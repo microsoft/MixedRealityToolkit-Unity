@@ -206,6 +206,30 @@ namespace HoloToolkit.Examples.SpatialUnderstandingFeatureOverview
             HandleResults_Topology("Find Placeable Positions", locationCount, new Vector3(0.25f, 0.025f, 0.25f), Color.cyan);
         }
 
+        public void Query_Topology_FindLargePositionsSittable()
+        {
+            // Setup
+            float minHeight = 0.125f;
+            float maxHeight = 2.0f;
+            float minFacingClearance = 1.0f;
+            float minWidth = .5f;
+
+            // Only if we're enabled
+            if (!SpatialUnderstanding.Instance.AllowSpatialUnderstanding)
+            {
+              return;
+            }
+
+            // Query
+            IntPtr resultsTopologyPtr = SpatialUnderstanding.Instance.UnderstandingDLL.PinObject(resultsTopology);
+            int locationCount = SpatialUnderstandingDllTopology.QueryTopology_FindLargePositionsSittable(
+                minHeight, maxHeight, minFacingClearance, minWidth,
+                resultsTopology.Length, resultsTopologyPtr);
+
+            // Output
+            HandleResults_Topology("Find Large Sittable Positions", locationCount, new Vector3(minWidth, 0.025f, minWidth), Color.cyan);
+        }
+
         public void Query_Shape_FindPositionsOnShape(string shapeName)
         {
             // Setup
