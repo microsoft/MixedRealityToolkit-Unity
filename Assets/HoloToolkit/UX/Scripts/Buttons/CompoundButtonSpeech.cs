@@ -3,7 +3,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 using UnityEngine;
+#if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
+#endif
 using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity;
 
@@ -36,11 +38,13 @@ namespace HoloToolkit.Unity.Buttons
         [HideInMRTKInspector]
         public string Keyword = string.Empty;
 
+#if UNITY_WSA || UNITY_STANDALONE_WIN
         /// <summary>
         /// The confidence level to use for this speech command
         /// </summary>
         [HideInMRTKInspector]
         public ConfidenceLevel ConfidenceLevel = ConfidenceLevel.Medium;
+#endif
 
         /// <summary>
         /// Variable to keep track of previous button text in case the button text changes after registration.
