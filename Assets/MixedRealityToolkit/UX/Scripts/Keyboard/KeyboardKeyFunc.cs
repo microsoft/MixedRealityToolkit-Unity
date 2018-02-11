@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MixedRealityToolkit.UX.Keyboard
+namespace MixedRealityToolkit.UX.VirtualKeyboard
 {
     /// <summary>
     /// Represents a key on the keyboard that has a function.
@@ -68,7 +68,7 @@ namespace MixedRealityToolkit.UX.Keyboard
         /// </summary>
         private void FireFunctionKey()
         {
-            KeyboardManager.Instance.FunctionKey(this);
+            VirtualKeyboardManager.Instance.FunctionKey(this);
         }
     }
 }

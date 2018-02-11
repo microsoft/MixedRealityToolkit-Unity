@@ -10,7 +10,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MixedRealityToolkit.UX.Keyboard
+namespace MixedRealityToolkit.UX.VirtualKeyboard
 {
     /// <summary>
     /// A simple general use keyboard that is ideal for AR/VR applications.
@@ -21,7 +21,7 @@ namespace MixedRealityToolkit.UX.Keyboard
     ///       To retrieve the input from the Keyboard, subscribe to the textEntered event. Note that
     ///       tapping 'Close' on the Keyboard will not fire the textEntered event. You must tap 'Enter' to
     ///       get the textEntered event.
-    public class KeyboardManager : Singleton<KeyboardManager>, IDictationHandler
+    public class VirtualKeyboardManager : Singleton<VirtualKeyboardManager>, IDictationHandler
     {
         /// <summary>
         /// Layout type enum for the type of keyboard layout to use.  

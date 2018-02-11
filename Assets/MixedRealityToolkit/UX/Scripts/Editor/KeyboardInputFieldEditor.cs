@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.UX.Keyboard;
+using MixedRealityToolkit.UX.VirtualKeyboard;
 using UnityEditor;
 
 namespace MixedRealityToolkit.UX.EditorScript
@@ -9,7 +9,7 @@ namespace MixedRealityToolkit.UX.EditorScript
     [CustomEditor(typeof(KeyboardInputField))]
     public class KeyboardInputFieldEditor : Editor
     {
-        public KeyboardManager.LayoutType KeyboardLayout = KeyboardManager.LayoutType.Alpha;
+        public VirtualKeyboardManager.LayoutType KeyboardLayout = VirtualKeyboardManager.LayoutType.Alpha;
         protected KeyboardInputField KeyboardField;
 
         protected virtual void Awake()
@@ -19,7 +19,7 @@ namespace MixedRealityToolkit.UX.EditorScript
 
         public override void OnInspectorGUI()
         {
-            KeyboardField.KeyboardLayout = (KeyboardManager.LayoutType)EditorGUILayout.EnumPopup("Keyboard Type:", KeyboardField.KeyboardLayout);
+            KeyboardField.KeyboardLayout = (VirtualKeyboardManager.LayoutType)EditorGUILayout.EnumPopup("Keyboard Type:", KeyboardField.KeyboardLayout);
 
             EditorGUILayout.Separator();
             base.OnInspectorGUI();

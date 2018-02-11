@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MixedRealityToolkit.UX.Keyboard
+namespace MixedRealityToolkit.UX.VirtualKeyboard
 {
     /// <summary>
     /// Represents a key on the keyboard that has a string value for input.
@@ -51,7 +51,7 @@ namespace MixedRealityToolkit.UX.Keyboard
             m_Button.onClick.RemoveAllListeners();
             m_Button.onClick.AddListener(FireAppendValue);
 
-            KeyboardManager.Instance.OnKeyboardShifted += Shift;
+            VirtualKeyboardManager.Instance.OnKeyboardShifted += Shift;
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace MixedRealityToolkit.UX.Keyboard
         /// </summary>
         private void FireAppendValue()
         {
-            KeyboardManager.Instance.AppendValue(this);
+            VirtualKeyboardManager.Instance.AppendValue(this);
         }
 
         /// <summary>

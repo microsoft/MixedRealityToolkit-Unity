@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace MixedRealityToolkit.UX.Keyboard
+namespace MixedRealityToolkit.UX.VirtualKeyboard
 {
     /// <summary>
     /// Class that when placed on an input field will enable keyboard on click
@@ -23,7 +23,7 @@ namespace MixedRealityToolkit.UX.Keyboard
         /// Internal field for overriding keyboard spawn point
         /// </summary>
         [HideInInspector]
-        public KeyboardManager.LayoutType KeyboardLayout = KeyboardManager.LayoutType.Alpha;
+        public VirtualKeyboardManager.LayoutType KeyboardLayout = VirtualKeyboardManager.LayoutType.Alpha;
 
         private const float KeyBoardPositionOffset = 0.045f;
 
@@ -34,21 +34,21 @@ namespace MixedRealityToolkit.UX.Keyboard
         {
             base.OnPointerClick(eventData);
 
-            KeyboardManager.Instance.Close();
-            KeyboardManager.Instance.PresentKeyboard(text, KeyboardLayout);
+            VirtualKeyboardManager.Instance.Close();
+            VirtualKeyboardManager.Instance.PresentKeyboard(text, KeyboardLayout);
 
             if (KeyboardSpawnPoint != null)
             {
-                KeyboardManager.Instance.RepositionKeyboard(KeyboardSpawnPoint, null, KeyBoardPositionOffset);
+                VirtualKeyboardManager.Instance.RepositionKeyboard(KeyboardSpawnPoint, null, KeyBoardPositionOffset);
             }
             else
             {
-                KeyboardManager.Instance.RepositionKeyboard(transform, null, KeyBoardPositionOffset);
+                VirtualKeyboardManager.Instance.RepositionKeyboard(transform, null, KeyBoardPositionOffset);
             }
 
             // Subscribe to keyboard delegates
-            KeyboardManager.Instance.OnTextUpdated += Keyboard_OnTextUpdated;
-            KeyboardManager.Instance.OnClosed += Keyboard_OnClosed;
+            VirtualKeyboardManager.Instance.OnTextUpdated += Keyboard_OnTextUpdated;
+            VirtualKeyboardManager.Instance.OnClosed += Keyboard_OnClosed;
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace MixedRealityToolkit.UX.Keyboard
         private void Keyboard_OnClosed(object sender, EventArgs e)
         {
             // Unsubscribe from delegate functions
-            KeyboardManager.Instance.OnTextUpdated -= Keyboard_OnTextUpdated;
-            KeyboardManager.Instance.OnClosed -= Keyboard_OnClosed;
+            VirtualKeyboardManager.Instance.OnTextUpdated -= Keyboard_OnTextUpdated;
+            VirtualKeyboardManager.Instance.OnClosed -= Keyboard_OnClosed;
         }
     }
 }
