@@ -2465,7 +2465,7 @@ GameObject:
   - component: {fileID: 11401954}
   - component: {fileID: 114593871428788132}
   m_Layer: 0
-  m_Name: Keyboard
+  m_Name: VirtualKeyboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5515,6 +5515,7 @@ MonoBehaviour:
   m_MinScale: 0.5
   m_MaxDistance: 3
   m_MinDistance: 1
+  CloseOnInactivity: 1
   CloseOnInactivityTime: 15
 --- !u!114 &11402014
 MonoBehaviour:
