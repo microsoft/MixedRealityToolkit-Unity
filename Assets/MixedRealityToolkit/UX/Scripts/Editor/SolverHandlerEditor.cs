@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using MixedRealityToolkit.InputModule.EditorScript;
 using MixedRealityToolkit.Utilities.Solvers;
 using UnityEditor;
 
-namespace MixedRealityToolkit.InputModule.EditorScript
+namespace MixedRealityToolkit.UX.EditorScript
 {
     [CustomEditor(typeof(SolverHandler))]
     public class SolverHandlerEditor : ControllerFinderEditor

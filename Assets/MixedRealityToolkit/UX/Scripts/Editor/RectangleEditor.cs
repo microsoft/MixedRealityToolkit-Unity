@@ -11,5 +11,4 @@ namespace MixedRealityToolkit.UX.EditorScript
         // Use FromSource step mode for rectangles since interpolated looks weird
         protected override StepModeEnum EditorStepMode { get { return StepModeEnum.FromSource; } }
     }
-
 }
