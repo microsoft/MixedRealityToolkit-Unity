@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Cursor
+namespace MixedRealityToolkit.UX.Cursor
 {
     /// <summary>
     /// Animated cursor is a cursor driven using an animator to inject state information

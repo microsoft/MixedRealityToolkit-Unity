@@ -4,44 +4,45 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Cursor
+namespace MixedRealityToolkit.UX.Cursor
 {
     /// <summary>
-    /// The object cursor can switch between different game objects based on its state.
-    /// It simply links the game object to set to active with its associated cursor state.
+    /// Object that represents a cursor comprised of sprites and colors for each state
     /// </summary>
-    public class ObjectCursor : BaseCursor
+    public class SpriteCursor : BaseCursor
     {
         [Serializable]
-        public struct ObjectCursorDatum
+        public struct SpriteCursorDatum
         {
             public string Name;
             public CursorStateEnum CursorState;
-            public GameObject CursorObject;
+            public Sprite CursorSprite;
+            public Color CursorColor;
         }
 
         [SerializeField]
-        public ObjectCursorDatum[] CursorStateData;
+        public SpriteCursorDatum[] CursorStateData;
 
         /// <summary>
         /// Sprite renderer to change.  If null find one in children
         /// </summary>
-        public Transform ParentTransform;
+        public SpriteRenderer TargetRenderer;
 
         /// <summary>
         /// On enable look for a sprite renderer on children
         /// </summary>
         protected override void OnEnable()
         {
-            if(ParentTransform == null)
+            if(TargetRenderer == null)
             {
-                ParentTransform = transform;
+                TargetRenderer = GetComponentInChildren<SpriteRenderer>();
             }
+
             base.OnEnable();
         }
 
         /// <summary>
-        /// Override OnCursorState change to set the correct animation
+        /// Override OnCursorState change to set the correct sprite
         /// state for the cursor
         /// </summary>
         /// <param name="state"></param>
@@ -51,21 +52,30 @@ namespace MixedRealityToolkit.InputModule.Cursor
 
             if (state != CursorStateEnum.Contextual)
             {
-                // Hide all children first
-                for(int i = 0; i < ParentTransform.childCount; i++)
-                {
-                    ParentTransform.GetChild(i).gameObject.SetActive(false);
-                }
-
-                // Set active any that match the current state
                 for (int i = 0; i < CursorStateData.Length; i++)
                 {
                     if (CursorStateData[i].CursorState == state)
                     {
-                        CursorStateData[i].CursorObject.SetActive(true);
+                        SetCursorState(CursorStateData[i]);
                     }
                 }
             }
         }
+
+        /// <summary>
+        /// Based on the type of state info pass it through to the sprite renderer
+        /// </summary>
+        /// <param name="stateDatum"></param>
+        private void SetCursorState(SpriteCursorDatum stateDatum)
+        {
+            // Return if we do not have an animator
+            if (TargetRenderer != null)
+            {
+                TargetRenderer.sprite = stateDatum.CursorSprite;
+                TargetRenderer.color = stateDatum.CursorColor;
+            }
+        }
+
     }
+
 }

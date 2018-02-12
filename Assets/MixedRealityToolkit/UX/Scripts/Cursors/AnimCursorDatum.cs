@@ -2,9 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Cursor
+namespace MixedRealityToolkit.UX.Cursor
 {
     /// <summary>
     /// Data struct for cursor state information for the Animated Cursor, which leverages the Unity animation system..

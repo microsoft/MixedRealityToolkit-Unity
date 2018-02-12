@@ -4,7 +4,7 @@
 using MixedRealityToolkit.InputModule.Gaze;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Cursor
+namespace MixedRealityToolkit.UX.Cursor
 {
     /// <summary>
     /// A cursor that looks and acts more like the shell cursor.
