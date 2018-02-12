@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
+using MixedRealityToolkit.InputModule.Focus;
+using MixedRealityToolkit.Utilities.Attributes;
 using MixedRealityToolkit.UX.Distorters;
 using MixedRealityToolkit.UX.Lines;
-using MixedRealityToolkit.Utilities.Attributes;
-using MixedRealityToolkit.InputModule.Focus;
+using UnityEngine;
 
 namespace MixedRealityToolkit.InputModule.Pointers
 {

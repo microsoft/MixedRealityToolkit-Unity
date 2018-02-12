@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Common;
 using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.InputModule;
-using MixedRealityToolkit.InputModule.Cursor;
+using MixedRealityToolkit.InputModule.Cursors;
 using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.Utilities;
 using UnityEditor;
@@ -37,6 +37,8 @@ namespace MixedRealityToolkit.Build
             AddMixedRealityCamera,
             CameraToOrigin,
             AddInputSystem,
+            AddDefaultCursor,
+            UpdateCanvases
         }
 
         #region Overrides / Event Handlers
@@ -53,15 +55,15 @@ namespace MixedRealityToolkit.Build
                 PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(CameraPrefabGUID)));
             }
 
-            var mainCamera = CameraCache.Refresh(Camera.main);
+            if (Values[SceneSetting.CameraToOrigin])
+            {
+                var mainCamera = CameraCache.Refresh(Camera.main);
 
-            if (mainCamera == null)
-            {
-                Debug.LogWarning("Could not find a valid \"MainCamera\"!  Unable to update camera position.");
-            }
-            else
-            {
-                if (Values[SceneSetting.CameraToOrigin])
+                if (mainCamera == null)
+                {
+                    Debug.LogWarning("Could not find a valid \"MainCamera\"!  Unable to update camera position.");
+                }
+                else
                 {
                     mainCamera.transform.position = Vector3.zero;
                 }
@@ -88,7 +90,23 @@ namespace MixedRealityToolkit.Build
                 }
 
                 PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(InputSystemPrefabGUID)));
-                FocusManager.Instance.UpdateCanvasEventSystems();
+                Values[SceneSetting.UpdateCanvases] = true;
+            }
+
+            if (Values[SceneSetting.UpdateCanvases])
+            {
+                var focusManager = FindObjectOfType<FocusManager>();
+                if (focusManager != null)
+                {
+                    FocusManager.Instance.UpdateCanvasEventSystems();
+                }
+
+                var sceneCanvases = Resources.FindObjectsOfTypeAll<Canvas>();
+                foreach (Canvas canvas in sceneCanvases)
+                {
+                    var helper = canvas.EnsureComponent<CanvasHelper>();
+                    helper.Canvas = canvas;
+                }
             }
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
@@ -98,7 +116,7 @@ namespace MixedRealityToolkit.Build
 
         protected override void LoadSettings()
         {
-            for (int i = 0; i <= (int)SceneSetting.AddInputSystem; i++)
+            for (int i = 0; i <= (int)SceneSetting.UpdateCanvases; i++)
             {
                 Values[(SceneSetting)i] = true;
             }
@@ -128,6 +146,20 @@ namespace MixedRealityToolkit.Build
                 "Adds the Input Manager Prefab to the scene.\n\n" +
                 "The prefab comes preset with all the components and options for automatically handling input for Mixed Reality Applications.\n\n" +
                 "<color=#ff0000ff><b>Warning!</b></color> This will remove and replace any currently existing Input Managers or Event Systems in your scene.";
+
+            Names[SceneSetting.AddDefaultCursor] = "Add the Default Cursor Prefab";
+            Descriptions[SceneSetting.AddDefaultCursor] =
+                "Recommended\n\n" +
+                "Adds the  Default Cursor Prefab to the scene.\n\n" +
+                "The prefab comes preset with all the components and options for automatically handling cursor animations for Mixed Reality Applications.\n\n" +
+                "<color=#ff0000ff><b>Warning!</b></color> This will remove and replace any currently existing Cursors in your scene.";
+
+            Names[SceneSetting.UpdateCanvases] = "Update World Space Canvases";
+            Descriptions[SceneSetting.UpdateCanvases] =
+                "Recommended\n\n" +
+                "Updates all the World Space Canvases in the scene to use the Focus Managers UIRaycastCamera as its default event camera.\n\n" +
+                "<color=#ffff00ff><b>Note:</b></color> This also adds a CanvasHelper script to the canvas to aid in the scene transitions and instances where the camera does not " +
+                "initially exist in the same scene as the canvas.";
         }
 
         protected override void OnEnable()

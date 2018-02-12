@@ -2,15 +2,16 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Common;
+using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.Pointers;
+using MixedRealityToolkit.InputModule.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
-using MixedRealityToolkit.Common.Extensions;
 #endif
 
 namespace MixedRealityToolkit.InputModule.InputSources
@@ -733,7 +734,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
             InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
 #else
-            recognizerStart = RecognizerStartBehavior.ManualStart;
+            RecognizerStart = RecognizerStartBehavior.ManualStart;
 #endif
         }
 

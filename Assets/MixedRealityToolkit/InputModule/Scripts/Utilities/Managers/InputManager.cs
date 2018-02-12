@@ -8,10 +8,15 @@ using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.InputModule.InputSources;
 using MixedRealityToolkit.InputModule.Pointers;
+using MixedRealityToolkit.InputModule.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+
+#if UNITY_WSA
+using UnityEngine.XR.WSA.Input;
+#endif
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
@@ -615,12 +620,12 @@ namespace MixedRealityToolkit.InputModule
         }
 
 #if UNITY_WSA
-        public void RaisePointerDown(IPointer pointer, UnityEngine.XR.WSA.Input.InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void RaisePointerDown(IPointer pointer, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
             // Create input event
             clickEventData.Initialize(pointer.InputSourceParent, pressType, handedness, tags);
 
-            if (pressType == UnityEngine.XR.WSA.Input.InteractionSourcePressType.Select)
+            if (pressType == InteractionSourcePressType.Select)
             {
                 ExecutePointerDown(HandlePointerDown(pointer));
             }
@@ -663,7 +668,7 @@ namespace MixedRealityToolkit.InputModule
         }
 
 #if UNITY_WSA
-        public void RaiseInputClicked(IPointer pointer, int tapCount, UnityEngine.XR.WSA.Input.InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void RaiseInputClicked(IPointer pointer, int tapCount, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
             // Create input event
             clickEventData.Initialize(pointer.InputSourceParent, tapCount, pressType, handedness, tags);
@@ -718,12 +723,12 @@ namespace MixedRealityToolkit.InputModule
         }
 
 #if UNITY_WSA
-        public void RaisePointerUp(IPointer pointer, UnityEngine.XR.WSA.Input.InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void RaisePointerUp(IPointer pointer, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
             // Create input event
             clickEventData.Initialize(pointer.InputSourceParent, pressType, handedness, tags);
 
-            if (pressType == UnityEngine.XR.WSA.Input.InteractionSourcePressType.Select)
+            if (pressType == InteractionSourcePressType.Select)
             {
                 ExecutePointerUp(HandlePointerUp(pointer));
             }
@@ -763,7 +768,7 @@ namespace MixedRealityToolkit.InputModule
         }
 
 #if UNITY_WSA
-        public void RaiseOnInputDown(IInputSource source, UnityEngine.XR.WSA.Input.InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void RaiseOnInputDown(IInputSource source, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
             // Create input event
             inputEventData.Initialize(source, pressType, handedness, tags);
@@ -802,7 +807,7 @@ namespace MixedRealityToolkit.InputModule
         }
 
 #if UNITY_WSA
-        public void RaiseOnInputPressed(IInputSource source, double pressAmount, UnityEngine.XR.WSA.Input.InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void RaiseOnInputPressed(IInputSource source, double pressAmount, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
             // Create input event
             inputPressedEventData.Initialize(source, pressAmount, pressType, handedness, tags);
@@ -841,7 +846,7 @@ namespace MixedRealityToolkit.InputModule
         }
 
 #if UNITY_WSA
-        public void RaiseOnInputUp(IInputSource source, UnityEngine.XR.WSA.Input.InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void RaiseOnInputUp(IInputSource source, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
             // Create input event
             inputEventData.Initialize(source, pressType, handedness, tags);
@@ -880,7 +885,7 @@ namespace MixedRealityToolkit.InputModule
         }
 
 #if UNITY_WSA
-        public void RaiseInputPositionChanged(IInputSource source, Vector2 inputPosition, UnityEngine.XR.WSA.Input.InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void RaiseInputPositionChanged(IInputSource source, Vector2 inputPosition, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
         {
             // Create input event
             inputPositionEventData.Initialize(source, inputPosition, pressType, handedness, tags);

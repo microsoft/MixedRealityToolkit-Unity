@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Cursor
+namespace MixedRealityToolkit.InputModule.Cursors
 {
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.

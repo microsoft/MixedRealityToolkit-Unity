@@ -4,6 +4,7 @@
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.InputSources;
 using MixedRealityToolkit.UX.Buttons.Enums;
 using System;
 using System.Collections;
@@ -11,7 +12,6 @@ using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
-using MixedRealityToolkit.InputModule.InputSources;
 #endif
 
 namespace MixedRealityToolkit.UX.Buttons

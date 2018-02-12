@@ -3,18 +3,9 @@
 
 using MixedRealityToolkit.Common;
 using MixedRealityToolkit.Common.Extensions;
-using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.InputModule.Utilities;
 using System.Collections;
 using UnityEngine;
-
-#if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
-using UnityEngine.XR.WSA.Input;
-#else
-using UnityEngine.VR.WSA.Input;
-#endif
-#endif
 
 namespace MixedRealityToolkit.Utilities.Solvers
 {

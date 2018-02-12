@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.InputModule.EventData;
-using System;
 using UnityEngine;
+using MixedRealityToolkit.InputModule.EventData;
 
-namespace MixedRealityToolkit.InputModule.Cursor
+namespace MixedRealityToolkit.InputModule.Cursors
 {
     /// <summary>
     /// Animated cursor is a cursor driven using an animator to inject state information
@@ -13,20 +12,6 @@ namespace MixedRealityToolkit.InputModule.Cursor
     /// </summary>
     public class AnimatedCursor : BaseCursor
     {
-        /// <summary>
-        /// Enabled state Data when enabling
-        /// </summary>
-        [Obsolete("Use InputEnabledParameter")]
-        [Tooltip("Cursor State Data to use when enabling the cursor")]
-        public AnimCursorDatum EnableStateData;
-
-        /// <summary>
-        /// Disabled state Data when disabled
-        /// </summary>
-        [Obsolete("Use InputDisabledParameter")]
-        [Tooltip("Cursor State Data to use when the cursor is disabled")]
-        public AnimCursorDatum DisableStateData;
-
         /// <summary>
         /// Serialized set of cursor state data
         /// </summary>

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 
 namespace MixedRealityToolkit.UX.Lines
@@ -10,6 +11,8 @@ namespace MixedRealityToolkit.UX.Lines
         [Header("Constrained Parabola Settings")]
         public Vector3 End = Vector3.forward;
         public Vector3 UpDirection = Vector3.up;
+        [Range(0.01f, 10f)]
+        public float Height = 1f;
 
         public override int NumPoints
         {

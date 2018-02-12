@@ -3,14 +3,15 @@
 
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Focus;
+using MixedRealityToolkit.InputModule.InputSources;
 using MixedRealityToolkit.InputModule.Pointers;
 using UnityEngine;
 
 #if UNITY_WSA
-using MixedRealityToolkit.InputModule.InputSources;
+using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace MixedRealityToolkit.InputModule.Cursor
+namespace MixedRealityToolkit.InputModule.Cursors
 {
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.
@@ -153,10 +154,10 @@ namespace MixedRealityToolkit.InputModule.Cursor
                 inputSource = eventData.InputSource as SimulatedInputSource;
             }
 
-            UnityEngine.XR.WSA.Input.InteractionSourceKind sourceKind;
+            InteractionSourceKind sourceKind;
             if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
                 inputSource != null && inputSource.TryGetSourceKind(out sourceKind))
-                && sourceKind == UnityEngine.XR.WSA.Input.InteractionSourceKind.Hand)
+                && sourceKind == InteractionSourceKind.Hand)
             {
                 visibleHandsCount++;
             }
@@ -182,10 +183,10 @@ namespace MixedRealityToolkit.InputModule.Cursor
                 inputSource = eventData.InputSource as SimulatedInputSource;
             }
 
-            UnityEngine.XR.WSA.Input.InteractionSourceKind sourceKind;
+            InteractionSourceKind sourceKind;
             if ((InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind) ||
                  inputSource != null && inputSource.TryGetSourceKind(out sourceKind))
-                && sourceKind == UnityEngine.XR.WSA.Input.InteractionSourceKind.Hand)
+                && sourceKind == InteractionSourceKind.Hand)
             {
                 visibleHandsCount--;
             }

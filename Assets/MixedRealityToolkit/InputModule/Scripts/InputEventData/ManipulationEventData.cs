@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.InputModule.InputSources;
+using MixedRealityToolkit.InputModule.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -14,7 +15,7 @@ namespace MixedRealityToolkit.InputModule.EventData
     {
         /// <summary>
         /// The amount of manipulation that has occurred. Usually in the form of
-        /// delta position of a hand. 
+        /// delta position of a hand.
         /// </summary>
         public Vector3 CumulativeDelta { get; private set; }
 

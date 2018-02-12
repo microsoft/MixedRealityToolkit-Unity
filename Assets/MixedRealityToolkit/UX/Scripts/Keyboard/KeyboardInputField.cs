@@ -23,7 +23,7 @@ namespace MixedRealityToolkit.UX.Keyboard
         /// Internal field for overriding keyboard spawn point
         /// </summary>
         [HideInInspector]
-        public Keyboard.LayoutType KeyboardLayout = Keyboard.LayoutType.Alpha;
+        public KeyboardManager.LayoutType KeyboardLayout = KeyboardManager.LayoutType.Alpha;
 
         private const float KeyBoardPositionOffset = 0.045f;
 
@@ -34,21 +34,21 @@ namespace MixedRealityToolkit.UX.Keyboard
         {
             base.OnPointerClick(eventData);
 
-            Keyboard.Instance.Close();
-            Keyboard.Instance.PresentKeyboard(text, KeyboardLayout);
+            KeyboardManager.Instance.Close();
+            KeyboardManager.Instance.PresentKeyboard(text, KeyboardLayout);
 
             if (KeyboardSpawnPoint != null)
             {
-                Keyboard.Instance.RepositionKeyboard(KeyboardSpawnPoint, null, KeyBoardPositionOffset);
+                KeyboardManager.Instance.RepositionKeyboard(KeyboardSpawnPoint, null, KeyBoardPositionOffset);
             }
             else
             {
-                Keyboard.Instance.RepositionKeyboard(transform, null, KeyBoardPositionOffset);
+                KeyboardManager.Instance.RepositionKeyboard(transform, null, KeyBoardPositionOffset);
             }
 
             // Subscribe to keyboard delegates
-            Keyboard.Instance.OnTextUpdated += Keyboard_OnTextUpdated;
-            Keyboard.Instance.OnClosed += Keyboard_OnClosed;
+            KeyboardManager.Instance.OnTextUpdated += Keyboard_OnTextUpdated;
+            KeyboardManager.Instance.OnClosed += Keyboard_OnClosed;
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace MixedRealityToolkit.UX.Keyboard
         private void Keyboard_OnClosed(object sender, EventArgs e)
         {
             // Unsubscribe from delegate functions
-            Keyboard.Instance.OnTextUpdated -= Keyboard_OnTextUpdated;
-            Keyboard.Instance.OnClosed -= Keyboard_OnClosed;
+            KeyboardManager.Instance.OnTextUpdated -= Keyboard_OnTextUpdated;
+            KeyboardManager.Instance.OnClosed -= Keyboard_OnClosed;
         }
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.InputModule.Gaze;
+using MixedRealityToolkit.InputModule.Utilities;
 using MixedRealityToolkit.InputModule.Utilities.Interations;
 using System;
 using UnityEngine;

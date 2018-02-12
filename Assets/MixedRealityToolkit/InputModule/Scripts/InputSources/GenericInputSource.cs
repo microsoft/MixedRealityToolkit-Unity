@@ -3,6 +3,7 @@
 
 using MixedRealityToolkit.InputModule.Gaze;
 using MixedRealityToolkit.InputModule.Pointers;
+using MixedRealityToolkit.InputModule.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

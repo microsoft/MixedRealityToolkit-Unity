@@ -5,14 +5,14 @@ using MixedRealityToolkit.UX.Lines;
 
 namespace MixedRealityToolkit.UX.EditorScript
 {
-    [UnityEditor.CustomEditor(typeof(Parabola))]
-    public class ParabolaEditor : LineBaseEditor
+    [UnityEditor.CustomEditor(typeof(ParabolaConstrained))]
+    public class ParabolaConstrainedEditor : LineBaseEditor
     {
         protected override void DrawCustomSceneGUI()
         {
             base.DrawCustomSceneGUI();
 
-            Parabola line = (Parabola)target;
+            ParabolaConstrained line = (ParabolaConstrained)target;
 
             line.FirstPoint = SquareMoveHandle(line.FirstPoint);
             line.LastPoint = SquareMoveHandle(line.LastPoint);

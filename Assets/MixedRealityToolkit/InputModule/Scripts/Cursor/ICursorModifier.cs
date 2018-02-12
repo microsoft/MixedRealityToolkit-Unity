@@ -4,7 +4,7 @@
 using MixedRealityToolkit.InputModule.InputHandlers;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Cursor
+namespace MixedRealityToolkit.InputModule.Cursors
 {
     /// <summary>
     /// Cursor Modifier Interface that provides basic overrides for cursor behavior.

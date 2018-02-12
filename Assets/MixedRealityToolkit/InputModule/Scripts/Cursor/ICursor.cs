@@ -5,7 +5,7 @@ using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.InputModule.Pointers;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Cursor
+namespace MixedRealityToolkit.InputModule.Cursors
 {
     /// <summary>
     /// Cursor Interface for handling input events and setting visibility.

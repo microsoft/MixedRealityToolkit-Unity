@@ -9,6 +9,8 @@ namespace MixedRealityToolkit.UX.Lines
 {
     public abstract class LineBase : MonoBehaviour
     {
+        public static readonly Color DefaultDisplayLineColor = Color.white;
+
         protected const float MinRotationMagnitude = 0.0001f;
 
         #region fields & properties
@@ -419,7 +421,7 @@ namespace MixedRealityToolkit.UX.Lines
 
             Vector3 firstPos = GetPoint(0f);
             Vector3 lastPos = firstPos;
-            Gizmos.color = Color.Lerp(Color.white, Color.clear, 0.25f);
+            Gizmos.color = Color.Lerp(DefaultDisplayLineColor, Color.clear, 0.25f);
             int numSteps = 16;
 
             for (int i = 1; i < numSteps; i++)

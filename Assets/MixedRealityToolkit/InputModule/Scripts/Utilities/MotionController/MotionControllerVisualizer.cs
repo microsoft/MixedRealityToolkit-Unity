@@ -3,8 +3,8 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using MixedRealityToolkit.Common;
+using UnityEngine;
 
 #if UNITY_EDITOR_WIN
 using System.Runtime.InteropServices;
@@ -19,7 +19,6 @@ using UnityGLTF;
 #if !UNITY_EDITOR
 using Windows.Foundation;
 using Windows.Storage.Streams;
-using MixedRealityToolkit.Common.Extensions;
 #endif
 #endif
 

@@ -68,7 +68,7 @@ namespace MixedRealityToolkit.UX.Keyboard
         /// </summary>
         private void FireFunctionKey()
         {
-            Keyboard.Instance.FunctionKey(this);
+            KeyboardManager.Instance.FunctionKey(this);
         }
     }
 }

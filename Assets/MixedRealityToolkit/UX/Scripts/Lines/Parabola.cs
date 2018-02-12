@@ -9,8 +9,6 @@ namespace MixedRealityToolkit.UX.Lines
     {
         [Header("Parabola Settings")]
         public Vector3 Start = Vector3.zero;
-        [Range(0.01f, 10f)]
-        public float Height = 1f;
 
         protected override float GetUnclampedWorldLengthInternal()
         {
