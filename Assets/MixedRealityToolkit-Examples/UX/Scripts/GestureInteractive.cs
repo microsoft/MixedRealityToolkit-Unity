@@ -5,7 +5,7 @@ using System.Collections;
 using UnityEngine;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.InputModule.InputSources;
-using MixedRealityToolkit.InputModule.Cursor;
+using MixedRealityToolkit.InputModule.Cursors;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.Common;

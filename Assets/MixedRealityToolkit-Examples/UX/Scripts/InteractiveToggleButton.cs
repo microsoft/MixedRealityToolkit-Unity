@@ -15,7 +15,6 @@ namespace MixedRealityToolkit.Examples.UX
     /// </summary>
     public class InteractiveToggleButton : InteractiveToggle
     {
-
         public UnityEvent OnGazeEnterEvents;
         public UnityEvent OnGazeLeaveEvents;
         public UnityEvent OnDownEvents;

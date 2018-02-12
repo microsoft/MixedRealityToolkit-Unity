@@ -5,6 +5,7 @@ using MixedRealityToolkit.Common;
 using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.Utilities;
 using MixedRealityToolkit.SpatialMapping;
 using MixedRealityToolkit.SpatialUnderstanding;
 using System;
@@ -66,7 +67,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstanding
             {
                 // Only allow this when we are actually scanning
                 if ((SpatialUnderstandingManager.Instance.ScanState != SpatialUnderstandingManager.ScanStates.Scanning) ||
-                    (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding))
+                   (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding))
                 {
                     return false;
                 }

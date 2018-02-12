@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.Focus;
+using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.Examples.UX.Controls;
+using MixedRealityToolkit.Examples.UX.Widgets;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Collections.Generic;
-using MixedRealityToolkit.InputModule.InputHandlers;
-using MixedRealityToolkit.Examples.UX.Widgets;
-using MixedRealityToolkit.InputModule.EventData;
-using MixedRealityToolkit.Examples.UX.Controls;
-using MixedRealityToolkit.InputModule.Focus;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;

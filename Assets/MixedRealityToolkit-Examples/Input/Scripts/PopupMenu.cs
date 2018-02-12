@@ -115,7 +115,7 @@ namespace MixedRealityToolkit.Examples.InputModule
             cancelledCallback = null;
             deactivatedCallback = null;
 
-            if (cancelButton)
+            if (cancelButton != null)
             {
                 cancelButton.Selected = false;
             }
