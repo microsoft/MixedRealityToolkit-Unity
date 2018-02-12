@@ -1,8 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Examples.Prototyping;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using MixedRealityToolkit.Examples.Prototyping;
+using MixedRealityToolkit.Examples.InteractiveElements;
 
 namespace MixedRealityToolkit.Examples.UX.Controls
 {
@@ -78,7 +81,7 @@ namespace MixedRealityToolkit.Examples.UX.Controls
             {
                 Orbs[i].GetComponent<Renderer>().material.color = UseLightTheme ? LightColor : DarkColor;
                 Orbs[i].SetActive(false);
-                FadeColors fade = Orbs[i].GetComponent<FadeColors>();
+                FadeObject fade = Orbs[i].GetComponent<FadeObject>();
                 fade.ResetFade(0);
             }
         }
@@ -236,7 +239,7 @@ namespace MixedRealityToolkit.Examples.UX.Controls
                     {
                         if (i == mFadeIndex)
                         {
-                            FadeColors fade = orb.GetComponent<FadeColors>();
+                            FadeObject fade = orb.GetComponent<FadeObject>();
                             fade.FadeOut(false);
                             if (i >= Orbs.Length - 1)
                             {
@@ -251,7 +254,7 @@ namespace MixedRealityToolkit.Examples.UX.Controls
                     {
                         if (i == mFadeIndex)
                         {
-                            FadeColors fade = orb.GetComponent<FadeColors>();
+                            FadeObject fade = orb.GetComponent<FadeObject>();
                             fade.FadeIn(false);
                             if (i >= Orbs.Length - 1)
                             {
