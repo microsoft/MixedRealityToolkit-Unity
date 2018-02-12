@@ -5,7 +5,7 @@ using MixedRealityToolkit.InputModule.EditorScript;
 using MixedRealityToolkit.Utilities.Solvers;
 using UnityEditor;
 
-namespace MixedRealityToolkit.UX.EditorScript
+namespace MixedRealityToolkit.Utilities.EditorScript
 {
     [CustomEditor(typeof(SolverHandler))]
     public class SolverHandlerEditor : ControllerFinderEditor
