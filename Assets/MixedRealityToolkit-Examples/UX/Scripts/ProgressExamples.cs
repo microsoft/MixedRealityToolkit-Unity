@@ -19,7 +19,7 @@ namespace MixedRealityToolkit.Examples.UX
         public float LoadingTime = 5f;
         public float FinishTime = 1.5f;
 
-        [Header("Set these to override the defaults set in the LoadingDialog prefab")]
+        [Header("Set these to override the defaults set in the ProgressIndicator prefab")]
         public GameObject LoadingPrefab = null;
         public Texture2D LoadingIcon = null;
 
@@ -42,63 +42,63 @@ namespace MixedRealityToolkit.Examples.UX
         {
             Debug.Log("Loading with button " + obj.name);
 
-            if (LoadingDialog.Instance.IsLoading)
+            if (ProgressIndicator.Instance.IsLoading)
                 return;
 
             switch (obj.name)
             {
-                case "ButtonLoadMessage":
-                    LoadingDialog.Instance.Open(
-                            LoadingDialog.IndicatorStyleEnum.None,
-                            LoadingDialog.ProgressStyleEnum.None,
-                            LoadingDialog.MessageStyleEnum.Visible,
+                case "ButtonLoadText":
+                    ProgressIndicator.Instance.Open(
+                            ProgressIndicator.IndicatorStyleEnum.None,
+                            ProgressIndicator.ProgressStyleEnum.None,
+                            ProgressIndicator.MessageStyleEnum.Visible,
                             LeadInMessage);
                     StartCoroutine(LoadOverTime(LoadTextMessage));
                     break;
 
-                case "ButtonLoadOrbs":
-                    LoadingDialog.Instance.Open(
-                             LoadingDialog.IndicatorStyleEnum.AnimatedOrbs,
-                             LoadingDialog.ProgressStyleEnum.None,
-                             LoadingDialog.MessageStyleEnum.Visible,
+                case "ButtonLoadDefault":
+                    ProgressIndicator.Instance.Open(
+                             ProgressIndicator.IndicatorStyleEnum.AnimatedOrbs,
+                             ProgressIndicator.ProgressStyleEnum.None,
+                             ProgressIndicator.MessageStyleEnum.Visible,
                              LeadInMessage);
                     StartCoroutine(LoadOverTime(LoadOrbsMessage));
                     break;
 
                 case "ButtonLoadIcon":
-                    LoadingDialog.Instance.Open(
-                        LoadingDialog.IndicatorStyleEnum.StaticIcon,
-                        LoadingDialog.ProgressStyleEnum.None,
-                        LoadingDialog.MessageStyleEnum.Visible,
+                    ProgressIndicator.Instance.Open(
+                        ProgressIndicator.IndicatorStyleEnum.StaticIcon,
+                        ProgressIndicator.ProgressStyleEnum.None,
+                        ProgressIndicator.MessageStyleEnum.Visible,
                         LeadInMessage,
                         null);
                     StartCoroutine(LoadOverTime(LoadIconMessage));
                     break;
 
                 case "ButtonLoadPrefab":
-                    LoadingDialog.Instance.Open(
-                        LoadingDialog.IndicatorStyleEnum.Prefab,
-                        LoadingDialog.ProgressStyleEnum.None,
-                        LoadingDialog.MessageStyleEnum.Visible,
+                    ProgressIndicator.Instance.Open(
+                        ProgressIndicator.IndicatorStyleEnum.Prefab,
+                        ProgressIndicator.ProgressStyleEnum.None,
+                        ProgressIndicator.MessageStyleEnum.Visible,
                         LeadInMessage,
                         LoadingPrefab);
                     StartCoroutine(LoadOverTime(LoadPrefabMessage));
                     break;
 
                 case "ButtonLoadProgress":
-                    LoadingDialog.Instance.Open(
-                        LoadingDialog.IndicatorStyleEnum.None,
-                        LoadingDialog.ProgressStyleEnum.Percentage,
-                        LoadingDialog.MessageStyleEnum.Visible,
+                    ProgressIndicator.Instance.Open(
+                        ProgressIndicator.IndicatorStyleEnum.None,
+                        ProgressIndicator.ProgressStyleEnum.Percentage,
+                        ProgressIndicator.MessageStyleEnum.Visible,
                         LeadInMessage);
                     StartCoroutine(LoadOverTime(LoadProgressMessage));
                     break;
 
                 case "ButtonLoadProgressBar":
-                    LoadingDialog.Instance.Open(
-                        LoadingDialog.IndicatorStyleEnum.None,
-                        LoadingDialog.ProgressStyleEnum.ProgressBar,
-                        LoadingDialog.MessageStyleEnum.Visible,
+                    ProgressIndicator.Instance.Open(
+                        ProgressIndicator.IndicatorStyleEnum.None,
+                        ProgressIndicator.ProgressStyleEnum.ProgressBar,
+                        ProgressIndicator.MessageStyleEnum.Visible,
                         LeadInMessage);
                     StartCoroutine(LoadOverTime(LoadProgressBarMessage));
                     break;
@@ -126,21 +126,21 @@ namespace MixedRealityToolkit.Examples.UX
             while (Time.time < startTime + LoadingTime)
             {
                 progress = (Time.time - startTime) / LoadingTime;
-                LoadingDialog.Instance.SetMessage(message);
-                LoadingDialog.Instance.SetProgress(progress);
+                ProgressIndicator.Instance.SetMessage(message);
+                ProgressIndicator.Instance.SetProgress(progress);
                 yield return new WaitForSeconds(Random.Range(0.15f, 0.5f));
             }
 
             // Give the user a final notification that loading has finished (optional)
-            LoadingDialog.Instance.SetMessage(FinishMessage);
-            LoadingDialog.Instance.SetProgress(1f);
+            ProgressIndicator.Instance.SetMessage(FinishMessage);
+            ProgressIndicator.Instance.SetProgress(1f);
             yield return new WaitForSeconds(FinishTime);
 
             // Close the loading dialog
-            // LoadingDialog.Instance.IsLoading will report true until its 'Closing' animation has ended
+            // ProgressIndicator.Instance.IsLoading will report true until its 'Closing' animation has ended
             // This typically takes about 1 second
-            LoadingDialog.Instance.Close();
-            while (LoadingDialog.Instance.IsLoading)
+            ProgressIndicator.Instance.Close();
+            while (ProgressIndicator.Instance.IsLoading)
             {
                 yield return null;
             }

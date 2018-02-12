@@ -49,7 +49,7 @@ namespace MixedRealityToolkit.Examples.UX
     /// Singleton for displaying a simple loading dialog
     /// Can be combined with a radial solver to keep locked to the HMD
     /// </summary>
-    public class LoadingDialog : Singleton<LoadingDialog>
+    public class ProgressIndicator : Singleton<ProgressIndicator>
     {
         const float SmoothProgressSpeed = 10f;
 

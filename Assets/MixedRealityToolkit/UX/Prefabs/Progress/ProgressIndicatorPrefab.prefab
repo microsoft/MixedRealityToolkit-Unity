@@ -20,11 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4168838544076616}
   - component: {fileID: 33760788477812612}
-  - component: {fileID: 64852714611982740}
   - component: {fileID: 23733828809625840}
-  - component: {fileID: 114079248952638588}
+  - component: {fileID: 114673174492309362}
   m_Layer: 0
-  m_Name: LoadingDefaultPrefabIcon
+  m_Name: ProgressIndicatorPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,9 +35,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1245238035927764}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -57,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 3283329e1c2ab0547acf377f146124b1, type: 2}
+  - {fileID: 2100000, guid: 4e837fa12a1366a4087cc48aa10c8dd2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -65,7 +64,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
+  m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 0
@@ -83,22 +82,8 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1245238035927764}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!64 &64852714611982740
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1245238035927764}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114079248952638588
+  m_Mesh: {fileID: 4300000, guid: 5838ea95659d32943afec95550ac1ce1, type: 3}
+--- !u!114 &114673174492309362
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -109,12 +94,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f26f823a09a994040b6713d14df62844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationIncrement: -200
+  rotationIncrement: 200
   minScale: 1
-  maxScale: 10
+  maxScale: 9
   scaleSpeed: 30
   rotationActive: 1
   growingActive: 1
   xAxisRotation: 0
-  yAxisRotation: 0
-  zAxisRotation: 1
+  yAxisRotation: 1
+  zAxisRotation: 0
