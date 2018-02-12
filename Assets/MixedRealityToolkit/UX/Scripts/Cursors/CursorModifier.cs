@@ -4,7 +4,7 @@
 using MixedRealityToolkit.InputModule.Focus;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.Cursor
+namespace MixedRealityToolkit.UX.Cursors
 {
     /// <summary>
     /// Component that can be added to any game object with a collider to modify 

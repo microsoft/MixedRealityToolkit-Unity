@@ -6,7 +6,7 @@ using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Focus;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.Cursor
+namespace MixedRealityToolkit.UX.Cursors
 {
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.

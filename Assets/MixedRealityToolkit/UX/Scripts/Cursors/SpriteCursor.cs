@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.Cursor
+namespace MixedRealityToolkit.UX.Cursors
 {
     /// <summary>
     /// Object that represents a cursor comprised of sprites and colors for each state

@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.Cursor
+namespace MixedRealityToolkit.UX.Cursors
 {
     /// <summary>
     /// The object cursor can switch between different game objects based on its state.

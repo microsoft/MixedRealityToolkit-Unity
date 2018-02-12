@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.Cursor
+namespace MixedRealityToolkit.UX.Cursors
 {
     /// <summary>
     /// Cursor Modifier Interface that provides basic overrides for cursor behavior.

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MixedRealityToolkit.UX.Cursor
+namespace MixedRealityToolkit.UX.Cursors
 {
     /// <summary>
     /// Data struct for cursor state information for the Animated Cursor, which leverages the Unity animation system..

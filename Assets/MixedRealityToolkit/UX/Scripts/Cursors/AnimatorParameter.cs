@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.Cursor
+namespace MixedRealityToolkit.UX.Cursors
 {
     /// <summary>
     /// Created a copy of the AnimatorControllerParameter because that class is not Serializable
