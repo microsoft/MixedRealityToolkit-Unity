@@ -25,6 +25,7 @@ public class LoadingAnimation : MonoBehaviour
     private bool mCheckLoopPause = false;
     private Vector3 mPositionVector;
     private Vector3 mRotatedPositionVector;
+    private LoadingAnimation loadingAnimation;
 
     // Use this for initialization
     void Start()
@@ -63,6 +64,7 @@ public class LoadingAnimation : MonoBehaviour
 
     public void StartLoader()
     {
+        loadingAnimation = gameObject.GetComponent<LoadingAnimation>();
         for (int i = 0; i < Orbs.Length; ++i)
         {
             Orbs[i].SetActive(false);
@@ -195,6 +197,7 @@ public class LoadingAnimation : MonoBehaviour
                     mLoopPause = true;
                     mFadeIndex = 0;
                     mRevolutionsCount = 0;
+                    loadingAnimation.gameObject.SetActive(false);
                 }
             }
         }

@@ -127,6 +127,7 @@ namespace MixedRealityToolkit.Examples.UX
         private float targetProgress = 0f;
         private bool closing = false;
         private GameObject instantiatedCustomObject;
+        private IndicatorStyleEnum style;
 
         /// <summary>
         /// Format to be used for the progress number
@@ -143,6 +144,8 @@ namespace MixedRealityToolkit.Examples.UX
         /// <param name="icon"></param>
         public void Open (IndicatorStyleEnum indicatorStyle, ProgressStyleEnum progressStyle, MessageStyleEnum messageStyle, string message = "", GameObject prefab = null)
         {
+            style = indicatorStyle;
+
             if (gameObject.activeSelf)
                 return;
 
@@ -152,45 +155,6 @@ namespace MixedRealityToolkit.Examples.UX
             // Make sure we aren't destroyed on load
             // Just in case the user is loading a scene
             DontDestroyOnLoad(transform);
-
-            //initialize references
-            if (progressText == null)
-            {
-                foreach (Transform child in transform)
-                {
-                    if (child != null)
-                    {
-                        if (child.name == "MessageText")
-                        {
-                            messageText = child.GetComponent<TextMesh>();
-                        }
-                        else if (child.name == "ProgressText")
-                        {
-                            progressText = child.GetComponent<TextMesh>();
-                        }
-                        else if (child.name == "Animator")
-                        {
-                            animator = child.GetComponent<Animator>();
-
-                            foreach (Transform animChild in animator.transform)
-                            {
-                                if (animChild != null)
-                                {
-                                    if (animChild.name == "ProgressBar")
-                                    {
-                                        progressBar = animChild;
-                                        progressBarContainer = animChild.gameObject;
-                                    }
-                                    else if (animChild.name == "Orbs")
-                                    {
-                                        orbsObject = animChild.gameObject;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
 
             // Turn our common objects on 
             closing = false;
@@ -330,6 +294,14 @@ namespace MixedRealityToolkit.Examples.UX
             progressBar.localScale = new Vector3(smoothProgress / 100, 1f, 1f);
             progressText.text = smoothProgress.ToString(ProgressFormat) + "%";
             // If we're closing, wait for the animator to reach the closed state
+
+            if (style == IndicatorStyleEnum.AnimatedOrbs)
+            {
+                if (orbsObject.activeSelf == false)
+                {
+                    closing = true;
+                }
+            }
             if (closing)
             {
                 if (animator.GetCurrentAnimatorStateInfo (0).IsName ("Closed"))

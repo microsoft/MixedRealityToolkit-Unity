@@ -148,6 +148,8 @@ namespace MixedRealityToolkit.Examples.UX.Controls
             {
                 Orbs[i].gameObject.SetActive(false);
             }
+
+            gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -247,7 +249,7 @@ namespace MixedRealityToolkit.Examples.UX.Controls
                             }
                             mFadeIndex += 1;
                         }
-                        
+
                     }
 
                     if (!mLoopPause && orbPercentage > 0.5f)
@@ -263,7 +265,7 @@ namespace MixedRealityToolkit.Examples.UX.Controls
                             mFadeIndex += 1;
                         }
                     }
-                    
+
                 }
             }
 
@@ -281,6 +283,7 @@ namespace MixedRealityToolkit.Examples.UX.Controls
                         mLoopPause = true;
                         mFadeIndex = 0;
                         mRevolutionsCount = 0;
+                        StopLoader();
                     }
                 }
             }
