@@ -13,7 +13,7 @@
 <img src="External/ReadMeImages/MotionControllerTest_Teleport.png" width="500px">
 
 If you're looking for **Controller models**:
-* See the [**MotionControllerTest**](Assets/HoloToolkit-Examples/Input/Scenes/MotionControllerTest.unity) scene.
+* See the [**MotionControllerTest**](Assets/MixedRealityToolkit-Examples/Input/Scenes/MotionControllerTest.unity) scene.
 * See:
     * ControllerVisualizer.cs
     * ControllerInfo.cs
@@ -24,7 +24,7 @@ If you're looking for **Controller models**:
 * **IMPORTANT** Currently, motion controller's GLTF 3D model is only visible when you deploy through Visual Studio. In Unity's game mode, you should assign override model. <img src="External/ReadMeImages/MotionControllerTest_ModelOverride.png" width="700px">
 
 If you're looking for **teleporting**:
-* See the [**MotionControllerTest**](Assets/HoloToolkit-Examples/Input/Scenes/MotionControllerTest.unity) scene.
+* See the [**MotionControllerTest**](Assets/MixedRealityToolkit-Examples/Input/Scenes/MotionControllerTest.unity) scene.
 * Controls are the same as the Cliff House, using either an Xbox controller or motion controllers. Thumbstick up for teleport, down for backup, left/right for rotation.
 * See:
     * MixedRealityTeleport.cs
@@ -32,10 +32,10 @@ If you're looking for **teleporting**:
     * TeleportMarker.prefab
     
 If you're looking for **Xbox Controller Input** via the MixedRealityToolkit's InputManager:
-* See the [**XboxControllerExample**](Assets/HoloToolkit-Examples/Input/Scenes/XboxControllerExample.unity) scene.
+* See the [**XboxControllerExample**](Assets/MixedRealityToolkit-Examples/Input/Scenes/XboxControllerExample.unity) scene.
     
 If you're looking for **Boundary** tools:
-* See the [**BoundaryTest**](Assets/HoloToolkit-Examples/Boundary/Scenes/BoundaryTest.unity) scene.
+* See the [**BoundaryTest**](Assets/MixedRealityToolkit-Examples/Boundary/Scenes/BoundaryTest.unity) scene.
 * The **Boundary** folder has the scripts that support defining the floor for your immersive applications.
 * The scripts help to draw the floor for immersive headsets and also allows you to check if an object is within those bounds.
 * See:
@@ -43,5 +43,5 @@ If you're looking for **Boundary** tools:
     * MixedRealityCameraParent.prefab
     
 If you're looking for **Motion controller Grab Mechanics**:
-* See  [**MotionControllersGrabMechanics**](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/master/Assets/HoloToolkit-Examples/MotionControllers-GrabMechanics) page.
+* See  [**MotionControllersGrabMechanics**](Assets/MixedRealityToolkit-Examples/MotionControllers-GrabMechanics) page.
 <img src="External/ReadMeImages/MRTK_MotionController_GrabMechanics.jpg" width="500px">
