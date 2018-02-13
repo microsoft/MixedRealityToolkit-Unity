@@ -15,6 +15,11 @@ The ProgressIndicator can appear:
 5. Text displayed with a numeric run up of percent loaded
 6. A progress bar
 
+![Progress Type Buttons](/External/ReadMeImages/MRTK_Progress3.jpg)
+
+Different types of Progress control can be opened by pressing these buttons in the scene.
+
+
 
 ## Prefab file
 
