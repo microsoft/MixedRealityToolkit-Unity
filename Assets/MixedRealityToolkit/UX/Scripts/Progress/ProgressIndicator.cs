@@ -171,13 +171,6 @@ namespace MixedRealityToolkit.Examples.UX
             // Turn the style objects off
             orbsObject.SetActive(false);
             
-            /*if (displayParent != null && transform.parent != displayParent)
-            {
-                transform.parent = displayParent;
-                transform.localPosition = Vector3.zero;
-                transform.localRotation = Quaternion.identity;
-            }*/
-            
             // Re-enable objects based on our style
             switch (indicatorStyle)
             {
@@ -295,13 +288,11 @@ namespace MixedRealityToolkit.Examples.UX
             progressText.text = smoothProgress.ToString(ProgressFormat) + "%";
             // If we're closing, wait for the animator to reach the closed state
 
-            if (style == IndicatorStyleEnum.AnimatedOrbs)
+            if (style == IndicatorStyleEnum.AnimatedOrbs && orbsObject.activeSelf == false)
             {
-                if (orbsObject.activeSelf == false)
-                {
-                    closing = true;
-                }
+                closing = true;
             }
+
             if (closing)
             {
                 if (animator.GetCurrentAnimatorStateInfo (0).IsName ("Closed"))

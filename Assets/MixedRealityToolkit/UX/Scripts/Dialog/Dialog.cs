@@ -1,11 +1,15 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using MixedRealityToolkit.UX.Receivers;
+using System;
 using System.Collections;
 using UnityEngine;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 #endif
 
-namespace MixedRealityToolkit.Examples.UX
+namespace MixedRealityToolkit.UX.Dialog
 {
     /// <summary>
     /// Used to tell simple dialogs which buttons to create
@@ -18,7 +22,7 @@ namespace MixedRealityToolkit.Examples.UX
         /// <summary>
         /// The button press that closed the dialog
         /// </summary>
-        public SimpleDialog.ButtonTypeEnum Result = SimpleDialog.ButtonTypeEnum.Close;
+        public Dialog.ButtonTypeEnum Result = Dialog.ButtonTypeEnum.Close;
 
         /// <summary>
         /// Title for the dialog to display
@@ -33,10 +37,10 @@ namespace MixedRealityToolkit.Examples.UX
         /// <summary>
         /// Which buttons to generate
         /// </summary>
-        public SimpleDialog.ButtonTypeEnum Buttons = SimpleDialog.ButtonTypeEnum.Close;
+        public Dialog.ButtonTypeEnum Buttons = Dialog.ButtonTypeEnum.Close;
     }
 
-    public abstract class SimpleDialog : Interactive
+    public abstract class Dialog : InteractionReceiver
     {
         public enum StateEnum
         {
@@ -218,10 +222,10 @@ namespace MixedRealityToolkit.Examples.UX
         /// <param name="dialogPrefab"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        public static SimpleDialog Open(GameObject dialogPrefab, SimpleDialogResult result)
+        public static Dialog Open(GameObject dialogPrefab, SimpleDialogResult result)
         {
             GameObject dialogGo = GameObject.Instantiate(dialogPrefab) as GameObject;
-            SimpleDialog dialog = dialogGo.GetComponent<SimpleDialog>();
+            Dialog dialog = dialogGo.GetComponent<Dialog>();
 
             dialog.Launch(result);
             return dialog;
@@ -235,10 +239,10 @@ namespace MixedRealityToolkit.Examples.UX
         /// <param name="title"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static SimpleDialog Open(GameObject dialogPrefab, ButtonTypeEnum buttons, string title, string message)
+        public static Dialog Open(GameObject dialogPrefab, ButtonTypeEnum buttons, string title, string message)
         {
             GameObject dialogGameObject = GameObject.Instantiate(dialogPrefab) as GameObject;
-            SimpleDialog dialog = dialogGameObject.GetComponent<SimpleDialog>();
+            Dialog dialog = dialogGameObject.GetComponent<Dialog>();
 
             SimpleDialogResult result = new SimpleDialogResult
             {
