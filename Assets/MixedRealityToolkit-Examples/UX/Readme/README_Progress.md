@@ -56,18 +56,18 @@ while (your loading operation is not complete)
 
 You can give an optional message to be displayed by the ProgressIndicator when load is complete, such as "finished!".
 <pre>
-    ProgressIndicator.Instance.SetMessage(FinishMessage);
-    ProgressIndicator.Instance.SetProgress(1f);
-    yield return new WaitForSeconds(<amount of time to hold message ie 1.5 secs>);
+ProgressIndicator.Instance.SetMessage(FinishMessage);
+ProgressIndicator.Instance.SetProgress(1f);
+yield return new WaitForSeconds(<amount of time to hold message ie 1.5 secs>);
 </pre>
 
 To close the ProgressIndicator, call the Close() function and wait for the IsLoading state to become false.
 <pre>
-    LoadingDialog.Instance.Close();
-    while (LoadingDialog.Instance.IsLoading)
-    {
-        yield return null;
-    }
+LoadingDialog.Instance.Close();
+while (LoadingDialog.Instance.IsLoading)
+{
+    yield return null;
+}
 </pre>
 
 
