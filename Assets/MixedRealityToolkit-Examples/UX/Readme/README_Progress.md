@@ -4,12 +4,6 @@ A progress control provides feedback to the user that a long-running operation i
 
 This example scene illustrates the use of the ProgressIndicator prefab to create a progress Indicator with several options for appearance.
 
-## Prefab file
-
-The **ProgressIndicator prefab** is located in MixedRealityToolkit/UX/Prefabs/Progress. It is composed of **ProgressIndicator** script and **Solver** scripts for the billboarding and tag-along behavior.
-
-![ProgressIndicator Properties](/External/ReadMeImages/MRTK_ProgressIndicatorInspector.jpg)
-
 
 ## Types of Progress
 ![Progress Types](/External/ReadMeImages/MRTK_Progress2.jpg)
@@ -20,6 +14,18 @@ The ProgressIndicator can appear:
 4. A user defined text message only such as "Loading..."
 5. Text displayed with a numeric run up of percent loaded
 6. A progress bar
+
+![Progress Type Buttons](/External/ReadMeImages/MRTK_Progress3.jpg)
+
+Different types of Progress control can be opened by pressing these buttons in the scene.
+
+
+
+## Prefab file
+
+The **ProgressIndicator prefab** is located in MixedRealityToolkit/UX/Prefabs/Progress. It is composed of **ProgressIndicator** script and **Solver** scripts for the billboarding and tag-along behavior.
+
+![ProgressIndicator Properties](/External/ReadMeImages/MRTK_ProgressIndicatorInspector.jpg)
 
 
 ## How to display a Progress control
@@ -50,18 +56,18 @@ while (your loading operation is not complete)
 
 You can give an optional message to be displayed by the ProgressIndicator when load is complete, such as "finished!".
 <pre>
-    ProgressIndicator.Instance.SetMessage(FinishMessage);
-    ProgressIndicator.Instance.SetProgress(1f);
-    yield return new WaitForSeconds(<amount of time to hold message ie 1.5 secs>);
+ProgressIndicator.Instance.SetMessage(FinishMessage);
+ProgressIndicator.Instance.SetProgress(1f);
+yield return new WaitForSeconds(<amount of time to hold message ie 1.5 secs>);
 </pre>
 
 To close the ProgressIndicator, call the Close() function and wait for the IsLoading state to become false.
 <pre>
-    LoadingDialog.Instance.Close();
-    while (LoadingDialog.Instance.IsLoading)
-    {
-        yield return null;
-    }
+LoadingDialog.Instance.Close();
+while (LoadingDialog.Instance.IsLoading)
+{
+    yield return null;
+}
 </pre>
 
 
