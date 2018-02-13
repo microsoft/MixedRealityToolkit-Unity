@@ -1,6 +1,5 @@
 # Dialogs Example
-<img src="/External/ReadMeImages/MRTK_Dialog.jpg" width="650">
-
+![Dialog](/External/ReadMeImages/MRTK_Dialog.jpg)
 Dialog is a transient UI element which appears when something happens that requires notification, approval, or additional information from the user. Dialogs block interactions with the app window until being explicitly dismissed. They often request some kind of action from the user. Mixed Reality Design Labs' Dialog provides one or two button options.
 
 Dialog works on both HoloLens(gaze and gesture) and Immersive headset(motion controllers).
@@ -37,6 +36,7 @@ The Dialog will stay in the user's field of view while the user can use gaze or 
 
 You can find more detailed information about the [Solver System on this README page](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/Dev_Working_Branch/Assets/MixedRealityToolkit-Examples/Utilities/Readme/README_SolverSystem.md).
 
-<img src="/External/ReadMeImages/MRTK_Dialog_Inspector.jpg" width="450">
+![Dialog Properties](/External/ReadMeImages/MRTK_Dialog_Inspector.jpg)
+
  
  
