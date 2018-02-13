@@ -1,5 +1,5 @@
 # Progress Example
-![Progress](/External/ReadMeImages/MRTK_Progress1.jpg)
+<img src="/External/ReadMeImages/MRTK_Progress1.jpg" width="550">
 A progress control provides feedback to the user that a long-running operation is underway. It can mean that the user cannot interact with the app when the progress indicator is visible, and can also indicate how long the wait time might be, depending on the indicator used.
 
 This example scene illustrates the use of the ProgressIndicator prefab to create a progress Indicator with several options for appearance.
