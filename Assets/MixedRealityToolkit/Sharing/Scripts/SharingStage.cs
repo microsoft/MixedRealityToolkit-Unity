@@ -221,12 +221,8 @@ namespace MixedRealityToolkit.Sharing
             get { return Manager != null && Connection != null && Connection.IsConnected(); }
         }
 
-        #region Unity Methods
-
-        protected override void Awake()
+        protected override void InitializeInternal()
         {
-            base.Awake();
-
             AppInstanceUniqueId = Guid.NewGuid().ToString();
             logWriter = new ConsoleLogWriter { ShowDetailedLogs = ShowDetailedLogs };
 
@@ -239,6 +235,8 @@ namespace MixedRealityToolkit.Sharing
                 ManagerInit(connectOnAwake);
             }
         }
+
+        #region Unity Methods
 
         private void OnEnable()
         {
