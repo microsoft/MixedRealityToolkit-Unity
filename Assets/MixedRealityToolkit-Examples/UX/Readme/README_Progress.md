@@ -21,11 +21,16 @@ Different types of Progress control can be opened by pressing these buttons in t
 
 
 
-## Prefab file
+## ProgressIndicator Prefab
 
 The **ProgressIndicator prefab** is located in MixedRealityToolkit/UX/Prefabs/Progress. It is composed of **ProgressIndicator** script and **Solver** scripts for the billboarding and tag-along behavior.
 
 ![ProgressIndicator Properties](/External/ReadMeImages/MRTK_ProgressIndicatorInspector.jpg)
+
+### ProgressIndicator Prefab Structure
+The **ProgressIndicator prefab** contains the elements for the different types of visualization. You can find child components such as Orbs, Bar and Text. These elements are assigned to ProgressIndicator script.
+
+![Progress Types](/External/ReadMeImages/MRTK_Progress4.jpg)
 
 
 ## How to display a Progress control
