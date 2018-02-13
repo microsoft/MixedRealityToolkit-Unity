@@ -4,12 +4,6 @@ A progress control provides feedback to the user that a long-running operation i
 
 This example scene illustrates the use of the ProgressIndicator prefab to create a progress Indicator with several options for appearance.
 
-## Prefab file
-
-The **ProgressIndicator prefab** is located in MixedRealityToolkit/UX/Prefabs/Progress. It is composed of **ProgressIndicator** script and **Solver** scripts for the billboarding and tag-along behavior.
-
-![ProgressIndicator Properties](/External/ReadMeImages/MRTK_ProgressIndicatorInspector.jpg)
-
 
 ## Types of Progress
 ![Progress Types](/External/ReadMeImages/MRTK_Progress2.jpg)
@@ -20,6 +14,13 @@ The ProgressIndicator can appear:
 4. A user defined text message only such as "Loading..."
 5. Text displayed with a numeric run up of percent loaded
 6. A progress bar
+
+
+## Prefab file
+
+The **ProgressIndicator prefab** is located in MixedRealityToolkit/UX/Prefabs/Progress. It is composed of **ProgressIndicator** script and **Solver** scripts for the billboarding and tag-along behavior.
+
+![ProgressIndicator Properties](/External/ReadMeImages/MRTK_ProgressIndicatorInspector.jpg)
 
 
 ## How to display a Progress control
