@@ -37,6 +37,7 @@ namespace MixedRealityToolkit.Examples.UX
         // Use this for initialization
         void Start()
         {
+            //if Immersive headset is used make buttons twice as big.
             bool isHoloLensUsed = MixedRealityToolkit.Common.CameraCache.Main.clearFlags != CameraClearFlags.Skybox;
             if (isHoloLensUsed == false)
             {

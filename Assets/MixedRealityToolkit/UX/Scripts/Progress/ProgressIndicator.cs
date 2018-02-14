@@ -141,6 +141,7 @@ namespace MixedRealityToolkit.UX.Progress
             if (gameObject.activeSelf)
                 return;
 
+            //Check if immersive headset is used. if so, scale up the progress indicator by a factor of 2.
             bool isHoloLensUsed = MixedRealityToolkit.Common.CameraCache.Main.clearFlags != CameraClearFlags.Skybox;
             if (isHoloLensUsed == false)
             {
