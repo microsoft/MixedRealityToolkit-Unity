@@ -1,15 +1,13 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
-using System.Collections;
-using System.Collections.Generic;
-using MixedRealityToolkit.InputModule;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
-using UnityEngine.Windows.Speech;
 #endif
 
 
-namespace MixedRealityToolkit.Examples.UX
+namespace MixedRealityToolkit.UX.Progress
 {
     public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
@@ -93,6 +91,9 @@ namespace MixedRealityToolkit.Examples.UX
         // The default icon used by the 'StaticIcon' indicator style
         [SerializeField]
         private GameObject defaultIconPrefab;
+
+        [SerializeField]
+        private GameObject defaultOrbsPrefab;
 
         // The animated orbs object used by the 'AnimatedOrbs' indicator style
         [SerializeField]
@@ -186,7 +187,7 @@ namespace MixedRealityToolkit.Examples.UX
                     else
                     {
                         instantiatedCustomObject = GameObject.Instantiate(defaultIconPrefab) as GameObject;
-                        instantiatedCustomObject.transform.localPosition = new Vector3(0.0f, 10.0f, 0.0f);
+                        instantiatedCustomObject.transform.localPosition = new Vector3(3.0f, 13.0f, 0.0f);
                         instantiatedCustomObject.transform.localRotation = Quaternion.identity;
                         instantiatedCustomObject.transform.localScale = new Vector3(10.0f, 10.0f, 10.0f);
 
@@ -196,8 +197,16 @@ namespace MixedRealityToolkit.Examples.UX
                     break;
 
                 case IndicatorStyleEnum.AnimatedOrbs:
-                    orbsObject.SetActive(true);
-                    orbsObject.GetComponent<LoadingAnimation>().StartLoader();
+                    if (defaultOrbsPrefab != null)
+                    {
+                        instantiatedCustomObject = GameObject.Instantiate(defaultOrbsPrefab) as GameObject;
+                        instantiatedCustomObject.transform.localPosition = new Vector3(1.0f, 22.0f, 0.0f);
+                        //instantiatedCustomObject.transform.localRotation = Quaternion.identity;
+                        instantiatedCustomObject.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
+
+                        instantiatedCustomObject.transform.Translate(messageText.transform.position);
+                        instantiatedCustomObject.transform.SetParent(messageText.transform, false);
+                    }
                     break;
 
                 case IndicatorStyleEnum.Prefab:
@@ -257,6 +266,10 @@ namespace MixedRealityToolkit.Examples.UX
             if (targetProgress == 100)
             {
                 smoothProgress = targetProgress;
+                if (instantiatedCustomObject != null && instantiatedCustomObject.name.Contains("Orbs"))
+                {
+                    instantiatedCustomObject.GetComponent<ProgressIndicatorOrbsRotator>().Stop();
+                }
             }
         }
 
@@ -288,14 +301,9 @@ namespace MixedRealityToolkit.Examples.UX
             progressText.text = smoothProgress.ToString(ProgressFormat) + "%";
             // If we're closing, wait for the animator to reach the closed state
 
-            if (style == IndicatorStyleEnum.AnimatedOrbs && orbsObject.activeSelf == false)
-            {
-                closing = true;
-            }
-
             if (closing)
             {
-                if (animator.GetCurrentAnimatorStateInfo (0).IsName ("Closed"))
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Closed"))
                 {
                     // Once we've reached the cloesd state shut down completely
                     closing = false;
