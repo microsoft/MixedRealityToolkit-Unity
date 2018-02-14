@@ -1,8 +1,8 @@
 # Dialogs Example
 <img src="/External/ReadMeImages/MRTK_Dialog.jpg" width="650">
-Dialog is a transient UI element which appears when something happens that requires notification, approval, or additional information from the user. Dialogs block interactions with the app window until being explicitly dismissed. They often request some kind of action from the user. Mixed Reality Design Labs' Dialog provides one or two button options.
+Dialog is a transient UI element which appears when something happens that requires notification, approval, or additional information from the user. Dialogs block interactions with the app window until being explicitly dismissed. They often request some kind of action from the user. Dialog provides one or two button options. It works on both HoloLens(gaze and gesture) and Immersive headset(motion controllers).
 
-Dialog works on both HoloLens(gaze and gesture) and Immersive headset(motion controllers).
+
 ![Dialogs on HoloLens and Immersive Headset](/External/ReadMeImages/MRTK_Dialog_Devices.jpg)
 
 ## Dialog prefab and DialogShell script
