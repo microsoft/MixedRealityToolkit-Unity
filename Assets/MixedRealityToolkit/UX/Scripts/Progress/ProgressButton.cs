@@ -1,14 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
-using System.Collections;
-using System.Collections.Generic;
-using MixedRealityToolkit.InputModule;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using MixedRealityToolkit.Examples.UX;
-
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-using UnityEngine.Windows.Speech;
-#endif
-
+using UnityEngine;
 
 namespace MixedRealityToolkit.UX.Buttons
 {

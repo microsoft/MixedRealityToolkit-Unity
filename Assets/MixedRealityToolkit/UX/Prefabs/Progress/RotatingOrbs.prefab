@@ -905,7 +905,7 @@ MonoBehaviour:
   - {fileID: 1634107716976086}
   - {fileID: 1732263211534098}
   - {fileID: 1404347800010822}
-  RotationSpeedRawDegrees: -160
+  RotationSpeedRawDegrees: -200
   SpacingDegrees: 22
   Acceleration: 1.4
   Revolutions: 3

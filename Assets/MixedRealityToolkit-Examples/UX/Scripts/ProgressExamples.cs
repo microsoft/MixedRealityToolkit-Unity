@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-
 using UnityEngine;
 using System.Collections;
 using MixedRealityToolkit.UX.Progress;
@@ -22,7 +21,7 @@ namespace MixedRealityToolkit.Examples.UX
         public Texture2D LoadingIcon = null;
 
         [Header("Messages displayed during loading")]
-        public string LeadInMessage = "(Starting load)";
+        public string LeadInMessage = "Lead in Message";
         public string LoadTextMessage = "Loading with message only";
         public string LoadOrbsMessage = "Loading with Orbs";
         public string LoadIconMessage = "Loading with Icon";

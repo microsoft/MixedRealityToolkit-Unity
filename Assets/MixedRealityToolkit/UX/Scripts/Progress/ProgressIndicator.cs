@@ -3,10 +3,6 @@
 
 using UnityEngine;
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-#endif
-
-
 namespace MixedRealityToolkit.UX.Progress
 {
     public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
@@ -128,7 +124,7 @@ namespace MixedRealityToolkit.UX.Progress
         private float targetProgress = 0f;
         private bool closing = false;
         private GameObject instantiatedCustomObject;
-        private IndicatorStyleEnum style;
+        private IndicatorStyleEnum style = IndicatorStyleEnum.AnimatedOrbs;
 
         /// <summary>
         /// Format to be used for the progress number
@@ -187,7 +183,7 @@ namespace MixedRealityToolkit.UX.Progress
                     else
                     {
                         instantiatedCustomObject = GameObject.Instantiate(defaultIconPrefab) as GameObject;
-                        instantiatedCustomObject.transform.localPosition = new Vector3(3.0f, 13.0f, 0.0f);
+                        instantiatedCustomObject.transform.localPosition = new Vector3(0.0f, 13.0f, 0.0f);
                         instantiatedCustomObject.transform.localRotation = Quaternion.identity;
                         instantiatedCustomObject.transform.localScale = new Vector3(10.0f, 10.0f, 10.0f);
 
@@ -200,7 +196,7 @@ namespace MixedRealityToolkit.UX.Progress
                     if (defaultOrbsPrefab != null)
                     {
                         instantiatedCustomObject = GameObject.Instantiate(defaultOrbsPrefab) as GameObject;
-                        instantiatedCustomObject.transform.localPosition = new Vector3(1.0f, 22.0f, 0.0f);
+                        instantiatedCustomObject.transform.localPosition = new Vector3(0.0f, 25.0f, 0.0f);
                         //instantiatedCustomObject.transform.localRotation = Quaternion.identity;
                         instantiatedCustomObject.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
 
@@ -220,7 +216,7 @@ namespace MixedRealityToolkit.UX.Progress
                         // The prefab sent in the function overrides the prefab set in the inspector 
                         // instantiatedCustomObject = GameObject.Instantiate((prefab == null) ? defaultPrefab : prefab, animator.transform) as GameObject;
                         instantiatedCustomObject = GameObject.Instantiate(defaultPrefab) as GameObject;
-                        instantiatedCustomObject.transform.localPosition = new Vector3(0.0f, 10.0f, 0.0f);
+                        instantiatedCustomObject.transform.localPosition = new Vector3(0.0f, 20.0f, 0.0f);
                         instantiatedCustomObject.transform.localRotation = Quaternion.identity;
                         instantiatedCustomObject.transform.localScale = new Vector3(10.0f, 10.0f, 10.0f);
 
