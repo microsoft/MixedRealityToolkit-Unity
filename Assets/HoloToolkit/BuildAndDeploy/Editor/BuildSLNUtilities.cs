@@ -144,7 +144,7 @@ namespace HoloToolkit.Unity
                     buildInfo.Scenes.ToArray(),
                     buildInfo.OutputDirectory,
                     buildInfo.BuildTarget,
-                    buildInfo.BuildOptions);
+                    buildInfo.BuildOptions).ToString();
 
                 if (buildError.StartsWith("Error"))
                 {
