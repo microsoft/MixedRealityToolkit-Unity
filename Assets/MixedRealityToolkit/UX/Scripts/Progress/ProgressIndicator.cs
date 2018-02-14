@@ -124,7 +124,6 @@ namespace MixedRealityToolkit.UX.Progress
         private float targetProgress = 0f;
         private bool closing = false;
         private GameObject instantiatedCustomObject;
-        private IndicatorStyleEnum style = IndicatorStyleEnum.AnimatedOrbs;
 
         /// <summary>
         /// Format to be used for the progress number
@@ -141,7 +140,6 @@ namespace MixedRealityToolkit.UX.Progress
         /// <param name="icon"></param>
         public void Open (IndicatorStyleEnum indicatorStyle, ProgressStyleEnum progressStyle, MessageStyleEnum messageStyle, string message = "", GameObject prefab = null)
         {
-            style = indicatorStyle;
 
             if (gameObject.activeSelf)
                 return;

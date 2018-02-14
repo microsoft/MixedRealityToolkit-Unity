@@ -6,9 +6,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-#endif
-
 namespace MixedRealityToolkit.UX.Dialog
 {
     /// <summary>

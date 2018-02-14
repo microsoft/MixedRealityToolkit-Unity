@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.UX.Buttons;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using MixedRealityToolkit.UX.Buttons;
-
 
 namespace MixedRealityToolkit.UX.Dialog
 {
