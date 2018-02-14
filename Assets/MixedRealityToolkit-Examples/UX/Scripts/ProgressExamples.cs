@@ -4,6 +4,10 @@
 using UnityEngine;
 using System.Collections;
 using MixedRealityToolkit.UX.Progress;
+using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.InputModule.InputSources;
+using UnityEngine.XR.WSA.Input;
+using MixedRealityToolkit.Utilities.Solvers;
 
 namespace MixedRealityToolkit.Examples.UX
 {
@@ -33,6 +37,12 @@ namespace MixedRealityToolkit.Examples.UX
         // Use this for initialization
         void Start()
         {
+            bool isHoloLensUsed = MixedRealityToolkit.Common.CameraCache.Main.clearFlags != CameraClearFlags.Skybox;
+            if (isHoloLensUsed == false)
+            {
+               GameObject buttonCollection = GameObject.Find("ButtonCollection");
+               buttonCollection.transform.localScale = new Vector3(2, 2, 2);
+            }
         }
 
         public void LaunchProgress(GameObject obj)
@@ -104,7 +114,6 @@ namespace MixedRealityToolkit.Examples.UX
                     break;
             }
         }
-
         protected IEnumerator LoadOverTime(string message)
         {
             // Turn off our buttons while we load

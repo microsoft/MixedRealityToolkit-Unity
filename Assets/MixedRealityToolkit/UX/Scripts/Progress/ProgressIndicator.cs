@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using UnityEngine.XR.WSA.Input;
+using MixedRealityToolkit.Utilities.Solvers;
 
 namespace MixedRealityToolkit.UX.Progress
 {
@@ -91,10 +93,6 @@ namespace MixedRealityToolkit.UX.Progress
         [SerializeField]
         private GameObject defaultOrbsPrefab;
 
-        // The animated orbs object used by the 'AnimatedOrbs' indicator style
-        [SerializeField]
-        private GameObject orbsObject;
-
         // The progress bar container object
         [SerializeField]
         private GameObject progressBarContainer;
@@ -140,9 +138,15 @@ namespace MixedRealityToolkit.UX.Progress
         /// <param name="icon"></param>
         public void Open (IndicatorStyleEnum indicatorStyle, ProgressStyleEnum progressStyle, MessageStyleEnum messageStyle, string message = "", GameObject prefab = null)
         {
-
             if (gameObject.activeSelf)
                 return;
+
+            bool isHoloLensUsed = MixedRealityToolkit.Common.CameraCache.Main.clearFlags != CameraClearFlags.Skybox;
+            if (isHoloLensUsed == false)
+            {
+                SolverConstantViewSize solver = GetComponent<SolverConstantViewSize>();
+                solver.MaxScale = 4;
+            }
 
             // Make sure we aren't parented under anything
             transform.parent = null;
@@ -162,9 +166,6 @@ namespace MixedRealityToolkit.UX.Progress
             // Reset our loading progress
             smoothProgress = 0f;
             targetProgress = 0f;
-
-            // Turn the style objects off
-            orbsObject.SetActive(false);
             
             // Re-enable objects based on our style
             switch (indicatorStyle)
