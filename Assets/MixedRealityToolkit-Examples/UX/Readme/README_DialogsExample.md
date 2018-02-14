@@ -36,7 +36,7 @@ The Dialog will stay in the user's field of view while the user can use gaze or 
 
 You can find more detailed information about the [Solver System on this README page](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/Dev_Working_Branch/Assets/MixedRealityToolkit-Examples/Utilities/Readme/README_SolverSystem.md).
 
-![Dialog Properties](/External/ReadMeImages/MRTK_Dialog_Inspector.jpg)
+<img src="/External/ReadMeImages/MRTK_Dialog_Inspector.jpg" width="450">
 
  
  
