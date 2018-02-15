@@ -42,7 +42,7 @@ namespace MixedRealityToolkit.Examples.UX
             if (HolographicSettings.IsDisplayOpaque)
             {
                GameObject buttonCollection = GameObject.Find("ButtonCollection");
-               buttonCollection.transform.localScale = new Vector3(2, 2, 2);
+               buttonCollection.transform.localScale = new Vector3(1.3f, 1.3f, 1.0f);
             }
         }
 
@@ -117,9 +117,6 @@ namespace MixedRealityToolkit.Examples.UX
         }
         protected IEnumerator LoadOverTime(string message)
         {
-            // Turn off our buttons while we load
-            //SceneObject.SetActive(false);         //address this
-
             // Wait for lead in time to end (optional)
             float startTime = Time.time;
             yield return new WaitForSeconds(LeadInTime);
@@ -151,9 +148,6 @@ namespace MixedRealityToolkit.Examples.UX
             {
                 yield return null;
             }
-
-            // Turn everything on again
-            //SceneObject.SetActive(true);      //address this
 
             yield break;
         }
