@@ -146,7 +146,7 @@ namespace MixedRealityToolkit.UX.Progress
             if (HolographicSettings.IsDisplayOpaque)
             {
                 SolverConstantViewSize solver = GetComponent<SolverConstantViewSize>();
-                solver.MaxScale = 4;
+                solver.TargetViewPercentV = 0.35f;
             }
 
             // Make sure we aren't parented under anything

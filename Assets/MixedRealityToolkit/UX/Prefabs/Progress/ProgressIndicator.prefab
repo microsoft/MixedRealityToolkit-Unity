@@ -526,7 +526,7 @@ MonoBehaviour:
   GoalScale: {x: 1, y: 1, z: 1}
   Smoothing: 1
   Lifetime: 0
-  TargetViewPercentV: 4
+  TargetViewPercentV: 0.28
   MinDistance: 0.2
   MaxDistance: 1
   MinScale: 0.05

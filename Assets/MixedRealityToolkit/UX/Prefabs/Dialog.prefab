@@ -2116,11 +2116,11 @@ MonoBehaviour:
   GoalScale: {x: 0, y: 0, z: 0}
   Smoothing: 1
   Lifetime: 0
-  TargetViewPercentV: 0.35
+  TargetViewPercentV: 0.29
   MinDistance: 0.5
   MaxDistance: 3
   MinScale: 0.01
-  MaxScale: 100
+  MaxScale: 2
   ScaleBuffer: 0.01
   ManualObjectSize: 0
   ScaleState: 0

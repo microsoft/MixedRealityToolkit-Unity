@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Utilities.Solvers;
 using MixedRealityToolkit.UX.Buttons;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.XR.WSA;
 
 namespace MixedRealityToolkit.UX.Dialog
 {
@@ -38,9 +40,14 @@ namespace MixedRealityToolkit.UX.Dialog
             }
         }
 
-        protected override void FinalizeLayout() {
-            // nothing to do here
-            // in another dialog we might resize to accomodate text size, etc
+        protected override void FinalizeLayout()
+        {
+            // Optimize the content for immersive headset
+            if (HolographicSettings.IsDisplayOpaque)
+            {
+                SolverConstantViewSize solver = GetComponent<SolverConstantViewSize>();
+                solver.TargetViewPercentV = 0.35f;
+            }
         }
 
         protected override void GenerateButtons()
