@@ -9,17 +9,21 @@ namespace MixedRealityToolkit.Examples.UX
     public class LaunchDialogScript : Interactive
     {
         public GameObject resultText;
+
+        [SerializeField]
+        private Dialog dialogPrefab;
+
         public int numButtons;
         private bool isDialogLaunched = false;
 
         protected IEnumerator LaunchDialog(Dialog.ButtonTypeEnum buttons, string title, string message)
         {
             isDialogLaunched = true;
-            //instantiate a dialog instance from the prefab
-            Dialog dialog;
 
-            GameObject dialogPrefab = Resources.Load("Dialog") as GameObject;
-            dialog = Dialog.Open(dialogPrefab, buttons, title, message);
+            //Open Dialog by sending in prefab...
+            Dialog dialog = Dialog.Open(dialogPrefab.gameObject, buttons, title, message);
+
+            //listen for OnClosed Event
             dialog.OnClosed += OnClosed;
 
             // Wait for dialog to close
