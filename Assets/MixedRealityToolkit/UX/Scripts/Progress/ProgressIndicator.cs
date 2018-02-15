@@ -4,6 +4,7 @@
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 using MixedRealityToolkit.Utilities.Solvers;
+using UnityEngine.XR.WSA;
 
 namespace MixedRealityToolkit.UX.Progress
 {
@@ -141,9 +142,8 @@ namespace MixedRealityToolkit.UX.Progress
             if (gameObject.activeSelf)
                 return;
 
-            //Check if immersive headset is used. if so, scale up the progress indicator by a factor of 2.
-            bool isHoloLensUsed = MixedRealityToolkit.Common.CameraCache.Main.clearFlags != CameraClearFlags.Skybox;
-            if (isHoloLensUsed == false)
+            // Optimize the content for immersive headset
+            if (HolographicSettings.IsDisplayOpaque)
             {
                 SolverConstantViewSize solver = GetComponent<SolverConstantViewSize>();
                 solver.MaxScale = 4;

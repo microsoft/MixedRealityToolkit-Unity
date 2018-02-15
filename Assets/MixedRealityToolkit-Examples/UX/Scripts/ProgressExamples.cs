@@ -8,6 +8,7 @@ using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.InputModule.InputSources;
 using UnityEngine.XR.WSA.Input;
 using MixedRealityToolkit.Utilities.Solvers;
+using UnityEngine.XR.WSA;
 
 namespace MixedRealityToolkit.Examples.UX
 {
@@ -37,9 +38,8 @@ namespace MixedRealityToolkit.Examples.UX
         // Use this for initialization
         void Start()
         {
-            //if Immersive headset is used make buttons twice as big.
-            bool isHoloLensUsed = MixedRealityToolkit.Common.CameraCache.Main.clearFlags != CameraClearFlags.Skybox;
-            if (isHoloLensUsed == false)
+            // Optimize the content for immersive headset
+            if (HolographicSettings.IsDisplayOpaque)
             {
                GameObject buttonCollection = GameObject.Find("ButtonCollection");
                buttonCollection.transform.localScale = new Vector3(2, 2, 2);
