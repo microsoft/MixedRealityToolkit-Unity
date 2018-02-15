@@ -28,6 +28,8 @@ public class TwoHandManipMgr : MonoBehaviour, IInputHandler, ISourceStateHandler
 {
     private Vector3 lastPositionA;
     private Vector3 lastPositionB;
+    private double lastPressedA;
+    private double lastPressedB;
 
     public TextMesh LeftText;
     public TextMesh RightText;
@@ -43,9 +45,19 @@ public class TwoHandManipMgr : MonoBehaviour, IInputHandler, ISourceStateHandler
     private TwoHandManipMode mode = TwoHandManipMode.rotation;
 
     // Maps input id -> position of hand
-    private readonly Dictionary<uint, Vector3> m_handsPressedLocationsMap = new Dictionary<uint, Vector3>();
-    // Maps input id -> input source. Then obtain position of input source using currentInputSource.TryGetGripPosition(currentInputSourceId, out inputPosition);
-    private readonly Dictionary<uint, IInputSource> m_handsPressedInputSourceMap = new Dictionary<uint, IInputSource>();
+    private readonly Dictionary<uint, Vector3> m_handPositions = new Dictionary<uint, Vector3>();
+    private readonly Dictionary<uint, IInputSource> m_handSources = new Dictionary<uint, IInputSource>();
+    private readonly Dictionary<uint, double> m_handPressedValues = new Dictionary<uint, double>();
+
+    private GameObject coverCube;
+    private GameObject upLeftFront;
+    private GameObject upRightFront;
+    private GameObject upLeftBack;
+    private GameObject upRightBack;
+    private GameObject downLeftFront;
+    private GameObject downRightFront;
+    private GameObject downLeftBack;
+    private GameObject downRightBack;
 
     // Use this for initialization
     void Start () {
@@ -71,14 +83,20 @@ public class TwoHandManipMgr : MonoBehaviour, IInputHandler, ISourceStateHandler
         return result;
     }
 
+    private double GetPressedInfo(InputEventData eventData)
+    {
+        bool isPressed = false;
+        double pressedValue = 0.0;
+
+        eventData.InputSource.TryGetSelect(eventData.SourceId, out isPressed, out pressedValue);
+        return pressedValue;
+    }
 
     public void OnInputDown(InputEventData eventData)
     {
-        Vector3 pos = GetInputPosition(eventData);
-        IInputSource source = eventData.InputSource;
-
-        m_handsPressedLocationsMap[eventData.SourceId] = pos;
-        m_handsPressedInputSourceMap[eventData.SourceId] = source;
+        m_handSources[eventData.SourceId] = eventData.InputSource;
+        m_handPositions[eventData.SourceId] = GetInputPosition(eventData);
+        m_handPressedValues[eventData.SourceId] = GetPressedInfo(eventData);
 
         // Add to hand map
         if (srcA == 0)
@@ -88,6 +106,7 @@ public class TwoHandManipMgr : MonoBehaviour, IInputHandler, ISourceStateHandler
         else if (srcB == 0 && eventData.SourceId != srcA)
         {
             srcB = eventData.SourceId;
+            CreateBoundingBox();
         }
 
         eventData.Use();
@@ -129,35 +148,51 @@ public class TwoHandManipMgr : MonoBehaviour, IInputHandler, ISourceStateHandler
 
     private void UpdateTextPorts()
     {
-        LeftText.text = lastPositionA.ToString();
-        RightText.text = lastPositionB.ToString();
+        // LeftText.text = lastPositionA.ToString();
+        //RightText.text = lastPositionB.ToString();
+
+        LeftText.text = ((int)(lastPressedA * 100)).ToString();
+        RightText.text = ((int)(lastPressedB * 100)).ToString();
     }
 
     private void UpdateData()
     {
-        foreach (var key in m_handsPressedInputSourceMap.Keys)
+        foreach (var key in m_handSources.Keys)
         {
-            var inputSource = m_handsPressedInputSourceMap[key];
+            var inputSource = m_handSources[key];
             Vector3 inputPosition = Vector3.zero;
+            bool isPressed = false;
+            double pressedValue = 0;
 
             if (inputSource.TryGetGripPosition(key, out inputPosition))
             {
-                m_handsPressedLocationsMap[key] = inputPosition;
+                m_handPositions[key] = inputPosition;
+            }
+
+            if (inputSource.TryGetSelect(key, out isPressed, out pressedValue))
+            {
+                m_handPressedValues[key] = pressedValue;
             }
 
             if (key == srcA)
             {
-                lastPositionA = m_handsPressedLocationsMap[key];
+                lastPositionA = m_handPositions[key];
+                lastPressedA = m_handPressedValues[key];
             }
             else if (key == srcB)
             {
-                lastPositionB = m_handsPressedLocationsMap[key];
+                lastPositionB = m_handPositions[key];
+                lastPressedB = m_handPressedValues[key];
             }
         }
     }
 
     private void UpdateTransform()
     {
+        if (lastPressedA > 0.5f && lastPressedB > 0.5f)
+        {
+            mode = TwoHandManipMode.scale;
+        }
         if (calibrationSet == true && scaleCalibration != 0.0f)
         {
             Vector3 deltaPosition = lastPositionB - lastPositionA;
@@ -191,7 +226,6 @@ public class TwoHandManipMgr : MonoBehaviour, IInputHandler, ISourceStateHandler
                 axis.Normalize();
                 float angle = Mathf.Acos(Vector3.Dot(deltaPosition, orientationNormal)) * (180.0f / Mathf.PI);
                 Quaternion rotation = Quaternion.AngleAxis(-angle, axis);
-                
                 this.gameObject.transform.rotation = rotation;
             }
         }
@@ -206,6 +240,93 @@ public class TwoHandManipMgr : MonoBehaviour, IInputHandler, ISourceStateHandler
         result.z = a.z + (0.1f * (b.z - a.z));
 
         return result;
+    }
+
+    private void CreateBoundingBox()
+    {
+        Shader shader;
+
+        coverCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        shader = Shader.Find("Transparent/Diffuse");
+        coverCube.GetComponent<Renderer>().material.shader = shader;
+        coverCube.GetComponent<Renderer>().material.color = new Color(1, 0, 0, 0.1f);
+        coverCube.transform.localPosition = this.gameObject.transform.localPosition;
+        coverCube.transform.localRotation = this.gameObject.transform.localRotation;
+        coverCube.transform.localScale = this.gameObject.transform.localScale * 1.05f;
+        coverCube.transform.parent = this.gameObject.transform;
+      
+
+        upLeftFront = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        shader = Shader.Find("Transparent/Diffuse");
+        upLeftFront.GetComponent<Renderer>().material.shader = shader;
+        upLeftFront.GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1.0f);
+        upLeftFront.transform.localPosition = this.gameObject.transform.localPosition + new Vector3(0.5f, 0.5f, -0.5f);
+        upLeftFront.transform.localRotation = this.gameObject.transform.localRotation;
+        upLeftFront.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); ;
+        upLeftFront.transform.parent = this.gameObject.transform;
+
+        upRightFront = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        shader = Shader.Find("Transparent/Diffuse");
+        upRightFront.GetComponent<Renderer>().material.shader = shader;
+        upRightFront.GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1.0f);
+        upRightFront.transform.localPosition = this.gameObject.transform.localPosition + new Vector3(-0.5f, 0.5f, -0.5f);
+        upRightFront.transform.localRotation = this.gameObject.transform.localRotation;
+        upRightFront.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); ;
+        upRightFront.transform.parent = this.gameObject.transform;
+
+        upLeftBack = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        shader = Shader.Find("Transparent/Diffuse");
+        upLeftBack.GetComponent<Renderer>().material.shader = shader;
+        upLeftBack.GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1.0f);
+        upLeftBack.transform.localPosition = this.gameObject.transform.localPosition + new Vector3(0.5f, 0.5f, 0.5f);
+        upLeftBack.transform.localRotation = this.gameObject.transform.localRotation;
+        upLeftBack.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); ;
+        upLeftBack.transform.parent = this.gameObject.transform;
+
+        upRightBack = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        shader = Shader.Find("Transparent/Diffuse");
+        upRightBack.GetComponent<Renderer>().material.shader = shader;
+        upRightBack.GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1.0f);
+        upRightBack.transform.localPosition = this.gameObject.transform.localPosition + new Vector3(-0.5f, 0.5f, 0.5f);
+        upRightBack.transform.localRotation = this.gameObject.transform.localRotation;
+        upRightBack.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); ;
+        upRightBack.transform.parent = this.gameObject.transform;
+
+        downLeftFront = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        shader = Shader.Find("Transparent/Diffuse");
+        downLeftFront.GetComponent<Renderer>().material.shader = shader;
+        downLeftFront.GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1.0f);
+        downLeftFront.transform.localPosition = this.gameObject.transform.localPosition + new Vector3(0.5f, -0.5f, -0.5f);
+        downLeftFront.transform.localRotation = this.gameObject.transform.localRotation;
+        downLeftFront.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); ;
+        downLeftFront.transform.parent = this.gameObject.transform;
+
+        downRightFront = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        shader = Shader.Find("Transparent/Diffuse");
+        downRightFront.GetComponent<Renderer>().material.shader = shader;
+        downRightFront.GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1.0f);
+        downRightFront.transform.localPosition = this.gameObject.transform.localPosition + new Vector3(-0.5f, -0.5f, -0.5f);
+        downRightFront.transform.localRotation = this.gameObject.transform.localRotation;
+        downRightFront.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); ;
+        downRightFront.transform.parent = this.gameObject.transform;
+
+        downLeftBack = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        shader = Shader.Find("Transparent/Diffuse");
+        downLeftBack.GetComponent<Renderer>().material.shader = shader;
+        downLeftBack.GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1.0f);
+        downLeftBack.transform.localPosition = this.gameObject.transform.localPosition + new Vector3(0.5f, -0.5f, 0.5f);
+        downLeftBack.transform.localRotation = this.gameObject.transform.localRotation;
+        downLeftBack.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); ;
+        downLeftBack.transform.parent = this.gameObject.transform;
+
+        downRightBack = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        shader = Shader.Find("Transparent/Diffuse");
+        downRightBack.GetComponent<Renderer>().material.shader = shader;
+        downRightBack.GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1.0f);
+        downRightBack.transform.localPosition = this.gameObject.transform.localPosition + new Vector3(-0.5f, -0.5f, 0.5f);
+        downRightBack.transform.localRotation = this.gameObject.transform.localRotation;
+        downRightBack.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); ;
+        downRightBack.transform.parent = this.gameObject.transform;
     }
 }
 

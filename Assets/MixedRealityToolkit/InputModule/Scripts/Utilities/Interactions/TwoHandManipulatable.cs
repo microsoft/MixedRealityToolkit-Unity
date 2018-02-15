@@ -10,12 +10,13 @@ using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.InputModule.InputSources;
+using MixedRealityToolkit.UX.BoundingBoxes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
-using System;
+
 
 namespace MixedRealityToolkit.InputModule.Utilities.Interations
 {
@@ -32,7 +33,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         // Event that gets raised when the object stops moving
         public event Action StoppedManipulating;
 
-        [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
+        public BoundingBoxBasic GlobalBoundingBox;
+
+         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
         public Transform HostTransform;
 
         public enum TwoHandedManipulation
@@ -78,6 +81,12 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             m_moveLogic = new MoveSphericalCoordsLogic();
             m_rotateLogic = new HandlebarRotateLogic(ConstraintOnRotation);
             m_scaleLogic = new ScaleLogic();
+
+            //if (BoundingBoxPrefab != null)
+            //{
+            //    boundingBoxInstance = BoundingBoxBasic.Instantiate<BoundingBoxBasic>(BoundingBoxPrefab);
+            //    boundingBoxInstance.GetComponent<BoundingBox>().Target = this.gameObject;
+            //}
         }
 
         private void Update()
@@ -308,7 +317,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
         private void OnTwoHandManipulationEnded()
         {
-
+            GlobalBoundingBox.GetComponent<BoundingBox>().Target = null;
         }
 
         private Vector3 GetHandsCentroid()
@@ -331,6 +340,8 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             {
                 m_scaleLogic.Setup(m_handsPressedLocationsMap, HostTransform);
             }
+
+            GlobalBoundingBox.GetComponent<BoundingBox>().Target = this.gameObject;
         }
 
         private void OnOneHandMoveStarted()

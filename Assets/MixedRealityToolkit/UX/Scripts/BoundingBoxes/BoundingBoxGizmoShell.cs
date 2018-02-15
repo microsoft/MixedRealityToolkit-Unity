@@ -9,7 +9,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
     /// Draws a bounding box gizmo in the style of the hololens shell
     /// </summary>
     [ExecuteInEditMode]
-    public class BoundingBoxGizmoShell : BoundingBoxGizmo
+    public class BoundingBoxBasic : BoundingBoxGizmo
     {
         #region public
 
