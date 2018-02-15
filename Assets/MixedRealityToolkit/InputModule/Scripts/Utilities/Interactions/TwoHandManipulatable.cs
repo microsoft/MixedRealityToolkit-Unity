@@ -333,7 +333,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
         private void OnTwoHandManipulationEnded()
         {
-            HasBoundingBox = false;
         }
 
         private Vector3 GetHandsCentroid()
@@ -356,8 +355,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             {
                 m_scaleLogic.Setup(m_handsPressedLocationsMap, HostTransform);
             }
-
-            HasBoundingBox = true;
         }
 
         private void OnOneHandMoveStarted()
@@ -365,8 +362,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             Assert.IsTrue(m_handsPressedLocationsMap.Count == 1);
 
             m_moveLogic.Setup(m_handsPressedLocationsMap.Values.First(), HostTransform);
-
-            HasBoundingBox = true;
         }
         private void OnManipulationStarted()
         {
