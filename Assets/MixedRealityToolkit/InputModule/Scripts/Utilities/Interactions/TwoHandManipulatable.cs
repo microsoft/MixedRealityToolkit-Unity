@@ -21,8 +21,6 @@ using UnityEngine.Assertions;
 namespace MixedRealityToolkit.InputModule.Utilities.Interations
 {
     /// <summary>
-    /// TO DO
-    /// Notes:
     /// - If host transform is not provided, will default to the GameObject the script is on.
     /// - Grabbing any collidable on or below this gameobject will activate this script.
     /// </summary>
@@ -32,7 +30,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         public event Action StartedManipulating;
         // Event that gets raised when the object stops moving
         public event Action StoppedManipulating;
-
+        // Bounding Box visual on manipulation interaction
         public GameObject GlobalBoundingBox;
 
          [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
@@ -371,7 +369,11 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             }
             InputManager.Instance.PushModalInputHandler(gameObject);
 
-            HasBoundingBox = true;
+            // Show Bounding Box visual on manipulation interaction
+            if(GlobalBoundingBox != null)
+            {
+                HasBoundingBox = true;
+            }
         }
         private void OnManipulationEnded()
         {
@@ -381,7 +383,11 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             }
             InputManager.Instance.PopModalInputHandler();
 
-            HasBoundingBox = false;
+            // Hide Bounding Box visual on release
+            if (GlobalBoundingBox != null)
+            {
+                HasBoundingBox = false;
+            }
         }
     }
 
