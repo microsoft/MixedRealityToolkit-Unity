@@ -6,16 +6,19 @@ Dialog is a transient UI element which appears when something happens that requi
 ![Dialogs on HoloLens and Immersive Headset](/External/ReadMeImages/MRTK_Dialog_Devices.jpg)
 
 ## Dialog prefab and DialogShell script
-Dialog prefab is located under **Resources** folder in **MixedRealityToolkit/UX** and dynamically instantiated with Unity's **Resources.Load()** function. This prefab contains **DialogShell** script and **Solver** scripts.
+Dialog prefab is located under MixedRealityToolkit/UX/Prefabs folder and dynamically instantiated with Unity's Instantiate() function. This prefab contains **DialogShell** script and **Solver** scripts.
 
 ## How to display a Dialog control
 You can find the code example in **LaunchDialogScript.cs** under SceneContent > SquareButton. It demonstrates the instantiation and response to a Dialog using the function Launch Dialog. The Dialog can be specified to have a single button, useful for communicating information to the user. The Dialog can also be configured to display two buttons, allowing the user to make a choice. The name of the selected button is returned to the script that opens the Dialog. 
 
-An instance of the Dialog is created using the following two lines of code: 
+An instance of the Dialog is created using: 
  
-**GameObject dialogPrefab Resources.Load("Dialog") as GameObject;**
+//fill dialogPrefab in the inspector:
+[Serialize]
+private Dialog dialogPrefab;
 
-**Dialog dialog = Dialog.Open(dialogPrefab, buttons, title, message);**
+//then call:
+Dialog dialog = Dialog.Open(dialogPrefab.gameObject, buttons, title, message);
  
 The second argument to the Open function defines the caption or captions that the button(s) will have. 
 They are identified by defining an enumerated value using Dialog.ButtonTypeEnum. 
