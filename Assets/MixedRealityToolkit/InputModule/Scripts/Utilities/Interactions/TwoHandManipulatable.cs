@@ -114,6 +114,8 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
             rig = this.gameObject.AddComponent<BoundingRig>();
             rig.Box = GlobalBoundingBox.GetComponent<BoundingBox>();
+            rig.ObjectToBound = this.gameObject;
+            rig.Box.gameObject.SetActive(false);
         }
 
 
@@ -123,16 +125,14 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             {
                 if (value == true)
                 {
-                    BoundingBox boundingBox = GlobalBoundingBox.GetComponent<BoundingBox>();
-                    boundingBox.Target = this.gameObject;
-                    boundingBox.gameObject.SetActive(true);
+                    rig.Box.Target = this.gameObject;
+                    rig.Box.gameObject.SetActive(true);
                     rig.Activate();
                 }
                 else
                 {
-                    BoundingBox boundingBox = GlobalBoundingBox.GetComponent<BoundingBox>();
-                    boundingBox.Target = null;
-                    boundingBox.gameObject.SetActive(false);
+                    rig.Box.Target = null;
+                    rig.Box.gameObject.SetActive(false);
                     rig.Deactivate();
                 }
             }
