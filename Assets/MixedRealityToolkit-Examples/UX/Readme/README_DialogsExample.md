@@ -5,6 +5,9 @@ Dialog is a transient UI element which appears when something happens that requi
 
 ![Dialogs on HoloLens and Immersive Headset](/External/ReadMeImages/MRTK_Dialog_Devices.jpg)
 
+## Demo Video
+https://gfycat.com/ConventionalDirtyKiskadee
+
 ## Dialog prefab and DialogShell script
 Dialog prefab is located under MixedRealityToolkit/UX/Prefabs folder and dynamically instantiated with Unity's Instantiate() function. This prefab contains **DialogShell** script and **Solver** scripts.
 
