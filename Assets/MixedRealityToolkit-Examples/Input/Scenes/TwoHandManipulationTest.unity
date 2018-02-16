@@ -714,7 +714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlobalBoundingBox: {fileID: 0}
   HostTransform: {fileID: 0}
-  ManipulationMode: 3
+  ManipulationMode: 1
   ConstraintOnRotation: 3
   OneHandMovement: 1
 --- !u!65 &687798438
@@ -1879,7 +1879,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1459742326}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.17, y: 0.751, z: -0.145}
+  m_LocalPosition: {x: -0.17, y: 0.389, z: 0.148}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1020269081}
