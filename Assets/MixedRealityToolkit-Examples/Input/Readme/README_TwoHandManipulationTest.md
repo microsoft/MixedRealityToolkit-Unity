@@ -9,8 +9,8 @@ The example also includes Bounding Box for the normal mode. In normal mode, Boun
 ![Bounding Box Normal Mode](/External/ReadMeImages/MRTK_BoundingBoxNormalMode.jpg)
 
 ### Known issues ###
-- Adjust mode Bouding Box and App Bar will be added through different Pull Request.
-- In immersive headset, current input system only shows single pointer cursor. While holding object with first controller, pointing and seleting the object with second controller will activate the manipulation behavior. Multi-pointer cursor visualization will be updated through different Pull Request. 
+- Adjust mode Bounding Box and App Bar will be added through different Pull Request.
+- In the immersive headset, current input system only shows single pointer cursor. While holding an object with the first controller, pointing and seleting the object with the second controller will activate the manipulation behavior. Multi-pointer cursor visualization will be updated through different Pull Request. 
 
 
 
