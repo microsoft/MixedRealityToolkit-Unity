@@ -1706,15 +1706,15 @@ MonoBehaviour:
     script. This script allows for an object to be movable, scalable, and rotatable
     with one or two hands. You may also configure the script on only enable certain
     manipulations.\r\n\r\n\r\n\r\nIn the Hierarchy panel, you can find different way
-    to use the TwoHandManipulatable script under SceneContent>Group1 and Group 2.
-    \n\nNotice how each example object has a Collider on it. The collider defines
-    the 'hittable area' for the manipulatable--grabbing any collidable that is on
-    the script's GameObject or any descendant will activate the script.\n\nThe script
-    has several configurable options:\r\n\n- HostTransform: Use this to specify the
-    transform that the scripts manipulates. By default it is the GameObject that this
-    script is on.\r\n- Manipulation Mode: Specify the enabled manipulations.\n- Constraint
-    On Rotation: If rotation is enabled, only rotate on these axes.\n- One Handed
-    Movement: Specify whether you can use just one hand to move the object."
+    to use the TwoHandManipulatable script under SceneContent.\n\nNotice how each
+    example object has a Collider on it. The collider defines the 'hittable area'
+    for the manipulatable--grabbing any collidable that is on the script's GameObject
+    or any descendant will activate the script.\n\nThe script has several configurable
+    options:\r\n\n- HostTransform: Use this to specify the transform that the scripts
+    manipulates. By default it is the GameObject that this script is on.\r\n- Manipulation
+    Mode: Specify the enabled manipulations.\n- Constraint On Rotation: If rotation
+    is enabled, only rotate on these axes.\n- One Handed Movement: Specify whether
+    you can use just one hand to move the object."
 --- !u!222 &1379348912
 CanvasRenderer:
   m_ObjectHideFlags: 0
