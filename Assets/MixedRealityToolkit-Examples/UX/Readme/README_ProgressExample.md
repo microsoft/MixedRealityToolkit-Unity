@@ -4,6 +4,8 @@ A progress control provides feedback to the user that a long-running operation i
 
 This example scene illustrates the use of the ProgressIndicator prefab to create a progress Indicator with several options for appearance.
 
+## Demo Video
+https://gfycat.com/JaggedDimLacewing
 
 ## Types of Progress
 ![Progress Types](/External/ReadMeImages/MRTK_Progress2.jpg)
