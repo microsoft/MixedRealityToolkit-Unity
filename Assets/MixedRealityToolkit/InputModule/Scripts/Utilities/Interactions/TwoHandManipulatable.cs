@@ -34,6 +34,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         public event Action StoppedManipulating;
 
         public GameObject GlobalBoundingBox;
+        private BoundingRig rig;
 
          [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
         public Transform HostTransform;
@@ -110,6 +111,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             {
                 HostTransform = transform;
             }
+
+            rig = this.gameObject.AddComponent<BoundingRig>();
+            rig.Box = GlobalBoundingBox.GetComponent<BoundingBox>();
         }
 
 
@@ -122,12 +126,14 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                     BoundingBox boundingBox = GlobalBoundingBox.GetComponent<BoundingBox>();
                     boundingBox.Target = this.gameObject;
                     boundingBox.gameObject.SetActive(true);
+                    rig.Activate();
                 }
                 else
                 {
                     BoundingBox boundingBox = GlobalBoundingBox.GetComponent<BoundingBox>();
                     boundingBox.Target = null;
                     boundingBox.gameObject.SetActive(false);
+                    rig.Deactivate();
                 }
             }
         }
