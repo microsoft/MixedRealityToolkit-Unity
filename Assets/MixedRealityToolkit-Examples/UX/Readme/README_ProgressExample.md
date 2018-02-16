@@ -30,7 +30,7 @@ The **ProgressIndicator prefab** is located in MixedRealityToolkit/UX/Prefabs/Pr
 ![ProgressIndicator Properties](/External/ReadMeImages/MRTK_ProgressIndicatorInspector.jpg)
 
 ### ProgressIndicator Prefab Structure
-The **ProgressIndicator prefab** contains the elements for the different types of visualization. You can find child components such as Orbs, Bar and Text. These elements are assigned to ProgressIndicator script.
+The **ProgressIndicator prefab** contains the elements for the different types of visualization. You can find child components such as  Bar, Message Text and Progress Text. These elements are assigned to ProgressIndicator script.
 
 ![Progress Types](/External/ReadMeImages/MRTK_Progress4.jpg)
 
