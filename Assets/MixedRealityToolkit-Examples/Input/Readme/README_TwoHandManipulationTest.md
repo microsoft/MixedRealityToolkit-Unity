@@ -2,6 +2,8 @@
 ![Two Hand Manipulation](/External/ReadMeImages/MRTK_TwoHandManipulation.jpg)
 This example shows how you can make any object interactable with [TwoHandManipulatable script](https://github.com/johnppella/MixedRealityToolkit-Unity/blob/Feature_UX_BoundingBox_TwoHandManipulation/Assets/MixedRealityToolkit/InputModule/Scripts/Utilities/Interactions/TwoHandManipulatable.cs). This script allows for an object to be movable, scalable, and rotatable with one or two hands. You may also configure the script on only enable certain manipulations. The script works with both HoloLens' gesture input and immersive headset's motion controller input.
 
+**Demo Video**: https://gfycat.com/PepperyEvergreenAmericanavocet
+
 The example also includes Bounding Box for the normal mode. In normal mode, Bounding Box gives the visual boundary of the object when you interact with the object. You can find this behavior in the cliff house. (Grab and move, rotate, scale with two motion controllers) In adjust mode, Bounding Box gives the handles for the manipulation. 
 
 ![Bounding Box Normal Mode](/External/ReadMeImages/MRTK_BoundingBoxNormalMode.jpg)
