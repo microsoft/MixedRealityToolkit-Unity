@@ -8,18 +8,22 @@ The example also includes Bounding Box for the normal mode. In normal mode, Boun
 
 ![Bounding Box Normal Mode](/External/ReadMeImages/MRTK_BoundingBoxNormalMode.jpg)
 
+
 ### Known issues ###
 - Adjust mode Bounding Box and App Bar will be added through different Pull Request.
 - In the immersive headset, current input system only shows single pointer cursor. While holding an object with the first controller, pointing and seleting the object with the second controller will activate the manipulation behavior. Multi-pointer cursor visualization will be updated through different Pull Request. 
 
 
-
-### TwoHandManipulatable Script ###
+### Unity Scene ###
+[TwoHandManipulationTest.unity](/Assets/MixedRealityToolkit-Examples/Input/Scenes/TwoHandManipulationTest.unity)
+![TwoHandManipulation Scene](/External/ReadMeImages/MRTK_TwoHandManipulationScene.jpg)
 
 In the Hierarchy panel, you can find multiple objects that have TwoHandManipulatable script under SceneContent. Notice how each example object has a collider on it. The collider defines the 'hittable area' for the manipulatable--grabbing any collidable that is on the script's GameObject or any descendant will activate the script. 
 
-![TwoHandManipulation Scene](/External/ReadMeImages/MRTK_TwoHandManipulationScene.jpg)
+### TwoHandManipulatable Script ###
+![TwoHandManipulation Script](/External/ReadMeImages/MRTK_TwoHandManipulationScript.jpg)
 
+Simply assign TwoHandManipulatable script to any GameObject to make it manipulatable.
 The script has several configurable options:
 - **HostTransform**: Use this to specify the transform that the scripts manipulates. By default it is the GameObject that this script is on.
 - **Manipulation Mode**: Specify the enabled manipulations.
@@ -28,7 +32,6 @@ The script has several configurable options:
 
 - **One Handed Movement**: Specify whether you can use just one hand to move the object.
 
-![TwoHandManipulation Script](/External/ReadMeImages/MRTK_TwoHandManipulationScript.jpg)
 
 
 ### Bounding Box normal mode visualization ###
