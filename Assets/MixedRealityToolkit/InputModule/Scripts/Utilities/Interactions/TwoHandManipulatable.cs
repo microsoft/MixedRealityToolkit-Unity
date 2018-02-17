@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 // #defines for features that are not yet implemented
@@ -21,19 +21,22 @@ using UnityEngine.Assertions;
 namespace MixedRealityToolkit.InputModule.Utilities.Interations
 {
     /// <summary>
-    /// - If host transform is not provided, will default to the GameObject the script is on.
-    /// - Grabbing any collidable on or below this gameobject will activate this script.
+    /// This script allows for an object to be movable, scalable, and rotatable with one or two hands. 
+    /// You may also configure the script on only enable certain manipulations. The script works with 
+    /// both HoloLens' gesture input and immersive headset's motion controller input.
+    /// See Assets/MixedRealityToolkit-Examples/Input/Readme/README_TwoHandManipulationTest.md
+    /// for instructions on how to use the script.
     /// </summary>
     public class TwoHandManipulatable : MonoBehaviour, IInputHandler, ISourceStateHandler
     {
-        // Event that gets raised when the object begins moving
+        // Event that gets raised when user begins manipulating the object
         public event Action StartedManipulating;
-        // Event that gets raised when the object stops moving
+        // Event that gets raised when the user ends manipulation
         public event Action StoppedManipulating;
         // Bounding Box visual on manipulation interaction
         public GameObject GlobalBoundingBox;
 
-         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
+        [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
         public Transform HostTransform;
 
         public enum TwoHandedManipulation
@@ -115,7 +118,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         {
             set
             {
-                if (value == true)
+                if (value)
                 {
                     BoundingBox boundingBox = GlobalBoundingBox.GetComponent<BoundingBox>();
                     boundingBox.Target = this.gameObject;
@@ -136,6 +139,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             eventData.InputSource.TryGetGripPosition(eventData.SourceId, out result);
             return result;
         }
+
         public void OnInputDown(InputEventData eventData)
         {
             // Add to hand map
@@ -428,7 +432,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
         public void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
         {
-
             m_currentRotationConstraint = m_rotationConstraint;
             m_previousHandlebarRotation = GetHandlebarDirection(handsPressedMap, manipulationRoot);
         }
@@ -499,9 +502,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
     /// Implements a movement logic that uses the model of angular rotations along a sphere whose 
     /// radius varies. The angle to move by is computed by looking at how much the hand changes
     /// relative to a pivot point (slightly below and in front of the head).
-    /// 
-    /// This implementation was copied from the HandDraggable logic from the experiences central prototyping team.
-    /// $\CPT\Templates\UnityHoloLens\Main\Assets\ProtoShared\Scripts\Hands\HandDraggable.cs
     /// </summary>
     public class MoveSphericalCoordsLogic
     {
@@ -582,6 +582,11 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         }
     }
 
+    /// <summary>
+    /// Implements a scale logic that will scale an object based on the 
+    /// ratio of the distance between hands.
+    /// object_scale = start_object_scale * curr_hand_dist / start_hand_dist
+    /// </summary>
     public class ScaleLogic
     {
         private Vector3 m_startObjectScale;
