@@ -108,14 +108,6 @@ namespace MixedRealityToolkit.UX.Progress
             if (gameObject.activeSelf)
                 return;
 
-            // Optimize the content for immersive headset
-            if (HolographicSettings.IsDisplayOpaque)
-            {
-                SolverConstantViewSize solver = GetComponent<SolverConstantViewSize>();
-                //default (hololens) is 2. Needs to be bigger in IHMD.
-                solver.MaxScale = 8.0f;
-            }
-
             // Make sure we aren't parented under anything
             transform.parent = null;
 
