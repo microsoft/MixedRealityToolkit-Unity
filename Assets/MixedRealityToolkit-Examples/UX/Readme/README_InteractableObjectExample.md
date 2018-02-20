@@ -40,6 +40,11 @@ Use this script to automatically register keywords for your button in the Speech
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonSpeech_Inspector.jpg)
 
+### [Compound Button Toggle](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/Utilities/CompoundButtonToggle.cs) ###
+Use this script to add toggle on/off state.
+
+
+
 
 ## Interactable Object Examples ##
 
