@@ -4,7 +4,7 @@ This example scene demonstrates how to make objects interactable using [Compound
 
 The scene also demonstrates how to use [Receiver](/Assets/MixedRealityToolkit/UX/Scripts/Receivers/InteractionReceiver.cs) to handle events comging from multiple objects, in a single script. This is especially useful when you have multiple buttons or interactable objects in a scene. 
  
-In the scene InteractableObject_Examples.unity, you will be able to find various combinations of 'CompoundButton' scripts. To create your own Interactable Object, you can combine different types of 'CompoundButton' scripts. It is designed to support various types of Interactable Object in flexible way.
+In the scene [InteractableObject_Examples.unity](/Assets/MixedRealityToolkit-Examples/UX/Scenes/InteractableObjectExample.unity), you will be able to find various combinations of 'CompoundButton' scripts. To create your own Interactable Object, you can combine different types of 'CompoundButton' scripts. It is designed to support various types of Interactable Object in flexible way.
 
 ### Compound Button ###
 This is the base of the button component. You will need this script to build any types of Interactable Objects.
