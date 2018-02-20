@@ -1,8 +1,35 @@
-# Interactable Objects Example
+# Interactable Objects & Receiver
 ![Interactable Objects](/External/ReadMeImages/MRTK_InteractableObject.jpg)
-With these example, you can make any object interactable with differentiated visual state for HoloLens gesture input or immersive headset's motion controller input state. For more information please see ['Interactable Object'](https://developer.microsoft.com/en-us/windows/mixed-reality/interactable_object) on Windows Dev Center.
+This example scene demonstrates how to make objects interactable using [CompoundButton](https://github.com/cre8ivepark/MixedRealityToolkit-Unity/blob/Dev_Working_Branch/Assets/MixedRealityToolkit/UX/Scripts/Buttons/CompoundButton.cs) script scries. With CompoundButton script, you can make any object interactable with differentiated visual state for the HoloLens' gesture input or immersive headset's motion controller input state. For more information please see ['Interactable Object'](https://developer.microsoft.com/en-us/windows/mixed-reality/interactable_object) on Windows Dev Center.
+
+The scene also demonstrates how to use [Receiver](https://github.com/cre8ivepark/MixedRealityToolkit-Unity/blob/Dev_Working_Branch/Assets/MixedRealityToolkit/UX/Scripts/Receivers/InteractionReceiver.cs) to handle events comging from multiple objects, in a single script. This is especially useful when you have multiple buttons or interactable objects in a scene. 
  
- 
+In the scene InteractableObject_Examples.unity, you will be able to find various combinations of 'CompoundButton' scripts. To create your own Interactable Object, you can combine different types of 'CompountButton' scripts. It is designed to support various types of Interactable Object in flexible way.
+
+### Compound Button ###
+This is the base of the button component. You will need this script to build any types of Interactable Objects.
+
+### Compound Button Mesh ###
+Use this script to use various types of custom mesh. You can use your own 3D models imported from 3D modeling software. Using this script, you can easily change the scale, offset of the mesh or material properties such as color for the different input interaction states. To create an Interactable Object using script, it is recommended to create an empty GameObject as a container and put the 3D mesh model under it as child component. This will prevent unexpected behavior from different scaling or offset values.
+
+### Compound Button Icon ###
+Using this scripts, you can use Texture 2D assets to display icons. 
+
+### Compound Button Text ###
+This scripts helps you manage a TextMesh component to display text on your button. This script can be used in conjunction with a CompoundButtonSpeech component to automatically link your button to spoken keywords.
+
+### Compound Button Sound ###
+Use this script to add audio feedback for the different input interaction states.
+
+### Compound Button Anim ###
+This is the base of the button component. You will need this script to build any types of Interactable Objects.
+
+### Compound Button Speech ###
+Use this script to automatically register keywords for your button in the Speech Manager (This script is experimental and still being tested).
+
+
+## Interactable Object Examples ##
+
 ### Holographic button ###
 
 ![Holographic button](/External/ReadMeImages/MRTK_InteractableObject_HolographicButton.jpg)
