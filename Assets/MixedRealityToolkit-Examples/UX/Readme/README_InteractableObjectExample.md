@@ -8,24 +8,37 @@ In the scene InteractableObject_Examples.unity, you will be able to find various
 
 ### Compound Button ###
 This is the base of the button component. You will need this script to build any types of Interactable Objects.
+![Compound Button](/External/ReadMeImages/MRTK_CompoundButton_Inspector.jpg)
 
 ### Compound Button Mesh ###
 Use this script to use various types of custom mesh. You can use your own 3D models imported from 3D modeling software. Using this script, you can easily change the scale, offset of the mesh or material properties such as color for the different input interaction states. To create an Interactable Object using script, it is recommended to create an empty GameObject as a container and put the 3D mesh model under it as child component. This will prevent unexpected behavior from different scaling or offset values.
 
+![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonMesh_Inspector.jpg)
+
 ### Compound Button Icon ###
 Using this scripts, you can use Texture 2D assets to display icons. 
+
+![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonIcon_Inspector.jpg)
 
 ### Compound Button Text ###
 This scripts helps you manage a TextMesh component to display text on your button. This script can be used in conjunction with a CompoundButtonSpeech component to automatically link your button to spoken keywords.
 
+![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonText_Inspector.jpg)
+
 ### Compound Button Sound ###
 Use this script to add audio feedback for the different input interaction states.
+
+![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonSound_Inspector.jpg)
 
 ### Compound Button Anim ###
 This is the base of the button component. You will need this script to build any types of Interactable Objects.
 
+![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonAnim_Inspector.jpg)
+
 ### Compound Button Speech ###
 Use this script to automatically register keywords for your button in the Speech Manager (This script is experimental and still being tested).
+
+![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonSpeech_Inspector.jpg)
 
 
 ## Interactable Object Examples ##
@@ -34,7 +47,7 @@ Use this script to automatically register keywords for your button in the Speech
 
 ![Holographic button](/External/ReadMeImages/MRTK_InteractableObject_HolographicButton.jpg)
 
-This is an example of Holographic button used in the Start menu and App Bar. This example uses Unity's Animation Controller and Animation Clips.
+This is an example of Holographic button used in the Start menu and App Bar. This example uses Unity's Animation Controller and Animation Clips. You can find this prefab under [MixedRealityToolkit/UX/Prefab](https://github.com/cre8ivepark/MixedRealityToolkit-Unity/blob/Dev_Working_Branch/Assets/MixedRealityToolkit/UX/Prefabs/Buttons/SquareButton.prefab)
 
 ### Mesh button ###
 
