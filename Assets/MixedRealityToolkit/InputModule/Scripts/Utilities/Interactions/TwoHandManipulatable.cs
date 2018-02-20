@@ -107,15 +107,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
         private void Start()
         {
-            if (HostTransform == null)
-            {
-                HostTransform = transform;
-            }
-
-            rig = this.gameObject.AddComponent<BoundingRig>();
-            rig.Box = GlobalBoundingBox.GetComponent<BoundingBox>();
-            rig.ObjectToBound = this.gameObject;
-            rig.Box.gameObject.SetActive(false);
         }
 
 
@@ -125,14 +116,23 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             {
                 if (value == true)
                 {
+                    if (HostTransform == null)
+                    {
+                        HostTransform = transform;
+                    }
+                    rig = this.gameObject.AddComponent<BoundingRig>();
+                    rig.Box = GlobalBoundingBox.GetComponent<BoundingBox>();
+                    rig.Box.gameObject.SetActive(false);
+                    rig.ObjectToBound = HostTransform.gameObject;
                     rig.Box.Target = this.gameObject;
                     rig.Box.gameObject.SetActive(true);
                     rig.Activate();
                 }
                 else
                 {
-                    rig.Box.Target = null;
                     rig.Box.gameObject.SetActive(false);
+                    rig.ObjectToBound = null;
+                    rig.Box.Target = null;
                     rig.Deactivate();
                 }
             }

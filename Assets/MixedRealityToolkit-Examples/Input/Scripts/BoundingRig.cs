@@ -13,9 +13,7 @@ public class BoundingRig : MonoBehaviour {
     private List<Vector3> handleCentroids;
     private bool isActive = false;
     private System.Int64 updateCount = 0;
-
     private GameObject transformRig;
-
 
     // Use this for initialization
     void Start () {
@@ -30,7 +28,7 @@ public class BoundingRig : MonoBehaviour {
             }
             else if (updateCount > 2)
             {
-                //UpdateHandles();
+                UpdateHandles();
             }
             updateCount++;
         }
@@ -40,12 +38,18 @@ public class BoundingRig : MonoBehaviour {
     {
         isActive = true;
         updateCount = 1;
+
+        if (transformRig == null)
+        {
+            transformRig = BuildRig();
+        }
     }
     public void Deactivate()
     {
         updateCount = 0;
         isActive = false;
         ClearHandles();
+        transformRig = null;
     }
 
     private void CreateHandles()
@@ -56,10 +60,12 @@ public class BoundingRig : MonoBehaviour {
         CreateCornerHandles();
         CreateRotateHandles();
         ParentHandles();
+        UpdateHandles();
     }
     private void CreateCornerHandles()
     {
         cornerHandles = new GameObject[handleCentroids.Count];
+
         for (int i = 0; i < handleCentroids.Count; ++i)
         {
             cornerHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -71,7 +77,7 @@ public class BoundingRig : MonoBehaviour {
     }
     private void CreateRotateHandles()
     {
-        rotateHandles = new GameObject[4];
+        rotateHandles = new GameObject[12];
 
         for (int i = 0; i < rotateHandles.Length; ++i)
         {
@@ -85,20 +91,27 @@ public class BoundingRig : MonoBehaviour {
         rotateHandles[1].transform.localPosition = (handleCentroids[3] + handleCentroids[1]) * 0.5f;
         rotateHandles[2].transform.localPosition = (handleCentroids[6] + handleCentroids[4]) * 0.5f;
         rotateHandles[3].transform.localPosition = (handleCentroids[7] + handleCentroids[5]) * 0.5f;
+
+        rotateHandles[4].transform.localPosition = (handleCentroids[0] + handleCentroids[1]) * 0.5f;
+        rotateHandles[5].transform.localPosition = (handleCentroids[2] + handleCentroids[3]) * 0.5f;
+        rotateHandles[6].transform.localPosition = (handleCentroids[4] + handleCentroids[5]) * 0.5f;
+        rotateHandles[7].transform.localPosition = (handleCentroids[6] + handleCentroids[7]) * 0.5f;
+
+        rotateHandles[8].transform.localPosition = (handleCentroids[0] + handleCentroids[4]) * 0.5f;
+        rotateHandles[9].transform.localPosition = (handleCentroids[1] + handleCentroids[5]) * 0.5f;
+        rotateHandles[10].transform.localPosition = (handleCentroids[2] + handleCentroids[6]) * 0.5f;
+        rotateHandles[1].transform.localPosition = (handleCentroids[3] + handleCentroids[7]) * 0.5f;
     }
     private void ParentHandles()
     {
-        Transform parent = Box.gameObject.transform;
+        transformRig.transform.position = Box.transform.position;
+        transformRig.transform.rotation = Box.transform.rotation;
 
-        for (int i = 0; i < rotateHandles.Length; ++i)
-        {
-            rotateHandles[i].transform.SetParent(parent, true);
-        }
+        Vector3 invScale = ObjectToBound.transform.localScale;
+       
+        transformRig.transform.localScale = new Vector3(0.5f / invScale.x, 0.5f / invScale.y, 0.5f / invScale.z);
 
-        for (int i = 0; i < cornerHandles.Length; ++i)
-        {
-            cornerHandles[i].transform.SetParent(parent, true);
-        }
+        transformRig.transform.parent = ObjectToBound.transform;
     }
 
     private void CreateCornerPositions()
@@ -107,26 +120,44 @@ public class BoundingRig : MonoBehaviour {
         LayerMask mask = new LayerMask();
         GameObject clone = GameObject.Instantiate(Box.gameObject);
         clone.transform.localRotation = Quaternion.identity;
+        clone.transform.position = new Vector3(0, 0, 0);
         BoundingBox.GetRenderBoundsPoints(clone, handleCentroids, mask);
         GameObject.Destroy(clone);
 
-        Quaternion q = Box.gameObject.transform.rotation;
-        Matrix4x4 m = new Matrix4x4();
-        m.SetTRS(new Vector3(0,0,0), q, new Vector3(1, 1, 1));
+        Matrix4x4 m = Matrix4x4.Rotate(ObjectToBound.transform.rotation);
         for (int i = 0; i < handleCentroids.Count; ++i)
         {
-            handleCentroids[i] = m.MultiplyVector(handleCentroids[i]);
-           // handleCentroids[i] += ObjectToBound.gameObject.transform.localPosition;
+            handleCentroids[i] = m.MultiplyPoint(handleCentroids[i]);
+            handleCentroids[i] += ObjectToBound.transform.position;
         }
     }
 
     private void UpdateHandles()
     {
-        for (int i = 0; i < handleCentroids.Count; ++i)
-        {
-           cornerHandles[i].transform.localRotation = ObjectToBound.gameObject.transform.rotation;
-           cornerHandles[i].transform.localPosition = ObjectToBound.transform.TransformPoint(handleCentroids[i]);
-        }
+       
+        //for (int i = 0; i < 8; ++i)
+        
+           // cornerHandles[i].transform.position = transformRig.transform.GetChild(i).transform.position;
+          //  cornerHandles[i].transform.localRotation = ObjectToBound.transform.localRotation;
+       // }
+
+        //rotateHandles[0].transform.position = (cornerHandles[2].transform.position + cornerHandles[0].transform.position) * 0.5f;
+        //rotateHandles[1].transform.position = (cornerHandles[3].transform.position + cornerHandles[1].transform.position) * 0.5f;
+        //rotateHandles[2].transform.position = (cornerHandles[6].transform.position + cornerHandles[4].transform.position) * 0.5f;
+        //rotateHandles[3].transform.position = (cornerHandles[7].transform.position + cornerHandles[5].transform.position) * 0.5f;
+
+        //rotateHandles[4].transform.position = (cornerHandles[0].transform.position + cornerHandles[1].transform.position) * 0.5f;
+        //rotateHandles[5].transform.position = (cornerHandles[2].transform.position + cornerHandles[3].transform.position) * 0.5f;
+        //rotateHandles[6].transform.position = (cornerHandles[4].transform.position + cornerHandles[5].transform.position) * 0.5f;
+        //rotateHandles[7].transform.position = (cornerHandles[6].transform.position + cornerHandles[7].transform.position) * 0.5f;
+
+        //rotateHandles[8].transform.position = (cornerHandles[0].transform.position + cornerHandles[4].transform.position) * 0.5f;
+        //rotateHandles[9].transform.position = (cornerHandles[1].transform.position + cornerHandles[5].transform.position) * 0.5f;
+        //rotateHandles[10].transform.position = (cornerHandles[2].transform.position + cornerHandles[6].transform.position) * 0.5f;
+        //rotateHandles[11].transform.position = (cornerHandles[3].transform.position + cornerHandles[7].transform.position) * 0.5f;
+
+        //GameObject textMesh = GameObject.Find("textOut");
+        //textMesh.GetComponent<TextMesh>().text = ObjectToBound.name + " " + ObjectToBound.transform.localScale.ToString();
     }
 
     private void ClearCornerHandles()
@@ -168,13 +199,14 @@ public class BoundingRig : MonoBehaviour {
 
     private GameObject BuildRig()
     {
+        Vector3 scale = ObjectToBound.transform.localScale;
+
         GameObject transformRig = new GameObject();
         transformRig.name = "center";
         transformRig.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.identity);
-        transformRig.transform.localScale = new Vector3(1, 1, 1);
+        transformRig.transform.localScale = new Vector3(1.0f /scale.x, 1.0f / scale.y, 1.0f / scale.z);
 
-
-        GameObject upperLeftFront = new GameObject();
+       GameObject upperLeftFront = new GameObject();
         upperLeftFront.name = "upperleftfront";
         upperLeftFront.transform.SetPositionAndRotation(new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity);
         upperLeftFront.transform.localScale = new Vector3(1, 1, 1);
@@ -201,25 +233,25 @@ public class BoundingRig : MonoBehaviour {
 
         GameObject upperRightFront = new GameObject();
         upperRightFront.name = "upperrightfront";
-        upperRightFront.transform.SetPositionAndRotation(new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity);
+        upperRightFront.transform.SetPositionAndRotation(new Vector3(-0.5f, 0.5f, 0.5f), Quaternion.identity);
         upperRightFront.transform.localScale = new Vector3(1, 1, 1);
         upperRightFront.transform.parent = transformRig.transform;
 
         GameObject upperRightBack = new GameObject();
         upperRightBack.name = "upperrightback";
-        upperRightBack.transform.SetPositionAndRotation(new Vector3(0.5f, 0.5f, -0.5f), Quaternion.identity);
+        upperRightBack.transform.SetPositionAndRotation(new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
         upperRightBack.transform.localScale = new Vector3(1, 1, 1);
         upperRightBack.transform.parent = transformRig.transform;
 
         GameObject lowerRightFront = new GameObject();
         lowerRightFront.name = "lowerrightfront";
-        lowerRightFront.transform.SetPositionAndRotation(new Vector3(0.5f, -0.5f, 0.5f), Quaternion.identity);
+        lowerRightFront.transform.SetPositionAndRotation(new Vector3(-0.5f, -0.5f, 0.5f), Quaternion.identity);
         lowerRightFront.transform.localScale = new Vector3(1, 1, 1);
         lowerRightFront.transform.parent = transformRig.transform;
 
         GameObject lowerRightBack = new GameObject();
         lowerRightBack.name = "lowerrightback";
-        lowerRightBack.transform.SetPositionAndRotation(new Vector3(0.5f, -0.5f, -0.5f), Quaternion.identity);
+        lowerRightBack.transform.SetPositionAndRotation(new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
         lowerRightBack.transform.localScale = new Vector3(1, 1, 1);
         lowerRightBack.transform.parent = transformRig.transform;
 
