@@ -1,10 +1,10 @@
 # Interactable Objects & Receiver
 ![Interactable Objects](/External/ReadMeImages/MRTK_InteractableObject.jpg)
-This example scene demonstrates how to make objects interactable using [CompoundButton](https://github.com/cre8ivepark/MixedRealityToolkit-Unity/blob/Dev_Working_Branch/Assets/MixedRealityToolkit/UX/Scripts/Buttons/CompoundButton.cs) script scries. With CompoundButton script, you can make any object interactable with differentiated visual state for the HoloLens' gesture input or immersive headset's motion controller input state. For more information please see ['Interactable Object'](https://developer.microsoft.com/en-us/windows/mixed-reality/interactable_object) on Windows Dev Center.
+This example scene demonstrates how to make objects interactable using [CompoundButton](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/CompoundButton.cs) script scries. With CompoundButton script, you can make any object interactable with differentiated visual state for the HoloLens' gesture input or immersive headset's motion controller input state. For more information please see ['Interactable Object'](https://developer.microsoft.com/en-us/windows/mixed-reality/interactable_object) on Windows Dev Center.
 
-The scene also demonstrates how to use [Receiver](https://github.com/cre8ivepark/MixedRealityToolkit-Unity/blob/Dev_Working_Branch/Assets/MixedRealityToolkit/UX/Scripts/Receivers/InteractionReceiver.cs) to handle events comging from multiple objects, in a single script. This is especially useful when you have multiple buttons or interactable objects in a scene. 
+The scene also demonstrates how to use [Receiver](/Assets/MixedRealityToolkit/UX/Scripts/Receivers/InteractionReceiver.cs) to handle events comging from multiple objects, in a single script. This is especially useful when you have multiple buttons or interactable objects in a scene. 
  
-In the scene InteractableObject_Examples.unity, you will be able to find various combinations of 'CompoundButton' scripts. To create your own Interactable Object, you can combine different types of 'CompountButton' scripts. It is designed to support various types of Interactable Object in flexible way.
+In the scene InteractableObject_Examples.unity, you will be able to find various combinations of 'CompoundButton' scripts. To create your own Interactable Object, you can combine different types of 'CompoundButton' scripts. It is designed to support various types of Interactable Object in flexible way.
 
 ### Compound Button ###
 This is the base of the button component. You will need this script to build any types of Interactable Objects.
@@ -47,7 +47,7 @@ Use this script to automatically register keywords for your button in the Speech
 
 ![Holographic button](/External/ReadMeImages/MRTK_InteractableObject_HolographicButton.jpg)
 
-This is an example of Holographic button used in the Start menu and App Bar. This example uses Unity's Animation Controller and Animation Clips. You can find this prefab under [MixedRealityToolkit/UX/Prefab](https://github.com/cre8ivepark/MixedRealityToolkit-Unity/blob/Dev_Working_Branch/Assets/MixedRealityToolkit/UX/Prefabs/Buttons/SquareButton.prefab)
+This is an example of Holographic button used in the Start menu and App Bar. This example uses Unity's Animation Controller and Animation Clips. You can find this prefab under [MixedRealityToolkit/UX/Prefab](/Assets/MixedRealityToolkit/UX/Prefabs/Buttons/SquareButton.prefab)
 
 ### Mesh button ###
 
