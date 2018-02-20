@@ -6,36 +6,36 @@ The scene also demonstrates how to use [Receiver](/Assets/MixedRealityToolkit/UX
  
 In the scene [InteractableObject_Examples.unity](/Assets/MixedRealityToolkit-Examples/UX/Scenes/InteractableObjectExample.unity), you will be able to find various combinations of 'CompoundButton' scripts. To create your own Interactable Object, you can combine different types of 'CompoundButton' scripts. It is designed to support various types of Interactable Object in flexible way.
 
-### Compound Button ###
+### [Compound Button](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/CompoundButton.cs) ###
 This is the base of the button component. You will need this script to build any types of Interactable Objects.
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButton_Inspector.jpg)
 
-### Compound Button Mesh ###
+### [Compound Button Mesh](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/CompoundButtonMesh.cs) ###
 Use this script to use various types of custom mesh. You can use your own 3D models imported from 3D modeling software. Using this script, you can easily change the scale, offset of the mesh or material properties such as color for the different input interaction states. To create an Interactable Object using script, it is recommended to create an empty GameObject as a container and put the 3D mesh model under it as child component. This will prevent unexpected behavior from different scaling or offset values.
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonMesh_Inspector.jpg)
 
-### Compound Button Icon ###
+### [Compound Button Icon](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/CompoundButtonIcon.cs) ###
 Using this scripts, you can use Texture 2D assets to display icons. 
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonIcon_Inspector.jpg)
 
-### Compound Button Text ###
+### [Compound Button Text](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/CompoundButtonText.cs) ###
 This scripts helps you manage a TextMesh component to display text on your button. This script can be used in conjunction with a CompoundButtonSpeech component to automatically link your button to spoken keywords.
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonText_Inspector.jpg)
 
-### Compound Button Sound ###
+### [Compound Button Sound](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/CompoundButtonSound.cs) ###
 Use this script to add audio feedback for the different input interaction states.
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonSound_Inspector.jpg)
 
-### Compound Button Anim ###
+### [Compound Button Anim](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/CompoundAnim.cs) ###
 This is the base of the button component. You will need this script to build any types of Interactable Objects.
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonAnim_Inspector.jpg)
 
-### Compound Button Speech ###
+### [Compound Button Speech](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/CompoundButtonSpeech.cs) ###
 Use this script to automatically register keywords for your button in the Speech Manager (This script is experimental and still being tested).
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonSpeech_Inspector.jpg)
