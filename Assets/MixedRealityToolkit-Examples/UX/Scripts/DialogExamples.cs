@@ -8,7 +8,7 @@ namespace MixedRealityToolkit.Examples.UX
 {
     public class DialogExamples : MonoBehaviour
     {
-        void Start()
+        private void Start()
         {
             // Optimize the content for immersive headset
             if (HolographicSettings.IsDisplayOpaque)

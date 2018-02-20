@@ -1,12 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
-using System.Collections;
-using System.Collections.Generic;
-using MixedRealityToolkit.InputModule;
-
-#if UNITY_WSA || UNITY_STANDALONE_WIN
-using UnityEngine.Windows.Speech;
-#endif
 
 
 namespace MixedRealityToolkit.Examples.InteractiveElements

@@ -1,47 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using UnityEngine.XR.WSA.Input;
 using MixedRealityToolkit.Utilities.Solvers;
+using UnityEngine;
 using UnityEngine.XR.WSA;
+using MixedRealityToolkit.Common;
 
 namespace MixedRealityToolkit.UX.Progress
 {
-    public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
-    {
-        public static T Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    T[] instances = FindObjectsOfType<T>();
-                    if (instances.Length == 0)
-                    {
-                        Debug.LogError("No instance of singleton class " + typeof(T) + " found.");
-                    }
-                    else
-                    {
-                        instance = instances[0];
-                        if (instances.Length > 1)
-                        {
-                            Debug.LogError("Multiple instances of singleton class " + typeof(T) + " found.");
-                        }
-                    }
-                }
-                return instance;
-            }
-        }
-
-        private static T instance;
-
-        protected virtual void Awake()
-        {
-            // Populate on startup
-            T instanceCheck = Instance;
-        }
-    }
     /// <summary>
     /// Singleton for displaying a simple loading dialog
     /// Can be combined with a radial solver to keep locked to the HMD
@@ -146,7 +112,8 @@ namespace MixedRealityToolkit.UX.Progress
             if (HolographicSettings.IsDisplayOpaque)
             {
                 SolverConstantViewSize solver = GetComponent<SolverConstantViewSize>();
-                solver.TargetViewPercentV = 0.35f;
+                //default (hololens) is 2. Needs to be bigger in IHMD.
+                solver.MaxScale = 8.0f;
             }
 
             // Make sure we aren't parented under anything

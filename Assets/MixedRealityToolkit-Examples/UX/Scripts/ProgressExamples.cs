@@ -35,8 +35,7 @@ namespace MixedRealityToolkit.Examples.UX
         public string LoadProgressBarMessage = "Loading with Bar";
         public string FinishMessage = "Finished!";
 
-        // Use this for initialization
-        void Start()
+        private void Start()
         {
             // Optimize the content for immersive headset
             if (HolographicSettings.IsDisplayOpaque)
