@@ -11,14 +11,15 @@ namespace MixedRealityToolkit.Examples.InteractiveElements
         private float mFadeCounter = 0;
         private Color mCachedColor;
         private bool mFadingIn = true;
-        private Renderer mRenderer;
         private bool mIsFading = false;
 
-        // Use this for initialization
+        //cache material to prevent memory leak
+        private Material mCachedMaterial;
+
         private void Awake()
         {
-            mRenderer = this.GetComponent<Renderer>();
-            mCachedColor = mRenderer.material.color;
+            mCachedMaterial = this.GetComponent<Renderer>().material;
+            mCachedColor = mCachedMaterial.color;
         }
 
         private void Start()
@@ -39,15 +40,15 @@ namespace MixedRealityToolkit.Examples.InteractiveElements
 
         public void FadeIn(bool resetStartValue)
         {
-            if (mRenderer != null)
+            if (mCachedMaterial != null)
             {
-                mCachedColor = mRenderer.material.color;
+                mCachedColor = mCachedMaterial.color;
             }
 
-            if (resetStartValue)
+            if (resetStartValue && mCachedMaterial)
             {
                 mCachedColor.a = 0;
-                mRenderer.material.color = mCachedColor;
+                mCachedMaterial.color = mCachedColor;
             }
 
             mFadeCounter = 0;
@@ -56,11 +57,11 @@ namespace MixedRealityToolkit.Examples.InteractiveElements
 
         public void ResetFade(float value)
         {
-            if (mRenderer != null)
+            if (mCachedMaterial != null)
             {
-                mCachedColor = mRenderer.material.color;
+                mCachedColor = mCachedMaterial.color;
                 mCachedColor.a = value;
-                mRenderer.material.color = mCachedColor;
+                mCachedMaterial.color = mCachedColor;
             }
 
             mFadeCounter = 0;
@@ -68,23 +69,22 @@ namespace MixedRealityToolkit.Examples.InteractiveElements
 
         public void FadeOut(bool resetStartValue)
         {
-            if (mRenderer != null)
+            if (mCachedMaterial != null)
             {
-                mCachedColor = mRenderer.material.color;
+                mCachedColor = mCachedMaterial.color;
             }
 
-            if (resetStartValue)
+            if (resetStartValue && mCachedMaterial)
             {
                 mCachedColor.a = 1;
-                mRenderer.material.color = mCachedColor;
+                mCachedMaterial.color = mCachedColor;
             }
 
             mFadeCounter = 0;
             mFadingIn = false;
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (mFadeCounter < FadeTime)
             {
@@ -100,19 +100,28 @@ namespace MixedRealityToolkit.Examples.InteractiveElements
                 {
                     percent = 1 - percent;
                     if (percent < mCachedColor.a)
+                    {
                         mCachedColor.a = percent;
+                    }
                 }
                 else
                 {
                     if (percent > mCachedColor.a)
+                    {
                         mCachedColor.a = percent;
+                    }
                 }
 
-                if (mRenderer != null)
+                if (mCachedMaterial != null)
                 {
-                    mRenderer.material.color = mCachedColor;
+                    mCachedMaterial.color = mCachedColor;
                 }
             }
+        }
+
+        public void OnDestroy()
+        {
+            DestroyImmediate(mCachedMaterial);
         }
     }
 }

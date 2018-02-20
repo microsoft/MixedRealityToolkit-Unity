@@ -13,30 +13,6 @@ namespace MixedRealityToolkit.UX.Dialog
     /// And to tell whatever launched the dialog which button was pressed
     /// Can be extended to include more information for dialog construction
     /// (eg detailed messages, button names, colors etc)
-    /// </summary>
-    public class SimpleDialogResult
-    {
-        /// <summary>
-        /// The button press that closed the dialog
-        /// </summary>
-        public Dialog.ButtonTypeEnum Result = Dialog.ButtonTypeEnum.Close;
-
-        /// <summary>
-        /// Title for the dialog to display
-        /// </summary>
-        public string Title = string.Empty;
-
-        /// <summary>
-        /// Message for the dialog to display
-        /// </summary>
-        public string Message = string.Empty;
-
-        /// <summary>
-        /// Which buttons to generate
-        /// </summary>
-        public Dialog.ButtonTypeEnum Buttons = Dialog.ButtonTypeEnum.Close;
-    }
-
     public abstract class Dialog : InteractionReceiver
     {
         public enum StateEnum
@@ -87,12 +63,12 @@ namespace MixedRealityToolkit.UX.Dialog
         /// <summary>
         /// Called after user has clicked a button and the dialog has finished closing
         /// </summary>
-        public Action<SimpleDialogResult> OnClosed;
+        public Action<DialogResult> OnClosed;
 
         /// <summary>
         /// Can be used to monitor result instead of events
         /// </summary>
-        public SimpleDialogResult Result
+        public DialogResult Result
         {
             get
             {
@@ -100,10 +76,12 @@ namespace MixedRealityToolkit.UX.Dialog
             }
         }
 
-        protected void Launch(SimpleDialogResult newResult)
+        protected void Launch(DialogResult newResult)
         {
             if (state != StateEnum.Uninitialized)
+            {
                 return;
+            }
 
             result = newResult;
             StartCoroutine(RunDialogOverTime());
@@ -191,26 +169,7 @@ namespace MixedRealityToolkit.UX.Dialog
         /// </summary>
         protected abstract void SetTitleAndMessage();
 
-        //todo: is this necessary?
-        //
-        //protected override void OnTapped(GameObject obj, UnityEngine.XR.WSA.Input.InteractionManager.InteractionEventArgs eventArgs)
-        //{
-        //    base.OnTapped(obj, eventArgs);
-        //    // If we're not done opening, wait
-        //    if (state != StateEnum.WaitingForInput)
-        //        return;
-
-        //    SimpleDialogButton button = obj.GetComponent<SimpleDialogButton>();
-        //    // If this isn't a simple dialog button it's not our problem
-        //    if (button == null)
-        //        return;
-
-        //    result.Result = button.Type;
-        //    state = StateEnum.Closing;
-        //}
-        //
-
-        protected SimpleDialogResult result;
+        protected DialogResult result;
         private StateEnum state = StateEnum.Uninitialized;
 
         /// <summary>
@@ -219,7 +178,7 @@ namespace MixedRealityToolkit.UX.Dialog
         /// <param name="dialogPrefab"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        public static Dialog Open(GameObject dialogPrefab, SimpleDialogResult result)
+        public static Dialog Open(GameObject dialogPrefab, DialogResult result)
         {
             GameObject dialogGo = GameObject.Instantiate(dialogPrefab) as GameObject;
             Dialog dialog = dialogGo.GetComponent<Dialog>();
@@ -241,7 +200,7 @@ namespace MixedRealityToolkit.UX.Dialog
             GameObject dialogGameObject = GameObject.Instantiate(dialogPrefab) as GameObject;
             Dialog dialog = dialogGameObject.GetComponent<Dialog>();
 
-            SimpleDialogResult result = new SimpleDialogResult
+            DialogResult result = new DialogResult
             {
                 Buttons = buttons,
                 Title = title,

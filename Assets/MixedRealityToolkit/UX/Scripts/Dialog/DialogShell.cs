@@ -1,13 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Utilities.Solvers;
-using MixedRealityToolkit.UX.Buttons;
+
 using System;
-using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using MixedRealityToolkit.Utilities.Solvers;
+using MixedRealityToolkit.UX.Buttons;
+
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+using System.Collections.Generic;
+using UnityEngine.XR;
 using UnityEngine.XR.WSA;
+#endif
+
 
 namespace MixedRealityToolkit.UX.Dialog
 {
@@ -162,12 +168,18 @@ namespace MixedRealityToolkit.UX.Dialog
                 int endOfLine = text.IndexOf(System.Environment.NewLine, pos);
 
                 if (endOfLine == -1)
+                {
                     next = endOfLine = text.Length;
+                }
                 else
+                {
                     next = endOfLine + System.Environment.NewLine.Length;
-                
-                if (endOfLine > pos) {
-                    do {
+                }
+
+                if (endOfLine > pos)
+                {
+                    do
+                    {
                         int len = endOfLine - pos;
 
                         if (len > maxCharsPerLine)
@@ -175,14 +187,20 @@ namespace MixedRealityToolkit.UX.Dialog
 
                         stringBuilder.Append(text, pos, len);
                         stringBuilder.Append(System.Environment.NewLine);
-                        
+
                         pos += len;
 
                         while (pos < endOfLine && Char.IsWhiteSpace(text[pos]))
+                        {
                             pos++;
+                        }
 
                     } while (endOfLine > pos);
-                } else stringBuilder.Append(System.Environment.NewLine);
+                }
+                else
+                {
+                    stringBuilder.Append(System.Environment.NewLine);
+                }
             }
 
             return stringBuilder.ToString();

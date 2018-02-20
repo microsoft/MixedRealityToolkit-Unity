@@ -13,7 +13,7 @@ namespace MixedRealityToolkit.UX.Buttons
 
         public Dialog.Dialog.ButtonTypeEnum ButtonTypeEnum;
 
-        void OnEnable()
+        private void OnEnable()
         {
             GetComponent<Button>().OnButtonClicked += OnButtonClicked;
         }

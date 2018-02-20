@@ -55,7 +55,7 @@ namespace MixedRealityToolkit.Examples.UX
             }
         }
 
-        protected void OnClosed(SimpleDialogResult result)
+        protected void OnClosed(DialogResult result)
         {
             resultText.GetComponent<TextMesh>().text = result.Result.ToString();
         }

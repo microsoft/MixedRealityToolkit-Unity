@@ -27,8 +27,7 @@ public class LoadingAnimation : MonoBehaviour
     private Vector3 mRotatedPositionVector;
     private LoadingAnimation loadingAnimation;
 
-    // Use this for initialization
-    void Start()
+    private void Start()
     {
         mPositionVector = transform.up;
 
@@ -86,7 +85,6 @@ public class LoadingAnimation : MonoBehaviour
         }
     }
 
-
     public void StartOrbit()
     {
         IsPaused = false;
@@ -106,8 +104,7 @@ public class LoadingAnimation : MonoBehaviour
         return -e / 2 * ((v -= 2) * v * v * v - 2) + s;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (IsPaused) return;
             
