@@ -293,7 +293,12 @@ namespace MixedRealityToolkit.Common.EditorScript
             SetFloatProperty(material, "_DIRECTIONAL_LIGHT", "_DirectionalLight", diffuse);
             SetFloatProperty(material, "_SPECULAR_HIGHLIGHTS", "_SpecularHighlights", specularHighlights);
             SetFloatProperty(material, "_NORMAL_MAP", "_EnableNormalMap", normalMap);
-            material.SetTexture("_NormalMap", normalMapTexture);
+
+            if (normalMapTexture)
+            {
+                material.SetTexture("_NormalMap", normalMapTexture);
+            }
+
             SetFloatProperty(material, "_EMISSION", "_EnableEmission", emission);
             SetColorProperty(material, "_EmissiveColor", emissionColor);
             SetFloatProperty(material, "_REFLECTIONS", "_Reflections", reflections);

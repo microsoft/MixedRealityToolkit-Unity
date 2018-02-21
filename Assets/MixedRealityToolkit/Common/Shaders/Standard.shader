@@ -555,11 +555,7 @@ Shader "MixedRealityToolkit/Standard"
 #if defined(_REFRACTION)
                 fixed4 refractColor = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, refract(incident, worldNormal, _RefractiveIndex));
                 ibl *= DecodeHDR(refractColor, unity_SpecCube0_HDR);
-#endif 
-#elif defined(_DIRECTIONAL_LIGHT)
-                fixed3 ibl = unity_AmbientSky.rgb;
-#else
-                fixed3 ibl = fixed3(0.0, 0.0, 0.0);
+#endif
 #endif
 
                 // Fresnel lighting.
@@ -568,13 +564,15 @@ Shader "MixedRealityToolkit/Standard"
 #if defined(_RIM_LIGHT)
                 fixed3 fresnelColor = _RimColor * pow(fresnel, _RimPower);
 #else
-                fixed3 fresnelColor = _FresnelColor * pow(fresnel, _FresnelPower);
+                fixed3 fresnelColor = _FresnelColor * max(pow(fresnel, _FresnelPower), 0.5);
 #endif
 #endif
                 // Final lighting mix.
                 fixed4 output = albedo;
+#if defined(_REFLECTIONS)
                 output.rgb += ibl;
                 output.rgb = lerp(output.rgb, ibl, min(_Smoothness, _Metallic));
+#endif
 
 #if defined(_FRESNEL)
                 output.rgb += fresnelColor * (1.0 - _Metallic);
