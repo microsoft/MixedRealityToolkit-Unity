@@ -8,7 +8,7 @@ Shader "MixedRealityToolkit/Standard"
         // Main maps.
         _Color("Color", Color) = (1.0, 1.0, 1.0, 1.0)
         _MainTex("Albedo", 2D) = "white" {}
-        [Enum(MixedRealityToolkit.Common.EditorScript.StandardShaderGUI.AlbedoAlphaMode)] _AlbedoAlphaMode("Albedo Alpha Mode", Float) = 0 // "Transparency"
+        [Enum(AlbedoAlphaMode)] _AlbedoAlphaMode("Albedo Alpha Mode", Float) = 0 // "Transparency"
         _Cutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
         _Metallic("Metallic", Range(0.0, 1.0)) = 0.0
         _Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
@@ -58,15 +58,15 @@ Shader "MixedRealityToolkit/Standard"
         _EnvironmentColorZ("Environment Color Z (RGB)", Color) = (0.0, 0.0, 1.0, 1.0)
 
         // Advanced options.
-        [Enum(MixedRealityToolkit.Common.EditorScript.StandardShaderGUI.RenderingMode)] _Mode("Rendering Mode", Float) = 0   // "Opaque"
-        [Enum(MixedRealityToolkit.Common.EditorScript.StandardShaderGUI.CustomRenderingMode)] _CustomMode("Mode", Float) = 0 // "Opaque"
-        [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend("Source Blend", Float) = 1                                         // "One"
-        [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend("Destination Blend", Float) = 0                                    // "Zero"
-        [Enum(UnityEngine.Rendering.BlendOp)] _BlendOp("Blend Operation", Float) = 0                                         // "Add"
-        [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest("Depth Test", Float) = 4                                        // "LessEqual"
-        [Enum(MixedRealityToolkit.Common.EditorScript.StandardShaderGUI.DepthWrite)] _ZWrite("Depth Write", Float) = 1       // "On"
-        [Enum(UnityEngine.Rendering.ColorWriteMask)] _ColorWriteMask("Color Write Mask", Float) = 15                         // "All"
-        [Enum(UnityEngine.Rendering.CullMode)] _CullMode("Cull Mode", Float) = 2                                             // "Back"
+        [Enum(RenderingMode)] _Mode("Rendering Mode", Float) = 0                                     // "Opaque"
+        [Enum(CustomRenderingMode)] _CustomMode("Mode", Float) = 0                                   // "Opaque"
+        [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend("Source Blend", Float) = 1                 // "One"
+        [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend("Destination Blend", Float) = 0            // "Zero"
+        [Enum(UnityEngine.Rendering.BlendOp)] _BlendOp("Blend Operation", Float) = 0                 // "Add"
+        [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest("Depth Test", Float) = 4                // "LessEqual"
+        [Enum(DepthWrite)] _ZWrite("Depth Write", Float) = 1                                         // "On"
+        [Enum(UnityEngine.Rendering.ColorWriteMask)] _ColorWriteMask("Color Write Mask", Float) = 15 // "All"
+        [Enum(UnityEngine.Rendering.CullMode)] _CullMode("Cull Mode", Float) = 2                     // "Back"
         _RenderQueueOverride("Render Queue Override", Range(-1.0, 5000)) = -1
     }
 
