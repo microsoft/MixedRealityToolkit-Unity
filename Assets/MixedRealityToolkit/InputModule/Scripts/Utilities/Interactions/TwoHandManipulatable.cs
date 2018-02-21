@@ -130,10 +130,10 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                 }
                 else
                 {
-                    rig.Box.gameObject.SetActive(false);
-                    rig.ObjectToBound = null;
-                    rig.Box.Target = null;
-                    rig.Deactivate();
+                    //rig.Box.gameObject.SetActive(false);
+                    //rig.ObjectToBound = null;
+                    //rig.Box.Target = null;
+                    //rig.Deactivate();
                 }
             }
         }

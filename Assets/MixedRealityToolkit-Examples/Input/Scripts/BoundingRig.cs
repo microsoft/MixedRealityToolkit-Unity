@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using MixedRealityToolkit.InputModule.InputSources;
-using MixedRealityToolkit.InputModule.EventData;
-using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.Utilities.Interations;
 using MixedRealityToolkit.UX.BoundingBoxes;
+using MixedRealityToolkit.Examples.InputModule;
 using UnityEngine;
 
-public class BoundingRig : MonoBehaviour, IInputHandler
+public class BoundingRig : MonoBehaviour
 {
     public GameObject ObjectToBound;
     public BoundingBox Box;
@@ -55,6 +54,32 @@ public class BoundingRig : MonoBehaviour, IInputHandler
         transformRig = null;
     }
 
+    public void FocusOnHandle(GameObject handle)
+    {
+        if (handle != null)
+        {
+            for (int i = 0; i < rotateHandles.Length; ++i)
+            {
+                rotateHandles[i].SetActive(rotateHandles[i] == handle);
+            }
+            for (int i = 0; i < cornerHandles.Length; ++i)
+            {
+                cornerHandles[i].SetActive(cornerHandles[i] == handle);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < rotateHandles.Length; ++i)
+            {
+                rotateHandles[i].SetActive(true);
+            }
+            for (int i = 0; i < cornerHandles.Length; ++i)
+            {
+                cornerHandles[i].SetActive(true);
+            }
+        }
+    }
+
     private GameObject BuildRig()
     {
         Vector3 scale = ObjectToBound.transform.localScale;
@@ -69,58 +94,48 @@ public class BoundingRig : MonoBehaviour, IInputHandler
         upperLeftFront.transform.SetPositionAndRotation(new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity);
         upperLeftFront.transform.localScale = new Vector3(1, 1, 1);
         upperLeftFront.transform.parent = transformRig.transform;
-        upperLeftFront.AddComponent<BoundingBox>();
-
 
         GameObject upperLeftBack = new GameObject();
         upperLeftBack.name = "upperleftback";
         upperLeftBack.transform.SetPositionAndRotation(new Vector3(0.5f, 0.5f, -0.5f), Quaternion.identity);
         upperLeftBack.transform.localScale = new Vector3(1, 1, 1);
         upperLeftBack.transform.parent = transformRig.transform;
-        upperLeftBack.AddComponent<BoundingBox>();
 
         GameObject lowerLeftFront = new GameObject();
         lowerLeftFront.name = "lowerleftfront";
         lowerLeftFront.transform.SetPositionAndRotation(new Vector3(0.5f, -0.5f, 0.5f), Quaternion.identity);
         lowerLeftFront.transform.localScale = new Vector3(1, 1, 1);
         lowerLeftFront.transform.parent = transformRig.transform;
-        lowerLeftFront.AddComponent<BoundingBox>();
 
         GameObject lowerLeftBack = new GameObject();
         lowerLeftBack.name = "lowerleftback";
         lowerLeftBack.transform.SetPositionAndRotation(new Vector3(0.5f, -0.5f, -0.5f), Quaternion.identity);
         lowerLeftBack.transform.localScale = new Vector3(1, 1, 1);
         lowerLeftBack.transform.parent = transformRig.transform;
-        lowerLeftBack.AddComponent<BoundingBox>();
-
 
         GameObject upperRightFront = new GameObject();
         upperRightFront.name = "upperrightfront";
         upperRightFront.transform.SetPositionAndRotation(new Vector3(-0.5f, 0.5f, 0.5f), Quaternion.identity);
         upperRightFront.transform.localScale = new Vector3(1, 1, 1);
         upperRightFront.transform.parent = transformRig.transform;
-        upperRightFront.AddComponent<BoundingBox>();
 
         GameObject upperRightBack = new GameObject();
         upperRightBack.name = "upperrightback";
         upperRightBack.transform.SetPositionAndRotation(new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
         upperRightBack.transform.localScale = new Vector3(1, 1, 1);
         upperRightBack.transform.parent = transformRig.transform;
-        upperRightBack.AddComponent<BoundingBox>();
 
         GameObject lowerRightFront = new GameObject();
         lowerRightFront.name = "lowerrightfront";
         lowerRightFront.transform.SetPositionAndRotation(new Vector3(-0.5f, -0.5f, 0.5f), Quaternion.identity);
         lowerRightFront.transform.localScale = new Vector3(1, 1, 1);
         lowerRightFront.transform.parent = transformRig.transform;
-        lowerRightFront.AddComponent<BoundingBox>();
 
         GameObject lowerRightBack = new GameObject();
         lowerRightBack.name = "lowerrightback";
         lowerRightBack.transform.SetPositionAndRotation(new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
         lowerRightBack.transform.localScale = new Vector3(1, 1, 1);
         lowerRightBack.transform.parent = transformRig.transform;
-        lowerRightBack.AddComponent<BoundingBox>();
 
         return transformRig;
     }
@@ -163,6 +178,12 @@ public class BoundingRig : MonoBehaviour, IInputHandler
                 cornerHandles[i].GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1);
                 cornerHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Diffuse");
                 cornerHandles[i].transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
+                cornerHandles[i].AddComponent<BoxCollider>();
+                cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
+                cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
+                cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = ObjectToBound;
+                cornerHandles[i].name = "Corner " + i.ToString();
+
             }
         }
 
@@ -183,6 +204,11 @@ public class BoundingRig : MonoBehaviour, IInputHandler
                 rotateHandles[i].GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1);
                 rotateHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Diffuse");
                 rotateHandles[i].transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
+                rotateHandles[i].AddComponent<BoxCollider>();
+                rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
+                rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
+                rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = ObjectToBound;
+                rotateHandles[i].name = "Middle " + i.ToString();
             }
         }
 
@@ -258,15 +284,5 @@ public class BoundingRig : MonoBehaviour, IInputHandler
     {
         ClearCornerHandles();
         ClearRotateHandles();
-    }
-
-    public void OnInputDown(InputEventData eventData)
-    {
-
-    }
-    public void OnInputUp(InputEventData eventData)
-    {
-        GameObject textMesh = GameObject.Find("textOut");
-        textMesh.GetComponent<TextMesh>().text = ObjectToBound.name + " " + "Clicked";
     }
 }
