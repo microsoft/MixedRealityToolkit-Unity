@@ -8,6 +8,7 @@ In the scene [InteractableObject_Examples.unity](/Assets/MixedRealityToolkit-Exa
 
 ### [Compound Button](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/CompoundButton.cs) ###
 This is the base of the button component. You will need this script to build any types of Interactable Objects.
+
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButton_Inspector.jpg)
 
 ### [Compound Button Mesh](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/Utilities/CompoundButtonMesh.cs) ###
