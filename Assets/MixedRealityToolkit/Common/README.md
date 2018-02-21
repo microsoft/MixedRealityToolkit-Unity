@@ -189,12 +189,6 @@ Utility component to animate and visualize a clipping plane that can be used wit
 ### [Shaders](Shaders)
 ---
 
-#### macro.cginc
-Preprocessor macros to support shaders
-
-#### MixedRealityToolkitCommon.cginc
-Common shader functionality
-
 #### Standard.shader
 A collection of shading techniques to mimic visuals similar to Unity's Standard Shader, implement Fluent Design System principles, and remain performant on mixed reality devices.
 
