@@ -17,9 +17,10 @@ Use this script to use various types of custom mesh. You can use your own 3D mod
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonMesh_Inspector.jpg)
 
 ### [Compound Button Icon](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/Utilities/CompoundButtonIcon.cs) ###
-Using this scripts, you can use Texture 2D assets to display icons. 
+Using this scripts, you can use Texture 2D assets to display icons. To assgin your custom icon texture, expand **DefaultButtonIconProfileTexture**. You will be able to find empty slots for the Texture 2D asset. Once you assign Texture 2D asset, you can select the icon using the drop down on the bottom of the profile section.
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonIcon_Inspector.jpg)
+![Compound Button Icon Texture](/External/ReadMeImages/MRTK_CompoundButtonIconTexture.jpg)
 
 ### [Compound Button Text](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/Utilities/CompoundButtonText.cs) ###
 This scripts helps you manage a TextMesh component to display text on your button. This script can be used in conjunction with a CompoundButtonSpeech component to automatically link your button to spoken keywords.
