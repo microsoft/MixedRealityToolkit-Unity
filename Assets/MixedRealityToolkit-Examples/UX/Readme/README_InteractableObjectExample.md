@@ -44,6 +44,32 @@ Use this script to automatically register keywords for your button in the Speech
 ### [Compound Button Toggle](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/Utilities/CompoundButtonToggle.cs) ###
 Use this script to add toggle on/off state.
 
+## Receiver ##
+![Receiver](/External/ReadMeImages/MRTK_Receiver.jpg)
+
+With Receiver, you can handle events from multiple objects in a single script. To use it, simply create a script and inherit from [InteractionReceiver](/Assets/MixedRealityToolkit/UX/Scripts/Receivers/InteractionReceiver.cs). In this example scene, you cand find the example of using Receiver in [ButtonReceiverExample script](/Assets/MixedRealityToolkit-Examples/UX/Scripts/ButtonReceiverExample.cs). The script uses Receiver to display the object name and event type. You can use switch case statement with **obj.name** to do specific action for the object that triggered the event.
+
+<pre>
+protected override void InputDown(GameObject obj, InputEventData eventData) {
+    Debug.Log(obj.name + " : InputDown");
+    txt.text = obj.name + " : InputDown";
+
+    switch(obj.name)
+    {
+        case "ButtonBalloon":
+            // Do something when balloon is pressed
+            break;
+
+        case "ButtonCoffeeCup":
+            // Do something when coffee cup is pressed
+            break;
+
+        default:
+            break;
+    }
+}
+</pre>
+
 
 
 
