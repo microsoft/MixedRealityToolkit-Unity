@@ -15,12 +15,13 @@ namespace MixedRealityToolkit.UX.AppBar
         public const float ButtonDepth = -0.0001f;
         const float MoveSpeed = 5f;
 
+        // MRTK_TEMP_FIX
         //public FilterTag VisibleFilterTag;
         //public FilterTag HiddenFilterTag;
 
         public void Initialize(AppBar newParentToolBar, AppBar.ButtonTemplate newTemplate, ButtonIconProfile newCustomProfile)
         {
-            // TODO move this into the tag manager
+            // MRTK_TEMP_FIX
             //VisibleFilterTag = new FilterTag();
             //VisibleFilterTag.Tag = "Default";
             //HiddenFilterTag = new FilterTag();
@@ -133,7 +134,7 @@ namespace MixedRealityToolkit.UX.AppBar
             icon.Alpha = 0f;
             text.DisableText = true;
             cButton.enabled = false;
-            //cButton.FilterTag = HiddenFilterTag;
+            // MRTK_TEMP_FIX cButton.FilterTag = HiddenFilterTag;
         }
 
         private void Show()
@@ -144,7 +145,7 @@ namespace MixedRealityToolkit.UX.AppBar
             icon.Alpha = 1f;
             text.DisableText = false;
             cButton.enabled = true;
-            //cButton.FilterTag = VisibleFilterTag;
+            // MRTK_TEMP_FIX cButton.FilterTag = VisibleFilterTag;
         }
 
         private void RefreshOffsets()
