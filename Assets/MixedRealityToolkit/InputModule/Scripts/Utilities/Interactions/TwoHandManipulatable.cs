@@ -33,6 +33,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         // Event that gets raised when the object stops moving
         public event Action StoppedManipulating;
 
+        public GameObject GlobalBoundingBox;
+        private BoundingRig rig;
+
          [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
         public Transform HostTransform;
 
@@ -74,20 +77,13 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         // Maps input id -> input source. Then obtain position of input source using currentInputSource.TryGetGripPosition(currentInputSourceId, out inputPosition);
         private readonly Dictionary<uint, IInputSource> m_handsPressedInputSourceMap = new Dictionary<uint, IInputSource>();
 
-        public GameObject GlobalBoundingBox;
-        private BoundingRig rig;
-        private bool hasBoundingBox = false;
-
         private void Awake()
         {
             m_moveLogic = new MoveSphericalCoordsLogic();
             m_rotateLogic = new HandlebarRotateLogic(ConstraintOnRotation);
             m_scaleLogic = new ScaleLogic();
 
-            //todo instantiate this
             GlobalBoundingBox = GameObject.Find("BoundingBoxBasic");
-
-            HostTransform = HostTransform ?? transform;
         }
 
         private void Update()
@@ -120,18 +116,24 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             {
                 if (value == true)
                 {
-                    if (hasBoundingBox == false)
+                    if (HostTransform == null)
                     {
-                        hasBoundingBox = value;
-                        rig = this.gameObject.AddComponent<BoundingRig>();
-                        rig.Box = GlobalBoundingBox.GetComponent<BoundingBox>();
-                        rig.ObjectToBound = HostTransform.gameObject;
-                        rig.Activate();
+                        HostTransform = transform;
                     }
+                    rig = this.gameObject.AddComponent<BoundingRig>();
+                    rig.Box = GlobalBoundingBox.GetComponent<BoundingBox>();
+                    rig.Box.gameObject.SetActive(false);
+                    rig.ObjectToBound = HostTransform.gameObject;
+                    rig.Box.Target = this.gameObject;
+                    rig.Box.gameObject.SetActive(true);
+                    rig.Activate();
                 }
                 else
                 {
-                    rig.ObjectToBound = null;
+                    //rig.Box.gameObject.SetActive(false);
+                    //rig.ObjectToBound = null;
+                    //rig.Box.Target = null;
+                    //rig.Deactivate();
                 }
             }
         }
