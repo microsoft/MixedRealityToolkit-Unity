@@ -121,11 +121,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                     if (value != hasBoundingBox)
                     {
                         hasBoundingBox = true;
-                        
                         rig = this.gameObject.AddComponent<BoundingRig>();
                         rig.Box = GlobalBoundingBox.GetComponent<BoundingBox>();
                         rig.ObjectToBound = HostTransform.gameObject;
-                        //rig.Activate();
                     }
                 }
                 else
@@ -134,7 +132,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                     {
                         hasBoundingBox = false;
                         rig.ObjectToBound = null;
-                        //rig.Deactivate();
                     }
                 }
             }

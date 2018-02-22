@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MixedRealityToolkit.InputModule.Utilities.Interations;
 using MixedRealityToolkit.UX.BoundingBoxes;
 using MixedRealityToolkit.Examples.InputModule;
+using MixedRealityToolkit.UX.Buttons;
 using UnityEngine;
 
 public class BoundingRig : MonoBehaviour
@@ -18,6 +19,7 @@ public class BoundingRig : MonoBehaviour
     private GameObject transformRig;
     private Vector3 scaleHandleSize = new Vector3(0.05f, 0.05f, 0.05f);
     private Vector3 rotateHandleSize = new Vector3(0.05f, 0.05f, 0.05f);
+    private CompoundButton appBarButton;
 
     public GameObject ObjectToBound
     {
@@ -33,9 +35,11 @@ public class BoundingRig : MonoBehaviour
                 objectToBound = value;
                 this.Box.Target = ObjectToBound;
                 Box.gameObject.SetActive(ObjectToBound != null);
+                BuildAppBar();
+
                 if (ObjectToBound != null)
                 {
-                    Activate();
+                   Activate();
                 }
                 else
                 {
@@ -114,6 +118,11 @@ public class BoundingRig : MonoBehaviour
         }
     }
 
+    private void BuildAppBar()
+    {
+        //appBarButton = Instantiate(appBarButton) as CompoundButton;
+        //appBarButton.transform.position = Box.get
+    }
     private GameObject BuildRig()
     {
         Vector3 scale = ObjectToBound.transform.localScale;
@@ -333,5 +342,26 @@ public class BoundingRig : MonoBehaviour
     {
         ClearCornerHandles();
         ClearRotateHandles();
+    }
+
+    private List<Vector3> GetBounds()
+    {
+        List<Vector3> bounds = new List<Vector3>();
+        LayerMask mask = new LayerMask();
+        GameObject clone = GameObject.Instantiate(Box.gameObject);
+        clone.transform.localRotation = Quaternion.identity;
+        clone.transform.position = new Vector3(0, 0, 0);
+        BoundingBox.GetRenderBoundsPoints(clone, bounds, mask);
+        GameObject.Destroy(clone);
+
+        Matrix4x4 m = Matrix4x4.Rotate(ObjectToBound.transform.rotation);
+
+        for (int i = 0; i < handleCentroids.Count; ++i)
+        {
+            bounds[i] = m.MultiplyPoint(handleCentroids[i]);
+            bounds[i] += ObjectToBound.transform.position;
+        }
+
+        return bounds;
     }
 }
