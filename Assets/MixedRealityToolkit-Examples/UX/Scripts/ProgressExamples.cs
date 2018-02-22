@@ -1,39 +1,252 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
 using MixedRealityToolkit.UX.Progress;
-using MixedRealityToolkit.InputModule;
-using MixedRealityToolkit.InputModule.InputSources;
-using UnityEngine.XR.WSA.Input;
-using MixedRealityToolkit.Utilities.Solvers;
+using System.Collections;
+using UnityEngine;
+
 using UnityEngine.XR.WSA;
+
 
 namespace MixedRealityToolkit.Examples.UX
 {
     public class ProgressExamples : MonoBehaviour
     {
-        public GameObject SceneObject;
+        private GameObject sceneObject;
 
         [Header("How long to spend on each stage of loading")]
-        public float LeadInTime = 1.5f;
-        public float LoadingTime = 5f;
-        public float FinishTime = 1.5f;
+        [SerializeField]
+        private float leadInTime = 1.5f;
+
+        [SerializeField]
+        private float loadingTime = 5f;
+
+        [SerializeField]
+        private float finishTime = 1.5f;
 
         [Header("Set these to override the defaults set in the ProgressIndicator prefab")]
-        public GameObject LoadingPrefab = null;
-        public Texture2D LoadingIcon = null;
+        [SerializeField]
+        private GameObject loadingPrefab = null;
+
+        [SerializeField]
+        private Texture2D loadingIcon = null;
 
         [Header("Messages displayed during loading")]
-        public string LeadInMessage = "Lead in Message";
-        public string LoadTextMessage = "Loading with message only";
-        public string LoadOrbsMessage = "Loading with Orbs";
-        public string LoadIconMessage = "Loading with Icon";
-        public string LoadPrefabMessage = "Loading with Prefab";
-        public string LoadProgressMessage = "Loading with Progress";
-        public string LoadProgressBarMessage = "Loading with Bar";
-        public string FinishMessage = "Finished!";
+        [SerializeField]
+        private string leadInMessage = "Lead in Message";
+        [SerializeField]
+        private string loadTextMessage = "Loading with message only";
+        [SerializeField]
+        private string loadOrbsMessage = "Loading with Orbs";
+        [SerializeField]
+        private string loadIconMessage = "Loading with Icon";
+        [SerializeField]
+        private string loadPrefabMessage = "Loading with Prefab";
+        [SerializeField]
+        private string loadProgressMessage = "Loading with Progress";
+        [SerializeField]
+        private string loadProgressBarMessage = "Loading with Bar";
+        [SerializeField]
+        private string finishMessage = "Finished!";
+
+        [Header("Readability")]
+        [SerializeField]
+        private Vector3 iHMDScalar = new Vector3(1.3f, 1.3f, 1);
+
+        public GameObject SceneObject
+        {
+            get
+            {
+                return sceneObject;
+            }
+
+            set
+            {
+                sceneObject = value;
+            }
+        }
+
+        public float LeadInTime
+        {
+            get
+            {
+                return leadInTime;
+            }
+
+            set
+            {
+                leadInTime = value;
+            }
+        }
+
+        public float LoadingTime
+        {
+            get
+            {
+                return loadingTime;
+            }
+
+            set
+            {
+                loadingTime = value;
+            }
+        }
+
+        public float FinishTime
+        {
+            get
+            {
+                return finishTime;
+            }
+
+            set
+            {
+                finishTime = value;
+            }
+        }
+
+        public GameObject LoadingPrefab
+        {
+            get
+            {
+                return loadingPrefab;
+            }
+
+            set
+            {
+                loadingPrefab = value;
+            }
+        }
+
+        public Texture2D LoadingIcon
+        {
+            get
+            {
+                return loadingIcon;
+            }
+
+            set
+            {
+                loadingIcon = value;
+            }
+        }
+
+        public string LeadInMessage
+        {
+            get
+            {
+                return leadInMessage;
+            }
+
+            set
+            {
+                leadInMessage = value;
+            }
+        }
+
+        public string LoadTextMessage
+        {
+            get
+            {
+                return loadTextMessage;
+            }
+
+            set
+            {
+                loadTextMessage = value;
+            }
+        }
+
+        public string LoadOrbsMessage
+        {
+            get
+            {
+                return loadOrbsMessage;
+            }
+
+            set
+            {
+                loadOrbsMessage = value;
+            }
+        }
+
+        public string LoadIconMessage
+        {
+            get
+            {
+                return loadIconMessage;
+            }
+
+            set
+            {
+                loadIconMessage = value;
+            }
+        }
+
+        public string LoadPrefabMessage
+        {
+            get
+            {
+                return loadPrefabMessage;
+            }
+
+            set
+            {
+                loadPrefabMessage = value;
+            }
+        }
+
+        public string LoadProgressMessage
+        {
+            get
+            {
+                return loadProgressMessage;
+            }
+
+            set
+            {
+                loadProgressMessage = value;
+            }
+        }
+
+        public string LoadProgressBarMessage
+        {
+            get
+            {
+                return loadProgressBarMessage;
+            }
+
+            set
+            {
+                loadProgressBarMessage = value;
+            }
+        }
+
+        public string FinishMessage
+        {
+            get
+            {
+                return finishMessage;
+            }
+
+            set
+            {
+                finishMessage = value;
+            }
+        }
+
+        public Vector3 IHMDScalar
+        {
+            get
+            {
+                return iHMDScalar;
+            }
+
+            set
+            {
+                iHMDScalar = value;
+            }
+        }
 
         private void Start()
         {
@@ -41,29 +254,53 @@ namespace MixedRealityToolkit.Examples.UX
             if (HolographicSettings.IsDisplayOpaque)
             {
                GameObject buttonCollection = GameObject.Find("ButtonCollection");
-               buttonCollection.transform.localScale = new Vector3(1.3f, 1.3f, 1.0f);
+               buttonCollection.transform.localScale = IHMDScalar;
             }
         }
 
-        public void LaunchProgress(GameObject obj)
+        public void LaunchProgress(ProgressIndicator.IndicatorStyleEnum indicatorStyle, ProgressIndicator.ProgressStyleEnum progressStyle)
         {
-            Debug.Log("Loading with button " + obj.name);
-
             if (ProgressIndicator.Instance.IsLoading)
-                return;
-
-            switch (obj.name)
             {
-                case "ButtonLoadText":
-                    ProgressIndicator.Instance.Open(
+                return;
+            }
+
+            switch (indicatorStyle)
+            {
+                case ProgressIndicator.IndicatorStyleEnum.None:
+                    //progressbar examples all assume IndicatorStyleEnum = None
+                    switch (progressStyle)
+                    {
+                        case ProgressIndicator.ProgressStyleEnum.Percentage:
+                            ProgressIndicator.Instance.Open(
+                                ProgressIndicator.IndicatorStyleEnum.None,
+                                ProgressIndicator.ProgressStyleEnum.Percentage,
+                                ProgressIndicator.MessageStyleEnum.Visible,
+                                LeadInMessage);
+                            StartCoroutine(LoadOverTime(LoadProgressMessage));
+                            break;
+
+                        case ProgressIndicator.ProgressStyleEnum.ProgressBar:
+                            ProgressIndicator.Instance.Open(
+                                ProgressIndicator.IndicatorStyleEnum.None,
+                                ProgressIndicator.ProgressStyleEnum.ProgressBar,
+                                ProgressIndicator.MessageStyleEnum.Visible,
+                                LeadInMessage);
+                            StartCoroutine(LoadOverTime(LoadProgressBarMessage));
+                            break;
+
+                        case ProgressIndicator.ProgressStyleEnum.None:
+                            ProgressIndicator.Instance.Open(
                             ProgressIndicator.IndicatorStyleEnum.None,
                             ProgressIndicator.ProgressStyleEnum.None,
                             ProgressIndicator.MessageStyleEnum.Visible,
                             LeadInMessage);
-                    StartCoroutine(LoadOverTime(LoadTextMessage));
+                            StartCoroutine(LoadOverTime(LoadTextMessage));
+                        break;
+                     }
                     break;
 
-                case "ButtonLoadDefault":
+                case ProgressIndicator.IndicatorStyleEnum.AnimatedOrbs:
                     ProgressIndicator.Instance.Open(
                              ProgressIndicator.IndicatorStyleEnum.AnimatedOrbs,
                              ProgressIndicator.ProgressStyleEnum.None,
@@ -72,7 +309,7 @@ namespace MixedRealityToolkit.Examples.UX
                     StartCoroutine(LoadOverTime(LoadOrbsMessage));
                     break;
 
-                case "ButtonLoadIcon":
+                case ProgressIndicator.IndicatorStyleEnum.StaticIcon:
                     ProgressIndicator.Instance.Open(
                         ProgressIndicator.IndicatorStyleEnum.StaticIcon,
                         ProgressIndicator.ProgressStyleEnum.None,
@@ -82,7 +319,7 @@ namespace MixedRealityToolkit.Examples.UX
                     StartCoroutine(LoadOverTime(LoadIconMessage));
                     break;
 
-                case "ButtonLoadPrefab":
+                case ProgressIndicator.IndicatorStyleEnum.Prefab:
                     ProgressIndicator.Instance.Open(
                         ProgressIndicator.IndicatorStyleEnum.Prefab,
                         ProgressIndicator.ProgressStyleEnum.None,
@@ -90,24 +327,6 @@ namespace MixedRealityToolkit.Examples.UX
                         LeadInMessage,
                         LoadingPrefab);
                     StartCoroutine(LoadOverTime(LoadPrefabMessage));
-                    break;
-
-                case "ButtonLoadProgress":
-                    ProgressIndicator.Instance.Open(
-                        ProgressIndicator.IndicatorStyleEnum.None,
-                        ProgressIndicator.ProgressStyleEnum.Percentage,
-                        ProgressIndicator.MessageStyleEnum.Visible,
-                        LeadInMessage);
-                    StartCoroutine(LoadOverTime(LoadProgressMessage));
-                    break;
-
-                case "ButtonLoadProgressBar":
-                    ProgressIndicator.Instance.Open(
-                        ProgressIndicator.IndicatorStyleEnum.None,
-                        ProgressIndicator.ProgressStyleEnum.ProgressBar,
-                        ProgressIndicator.MessageStyleEnum.Visible,
-                        LeadInMessage);
-                    StartCoroutine(LoadOverTime(LoadProgressBarMessage));
                     break;
 
                 default:

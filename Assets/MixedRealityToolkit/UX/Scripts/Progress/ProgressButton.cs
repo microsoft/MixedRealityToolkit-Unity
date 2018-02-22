@@ -3,12 +3,47 @@
 
 using MixedRealityToolkit.Examples.UX;
 using UnityEngine;
+using MixedRealityToolkit.UX.Progress;
 
 namespace MixedRealityToolkit.UX.Buttons
 {
     public class ProgressButton : MonoBehaviour
     {
-        void OnEnable()
+        [Header("Which Indicator style is desired?")]
+        [SerializeField]
+        private ProgressIndicator.IndicatorStyleEnum indicatorStyle;
+
+        [Header("Which Progress style is desired?")]
+        [SerializeField]
+        private ProgressIndicator.ProgressStyleEnum progressStyle;
+
+        public ProgressIndicator.IndicatorStyleEnum IndicatorStyle
+        {
+            get
+            {
+                return indicatorStyle;
+            }
+
+            set
+            {
+                indicatorStyle = value;
+            }
+        }
+
+        public ProgressIndicator.ProgressStyleEnum ProgressStyle
+        {
+            get
+            {
+                return progressStyle;
+            }
+
+            set
+            {
+                progressStyle = value;
+            }
+        }
+
+        private void OnEnable()
         {
             GetComponent<Button>().OnButtonClicked += OnButtonClicked;
         }
@@ -16,7 +51,7 @@ namespace MixedRealityToolkit.UX.Buttons
         private void OnButtonClicked(GameObject obj)
         {
             ProgressExamples examples = Object.FindObjectOfType<ProgressExamples>();
-            examples.LaunchProgress(this.gameObject);
+            examples.LaunchProgress(indicatorStyle, progressStyle);
         }
     }
 }
