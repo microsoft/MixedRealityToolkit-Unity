@@ -121,7 +121,7 @@ namespace MixedRealityToolkit.Examples.InteractiveElements
 
         public void OnDestroy()
         {
-            DestroyImmediate(mCachedMaterial);
+            Destroy(mCachedMaterial);
         }
     }
 }

@@ -172,8 +172,6 @@ namespace MixedRealityToolkit.UX.Progress
                     }
                     else
                     {
-                        // The prefab sent in the function overrides the prefab set in the inspector 
-                        // instantiatedCustomObject = GameObject.Instantiate((prefab == null) ? defaultPrefab : prefab, animator.transform) as GameObject;
                         instantiatedCustomObject = GameObject.Instantiate(defaultPrefab) as GameObject;
                         instantiatedCustomObject.transform.localPosition = new Vector3(0.0f, 20.0f, 0.0f);
                         instantiatedCustomObject.transform.localRotation = Quaternion.identity;

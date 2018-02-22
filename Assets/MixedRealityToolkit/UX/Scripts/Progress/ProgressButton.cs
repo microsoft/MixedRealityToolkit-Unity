@@ -15,7 +15,6 @@ namespace MixedRealityToolkit.UX.Buttons
 
         private void OnButtonClicked(GameObject obj)
         {
-            string na = this.gameObject.name;
             ProgressExamples examples = Object.FindObjectOfType<ProgressExamples>();
             examples.LaunchProgress(this.gameObject);
         }
