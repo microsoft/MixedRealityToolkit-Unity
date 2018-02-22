@@ -148,6 +148,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// Writes a mesh header to the data stream.
         /// </summary>
         /// <param name="writer">BinaryWriter representing the data stream.</param>
+        /// <param name="name">Iterable name of the object</param>
         /// <param name="vertexCount">Count of vertices in the mesh.</param>
         /// <param name="triangleIndexCount">Count of triangle indices in the mesh.</param>
         private static void WriteMeshHeader(BinaryWriter writer, string name, int vertexCount, int triangleIndexCount)
@@ -162,6 +163,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// Reads a mesh header from the data stream.
         /// </summary>
         /// <param name="reader">BinaryReader representing the data stream.</param>
+        /// <param name="name">Iterable name of the object</param>
         /// <param name="vertexCount">Count of vertices in the mesh.</param>
         /// <param name="triangleIndexCount">Count of triangle indices in the mesh.</param>
         private static void ReadMeshHeader(BinaryReader reader, out string name, out int vertexCount, out int triangleIndexCount)

@@ -1,116 +1,113 @@
 using HoloToolkit.Unity;
 using UnityEngine;
-using UnityEngine.VR.WSA;
-using UnityEngine.VR.WSA.Persistence;
 using System.Collections.Generic;
 using HoloToolkit.Unity.SpatialMapping;
+using UnityEngine.XR.WSA.Persistence;
+using UnityEngine.XR.WSA;
 
-public class RoomSaver : MonoBehaviour
+namespace HoloToolkit.Unity.SpatialMapping
 {
-
-    public string fileName;             // name of file to store meshes
-    public string anchorStoreName;      // name of world anchor to store for room
-
-    List<MeshFilter> roomMeshFilters;
-    WorldAnchorStore anchorStore;
-    int meshCount = 0;
-
-    // Use this for initialization
-    void Start()
+    public class RoomSaver : MonoBehaviour
     {
-        WorldAnchorStore.GetAsync(AnchorStoreReady);
-    }
 
-    void AnchorStoreReady(WorldAnchorStore store)
-    {
-        anchorStore = store;
-    }
+        public string fileName;             // name of file to store meshes
+        public string anchorStoreName;      // name of world anchor to store for room
 
-    public bool SaveRoom()
-    {
-        // if the anchor store is not ready then we cannot save the room mesh
-        if (anchorStore == null)
+        private List<MeshFilter> roomMeshFilters;
+        private WorldAnchorStore anchorStore;
+        private int meshCount = 0;
+
+        // Use this for initialization
+        private void Start()
         {
-            return false;
+            WorldAnchorStore.GetAsync(AnchorStoreReady);
         }
 
-        // delete old relevant anchors
-        string[] anchorIds = anchorStore.GetAllIds();
-        for (int i = 0; i < anchorIds.Length; i++)
+        private void AnchorStoreReady(WorldAnchorStore store)
         {
-            if (anchorIds[i].Contains(anchorStoreName))
-            {
-                anchorStore.Delete(anchorIds[i]);
-            }
+            anchorStore = store;
         }
 
-        Debug.Log("Old anchors deleted...");
-
-        // get all mesh filters used for spatial mapping meshes
-        roomMeshFilters = SpatialUnderstanding.Instance.UnderstandingCustomMesh.GetMeshFilters() as List<MeshFilter>;
-
-        Debug.Log("Mesh filters fetched...");
-
-        // create new list of room meshes for serialization
-        List<Mesh> roomMeshes = new List<Mesh>();
-
-        // cycle through all room mesh filters
-        foreach (MeshFilter filter in roomMeshFilters)
+        public bool SaveRoom()
         {
-            // increase count of meshes in room
-            meshCount++;
-
-            // make mesh name = anchor name + mesh count
-            string meshName = anchorStoreName + meshCount.ToString();
-            filter.mesh.name = meshName;
-
-            Debug.Log("Mesh " + filter.mesh.name + ": " + filter.transform.position + "\n--- rotation " + filter.transform.localRotation + "\n--- scale: " + filter.transform.localScale);
-            // add mesh to room meshes for serialization
-            roomMeshes.Add(filter.mesh);
-
-            // save world anchor
-            WorldAnchor attachingAnchor = filter.gameObject.GetComponent<WorldAnchor>();
-            if (attachingAnchor == null)
+            // if the anchor store is not ready then we cannot save the room mesh
+            if (anchorStore == null)
             {
-                attachingAnchor = filter.gameObject.AddComponent<WorldAnchor>();
-                Debug.Log("" + filter.mesh.name + ": Using new anchor...");
+                return false;
             }
-            else
+
+            // delete old relevant anchors
+            string[] anchorIds = anchorStore.GetAllIds();
+            for (int i = 0; i < anchorIds.Length; i++)
             {
-                Debug.Log("" + filter.mesh.name + ": Deleting existing anchor...");
-                DestroyImmediate(attachingAnchor);
-                Debug.Log("" + filter.mesh.name + ": Creating new anchor...");
-                attachingAnchor = filter.gameObject.AddComponent<WorldAnchor>();
+                if (anchorIds[i].Contains(anchorStoreName))
+                {
+                    anchorStore.Delete(anchorIds[i]);
+                }
             }
-            if (attachingAnchor.isLocated)
+
+            // Old anchors deleted...
+
+            // get all mesh filters used for spatial mapping meshes
+            roomMeshFilters = SpatialUnderstanding.Instance.UnderstandingCustomMesh.GetMeshFilters() as List<MeshFilter>;
+
+            // Mesh filters fetched...
+
+            // create new list of room meshes for serialization
+            List<Mesh> roomMeshes = new List<Mesh>();
+
+            // cycle through all room mesh filters
+            foreach (MeshFilter filter in roomMeshFilters)
             {
-                if (!anchorStore.Save(meshName, attachingAnchor))
-                    Debug.Log("" + meshName + ": Anchor save failed...");
+                // increase count of meshes in room
+                meshCount++;
+
+                // make mesh name = anchor name + mesh count
+                string meshName = anchorStoreName + meshCount.ToString();
+                filter.mesh.name = meshName;
+
+                // add mesh to room meshes for serialization
+                roomMeshes.Add(filter.mesh);
+
+                // save world anchor
+                WorldAnchor attachingAnchor = filter.gameObject.GetComponent<WorldAnchor>();
+                if (attachingAnchor == null)
+                {
+                    attachingAnchor = filter.gameObject.AddComponent<WorldAnchor>();
+                }
                 else
-                    Debug.Log("" + meshName + ": Anchor SAVED...");
+                {
+                    // Deleting existing anchor...
+                    Destroy(attachingAnchor);
+                    // Creating new anchor...
+                    attachingAnchor = filter.gameObject.AddComponent<WorldAnchor>();
+                }
+                if (attachingAnchor.isLocated)
+                {
+                    if (!anchorStore.Save(meshName, attachingAnchor))
+                        Debug.Log("" + meshName + ": Anchor save failed...");
+                }
+                else
+                {
+                    attachingAnchor.OnTrackingChanged += AttachingAnchor_OnTrackingChanged;
+                }
             }
-            else
-            {
-                attachingAnchor.OnTrackingChanged += AttachingAnchor_OnTrackingChanged;
-            }
+
+            // serialize and save meshes
+            MeshSaver.Save(fileName, roomMeshes);
+            return true;
         }
 
-        // serialize and save meshes
-        MeshSaver.Save(fileName, roomMeshes);
-        return true;
-    }
-
-    private void AttachingAnchor_OnTrackingChanged(WorldAnchor self, bool located)
-    {
-        if (located)
+        private void AttachingAnchor_OnTrackingChanged(WorldAnchor self, bool located)
         {
-            string meshName = self.gameObject.GetComponent<MeshFilter>().mesh.name;
-            if (!anchorStore.Save(meshName, self))
-                Debug.Log("" + meshName + ": Anchor save failed...");
-            else
-                Debug.Log("" + meshName + ": Anchor SAVED...");
+            if (located)
+            {
+                string meshName = self.gameObject.GetComponent<MeshFilter>().mesh.name;
+                if (!anchorStore.Save(meshName, self))
+                    Debug.Log("" + meshName + ": Anchor save failed...");
 
-            self.OnTrackingChanged -= AttachingAnchor_OnTrackingChanged;
+                self.OnTrackingChanged -= AttachingAnchor_OnTrackingChanged;
+            }
         }
     }
 }
