@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using MixedRealityToolkit.InputModule.Utilities.Interations;
 using MixedRealityToolkit.UX.BoundingBoxes;
 using MixedRealityToolkit.Examples.InputModule;
+using MixedRealityToolkit.UX.Buttons;
 using UnityEngine;
 
 public class BoundingRig : MonoBehaviour
 {
-    public GameObject ObjectToBound;
+    private GameObject objectToBound;
     public BoundingBox Box;
+    public float ScaleHandleSize = 0.06f;
+    public float RotateHandleSize = 0.06f;
 
     private GameObject[] rotateHandles;
     private GameObject[] cornerHandles;
@@ -16,6 +19,25 @@ public class BoundingRig : MonoBehaviour
     private bool isActive = false;
     private System.Int64 updateCount;
     private GameObject transformRig;
+    private CompoundButton appbarButton;
+
+    public GameObject ObjectToBound
+    {
+        get
+        {
+            return objectToBound;
+        }
+
+        set
+        {
+            if (ObjectToBound != value)
+            {
+                objectToBound = value;
+                Box.Target = objectToBound;
+                Box.gameObject.SetActive(ObjectToBound != null);
+            }
+        }
+    }
 
     private void Start()
     {
@@ -183,7 +205,7 @@ public class BoundingRig : MonoBehaviour
                 cornerHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cornerHandles[i].GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1);
                 cornerHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Diffuse");
-                cornerHandles[i].transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
+                cornerHandles[i].transform.localScale = new Vector3(ScaleHandleSize, ScaleHandleSize, ScaleHandleSize);
                 BoxCollider collider = cornerHandles[i].AddComponent<BoxCollider>();
                 collider.transform.localScale.Scale(new Vector3(3, 3, 3));
                 cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
@@ -193,6 +215,10 @@ public class BoundingRig : MonoBehaviour
                 cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Scale;
                 cornerHandles[i].name = "Corner " + i.ToString();
             }
+
+            appbarButton = Instantiate(appbarButton) as CompoundButton;
+            appbarButton.transform.position = (cornerHandles[2].transform.position + cornerHandles[6].transform.position) * 0.5f;
+            appbarButton.transform.parent = this.transform;
         }
 
         for (int i = 0; i < handleCentroids.Count; ++i)
@@ -212,7 +238,7 @@ public class BoundingRig : MonoBehaviour
                 rotateHandles[i].GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1);
                 rotateHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Standard");
                 rotateHandles[i].GetComponent<Collider>().transform.localScale *= 2.0f;
-                rotateHandles[i].transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
+                rotateHandles[i].transform.localScale = new Vector3(RotateHandleSize, RotateHandleSize, RotateHandleSize);
                 SphereCollider collider = rotateHandles[i].AddComponent<SphereCollider>();
                 collider.transform.localScale.Scale(new Vector3(3, 3, 3) );
                 rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
