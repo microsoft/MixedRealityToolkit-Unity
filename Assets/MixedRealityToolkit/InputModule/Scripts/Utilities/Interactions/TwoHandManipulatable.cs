@@ -35,6 +35,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
         public GameObject GlobalBoundingBox;
         private BoundingRig rig;
+        private bool hasBoundingBox;
 
          [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
         public Transform HostTransform;
@@ -110,30 +111,32 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         }
 
 
-        private bool HasBoundingBox
+        public bool HasBoundingBox
         {
             set
             {
                 if (value == true)
                 {
-                    if (HostTransform == null)
+                    if (value != hasBoundingBox)
                     {
-                        HostTransform = transform;
+                        hasBoundingBox = true;
+                        HostTransform = HostTransform ?? transform;
+                        rig = this.gameObject.AddComponent<BoundingRig>();
+                        rig.Box = GlobalBoundingBox.GetComponent<BoundingBox>();
+                        rig.ObjectToBound = HostTransform.gameObject;
+                       // rig.Box.gameObject.SetActive(true);
+                        rig.Activate();
                     }
-                    rig = this.gameObject.AddComponent<BoundingRig>();
-                    rig.Box = GlobalBoundingBox.GetComponent<BoundingBox>();
-                    rig.Box.gameObject.SetActive(false);
-                    rig.ObjectToBound = HostTransform.gameObject;
-                    rig.Box.Target = this.gameObject;
-                    rig.Box.gameObject.SetActive(true);
-                    rig.Activate();
                 }
                 else
                 {
-                    //rig.Box.gameObject.SetActive(false);
-                    //rig.ObjectToBound = null;
-                    //rig.Box.Target = null;
-                    //rig.Deactivate();
+                    if (value != hasBoundingBox)
+                    {
+                        hasBoundingBox = false;
+                        //rig.Box.gameObject.SetActive(false);
+                        rig.ObjectToBound = null;
+                        rig.Deactivate();
+                    }
                 }
             }
         }
