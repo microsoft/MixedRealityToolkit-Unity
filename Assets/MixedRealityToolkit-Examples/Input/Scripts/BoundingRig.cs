@@ -16,8 +16,8 @@ public class BoundingRig : MonoBehaviour
     private bool isActive = false;
     private System.Int64 updateCount;
     private GameObject transformRig;
-    private Vector3 scaleHandleSize = new Vector3(0.06f, 0.06f, 0.06f);
-    private Vector3 rotateHandleSize = new Vector3(0.06f, 0.06f, 0.06f);
+    private Vector3 scaleHandleSize = new Vector3(0.05f, 0.05f, 0.05f);
+    private Vector3 rotateHandleSize = new Vector3(0.05f, 0.05f, 0.05f);
 
     public GameObject ObjectToBound
     {
@@ -33,6 +33,14 @@ public class BoundingRig : MonoBehaviour
                 objectToBound = value;
                 this.Box.Target = ObjectToBound;
                 Box.gameObject.SetActive(ObjectToBound != null);
+                if (ObjectToBound != null)
+                {
+                    Activate();
+                }
+                else
+                {
+                    Deactivate();
+                }
             }
         }
     }

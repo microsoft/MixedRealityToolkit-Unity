@@ -85,6 +85,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             m_scaleLogic = new ScaleLogic();
 
             GlobalBoundingBox = GameObject.Find("BoundingBoxBasic");
+            HostTransform = HostTransform ?? transform;
         }
 
         private void Update()
@@ -120,12 +121,11 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                     if (value != hasBoundingBox)
                     {
                         hasBoundingBox = true;
-                        HostTransform = HostTransform ?? transform;
+                        
                         rig = this.gameObject.AddComponent<BoundingRig>();
                         rig.Box = GlobalBoundingBox.GetComponent<BoundingBox>();
                         rig.ObjectToBound = HostTransform.gameObject;
-                       // rig.Box.gameObject.SetActive(true);
-                        rig.Activate();
+                        //rig.Activate();
                     }
                 }
                 else
@@ -133,9 +133,8 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                     if (value != hasBoundingBox)
                     {
                         hasBoundingBox = false;
-                        //rig.Box.gameObject.SetActive(false);
                         rig.ObjectToBound = null;
-                        rig.Deactivate();
+                        //rig.Deactivate();
                     }
                 }
             }
