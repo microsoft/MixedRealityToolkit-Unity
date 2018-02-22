@@ -35,15 +35,15 @@ public class BoundingRig : MonoBehaviour
                 objectToBound = value;
                 this.Box.Target = ObjectToBound;
                 Box.gameObject.SetActive(ObjectToBound != null);
-                BuildAppBar();
 
                 if (ObjectToBound != null)
                 {
-                   Activate();
+                    BuildAppBar();
+                   //Activate();
                 }
                 else
                 {
-                    Deactivate();
+                   //Deactivate();
                 }
             }
         }
@@ -120,8 +120,11 @@ public class BoundingRig : MonoBehaviour
 
     private void BuildAppBar()
     {
+        //appBarButton = new CompoundButton();
         //appBarButton = Instantiate(appBarButton) as CompoundButton;
-        //appBarButton.transform.position = Box.get
+        //List<Vector3> bounds = GetBounds();
+        //appBarButton.transform.position = bounds[2];// (bounds[2] + bounds[6] * 0.5f);
+        //appBarButton.transform.parent = ObjectToBound.transform;
     }
     private GameObject BuildRig()
     {
@@ -184,21 +187,7 @@ public class BoundingRig : MonoBehaviour
     }
     private void UpdateCornerPositions()
     {
-        handleCentroids = new List<Vector3>();
-        LayerMask mask = new LayerMask();
-        GameObject clone = GameObject.Instantiate(Box.gameObject);
-        clone.transform.localRotation = Quaternion.identity;
-        clone.transform.position = new Vector3(0, 0, 0);
-        BoundingBox.GetRenderBoundsPoints(clone, handleCentroids, mask);
-        GameObject.Destroy(clone);
-
-        Matrix4x4 m = Matrix4x4.Rotate(ObjectToBound.transform.rotation);
-
-        for (int i = 0; i < handleCentroids.Count; ++i)
-        {
-            handleCentroids[i] = m.MultiplyPoint(handleCentroids[i]);
-            handleCentroids[i] += ObjectToBound.transform.position;
-        }
+        handleCentroids = GetBounds();
     }
     private void CreateHandles()
     {
@@ -356,9 +345,9 @@ public class BoundingRig : MonoBehaviour
 
         Matrix4x4 m = Matrix4x4.Rotate(ObjectToBound.transform.rotation);
 
-        for (int i = 0; i < handleCentroids.Count; ++i)
+        for (int i = 0; i < bounds.Count; ++i)
         {
-            bounds[i] = m.MultiplyPoint(handleCentroids[i]);
+            bounds[i] = m.MultiplyPoint(bounds[i]);
             bounds[i] += ObjectToBound.transform.position;
         }
 
