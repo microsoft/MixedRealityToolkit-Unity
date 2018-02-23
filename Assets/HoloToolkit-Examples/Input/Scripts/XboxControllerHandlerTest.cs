@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private XboxControllerMappingTypes resetButton = XboxControllerMappingTypes.XboxY;
 
         [SerializeField]
-        private Text debugText;
+        private Text debugText = null;
 
         private Vector3 initialPosition;
         private Vector3 newPosition;

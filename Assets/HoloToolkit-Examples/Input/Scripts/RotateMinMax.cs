@@ -7,9 +7,9 @@ namespace HoloToolkit.Unity.Tests
 {
     public class RotateMinMax : MonoBehaviour
     {
-        [SerializeField] private float _minAngle;
-        [SerializeField] private float _maxAngle;
-        [SerializeField] private float _step;
+        [SerializeField] private float _minAngle = 0;
+        [SerializeField] private float _maxAngle = 0;
+        [SerializeField] private float _step = 0;
 
         private void Update()
         {

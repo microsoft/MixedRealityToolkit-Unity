@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity.UX
         public float NormalizedDistance = 0f;
 
         [SerializeField]
-        private LineBase source;
+        private LineBase source = null;
 
         private void Update()
         {

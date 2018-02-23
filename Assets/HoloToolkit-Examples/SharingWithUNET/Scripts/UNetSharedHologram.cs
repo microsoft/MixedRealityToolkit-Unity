@@ -47,7 +47,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         private int layerMask;
         private InputManager inputManager;
         public Vector3 movementOffset = Vector3.zero;
-        private bool isOpaque;
+        private bool isOpaque = false;
 
         // Use this for initialization
         private void Start()

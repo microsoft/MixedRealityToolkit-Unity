@@ -65,7 +65,7 @@ namespace HoloToolkit.Unity.InputModule
         private Animator animationController;
 
         [SerializeField]
-        private bool useCustomMapping;
+        private bool useCustomMapping = false;
 
         /// <summary>
         /// The fade control allows us to fade out and fade in the scene.
