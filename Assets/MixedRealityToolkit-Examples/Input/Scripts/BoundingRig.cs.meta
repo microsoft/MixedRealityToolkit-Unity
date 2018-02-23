@@ -1,11 +1,14 @@
 fileFormatVersion: 2
 guid: 4768146f072b50149a922df192dfb58f
-timeCreated: 1518737394
+timeCreated: 1519332599
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Box: {instanceID: 0}
+  - appBarButton: {fileID: 114028004023545408, guid: 7bcb89df8599d00448726407181348bd,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

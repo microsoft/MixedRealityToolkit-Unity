@@ -8,9 +8,10 @@ using UnityEngine;
 
 public class BoundingRig : MonoBehaviour
 {
-    private GameObject objectToBound;
     public BoundingBox Box;
 
+    private GameObject objectToBound;
+    private CompoundButton appBarButton;
     private GameObject[] rotateHandles;
     private GameObject[] cornerHandles;
     private List<Vector3> handleCentroids;
@@ -19,7 +20,22 @@ public class BoundingRig : MonoBehaviour
     private GameObject transformRig;
     private Vector3 scaleHandleSize = new Vector3(0.05f, 0.05f, 0.05f);
     private Vector3 rotateHandleSize = new Vector3(0.05f, 0.05f, 0.05f);
-    private CompoundButton appBarButton;
+    private bool showRig;
+
+    public bool ShowRig
+    {
+        get
+        {
+            return showRig;
+        }
+        set
+        {
+            if (showRig != value)
+            {
+                showRig = value;
+            }
+        }
+    }
 
     public GameObject ObjectToBound
     {
@@ -30,47 +46,67 @@ public class BoundingRig : MonoBehaviour
 
         set
         {
-            if (ObjectToBound != value)
+            if (objectToBound != value)
             {
                 objectToBound = value;
-                this.Box.Target = ObjectToBound;
-                Box.gameObject.SetActive(ObjectToBound != null);
-
-                if (ObjectToBound != null)
+                this.Box.Target = objectToBound;
+                Box.gameObject.SetActive(objectToBound != null);
+                isActive = objectToBound != null;
+                if (objectToBound != null)
                 {
-                    BuildAppBar();
-                   //Activate();
+                   BuildRig();
+                   Activate();
                 }
                 else
                 {
-                   //Deactivate();
+                   Deactivate();
                 }
             }
+        }
+    }
+
+    public CompoundButton AppBarButton
+    {
+        get
+        {
+            return AppBarButton;
+        }
+
+        set
+        {
+            AppBarButton = value;
         }
     }
 
     private void Start()
     {
+        appBarButton = this.gameObject.GetComponent<CompoundButton>();
     }
     private void Update()
     {
         if (isActive == true)
         {
-            if (updateCount == 2)
+            UpdateBoundsPoints();
+            UpdateAppBar();
+
+            if (ShowRig)
             {
-                CreateHandles();
+                if (updateCount == 2)
+                {
+                    CreateHandles();
+                }
+                else if (updateCount > 2)
+                {
+                    UpdateHandles();
+                }
+                updateCount++;
             }
-            else if (updateCount > 2)
-            {
-                UpdateHandles();
-            }
-            updateCount++;
         }
     }
 
     public void Activate()
     {
-        isActive = true;
+        ShowRig = true;
         updateCount = 1;
 
         if (transformRig == null)
@@ -80,8 +116,8 @@ public class BoundingRig : MonoBehaviour
     }
     public void Deactivate()
     {
+        ShowRig = false;
         updateCount = 0;
-        isActive = false;
         ClearHandles();
         transformRig = null;
     }
@@ -118,82 +154,74 @@ public class BoundingRig : MonoBehaviour
         }
     }
 
-    private void BuildAppBar()
-    {
-        //appBarButton = new CompoundButton();
-        //appBarButton = Instantiate(appBarButton) as CompoundButton;
-        //List<Vector3> bounds = GetBounds();
-        //appBarButton.transform.position = bounds[2];// (bounds[2] + bounds[6] * 0.5f);
-        //appBarButton.transform.parent = ObjectToBound.transform;
-    }
     private GameObject BuildRig()
     {
         Vector3 scale = ObjectToBound.transform.localScale;
 
-        GameObject transformRig = new GameObject();
-        transformRig.name = "center";
-        transformRig.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.identity);
-        transformRig.transform.localScale = new Vector3(1.0f / scale.x, 1.0f / scale.y, 1.0f / scale.z);
+        GameObject rig = new GameObject();
+        rig.name = "center";
+        rig.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.identity);
+        rig.transform.localScale = new Vector3(1.0f / scale.x, 1.0f / scale.y, 1.0f / scale.z);
 
         GameObject upperLeftFront = new GameObject();
         upperLeftFront.name = "upperleftfront";
         upperLeftFront.transform.SetPositionAndRotation(new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity);
         upperLeftFront.transform.localScale = new Vector3(1, 1, 1);
-        upperLeftFront.transform.parent = transformRig.transform;
+        upperLeftFront.transform.parent = rig.transform;
 
         GameObject upperLeftBack = new GameObject();
         upperLeftBack.name = "upperleftback";
         upperLeftBack.transform.SetPositionAndRotation(new Vector3(0.5f, 0.5f, -0.5f), Quaternion.identity);
         upperLeftBack.transform.localScale = new Vector3(1, 1, 1);
-        upperLeftBack.transform.parent = transformRig.transform;
+        upperLeftBack.transform.parent = rig.transform;
 
         GameObject lowerLeftFront = new GameObject();
         lowerLeftFront.name = "lowerleftfront";
         lowerLeftFront.transform.SetPositionAndRotation(new Vector3(0.5f, -0.5f, 0.5f), Quaternion.identity);
         lowerLeftFront.transform.localScale = new Vector3(1, 1, 1);
-        lowerLeftFront.transform.parent = transformRig.transform;
+        lowerLeftFront.transform.parent = rig.transform;
 
         GameObject lowerLeftBack = new GameObject();
         lowerLeftBack.name = "lowerleftback";
         lowerLeftBack.transform.SetPositionAndRotation(new Vector3(0.5f, -0.5f, -0.5f), Quaternion.identity);
         lowerLeftBack.transform.localScale = new Vector3(1, 1, 1);
-        lowerLeftBack.transform.parent = transformRig.transform;
+        lowerLeftBack.transform.parent = rig.transform;
 
         GameObject upperRightFront = new GameObject();
         upperRightFront.name = "upperrightfront";
         upperRightFront.transform.SetPositionAndRotation(new Vector3(-0.5f, 0.5f, 0.5f), Quaternion.identity);
         upperRightFront.transform.localScale = new Vector3(1, 1, 1);
-        upperRightFront.transform.parent = transformRig.transform;
+        upperRightFront.transform.parent = rig.transform;
 
         GameObject upperRightBack = new GameObject();
         upperRightBack.name = "upperrightback";
         upperRightBack.transform.SetPositionAndRotation(new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
         upperRightBack.transform.localScale = new Vector3(1, 1, 1);
-        upperRightBack.transform.parent = transformRig.transform;
+        upperRightBack.transform.parent = rig.transform;
 
         GameObject lowerRightFront = new GameObject();
         lowerRightFront.name = "lowerrightfront";
         lowerRightFront.transform.SetPositionAndRotation(new Vector3(-0.5f, -0.5f, 0.5f), Quaternion.identity);
         lowerRightFront.transform.localScale = new Vector3(1, 1, 1);
-        lowerRightFront.transform.parent = transformRig.transform;
+        lowerRightFront.transform.parent = rig.transform;
 
         GameObject lowerRightBack = new GameObject();
         lowerRightBack.name = "lowerrightback";
         lowerRightBack.transform.SetPositionAndRotation(new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
         lowerRightBack.transform.localScale = new Vector3(1, 1, 1);
-        lowerRightBack.transform.parent = transformRig.transform;
+        lowerRightBack.transform.parent = rig.transform;
 
-        return transformRig;
+        transformRig = rig;
+
+        return rig;
     }
-    private void UpdateCornerPositions()
+    private void UpdateBoundsPoints()
     {
         handleCentroids = GetBounds();
     }
     private void CreateHandles()
     {
         ClearHandles();
-
-        UpdateCornerPositions();
         UpdateCornerHandles();
         UpdateRotateHandles();
         ParentHandles();
@@ -201,81 +229,92 @@ public class BoundingRig : MonoBehaviour
     }
     private void UpdateCornerHandles()
     {
-        if (cornerHandles == null)
+        if (ShowRig)
         {
-            cornerHandles = new GameObject[handleCentroids.Count];
+            handleCentroids = handleCentroids ?? GetBounds();
+
+            if (cornerHandles == null)
+            {
+                cornerHandles = new GameObject[handleCentroids.Count];
+                for (int i = 0; i < handleCentroids.Count; ++i)
+                {
+                    cornerHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    cornerHandles[i].GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1);
+                    cornerHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Diffuse");
+                    cornerHandles[i].transform.localScale = scaleHandleSize;
+                    BoxCollider collider = cornerHandles[i].AddComponent<BoxCollider>();
+                    collider.transform.localScale.Scale(new Vector3(3, 3, 3));
+                    cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
+                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
+                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = ObjectToBound;
+                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Scale;
+                    cornerHandles[i].name = "Corner " + i.ToString();
+                }
+            }
+
             for (int i = 0; i < handleCentroids.Count; ++i)
             {
-                cornerHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cornerHandles[i].GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1);
-                cornerHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Diffuse");
-                cornerHandles[i].transform.localScale = scaleHandleSize;
-                BoxCollider collider = cornerHandles[i].AddComponent<BoxCollider>();
-                collider.transform.localScale.Scale(new Vector3(3, 3, 3));
-                cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
-                cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
-                cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = ObjectToBound;
-                cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-                cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Scale;
-                cornerHandles[i].name = "Corner " + i.ToString();
+                cornerHandles[i].transform.localPosition = handleCentroids[i];
+                cornerHandles[i].transform.localRotation = ObjectToBound.transform.rotation;
             }
-        }
-
-        for (int i = 0; i < handleCentroids.Count; ++i)
-        {
-            cornerHandles[i].transform.localPosition = handleCentroids[i];
         }
     }
     private void UpdateRotateHandles()
     {
-        if (rotateHandles == null)
+        if (ShowRig)
         {
-            rotateHandles = new GameObject[12];
+            handleCentroids = handleCentroids ?? GetBounds();
 
-            for (int i = 0; i < rotateHandles.Length; ++i)
+            if (rotateHandles == null)
             {
-                rotateHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                rotateHandles[i].GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1);
-                rotateHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Standard");
-                rotateHandles[i].GetComponent<Collider>().transform.localScale *= 2.0f;
-                rotateHandles[i].transform.localScale = rotateHandleSize;
-                SphereCollider collider = rotateHandles[i].AddComponent<SphereCollider>();
-                collider.transform.localScale.Scale(new Vector3(3, 3, 3) );
-                rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
-                rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
-                rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = ObjectToBound;
-                rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Rotation;
-                rotateHandles[i].name = "Middle " + i.ToString();
+                rotateHandles = new GameObject[12];
+
+                for (int i = 0; i < rotateHandles.Length; ++i)
+                {
+                    rotateHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    rotateHandles[i].GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1);
+                    rotateHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Standard");
+                    rotateHandles[i].GetComponent<Collider>().transform.localScale *= 2.0f;
+                    rotateHandles[i].transform.localScale = rotateHandleSize;
+                    SphereCollider collider = rotateHandles[i].AddComponent<SphereCollider>();
+                    collider.transform.localScale.Scale(new Vector3(3, 3, 3));
+                    rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
+                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
+                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = ObjectToBound;
+                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Rotation;
+                    rotateHandles[i].name = "Middle " + i.ToString();
+                }
             }
+
+            rotateHandles[0].transform.localPosition = (handleCentroids[2] + handleCentroids[0]) * 0.5f;
+            rotateHandles[1].transform.localPosition = (handleCentroids[3] + handleCentroids[1]) * 0.5f;
+            rotateHandles[2].transform.localPosition = (handleCentroids[6] + handleCentroids[4]) * 0.5f;
+            rotateHandles[3].transform.localPosition = (handleCentroids[7] + handleCentroids[5]) * 0.5f;
+            rotateHandles[4].transform.localPosition = (handleCentroids[0] + handleCentroids[1]) * 0.5f;
+            rotateHandles[5].transform.localPosition = (handleCentroids[2] + handleCentroids[3]) * 0.5f;
+            rotateHandles[6].transform.localPosition = (handleCentroids[4] + handleCentroids[5]) * 0.5f;
+            rotateHandles[7].transform.localPosition = (handleCentroids[6] + handleCentroids[7]) * 0.5f;
+            rotateHandles[8].transform.localPosition = (handleCentroids[0] + handleCentroids[4]) * 0.5f;
+            rotateHandles[9].transform.localPosition = (handleCentroids[1] + handleCentroids[5]) * 0.5f;
+            rotateHandles[10].transform.localPosition = (handleCentroids[2] + handleCentroids[6]) * 0.5f;
+            rotateHandles[11].transform.localPosition = (handleCentroids[3] + handleCentroids[7]) * 0.5f;
+
+            rotateHandles[0].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+            rotateHandles[1].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+            rotateHandles[2].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+            rotateHandles[3].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+
+            rotateHandles[4].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
+            rotateHandles[5].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
+            rotateHandles[6].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
+            rotateHandles[7].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+
+            rotateHandles[8].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
+            rotateHandles[9].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
+            rotateHandles[10].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
+            rotateHandles[11].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
         }
-
-        rotateHandles[0].transform.localPosition = (handleCentroids[2] + handleCentroids[0]) * 0.5f;
-        rotateHandles[1].transform.localPosition = (handleCentroids[3] + handleCentroids[1]) * 0.5f;
-        rotateHandles[2].transform.localPosition = (handleCentroids[6] + handleCentroids[4]) * 0.5f;
-        rotateHandles[3].transform.localPosition = (handleCentroids[7] + handleCentroids[5]) * 0.5f;
-        rotateHandles[4].transform.localPosition = (handleCentroids[0] + handleCentroids[1]) * 0.5f;
-        rotateHandles[5].transform.localPosition = (handleCentroids[2] + handleCentroids[3]) * 0.5f;
-        rotateHandles[6].transform.localPosition = (handleCentroids[4] + handleCentroids[5]) * 0.5f;
-        rotateHandles[7].transform.localPosition = (handleCentroids[6] + handleCentroids[7]) * 0.5f;
-        rotateHandles[8].transform.localPosition = (handleCentroids[0] + handleCentroids[4]) * 0.5f;
-        rotateHandles[9].transform.localPosition = (handleCentroids[1] + handleCentroids[5]) * 0.5f;
-        rotateHandles[10].transform.localPosition = (handleCentroids[2] + handleCentroids[6]) * 0.5f;
-        rotateHandles[11].transform.localPosition = (handleCentroids[3] + handleCentroids[7]) * 0.5f;
-
-        rotateHandles[0].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-        rotateHandles[1].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-        rotateHandles[2].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-        rotateHandles[3].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-
-        rotateHandles[4].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
-        rotateHandles[5].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
-        rotateHandles[6].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
-        rotateHandles[7].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-
-        rotateHandles[8].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
-        rotateHandles[9].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
-        rotateHandles[10].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
-        rotateHandles[11].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
     }
     private void ParentHandles()
     {
@@ -291,9 +330,19 @@ public class BoundingRig : MonoBehaviour
 
     private void UpdateHandles()
     {
-        UpdateCornerPositions();
-        UpdateCornerHandles();
-        UpdateRotateHandles();
+        if (ShowRig)
+        {
+            UpdateCornerHandles();
+            UpdateRotateHandles();
+        }
+    }
+
+    private void UpdateAppBar()
+    {
+        if (handleCentroids != null)
+        {
+            appBarButton.transform.localPosition = (handleCentroids[3] + handleCentroids[7]) * 0.5f;
+        }
     }
 
     private void ClearCornerHandles()
@@ -335,22 +384,27 @@ public class BoundingRig : MonoBehaviour
 
     private List<Vector3> GetBounds()
     {
-        List<Vector3> bounds = new List<Vector3>();
-        LayerMask mask = new LayerMask();
-        GameObject clone = GameObject.Instantiate(Box.gameObject);
-        clone.transform.localRotation = Quaternion.identity;
-        clone.transform.position = new Vector3(0, 0, 0);
-        BoundingBox.GetRenderBoundsPoints(clone, bounds, mask);
-        GameObject.Destroy(clone);
-
-        Matrix4x4 m = Matrix4x4.Rotate(ObjectToBound.transform.rotation);
-
-        for (int i = 0; i < bounds.Count; ++i)
+        if (ObjectToBound != null)
         {
-            bounds[i] = m.MultiplyPoint(bounds[i]);
-            bounds[i] += ObjectToBound.transform.position;
+            List<Vector3> bounds = new List<Vector3>();
+            LayerMask mask = new LayerMask();
+            GameObject clone = GameObject.Instantiate(Box.gameObject);
+            clone.transform.localRotation = Quaternion.identity;
+            clone.transform.position = new Vector3(0, 0, 0);
+            BoundingBox.GetRenderBoundsPoints(clone, bounds, mask);
+            GameObject.Destroy(clone);
+
+            Matrix4x4 m = Matrix4x4.Rotate(ObjectToBound.transform.rotation);
+
+            for (int i = 0; i < bounds.Count; ++i)
+            {
+                bounds[i] = m.MultiplyPoint(bounds[i]);
+                bounds[i] += ObjectToBound.transform.position;
+            }
+
+            return bounds;
         }
 
-        return bounds;
+        return null;
     }
 }

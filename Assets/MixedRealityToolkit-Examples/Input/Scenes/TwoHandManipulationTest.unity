@@ -427,7 +427,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
+  BoundingBoxRigObject: {fileID: 394745417}
+  GlobalBoundingBox: {fileID: 1977967042}
   HostTransform: {fileID: 150548430}
   ManipulationMode: 4
   ConstraintOnRotation: 5
@@ -610,7 +611,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
+  BoundingBoxRigObject: {fileID: 394745417}
+  GlobalBoundingBox: {fileID: 1977967042}
   HostTransform: {fileID: 293671890}
   ManipulationMode: 4
   ConstraintOnRotation: 0
@@ -673,7 +675,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
+  BoundingBoxRigObject: {fileID: 394745417}
+  GlobalBoundingBox: {fileID: 1977967042}
   HostTransform: {fileID: 330544710}
   ManipulationMode: 1
   ConstraintOnRotation: 0
@@ -835,6 +838,63 @@ Transform:
   m_PrefabParentObject: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60,
     type: 2}
   m_PrefabInternal: {fileID: 380370569}
+--- !u!1001 &394745416
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4534580742824818, guid: 57828122b3388d742a3d8b33042e2223, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534580742824818, guid: 57828122b3388d742a3d8b33042e2223, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534580742824818, guid: 57828122b3388d742a3d8b33042e2223, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0.3067
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534580742824818, guid: 57828122b3388d742a3d8b33042e2223, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534580742824818, guid: 57828122b3388d742a3d8b33042e2223, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534580742824818, guid: 57828122b3388d742a3d8b33042e2223, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534580742824818, guid: 57828122b3388d742a3d8b33042e2223, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534580742824818, guid: 57828122b3388d742a3d8b33042e2223, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114175038440563122, guid: 57828122b3388d742a3d8b33042e2223,
+        type: 2}
+      propertyPath: Box
+      value: 
+      objectReference: {fileID: 1977967044}
+    - target: {fileID: 23899439937517240, guid: 57828122b3388d742a3d8b33042e2223,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 1836084574}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 57828122b3388d742a3d8b33042e2223, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1 &394745417 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1239953840342384, guid: 57828122b3388d742a3d8b33042e2223,
+    type: 2}
+  m_PrefabInternal: {fileID: 394745416}
 --- !u!1 &407816390
 GameObject:
   m_ObjectHideFlags: 0
@@ -1559,7 +1619,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
+  BoundingBoxRigObject: {fileID: 394745417}
+  GlobalBoundingBox: {fileID: 1977967042}
   HostTransform: {fileID: 809834512}
   ManipulationMode: 3
   ConstraintOnRotation: 3
@@ -1689,7 +1750,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
+  BoundingBoxRigObject: {fileID: 394745417}
+  GlobalBoundingBox: {fileID: 1977967042}
   HostTransform: {fileID: 826462193}
   ManipulationMode: 1
   ConstraintOnRotation: 2
@@ -2127,6 +2189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BoundingBoxRigObject: {fileID: 394745417}
   GlobalBoundingBox: {fileID: 1977967042}
   HostTransform: {fileID: 1239289433}
   ManipulationMode: 0
@@ -2164,7 +2227,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
+  BoundingBoxRigObject: {fileID: 394745417}
+  GlobalBoundingBox: {fileID: 1977967042}
   HostTransform: {fileID: 1270581480}
   ManipulationMode: 3
   ConstraintOnRotation: 0
@@ -2605,6 +2669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BoundingBoxRigObject: {fileID: 394745417}
   GlobalBoundingBox: {fileID: 1977967042}
   HostTransform: {fileID: 1512395851}
   ManipulationMode: 0
@@ -2903,7 +2968,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
+  BoundingBoxRigObject: {fileID: 394745417}
+  GlobalBoundingBox: {fileID: 1977967042}
   HostTransform: {fileID: 1596208171}
   ManipulationMode: 0
   ConstraintOnRotation: 0
@@ -3395,6 +3461,85 @@ Transform:
   m_Father: {fileID: 1329454425}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &1836084574
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: ButtonIconMaterial
+  m_Shader: {fileID: 4800000, guid: 5c2339e78c48ab14bb095cea2be5fb1a, type: 3}
+  m_ShaderKeywords: _USECOLOR_ON _USEMAINTEX_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3100
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 517a5268112b8854e8d807547081e670, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _BumpScale: 1
+    - _ColorWriteMask: 15
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 10
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 5
+    - _UVSec: 0
+    - _UseColor: 1
+    - _UseMainTex: 1
+    - _ZTest: 4
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &1838090887
 GameObject:
   m_ObjectHideFlags: 0
@@ -3519,7 +3664,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
+  BoundingBoxRigObject: {fileID: 394745417}
+  GlobalBoundingBox: {fileID: 1977967042}
   HostTransform: {fileID: 1887701331}
   ManipulationMode: 4
   ConstraintOnRotation: 1
@@ -3635,7 +3781,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
+  BoundingBoxRigObject: {fileID: 394745417}
+  GlobalBoundingBox: {fileID: 1977967042}
   HostTransform: {fileID: 1909326605}
   ManipulationMode: 2
   ConstraintOnRotation: 0
@@ -3881,3 +4028,9 @@ CanvasRenderer:
 GameObject:
   m_PrefabParentObject: {fileID: 160298, guid: 865a8ded6c47efd4285f04f3aebe99e9, type: 2}
   m_PrefabInternal: {fileID: 10506497}
+--- !u!114 &1977967044 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
+    type: 2}
+  m_PrefabInternal: {fileID: 10506497}
+  m_Script: {fileID: 11500000, guid: d946fff9ec509c9468425c0aa57433a8, type: 3}

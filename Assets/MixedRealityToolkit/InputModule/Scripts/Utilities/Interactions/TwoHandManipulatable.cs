@@ -33,7 +33,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         // Event that gets raised when the object stops moving
         public event Action StoppedManipulating;
 
+        public GameObject BoundingBoxRigObject;
         public GameObject GlobalBoundingBox;
+
         private BoundingRig rig;
         private bool hasBoundingBox;
 
@@ -84,7 +86,10 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             m_rotateLogic = new HandlebarRotateLogic(ConstraintOnRotation);
             m_scaleLogic = new ScaleLogic();
 
-            GlobalBoundingBox = GameObject.Find("BoundingBoxBasic");
+            if (GlobalBoundingBox == null)
+            {
+                GlobalBoundingBox = GameObject.Find("BoundingBoxBasic");
+            }
             HostTransform = HostTransform ?? transform;
         }
 
@@ -121,7 +126,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                     if (value != hasBoundingBox)
                     {
                         hasBoundingBox = true;
-                        rig = this.gameObject.AddComponent<BoundingRig>();
+                        rig = BoundingBoxRigObject.GetComponent<BoundingRig>();
                         rig.Box = GlobalBoundingBox.GetComponent<BoundingBox>();
                         rig.ObjectToBound = HostTransform.gameObject;
                     }
