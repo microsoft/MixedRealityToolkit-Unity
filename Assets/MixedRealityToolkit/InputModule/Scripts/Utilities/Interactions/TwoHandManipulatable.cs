@@ -30,11 +30,13 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         public event Action StartedManipulating;
         // Event that gets raised when the user ends manipulation
         public event Action StoppedManipulating;
-        // Bounding Box visual on manipulation interaction
-        public GameObject GlobalBoundingBox;
 
+        // Bounding Box visual on manipulation interaction
+        private GameObject GlobalBoundingBox;
+
+        [SerializeField]
         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
-        public Transform HostTransform;
+        private Transform HostTransform;
 
         public enum TwoHandedManipulation
         {
@@ -45,13 +47,17 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             MoveRotateScale
         };
 
+        [SerializeField]
         [Tooltip("What manipulation will two hands perform?")]
-        public TwoHandedManipulation ManipulationMode;
+        private TwoHandedManipulation ManipulationMode;
 
+        [SerializeField]
         [Tooltip("Constrain rotation along an axis")]
-        public HandlebarRotateLogic.RotationConstraint ConstraintOnRotation = HandlebarRotateLogic.RotationConstraint.None;
+        private HandlebarRotateLogic.RotationConstraint ConstraintOnRotation = HandlebarRotateLogic.RotationConstraint.None;
+
+        [SerializeField]
         [Tooltip("If true, grabbing the object with one hand will initiate movement.")]
-        public bool OneHandMovement = true;
+        private bool OneHandMovement = true;
 
         [Flags]
         private enum State

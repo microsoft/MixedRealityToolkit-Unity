@@ -191,9 +191,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &78828852
@@ -626,7 +626,7 @@ Prefab:
         type: 2}
       propertyPath: rightHand
       value: 
-      objectReference: {fileID: 1198379067318554, guid: 2add19f3c951d1443bb4c1bde6409236,
+      objectReference: {fileID: 1198379067318554, guid: cda8fa918eca5054e9cd75c5f023282f,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
@@ -712,11 +712,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
   HostTransform: {fileID: 0}
   ManipulationMode: 1
   ConstraintOnRotation: 3
-  OneHandMovement: 1
+  currentState: 0
 --- !u!65 &687798438
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1388,11 +1387,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
   HostTransform: {fileID: 0}
   ManipulationMode: 1
   ConstraintOnRotation: 2
-  OneHandMovement: 1
+  currentState: 0
 --- !u!65 &1141423121
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1615,11 +1613,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
   HostTransform: {fileID: 0}
   ManipulationMode: 2
   ConstraintOnRotation: 0
-  OneHandMovement: 1
+  currentState: 0
 --- !u!65 &1337778049
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2402,11 +2399,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
   HostTransform: {fileID: 0}
   ManipulationMode: 4
   ConstraintOnRotation: 0
-  OneHandMovement: 1
+  currentState: 0
 --- !u!1 &1838090887
 GameObject:
   m_ObjectHideFlags: 0
@@ -2504,11 +2500,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767ea91a006240b49a7dbe9454ed26ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalBoundingBox: {fileID: 0}
   HostTransform: {fileID: 0}
   ManipulationMode: 0
   ConstraintOnRotation: 0
-  OneHandMovement: 1
+  currentState: 0
 --- !u!65 &1886941386
 BoxCollider:
   m_ObjectHideFlags: 0
