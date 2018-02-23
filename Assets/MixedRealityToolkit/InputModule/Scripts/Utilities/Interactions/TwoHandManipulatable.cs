@@ -31,12 +31,12 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         // Event that gets raised when the user ends manipulation
         public event Action StoppedManipulating;
 
-        // Bounding Box visual on manipulation interaction
-        private GameObject GlobalBoundingBox;
-
         [SerializeField]
         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
         private Transform HostTransform;
+
+        [SerializeField]
+        private GameObject boundingBoxPrefab;
 
         public enum TwoHandedManipulation
         {
@@ -71,6 +71,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             MovingRotatingScaling = 0x111
         };
 
+        private BoundingBoxBasic boundingBoxBasicInstance;
         private State currentState;
         private MoveSphericalCoordsLogic m_moveLogic;
         private ScaleLogic m_scaleLogic;
@@ -86,7 +87,16 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             m_rotateLogic = new HandlebarRotateLogic(ConstraintOnRotation);
             m_scaleLogic = new ScaleLogic();
 
-            GlobalBoundingBox = GameObject.Find("BoundingBoxBasic");
+            
+            try
+            {
+               // BoundingBoxBasic prefab = boundingBoxPrefab;
+               // boundingBoxBasicInstance = Instantiate(prefab);
+            }
+            catch (Exception e)
+            {
+                string s = e.Message;
+            }
         }
 
         private void Start()
@@ -122,13 +132,13 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             {
                 if (value)
                 {
-                    BoundingBox boundingBox = GlobalBoundingBox.GetComponent<BoundingBox>();
+                    BoundingBox boundingBox = boundingBoxBasicInstance.GetComponent<BoundingBox>();
                     boundingBox.Target = this.gameObject;
                     boundingBox.gameObject.SetActive(true);
                 }
                 else
                 {
-                    BoundingBox boundingBox = GlobalBoundingBox.GetComponent<BoundingBox>();
+                    BoundingBox boundingBox = boundingBoxBasicInstance.GetComponent<BoundingBox>();
                     boundingBox.Target = null;
                     boundingBox.gameObject.SetActive(false);
                 }
@@ -370,7 +380,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             InputManager.Instance.PushModalInputHandler(gameObject);
 
             // Show Bounding Box visual on manipulation interaction
-            if(GlobalBoundingBox != null)
+            if(boundingBoxBasicInstance != null)
             {
                 HasBoundingBox = true;
             }
@@ -384,7 +394,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             InputManager.Instance.PopModalInputHandler();
 
             // Hide Bounding Box visual on release
-            if (GlobalBoundingBox != null)
+            if (boundingBoxBasicInstance != null)
             {
                 HasBoundingBox = false;
             }

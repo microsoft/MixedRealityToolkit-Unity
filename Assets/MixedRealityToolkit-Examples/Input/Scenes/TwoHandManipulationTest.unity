@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.50217825, g: 0.5020953, b: 0.5018046, a: 1}
+  m_IndirectSpecularColor: {r: 0.50224054, g: 0.5020953, b: 0.501867, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -191,9 +191,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Convex: 0
-  m_CookingOptions: 14
+  m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &78828852
@@ -713,6 +713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 0}
+  boundingBoxPrefab: {fileID: 160298, guid: 865a8ded6c47efd4285f04f3aebe99e9, type: 2}
   ManipulationMode: 1
   ConstraintOnRotation: 3
   OneHandMovement: 1
@@ -932,9 +933,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Convex: 0
-  m_CookingOptions: 14
+  m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 5838ea95659d32943afec95550ac1ce1, type: 3}
 --- !u!1 &785992102
@@ -1055,9 +1056,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Convex: 0
-  m_CookingOptions: 14
+  m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 5838ea95659d32943afec95550ac1ce1, type: 3}
 --- !u!1001 &910890641
@@ -1424,6 +1425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 0}
+  boundingBoxPrefab: {fileID: 160298, guid: 865a8ded6c47efd4285f04f3aebe99e9, type: 2}
   ManipulationMode: 1
   ConstraintOnRotation: 2
   OneHandMovement: 1
@@ -1471,7 +1473,6 @@ Transform:
   - {fileID: 1141423118}
   - {fileID: 687798435}
   - {fileID: 1337778046}
-  - {fileID: 1672046724}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1650,6 +1651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 0}
+  boundingBoxPrefab: {fileID: 160298, guid: 865a8ded6c47efd4285f04f3aebe99e9, type: 2}
   ManipulationMode: 2
   ConstraintOnRotation: 0
   OneHandMovement: 1
@@ -1678,9 +1680,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Convex: 0
-  m_CookingOptions: 14
+  m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 5838ea95659d32943afec95550ac1ce1, type: 3}
 --- !u!1 &1379348909
@@ -2029,9 +2031,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Convex: 0
-  m_CookingOptions: 14
+  m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 284d5c2c421022e4f9056fb0a21ff91c, type: 3}
 --- !u!1 &1592151106 stripped
@@ -2047,9 +2049,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Convex: 0
-  m_CookingOptions: 14
+  m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 284d5c2c421022e4f9056fb0a21ff91c, type: 3}
 --- !u!1001 &1663716338
@@ -2105,7 +2107,7 @@ Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1329454425}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 497668, guid: 865a8ded6c47efd4285f04f3aebe99e9, type: 2}
       propertyPath: m_LocalPosition.x
@@ -2117,7 +2119,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 497668, guid: 865a8ded6c47efd4285f04f3aebe99e9, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -2.37
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 497668, guid: 865a8ded6c47efd4285f04f3aebe99e9, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2137,19 +2139,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 497668, guid: 865a8ded6c47efd4285f04f3aebe99e9, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 160298, guid: 865a8ded6c47efd4285f04f3aebe99e9, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 865a8ded6c47efd4285f04f3aebe99e9, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &1672046724 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 497668, guid: 865a8ded6c47efd4285f04f3aebe99e9, type: 2}
-  m_PrefabInternal: {fileID: 1672046723}
 --- !u!1001 &1677768352
 Prefab:
   m_ObjectHideFlags: 0
@@ -2494,6 +2492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 0}
+  boundingBoxPrefab: {fileID: 160298, guid: 865a8ded6c47efd4285f04f3aebe99e9, type: 2}
   ManipulationMode: 4
   ConstraintOnRotation: 0
   OneHandMovement: 1
@@ -2595,6 +2594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 0}
+  boundingBoxPrefab: {fileID: 160298, guid: 865a8ded6c47efd4285f04f3aebe99e9, type: 2}
   ManipulationMode: 0
   ConstraintOnRotation: 0
   OneHandMovement: 1
