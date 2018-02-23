@@ -118,6 +118,8 @@ namespace HoloToolkit.Unity.InputModule
             InputManager.Instance.PushModalInputHandler(gameObject);
 
             isDragging = true;
+            if (hostRigidbody != null)
+                hostRigidbody.isKinematic = true;
 
             Transform cameraTransform = CameraCache.Main.transform;
 
@@ -293,6 +295,8 @@ namespace HoloToolkit.Unity.InputModule
             isDragging = false;
             currentInputSource = null;
             currentInputSourceId = 0;
+            if (hostRigidbody != null)
+                hostRigidbody.isKinematic = false;
             StoppedDragging.RaiseEvent();
         }
 
