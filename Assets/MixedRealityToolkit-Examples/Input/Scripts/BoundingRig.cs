@@ -8,8 +8,15 @@ using UnityEngine;
 
 public class BoundingRig : MonoBehaviour
 {
-    public BoundingBox Box;
+    [SerializeField]
+    [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
+    public BoundingBox BoundingBoxPrefab;
 
+    [SerializeField]
+    [Tooltip("Button prefab.")]
+    public CompoundButton ButtonPrefab;
+
+    private BoundingBox boxInstance;
     private GameObject objectToBound;
     private CompoundButton appBarButton;
     private GameObject[] rotateHandles;
@@ -37,33 +44,6 @@ public class BoundingRig : MonoBehaviour
         }
     }
 
-    public GameObject ObjectToBound
-    {
-        get
-        {
-            return objectToBound;
-        }
-        set
-        {
-            if (objectToBound != value )
-            {
-                objectToBound =  value ?? objectToBound;
-                this.Box.Target = objectToBound;
-                Box.gameObject.SetActive(value != null);
-                isActive = value != null;
-                if (objectToBound != null)
-                {
-                   BuildRig();
-                   //Activate();
-                }
-                else
-                {
-                   //Deactivate();
-                }
-            }
-        }
-    }
-
     public CompoundButton AppBarButton
     {
         get
@@ -79,20 +59,16 @@ public class BoundingRig : MonoBehaviour
 
     private void Start()
     {
-        appBarButton = this.gameObject.GetComponent<CompoundButton>();
+        objectToBound = this.gameObject;
+        boxInstance = Instantiate(BoundingBoxPrefab) as BoundingBox;
+        boxInstance.Target = objectToBound;
+        boxInstance.gameObject.SetActive(true);
+        isActive = true;
+        appBarButton = Instantiate(ButtonPrefab) as CompoundButton;
         appBarButton.OnButtonClicked += AppBarButton_OnButtonPressed;
-    }
 
-    private void AppBarButton_OnButtonPressed(GameObject obj)
-    {
-        if (showRig == true)
-        {
-            Deactivate();
-        }
-        else
-        {
-            Activate();
-        }
+        BuildRig();
+        Activate();
     }
 
     private void Update()
@@ -170,7 +146,7 @@ public class BoundingRig : MonoBehaviour
 
     private GameObject BuildRig()
     {
-        Vector3 scale = ObjectToBound.transform.localScale;
+        Vector3 scale = objectToBound.transform.localScale;
 
         GameObject rig = new GameObject();
         rig.name = "center";
@@ -260,7 +236,7 @@ public class BoundingRig : MonoBehaviour
                     collider.transform.localScale.Scale(new Vector3(3, 3, 3));
                     cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
-                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = ObjectToBound;
+                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = objectToBound;
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Scale;
                     cornerHandles[i].name = "Corner " + i.ToString();
@@ -270,7 +246,7 @@ public class BoundingRig : MonoBehaviour
             for (int i = 0; i < handleCentroids.Count; ++i)
             {
                 cornerHandles[i].transform.localPosition = handleCentroids[i];
-                cornerHandles[i].transform.localRotation = ObjectToBound.transform.rotation;
+                cornerHandles[i].transform.localRotation = objectToBound.transform.rotation;
             }
         }
     }
@@ -295,7 +271,7 @@ public class BoundingRig : MonoBehaviour
                     collider.transform.localScale.Scale(new Vector3(3, 3, 3));
                     rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                     rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
-                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = ObjectToBound;
+                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = objectToBound;
                     rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Rotation;
                     rotateHandles[i].name = "Middle " + i.ToString();
                 }
@@ -332,14 +308,13 @@ public class BoundingRig : MonoBehaviour
     }
     private void ParentHandles()
     {
-        transformRig.transform.position = Box.transform.position;
-        transformRig.transform.rotation = Box.transform.rotation;
+        transformRig.transform.position = boxInstance.transform.position;
+        transformRig.transform.rotation = boxInstance.transform.rotation;
 
-        Vector3 invScale = ObjectToBound.transform.localScale;
+        Vector3 invScale = objectToBound.transform.localScale;
 
         transformRig.transform.localScale = new Vector3(0.5f / invScale.x, 0.5f / invScale.y, 0.5f / invScale.z);
-
-        transformRig.transform.parent = ObjectToBound.transform;
+        transformRig.transform.parent = objectToBound.transform;
     }
 
     private void UpdateHandles()
@@ -353,7 +328,7 @@ public class BoundingRig : MonoBehaviour
 
     private void UpdateAppBar()
     {
-        if (handleCentroids != null)
+        if (handleCentroids != null && appBarButton != null)
         {
             appBarButton.transform.position = (handleCentroids[0] + handleCentroids[4]) * 0.5f;
         }
@@ -398,22 +373,22 @@ public class BoundingRig : MonoBehaviour
 
     private List<Vector3> GetBounds()
     {
-        if (ObjectToBound != null)
+        if (objectToBound != null)
         {
             List<Vector3> bounds = new List<Vector3>();
             LayerMask mask = new LayerMask();
-            GameObject clone = GameObject.Instantiate(Box.gameObject);
+            GameObject clone = GameObject.Instantiate(boxInstance.gameObject);
             clone.transform.localRotation = Quaternion.identity;
             clone.transform.position = new Vector3(0, 0, 0);
             BoundingBox.GetRenderBoundsPoints(clone, bounds, mask);
             GameObject.Destroy(clone);
 
-            Matrix4x4 m = Matrix4x4.Rotate(ObjectToBound.transform.rotation);
+            Matrix4x4 m = Matrix4x4.Rotate(objectToBound.transform.rotation);
 
             for (int i = 0; i < bounds.Count; ++i)
             {
                 bounds[i] = m.MultiplyPoint(bounds[i]);
-                bounds[i] += ObjectToBound.transform.position;
+                bounds[i] += objectToBound.transform.position;
             }
 
             return bounds;
@@ -422,5 +397,15 @@ public class BoundingRig : MonoBehaviour
         return null;
     }
 
-
+    private void AppBarButton_OnButtonPressed(GameObject obj)
+    {
+        if (showRig == true)
+        {
+            Deactivate();
+        }
+        else
+        {
+            Activate();
+        }
+    }
 }

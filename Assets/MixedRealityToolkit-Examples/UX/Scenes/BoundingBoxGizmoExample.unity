@@ -369,7 +369,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 150548430}
-  boundingBoxPrefab: {fileID: 0}
+  boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
+    type: 2}
   ManipulationMode: 4
   ConstraintOnRotation: 5
   OneHandMovement: 1
@@ -552,7 +553,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 293671890}
-  boundingBoxPrefab: {fileID: 0}
+  boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
+    type: 2}
   ManipulationMode: 4
   ConstraintOnRotation: 0
   OneHandMovement: 1
@@ -615,7 +617,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 330544710}
-  boundingBoxPrefab: {fileID: 0}
+  boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
+    type: 2}
   ManipulationMode: 1
   ConstraintOnRotation: 0
   OneHandMovement: 1
@@ -1557,7 +1560,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 809834512}
-  boundingBoxPrefab: {fileID: 0}
+  boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
+    type: 2}
   ManipulationMode: 3
   ConstraintOnRotation: 3
   OneHandMovement: 1
@@ -1687,7 +1691,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 826462193}
-  boundingBoxPrefab: {fileID: 0}
+  boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
+    type: 2}
   ManipulationMode: 1
   ConstraintOnRotation: 2
   OneHandMovement: 1
@@ -2060,7 +2065,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 1270581480}
-  boundingBoxPrefab: {fileID: 0}
+  boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
+    type: 2}
   ManipulationMode: 3
   ConstraintOnRotation: 0
   OneHandMovement: 1
@@ -2800,7 +2806,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 1596208171}
-  boundingBoxPrefab: {fileID: 0}
+  boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
+    type: 2}
   ManipulationMode: 0
   ConstraintOnRotation: 0
   OneHandMovement: 1
@@ -3416,7 +3423,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 1887701331}
-  boundingBoxPrefab: {fileID: 0}
+  boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
+    type: 2}
   ManipulationMode: 4
   ConstraintOnRotation: 1
   OneHandMovement: 1
@@ -3532,7 +3540,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 1909326605}
-  boundingBoxPrefab: {fileID: 0}
+  boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
+    type: 2}
   ManipulationMode: 2
   ConstraintOnRotation: 0
   OneHandMovement: 1

@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-// #defines for features that are not yet implemented
-#define TODO_ROTATE_FACE_USER
-
 using MixedRealityToolkit.Common;
 using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.InputModule.EventData;
@@ -21,26 +18,26 @@ using UnityEngine.Assertions;
 namespace MixedRealityToolkit.InputModule.Utilities.Interations
 {
     /// <summary>
-    /// TO DO
-    /// Notes:
-    /// - If host transform is not provided, will default to the GameObject the script is on.
-    /// - Grabbing any collidable on or below this gameobject will activate this script.
+    /// This script allows for an object to be movable, scalable, and rotatable with one or two hands. 
+    /// You may also configure the script on only enable certain manipulations. The script works with 
+    /// both HoloLens' gesture input and immersive headset's motion controller input.
+    /// See Assets/MixedRealityToolkit-Examples/Input/Readme/README_TwoHandManipulationTest.md
+    /// for instructions on how to use the script.
     /// </summary>
     public class TwoHandManipulatable : MonoBehaviour, IInputHandler, ISourceStateHandler
     {
-        // Event that gets raised when the object begins moving
+        // Event that gets raised when user begins manipulating the object
         public event Action StartedManipulating;
-        // Event that gets raised when the object stops moving
+        // Event that gets raised when the user ends manipulation
         public event Action StoppedManipulating;
 
-        public GameObject BoundingBoxRigObject;
-        public GameObject GlobalBoundingBox;
+        [SerializeField]
+        [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
+        private Transform HostTransform;
 
-        private BoundingRig rig;
-        private bool hasBoundingBox;
-
-         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
-        public Transform HostTransform;
+        [SerializeField]
+        [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
+        private BoundingBox boundingBoxPrefab;
 
         public enum TwoHandedManipulation
         {
@@ -51,13 +48,17 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             MoveRotateScale
         };
 
+        [SerializeField]
         [Tooltip("What manipulation will two hands perform?")]
-        public TwoHandedManipulation ManipulationMode;
+        private TwoHandedManipulation ManipulationMode;
 
+        [SerializeField]
         [Tooltip("Constrain rotation along an axis")]
-        public HandlebarRotateLogic.RotationConstraint ConstraintOnRotation = HandlebarRotateLogic.RotationConstraint.None;
+        private HandlebarRotateLogic.RotationConstraint ConstraintOnRotation = HandlebarRotateLogic.RotationConstraint.None;
+
+        [SerializeField]
         [Tooltip("If true, grabbing the object with one hand will initiate movement.")]
-        public bool OneHandMovement = true;
+        private bool OneHandMovement = true;
 
         [Flags]
         private enum State
@@ -71,6 +72,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             MovingRotatingScaling = 0x111
         };
 
+        private BoundingBox boundingBoxInstance;
         private State currentState;
         private MoveSphericalCoordsLogic m_moveLogic;
         private ScaleLogic m_scaleLogic;
@@ -85,13 +87,16 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             m_moveLogic = new MoveSphericalCoordsLogic();
             m_rotateLogic = new HandlebarRotateLogic(ConstraintOnRotation);
             m_scaleLogic = new ScaleLogic();
-
-            if (GlobalBoundingBox == null)
-            {
-                GlobalBoundingBox = GameObject.Find("BoundingBoxBasic");
-            }
-            HostTransform = HostTransform ?? transform;
         }
+
+        private void Start()
+        {
+            if (HostTransform == null)
+            {
+                HostTransform = transform;
+            }
+        }
+
         private void Update()
         {
             // Update positions of all hands
@@ -110,34 +115,32 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                 UpdateStateMachine();
             }
         }
-        private void Start()
-        {
-        }
 
-        public bool HasBoundingBox
+        private bool showBoundingBox
         {
             set
             {
-                if (value == true)
+                if (boundingBoxInstance == null && boundingBoxPrefab != null)
                 {
-                    if (value != hasBoundingBox)
-                    {
-                        hasBoundingBox = true;
-                        rig = BoundingBoxRigObject.GetComponent<BoundingRig>();
-                        rig.Box = GlobalBoundingBox.GetComponent<BoundingBox>();
-                        rig.ObjectToBound = HostTransform.gameObject;
-                    }
+                    boundingBoxInstance = Instantiate(boundingBoxPrefab) as BoundingBox;
                 }
-                else
+
+                if (boundingBoxInstance != null)
                 {
-                    if (value != hasBoundingBox)
+                    if (value)
                     {
-                        hasBoundingBox = false;
-                        rig.ObjectToBound = null;
+                        boundingBoxInstance.Target = this.gameObject;
+                        boundingBoxInstance.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        boundingBoxInstance.Target = null;
+                        boundingBoxInstance.gameObject.SetActive(false);
                     }
                 }
             }
         }
+
         private Vector3 GetInputPosition(InputEventData eventData)
         {
             Vector3 result = Vector3.zero;
@@ -153,12 +156,14 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             UpdateStateMachine();
             eventData.Use();
         }
+
         public void OnInputUp(InputEventData eventData)
         {
             RemoveSourceIdFromHandMap(eventData.SourceId);
             UpdateStateMachine();
             eventData.Use();
         }
+
         public void OnSourceDetected(SourceStateEventData eventData)
         {
         }
@@ -175,12 +180,14 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                 m_handsPressedInputSourceMap.Remove(sourceId);
             }
         }
+
         public void OnSourceLost(SourceStateEventData eventData)
         {
             RemoveSourceIdFromHandMap(eventData.SourceId);
             UpdateStateMachine();
             eventData.Use();
         }
+
         private void UpdateStateMachine()
         {
             var handsPressedCount = m_handsPressedLocationsMap.Count;
@@ -296,6 +303,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                 }
             }
         }
+
         private void OnTwoHandManipulationUpdated()
         {
             var targetRotation = HostTransform.rotation;
@@ -319,26 +327,24 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             HostTransform.rotation = targetRotation;
             HostTransform.localScale = targetScale;
         }
+
         private void OnOneHandMoveUpdated()
         {
             var targetPosition = m_moveLogic.Update(m_handsPressedLocationsMap.Values.First(), HostTransform.position);
 
             HostTransform.position = targetPosition;
-
-#if !TODO_ROTATE_FACE_USER
-            // TODO: Rotate object to face user as needed.
-            TryRotateObjectToFaceUser();
-#endif
-
         }
+
         private void OnTwoHandManipulationEnded()
         {
         }
+
         private Vector3 GetHandsCentroid()
         {
             Vector3 result = m_handsPressedLocationsMap.Values.Aggregate(Vector3.zero, (current, state) => current + state);
             return result / m_handsPressedLocationsMap.Count;
         }
+
         private void OnTwoHandManipulationStarted(State newState)
         {
             if ((newState & State.Rotating) > 0)
@@ -354,6 +360,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                 m_scaleLogic.Setup(m_handsPressedLocationsMap, HostTransform);
             }
         }
+
         private void OnOneHandMoveStarted()
         {
             Assert.IsTrue(m_handsPressedLocationsMap.Count == 1);
@@ -368,7 +375,8 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             }
             InputManager.Instance.PushModalInputHandler(gameObject);
 
-            HasBoundingBox = true;
+            //Show Bounding Box visual on manipulation interaction
+            showBoundingBox = true;
         }
         private void OnManipulationEnded()
         {
@@ -378,7 +386,8 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             }
             InputManager.Instance.PopModalInputHandler();
 
-            HasBoundingBox = false;
+            //Hide Bounding Box visual on release
+            showBoundingBox = false;
         }
     }
 
@@ -419,7 +428,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
         public void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
         {
-
             m_currentRotationConstraint = m_rotationConstraint;
             m_previousHandlebarRotation = GetHandlebarDirection(handsPressedMap, manipulationRoot);
         }
@@ -490,9 +498,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
     /// Implements a movement logic that uses the model of angular rotations along a sphere whose 
     /// radius varies. The angle to move by is computed by looking at how much the hand changes
     /// relative to a pivot point (slightly below and in front of the head).
-    /// 
-    /// This implementation was copied from the HandDraggable logic from the experiences central prototyping team.
-    /// $\CPT\Templates\UnityHoloLens\Main\Assets\ProtoShared\Scripts\Hands\HandDraggable.cs
     /// </summary>
     public class MoveSphericalCoordsLogic
     {
@@ -573,6 +578,11 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         }
     }
 
+    /// <summary>
+    /// Implements a scale logic that will scale an object based on the 
+    /// ratio of the distance between hands.
+    /// object_scale = start_object_scale * curr_hand_dist / start_hand_dist
+    /// </summary>
     public class ScaleLogic
     {
         private Vector3 m_startObjectScale;
