@@ -24,7 +24,6 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         /// </summary>
         [SerializeField]
         private InteractionSourcePressType pressType;
-#endif
 
         private UseStateEnum state;
 
@@ -33,6 +32,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         {
             get { return state; }
         }
+#endif
 
         protected virtual void UseStart()
         {

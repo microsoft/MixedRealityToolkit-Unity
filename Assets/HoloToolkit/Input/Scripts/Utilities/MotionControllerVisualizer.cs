@@ -52,9 +52,11 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         protected UnityEngine.Material GLTFMaterial;
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         // This will be used to keep track of our controllers, indexed by their unique source ID.
         private Dictionary<string, MotionControllerInfo> controllerDictionary = new Dictionary<string, MotionControllerInfo>(0);
         private List<string> loadingControllers = new List<string>();
+#endif
 
         private MotionControllerInfo leftControllerModel;
         private MotionControllerInfo rightControllerModel;

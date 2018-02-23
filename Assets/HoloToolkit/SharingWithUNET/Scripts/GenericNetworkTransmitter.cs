@@ -29,7 +29,10 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// </summary>
         /// <param name="data">The data that arrived.</param>
         public delegate void OnDataReady(byte[] data);
+
+#if !UNITY_EDITOR && UNITY_WSA
         public event OnDataReady DataReadyEvent;
+#endif
 
         /// <summary>
         /// The server to connect to when data is needed.
