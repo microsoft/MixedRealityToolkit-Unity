@@ -67,7 +67,7 @@ namespace MixedRealityToolkit.InputModule.Utilities
 #endif
 
 #if UNITY_EDITOR_WIN
-        [DllImport("MotionControllerModel")]
+        [DllImport("EditorMotionController")]
         private static extern bool TryGetMotionControllerModel([In] uint controllerId, [Out] out uint outputSize, [Out] out IntPtr outputBuffer);
 #endif
 
