@@ -92,7 +92,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             }
             HostTransform = HostTransform ?? transform;
         }
-
         private void Update()
         {
             // Update positions of all hands
@@ -111,11 +110,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                 UpdateStateMachine();
             }
         }
-
         private void Start()
         {
         }
-
 
         public bool HasBoundingBox
         {
@@ -141,13 +138,13 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                 }
             }
         }
-
         private Vector3 GetInputPosition(InputEventData eventData)
         {
             Vector3 result = Vector3.zero;
             eventData.InputSource.TryGetGripPosition(eventData.SourceId, out result);
             return result;
         }
+
         public void OnInputDown(InputEventData eventData)
         {
             // Add to hand map
@@ -156,14 +153,12 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             UpdateStateMachine();
             eventData.Use();
         }
-
         public void OnInputUp(InputEventData eventData)
         {
             RemoveSourceIdFromHandMap(eventData.SourceId);
             UpdateStateMachine();
             eventData.Use();
         }
-
         public void OnSourceDetected(SourceStateEventData eventData)
         {
         }
@@ -180,14 +175,12 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                 m_handsPressedInputSourceMap.Remove(sourceId);
             }
         }
-
         public void OnSourceLost(SourceStateEventData eventData)
         {
             RemoveSourceIdFromHandMap(eventData.SourceId);
             UpdateStateMachine();
             eventData.Use();
         }
-
         private void UpdateStateMachine()
         {
             var handsPressedCount = m_handsPressedLocationsMap.Count;
@@ -303,7 +296,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                 }
             }
         }
-
         private void OnTwoHandManipulationUpdated()
         {
             var targetRotation = HostTransform.rotation;
@@ -327,7 +319,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             HostTransform.rotation = targetRotation;
             HostTransform.localScale = targetScale;
         }
-
         private void OnOneHandMoveUpdated()
         {
             var targetPosition = m_moveLogic.Update(m_handsPressedLocationsMap.Values.First(), HostTransform.position);
@@ -340,17 +331,14 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 #endif
 
         }
-
         private void OnTwoHandManipulationEnded()
         {
         }
-
         private Vector3 GetHandsCentroid()
         {
             Vector3 result = m_handsPressedLocationsMap.Values.Aggregate(Vector3.zero, (current, state) => current + state);
             return result / m_handsPressedLocationsMap.Count;
         }
-
         private void OnTwoHandManipulationStarted(State newState)
         {
             if ((newState & State.Rotating) > 0)
@@ -366,7 +354,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                 m_scaleLogic.Setup(m_handsPressedLocationsMap, HostTransform);
             }
         }
-
         private void OnOneHandMoveStarted()
         {
             Assert.IsTrue(m_handsPressedLocationsMap.Count == 1);

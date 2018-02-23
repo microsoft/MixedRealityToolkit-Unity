@@ -43,23 +43,22 @@ public class BoundingRig : MonoBehaviour
         {
             return objectToBound;
         }
-
         set
         {
-            if (objectToBound != value)
+            if (objectToBound != value )
             {
-                objectToBound = value;
+                objectToBound =  value ?? objectToBound;
                 this.Box.Target = objectToBound;
-                Box.gameObject.SetActive(objectToBound != null);
-                isActive = objectToBound != null;
+                Box.gameObject.SetActive(value != null);
+                isActive = value != null;
                 if (objectToBound != null)
                 {
                    BuildRig();
-                   Activate();
+                   //Activate();
                 }
                 else
                 {
-                   Deactivate();
+                   //Deactivate();
                 }
             }
         }
@@ -81,7 +80,21 @@ public class BoundingRig : MonoBehaviour
     private void Start()
     {
         appBarButton = this.gameObject.GetComponent<CompoundButton>();
+        appBarButton.OnButtonClicked += AppBarButton_OnButtonPressed;
     }
+
+    private void AppBarButton_OnButtonPressed(GameObject obj)
+    {
+        if (showRig == true)
+        {
+            Deactivate();
+        }
+        else
+        {
+            Activate();
+        }
+    }
+
     private void Update()
     {
         if (isActive == true)
@@ -108,6 +121,7 @@ public class BoundingRig : MonoBehaviour
     {
         ShowRig = true;
         updateCount = 1;
+        isActive = true;
 
         if (transformRig == null)
         {
@@ -407,4 +421,6 @@ public class BoundingRig : MonoBehaviour
 
         return null;
     }
+
+
 }
