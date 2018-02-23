@@ -49,6 +49,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4000014090385390}
+  - component: {fileID: 114151259519301320}
   m_Layer: 2
   m_Name: Anchor_Cursor
   m_TagString: Untagged
@@ -584,6 +585,20 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114151259519301320
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010503763288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa899d3f9dc64e41871228531b59783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Radius: 0.15
+  Color: {r: 1, g: 1, b: 1, a: 1}
+  Intensity: 0.3
 --- !u!114 &114611684728110934
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -614,11 +629,6 @@ MonoBehaviour:
       DefaultFloat: 0
       DefaultBool: 0
       Name: CursorState
-    AnimInputType: 0
-    AnimParameterName: 
-    AnimBoolValue: 0
-    AnimIntValue: 0
-    AnimFloatValue: 0
   - Name: ObserveHover
     CursorState: 1
     Parameter:
@@ -627,11 +637,6 @@ MonoBehaviour:
       DefaultFloat: 0
       DefaultBool: 0
       Name: CursorState
-    AnimInputType: 0
-    AnimParameterName: 
-    AnimBoolValue: 0
-    AnimIntValue: 0
-    AnimFloatValue: 0
   - Name: Interact
     CursorState: 2
     Parameter:
@@ -640,11 +645,6 @@ MonoBehaviour:
       DefaultFloat: 0
       DefaultBool: 0
       Name: CursorState
-    AnimInputType: 0
-    AnimParameterName: 
-    AnimBoolValue: 0
-    AnimIntValue: 0
-    AnimFloatValue: 0
   - Name: InteractHover
     CursorState: 3
     Parameter:
@@ -653,11 +653,6 @@ MonoBehaviour:
       DefaultFloat: 0
       DefaultBool: 0
       Name: CursorState
-    AnimInputType: 0
-    AnimParameterName: 
-    AnimBoolValue: 0
-    AnimIntValue: 0
-    AnimFloatValue: 0
   - Name: Select
     CursorState: 4
     Parameter:
@@ -666,11 +661,6 @@ MonoBehaviour:
       DefaultFloat: 0
       DefaultBool: 0
       Name: CursorState
-    AnimInputType: 0
-    AnimParameterName: 
-    AnimBoolValue: 0
-    AnimIntValue: 0
-    AnimFloatValue: 0
   - Name: Release
     CursorState: 5
     Parameter:
@@ -679,11 +669,6 @@ MonoBehaviour:
       DefaultFloat: 0
       DefaultBool: 0
       Name: CursorState
-    AnimInputType: 0
-    AnimParameterName: 
-    AnimBoolValue: 0
-    AnimIntValue: 0
-    AnimFloatValue: 0
   InputEnabledParameter:
     Type: 4
     DefaultInt: 0
@@ -706,6 +691,7 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -721,6 +707,7 @@ SkinnedMeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -752,6 +739,7 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -767,6 +755,7 @@ SkinnedMeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -798,6 +787,7 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -813,6 +803,7 @@ SkinnedMeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -844,6 +835,7 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -859,6 +851,7 @@ SkinnedMeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
