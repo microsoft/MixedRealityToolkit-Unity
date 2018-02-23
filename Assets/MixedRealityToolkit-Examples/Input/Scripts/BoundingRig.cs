@@ -69,12 +69,12 @@ public class BoundingRig : MonoBehaviour
     {
         get
         {
-            return AppBarButton;
+            return appBarButton;
         }
 
         set
         {
-            AppBarButton = value;
+            appBarButton = value;
         }
     }
 
@@ -341,7 +341,7 @@ public class BoundingRig : MonoBehaviour
     {
         if (handleCentroids != null)
         {
-            appBarButton.transform.localPosition = (handleCentroids[3] + handleCentroids[7]) * 0.5f;
+            appBarButton.transform.position = (handleCentroids[0] + handleCentroids[4]) * 0.5f;
         }
     }
 
