@@ -1,10 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Common;
-using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.InputModule.EventData;
-using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.InputModule.InputSources;
 using MixedRealityToolkit.UX.BoundingBoxes;
@@ -36,7 +33,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         private Transform HostTransform;
 
         [SerializeField]
-        [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
+        [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here. This is optional.")]
         private BoundingBox boundingBoxPrefab;
 
         public enum TwoHandedManipulation
@@ -120,12 +117,10 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         {
             set
             {
-                if (boundingBoxInstance == null)
+                if ((boundingBoxInstance == null) && (boundingBoxPrefab != null))
                 {
-                    if (boundingBoxPrefab != null)
-                    {
-                        boundingBoxInstance = Instantiate(boundingBoxPrefab) as BoundingBox;
-                    }
+                    // Instantiate Bounding Box from the Prefab
+                    boundingBoxInstance = Instantiate(boundingBoxPrefab) as BoundingBox;
                 }
                
                 if (value)
