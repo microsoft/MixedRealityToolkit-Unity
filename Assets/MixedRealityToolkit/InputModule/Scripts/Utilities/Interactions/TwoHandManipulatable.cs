@@ -89,6 +89,14 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             GlobalBoundingBox = GameObject.Find("BoundingBoxBasic");
         }
 
+        private void Start()
+        {
+            if (HostTransform == null)
+            {
+                HostTransform = transform;
+            }
+        }
+
         private void Update()
         {
             // Update positions of all hands
@@ -107,15 +115,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                 UpdateStateMachine();
             }
         }
-
-        private void Start()
-        {
-            if (HostTransform == null)
-            {
-                HostTransform = transform;
-            }
-        }
-
 
         private bool HasBoundingBox
         {
