@@ -1,9 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-// #defines for features that are not yet implemented
-#define TODO_ROTATE_FACE_USER
-
 using MixedRealityToolkit.Common;
 using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.InputModule.EventData;
@@ -325,12 +322,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             var targetPosition = m_moveLogic.Update(m_handsPressedLocationsMap.Values.First(), HostTransform.position);
 
             HostTransform.position = targetPosition;
-
-#if !TODO_ROTATE_FACE_USER
-            // TODO: Rotate object to face user as needed.
-            TryRotateObjectToFaceUser();
-#endif
-
         }
 
         private void OnTwoHandManipulationEnded()
