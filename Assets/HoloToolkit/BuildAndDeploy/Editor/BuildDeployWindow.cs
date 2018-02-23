@@ -219,6 +219,44 @@ namespace HoloToolkit.Unity
 
             #region Quick Options
 
+            if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.WSAPlayer)
+            {
+                EditorGUILayout.HelpBox("Build window only available for UWP build target.", MessageType.Warning);
+                GUILayout.BeginVertical();
+                GUILayout.Space(5);
+                EditorGUILayout.BeginHorizontal();
+
+                // Build directory (and save setting, if it's changed)
+                string curBuildDirectory = BuildDeployPrefs.BuildDirectory;
+                EditorGUILayout.LabelField(buildDirectoryLabel, GUILayout.Width(96));
+                string newBuildDirectory = EditorGUILayout.TextField(
+                        curBuildDirectory,
+                        GUILayout.Width(64), GUILayout.ExpandWidth(true));
+
+                if (newBuildDirectory != curBuildDirectory)
+                {
+                    BuildDeployPrefs.BuildDirectory = newBuildDirectory;
+                }
+
+                GUI.enabled = Directory.Exists(BuildDeployPrefs.AbsoluteBuildDirectory);
+
+                if (GUILayout.Button("Open Build Directory", GUILayout.Width(quarterWidth)))
+                {
+                    EditorApplication.delayCall += () => Process.Start(BuildDeployPrefs.AbsoluteBuildDirectory);
+                }
+
+                GUI.enabled = true;
+
+                if (GUILayout.Button("Open Player Settings", GUILayout.Width(quarterWidth)))
+                {
+                    EditorApplication.ExecuteMenuItem("Edit/Project Settings/Player");
+                }
+
+                EditorGUILayout.EndHorizontal();
+                GUILayout.EndVertical();
+                return;
+            }
+
             GUILayout.BeginVertical();
             GUILayout.Space(5);
             GUILayout.Label("Quick Options");
