@@ -17,13 +17,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
     {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
         [SerializeField]
-        private InteractionSourceHandedness handedness;
-
-        /// <summary>
-        /// Assign a controller button to "use" the object
-        /// </summary>
-        [SerializeField]
-        private InteractionSourcePressType pressType;
+        private InteractionSourceHandedness handedness = InteractionSourceHandedness.Unknown;
 
         private UseStateEnum state;
 
@@ -65,7 +59,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private void UseInputStart(InteractionSourcePressedEventArgs obj)
         {
-            if (/*obj.pressType == pressType && (*/handedness == InteractionSourceHandedness.Unknown || handedness == obj.state.source.handedness)
+            if (handedness == InteractionSourceHandedness.Unknown || handedness == obj.state.source.handedness)
             {
 
                 if (GetComponent<BaseGrabbable>().GrabState == GrabStateEnum.Single)
@@ -78,7 +72,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
 
         private void UseInputEnd(InteractionSourceReleasedEventArgs obj)
         {
-            if (/*obj.pressType == pressType && */obj.state.source.handedness == handedness)
+            if (obj.state.source.handedness == handedness)
             {
                 state = UseStateEnum.Inactive;
                 UseEnd();

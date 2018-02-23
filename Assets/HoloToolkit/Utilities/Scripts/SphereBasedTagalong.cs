@@ -33,11 +33,11 @@ namespace HoloToolkit.Unity
 
         [SerializeField]
         [Tooltip("Display the sphere in red wireframe for debugging purposes.")]
-        private bool debugDisplaySphere;
+        private bool debugDisplaySphere = false;
 
         [SerializeField]
         [Tooltip("Display a small green cube where the target position is.")]
-        private bool debugDisplayTargetPosition;
+        private bool debugDisplayTargetPosition = false;
 
         private Vector3 targetPosition;
         private Vector3 optimalPosition;

@@ -15,10 +15,10 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private Animator rootAnimator = null;
 
         [SerializeField]
-        private bool isModal;
+        private bool isModal = false;
 
         [SerializeField]
-        private bool closeOnNonTargetedTap;
+        private bool closeOnNonTargetedTap = false;
 
         /// <summary>
         /// Called when 'place' is selected

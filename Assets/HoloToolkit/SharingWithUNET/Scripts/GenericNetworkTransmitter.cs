@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// <param name="data">The data that arrived.</param>
         public delegate void OnDataReady(byte[] data);
 
-#if !UNITY_EDITOR && UNITY_WSA
+#if UNITY_WSA
         public event OnDataReady DataReadyEvent;
 #endif
 

@@ -16,7 +16,9 @@ namespace HoloToolkit.Unity.Buttons
     /// </summary>
     public class ButtonIconProfileTexture : ButtonIconProfile
     {
+#if UNITY_EDITOR
         private static float textureSize = 50f;
+#endif
 
         [Header("Navigation icons")]
         public Texture2D GlobalNavButton;
