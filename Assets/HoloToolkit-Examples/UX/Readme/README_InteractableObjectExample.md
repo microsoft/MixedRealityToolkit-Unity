@@ -27,7 +27,7 @@ This scripts helps you manage a TextMesh component to display text on your butto
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonText_Inspector.jpg)
 
-### [Compound Button Sound](/Assets/HoloToolkit/UX/Scripts/Buttons/Utilities/CompoundButtonSounds.cs) ###
+### [Compound Button Sound](/Assets/HoloToolkit/UX/Scripts/Buttons/CompoundButtonSounds.cs) ###
 Use this script to add audio feedback for the different input interaction states.
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonSound_Inspector.jpg)
