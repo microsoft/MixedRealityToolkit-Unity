@@ -27,6 +27,8 @@ public class BoundingRig : MonoBehaviour
     private GameObject transformRig;
     private Vector3 scaleHandleSize = new Vector3(0.05f, 0.05f, 0.05f);
     private Vector3 rotateHandleSize = new Vector3(0.05f, 0.05f, 0.05f);
+    private Color defaultColor = new Color(0.48f, 0.79f, 1.0f, 1);
+    private Color interactingColor = new Color(1.0f, 0.5f, 0.0f, 1);
     private bool showRig;
 
     public bool ShowRig
@@ -229,8 +231,8 @@ public class BoundingRig : MonoBehaviour
                 for (int i = 0; i < handleCentroids.Count; ++i)
                 {
                     cornerHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cornerHandles[i].GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1);
-                    cornerHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Diffuse");
+                    cornerHandles[i].GetComponent<Renderer>().material.color = defaultColor;
+                    cornerHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Standard");
                     cornerHandles[i].transform.localScale = scaleHandleSize;
                     BoxCollider collider = cornerHandles[i].AddComponent<BoxCollider>();
                     collider.transform.localScale.Scale(new Vector3(3, 3, 3));
@@ -263,7 +265,7 @@ public class BoundingRig : MonoBehaviour
                 for (int i = 0; i < rotateHandles.Length; ++i)
                 {
                     rotateHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    rotateHandles[i].GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1);
+                    rotateHandles[i].GetComponent<Renderer>().material.color = defaultColor;
                     rotateHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Standard");
                     rotateHandles[i].GetComponent<Collider>().transform.localScale *= 2.0f;
                     rotateHandles[i].transform.localScale = rotateHandleSize;

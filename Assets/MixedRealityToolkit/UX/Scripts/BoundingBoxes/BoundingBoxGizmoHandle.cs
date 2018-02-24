@@ -9,6 +9,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 {
     public class BoundingBoxGizmoHandle : MonoBehaviour, IInputHandler
     {
+        private Color defaultColor = new Color(0.48f, 0.79f, 1.0f, 1);
+        private Color interactingColor = new Color(1.0f, 0.5f, 0.0f, 1);
+
         public enum TransformType
         {
             Rotation,
@@ -140,13 +143,13 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             //lightGameObject.transform.position = GameObject.Find("DefaultCursor").transform.position;
             //lightGameObject.transform.parent = this.gameObject.transform;
 
-            this.gameObject.GetComponent<Renderer>().material.color = new Color(1, 0.5f, 0);
+            this.gameObject.GetComponent<Renderer>().material.color = interactingColor;
 
             Rig.FocusOnHandle(this.gameObject);
         }
         public void OnInputUp(InputEventData eventData)
         {
-            this.gameObject.GetComponent<Renderer>().material.color = new Color(0, 0, 1);
+            this.gameObject.GetComponent<Renderer>().material.color = defaultColor;
            // GameObject.Destroy(GameObject.Find("HandleLight"));
             inputDownEventData = null;
             Rig.FocusOnHandle(null);
