@@ -26,6 +26,8 @@ In the Hierarchy panel, you can find multiple objects that have TwoHandManipulat
 Simply assign TwoHandManipulatable script to any GameObject to make it manipulatable.
 The script has several configurable options:
 - **HostTransform**: Use this to specify the transform that the scripts manipulates. By default it is the GameObject that this script is on.
+- **Bounding Box Prefab**: To visualize the object bounding box, drop the [BoundingBoxBasic.prefab](/Assets/MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab) here. This is optional.
+
 - **Manipulation Mode**: Specify the enabled manipulations.
 
 - **Constraint On Rotation**: If rotation is enabled, only rotate on these axes.
@@ -38,5 +40,5 @@ The script has several configurable options:
 ![BoundingBox Basic Prefab](/External/ReadMeImages/MRTK_BoundingBoxBasicPrefab.jpg)
 
 
-**TwoHandManipulatable** script uses optional **BoundingBoxBasic prefab** to visualize the borders on manipulation interaction. It shows/hides BoundingBoxBasic in **OnManipulationStarted** and **OnManipulationEnded** event. **TwoHandManipulatable** script can work without BoundingBox visualization. Simply don't assign the BoundingBoxBasic prefab in the Inspector panel.
+**TwoHandManipulatable** script uses optional [**BoundingBoxBasic prefab**](/Assets/MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab) to visualize the borders on manipulation interaction. It shows/hides BoundingBoxBasic in **OnManipulationStarted** and **OnManipulationEnded** event. **TwoHandManipulatable** script can work without BoundingBox visualization. Simply don't assign the BoundingBoxBasic prefab in the Inspector panel.
 
