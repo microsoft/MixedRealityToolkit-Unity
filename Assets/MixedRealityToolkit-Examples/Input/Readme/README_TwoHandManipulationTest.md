@@ -4,7 +4,7 @@ This example shows how you can make any object interactable with [TwoHandManipul
 
 **Demo Video**: https://gfycat.com/ColossalEnlightenedAntipodesgreenparakeet
 
-The example also includes Bounding Box for the normal mode. In normal mode, Bounding Box gives the visual boundary of the object when you interact with the object. You can find this behavior in the cliff house. (Grab and move, rotate, scale with two motion controllers) In adjust mode, Bounding Box gives the handles for the manipulation. 
+The example also includes Bounding Box for the normal mode. In normal mode, Bounding Box gives the visual boundary of the object when you interact with the object. You can find this behavior in the cliff house. (Grab and move, rotate, scale with two motion controllers)
 
 ![Bounding Box Normal Mode](/External/ReadMeImages/MRTK_BoundingBoxNormalMode.jpg)
 
@@ -38,5 +38,5 @@ The script has several configurable options:
 ![BoundingBox Basic Prefab](/External/ReadMeImages/MRTK_BoundingBoxBasicPrefab.jpg)
 
 
-**TwoHandManipulatable** script uses **BoundingBoxBasic prefab** to visualize the borders on manipulation interaction. It shows/hides BoundingBoxBasic in **OnManipulationStarted** and **OnManipulationEnded** event. **TwoHandManipulatable** script can work without BoundingBox visualization. Simply don't include the BoundingBoxBasic prefab in the scene hierarchy.
+**TwoHandManipulatable** script uses optional **BoundingBoxBasic prefab** to visualize the borders on manipulation interaction. It shows/hides BoundingBoxBasic in **OnManipulationStarted** and **OnManipulationEnded** event. **TwoHandManipulatable** script can work without BoundingBox visualization. Simply don't assign the BoundingBoxBasic prefab in the Inspector panel.
 
