@@ -56,13 +56,13 @@ namespace HoloToolkit.Unity.InputModule
         // This will be used to keep track of our controllers, indexed by their unique source ID.
         private Dictionary<string, MotionControllerInfo> controllerDictionary = new Dictionary<string, MotionControllerInfo>(0);
         private List<string> loadingControllers = new List<string>();
-#endif
 
         private MotionControllerInfo leftControllerModel;
         private MotionControllerInfo rightControllerModel;
 
         public event Action<MotionControllerInfo> OnControllerModelLoaded;
         public event Action<MotionControllerInfo> OnControllerModelUnloaded;
+#endif
 
 #if UNITY_EDITOR_WIN
         [DllImport("MotionControllerModel")]
