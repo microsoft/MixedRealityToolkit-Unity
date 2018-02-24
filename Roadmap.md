@@ -17,9 +17,9 @@ Provide an easier to use SDK, to enable rapid prototyping and ease adoption for 
 
 Ensure an extensive framework for advanced integrators, with the ability to swap out core components with their own should they wish to, or simply extend the framework to add new capabilities.
 
-> Learn more about the architecture behind [Windows Mixed Reality - vNext](/MRTK-vNext.md) here.
+> Learn more about the architecture behind [Windows Mixed Reality - vNext](/MRTK-Version-Next/MRTK-vNext.md) here.
 
-> Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](/MRTK-SDK.md) here.
+> Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](/MRTK-Version-Next/MRTK-SDK.md) here.
 
 # Future work planning
 - Automated build for MRTK-Unity.
