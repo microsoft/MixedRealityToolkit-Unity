@@ -1,8 +1,8 @@
 # How to ...
-This readme is intended to document any questions developers might have around how to achieve certain things using the HoloToolkit.
+This readme is intended to document any questions developers might have around how to achieve certain things using the MixedRealityToolkit.
 
 ## How to migrate from the old SendMessage based input model to the new one?
-Ensure you have the released version or latest HoloToolkit-Unity packages imported into your project.
+Ensure you have the released version or latest MixedRealityToolkit-Unity packages imported into your project.
 
 ###Focus aka Gaze
 Previously, you attached a GazeManager script onto your Managers object.
@@ -18,7 +18,7 @@ It has the updated GazeManager.cs along with GazeStabilizer.
 It also has the stabilization plane being set using the StabilizationPlaneModifier.cs.
 FocusManager.cs script helps make the GazeManager.cs more extensible for VR devices.
 
-**Refer to test scene: Assets\HoloToolkit\Input\Tests\Scenes\InputTapTest.unity**
+**Refer to test scene: Assets\MixedRealityToolkit\Input\Tests\Scenes\InputTapTest.unity**
 
 ###Gestures
 Previously, you attached the GestureManager script to your Managers object.
@@ -37,11 +37,11 @@ You might have had the OnSelect function or some other method name responding to
 2. In that MonoBehavior, implement the interface called IInputClickHandler. This will get raised when a tap is detected by GesturesInput.
 3. The event data inside the OnInputClicked event handler will provide with the necessary information needed for example tap count etc.
 
-**Refer to test scene: Assets\HoloToolkit\Input\Tests\Scenes\InputTapTest.unity**
+**Refer to test scene: Assets\MixedRealityToolkit\Input\Tests\Scenes\InputTapTest.unity**
 
 ###How to handle the navigation gesture?
 
 1. In your MonoBehavior, implement the interface called INavigationHandler. These events will get raised for navigation events.
 2. The event data inside the event handler will provide with navigation offset to take your action.
 
-**Refer to test scene: Assets\HoloToolkit\Input\Tests\Scenes\InputNavigationRotateTest.unity**
+**Refer to test scene: Assets\MixedRealityToolkit\Input\Tests\Scenes\InputNavigationRotateTest.unity**

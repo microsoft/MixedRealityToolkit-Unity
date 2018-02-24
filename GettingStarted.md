@@ -75,7 +75,7 @@ Open or create your project in Unity.
 Then import the MRTK asset using `Assets -> Import Package -> Custom Package…` [Navigate to the package 
 you have either downloaded or exported above].
 
-> **NOTE**: If you've prepared the source code yourself, The HoloToolkit-Examples and HoloToolkit-Test folders (and all its content and subfolders) are optional when you import the custom package. You can uncheck those folders in the **Import Unity Package** window that shows all the contents of the package before performing the import.   
+> **NOTE**: If you've prepared the source code yourself, The MixedRealityToolkit-Examples and MixedRealityToolkit-Test folders (and all its content and subfolders) are optional when you import the custom package. You can uncheck those folders in the **Import Unity Package** window that shows all the contents of the package before performing the import.   
 
 You should now have a `Mixed Reality Toolkit` menu item in the Unity editor.
 
@@ -119,14 +119,14 @@ Alternatively, you can setup your scene manually as follows:
 
 2. Remove the default `Main Camera` and `Directional Light` objects in the scene.
 
-3. Add the `MixedRealityCameraParent.prefab` (found under HoloToolkit/Input/Prefabs). Check the configured options for the Parent and child camera meet your requirements.
+3. Add the `MixedRealityCameraParent.prefab` (found under MixedRealityToolkit/Input/Prefabs). Check the configured options for the Parent and child camera meet your requirements.
 
-4. Add the `InputManager.prefab` (found under HoloToolkit/Input/Prefabs), which will add a new **InputManager** Prefab which contains the all-important UI **EventSystem** object.
+4. Add the `InputManager.prefab` (found under MixedRealityToolkit/Input/Prefabs), which will add a new **InputManager** Prefab which contains the all-important UI **EventSystem** object.
 
-5. Add the `DefaultCursor.prefab` (found under HoloToolkit/Input/Prefabs/Cursor) and add that Object to the **InputManager** Cursor parameter (to avoid it being searched for on scene start) 
+5. Add the `DefaultCursor.prefab` (found under MixedRealityToolkit/Input/Prefabs/Cursor) and add that Object to the **InputManager** Cursor parameter (to avoid it being searched for on scene start) 
 
 > **For Hololens**
-> Optionally, if you wish to enable spatial mapping in your scene for HoloLens, you can add the `SpatialMapping.prefab` (found under HoloToolkit/SpatialMapping/Prefabs) to your 'Managers' object.  Be aware that you must also enable `Spatial Perception` Capabilities: `Edit/Project Settings/Player -> Inspector -> Publishing Settings/Capabilities`.
+> Optionally, if you wish to enable spatial mapping in your scene for HoloLens, you can add the `SpatialMapping.prefab` (found under MixedRealityToolkit/SpatialMapping/Prefabs) to your 'Managers' object.  Be aware that you must also enable `Spatial Perception` Capabilities: `Edit/Project Settings/Player -> Inspector -> Publishing Settings/Capabilities`.
 
 # 5 Building your project 
 The MRTK provides you a quick and easy way to generate your Unity project from a custom window, which can be found under:
@@ -143,7 +143,7 @@ This window offers many quick options to be able to:
 
 ![Build Window](/External/ReadMeImages/BuildWindow.PNG)
 
-_Note: You should always target the lastest Windows SDK in all builds._
+_Note: You should always target the latest Windows SDK in all builds._
 
 ## 5.1 Running your project for **Immersive Headsets**
 Unity supports running your Immersive solution direct from the editor **BUT** Only when the Mixed Reality Portal is running.
