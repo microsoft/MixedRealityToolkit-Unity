@@ -1,9 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using MixedRealityToolkit.InputModule.Utilities.Interations;
 using MixedRealityToolkit.UX.BoundingBoxes;
-using MixedRealityToolkit.Examples.InputModule;
 using MixedRealityToolkit.UX.Buttons;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BoundingRig : MonoBehaviour
