@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MixedRealityToolkit.UX.Keyboard
+namespace MixedRealityToolkit.UX.VirtualKeyboard
 {
     public class CapsLockHighlight : MonoBehaviour
     {
@@ -17,14 +17,14 @@ namespace MixedRealityToolkit.UX.Keyboard
         /// <summary>
         /// The keyboard to check for caps locks
         /// </summary>
-        private KeyboardManager m_Keyboard;
+        private VirtualKeyboardManager m_Keyboard;
                 
         /// <summary>
         /// Unity Start method.
         /// </summary>
         private void Start()
         {
-            m_Keyboard = this.GetComponentInParent<KeyboardManager>();
+            m_Keyboard = this.GetComponentInParent<VirtualKeyboardManager>();
             UpdateState();
         }
 

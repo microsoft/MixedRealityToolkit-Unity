@@ -4,7 +4,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace MixedRealityToolkit.UX.Keyboard
+namespace MixedRealityToolkit.UX.VirtualKeyboard
 {
     /// <summary>
     /// This is an input field that overrides getting deselected
