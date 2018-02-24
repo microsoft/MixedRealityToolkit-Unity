@@ -22,7 +22,6 @@ public class BoundingRig : MonoBehaviour
     private GameObject[] rotateHandles;
     private GameObject[] cornerHandles;
     private List<Vector3> handleCentroids;
-    private bool isActive = false;
     private System.Int64 updateCount;
     private GameObject transformRig;
     private Vector3 scaleHandleSize = new Vector3(0.05f, 0.05f, 0.05f);
@@ -37,10 +36,7 @@ public class BoundingRig : MonoBehaviour
         }
         set
         {
-            if (showRig != value)
-            {
-                showRig = value;
-            }
+            showRig = value;
         }
     }
 
@@ -60,12 +56,13 @@ public class BoundingRig : MonoBehaviour
     private void Start()
     {
         objectToBound = this.gameObject;
+
         boxInstance = Instantiate(BoundingBoxPrefab) as BoundingBox;
-        boxInstance.Target = objectToBound;
         boxInstance.gameObject.SetActive(true);
-        isActive = true;
+        boxInstance.Target = objectToBound;
+
         appBarButton = Instantiate(ButtonPrefab) as CompoundButton;
-        appBarButton.OnButtonClicked += AppBarButton_OnButtonPressed;
+        appBarButton.OnButtonReleased += AppBarButton_OnButtonReleased;
 
         BuildRig();
         Activate();
@@ -73,31 +70,28 @@ public class BoundingRig : MonoBehaviour
 
     private void Update()
     {
-        if (isActive == true)
-        {
-            UpdateBoundsPoints();
-            UpdateAppBar();
+        UpdateBoundsPoints();
+        UpdateAppBar();
 
-            if (ShowRig)
+        if (ShowRig)
+        {
+            if (updateCount == 2)
             {
-                if (updateCount == 2)
-                {
-                    CreateHandles();
-                }
-                else if (updateCount > 2)
-                {
-                    UpdateHandles();
-                }
-                updateCount++;
+                CreateHandles();
             }
+            else if (updateCount > 2)
+            {
+                UpdateHandles();
+            }
+            updateCount++;
         }
     }
 
     public void Activate()
     {
+        boxInstance.gameObject.SetActive(true);
         ShowRig = true;
         updateCount = 1;
-        isActive = true;
 
         if (transformRig == null)
         {
@@ -106,6 +100,7 @@ public class BoundingRig : MonoBehaviour
     }
     public void Deactivate()
     {
+        boxInstance.gameObject.SetActive(false);
         ShowRig = false;
         updateCount = 0;
         ClearHandles();
@@ -397,15 +392,9 @@ public class BoundingRig : MonoBehaviour
         return null;
     }
 
-    private void AppBarButton_OnButtonPressed(GameObject obj)
+    private void AppBarButton_OnButtonReleased(GameObject obj)
     {
-        if (showRig == true)
-        {
-            Deactivate();
-        }
-        else
-        {
-            Activate();
-        }
+        ShowRig = !ShowRig;
+        GameObject.Find("New Text").GetComponent<TextMesh>().text = obj.name + " " + ShowRig.ToString();
     }
 }

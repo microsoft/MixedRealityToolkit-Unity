@@ -143,6 +143,8 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             this.gameObject.GetComponent<Renderer>().material.color = new Color(1, 0.5f, 0);
 
             Rig.FocusOnHandle(this.gameObject);
+
+            eventData.Use();
         }
         public void OnInputUp(InputEventData eventData)
         {
@@ -150,6 +152,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
            // GameObject.Destroy(GameObject.Find("HandleLight"));
             inputDownEventData = null;
             Rig.FocusOnHandle(null);
+            eventData.Use();
         }
     }
 }
