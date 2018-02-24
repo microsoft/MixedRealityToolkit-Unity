@@ -4,8 +4,22 @@
 | Target Unity release  | Release timeframe | Master release tag | Toolkit release features |
 | --- | --- | --- | --- |
 | 2017.2.0 | COMPLETED       | v1.2017.2.0        | <ul><li>Updated master with Windows Mixed Reality support (xR namespace).</li><li>RI Dev_Unity_2017.2.0 into master.</li><li>Toolkit will work on both HoloLens and immersive headsets.</li><li>Windows Mixed Reality motion controller support.</li></ul>|
-| 2017.3.0              | End Jan 2018      | 2017.3.0        | <ul><li>Default to use Enable Depth Buffer Sharing.</li><li>Remove stabilization plane script from InputManager prefab.</li><li>Use reflection to enable setting via Configure window.</li><li>Editor and shader clean up work.</li><li>Namespace refactor work to MixedRealityToolkit instead of HoloToolkit.</li><li>Multi-pointer support for motion controllers.</li></ul>|
-| 2018.1.0              | End Feb 2018      | 2018.1.0        | <ul><li>Examples folder cleanup.</li></ul>|
+| 2018.1.0              | May 2018      | 2018.1.0        | <ul><li>Mixed Reality Toolkit Version Next.</li></ul>|
+
+# MRTK Version Next
+This new version of the MixedRealityToolkit aims to further extend the capabilities of the toolkit and also introduce new features, including the capability to support more VR/AR/XR platforms beyond Microsoft's own Mixed Reality setup.
+
+The vNext branch is taking all the best lessons learned from the original Mixed Reality Toolkit and refactoring / restructuring it to both:
+
+Support a wider audience, allowing solutions to be built that will run on multiple VR / AR / XR platforms such as Mixed Reality, Steam/Open VR and OpenXR (initially)
+
+Provide an easier to use SDK, to enable rapid prototyping and ease adoption for new users (or users of previous frameworks)
+
+Ensure an extensive framework for advanced integrators, with the ability to swap out core components with their own should they wish to, or simply extend the framework to add new capabilities.
+
+> Learn more about the architecture behind [Windows Mixed Reality - vNext](/MRTK-vNext.md) here.
+
+> Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](/MRTK-SDK.md) here.
 
 # Future work planning
 - Automated build for MRTK-Unity.
