@@ -7,7 +7,6 @@ namespace HoloToolkit.Unity.Boundary.Tests
 {
     public class BoundaryTest : MonoBehaviour
     {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private Material[] defaultMaterials = null;
 
         private void Start()
@@ -16,7 +15,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
             BoundaryManager.Instance.RenderFloor = true;
 
             defaultMaterials = GetComponent<Renderer>().materials;
-        
+
             if (BoundaryManager.Instance.ContainsObject(gameObject.transform.position))
             {
                 Debug.LogFormat("Object {0} is within established boundary. Position: {1}", name, gameObject.transform.position);
@@ -46,6 +45,5 @@ namespace HoloToolkit.Unity.Boundary.Tests
                 Destroy(defaultMaterials[i]);
             }
         }
-#endif
     }
 }
