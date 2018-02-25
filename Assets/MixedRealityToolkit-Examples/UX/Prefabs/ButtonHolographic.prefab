@@ -37,7 +37,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4334921369808496}
   - component: {fileID: 33533276614374920}
-  - component: {fileID: 65311946423756586}
   - component: {fileID: 23714127561629088}
   m_Layer: 0
   m_Name: BackPlate
@@ -95,7 +94,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4205745926742128}
   - component: {fileID: 33466526087975466}
-  - component: {fileID: 65833764099629658}
   - component: {fileID: 23436768434926048}
   m_Layer: 0
   m_Name: FrontPlate
@@ -330,30 +328,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1256721497782060}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &65311946423756586
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1256721497782060}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &65833764099629658
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1635394777758748}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65959870370459156
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -362,10 +336,10 @@ BoxCollider:
   m_GameObject: {fileID: 1619954670119144}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.079664916, y: 0.07962405, z: 0.007567048}
-  m_Center: {x: 0.00009402633, y: 0.00011447817, z: -0.00061780214}
+  m_Size: {x: 0.12, y: 0.12, z: 0.02}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95836897654538082
 Animator:
   serializedVersion: 3
@@ -540,5 +514,5 @@ MonoBehaviour:
   ButtonState: 4
   ButtonPressFilter: 1
   RequireGaze: 1
-  MainCollider: {fileID: 65833764099629658}
+  MainCollider: {fileID: 65959870370459156}
   MainRenderer: {fileID: 23714127561629088}

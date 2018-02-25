@@ -77,7 +77,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4165797710622800}
   - component: {fileID: 33183056751404668}
-  - component: {fileID: 65239488888792366}
   - component: {fileID: 23614520705590048}
   m_Layer: 0
   m_Name: FrontPlate
@@ -95,7 +94,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4469891222133882}
   - component: {fileID: 33251067709024942}
-  - component: {fileID: 65356573923581816}
   - component: {fileID: 23637783586042108}
   m_Layer: 0
   m_Name: BackPlate
@@ -338,33 +336,9 @@ BoxCollider:
   m_GameObject: {fileID: 1210820392543280}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.079664916, y: 0.07962405, z: 0.007567048}
-  m_Center: {x: 0.00009402633, y: 0.00011447817, z: -0.00061780214}
---- !u!65 &65239488888792366
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1447780916617028}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &65356573923581816
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1676057836463404}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.12, y: 0.12, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95444211700001698
 Animator:
@@ -458,7 +432,7 @@ MonoBehaviour:
   ButtonState: 4
   ButtonPressFilter: 1
   RequireGaze: 1
-  MainCollider: {fileID: 65239488888792366}
+  MainCollider: {fileID: 65091470401894616}
   MainRenderer: {fileID: 23637783586042108}
 --- !u!114 &114586770699789526
 MonoBehaviour:
