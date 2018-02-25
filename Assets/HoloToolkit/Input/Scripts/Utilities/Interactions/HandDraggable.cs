@@ -64,6 +64,7 @@ namespace HoloToolkit.Unity.InputModule
         private IInputSource currentInputSource;
         private uint currentInputSourceId;
         private Rigidbody hostRigidbody;
+        private bool hostRigidbodyWasKinematic;
 
         private void Start()
         {
@@ -120,6 +121,7 @@ namespace HoloToolkit.Unity.InputModule
             isDragging = true;
             if (hostRigidbody != null)
             {
+                hostRigidbodyWasKinematic = hostRigidbody.isKinematic;
                 hostRigidbody.isKinematic = true;
             }
 
@@ -299,7 +301,7 @@ namespace HoloToolkit.Unity.InputModule
             currentInputSourceId = 0;
             if (hostRigidbody != null)
             {
-                hostRigidbody.isKinematic = false;
+                hostRigidbody.isKinematic = hostRigidbodyWasKinematic;
             }
             StoppedDragging.RaiseEvent();
         }
