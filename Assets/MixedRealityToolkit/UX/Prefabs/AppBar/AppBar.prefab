@@ -58,7 +58,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4691479528535670
 Transform:
   m_ObjectHideFlags: 1
@@ -80,8 +80,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1275815092924048}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75000036, y: -0.30000013, z: 1.0000005}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4691479528535670}
   m_Father: {fileID: 0}
@@ -95,7 +95,7 @@ Transform:
   m_GameObject: {fileID: 1093294406509342}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.4882841, y: 1.4882845, z: 0.61235887}
   m_Children: []
   m_Father: {fileID: 4691479528535670}
   m_RootOrder: 0
@@ -114,7 +114,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 11217bb60dac19b47854c8d47c51b871, type: 2}
+  - {fileID: 2100000, guid: 4c24a500fa1c19a40991fbbee0ef2970, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -155,9 +155,9 @@ MonoBehaviour:
   interactables: []
   Targets: []
   lockFocus: 0
-  HoverOffsetYScale: 0.25
-  HoverOffsetZ: 0
-  SquareButtonPrefab: {fileID: 1820333246347296, guid: 7bcb89df8599d00448726407181348bd,
+  HoverOffsetYScale: 0.35
+  HoverOffsetZ: -0.3
+  SquareButtonPrefab: {fileID: 1210820392543280, guid: 40da8a1b3b26ba743b892d890b95a9f9,
     type: 2}
   UseRemove: 1
   UseAdjust: 1
@@ -166,67 +166,31 @@ MonoBehaviour:
   State: 0
   CustomButtonIconProfile: {fileID: 0}
   buttons:
-  - DefaultPosition: 0
-    ManipulationPosition: 0
+  - DefaultPosition: 1
+    ManipulationPosition: 1
     Type: 0
-    Name: 
+    Name: Save
     Icon: 
-    Text: 
+    Text: Save
     EventTarget: {fileID: 0}
     OnTappedEvent:
       m_PersistentCalls:
         m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-  - DefaultPosition: 0
-    ManipulationPosition: 0
+  - DefaultPosition: 2
+    ManipulationPosition: 2
     Type: 0
-    Name: 
+    Name: Load
     Icon: 
-    Text: 
+    Text: Load
     EventTarget: {fileID: 0}
     OnTappedEvent:
       m_PersistentCalls:
         m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-  - DefaultPosition: 0
-    ManipulationPosition: 0
-    Type: 0
-    Name: 
-    Icon: 
-    Text: 
-    EventTarget: {fileID: 0}
-    OnTappedEvent:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - DefaultPosition: 0
-    ManipulationPosition: 0
-    Type: 0
-    Name: 
-    Icon: 
-    Text: 
-    EventTarget: {fileID: 0}
-    OnTappedEvent:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - DefaultPosition: 0
-    ManipulationPosition: 0
-    Type: 0
-    Name: 
-    Icon: 
-    Text: 
-    EventTarget: {fileID: 0}
-    OnTappedEvent:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  buttonParent: {fileID: 0}
-  baseRenderer: {fileID: 0}
-  backgroundBar: {fileID: 0}
+  buttonParent: {fileID: 4691479528535670}
+  baseRenderer: {fileID: 1275815092924048}
+  backgroundBar: {fileID: 1093294406509342}
   boundingBox: {fileID: 0}

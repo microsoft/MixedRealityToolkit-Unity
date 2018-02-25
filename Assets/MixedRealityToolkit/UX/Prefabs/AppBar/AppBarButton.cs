@@ -3,16 +3,17 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 using MixedRealityToolkit.UX.Buttons;
+using MixedRealityToolkit.UX.Buttons.Enums;
 using MixedRealityToolkit.UX.Buttons.Profiles;
 using MixedRealityToolkit.UX.Buttons.Utilities;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.AppBar
+namespace MixedRealityToolkit.UX.BoundingBoxes
 {
     public class AppBarButton : MonoBehaviour
     {
-        public const float ButtonWidth = 0.08f;
-        public const float ButtonDepth = -0.0001f;
+        public const float ButtonWidth = 0.12f;
+        public const float ButtonDepth = 0.0001f;
         const float MoveSpeed = 5f;
 
         // MRTK_TEMP_FIX
@@ -134,6 +135,9 @@ namespace MixedRealityToolkit.UX.AppBar
             icon.Alpha = 0f;
             text.DisableText = true;
             cButton.enabled = false;
+            //cButton.ButtonState = ButtonStateEnum.Disabled;
+            //cButton.MainCollider = null;
+            //cButton.gameObject.SetActive(false);
             // MRTK_TEMP_FIX cButton.FilterTag = HiddenFilterTag;
         }
 
@@ -145,6 +149,10 @@ namespace MixedRealityToolkit.UX.AppBar
             icon.Alpha = 1f;
             text.DisableText = false;
             cButton.enabled = true;
+            //cButton.MainCollider = this.gameObject.GetComponent<BoxCollider>();
+            //cButton.ButtonState = ButtonStateEnum.Observation;
+
+            //cButton.gameObject.SetActive(true);
             // MRTK_TEMP_FIX cButton.FilterTag = VisibleFilterTag;
         }
 
