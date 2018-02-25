@@ -30,8 +30,8 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private System.Int64 updateCount;
         private GameObject transformRig;
         private Vector3 scaleHandleSize = new Vector3(0.05f, 0.05f, 0.05f);
-        private Vector3 rotateHandleSize = new Vector3(0.05f, 0.05f, 0.05f);
-        private Color defaultColor = new Color(0.48f, 0.79f, 1.0f, 1);
+        private Vector3 rotateHandleSize = new Vector3(0.03f, 0.03f, 0.03f);
+        private Color defaultColor = new Color(0, 0.486f, 0.796f, 1);
         private Color interactingColor = new Color(1.0f, 0.5f, 0.0f, 1);
         private bool showRig;
 
