@@ -135,10 +135,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             icon.Alpha = 0f;
             text.DisableText = true;
             cButton.enabled = false;
-            //cButton.ButtonState = ButtonStateEnum.Disabled;
-            //cButton.MainCollider = null;
-            //cButton.gameObject.SetActive(false);
-            // MRTK_TEMP_FIX cButton.FilterTag = HiddenFilterTag;
+            cButton.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
         }
 
         private void Show()
@@ -149,11 +146,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             icon.Alpha = 1f;
             text.DisableText = false;
             cButton.enabled = true;
-            //cButton.MainCollider = this.gameObject.GetComponent<BoxCollider>();
-            //cButton.ButtonState = ButtonStateEnum.Observation;
-
-            //cButton.gameObject.SetActive(true);
-            // MRTK_TEMP_FIX cButton.FilterTag = VisibleFilterTag;
+            cButton.gameObject.layer = LayerMask.NameToLayer("UI");
         }
 
         private void RefreshOffsets()
