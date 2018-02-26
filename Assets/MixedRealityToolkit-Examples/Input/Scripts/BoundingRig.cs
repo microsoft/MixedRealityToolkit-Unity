@@ -68,17 +68,15 @@ public class BoundingRig : MonoBehaviour
         boxInstance = Instantiate(BoundingBoxPrefab) as BoundingBox;
         boxInstance.Target = objectToBound;
 
-        appBarInstance = Instantiate(appBarPrefab) as AppBar;
-        appBarInstance.BoundingBox = boxInstance;
-        
         BuildRig();
 
-       // Deactivate();
+        appBarInstance = Instantiate(appBarPrefab) as AppBar;
+        appBarInstance.BoundingBox = boxInstance;
+
     }
     private void Update()
     {
         UpdateBoundsPoints();
-        //UpdateAppBar();
 
         if (ShowRig)
         {
