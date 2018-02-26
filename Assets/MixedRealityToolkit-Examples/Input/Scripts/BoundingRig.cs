@@ -29,28 +29,6 @@ public class BoundingRig : MonoBehaviour
 
     public Color UnselectedColor = new Color(0, 0.486f, 0.796f, 1);
 
-    public bool ShowRig
-    {
-        get
-        {
-            return showRig;
-        }
-        set
-        {
-            showRig = value;
-            boxInstance.gameObject.SetActive(showRig);
-
-            foreach (GameObject handle in cornerHandles)
-            {
-                handle.SetActive(showRig);
-            }
-            foreach (GameObject handle in rotateHandles)
-            {
-                handle.SetActive(showRig);
-            }
-        }
-    }
-
     public void Activate()
     {
         ShowRig = true;
@@ -59,31 +37,6 @@ public class BoundingRig : MonoBehaviour
     {
         ShowRig = false;
     }
-    
-
-    private void Start()
-    {
-        objectToBound = this.gameObject;
-
-        boxInstance = Instantiate(BoundingBoxPrefab) as BoundingBox;
-        boxInstance.Target = objectToBound;
-
-        BuildRig();
-
-        appBarInstance = Instantiate(appBarPrefab) as AppBar;
-        appBarInstance.BoundingBox = boxInstance;
-
-    }
-    private void Update()
-    {
-        UpdateBoundsPoints();
-
-        if (ShowRig)
-        {
-            UpdateHandles();
-        }
-    }
-
     public void FocusOnHandle(GameObject handle)
     {
         if (handle != null)
@@ -116,66 +69,22 @@ public class BoundingRig : MonoBehaviour
         }
     }
 
-    private GameObject BuildRig()
+    private void Start()
     {
-        Vector3 scale = objectToBound.transform.localScale;
+        objectToBound = this.gameObject;
 
-        GameObject rig = new GameObject();
-        rig.name = "center";
-        rig.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.identity);
-        rig.transform.localScale = new Vector3(1.0f / scale.x, 1.0f / scale.y, 1.0f / scale.z);
+        boxInstance = Instantiate(BoundingBoxPrefab) as BoundingBox;
+        boxInstance.Target = objectToBound;
 
-        GameObject upperLeftFront = new GameObject();
-        upperLeftFront.name = "upperleftfront";
-        upperLeftFront.transform.SetPositionAndRotation(new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity);
-        upperLeftFront.transform.localScale = new Vector3(1, 1, 1);
-        upperLeftFront.transform.parent = rig.transform;
+        BuildRig();
 
-        GameObject upperLeftBack = new GameObject();
-        upperLeftBack.name = "upperleftback";
-        upperLeftBack.transform.SetPositionAndRotation(new Vector3(0.5f, 0.5f, -0.5f), Quaternion.identity);
-        upperLeftBack.transform.localScale = new Vector3(1, 1, 1);
-        upperLeftBack.transform.parent = rig.transform;
-
-        GameObject lowerLeftFront = new GameObject();
-        lowerLeftFront.name = "lowerleftfront";
-        lowerLeftFront.transform.SetPositionAndRotation(new Vector3(0.5f, -0.5f, 0.5f), Quaternion.identity);
-        lowerLeftFront.transform.localScale = new Vector3(1, 1, 1);
-        lowerLeftFront.transform.parent = rig.transform;
-
-        GameObject lowerLeftBack = new GameObject();
-        lowerLeftBack.name = "lowerleftback";
-        lowerLeftBack.transform.SetPositionAndRotation(new Vector3(0.5f, -0.5f, -0.5f), Quaternion.identity);
-        lowerLeftBack.transform.localScale = new Vector3(1, 1, 1);
-        lowerLeftBack.transform.parent = rig.transform;
-
-        GameObject upperRightFront = new GameObject();
-        upperRightFront.name = "upperrightfront";
-        upperRightFront.transform.SetPositionAndRotation(new Vector3(-0.5f, 0.5f, 0.5f), Quaternion.identity);
-        upperRightFront.transform.localScale = new Vector3(1, 1, 1);
-        upperRightFront.transform.parent = rig.transform;
-
-        GameObject upperRightBack = new GameObject();
-        upperRightBack.name = "upperrightback";
-        upperRightBack.transform.SetPositionAndRotation(new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
-        upperRightBack.transform.localScale = new Vector3(1, 1, 1);
-        upperRightBack.transform.parent = rig.transform;
-
-        GameObject lowerRightFront = new GameObject();
-        lowerRightFront.name = "lowerrightfront";
-        lowerRightFront.transform.SetPositionAndRotation(new Vector3(-0.5f, -0.5f, 0.5f), Quaternion.identity);
-        lowerRightFront.transform.localScale = new Vector3(1, 1, 1);
-        lowerRightFront.transform.parent = rig.transform;
-
-        GameObject lowerRightBack = new GameObject();
-        lowerRightBack.name = "lowerrightback";
-        lowerRightBack.transform.SetPositionAndRotation(new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
-        lowerRightBack.transform.localScale = new Vector3(1, 1, 1);
-        lowerRightBack.transform.parent = rig.transform;
-
-        transformRig = rig;
-
-        return rig;
+        appBarInstance = Instantiate(appBarPrefab) as AppBar;
+        appBarInstance.BoundingBox = boxInstance;
+    }
+    private void Update()
+    {
+        UpdateBoundsPoints();
+        UpdateHandles();
     }
     private void UpdateBoundsPoints()
     {
@@ -288,7 +197,6 @@ public class BoundingRig : MonoBehaviour
         transformRig.transform.localScale = new Vector3(0.5f / invScale.x, 0.5f / invScale.y, 0.5f / invScale.z);
         transformRig.transform.parent = objectToBound.transform;
     }
-
     private void UpdateHandles()
     {
         if (ShowRig)
@@ -297,17 +205,6 @@ public class BoundingRig : MonoBehaviour
             UpdateRotateHandles();
         }
     }
-    private void UpdateAppBar()
-    {
-        if (handleCentroids != null && appBarInstance != null)
-        {
-            Vector3 buttonPosition = (handleCentroids[0] + handleCentroids[4]) * 0.5f;
-            buttonPosition.y += 0.07f;
-           // appBarInstance.transform.position = buttonPosition;
-           // appBarInstance.transform.localRotation = objectToBound.transform.rotation;
-        }
-    }
-
     private void ClearCornerHandles()
     {
         if (cornerHandles != null)
@@ -344,7 +241,88 @@ public class BoundingRig : MonoBehaviour
         ClearCornerHandles();
         ClearRotateHandles();
     }
+    private GameObject BuildRig()
+    {
+        Vector3 scale = objectToBound.transform.localScale;
 
+        GameObject rig = new GameObject();
+        rig.name = "center";
+        rig.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.identity);
+        rig.transform.localScale = new Vector3(1.0f / scale.x, 1.0f / scale.y, 1.0f / scale.z);
+
+        GameObject upperLeftFront = new GameObject();
+        upperLeftFront.name = "upperleftfront";
+        upperLeftFront.transform.SetPositionAndRotation(new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity);
+        upperLeftFront.transform.localScale = new Vector3(1, 1, 1);
+        upperLeftFront.transform.parent = rig.transform;
+
+        GameObject upperLeftBack = new GameObject();
+        upperLeftBack.name = "upperleftback";
+        upperLeftBack.transform.SetPositionAndRotation(new Vector3(0.5f, 0.5f, -0.5f), Quaternion.identity);
+        upperLeftBack.transform.localScale = new Vector3(1, 1, 1);
+        upperLeftBack.transform.parent = rig.transform;
+
+        GameObject lowerLeftFront = new GameObject();
+        lowerLeftFront.name = "lowerleftfront";
+        lowerLeftFront.transform.SetPositionAndRotation(new Vector3(0.5f, -0.5f, 0.5f), Quaternion.identity);
+        lowerLeftFront.transform.localScale = new Vector3(1, 1, 1);
+        lowerLeftFront.transform.parent = rig.transform;
+
+        GameObject lowerLeftBack = new GameObject();
+        lowerLeftBack.name = "lowerleftback";
+        lowerLeftBack.transform.SetPositionAndRotation(new Vector3(0.5f, -0.5f, -0.5f), Quaternion.identity);
+        lowerLeftBack.transform.localScale = new Vector3(1, 1, 1);
+        lowerLeftBack.transform.parent = rig.transform;
+
+        GameObject upperRightFront = new GameObject();
+        upperRightFront.name = "upperrightfront";
+        upperRightFront.transform.SetPositionAndRotation(new Vector3(-0.5f, 0.5f, 0.5f), Quaternion.identity);
+        upperRightFront.transform.localScale = new Vector3(1, 1, 1);
+        upperRightFront.transform.parent = rig.transform;
+
+        GameObject upperRightBack = new GameObject();
+        upperRightBack.name = "upperrightback";
+        upperRightBack.transform.SetPositionAndRotation(new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
+        upperRightBack.transform.localScale = new Vector3(1, 1, 1);
+        upperRightBack.transform.parent = rig.transform;
+
+        GameObject lowerRightFront = new GameObject();
+        lowerRightFront.name = "lowerrightfront";
+        lowerRightFront.transform.SetPositionAndRotation(new Vector3(-0.5f, -0.5f, 0.5f), Quaternion.identity);
+        lowerRightFront.transform.localScale = new Vector3(1, 1, 1);
+        lowerRightFront.transform.parent = rig.transform;
+
+        GameObject lowerRightBack = new GameObject();
+        lowerRightBack.name = "lowerrightback";
+        lowerRightBack.transform.SetPositionAndRotation(new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
+        lowerRightBack.transform.localScale = new Vector3(1, 1, 1);
+        lowerRightBack.transform.parent = rig.transform;
+
+        transformRig = rig;
+
+        return rig;
+    }
+    private bool ShowRig
+    {
+        get
+        {
+            return showRig;
+        }
+        set
+        {
+            showRig = value;
+            boxInstance.gameObject.SetActive(showRig);
+
+            foreach (GameObject handle in cornerHandles)
+            {
+                handle.SetActive(showRig);
+            }
+            foreach (GameObject handle in rotateHandles)
+            {
+                handle.SetActive(showRig);
+            }
+        }
+    }
     private List<Vector3> GetBounds()
     {
         if (objectToBound != null)
