@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using MixedRealityToolkit.InputModule.InputSources;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.InputHandlers;
+using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Utilities.Interations
+namespace MixedRealityToolkit.UX.BoundingBoxes
 {
     public class BoundingBoxGizmoHandle : MonoBehaviour, IInputHandler
     {
@@ -31,6 +31,8 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         private Vector3 initialScale;
         private Vector3 initialOrientation;
         private InputEventData inputDownEventData;
+        private Color defaultColor = new Color(0, 0.486f, 0.796f, 1);
+        private Color interactingColor = new Color(1.0f, 0.5f, 0.0f, 1);
 
         public GameObject ObjectToAffect
         {
@@ -140,15 +142,15 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             //lightGameObject.transform.position = GameObject.Find("DefaultCursor").transform.position;
             //lightGameObject.transform.parent = this.gameObject.transform;
 
-            this.gameObject.GetComponent<Renderer>().material.color = new Color(1, 0.5f, 0);
-
+            this.gameObject.GetComponent<Renderer>().material.color = interactingColor;
+            Debug.Log("########################## OnInputDown " + this.gameObject.name);
             Rig.FocusOnHandle(this.gameObject);
 
             eventData.Use();
         }
         public void OnInputUp(InputEventData eventData)
         {
-            this.gameObject.GetComponent<Renderer>().material.color = new Color(0, 0, 1);
+            this.gameObject.GetComponent<Renderer>().material.color = defaultColor;
            // GameObject.Destroy(GameObject.Find("HandleLight"));
             inputDownEventData = null;
             Rig.FocusOnHandle(null);
