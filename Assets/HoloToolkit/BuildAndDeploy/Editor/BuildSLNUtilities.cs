@@ -129,8 +129,6 @@ namespace HoloToolkit.Unity
             string buildError = "Error";
             try
             {
-                VerifyWsaUwpSdkIsInstalled(EditorUserBuildSettings.wsaUWPSDK);
-
                 // For the WSA player, Unity builds into a target directory.
                 // For other players, the OutputPath parameter indicates the
                 // path to the target executable to build.
@@ -144,7 +142,7 @@ namespace HoloToolkit.Unity
                     buildInfo.Scenes.ToArray(),
                     buildInfo.OutputDirectory,
                     buildInfo.BuildTarget,
-                    buildInfo.BuildOptions);
+                    buildInfo.BuildOptions).ToString();
 
                 if (buildError.StartsWith("Error"))
                 {
@@ -172,54 +170,6 @@ namespace HoloToolkit.Unity
 
                 EditorUserBuildSettings.SwitchActiveBuildTarget(oldBuildTargetGroup, oldBuildTarget);
             }
-        }
-
-        private static void VerifyWsaUwpSdkIsInstalled(string wsaUwpSdk)
-        {
-            if (string.IsNullOrEmpty(wsaUwpSdk))
-            {
-                // Unity uses a null or empty string to mean "use the latest sdk that's installed", so we don't need to
-                // verify any particular version.
-                return;
-            }
-
-            IEnumerable<Version> uwpSdksAvailable;
-            try
-            {
-                // In order to get the same list of SDKs that the Unity build settings "UWP SDK" box has, we call into an
-                // internal Unity function.  If Unity changes how its internals work, we'll need to update this code.
-                Type uwpReferencesType = typeof(Editor).Assembly.GetType("UnityEditor.Scripting.Compilers.UWPReferences", throwOnError: false);
-
-                MethodInfo uwpReferencesMethod = uwpReferencesType == null
-                    ? null
-                    : uwpReferencesType.GetMethod("GetInstalledSDKVersions");
-
-                uwpSdksAvailable = uwpReferencesMethod == null
-                    ? null
-                    : uwpReferencesMethod.Invoke(null, null) as IEnumerable<Version>;
-            }
-            catch
-            {
-                uwpSdksAvailable = null;
-            }
-
-            if (uwpSdksAvailable == null)
-            {
-                Debug.LogWarningFormat("Couldn't verify that UWP SDK \"{0}\" is installed. You better make sure it's installed"
-                                    + " and available in your Unity Build settings menu, or you may get unexpected build breaks or runtime"
-                                    + " behavior.",
-                    wsaUwpSdk
-                );
-            }
-            else if (!uwpSdksAvailable.Select(version => version.ToString()).Contains(wsaUwpSdk))
-            {
-                throw new Exception(string.Format("UWP SDK \"{0}\" is not installed. Please install it and try building again. If"
-                                               + " you really want to build without that SDK, build directly from Unity's Build settings menu instead.",
-                    wsaUwpSdk
-                ));
-            }
-
-            // The SDK is verified installed. All is right with the world!
         }
 
         public static void ParseBuildCommandLine(ref BuildInfo buildInfo)

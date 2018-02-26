@@ -127,7 +127,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 2017.2.1.1
+  bundleVersion: 2017.2.1.2
   preloadedAssets: []
   metroInputSource: 0
   m_HolographicPauseOnTrackingLoss: 0
@@ -619,12 +619,12 @@ PlayerSettings:
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: MixedRealityToolkit-Unity
-  metroPackageVersion: 2017.2.1.1
+  metroPackageVersion: 2017.2.1.2
   metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: Microsoft
   metroCertificateIssuer: Microsoft
-  metroCertificateNotAfter: 0047bdc38784d401
+  metroCertificateNotAfter: 004f768dd489d401
   metroApplicationDescription: MixedRealityToolkit-Unity
   wsaImages: {}
   metroTileShortName: MixedRealityToolkit-Unity
@@ -653,7 +653,7 @@ PlayerSettings:
       InternetClientServer: True
       Location: False
       Microphone: True
-      MusicLibrary: False
+      MusicLibrary: True
       Objects3D: False
       PhoneCall: False
       PicturesLibrary: False

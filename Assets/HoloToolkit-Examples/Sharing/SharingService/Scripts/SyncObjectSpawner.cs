@@ -1,7 +1,5 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using UnityEngine;
 using HoloToolkit.Sharing.Spawning;
@@ -15,7 +13,7 @@ namespace HoloToolkit.Sharing.Tests
     public class SyncObjectSpawner : MonoBehaviour
     {
         [SerializeField]
-        private PrefabSpawnManager spawnManager;
+        private PrefabSpawnManager spawnManager = null;
 
         [SerializeField]
         [Tooltip("Optional transform target, for when you want to spawn the object on a specific parent.  If this value is not set, then the spawned objects will be spawned on this game object.")]

@@ -251,12 +251,18 @@ namespace HoloToolkit.Unity
             if (string.IsNullOrEmpty(texturePath)) { return string.Empty; }
 
             var iconSize = GetUWPImageTypeSize(type, scale);
+
             if (iconSize == Vector2.zero) { return string.Empty; }
 
             if (iconSize.x == 1240 && iconSize.y == 1240 || iconSize.x == 2480 && iconSize.y == 1200) { return texturePath; }
 
-            string filePath = string.Format("{0}/{1}_{2}x{3}.png", _outputDirectoryName, type.ToString(), iconSize.x, iconSize.y);
+            string filePath = string.Format("{0}/{1}_AppIcon_{2}x{3}.png", _outputDirectoryName, Application.productName, iconSize.x, iconSize.y);
             filePath = filePath.Replace(Application.dataPath, "Assets");
+
+            if (File.Exists(filePath))
+            {
+                return filePath;
+            }
 
             // Create copy of original image
             try
@@ -284,7 +290,7 @@ namespace HoloToolkit.Unity
 
                 if (rawData.Length > 204800)
                 {
-                    Debug.LogWarningFormat("{0} exceeds the minimum file size of 204,800 bytes, please use a smaller image for generating your icons.", clone.name);
+                    Debug.LogWarningFormat("{0} exceeds the minimum file size of 204,800 bytes, please use a smaller image for generating your icons.", filePath);
                 }
             }
             catch (Exception e)
@@ -301,17 +307,12 @@ namespace HoloToolkit.Unity
             switch (type)
             {
                 case PlayerSettings.WSAImageType.PackageLogo:
-                case PlayerSettings.WSAImageType.StoreTileLogo:
-                case PlayerSettings.WSAImageType.StoreTileSmallLogo:
-                case PlayerSettings.WSAImageType.StoreSmallTile:
-                case PlayerSettings.WSAImageType.StoreLargeTile:
                 case PlayerSettings.WSAImageType.UWPSquare44x44Logo:
                 case PlayerSettings.WSAImageType.UWPSquare71x71Logo:
                 case PlayerSettings.WSAImageType.UWPSquare150x150Logo:
                 case PlayerSettings.WSAImageType.UWPSquare310x310Logo:
                     return _newAppIconPath;
                 case PlayerSettings.WSAImageType.SplashScreenImage:
-                case PlayerSettings.WSAImageType.StoreTileWideLogo:
                 case PlayerSettings.WSAImageType.UWPWide310x150Logo:
                     if (scale != PlayerSettings.WSAImageScale.Target16 &&
                         scale != PlayerSettings.WSAImageScale.Target24 &&
@@ -325,12 +326,6 @@ namespace HoloToolkit.Unity
                     {
                         return _newAppIconPath;
                     }
-                case PlayerSettings.WSAImageType.PhoneAppIcon:
-                case PlayerSettings.WSAImageType.PhoneSmallTile:
-                case PlayerSettings.WSAImageType.PhoneMediumTile:
-                case PlayerSettings.WSAImageType.PhoneWideTile:
-                case PlayerSettings.WSAImageType.PhoneSplashScreen:
-                    return string.Empty;
                 default:
                     throw new ArgumentOutOfRangeException("type", type, null);
             }
@@ -363,20 +358,6 @@ namespace HoloToolkit.Unity
             {
                 case PlayerSettings.WSAImageType.PackageLogo:
                     return CreateSquareSize(50, scaleFactor);
-                case PlayerSettings.WSAImageType.StoreTileLogo:
-                    return CreateSquareSize(150, scaleFactor);
-                case PlayerSettings.WSAImageType.StoreTileSmallLogo:
-                    return CreateSquareSize(30, scaleFactor);
-                case PlayerSettings.WSAImageType.StoreSmallTile:
-                    return CreateSquareSize(70, scaleFactor);
-                case PlayerSettings.WSAImageType.StoreLargeTile:
-                    return CreateSquareSize(310, scaleFactor);
-                case PlayerSettings.WSAImageType.PhoneAppIcon:
-                    return CreateSquareSize(44, scaleFactor);
-                case PlayerSettings.WSAImageType.PhoneSmallTile:
-                    return CreateSquareSize(71, scaleFactor);
-                case PlayerSettings.WSAImageType.PhoneMediumTile:
-                    return CreateSquareSize(150, scaleFactor);
                 case PlayerSettings.WSAImageType.UWPSquare44x44Logo:
                     return CreateSquareSize(44, scaleFactor);
                 case PlayerSettings.WSAImageType.UWPSquare71x71Logo:
@@ -387,26 +368,17 @@ namespace HoloToolkit.Unity
                     return CreateSquareSize(310, scaleFactor);
 
                 // WIDE 31:15
-                case PlayerSettings.WSAImageType.PhoneWideTile:
-                case PlayerSettings.WSAImageType.StoreTileWideLogo:
                 case PlayerSettings.WSAImageType.UWPWide310x150Logo:
                     return CreateSize(new Vector2(310, 150), scaleFactor);
                 case PlayerSettings.WSAImageType.SplashScreenImage:
                     return CreateSize(new Vector2(620, 300), scaleFactor);
-                case PlayerSettings.WSAImageType.PhoneSplashScreen:
                 default:
-                    var size = CreateSquareSize(0, scaleFactor);
-
-                    if (size == Vector2.zero)
-                    {
-                        Debug.LogWarningFormat("Invalid image size for {0} with scale {1}", type, scale);
-                    }
-
-                    return size;
+                    Debug.LogWarningFormat("Invalid image size for {0} with scale {1}X{2}", type, scale, scaleFactor);
+                    return Vector2.zero;
             }
         }
 
-        private static Vector2 CreateSquareSize(int size, float scaleFactor = 0f)
+        private static Vector2 CreateSquareSize(int size, float scaleFactor = 1f)
         {
             var newSize = new Vector2(size * scaleFactor, size * scaleFactor);
             newSize.x = (float)Math.Ceiling(newSize.x);
@@ -414,7 +386,7 @@ namespace HoloToolkit.Unity
             return newSize;
         }
 
-        private static Vector2 CreateSize(Vector2 size, float scaleFactor = 0f)
+        private static Vector2 CreateSize(Vector2 size, float scaleFactor = 1f)
         {
             var newSize = new Vector2(size.x * scaleFactor, size.y * scaleFactor);
             newSize.x = (float)Math.Ceiling(newSize.x);

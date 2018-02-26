@@ -40,10 +40,11 @@ namespace HoloToolkit.Unity.Boundary
         //private TrackingSpaceType transparentTrackingSpaceType = TrackingSpaceType.Stationary;
 #endif
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         // Testing in the editor found that this moved the floor out of the way enough, and it is only
         // used in the case where a headset isn't attached. Otherwise, the floor is positioned like normal.
         private readonly Vector3 floorPositionInEditor = new Vector3(0f, -3f, 0f);
-
+#endif
         [SerializeField]
         private bool renderFloor = true;
         public bool RenderFloor
@@ -190,6 +191,10 @@ namespace HoloToolkit.Unity.Boundary
                         boundaryBounds.Encapsulate(boundaryGeo);
                     }
                 }
+            }
+            else
+            {
+                Debug.Log("TryGetGeometry always returns false.");
             }
 
             // Ensuring that we set height of the bounds volume to be say 10 feet tall.

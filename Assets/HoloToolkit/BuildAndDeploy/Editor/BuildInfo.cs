@@ -1,7 +1,5 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using System;
 using System.Collections.Generic;
@@ -54,7 +52,7 @@ namespace HoloToolkit.Unity
         public void AppendSymbols(IEnumerable<string> symbols)
         {
             string[] toAdd = symbols.Except(BuildSymbols.Split(';'))
-                .Where(sym => !string.IsNullOrEmpty(sym)).ToArray();
+                                    .Where(sym => !string.IsNullOrEmpty(sym)).ToArray();
 
             if (!toAdd.Any())
             {
@@ -82,9 +80,9 @@ namespace HoloToolkit.Unity
                 BuildSLNUtilities.BuildSymbolMaster);
         }
 
-        public static IEnumerable<string> RemoveConfigurationSymbols(string symbolstring)
+        public static IEnumerable<string> RemoveConfigurationSymbols(string symbols)
         {
-            return symbolstring.Split(';').Except(new[]
+            return symbols.Split(';').Except(new[]
             {
                 BuildSLNUtilities.BuildSymbolDebug,
                 BuildSLNUtilities.BuildSymbolRelease,
