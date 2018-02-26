@@ -13,21 +13,21 @@ public class BoundingRig : MonoBehaviour
     public BoundingBox BoundingBoxPrefab;
 
     [SerializeField]
-    [Tooltip("Button prefab.")]
-    public CompoundButton ButtonPrefab;
-
-    public Color UnselectedColor = new Color(0, 0.486f, 0.796f, 1);
+    [Tooltip("AppBar prefab.")]
+    private AppBar appBarPrefab;
 
     private BoundingBox boxInstance;
     private GameObject objectToBound;
-    private CompoundButton appBarButton;
+    private AppBar appBarInstance;
     private GameObject[] rotateHandles;
     private GameObject[] cornerHandles;
     private List<Vector3> handleCentroids;
     private GameObject transformRig;
+    private bool showRig = false;
     private Vector3 scaleHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
     private Vector3 rotateHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
-    private bool showRig;
+
+    public Color UnselectedColor = new Color(0, 0.486f, 0.796f, 1);
 
     public bool ShowRig
     {
@@ -38,21 +38,28 @@ public class BoundingRig : MonoBehaviour
         set
         {
             showRig = value;
+            boxInstance.gameObject.SetActive(showRig);
+
+            foreach (GameObject handle in cornerHandles)
+            {
+                handle.SetActive(showRig);
+            }
+            foreach (GameObject handle in rotateHandles)
+            {
+                handle.SetActive(showRig);
+            }
         }
     }
 
-    public CompoundButton AppBarButton
+    public void Activate()
     {
-        get
-        {
-            return appBarButton;
-        }
-
-        set
-        {
-            appBarButton = value;
-        }
+        ShowRig = true;
     }
+    public void Deactivate()
+    {
+        ShowRig = false;
+    }
+    
 
     private void Start()
     {
@@ -61,36 +68,22 @@ public class BoundingRig : MonoBehaviour
         boxInstance = Instantiate(BoundingBoxPrefab) as BoundingBox;
         boxInstance.Target = objectToBound;
 
-        appBarButton = Instantiate(ButtonPrefab) as CompoundButton;
-        appBarButton.OnButtonReleased += AppBarButton_OnButtonReleased;
-
+        appBarInstance = Instantiate(appBarPrefab) as AppBar;
+        appBarInstance.BoundingBox = boxInstance;
+        
         BuildRig();
 
-        Activate();
+       // Deactivate();
     }
-
     private void Update()
     {
         UpdateBoundsPoints();
-        UpdateAppBar();
+        //UpdateAppBar();
 
         if (ShowRig)
         {
             UpdateHandles();
         }
-    }
-
-    public void Activate()
-    {
-        boxInstance.gameObject.SetActive(true);
-        ShowRig = true;
-    }
-    public void Deactivate()
-    {
-        boxInstance.gameObject.SetActive(false);
-        ShowRig = false;
-        ClearHandles();
-        transformRig = null;
     }
 
     public void FocusOnHandle(GameObject handle)
@@ -306,15 +299,14 @@ public class BoundingRig : MonoBehaviour
             UpdateRotateHandles();
         }
     }
-
     private void UpdateAppBar()
     {
-        if (handleCentroids != null && appBarButton != null)
+        if (handleCentroids != null && appBarInstance != null)
         {
             Vector3 buttonPosition = (handleCentroids[0] + handleCentroids[4]) * 0.5f;
             buttonPosition.y += 0.07f;
-            appBarButton.transform.position = buttonPosition;
-            appBarButton.transform.localRotation = objectToBound.transform.rotation;
+           // appBarInstance.transform.position = buttonPosition;
+           // appBarInstance.transform.localRotation = objectToBound.transform.rotation;
         }
     }
 
@@ -379,11 +371,5 @@ public class BoundingRig : MonoBehaviour
         }
 
         return null;
-    }
-
-    private void AppBarButton_OnButtonReleased(GameObject obj)
-    {
-        ShowRig = !ShowRig;
-        GameObject.Find("New Text").GetComponent<TextMesh>().text = obj.name + " " + ShowRig.ToString();
     }
 }
