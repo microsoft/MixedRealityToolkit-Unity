@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.Boundary
+namespace MixedRealityToolkit.Boundary
 {
     /// <summary>
     /// Helper class to hold an edge

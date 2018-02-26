@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Boundary;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Examples.Boundary
+namespace MixedRealityToolkit.Boundary.Tests
 {
     public class BoundaryTest : MonoBehaviour
     {

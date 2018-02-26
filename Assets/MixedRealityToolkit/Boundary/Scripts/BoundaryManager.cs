@@ -4,12 +4,9 @@
 using MixedRealityToolkit.Common;
 using UnityEngine;
 using System;
-
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using System.Collections.Generic;
 using UnityEngine.XR;
 using UnityEngine.XR.WSA;
-#endif
 
 namespace MixedRealityToolkit.Boundary
 {
