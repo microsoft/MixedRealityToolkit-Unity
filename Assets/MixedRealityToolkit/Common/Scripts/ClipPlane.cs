@@ -16,20 +16,8 @@ namespace MixedRealityToolkit.Common
         private Renderer[] renderers;
 
         private int clipPlaneID;
+        private Material[] materials;
         private MaterialPropertyBlock materialPropertyBlock;
-
-        public Renderer[] Renderers
-        {
-            get
-            {
-                return renderers;
-            }
-
-            set
-            {
-                renderers = value;
-            }
-        }
 
         private void OnEnable()
         {
@@ -74,15 +62,46 @@ namespace MixedRealityToolkit.Common
             Gizmos.DrawWireCube(Vector3.zero, new Vector3(1.0f, 0.0f, 1.0f));
         }
 
+        private void OnDestroy()
+        {
+            if (materials != null)
+            {
+                foreach (Material material in materials)
+                {
+                    if (Application.isPlaying)
+                    {
+                        Destroy(material);
+                    }
+                }
+
+                materials = null;
+            }
+        }
+
         private void Initialize()
         {
             clipPlaneID = Shader.PropertyToID("_ClipPlane");
+
+            materials = new Material[renderers.Length];
+
+            for (int i = 0; i < renderers.Length; ++i)
+            {
+                if (Application.isPlaying)
+                {
+                    materials[i] = renderers[i].material;
+                }
+                else
+                {
+                    materials[i] = renderers[i].sharedMaterial;
+                }
+            }
+
             materialPropertyBlock = new MaterialPropertyBlock();
         }
 
         private void UpdatePlanePosition()
         {
-            if (Renderers == null)
+            if (renderers == null)
             {
                 return;
             }
@@ -90,9 +109,9 @@ namespace MixedRealityToolkit.Common
             Vector3 up = transform.up;
             Vector4 plane = new Vector4(up.x, up.y, up.z, Vector3.Dot(up, transform.position));
 
-            foreach (Renderer renderer in Renderers)
+            foreach (Renderer renderer in renderers)
             {
-                if (!renderer)
+                if (renderer == null)
                 {
                     continue;
                 }
@@ -103,48 +122,34 @@ namespace MixedRealityToolkit.Common
             }
         }
 
-        private void ToggleClippingPlane(bool clippingPlaneOn)
+        private void ToggleClippingPlane(bool isClippingPlaneOn)
         {
-            if (Renderers == null)
+            if (materials == null)
             {
                 return;
             }
 
-            foreach (Renderer renderer in Renderers)
+            foreach (Material material in materials)
             {
-                if (!renderer)
+                if (material == null)
                 {
                     continue;
                 }
 
-                Material material;
+                const string clippingPlaneKeyword = "_CLIPPING_PLANE";
 
-                if(Application.isEditor && !Application.isPlaying)
+                if (isClippingPlaneOn)
                 {
-                    material = renderer.sharedMaterial;
+                    if (!material.IsKeywordEnabled(clippingPlaneKeyword))
+                    {
+                        material.EnableKeyword(clippingPlaneKeyword);
+                    }
                 }
                 else
                 {
-                    material = renderer.material;
-                }
-
-                if (material)
-                {
-                    const string clippingPlaneKeyword = "_CLIPPING_PLANE";
-
-                    if (clippingPlaneOn)
+                    if (material.IsKeywordEnabled(clippingPlaneKeyword))
                     {
-                        if (!material.IsKeywordEnabled(clippingPlaneKeyword))
-                        {
-                            material.EnableKeyword(clippingPlaneKeyword);
-                        }
-                    }
-                    else
-                    {
-                        if (material.IsKeywordEnabled(clippingPlaneKeyword))
-                        {
-                            material.DisableKeyword(clippingPlaneKeyword);
-                        }
+                        material.DisableKeyword(clippingPlaneKeyword);
                     }
                 }
             }

@@ -102,12 +102,12 @@ namespace MixedRealityToolkit.Common.EditorScript
             public static GUIContent enableHoverColorOverride = new GUIContent("Override Color", "Override Global Hover Color");
             public static GUIContent hoverColorOverride = new GUIContent("Color", "Override Hover Color");
             public static GUIContent roundCorners = new GUIContent("Round Corners", "(Assumes UVs Specify Borders)");
-            public static GUIContent roundCornerRadius = new GUIContent("Radius", "Rounded Rectngle Corner Sphere Radius");
-            public static GUIContent roundCornerMargin = new GUIContent("Margin", "Distance From Geometry Edge");
+            public static GUIContent roundCornerRadius = new GUIContent("Unit Radius", "Rounded Rectangle Corner Unit Sphere Radius");
+            public static GUIContent roundCornerMargin = new GUIContent("Margin %", "Distance From Geometry Edge");
             public static GUIContent borderLight = new GUIContent("Border Light", "Enable Border Lighting (Assumes UVs Specify Borders)");
             public static GUIContent borderLightUsesHoverColor = new GUIContent("Use Hover Color", "Border Color Comes From Hover Light");
             public static GUIContent borderLightOpaque = new GUIContent("Opaque Borders", "Borders Override Alpha Value to Appear Opaque");
-            public static GUIContent borderWidth = new GUIContent("Width", "Uniform Width Along Border");
+            public static GUIContent borderWidth = new GUIContent("Width %", "Uniform Width Along Border as a % of the Smallest XYZ Dimension");
             public static GUIContent borderMinValue = new GUIContent("Min Value", "Minimum Border Saturation");
             public static GUIContent edgeSmoothingValue = new GUIContent("Edge Smoothing Value", "Smooths Edges When Round Corners and Transparency Is Enabled");
             public static GUIContent innerGlow = new GUIContent("Inner Glow", "Enable Inner Glow (Assumes UVs Specify Borders)");
