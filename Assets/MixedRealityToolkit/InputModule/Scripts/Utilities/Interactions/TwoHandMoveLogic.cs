@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Common;
 using UnityEngine;
 
 namespace MixedRealityToolkit.InputModule.Utilities.Interations
@@ -44,8 +45,8 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
             // We transform the forward vector of the object, the direction of the object, and the direction of the hand
             // to camera space so everything is relative to the user's perspective.
-            objDirectoin = Camera.main.transform.InverseTransformDirection(objDirectoin);
-            handDirection = Camera.main.transform.InverseTransformDirection(handDirection);
+            objDirectoin = CameraCache.Main.transform.InverseTransformDirection(objDirectoin);
+            handDirection = CameraCache.Main.transform.InverseTransformDirection(handDirection);
 
             // Store the original rotation between the hand an object
             m_gazeAngularOffset = Quaternion.FromToRotation(handDirection, objDirectoin);
@@ -59,11 +60,11 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
             // Compute the pivot -> hand vector in camera space
             var newHandDirection = Vector3.Normalize(newHandPosition - pivotPosition);
-            newHandDirection = Camera.main.transform.InverseTransformDirection(newHandDirection);
+            newHandDirection = CameraCache.Main.transform.InverseTransformDirection(newHandDirection);
 
             // The direction the object should face is the current hand direction rotated by the original hand -> object rotation.
             var targetDirection = Vector3.Normalize(m_gazeAngularOffset * newHandDirection);
-            targetDirection = Camera.main.transform.TransformDirection(targetDirection);
+            targetDirection = CameraCache.Main.transform.TransformDirection(targetDirection);
 
             // Compute how far away the object should be based on the ratio of the current to original hand distance
             var currentHandDistance = Vector3.Magnitude(newHandPosition - pivotPosition);
@@ -88,7 +89,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         /// <returns>A point that is below and just in front of the head.</returns>
         public static Vector3 GetHandPivotPosition()
         {
-            Vector3 pivot = Camera.main.transform.position + new Vector3(0, -0.2f, 0) - Camera.main.transform.forward * 0.2f; // a bit lower and behind
+            Vector3 pivot = CameraCache.Main.transform.position + new Vector3(0, -0.2f, 0) - CameraCache.Main.transform.forward * 0.2f; // a bit lower and behind
             return pivot;
         }
     }
