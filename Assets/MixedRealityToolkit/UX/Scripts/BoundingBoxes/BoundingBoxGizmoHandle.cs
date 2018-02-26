@@ -114,7 +114,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                         {
                             newRotation += new Vector3(0, 0, scalar);
                         }
-                        objectToAffect.transform.rotation = Quaternion.Euler(newRotation);
+                        objectToAffect.transform.localEulerAngles = newRotation;
                     }
                 }
             }
@@ -134,14 +134,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             initialScale        = objectToAffect.transform.localScale;
             initialOrientation  = objectToAffect.transform.rotation.eulerAngles;
 
-            //GameObject lightGameObject = new GameObject("HandleLight");
-            //Light lightComp = lightGameObject.AddComponent<Light>();
-            //lightComp.color = Color.white;
-            //lightComp.intensity = 10.0f;
-            //lightComp.type = LightType.Point;
-            //lightGameObject.transform.position = GameObject.Find("DefaultCursor").transform.position;
-            //lightGameObject.transform.parent = this.gameObject.transform;
-
             this.gameObject.GetComponent<Renderer>().material.color = interactingColor;
             Debug.Log("########################## OnInputDown " + this.gameObject.name);
             Rig.FocusOnHandle(this.gameObject);
@@ -150,8 +142,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         }
         public void OnInputUp(InputEventData eventData)
         {
-            this.gameObject.GetComponent<Renderer>().material.color = defaultColor;
-           // GameObject.Destroy(GameObject.Find("HandleLight"));
+            this.gameObject.GetComponent<Renderer>().material.color = Rig.UnselectedColor;
             inputDownEventData = null;
             Rig.FocusOnHandle(null);
             eventData.Use();

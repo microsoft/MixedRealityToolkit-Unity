@@ -16,16 +16,17 @@ public class BoundingRig : MonoBehaviour
     [Tooltip("Button prefab.")]
     public CompoundButton ButtonPrefab;
 
+    public Color UnselectedColor = new Color(0, 0.486f, 0.796f, 1);
+
     private BoundingBox boxInstance;
     private GameObject objectToBound;
     private CompoundButton appBarButton;
     private GameObject[] rotateHandles;
     private GameObject[] cornerHandles;
     private List<Vector3> handleCentroids;
-    private System.Int64 updateCount;
     private GameObject transformRig;
-    private Vector3 scaleHandleSize = new Vector3(0.05f, 0.05f, 0.05f);
-    private Vector3 rotateHandleSize = new Vector3(0.05f, 0.05f, 0.05f);
+    private Vector3 scaleHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
+    private Vector3 rotateHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
     private bool showRig;
 
     public bool ShowRig
@@ -58,13 +59,13 @@ public class BoundingRig : MonoBehaviour
         objectToBound = this.gameObject;
 
         boxInstance = Instantiate(BoundingBoxPrefab) as BoundingBox;
-        boxInstance.gameObject.SetActive(true);
         boxInstance.Target = objectToBound;
 
         appBarButton = Instantiate(ButtonPrefab) as CompoundButton;
         appBarButton.OnButtonReleased += AppBarButton_OnButtonReleased;
 
         BuildRig();
+
         Activate();
     }
 
@@ -75,15 +76,7 @@ public class BoundingRig : MonoBehaviour
 
         if (ShowRig)
         {
-            if (updateCount == 2)
-            {
-                CreateHandles();
-            }
-            else if (updateCount > 2)
-            {
-                UpdateHandles();
-            }
-            updateCount++;
+            UpdateHandles();
         }
     }
 
@@ -91,18 +84,11 @@ public class BoundingRig : MonoBehaviour
     {
         boxInstance.gameObject.SetActive(true);
         ShowRig = true;
-        updateCount = 1;
-
-        if (transformRig == null)
-        {
-            transformRig = BuildRig();
-        }
     }
     public void Deactivate()
     {
         boxInstance.gameObject.SetActive(false);
         ShowRig = false;
-        updateCount = 0;
         ClearHandles();
         transformRig = null;
     }
@@ -224,7 +210,7 @@ public class BoundingRig : MonoBehaviour
                 for (int i = 0; i < handleCentroids.Count; ++i)
                 {
                     cornerHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cornerHandles[i].GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1);
+                    cornerHandles[i].GetComponent<Renderer>().material.color = UnselectedColor;
                     cornerHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Diffuse");
                     cornerHandles[i].transform.localScale = scaleHandleSize;
                     BoxCollider collider = cornerHandles[i].AddComponent<BoxCollider>();
@@ -258,7 +244,7 @@ public class BoundingRig : MonoBehaviour
                 for (int i = 0; i < rotateHandles.Length; ++i)
                 {
                     rotateHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    rotateHandles[i].GetComponent<Renderer>().material.color = new Color(0, 0, 1, 1);
+                    rotateHandles[i].GetComponent<Renderer>().material.color = UnselectedColor;
                     rotateHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Standard");
                     rotateHandles[i].GetComponent<Collider>().transform.localScale *= 2.0f;
                     rotateHandles[i].transform.localScale = rotateHandleSize;
@@ -325,7 +311,10 @@ public class BoundingRig : MonoBehaviour
     {
         if (handleCentroids != null && appBarButton != null)
         {
-            appBarButton.transform.position = (handleCentroids[0] + handleCentroids[4]) * 0.5f;
+            Vector3 buttonPosition = (handleCentroids[0] + handleCentroids[4]) * 0.5f;
+            buttonPosition.y += 0.07f;
+            appBarButton.transform.position = buttonPosition;
+            appBarButton.transform.localRotation = objectToBound.transform.rotation;
         }
     }
 
