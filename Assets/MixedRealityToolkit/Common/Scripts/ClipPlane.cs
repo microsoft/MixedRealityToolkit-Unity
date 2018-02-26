@@ -12,44 +12,54 @@ namespace MixedRealityToolkit.Common
     [ExecuteInEditMode]
     public class ClipPlane : MonoBehaviour
     {
-        public Renderer[] Renderers;
+        [SerializeField]
+        private Renderer[] renderers;
 
         private int clipPlaneID;
         private MaterialPropertyBlock materialPropertyBlock;
 
-        private void Awake()
+        public Renderer[] Renderers
+        {
+            get
+            {
+                return renderers;
+            }
+
+            set
+            {
+                renderers = value;
+            }
+        }
+
+        private void OnEnable()
         {
             Initialize();
             UpdatePlanePosition();
+            ToggleClippingPlane(true);
+        }
+
+        private void OnDisable()
+        {
+            UpdatePlanePosition();
+            ToggleClippingPlane(false);
         }
 
 #if UNITY_EDITOR
         private void Update()
         {
+            if (Application.isPlaying)
+            {
+                return;
+            }
+
             Initialize();
-#else
-        private void LateUpdate()
-        {
-#endif
             UpdatePlanePosition();
         }
+#endif
 
-        private void UpdatePlanePosition()
+        private void LateUpdate()
         {
-            Vector3 up = transform.up;
-            Vector4 plane = new Vector4(up.x, up.y, up.z, Vector3.Dot(up, transform.position));
-
-            foreach (Renderer renderer in Renderers)
-            {
-                if (!renderer)
-                {
-                    continue;
-                }
-
-                renderer.GetPropertyBlock(materialPropertyBlock);
-                materialPropertyBlock.SetVector(clipPlaneID, plane);
-                renderer.SetPropertyBlock(materialPropertyBlock);
-            }
+            UpdatePlanePosition();
         }
 
         private void OnDrawGizmosSelected()
@@ -68,6 +78,76 @@ namespace MixedRealityToolkit.Common
         {
             clipPlaneID = Shader.PropertyToID("_ClipPlane");
             materialPropertyBlock = new MaterialPropertyBlock();
+        }
+
+        private void UpdatePlanePosition()
+        {
+            if (Renderers == null)
+            {
+                return;
+            }
+
+            Vector3 up = transform.up;
+            Vector4 plane = new Vector4(up.x, up.y, up.z, Vector3.Dot(up, transform.position));
+
+            foreach (Renderer renderer in Renderers)
+            {
+                if (!renderer)
+                {
+                    continue;
+                }
+
+                renderer.GetPropertyBlock(materialPropertyBlock);
+                materialPropertyBlock.SetVector(clipPlaneID, plane);
+                renderer.SetPropertyBlock(materialPropertyBlock);
+            }
+        }
+
+        private void ToggleClippingPlane(bool clippingPlaneOn)
+        {
+            if (Renderers == null)
+            {
+                return;
+            }
+
+            foreach (Renderer renderer in Renderers)
+            {
+                if (!renderer)
+                {
+                    continue;
+                }
+
+                Material material;
+
+                if(Application.isEditor && !Application.isPlaying)
+                {
+                    material = renderer.sharedMaterial;
+                }
+                else
+                {
+                    material = renderer.material;
+                }
+
+                if (material)
+                {
+                    const string clippingPlaneKeyword = "_CLIPPING_PLANE";
+
+                    if (clippingPlaneOn)
+                    {
+                        if (!material.IsKeywordEnabled(clippingPlaneKeyword))
+                        {
+                            material.EnableKeyword(clippingPlaneKeyword);
+                        }
+                    }
+                    else
+                    {
+                        if (material.IsKeywordEnabled(clippingPlaneKeyword))
+                        {
+                            material.DisableKeyword(clippingPlaneKeyword);
+                        }
+                    }
+                }
+            }
         }
     }
 }
