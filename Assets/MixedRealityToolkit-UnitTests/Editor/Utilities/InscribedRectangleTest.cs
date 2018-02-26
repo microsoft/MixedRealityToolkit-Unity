@@ -5,9 +5,9 @@ using System;
 using System.Text;
 using UnityEngine;
 using NUnit.Framework;
-using HoloToolkit.Unity.Boundary;
+using MixedRealityToolkit.Boundary;
 
-namespace HoloToolkit.Unity.Tests
+namespace MixedRealityToolkit.Tests.Utilities
 {
     /// <summary>
     /// Some smoke tests to make sure the algorithm at least functioning

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.Boundary.Tests
+namespace MixedRealityToolkit.Boundary
 {
     /// <summary>
     /// Demo class to show different ways of using the boundary API
@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
         [Tooltip("Material used to draw the rectangle bounds")]
         public Material BoundsMaterial;
 
-        void Awake()
+        private void Start()
         {
             this.AddRectangleBounds();
             this.AddIndicators();
