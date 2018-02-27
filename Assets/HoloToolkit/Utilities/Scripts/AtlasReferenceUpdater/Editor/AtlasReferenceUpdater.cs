@@ -32,7 +32,7 @@ namespace HoloToolkit.Unity
                 }
                 if (reference.Prefabs.Any(o => o == null))
                 {
-                    Debug.LogWarning("One or more prefab references are null" + reference.name);
+                    Debug.LogWarning("One or more prefab references are null: " + reference.name);
                     continue;
                 }
                 References.Add(reference);
