@@ -132,6 +132,6 @@ Material:
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
     - _HoverColor: {r: 1, g: 0, b: 0, a: 1}
-    - _HoverColorOverride: {r: 1, g: 0.93103445, b: 0, a: 1}
+    - _HoverColorOverride: {r: 0.41176468, g: 0.3833671, b: 0, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.5019608}
     - _RimColor: {r: 0.33088237, g: 0.33088237, b: 0.33088237, a: 1}

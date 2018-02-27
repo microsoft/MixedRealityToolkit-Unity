@@ -249,7 +249,7 @@ Shader "MixedRealityToolkit/Standard"
             float _HoverRadius;
             fixed4 _HoverColor;
 #if defined(_HOVER_COLOR_OVERRIDE)
-            fixed4 _HoverColorOverride;
+            fixed3 _HoverColorOverride;
 #endif
 #endif
 
@@ -472,7 +472,7 @@ Shader "MixedRealityToolkit/Standard"
 #if defined(_HOVER_LIGHT)
                 fixed pointToHover = (1.0 - saturate(length(_HoverPosition - i.worldPosition.xyz) / _HoverRadius)) * _HoverColor.a;
 #if defined(_HOVER_COLOR_OVERRIDE)
-                _HoverColor = _HoverColorOverride;
+                _HoverColor.rgb = _HoverColorOverride;
 #endif
                 albedo.rgb += _HoverColor.rgb * pointToHover;
 #endif

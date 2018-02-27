@@ -597,8 +597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.15
-  color: {r: 1, g: 1, b: 1, a: 1}
-  intensity: 0.3
+  color: {r: 0.3, g: 0.3, b: 0.3, a: 1}
 --- !u!114 &114611684728110934
 MonoBehaviour:
   m_ObjectHideFlags: 1

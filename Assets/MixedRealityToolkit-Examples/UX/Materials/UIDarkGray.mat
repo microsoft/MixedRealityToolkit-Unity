@@ -9,8 +9,8 @@ Material:
   m_Name: UIDarkGray
   m_Shader: {fileID: 4800000, guid: d45c0efca53019e43891b0f610f8146e, type: 3}
   m_ShaderKeywords: _BORDER_LIGHT _BORDER_LIGHT_USES_HOVER_COLOR _DIRECTIONAL_LIGHT
-    _DISABLE_ALBEDO_MAP _HOVER_COLOR_OVERRIDE _HOVER_LIGHT _SPECULARHIGHLIGHTS_ON
-    _SPECULAR_HIGHLIGHTS _USEAMBIENT_ON _USEDIFFUSE_ON _USEMAINCOLOR_ON
+    _DISABLE_ALBEDO_MAP _HOVER_LIGHT _SPECULARHIGHLIGHTS_ON _SPECULAR_HIGHLIGHTS _USEAMBIENT_ON
+    _USEDIFFUSE_ON _USEMAINCOLOR_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -101,7 +101,7 @@ Material:
     - _DstBlend: 0
     - _EdgeSmoothingValue: 0.002
     - _EnableEmission: 0
-    - _EnableHoverColorOverride: 1
+    - _EnableHoverColorOverride: 0
     - _EnableNormalMap: 0
     - _EnvironmentColorIntensity: 0.5
     - _EnvironmentColorThreshold: 1.5
@@ -165,7 +165,7 @@ Material:
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
-    - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
+    - _HoverColorOverride: {r: 0.3019608, g: 0.3019608, b: 0.3, a: 0.003921569}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

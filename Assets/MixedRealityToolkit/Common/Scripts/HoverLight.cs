@@ -16,10 +16,7 @@ namespace MixedRealityToolkit.Common
         [Range(0.0f, 1.0f)]
         private float radius = 0.15f;
         [SerializeField]
-        private Color color = Color.white;
-        [SerializeField]
-        [Range(0.0f, 1.0f)]
-        private float intensity = 0.3f;
+        private Color color = new Color(0.3f, 0.3f, 0.3f, 1.0f);
 
         private int hoverPositionID;
         private int hoverRadiusID;
@@ -48,19 +45,6 @@ namespace MixedRealityToolkit.Common
             set
             {
                 color = value;
-            }
-        }
-
-        public float Intensity
-        {
-            get
-            {
-                return intensity;
-            }
-
-            set
-            {
-                intensity = value;
             }
         }
 
@@ -123,7 +107,7 @@ namespace MixedRealityToolkit.Common
             Shader.SetGlobalVector(hoverColorID, new Vector4(Color.r,
                                                               Color.g,
                                                               Color.b,
-                                                              isActiveAndEnabled ? Intensity : 0.0f));
+                                                              isActiveAndEnabled ? 1.0f : 0.0f));
         }
     }
 }
