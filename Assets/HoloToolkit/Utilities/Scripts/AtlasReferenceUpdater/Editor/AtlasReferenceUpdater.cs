@@ -15,53 +15,98 @@ namespace HoloToolkit.Unity
 
         static AtlasReferenceUpdater()
         {
-            References.Clear();
-            var references = Resources.FindObjectsOfTypeAll<AtlasPrefabReference>();
-            foreach (var atlasPrefabReference in references)
-            {
-                if (atlasPrefabReference.Atlas == null)
-                {
-                    Debug.LogWarning("No sprite atlas referenced.");
-                    continue;
-                }
-                if (atlasPrefabReference.Prefabs.Any(o => o == null))
-                {
-                    Debug.LogWarning("One or more prefab references are null");
-                    continue;
-                }
-                References.Add(atlasPrefabReference);
-            }
-
+            FindAtlasPrefabReferences();
+            UpdateAllReferences();
             PrefabUtility.prefabInstanceUpdated += PrefabInstanceUpdated;
+        }
+
+        private static void FindAtlasPrefabReferences()
+        {
+            References.Clear();
+            foreach (var reference in FindAllAssets<AtlasPrefabReference>())
+            {
+                if (reference.Atlas == null)
+                {
+                    Debug.LogWarning("No sprite atlas referenced: " + reference.name);
+                    continue;
+                }
+                if (reference.Prefabs.Any(o => o == null))
+                {
+                    Debug.LogWarning("One or more prefab references are null" + reference.name);
+                    continue;
+                }
+                References.Add(reference);
+            }
+        }
+
+        private static void UpdateAllReferences()
+        {
+            foreach (var atlasPrefabReference in References)
+            {
+                UpdateAtlasReferences(atlasPrefabReference);
+            }
         }
 
         private static void PrefabInstanceUpdated(GameObject instance)
         {
-            var prefabForInstance = PrefabUtility.GetPrefabParent(instance);
+            var prefab = PrefabUtility.GetPrefabParent(instance) as GameObject;
             foreach (var atlasPrefabReference in References)
             {
-                foreach (var gameObject in atlasPrefabReference.Prefabs)
+                if (atlasPrefabReference.Prefabs.Contains(prefab))
                 {
-                    if (gameObject == prefabForInstance)
-                    {
-                        UpdateAtlasReferences(atlasPrefabReference);
-                    }
+                    UpdateAtlasReferences(atlasPrefabReference);
+                }
+            }
+        }
+        private static AssetDeleteResult OnWillDeleteAsset(string assetPath, RemoveAssetOptions options)
+        {
+            var atlasReference = AssetDatabase.LoadAssetAtPath<AtlasPrefabReference>(assetPath);
+            if (atlasReference != null)
+            {
+                EditorApplication.delayCall += FindAtlasPrefabReferences;
+                return AssetDeleteResult.DidNotDelete;
+            }
+
+            var deletedSprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
+            if (deletedSprite != null)
+            {
+                foreach (var reference in References.Where(re => re.Atlas.ContainsSprite(deletedSprite)))
+                {
+                    var localRef = reference;
+                    EditorApplication.delayCall += () => UpdateAtlasReferences(localRef);
+                }
+                return AssetDeleteResult.DidNotDelete;
+            }
+
+            return AssetDeleteResult.DidNotDelete;
+        }
+
+        private static string[] OnWillSaveAssets(string[] paths)
+        {
+            if (paths.Select(AssetDatabase.LoadAssetAtPath<AtlasPrefabReference>).Any(atlasReference => atlasReference != null))
+            {
+                EditorApplication.delayCall += FindAtlasPrefabReferences;
+                EditorApplication.delayCall += UpdateAllReferences;
+            }
+            return paths;
+        }
+
+        private static IEnumerable<T> FindAllAssets<T>() where T : UnityEngine.Object
+        {
+            var type = typeof(T).FullName;
+            foreach (var assetGuid in AssetDatabase.FindAssets("t:" + type))
+            {
+                var obj = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(assetGuid));
+                if (obj != null)
+                {
+                    yield return obj;
                 }
             }
         }
 
         public static void UpdateAtlasReferences(AtlasPrefabReference reference)
         {
-            UpdateAtlasReferences(reference, Enumerable.Empty<Sprite>());
-        }
-
-        public static void UpdateAtlasReferences(AtlasPrefabReference reference, IEnumerable<Sprite> ignoreSprites)
-        {
             var uniqueSprites = GetDistinctSprites(reference.Prefabs).ToList();
-            foreach (var ignoreSprite in ignoreSprites)
-            {
-                uniqueSprites.Remove(ignoreSprite);
-            }
             reference.Atlas.SetSprites(uniqueSprites);
         }
 
@@ -69,19 +114,6 @@ namespace HoloToolkit.Unity
         {
             return prefabs.SelectMany(p => p.GetComponentsInChildren<Image>())
                 .Select(i => i.sprite).Where(i => i != null).Distinct();
-        }
-
-        private static AssetDeleteResult OnWillDeleteAsset(string assetPath, RemoveAssetOptions options)
-        {
-            var deletedSprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
-            if (deletedSprite == null) { return AssetDeleteResult.DidNotDelete; }
-            foreach (var atlasPrefabReference in References)
-            {
-                if (!atlasPrefabReference.Atlas.ContainsSprite(deletedSprite)) { continue; }
-                UpdateAtlasReferences(atlasPrefabReference, new List<Sprite> { deletedSprite });
-                break;
-            }
-            return AssetDeleteResult.DidNotDelete;
         }
     }
 }
