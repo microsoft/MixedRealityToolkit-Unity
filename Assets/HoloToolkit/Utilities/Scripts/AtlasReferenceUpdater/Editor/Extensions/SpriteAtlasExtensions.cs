@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity
 {
     public static class SpriteAtlasExtensions
     {
-        public static string SpritePackables = "m_EditorData.packables";
+        public const string SpritePackables = "m_EditorData.packables";
 
         public static void SetSprites(this SpriteAtlas spriteAtlas, IList<Sprite> sprites)
         {
