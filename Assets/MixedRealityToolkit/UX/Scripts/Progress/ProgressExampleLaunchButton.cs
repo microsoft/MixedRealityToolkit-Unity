@@ -2,12 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Examples.UX;
-using UnityEngine;
+using MixedRealityToolkit.UX.Buttons;
 using MixedRealityToolkit.UX.Progress;
+using UnityEngine;
 
-namespace MixedRealityToolkit.UX.Buttons
+namespace MixedRealityToolkit.Examples.UX
 {
-    public class ProgressButton : MonoBehaviour
+    public class ProgressExampleLaunchButton : MonoBehaviour
     {
         [Header("Which Indicator style is desired?")]
         [SerializeField]

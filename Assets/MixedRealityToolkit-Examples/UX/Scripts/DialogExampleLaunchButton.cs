@@ -3,19 +3,25 @@
 
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.UX.Dialog;
+using MixedRealityToolkit.UX.Buttons;
 using System.Collections;
 using UnityEngine;
 
-
 namespace MixedRealityToolkit.Examples.UX
 {
-    public class LaunchDialogScript : Interactive
+    public class DialogExampleLaunchButton : MonoBehaviour
     {
         [SerializeField]
         private Dialog dialogPrefab;
+
+        [SerializeField]
         private bool isDialogLaunched;
+
+        [SerializeField]
         private GameObject resultText;
-        private int numButtons;
+
+        [SerializeField]
+        private int numButtons = 1;
 
         public GameObject ResultText
         {
@@ -31,6 +37,7 @@ namespace MixedRealityToolkit.Examples.UX
         }
 
         public int NumButtons { get; set; }
+
 
         protected IEnumerator LaunchDialog(Dialog.ButtonTypeEnum buttons, string title, string message)
         {
@@ -54,16 +61,21 @@ namespace MixedRealityToolkit.Examples.UX
             yield break;
         }
 
-        public override void OnInputClicked(InputClickedEventData eventData)
+        private void OnEnable()
+        {
+            GetComponent<Button>().OnButtonClicked += OnButtonClicked;
+        }
+
+        private void OnButtonClicked(GameObject obj)
         {
             if (isDialogLaunched == false)
             {
-                if (NumButtons == 1)
+                if (numButtons == 1)
                 {
                     // Launch Dialog with single button
                     StartCoroutine(LaunchDialog(Dialog.ButtonTypeEnum.OK, "Single Button Dialog", "Dialogs and flyouts are transient UI elements that appear when something happens that requires notification, approval, or additional information from the user."));
                 }
-                else if (NumButtons == 2)
+                else if (numButtons == 2)
                 {
                     // Launch Dialog with two buttons
                     StartCoroutine(LaunchDialog(Dialog.ButtonTypeEnum.Yes | Dialog.ButtonTypeEnum.No, "Two Buttons Dialog", "Dialogs and flyouts are transient UI elements that appear when something happens that requires notification, approval, or additional information from the user."));
@@ -73,6 +85,7 @@ namespace MixedRealityToolkit.Examples.UX
 
         protected void OnClosed(DialogResult result)
         {
+            // Get the result text from the Dialog
             ResultText.GetComponent<TextMesh>().text = result.Result.ToString();
         }
     }

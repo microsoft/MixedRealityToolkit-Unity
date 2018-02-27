@@ -49,9 +49,12 @@ namespace MixedRealityToolkit.Examples.UX
         [SerializeField]
         private string finishMessage = "Finished!";
 
-        [Header("Readability")]
+        [Header("Test buttons size optimization")]
         [SerializeField]
         private Vector3 iHMDScalar = new Vector3(1.3f, 1.3f, 1);
+
+        [SerializeField]
+        private GameObject buttonCollection = null;
 
         public GameObject SceneObject
         {
@@ -128,6 +131,19 @@ namespace MixedRealityToolkit.Examples.UX
             set
             {
                 loadingIcon = value;
+            }
+        }
+
+        public GameObject ButtonCollection
+        {
+            get
+            {
+                return buttonCollection;
+            }
+
+            set
+            {
+                buttonCollection = value;
             }
         }
 
@@ -253,7 +269,6 @@ namespace MixedRealityToolkit.Examples.UX
             // Optimize the content for immersive headset
             if (HolographicSettings.IsDisplayOpaque)
             {
-               GameObject buttonCollection = GameObject.Find("ButtonCollection");
                buttonCollection.transform.localScale = IHMDScalar;
             }
         }
