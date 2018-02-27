@@ -83,8 +83,11 @@ public class BoundingRig : MonoBehaviour
     }
     private void Update()
     {
-        UpdateBoundsPoints();
-        UpdateHandles();
+        if (ShowRig)
+        {
+            UpdateBoundsPoints();
+            UpdateHandles();
+        }
     }
     private void UpdateBoundsPoints()
     {
@@ -100,92 +103,86 @@ public class BoundingRig : MonoBehaviour
     }
     private void UpdateCornerHandles()
     {
-        if (ShowRig)
+        handleCentroids = handleCentroids ?? GetBounds();
+
+        if (cornerHandles == null)
         {
-            handleCentroids = handleCentroids ?? GetBounds();
-
-            if (cornerHandles == null)
-            {
-                cornerHandles = new GameObject[handleCentroids.Count];
-                for (int i = 0; i < handleCentroids.Count; ++i)
-                {
-                    cornerHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cornerHandles[i].GetComponent<Renderer>().material.color = UnselectedColor;
-                    cornerHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Diffuse");
-                    cornerHandles[i].transform.localScale = scaleHandleSize;
-                    BoxCollider collider = cornerHandles[i].AddComponent<BoxCollider>();
-                    collider.transform.localScale.Scale(new Vector3(3, 3, 3));
-                    cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
-                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
-                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = objectToBound;
-                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Scale;
-                    cornerHandles[i].name = "Corner " + i.ToString();
-                }
-            }
-
+            cornerHandles = new GameObject[handleCentroids.Count];
             for (int i = 0; i < handleCentroids.Count; ++i)
             {
-                cornerHandles[i].transform.localPosition = handleCentroids[i];
-                cornerHandles[i].transform.localRotation = objectToBound.transform.rotation;
+                cornerHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                cornerHandles[i].GetComponent<Renderer>().material.color = UnselectedColor;
+                cornerHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Diffuse");
+                cornerHandles[i].transform.localScale = scaleHandleSize;
+                BoxCollider collider = cornerHandles[i].AddComponent<BoxCollider>();
+                collider.transform.localScale.Scale(new Vector3(3, 3, 3));
+                cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
+                cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
+                cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = objectToBound;
+                cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+                cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Scale;
+                cornerHandles[i].name = "Corner " + i.ToString();
             }
+        }
+
+        for (int i = 0; i < handleCentroids.Count; ++i)
+        {
+            cornerHandles[i].transform.localPosition = handleCentroids[i];
+            cornerHandles[i].transform.localRotation = objectToBound.transform.rotation;
         }
     }
     private void UpdateRotateHandles()
     {
-        if (ShowRig)
+        handleCentroids = handleCentroids ?? GetBounds();
+
+        if (rotateHandles == null)
         {
-            handleCentroids = handleCentroids ?? GetBounds();
+            rotateHandles = new GameObject[12];
 
-            if (rotateHandles == null)
+            for (int i = 0; i < rotateHandles.Length; ++i)
             {
-                rotateHandles = new GameObject[12];
-
-                for (int i = 0; i < rotateHandles.Length; ++i)
-                {
-                    rotateHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    rotateHandles[i].GetComponent<Renderer>().material.color = UnselectedColor;
-                    rotateHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Standard");
-                    rotateHandles[i].GetComponent<Collider>().transform.localScale *= 2.0f;
-                    rotateHandles[i].transform.localScale = rotateHandleSize;
-                    SphereCollider collider = rotateHandles[i].AddComponent<SphereCollider>();
-                    collider.transform.localScale.Scale(new Vector3(3, 3, 3));
-                    rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
-                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
-                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = objectToBound;
-                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Rotation;
-                    rotateHandles[i].name = "Middle " + i.ToString();
-                }
+                rotateHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                rotateHandles[i].GetComponent<Renderer>().material.color = UnselectedColor;
+                rotateHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Standard");
+                rotateHandles[i].GetComponent<Collider>().transform.localScale *= 2.0f;
+                rotateHandles[i].transform.localScale = rotateHandleSize;
+                SphereCollider collider = rotateHandles[i].AddComponent<SphereCollider>();
+                collider.transform.localScale.Scale(new Vector3(3, 3, 3));
+                rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
+                rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
+                rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = objectToBound;
+                rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Rotation;
+                rotateHandles[i].name = "Middle " + i.ToString();
             }
-
-            rotateHandles[0].transform.localPosition = (handleCentroids[2] + handleCentroids[0]) * 0.5f;
-            rotateHandles[1].transform.localPosition = (handleCentroids[3] + handleCentroids[1]) * 0.5f;
-            rotateHandles[2].transform.localPosition = (handleCentroids[6] + handleCentroids[4]) * 0.5f;
-            rotateHandles[3].transform.localPosition = (handleCentroids[7] + handleCentroids[5]) * 0.5f;
-            rotateHandles[4].transform.localPosition = (handleCentroids[0] + handleCentroids[1]) * 0.5f;
-            rotateHandles[5].transform.localPosition = (handleCentroids[2] + handleCentroids[3]) * 0.5f;
-            rotateHandles[6].transform.localPosition = (handleCentroids[4] + handleCentroids[5]) * 0.5f;
-            rotateHandles[7].transform.localPosition = (handleCentroids[6] + handleCentroids[7]) * 0.5f;
-            rotateHandles[8].transform.localPosition = (handleCentroids[0] + handleCentroids[4]) * 0.5f;
-            rotateHandles[9].transform.localPosition = (handleCentroids[1] + handleCentroids[5]) * 0.5f;
-            rotateHandles[10].transform.localPosition = (handleCentroids[2] + handleCentroids[6]) * 0.5f;
-            rotateHandles[11].transform.localPosition = (handleCentroids[3] + handleCentroids[7]) * 0.5f;
-
-            rotateHandles[0].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-            rotateHandles[1].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-            rotateHandles[2].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-            rotateHandles[3].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-
-            rotateHandles[4].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
-            rotateHandles[5].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
-            rotateHandles[6].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
-            rotateHandles[7].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-
-            rotateHandles[8].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
-            rotateHandles[9].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
-            rotateHandles[10].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
-            rotateHandles[11].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
         }
+
+        rotateHandles[0].transform.localPosition = (handleCentroids[2] + handleCentroids[0]) * 0.5f;
+        rotateHandles[1].transform.localPosition = (handleCentroids[3] + handleCentroids[1]) * 0.5f;
+        rotateHandles[2].transform.localPosition = (handleCentroids[6] + handleCentroids[4]) * 0.5f;
+        rotateHandles[3].transform.localPosition = (handleCentroids[7] + handleCentroids[5]) * 0.5f;
+        rotateHandles[4].transform.localPosition = (handleCentroids[0] + handleCentroids[1]) * 0.5f;
+        rotateHandles[5].transform.localPosition = (handleCentroids[2] + handleCentroids[3]) * 0.5f;
+        rotateHandles[6].transform.localPosition = (handleCentroids[4] + handleCentroids[5]) * 0.5f;
+        rotateHandles[7].transform.localPosition = (handleCentroids[6] + handleCentroids[7]) * 0.5f;
+        rotateHandles[8].transform.localPosition = (handleCentroids[0] + handleCentroids[4]) * 0.5f;
+        rotateHandles[9].transform.localPosition = (handleCentroids[1] + handleCentroids[5]) * 0.5f;
+        rotateHandles[10].transform.localPosition = (handleCentroids[2] + handleCentroids[6]) * 0.5f;
+        rotateHandles[11].transform.localPosition = (handleCentroids[3] + handleCentroids[7]) * 0.5f;
+
+        rotateHandles[0].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+        rotateHandles[1].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+        rotateHandles[2].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+        rotateHandles[3].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+
+        rotateHandles[4].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
+        rotateHandles[5].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
+        rotateHandles[6].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
+        rotateHandles[7].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+
+        rotateHandles[8].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
+        rotateHandles[9].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
+        rotateHandles[10].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
+        rotateHandles[11].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
     }
     private void ParentHandles()
     {
@@ -199,11 +196,8 @@ public class BoundingRig : MonoBehaviour
     }
     private void UpdateHandles()
     {
-        if (ShowRig)
-        {
-            UpdateCornerHandles();
-            UpdateRotateHandles();
-        }
+        UpdateCornerHandles();
+        UpdateRotateHandles();
     }
     private void ClearCornerHandles()
     {
@@ -310,17 +304,24 @@ public class BoundingRig : MonoBehaviour
         }
         set
         {
-            showRig = value;
-            boxInstance.gameObject.SetActive(showRig);
+            if (value == true)
+            {
+                UpdateBoundsPoints();
+                UpdateHandles();
+            }
+
+            boxInstance.gameObject.SetActive(value);
 
             foreach (GameObject handle in cornerHandles)
             {
-                handle.SetActive(showRig);
+                handle.SetActive(value);
             }
             foreach (GameObject handle in rotateHandles)
             {
-                handle.SetActive(showRig);
+                handle.SetActive(value);
             }
+
+            showRig = value;
         }
     }
     private List<Vector3> GetBounds()
