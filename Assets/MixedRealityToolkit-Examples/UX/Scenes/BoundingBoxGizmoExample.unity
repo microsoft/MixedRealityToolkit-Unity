@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.50217825, g: 0.5020953, b: 0.5018046, a: 1}
+  m_IndirectSpecularColor: {r: 0.50224054, g: 0.5020953, b: 0.501867, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1008,6 +1008,10 @@ MonoBehaviour:
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
     type: 2}
+  scaleHandleMaterial: {fileID: 2100000, guid: 97c4a9f92f5f5f34ebdda0346d3dacc2, type: 2}
+  rotateHandleMaterial: {fileID: 2100000, guid: 97c4a9f92f5f5f34ebdda0346d3dacc2,
+    type: 2}
+  interactingMaterial: {fileID: 2100000, guid: 3602635b22247e64fb9d32876c31f9fe, type: 2}
   UnselectedColor: {r: 0, g: 0.486, b: 0.796, a: 1}
 --- !u!4 &1308735481 stripped
 Transform:
@@ -1483,6 +1487,10 @@ MonoBehaviour:
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
     type: 2}
+  scaleHandleMaterial: {fileID: 2100000, guid: 97c4a9f92f5f5f34ebdda0346d3dacc2, type: 2}
+  rotateHandleMaterial: {fileID: 2100000, guid: 97c4a9f92f5f5f34ebdda0346d3dacc2,
+    type: 2}
+  interactingMaterial: {fileID: 2100000, guid: 3602635b22247e64fb9d32876c31f9fe, type: 2}
   UnselectedColor: {r: 0, g: 0.486, b: 0.796, a: 1}
 --- !u!4 &1588477260 stripped
 Transform:
@@ -1818,6 +1826,10 @@ MonoBehaviour:
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
     type: 2}
+  scaleHandleMaterial: {fileID: 2100000, guid: 97c4a9f92f5f5f34ebdda0346d3dacc2, type: 2}
+  rotateHandleMaterial: {fileID: 2100000, guid: 97c4a9f92f5f5f34ebdda0346d3dacc2,
+    type: 2}
+  interactingMaterial: {fileID: 2100000, guid: 3602635b22247e64fb9d32876c31f9fe, type: 2}
   UnselectedColor: {r: 0, g: 0.486, b: 0.796, a: 1}
 --- !u!23 &1939329914
 MeshRenderer:

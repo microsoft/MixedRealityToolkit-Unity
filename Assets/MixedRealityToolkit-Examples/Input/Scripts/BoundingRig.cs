@@ -16,6 +16,52 @@ public class BoundingRig : MonoBehaviour
     [Tooltip("AppBar prefab.")]
     private AppBar appBarPrefab;
 
+    [SerializeField]
+    private Material scaleHandleMaterial;
+
+    [SerializeField]
+    private Material rotateHandleMaterial;
+
+    [SerializeField]
+    private Material interactingMaterial;
+
+    public Material ScaleHandleMaterial
+    {
+        get
+        {
+            return scaleHandleMaterial;
+        }
+
+        set
+        {
+            scaleHandleMaterial = value;
+        }
+    }
+    public Material RotateHandleMaterial
+    {
+        get
+        {
+            return rotateHandleMaterial;
+        }
+
+        set
+        {
+            rotateHandleMaterial = value;
+        }
+    }
+    public Material InteractingMaterial
+    {
+        get
+        {
+            return interactingMaterial;
+        }
+
+        set
+        {
+            interactingMaterial = value;
+        }
+    }
+
     private BoundingBox boxInstance;
     private GameObject objectToBound;
     private AppBar appBarInstance;
@@ -26,8 +72,6 @@ public class BoundingRig : MonoBehaviour
     private bool showRig = false;
     private Vector3 scaleHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
     private Vector3 rotateHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
-
-    public Color UnselectedColor = new Color(0, 0.486f, 0.796f, 1);
 
     public void Activate()
     {
@@ -111,11 +155,9 @@ public class BoundingRig : MonoBehaviour
             for (int i = 0; i < handleCentroids.Count; ++i)
             {
                 cornerHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cornerHandles[i].GetComponent<Renderer>().material.color = UnselectedColor;
-                cornerHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Diffuse");
+                cornerHandles[i].GetComponent<Renderer>().material = scaleHandleMaterial;
                 cornerHandles[i].transform.localScale = scaleHandleSize;
                 BoxCollider collider = cornerHandles[i].AddComponent<BoxCollider>();
-                collider.transform.localScale.Scale(new Vector3(3, 3, 3));
                 cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                 cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
                 cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = objectToBound;
@@ -142,12 +184,9 @@ public class BoundingRig : MonoBehaviour
             for (int i = 0; i < rotateHandles.Length; ++i)
             {
                 rotateHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                rotateHandles[i].GetComponent<Renderer>().material.color = UnselectedColor;
-                rotateHandles[i].GetComponent<Renderer>().material.shader = Shader.Find("Standard");
-                rotateHandles[i].GetComponent<Collider>().transform.localScale *= 2.0f;
+                rotateHandles[i].GetComponent<Renderer>().material = rotateHandleMaterial;
                 rotateHandles[i].transform.localScale = rotateHandleSize;
                 SphereCollider collider = rotateHandles[i].AddComponent<SphereCollider>();
-                collider.transform.localScale.Scale(new Vector3(3, 3, 3));
                 rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                 rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
                 rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = objectToBound;
@@ -324,6 +363,9 @@ public class BoundingRig : MonoBehaviour
             showRig = value;
         }
     }
+
+
+
     private List<Vector3> GetBounds()
     {
         if (objectToBound != null)

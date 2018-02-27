@@ -31,8 +31,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private Vector3 initialScale;
         private Vector3 initialOrientation;
         private InputEventData inputDownEventData;
-        private Color defaultColor = new Color(0, 0.486f, 0.796f, 1);
-        private Color interactingColor = new Color(1.0f, 0.5f, 0.0f, 1);
 
         public GameObject ObjectToAffect
         {
@@ -82,7 +80,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
                 if (isPressed == false)
                 {
-                    inputDownEventData = null;
+                    //inputDownEventData = null;
                     OnInputUp(null);
                     Rig.FocusOnHandle(null);
                 }
@@ -134,20 +132,26 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             initialScale        = objectToAffect.transform.localScale;
             initialOrientation  = objectToAffect.transform.rotation.eulerAngles;
 
-            this.gameObject.GetComponent<Renderer>().material.color = interactingColor;
+            this.gameObject.GetComponent<Renderer>().material = Rig.InteractingMaterial;
             Rig.FocusOnHandle(this.gameObject);
 
             eventData.Use();
         }
         public void OnInputUp(InputEventData eventData)
         {
-            this.gameObject.GetComponent<Renderer>().material.color = Rig.UnselectedColor;
-            inputDownEventData = null;
-            Rig.FocusOnHandle(null);
+            if (this.AffineType == TransformType.Scale)
+            {
+                this.gameObject.GetComponent<Renderer>().material = Rig.ScaleHandleMaterial;
+            }
+            else
+            {
+                this.gameObject.GetComponent<Renderer>().material = Rig.RotateHandleMaterial;
+            }
 
             if (eventData != null)
             {
-                eventData.Use();
+                inputDownEventData = null;
+                Rig.FocusOnHandle(null);
             }
         }
     }
