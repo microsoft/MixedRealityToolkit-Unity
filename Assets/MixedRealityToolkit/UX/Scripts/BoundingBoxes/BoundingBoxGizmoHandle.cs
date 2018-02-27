@@ -144,7 +144,11 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             this.gameObject.GetComponent<Renderer>().material.color = Rig.UnselectedColor;
             inputDownEventData = null;
             Rig.FocusOnHandle(null);
-            eventData.Use();
+
+            if (eventData != null)
+            {
+                eventData.Use();
+            }
         }
     }
 }
