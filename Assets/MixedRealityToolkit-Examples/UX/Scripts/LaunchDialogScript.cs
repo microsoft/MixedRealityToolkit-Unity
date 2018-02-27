@@ -30,18 +30,7 @@ namespace MixedRealityToolkit.Examples.UX
             }
         }
 
-        public int NumButtons
-        {
-            get
-            {
-                return numButtons;
-            }
-
-            set
-            {
-                numButtons = value;
-            }
-        }
+        public int NumButtons { get; set; }
 
         protected IEnumerator LaunchDialog(Dialog.ButtonTypeEnum buttons, string title, string message)
         {
