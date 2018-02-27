@@ -179,11 +179,12 @@ namespace HoloToolkit
 
     public static class ReflectionExtensions
     {
+#if !NET_4_6
         public static Type GetTypeInfo(this Type type)
         {
             return type;
         }
-
+#endif
         public static Type AsType(this Type type)
         {
             return type;
