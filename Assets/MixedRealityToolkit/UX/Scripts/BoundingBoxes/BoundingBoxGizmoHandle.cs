@@ -135,7 +135,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             initialOrientation  = objectToAffect.transform.rotation.eulerAngles;
 
             this.gameObject.GetComponent<Renderer>().material.color = interactingColor;
-            Debug.Log("########################## OnInputDown " + this.gameObject.name);
             Rig.FocusOnHandle(this.gameObject);
 
             eventData.Use();
