@@ -23,7 +23,7 @@ ModelImporter:
       name: shader_ball
     second: {fileID: 2100000, guid: 507f1f09965e0d94982d6921db7ea788, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0
