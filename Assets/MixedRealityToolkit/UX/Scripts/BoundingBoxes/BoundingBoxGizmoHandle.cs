@@ -78,29 +78,11 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
                 if (this.AffineType == TransformType.Scale)
                 {
-                    float scalar = (currentHandPosition - objectToAffect.transform.position).magnitude / (objectToAffect.transform.position - initialHandPosition).magnitude;
-                    Vector3 newScale = new Vector3(scalar, scalar, scalar);
-                    newScale.Scale(initialScale);
-                    objectToAffect.transform.localScale = newScale;
+                    CalculateScale(currentHandPosition);
                 }
                 else if (this.AffineType == TransformType.Rotation)
                 {
-                    float scalar = (currentHandPosition - objectToAffect.transform.position).magnitude - (objectToAffect.transform.position - initialHandPosition).magnitude;
-                    scalar *= (4.0f * Mathf.Rad2Deg);
-                    Vector3 newRotation = new Vector3(initialOrientation.x, initialOrientation.y, initialOrientation.z);
-                    if (Axis == AxisToAffect.X)
-                    {
-                        newRotation += new Vector3(scalar, 0, 0);
-                    }
-                    else if (Axis == AxisToAffect.Y)
-                    {
-                        newRotation += new Vector3(0, scalar, 0);
-                    }
-                    else if (Axis == AxisToAffect.Z)
-                    {
-                        newRotation += new Vector3(0, 0, scalar);
-                    }
-                    objectToAffect.transform.localEulerAngles = newRotation;
+                    CalculateRotation(currentHandPosition);
                 }
             }
         }
@@ -112,6 +94,32 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             inputDownEventData.InputSource.TryGetGripPosition(sourceId, out handPosition);
 
             return handPosition;
+        }
+        private void CalculateScale(Vector3 currentHandPosition)
+        {
+            float scalar = (currentHandPosition - objectToAffect.transform.position).magnitude / (objectToAffect.transform.position - initialHandPosition).magnitude;
+            Vector3 newScale = new Vector3(scalar, scalar, scalar);
+            newScale.Scale(initialScale);
+            objectToAffect.transform.localScale = newScale;
+        }
+        private void CalculateRotation(Vector3 currentHandPosition)
+        {
+            float scalar = (currentHandPosition - objectToAffect.transform.position).magnitude - (objectToAffect.transform.position - initialHandPosition).magnitude;
+            scalar *= (4.0f * Mathf.Rad2Deg);
+            Vector3 newRotation = new Vector3(initialOrientation.x, initialOrientation.y, initialOrientation.z);
+            if (Axis == AxisToAffect.X)
+            {
+                newRotation += new Vector3(scalar, 0, 0);
+            }
+            else if (Axis == AxisToAffect.Y)
+            {
+                newRotation += new Vector3(0, scalar, 0);
+            }
+            else if (Axis == AxisToAffect.Z)
+            {
+                newRotation += new Vector3(0, 0, scalar);
+            }
+            objectToAffect.transform.localEulerAngles = newRotation;
         }
 
         public void OnInputDown(InputEventData eventData)

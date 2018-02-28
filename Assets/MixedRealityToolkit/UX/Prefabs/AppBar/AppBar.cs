@@ -358,7 +358,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     targetBarSize = new Vector3(numHiddenButtons * buttonWidth, buttonWidth, 1f);
                     if (boundingBox != null)
                     {
-                        boundingBox.enabled = false;
                         // MRTK_TEMP_FIX boundingBox.AcceptInput = false;
                     }
                     break;
@@ -367,7 +366,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     targetBarSize = new Vector3(numManipulationButtons * buttonWidth, buttonWidth, 1f);
                     if (boundingBox != null)
                     {
-                        boundingBox.enabled = false;
                         // MRTK_TEMP_FIX boundingBox.AcceptInput = true;
                     }
                     break;
