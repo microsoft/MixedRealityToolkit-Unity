@@ -31,6 +31,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private Vector3 initialScale;
         private Vector3 initialOrientation;
         private InputEventData inputDownEventData;
+        private InputModule.InputSources.InteractionSourceInfo sourceInfo;
 
         public GameObject ObjectToAffect
         {
@@ -73,47 +74,33 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         {
             if (inputDownEventData != null)
             {
-                uint sourceId = inputDownEventData.SourceId;
-                bool isPressed = false;
-                double pressedValue = 0.0;
-                inputDownEventData.InputSource.TryGetSelect(sourceId, out isPressed, out pressedValue);
+                Vector3 currentHandPosition = GetHandPosition(inputDownEventData.SourceId);
 
-                if (isPressed == false)
+                if (this.AffineType == TransformType.Scale)
                 {
-                    //inputDownEventData = null;
-                    OnInputUp(null);
-                    Rig.FocusOnHandle(null);
+                    float scalar = (currentHandPosition - objectToAffect.transform.position).magnitude / (objectToAffect.transform.position - initialHandPosition).magnitude;
+                    Vector3 newScale = new Vector3(scalar, scalar, scalar);
+                    newScale.Scale(initialScale);
+                    objectToAffect.transform.localScale = newScale;
                 }
-                else
+                else if (this.AffineType == TransformType.Rotation)
                 {
-                    Vector3 currentHandPosition = GetHandPosition(sourceId);
-
-                    if (this.AffineType == TransformType.Scale)
+                    float scalar = (currentHandPosition - objectToAffect.transform.position).magnitude - (objectToAffect.transform.position - initialHandPosition).magnitude;
+                    scalar *= (4.0f * Mathf.Rad2Deg);
+                    Vector3 newRotation = new Vector3(initialOrientation.x, initialOrientation.y, initialOrientation.z);
+                    if (Axis == AxisToAffect.X)
                     {
-                        float scalar = (currentHandPosition - objectToAffect.transform.position).magnitude / (objectToAffect.transform.position - initialHandPosition).magnitude;
-                        Vector3 newScale = new Vector3(scalar, scalar, scalar);
-                        newScale.Scale(initialScale);
-                        objectToAffect.transform.localScale = newScale;
+                        newRotation += new Vector3(scalar, 0, 0);
                     }
-                    else if (this.AffineType == TransformType.Rotation)
+                    else if (Axis == AxisToAffect.Y)
                     {
-                        float scalar = (currentHandPosition - objectToAffect.transform.position).magnitude - (objectToAffect.transform.position - initialHandPosition).magnitude;
-                        scalar *= (4.0f * Mathf.Rad2Deg);
-                        Vector3 newRotation = new Vector3(initialOrientation.x, initialOrientation.y, initialOrientation.z);
-                        if (Axis == AxisToAffect.X)
-                        {
-                            newRotation += new Vector3(scalar, 0, 0);
-                        }
-                        else if (Axis == AxisToAffect.Y)
-                        {
-                            newRotation += new Vector3(0, scalar, 0);
-                        }
-                        else if (Axis == AxisToAffect.Z)
-                        {
-                            newRotation += new Vector3(0, 0, scalar);
-                        }
-                        objectToAffect.transform.localEulerAngles = newRotation;
+                        newRotation += new Vector3(0, scalar, 0);
                     }
+                    else if (Axis == AxisToAffect.Z)
+                    {
+                        newRotation += new Vector3(0, 0, scalar);
+                    }
+                    objectToAffect.transform.localEulerAngles = newRotation;
                 }
             }
         }
@@ -121,24 +108,31 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private Vector3 GetHandPosition(uint sourceId)
         {
             Vector3 handPosition = new Vector3(0, 0, 0);
+
             inputDownEventData.InputSource.TryGetGripPosition(sourceId, out handPosition);
+
             return handPosition;
         }
 
         public void OnInputDown(InputEventData eventData)
         {
-            inputDownEventData  = eventData;
+            MixedRealityToolkit.InputModule.InputManager.Instance.PushModalInputHandler(gameObject);
+            inputDownEventData = eventData;
+            eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceInfo);
             initialHandPosition = GetHandPosition(eventData.SourceId);
             initialScale        = objectToAffect.transform.localScale;
             initialOrientation  = objectToAffect.transform.rotation.eulerAngles;
 
             this.gameObject.GetComponent<Renderer>().material = Rig.InteractingMaterial;
-            Rig.FocusOnHandle(this.gameObject);
 
+            Rig.FocusOnHandle(this.gameObject);
+            
             eventData.Use();
         }
         public void OnInputUp(InputEventData eventData)
         {
+            inputDownEventData = null;
+
             if (this.AffineType == TransformType.Scale)
             {
                 this.gameObject.GetComponent<Renderer>().material = Rig.ScaleHandleMaterial;
@@ -148,11 +142,10 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 this.gameObject.GetComponent<Renderer>().material = Rig.RotateHandleMaterial;
             }
 
-            if (eventData != null)
-            {
-                inputDownEventData = null;
-                Rig.FocusOnHandle(null);
-            }
+            MixedRealityToolkit.InputModule.InputManager.Instance.PopModalInputHandler();
+           
+            Rig.FocusOnHandle(null);
+            eventData.Use();
         }
     }
 }
