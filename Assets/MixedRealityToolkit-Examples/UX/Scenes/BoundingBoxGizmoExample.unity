@@ -1012,6 +1012,7 @@ MonoBehaviour:
   rotateHandleMaterial: {fileID: 2100000, guid: 97c4a9f92f5f5f34ebdda0346d3dacc2,
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: 3602635b22247e64fb9d32876c31f9fe, type: 2}
+  UnselectedColor: {r: 0, g: 0.486, b: 0.796, a: 1}
 --- !u!4 &1308735481 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400002, guid: 284d5c2c421022e4f9056fb0a21ff91c, type: 3}
@@ -1490,6 +1491,7 @@ MonoBehaviour:
   rotateHandleMaterial: {fileID: 2100000, guid: 97c4a9f92f5f5f34ebdda0346d3dacc2,
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: 3602635b22247e64fb9d32876c31f9fe, type: 2}
+  UnselectedColor: {r: 0, g: 0.486, b: 0.796, a: 1}
 --- !u!4 &1588477260 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400002, guid: 1e23ec24c22068b4cbf47737c35e277b, type: 3}
@@ -1828,6 +1830,7 @@ MonoBehaviour:
   rotateHandleMaterial: {fileID: 2100000, guid: 97c4a9f92f5f5f34ebdda0346d3dacc2,
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: 3602635b22247e64fb9d32876c31f9fe, type: 2}
+  UnselectedColor: {r: 0, g: 0.486, b: 0.796, a: 1}
 --- !u!23 &1939329914
 MeshRenderer:
   m_ObjectHideFlags: 0
