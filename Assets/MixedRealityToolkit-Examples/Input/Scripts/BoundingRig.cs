@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using MixedRealityToolkit.InputModule.Utilities.Interations;
 using MixedRealityToolkit.UX.BoundingBoxes;
 using MixedRealityToolkit.Examples.InputModule;
-using MixedRealityToolkit.InputModule.InputHandlers;
-using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.UX.Buttons;
 using UnityEngine;
 
-public class BoundingRig : MonoBehaviour, IInputHandler
+public class BoundingRig : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
@@ -20,8 +18,10 @@ public class BoundingRig : MonoBehaviour, IInputHandler
 
     [SerializeField]
     private Material scaleHandleMaterial;
+
     [SerializeField]
     private Material rotateHandleMaterial;
+
     [SerializeField]
     private Material interactingMaterial;
 
@@ -124,8 +124,6 @@ public class BoundingRig : MonoBehaviour, IInputHandler
 
         appBarInstance = Instantiate(appBarPrefab) as AppBar;
         appBarInstance.BoundingBox = boxInstance;
-
-        boxInstance.gameObject.SetActive(false);
     }
     private void Update()
     {
@@ -159,7 +157,7 @@ public class BoundingRig : MonoBehaviour, IInputHandler
                 cornerHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cornerHandles[i].GetComponent<Renderer>().material = scaleHandleMaterial;
                 cornerHandles[i].transform.localScale = scaleHandleSize;
-                cornerHandles[i].AddComponent<BoxCollider>();
+                BoxCollider collider = cornerHandles[i].AddComponent<BoxCollider>();
                 cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                 cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
                 cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = objectToBound;
@@ -188,7 +186,7 @@ public class BoundingRig : MonoBehaviour, IInputHandler
                 rotateHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 rotateHandles[i].GetComponent<Renderer>().material = rotateHandleMaterial;
                 rotateHandles[i].transform.localScale = rotateHandleSize;
-                rotateHandles[i].AddComponent<SphereCollider>();
+                SphereCollider collider = rotateHandles[i].AddComponent<SphereCollider>();
                 rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                 rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
                 rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = objectToBound;
@@ -364,14 +362,6 @@ public class BoundingRig : MonoBehaviour, IInputHandler
 
             showRig = value;
         }
-    }
-
-    public void OnInputDown(InputEventData eventData)
-    {
-    }
-    public void OnInputUp(InputEventData eventData)
-    {
-        boxInstance.gameObject.SetActive(true);
     }
 
     private List<Vector3> GetBounds()

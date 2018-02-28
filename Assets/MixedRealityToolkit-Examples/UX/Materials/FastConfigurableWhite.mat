@@ -8,7 +8,8 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: FastConfigurableWhite
   m_Shader: {fileID: 4800000, guid: f1f3948b20c230044bda31b620ddd37f, type: 3}
-  m_ShaderKeywords: _EMISSION _SPECULARHIGHLIGHTS_ON _USEDIFFUSE_ON _USEMAINCOLOR_ON
+  m_ShaderKeywords: _EMISSION _SPECULARHIGHLIGHTS_ON _USEAMBIENT_ON _USEDIFFUSE_ON
+    _USEMAINCOLOR_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -81,7 +82,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _ForcePerPixel: 0
-    - _Gloss: 2.36
+    - _Gloss: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -95,11 +96,11 @@ Material:
     - _RimPower: 0.7
     - _Shade4: 0
     - _SmoothnessTextureChannel: 0
-    - _Specular: 8.9
+    - _Specular: 10
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _UseAmbient: 0
+    - _UseAmbient: 1
     - _UseBumpMap: 0
     - _UseDiffuse: 1
     - _UseEmissionColor: 0
@@ -117,7 +118,7 @@ Material:
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.5808823, g: 0.5808823, b: 0.5808823, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
