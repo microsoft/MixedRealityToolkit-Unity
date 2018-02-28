@@ -6,6 +6,6 @@ using MixedRealityToolkit.UX.BoundingBoxes;
 
 namespace MixedRealityToolkit.UX.EditorScript
 {
-    [UnityEditor.CustomEditor(typeof(BoundingBoxBasic))]
+    [UnityEditor.CustomEditor(typeof(BoundingBoxGizmoShell))]
     public class BoundingBoxGizmoShellEditor : MRTKEditor { }
 }

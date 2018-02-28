@@ -90,11 +90,11 @@ public class BoundingRig : MonoBehaviour
 
             for (int i = 0; i < rotateHandles.Length; ++i)
             {
-                rotateHandles[i].SetActive(rotateHandles[i].name == handle.name);
+                rotateHandles[i].SetActive(rotateHandles[i].gameObject == handle);
             }
             for (int i = 0; i < cornerHandles.Length; ++i)
             {
-                cornerHandles[i].SetActive(cornerHandles[i].name == handle.name);
+                cornerHandles[i].SetActive(cornerHandles[i].gameObject == handle);
             }
         }
         else
@@ -364,8 +364,6 @@ public class BoundingRig : MonoBehaviour
         }
     }
 
-
-
     private List<Vector3> GetBounds()
     {
         if (objectToBound != null)
@@ -375,7 +373,9 @@ public class BoundingRig : MonoBehaviour
             GameObject clone = GameObject.Instantiate(boxInstance.gameObject);
             clone.transform.localRotation = Quaternion.identity;
             clone.transform.position = new Vector3(0, 0, 0);
+
             BoundingBox.GetRenderBoundsPoints(clone, bounds, mask);
+
             GameObject.Destroy(clone);
 
             Matrix4x4 m = Matrix4x4.Rotate(objectToBound.transform.rotation);

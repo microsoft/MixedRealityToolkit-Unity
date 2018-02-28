@@ -124,9 +124,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             initialOrientation  = objectToAffect.transform.rotation.eulerAngles;
 
             this.gameObject.GetComponent<Renderer>().material = Rig.InteractingMaterial;
-
             Rig.FocusOnHandle(this.gameObject);
-            
             eventData.Use();
         }
         public void OnInputUp(InputEventData eventData)
@@ -143,7 +141,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
 
             MixedRealityToolkit.InputModule.InputManager.Instance.PopModalInputHandler();
-           
             Rig.FocusOnHandle(null);
             eventData.Use();
         }

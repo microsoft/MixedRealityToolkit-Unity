@@ -19,12 +19,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4534580742824818}
-  - component: {fileID: 114766803944175666}
-  - component: {fileID: 114898369366749218}
-  - component: {fileID: 114318912611138786}
-  - component: {fileID: 114315923445740006}
-  - component: {fileID: 114094247322991360}
-  - component: {fileID: 114219408081611750}
   - component: {fileID: 65801773077148412}
   - component: {fileID: 114175038440563122}
   m_Layer: 5
@@ -361,28 +355,6 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
---- !u!114 &114094247322991360
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1239953840342384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffc886b5774e0184990bff0ce51eaf92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Profile: {fileID: 11400000, guid: 470603dbc72fbc14f8c1b69d314faf75, type: 2}
-  TextMesh: {fileID: 102052099225654442}
-  OverrideFontStyle: 0
-  Style: 0
-  OverrideAnchor: 0
-  Anchor: 4
-  OverrideSize: 0
-  Size: 72
-  OverrideOffset: 0
-  alpha: 1
-  disableText: 0
 --- !u!114 &114175038440563122
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -395,80 +367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BoundingBoxPrefab: {fileID: 0}
-  ButtonPrefab: {fileID: 0}
-  ApppBarPrefab: {fileID: 0}
---- !u!114 &114219408081611750
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1239953840342384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d56c23c4a6e0ec6478791a5c1a0f81a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  KeywordSource: 2
-  Keyword: 
-  ConfidenceLevel: 4
---- !u!114 &114315923445740006
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1239953840342384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fff02dbb374b62340a93479237fb9319, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Profile: {fileID: 11400000, guid: a05b72560895bf146a8fcc7cdc391aae, type: 2}
-  targetIconRenderer: {fileID: 23899439937517240}
-  DisableIcon: 0
-  OverrideIcon: 0
-  iconName: ObjectCollectionSphere
-  iconOverride: {fileID: 0}
-  alpha: 1
---- !u!114 &114318912611138786
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1239953840342384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f67074a40850544a196681fad1325f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Profile: {fileID: 11400000, guid: f9af5d824507da24b8bbd97f4948aec7, type: 2}
-  audioSource: {fileID: 0}
---- !u!114 &114766803944175666
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1239953840342384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e77a98cf320fe9340a55eecfe4567ca4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ButtonState: 4
-  ButtonPressFilter: 1
-  RequireGaze: 1
-  MainCollider: {fileID: 65801773077148412}
-  MainRenderer: {fileID: 23907422687686574}
---- !u!114 &114898369366749218
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1239953840342384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86772d5ca853e924ba484bc960537c04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Profile: {fileID: 11400000, guid: c7079c29554cb374294a5e28695efa0b, type: 2}
-  TargetTransform: {fileID: 0}
-  Renderer: {fileID: 23957602964816658}
+  appBarPrefab: {fileID: 0}
+  scaleHandleMaterial: {fileID: 0}
+  rotateHandleMaterial: {fileID: 0}
+  interactingMaterial: {fileID: 0}
