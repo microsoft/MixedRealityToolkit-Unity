@@ -70,7 +70,7 @@ namespace HoloToolkit.Unity
             var deletedSprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
             if (deletedSprite != null)
             {
-                foreach (var reference in References.Where(re => re.Atlas.ContainsSprite(deletedSprite)))
+                foreach (var reference in References.Where(_ref => _ref.Atlas.ContainsSprite(deletedSprite)))
                 {
                     var localRef = reference;
                     EditorApplication.delayCall += () => UpdateAtlasReferences(localRef);
@@ -83,7 +83,7 @@ namespace HoloToolkit.Unity
 
         private static string[] OnWillSaveAssets(string[] paths)
         {
-            if (paths.Select(AssetDatabase.LoadAssetAtPath<AtlasPrefabReference>).Any(atlasReference => atlasReference != null))
+            if (paths.Select(AssetDatabase.LoadAssetAtPath<AtlasPrefabReference>).Any(_ref => _ref != null))
             {
                 EditorApplication.delayCall += FindAtlasPrefabReferences;
                 EditorApplication.delayCall += UpdateAllReferences;
@@ -113,7 +113,7 @@ namespace HoloToolkit.Unity
         private static IEnumerable<Sprite> GetDistinctSprites(IEnumerable<GameObject> prefabs)
         {
             return prefabs.SelectMany(p => p.GetComponentsInChildren<Image>())
-                .Select(i => i.sprite).Where(i => i != null).Distinct();
+                .Select(img => img.sprite).Where(img => img != null).Distinct();
         }
     }
 }
