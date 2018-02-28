@@ -6,7 +6,6 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using UnityEngine.XR;
-using UnityEngine.XR.WSA;
 
 namespace MixedRealityToolkit.Boundary
 {
@@ -78,7 +77,15 @@ namespace MixedRealityToolkit.Boundary
         {
             base.Awake();
 
-            if (HolographicSettings.IsDisplayOpaque)
+#if UNITY_WSA
+            bool isDisplayOpaque = UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque;
+#else
+            // Assume displays on non Windows MR platforms are all opaque.
+            // This will likely change as new hardwre comes to market.
+            bool isDisplayOpaque = true;
+#endif
+
+            if (isDisplayOpaque)
             {
                 XRDevice.SetTrackingSpaceType(opaqueTrackingSpaceType);
             }

@@ -7,37 +7,39 @@ using UnityEngine;
 
 namespace MixedRealityToolkit.Boundary
 {
-    /// <summary>
-    /// Helper class to hold an edge
-    /// </summary>
-    internal struct Edge
-    {
-        public float Ax;
-        public float Ay;
-        public float Bx;
-        public float By;
 
-        public Edge(float ax, float ay, float bx, float by)
-        {
-            this.Ax = ax;
-            this.Ay = ay;
-            this.Bx = bx;
-            this.By = by;
-        }
-
-        public Edge(Vector2 pointA, Vector2 pointB)
-        {
-            this.Ax = pointA.x;
-            this.Bx = pointB.x;
-            this.Ay = pointA.y;
-            this.By = pointB.y;
-        }
-    }
 
     public class InscribedRectangle
     {
-        private static Vector2 InvalidPoint = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
+        /// <summary>
+        /// Helper class to hold an edge
+        /// </summary>
+        private struct Edge
+        {
+            public float Ax;
+            public float Ay;
+            public float Bx;
+            public float By;
 
+            public Edge(float ax, float ay, float bx, float by)
+            {
+                this.Ax = ax;
+                this.Ay = ay;
+                this.Bx = bx;
+                this.By = by;
+            }
+
+            public Edge(Vector2 pointA, Vector2 pointB)
+            {
+                this.Ax = pointA.x;
+                this.Bx = pointB.x;
+                this.Ay = pointA.y;
+                this.By = pointB.y;
+            }
+        }
+
+        // Sentinel value
+        private static Vector2 InvalidPoint = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
 
         // Total number of starting points randomly generated within the boundary
         private const int randomPointCount = 30;
@@ -80,7 +82,6 @@ namespace MixedRealityToolkit.Boundary
 
             FindInscribedRectangle(edges, randomSeed, out this.center, out this.angle, out this.width, out this.height);
         }
-
 
         /// <summary>
         /// Use this to determine if there is a valid inscribed rectangle
@@ -213,11 +214,10 @@ namespace MixedRealityToolkit.Boundary
         /// </summary>
         private static Vector2 GetIntersection(Edge edge1, Edge edge2)
         {
-            float s1_x, s1_y, s2_x, s2_y;
-            s1_x = edge1.Bx - edge1.Ax;
-            s1_y = edge1.By - edge1.Ay;
-            s2_x = edge2.Bx - edge2.Ax;
-            s2_y = edge2.By - edge2.Ay;
+            float s1_x = edge1.Bx - edge1.Ax;
+            float s1_y = edge1.By - edge1.Ay;
+            float s2_x = edge2.Bx - edge2.Ax;
+            float s2_y = edge2.By - edge2.Ay;
 
             float s, t;
             s = (-s1_y * (edge1.Ax - edge2.Ax) + s1_x * (edge1.Ay - edge2.Ay)) / (-s2_x * s1_y + s1_x * s2_y);
@@ -452,26 +452,30 @@ namespace MixedRealityToolkit.Boundary
 
             return true;
         }
-
-        // Finds a large inscribed rectangle. Tries to be maximal but this is
-        // best effort. The algorithm used was inspired by the blog post
-        // https://d3plus.org/blog/behind-the-scenes/2014/07/08/largest-rect/
-        // Random points within the polygon are chosen, and then 2 lines are
-        // drawn through those points. The midpoints of those lines are
-        // used as the center of various rectangles, using a binary search to
-        // vary the size, until the largest fit-able rectangle is found.
-        // This is then repeated for pre-defined angles (0-180 in steps of 15)
-        // and aspect ratios (1 to 15 in steps of 0.5)
+        
+        /// <summary>
+        /// Finds a large inscribed rectangle. Tries to be maximal but this is
+        /// best effort. The algorithm used was inspired by the blog post
+        /// https://d3plus.org/blog/behind-the-scenes/2014/07/08/largest-rect/
+        /// Random points within the polygon are chosen, and then 2 lines are
+        /// drawn through those points. The midpoints of those lines are
+        /// used as the center of various rectangles, using a binary search to
+        /// vary the size, until the largest fit-able rectangle is found.
+        /// This is then repeated for pre-defined angles (0-180 in steps of 15)
+        /// and aspect ratios (1 to 15 in steps of 0.5)
+        /// </summary>
         private static void FindInscribedRectangle(Edge[] edges, int randomSeed, out Vector2 center, out float angle, out float width, out float height)
         {
             center = InvalidPoint;
             angle = width = height = 0;
-            // Step 1: Find min x, y, max x, max y and generate random
-            // points in this range until we have TOTAL_RANDOM_POINTS
+
+            // Find min x, min y, max x, max y and generate random
+            // points in this range until we have randomPointCount
             // random starting points
-            float minX, minY, maxX, maxY;
-            minX = minY = largeValue;
-            maxX = maxY = smallValue;
+            float minX = largeValue;
+            float minY = largeValue;
+            float maxX = smallValue;
+            float maxY = smallValue;
 
             foreach (var edge in edges)
             {
