@@ -31,7 +31,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private Vector3 initialScale;
         private Vector3 initialOrientation;
         private InputEventData inputDownEventData;
-        private InputModule.InputSources.InteractionSourceInfo sourceInfo;
 
         public GameObject ObjectToAffect
         {
@@ -117,8 +116,8 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         public void OnInputDown(InputEventData eventData)
         {
             MixedRealityToolkit.InputModule.InputManager.Instance.PushModalInputHandler(gameObject);
+
             inputDownEventData = eventData;
-            eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceInfo);
             initialHandPosition = GetHandPosition(eventData.SourceId);
             initialScale        = objectToAffect.transform.localScale;
             initialOrientation  = objectToAffect.transform.rotation.eulerAngles;
@@ -141,6 +140,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
 
             MixedRealityToolkit.InputModule.InputManager.Instance.PopModalInputHandler();
+
             Rig.FocusOnHandle(null);
             eventData.Use();
         }
