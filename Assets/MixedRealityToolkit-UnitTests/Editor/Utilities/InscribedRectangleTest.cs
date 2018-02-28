@@ -12,7 +12,7 @@ namespace MixedRealityToolkit.Tests.Utilities
     /// <summary>
     /// Some smoke tests to make sure the algorithm at least functioning
     /// </summary>
-    class InscribedRectangleTest
+    public class InscribedRectangleTest
     {
         private class LargestRectangleTestCase
         {
