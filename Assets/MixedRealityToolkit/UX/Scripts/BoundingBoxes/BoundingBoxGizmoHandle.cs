@@ -3,11 +3,12 @@
 
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.InputHandlers;
+
 using UnityEngine;
 
 namespace MixedRealityToolkit.UX.BoundingBoxes
 {
-    public class BoundingBoxGizmoHandle : MonoBehaviour, IInputHandler
+    public class BoundingBoxGizmoHandle : MonoBehaviour, IInputHandler, ISourceStateHandler
     {
         public enum TransformType
         {
@@ -31,7 +32,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private Vector3 initialScale;
         private Vector3 initialOrientation;
         private InputEventData inputDownEventData;
-        private InputModule.InputSources.InteractionSourceInfo sourceInfo;
 
         public GameObject ObjectToAffect
         {
@@ -126,7 +126,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         {
             MixedRealityToolkit.InputModule.InputManager.Instance.PushModalInputHandler(gameObject);
             inputDownEventData = eventData;
-            eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceInfo);
             initialHandPosition = GetHandPosition(eventData.SourceId);
             initialScale        = objectToAffect.transform.localScale;
             initialOrientation  = objectToAffect.transform.rotation.eulerAngles;
@@ -150,6 +149,22 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             MixedRealityToolkit.InputModule.InputManager.Instance.PopModalInputHandler();
             Rig.FocusOnHandle(null);
+
+            if (eventData != null)
+            {
+                eventData.Use();
+            }
+        }
+
+        public void OnSourceDetected(SourceStateEventData eventData)
+        {
+        }
+        public void OnSourceLost(SourceStateEventData eventData)
+        {
+            if (eventData.SourceId == inputDownEventData.SourceId)
+            {
+                OnInputUp(null);
+            }
             eventData.Use();
         }
     }
