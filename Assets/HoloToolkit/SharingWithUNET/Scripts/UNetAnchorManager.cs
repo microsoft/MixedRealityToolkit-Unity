@@ -304,7 +304,10 @@ namespace HoloToolkit.Unity.SharingWithUNET
             else if (spatialMapping == null)
             {
                 if (UseSpatialMapping)
+                {
                     Debug.Log("No spatial mapping...");
+                }
+                
                 ExportAnchorAtPosition(objectToAnchor.transform.position);
             }
             // 3. seek a vertex dense portion of spatial mapping
