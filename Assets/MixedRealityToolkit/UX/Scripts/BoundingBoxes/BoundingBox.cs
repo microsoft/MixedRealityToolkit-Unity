@@ -184,6 +184,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         #endregion
 
         #region private
+        private bool isVisible = true;
 
         /// <summary>
         /// Override so we're not overwhelmed by button gizmos
@@ -388,6 +389,22 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         }
 
         #endregion
+
+        public bool IsVisible
+        {
+            get
+            {
+                return isVisible;
+            }
+            set
+            {
+                Transform scale = transform.GetChild(0);
+                Transform rig = scale.GetChild(0);
+                GameObject rigobject = rig.gameObject;
+                rigobject.gameObject.GetComponent<Renderer>().enabled = value;
+                isVisible = value;
+            }
+        }
 
         #region static utility functions
 

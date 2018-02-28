@@ -124,6 +124,8 @@ public class BoundingRig : MonoBehaviour
 
         appBarInstance = Instantiate(appBarPrefab) as AppBar;
         appBarInstance.BoundingBox = boxInstance;
+
+        boxInstance.IsVisible = false;
     }
     private void Update()
     {
@@ -350,6 +352,7 @@ public class BoundingRig : MonoBehaviour
             }
 
             boxInstance.gameObject.SetActive(value);
+            boxInstance.IsVisible = true;
 
             foreach (GameObject handle in cornerHandles)
             {
