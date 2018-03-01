@@ -18,14 +18,12 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             Rotation,
             Scale
         };
-
         public enum AxisToAffect
         {
             X,
             Y,
             Z
         };
-
         public BoundingBoxRig Rig;
 
         private GameObject objectToAffect;
@@ -37,6 +35,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private Quaternion initialHandOrientation;
         private InputEventData inputDownEventData;
         private bool isHandRotationAvailable = true;
+        private bool isLeftHandedRotation = false;
 
         public GameObject ObjectToAffect
         {
@@ -74,6 +73,18 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 axis = value;
             }
         }
+        public bool IsLeftHandedRotation
+        {
+            get
+            {
+                return isLeftHandedRotation;
+            }
+
+            set
+            {
+                isLeftHandedRotation = value;
+            }
+        }
 
         private void Start()
         {
@@ -84,7 +95,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
 #endif
         }
-
         private void Update()
         {
             if (inputDownEventData != null)
@@ -188,7 +198,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         }
         private void CalculateRotation(Vector3 currentHandPosition)
         {
-            float rotationScalar = 10.0f;
             Vector3 initialRay = initialHandPosition - ObjectToAffect.transform.position;
             initialRay.Normalize();
 
@@ -197,22 +206,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             Vector3 delta = currentRay - initialRay;
             delta.Scale(new Vector3(-300, -300, -300));
-
-            //determine which direction to rotate
-            //if (Mathf.Abs(initialRay.y - currentRay.y) < Mathf.Abs(initialRay.x - currentRay.x))
-            //{
-            //    if (Vector3.Cross(initialRay, currentRay).y < 0)
-            //    {
-            //        angle = -angle;
-            //    }
-            //}
-            //else
-            //{
-            //    if (Vector3.Cross(initialRay, currentRay).x < 0)
-            //    {
-            //        angle = -angle;
-            //    }
-            //}
 
             Vector3 newEulers = new Vector3(0, 0, 0);
             if (Axis == AxisToAffect.X)
@@ -227,14 +220,20 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             {
                 newEulers = new Vector3(0, 0, delta.y);
             }
+
+            if (IsLeftHandedRotation)
+            {
+                newEulers.Scale(new Vector3(-1.0f, -1.0f, -1.0f));
+            }
+
             newEulers += initialOrientation;
 
 
             ObjectToAffect.transform.rotation = Quaternion.Euler(newEulers);
         }
+
         public void OnInputDown(InputEventData eventData)
         {
-            MixedRealityToolkit.InputModule.InputManager.Instance.PushModalInputHandler(gameObject);
             inputDownEventData = eventData;
             initialHandPosition = GetHandPosition(eventData.SourceId);
             initialScale        = objectToAffect.transform.localScale;

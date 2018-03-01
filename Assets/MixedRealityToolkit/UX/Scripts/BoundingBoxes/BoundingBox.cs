@@ -180,11 +180,9 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         protected List<Vector3> boundsPoints = new List<Vector3>();
 
         protected FlattenModeEnum flattenedAxis = FlattenModeEnum.DoNotFlatten;
-
+   
+        protected bool isVisible = true;
         #endregion
-
-        #region private
-        private bool isVisible = true;
 
         /// <summary>
         /// Override so we're not overwhelmed by button gizmos

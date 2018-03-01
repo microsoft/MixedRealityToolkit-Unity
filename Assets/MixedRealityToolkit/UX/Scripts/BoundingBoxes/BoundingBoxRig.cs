@@ -28,6 +28,17 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         [SerializeField]
         private Material interactingMaterial;
 
+        private BoundingBox boxInstance;
+        private GameObject objectToBound;
+        private AppBar appBarInstance;
+        private GameObject[] rotateHandles;
+        private GameObject[] cornerHandles;
+        private List<Vector3> handleCentroids;
+        private GameObject transformRig;
+        private bool showRig = false;
+        private Vector3 scaleHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
+        private Vector3 rotateHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
+
         public Material ScaleHandleMaterial
         {
             get
@@ -65,17 +76,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
         }
 
-        private BoundingBox boxInstance;
-        private GameObject objectToBound;
-        private AppBar appBarInstance;
-        private GameObject[] rotateHandles;
-        private GameObject[] cornerHandles;
-        private List<Vector3> handleCentroids;
-        private GameObject transformRig;
-        private bool showRig = false;
-        private Vector3 scaleHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
-        private Vector3 rotateHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
-
         public void Activate()
         {
             ShowRig = true;
@@ -88,9 +88,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         {
             if (handle != null)
             {
-                GameObject textMesh = GameObject.Find("textOut");
-                textMesh.GetComponent<TextMesh>().text = handle.name.ToString();
-
                 for (int i = 0; i < rotateHandles.Length; ++i)
                 {
                     rotateHandles[i].SetActive(rotateHandles[i].gameObject == handle);
@@ -102,9 +99,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
             else
             {
-                GameObject textMesh = GameObject.Find("textOut");
-                textMesh.GetComponent<TextMesh>().text = "None";
-
                 for (int i = 0; i < rotateHandles.Length; ++i)
                 {
                     rotateHandles[i].SetActive(true);
@@ -200,6 +194,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     rotateHandles[i].name = "Middle " + i.ToString();
                 }
 
+                //set axis to affect
                 rotateHandles[0].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
                 rotateHandles[1].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
                 rotateHandles[2].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
@@ -208,12 +203,28 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 rotateHandles[4].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
                 rotateHandles[5].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
                 rotateHandles[6].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
-                rotateHandles[7].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+                rotateHandles[7].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
 
                 rotateHandles[8].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
                 rotateHandles[9].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
                 rotateHandles[10].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
                 rotateHandles[11].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
+
+                //set lefthandedness
+                rotateHandles[0].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
+                rotateHandles[1].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
+                rotateHandles[2].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
+                rotateHandles[3].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
+
+                rotateHandles[4].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
+                rotateHandles[5].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
+                rotateHandles[6].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = true;
+                rotateHandles[7].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = true;
+
+                rotateHandles[8].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
+                rotateHandles[9].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = true;
+                rotateHandles[10].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
+                rotateHandles[11].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = true;
             }
 
             rotateHandles[0].transform.localPosition = (handleCentroids[2] + handleCentroids[0]) * 0.5f;
