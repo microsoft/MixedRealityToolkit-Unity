@@ -29,21 +29,21 @@ Description here.
 
 
 ## How to use Bounding Box & App Bar ##
-You can enable Bounding Box and App Bar by simply assigning [BoundingBoxRig script](/Assets/MixedRealityToolkit/UX/Scripts/BoundingBoxes/BoundingBoxRig.cs) to any GameObject. After assigning **BoundingBoxRig** script, you need to assign prefabs and materials. Below screenshot shows the items that need to be assigned.
-- **BoundingBoxBasic prefab** 
-- **AppBar prefab** 
-- **BoundingBoxHandle material**
-- **BoundingBoxGrabbed material**
+You can enable Bounding Box and App Bar by simply assigning [BoundingBoxRig script](/Assets/MixedRealityToolkit/UX/Scripts/BoundingBoxes/BoundingBoxRig.cs) to any GameObject. **BoundingBoxRig** script contains these items.
+- **BoundingBoxBasic prefab** - Visualizes boundary wireframe 
+- **AppBar prefab** - Constructs App Bar
+- **BoundingBoxHandle material** - Default Material for the gizmo
+- **BoundingBoxGrabbed material** - Material for the gizmo when it is being interacted
 
 ![BoundingBox Script Setup](/External/ReadMeImages/MRTK_AppBar_BoundingBox_ScriptSetup.jpg)
 ![BoundingBox Material Setup](/External/ReadMeImages/MRTK_AppBar_BoundingBox_Materials.jpg)
 
 
-## Combining with TwoHandManipulatable script ##
-Description here.
-
 ## Combining with HandDraggable script ##
-Description here.
+Bounding Box with gizmo provides the interface for scaling and rotating object. To make the object movable, you can assign [HandDraggable script](/Assets/MixedRealityToolkit/InputModule/Scripts/Utilities/Interactions/HandDraggable.cs) to the object. With HandDraggable script, you can grab the body of the object and move. You can move object in both normal mode and adjust mode since it does not require the gizmo interface.
+
+## Combining with TwoHandManipulatable script ##
+[TwoHandManipulatable script](/Assets/MixedRealityToolkit/InputModule/Scripts/Utilities/Interactions/TwoHandManipulatable.cs) allows for an object to be movable, scalable, and rotatable with one or two hands. This script can be combined with BoudningBoxRig script, providing both options for manipulating objects. You can find this interaction behavior in the cliff house. Using two motion controllers and select buttons, you can move/rotate/scale any objects without entering adjust mode. Still you can enter adjust mode by pressing the button on the AppBar and use gizmo to scale/rotate the object. For more detailed information about TwoHandManipulatable script, please refer to the [README file](/Assets/MixedRealityToolkit-Examples/Input/Readme/README_TwoHandManipulationTest.md).
 
 
 ## How to add custom buttons to the App Bar ##
