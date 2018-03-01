@@ -110,6 +110,26 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         }
 
         /// <summary>
+        /// Sets the bounding box invisible while not interrupting
+        /// the computation of bounds points.
+        /// </summary>
+        public bool IsVisible
+        {
+            get
+            {
+                return isVisible;
+            }
+            set
+            {
+                Transform scale = transform.GetChild(0);
+                Transform rig = scale.GetChild(0);
+                GameObject rigobject = rig.gameObject;
+                rigobject.gameObject.GetComponent<Renderer>().enabled = value;
+                isVisible = value;
+            }
+        }
+
+        /// <summary>
         /// The current flattened axis, if any
         /// </summary>
         public virtual FlattenModeEnum FlattenedAxis
@@ -184,6 +204,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         protected bool isVisible = true;
         #endregion
 
+        #region
         /// <summary>
         /// Override so we're not overwhelmed by button gizmos
         /// </summary>
@@ -385,24 +406,9 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             transform.eulerAngles = rotation;
         }
-
         #endregion
 
-        public bool IsVisible
-        {
-            get
-            {
-                return isVisible;
-            }
-            set
-            {
-                Transform scale = transform.GetChild(0);
-                Transform rig = scale.GetChild(0);
-                GameObject rigobject = rig.gameObject;
-                rigobject.gameObject.GetComponent<Renderer>().enabled = value;
-                isVisible = value;
-            }
-        }
+  
 
         #region static utility functions
 
