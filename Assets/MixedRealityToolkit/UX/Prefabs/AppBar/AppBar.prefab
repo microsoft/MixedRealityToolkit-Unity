@@ -165,31 +165,7 @@ MonoBehaviour:
   DisplayType: 0
   State: 0
   CustomButtonIconProfile: {fileID: 0}
-  buttons:
-  - DefaultPosition: 1
-    ManipulationPosition: 1
-    Type: 0
-    Name: Custom 1
-    Icon: 
-    Text: Custom 1
-    EventTarget: {fileID: 0}
-    OnTappedEvent:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - DefaultPosition: 2
-    ManipulationPosition: 2
-    Type: 0
-    Name: Custom 2
-    Icon: 
-    Text: Custom 2
-    EventTarget: {fileID: 0}
-    OnTappedEvent:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+  buttons: []
   buttonParent: {fileID: 4691479528535670}
   baseRenderer: {fileID: 1275815092924048}
   backgroundBar: {fileID: 1093294406509342}
