@@ -38,6 +38,8 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private InputEventData inputDownEventData;
         private bool isHandRotationAvailable;
         private bool isLeftHandedRotation = false;
+        private Vector3 rotationFromPositionScale = new Vector3(-300.0f, -300.0f, -300.0f);
+        private float minimumScaleNav = 0.001f;
 
         public GameObject ObjectToAffect
         {
@@ -116,17 +118,17 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 //calculate affines
                 if (this.AffineType == TransformType.Scale)
                 {
-                    CalculateScale(currentHandPosition);
+                    ApplyScale(currentHandPosition);
                 }
                 else if (this.AffineType == TransformType.Rotation)
                 {
                     if (isHandRotationAvailable)
                     {
-                        CalculateRotation(currentHandOrientation);
+                        ApplyRotation(currentHandOrientation);
                     }
                     else
                     {
-                        CalculateRotation(currentHandPosition);
+                        ApplyRotation(currentHandPosition);
                     }
                 }
             }
@@ -144,24 +146,27 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             inputDownEventData.InputSource.TryGetGripRotation(sourceId, out handOrientation);
             return handOrientation;
         }
-        private void CalculateScale(Vector3 currentHandPosition)
+        private void ApplyScale(Vector3 currentHandPosition)
         {
-            float scaleScalar = (currentHandPosition - objectToAffect.transform.position).magnitude / (objectToAffect.transform.position - initialHandPosition).magnitude;
-            Vector3 newScale = new Vector3(scaleScalar, scaleScalar, scaleScalar);
-            newScale.Scale(initialScale);
+            if ((objectToAffect.transform.position - initialHandPosition).magnitude > minimumScaleNav)
+            {
+                float scaleScalar = (currentHandPosition - objectToAffect.transform.position).magnitude / (objectToAffect.transform.position - initialHandPosition).magnitude;
+                Vector3 newScale = new Vector3(scaleScalar, scaleScalar, scaleScalar);
+                newScale.Scale(initialScale);
 
-            //scale from object center
-            objectToAffect.transform.localScale = newScale;
+                //scale from object center
+                objectToAffect.transform.localScale = newScale;
 
-            //now handle offset
-            Vector3 currentScaleOrigin = initialScaleOrigin;
-            currentScaleOrigin.Scale(new Vector3(scaleScalar, scaleScalar, scaleScalar));
-            Vector3 postScaleOffset = currentScaleOrigin - initialScaleOrigin;
+                //now handle offset
+                Vector3 currentScaleOrigin = initialScaleOrigin;
+                currentScaleOrigin.Scale(new Vector3(scaleScalar, scaleScalar, scaleScalar));
+                Vector3 postScaleOffset = currentScaleOrigin - initialScaleOrigin;
 
-            //translate so that scale is effectively from opposite corner
-            objectToAffect.transform.position = initialPosition - postScaleOffset;
+                //translate so that scale is effectively from opposite corner
+                objectToAffect.transform.position = initialPosition - postScaleOffset;
+            }
         }
-        private void CalculateRotation(Quaternion currentHandOrientation)
+        private void ApplyRotation(Quaternion currentHandOrientation)
         {
             Matrix4x4 m = Matrix4x4.Rotate(initialHandOrientation);
             Vector3 initRay = new Vector3(0, 0, 1);
@@ -209,7 +214,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             ObjectToAffect.transform.rotation = Quaternion.Euler(newEulers);
         }
-        private void CalculateRotation(Vector3 currentHandPosition)
+        private void ApplyRotation(Vector3 currentHandPosition)
         {
             Vector3 initialRay = initialHandPosition - ObjectToAffect.transform.position;
             initialRay.Normalize();
@@ -218,7 +223,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             currentRay.Normalize();
 
             Vector3 delta = currentRay - initialRay;
-            delta.Scale(new Vector3(-300, -300, -300));
+            delta.Scale(rotationFromPositionScale);
 
             Vector3 newEulers = new Vector3(0, 0, 0);
             if (Axis == AxisToAffect.X)
