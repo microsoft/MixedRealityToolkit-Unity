@@ -156,7 +156,7 @@ MonoBehaviour:
   Targets: []
   lockFocus: 0
   HoverOffsetYScale: 0.35
-  HoverOffsetZ: -0.3
+  HoverOffsetZ: -0.1
   SquareButtonPrefab: {fileID: 1210820392543280, guid: 40da8a1b3b26ba743b892d890b95a9f9,
     type: 2}
   UseRemove: 1

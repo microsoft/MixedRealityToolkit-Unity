@@ -8,26 +8,28 @@ using MixedRealityToolkit.UX.Buttons.Profiles;
 using MixedRealityToolkit.UX.Buttons.Utilities;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.BoundingBoxes
+namespace MixedRealityToolkit.UX.AppBarControl
 {
     public class AppBarButton : MonoBehaviour
     {
+        private ButtonIconProfile customIconProfile;
+        private AppBar.ButtonTemplate template;
+        private Vector3 targetPosition;
+        private Vector3 defaultOffset;
+        private Vector3 hiddenOffset;
+        private Vector3 manipulationOffset;
+        private CompoundButton cButton;
+        private CompoundButtonText text;
+        private CompoundButtonIcon icon;
+        private AppBar parentToolBar;
+        private bool initialized = false;
+
         public const float ButtonWidth = 0.12f;
         public const float ButtonDepth = 0.0001f;
         const float MoveSpeed = 5f;
 
-        // MRTK_TEMP_FIX
-        //public FilterTag VisibleFilterTag;
-        //public FilterTag HiddenFilterTag;
-
         public void Initialize(AppBar newParentToolBar, AppBar.ButtonTemplate newTemplate, ButtonIconProfile newCustomProfile)
         {
-            // MRTK_TEMP_FIX
-            //VisibleFilterTag = new FilterTag();
-            //VisibleFilterTag.Tag = "Default";
-            //HiddenFilterTag = new FilterTag();
-            //HiddenFilterTag.Tag = "Hidden";
-
             template = newTemplate;
             customIconProfile = newCustomProfile;
             parentToolBar = newParentToolBar;
@@ -176,16 +178,5 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             hiddenOffset = Vector3.zero;
         }
 
-        private ButtonIconProfile customIconProfile;
-        private AppBar.ButtonTemplate template;
-        private Vector3 targetPosition;
-        private Vector3 defaultOffset;
-        private Vector3 hiddenOffset;
-        private Vector3 manipulationOffset;
-        private CompoundButton cButton;
-        private CompoundButtonText text;
-        private CompoundButtonIcon icon;
-        private AppBar parentToolBar;
-        private bool initialized = false;
     }
 }

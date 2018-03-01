@@ -23,7 +23,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             Z
         };
 
-        public BoundingRig Rig;
+        public BoundingBoxRig Rig;
 
         private GameObject objectToAffect;
         private TransformType affineType;

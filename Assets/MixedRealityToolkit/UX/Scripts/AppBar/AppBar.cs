@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.WSA.Input;
 
-namespace MixedRealityToolkit.UX.BoundingBoxes
+namespace MixedRealityToolkit.UX.AppBarControl
 {
     public class AppBar : InteractionReceiver
     {
@@ -161,9 +161,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
         public void Reset() {
             State = AppBarStateEnum.Default;
-            if (boundingBox != null) {
-                // MRTK_TEMP_FIX boundingBox.AcceptInput = false;
-            }
             FollowBoundingBox(false);
             lastTimeTapped = Time.time + coolDownTime;
         }
@@ -189,25 +186,20 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             lastTimeTapped = Time.time;
 
             base.InputClicked(obj, eventData);
-            Debug.Log("MRTK ###################### InputClicked, obj.name =" + obj.name);
 
             switch (obj.name)
             {
                 case "Remove":
                     // Destroy the target object
                     // GameObject.Destroy(boundingBox.Target);
-                    // MRTK_FIX: destroy objectToBound
-                    // Set our bounding box to null so we'll disappear
-                    //boundingBox = null;
                     break;
 
                 case "Adjust":
                     // Make the bounding box active so users can manipulate it
                     State = AppBarStateEnum.Manipulation;
 
-                    // Activate BoundingRig
-                    boundingBox.Target.GetComponent<BoundingRig>().Activate();
-                    Debug.Log("MRTK ###################### AppBarStateEnum.Manipulation, BoundingRig");
+                    // Activate BoundingBoxRig
+                    boundingBox.Target.GetComponent<BoundingBoxRig>().Activate();
 
                     break;
 
@@ -218,17 +210,15 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
                 case "Show":
                     State = AppBarStateEnum.Default;
-                    // Deactivate BoundingRig
-                    boundingBox.Target.GetComponent<BoundingRig>().Deactivate();
-                    Debug.Log("MRTK ###################### AppBarStateEnum.Default, BoundingRig");
+                    // Deactivate BoundingBoxRig
+                    boundingBox.Target.GetComponent<BoundingBoxRig>().Deactivate();
                     break;
 
                 case "Done":
                     State = AppBarStateEnum.Default;
 
-                    // Deactivate BoundingRig
-                    boundingBox.Target.GetComponent<BoundingRig>().Deactivate();
-                    Debug.Log("MRTK ###################### AppBarStateEnum.Default, BoundingRig");
+                    // Deactivate BoundingBoxRig
+                    boundingBox.Target.GetComponent<BoundingBoxRig>().Deactivate();
 
                     break;
 
@@ -276,11 +266,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             newButton.transform.localRotation = Quaternion.identity;
             AppBarButton mtb = newButton.AddComponent<AppBarButton>();
             mtb.Initialize(this, template, customIconProfile);
-
-            //buttonWidth = newButton.transform.localScale.x;
-            //Debug.Log("MRTK ###################### buttonWidth =" + obj.name);
-
-
         }
 
         private void FollowBoundingBox(bool smooth) {
@@ -348,26 +333,14 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 case AppBarStateEnum.Default:
                 default:
                     targetBarSize = new Vector3 (numDefaultButtons * buttonWidth, buttonWidth, 1f);
-                    if (boundingBox != null)
-                    {
-                        // MRTK_TEMP_FIX boundingBox.AcceptInput = false;
-                    }
                     break;
 
                 case AppBarStateEnum.Hidden:
                     targetBarSize = new Vector3(numHiddenButtons * buttonWidth, buttonWidth, 1f);
-                    if (boundingBox != null)
-                    {
-                        // MRTK_TEMP_FIX boundingBox.AcceptInput = false;
-                    }
                     break;
 
                 case AppBarStateEnum.Manipulation:
                     targetBarSize = new Vector3(numManipulationButtons * buttonWidth, buttonWidth, 1f);
-                    if (boundingBox != null)
-                    {
-                        // MRTK_TEMP_FIX boundingBox.AcceptInput = true;
-                    }
                     break;
             }
 
@@ -402,13 +375,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             RefreshTemplates();
         }
 
-        // MRTK_TEMP_FIX
-        //protected override void OnDrawGizmos() {
-        //    if (Application.isPlaying)
-        //        return;
-
-        //    FollowBoundingBox(true);
-        //}
 #endif
 
         private ButtonTemplate[] defaultButtons;
