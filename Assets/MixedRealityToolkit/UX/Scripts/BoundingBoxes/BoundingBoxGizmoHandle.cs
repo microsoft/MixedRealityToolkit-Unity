@@ -3,8 +3,11 @@
 
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.InputHandlers;
-
 using UnityEngine;
+
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+using UnityEngine.XR.WSA;
+#endif
 
 namespace MixedRealityToolkit.UX.BoundingBoxes
 {
@@ -33,6 +36,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private Vector3 initialOrientation;
         private Quaternion initialHandOrientation;
         private InputEventData inputDownEventData;
+        private bool isHandRotationAvailable = true;
 
         public GameObject ObjectToAffect
         {
@@ -71,20 +75,46 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
         }
 
+        private void Start()
+        {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            if (HolographicSettings.IsDisplayOpaque == false)
+            {
+                isHandRotationAvailable = false;
+            }
+#endif
+        }
+
         private void Update()
         {
             if (inputDownEventData != null)
             {
-                Vector3 currentHandPosition = GetHandPosition(inputDownEventData.SourceId);
-                Quaternion currentHandOrientation = GetHandOrientation(inputDownEventData.SourceId);
+                Vector3 currentHandPosition = Vector3.zero;
+                Quaternion currentHandOrientation = Quaternion.identity;
 
+                //set values from hand
+                currentHandPosition = GetHandPosition(inputDownEventData.SourceId);
+
+                if (isHandRotationAvailable)
+                {
+                    currentHandOrientation = GetHandOrientation(inputDownEventData.SourceId);
+                }
+
+                //calculate affines
                 if (this.AffineType == TransformType.Scale)
                 {
                     CalculateScale(currentHandPosition);
                 }
                 else if (this.AffineType == TransformType.Rotation)
                 {
-                    CalculateRotation(currentHandOrientation);
+                    if (isHandRotationAvailable && false)
+                    {
+                        CalculateRotation(currentHandOrientation);
+                    }
+                    else
+                    {
+                        CalculateRotation(currentHandPosition);
+                    }
                 }
             }
         }
@@ -110,44 +140,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         }
         private void CalculateRotation(Quaternion currentHandOrientation)
         {
-            //{
-            //    float scalar = (currentHandPosition - objectToAffect.transform.position).magnitude - (objectToAffect.transform.position - initialHandPosition).magnitude;
-            //    scalar *= (4.0f * Mathf.Rad2Deg);
-            //    Vector3 newRotation = new Vector3(initialOrientation.x, initialOrientation.y, initialOrientation.z);
-            //    if (Axis == AxisToAffect.X)
-            //    {
-            //        newRotation += new Vector3(scalar, 0, 0);
-            //    }
-            //    else if (Axis == AxisToAffect.Y)
-            //    {
-            //        newRotation += new Vector3(0, scalar, 0);
-            //    }
-            //    else if (Axis == AxisToAffect.Z)
-            //    {
-            //        newRotation += new Vector3(0, 0, scalar);
-            //    }
-            //    objectToAffect.transform.localEulerAngles = newRotation;
-            //}
-
-
-            //
-            //float angle = 0;
-            //Vector3 axis = new Vector3(0, 0, 0);
-            //newQ.ToAngleAxis(out angle, out axis);
-            //if (Axis == AxisToAffect.X)
-            //{
-            //    axis += new Vector3(axis.x, 0, 0);
-            //}
-            //else if (Axis == AxisToAffect.Y)
-            //{
-            //    axis += new Vector3(0, axis.y, 0);
-            //}
-            //else if (Axis == AxisToAffect.Z)
-            //{
-            //    axis += new Vector3(0, 0, axis.z);
-            //}
-            //angle *= axis.magnitude;
-
             Matrix4x4 m = Matrix4x4.Rotate(initialHandOrientation);
             Vector3 initRay = new Vector3(0, 0, 1);
             initRay = m.MultiplyPoint(initRay);
@@ -157,8 +149,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             Vector3 currentRay = new Vector3(0, 0, 1);
             currentRay = m.MultiplyPoint(currentRay);
             currentRay.Normalize();
-
-           
 
             float dot = Vector3.Dot(initRay, currentRay);
             dot = Mathf.Acos(dot) * Mathf.Rad2Deg;
@@ -196,7 +186,52 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             ObjectToAffect.transform.rotation = Quaternion.Euler(newEulers);
         }
+        private void CalculateRotation(Vector3 currentHandPosition)
+        {
+            float rotationScalar = 10.0f;
+            Vector3 initialRay = initialHandPosition - ObjectToAffect.transform.position;
+            initialRay.Normalize();
 
+            Vector3 currentRay = currentHandPosition - ObjectToAffect.transform.position;
+            currentRay.Normalize();
+
+            Vector3 delta = currentRay - initialRay;
+            delta.Scale(new Vector3(-300, -300, -300));
+
+            //determine which direction to rotate
+            //if (Mathf.Abs(initialRay.y - currentRay.y) < Mathf.Abs(initialRay.x - currentRay.x))
+            //{
+            //    if (Vector3.Cross(initialRay, currentRay).y < 0)
+            //    {
+            //        angle = -angle;
+            //    }
+            //}
+            //else
+            //{
+            //    if (Vector3.Cross(initialRay, currentRay).x < 0)
+            //    {
+            //        angle = -angle;
+            //    }
+            //}
+
+            Vector3 newEulers = new Vector3(0, 0, 0);
+            if (Axis == AxisToAffect.X)
+            {
+                newEulers = new Vector3(-delta.y, 0, 0);
+            }
+            else if (Axis == AxisToAffect.Y)
+            {
+                newEulers = new Vector3(0, delta.x, 0);
+            }
+            else if (Axis == AxisToAffect.Z)
+            {
+                newEulers = new Vector3(0, 0, delta.y);
+            }
+            newEulers += initialOrientation;
+
+
+            ObjectToAffect.transform.rotation = Quaternion.Euler(newEulers);
+        }
         public void OnInputDown(InputEventData eventData)
         {
             MixedRealityToolkit.InputModule.InputManager.Instance.PushModalInputHandler(gameObject);
@@ -244,3 +279,13 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
