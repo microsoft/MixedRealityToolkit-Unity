@@ -31,10 +31,12 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private AxisToAffect axis;
         private Vector3 initialHandPosition;
         private Vector3 initialScale;
+        private Vector3 initialPosition;
         private Vector3 initialOrientation;
         private Quaternion initialHandOrientation;
+        private Vector3 initialScaleOrigin;
         private InputEventData inputDownEventData;
-        private bool isHandRotationAvailable = true;
+        private bool isHandRotationAvailable;
         private bool isLeftHandedRotation = false;
 
         public GameObject ObjectToAffect
@@ -88,6 +90,8 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
         private void Start()
         {
+            isHandRotationAvailable = true;
+
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             if (HolographicSettings.IsDisplayOpaque == false)
             {
@@ -104,7 +108,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
                 //set values from hand
                 currentHandPosition = GetHandPosition(inputDownEventData.SourceId);
-
                 if (isHandRotationAvailable)
                 {
                     currentHandOrientation = GetHandOrientation(inputDownEventData.SourceId);
@@ -117,7 +120,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 }
                 else if (this.AffineType == TransformType.Rotation)
                 {
-                    if (isHandRotationAvailable && false)
+                    if (isHandRotationAvailable)
                     {
                         CalculateRotation(currentHandOrientation);
                     }
@@ -143,10 +146,20 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         }
         private void CalculateScale(Vector3 currentHandPosition)
         {
-            float scalar = (currentHandPosition - objectToAffect.transform.position).magnitude / (objectToAffect.transform.position - initialHandPosition).magnitude;
-            Vector3 newScale = new Vector3(scalar, scalar, scalar);
+            float scaleScalar = (currentHandPosition - objectToAffect.transform.position).magnitude / (objectToAffect.transform.position - initialHandPosition).magnitude;
+            Vector3 newScale = new Vector3(scaleScalar, scaleScalar, scaleScalar);
             newScale.Scale(initialScale);
+
+            //scale from object center
             objectToAffect.transform.localScale = newScale;
+
+            //now handle offset
+            Vector3 currentScaleOrigin = initialScaleOrigin;
+            currentScaleOrigin.Scale(new Vector3(scaleScalar, scaleScalar, scaleScalar));
+            Vector3 postScaleOffset = currentScaleOrigin - initialScaleOrigin;
+
+            //translate so that scale is effectively from opposite corner
+            objectToAffect.transform.position = initialPosition - postScaleOffset;
         }
         private void CalculateRotation(Quaternion currentHandOrientation)
         {
@@ -235,10 +248,15 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         public void OnInputDown(InputEventData eventData)
         {
             inputDownEventData = eventData;
-            initialHandPosition = GetHandPosition(eventData.SourceId);
-            initialScale        = objectToAffect.transform.localScale;
-            initialOrientation  = objectToAffect.transform.rotation.eulerAngles;
-            initialHandOrientation = GetHandOrientation(eventData.SourceId);
+
+            initialHandPosition     = GetHandPosition(eventData.SourceId);
+            initialScale            = objectToAffect.transform.localScale;
+            initialPosition         = objectToAffect.transform.position;
+            initialOrientation      = objectToAffect.transform.rotation.eulerAngles;
+            initialHandOrientation  = GetHandOrientation(eventData.SourceId);
+            initialScaleOrigin      = ObjectToAffect.transform.position - this.transform.position;
+
+            MixedRealityToolkit.InputModule.InputManager.Instance.PushModalInputHandler(gameObject);
 
             this.gameObject.GetComponent<Renderer>().material = Rig.InteractingMaterial;
             Rig.FocusOnHandle(this.gameObject);
