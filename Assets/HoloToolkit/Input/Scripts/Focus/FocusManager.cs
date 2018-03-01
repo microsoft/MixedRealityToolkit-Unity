@@ -104,7 +104,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Data
 
-        private class PointerData : PointerResult
+        protected class PointerData : PointerResult
         {
             public readonly IPointingSource PointingSource;
 
@@ -545,7 +545,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// Perform a Unity physics Raycast to determine which scene objects with a collider is currently being gazed at, if any.
         /// </summary>
-        private void RaycastPhysics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
+        protected virtual void RaycastPhysics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
             bool isHit = false;
             int rayStepIndex = 0;
@@ -579,7 +579,7 @@ namespace HoloToolkit.Unity.InputModule
             }
         }
 
-        private bool RaycastPhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
+        protected bool RaycastPhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
         {
             bool isHit = false;
             physicsHit = default(RaycastHit);

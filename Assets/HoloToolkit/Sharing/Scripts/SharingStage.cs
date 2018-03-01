@@ -27,7 +27,7 @@ namespace HoloToolkit.Sharing
         /// Default username to use when joining a session.
         /// </summary>
         /// <remarks>Set the user name with the <see cref="UserName"/> property.</remarks>
-        private const string DefaultUserName = "User ";
+        protected const string DefaultUserName = "User ";
 
         /// <summary>
         /// Set whether this app should be a Primary or Secondary client.
@@ -94,7 +94,7 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Sharing manager used by the application.
         /// </summary>
-        public SharingManager Manager { get; private set; }
+        public SharingManager Manager { get; protected set; }
 
         public bool AutoDiscoverServer;
 
@@ -109,29 +109,29 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Pipes sharing server console output to Unity's output window for debugging.
         /// </summary>
-        private ConsoleLogWriter logWriter;
+        protected ConsoleLogWriter logWriter;
 
         /// <summary>
         /// Root element of our data model
         /// </summary>
-        public SyncRoot Root { get; private set; }
+        public SyncRoot Root { get; protected set; }
 
         /// <summary>
         /// Server sessions tracker.
         /// </summary>
         /// <remarks>Note that if this processes takes the role of a secondary client,
         ///  then the sessionsTracker will always be null.</remarks>
-        public ServerSessionsTracker SessionsTracker { get; private set; }
+        public ServerSessionsTracker SessionsTracker { get; protected set; }
 
         /// <summary>
         /// Current session users tracker.
         /// </summary>
-        public SessionUsersTracker SessionUsersTracker { get; private set; }
+        public SessionUsersTracker SessionUsersTracker { get; protected set; }
 
         /// <summary>
         /// Sync State Listener sending events indicating the current sharing sync state.
         /// </summary>
-        public SyncStateListener SyncStateListener { get; private set; }
+        public SyncStateListener SyncStateListener { get; protected set; }
 
         /// <summary>
         /// Unique ID used to uniquely identify anything spawned by this application's instance,
@@ -147,12 +147,12 @@ namespace HoloToolkit.Sharing
         /// <summary> 
         /// Enables Server Discovery on the network.
         /// </summary> 
-        private DiscoveryClient discoveryClient;
+        protected DiscoveryClient discoveryClient;
 
         /// <summary> 
         /// Provides callbacks when server is discovered or lost. 
         /// </summary> 
-        private DiscoveryClientAdapter discoveryClientAdapter;
+        protected DiscoveryClientAdapter discoveryClientAdapter;
 
         /// <summary>
         /// The current ping interval during AutoDiscovery updates.
@@ -162,7 +162,7 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// True when AutoDiscovery is actively searching, otherwise false.
         /// </summary>
-        private bool isTryingToFindServer;
+        protected bool isTryingToFindServer;
 
         /// <summary>
         /// Show Detailed Information for sharing services.
@@ -205,7 +205,7 @@ namespace HoloToolkit.Sharing
             get { return CurrentRoomManager != null ? CurrentRoomManager.GetCurrentRoom() : null; }
         }
 
-        private NetworkConnectionAdapter networkConnectionAdapter;
+        protected NetworkConnectionAdapter networkConnectionAdapter;
 
         public NetworkConnection Connection
         {
@@ -321,7 +321,7 @@ namespace HoloToolkit.Sharing
 
         #region Event Callbacks
 
-        private void OnNetworkConnectionChanged(NetworkConnection networkConnection)
+        protected void OnNetworkConnectionChanged(NetworkConnection networkConnection)
         {
             if (IsConnected)
             {
@@ -388,7 +388,7 @@ namespace HoloToolkit.Sharing
 
         #endregion // Event Callbacks
 
-        private void ManagerInit(bool setConnection)
+        protected virtual void ManagerInit(bool setConnection)
         {
             var config = new ClientConfig(ClientRole);
             config.SetIsAudioEndpoint(IsAudioEndpoint);
@@ -438,7 +438,7 @@ namespace HoloToolkit.Sharing
             }
         }
 
-        private void AutoDiscoverInit()
+        protected void AutoDiscoverInit()
         {
             if (ShowDetailedLogs)
             {
