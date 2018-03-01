@@ -368,6 +368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoundingBoxPrefab: {fileID: 0}
   appBarPrefab: {fileID: 0}
-  scaleHandleMaterial: {fileID: 0}
-  rotateHandleMaterial: {fileID: 0}
-  interactingMaterial: {fileID: 0}
+  scaleHandleMaterial: {fileID: 2100000, guid: 4a9072a0d8623aa44abf31f02d209a09, type: 2}
+  rotateHandleMaterial: {fileID: 2100000, guid: 4a9072a0d8623aa44abf31f02d209a09,
+    type: 2}
+  interactingMaterial: {fileID: 2100000, guid: 3602635b22247e64fb9d32876c31f9fe, type: 2}

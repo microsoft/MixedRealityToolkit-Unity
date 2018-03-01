@@ -169,9 +169,9 @@ MonoBehaviour:
   - DefaultPosition: 1
     ManipulationPosition: 1
     Type: 0
-    Name: Save
+    Name: Custom 1
     Icon: 
-    Text: Save
+    Text: Custom 1
     EventTarget: {fileID: 0}
     OnTappedEvent:
       m_PersistentCalls:
@@ -181,9 +181,9 @@ MonoBehaviour:
   - DefaultPosition: 2
     ManipulationPosition: 2
     Type: 0
-    Name: Load
+    Name: Custom 2
     Icon: 
-    Text: Load
+    Text: Custom 2
     EventTarget: {fileID: 0}
     OnTappedEvent:
       m_PersistentCalls:
