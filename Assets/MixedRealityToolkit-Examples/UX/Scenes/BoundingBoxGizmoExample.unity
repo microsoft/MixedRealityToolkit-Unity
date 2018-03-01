@@ -322,7 +322,7 @@ Prefab:
     - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
         type: 2}
       propertyPath: m_Text
-      value: "BoundingBoxRig \n+\nTwoHandManipulatable script"
+      value: "BoundingBoxRig \n+\nHandDraggable script"
       objectReference: {fileID: 0}
     - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
         type: 2}
@@ -331,7 +331,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000013198843976, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
       propertyPath: m_Name
-      value: textOut
+      value: GroupTitleText1
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -374,7 +374,7 @@ Transform:
   - {fileID: 297018082}
   - {fileID: 905576784}
   m_Father: {fileID: 1329454425}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
 --- !u!1001 &297018081
 Prefab:
@@ -649,7 +649,7 @@ Transform:
   - {fileID: 1222626214}
   - {fileID: 1197191673}
   m_Father: {fileID: 1329454425}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &556615939
 Prefab:
@@ -736,12 +736,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
         type: 2}
       propertyPath: m_Text
-      value: "BoundingBoxRig \n+\nHandDraggable script"
+      value: "BoundingBoxRig \n+\nTwoHandManipulatable script"
       objectReference: {fileID: 0}
     - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
         type: 2}
@@ -750,7 +750,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000013198843976, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
       propertyPath: m_Name
-      value: textOut (2)
+      value: GroupTitleText3
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -921,7 +921,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000013198843976, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
       propertyPath: m_Name
-      value: textOut (1)
+      value: GroupTitleText2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
@@ -1080,7 +1080,7 @@ Transform:
   - {fileID: 1308735481}
   - {fileID: 1588477260}
   m_Father: {fileID: 1329454425}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
 --- !u!1001 &905576783
 Prefab:
@@ -1834,10 +1834,10 @@ Transform:
   - {fileID: 1459742327}
   - {fileID: 116723880}
   - {fileID: 768236425}
+  - {fileID: 654639568}
   - {fileID: 503309312}
   - {fileID: 832766077}
   - {fileID: 118976985}
-  - {fileID: 654639568}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
