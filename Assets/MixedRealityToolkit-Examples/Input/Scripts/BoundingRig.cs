@@ -15,13 +15,10 @@ public class BoundingRig : MonoBehaviour
     [SerializeField]
     [Tooltip("AppBar prefab.")]
     private AppBar appBarPrefab;
-
     [SerializeField]
     private Material scaleHandleMaterial;
-
     [SerializeField]
     private Material rotateHandleMaterial;
-
     [SerializeField]
     private Material interactingMaterial;
 
@@ -135,6 +132,7 @@ public class BoundingRig : MonoBehaviour
             UpdateHandles();
         }
     }
+
     private void UpdateBoundsPoints()
     {
         handleCentroids = GetBounds();
@@ -366,7 +364,6 @@ public class BoundingRig : MonoBehaviour
             showRig = value;
         }
     }
-
     private List<Vector3> GetBounds()
     {
         if (objectToBound != null)

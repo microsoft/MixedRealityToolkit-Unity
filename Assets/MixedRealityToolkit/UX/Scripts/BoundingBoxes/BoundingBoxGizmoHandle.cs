@@ -31,6 +31,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private Vector3 initialHandPosition;
         private Vector3 initialScale;
         private Vector3 initialOrientation;
+        private Quaternion initialHandOrientation;
         private InputEventData inputDownEventData;
 
         public GameObject ObjectToAffect
@@ -75,6 +76,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             if (inputDownEventData != null)
             {
                 Vector3 currentHandPosition = GetHandPosition(inputDownEventData.SourceId);
+                Quaternion currentHandOrientation = GetHandOrientation(inputDownEventData.SourceId);
 
                 if (this.AffineType == TransformType.Scale)
                 {
@@ -82,7 +84,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 }
                 else if (this.AffineType == TransformType.Rotation)
                 {
-                    CalculateRotation(currentHandPosition);
+                    CalculateRotation(currentHandOrientation);
                 }
             }
         }
@@ -90,10 +92,14 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private Vector3 GetHandPosition(uint sourceId)
         {
             Vector3 handPosition = new Vector3(0, 0, 0);
-
             inputDownEventData.InputSource.TryGetGripPosition(sourceId, out handPosition);
-
             return handPosition;
+        }
+        private Quaternion GetHandOrientation(uint sourceId)
+        {
+            Quaternion handOrientation = Quaternion.identity;
+            inputDownEventData.InputSource.TryGetGripRotation(sourceId, out handOrientation);
+            return handOrientation;
         }
         private void CalculateScale(Vector3 currentHandPosition)
         {
@@ -102,24 +108,93 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             newScale.Scale(initialScale);
             objectToAffect.transform.localScale = newScale;
         }
-        private void CalculateRotation(Vector3 currentHandPosition)
+        private void CalculateRotation(Quaternion currentHandOrientation)
         {
-            float scalar = (currentHandPosition - objectToAffect.transform.position).magnitude - (objectToAffect.transform.position - initialHandPosition).magnitude;
-            scalar *= (4.0f * Mathf.Rad2Deg);
-            Vector3 newRotation = new Vector3(initialOrientation.x, initialOrientation.y, initialOrientation.z);
+            //{
+            //    float scalar = (currentHandPosition - objectToAffect.transform.position).magnitude - (objectToAffect.transform.position - initialHandPosition).magnitude;
+            //    scalar *= (4.0f * Mathf.Rad2Deg);
+            //    Vector3 newRotation = new Vector3(initialOrientation.x, initialOrientation.y, initialOrientation.z);
+            //    if (Axis == AxisToAffect.X)
+            //    {
+            //        newRotation += new Vector3(scalar, 0, 0);
+            //    }
+            //    else if (Axis == AxisToAffect.Y)
+            //    {
+            //        newRotation += new Vector3(0, scalar, 0);
+            //    }
+            //    else if (Axis == AxisToAffect.Z)
+            //    {
+            //        newRotation += new Vector3(0, 0, scalar);
+            //    }
+            //    objectToAffect.transform.localEulerAngles = newRotation;
+            //}
+
+
+            //
+            //float angle = 0;
+            //Vector3 axis = new Vector3(0, 0, 0);
+            //newQ.ToAngleAxis(out angle, out axis);
+            //if (Axis == AxisToAffect.X)
+            //{
+            //    axis += new Vector3(axis.x, 0, 0);
+            //}
+            //else if (Axis == AxisToAffect.Y)
+            //{
+            //    axis += new Vector3(0, axis.y, 0);
+            //}
+            //else if (Axis == AxisToAffect.Z)
+            //{
+            //    axis += new Vector3(0, 0, axis.z);
+            //}
+            //angle *= axis.magnitude;
+
+            Matrix4x4 m = Matrix4x4.Rotate(initialHandOrientation);
+            Vector3 initRay = new Vector3(0, 0, 1);
+            initRay = m.MultiplyPoint(initRay);
+            initRay.Normalize();
+
+            m  = Matrix4x4.Rotate(currentHandOrientation);
+            Vector3 currentRay = new Vector3(0, 0, 1);
+            currentRay = m.MultiplyPoint(currentRay);
+            currentRay.Normalize();
+
+           
+
+            float dot = Vector3.Dot(initRay, currentRay);
+            dot = Mathf.Acos(dot) * Mathf.Rad2Deg;
+
+            if (Mathf.Abs(initRay.y - currentRay.y) < Mathf.Abs(initRay.x - currentRay.x))
+            {
+                if (Vector3.Cross(initRay, currentRay).y > 0)
+                {
+                    dot = -dot;
+                }
+            }
+            else
+            {
+                if (Vector3.Cross(initRay, currentRay).x > 0)
+                {
+                    dot = -dot;
+                }
+            }
+
+            Vector3 newEulers = new Vector3(0,0,0);
             if (Axis == AxisToAffect.X)
             {
-                newRotation += new Vector3(scalar, 0, 0);
+                newEulers = new Vector3(dot, 0, 0);
             }
             else if (Axis == AxisToAffect.Y)
             {
-                newRotation += new Vector3(0, scalar, 0);
+                newEulers = new Vector3(0, dot, 0);
             }
             else if (Axis == AxisToAffect.Z)
             {
-                newRotation += new Vector3(0, 0, scalar);
+                newEulers = new Vector3(0, 0, dot);
             }
-            objectToAffect.transform.localEulerAngles = newRotation;
+            newEulers += initialOrientation;
+
+
+            ObjectToAffect.transform.rotation = Quaternion.Euler(newEulers);
         }
 
         public void OnInputDown(InputEventData eventData)
@@ -129,6 +204,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             initialHandPosition = GetHandPosition(eventData.SourceId);
             initialScale        = objectToAffect.transform.localScale;
             initialOrientation  = objectToAffect.transform.rotation.eulerAngles;
+            initialHandOrientation = GetHandOrientation(eventData.SourceId);
 
             this.gameObject.GetComponent<Renderer>().material = Rig.InteractingMaterial;
             Rig.FocusOnHandle(this.gameObject);
@@ -155,7 +231,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 eventData.Use();
             }
         }
-
         public void OnSourceDetected(SourceStateEventData eventData)
         {
         }
