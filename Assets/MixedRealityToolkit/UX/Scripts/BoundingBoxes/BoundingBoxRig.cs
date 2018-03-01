@@ -88,9 +88,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         {
             if (handle != null)
             {
-                GameObject textMesh = GameObject.Find("textOut");
-                textMesh.GetComponent<TextMesh>().text = handle.name.ToString();
-
                 for (int i = 0; i < rotateHandles.Length; ++i)
                 {
                     rotateHandles[i].SetActive(rotateHandles[i].gameObject == handle);
@@ -102,9 +99,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
             else
             {
-                GameObject textMesh = GameObject.Find("textOut");
-                textMesh.GetComponent<TextMesh>().text = "None";
-
                 for (int i = 0; i < rotateHandles.Length; ++i)
                 {
                     rotateHandles[i].SetActive(true);
