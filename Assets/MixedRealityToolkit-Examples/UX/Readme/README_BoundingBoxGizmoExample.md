@@ -12,10 +12,21 @@ There are two modes in the Bounding Box: Normal mode and Adjust mode.
 - Bounding Box and gizmo is visible
 - App Bar shows 'Done' button
 
-When you select one of the gizmo, it is highlighted and other gizmos becomes invisible. This visual feedback helps the user 
+When you select one of the gizmo, it is highlighted and other gizmos becomes invisible. This visual feedback helps the user to understand which handle is beining interacted with.
 
 
 <img src="/External/ReadMeImages/MRTK_AppBar_BoundingBox_Interaction.jpg" width="600">
+
+## Structure of Bounding Box & App Bar ##
+![Bounding Box](/External/ReadMeImages/MRTK_AppBar_BoundingBox_Structure.jpg)
+### BoundingBoxRig script ###
+Description here.
+### BoundingBoxGizmoHandle script ###
+Description here.
+### AppBar and AppBarButton script ###
+Description here.
+
+
 
 ## How to use Bounding Box & App Bar ##
 You can enable Bounding Box and App Bar by simply assigning [BoundingBoxRig script](/Assets/MixedRealityToolkit/UX/Scripts/BoundingBoxes/BoundingBoxRig.cs) to any GameObject. After assigning **BoundingBoxRig** script, you need to assign prefabs and materials. Below screenshot shows the items that need to be assigned.
@@ -28,6 +39,17 @@ You can enable Bounding Box and App Bar by simply assigning [BoundingBoxRig scri
 ![BoundingBox Material Setup](/External/ReadMeImages/MRTK_AppBar_BoundingBox_Materials.jpg)
 
 
+## Combining with TwoHandManipulatable script ##
+Description here.
+
+## Combining with HandDraggable script ##
+Description here.
+
+
+## How to add custom buttons to the App Bar ##
+You can add additional buttons to the App Bar for other actions. AppBar prefab provides convenient options in the Inspector panel. Find the AppBar prefab in the Project panel and select it. In the Inspector panel, expand **Buttons** section. By modifying the number of **Size** field, you will be able to see the Element populated in the Buttons section. You can specify details such as postion, name and icon texture name. These buttons are based on CompoundButton
+
+![AppBar Custom Button](/External/ReadMeImages/MRTK_AppBar_BoundingBox_CustomButtons.jpg)
 
 
 
