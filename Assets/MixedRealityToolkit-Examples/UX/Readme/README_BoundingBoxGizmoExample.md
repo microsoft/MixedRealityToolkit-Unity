@@ -21,6 +21,13 @@ When you select one of the gizmo, it is highlighted and other gizmos becomes inv
 
 <img src="/External/ReadMeImages/MRTK_AppBar_BoundingBox_Interaction.jpg" width="600">
 
+## Example scene ##
+[BoundingBoxExample.unity](/Assets/MixedRealityToolkit-Examples/UX/Scenes/BoundingBoxGizmoExample.unity)
+
+<img src="/External/ReadMeImages/MRTK_AppBar_BoundingBox_ExampleScene.jpg" width="600">
+
+
+
 ## Structure of Bounding Box & App Bar ##
 ![Bounding Box](/External/ReadMeImages/MRTK_AppBar_BoundingBox_Structure.jpg)
 ### [BoundingBoxRig script](/Assets/MixedRealityToolkit/UX/Scripts/BoundingBoxes/BoundingBoxRig.cs) ###
