@@ -14,7 +14,7 @@ There are two modes in the Bounding Box: Normal mode and Adjust mode.
 - App Bar shows 'Done' button
 
 ### Demo video ###
-https://gfycat.com/EmptyLoathsomeGrouper
+https://gfycat.com/TameQuaintGnu
 
 When you select one of the gizmo, it is highlighted and other gizmos becomes invisible. This visual feedback helps the user to understand which handle is beining interacted with.
 
