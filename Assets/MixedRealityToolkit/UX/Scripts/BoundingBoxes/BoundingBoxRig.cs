@@ -15,10 +15,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
     public class BoundingBoxRig : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("Choose the Transform that you want to affect by interacting with the BoundingRig. By default this is the same object to which this script is attached.")]
-        public Transform TransformToAffect;
-
-        [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
         public BoundingBox BoundingBoxPrefab;
 
@@ -120,10 +116,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private void Start()
         {
             objectToBound = this.gameObject;
-            if (TransformToAffect == null)
-            {
-                TransformToAffect = objectToBound.transform;
-            }
 
             boxInstance = Instantiate(BoundingBoxPrefab) as BoundingBox;
             boxInstance.Target = objectToBound;
@@ -171,7 +163,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     cornerHandles[i].AddComponent<BoxCollider>();
                     cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
-                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().TransformToAffect = TransformToAffect;
+                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().TransformToAffect = objectToBound.transform;
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Scale;
                     cornerHandles[i].name = "Corner " + i.ToString();
@@ -179,7 +171,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
 
             int index = handleCentroids.Count - 8;
-            index = 0;
             for (int i = 0; i < cornerHandles.Length; ++i)
             {
                 cornerHandles[i].transform.position = handleCentroids[index + i];
@@ -202,7 +193,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     rotateHandles[i].AddComponent<SphereCollider>();
                     rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                     rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
-                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().TransformToAffect = TransformToAffect;
+                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().TransformToAffect = objectToBound.transform;
                     rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Rotation;
                     rotateHandles[i].name = "Middle " + i.ToString();
                 }
@@ -383,13 +374,16 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 boxInstance.gameObject.SetActive(value);
                 boxInstance.IsVisible = true;
 
-                foreach (GameObject handle in cornerHandles)
+                if (cornerHandles != null && rotateHandles != null)
                 {
-                    handle.SetActive(value);
-                }
-                foreach (GameObject handle in rotateHandles)
-                {
-                    handle.SetActive(value);
+                    foreach (GameObject handle in cornerHandles)
+                    {
+                        handle.SetActive(value);
+                    }
+                    foreach (GameObject handle in rotateHandles)
+                    {
+                        handle.SetActive(value);
+                    }
                 }
 
                 showRig = value;
@@ -417,9 +411,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
                 return bounds;
             }
-
-          
-
 
             return null;
         }

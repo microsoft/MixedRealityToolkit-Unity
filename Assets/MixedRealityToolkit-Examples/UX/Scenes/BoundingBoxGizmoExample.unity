@@ -406,7 +406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4768146f072b50149a922df192dfb58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransformToAffect: {fileID: 0}
   BoundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
@@ -478,7 +477,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 270745903}
   m_LocalRotation: {x: -0.0000000128584405, y: 0.68235934, z: 0.000000021480142, w: 0.731017}
-  m_LocalPosition: {x: 2.099, y: -0.977, z: -1.405}
+  m_LocalPosition: {x: 2.201, y: -0.977, z: -1.588}
   m_LocalScale: {x: 0.45514756, y: 0.2965754, z: 0.45514756}
   m_Children: []
   m_Father: {fileID: 1329454425}
@@ -582,7 +581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4768146f072b50149a922df192dfb58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransformToAffect: {fileID: 0}
   BoundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
@@ -667,7 +665,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4768146f072b50149a922df192dfb58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransformToAffect: {fileID: 0}
   BoundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
@@ -1292,7 +1289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4768146f072b50149a922df192dfb58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransformToAffect: {fileID: 0}
   BoundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
@@ -1316,22 +1312,6 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 1e23ec24c22068b4cbf47737c35e277b, type: 3}
---- !u!1 &1011248157 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100004, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
-  m_PrefabInternal: {fileID: 1575359649}
---- !u!65 &1011248159
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1011248157}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.5053551, y: 2.182222, z: 1.9755288}
-  m_Center: {x: 0.26491335, y: 1.1037667, z: -0.0000001490116}
 --- !u!1 &1020269080
 GameObject:
   m_ObjectHideFlags: 0
@@ -1510,7 +1490,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4768146f072b50149a922df192dfb58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransformToAffect: {fileID: 0}
   BoundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
@@ -1615,7 +1594,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4768146f072b50149a922df192dfb58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransformToAffect: {fileID: 0}
   BoundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
@@ -1790,7 +1768,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4768146f072b50149a922df192dfb58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransformToAffect: {fileID: 0}
   BoundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
@@ -1878,7 +1855,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4768146f072b50149a922df192dfb58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransformToAffect: {fileID: 0}
   BoundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
@@ -2244,7 +2220,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4768146f072b50149a922df192dfb58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransformToAffect: {fileID: 0}
   BoundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
@@ -2376,7 +2351,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.912
+      value: -1.254
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2506,7 +2481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4768146f072b50149a922df192dfb58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransformToAffect: {fileID: 0}
   BoundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
@@ -2673,7 +2647,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4768146f072b50149a922df192dfb58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransformToAffect: {fileID: 0}
   BoundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
