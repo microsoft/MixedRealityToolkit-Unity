@@ -45,6 +45,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private bool showRig = false;
         private Vector3 scaleHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
         private Vector3 rotateHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
+        private bool destroying = false;
 
         public Material ScaleHandleMaterial
         {
@@ -138,7 +139,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         }
         private void Update()
         {
-            if (ShowRig)
+            if (destroying == false && ShowRig)
             {
                 UpdateBoundsPoints();
                 UpdateHandles();
@@ -147,10 +148,9 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
         private void OnDestroy()
         {
+            destroying = true;
             ShowRig = false;
             ClearHandles();
-            ClearRig();
-            Destroy(boxInstance.gameObject);
         }
 
         private void UpdateBoundsPoints()
@@ -388,33 +388,34 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
             set
             {
-                if (value == true)
+                if (destroying == false)
                 {
-                    UpdateBoundsPoints();
-                    UpdateHandles();
-                }
-
-                boxInstance.IsVisible = true;
-
-                if (cornerHandles != null && rotateHandles != null)
-                {
-                    foreach (GameObject handle in cornerHandles)
+                    if (value == true)
                     {
-                        handle.SetActive(value);
+                        UpdateBoundsPoints();
+                        UpdateHandles();
                     }
-                    foreach (GameObject handle in rotateHandles)
-                    {
-                        handle.SetActive(value);
-                    }
-                }
 
-                showRig = value;
+                    if (boxInstance != null)
+                    {
+                        boxInstance.IsVisible = value;
+                    }
+
+                    if (cornerHandles != null && rotateHandles != null)
+                    {
+                        foreach (GameObject handle in cornerHandles)
+                        {
+                            handle.SetActive(value);
+                        }
+                        foreach (GameObject handle in rotateHandles)
+                        {
+                            handle.SetActive(value);
+                        }
+                    }
+
+                    showRig = value;
+                }
             }
-        }
-
-        private void ClearRig()
-        {
-            GameObject.Destroy(transformRig);
         }
 
         private List<Vector3> GetBounds()
