@@ -14,22 +14,26 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 {
     public class BoundingBoxRig : MonoBehaviour
     {
-        [SerializeField]
-        [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
-        public BoundingBox BoundingBoxPrefab;
-
-        [SerializeField]
-        [Tooltip("AppBar prefab.")]
-        private AppBar appBarPrefab;
+        [Header("Flattening")]
         [SerializeField]
         [Tooltip("Choose this option if Rig is to be applied to a 2D object.")]
-        private bool isFlat;
+        private BoundingBox.FlattenModeEnum flattenedAxis;
+
+        [Header("Customization Settings")]
         [SerializeField]
         private Material scaleHandleMaterial;
         [SerializeField]
         private Material rotateHandleMaterial;
         [SerializeField]
         private Material interactingMaterial;
+
+        [Header("Preset Components")]
+        [SerializeField]
+        [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
+        public BoundingBox BoundingBoxPrefab;
+        [SerializeField]
+        [Tooltip("AppBar prefab.")]
+        private AppBar appBarPrefab;
 
         private BoundingBox boxInstance;
         private GameObject objectToBound;
@@ -119,6 +123,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             boxInstance = Instantiate(BoundingBoxPrefab) as BoundingBox;
             boxInstance.Target = objectToBound;
+            boxInstance.FlattenPreference = flattenedAxis;
 
             BuildRig();
 
@@ -160,7 +165,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     cornerHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     cornerHandles[i].GetComponent<Renderer>().material = scaleHandleMaterial;
                     cornerHandles[i].transform.localScale = scaleHandleSize;
-                    cornerHandles[i].AddComponent<BoxCollider>();
                     cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().TransformToAffect = objectToBound.transform;
@@ -170,10 +174,9 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 }
             }
 
-            int index = handleCentroids.Count - 8;
             for (int i = 0; i < cornerHandles.Length; ++i)
             {
-                cornerHandles[i].transform.position = handleCentroids[index + i];
+                cornerHandles[i].transform.position = handleCentroids[i];
                 cornerHandles[i].transform.localRotation = objectToBound.transform.rotation;
             }
         }
@@ -190,7 +193,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     rotateHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     rotateHandles[i].GetComponent<Renderer>().material = rotateHandleMaterial;
                     rotateHandles[i].transform.localScale = rotateHandleSize;
-                    rotateHandles[i].AddComponent<SphereCollider>();
                     rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                     rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
                     rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().TransformToAffect = objectToBound.transform;
@@ -231,19 +233,18 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 rotateHandles[11].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = true;
             }
 
-            int index = handleCentroids.Count - 8;
-            rotateHandles[0].transform.localPosition = (handleCentroids[index + 2] + handleCentroids[index + 0]) * 0.5f;
-            rotateHandles[1].transform.localPosition = (handleCentroids[index + 3] + handleCentroids[index + 1]) * 0.5f;
-            rotateHandles[2].transform.localPosition = (handleCentroids[index + 6] + handleCentroids[index + 4]) * 0.5f;
-            rotateHandles[3].transform.localPosition = (handleCentroids[index + 7] + handleCentroids[index + 5]) * 0.5f;
-            rotateHandles[4].transform.localPosition = (handleCentroids[index + 0] + handleCentroids[index + 1]) * 0.5f;
-            rotateHandles[5].transform.localPosition = (handleCentroids[index + 2] + handleCentroids[index + 3]) * 0.5f;
-            rotateHandles[6].transform.localPosition = (handleCentroids[index + 4] + handleCentroids[index + 5]) * 0.5f;
-            rotateHandles[7].transform.localPosition = (handleCentroids[index + 6] + handleCentroids[index + 7]) * 0.5f;
-            rotateHandles[8].transform.localPosition = (handleCentroids[index + 0] + handleCentroids[index + 4]) * 0.5f;
-            rotateHandles[9].transform.localPosition = (handleCentroids[index + 1] + handleCentroids[index + 5]) * 0.5f;
-            rotateHandles[10].transform.localPosition = (handleCentroids[index + 2] + handleCentroids[index + 6]) * 0.5f;
-            rotateHandles[11].transform.localPosition = (handleCentroids[index + 3] + handleCentroids[index + 7]) * 0.5f;
+            rotateHandles[0].transform.localPosition = (handleCentroids[2] + handleCentroids[0]) * 0.5f;
+            rotateHandles[1].transform.localPosition = (handleCentroids[3] + handleCentroids[1]) * 0.5f;
+            rotateHandles[2].transform.localPosition = (handleCentroids[6] + handleCentroids[4]) * 0.5f;
+            rotateHandles[3].transform.localPosition = (handleCentroids[7] + handleCentroids[5]) * 0.5f;
+            rotateHandles[4].transform.localPosition = (handleCentroids[0] + handleCentroids[1]) * 0.5f;
+            rotateHandles[5].transform.localPosition = (handleCentroids[2] + handleCentroids[3]) * 0.5f;
+            rotateHandles[6].transform.localPosition = (handleCentroids[4] + handleCentroids[5]) * 0.5f;
+            rotateHandles[7].transform.localPosition = (handleCentroids[6] + handleCentroids[7]) * 0.5f;
+            rotateHandles[8].transform.localPosition = (handleCentroids[0] + handleCentroids[4]) * 0.5f;
+            rotateHandles[9].transform.localPosition = (handleCentroids[1] + handleCentroids[5]) * 0.5f;
+            rotateHandles[10].transform.localPosition = (handleCentroids[2] + handleCentroids[6]) * 0.5f;
+            rotateHandles[11].transform.localPosition = (handleCentroids[3] + handleCentroids[7]) * 0.5f;
         }
         private void ParentHandles()
         {
@@ -399,7 +400,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 GameObject clone = GameObject.Instantiate(boxInstance.gameObject);
                 clone.transform.localRotation = Quaternion.identity;
                 clone.transform.position = new Vector3(0, 0, 0);
-                BoundingBox.GetRenderBoundsPoints(clone, bounds, mask);
+                BoundingBox.GetMeshFilterBoundsPoints(clone, bounds, mask);
                 Vector3 centroid = boxInstance.TargetBoundsCenter;
                 GameObject.Destroy(clone);
                 Matrix4x4 m = Matrix4x4.Rotate(objectToBound.transform.rotation);
@@ -413,6 +414,29 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
 
             return null;
+        }
+
+        private BoundingBox.FlattenModeEnum GetBestAxisToFlatten()
+        {
+            int index = handleCentroids.Count - 8;
+            float width = (handleCentroids[index + 0] - handleCentroids[index + 4]).magnitude;
+            float height = (handleCentroids[index + 0] - handleCentroids[index + 2]).magnitude;
+            float depth = (handleCentroids[index + 0] - handleCentroids[index + 1]).magnitude;
+
+            if (width < height && width < depth)
+            {
+                return BoundingBox.FlattenModeEnum.FlattenX;
+            }
+            else if (height < width && height < depth)
+            {
+                return BoundingBox.FlattenModeEnum.FlattenY;
+            }
+            else if (depth < height && depth < width)
+            {
+                return BoundingBox.FlattenModeEnum.FlattenZ;
+            }
+          
+            return BoundingBox.FlattenModeEnum.DoNotFlatten;
         }
     }
 }
