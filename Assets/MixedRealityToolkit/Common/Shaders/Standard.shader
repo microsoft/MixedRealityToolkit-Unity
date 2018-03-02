@@ -22,7 +22,7 @@ Shader "MixedRealityToolkit/Standard"
         [Toggle(_SPECULAR_HIGHLIGHTS)] _SpecularHighlights("Specular Highlights", Float) = 1.0
         [Toggle(_REFLECTIONS)] _Reflections("Reflections", Float) = 0.0
         [Toggle(_REFRACTION)] _Refraction("Refraction", Float) = 0.0
-        _RefractiveIndex("Refractive Index", Range(0.0, 3.0)) = 1.1
+        _RefractiveIndex("Refractive Index", Range(0.0, 3.0)) = 0.0
         [Toggle(_RIM_LIGHT)] _RimLight("Rim Light", Float) = 0.0
         _RimColor("Rim Color", Color) = (0.5, 0.5, 0.5, 1.0)
         _RimPower("Rim Power", Range(0.0, 8.0)) = 0.25
@@ -36,9 +36,12 @@ Shader "MixedRealityToolkit/Standard"
         _FadeCompleteDistance("Fade Complete Distance", Range(0.01, 10.0)) = 0.5
 
         // Fluent options.
-        [Toggle(_HOVER_LIGHT)] _HoverLight("Hover Light", Float) = 0.0
-        [Toggle(_HOVER_COLOR_OVERRIDE)] _EnableHoverColorOverride("Hover Color Override", Float) = 0.0
+        [Toggle(_HOVER_LIGHT)] _HoverLight("Hover Light", Float) = 1.0
+        [Toggle(_HOVER_COLOR_OVERRIDE)] _EnableHoverColorOverride("Override Hover Color", Float) = 0.0
         _HoverColorOverride("Hover Color Override", Color) = (1.0, 1.0, 1.0, 1.0)
+        [Toggle(_HOVER_LIGHT_OPAQUE)] _HoverLightOpaque("Hover Light Opaque", Float) = 0.0
+        [Toggle(_HOVER_COLOR_OPAQUE_OVERRIDE)] _EnableHoverColorOpaqueOverride("Override Hover Color Opaque", Float) = 0.0
+        _HoverColorOpaqueOverride("Hover Color Override for Transparent Pixels", Color) = (1.0, 1.0, 1.0, 1.0)
         [Toggle(_ROUND_CORNERS)] _RoundCorners("Round Corners", Float) = 0.0
         _RoundCornerRadius("Round Corner Radius", Range(0.0, 0.5)) = 0.25
         _RoundCornerMargin("Round Corner Margin", Range(0.0, 0.5)) = 0.0
@@ -107,6 +110,8 @@ Shader "MixedRealityToolkit/Standard"
             #pragma shader_feature _NEAR_PLANE_FADE
             #pragma shader_feature _HOVER_LIGHT
             #pragma shader_feature _HOVER_COLOR_OVERRIDE
+            #pragma shader_feature _HOVER_LIGHT_OPAQUE
+            #pragma shader_feature _HOVER_COLOR_OPAQUE_OVERRIDE
             #pragma shader_feature _ROUND_CORNERS
             #pragma shader_feature _BORDER_LIGHT
             #pragma shader_feature _BORDER_LIGHT_USES_HOVER_COLOR
@@ -251,6 +256,9 @@ Shader "MixedRealityToolkit/Standard"
 #if defined(_HOVER_COLOR_OVERRIDE)
             fixed3 _HoverColorOverride;
 #endif
+#if defined(_HOVER_COLOR_OPAQUE_OVERRIDE)
+            fixed3 _HoverColorOpaqueOverride;
+#endif
 #endif
 
 #if defined(_ROUND_CORNERS)
@@ -286,8 +294,8 @@ Shader "MixedRealityToolkit/Standard"
 #endif
 
 #if defined(_BORDER_LIGHT)
-            static const fixed3 _BorderColor = fixed3(10.0f, 10.0f, 10.0f);
-            static const fixed _BorderMinValueScale = 1 / 10.0f;
+            static const fixed _BorderPower = 10.0f;
+            static const fixed _InverseBorderPower = 1.0 / _BorderPower;
 #endif
 
 #if defined(_CLIPPING_PLANE)
@@ -434,8 +442,10 @@ Shader "MixedRealityToolkit/Standard"
 
 #if defined(_METALLIC_TEXTURE_ALBEDO_CHANNEL_A)
                 _Metallic = albedo.a;
+                albedo.a = 1.0;
 #elif defined(_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A)
                 _Smoothness = albedo.a;
+                albedo.a = 1.0;
 #endif 
 
                 // Plane clipping.
@@ -472,19 +482,23 @@ Shader "MixedRealityToolkit/Standard"
 #if defined(_HOVER_LIGHT)
                 fixed pointToHover = (1.0 - saturate(length(_HoverPosition - i.worldPosition.xyz) / _HoverRadius)) * _HoverColor.a;
 #if defined(_HOVER_COLOR_OVERRIDE)
-                _HoverColor.rgb = _HoverColorOverride;
+                _HoverColor.rgb = _HoverColorOverride.rgb;
 #endif
-                albedo.rgb += _HoverColor.rgb * pointToHover;
+#if defined(_HOVER_LIGHT_OPAQUE)
+#if defined(_HOVER_COLOR_OPAQUE_OVERRIDE)
+                _HoverColor.rgb = lerp(_HoverColorOpaqueOverride, _HoverColor.rgb, albedo.a);
+#endif
+                fixed baseBlend = 1.0 + (albedo.a - 1.0) * saturate(pointToHover / (pointToHover + albedo.a));
+                albedo.rgb += -(1.0 - baseBlend) * albedo.rgb + _HoverColor.rgb * max(pointToHover, 1.0 - baseBlend);
+                albedo.a = (albedo.a + pointToHover);
+#else
+                albedo.rgb = saturate(albedo.rgb + _HoverColor.rgb * pointToHover);
+#endif
 #endif
 
                 // Border light.
 #if defined(_BORDER_LIGHT)
-                fixed3 borderColor;
-#if defined(_BORDER_LIGHT_OPAQUE)
-                borderColor = albedo.rgb;
-#else
-                borderColor = _BorderColor;
-#endif
+                fixed3 borderColor = albedo.rgb * _BorderPower;
 #if defined(_HOVER_LIGHT)
 #if defined(_BORDER_LIGHT_USES_HOVER_COLOR)
                 borderColor *= _HoverColor.rgb;
@@ -498,7 +512,7 @@ Shader "MixedRealityToolkit/Standard"
 #else
                 borderValue = max(step(i.uv.z, distanceToEdge.x), step(i.uv.w, distanceToEdge.y));
 #endif
-                borderColor = borderColor * borderValue * max(_BorderMinValue * _BorderMinValueScale, pointToHover);
+                borderColor = borderColor * borderValue * max(_BorderMinValue * _InverseBorderPower, pointToHover);
                 albedo.rgb += borderColor;
 #if defined(_BORDER_LIGHT_OPAQUE)
                 albedo.a += 1.0 - step(borderColor.r + borderColor.g + borderColor.b, 0.0);
@@ -555,7 +569,7 @@ Shader "MixedRealityToolkit/Standard"
 #if defined(_REFRACTION)
                 fixed4 refractColor = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, refract(incident, worldNormal, _RefractiveIndex));
                 ibl *= DecodeHDR(refractColor, unity_SpecCube0_HDR);
-#endif
+#endif 
 #endif
 
                 // Fresnel lighting.
@@ -574,13 +588,13 @@ Shader "MixedRealityToolkit/Standard"
                 output.rgb = lerp(output.rgb, ibl, min(_Smoothness, _Metallic));
 #endif
 
-#if defined(_FRESNEL)
-                output.rgb += fresnelColor * (1.0 - _Metallic);
-#endif
-
 #if defined(_DIRECTIONAL_LIGHT)
                 output.rgb *= lerp(unity_AmbientSky.rgb + (albedo.rgb *_LightColor0.rgb * diffuse + _LightColor0.rgb * specular), albedo, _Metallic);
                 output.rgb += _LightColor0.rgb * albedo * specular;
+#endif
+
+#if defined(_RIM_LIGHT)
+                output.rgb += fresnelColor * (1.0 - _Metallic);
 #endif
 
 #if defined(_EMISSION)
