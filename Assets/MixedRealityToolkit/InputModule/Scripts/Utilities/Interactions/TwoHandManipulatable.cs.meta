@@ -1,11 +1,14 @@
 fileFormatVersion: 2
 guid: 767ea91a006240b49a7dbe9454ed26ba
-timeCreated: 1515171865
-licenseType: Free
+timeCreated: 1520019654
+licenseType: Pro
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - HostTransform: {instanceID: 0}
+  - boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
