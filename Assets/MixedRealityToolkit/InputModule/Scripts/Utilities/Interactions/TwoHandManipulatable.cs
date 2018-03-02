@@ -1,10 +1,7 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Common;
-using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.InputModule.EventData;
-using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.InputModule.InputSources;
 using MixedRealityToolkit.UX.BoundingBoxes;
@@ -36,7 +33,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         private Transform HostTransform;
 
         [SerializeField]
-        [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
+        [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here. This is optional.")]
         private BoundingBox boundingBoxPrefab;
 
         public enum TwoHandedManipulation
@@ -54,7 +51,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
         [SerializeField]
         [Tooltip("Constrain rotation along an axis")]
-        private HandlebarRotateLogic.RotationConstraint ConstraintOnRotation = HandlebarRotateLogic.RotationConstraint.None;
+        private TwoHandRotateLogic.RotationConstraint ConstraintOnRotation = TwoHandRotateLogic.RotationConstraint.None;
 
         [SerializeField]
         [Tooltip("If true, grabbing the object with one hand will initiate movement.")]
@@ -74,9 +71,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
         private BoundingBox boundingBoxInstance;
         private State currentState;
-        private MoveSphericalCoordsLogic m_moveLogic;
-        private ScaleLogic m_scaleLogic;
-        private HandlebarRotateLogic m_rotateLogic;
+        private TwoHandMoveLogic m_moveLogic;
+        private TwoHandScaleLogic m_scaleLogic;
+        private TwoHandRotateLogic m_rotateLogic;
         // Maps input id -> position of hand
         private readonly Dictionary<uint, Vector3> m_handsPressedLocationsMap = new Dictionary<uint, Vector3>();
         // Maps input id -> input source. Then obtain position of input source using currentInputSource.TryGetGripPosition(currentInputSourceId, out inputPosition);
@@ -84,9 +81,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
         private void Awake()
         {
-            m_moveLogic = new MoveSphericalCoordsLogic();
-            m_rotateLogic = new HandlebarRotateLogic(ConstraintOnRotation);
-            m_scaleLogic = new ScaleLogic();
+            m_moveLogic = new TwoHandMoveLogic();
+            m_rotateLogic = new TwoHandRotateLogic(ConstraintOnRotation);
+            m_scaleLogic = new TwoHandScaleLogic();
         }
 
         private void Start()
@@ -120,23 +117,21 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         {
             set
             {
-                if (boundingBoxInstance == null && boundingBoxPrefab != null)
+                if ((boundingBoxInstance == null) && (boundingBoxPrefab != null))
                 {
+                    // Instantiate Bounding Box from the Prefab
                     boundingBoxInstance = Instantiate(boundingBoxPrefab) as BoundingBox;
                 }
-
-                if (boundingBoxInstance != null)
+               
+                if (value)
                 {
-                    if (value)
-                    {
-                        boundingBoxInstance.Target = this.gameObject;
-                        boundingBoxInstance.gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        boundingBoxInstance.Target = null;
-                        boundingBoxInstance.gameObject.SetActive(false);
-                    }
+                    boundingBoxInstance.Target = this.gameObject;
+                    boundingBoxInstance.gameObject.SetActive(true);
+                }
+                else
+                {
+                    boundingBoxInstance.Target = null;
+                    boundingBoxInstance.gameObject.SetActive(false);
                 }
             }
         }
@@ -389,239 +384,5 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             //Hide Bounding Box visual on release
             showBoundingBox = false;
         }
-    }
-
-    /// <summary>
-    /// RotateLogic implements common logic for rotating holograms using a handlebar metaphor. 
-    /// When a manipulation starts, call Setup.
-    /// Call Update any time to update the move logic and get a new rotation for the object.
-    /// </summary>
-    public class HandlebarRotateLogic
-    {
-        private const float MinHandDistanceForPitchM = 0.1f;
-        private const float RotationMultiplier = 2f;
-        public enum RotationConstraint
-        {
-            None,
-            XAxisOnly,
-            YAxisOnly,
-            ZAxisOnly
-        };
-
-        private readonly RotationConstraint m_rotationConstraint;
-        /// <summary>
-        /// The current rotation constraint might be modified based on disambiguation logic, for example
-        /// XOrYBasedOnInitialHandPosition might change the current rotation constraint based on the 
-        /// initial hand positions at the start
-        /// </summary>
-        private RotationConstraint m_currentRotationConstraint;
-        public RotationConstraint GetCurrentRotationConstraint()
-        {
-            return m_currentRotationConstraint;
-        }
-        private Vector3 m_previousHandlebarRotation;
-
-        public HandlebarRotateLogic(RotationConstraint rotationConstraint)
-        {
-            m_rotationConstraint = rotationConstraint;
-        }
-
-        public void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
-        {
-            m_currentRotationConstraint = m_rotationConstraint;
-            m_previousHandlebarRotation = GetHandlebarDirection(handsPressedMap, manipulationRoot);
-        }
-
-        private Vector3 ProjectHandlebarGivenConstraint(RotationConstraint constraint, Vector3 handlebarRotation, Transform manipulationRoot)
-        {
-            Vector3 result = handlebarRotation;
-            switch (constraint)
-            {
-                case RotationConstraint.XAxisOnly:
-                    result.x = 0;
-                    break;
-                case RotationConstraint.YAxisOnly:
-                    result.y = 0;
-                    break;
-                case RotationConstraint.ZAxisOnly:
-                    result.z = 0;
-                    break;
-            }
-            return Camera.main.transform.TransformDirection(result);
-        }
-
-        private Vector3 GetHandlebarDirection(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
-        {
-            Assert.IsTrue(handsPressedMap.Count > 1);
-            var handsEnumerator = handsPressedMap.Values.GetEnumerator();
-            handsEnumerator.MoveNext();
-            var hand1 = handsEnumerator.Current;
-            handsEnumerator.MoveNext();
-            var hand2 = handsEnumerator.Current;
-
-            // We project the handlebar direction into camera space because otherwise when we move our body the handlebard will move even 
-            // though, relative to our heads, the handlebar is not moving.
-            hand1 = Camera.main.transform.InverseTransformPoint(hand1);
-            hand2 = Camera.main.transform.InverseTransformPoint(hand2);
-
-            return hand2 - hand1;
-        }
-
-        public Quaternion Update(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot, Quaternion currentRotation)
-        {
-            var handlebarDirection = GetHandlebarDirection(handsPressedMap, manipulationRoot);
-            var handlebarDirectionProjected = ProjectHandlebarGivenConstraint(m_currentRotationConstraint, handlebarDirection,
-                manipulationRoot);
-            var prevHandlebarDirectionProjected = ProjectHandlebarGivenConstraint(m_currentRotationConstraint,
-                m_previousHandlebarRotation, manipulationRoot);
-            m_previousHandlebarRotation = handlebarDirection;
-
-            var rotationDelta = Quaternion.FromToRotation(prevHandlebarDirectionProjected, handlebarDirectionProjected);
-
-            var angle = 0f;
-            var axis = Vector3.zero;
-            rotationDelta.ToAngleAxis(out angle, out axis);
-            angle *= RotationMultiplier;
-
-            if (m_currentRotationConstraint == RotationConstraint.YAxisOnly)
-            {
-                // If we are rotating about Y axis, then make sure we rotate about global Y axis.
-                // Since the angle is obtained from a quaternion, we need to properly orient it (up or down) based
-                // on the original axis-angle representation. 
-                axis = Vector3.up * Vector3.Dot(axis, Vector3.up);
-            }
-            return Quaternion.AngleAxis(angle, axis) * currentRotation;
-        }
-    }
-
-    /// <summary>
-    /// Implements a movement logic that uses the model of angular rotations along a sphere whose 
-    /// radius varies. The angle to move by is computed by looking at how much the hand changes
-    /// relative to a pivot point (slightly below and in front of the head).
-    /// </summary>
-    public class MoveSphericalCoordsLogic
-    {
-        private float m_handRefDistance;
-        private float m_objRefDistance;
-        /// <summary>
-        /// The initial angle between the hand and the object
-        /// </summary>
-        private Quaternion m_gazeAngularOffset;
-        /// <summary>
-        /// The initial object position
-        /// </summary>
-        private Vector3 m_draggingPosition;
-
-        private const float DistanceScale = 2f;
-
-        public void Setup(Vector3 startHandPositionMeters, Transform manipulationRoot)
-        {
-            var newHandPosition = startHandPositionMeters;
-
-            // The pivot is just below and in front of the head.
-            var pivotPosition = GetHandPivotPosition();
-
-            m_handRefDistance = Vector3.Distance(newHandPosition, pivotPosition);
-            m_objRefDistance = Vector3.Distance(manipulationRoot.position, pivotPosition);
-
-            var objDirectoin = Vector3.Normalize(manipulationRoot.position - pivotPosition);
-            var handDirection = Vector3.Normalize(newHandPosition - pivotPosition);
-
-            // We transform the forward vector of the object, the direction of the object, and the direction of the hand
-            // to camera space so everything is relative to the user's perspective.
-            objDirectoin = Camera.main.transform.InverseTransformDirection(objDirectoin);
-            handDirection = Camera.main.transform.InverseTransformDirection(handDirection);
-
-            // Store the original rotation between the hand an object
-            m_gazeAngularOffset = Quaternion.FromToRotation(handDirection, objDirectoin);
-            m_draggingPosition = manipulationRoot.position;
-        }
-
-        public Vector3 Update(Vector3 centroid, Vector3 manipulationObjectPosition)
-        {
-            var newHandPosition = centroid;
-            var pivotPosition = GetHandPivotPosition();
-
-            // Compute the pivot -> hand vector in camera space
-            var newHandDirection = Vector3.Normalize(newHandPosition - pivotPosition);
-            newHandDirection = Camera.main.transform.InverseTransformDirection(newHandDirection);
-
-            // The direction the object should face is the current hand direction rotated by the original hand -> object rotation.
-            var targetDirection = Vector3.Normalize(m_gazeAngularOffset * newHandDirection);
-            targetDirection = Camera.main.transform.TransformDirection(targetDirection);
-
-            // Compute how far away the object should be based on the ratio of the current to original hand distance
-            var currentHandDistance = Vector3.Magnitude(newHandPosition - pivotPosition);
-            var distanceRatio = currentHandDistance / m_handRefDistance;
-            var distanceOffset = distanceRatio > 0 ? (distanceRatio - 1f) * DistanceScale : 0;
-            var targetDistance = m_objRefDistance + distanceOffset;
-
-            var newPosition = pivotPosition + (targetDirection * targetDistance);
-
-            var newDistance = Vector3.Distance(newPosition, pivotPosition);
-            if (newDistance > 4f)
-            {
-                newPosition = pivotPosition + Vector3.Normalize(newPosition - pivotPosition) * 4f;
-            }
-
-            m_draggingPosition = newPosition;
-
-
-            return m_draggingPosition;
-        }
-
-        /// <returns>A point that is below and just in front of the head.</returns>
-        public static Vector3 GetHandPivotPosition()
-        {
-            Vector3 pivot = Camera.main.transform.position + new Vector3(0, -0.2f, 0) - Camera.main.transform.forward * 0.2f; // a bit lower and behind
-            return pivot;
-        }
-    }
-
-    /// <summary>
-    /// Implements a scale logic that will scale an object based on the 
-    /// ratio of the distance between hands.
-    /// object_scale = start_object_scale * curr_hand_dist / start_hand_dist
-    /// </summary>
-    public class ScaleLogic
-    {
-        private Vector3 m_startObjectScale;
-        private float m_startHandDistanceMeters;
-
-        public virtual void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
-        {
-            m_startHandDistanceMeters = GetMinDistanceBetweenHands(handsPressedMap);
-            m_startObjectScale = manipulationRoot.transform.localScale;
-        }
-
-        /// <summary>
-        /// Finds the minimum distance between all pairs of hands
-        /// </summary>
-        /// <returns></returns>
-        private float GetMinDistanceBetweenHands(Dictionary<uint, Vector3> handsPressedMap)
-        {
-            var result = float.MaxValue;
-            Vector3[] handLocations = new Vector3[handsPressedMap.Values.Count];
-            handsPressedMap.Values.CopyTo(handLocations, 0);
-            for (int i = 0; i < handLocations.Length; i++)
-            {
-                for (int j = i + 1; j < handLocations.Length; j++)
-                {
-                    var distance = Vector3.Distance(handLocations[i], handLocations[j]);
-                    if (distance < result)
-                    {
-                        result = distance;
-                    }
-                }
-            }
-            return result;
-        }
-
-        public virtual Vector3 Update(Dictionary<uint, Vector3> handsPressedMap)
-        {
-            var ratioMultiplier = GetMinDistanceBetweenHands(handsPressedMap) / m_startHandDistanceMeters;
-            return m_startObjectScale * ratioMultiplier;
-        }
-
     }
 }
