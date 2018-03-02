@@ -146,7 +146,7 @@ namespace MixedRealityToolkit.Build
                     buildInfo.Scenes.ToArray(),
                     buildInfo.OutputDirectory,
                     buildInfo.BuildTarget,
-                    buildInfo.BuildOptions);
+                    buildInfo.BuildOptions).ToString();
 
                 if (buildError.StartsWith("Error"))
                 {

@@ -81,6 +81,9 @@ namespace MixedRealityToolkit.InputModule.InputSources
         [Tooltip("The total amount of input source movement that needs to happen to signal intent to start a manipulation. This is a distance, but not a distance in any one direction.")]
         private float manipulationStartMovementThreshold = 0.03f;
 
+        // Used to assign unique input ids for input sources
+        private static uint customInputSourceCount = 1;
+
         public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
@@ -262,7 +265,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
             currentButtonStates = new ButtonStates();
             currentlyVisible = false;
             visibilityChanged = false;
-            controllerId = (uint)Random.value;
+            controllerId = customInputSourceCount++;
         }
 
         private void Update()

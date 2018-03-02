@@ -113,10 +113,8 @@ namespace MixedRealityToolkit.InputModule.Gaze
 
         private float lastHitDistance = 2.0f;
 
-        protected override void Awake()
+        protected override void InitializeInternal()
         {
-            base.Awake();
-
             // Add default RaycastLayers as first layerPriority
             if (RaycastLayerMasks == null || RaycastLayerMasks.Length == 0)
             {

@@ -21,10 +21,8 @@ namespace MixedRealityToolkit.InputModule.Focus
     {
         #region MonoBehaviour Implementation
 
-        protected override void Awake()
+        protected override void InitializeInternal()
         {
-            base.Awake();
-
             if (registeredPointers != null)
             {
                 for (int iPointer = 0; iPointer < registeredPointers.Length; iPointer++)
@@ -51,11 +49,8 @@ namespace MixedRealityToolkit.InputModule.Focus
                     RegisterPointer(pointingSource);
                 }
             }
-        }
 
-        private void Start()
-        {
-            if (pointers.Count == 0 && autoRegisterGazePointerIfNoPointersRegistered && GazeManager.IsInitialized)
+            if (pointers.Count == 0 && autoRegisterGazePointerIfNoPointersRegistered && GazeManager.ConfirmInitialized())
             {
                 RegisterPointer(GazeManager.Instance);
             }
@@ -70,7 +65,6 @@ namespace MixedRealityToolkit.InputModule.Focus
         #endregion
 
         #region Settings
-
         /// <summary>
         /// Maximum distance at which the pointer can collide with an object.
         /// </summary>
@@ -107,7 +101,6 @@ namespace MixedRealityToolkit.InputModule.Focus
         #endregion
 
         #region Data
-
         private class PointerData : PointerResult
         {
             public readonly IPointingSource PointingSource;
