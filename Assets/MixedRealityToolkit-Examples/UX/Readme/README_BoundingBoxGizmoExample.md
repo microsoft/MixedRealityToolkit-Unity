@@ -31,9 +31,16 @@ When you select one of the gizmo, it is highlighted and other gizmos becomes inv
 ## Structure of Bounding Box & App Bar ##
 ![Bounding Box](/External/ReadMeImages/MRTK_AppBar_BoundingBox_Structure.jpg)
 ### [BoundingBoxRig script](/Assets/MixedRealityToolkit/UX/Scripts/BoundingBoxes/BoundingBoxRig.cs) ###
-Description here.
+This script gets added as a Component to a GameObject. An object with this script as a Component will appear with an AppBar floating in front of it. The BoundingBoxRig script creates a rig of corner and mid-edge handles for scaling and rotating an object. The Adjust button in the AppBar turns on and off the rig. This script cooperates with the TwoHandedManipulation script.
+
+
+
 ### [BoundingBoxGizmoHandle script](/Assets/MixedRealityToolkit/UX/Scripts/BoundingBoxes/BoundingBoxGizmoHandle.cs) ###
-Description here.
+This script is not used directly. It is already included in the BoundingBoxRig script. It takes care of creating the rotation and scale handles that are used to adjust the Target object.
+
+
+
+
 ### [AppBar](/Assets/MixedRealityToolkit/UX/Scripts/AppBar/AppBar.cs) and [AppBarButton](/Assets/MixedRealityToolkit/UX/Scripts/AppBar/AppBarButton.cs) script ###
 AppBar uses [HolographicButton](/Assets/MixedRealityToolkit/UX/Prefabs/Buttons/HolographicButton.prefab) as a template to build a button collection. In default, it includes Show, Hide, Adjust, Done and Remove buttons. Depending on the current mode - Default, Hidden and Manipulation - it controls the visiblity of each button. Based on the number of the buttons, it adjusts the width of the BackgroundBar component. AppBar script has the logic for following user's position in FollowBoundingBox() function.
 
