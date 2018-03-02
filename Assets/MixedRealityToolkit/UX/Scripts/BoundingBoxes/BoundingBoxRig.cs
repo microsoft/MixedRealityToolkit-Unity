@@ -15,12 +15,19 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
     public class BoundingBoxRig : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("Choose the Transform that you want to affect by interacting with the BoundingRig. By default this is the same object to which this script is attached.")]
+        public Transform TransformToAffect;
+
+        [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
         public BoundingBox BoundingBoxPrefab;
 
         [SerializeField]
         [Tooltip("AppBar prefab.")]
         private AppBar appBarPrefab;
+        [SerializeField]
+        [Tooltip("Choose this option if Rig is to be applied to a 2D object.")]
+        private bool isFlat;
         [SerializeField]
         private Material scaleHandleMaterial;
         [SerializeField]
@@ -113,6 +120,10 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private void Start()
         {
             objectToBound = this.gameObject;
+            if (TransformToAffect == null)
+            {
+                TransformToAffect = objectToBound.transform;
+            }
 
             boxInstance = Instantiate(BoundingBoxPrefab) as BoundingBox;
             boxInstance.Target = objectToBound;
@@ -152,7 +163,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             if (cornerHandles == null)
             {
                 cornerHandles = new GameObject[handleCentroids.Count];
-                for (int i = 0; i < handleCentroids.Count; ++i)
+                for (int i = 0; i < cornerHandles.Length; ++i)
                 {
                     cornerHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     cornerHandles[i].GetComponent<Renderer>().material = scaleHandleMaterial;
@@ -160,16 +171,18 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     cornerHandles[i].AddComponent<BoxCollider>();
                     cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
-                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = objectToBound;
+                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().TransformToAffect = TransformToAffect;
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Scale;
                     cornerHandles[i].name = "Corner " + i.ToString();
                 }
             }
 
-            for (int i = 0; i < handleCentroids.Count; ++i)
+            int index = handleCentroids.Count - 8;
+            index = 0;
+            for (int i = 0; i < cornerHandles.Length; ++i)
             {
-                cornerHandles[i].transform.localPosition = handleCentroids[i];
+                cornerHandles[i].transform.position = handleCentroids[index + i];
                 cornerHandles[i].transform.localRotation = objectToBound.transform.rotation;
             }
         }
@@ -189,7 +202,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     rotateHandles[i].AddComponent<SphereCollider>();
                     rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                     rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
-                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().ObjectToAffect = objectToBound;
+                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().TransformToAffect = TransformToAffect;
                     rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Rotation;
                     rotateHandles[i].name = "Middle " + i.ToString();
                 }
@@ -227,18 +240,19 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 rotateHandles[11].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = true;
             }
 
-            rotateHandles[0].transform.localPosition = (handleCentroids[2] + handleCentroids[0]) * 0.5f;
-            rotateHandles[1].transform.localPosition = (handleCentroids[3] + handleCentroids[1]) * 0.5f;
-            rotateHandles[2].transform.localPosition = (handleCentroids[6] + handleCentroids[4]) * 0.5f;
-            rotateHandles[3].transform.localPosition = (handleCentroids[7] + handleCentroids[5]) * 0.5f;
-            rotateHandles[4].transform.localPosition = (handleCentroids[0] + handleCentroids[1]) * 0.5f;
-            rotateHandles[5].transform.localPosition = (handleCentroids[2] + handleCentroids[3]) * 0.5f;
-            rotateHandles[6].transform.localPosition = (handleCentroids[4] + handleCentroids[5]) * 0.5f;
-            rotateHandles[7].transform.localPosition = (handleCentroids[6] + handleCentroids[7]) * 0.5f;
-            rotateHandles[8].transform.localPosition = (handleCentroids[0] + handleCentroids[4]) * 0.5f;
-            rotateHandles[9].transform.localPosition = (handleCentroids[1] + handleCentroids[5]) * 0.5f;
-            rotateHandles[10].transform.localPosition = (handleCentroids[2] + handleCentroids[6]) * 0.5f;
-            rotateHandles[11].transform.localPosition = (handleCentroids[3] + handleCentroids[7]) * 0.5f;
+            int index = handleCentroids.Count - 8;
+            rotateHandles[0].transform.localPosition = (handleCentroids[index + 2] + handleCentroids[index + 0]) * 0.5f;
+            rotateHandles[1].transform.localPosition = (handleCentroids[index + 3] + handleCentroids[index + 1]) * 0.5f;
+            rotateHandles[2].transform.localPosition = (handleCentroids[index + 6] + handleCentroids[index + 4]) * 0.5f;
+            rotateHandles[3].transform.localPosition = (handleCentroids[index + 7] + handleCentroids[index + 5]) * 0.5f;
+            rotateHandles[4].transform.localPosition = (handleCentroids[index + 0] + handleCentroids[index + 1]) * 0.5f;
+            rotateHandles[5].transform.localPosition = (handleCentroids[index + 2] + handleCentroids[index + 3]) * 0.5f;
+            rotateHandles[6].transform.localPosition = (handleCentroids[index + 4] + handleCentroids[index + 5]) * 0.5f;
+            rotateHandles[7].transform.localPosition = (handleCentroids[index + 6] + handleCentroids[index + 7]) * 0.5f;
+            rotateHandles[8].transform.localPosition = (handleCentroids[index + 0] + handleCentroids[index + 4]) * 0.5f;
+            rotateHandles[9].transform.localPosition = (handleCentroids[index + 1] + handleCentroids[index + 5]) * 0.5f;
+            rotateHandles[10].transform.localPosition = (handleCentroids[index + 2] + handleCentroids[index + 6]) * 0.5f;
+            rotateHandles[11].transform.localPosition = (handleCentroids[index + 3] + handleCentroids[index + 7]) * 0.5f;
         }
         private void ParentHandles()
         {
@@ -387,24 +401,25 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             {
                 List<Vector3> bounds = new List<Vector3>();
                 LayerMask mask = new LayerMask();
+
                 GameObject clone = GameObject.Instantiate(boxInstance.gameObject);
                 clone.transform.localRotation = Quaternion.identity;
                 clone.transform.position = new Vector3(0, 0, 0);
-
                 BoundingBox.GetRenderBoundsPoints(clone, bounds, mask);
-
+                Vector3 centroid = boxInstance.TargetBoundsCenter;
                 GameObject.Destroy(clone);
-
                 Matrix4x4 m = Matrix4x4.Rotate(objectToBound.transform.rotation);
-
                 for (int i = 0; i < bounds.Count; ++i)
                 {
                     bounds[i] = m.MultiplyPoint(bounds[i]);
-                    bounds[i] += objectToBound.transform.position;
+                    bounds[i] += boxInstance.TargetBoundsCenter;
                 }
 
                 return bounds;
             }
+
+          
+
 
             return null;
         }

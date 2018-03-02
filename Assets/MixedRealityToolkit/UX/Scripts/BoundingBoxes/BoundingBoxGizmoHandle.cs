@@ -26,7 +26,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         };
         public BoundingBoxRig Rig;
 
-        private GameObject objectToAffect;
+        private Transform transformToAffect;
         private TransformType affineType;
         private AxisToAffect axis;
         private Vector3 initialHandPosition;
@@ -40,19 +40,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private bool isLeftHandedRotation = false;
         private Vector3 rotationFromPositionScale = new Vector3(-300.0f, -300.0f, -300.0f);
         private float minimumScaleNav = 0.001f;
-
-        public GameObject ObjectToAffect
-        {
-            get
-            {
-                return objectToAffect;
-            }
-
-            set
-            {
-                objectToAffect = value;
-            }
-        }
+        
         public TransformType AffineType
         {
             get
@@ -87,6 +75,18 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             set
             {
                 isLeftHandedRotation = value;
+            }
+        }
+        public Transform TransformToAffect
+        {
+            get
+            {
+                return transformToAffect;
+            }
+
+            set
+            {
+                transformToAffect = value;
             }
         }
 
@@ -148,14 +148,14 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         }
         private void ApplyScale(Vector3 currentHandPosition)
         {
-            if ((objectToAffect.transform.position - initialHandPosition).magnitude > minimumScaleNav)
+            if ((transformToAffect.position - initialHandPosition).magnitude > minimumScaleNav)
             {
-                float scaleScalar = (currentHandPosition - objectToAffect.transform.position).magnitude / (objectToAffect.transform.position - initialHandPosition).magnitude;
+                float scaleScalar = (currentHandPosition - transformToAffect.position).magnitude / (transformToAffect.position - initialHandPosition).magnitude;
                 Vector3 newScale = new Vector3(scaleScalar, scaleScalar, scaleScalar);
                 newScale.Scale(initialScale);
 
                 //scale from object center
-                objectToAffect.transform.localScale = newScale;
+                transformToAffect.localScale = newScale;
 
                 //now handle offset
                 Vector3 currentScaleOrigin = initialScaleOrigin;
@@ -163,7 +163,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 Vector3 postScaleOffset = currentScaleOrigin - initialScaleOrigin;
 
                 //translate so that scale is effectively from opposite corner
-                objectToAffect.transform.position = initialPosition - postScaleOffset;
+                transformToAffect.position = initialPosition - postScaleOffset;
             }
         }
         private void ApplyRotation(Quaternion currentHandOrientation)
@@ -212,14 +212,14 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             newEulers += initialOrientation;
 
 
-            ObjectToAffect.transform.rotation = Quaternion.Euler(newEulers);
+            transformToAffect.rotation = Quaternion.Euler(newEulers);
         }
         private void ApplyRotation(Vector3 currentHandPosition)
         {
-            Vector3 initialRay = initialHandPosition - ObjectToAffect.transform.position;
+            Vector3 initialRay = initialHandPosition - transformToAffect.position;
             initialRay.Normalize();
 
-            Vector3 currentRay = currentHandPosition - ObjectToAffect.transform.position;
+            Vector3 currentRay = currentHandPosition - transformToAffect.position;
             currentRay.Normalize();
 
             Vector3 delta = currentRay - initialRay;
@@ -246,8 +246,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             newEulers += initialOrientation;
 
-
-            ObjectToAffect.transform.rotation = Quaternion.Euler(newEulers);
+            transformToAffect.rotation = Quaternion.Euler(newEulers);
         }
 
         public void OnInputDown(InputEventData eventData)
@@ -255,11 +254,11 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             inputDownEventData = eventData;
 
             initialHandPosition     = GetHandPosition(eventData.SourceId);
-            initialScale            = objectToAffect.transform.localScale;
-            initialPosition         = objectToAffect.transform.position;
-            initialOrientation      = objectToAffect.transform.rotation.eulerAngles;
+            initialScale            = transformToAffect.localScale;
+            initialPosition         = transformToAffect.position;
+            initialOrientation      = transformToAffect.rotation.eulerAngles;
             initialHandOrientation  = GetHandOrientation(eventData.SourceId);
-            initialScaleOrigin      = ObjectToAffect.transform.position - this.transform.position;
+            initialScaleOrigin      = transformToAffect.position - this.transform.position;
 
             MixedRealityToolkit.InputModule.InputManager.Instance.PushModalInputHandler(gameObject);
 
