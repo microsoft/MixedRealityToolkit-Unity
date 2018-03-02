@@ -58,6 +58,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 scaleHandleMaterial = value;
             }
         }
+
         public Material RotateHandleMaterial
         {
             get
@@ -70,6 +71,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 rotateHandleMaterial = value;
             }
         }
+
         public Material InteractingMaterial
         {
             get
@@ -87,10 +89,12 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         {
             ShowRig = true;
         }
+
         public void Deactivate()
         {
             ShowRig = false;
         }
+
         public void FocusOnHandle(GameObject handle)
         {
             if (handle != null)
@@ -153,6 +157,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         {
             handleCentroids = GetBounds();
         }
+
         private void CreateHandles()
         {
             ClearHandles();
@@ -161,6 +166,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             ParentHandles();
             UpdateHandles();
         }
+
         private void UpdateCornerHandles()
         {
             handleCentroids = handleCentroids ?? GetBounds();
@@ -188,6 +194,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 cornerHandles[i].transform.localRotation = objectToBound.transform.rotation;
             }
         }
+
         private void UpdateRotateHandles()
         {
             handleCentroids = handleCentroids ?? GetBounds();
@@ -254,6 +261,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             rotateHandles[10].transform.localPosition = (handleCentroids[2] + handleCentroids[6]) * 0.5f;
             rotateHandles[11].transform.localPosition = (handleCentroids[3] + handleCentroids[7]) * 0.5f;
         }
+
         private void ParentHandles()
         {
             transformRig.transform.position = boxInstance.transform.position;
@@ -264,11 +272,13 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             transformRig.transform.localScale = new Vector3(0.5f / invScale.x, 0.5f / invScale.y, 0.5f / invScale.z);
             transformRig.transform.parent = objectToBound.transform;
         }
+
         private void UpdateHandles()
         {
             UpdateCornerHandles();
             UpdateRotateHandles();
         }
+
         private void ClearCornerHandles()
         {
             if (cornerHandles != null)
@@ -284,6 +294,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             cornerHandles = null;
             handleCentroids = null;
         }
+
         private void ClearRotateHandles()
         {
             if (rotateHandles != null && rotateHandles.Length > 0 && rotateHandles[0] != null)
@@ -300,11 +311,13 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             rotateHandles = null;
         }
+
         private void ClearHandles()
         {
             ClearCornerHandles();
             ClearRotateHandles();
         }
+
         private GameObject BuildRig()
         {
             Vector3 scale = objectToBound.transform.localScale;
@@ -366,6 +379,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             return rig;
         }
+
         private bool ShowRig
         {
             get
@@ -403,6 +417,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         {
             GameObject.Destroy(transformRig);
         }
+
         private List<Vector3> GetBounds()
         {
             if (objectToBound != null)
