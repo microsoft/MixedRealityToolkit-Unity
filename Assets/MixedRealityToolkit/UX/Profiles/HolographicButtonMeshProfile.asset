@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: HolographicButtonMeshProfile
   m_EditorClassIdentifier: 
   ColorPropertyName: _Color
-  ValuePropertyName: 
+  ValuePropertyName: _BorderWidth
   SmoothStateChanges: 1
   StickyPressedEvents: 0
   StickyPressedTime: 0.5
@@ -21,36 +21,36 @@ MonoBehaviour:
   - Name: Pressed
     ActiveState: 0
     StateColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    StateValue: 0
+    StateValue: 0.4
     Offset: {x: 0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 0.5}
+    Scale: {x: 0.12, y: 0.12, z: 0.01}
   - Name: Targeted
     ActiveState: 1
-    StateColor: {r: 1, g: 1, b: 1, a: 1}
-    StateValue: 0
+    StateColor: {r: 0, g: 0, b: 0, a: 0.3019608}
+    StateValue: 0.4
     Offset: {x: 0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 0.5}
+    Scale: {x: 0.12, y: 0.12, z: 0.01}
   - Name: Interactive
     ActiveState: 2
-    StateColor: {r: 1, g: 1, b: 1, a: 0}
+    StateColor: {r: 0, g: 0, b: 0, a: 0}
     StateValue: 0
     Offset: {x: 0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 0.5}
+    Scale: {x: 0.12, y: 0.12, z: 0.01}
   - Name: ObservationTargeted
     ActiveState: 3
-    StateColor: {r: 1, g: 1, b: 1, a: 1}
-    StateValue: 0
+    StateColor: {r: 0, g: 0, b: 0, a: 0.303}
+    StateValue: 0.4
     Offset: {x: 0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 0.5}
+    Scale: {x: 0.12, y: 0.12, z: 0.01}
   - Name: Observation
     ActiveState: 4
-    StateColor: {r: 0.25735295, g: 0.25735295, b: 0.25735295, a: 0}
+    StateColor: {r: 0, g: 0, b: 0, a: 0}
     StateValue: 0
     Offset: {x: 0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 0.5}
+    Scale: {x: 0.12, y: 0.12, z: 0.01}
   - Name: Disabled
     ActiveState: 5
     StateColor: {r: 0, g: 0, b: 0, a: 0}
     StateValue: 0
     Offset: {x: 0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 0.5}
+    Scale: {x: 0.12, y: 0.12, z: 0.01}

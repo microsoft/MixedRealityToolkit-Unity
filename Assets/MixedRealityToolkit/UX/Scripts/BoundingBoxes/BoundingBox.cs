@@ -110,6 +110,26 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         }
 
         /// <summary>
+        /// Sets the bounding box invisible while not interrupting
+        /// the computation of bounds points.
+        /// </summary>
+        public bool IsVisible
+        {
+            get
+            {
+                return isVisible;
+            }
+            set
+            {
+                Transform scale = transform.GetChild(0);
+                Transform rig = scale.GetChild(0);
+                GameObject rigobject = rig.gameObject;
+                rigobject.gameObject.GetComponent<Renderer>().enabled = value;
+                isVisible = value;
+            }
+        }
+
+        /// <summary>
         /// The current flattened axis, if any
         /// </summary>
         public virtual FlattenModeEnum FlattenedAxis
@@ -180,11 +200,11 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         protected List<Vector3> boundsPoints = new List<Vector3>();
 
         protected FlattenModeEnum flattenedAxis = FlattenModeEnum.DoNotFlatten;
-
+   
+        protected bool isVisible = true;
         #endregion
 
-        #region private
-
+        #region
         /// <summary>
         /// Override so we're not overwhelmed by button gizmos
         /// </summary>
@@ -386,8 +406,9 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             transform.eulerAngles = rotation;
         }
-
         #endregion
+
+  
 
         #region static utility functions
 
