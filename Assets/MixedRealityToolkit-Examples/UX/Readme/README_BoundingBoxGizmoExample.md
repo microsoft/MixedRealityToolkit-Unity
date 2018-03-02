@@ -50,7 +50,7 @@ Bounding Box with gizmo provides the interface for scaling and rotating object. 
 
 
 ## How to add custom buttons to the App Bar ##
-You can add additional buttons to the App Bar for other actions. AppBar prefab provides convenient options in the Inspector panel. Find the AppBar prefab in the Project panel and select it. In the Inspector panel, expand **Buttons** section. By modifying the number of **Size** field, you will be able to see the Element populated in the Buttons section. You can specify details such as postion, name and icon texture name. These buttons are based on CompoundButton
+You can add additional buttons to the App Bar for other actions. AppBar prefab provides convenient options in the Inspector panel. Find the AppBar prefab in the Project panel and select it. In the Inspector panel, expand **Buttons** section. By modifying the number of **Size** field, you will be able to see the Element populated in the Buttons section. You can specify details such as postion, name and icon texture name. These buttons are using [HolographicButton](/Assets/MixedRealityToolkit/UX/Prefabs/Buttons/HolographicButton.prefab) prefab as a template. HolographicButton is based on [CompoundButton](/Assets/MixedRealityToolkit/UX/Scripts/Buttons/CompoundButton.cs) script series. For more details about CompoundButton, please refer to the [README file of the InteractableObjectExample](/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md).
 
 ![AppBar Custom Button](/External/ReadMeImages/MRTK_AppBar_BoundingBox_CustomButtons.jpg)
 
