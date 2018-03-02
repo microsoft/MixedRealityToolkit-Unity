@@ -1,6 +1,6 @@
 # Bounding Box & App Bar
 ![Bounding Box](/External/ReadMeImages/MRTK_AppBar_BoundingBox.jpg)
-This example scene demonstrates how to make objects manipulatable using [BoundingBox](/Assets/MixedRealityToolkit/UX/Scripts/BoundingBoxes/BoundingBoxRig.cs) script. The bounding box is a standard interface for manipulating object in Windows Mixed Reality. Using gizmo on the corners and edges, you can scale or rotate the object. 
+This example scene demonstrates how to make objects manipulatable using [BoundingBoxRig](/Assets/MixedRealityToolkit/UX/Scripts/BoundingBoxes/BoundingBoxRig.cs) script. The bounding box is a standard interface for manipulating object in Windows Mixed Reality. Using gizmo on the corners and edges, you can scale or rotate the object. 
 App Bar provides the button for entering/exiting 'Adjust' mode to enable/disable Bounding Box. For more information please see ['App Bar and Bounding Box'](https://developer.microsoft.com/en-us/windows/mixed-reality/app_bar_and_bounding_box) on Windows Dev Center.
 
 ## Interaction behavior ##
@@ -23,13 +23,12 @@ When you select one of the gizmo, it is highlighted and other gizmos becomes inv
 
 ## Structure of Bounding Box & App Bar ##
 ![Bounding Box](/External/ReadMeImages/MRTK_AppBar_BoundingBox_Structure.jpg)
-### BoundingBoxRig script ###
+### [BoundingBoxRig script](/Assets/MixedRealityToolkit/UX/Scripts/BoundingBoxes/BoundingBoxRig.cs) ###
 Description here.
-### BoundingBoxGizmoHandle script ###
+### [BoundingBoxGizmoHandle script](/Assets/MixedRealityToolkit/UX/Scripts/BoundingBoxes/BoundingBoxGizmoHandle.cs) ###
 Description here.
-### AppBar and AppBarButton script ###
-Description here.
-
+### [AppBar](/Assets/MixedRealityToolkit/UX/Scripts/AppBar/AppBar.cs) and [AppBarButton](/Assets/MixedRealityToolkit/UX/Scripts/AppBar/AppBarButton.cs) script ###
+AppBar uses [HolographicButton](/Assets/MixedRealityToolkit/UX/Prefabs/Buttons/HolographicButton.prefab) as a template to build a button collection. In default, it includes Show, Hide, Adjust, Done and Remove buttons. Depending on the current mode - Default, Hidden and Manipulation - it controls the visiblity of each button. Based on the number of the buttons, it adjusts the width of the BackgroundBar component. AppBar script has the logic for following user's position in FollowBoundingBox() function.
 
 
 ## How to use Bounding Box & App Bar ##
