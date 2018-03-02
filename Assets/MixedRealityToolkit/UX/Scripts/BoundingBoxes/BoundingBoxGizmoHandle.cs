@@ -122,7 +122,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 }
                 else if (this.AffineType == TransformType.Rotation)
                 {
-                    if (isHandRotationAvailable && false)
+                    if (isHandRotationAvailable)
                     {
                         ApplyRotation(currentHandOrientation);
                     }
