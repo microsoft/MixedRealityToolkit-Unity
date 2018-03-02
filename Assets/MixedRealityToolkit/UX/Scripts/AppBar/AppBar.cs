@@ -191,9 +191,8 @@ namespace MixedRealityToolkit.UX.AppBarControl
             {
                 case "Remove":
                     // Destroy the target object, Bounding Box, Bounding Box Rig and App Bar
+                    Component.Destroy(boundingBox.Target.GetComponent<BoundingBoxRig>());
                     GameObject.Destroy(boundingBox.Target);
-                    GameObject.Destroy(boundingBox.Target.GetComponent<BoundingBoxRig>().gameObject);
-                    GameObject.Destroy(boundingBox);
                     GameObject.Destroy(this.gameObject);
                     break;
 

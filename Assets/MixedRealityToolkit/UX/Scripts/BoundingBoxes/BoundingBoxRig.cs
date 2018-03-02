@@ -141,6 +141,13 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
         }
 
+        private void OnDestroy()
+        {
+            ClearHandles();
+            ClearRig();
+            Destroy(boxInstance.gameObject);
+        }
+
         private void UpdateBoundsPoints()
         {
             handleCentroids = GetBounds();
@@ -389,6 +396,11 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
                 showRig = value;
             }
+        }
+
+        private void ClearRig()
+        {
+            GameObject.Destroy(transformRig);
         }
         private List<Vector3> GetBounds()
         {
