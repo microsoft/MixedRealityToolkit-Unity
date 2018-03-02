@@ -3,6 +3,10 @@
 This example scene demonstrates how to make objects manipulatable using [BoundingBox](/Assets/MixedRealityToolkit/UX/Scripts/BoundingBoxes/BoundingBoxRig.cs) script. The bounding box is a standard interface for manipulating object in Windows Mixed Reality. Using gizmo on the corners and edges, you can scale or rotate the object. 
 App Bar provides the button for entering/exiting 'Adjust' mode to enable/disable Bounding Box. For more information please see ['App Bar and Bounding Box'](https://developer.microsoft.com/en-us/windows/mixed-reality/app_bar_and_bounding_box) on Windows Dev Center.
 
+## Interaction behavior ##
+### Demo video ###
+https://gfycat.com/EmptyLoathsomeGrouper
+
 There are two modes in the Bounding Box: Normal mode and Adjust mode. 
 ### Normal mode ###
 - Bounding Box is not visible. 
@@ -12,8 +16,6 @@ There are two modes in the Bounding Box: Normal mode and Adjust mode.
 - Bounding Box and gizmo is visible
 - App Bar shows 'Done' button
 
-## Demo Video ##
-https://gfycat.com/EmptyLoathsomeGrouper
 
 When you select one of the gizmo, it is highlighted and other gizmos becomes invisible. This visual feedback helps the user to understand which handle is beining interacted with.
 
