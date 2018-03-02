@@ -394,7 +394,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     UpdateHandles();
                 }
 
-                boxInstance.gameObject.SetActive(value);
                 boxInstance.IsVisible = true;
 
                 if (cornerHandles != null && rotateHandles != null)
