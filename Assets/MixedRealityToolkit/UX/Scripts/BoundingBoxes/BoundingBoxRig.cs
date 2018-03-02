@@ -143,6 +143,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
         private void OnDestroy()
         {
+            ShowRig = false;
             ClearHandles();
             ClearRig();
             Destroy(boxInstance.gameObject);
