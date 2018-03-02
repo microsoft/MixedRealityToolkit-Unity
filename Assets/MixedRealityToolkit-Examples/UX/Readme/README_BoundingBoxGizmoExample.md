@@ -54,8 +54,3 @@ You can add additional buttons to the App Bar for other actions. AppBar prefab p
 
 ![AppBar Custom Button](/External/ReadMeImages/MRTK_AppBar_BoundingBox_CustomButtons.jpg)
 
-
-
-App Bar provides collection of buttons to enter and exit adjust mode. In normal mode, Bounding Box is not visible. When you enter adjust mode, you can see the Bounding Box with gizmo interface. You can exit adjust mode by pressing 'Done' button. App Bar follows user's position for easier access. 
- 
-To create your own Interactable Object, you can combine different types of 'CompoundButton' scripts. It is designed to support various types of Interactable Object in flexible way.
