@@ -190,8 +190,11 @@ namespace MixedRealityToolkit.UX.AppBarControl
             switch (obj.name)
             {
                 case "Remove":
-                    // Destroy the target object
-                    // GameObject.Destroy(boundingBox.Target);
+                    // Destroy the target object, Bounding Box, Bounding Box Rig and App Bar
+                    GameObject.Destroy(boundingBox.Target);
+                    GameObject.Destroy(boundingBox.Target.GetComponent<BoundingBoxRig>().gameObject);
+                    GameObject.Destroy(boundingBox);
+                    GameObject.Destroy(this.gameObject);
                     break;
 
                 case "Adjust":
@@ -231,7 +234,6 @@ namespace MixedRealityToolkit.UX.AppBarControl
             if (template.IsEmpty)
                 return;
 
-            // TODO find a less inelegant way to do this
             switch (template.Type) {
                 case ButtonTypeEnum.Custom:
                     numDefaultButtons++;
