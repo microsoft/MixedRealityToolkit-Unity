@@ -12,6 +12,13 @@ namespace MixedRealityToolkit.Examples.UX
 {
     public class ProgressExamples : MonoBehaviour
     {
+        [SerializeField]
+        private GameObject objectToScaleBasedOnHMD;
+
+        [SerializeField]
+        private Vector3 scaleIfImmersive = new Vector3(1.3f, 1.3f, 1);
+
+
         private GameObject sceneObject;
 
         [Header("How long to spend on each stage of loading")]
@@ -249,6 +256,15 @@ namespace MixedRealityToolkit.Examples.UX
 
         private void Start()
         {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            if (objectToScaleBasedOnHMD)
+            {
+                if (HolographicSettings.IsDisplayOpaque)
+                {
+                    objectToScaleBasedOnHMD.transform.localScale = scaleIfImmersive;
+                }
+            }
+#endif
         }
 
         public void LaunchProgress(ProgressIndicator.IndicatorStyleEnum indicatorStyle, ProgressIndicator.ProgressStyleEnum progressStyle)
