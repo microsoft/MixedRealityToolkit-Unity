@@ -1574,7 +1574,7 @@ MonoBehaviour:
   HostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  ManipulationMode: 0
+  ManipulationMode: 4
   ConstraintOnRotation: 0
   OneHandMovement: 1
 --- !u!1 &1459742326
