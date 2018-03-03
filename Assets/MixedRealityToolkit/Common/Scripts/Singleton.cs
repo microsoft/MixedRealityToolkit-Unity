@@ -75,14 +75,14 @@ namespace MixedRealityToolkit.Common
 
         public static bool ConfirmInitialized()
         {
-            T access = Instance;
+            T access = Instance; // assigning the Instance to access is used.
             return IsInitialized;
         }
 
         [SerializeField]
-        private bool DontDestroyParentRootOnLoad = true;
+        private bool dontDestroyParentRootOnLoad = true;
 
-        private object initializedLock = new object();
+        private readonly object initializedLock = new object();
 
         protected void Initialize()
         {
@@ -92,9 +92,9 @@ namespace MixedRealityToolkit.Common
                 {
                     instance = (T)this;
                     InitializeInternal();
-                    if (DontDestroyParentRootOnLoad)
+                    if (dontDestroyParentRootOnLoad)
                     {
-                        DontDestroyOnLoad(instance.transform.root);
+                        instance.transform.root.DontDestroyOnLoad();
                     }
                 }
             }

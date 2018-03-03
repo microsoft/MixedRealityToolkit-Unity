@@ -19,22 +19,19 @@ namespace MixedRealityToolkit.Common.Extensions
         /// <returns>A delimited string that is the full path to the game object in the hierarchy.</returns>
         public static string GetFullPath(this Transform transform, string delimiter = ".", string prefix = "/")
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             GetFullPath(stringBuilder, transform, delimiter, prefix);
             return stringBuilder.ToString();
         }
 
         private static void GetFullPath(StringBuilder stringBuilder, Transform transform, string delimiter, string prefix)
         {
-            if (transform.parent == null)
-            {
-                stringBuilder.Append(prefix);
-            }
-            else
+            if (transform.parent != null)
             {
                 GetFullPath(stringBuilder, transform.parent, delimiter, prefix);
                 stringBuilder.Append(delimiter);
             }
+
             stringBuilder.Append(transform.name);
         }
 
