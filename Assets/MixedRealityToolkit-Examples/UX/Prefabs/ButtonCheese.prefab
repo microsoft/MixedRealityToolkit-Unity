@@ -120,7 +120,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1976805537069254}
   m_LocalRotation: {x: -0, y: 0.009820116, z: -0, w: 0.9999518}
-  m_LocalPosition: {x: 0.5124, y: -0.18201917, z: 1.9464}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.035, y: 0.035, z: 0.035}
   m_Children:
   - {fileID: 4896196379187602}
@@ -176,6 +176,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -193,6 +194,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -210,6 +212,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -225,6 +228,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -242,12 +246,12 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 876adfbb3cd680f45ba0fae6dccf9c32, type: 2}
-  - {fileID: 2100000, guid: 9b4f4540d3572b24e8c9108c7662acfe, type: 2}
+  - {fileID: 2100000, guid: 347544df56dcd64408e75005a6aa0c34, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -258,6 +262,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -342,6 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728fec8e9feecf64f933543126cbecae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TargetAnimator: {fileID: 95867438526656962}
   AnimActions:
   - ButtonState: 0
     ParamName: Press
@@ -385,7 +391,6 @@ MonoBehaviour:
     IntValue: 0
     FloatValue: 0
     InvalidParam: 0
-  TargetAnimator: {fileID: 95867438526656962}
 --- !u!114 &114368361658053550
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -397,9 +402,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e77a98cf320fe9340a55eecfe4567ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FilterTag:
-    Tag: Default
   ButtonState: 4
+  ButtonPressFilter: 1
   RequireGaze: 1
   MainCollider: {fileID: 0}
   MainRenderer: {fileID: 0}
