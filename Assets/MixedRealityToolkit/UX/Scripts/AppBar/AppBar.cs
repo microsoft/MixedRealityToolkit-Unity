@@ -447,7 +447,7 @@ namespace MixedRealityToolkit.UX.AppBarControl
                     return new ButtonTemplate(
                         ButtonTypeEnum.Adjust,
                         "Adjust",
-                        "EBD2",
+                        "ObjectCollectionScatter", // Replace with your custom icon texture name in HolographicButton prefab
                         "Adjust",
                         adjustPosition, // Always next-to-last to appear
                         0);
@@ -456,7 +456,7 @@ namespace MixedRealityToolkit.UX.AppBarControl
                     return new ButtonTemplate(
                         ButtonTypeEnum.Done,
                         "Done",
-                        "E8FB",
+                        "ObjectCollectionScatter", // Replace with your custom icon texture name in HolographicButton prefab
                         "Done",
                         0,
                         0);
@@ -465,7 +465,7 @@ namespace MixedRealityToolkit.UX.AppBarControl
                     return new ButtonTemplate(
                         ButtonTypeEnum.Hide,
                         "Hide",
-                        "E76C",
+                        "ObjectCollectionScatter", // Replace with your custom icon texture name in HolographicButton prefab
                         "Hide Menu",
                         0,// Always the first to appear
                         0);
@@ -483,7 +483,7 @@ namespace MixedRealityToolkit.UX.AppBarControl
                     return new ButtonTemplate(
                         ButtonTypeEnum.Remove,
                         "Remove",
-                        "EC90",
+                        "ObjectCollectionScatter", // Replace with your custom icon texture name in HolographicButton prefab
                         "Remove",
                         removePosition, // Always the last to appear
                         1);
@@ -492,7 +492,7 @@ namespace MixedRealityToolkit.UX.AppBarControl
                     return new ButtonTemplate(
                         ButtonTypeEnum.Show,
                         "Show",
-                        "E700",
+                        "ObjectCollectionScatter", // Replace with your custom icon texture name in HolographicButton prefab
                         "Show Menu",
                         0,
                         0);
