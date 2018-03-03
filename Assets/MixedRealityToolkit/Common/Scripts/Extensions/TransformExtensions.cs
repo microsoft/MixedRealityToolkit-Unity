@@ -26,7 +26,11 @@ namespace MixedRealityToolkit.Common.Extensions
 
         private static void GetFullPath(StringBuilder stringBuilder, Transform transform, string delimiter, string prefix)
         {
-            if (transform.parent != null)
+            if (transform.parent == null)
+            {
+                stringBuilder.Append(prefix);
+            }
+            else
             {
                 GetFullPath(stringBuilder, transform.parent, delimiter, prefix);
                 stringBuilder.Append(delimiter);
