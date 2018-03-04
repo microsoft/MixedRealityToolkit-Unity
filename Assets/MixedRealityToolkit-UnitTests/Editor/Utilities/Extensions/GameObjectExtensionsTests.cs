@@ -203,12 +203,16 @@ namespace MixedRealityToolkit.Tests.Utilities.Extensions
             }
         }
 
-        [TestCase("1234", "1234")]
-        [TestCase("Foo", "Foo")]
-        [TestCase("Foo/Bar", "Foo", "Bar")]
-        [TestCase("Foo/Bar/Baz", "Foo", "Bar", "Baz")]
-        [TestCase("Foo/Bar/?__/ä/124", "Foo", "Bar", "?__", "ä", "124")]
-        public void GetFullPathTests(string result, params string[] names)
+        [TestCase("wah1234", "", "wah", "1234")]
+        [TestCase("-Foo", "", "-", "Foo")]
+        [TestCase("Foo", "", "", "Foo")]
+        [TestCase("/-Foo", "", "/-", "Foo")]
+        [TestCase("/Foo..Bar", "..", "/", "Foo", "Bar")]
+        [TestCase("/Foo...Bar...Baz", "...", "/", "Foo", "Bar", "Baz")]
+        [TestCase("/Foo-Bar", "-", "/", "Foo", "Bar")]
+        [TestCase("-Foo/Bar", "/", "-", "Foo", "Bar")]
+        [TestCase("/Foo.Bar.?__.ä.124", ".", "/", "Foo", "Bar", "?__", "ä", "124")]
+        public void GetFullPathTests(string result, string delimiter, string prefix, params string[] names)
         {
             //TODO: Delete with GameObjectExtensions.GetFullPath
             if (names.Length == 0) { Assert.IsFalse(false, "Invalid test case"); }
@@ -220,7 +224,7 @@ namespace MixedRealityToolkit.Tests.Utilities.Extensions
                 parent.name = names[i];
             }
 
-            Assert.That(parent.transform.GetFullPath(), Is.EqualTo(result));
+            Assert.That(parent.transform.GetFullPath(delimiter, prefix), Is.EqualTo(result));
         }
     }
 }
