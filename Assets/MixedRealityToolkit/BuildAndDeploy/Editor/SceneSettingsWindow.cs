@@ -4,9 +4,9 @@
 using MixedRealityToolkit.Common;
 using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.InputModule;
-using MixedRealityToolkit.InputModule.Cursor;
 using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.Utilities;
+using MixedRealityToolkit.UX.Cursors;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
