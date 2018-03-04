@@ -9,7 +9,22 @@ namespace MixedRealityToolkit.Utilities
 {
     public class AtlasPrefabReference : ScriptableObject
     {
-        [SerializeField] public List<GameObject> Prefabs;
-        [SerializeField] public SpriteAtlas Atlas;
+        [SerializeField]
+        private List<GameObject> prefabs;
+
+        [SerializeField]
+        private SpriteAtlas atlas;
+
+        public List<GameObject> Prefabs
+        {
+            get { return prefabs; }
+            set { prefabs = value; }
+        }
+
+        public SpriteAtlas Atlas
+        {
+            get { return atlas; }
+            set { atlas = value; }
+        }
     }
 }
