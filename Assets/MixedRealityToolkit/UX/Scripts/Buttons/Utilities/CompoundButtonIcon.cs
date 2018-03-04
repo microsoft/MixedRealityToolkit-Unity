@@ -15,7 +15,7 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
         [Header("Icon Settings")]
         [SerializeField]
         [DropDownComponent]
-        private MeshRenderer targetIconRenderer;
+        private MeshRenderer targetIconRenderer = null;
 
         [Tooltip("Turns off the icon entirely")]
         public bool DisableIcon = false;
@@ -30,7 +30,7 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
         [SerializeField]
         [ShowIfBoolValue("OverrideIcon")]
         [Tooltip("Icon to use for override")]
-        private Texture2D iconOverride;
+        private Texture2D iconOverride = null;
 
         [SerializeField]
         [Tooltip("Alpha value for the text mesh component")]

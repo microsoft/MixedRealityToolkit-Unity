@@ -14,10 +14,10 @@ namespace MixedRealityToolkit.UX.Buttons
     {
         [Tooltip("The button's 'main' collider - not required, but useful for judging scale and enabling / disabling")]
         [DropDownComponent]
-        public Collider MainCollider;
+        public Collider MainCollider = null;
 
         [Tooltip("The button's 'main' renderer - not required, but useful for judging material properties")]
         [DropDownComponent]
-        public MeshRenderer MainRenderer;
+        public MeshRenderer MainRenderer = null;
     }
 }

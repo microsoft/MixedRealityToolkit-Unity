@@ -27,7 +27,7 @@ namespace MixedRealityToolkit.Utilities
         private float MinViewportSize = 0.5f;
 
         [SerializeField]
-        private AdaptiveQuality qualityController;
+        private AdaptiveQuality qualityController = null;
 
         public float CurrentScale { get; private set; }
 
