@@ -27,6 +27,7 @@ struct vertexInput {
 		float2 uv0 : TEXCOORD0;
 		float2 uv1 : TEXCOORD1;
 	#endif
+    UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 struct vertexOutput {
 	float4 pos : SV_POSITION;
@@ -39,11 +40,14 @@ struct vertexOutput {
 	#ifdef LIGHTMAP_ON
 		float2 lightmapCoord : TEXCOORD1;
 	#endif
+    UNITY_VERTEX_OUTPUT_STEREO
 };
 
 vertexOutput vert(vertexInput input)
 {
 	vertexOutput output;
+    UNITY_SETUP_INSTANCE_ID(input);
+    UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
 	#ifdef EMISSION_MAP_ON
 		float2 emissionCoord =
