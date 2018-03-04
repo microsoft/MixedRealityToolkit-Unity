@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace MixedRealityToolkit.InputModule.Utilities.Interations
+namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 {
     /// <summary>
     /// Implements common logic for rotating holograms using a handlebar metaphor. 

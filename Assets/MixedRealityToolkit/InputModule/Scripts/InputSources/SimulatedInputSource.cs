@@ -3,7 +3,7 @@
 
 using MixedRealityToolkit.InputModule.Gaze;
 using MixedRealityToolkit.InputModule.Utilities;
-using MixedRealityToolkit.InputModule.Utilities.Interations;
+using MixedRealityToolkit.InputModule.Utilities.Interactions;
 using System;
 using UnityEngine;
 

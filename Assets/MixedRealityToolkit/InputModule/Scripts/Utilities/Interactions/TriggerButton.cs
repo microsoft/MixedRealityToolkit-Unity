@@ -4,11 +4,10 @@
 using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.InputHandlers;
-using MixedRealityToolkit.InputModule.InputSources;
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Utilities.Interations
+namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 {
     /// <summary>
     /// Very simple class that implements basic logic for a trigger button.

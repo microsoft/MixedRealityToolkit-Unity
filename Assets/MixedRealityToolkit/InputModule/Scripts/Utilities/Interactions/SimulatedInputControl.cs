@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Common;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Utilities.Interations
+namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 {
     /// <summary>
     /// Class for manually controlling inputs when running in the Unity editor.

@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.InputModule.InputSources;
-using MixedRealityToolkit.InputModule.Utilities.Interations;
+using MixedRealityToolkit.InputModule.Utilities.Interactions;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -11,7 +11,7 @@ using UnityEngine;
 namespace MixedRealityToolkit.InputModule.EditorScript
 {
     [CustomEditor(typeof(SpeechInputHandler))]
-    public class SpeechInputHandlerEditor : UnityEditor.Editor
+    public class SpeechInputHandlerEditor : Editor
     {
         private SerializedProperty keywordsProperty;
         private string[] registeredKeywords;
@@ -20,7 +20,7 @@ namespace MixedRealityToolkit.InputModule.EditorScript
 
         private void OnEnable()
         {
-            keywordsProperty = serializedObject.FindProperty("Keywords");            
+            keywordsProperty = serializedObject.FindProperty("Keywords");
             isGlobalListenerProperty = serializedObject.FindProperty("IsGlobalListener");
             persistentKeywordsProperty = serializedObject.FindProperty("PersistentKeywords");
         }

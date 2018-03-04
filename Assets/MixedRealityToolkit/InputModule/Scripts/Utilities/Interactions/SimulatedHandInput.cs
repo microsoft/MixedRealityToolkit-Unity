@@ -7,7 +7,7 @@ using MixedRealityToolkit.Common;
 using UnityEngine;
 using UnityEngine.XR;
 
-namespace MixedRealityToolkit.InputModule.Utilities.Interations
+namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 {
     public class SimulatedHandInput : Singleton<SimulatedHandInput>
     {

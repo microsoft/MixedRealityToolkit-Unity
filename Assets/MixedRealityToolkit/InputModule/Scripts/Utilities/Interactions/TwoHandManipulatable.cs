@@ -12,7 +12,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 
-namespace MixedRealityToolkit.InputModule.Utilities.Interations
+namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 {
     /// <summary>
     /// This script allows for an object to be movable, scalable, and rotatable with one or two hands. 

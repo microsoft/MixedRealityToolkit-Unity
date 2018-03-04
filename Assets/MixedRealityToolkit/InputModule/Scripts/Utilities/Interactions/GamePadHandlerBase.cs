@@ -2,7 +2,7 @@
 using MixedRealityToolkit.InputModule.InputHandlers;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Utilities.Interations
+namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 {
     public class GamePadHandlerBase : MonoBehaviour, ISourceStateHandler, IInputHandler
     {
