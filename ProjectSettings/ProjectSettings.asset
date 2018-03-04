@@ -45,7 +45,7 @@ PlayerSettings:
   defaultScreenHeight: 768
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
-  m_StereoRenderingPath: 0
+  m_StereoRenderingPath: 1
   m_ActiveColorSpace: 0
   m_MTRendering: 1
   m_StackTraceTypes: 010000000100000001000000010000000100000001000000
@@ -650,14 +650,14 @@ PlayerSettings:
       HumanInterfaceDevice: False
       InputInjectionBrokered: False
       InternetClient: False
-      InternetClientServer: False
+      InternetClientServer: True
       Location: False
       Microphone: True
       MusicLibrary: True
       Objects3D: False
       PhoneCall: False
       PicturesLibrary: False
-      PrivateNetworkClientServer: False
+      PrivateNetworkClientServer: True
       Proximity: False
       RemovableStorage: False
       SharedUserCertificates: False

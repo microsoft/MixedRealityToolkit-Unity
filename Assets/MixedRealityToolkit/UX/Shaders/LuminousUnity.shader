@@ -116,6 +116,7 @@ Shader "Custom/MayaHLSL4" {
 				float4 vTangent	 		: TANGENT;
 				float3 vNormal 			: NORMAL;
 				float4 vTexCoord0 		: TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
 			struct Vs2Ps {
@@ -126,11 +127,14 @@ Shader "Custom/MayaHLSL4" {
 				float3 vWorldTangent 	: TEXCOORD3;
 				float3 vWorldBitangent 	: TEXCOORD4;
 				float2 vTexCoord0 		: TEXCOORD5;
+                UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			Vs2Ps vert(in VsIn vsIn)
 			{
 				Vs2Ps vsOut;
+                UNITY_SETUP_INSTANCE_ID(vsIn);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(vsOut);
 
 				// vertex from model space to view space and world space
 				// normally a geometry shader would come next, in which case we would only go to world space
@@ -369,6 +373,7 @@ Shader "Custom/MayaHLSL4" {
 				float4 vTangent	 		: TANGENT;
 				float3 vNormal 			: NORMAL;
 				float4 vTexCoord0 		: TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
 			struct Vs2Ps {
@@ -380,11 +385,14 @@ Shader "Custom/MayaHLSL4" {
 				float3 vWorldBitangent 	: TEXCOORD4;
 				float2 vTexCoord0 		: TEXCOORD5;
 				LIGHTING_COORDS(6,7)
+                UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			Vs2Ps vert(in VsIn vsIn)
 			{
 				Vs2Ps vsOut;
+                UNITY_SETUP_INSTANCE_ID(vsIn);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(vsOut);
 
 				// vertex from model space to view space and world space
 				// normally a geometry shader would come next, in which case we would only go to world space

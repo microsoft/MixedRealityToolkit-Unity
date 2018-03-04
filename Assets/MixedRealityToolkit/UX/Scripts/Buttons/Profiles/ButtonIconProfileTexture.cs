@@ -3,6 +3,7 @@
 
 using MixedRealityToolkit.Utilities.Attributes;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 #if ENABLE_WINMD_SUPPORT && !UNITY_EDITOR
@@ -99,20 +100,23 @@ namespace MixedRealityToolkit.UX.Buttons.Profiles
         /// <summary>
         /// (Icons starting with '_' will not be included in icon list)
         /// </summary>
-        public override List<string> GetIconKeys()
+        public override ReadOnlyCollection<string> GetIconKeys()
         {
             Initialize();
 
-            return new List<string>(iconKeys);
+            return iconKeys.AsReadOnly();
         }
 
         private void Initialize()
         {
-            if (iconLookup != null)
-                return;
+            if (iconLookup == null)
+            {
+                iconLookup = new Dictionary<string, Texture2D>();
+                iconKeys = new List<string>();
+            }
 
-            iconLookup = new Dictionary<string, Texture2D>();
-            iconKeys = new List<string>();
+            iconLookup.Clear();
+            iconKeys.Clear();
 
             // Store all icons in iconLookup via reflection
 #if ENABLE_WINMD_SUPPORT && !UNITY_EDITOR
@@ -148,16 +152,17 @@ namespace MixedRealityToolkit.UX.Buttons.Profiles
         public override string DrawIconSelectField(string iconName)
         {
             int selectedIconIndex = -1;
-            List<string> iconKeys = GetIconKeys();
+            ReadOnlyCollection<string> iconKeys = GetIconKeys();
+            string[] dropdownKeys = new string[iconKeys.Count]; 
             for (int i = 0; i < iconKeys.Count; i++)
             {
                 if (iconName == iconKeys[i])
                 {
                     selectedIconIndex = i;
-                    break;
                 }
+                dropdownKeys[i] = iconKeys[i];
             }
-            int newIconIndex = UnityEditor.EditorGUILayout.Popup("Icon", selectedIconIndex, iconKeys.ToArray());
+            int newIconIndex = UnityEditor.EditorGUILayout.Popup("Icon", selectedIconIndex, dropdownKeys);
             // This will automatically set the icon in the editor view
             iconName = (newIconIndex < 0 ? string.Empty : iconKeys[newIconIndex]);
             return iconName;

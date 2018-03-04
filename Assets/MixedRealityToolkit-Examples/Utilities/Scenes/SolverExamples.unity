@@ -282,6 +282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   element: 6
+  handedness: 1
   trackedObjectToReference: 0
   transformTarget: {fileID: 0}
 --- !u!1 &120386737
@@ -498,6 +499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   element: 6
+  handedness: 1
   trackedObjectToReference: 1
   transformTarget: {fileID: 0}
 --- !u!23 &236969295
@@ -1385,6 +1387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   element: 6
+  handedness: 1
   trackedObjectToReference: 2
   transformTarget: {fileID: 0}
 --- !u!23 &1299772963
@@ -1618,7 +1621,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 474f0e0481d4aa14e92a5ada98042f3a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2133,6 +2136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   element: 6
+  handedness: 1
   trackedObjectToReference: 0
   transformTarget: {fileID: 0}
 --- !u!23 &1878976466

@@ -27,7 +27,7 @@ namespace MixedRealityToolkit.Examples.Sharing
         /// </summary>
         private Dictionary<long, RemoteHeadInfo> remoteHeads = new Dictionary<long, RemoteHeadInfo>();
 
-        private void Start()
+        protected override void InitializeInternal()
         {
             CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.HeadTransform] = UpdateHeadTransform;
 
