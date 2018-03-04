@@ -179,9 +179,8 @@ namespace MixedRealityToolkit.Boundary
 
             // Get all the bounds setup by the user.
             var boundaryGeometry = new List<Vector3>(0);
-            // TODO: BUG: Unity: Should return true if a floor and boundary has been established by user.
-            // But this always returns false with in 2017.2.0p2-MRTP5.
-            if (UnityEngine.Experimental.XR.Boundary.TryGetGeometry(boundaryGeometry))
+
+            if (UnityEngine.Experimental.XR.Boundary.TryGetGeometry(boundaryGeometry, UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
             {
                 if (boundaryGeometry.Count > 0)
                 {
@@ -191,10 +190,6 @@ namespace MixedRealityToolkit.Boundary
                         boundaryBounds.Encapsulate(boundaryGeo);
                     }
                 }
-            }
-            else
-            {
-                Debug.Log("TryGetGeometry always returns false.");
             }
 
             // Ensuring that we set height of the bounds volume to be say 10 feet tall.

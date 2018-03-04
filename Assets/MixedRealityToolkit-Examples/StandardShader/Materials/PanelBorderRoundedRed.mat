@@ -8,8 +8,8 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: PanelBorderRoundedRed
   m_Shader: {fileID: 4800000, guid: d45c0efca53019e43891b0f610f8146e, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT _BORDER_LIGHT_USES_HOVER_COLOR _HOVER_COLOR_OVERRIDE
-    _HOVER_LIGHT _INNER_GLOW _ROUND_CORNERS
+  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT _BORDER_LIGHT_OPAQUE _BORDER_LIGHT_USES_HOVER_COLOR
+    _HOVER_COLOR_OVERRIDE _HOVER_LIGHT _INNER_GLOW _ROUND_CORNERS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -69,7 +69,7 @@ Material:
     - _AlbedoAlphaSmoothness: 0
     - _BlendOp: 0
     - _BorderLight: 1
-    - _BorderLightOpaque: 0
+    - _BorderLightOpaque: 1
     - _BorderLightUsesHoverColor: 1
     - _BorderMinValue: 0.1
     - _BorderWidth: 0.1
@@ -88,6 +88,7 @@ Material:
     - _DstBlend: 10
     - _EdgeSmoothingValue: 0.002
     - _EnableEmission: 0
+    - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 1
     - _EnableLightMap: 0
     - _EnableNormalMap: 0
@@ -100,6 +101,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _HoverLight: 1
+    - _HoverLightOpaque: 0
     - _InnerGlow: 1
     - _Metallic: 0
     - _Mode: 2
@@ -126,13 +128,14 @@ Material:
     m_Colors:
     - _ClipPlane: {r: 0, g: 1, b: 0, a: 0}
     - _ClippingPlaneBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    - _Color: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
     - _HoverColor: {r: 1, g: 0, b: 0, a: 1}
-    - _HoverColorOverride: {r: 1, g: 0, b: 0, a: 1}
+    - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
+    - _HoverColorOverride: {r: 0.33823532, g: 0, b: 0, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.5019608}
     - _RimColor: {r: 0.33088237, g: 0.33088237, b: 0.33088237, a: 1}

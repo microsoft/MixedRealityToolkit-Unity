@@ -54,9 +54,24 @@ GameObject:
   - component: {fileID: 4000013641020314}
   - component: {fileID: 33000013976101514}
   - component: {fileID: 23000014103550452}
-  - component: {fileID: 114801847096842130}
   m_Layer: 0
   m_Name: CursorRing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1107446015067340
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4332284432891014}
+  - component: {fileID: 114574266931405776}
+  m_Layer: 0
+  m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,6 +102,7 @@ Transform:
   m_Children:
   - {fileID: 4000010337883960}
   - {fileID: 4000013641020314}
+  - {fileID: 4332284432891014}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -103,6 +119,19 @@ Transform:
   m_Father: {fileID: 4000013367923696}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!4 &4332284432891014
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1107446015067340}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4000013367923696}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23000010183943626
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -187,6 +216,19 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013883439490}
   m_Mesh: {fileID: 4300002, guid: d6fab9b92d520f54fb1d447be32320f2, type: 3}
+--- !u!114 &114574266931405776
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1107446015067340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa899d3f9dc64e41871228531b59783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.15
+  color: {r: 0.3, g: 0.3, b: 0.3, a: 1}
 --- !u!114 &114698458312288788
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -210,23 +252,9 @@ MonoBehaviour:
   PrimaryCursorVisual: {fileID: 0}
   Ring: {fileID: 1000013883439490}
   Dot: {fileID: 1000010809468922}
-  Light: {fileID: 0}
+  Light: {fileID: 1107446015067340}
   DistanceScaleFactor: 0.3
   DefaultScale: 0.5
   DownScale: 0.4
   UpScale: 0.65
   ScaleTime: 0.1
---- !u!114 &114801847096842130
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013883439490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfa899d3f9dc64e41871228531b59783, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Radius: 0.15
-  Color: {r: 1, g: 1, b: 1, a: 1}
-  Intensity: 0.3

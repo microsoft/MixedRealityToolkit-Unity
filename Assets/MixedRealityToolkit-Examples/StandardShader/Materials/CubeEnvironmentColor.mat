@@ -86,6 +86,7 @@ Material:
     - _DstBlend: 0
     - _EdgeSmoothingValue: 0.002
     - _EnableEmission: 0
+    - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 0
     - _EnableLightMap: 0
     - _EnableNormalMap: 0
@@ -98,6 +99,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _HoverLight: 1
+    - _HoverLightOpaque: 0
     - _InnerGlow: 1
     - _Metallic: 0
     - _Mode: 0
@@ -126,9 +128,10 @@ Material:
     - _Color: {r: 0.41176468, g: 0.41176468, b: 0.41176468, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EnvironmentColorX: {r: 1, g: 0, b: 1, a: 1}
-    - _EnvironmentColorY: {r: 0.44439337, g: 1, b: 0.42647058, a: 1}
-    - _EnvironmentColorZ: {r: 0, g: 0, b: 0.9485294, a: 1}
+    - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
+    - _EnvironmentColorY: {r: 0.03125, g: 1, b: 0, a: 1}
+    - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
+    - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.572}
     - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

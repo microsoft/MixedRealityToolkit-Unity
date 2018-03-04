@@ -100,14 +100,17 @@ namespace MixedRealityToolkit.Common.EditorScript
             public static GUIContent fadeCompleteDistance = new GUIContent("Fade Complete", "Distance From Camera When Fade is Fully In");
             public static GUIContent hoverLight = new GUIContent("Hover Light", "Enable utilization of a Hover Light");
             public static GUIContent enableHoverColorOverride = new GUIContent("Override Color", "Override Global Hover Color");
+            public static GUIContent hoverLightOpaque = new GUIContent("Hover Light Opaque", "Enable Hover Light on Transparent pixels");
+            public static GUIContent enableHoverColorOpaqueOverride = new GUIContent("Override Color", "Override Opaque Hover Color");
+            public static GUIContent hoverColorOpaqueOverride = new GUIContent("Color", "Override Hover Color for Trasnparent Pixels");
             public static GUIContent hoverColorOverride = new GUIContent("Color", "Override Hover Color");
             public static GUIContent roundCorners = new GUIContent("Round Corners", "(Assumes UVs Specify Borders)");
-            public static GUIContent roundCornerRadius = new GUIContent("Radius", "Rounded Rectngle Corner Sphere Radius");
-            public static GUIContent roundCornerMargin = new GUIContent("Margin", "Distance From Geometry Edge");
+            public static GUIContent roundCornerRadius = new GUIContent("Unit Radius", "Rounded Rectangle Corner Unit Sphere Radius");
+            public static GUIContent roundCornerMargin = new GUIContent("Margin %", "Distance From Geometry Edge");
             public static GUIContent borderLight = new GUIContent("Border Light", "Enable Border Lighting (Assumes UVs Specify Borders)");
             public static GUIContent borderLightUsesHoverColor = new GUIContent("Use Hover Color", "Border Color Comes From Hover Light");
             public static GUIContent borderLightOpaque = new GUIContent("Opaque Borders", "Borders Override Alpha Value to Appear Opaque");
-            public static GUIContent borderWidth = new GUIContent("Width", "Uniform Width Along Border");
+            public static GUIContent borderWidth = new GUIContent("Width %", "Uniform Width Along Border as a % of the Smallest XYZ Dimension");
             public static GUIContent borderMinValue = new GUIContent("Min Value", "Minimum Border Saturation");
             public static GUIContent edgeSmoothingValue = new GUIContent("Edge Smoothing Value", "Smooths Edges When Round Corners and Transparency Is Enabled");
             public static GUIContent innerGlow = new GUIContent("Inner Glow", "Enable Inner Glow (Assumes UVs Specify Borders)");
@@ -160,6 +163,9 @@ namespace MixedRealityToolkit.Common.EditorScript
         protected MaterialProperty fadeCompleteDistance;
         protected MaterialProperty hoverLight;
         protected MaterialProperty enableHoverColorOverride;
+        protected MaterialProperty hoverLightOpaque;
+        protected MaterialProperty enableHoverColorOpaqueOverride;
+        protected MaterialProperty hoverColorOverrideOpaque;
         protected MaterialProperty hoverColorOverride;
         protected MaterialProperty roundCorners;
         protected MaterialProperty roundCornerRadius;
@@ -220,6 +226,9 @@ namespace MixedRealityToolkit.Common.EditorScript
             hoverLight = FindProperty("_HoverLight", props);
             enableHoverColorOverride = FindProperty("_EnableHoverColorOverride", props);
             hoverColorOverride = FindProperty("_HoverColorOverride", props);
+            hoverLightOpaque = FindProperty("_HoverLightOpaque", props);
+            enableHoverColorOpaqueOverride = FindProperty("_EnableHoverColorOpaqueOverride", props);
+            hoverColorOverrideOpaque = FindProperty("_HoverColorOpaqueOverride", props);
             roundCorners = FindProperty("_RoundCorners", props);
             roundCornerRadius = FindProperty("_RoundCornerRadius", props);
             roundCornerMargin = FindProperty("_RoundCornerMargin", props);
@@ -500,6 +509,8 @@ namespace MixedRealityToolkit.Common.EditorScript
         {
             EditorGUILayout.Space();
             GUILayout.Label(Styles.fluentOptionsTitle, EditorStyles.boldLabel, new GUILayoutOption[0]);
+            RenderingMode mode = (RenderingMode)renderingMode.floatValue;
+            CustomRenderingMode customMode = (CustomRenderingMode)customRenderingMode.floatValue;
 
             materialEditor.ShaderProperty(hoverLight, Styles.hoverLight);
 
@@ -510,6 +521,21 @@ namespace MixedRealityToolkit.Common.EditorScript
                 if (PropertyEnabled(enableHoverColorOverride))
                 {
                     materialEditor.ShaderProperty(hoverColorOverride, Styles.hoverColorOverride, 4);
+                }
+
+                if (mode == RenderingMode.Transparent || (mode == RenderingMode.Custom && customMode == CustomRenderingMode.Transparent))
+                {
+                    materialEditor.ShaderProperty(hoverLightOpaque, Styles.hoverLightOpaque, 2);
+                }
+
+                if (PropertyEnabled(hoverLightOpaque))
+                {
+                    materialEditor.ShaderProperty(enableHoverColorOpaqueOverride, Styles.enableHoverColorOpaqueOverride, 4);
+
+                    if (PropertyEnabled(enableHoverColorOpaqueOverride))
+                    {
+                        materialEditor.ShaderProperty(hoverColorOverrideOpaque, Styles.hoverColorOpaqueOverride, 6);
+                    }
                 }
             }
 
@@ -531,13 +557,19 @@ namespace MixedRealityToolkit.Common.EditorScript
                     materialEditor.ShaderProperty(borderLightUsesHoverColor, Styles.borderLightUsesHoverColor, 2);
                 }
 
-                materialEditor.ShaderProperty(borderLightOpaque, Styles.borderLightOpaque, 2);
+                if (mode == RenderingMode.TransparentCutout || mode == RenderingMode.Transparent ||
+                    (mode == RenderingMode.Custom && customMode == CustomRenderingMode.TransparentCutout) ||
+                    (mode == RenderingMode.Custom && customMode == CustomRenderingMode.Transparent))
+                {
+                    materialEditor.ShaderProperty(borderLightOpaque, Styles.borderLightOpaque, 2);
+                }
+
                 materialEditor.ShaderProperty(borderWidth, Styles.borderWidth, 2);
 
                 if (!PropertyEnabled(borderLightOpaque))
                 {
                     materialEditor.ShaderProperty(borderMinValue, Styles.borderMinValue, 2);
-                }    
+                }
             }
 
             materialEditor.ShaderProperty(innerGlow, Styles.innerGlow);

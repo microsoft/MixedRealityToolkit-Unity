@@ -49,7 +49,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4000014090385390}
-  - component: {fileID: 114151259519301320}
   m_Layer: 2
   m_Name: Anchor_Cursor
   m_TagString: Untagged
@@ -158,6 +157,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000013316072862}
   - component: {fileID: 95274710619506266}
+  - component: {fileID: 114368721515304462}
   m_Layer: 2
   m_Name: CursorVisual
   m_TagString: Untagged
@@ -585,20 +585,19 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114151259519301320
+--- !u!114 &114368721515304462
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010503763288}
+  m_GameObject: {fileID: 1000011844533774}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfa899d3f9dc64e41871228531b59783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Radius: 0.15
-  Color: {r: 1, g: 1, b: 1, a: 1}
-  Intensity: 0.3
+  radius: 0.15
+  color: {r: 0.3, g: 0.3, b: 0.3, a: 1}
 --- !u!114 &114611684728110934
 MonoBehaviour:
   m_ObjectHideFlags: 1
