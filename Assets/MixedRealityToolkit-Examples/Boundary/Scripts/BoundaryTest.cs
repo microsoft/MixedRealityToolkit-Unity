@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Boundary;
 using UnityEngine;
+using MixedRealityToolkit.Boundary;
 
 namespace MixedRealityToolkit.Examples.Boundary
 {
@@ -12,7 +12,6 @@ namespace MixedRealityToolkit.Examples.Boundary
 
         private void Start()
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             BoundaryManager.Instance.RenderBoundary = true;
             BoundaryManager.Instance.RenderFloor = true;
 
@@ -38,10 +37,6 @@ namespace MixedRealityToolkit.Examples.Boundary
                     defaultMaterials[i].SetColor("_Color", Color.red);
                 }
             }
-#else
-            BoundaryManager.Instance.RenderBoundary = false;
-            BoundaryManager.Instance.RenderFloor = false;
-#endif
         }
 
         private void OnDestroy()
