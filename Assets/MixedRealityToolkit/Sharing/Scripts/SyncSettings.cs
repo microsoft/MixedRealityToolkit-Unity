@@ -6,7 +6,6 @@ using MixedRealityToolkit.Sharing.SyncModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace MixedRealityToolkit.Sharing
 {
@@ -100,7 +99,7 @@ namespace MixedRealityToolkit.Sharing
             }
         }
 
-        private static Assembly[] GetAssemblies()
+        private static System.Reflection.Assembly[] GetAssemblies()
         {
 #if UNITY_WSA && !UNITY_EDITOR
             return new Assembly[]

@@ -3,6 +3,7 @@
 
 using System;
 using System.Globalization;
+using System.IO;
 using UnityEngine;
 using UnityEditor;
 using MixedRealityToolkit.Common.EditorScript;
@@ -49,6 +50,22 @@ namespace MixedRealityToolkit.Utilities.EditorScript
                 {
                     EditorSettings.externalVersionControl = "Visible Meta Files";
                     Debug.Log("Updated external version control mode: " + EditorSettings.externalVersionControl);
+                }
+            }
+
+            if (PlayerSettings.scriptingRuntimeVersion != ScriptingRuntimeVersion.Latest)
+            {
+                if (EditorUtility.DisplayDialog(
+                        "Change the Scripting Runtime Version to 4.x?",
+                        "The Mixed Reality Toolkit would like to change the Scripting Runtime Version to use .NET 4.x.\n" +
+                        "WARNING: If you do not make this change, then it's likely you're build will not complete successfully.\n" +
+                        "Would you like to make this change?",
+                        "Enable .NET 4.x",
+                        "Later"))
+                {
+                    PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
+                    Debug.Log("Updated .NET Scripting runtime: " + PlayerSettings.scriptingRuntimeVersion);
+                    EditorApplication.OpenProject(Directory.GetParent(Application.dataPath).ToString());
                 }
             }
 
