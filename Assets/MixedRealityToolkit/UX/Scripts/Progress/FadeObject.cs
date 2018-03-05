@@ -1,14 +1,12 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿using UnityEngine;
 
-using UnityEngine;
 
 namespace MixedRealityToolkit.Examples.InteractiveElements
 {
     public class FadeObject : MonoBehaviour
     {
-        private float fadeTime = 0.5f;
-        private bool autoFadeIn = false;
+        public float FadeTime = 0.5f;
+        public bool AutoFadeIn = false;
 
         private float mFadeCounter = 0;
         private Color mCachedColor;
@@ -17,32 +15,6 @@ namespace MixedRealityToolkit.Examples.InteractiveElements
 
         //cache material to prevent memory leak
         private Material mCachedMaterial;
-
-        public float FadeTime
-        {
-            get
-            {
-                return fadeTime;
-            }
-
-            set
-            {
-                fadeTime = value;
-            }
-        }
-
-        public bool AutoFadeIn
-        {
-            get
-            {
-                return autoFadeIn;
-            }
-
-            set
-            {
-                autoFadeIn = value;
-            }
-        }
 
         private void Awake()
         {

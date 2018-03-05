@@ -109,12 +109,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f26f823a09a994040b6713d14df62844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationIncrement: -300
-  minScale: 1
-  maxScale: 9
-  scaleSpeed: 30
-  rotationActive: 1
-  growingActive: 1
-  xAxisRotation: 0
-  yAxisRotation: 0
-  zAxisRotation: 1
+  RotationIncrement: -200
+  MinScale: 1
+  MaxScale: 10
+  ScaleSpeed: 30
+  RotationActive: 1
+  GrowingActive: 1
+  XAxisRotation: 0
+  YAxisRotation: 0
+  ZAxisRotation: 1

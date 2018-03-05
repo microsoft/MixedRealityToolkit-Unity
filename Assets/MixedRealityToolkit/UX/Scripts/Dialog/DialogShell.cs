@@ -1,15 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+
 using System;
 using System.Text;
 using UnityEngine;
 using MixedRealityToolkit.Utilities.Solvers;
 using MixedRealityToolkit.UX.Buttons;
-using System.Collections.Generic;
-
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+using System.Collections.Generic;
+using UnityEngine.XR;
 using UnityEngine.XR.WSA;
 #endif
 
@@ -21,8 +22,7 @@ namespace MixedRealityToolkit.UX.Dialog
     /// </summary>
     public class DialogShell : Dialog
     {
-        [SerializeField]
-        private int maxCharsPerLine = 60;
+        public int MaxCharsPerLine = 60;
 
         [SerializeField]
         private TextMesh titleText;
@@ -38,19 +38,6 @@ namespace MixedRealityToolkit.UX.Dialog
 
         private DialogButton buttonPressed;
 
-        public int MaxCharsPerLine
-        {
-            get
-            {
-                return maxCharsPerLine;
-            }
-
-            set
-            {
-                maxCharsPerLine = value;
-            }
-        }
-
         protected void OnDrawGizmos()
         {
             if (messageText != null)
@@ -61,17 +48,12 @@ namespace MixedRealityToolkit.UX.Dialog
 
         protected override void FinalizeLayout()
         {
-            SolverConstantViewSize solver = GetComponent<SolverConstantViewSize>();
-
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // Optimize the content for immersive headset
             if (HolographicSettings.IsDisplayOpaque)
             {
+                SolverConstantViewSize solver = GetComponent<SolverConstantViewSize>();
                 solver.TargetViewPercentV = 0.35f;
             }
-#else
-            solver.TargetViewPercentV = 0.35f;
-#endif
         }
 
         protected override void GenerateButtons()

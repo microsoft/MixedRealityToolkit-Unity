@@ -9,53 +9,28 @@ namespace MixedRealityToolkit.UX.Buttons
 {
     public class DialogButton : MonoBehaviour
     {
-        private DialogShell _parentDialog;
-        private Button buttonComponent;
-
-        public DialogShell ParentDialog
-        {
-            get
-            {
-                return _parentDialog;
-            }
-            set
-            {
-                _parentDialog = value;
-            }
-        }
+        public DialogShell ParentDialog { get; set; }
 
         public Dialog.Dialog.ButtonTypeEnum ButtonTypeEnum;
 
         private void OnEnable()
         {
-            buttonComponent = GetComponent<Button>();
-            buttonComponent.OnButtonClicked += OnButtonClicked;
-        }
-
-        private void OnDisable()
-        {
-            if (buttonComponent != null)
-            {
-                buttonComponent.OnButtonClicked -= OnButtonClicked;
-            }
+            GetComponent<Button>().OnButtonClicked += OnButtonClicked;
         }
 
         public void OnButtonClicked(GameObject obj)
         {
-            if (_parentDialog != null)
+            if (ParentDialog != null)
             {
-                _parentDialog.Result.Result = ButtonTypeEnum;
-                _parentDialog.DismissDialog();
+                ParentDialog.Result.Result = ButtonTypeEnum;
+                ParentDialog.DismissDialog();
             }
         }
 
         public void SetTitle(string title)
         {
-            CompoundButtonText compoundButtonText = GetComponent<CompoundButtonText>();
-            if (compoundButtonText)
-            {
-                compoundButtonText.Text = title;
-            }
+            CompoundButtonText c = GetComponent<CompoundButtonText>();
+            c.Text = title;
         }
     }
 }

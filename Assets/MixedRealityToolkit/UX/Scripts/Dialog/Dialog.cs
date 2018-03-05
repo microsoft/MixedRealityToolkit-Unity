@@ -92,7 +92,8 @@ namespace MixedRealityToolkit.UX.Dialog
         /// </summary>
         /// <returns></returns>
         protected IEnumerator RunDialogOverTime()
-        {  
+        {
+            
             // Create our buttons and set up our message
             GenerateButtons();
             SetTitleAndMessage();

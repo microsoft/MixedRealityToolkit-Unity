@@ -1,7 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +9,7 @@ namespace MixedRealityToolkit.UX.Dialog
         /// <summary>
         /// The button press that closed the dialog
         /// </summary>
-        private Dialog.ButtonTypeEnum result = Dialog.ButtonTypeEnum.Close;
+        public Dialog.ButtonTypeEnum Result = Dialog.ButtonTypeEnum.Close;
 
         /// <summary>
         /// Title for the dialog to display
@@ -65,19 +62,6 @@ namespace MixedRealityToolkit.UX.Dialog
             set
             {
                 buttons = value;
-            }
-        }
-
-        public Dialog.ButtonTypeEnum Result
-        {
-            get
-            {
-                return result;
-            }
-
-            set
-            {
-                result = value;
             }
         }
     }
