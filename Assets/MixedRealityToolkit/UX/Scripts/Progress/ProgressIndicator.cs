@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Utilities.Solvers;
-using UnityEngine;
-using UnityEngine.XR.WSA;
 using MixedRealityToolkit.Common;
+using UnityEngine;
 
 namespace MixedRealityToolkit.UX.Progress
 {
@@ -45,9 +43,12 @@ namespace MixedRealityToolkit.UX.Progress
             }
         }
 
-        public IndicatorStyleEnum DefaultIndicatorStyle = IndicatorStyleEnum.AnimatedOrbs;
-        public ProgressStyleEnum DefaultProgressStyle = ProgressStyleEnum.Percentage;
-        public MessageStyleEnum DefaultMessageStyle = MessageStyleEnum.Visible;
+        [SerializeField]
+        private IndicatorStyleEnum defaultIndicatorStyle = IndicatorStyleEnum.AnimatedOrbs;
+        [SerializeField]
+        private ProgressStyleEnum defaultProgressStyle = ProgressStyleEnum.Percentage;
+        [SerializeField]
+        private MessageStyleEnum defaultMessageStyle = MessageStyleEnum.Visible;
 
         // The default prefab used by the 'Prefab' indicator style
         [SerializeField]
@@ -110,10 +111,6 @@ namespace MixedRealityToolkit.UX.Progress
 
             // Make sure we aren't parented under anything
             transform.parent = null;
-
-            // Make sure we aren't destroyed on load
-            // Just in case the user is loading a scene
-            DontDestroyOnLoad(transform);
 
             // Turn our common objects on 
             closing = false;
@@ -191,7 +188,7 @@ namespace MixedRealityToolkit.UX.Progress
         /// <param name="message"></param>
         public void Open (string message)
         {
-            Open(DefaultIndicatorStyle, DefaultProgressStyle, MessageStyleEnum.Visible, message, null);
+            Open(defaultIndicatorStyle, defaultProgressStyle, MessageStyleEnum.Visible, message, null);
         }
 
         /// <summary>
