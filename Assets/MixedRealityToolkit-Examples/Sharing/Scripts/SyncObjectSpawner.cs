@@ -14,7 +14,7 @@ namespace MixedRealityToolkit.Examples.Sharing
     public class SyncObjectSpawner : MonoBehaviour
     {
         [SerializeField]
-        private PrefabSpawnManager spawnManager;
+        private PrefabSpawnManager spawnManager = null;
 
         [SerializeField]
         [Tooltip("Optional transform target, for when you want to spawn the object on a specific parent.  If this value is not set, then the spawned objects will be spawned on this game object.")]
