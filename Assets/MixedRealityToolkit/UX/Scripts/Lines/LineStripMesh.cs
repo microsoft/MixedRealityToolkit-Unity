@@ -14,18 +14,21 @@ namespace MixedRealityToolkit.UX.Lines
         [Header("Strip Mesh Settings")]
         public Material LineMaterial;
 
-        public Vector3 Forward;
-
         [SerializeField]
         private float uvOffset = 0f;
 
         private Mesh stripMesh;
         private MeshRenderer stripMeshRenderer;
         private Material lineMatInstance;
-        private List<Vector3> positions = new List<Vector3>();
-        private List<Vector3> forwards = new List<Vector3>();
-        private List<Color> colors = new List<Color>();
-        private List<float> widths = new List<float>();
+        private readonly List<Vector3> positions = new List<Vector3>();
+        private readonly List<Vector3> forwards = new List<Vector3>();
+        private readonly List<Color> colors = new List<Color>();
+        private readonly List<float> widths = new List<float>();
+
+        private static Vector3[] stripMeshVertices = null;
+        private static Color[] stripMeshColors = null;
+        private static Vector2[] stripMeshUvs = null;
+        private static int[] stripMeshTriangles = null;
 
         private GameObject meshRendererGameObject;
 
@@ -65,12 +68,12 @@ namespace MixedRealityToolkit.UX.Lines
         {
             if (lineMatInstance != null)
             {
-                GameObject.Destroy(lineMatInstance);
+                Destroy(lineMatInstance);
             }
 
             if (meshRendererGameObject != null)
             {
-                GameObject.Destroy(meshRendererGameObject);
+                Destroy(meshRendererGameObject);
                 stripMeshRenderer = null;
             }
         }
@@ -167,10 +170,5 @@ namespace MixedRealityToolkit.UX.Lines
             mesh.RecalculateBounds();
             mesh.RecalculateNormals();
         }
-
-        private static Vector3[] stripMeshVertices = null;
-        private static Color[] stripMeshColors = null;
-        private static Vector2[] stripMeshUvs = null;
-        private static int[] stripMeshTriangles = null;
     }
 }

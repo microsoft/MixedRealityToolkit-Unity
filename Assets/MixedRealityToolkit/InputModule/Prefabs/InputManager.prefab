@@ -313,7 +313,7 @@ MonoBehaviour:
     m_Bits: 4294967291
   debugDrawPointingRays: 0
   debugDrawPointingRayColors: []
-  uiRaycastCamera: {fileID: 0}
+  uiRaycastCamera: {fileID: 20049547090947856}
 --- !u!114 &114749671304188880
 MonoBehaviour:
   m_ObjectHideFlags: 1

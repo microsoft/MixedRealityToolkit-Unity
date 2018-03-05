@@ -27,9 +27,11 @@ namespace MixedRealityToolkit.UX.Lines
         [Tooltip("Clamps the line's normalized start point. This setting will affect line renderers.")]
         [Range(0f, 1f)]
         public float LineStartClamp = 0f;
+
         [Range(0f, 1f)]
         [Tooltip("Clamps the line's normalized end point. This setting will affect line renderers.")]
         public float LineEndClamp = 1f;
+
         [Tooltip("Transform to use when translating points from local to world space. If null, this object's transform is used.")]
         [SerializeField]
         protected Transform customLineTransform;
@@ -57,18 +59,21 @@ namespace MixedRealityToolkit.UX.Lines
         public float ManualUpVectorBlend = 0f;
 
         [Tooltip("These vectors are used with ManualUpVectorBlend to determine rotation along the line in Velocity rotation mode. Vectors are distributed along the normalized length of the line.")]
-        public Vector3[] ManualUpVectors = new Vector3[] { Vector3.up, Vector3.up, Vector3.up };
+        public Vector3[] ManualUpVectors = { Vector3.up, Vector3.up, Vector3.up };
 
         [Tooltip("Used in Velocity rotation mode. Smaller values are more accurate but more expensive")]
         [Range(0.0001f, 0.1f)]
         public float VelocitySearchRange = 0.02f;
+
         [Range(0f, 1f)]
         public float VelocityBlend = 0.5f;
 
         [Header("Distortion")]
         [Tooltip("NormalizedLength mode uses the DistortionStrength curve for distortion strength, Uniform uses UniformDistortionStrength along entire line")]
         public DistortionTypeEnum DistortionType = DistortionTypeEnum.NormalizedLength;
+
         public AnimationCurve DistortionStrength = AnimationCurve.Linear(0f, 1f, 1f, 1f);
+
         [Range(0f, 1f)]
         public float UniformDistortionStrength = 1f;
 

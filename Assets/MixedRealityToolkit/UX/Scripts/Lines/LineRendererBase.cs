@@ -17,6 +17,7 @@ namespace MixedRealityToolkit.UX.Lines
         public Gradient LineColor;
 
         public AnimationCurve LineWidth = AnimationCurve.Linear(0f, 0.05f, 1f, 0.05f);
+
         [Range(0f, 10f)]
         public float WidthMultiplier = 0.25f;
 
@@ -24,9 +25,11 @@ namespace MixedRealityToolkit.UX.Lines
         [Range(0f, 10f)]
         [Tooltip("Normalized offset for color gradient")]
         public float ColorOffset = 0f;
+
         [Range(0f, 10f)]
         [Tooltip("Normalized offset for width curve")]
         public float WidthOffset = 0f;
+
         [Range(0f, 10f)]
         [Tooltip("Normalized offset for rotation offset")]
         public float RotationOffset = 0f;
@@ -34,6 +37,7 @@ namespace MixedRealityToolkit.UX.Lines
         [Header("Point Placement")]
         [Tooltip("Method for gathering points along line. Interpolated uses normalized length. FromSource uses line's base points. (FromSource may not look right for all Line types.)")]
         public StepModeEnum StepMode = StepModeEnum.Interpolated;
+
         [Range(0, 2048)]
         [Tooltip("Number of steps to interpolate along line in Interpolated step mode")]
         [ShowIfEnumValue("StepMode", StepModeEnum.Interpolated)]
@@ -41,14 +45,19 @@ namespace MixedRealityToolkit.UX.Lines
 
         [FeatureInProgress]
         public InterpolationModeEnum InterpolationMode = InterpolationModeEnum.FromLength;
+
         [FeatureInProgress]
         [Range(0.001f, 1f)]
         public float StepLength = 0.05f;
+
         [FeatureInProgress]
         [Range(1, 2048)]
         public int MaxLineSteps = 2048;
+
         [FeatureInProgress]
         public AnimationCurve StepLengthCurve = AnimationCurve.Linear(0f, 1f, 1f, 0.5f);
+
+        private float[] normalizedLengths;
 
         public virtual LineBase Source
         {
@@ -89,8 +98,6 @@ namespace MixedRealityToolkit.UX.Lines
 
             return LineWidth.Evaluate(Mathf.Repeat(normalizedLength + WidthOffset, 1f)) * WidthMultiplier;
         }
-
-        private float[] normalizedLengths;
 
 #if UNITY_EDITOR
         protected virtual void OnDrawGizmos()
@@ -174,6 +181,5 @@ namespace MixedRealityToolkit.UX.Lines
             }
         }
 #endif
-
     }
 }

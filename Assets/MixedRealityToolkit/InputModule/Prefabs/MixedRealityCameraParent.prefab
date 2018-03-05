@@ -886,7 +886,7 @@ MonoBehaviour:
   AlternateLeftController: {fileID: 0}
   AlternateRightController: {fileID: 0}
   TouchpadTouchedOverride: {fileID: 0}
-  GLTFMaterial: {fileID: 0}
+  GLTFMaterial: {fileID: 2100000, guid: 2ac78523d661e954c83d799f582b22e8, type: 2}
 --- !u!114 &114982334573009450
 MonoBehaviour:
   m_ObjectHideFlags: 1
