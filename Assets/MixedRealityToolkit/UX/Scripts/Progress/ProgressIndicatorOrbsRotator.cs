@@ -8,7 +8,11 @@ namespace MixedRealityToolkit.UX.Progress
 {
     public class ProgressIndicatorOrbsRotator : MonoBehaviour
     {
-        public GameObject[] Orbs;
+        [SerializeField]
+        public GameObject[] orbs;
+
+        [SerializeField]
+        private Material orbMaterial;
 
         public float RotationSpeedRawDegrees;
 
@@ -31,9 +35,9 @@ namespace MixedRealityToolkit.UX.Progress
         private GameObject[] dots;
         private bool stopRequested;
         private float rotationWhenStopped;
+        private Material[] materials;
 
-        // Use this for initialization
-        void Start()
+        private void Start()
         {
             rotationWhenStopped = 0.0f;
             stopRequested = false;
@@ -41,22 +45,25 @@ namespace MixedRealityToolkit.UX.Progress
             timeUpdated = false;
             deployedCount = 1;
             timeElapsed = 0.0f;
-            angles = new float[Orbs.Length];
+            angles = new float[orbs.Length];
             for (int i = 0; i < angles.Length; ++i)
             {
                 angles[i] = 0;
             }
 
             dots = new GameObject[5];
-            for (int i = 0; i < Orbs.Length; ++i)
+            materials = new Material[dots.Length];
+            
+            for (int i = 0; i < orbs.Length; ++i)
             {
-                dots[i] = Orbs[i].transform.GetChild(0).gameObject;
-                dots[i].GetComponent<Renderer>().material.color = new Color(1, 1, 1, 1);
+                materials[i] = (Material)Instantiate(orbMaterial);
+                materials[i].color = new Color(1, 1, 1, 1);
+                dots[i] = orbs[i].transform.GetChild(0).gameObject;
+                materials[i] = dots[i].GetComponent<Renderer>().sharedMaterial = materials[i];
             }
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (HasAnimationFinished == false)
             {
@@ -74,7 +81,7 @@ namespace MixedRealityToolkit.UX.Progress
             rotationWhenStopped = angles[0];
         }
 
-        void UpdateTime()
+        private void UpdateTime()
         {
             if (timeUpdated == false)
             {
@@ -89,9 +96,9 @@ namespace MixedRealityToolkit.UX.Progress
             }
         }
 
-        void ControlDotStarts()
+        private void ControlDotStarts()
         {
-            if (deployedCount < Orbs.Length)
+            if (deployedCount < orbs.Length)
             {
                 if (angles[deployedCount - 1] >= SpacingDegrees)
                 {
@@ -100,7 +107,7 @@ namespace MixedRealityToolkit.UX.Progress
             }
         }
 
-        void IncrementOrbs()
+        private void IncrementOrbs()
         {
             for (int i = 0; i < deployedCount; ++i)
             {
@@ -108,36 +115,36 @@ namespace MixedRealityToolkit.UX.Progress
             }
         }
 
-        void IncrementOrb(int index)
+        private void IncrementOrb(int index)
         {
             float acceleratedDegrees = (RotationSpeedRawDegrees * (Acceleration + -Mathf.Cos(deg2rad * angles[index]))) * timeSlice;
-            Orbs[index].gameObject.transform.Rotate(0, 0, acceleratedDegrees);
+            orbs[index].gameObject.transform.Rotate(0, 0, acceleratedDegrees);
             angles[index] += Mathf.Abs(acceleratedDegrees);
 
             HandleFade(index);
         }
 
-        void HandleFade(int index)
+        private void HandleFade(int index)
         {
-            Color adjustedColor = dots[index].GetComponent<Renderer>().material.color;
+            Color adjustedColor = materials[index].color;
 
             //fade in
             if (stopRequested == false && adjustedColor.a < 1.0f)
             {
                 adjustedColor.a += (1.0f * timeSlice);
                 adjustedColor.a = Mathf.Min(1.0f, adjustedColor.a);
-                dots[index].GetComponent<Renderer>().material.color = adjustedColor;
+                materials[index].color = adjustedColor;
             }
             //fade out
             else if (stopRequested && angles[index] > rotationWhenStopped)
             {
                 adjustedColor.a -= (1.0f * timeSlice);
                 adjustedColor.a = Mathf.Max(0.0f, adjustedColor.a);
-                dots[index].GetComponent<Renderer>().material.color = adjustedColor;
+                materials[index].color = adjustedColor;
             }
         }
 
-        void HandleTestStop()
+        private void HandleTestStop()
         {
             if (TestStop == true && stopRequested == false)
             {
@@ -145,9 +152,9 @@ namespace MixedRealityToolkit.UX.Progress
             }
         }
 
-        void HandleStopping()
+        private void HandleStopping()
         {
-            if (stopRequested == true && dots[Orbs.Length - 1].GetComponent<Renderer>().material.color.a <= 0.01f)
+            if (stopRequested == true && materials[orbs.Length - 1].color.a <= 0.01f)
             {
                 HasAnimationFinished = true;
             }
