@@ -5,7 +5,9 @@ using MixedRealityToolkit.UX.Progress;
 using System.Collections;
 using UnityEngine;
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
+#endif
 
 
 namespace MixedRealityToolkit.Examples.UX
@@ -17,9 +19,6 @@ namespace MixedRealityToolkit.Examples.UX
 
         [SerializeField]
         private Vector3 scaleIfImmersive = new Vector3(1.3f, 1.3f, 1);
-
-
-        private GameObject sceneObject;
 
         [Header("How long to spend on each stage of loading")]
         [SerializeField]
@@ -58,19 +57,6 @@ namespace MixedRealityToolkit.Examples.UX
 
         [SerializeField]
         private GameObject buttonCollection = null;
-
-        public GameObject SceneObject
-        {
-            get
-            {
-                return sceneObject;
-            }
-
-            set
-            {
-                sceneObject = value;
-            }
-        }
 
         public float LeadInTime
         {
@@ -342,6 +328,7 @@ namespace MixedRealityToolkit.Examples.UX
                     break;
             }
         }
+
         protected IEnumerator LoadOverTime(string message)
         {
             // Wait for lead in time to end (optional)

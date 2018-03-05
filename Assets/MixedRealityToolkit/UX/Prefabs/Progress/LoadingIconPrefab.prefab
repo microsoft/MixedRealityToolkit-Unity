@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33438200274554124}
   - component: {fileID: 65825787308792590}
   - component: {fileID: 23363418055148764}
-  - component: {fileID: 114695844022001110}
+  - component: {fileID: 114442307572104106}
   m_Layer: 0
   m_Name: LoadingIconPrefab
   m_TagString: Untagged
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114695844022001110
+--- !u!114 &114442307572104106
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -104,12 +104,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1787749711970592}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f21b21e52b3ffa44ea36d006a8740001, type: 3}
+  m_Script: {fileID: 11500000, guid: f26f823a09a994040b6713d14df62844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotationIncrement: 200
-  minScale: 0.5
-  maxScale: 1
+  minScale: 1
+  maxScale: 9
   scaleSpeed: 30
   rotationActive: 1
   growingActive: 1
+  xAxisRotation: 0
+  yAxisRotation: 0
+  zAxisRotation: 1
