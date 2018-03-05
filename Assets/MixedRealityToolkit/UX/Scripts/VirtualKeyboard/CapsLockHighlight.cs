@@ -12,13 +12,13 @@ namespace MixedRealityToolkit.UX.VirtualKeyboard
         /// The highlight image to turn on and off.
         /// </summary>
         [SerializeField]
-        private Image m_Highlight;
+        private Image m_Highlight = null;
 
         /// <summary>
         /// The keyboard to check for caps locks
         /// </summary>
-        private VirtualKeyboardManager m_Keyboard;
-                
+        private VirtualKeyboardManager m_Keyboard = null;
+
         /// <summary>
         /// Unity Start method.
         /// </summary>

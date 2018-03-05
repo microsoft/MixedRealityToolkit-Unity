@@ -43,9 +43,10 @@ namespace MixedRealityToolkit.InputModule.Utilities
             {
                 AddControllerTransform(ControllerInfo);
             }
-#endif 
+
             MotionControllerVisualizer.Instance.OnControllerModelLoaded += AddControllerTransform;
             MotionControllerVisualizer.Instance.OnControllerModelUnloaded += RemoveControllerTransform;
+#endif 
         }
 
         protected override void AddControllerTransform(MotionControllerInfo newController)

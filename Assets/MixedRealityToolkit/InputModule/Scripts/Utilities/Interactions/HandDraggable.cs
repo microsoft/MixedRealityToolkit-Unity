@@ -72,6 +72,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 
         private uint currentInputSourceId;
         private Rigidbody hostRigidbody;
+        private bool hostRigidbodyWasKinematic;
 
         private void Start()
         {
@@ -121,6 +122,12 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
             InputManager.Instance.PushModalInputHandler(gameObject);
 
             isDragging = true;
+
+            if (hostRigidbody != null)
+            {
+                hostRigidbodyWasKinematic = hostRigidbody.isKinematic;
+                hostRigidbody.isKinematic = true;
+            }
 
             Transform cameraTransform = CameraCache.Main.transform;
 
@@ -296,6 +303,10 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 
             isDragging = false;
             currentInputSourceId = 0;
+            if (hostRigidbody != null)
+            {
+                hostRigidbody.isKinematic = hostRigidbodyWasKinematic;
+            }
             StoppedDragging.RaiseEvent();
         }
 

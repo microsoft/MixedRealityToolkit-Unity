@@ -42,18 +42,18 @@ namespace MixedRealityToolkit.Sharing.Utilities
         public int Timeout = 5;
 
         [SerializeField]
-        private Text ipAddress;
+        private Text ipAddress = null;
 
         [SerializeField]
-        private Image connectionIndicator;
+        private Image connectionIndicator = null;
 
-        private bool timerRunning;
+        private bool timerRunning = false;
 
-        private float timer;
+        private float timer = 0;
 
-        private bool isTryingToConnect;
+        private bool isTryingToConnect = false;
 
-        private bool firstRun;
+        private bool firstRun = false;
 
         private void Awake()
         {

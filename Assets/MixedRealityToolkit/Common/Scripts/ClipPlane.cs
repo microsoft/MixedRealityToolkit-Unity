@@ -13,7 +13,7 @@ namespace MixedRealityToolkit.Common
     public class ClipPlane : MonoBehaviour
     {
         [SerializeField]
-        private Renderer[] renderers;
+        private Renderer[] renderers = null;
 
         private int clipPlaneID;
         private Material[] materials;

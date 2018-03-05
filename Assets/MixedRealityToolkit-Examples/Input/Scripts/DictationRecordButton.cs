@@ -26,10 +26,10 @@ namespace MixedRealityToolkit.Examples.InputModule
         private int recordingTime = 10;
 
         [SerializeField]
-        private TextMesh speechToTextOutput;
+        private TextMesh speechToTextOutput = null;
 
         [SerializeField]
-        private GameObject recordLight;
+        private GameObject recordLight = null;
 
         private Renderer buttonRenderer;
 
