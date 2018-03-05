@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.Events;
+using HoloToolkit.Unity;
 
 namespace MixedRealityToolkit.Examples.UX.Controls
 {
@@ -24,7 +24,7 @@ namespace MixedRealityToolkit.Examples.UX.Controls
         public GameObject CenteredDot;
 
         [Tooltip("Sends slider event information on Update")]
-        public UnityEvent OnUpdateEvent;
+        public UnityEventFloat OnUpdateEvent;
 
         /// <summary>
         /// The value of the slider
@@ -36,7 +36,7 @@ namespace MixedRealityToolkit.Examples.UX.Controls
                 if (mSliderValue != value)
                 {
                     mSliderValue = value;
-                    OnUpdateEvent.Invoke();
+                    OnUpdateEvent.Invoke(mSliderValue);
                 }
             }
             get
