@@ -22,19 +22,24 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         [Header("Customization Settings")]
         [SerializeField]
         private Material scaleHandleMaterial;
+
         [SerializeField]
         private Material rotateHandleMaterial;
+
         [SerializeField]
         private Material interactingMaterial;
 
         [Header("Behavior")]
         [SerializeField]
         private float scaleRate = 1.0f;
+
         [SerializeField]
         [Tooltip("This is the maximum scale that one grab can accomplish.")]
         private float maxScale = 2.0f;
+
         [SerializeField]
-        private BoundingBoxGizmoHandle.RotationType rotationType = BoundingBoxGizmoHandle.RotationType.globalCoordinates;
+        private BoundingBoxGizmoHandle.RotationType rotationType = BoundingBoxGizmoHandle.RotationType.objectCoordinates;
+
         [SerializeField]
         private BoundingBoxGizmoHandle.HandMotionType handMotionToRotate = BoundingBoxGizmoHandle.HandMotionType.handRotatesToRotateObject;
 
@@ -42,21 +47,33 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
         public BoundingBox BoundingBoxPrefab;
+
         [SerializeField]
         [Tooltip("AppBar prefab.")]
         private AppBar appBarPrefab;
 
         private BoundingBox boxInstance;
+
         private GameObject objectToBound;
+
         private AppBar appBarInstance;
+
         private GameObject[] rotateHandles;
+
         private GameObject[] cornerHandles;
+
         private List<Vector3> handleCentroids;
+
         private GameObject transformRig;
+
         private bool showRig = false;
+
         private Vector3 scaleHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
+
         private Vector3 rotateHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
+
         private bool destroying = false;
+
 
         public Material ScaleHandleMaterial
         {
@@ -133,6 +150,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
         }
 
+
         private void Start()
         {
             objectToBound = this.gameObject;
@@ -148,6 +166,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             boxInstance.IsVisible = false;
         }
+
         private void Update()
         {
             if (destroying == false && ShowRig)

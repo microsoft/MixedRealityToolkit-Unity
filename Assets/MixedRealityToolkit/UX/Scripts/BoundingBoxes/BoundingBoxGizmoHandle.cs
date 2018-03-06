@@ -18,13 +18,11 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             objectCoordinates,
             globalCoordinates
         }
-
         public enum HandMotionType
         {
             handRotatesToRotateObject,
             handMovesToRotateObject
         }
-
         public enum TransformType
         {
             Rotation,
@@ -36,8 +34,8 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             Y,
             Z
         };
-        public BoundingBoxRig Rig;
 
+        private BoundingBoxRig rig;
         private Transform transformToAffect;
         private TransformType affineType;
         private AxisToAffect axis;
@@ -106,7 +104,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 transformToAffect = value;
             }
         }
-
         public RotationType RotationCoordinateSystem
         {
             get
@@ -118,7 +115,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 rotationCoordinateSystem = value;
             }
         }
-
         public HandMotionType HandMotionForRotation
         {
             get
@@ -130,7 +126,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 handMotionForRotation = value;
             }
         }
-
         public float ScaleRate
         {
             get
@@ -151,6 +146,18 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             set
             {
                 maxScale = value;
+            }
+        }
+        public BoundingBoxRig Rig
+        {
+            get
+            {
+                return rig;
+            }
+
+            set
+            {
+                rig = value;
             }
         }
 
@@ -315,7 +322,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 transformToAffect.Rotate(axis, angle * 2.0f);
             }
         }
-
         private Vector3 GetBoundedScaleChange(Vector3 scale)
         {
             Vector3 maximumScale = new Vector3(initialScale.x * maxScale, initialScale.y * maxScale, initialScale.z * maxScale);
