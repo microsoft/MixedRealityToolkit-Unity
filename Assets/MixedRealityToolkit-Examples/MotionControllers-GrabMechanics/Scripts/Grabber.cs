@@ -20,7 +20,7 @@ namespace MixedRealityToolkit.Examples.Grabbables
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
         [SerializeField]
-        private InteractionSourcePressType pressType;
+        private InteractionSourcePressType pressType = InteractionSourcePressType.None;
 #endif
 
         ///Subscribe GrabStart and GrabEnd to InputEvents for GripPressed

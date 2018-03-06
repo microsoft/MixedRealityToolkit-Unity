@@ -10,7 +10,7 @@ namespace MixedRealityToolkit.Examples.Utilities
     public class CheckApiTest : MonoBehaviour
     {
         [SerializeField]
-        private Text text;
+        private Text text = null;
 
         public void CheckV5Api()
         {
