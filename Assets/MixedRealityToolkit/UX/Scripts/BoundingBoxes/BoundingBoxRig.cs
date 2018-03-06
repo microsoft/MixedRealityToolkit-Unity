@@ -27,6 +27,17 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         [SerializeField]
         private Material interactingMaterial;
 
+        [Header("Behavior")]
+        [SerializeField]
+        private float scaleRate = 1.0f;
+        [SerializeField]
+        [Tooltip("This is the maximum scale that one grab can accomplish.")]
+        private float maxScale = 2.0f;
+        [SerializeField]
+        private BoundingBoxGizmoHandle.RotationType rotationType = BoundingBoxGizmoHandle.RotationType.globalCoordinates;
+        [SerializeField]
+        private BoundingBoxGizmoHandle.HandMotionType handMotionToRotate = BoundingBoxGizmoHandle.HandMotionType.handRotatesToRotateObject;
+
         [Header("Preset Components")]
         [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
@@ -181,6 +192,8 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     cornerHandles[i].transform.localScale = scaleHandleSize;
                     cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
+                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().ScaleRate = scaleRate;
+                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().MaxScale = maxScale;
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().TransformToAffect = objectToBound.transform;
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
                     cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Scale;
@@ -210,6 +223,8 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     rotateHandles[i].transform.localScale = rotateHandleSize;
                     rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                     rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
+                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().HandMotionForRotation = handMotionToRotate;
+                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().RotationCoordinateSystem = rotationType;
                     rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().TransformToAffect = objectToBound.transform;
                     rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Rotation;
                     rotateHandles[i].name = "Middle " + i.ToString();
