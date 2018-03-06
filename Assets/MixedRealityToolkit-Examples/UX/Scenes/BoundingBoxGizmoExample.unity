@@ -1217,7 +1217,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -512.82153, y: -322.911}
+  m_AnchoredPosition: {x: -512.82153, y: -322.93628}
   m_SizeDelta: {x: 1107.8, y: 89.1924}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1249210503
@@ -1381,7 +1381,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Bounding Box
+  m_Text: Bounding Box Rig
 --- !u!222 &1331017469
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1509,18 +1509,19 @@ MonoBehaviour:
   m_Text: '
 
 
-    The bounding box is a standard interface for manipulating object. Using gizmo
-    on the corners and edges, you can scale or rotate the object. Use ''Adjust'' button
-    on the App Bar to enable Bounding Box and gizmo interface.
+    The bounding box rig is a standard interface for manipulating object. Using the
+    gizmo on the corners and edges, you can scale or rotate the object. Use ''Adjust''
+    button on the App Bar to enable Bounding Box and Rig interface. Several properties
+    can be adjusted in the Inspector to affect behavior.
 
 
 
 
-    App Bar provides collection of buttons to enter and exit ''Adjust'' mode. In normal
-    mode, Bounding Box is not visible. When you enter ''Adjust'' mode, you can see
-    the Bounding Box with gizmo interface. You can exit adjust mode by pressing ''Done''
-    button. App Bar follows user''s position for easier access. Please refer to the
-    README file for the technical details.
+    The App Bar provides collection of buttons to enter and exit ''Adjust'' mode.
+    In normal mode, Bounding Box is not visible. When you enter ''Adjust'' mode, you
+    can see the Bounding Box with gizmo interface. You can exit adjust mode by pressing
+    ''Done'' button. App Bar follows user''s position for easier access. Please refer
+    to the README file for the technical details.
 
 
 
@@ -1708,7 +1709,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Bounding Box and App Bar
+  m_Text: Bounding Box Rig and App Bar
 --- !u!222 &1517590050
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2239,7 +2240,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -512.82166, y: -323.07727}
+  m_AnchoredPosition: {x: -512.82166, y: -323.11884}
   m_SizeDelta: {x: 1107.8, y: 89.1924}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2077985936
