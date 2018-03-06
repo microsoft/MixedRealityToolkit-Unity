@@ -88,8 +88,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4931155170010354}
   - component: {fileID: 114886253910924990}
-  - component: {fileID: 114143200853866614}
-  - component: {fileID: 114805107792341780}
   m_Layer: 0
   m_Name: MotionControllers
   m_TagString: Untagged
@@ -690,17 +688,6 @@ MonoBehaviour:
   opaqueTrackingSpaceType: 1
   renderFloor: 1
   renderBoundary: 1
---- !u!114 &114143200853866614
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1493965172262900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f70d42c5aa30ffb4e9cd9116a13bd2b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114180319962519104
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -828,17 +815,6 @@ MonoBehaviour:
   Axis0Destination: 4
   Axis1Destination: 6
   Axis2Destination: 6
---- !u!114 &114805107792341780
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1493965172262900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cae8f3c88e9704a4393cb8d904b62372, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114828096048444974
 MonoBehaviour:
   m_ObjectHideFlags: 1
