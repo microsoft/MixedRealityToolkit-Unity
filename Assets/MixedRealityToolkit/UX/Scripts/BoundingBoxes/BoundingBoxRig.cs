@@ -22,30 +22,74 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         [Header("Customization Settings")]
         [SerializeField]
         private Material scaleHandleMaterial;
+
         [SerializeField]
         private Material rotateHandleMaterial;
+
         [SerializeField]
         private Material interactingMaterial;
+
+        [Header("Behavior")]
+        [SerializeField]
+        private float scaleRate = 1.0f;
+
+        [SerializeField]
+        [Tooltip("This is the maximum scale that one grab can accomplish.")]
+        private float maxScale = 2.0f;
+
+        [SerializeField]
+        private BoundingBoxGizmoHandle.RotationType rotationType = BoundingBoxGizmoHandle.RotationType.objectCoordinates;
+
+        [SerializeField]
+        private BoundingBoxGizmoHandle.HandMotionType handMotionToRotate = BoundingBoxGizmoHandle.HandMotionType.handRotatesToRotateObject;
 
         [Header("Preset Components")]
         [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
-        public BoundingBox BoundingBoxPrefab;
+        private BoundingBox boundingBoxPrefab;
+
         [SerializeField]
         [Tooltip("AppBar prefab.")]
         private AppBar appBarPrefab;
 
         private BoundingBox boxInstance;
+
         private GameObject objectToBound;
+
         private AppBar appBarInstance;
+
         private GameObject[] rotateHandles;
+
         private GameObject[] cornerHandles;
+
         private List<Vector3> handleCentroids;
+
         private GameObject transformRig;
+
+        private BoundingBoxGizmoHandle[] rigScaleGizmoHandles;
+
+        private BoundingBoxGizmoHandle[] rigRotateGizmoHandles;
+
         private bool showRig = false;
+
         private Vector3 scaleHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
+
         private Vector3 rotateHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
+
         private bool destroying = false;
+
+        public BoundingBox BoundingBoxPrefab
+        {
+            get
+            {
+                return boundingBoxPrefab;
+            }
+
+            set
+            {
+                boundingBoxPrefab = value;
+            }
+        }
 
         public Material ScaleHandleMaterial
         {
@@ -122,6 +166,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
         }
 
+
         private void Start()
         {
             objectToBound = this.gameObject;
@@ -137,6 +182,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             boxInstance.IsVisible = false;
         }
+
         private void Update()
         {
             if (destroying == false && ShowRig)
@@ -169,22 +215,28 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
         private void UpdateCornerHandles()
         {
-            handleCentroids = handleCentroids ?? GetBounds();
+            if (handleCentroids != null)
+            {
+                GetBounds();
+            }
 
             if (cornerHandles == null)
             {
                 cornerHandles = new GameObject[handleCentroids.Count];
+                rigScaleGizmoHandles = new BoundingBoxGizmoHandle[handleCentroids.Count];
                 for (int i = 0; i < cornerHandles.Length; ++i)
                 {
                     cornerHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     cornerHandles[i].GetComponent<Renderer>().material = scaleHandleMaterial;
                     cornerHandles[i].transform.localScale = scaleHandleSize;
-                    cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
-                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
-                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().TransformToAffect = objectToBound.transform;
-                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-                    cornerHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Scale;
                     cornerHandles[i].name = "Corner " + i.ToString();
+                    rigScaleGizmoHandles[i] = cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
+                    rigScaleGizmoHandles[i].Rig = this;
+                    rigScaleGizmoHandles[i].ScaleRate = scaleRate;
+                    rigScaleGizmoHandles[i].MaxScale = maxScale;
+                    rigScaleGizmoHandles[i].TransformToAffect = objectToBound.transform;
+                    rigScaleGizmoHandles[i].Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+                    rigScaleGizmoHandles[i].AffineType = BoundingBoxGizmoHandle.TransformType.Scale;
                 }
             }
 
@@ -197,55 +249,61 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
         private void UpdateRotateHandles()
         {
-            handleCentroids = handleCentroids ?? GetBounds();
+            if (handleCentroids != null)
+            {
+                GetBounds();
+            }
 
             if (rotateHandles == null)
             {
                 rotateHandles = new GameObject[12];
-
+                rigRotateGizmoHandles = new BoundingBoxGizmoHandle[12];
                 for (int i = 0; i < rotateHandles.Length; ++i)
                 {
                     rotateHandles[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     rotateHandles[i].GetComponent<Renderer>().material = rotateHandleMaterial;
                     rotateHandles[i].transform.localScale = rotateHandleSize;
-                    rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
-                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().Rig = this;
-                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().TransformToAffect = objectToBound.transform;
-                    rotateHandles[i].GetComponent<BoundingBoxGizmoHandle>().AffineType = BoundingBoxGizmoHandle.TransformType.Rotation;
                     rotateHandles[i].name = "Middle " + i.ToString();
+                    rigRotateGizmoHandles[i] = rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
+                    rigRotateGizmoHandles[i].Rig = this;
+                    rigRotateGizmoHandles[i].HandMotionForRotation = handMotionToRotate;
+                    rigRotateGizmoHandles[i].RotationCoordinateSystem = rotationType;
+                    rigRotateGizmoHandles[i].TransformToAffect = objectToBound.transform;
+                    rigRotateGizmoHandles[i].AffineType = BoundingBoxGizmoHandle.TransformType.Rotation;
+                   
                 }
 
                 //set axis to affect
-                rotateHandles[0].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-                rotateHandles[1].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-                rotateHandles[2].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-                rotateHandles[3].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+                rigRotateGizmoHandles[0].Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+                rigRotateGizmoHandles[1].Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+                rigRotateGizmoHandles[2].Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+                rigRotateGizmoHandles[3].Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
 
-                rotateHandles[4].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
-                rotateHandles[5].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
-                rotateHandles[6].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
-                rotateHandles[7].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
+                rigRotateGizmoHandles[4].Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
+                rigRotateGizmoHandles[5].Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
+                rigRotateGizmoHandles[6].Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
+                rigRotateGizmoHandles[7].Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
 
-                rotateHandles[8].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
-                rotateHandles[9].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
-                rotateHandles[10].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
-                rotateHandles[11].GetComponent<BoundingBoxGizmoHandle>().Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
+                rigRotateGizmoHandles[8].Axis  = BoundingBoxGizmoHandle.AxisToAffect.X;
+                rigRotateGizmoHandles[9].Axis  = BoundingBoxGizmoHandle.AxisToAffect.X;
+                rigRotateGizmoHandles[10].Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
+                rigRotateGizmoHandles[11].Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
 
                 //set lefthandedness
-                rotateHandles[0].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
-                rotateHandles[1].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
-                rotateHandles[2].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
-                rotateHandles[3].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
+                rigRotateGizmoHandles[0].IsLeftHandedRotation = false;
+                rigRotateGizmoHandles[1].IsLeftHandedRotation = false;
+                rigRotateGizmoHandles[2].IsLeftHandedRotation = false;
+                rigRotateGizmoHandles[3].IsLeftHandedRotation = false;
 
-                rotateHandles[4].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
-                rotateHandles[5].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
-                rotateHandles[6].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = true;
-                rotateHandles[7].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = true;
+                rigRotateGizmoHandles[4].IsLeftHandedRotation = false;
+                rigRotateGizmoHandles[5].IsLeftHandedRotation = false;
+                rigRotateGizmoHandles[6].IsLeftHandedRotation = true;
+                rigRotateGizmoHandles[7].IsLeftHandedRotation = true;
 
-                rotateHandles[8].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
-                rotateHandles[9].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = true;
-                rotateHandles[10].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = false;
-                rotateHandles[11].GetComponent<BoundingBoxGizmoHandle>().IsLeftHandedRotation = true;
+                rigRotateGizmoHandles[8].IsLeftHandedRotation = false;
+                rigRotateGizmoHandles[9].IsLeftHandedRotation = true;
+                rigRotateGizmoHandles[10].IsLeftHandedRotation = false;
+                rigRotateGizmoHandles[11].IsLeftHandedRotation = true;
             }
 
             rotateHandles[0].transform.localPosition = (handleCentroids[2] + handleCentroids[0]) * 0.5f;
@@ -324,7 +382,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             GameObject rig = new GameObject();
             rig.name = "center";
-            rig.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.identity);
+            rig.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
             rig.transform.localScale = new Vector3(1.0f / scale.x, 1.0f / scale.y, 1.0f / scale.z);
 
             GameObject upperLeftFront = new GameObject();
@@ -418,6 +476,8 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
         }
 
+
+
         private List<Vector3> GetBounds()
         {
             if (objectToBound != null)
@@ -427,7 +487,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
                 GameObject clone = GameObject.Instantiate(boxInstance.gameObject);
                 clone.transform.localRotation = Quaternion.identity;
-                clone.transform.position = new Vector3(0, 0, 0);
+                clone.transform.position = Vector3.zero;
                 BoundingBox.GetMeshFilterBoundsPoints(clone, bounds, mask);
                 Vector3 centroid = boxInstance.TargetBoundsCenter;
                 GameObject.Destroy(clone);
