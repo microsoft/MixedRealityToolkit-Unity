@@ -17,14 +17,6 @@ namespace MixedRealityToolkit.InputModule.Pointers
         [Tooltip("Pointers that you want to disable while teleporting")]
         private BaseControllerPointer[] disableWhileActive;
 
-        //[Header("Parabola settings")]
-        //[SerializeField]
-        //private AnimationCurve parabolaVelocityCurve = AnimationCurve.Linear(-1f, 1f, 1f, 1f);
-
-        //[SerializeField]
-        //[Range(1f, 36f)]
-        //private float parabolaVelocityMultiplier = 10f;
-
         [SerializeField]
         [DropDownComponent(true, true)]
         private ParabolaPhysical physicsParabolaDataMain;

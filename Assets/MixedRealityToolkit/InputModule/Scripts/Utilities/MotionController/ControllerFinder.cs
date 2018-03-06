@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Utilities.Attributes;
 using UnityEngine;
 
 #if UNITY_WSA
@@ -18,6 +19,7 @@ namespace MixedRealityToolkit.InputModule.Utilities
     /// </summary>
     public abstract class ControllerFinder : MonoBehaviour
     {
+        [EditableProp]
         public MotionControllerInfo.ControllerElementEnum Element
         {
             get { return element; }
@@ -28,6 +30,7 @@ namespace MixedRealityToolkit.InputModule.Utilities
         [SerializeField]
         private MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
 
+        [EditableProp]
         public Handedness Handedness
         {
             get

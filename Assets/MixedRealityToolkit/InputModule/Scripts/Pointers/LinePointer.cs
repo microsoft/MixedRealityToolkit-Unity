@@ -40,7 +40,7 @@ namespace MixedRealityToolkit.InputModule.Pointers
         protected LineBase LineBase;
 
         [SerializeField]
-        [DropDownComponent(true, true)]
+        [Tooltip("If no line renderers are specified, this array will be auto-populated on startup.")]
         protected LineRendererBase[] LineRenderers;
 
         protected DistorterGravity DistorterGravity;
@@ -52,7 +52,9 @@ namespace MixedRealityToolkit.InputModule.Pointers
             LineBase = GetComponent<LineBase>();
             DistorterGravity = GetComponent<DistorterGravity>();
             LineBase.AddDistorter(DistorterGravity);
-            LineRenderers = LineBase.GetComponentsInChildren<LineRendererBase>();
+            if (LineRenderers == null || LineRenderers.Length == 0) {
+                LineRenderers = LineBase.GetComponentsInChildren<LineRendererBase>();
+            }
         }
 
         /// <summary>
