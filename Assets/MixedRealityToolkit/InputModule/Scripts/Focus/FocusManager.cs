@@ -402,6 +402,18 @@ namespace MixedRealityToolkit.InputModule.Focus
             return null;
         }
 
+        public bool RegisterPointer(IPointer pointer)
+        {
+            PointerData pointerData = GetPointerData(pointer);
+            
+            // We've already registered this pointer
+            if (pointerData != null) { return false; }
+
+            pointerData = new PointerData(pointer);
+            pointers.Add(pointerData);
+            return true;
+        }
+
         public bool IsPointerRegistered(IPointer pointer)
         {
             return GetPointerData(pointer) != null;

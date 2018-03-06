@@ -119,6 +119,8 @@ namespace MixedRealityToolkit.InputModule.Pointers
             InputManager.AssertIsInitialized();
             Debug.Assert(InputManager.GlobalListeners.Contains(FocusManager.Instance.gameObject));
             Debug.Assert(InputSourceParent != null, "This Pointer must have a Input Source Assigned");
+            
+            FocusManager.Instance.RegisterPointer(this);
 
             SetCursor();
         }
