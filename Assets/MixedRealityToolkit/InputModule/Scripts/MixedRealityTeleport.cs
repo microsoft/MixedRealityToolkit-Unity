@@ -63,9 +63,6 @@ namespace MixedRealityToolkit.InputModule
         private GameObject teleportMarker;
         private Animator animationController;
 
-        [SerializeField]
-        private bool useCustomMapping = false;
-
         /// <summary>
         /// The fade control allows us to fade out and fade in the scene.
         /// This is done to improve comfort when using an immersive display.

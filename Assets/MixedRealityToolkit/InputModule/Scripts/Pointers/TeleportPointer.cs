@@ -6,7 +6,7 @@ using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.Utilities;
 using MixedRealityToolkit.Utilities.Attributes;
-using MixedRealityToolkit.UX.Distorters;
+using MixedRealityToolkit.Utilities.Distorters;
 using System;
 using UnityEngine;
 

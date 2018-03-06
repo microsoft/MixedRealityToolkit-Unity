@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Utilities.Attributes;
-using MixedRealityToolkit.UX.Distorters;
+using MixedRealityToolkit.Utilities.Distorters;
 using MixedRealityToolkit.UX.Lines;
 using UnityEngine;
 

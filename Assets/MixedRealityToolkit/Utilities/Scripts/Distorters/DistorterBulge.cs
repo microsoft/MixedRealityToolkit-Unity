@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.Distorters
+namespace MixedRealityToolkit.Utilities.Distorters
 {
     public class DistorterBulge : Distorter
     {
