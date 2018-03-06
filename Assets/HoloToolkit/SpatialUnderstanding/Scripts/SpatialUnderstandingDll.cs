@@ -362,12 +362,12 @@ namespace HoloToolkit.Unity
             /// before any other DLL function.
             /// </summary>
             /// <returns>Zero if fails, one if success</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int SpatialUnderstanding_Init();
             /// <summary>
             /// Terminate the spatial understanding DLL. 
             /// </summary>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern void SpatialUnderstanding_Term();
 
             /// <summary>
@@ -384,7 +384,7 @@ namespace HoloToolkit.Unity
             /// <param name="camUp_Z">The user's camera/view unit up vector, z value</param>
             /// <param name="searchDst">Suggested search distance for playspace center</param>
             /// <param name="optimalSize">Optimal room size. Used to determined the playspace size</param>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern void GeneratePlayspace_InitScan(
                 [In] float camPos_X, [In] float camPos_Y, [In] float camPos_Z,
                 [In] float camFwd_X, [In] float camFwd_Y, [In] float camFwd_Z,
@@ -407,7 +407,7 @@ namespace HoloToolkit.Unity
             /// <param name="camUp_Z">The user's camera/view unit up vector, z value</param>
             /// <param name="deltaTime">Time since last update</param>
             /// <returns>One if scanning has been finalized, zero if more updates are required.</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int GeneratePlayspace_UpdateScan(
                 [In] int meshCount, [In] IntPtr meshes,
                 [In] float camPos_X, [In] float camPos_Y, [In] float camPos_Z,
@@ -420,7 +420,7 @@ namespace HoloToolkit.Unity
             /// finalized. This should be called once the user is happy with the currently
             /// scanned in playspace.
             /// </summary>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern void GeneratePlayspace_RequestFinish();
 
             /// <summary>
@@ -432,7 +432,7 @@ namespace HoloToolkit.Unity
             /// <param name="vertexCount">Filled in with the number of vertices to be returned in the subsequent extract call</param>
             /// <param name="indexCount">Filled in with the number of indices to be returned in the subsequent extract call</param>
             /// <returns>Zero if fails, one if success</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int GeneratePlayspace_ExtractMesh_Setup(
                 [Out] out int vertexCount,
                 [Out] out int indexCount);
@@ -447,7 +447,7 @@ namespace HoloToolkit.Unity
             /// <param name="bufferIndexCount">Size of indices, in number of elements</param>
             /// <param name="indices">Array to receive the mesh indices</param>
             /// <returns>Zero if fails, one if success</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int GeneratePlayspace_ExtractMesh_Extract(
                 [In] int bufferVertexCount,
                 [In] IntPtr verticesPos,        // (vertexCount) DirectX::XMFLOAT3*
@@ -460,7 +460,7 @@ namespace HoloToolkit.Unity
             /// </summary>
             /// <param name="playspaceStats">playspace stats structure to receive the statistics data</param>
             /// <returns>Zero if fails, one if success</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int QueryPlayspaceStats(
                 [In] IntPtr playspaceStats);    // PlayspaceStats
 
@@ -469,7 +469,7 @@ namespace HoloToolkit.Unity
             /// </summary>
             /// <param name="playspaceAlignment">playspace alignment structure to receive the alignment data</param>
             /// <returns>Zero if fails, one if success</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int QueryPlayspaceAlignment(
                 [In] IntPtr playspaceAlignment); // PlayspaceAlignment
 
@@ -485,7 +485,7 @@ namespace HoloToolkit.Unity
             /// <param name="rayVec_Z">Ray direction vector, z component. Length of ray indicates the length of the ray cast query.</param>
             /// <param name="result">Structure to receive the results of the raycast</param>
             /// <returns>Zero if fails or no intersection, one if an intersection is detected</returns>
-            [DllImport("SpatialUnderstanding")]
+            [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
             public static extern int PlayspaceRaycast(
                 [In] float rayPos_X, [In] float rayPos_Y, [In] float rayPos_Z,
                 [In] float rayVec_X, [In] float rayVec_Y, [In] float rayVec_Z,
