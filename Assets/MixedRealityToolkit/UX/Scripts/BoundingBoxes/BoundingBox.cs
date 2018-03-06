@@ -121,10 +121,15 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
             set
             {
-                Transform scale = transform.GetChild(0);
-                Transform rig = scale.GetChild(0);
-                GameObject rigobject = rig.gameObject;
-                rigobject.gameObject.GetComponent<Renderer>().enabled = value;
+                if (rendererForVisibility == null)
+                {
+                    Transform scale = transform.GetChild(0);
+                    Transform rig = scale.GetChild(0);
+                    GameObject rigobject = rig.gameObject;
+                    rendererForVisibility = rigobject.gameObject.GetComponent<Renderer>();
+                }
+
+                rendererForVisibility.enabled = value;
                 isVisible = value;
             }
         }
@@ -194,14 +199,18 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         protected LayerMask ignoreLayers = (1 << 2); // Ignore Raycast Layer
 
         protected Vector3 targetBoundsWorldCenter = Vector3.zero;
+
         protected Vector3 targetBoundsLocalScale = Vector3.zero;
 
         protected Bounds localTargetBounds = new Bounds();
+
         protected List<Vector3> boundsPoints = new List<Vector3>();
 
         protected FlattenModeEnum flattenedAxis = FlattenModeEnum.DoNotFlatten;
    
         protected bool isVisible = true;
+
+        protected Renderer rendererForVisibility;
         #endregion
 
         #region

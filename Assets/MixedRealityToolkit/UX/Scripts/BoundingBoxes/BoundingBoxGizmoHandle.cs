@@ -171,6 +171,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 isHandRotationAvailable = false;
             }
 #endif
+            cachedRenderer = gameObject.GetComponent<Renderer>();
         }
         private void Update()
         {
@@ -335,6 +336,25 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             return scale;
         }
 
+        private Renderer cachedRenderer;
+
+        private void ResetRigHandles()
+        {
+            inputDownEventData = null;
+
+            if (this.AffineType == TransformType.Scale)
+            {
+                cachedRenderer.sharedMaterial = Rig.ScaleHandleMaterial;
+            }
+            else
+            {
+                cachedRenderer.sharedMaterial = Rig.RotateHandleMaterial;
+            }
+
+            MixedRealityToolkit.InputModule.InputManager.Instance.PopModalInputHandler();
+            Rig.FocusOnHandle(null);
+        }
+
         public void OnInputDown(InputEventData eventData)
         {
             inputDownEventData = eventData;
@@ -349,25 +369,14 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
             MixedRealityToolkit.InputModule.InputManager.Instance.PushModalInputHandler(gameObject);
 
-            this.gameObject.GetComponent<Renderer>().material = Rig.InteractingMaterial;
+            cachedRenderer.sharedMaterial = Rig.InteractingMaterial;
             Rig.FocusOnHandle(this.gameObject);
             eventData.Use();
         }
         public void OnInputUp(InputEventData eventData)
         {
             inputDownEventData = null;
-
-            if (this.AffineType == TransformType.Scale)
-            {
-                this.gameObject.GetComponent<Renderer>().material = Rig.ScaleHandleMaterial;
-            }
-            else
-            {
-                this.gameObject.GetComponent<Renderer>().material = Rig.RotateHandleMaterial;
-            }
-
-            MixedRealityToolkit.InputModule.InputManager.Instance.PopModalInputHandler();
-            Rig.FocusOnHandle(null);
+            ResetRigHandles();
 
             if (eventData != null)
             {
@@ -381,7 +390,8 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         {
             if (eventData.SourceId == inputDownEventData.SourceId)
             {
-                OnInputUp(null);
+                inputDownEventData = null;
+                ResetRigHandles();
             }
             eventData.Use();
         }
