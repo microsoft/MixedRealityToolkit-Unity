@@ -49,9 +49,9 @@ namespace MixedRealityToolkit.InputModule.Pointers
             PointerTeleportManager.Instance.InitiateTeleport(this);
         }
 
-        public override void OnInputReleased()
+        public override void OnSelectReleased()
         {
-            base.OnInputReleased();
+            base.OnSelectReleased();
 
             for (int i = 0; i < disableWhileActive.Length; i++)
             {

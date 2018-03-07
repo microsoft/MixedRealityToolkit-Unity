@@ -119,7 +119,7 @@ namespace MixedRealityToolkit.InputModule.Pointers
             InputManager.AssertIsInitialized();
             Debug.Assert(InputManager.GlobalListeners.Contains(FocusManager.Instance.gameObject));
             Debug.Assert(InputSourceParent != null, "This Pointer must have a Input Source Assigned");
-            
+
             FocusManager.Instance.RegisterPointer(this);
 
             SetCursor();
@@ -172,7 +172,7 @@ namespace MixedRealityToolkit.InputModule.Pointers
             SelectPressedOnce = true;
         }
 
-        public virtual void OnInputReleased()
+        public virtual void OnSelectReleased()
         {
             SelectPressed = false;
         }
@@ -324,7 +324,7 @@ namespace MixedRealityToolkit.InputModule.Pointers
 #endif
                 if (eventData.KeyCode == interactionEnabledKeyCode || interactionPressed)
                 {
-                    OnInputReleased();
+                    OnSelectReleased();
                 }
             }
         }

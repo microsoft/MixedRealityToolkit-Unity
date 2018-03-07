@@ -76,7 +76,7 @@ namespace MixedRealityToolkit.InputModule.Pointers
                 if (InteractionEnabled)
                 {
                     InteractionEnabled = false;
-                    OnInputReleased();
+                    OnSelectReleased();
                 }
             }
         }
@@ -164,7 +164,7 @@ namespace MixedRealityToolkit.InputModule.Pointers
             }
         }
 
-        public override void OnInputReleased()
+        public override void OnSelectReleased()
         {
             SelectPressed = false;
 

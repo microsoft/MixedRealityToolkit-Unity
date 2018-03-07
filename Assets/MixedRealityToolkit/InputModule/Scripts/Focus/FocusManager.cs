@@ -348,6 +348,10 @@ namespace MixedRealityToolkit.InputModule.Focus
 
         #region Utilities
 
+        /// <summary>
+        /// Generate a new unique pointer id.
+        /// </summary>
+        /// <returns></returns>
         public static uint GenerateNewPointerId()
         {
             var newId = (uint)UnityEngine.Random.Range(1, int.MaxValue);
@@ -813,7 +817,7 @@ namespace MixedRealityToolkit.InputModule.Focus
 
         #region ISourceState Implementation
 
-        public void OnSourceDetected(SourceStateEventData eventData)
+        void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
         {
             // If our input source does not have any pointers, then skip.
             if (eventData.InputSource.Pointers == null) { return; }
@@ -840,7 +844,7 @@ namespace MixedRealityToolkit.InputModule.Focus
             }
         }
 
-        public void OnSourceLost(SourceStateEventData eventData)
+        void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
             // If the input source does not have pointers, then skip.
             if (eventData.InputSource.Pointers == null) { return; }
@@ -858,9 +862,9 @@ namespace MixedRealityToolkit.InputModule.Focus
             }
         }
 
-        public void OnSourcePositionChanged(SourcePositionEventData eventData) { }
+        void ISourceStateHandler.OnSourcePositionChanged(SourcePositionEventData eventData) { }
 
-        public void OnSourceRotationChanged(SourceRotationEventData eventData) { }
+        void ISourceStateHandler.OnSourceRotationChanged(SourceRotationEventData eventData) { }
 
         #endregion ISourceState Implementation
     }
