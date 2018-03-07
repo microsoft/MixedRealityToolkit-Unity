@@ -149,7 +149,7 @@ Transform:
   m_GameObject: {fileID: 1669469392401874}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.58, y: 0.58, z: 0.58}
   m_Children:
   - {fileID: 4265888144028786}
   - {fileID: 4877995955028244}
@@ -164,7 +164,7 @@ Transform:
   m_GameObject: {fileID: 1866436118204410}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 0.17, y: 0.028, z: 1}
   m_Children: []
   m_Father: {fileID: 4838603517195600}
   m_RootOrder: 1
@@ -176,7 +176,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1963181076315932}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.3439, y: -4.5484, z: 10.748}
+  m_LocalPosition: {x: -5.86, y: -2.16, z: 13.19}
   m_LocalScale: {x: 15.419085, y: 15.419087, z: 15.419087}
   m_Children:
   - {fileID: 4992329056269614}
@@ -191,7 +191,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1159203306281736}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.011799991, y: 0.0079, z: 0.17799997}
+  m_LocalPosition: {x: 0.1489, y: 0.0024, z: -0.0569}
   m_LocalScale: {x: 0.0025, y: 0.0025, z: 0.0025}
   m_Children: []
   m_Father: {fileID: 4958700347904618}
@@ -245,7 +245,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: c6028df940be03a488e7a0f031389302, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -350,7 +350,7 @@ MonoBehaviour:
   UniformDistortionStrength: 1
   distorters: []
   loops: 0
-  Start: {x: -0.011799978, y: 0.007900008, z: 0.17799999}
+  Start: {x: 0.14890002, y: 0.002400006, z: -0.0569}
   End: {x: 0.28600004, y: 0.06299999, z: -0.06440002}
 --- !u!114 &114262839923521372
 MonoBehaviour:
@@ -426,17 +426,17 @@ MonoBehaviour:
   distorters: []
   loops: 1
   points:
-  - {x: -0.5, y: 0.5, z: 0}
-  - {x: 0, y: 0.5, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  - {x: 0.5, y: 0, z: 0}
-  - {x: 0.5, y: -0.5, z: 0}
-  - {x: 0, y: -0.5, z: 0}
-  - {x: -0.5, y: -0.5, z: 0}
-  - {x: -0.5, y: 0, z: 0}
+  - {x: -0.5, y: 0.5, z: -0.00075}
+  - {x: 0, y: 0.5, z: -0.00075}
+  - {x: 0.5, y: 0.5, z: -0.00075}
+  - {x: 0.5, y: 0, z: -0.00075}
+  - {x: 0.5, y: -0.5, z: -0.00075}
+  - {x: 0, y: -0.5, z: -0.00075}
+  - {x: -0.5, y: -0.5, z: -0.00075}
+  - {x: -0.5, y: 0, z: -0.00075}
   xSize: 1
   ySize: 1
-  zOffset: 0
+  zOffset: -0.00075
 --- !u!114 &114560166902750794
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -450,7 +450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
   FollowType: 0
-  PivotMode: 0
+  PivotMode: 1
   PivotDirection: 1
   PivotDirectionOrient: 0
   ManualPivotDirection: {x: 0, y: 1, z: 0}
@@ -561,7 +561,7 @@ MonoBehaviour:
   ButtonState: 4
   ButtonPressFilter: 1
   RequireGaze: 1
-  tipState: 0
+  tipState: 1
   groupTipState: 0
   masterTipState: 0
   anchor: {fileID: 1159203306281736}
@@ -571,7 +571,7 @@ MonoBehaviour:
   toolTipText: 
   backgroundPadding: {x: 0, y: 0}
   backgroundOffset: {x: 0, y: 0, z: 0}
-  contentScale: 1
+  contentScale: 0.58
   fontSize: 30
   attachPointType: 9
   toolTipLine: {fileID: 114065498733854586}
