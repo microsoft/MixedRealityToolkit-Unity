@@ -407,7 +407,7 @@ namespace MixedRealityToolkit.InputModule.Focus
         public bool RegisterPointer(IPointer pointer)
         {
             Debug.Assert(pointer.PointerId != 0, string.Format("{0} does not have a valid pointer id!", pointer));
-            Debug.Assert(pointer.PointerId != gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be registered on source detected.");
+            Debug.Assert(gazeManagerPointingData == null || pointer.PointerId != gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be registered on source detected.");
 
             if (IsPointerRegistered(pointer)) { return false; }
 
