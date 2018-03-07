@@ -71,11 +71,17 @@ namespace MixedRealityToolkit.InputModule.Pointers
             InputManager.Instance.RemoveGlobalListener(gameObject);
         }
 
-        // True if select is pressed right now
+        /// <summary>
+        /// True if select is pressed right now
+        /// </summary>
         protected bool SelectPressed = false;
 
-        // True if select has been pressed once since startup
+        /// <summary>
+        /// True if select has been pressed once since startup
+        /// </summary>
         protected bool SelectPressedOnce = false;
+
+        private bool delayPointerRegistration = true;
 
         /// <summary>
         /// The Y orientation of the pointer target - used for touchpad rotation and navigation
@@ -111,6 +117,11 @@ namespace MixedRealityToolkit.InputModule.Pointers
             {
                 BaseCursor.enabled = true;
             }
+
+            if (!delayPointerRegistration)
+            {
+                FocusManager.Instance.RegisterPointer(this);
+            }
         }
 
         protected virtual void Start()
@@ -121,6 +132,7 @@ namespace MixedRealityToolkit.InputModule.Pointers
             Debug.Assert(InputSourceParent != null, "This Pointer must have a Input Source Assigned");
 
             FocusManager.Instance.RegisterPointer(this);
+            delayPointerRegistration = false;
 
             SetCursor();
         }
@@ -134,6 +146,8 @@ namespace MixedRealityToolkit.InputModule.Pointers
             {
                 BaseCursor.enabled = false;
             }
+
+            FocusManager.Instance.UnregisterPointer(this);
         }
 
         protected override void OnDestroy()
