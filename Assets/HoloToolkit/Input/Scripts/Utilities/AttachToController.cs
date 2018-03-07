@@ -2,113 +2,65 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-using UnityEngine.XR.WSA.Input;
-#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
     /// Waits for a controller to be instantiated, then attaches itself to a specified element
     /// </summary>
-    public class AttachToController : MonoBehaviour
+    public class AttachToController : ControllerFinder
     {
-#if  UNITY_WSA && UNITY_2017_2_OR_NEWER
-        public InteractionSourceHandedness Handedness { get { return handedness; } }
-
-        [Header("AttachToController Elements")]
-        [SerializeField]
-        protected InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
-
-#endif
-        public MotionControllerInfo.ControllerElementEnum Element { get { return element; } }
-
-        [SerializeField]
-        protected MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
-
         public bool SetChildrenInactiveWhenDetached = true;
 
         [SerializeField]
-        protected Vector3 positionOffset = Vector3.zero;
+        protected Vector3 PositionOffset = Vector3.zero;
 
         [SerializeField]
-        protected Vector3 rotationOffset = Vector3.zero;
+        protected Vector3 RotationOffset = Vector3.zero;
 
         [SerializeField]
-        protected Vector3 scale = Vector3.one;
+        protected Vector3 ScaleOffset = Vector3.one;
 
         [SerializeField]
-        protected bool setScaleOnAttach = false;
+        protected bool SetScaleOnAttach = false;
 
         public bool IsAttached { get; private set; }
-
-        private Transform elementTransform;
-        public Transform ElementTransform { get; private set; }
-
-        protected MotionControllerInfo controller;
 
         protected virtual void OnAttachToController() { }
         protected virtual void OnDetachFromController() { }
 
-
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             SetChildrenActive(false);
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // Look if the controller has loaded.
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out controller))
+            if (MotionControllerVisualizer.Instance.TryGetControllerModel(Handedness, out ControllerInfo))
             {
-                AttachElementToController(controller);
+                AddControllerTransform(ControllerInfo);
             }
+            MotionControllerVisualizer.Instance.OnControllerModelLoaded += AddControllerTransform;
+            MotionControllerVisualizer.Instance.OnControllerModelUnloaded += RemoveControllerTransform;
 #endif 
-
-            MotionControllerVisualizer.Instance.OnControllerModelLoaded += AttachElementToController;
-            MotionControllerVisualizer.Instance.OnControllerModelUnloaded += DetachElementFromController;
         }
 
-        protected virtual void OnDisable()
-        {
-            if (MotionControllerVisualizer.IsInitialized)
-            {
-                MotionControllerVisualizer.Instance.OnControllerModelLoaded -= AttachElementToController;
-                MotionControllerVisualizer.Instance.OnControllerModelUnloaded -= DetachElementFromController;
-            }
-        }
-
-        protected virtual void OnDestroy()
-        {
-            if (MotionControllerVisualizer.IsInitialized)
-            {
-                MotionControllerVisualizer.Instance.OnControllerModelLoaded -= AttachElementToController;
-                MotionControllerVisualizer.Instance.OnControllerModelUnloaded -= DetachElementFromController;
-            }
-        }
-
-        private void AttachElementToController(MotionControllerInfo newController)
+        protected override void AddControllerTransform(MotionControllerInfo newController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            // Check handedness
-            if (!IsAttached && newController.Handedness == handedness)
+            if (!IsAttached && newController.Handedness == Handedness)
             {
-                // Get specific element of the controller
-                if (!newController.TryGetElement(element, out elementTransform))
-                {
-                    Debug.LogError("Unable to find element of type " + element + " under controller " + newController.ControllerParent.name + "; not attaching.");
-                    return;
-                }
-
-                controller = newController;
+                base.AddControllerTransform(newController);
 
                 SetChildrenActive(true);
 
                 // Parent ourselves under the element and set our offsets
-                transform.parent = elementTransform;
-                transform.localPosition = positionOffset;
-                transform.localEulerAngles = rotationOffset;
-                if (setScaleOnAttach)
+                transform.parent = ElementTransform;
+                transform.localPosition = PositionOffset;
+                transform.localEulerAngles = RotationOffset;
+
+                if (SetScaleOnAttach)
                 {
-                    transform.localScale = scale;
+                    transform.localScale = ScaleOffset;
                 }
 
                 // Announce that we're attached
@@ -119,14 +71,15 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
-        private void DetachElementFromController(MotionControllerInfo oldController)
+        protected override void RemoveControllerTransform(MotionControllerInfo oldController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            if (IsAttached && oldController.Handedness == handedness)
+            if (IsAttached && oldController.Handedness == Handedness)
             {
+                base.RemoveControllerTransform(oldController);
+
                 OnDetachFromController();
 
-                controller = null;
                 transform.parent = null;
 
                 SetChildrenActive(false);

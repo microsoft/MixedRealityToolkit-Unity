@@ -1,7 +1,6 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using HoloToolkit.Unity;
 using System.Collections;
 using UnityEngine;
@@ -15,7 +14,7 @@ namespace HoloToolkit.Unity.Buttons
         [Header("Icon Settings")]
         [SerializeField]
         [DropDownComponent]
-        private MeshRenderer targetIconRenderer;
+        private MeshRenderer targetIconRenderer = null;
 
         [Tooltip("Turns off the icon entirely")]
         public bool DisableIcon = false;
@@ -30,7 +29,7 @@ namespace HoloToolkit.Unity.Buttons
         [SerializeField]
         [ShowIfBoolValue("OverrideIcon")]
         [Tooltip("Icon to use for override")]
-        private Texture2D iconOverride;
+        private Texture2D iconOverride = null;
 
         [SerializeField]
         [Tooltip("Alpha value for the text mesh component")]

@@ -1,8 +1,5 @@
-﻿//
-// Copyright (c) @jevertt
-// Copyright (c) Rafael Rivera
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using System;
 using System.Collections.Generic;
@@ -22,15 +19,63 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class BuildDeployWindow : EditorWindow
     {
-        private const float GUISectionOffset = 10.0f;
-        private const string GUIHorizontalSpacer = "     ";
         private const float UpdateBuildsPeriod = 1.0f;
+
         private const string SdkVersion =
 #if UNITY_2017_2_OR_NEWER
-            "10.0.16299.0";
+                "10.0.16299.0";
 #else
-            "10.0.15063.0";
+                "10.0.15063.0";
 #endif
+
+        private readonly string[] tabNames = { "Unity Build Options", "Appx Build Options", "Deploy Options" };
+
+        private readonly string[] scriptingBackendNames = { "IL2CPP", ".NET" };
+
+        private readonly int[] scriptingBackendEnum = { (int)ScriptingImplementation.IL2CPP, (int)ScriptingImplementation.WinRTDotNET };
+
+        private readonly string[] deviceNames = { "Any Device", "PC", "Mobile", "HoloLens" };
+
+        private readonly List<string> builds = new List<string>(0);
+
+        private static readonly List<string> appPackageDirectories = new List<string>(0);
+
+        #region Labels
+
+        private readonly GUIContent buildAllThenInstallLabel = new GUIContent("Build all, then Install", "Builds the Unity Project, the APPX, then installs to the target device.");
+
+        private readonly GUIContent buildAllLabel = new GUIContent("Build all", "Builds the Unity Project and APPX");
+
+        private readonly GUIContent buildDirectoryLabel = new GUIContent("Build Directory", "It's recommended to use 'UWP'");
+
+        private readonly GUIContent useCSharpProjectsLabel = new GUIContent("Unity C# Projects", "Generate C# Project References for debugging");
+
+        private readonly GUIContent autoIncrementLabel = new GUIContent("Auto Increment", "Increases Version Build Number");
+
+        private readonly GUIContent versionNumberLabel = new GUIContent("Version Number", "Major.Minor.Build.Revision\nNote: Revision should always be zero because it's reserved by Windows Store.");
+
+        private readonly GUIContent pairHoloLensUsbLabel = new GUIContent("Pair HoloLens", "Pairs the USB connected HoloLens with the Build Window so you can deploy via USB");
+
+        private readonly GUIContent useSSLLabel = new GUIContent("Use SSL?", "Use SLL to communicate with Device Portal");
+
+        private readonly GUIContent addConnectionLabel = new GUIContent("+", "Add a remote connection");
+
+        private readonly GUIContent removeConnectionLabel = new GUIContent("-", "Remove a remote connection");
+
+        private readonly GUIContent ipAddressLabel = new GUIContent("IpAddress", "Note: Local Machine will install on any HoloLens connected to USB as well.");
+
+        private readonly GUIContent doAllLabel = new GUIContent(" Do actions on all devices", "Should the build options perform actions on all the connected devices?");
+
+        private readonly GUIContent uninstallLabel = new GUIContent("Uninstall First", "Uninstall application before installing");
+
+        #endregion
+
+        private enum BuildDeployTab
+        {
+            UnityBuildOptions,
+            AppxBuildOptions,
+            DeployOptions
+        }
 
         private enum BuildPlatformEnum
         {
@@ -47,11 +92,21 @@ namespace HoloToolkit.Unity
 
         #region Properties
 
-        private bool ShouldOpenSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); } }
+        private static bool ShouldOpenSLNBeEnabled
+        {
+            get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
+        }
 
-        private bool ShouldBuildSLNBeEnabled { get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory) && !string.IsNullOrEmpty(PlayerSettings.WSA.certificatePath); } }
+        private static bool ShouldBuildSLNBeEnabled
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory) &&
+                       !string.IsNullOrEmpty(PlayerSettings.WSA.certificatePath);
+            }
+        }
 
-        private bool ShouldBuildAppxBeEnabled
+        private static bool ShouldBuildAppxBeEnabled
         {
             get
             {
@@ -62,24 +117,22 @@ namespace HoloToolkit.Unity
             }
         }
 
-        private bool ShouldLaunchAppBeEnabled
+        private static bool DevicePortalConnectionEnabled
         {
-            get { return !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
+            get { return (portalConnections.Connections.Count > 1 || IsHoloLensConnectedUsb) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
         }
 
-        private bool ShouldWebPortalBeEnabled
+        private static bool CanInstall
         {
-            get { return !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
+            get
+            {
+                return Directory.Exists(BuildDeployPrefs.AbsoluteBuildDirectory) && !string.IsNullOrEmpty(familyPackageName);
+            }
         }
 
-        private bool ShouldLogViewBeEnabled
-        {
-            get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
-        }
+        private static string familyPackageName;
 
-        private bool LocalIPsOnly { get { return true; } }
-
-        private bool HoloLensUsbConnected
+        private static bool IsHoloLensConnectedUsb
         {
             get
             {
@@ -87,20 +140,18 @@ namespace HoloToolkit.Unity
 
                 if (USBDeviceListener.USBDevices != null)
                 {
-                    foreach (USBDeviceInfo device in USBDeviceListener.USBDevices)
+                    if (USBDeviceListener.USBDevices.Any(device => device.Name.Equals("Microsoft HoloLens")))
                     {
-                        if (device.Name.Equals("Microsoft HoloLens"))
-                        {
-                            isConnected = true;
-                        }
+                        isConnected = true;
                     }
+
+                    SessionState.SetBool("HoloLensUsbConnected", isConnected);
                 }
                 else
                 {
                     isConnected = SessionState.GetBool("HoloLensUsbConnected", false);
                 }
 
-                SessionState.SetBool("HoloLensUsbConnected", isConnected);
                 return isConnected;
             }
         }
@@ -109,11 +160,21 @@ namespace HoloToolkit.Unity
 
         #region Fields
 
-        private List<string> builds = new List<string>();
+        private int halfWidth;
+        private int quarterWidth;
+
         private float timeLastUpdatedBuilds;
+
+        private string[] targetIps;
         private string[] windowsSdkPaths;
+
         private Vector2 scrollPosition;
-        private string wsaCertPath;
+
+        private BuildDeployTab currentTab = BuildDeployTab.UnityBuildOptions;
+
+        private static bool isAppRunning;
+        private static int currentConnectionInfoIndex;
+        private static DevicePortalConnections portalConnections;
 
         #endregion // Fields
 
@@ -136,7 +197,7 @@ namespace HoloToolkit.Unity
         private void Setup()
         {
             titleContent = new GUIContent("Build Window");
-            minSize = new Vector2(600, 575);
+            minSize = new Vector2(512, 256);
 
             windowsSdkPaths = Directory.GetDirectories(@"C:\Program Files (x86)\Windows Kits\10\Lib");
 
@@ -145,168 +206,224 @@ namespace HoloToolkit.Unity
                 windowsSdkPaths[i] = windowsSdkPaths[i].Substring(windowsSdkPaths[i].LastIndexOf(@"\", StringComparison.Ordinal) + 1);
             }
 
-            wsaCertPath = PlayerSettings.WSA.certificatePath;
-            wsaCertPath = wsaCertPath.Replace("\\", "/");
-            wsaCertPath = wsaCertPath.Substring(wsaCertPath.LastIndexOf("/", StringComparison.Ordinal) + 1);
-
-            UpdateXdeStatus();
             UpdateBuilds();
-        }
 
-        private void UpdateXdeStatus()
-        {
-            XdeGuestLocator.FindGuestAddressAsync();
+            portalConnections = JsonUtility.FromJson<DevicePortalConnections>(BuildDeployPrefs.DevicePortalConnections);
+            UpdatePortalConnections();
         }
 
         private void OnGUI()
         {
-            GUILayout.Space(GUISectionOffset);
+            quarterWidth = Screen.width / 4;
+            halfWidth = Screen.width / 2;
 
-            // Setup
-            int buttonWidth_Quarter = Screen.width / 4;
-            int buttonWidth_Half = Screen.width / 2;
-            int buttonWidth_Full = Screen.width - 25;
-            var locatorHasData = XdeGuestLocator.HasData;
-            var locatorIsSearching = XdeGuestLocator.IsSearching;
-            var xdeGuestIpAddress = XdeGuestLocator.GuestIpAddress;
+            #region Quick Options
 
-            // Quick Options
-            GUILayout.BeginVertical();
-            GUILayout.Label("Quick Options");
-
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            EditorGUILayout.EndHorizontal();
-
-            // Build & Run button...
-            using (new EditorGUILayout.HorizontalScope())
+            if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.WSAPlayer)
             {
-                GUILayout.FlexibleSpace();
-                GUI.enabled = ShouldBuildSLNBeEnabled;
+                EditorGUILayout.HelpBox("Build window only available for UWP build target.", MessageType.Warning);
+                GUILayout.BeginVertical();
+                GUILayout.Space(5);
+                EditorGUILayout.BeginHorizontal();
 
-                if (GUILayout.Button((!locatorIsSearching && locatorHasData || HoloLensUsbConnected)
-                    ? "Build SLN, Build APPX, then Install"
-                    : "Build SLN, Build APPX",
-                    GUILayout.Width(buttonWidth_Half - 20)))
+                // Build directory (and save setting, if it's changed)
+                string curBuildDirectory = BuildDeployPrefs.BuildDirectory;
+                EditorGUILayout.LabelField(buildDirectoryLabel, GUILayout.Width(96));
+                string newBuildDirectory = EditorGUILayout.TextField(
+                        curBuildDirectory,
+                        GUILayout.Width(64), GUILayout.ExpandWidth(true));
+
+                if (newBuildDirectory != curBuildDirectory)
                 {
-                    // Build SLN
-                    EditorApplication.delayCall += () => { BuildAll(!locatorIsSearching && locatorHasData || HoloLensUsbConnected); };
+                    BuildDeployPrefs.BuildDirectory = newBuildDirectory;
+                }
+
+                GUI.enabled = Directory.Exists(BuildDeployPrefs.AbsoluteBuildDirectory);
+
+                if (GUILayout.Button("Open Build Directory", GUILayout.Width(quarterWidth)))
+                {
+                    EditorApplication.delayCall += () => Process.Start(BuildDeployPrefs.AbsoluteBuildDirectory);
                 }
 
                 GUI.enabled = true;
 
-                if (GUILayout.Button("Open Player Settings", GUILayout.Width(buttonWidth_Quarter)))
+                if (GUILayout.Button("Open Player Settings", GUILayout.Width(quarterWidth)))
                 {
                     EditorApplication.ExecuteMenuItem("Edit/Project Settings/Player");
                 }
 
-                if (GUILayout.Button(string.IsNullOrEmpty(wsaCertPath) ? "Select Certificate" : wsaCertPath, GUILayout.Width(buttonWidth_Quarter)))
-                {
-                    string path = EditorUtility.OpenFilePanel("Select Certificate", Application.dataPath, "pfx");
-                    wsaCertPath = path.Substring(path.LastIndexOf("/", StringComparison.Ordinal) + 1);
-
-                    if (!string.IsNullOrEmpty(path))
-                    {
-                        CertificatePasswordWindow.Show(path);
-                    }
-                    else
-                    {
-                        PlayerSettings.WSA.SetCertificate(string.Empty, string.Empty);
-                    }
-                }
+                EditorGUILayout.EndHorizontal();
+                GUILayout.EndVertical();
+                return;
             }
 
-            GUILayout.EndVertical();
-
-            // Build section
             GUILayout.BeginVertical();
-            GUILayout.Label("SLN");
-
+            GUILayout.Space(5);
+            GUILayout.Label("Quick Options");
             EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
+
+            EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup((int)EditorUserBuildSettings.wsaSubtarget, deviceNames);
+
+            GUI.enabled = ShouldBuildSLNBeEnabled;
+            bool canInstall = CanInstall;
+
+            // Build & Run button...
+            if (GUILayout.Button(CanInstall
+                ? buildAllThenInstallLabel
+                : buildAllLabel,
+                GUILayout.Width(halfWidth - 20)))
+            {
+                EditorApplication.delayCall += () => { BuildAll(canInstall); };
+            }
+
+            GUI.enabled = true;
+
+            if (GUILayout.Button("Open Player Settings", GUILayout.Width(quarterWidth)))
+            {
+                EditorApplication.ExecuteMenuItem("Edit/Project Settings/Player");
+            }
+
+            // If Xbox Controller support is enabled and we're targeting the HoloLens device,
+            // Enable the HID capability.
+            if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+            {
+                PlayerSettings.WSA.SetCapability(
+                    PlayerSettings.WSACapability.HumanInterfaceDevice,
+                    EditorPrefsUtility.GetEditorPref("Enable Xbox Controller Support", false));
+
+                BuildDeployPrefs.BuildPlatform = BuildPlatformEnum.x86.ToString();
+            }
+            else
+            {
+                PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.HumanInterfaceDevice, false);
+            }
+
             EditorGUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+            GUILayout.Space(10);
+
+            #endregion
+
+            currentTab = (BuildDeployTab)GUILayout.Toolbar(SessionState.GetInt("_MRTK_BuildWindow_Tab", (int)currentTab), tabNames);
+            SessionState.SetInt("_MRTK_BuildWindow_Tab", (int)currentTab);
+
+            GUILayout.Space(10);
+
+            switch (currentTab)
+            {
+                case BuildDeployTab.UnityBuildOptions:
+                    UnityBuildGUI();
+                    break;
+                case BuildDeployTab.AppxBuildOptions:
+                    AppxBuildGUI();
+                    break;
+                case BuildDeployTab.DeployOptions:
+                    DeployGUI();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void Update()
+        {
+            if (Time.realtimeSinceStartup - timeLastUpdatedBuilds > UpdateBuildsPeriod)
+            {
+                UpdateBuilds();
+            }
+        }
+
+        private void UnityBuildGUI()
+        {
+            GUILayout.BeginVertical();
             EditorGUILayout.BeginHorizontal();
 
             // Build directory (and save setting, if it's changed)
             string curBuildDirectory = BuildDeployPrefs.BuildDirectory;
-            string newBuildDirectory = EditorGUILayout.TextField(new GUIContent(GUIHorizontalSpacer + "Build Directory", "It's recommended to use UWP"), curBuildDirectory);
+            EditorGUILayout.LabelField(buildDirectoryLabel, GUILayout.Width(96));
+            string newBuildDirectory = EditorGUILayout.TextField(
+                curBuildDirectory,
+                GUILayout.Width(64), GUILayout.ExpandWidth(true));
 
             if (newBuildDirectory != curBuildDirectory)
             {
                 BuildDeployPrefs.BuildDirectory = newBuildDirectory;
-                curBuildDirectory = newBuildDirectory;
             }
 
             GUI.enabled = Directory.Exists(BuildDeployPrefs.AbsoluteBuildDirectory);
 
-            if (GUILayout.Button("Open Build Directory"))
+            if (GUILayout.Button("Open Build Directory", GUILayout.Width(halfWidth)))
             {
-                Process.Start(BuildDeployPrefs.AbsoluteBuildDirectory);
+                EditorApplication.delayCall += () => Process.Start(BuildDeployPrefs.AbsoluteBuildDirectory);
             }
 
             GUI.enabled = true;
+
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
 
-            // Build SLN button
-            using (new EditorGUILayout.HorizontalScope())
+            GUI.enabled = ShouldOpenSLNBeEnabled;
+
+            if (GUILayout.Button("Open in Visual Studio", GUILayout.Width(halfWidth)))
             {
-                GUILayout.FlexibleSpace();
+                // Open SLN
+                string slnFilename = Path.Combine(BuildDeployPrefs.BuildDirectory, PlayerSettings.productName + ".sln");
 
-                float previousLabelWidth = EditorGUIUtility.labelWidth;
-
-                // Generate C# Project References
-                EditorGUIUtility.labelWidth = 105;
-                bool generateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
-                bool shouldGenerateProjects = EditorGUILayout.Toggle("Unity C# Projects", generateReferenceProjects);
-
-                if (shouldGenerateProjects != generateReferenceProjects)
+                if (File.Exists(slnFilename))
                 {
-                    EditorUserBuildSettings.wsaGenerateReferenceProjects = shouldGenerateProjects;
+                    EditorApplication.delayCall += () => Process.Start(new FileInfo(slnFilename).FullName);
                 }
-
-                // Restore previous label width
-                EditorGUIUtility.labelWidth = previousLabelWidth;
-
-                GUI.enabled = ShouldOpenSLNBeEnabled;
-
-                if (GUILayout.Button("Open Project Solution", GUILayout.Width(buttonWidth_Quarter)))
+                else if (EditorUtility.DisplayDialog(
+                    "Solution Not Found",
+                    "We couldn't find the Project's Solution. Would you like to Build the project now?",
+                    "Yes, Build", "No"))
                 {
-                    // Open SLN
-                    string slnFilename = Path.Combine(curBuildDirectory, PlayerSettings.productName + ".sln");
-
-                    if (File.Exists(slnFilename))
-                    {
-                        var slnFile = new FileInfo(slnFilename);
-                        Process.Start(slnFile.FullName);
-                    }
-                    else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the Project's Solution. Would you like to Build the project now?", "Yes, Build", "No"))
-                    {
-                        // Build SLN
-                        EditorApplication.delayCall += () => { BuildDeployTools.BuildSLN(curBuildDirectory); };
-                    }
+                    EditorApplication.delayCall += () => BuildDeployTools.BuildSLN(BuildDeployPrefs.BuildDirectory);
                 }
-
-                GUI.enabled = ShouldBuildSLNBeEnabled;
-
-                if (GUILayout.Button("Build Unity Project", GUILayout.Width(buttonWidth_Half)))
-                {
-                    // Build SLN
-                    EditorApplication.delayCall += () => { BuildDeployTools.BuildSLN(curBuildDirectory); };
-                }
-
-                GUI.enabled = true;
             }
 
-            // Appx sub-section
-            GUILayout.BeginVertical();
-            GUILayout.Label("APPX");
 
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+
+            // Generate C# Project References for debugging
+            GUILayout.FlexibleSpace();
+            var previousLabelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 105;
+            bool generateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
+            bool shouldGenerateProjects = EditorGUILayout.Toggle(useCSharpProjectsLabel, generateReferenceProjects);
+
+            if (shouldGenerateProjects != generateReferenceProjects)
+            {
+                EditorUserBuildSettings.wsaGenerateReferenceProjects = shouldGenerateProjects;
+            }
+
+            EditorGUIUtility.labelWidth = previousLabelWidth;
+
+            // Build Unity Player
+            GUI.enabled = ShouldBuildSLNBeEnabled;
+
+            if (GUILayout.Button("Build Unity Project", GUILayout.Width(halfWidth)))
+            {
+                EditorApplication.delayCall += () => BuildDeployTools.BuildSLN(BuildDeployPrefs.BuildDirectory);
+            }
+
+            GUI.enabled = true;
+
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+        }
+
+        private void AppxBuildGUI()
+        {
+            GUILayout.BeginVertical();
             GUILayout.BeginHorizontal();
 
             // SDK and MS Build Version(and save setting, if it's changed)
             string currentSDKVersion = EditorUserBuildSettings.wsaUWPSDK;
 
-            int currentSDKVersionIndex = 0;
+            int currentSDKVersionIndex = -1;
 
             for (var i = 0; i < windowsSdkPaths.Length; i++)
             {
@@ -323,23 +440,48 @@ namespace HoloToolkit.Unity
                 }
             }
 
-            if (currentSDKVersionIndex == 0)
-            {
-                Debug.LogErrorFormat("Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {0} SDK from Visual Studio Installer.", SdkVersion);
-            }
+            EditorGUILayout.LabelField("Required SDK Version: " + SdkVersion);
 
-            EditorGUILayout.LabelField(GUIHorizontalSpacer + "Required SDK Version: " + SdkVersion);
+            // Throw exception if user has no Windows 10 SDK installed
+            if (currentSDKVersionIndex < 0)
+            {
+                Debug.LogErrorFormat("Unable to find the required Windows 10 SDK Target!\n" +
+                                     "Please be sure to install the {0} SDK from Visual Studio Installer.", SdkVersion);
+                GUILayout.EndHorizontal();
+
+                EditorGUILayout.HelpBox(string.Format("Unable to find the required Windows 10 SDK Target!\n" +
+                                        "Please be sure to install the {0} SDK from Visual Studio Installer.", SdkVersion), MessageType.Error);
+
+                GUILayout.BeginHorizontal();
+            }
 
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
             var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup(
-                GUIHorizontalSpacer + "Scripting Backend",
+                "Scripting Backend",
                 (int)curScriptingBackend,
-                new[] { "IL2CPP", ".NET" },
-                new[] { (int)ScriptingImplementation.IL2CPP, (int)ScriptingImplementation.WinRTDotNET });
+                scriptingBackendNames,
+                scriptingBackendEnum,
+                GUILayout.Width(halfWidth));
 
             if (newScriptingBackend != curScriptingBackend)
             {
-                PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, newScriptingBackend);
+                bool canUpdate = !Directory.Exists(BuildDeployPrefs.AbsoluteBuildDirectory);
+
+                if (!canUpdate &&
+                    EditorUtility.DisplayDialog("Attention!",
+                        string.Format("Build path contains project built with {0} scripting backend, while current project is using {1} scripting backend.\n\n" +
+                                      "Switching to a new scripting backend requires us to delete all the data currently in your build folder and rebuild the Unity Player!",
+                            newScriptingBackend.ToString(),
+                            curScriptingBackend.ToString()),
+                        "Okay", "Cancel"))
+                {
+                    Directory.Delete(BuildDeployPrefs.AbsoluteBuildDirectory, true);
+                }
+
+                if (canUpdate)
+                {
+                    PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, newScriptingBackend);
+                }
             }
 
             string newSDKVersion = windowsSdkPaths[currentSDKVersionIndex];
@@ -351,6 +493,7 @@ namespace HoloToolkit.Unity
 
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
 
             // Build config (and save setting, if it's changed)
             string curBuildConfigString = BuildDeployPrefs.BuildConfig;
@@ -369,19 +512,22 @@ namespace HoloToolkit.Unity
                 buildConfigOption = BuildConfigEnum.Debug;
             }
 
-            buildConfigOption = (BuildConfigEnum)EditorGUILayout.EnumPopup(GUIHorizontalSpacer + "Build Configuration", buildConfigOption);
+            buildConfigOption = (BuildConfigEnum)EditorGUILayout.EnumPopup("Build Configuration", buildConfigOption, GUILayout.Width(halfWidth));
 
             string buildConfigString = buildConfigOption.ToString();
 
             if (buildConfigString != curBuildConfigString)
             {
                 BuildDeployPrefs.BuildConfig = buildConfigString;
-                curBuildConfigString = buildConfigString;
             }
+
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
 
             // Build Platform (and save setting, if it's changed)
             string curBuildPlatformString = BuildDeployPrefs.BuildPlatform;
-            BuildPlatformEnum buildPlatformOption = BuildPlatformEnum.x86;
+            var buildPlatformOption = BuildPlatformEnum.x86;
 
             if (curBuildPlatformString.ToLower().Equals("x86"))
             {
@@ -392,7 +538,7 @@ namespace HoloToolkit.Unity
                 buildPlatformOption = BuildPlatformEnum.x64;
             }
 
-            buildPlatformOption = (BuildPlatformEnum)EditorGUILayout.EnumPopup(GUIHorizontalSpacer + "Build Platform", buildPlatformOption);
+            buildPlatformOption = (BuildPlatformEnum)EditorGUILayout.EnumPopup("Build Platform", buildPlatformOption, GUILayout.Width(halfWidth));
 
             string newBuildPlatformString;
 
@@ -409,173 +555,350 @@ namespace HoloToolkit.Unity
             if (newBuildPlatformString != curBuildPlatformString)
             {
                 BuildDeployPrefs.BuildPlatform = newBuildPlatformString;
-                curBuildPlatformString = newBuildPlatformString;
             }
 
             GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
 
-            // Build APPX button
-            using (new EditorGUILayout.HorizontalScope())
+            var previousLabelWidth = EditorGUIUtility.labelWidth;
+
+            // Auto Increment version
+            EditorGUIUtility.labelWidth = 96;
+            bool curIncrementVersion = BuildDeployPrefs.IncrementBuildVersion;
+            bool newIncrementVersion = EditorGUILayout.Toggle(autoIncrementLabel, curIncrementVersion);
+
+            // Restore previous label width
+            EditorGUIUtility.labelWidth = previousLabelWidth;
+
+            if (newIncrementVersion != curIncrementVersion)
             {
-                GUILayout.FlexibleSpace();
+                BuildDeployPrefs.IncrementBuildVersion = newIncrementVersion;
+            }
 
-                float previousLabelWidth = EditorGUIUtility.labelWidth;
+            EditorGUILayout.LabelField(versionNumberLabel, GUILayout.Width(96));
+            Vector3 newVersion = Vector3.zero;
 
-                // Force rebuild
-                EditorGUIUtility.labelWidth = 50;
-                bool curForceRebuildAppx = BuildDeployPrefs.ForceRebuild;
-                bool newForceRebuildAppx = EditorGUILayout.Toggle("Rebuild", curForceRebuildAppx);
+            EditorGUI.BeginChangeCheck();
 
-                if (newForceRebuildAppx != curForceRebuildAppx)
+            newVersion.x = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Major, GUILayout.Width(quarterWidth / 2 - 3));
+            newVersion.y = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Minor, GUILayout.Width(quarterWidth / 2 - 3));
+            newVersion.z = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Build, GUILayout.Width(quarterWidth / 2 - 3));
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                PlayerSettings.WSA.packageVersion = new Version((int)newVersion.x, (int)newVersion.y, (int)newVersion.z, 0);
+            }
+
+            GUI.enabled = false;
+            EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Revision, GUILayout.Width(quarterWidth / 2 - 3));
+            GUI.enabled = true;
+
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
+            // Force rebuild
+            previousLabelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 50;
+            bool curForceRebuildAppx = BuildDeployPrefs.ForceRebuild;
+            bool newForceRebuildAppx = EditorGUILayout.Toggle("Rebuild", curForceRebuildAppx);
+
+            if (newForceRebuildAppx != curForceRebuildAppx)
+            {
+                BuildDeployPrefs.ForceRebuild = newForceRebuildAppx;
+            }
+
+            // Restore previous label width
+            EditorGUIUtility.labelWidth = previousLabelWidth;
+
+            // Build APPX
+            GUI.enabled = ShouldBuildAppxBeEnabled;
+
+            if (GUILayout.Button("Build APPX", GUILayout.Width(halfWidth)))
+            {
+                // Check if SLN exists
+                string slnFilename = Path.Combine(BuildDeployPrefs.BuildDirectory, PlayerSettings.productName + ".sln");
+
+                if (File.Exists(slnFilename))
                 {
-                    BuildDeployPrefs.ForceRebuild = newForceRebuildAppx;
-                    curForceRebuildAppx = newForceRebuildAppx;
-                }
-
-                // Increment version
-                EditorGUIUtility.labelWidth = 110;
-                bool curIncrementVersion = BuildDeployPrefs.IncrementBuildVersion;
-                bool newIncrementVersion = EditorGUILayout.Toggle("Increment Version", curIncrementVersion);
-
-                if (newIncrementVersion != curIncrementVersion)
-                {
-                    BuildDeployPrefs.IncrementBuildVersion = newIncrementVersion;
-                    curIncrementVersion = newIncrementVersion;
-                }
-
-                // Restore previous label width
-                EditorGUIUtility.labelWidth = previousLabelWidth;
-
-                // Build APPX
-                GUI.enabled = ShouldBuildAppxBeEnabled;
-
-                if (GUILayout.Button("Build APPX", GUILayout.Width(buttonWidth_Half)))
-                {
-                    // Open SLN
-                    string slnFilename = Path.Combine(curBuildDirectory, PlayerSettings.productName + ".sln");
-
-                    if (File.Exists(slnFilename))
+                    // Build APPX
+                    EditorApplication.delayCall += () =>
                     {
-                        // Build APPX
-                        EditorApplication.delayCall += () =>
-                            BuildDeployTools.BuildAppxFromSLN(
-                                PlayerSettings.productName,
-                                BuildDeployTools.DefaultMSBuildVersion,
-                                curForceRebuildAppx,
-                                curBuildConfigString,
-                                curBuildPlatformString,
-                                curBuildDirectory,
-                                curIncrementVersion);
-                    }
-                    else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the solution. Would you like to Build it?", "Yes, Build", "No"))
-                    {
-                        // Build SLN then APPX
-                        EditorApplication.delayCall += () => BuildAll(install: false);
-                    }
+                        BuildDeployTools.BuildAppxFromSLN(
+                            PlayerSettings.productName,
+                            BuildDeployTools.DefaultMSBuildVersion,
+                            BuildDeployPrefs.ForceRebuild,
+                            BuildDeployPrefs.BuildConfig,
+                            BuildDeployPrefs.BuildPlatform,
+                            BuildDeployPrefs.BuildDirectory,
+                            BuildDeployPrefs.IncrementBuildVersion);
+                    };
+                }
+                else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the solution. Would you like to Build it?", "Yes, Build", "No"))
+                {
+                    // Build SLN then APPX
+                    EditorApplication.delayCall += () => BuildAll(install: false);
                 }
 
                 GUI.enabled = true;
             }
 
-            GUILayout.EndVertical();
-            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
 
-            GUILayout.Space(GUISectionOffset);
+            // Open AppX packages location
+            string appxBuildPath = Path.GetFullPath(BuildDeployPrefs.BuildDirectory + "/" + PlayerSettings.productName + "/AppPackages");
+            GUI.enabled = builds.Count > 0 && !string.IsNullOrEmpty(appxBuildPath);
 
-            // Deploy section
+            if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(halfWidth)))
+            {
+                EditorApplication.delayCall += () => Process.Start("explorer.exe", "/f /open," + appxBuildPath);
+            }
+
+            GUI.enabled = true;
+
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+        }
+
+        private void DeployGUI()
+        {
+            Debug.Assert(portalConnections.Connections.Count != 0);
+            Debug.Assert(currentConnectionInfoIndex >= 0);
+
             GUILayout.BeginVertical();
-            GUILayout.Label("Deploy");
+            EditorGUI.BeginChangeCheck();
+            GUILayout.BeginHorizontal();
 
-            // Target IPs (and save setting, if it's changed)
-            string curTargetIps = BuildDeployPrefs.TargetIPs;
-            if (!LocalIPsOnly)
+            // Launch app...
+            GUI.enabled = IsHoloLensConnectedUsb;
+
+            if (GUILayout.Button(pairHoloLensUsbLabel, GUILayout.Width(quarterWidth)))
             {
-                string newTargetIPs = EditorGUILayout.TextField(
-                    new GUIContent(GUIHorizontalSpacer + "IP Address(es)", "IP(s) of target devices (e.g. 127.0.0.1 | 10.11.12.13)"),
-                    curTargetIps);
-
-                if (newTargetIPs != curTargetIps)
+                EditorApplication.delayCall += () =>
                 {
-                    BuildDeployPrefs.TargetIPs = newTargetIPs;
-                    curTargetIps = newTargetIPs;
-                }
+                    var newConnection = default(ConnectInfo);
+
+                    foreach (var targetDevice in portalConnections.Connections)
+                    {
+                        if (!IsLocalConnection(targetDevice))
+                        {
+                            continue;
+                        }
+
+                        var machineName = BuildDeployPortal.GetMachineName(targetDevice);
+                        var networkInfo = BuildDeployPortal.GetNetworkInfo(targetDevice);
+
+                        if (networkInfo != null)
+                        {
+                            var newIps = new List<string>();
+                            foreach (var adapter in networkInfo.Adapters)
+                            {
+                                newIps.AddRange(from address in adapter.IpAddresses where !address.IpAddress.Contains("0.0.0.0") select address.IpAddress);
+                            }
+
+                            if (newIps.Count == 0)
+                            {
+                                Debug.LogWarning("This HoloLens is not connected to any networks and cannot be paired.");
+                            }
+
+                            foreach (var ip in newIps)
+                            {
+                                if (portalConnections.Connections.Any(connection => connection.IP == ip))
+                                {
+                                    Debug.LogFormat("Already paired");
+                                    continue;
+                                }
+
+                                newConnection.IP = ip;
+                                newConnection.User = targetDevice.User;
+                                newConnection.Password = targetDevice.Password;
+
+                                if (machineName != null)
+                                {
+                                    newConnection.MachineName = machineName.ComputerName;
+                                }
+                            }
+                        }
+                    }
+
+                    if (IsValidIpAddress(newConnection.IP))
+                    {
+                        portalConnections.Connections.Add(newConnection);
+                        for (var i = 0; i < portalConnections.Connections.Count; i++)
+                        {
+                            if (portalConnections.Connections[i].IP == newConnection.IP)
+                            {
+                                currentConnectionInfoIndex = i;
+                                SessionState.SetInt("_MRTK_BuildWindow_CurrentDeviceIndex", currentConnectionInfoIndex);
+                                break;
+                            }
+                        }
+
+                        UpdatePortalConnections();
+                    }
+                };
             }
-            else
+
+            GUI.enabled = true;
+
+            GUILayout.FlexibleSpace();
+
+            var previousLabelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 64;
+            bool useSSL = EditorGUILayout.Toggle(useSSLLabel, BuildDeployPrefs.UseSSL);
+            EditorGUIUtility.labelWidth = previousLabelWidth;
+
+            currentConnectionInfoIndex = EditorGUILayout.Popup(
+                SessionState.GetInt("_MRTK_BuildWindow_CurrentDeviceIndex", 0), targetIps, GUILayout.Width(halfWidth - 48));
+
+            var currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
+
+            bool currentConnectionIsLocal = IsLocalConnection(currentConnection);
+
+            if (currentConnectionIsLocal)
             {
-                // Queue up a repaint if we're still busy, or we'll get stuck
-                // in a disabled state.
+                currentConnection.MachineName = "Local Machine";
+            }
 
-                if (locatorIsSearching)
+            GUI.enabled = IsValidIpAddress(currentConnection.IP);
+
+            if (GUILayout.Button(addConnectionLabel, GUILayout.Width(20)))
+            {
+                portalConnections.Connections.Add(new ConnectInfo("0.0.0.0", currentConnection.User, currentConnection.Password));
+                currentConnectionInfoIndex++;
+                currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
+                UpdatePortalConnections();
+            }
+
+            GUI.enabled = portalConnections.Connections.Count > 1 && currentConnectionInfoIndex != 0;
+
+            if (GUILayout.Button(removeConnectionLabel, GUILayout.Width(20)))
+            {
+                portalConnections.Connections.RemoveAt(currentConnectionInfoIndex);
+                currentConnectionInfoIndex--;
+                currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
+                UpdatePortalConnections();
+            }
+
+            GUI.enabled = true;
+
+            GUILayout.EndHorizontal();
+            GUILayout.Space(5);
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
+            GUILayout.Label(currentConnection.MachineName, GUILayout.Width(halfWidth));
+
+            GUILayout.EndHorizontal();
+
+            previousLabelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 64;
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
+            GUI.enabled = !currentConnectionIsLocal;
+            currentConnection.IP = EditorGUILayout.TextField(
+                ipAddressLabel,
+                currentConnection.IP,
+                GUILayout.Width(halfWidth));
+            GUI.enabled = true;
+
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            currentConnection.User = EditorGUILayout.TextField("Username", currentConnection.User, GUILayout.Width(halfWidth));
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            currentConnection.Password = EditorGUILayout.PasswordField("Password", currentConnection.Password, GUILayout.Width(halfWidth));
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+
+            EditorGUIUtility.labelWidth = 152;
+
+            bool processAll = EditorGUILayout.Toggle(
+                doAllLabel,
+                BuildDeployPrefs.TargetAllConnections,
+                GUILayout.Width(176));
+
+            EditorGUIUtility.labelWidth = 86;
+
+            bool fullReinstall = EditorGUILayout.Toggle(
+                uninstallLabel,
+                BuildDeployPrefs.FullReinstall,
+                GUILayout.ExpandWidth(false));
+            EditorGUIUtility.labelWidth = previousLabelWidth;
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                SessionState.SetInt("_MRTK_BuildWindow_CurrentDeviceIndex", currentConnectionInfoIndex);
+                BuildDeployPrefs.TargetAllConnections = processAll;
+                BuildDeployPrefs.FullReinstall = fullReinstall;
+                BuildDeployPrefs.UseSSL = useSSL;
+
+                // Format our local connection
+                if (currentConnection.IP.Contains("127.0.0.1"))
                 {
-                    Repaint();
+                    currentConnection.IP = "Local Machine";
                 }
 
-                var addressesToPresent = new List<string> { "127.0.0.1" };
+                portalConnections.Connections[currentConnectionInfoIndex] = currentConnection;
+                UpdatePortalConnections();
+                Repaint();
+            }
 
-                if (!locatorIsSearching && locatorHasData)
+            GUILayout.FlexibleSpace();
+
+            // Connect
+            if (!IsLocalConnection(currentConnection))
+            {
+                GUI.enabled = IsValidIpAddress(currentConnection.IP) && IsCredentialsValid(currentConnection);
+
+                if (GUILayout.Button("Connect", GUILayout.Width(quarterWidth)))
                 {
-                    addressesToPresent.Add(xdeGuestIpAddress.ToString());
-                }
+                    EditorApplication.delayCall += () =>
+                    {
+                        var machineName = BuildDeployPortal.GetMachineName(currentConnection);
 
-                var previouslySavedAddress = addressesToPresent.IndexOf(curTargetIps);
+                        if (machineName != null)
+                        {
+                            currentConnection.MachineName = machineName.ComputerName;
+                        }
 
-                if (previouslySavedAddress == -1)
-                {
-                    previouslySavedAddress = 0;
-                }
-
-                EditorGUILayout.BeginHorizontal();
-
-                if (locatorIsSearching && !locatorHasData)
-                {
-                    GUI.enabled = false;
-                }
-
-                var selectedAddressIndex = EditorGUILayout.Popup(GUIHorizontalSpacer + "IP Address", previouslySavedAddress, addressesToPresent.ToArray());
-
-                if (GUILayout.Button(locatorIsSearching ? "Searching" : "Refresh", GUILayout.Width(buttonWidth_Quarter)))
-                {
-                    UpdateXdeStatus();
+                        portalConnections.Connections[currentConnectionInfoIndex] = currentConnection;
+                        UpdatePortalConnections();
+                        Repaint();
+                    };
                 }
 
                 GUI.enabled = true;
-                EditorGUILayout.EndHorizontal();
-
-                var selectedAddress = addressesToPresent[selectedAddressIndex];
-
-                if (curTargetIps != selectedAddress && !locatorIsSearching)
-                {
-                    BuildDeployPrefs.TargetIPs = selectedAddress;
-                }
             }
 
-            // Username/Password (and save seeings, if changed)
-            string curUsername = BuildDeployPrefs.DeviceUser;
-            string newUsername = EditorGUILayout.TextField(GUIHorizontalSpacer + "Username", curUsername);
-            string curPassword = BuildDeployPrefs.DevicePassword;
-            string newPassword = EditorGUILayout.PasswordField(GUIHorizontalSpacer + "Password", curPassword);
-            bool curFullReinstall = BuildDeployPrefs.FullReinstall;
-            bool newFullReinstall = EditorGUILayout.Toggle(
-                new GUIContent(GUIHorizontalSpacer + "Uninstall First", "Uninstall application before installing"), curFullReinstall);
+            GUI.enabled = DevicePortalConnectionEnabled && CanInstall;
 
-            if (newUsername != curUsername ||
-                newPassword != curPassword ||
-                newFullReinstall != curFullReinstall)
+            // Open web portal
+            if (GUILayout.Button("Open Device Portal", GUILayout.Width(quarterWidth)))
             {
-                BuildDeployPrefs.DeviceUser = newUsername;
-                BuildDeployPrefs.DevicePassword = newPassword;
-                BuildDeployPrefs.FullReinstall = newFullReinstall;
+                EditorApplication.delayCall += () => OpenDevicePortal(portalConnections);
             }
 
-            // Build list (with install buttons)
+            GUI.enabled = true;
+
+            GUILayout.EndHorizontal();
+
+            // Build list
             if (builds.Count == 0)
             {
-                GUILayout.Label(GUIHorizontalSpacer + "*** No builds found in build directory", EditorStyles.boldLabel);
+                GUILayout.Label("*** No builds found in build directory", EditorStyles.boldLabel);
             }
             else
             {
-                GUILayout.BeginVertical();
-                scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(buttonWidth_Full), GUILayout.Height(128));
+                EditorGUILayout.Separator();
+                GUILayout.BeginVertical(GUILayout.ExpandHeight(true));
+                scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
 
                 foreach (var fullBuildLocation in builds)
                 {
@@ -584,142 +907,125 @@ namespace HoloToolkit.Unity
                     var directoryDate = Directory.GetLastWriteTime(fullBuildLocation).ToString("yyyy/MM/dd HH:mm:ss");
                     string packageName = fullBuildLocation.Substring(lastBackslashIndex + 1);
 
+                    GUILayout.Space(2);
                     EditorGUILayout.BeginHorizontal();
-                    GUILayout.Space(GUISectionOffset + 15);
+                    GUILayout.Space(12);
 
-                    GUI.enabled = (!locatorIsSearching && locatorHasData || HoloLensUsbConnected);
-                    if (GUILayout.Button("Install", GUILayout.Width(120.0f)))
+                    GUI.enabled = CanInstall;
+                    if (GUILayout.Button("Install", GUILayout.Width(96)))
                     {
-                        string thisBuildLocation = fullBuildLocation;
-                        string[] ipList = ParseIPList(curTargetIps);
                         EditorApplication.delayCall += () =>
                         {
-                            InstallAppOnDevicesList(thisBuildLocation, ipList);
+                            if (processAll)
+                            {
+                                InstallAppOnDevicesList(fullBuildLocation, portalConnections);
+                            }
+                            else
+                            {
+                                InstallOnTargetDevice(fullBuildLocation, currentConnection);
+                            }
                         };
                     }
 
                     GUI.enabled = true;
 
-                    GUILayout.Space(5);
-                    GUILayout.Label(packageName + " (" + directoryDate + ")");
+                    // Uninstall...
+                    GUI.enabled = CanInstall;
+
+                    if (GUILayout.Button("Uninstall", GUILayout.Width(96)))
+                    {
+                        EditorApplication.delayCall += () =>
+                        {
+                            if (processAll)
+                            {
+                                UninstallAppOnDevicesList(portalConnections);
+                            }
+                            else
+                            {
+                                UninstallAppOnTargetDevice(familyPackageName, currentConnection);
+                            }
+                        };
+                    }
+
+                    GUI.enabled = true;
+
+                    bool canLaunchLocal = currentConnectionInfoIndex == 0 && IsHoloLensConnectedUsb;
+                    bool canLaunchRemote = DevicePortalConnectionEnabled && CanInstall && currentConnectionInfoIndex != 0;
+
+                    // Launch app...
+                    GUI.enabled = canLaunchLocal || canLaunchRemote;
+
+                    if (GUILayout.Button(new GUIContent(isAppRunning ? "Kill App" : "Launch App", "These are remote commands only"), GUILayout.Width(96)))
+                    {
+                        EditorApplication.delayCall += () =>
+                        {
+                            if (isAppRunning)
+                            {
+                                if (processAll)
+                                {
+                                    KillAppOnDeviceList(portalConnections);
+                                    isAppRunning = false;
+                                }
+                                else
+                                {
+                                    isAppRunning = !KillAppOnTargetDevice(currentConnection);
+                                }
+                            }
+                            else
+                            {
+                                if (processAll)
+                                {
+                                    LaunchAppOnDeviceList(portalConnections);
+                                    isAppRunning = true;
+                                }
+                                else
+                                {
+                                    isAppRunning = LaunchAppOnTargetDevice(currentConnection);
+                                }
+                            }
+                        };
+                    }
+
+                    GUI.enabled = true;
+
+                    // Log file
+                    string localLogPath = string.Format("%USERPROFILE%\\AppData\\Local\\Packages\\{0}\\TempState\\UnityPlayer.log", PlayerSettings.productName);
+                    bool localLogExists = File.Exists(localLogPath);
+
+                    GUI.enabled = localLogExists || canLaunchRemote || canLaunchLocal;
+
+                    if (GUILayout.Button("View Log", GUILayout.Width(96)))
+                    {
+                        EditorApplication.delayCall += () =>
+                        {
+                            if (processAll)
+                            {
+                                OpenLogFilesOnDeviceList(portalConnections, localLogPath);
+                            }
+                            else
+                            {
+                                OpenLogFileForTargetDevice(currentConnection, localLogPath);
+                            }
+                        };
+                    }
+
+                    GUI.enabled = true;
+
+                    GUILayout.Space(8);
+                    GUILayout.Label(new GUIContent(packageName + " (" + directoryDate + ")"));
                     EditorGUILayout.EndHorizontal();
                 }
+
                 GUILayout.EndScrollView();
                 GUILayout.EndVertical();
-
-                EditorGUILayout.Separator();
             }
 
-            GUILayout.EndVertical();
-            GUILayout.Space(GUISectionOffset);
-
-            // Utilities section
-            GUILayout.BeginVertical();
-            GUILayout.Label("Utilities");
-
-            // Open AppX packages location
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                GUI.enabled = builds.Count > 0;
-
-                GUILayout.FlexibleSpace();
-
-                if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(buttonWidth_Full)))
-                {
-                    Process.Start("explorer.exe", "/f /open," + Path.GetFullPath(curBuildDirectory + "/" + PlayerSettings.productName + "/AppPackages"));
-                }
-
-                GUI.enabled = true;
-            }
-
-            // Open web portal
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                GUI.enabled = ShouldWebPortalBeEnabled && (!locatorIsSearching && locatorHasData || HoloLensUsbConnected);
-                GUILayout.FlexibleSpace();
-
-                if (GUILayout.Button("Open Device Portal", GUILayout.Width(buttonWidth_Full)))
-                {
-                    OpenWebPortalForIPs(curTargetIps);
-                }
-
-                GUI.enabled = true;
-            }
-
-            // Launch app..
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                GUI.enabled = ShouldLaunchAppBeEnabled && (!locatorIsSearching && locatorHasData || HoloLensUsbConnected);
-                GUILayout.FlexibleSpace();
-
-                if (GUILayout.Button("Launch Application", GUILayout.Width(buttonWidth_Full)))
-                {
-                    // If already running, kill it (button is a toggle)
-                    if (IsAppRunning_FirstIPCheck(PlayerSettings.productName, curTargetIps))
-                    {
-                        KillAppOnIPs(curTargetIps);
-                    }
-                    else
-                    {
-                        LaunchAppOnIPs(curTargetIps);
-                    }
-                }
-
-                GUI.enabled = true;
-            }
-
-            // Log file
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                string localLogPath = string.Empty;
-                bool localLogExists = false;
-
-                bool remoteDeviceDetected = !locatorIsSearching && locatorHasData || HoloLensUsbConnected && !string.IsNullOrEmpty(BuildDeployPrefs.TargetIPs);
-                bool isLocalBuild = BuildDeployPrefs.BuildPlatform == BuildPlatformEnum.x64.ToString();
-                if (!remoteDeviceDetected)
-                {
-                    localLogPath = string.Format("%USERPROFILE%\\AppData\\Local\\Packages\\{0}\\TempState\\UnityPlayer.log", PlayerSettings.productName);
-                    localLogExists = File.Exists(localLogPath);
-                }
-
-                GUI.enabled = ShouldLogViewBeEnabled && (remoteDeviceDetected || isLocalBuild && localLogExists);
-                GUILayout.FlexibleSpace();
-
-                if (GUILayout.Button("View Log File", GUILayout.Width(buttonWidth_Full)))
-                {
-                    if (remoteDeviceDetected)
-                    {
-                        OpenLogFileForIPs(curTargetIps);
-                    }
-                    else
-                    {
-                        Process.Start(localLogPath);
-                    }
-                }
-
-                GUI.enabled = true;
-            }
-
-            // Uninstall...
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                GUI.enabled = ShouldLogViewBeEnabled && (!locatorIsSearching && locatorHasData || HoloLensUsbConnected);
-                GUILayout.FlexibleSpace();
-
-                if (GUILayout.Button("Uninstall Application", GUILayout.Width(buttonWidth_Full)))
-                {
-                    EditorApplication.delayCall += () =>
-                    {
-                        UninstallAppOnDevicesList(ParseIPList(curTargetIps));
-                    };
-                }
-
-                GUI.enabled = true;
-            }
-
-            //GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
+
+        #endregion // Methods
+
+        #region Utilities
 
         private void BuildAll(bool install = true)
         {
@@ -747,16 +1053,55 @@ namespace HoloToolkit.Unity
             if (install)
             {
                 string fullBuildLocation = CalcMostRecentBuild();
-                string[] ipList = ParseIPList(BuildDeployPrefs.TargetIPs);
-                InstallAppOnDevicesList(fullBuildLocation, ipList);
+
+                if (BuildDeployPrefs.TargetAllConnections)
+                {
+                    InstallAppOnDevicesList(fullBuildLocation, portalConnections);
+                }
+                else
+                {
+                    InstallOnTargetDevice(fullBuildLocation, portalConnections.Connections[currentConnectionInfoIndex]);
+                }
             }
+        }
+
+        private void UpdateBuilds()
+        {
+            builds.Clear();
+
+            try
+            {
+                appPackageDirectories.Clear();
+                string[] buildList = Directory.GetDirectories(BuildDeployPrefs.AbsoluteBuildDirectory, "*", SearchOption.AllDirectories);
+                foreach (string appBuild in buildList)
+                {
+                    if (appBuild.Contains("AppPackages") && !appBuild.Contains("AppPackages\\"))
+                    {
+                        appPackageDirectories.AddRange(Directory.GetDirectories(appBuild));
+                    }
+                }
+
+                IEnumerable<string> selectedDirectories =
+                    from string directory in appPackageDirectories
+                    orderby Directory.GetLastWriteTime(directory) descending
+                    select Path.GetFullPath(directory);
+                builds.AddRange(selectedDirectories);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // unused
+            }
+
+            familyPackageName = CalcPackageFamilyName();
+
+            timeLastUpdatedBuilds = Time.realtimeSinceStartup;
         }
 
         private string CalcMostRecentBuild()
         {
             UpdateBuilds();
             DateTime mostRecent = DateTime.MinValue;
-            string mostRecentBuild = "";
+            string mostRecentBuild = string.Empty;
 
             foreach (var fullBuildLocation in builds)
             {
@@ -772,15 +1117,69 @@ namespace HoloToolkit.Unity
             return mostRecentBuild;
         }
 
-        private string CalcPackageFamilyName()
+        private void UpdatePortalConnections()
         {
+            targetIps = new string[portalConnections.Connections.Count];
+            if (currentConnectionInfoIndex > portalConnections.Connections.Count - 1)
+            {
+                currentConnectionInfoIndex = portalConnections.Connections.Count - 1;
+            }
+
+            targetIps[0] = "Local Machine";
+            for (int i = 1; i < targetIps.Length; i++)
+            {
+                targetIps[i] = portalConnections.Connections[i].MachineName;
+            }
+
+            BuildDeployPrefs.DevicePortalConnections = JsonUtility.ToJson(portalConnections);
+            Repaint();
+        }
+
+        private static bool IsLocalConnection(ConnectInfo connection)
+        {
+            return connection.IP.Contains("Local Machine") || connection.IP.Contains("127.0.0.1");
+        }
+
+        private static bool IsCredentialsValid(ConnectInfo connection)
+        {
+            return !string.IsNullOrEmpty(connection.User) && !string.IsNullOrEmpty(connection.IP);
+        }
+
+        private static bool IsValidIpAddress(string ip)
+        {
+            if (string.IsNullOrEmpty(ip))
+            {
+                return false;
+            }
+
+            if (ip.Contains("Local Machine"))
+            {
+                return true;
+            }
+
+            if (ip.Contains("0.0.0.0"))
+            {
+                return false;
+            }
+
+            var subAddresses = ip.Split('.');
+            return subAddresses.Length > 3;
+        }
+
+        private static string CalcPackageFamilyName()
+        {
+            if (appPackageDirectories.Count == 0)
+            {
+                return string.Empty;
+            }
+
             // Find the manifest
             string[] manifests = Directory.GetFiles(BuildDeployPrefs.AbsoluteBuildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
 
             if (manifests.Length == 0)
             {
                 Debug.LogError("Unable to find manifest file for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ")");
-                return "";
+                return string.Empty;
             }
 
             string manifest = manifests[0];
@@ -813,8 +1212,49 @@ namespace HoloToolkit.Unity
             return string.Empty;
         }
 
-        private void InstallAppOnDevicesList(string buildPath, string[] targetList)
+        #endregion
+
+        #region Device Portal Commands
+
+        private static void OpenDevicePortal(DevicePortalConnections targetDevices)
         {
+            MachineName usbMachine = null;
+
+            if (IsHoloLensConnectedUsb)
+            {
+                usbMachine = BuildDeployPortal.GetMachineName(targetDevices.Connections.FirstOrDefault(targetDevice => targetDevice.IP.Contains("Local Machine")));
+            }
+
+            for (int i = 0; i < targetDevices.Connections.Count; i++)
+            {
+                bool isLocalMachine = IsLocalConnection(targetDevices.Connections[i]);
+
+                if (isLocalMachine && !IsHoloLensConnectedUsb)
+                {
+                    continue;
+                }
+
+                if (IsHoloLensConnectedUsb)
+                {
+                    if (isLocalMachine || usbMachine != null && usbMachine.ComputerName != targetDevices.Connections[i].MachineName)
+                    {
+                        BuildDeployPortal.OpenWebPortal(targetDevices.Connections[i]);
+                    }
+                }
+                else
+                {
+                    if (!isLocalMachine)
+                    {
+                        BuildDeployPortal.OpenWebPortal(targetDevices.Connections[i]);
+                    }
+                }
+            }
+        }
+
+        private static void InstallOnTargetDevice(string buildPath, ConnectInfo targetDevice)
+        {
+            isAppRunning = false;
+
             string packageFamilyName = CalcPackageFamilyName();
 
             if (string.IsNullOrEmpty(packageFamilyName))
@@ -822,57 +1262,48 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            for (int i = 0; i < targetList.Length; i++)
+            if (IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb || buildPath.Contains("x64"))
             {
-                try
+                FileInfo[] installerFiles = new DirectoryInfo(buildPath).GetFiles("*.ps1");
+                if (installerFiles.Length == 1)
                 {
-                    bool completedUninstall = false;
-                    string ip = FinalizeIP(targetList[i]);
-                    if (BuildDeployPrefs.FullReinstall &&
-                        BuildDeployPortal.IsAppInstalled(packageFamilyName, new BuildDeployPortal.ConnectInfo(ip, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword)))
+                    var pInfo = new ProcessStartInfo
                     {
-                        EditorUtility.DisplayProgressBar("Installing on devices", "Uninstall (" + ip + ")", i / (float)targetList.Length);
-                        if (!UninstallApp(packageFamilyName, ip))
-                        {
-                            Debug.LogError("Uninstall failed - skipping install (" + ip + ")");
-                            continue;
-                        }
+                        FileName = "powershell.exe",
+                        CreateNoWindow = false,
+                        Arguments = string.Format("-executionpolicy bypass -File \"{0}\"", installerFiles[0].FullName)
+                    };
 
-                        completedUninstall = true;
-                    }
+                    var process = new Process { StartInfo = pInfo };
 
-                    EditorUtility.DisplayProgressBar("Installing on devices", "Install (" + ip + ")", (i + (completedUninstall ? 0.5f : 0.0f)) / targetList.Length);
-                    InstallApp(buildPath, ip);
+                    process.Start();
                 }
-                catch (Exception ex)
-                {
-                    Debug.LogError(ex.ToString());
-                }
+
+                return;
             }
-            EditorUtility.ClearProgressBar();
-        }
 
-        private static bool InstallApp(string buildPath, string targetDevice)
-        {
+            if (buildPath.Contains("x64"))
+            {
+                return;
+            }
+
             // Get the appx path
             FileInfo[] files = new DirectoryInfo(buildPath).GetFiles("*.appx");
             files = files.Length == 0 ? new DirectoryInfo(buildPath).GetFiles("*.appxbundle") : files;
 
             if (files.Length == 0)
             {
-                Debug.LogError("No APPX found in folder build folder (" + buildPath + ")");
-                return false;
+                Debug.LogErrorFormat("No APPX found in folder build folder ({0})", buildPath);
+                return;
             }
 
-            // Connection info
-            var connectInfo = new BuildDeployPortal.ConnectInfo(targetDevice, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword);
+            BuildDeployPortal.IsAppInstalled(packageFamilyName, targetDevice);
 
             // Kick off the install
-            Debug.Log("Installing build on: " + targetDevice);
-            return BuildDeployPortal.InstallApp(files[0].FullName, connectInfo);
+            BuildDeployPortal.InstallApp(files[0].FullName, targetDevice);
         }
 
-        private void UninstallAppOnDevicesList(string[] targetList)
+        private static void InstallAppOnDevicesList(string buildPath, DevicePortalConnections targetList)
         {
             string packageFamilyName = CalcPackageFamilyName();
 
@@ -881,128 +1312,164 @@ namespace HoloToolkit.Unity
                 return;
             }
 
+            if (BuildDeployPrefs.FullReinstall)
+            {
+                UninstallAppOnDevicesList(targetList);
+            }
+
             try
             {
-                for (int i = 0; i < targetList.Length; i++)
+                for (int i = 0; i < targetList.Connections.Count; i++)
                 {
-                    string ip = FinalizeIP(targetList[i]);
-                    EditorUtility.DisplayProgressBar("Uninstalling application", "Uninstall (" + ip + ")", i / (float)targetList.Length);
-                    UninstallApp(packageFamilyName, ip);
+                    EditorUtility.DisplayProgressBar("Installing on devices",
+                        string.Format("Installing on {0}", targetList.Connections[i].MachineName),
+                        i / (float)targetList.Connections.Count);
+
+                    InstallOnTargetDevice(buildPath, targetList.Connections[i]);
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Debug.LogError(ex.ToString());
+                Debug.LogError(e.Message);
             }
 
             EditorUtility.ClearProgressBar();
         }
 
-        private bool UninstallApp(string packageFamilyName, string targetDevice)
+        private static void UninstallAppOnTargetDevice(string packageFamilyName, ConnectInfo currentConnection, bool showDialog = true)
         {
-            // Connection info
-            var connectInfo = new BuildDeployPortal.ConnectInfo(targetDevice, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword);
+            isAppRunning = false;
 
-            // Kick off the install
-            Debug.Log("Uninstall build: " + targetDevice);
-            return BuildDeployPortal.UninstallApp(packageFamilyName, connectInfo);
+            if (IsLocalConnection(currentConnection) && !IsHoloLensConnectedUsb)
+            {
+                var pInfo = new ProcessStartInfo
+                {
+                    FileName = "powershell.exe",
+                    CreateNoWindow = true,
+                    Arguments = string.Format("-windowstyle hidden -nologo Get-AppxPackage *{0}* | Remove-AppxPackage", packageFamilyName)
+                };
+
+                var process = new Process { StartInfo = pInfo };
+                process.Start();
+            }
+            else
+            {
+                if (BuildDeployPortal.IsAppInstalled(packageFamilyName, currentConnection))
+                {
+                    BuildDeployPortal.UninstallApp(packageFamilyName, currentConnection, showDialog);
+                }
+            }
         }
 
-        private void UpdateBuilds()
+        private static void UninstallAppOnDevicesList(DevicePortalConnections targetList)
         {
-            builds.Clear();
+            string packageFamilyName = CalcPackageFamilyName();
+
+            if (string.IsNullOrEmpty(packageFamilyName))
+            {
+                return;
+            }
 
             try
             {
-                var appPackageDirectories = new List<string>();
-                string[] buildList = Directory.GetDirectories(BuildDeployPrefs.AbsoluteBuildDirectory);
-
-                foreach (string appBuild in buildList)
+                for (int i = 0; i < targetList.Connections.Count; i++)
                 {
-                    string appPackageDirectory = appBuild + @"\AppPackages";
-                    if (Directory.Exists(appPackageDirectory))
-                    {
-                        appPackageDirectories.AddRange(Directory.GetDirectories(appPackageDirectory));
-                    }
+                    EditorUtility.DisplayProgressBar("Uninstalling on devices", string.Format("Uninstalling ({0})", targetList.Connections[i].IP), i / (float)targetList.Connections.Count);
+                    UninstallAppOnTargetDevice(packageFamilyName, targetList.Connections[i], false);
                 }
-
-                IEnumerable<string> selectedDirectories =
-                    from string directory in appPackageDirectories
-                    orderby Directory.GetLastWriteTime(directory) descending
-                    select Path.GetFullPath(directory);
-                builds.AddRange(selectedDirectories);
             }
-            catch (DirectoryNotFoundException)
+            catch (Exception e)
             {
-                // unused
+                Debug.LogError(e.ToString());
             }
 
-            timeLastUpdatedBuilds = Time.realtimeSinceStartup;
+            EditorUtility.ClearProgressBar();
         }
 
-        private void Update()
+        private static bool LaunchAppOnTargetDevice(ConnectInfo targetDevice, bool showDialog = true)
         {
-            if (Time.realtimeSinceStartup - timeLastUpdatedBuilds > UpdateBuildsPeriod)
+            string packageFamilyName = CalcPackageFamilyName();
+
+            if (string.IsNullOrEmpty(packageFamilyName))
             {
-                UpdateBuilds();
+                return false;
             }
+
+            if (IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb)
+            {
+                return false;
+            }
+
+            if (showDialog)
+            {
+                EditorUtility.DisplayProgressBar("Launching Application", string.Format("Launching {0} on {1}", packageFamilyName, targetDevice.MachineName), 0.25f);
+            }
+
+            bool success = !BuildDeployPortal.IsAppRunning(PlayerSettings.productName, targetDevice) &&
+                            BuildDeployPortal.LaunchApp(packageFamilyName, targetDevice, false);
+
+            if (showDialog)
+            {
+                EditorUtility.ClearProgressBar();
+            }
+
+            return success;
         }
 
-        public static string[] ParseIPList(string targetIPs)
+        private static void LaunchAppOnDeviceList(DevicePortalConnections targetDevices)
         {
-            string[] ipList = { };
-
-            if (string.IsNullOrEmpty(targetIPs))
+            for (int i = 0; i < targetDevices.Connections.Count; i++)
             {
-                return ipList;
-            }
+                EditorUtility.DisplayProgressBar("Launching App on devices",
+                    string.Format("Launching on {0}", targetDevices.Connections[i].IP),
+                    i / (float)targetDevices.Connections.Count);
 
-            string[] separators = { ";", " " };
-            ipList = targetIPs.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-            return ipList;
+                LaunchAppOnTargetDevice(targetDevices.Connections[i], false);
+            }
         }
 
-        private static string FinalizeIP(string ip)
+        private static bool KillAppOnTargetDevice(ConnectInfo targetDevice, bool showDialog = true)
         {
-            // If it's local, add the port
-            if (ip == "127.0.0.1")
+            string packageFamilyName = CalcPackageFamilyName();
+
+            if (string.IsNullOrEmpty(packageFamilyName))
             {
-                ip += ":10080";
+                return false;
             }
 
-            return ip;
+            if (IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb)
+            {
+                return false;
+            }
+
+            if (showDialog)
+            {
+                EditorUtility.DisplayProgressBar("Stopping Application", string.Format("Stopping {0} on {1}", packageFamilyName, targetDevice.MachineName), 0.5f);
+            }
+
+            bool success = BuildDeployPortal.IsAppRunning(PlayerSettings.productName, targetDevice) &&
+                           BuildDeployPortal.KillApp(packageFamilyName, targetDevice, false);
+
+            if (showDialog)
+            {
+                EditorUtility.ClearProgressBar();
+            }
+
+            return success;
         }
 
-        public static void OpenWebPortalForIPs(string targetIPs)
+        private static void KillAppOnDeviceList(DevicePortalConnections targetDevices)
         {
-            string[] ipList = ParseIPList(targetIPs);
-
-            for (int i = 0; i < ipList.Length; i++)
+            for (int i = 0; i < targetDevices.Connections.Count; i++)
             {
-                string url = string.Format("http://{0}", FinalizeIP(ipList[i]));
-
-                // Run the process
-                Process.Start(url);
+                EditorUtility.DisplayProgressBar("Stopping Application on devices",
+                    string.Format("Stopping on {0}", targetDevices.Connections[i].MachineName),
+                    i / (float)targetDevices.Connections.Count);
+                KillAppOnTargetDevice(targetDevices.Connections[i], false);
             }
         }
 
-        private bool IsAppRunning_FirstIPCheck(string appName, string targetIPs)
-        {
-            // Just pick the first one and use it...
-            string[] ipList = ParseIPList(targetIPs);
-
-            if (ipList.Length > 0)
-            {
-                string targetIP = FinalizeIP(ipList[0]);
-                return BuildDeployPortal.IsAppRunning(
-                    appName,
-                    new BuildDeployPortal.ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
-            }
-
-            return false;
-        }
-
-        private void LaunchAppOnIPs(string targetIPs)
+        private static void OpenLogFileForTargetDevice(ConnectInfo targetDevice, string localLogPath)
         {
             string packageFamilyName = CalcPackageFamilyName();
 
@@ -1011,59 +1478,29 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            string[] ipList = ParseIPList(targetIPs);
-
-            for (int i = 0; i < ipList.Length; i++)
+            if (IsLocalConnection(targetDevice) && File.Exists(localLogPath))
             {
-                string targetIP = FinalizeIP(ipList[i]);
-                Debug.Log("Launch app on: " + targetIP);
-                BuildDeployPortal.LaunchApp(
-                    packageFamilyName,
-                    new BuildDeployPortal.ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
-            }
-        }
-
-        private void KillAppOnIPs(string targetIPs)
-        {
-            string packageFamilyName = CalcPackageFamilyName();
-
-            if (string.IsNullOrEmpty(packageFamilyName))
-            {
+                Process.Start(localLogPath);
                 return;
             }
 
-            string[] ipList = ParseIPList(targetIPs);
-
-            for (int i = 0; i < ipList.Length; i++)
+            if (!IsLocalConnection(targetDevice) || IsHoloLensConnectedUsb)
             {
-                string targetIP = FinalizeIP(ipList[i]);
-                Debug.Log("Kill app on: " + targetIP);
-                BuildDeployPortal.KillApp(
-                    packageFamilyName,
-                    new BuildDeployPortal.ConnectInfo(targetIP, BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
-            }
-        }
-
-        public void OpenLogFileForIPs(string targetIPs)
-        {
-            string packageFamilyName = CalcPackageFamilyName();
-
-            if (string.IsNullOrEmpty(packageFamilyName))
-            {
+                BuildDeployPortal.DeviceLogFile_View(packageFamilyName, targetDevice);
                 return;
             }
 
-            string[] ipList = ParseIPList(targetIPs);
+            Debug.Log("No Log Found");
+        }
 
-            for (int i = 0; i < ipList.Length; i++)
+        private static void OpenLogFilesOnDeviceList(DevicePortalConnections targetDevices, string localLogPath)
+        {
+            for (int i = 0; i < targetDevices.Connections.Count; i++)
             {
-                // Use the Device Portal REST API
-                BuildDeployPortal.DeviceLogFile_View(
-                    packageFamilyName,
-                    new BuildDeployPortal.ConnectInfo(FinalizeIP(ipList[i]), BuildDeployPrefs.DeviceUser, BuildDeployPrefs.DevicePassword));
+                OpenLogFileForTargetDevice(targetDevices.Connections[i], localLogPath);
             }
         }
 
-        #endregion // Methods
+        #endregion
     }
 }

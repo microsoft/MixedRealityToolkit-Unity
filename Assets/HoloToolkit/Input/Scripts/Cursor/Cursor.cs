@@ -316,7 +316,7 @@ namespace HoloToolkit.Unity.InputModule
                     // If no modifier is on the target, just use the hit result to set cursor position
                     // Get the look forward by using distance between pointer origin and target position
                     // (This may not be strictly accurate for extremely wobbly pointers, but it should produce usable results)
-                    float distanceToTarget = Vector3.Distance(Pointer.Rays[0].origin, focusDetails.Point);
+                    float distanceToTarget = Vector3.Distance(Pointer.Rays[0].Origin, focusDetails.Point);
                     lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, distanceToTarget);
                     targetPosition = focusDetails.Point + (lookForward * SurfaceCursorDistance);
                     Vector3 lookRotation = Vector3.Slerp(focusDetails.Normal, lookForward, LookRotationBlend);

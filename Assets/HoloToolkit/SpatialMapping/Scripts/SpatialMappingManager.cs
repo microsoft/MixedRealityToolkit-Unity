@@ -44,7 +44,6 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// <summary>
         /// Time when StartObserver() was called.
         /// </summary>
-        [HideInInspector]
         public float StartTime { get; private set; }
 
         /// <summary>

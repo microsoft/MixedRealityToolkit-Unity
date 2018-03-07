@@ -54,6 +54,9 @@ namespace HoloToolkit.Unity.InputModule
         public bool EnableRotation = true;
         public bool EnableStrafe = true;
 
+        [Tooltip("Makes sure you don't get put 'on top' of holograms, just on the floor")]
+        public bool StayOnTheFloor = false;
+
         public float RotationSize = 45.0f;
         public float StrafeAmount = 0.5f;
 
@@ -62,7 +65,7 @@ namespace HoloToolkit.Unity.InputModule
         private Animator animationController;
 
         [SerializeField]
-        private bool useCustomMapping;
+        private bool useCustomMapping = false;
 
         /// <summary>
         /// The fade control allows us to fade out and fade in the scene.
@@ -287,11 +290,18 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="worldPosition"></param>
         public void SetWorldPosition(Vector3 worldPosition)
         {
+            var originalY = transform.position.y;
+
             // There are two things moving the camera: the camera parent (that this script is attached to)
             // and the user's head (which the MR device is attached to. :)). When setting the world position,
             // we need to set it relative to the user's head in the scene so they are looking/standing where 
             // we expect.
-            transform.position = worldPosition - (CameraCache.Main.transform.position - transform.position);
+            var newPosition = worldPosition - (CameraCache.Main.transform.position - transform.position);
+            if (StayOnTheFloor)
+            {
+                newPosition.y = originalY;
+            }
+            transform.position = newPosition;
         }
 
         private void EnableMarker()

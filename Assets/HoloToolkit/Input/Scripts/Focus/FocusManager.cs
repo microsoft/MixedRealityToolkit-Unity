@@ -139,7 +139,7 @@ namespace HoloToolkit.Unity.InputModule
                 PreviousEndObject = End.Object;
                 RayStepIndex = rayStepIndex;
 
-                StartPoint = sourceRay.origin;
+                StartPoint = sourceRay.Origin;
                 End = new FocusDetails
                 {
                     Point = hit.point,
@@ -154,7 +154,7 @@ namespace HoloToolkit.Unity.InputModule
                 // it's already been updated in the first physics raycast.
 
                 RayStepIndex = rayStepIndex;
-                StartPoint = sourceRay.origin;
+                StartPoint = sourceRay.Origin;
                 End = new FocusDetails
                 {
                     Point = hit.point,
@@ -171,11 +171,11 @@ namespace HoloToolkit.Unity.InputModule
                 RayStep finalStep = PointingSource.Rays[PointingSource.Rays.Length - 1];
                 RayStepIndex = 0;
 
-                StartPoint = firstStep.origin;
+                StartPoint = firstStep.Origin;
                 End = new FocusDetails
                 {
-                    Point = finalStep.terminus,
-                    Normal = (-finalStep.direction),
+                    Point = finalStep.Terminus,
+                    Normal = (-finalStep.Direction),
                     Object = null
                 };
             }
@@ -552,8 +552,9 @@ namespace HoloToolkit.Unity.InputModule
             RayStep rayStep = default(RayStep);
             RaycastHit physicsHit = default(RaycastHit);
 
-            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for " + pointer.GetType());
-            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for " + pointer.GetType());
+            // Comment back in GetType() only when debugging for a specific pointer.
+            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for pointer "/* + pointer.GetType()*/);
+            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for pointer "/* + pointer.GetType()*/);
 
             // Check raycast for each step in the pointing source
             for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
@@ -587,12 +588,12 @@ namespace HoloToolkit.Unity.InputModule
             // If there is only one priority, don't prioritize
             if (prioritizedLayerMasks.Length == 1)
             {
-                isHit = Physics.Raycast(step.origin, step.direction, out physicsHit, step.length, prioritizedLayerMasks[0]);
+                isHit = Physics.Raycast(step.Origin, step.Direction, out physicsHit, step.Length, prioritizedLayerMasks[0]);
             }
             else
             {
                 // Raycast across all layers and prioritize
-                RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(step.origin, step.direction, step.length, Physics.AllLayers), prioritizedLayerMasks);
+                RaycastHit? hit = PrioritizeHits(Physics.RaycastAll(step.Origin, step.Direction, step.Length, Physics.AllLayers), prioritizedLayerMasks);
                 isHit = hit.HasValue;
 
                 if (isHit)
@@ -606,7 +607,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void RaycastUnityUI(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-            Debug.Assert(pointer.End.Point != Vector3.zero, string.Format("No pointer {0} end point found to raycast against!", pointer.PointingSource.GetType()));
+            Debug.Assert(pointer.End.Point != Vector3.zero, "No pointer source end point found to raycast against!");
             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusManager before you can process uGUI raycasting.");
 
             RaycastResult uiRaycastResult = default(RaycastResult);
@@ -614,8 +615,9 @@ namespace HoloToolkit.Unity.InputModule
             RayStep rayStep = default(RayStep);
             int rayStepIndex = 0;
 
-            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for " + pointer.GetType());
-            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for " + pointer.GetType());
+            // Comment back in GetType() only when debugging for a specific pointer.
+            Debug.Assert(pointer.PointingSource.Rays != null, "No valid rays for pointer "/* + pointer.GetType()*/);
+            Debug.Assert(pointer.PointingSource.Rays.Length > 0, "No valid rays for pointer "/* + pointer.GetType()*/);
 
             // Cast rays for every step until we score a hit
             for (int i = 0; i < pointer.PointingSource.Rays.Length; i++)
@@ -629,7 +631,8 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Check if we need to overwrite the physics raycast info
-            if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.isValid && uiRaycastResult.module.eventCamera == UIRaycastCamera)
+            if ((pointer.End.Object == null || overridePhysicsRaycast) && uiRaycastResult.isValid &&
+                 uiRaycastResult.module != null && uiRaycastResult.module.eventCamera == UIRaycastCamera)
             {
                 newUiRaycastPosition.x = uiRaycastResult.screenPosition.x;
                 newUiRaycastPosition.y = uiRaycastResult.screenPosition.y;
@@ -650,8 +653,8 @@ namespace HoloToolkit.Unity.InputModule
         private bool RaycastUnityUIStep(PointerData pointer, RayStep step, LayerMask[] prioritizedLayerMasks, out bool overridePhysicsRaycast, out RaycastResult uiRaycastResult)
         {
             // Move the uiRaycast camera to the current pointer's position.
-            UIRaycastCamera.transform.position = step.origin;
-            UIRaycastCamera.transform.forward = step.direction;
+            UIRaycastCamera.transform.position = step.Origin;
+            UIRaycastCamera.transform.forward = step.Direction;
 
             // We always raycast from the center of the camera.
             pointer.UnityUIPointerData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
@@ -862,13 +865,14 @@ namespace HoloToolkit.Unity.InputModule
 
         /// <summary>
         /// Helper for assigning world space canvases event cameras.
-        /// <remarks>Can be used at runtime.</remarks>
+        /// <remarks>Warning! Very expensive. Use sparingly at runtime.</remarks>
         /// </summary>
         public void UpdateCanvasEventSystems()
         {
             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusManager before updating your canvases.");
 
             // This will also find disabled GameObjects in the scene.
+            // Warning! this look up is very expensive!
             var sceneCanvases = Resources.FindObjectsOfTypeAll<Canvas>();
 
             for (var i = 0; i < sceneCanvases.Length; i++)

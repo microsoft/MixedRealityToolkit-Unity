@@ -32,12 +32,11 @@ namespace HoloToolkit.Unity.Boundary
             UsePresetXAndZWithHeadHeight
         }
 
-        private int frameWaitHack = 0;
-
         [SerializeField]
         [Tooltip("Optional container object reference. If null, this script will move the object it's attached to.")]
-        private Transform containerObject;
+        private Transform containerObject = null;
 
+#if UNITY_2017_2_OR_NEWER
         [SerializeField]
         [Tooltip("Select this if the container should be placed in front of the head on app launch in a room scale app.")]
         private AlignmentType alignmentType = AlignmentType.AlignWithHeadHeight;
@@ -51,6 +50,9 @@ namespace HoloToolkit.Unity.Boundary
         private Vector3 roomScaleSpaceTypePosition = Vector3.zero;
 
         private Vector3 contentPosition = Vector3.zero;
+
+        private int frameWaitHack = 0;
+#endif
 
         private void Awake()
         {
