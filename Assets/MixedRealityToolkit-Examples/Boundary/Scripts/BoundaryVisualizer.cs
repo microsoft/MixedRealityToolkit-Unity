@@ -11,14 +11,15 @@ namespace MixedRealityToolkit.Examples.Boundary
     /// </summary>
     public class BoundaryVisualizer : MonoBehaviour
     {
-        [Tooltip("Material used to draw the rectangle bounds")]
-        public Material BoundsMaterial;
+        [Tooltip("Material used to draw the inscribed rectangle bounds")]
+        [SerializeField]
+        private Material BoundsMaterial;
 
         private void Start()
         {
-            this.AddRectangleBounds();
-            this.AddIndicators();
-            this.AddQuad();
+            AddQuad();
+            AddRectangleBounds();
+            AddIndicators();
         }
 
         /// <summary>
@@ -92,7 +93,7 @@ namespace MixedRealityToolkit.Examples.Boundary
                     marker.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
                     if (BoundaryManager.Instance.ContainsObject(position))
                     {
-                        marker.GetComponent<MeshRenderer>().material = this.BoundsMaterial;
+                        marker.GetComponent<MeshRenderer>().sharedMaterial = this.BoundsMaterial;
                     }
                 }
             }
