@@ -38,7 +38,7 @@ UI Text Mesh prefab with optimized scaling factor at 2-meter distance. (Please r
 ![Assigning font file and material](../../../External/ReadMeImages/TextPrefabInstructions04.png)
 
 4. Follow the same steps for the sample text layout prefabs in [HoloToolkit-Examples\Text](../../HoloToolkit-Examples/UX/Prefabs)
-![Sample layout prefabs](External/ReadMeImages/TextPrefabInstructions05.png)
+![Sample layout prefabs](../../../External/ReadMeImages/TextPrefabInstructions05.png)
 
 **Working with Fonts in Unity**
 
