@@ -2,8 +2,6 @@
 
 Useful common UX controls that you can leverage in your application.
 
-
-
 ### [Materials](Materials)
 
 Materials used in prefabs
@@ -12,7 +10,7 @@ Materials used in prefabs
 
 Material for 3DTextPrefab with occlusion support. Requires 3DTextShader.shader
 
-![Default Font material vs 3DTextSegoeUI material](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions06.png)
+![Default Font material vs 3DTextSegoeUI material](../../../External/ReadMeImages/TextPrefabInstructions06.png)
 
 ### [Prefabs](Prefabs)
 
@@ -28,19 +26,19 @@ UI Text Mesh prefab with optimized scaling factor at 2-meter distance. (Please r
 
 **IMPORTANT: Text Prefab uses open source font 'Selawik'. To use Text Prefab with different font, please import font file and follow the instruction below. Below example shows how to use 'Segoe UI' font with Text Prefab.**
 
-![Importing Segoe UI font file](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions01.png)
+![Importing Segoe UI font file](../../../External/ReadMeImages/TextPrefabInstructions01.png)
 
 1. Assign font texture to 3DTextSegoeUI.mat material. 
-![Assigning font texture](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions02.png)
+![Assigning font texture](External/ReadMeImages/TextPrefabInstructions02.png)
 
 2. On 3DTextSegoeUI.mat material, select the shader Custom/3DTextShader.shader. 
-![Assigning shader](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions03.png)
+![Assigning shader](../../../External/ReadMeImages/TextPrefabInstructions03.png)
 
 3. Assign Segoe UI font and 3DTextSegoeUI material to the text components in the prefabs.
-![Assigning font file and material](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions04.png)
+![Assigning font file and material](../../../External/ReadMeImages/TextPrefabInstructions04.png)
 
-4. Follow the same steps for the sample text layout prefabs in [HoloToolkit-Examples\Text](../..//HoloToolkit-Examples/Text)
-![Sample layout prefabs](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions05.png)
+4. Follow the same steps for the sample text layout prefabs in [HoloToolkit-Examples\Text](../../HoloToolkit-Examples/UX/Prefabs)
+![Sample layout prefabs](../../../External/ReadMeImages/TextPrefabInstructions05.png)
 
 **Working with Fonts in Unity**
 
@@ -60,7 +58,7 @@ When adding a UI or canvas based Text element to a scene, the size disparity is 
  
 **Disclaimer**: The default value of any font may be effected by the texture size of that font or how the font was imported into Unity. These tests were performed based on the default Arial font in Unity, as well as one other imported font.
 
-![Font size with scaling factors](https://github.com/cre8ivepark/HoloToolkit-Unity/blob/master/External/ReadMeImages/TextPrefabInstructions07.png)
+![Font size with scaling factors](../../../External/ReadMeImages/TextPrefabInstructions07.png)
 
 ### [Scripts](Scripts)
 
