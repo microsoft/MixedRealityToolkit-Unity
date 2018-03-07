@@ -397,13 +397,3 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         }
     }
 }
-
-
-
-
-
-
-
-
-
-

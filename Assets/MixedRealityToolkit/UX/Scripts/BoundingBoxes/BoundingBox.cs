@@ -407,17 +407,11 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     scale.z += (largestDimension * flattenedScalePadding);
                     break;
             }
-
-
             scaleTransform.localScale = scale;
-
             Vector3 rotation = target.transform.eulerAngles;
-
             transform.eulerAngles = rotation;
         }
         #endregion
-
-  
 
         #region static utility functions
 
