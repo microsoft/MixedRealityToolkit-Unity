@@ -845,14 +845,14 @@ namespace MixedRealityToolkit.InputModule.Focus
 
             foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
-                UnregisterPointer(sourcePointer);
-
                 // If the source lost is the gaze input source, then reset it.
                 if (sourcePointer.PointerId == gazeManagerPointingData.Pointer.PointerId)
                 {
                     gazeManagerPointingData.ResetFocusedObjects();
                     gazeManagerPointingData = null;
                 }
+
+                UnregisterPointer(sourcePointer);
             }
         }
 
