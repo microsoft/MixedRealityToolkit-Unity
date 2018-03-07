@@ -3,7 +3,7 @@
 
 using UnityEngine;
 using System.Collections;
-using UnityEngine.Events;
+using HoloToolkit.Unity;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
