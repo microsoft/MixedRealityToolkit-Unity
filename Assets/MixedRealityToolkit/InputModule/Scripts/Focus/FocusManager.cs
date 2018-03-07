@@ -403,6 +403,7 @@ namespace MixedRealityToolkit.InputModule.Focus
         public bool RegisterPointer(IPointer pointer)
         {
             Debug.Assert(pointer.PointerId != 0, string.Format("{0} does not have a valid pointer id!", pointer));
+            Debug.Assert(pointer.PointerId != gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be registered on source detected.");
 
             if (IsPointerRegistered(pointer)) { return false; }
 
@@ -417,6 +418,7 @@ namespace MixedRealityToolkit.InputModule.Focus
         public void UnregisterPointer(IPointer pointer)
         {
             Debug.Assert(pointer.PointerId != 0, string.Format("{0} does not have a valid pointer id!", pointer));
+            Debug.Assert(pointer.PointerId == gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be unregistered on source lost.");
 
             PointerData pointerData = GetPointerData(pointer);
             Debug.Assert(pointerData != null, "Pointing Source was never registered!");
