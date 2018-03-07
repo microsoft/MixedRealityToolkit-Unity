@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnchorName: 
+  UseSpatialMapping: 1
 --- !u!114 &114794433019965522
 MonoBehaviour:
   m_ObjectHideFlags: 1
