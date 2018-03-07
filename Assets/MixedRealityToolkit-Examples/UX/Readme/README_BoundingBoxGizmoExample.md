@@ -55,6 +55,12 @@ You can enable Bounding Box and App Bar by simply assigning [BoundingBoxRig scri
 ![BoundingBox Script Setup](/External/ReadMeImages/MRTK_AppBar_BoundingBox_ScriptSetup.jpg)
 ![BoundingBox Material Setup](/External/ReadMeImages/MRTK_AppBar_BoundingBox_Materials.jpg)
 
+## Inspector Properties ##
+The BoundingBoxRig exposes several properties in the Inspector. 'Flattening' lets you create a BoundingBoxRig that treats the object as if it were flat in one of its dimensions.
+
+Customization Settings- let you specify custom materials for the Scale cubes and the Rotate spheres. Additionally, you can specify a Material that is used for any selected handle.
+
+Behavior- These settings effect how the BoundingBoxRig Scales and Rotates the Target object. Rotation Type allows the object to be rotated in either World Coordinates, or Model Coordinates. You can also specify whether rotation occurs by moving the hand or controller, or by rotating a controller.
 
 ## Combining with HandDraggable script ##
 Bounding Box with gizmo provides the interface for scaling and rotating object. To make the object movable, you can assign [HandDraggable script](/Assets/MixedRealityToolkit/InputModule/Scripts/Utilities/Interactions/HandDraggable.cs) to the object. With HandDraggable script, you can grab the body of the object and move. You can move object in both normal mode and adjust mode since it does not require the gizmo interface.
