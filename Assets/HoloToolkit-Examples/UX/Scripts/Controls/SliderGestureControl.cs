@@ -25,7 +25,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         public GameObject CenteredDot;
 
         [Tooltip("Sends slider event information on Update")]
-        public UnityEvent OnUpdateEvent;
+        public UnityEventFloat OnUpdateEvent;
 
         /// <summary>
         /// The value of the slider
@@ -37,7 +37,7 @@ namespace HoloToolkit.Examples.InteractiveElements
                 if (mSliderValue != value)
                 {
                     mSliderValue = value;
-                    OnUpdateEvent.Invoke();
+                    OnUpdateEvent.Invoke(mSliderValue);
                 }
             }
             get
