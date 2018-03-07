@@ -7,8 +7,6 @@ using UnityEngine;
 
 namespace MixedRealityToolkit.Boundary
 {
-
-
     public class InscribedRectangle
     {
         /// <summary>
