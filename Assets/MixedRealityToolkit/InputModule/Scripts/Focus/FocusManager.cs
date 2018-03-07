@@ -385,6 +385,69 @@ namespace MixedRealityToolkit.InputModule.Focus
         }
 
         /// <summary>
+        /// Checks if the pointer is registered with the Focus Manager.
+        /// </summary>
+        /// <param name="pointer"></param>
+        /// <returns>True, if registered, otherwise false.</returns>
+        public bool IsPointerRegistered(IPointer pointer)
+        {
+            Debug.Assert(pointer.PointerId != 0, string.Format("{0} does not have a valid pointer id!", pointer));
+            return GetPointerData(pointer) != null;
+        }
+
+        /// <summary>
+        /// Registers the pointer with the Focus Manager.
+        /// </summary>
+        /// <param name="pointer"></param>
+        /// <returns>True, if the pointer was registered, false if the pointer was previously registered.</returns>
+        public bool RegisterPointer(IPointer pointer)
+        {
+            Debug.Assert(pointer.PointerId != 0, string.Format("{0} does not have a valid pointer id!", pointer));
+
+            if (IsPointerRegistered(pointer)) { return false; }
+
+            pointers.Add(new PointerData(pointer));
+            return true;
+        }
+
+        /// <summary>
+        /// Unregisters the pointer with the Focus Manager.
+        /// </summary>
+        /// <param name="pointer"></param>
+        public void UnregisterPointer(IPointer pointer)
+        {
+            Debug.Assert(pointer.PointerId != 0, string.Format("{0} does not have a valid pointer id!", pointer));
+
+            PointerData pointerData = GetPointerData(pointer);
+            Debug.Assert(pointerData != null, "Pointing Source was never registered!");
+
+            // Raise focus events if needed.
+            if (pointerData.CurrentPointerTarget != null)
+            {
+                GameObject unfocusedObject = pointerData.CurrentPointerTarget;
+                bool objectIsStillFocusedByOtherPointer = false;
+
+                foreach (var otherPointer in pointers)
+                {
+                    if (otherPointer.CurrentPointerTarget == unfocusedObject)
+                    {
+                        objectIsStillFocusedByOtherPointer = true;
+                        break;
+                    }
+                }
+
+                if (!objectIsStillFocusedByOtherPointer)
+                {
+                    InputManager.Instance.RaiseFocusExit(pointer, unfocusedObject);
+                }
+
+                InputManager.Instance.RaisePreFocusChangedEvent(pointer, unfocusedObject, null);
+            }
+
+            pointers.Remove(pointerData);
+        }
+
+        /// <summary>
         /// Returns the registered PointerData for the provided pointing input source.
         /// </summary>
         /// <param name="pointer"></param>
@@ -400,23 +463,6 @@ namespace MixedRealityToolkit.InputModule.Focus
             }
 
             return null;
-        }
-
-        public bool RegisterPointer(IPointer pointer)
-        {
-            PointerData pointerData = GetPointerData(pointer);
-            
-            // We've already registered this pointer
-            if (pointerData != null) { return false; }
-
-            pointerData = new PointerData(pointer);
-            pointers.Add(pointerData);
-            return true;
-        }
-
-        public bool IsPointerRegistered(IPointer pointer)
-        {
-            return GetPointerData(pointer) != null;
         }
 
         private void UpdatePointers()
@@ -772,16 +818,13 @@ namespace MixedRealityToolkit.InputModule.Focus
 
             foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
-                Debug.Assert(sourcePointer.PointerId != 0, string.Format("{0} does not have a valid pointer id!", sourcePointer));
-
-                PointerData pointerData = GetPointerData(sourcePointer);
-
-                // If we've already registered this pointer, then skip
-                if (pointerData != null) { continue; }
+                RegisterPointer(sourcePointer);
 
                 // Special Registration for Gaze
                 if (eventData.InputSource.SourceId == GazeManager.Instance.SourceId)
                 {
+                    Debug.Assert(gazeManagerPointingData == null, "Gaze Manager Pointer Data was already registered!");
+
                     if (gazeManagerPointingData == null)
                     {
                         if (GazeManager.IsInitialized)
@@ -789,21 +832,9 @@ namespace MixedRealityToolkit.InputModule.Focus
                             gazeManagerPointingData = new PointerData(sourcePointer);
                         }
                     }
-                    else
-                    {
-                        Debug.Assert(gazeManagerPointingData.Pointer.PointerId == GazeManager.Instance.Pointers[0].PointerId);
-                        gazeManagerPointingData.ResetFocusedObjects();
-                    }
 
                     Debug.Assert(gazeManagerPointingData != null);
-                    pointerData = gazeManagerPointingData;
                 }
-                else
-                {
-                    pointerData = new PointerData(sourcePointer);
-                }
-
-                pointers.Add(pointerData);
             }
         }
 
@@ -814,40 +845,14 @@ namespace MixedRealityToolkit.InputModule.Focus
 
             foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
-                PointerData pointerData = GetPointerData(sourcePointer);
-                Debug.Assert(pointerData != null, "Pointing Source was never registered!");
+                UnregisterPointer(sourcePointer);
 
-                // If the source lost is not the gaze input source, then skip.
-                if (pointerData.Pointer.PointerId == gazeManagerPointingData.Pointer.PointerId &&
-                    eventData.SourceId != gazeManagerPointingData.Pointer.InputSourceParent.SourceId)
+                // If the source lost is the gaze input source, then reset it.
+                if (sourcePointer.PointerId == gazeManagerPointingData.Pointer.PointerId)
                 {
-                    continue;
+                    gazeManagerPointingData.ResetFocusedObjects();
+                    gazeManagerPointingData = null;
                 }
-
-                // Raise focus events if needed.
-                if (pointerData.CurrentPointerTarget != null)
-                {
-                    GameObject unfocusedObject = pointerData.CurrentPointerTarget;
-                    bool objectIsStillFocusedByOtherPointer = false;
-
-                    foreach (var otherPointer in pointers)
-                    {
-                        if (otherPointer.CurrentPointerTarget == unfocusedObject)
-                        {
-                            objectIsStillFocusedByOtherPointer = true;
-                            break;
-                        }
-                    }
-
-                    if (!objectIsStillFocusedByOtherPointer)
-                    {
-                        InputManager.Instance.RaiseFocusExit(sourcePointer, unfocusedObject);
-                    }
-
-                    InputManager.Instance.RaisePreFocusChangedEvent(sourcePointer, unfocusedObject, null);
-                }
-
-                pointers.Remove(pointerData);
             }
         }
 
