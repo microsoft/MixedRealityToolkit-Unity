@@ -30,11 +30,11 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
         [SerializeField]
         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
-        private Transform HostTransform;
+        private Transform HostTransform = null;
 
         [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here. This is optional.")]
-        private BoundingBox boundingBoxPrefab;
+        private BoundingBox boundingBoxPrefab = null;
 
         public enum TwoHandedManipulation
         {
@@ -47,7 +47,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
         [SerializeField]
         [Tooltip("What manipulation will two hands perform?")]
-        private TwoHandedManipulation ManipulationMode;
+        private TwoHandedManipulation ManipulationMode = TwoHandedManipulation.Scale;
 
         [SerializeField]
         [Tooltip("Constrain rotation along an axis")]

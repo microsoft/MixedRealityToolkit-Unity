@@ -41,13 +41,13 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         public List<GameObject> Inputs = new List<GameObject>(0);
 
         [SerializeField]
-        private GameObject mouse;
+        private GameObject mouse = null;
 
         [SerializeField]
-        private GameObject leftHand;
+        private GameObject leftHand = null;
 
         [SerializeField]
-        private GameObject rightHand;
+        private GameObject rightHand = null;
 
         private void Awake()
         {

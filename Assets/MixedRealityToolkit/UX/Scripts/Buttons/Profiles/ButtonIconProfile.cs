@@ -16,7 +16,7 @@ namespace MixedRealityToolkit.UX.Buttons.Profiles
         /// <summary>
         /// The icon returned when a requested icon is not found
         /// </summary>
-        public Texture2D _IconNotFound;
+        public Texture2D _IconNotFound = null;
 
         /// <summary>
         /// How quickly to animate changing icon alpha at runtime
@@ -26,12 +26,12 @@ namespace MixedRealityToolkit.UX.Buttons.Profiles
         /// <summary>
         /// The default material used for icons
         /// </summary>
-        public Material IconMaterial;
+        public Material IconMaterial = null;
 
         /// <summary>
         /// The default mesh used for icons
         /// </summary>
-        public Mesh IconMesh;
+        public Mesh IconMesh = null;
 
         /// <summary>
         /// Property used to modify icon alpha
