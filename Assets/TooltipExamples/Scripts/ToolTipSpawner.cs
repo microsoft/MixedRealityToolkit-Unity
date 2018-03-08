@@ -4,6 +4,9 @@
 //
 using System.Collections;
 using UnityEngine;
+using MixedRealityToolkit.InputModule;
+using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.EventData;
 
 namespace MixedRealityToolkit.UX.ToolTips
 {
@@ -11,7 +14,7 @@ namespace MixedRealityToolkit.UX.ToolTips
     /// Add to any InteractibleObject to spawn ToolTips on tap or on focus, according to preference
     /// Applies its follow settings to the spawned ToolTip's ToolTipConnector component
     /// </summary>
-    public class ToolTipSpawner : MonoBehaviour
+    public class ToolTipSpawner : MonoBehaviour , IInputHandler
     {
         public enum VanishBehaviorEnum
         {
@@ -55,7 +58,7 @@ namespace MixedRealityToolkit.UX.ToolTips
 
         public GameObject ToolTipPrefab;
 
-        public Transform Anchor;
+        public Transform Anchor; 
 
         public void Tapped()
         {
@@ -142,10 +145,27 @@ namespace MixedRealityToolkit.UX.ToolTips
 
             while (toolTip.gameObject.activeSelf)
             {
+                if (RemainBehavior == RemainBehaviorEnum.Timeout)
+                {
+                    if (Time.time - tappedTime >= VanishDelay)
+                    {
+                        toolTip.gameObject.SetActive(false);
+                        yield break;
+                    }
+                }
                 //check whether we're suppose to disappear
                 switch (VanishBehavior)
                 {
                     case VanishBehaviorEnum.VanishOnFocusExit:
+                        break;
+
+                    case VanishBehaviorEnum.VanishOnTap:
+                        if (tappedTime != tappedTimeOnStart)
+                        {
+                            toolTip.gameObject.SetActive(false);
+                        }
+                        break;
+
                     default:
                         if (!hasFocus)
                         {
@@ -153,13 +173,6 @@ namespace MixedRealityToolkit.UX.ToolTips
                             {
                                 toolTip.gameObject.SetActive(false);
                             }
-                        }
-                        break;
-
-                    case VanishBehaviorEnum.VanishOnTap:
-                        if (tappedTime != tappedTimeOnStart)
-                        {
-                            toolTip.gameObject.SetActive(false);
                         }
                         break;
                 }
@@ -203,7 +216,29 @@ namespace MixedRealityToolkit.UX.ToolTips
                 }
             }
         }
-        #endif
+
+        public void OnInputDown(InputEventData eventData)
+        {
+            
+        }
+
+        public void OnInputUp(InputEventData eventData)
+        {
+            tappedTime = Time.unscaledTime;
+            if (toolTip == null || !toolTip.gameObject.activeSelf)
+            {
+                switch (AppearBehavior)
+                {
+                    case AppearBehaviorEnum.AppearOnTap:
+                        ShowToolTip();
+                        return;
+
+                    default:
+                        break;
+                }
+            }
+        }
+#endif
 
         private float focusEnterTime = 0f;
         private float focusExitTime = 0f;
