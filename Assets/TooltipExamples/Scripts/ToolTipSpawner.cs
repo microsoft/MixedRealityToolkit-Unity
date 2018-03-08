@@ -43,6 +43,9 @@ namespace MixedRealityToolkit.UX.ToolTips
         [Range (0f, 1f)]
         public float PivotDistance = 0.25f;
 
+        [Range(0.5f, 10.0f)]
+        public float Lifetime = 2.0f;
+
         public AppearBehaviorEnum AppearBehavior = AppearBehaviorEnum.AppearOnFocusEnter;
         public VanishBehaviorEnum VanishBehavior = VanishBehaviorEnum.VanishOnFocusExit;
         public RemainBehaviorEnum RemainBehavior = RemainBehaviorEnum.Indefinite;
@@ -147,7 +150,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             {
                 if (RemainBehavior == RemainBehaviorEnum.Timeout)
                 {
-                    if (Time.time - tappedTime >= VanishDelay)
+                    if (Time.time - tappedTime >= Lifetime)
                     {
                         toolTip.gameObject.SetActive(false);
                         yield break;
