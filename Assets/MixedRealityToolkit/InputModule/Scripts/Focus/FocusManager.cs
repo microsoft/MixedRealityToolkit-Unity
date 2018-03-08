@@ -196,7 +196,7 @@ namespace MixedRealityToolkit.InputModule.Focus
             {
                 if (ReferenceEquals(null, obj)) return false;
                 if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != this.GetType()) return false;
+                if (obj.GetType() != GetType()) return false;
                 return Equals((PointerData)obj);
             }
 
@@ -419,13 +419,14 @@ namespace MixedRealityToolkit.InputModule.Focus
         /// Unregisters the pointer with the Focus Manager.
         /// </summary>
         /// <param name="pointer"></param>
-        public void UnregisterPointer(IPointer pointer)
+        /// <returns>True, if the pointer was unregistered, false if the pointer was not registered.</returns>
+        public bool UnregisterPointer(IPointer pointer)
         {
             Debug.Assert(pointer.PointerId != 0, string.Format("{0} does not have a valid pointer id!", pointer));
-            Debug.Assert(pointer.PointerId == gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be unregistered on source lost.");
+            Debug.Assert(pointer.PointerId != gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be unregistered on source lost.");
 
             PointerData pointerData = GetPointerData(pointer);
-            Debug.Assert(pointerData != null, "Pointing Source was never registered!");
+            if (pointerData == null) { return false; }
 
             // Raise focus events if needed.
             if (pointerData.CurrentPointerTarget != null)
@@ -451,6 +452,7 @@ namespace MixedRealityToolkit.InputModule.Focus
             }
 
             pointers.Remove(pointerData);
+            return true;
         }
 
         /// <summary>

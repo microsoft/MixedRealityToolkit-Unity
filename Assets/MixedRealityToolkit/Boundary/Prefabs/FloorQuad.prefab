@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 33725320117591798}
   - component: {fileID: 64098071410773274}
   - component: {fileID: 23731890180271836}
-  - component: {fileID: 114197230869162762}
   m_Layer: 0
   m_Name: FloorQuad
   m_TagString: Untagged
@@ -98,25 +97,3 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114197230869162762
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1520281459093612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ac9011bc393ab946ae90dc4b10dfe1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  focusEnabled: 0
-  highlightColorProp: _Color
-  outlineColorProp: _Color
-  highlightColor: {r: 0, g: 1, b: 0, a: 1}
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  targetRenderers: []
-  highlightMat: {fileID: 0}
-  overlayMat: {fileID: 0}
-  targetStyle: 1
-  highlight: 0
-  overrideOrientation: 0
