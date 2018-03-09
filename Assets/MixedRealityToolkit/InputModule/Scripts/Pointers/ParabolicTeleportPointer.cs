@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Utilities.Attributes;
-using MixedRealityToolkit.UX.Distorters;
+using MixedRealityToolkit.Utilities.Distorters;
 using MixedRealityToolkit.UX.Lines;
 using UnityEngine;
 
@@ -60,9 +60,9 @@ namespace MixedRealityToolkit.InputModule.Pointers
             PointerTeleportManager.Instance.InitiateTeleport(this);
         }
 
-        public override void OnInputReleased()
+        public override void OnSelectReleased()
         {
-            base.OnInputReleased();
+            base.OnSelectReleased();
 
             for (int i = 0; i < disableWhileActive.Length; i++)
             {

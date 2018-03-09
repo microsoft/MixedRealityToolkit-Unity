@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Utilities.Inspectors.EditorScript;
+using MixedRealityToolkit.InputModule.Pointers;
 using UnityEditor;
 
-namespace MixedRealityToolkit.InputModule.Pointers 
+namespace MixedRealityToolkit.Utilities.Inspectors.EditorScript
 {
     [CustomEditor(typeof(BaseControllerPointer))]
     public class BaseControllerPointerEditor : MRTKEditor { }

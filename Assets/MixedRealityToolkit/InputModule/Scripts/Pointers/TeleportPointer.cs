@@ -6,7 +6,7 @@ using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.Utilities;
 using MixedRealityToolkit.Utilities.Attributes;
-using MixedRealityToolkit.UX.Distorters;
+using MixedRealityToolkit.Utilities.Distorters;
 using System;
 using UnityEngine;
 
@@ -76,7 +76,7 @@ namespace MixedRealityToolkit.InputModule.Pointers
                 if (InteractionEnabled)
                 {
                     InteractionEnabled = false;
-                    OnInputReleased();
+                    OnSelectReleased();
                 }
             }
         }
@@ -96,7 +96,8 @@ namespace MixedRealityToolkit.InputModule.Pointers
                     return TeleportTarget.Position;
                 }
 
-                return Result.StartPoint;
+                Debug.Assert(Result != null);
+                return Result.End.Point;
             }
         }
 
@@ -164,7 +165,7 @@ namespace MixedRealityToolkit.InputModule.Pointers
             }
         }
 
-        public override void OnInputReleased()
+        public override void OnSelectReleased()
         {
             SelectPressed = false;
 
@@ -245,9 +246,14 @@ namespace MixedRealityToolkit.InputModule.Pointers
                         {
                             // If it's NOT a hotspot, check if the hit normal is too steep 
                             // (Hotspots override dot requirements)
-                            TeleportSurfaceResult = Vector3.Dot(Result.StartPoint, Vector3.up) < MinValidDot
-                                    ? TeleportSurfaceResult.Invalid
-                                    : TeleportSurfaceResult.Valid;
+                            if (Vector3.Dot(Result.StartPoint, Vector3.up) < MinValidDot)
+                            {
+                                TeleportSurfaceResult = TeleportSurfaceResult.Valid;
+                            }
+                            else
+                            {
+                                TeleportSurfaceResult = TeleportSurfaceResult.Invalid;
+                            }
                         }
                     }
                     else if (((1 << Result.CurrentPointerTarget.layer) & InvalidLayers) != 0)

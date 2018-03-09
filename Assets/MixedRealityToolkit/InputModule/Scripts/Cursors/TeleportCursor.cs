@@ -67,7 +67,7 @@ namespace MixedRealityToolkit.InputModule.Cursors
                 return;
             }
 
-            if (!canUpdateTransform) { return; }
+            if (!canUpdateTransform || pointer.Result == null) { return; }
 
             transform.position = pointer.TeleportTargetPosition;
 

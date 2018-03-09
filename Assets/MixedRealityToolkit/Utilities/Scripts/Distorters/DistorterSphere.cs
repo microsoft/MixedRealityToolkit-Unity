@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.Distorters
+namespace MixedRealityToolkit.Utilities.Distorters
 {
     public class DistorterSphere : Distorter
     {
@@ -21,6 +21,7 @@ namespace MixedRealityToolkit.UX.Distorters
 
         [SerializeField]
         private Vector3 sphereCenter;
+
         [SerializeField]
         private float radius = 2f;
 

@@ -234,7 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4541142303025740}
   - component: {fileID: 114059824862712730}
-  - component: {fileID: 114812681035175298}
+  - component: {fileID: 114035199948662072}
   m_Layer: 0
   m_Name: MixedRealityCameraParent
   m_TagString: Untagged
@@ -600,6 +600,22 @@ MonoBehaviour:
   Axis0Destination: 0
   Axis1Destination: 4
   Axis2Destination: 6
+--- !u!114 &114035199948662072
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1850730992894404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 425b8087c3cff8b4d81254a7774d0417, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyParentRootOnLoad: 1
+  playBounds: {fileID: 0}
+  teleportDuration: 0.25
+  pointerBehavior: 0
+  helperTransform: {fileID: 0}
 --- !u!114 &114059824862712730
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -799,35 +815,6 @@ MonoBehaviour:
   Axis0Destination: 4
   Axis1Destination: 6
   Axis2Destination: 6
---- !u!114 &114812681035175298
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1850730992894404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bc175d33f66e6647aabac1b65e7e632, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyParentRootOnLoad: 1
-  HorizontalStrafe: 1
-  ForwardMovement: 2
-  HorizontalRotation: 3
-  VerticalRotation: 4
-  LeftThumbstickX: CONTROLLER_LEFT_STICK_HORIZONTAL
-  LeftThumbstickY: CONTROLLER_LEFT_STICK_VERTICAL
-  RightThumbstickX: CONTROLLER_RIGHT_STICK_HORIZONTAL
-  RightThumbstickY: CONTROLLER_RIGHT_STICK_VERTICAL
-  EnableTeleport: 1
-  EnableRotation: 1
-  EnableStrafe: 1
-  StayOnTheFloor: 0
-  RotationSize: 45
-  StrafeAmount: 0.5
-  teleportMarker: {fileID: 1503526479864244, guid: 10d95b99055c6ad40b735cc8b3593745,
-    type: 2}
-  useCustomMapping: 0
 --- !u!114 &114828096048444974
 MonoBehaviour:
   m_ObjectHideFlags: 1

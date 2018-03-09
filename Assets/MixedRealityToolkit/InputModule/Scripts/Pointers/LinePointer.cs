@@ -3,7 +3,7 @@
 
 using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.Utilities.Attributes;
-using MixedRealityToolkit.UX.Distorters;
+using MixedRealityToolkit.Utilities.Distorters;
 using MixedRealityToolkit.UX.Lines;
 using UnityEngine;
 

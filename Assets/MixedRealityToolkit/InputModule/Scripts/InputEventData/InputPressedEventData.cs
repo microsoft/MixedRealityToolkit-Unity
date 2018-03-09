@@ -3,6 +3,7 @@
 
 using MixedRealityToolkit.InputModule.InputSources;
 using MixedRealityToolkit.InputModule.Utilities;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 #if UNITY_WSA
@@ -22,13 +23,25 @@ namespace MixedRealityToolkit.InputModule.EventData
 
         public void Initialize(IInputSource inputSource, double pressedAmount, object[] tags = null)
         {
-            BaseInitialize(inputSource, tags);
+            Initialize(inputSource, tags);
+            PressedAmount = pressedAmount;
+        }
+
+        public void Initialize(IInputSource inputSource, KeyCode keyCode, double pressedAmount, object[] tags = null)
+        {
+            Initialize(inputSource, keyCode, tags);
             PressedAmount = pressedAmount;
         }
 
         public void Initialize(IInputSource inputSource, double pressedAmount, Handedness handedness, object[] tags = null)
         {
             Initialize(inputSource, handedness, tags);
+            PressedAmount = pressedAmount;
+        }
+
+        public void Initialize(IInputSource inputSource, KeyCode keyCode, double pressedAmount, Handedness handedness, object[] tags = null)
+        {
+            Initialize(inputSource, keyCode, handedness, tags);
             PressedAmount = pressedAmount;
         }
 

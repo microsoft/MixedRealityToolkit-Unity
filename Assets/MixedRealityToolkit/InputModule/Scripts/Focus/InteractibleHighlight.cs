@@ -79,9 +79,11 @@ namespace MixedRealityToolkit.InputModule.Focus
             }
         }
 
-        public string HighlightColorProp = "_Color";
+        [SerializeField]
+        private string highlightColorProp = "_Color";
 
-        public string OutlineColorProp = "_Color";
+        [SerializeField]
+        private string outlineColorProp = "_Color";
 
         [SerializeField]
         private Color highlightColor = Color.green;
@@ -154,7 +156,7 @@ namespace MixedRealityToolkit.InputModule.Focus
                 // And we haven't added it yet
                 if ((currentStyle & MatStyleEnum.Highlight) == 0)
                 {
-                    AddMatToRenderers(targetRenderers, highlightMat, HighlightColorProp, highlightColor);
+                    AddMatToRenderers(targetRenderers, highlightMat, highlightColorProp, highlightColor);
                 }
             }
 
@@ -164,7 +166,7 @@ namespace MixedRealityToolkit.InputModule.Focus
                 // And we haven't added it yet
                 if ((currentStyle & MatStyleEnum.Overlay) == 0)
                 {
-                    AddMatToRenderers(targetRenderers, overlayMat, OutlineColorProp, outlineColor);
+                    AddMatToRenderers(targetRenderers, overlayMat, outlineColorProp, outlineColor);
                 }
             }
 

@@ -4,13 +4,14 @@
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.UX.Distorters
+namespace MixedRealityToolkit.Utilities.Distorters
 {
     public abstract class Distorter : MonoBehaviour, IComparable<Distorter>
     {
         [SerializeField]
         [Range(0, 10)]
         protected int distortOrder = 0;
+
         [SerializeField]
         [Range(0, 1)]
         protected float distortStrength = 1f;
@@ -88,7 +89,7 @@ namespace MixedRealityToolkit.UX.Distorters
 
         protected virtual void OnDisable()
         {
-            // Makes script enableable in editor            
+            // Makes script enableable in editor
         }
 
         public float DistortStrength

@@ -133,6 +133,8 @@ namespace MixedRealityToolkit.InputModule.Utilities
         private void UpdateControllerState()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            if (InteractionManager.numSourceStates == 0) { return; }
+
             foreach (var sourceState in InteractionManager.GetCurrentReading())
             {
                 MotionControllerInfo currentController;
