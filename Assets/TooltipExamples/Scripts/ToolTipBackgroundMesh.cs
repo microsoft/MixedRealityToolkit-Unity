@@ -30,8 +30,11 @@ namespace MixedRealityToolkit.UX.ToolTips
         protected override void ScaleToFitContent ()
         {
             return;
+
             if (BackgroundRenderer == null)
+            {
                 return;
+            }
 
             // Get the local size of the content - this is the scale of the text under the content parent
             Vector3 localContentSize = toolTip.LocalContentSize;

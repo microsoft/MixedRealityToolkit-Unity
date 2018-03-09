@@ -92,9 +92,12 @@ namespace MixedRealityToolkit.UX.ToolTips
                 cornerBotLeft.localScale = globalScale * cornerScale;
         }
 
-        private void OnDrawGizmos() {
+        private void OnDrawGizmos()
+        {
             if (Application.isPlaying)
+            {
                 return;
+            }
 
             ScaleToFitContent();
         }

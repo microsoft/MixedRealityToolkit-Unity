@@ -120,14 +120,12 @@ namespace MixedRealityToolkit.UX.ToolTips
             if (toolTip == null)
             {
                 GameObject toolTipGo = GameObject.Instantiate(toolTipPrefab) as GameObject;
-                toolTip = toolTipGo.GetComponent<ToolTip>();                
+                toolTip = toolTipGo.GetComponent<ToolTip>();
+                toolTip.gameObject.SetActive(false);
                 toolTip.transform.position = transform.position;
                 toolTip.transform.parent = transform;
-                toolTip.gameObject.SetActive(false);
                 toolTip.ContentParentTransform.localScale = new Vector3(0.182f, 0.028f, 1.0f);
             }
-
-            //todo handle look at exit enter here 
 
             switch (AppearBehavior)
             {
@@ -142,8 +140,8 @@ namespace MixedRealityToolkit.UX.ToolTips
                     break;
             }
             
-            toolTip.gameObject.SetActive(true);
             toolTip.ToolTipText = ToolTipText;
+            toolTip.gameObject.SetActive(true);
             ToolTipConnector connector = toolTip.GetComponent<ToolTipConnector>();
             connector.Target = (Anchor != null) ? Anchor.gameObject : gameObject;
             connector.PivotDirection = PivotDirection;
