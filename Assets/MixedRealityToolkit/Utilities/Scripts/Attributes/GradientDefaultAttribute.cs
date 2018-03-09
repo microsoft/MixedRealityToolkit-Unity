@@ -41,6 +41,8 @@ namespace MixedRealityToolkit.Utilities.Attributes
 #if UNITY_EDITOR
         public override void DrawEditor(UnityEngine.Object target, FieldInfo field, SerializedProperty property)
         {
+            Color c = GUI.color;
+
             Gradient gradientValue = field.GetValue(target) as Gradient;
 
             if (gradientValue == null || gradientValue.colorKeys == null || gradientValue.colorKeys.Length == 0)
@@ -52,6 +54,19 @@ namespace MixedRealityToolkit.Utilities.Attributes
             {
                 gradientValue = GetDefault();
             }
+            if (GUILayout.Button("Copy")) {
+                if (clipBoard == null) {
+                    clipBoard = new Gradient();
+                }
+                clipBoard.SetKeys(gradientValue.colorKeys, gradientValue.alphaKeys);
+            }
+            if (clipBoard == null) {
+                GUI.color = Color.gray;
+            }
+            if (GUILayout.Button("Paste")) {
+                gradientValue.SetKeys(clipBoard.colorKeys, clipBoard.alphaKeys);
+            }
+            GUI.color = c;
             EditorGUILayout.EndHorizontal();
 
             field.SetValue(target, gradientValue);
@@ -109,5 +124,7 @@ namespace MixedRealityToolkit.Utilities.Attributes
                     return Color.yellow;
             }
         }
+
+        private static Gradient clipBoard;
     }
 }

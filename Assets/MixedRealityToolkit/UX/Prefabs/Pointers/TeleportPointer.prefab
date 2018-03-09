@@ -193,119 +193,119 @@ MonoBehaviour:
   interactionRequiresHold: 0
   LineColorSelected:
     serializedVersion: 2
-    key0: {r: 0, g: 0, b: 1, a: 0}
-    key1: {r: 0, g: 0, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
+    key0: {r: 0, g: 0.5735294, b: 0.5735294, a: 0}
+    key1: {r: 0, g: 0.35588232, b: 0.42647058, a: 1}
+    key2: {r: 0, g: 0.18919882, b: 0.30147058, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65535
-    ctime2: 0
+    ctime1: 33731
+    ctime2: 65535
     ctime3: 0
     ctime4: 0
     ctime5: 0
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 5975
-    atime2: 59753
+    atime1: 5012
+    atime2: 60524
     atime3: 65535
     atime4: 0
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 2
+    m_NumColorKeys: 3
     m_NumAlphaKeys: 4
   LineColorValid:
     serializedVersion: 2
-    key0: {r: 0, g: 0, b: 1, a: 0}
-    key1: {r: 0, g: 0, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 0.067241386, g: 0.5735294, b: 0, a: 0}
+    key1: {r: 0, g: 0.42647058, b: 0.0029411525, a: 1}
+    key2: {r: 0.010395525, g: 0.30147058, b: 0, a: 1}
+    key3: {r: 0.30147058, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
+    ctime1: 33731
+    ctime2: 65535
+    ctime3: 65535
     ctime4: 0
     ctime5: 0
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 5975
-    atime2: 59753
+    atime1: 5012
+    atime2: 60524
     atime3: 65535
     atime4: 0
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 2
+    m_NumColorKeys: 3
     m_NumAlphaKeys: 4
   LineColorNoTarget:
     serializedVersion: 2
-    key0: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0}
-    key1: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
+    key0: {r: 0.52205884, g: 0.52205884, b: 0.52205884, a: 0}
+    key1: {r: 0.32352942, g: 0.32352942, b: 0.32352942, a: 1}
+    key2: {r: 0.1544118, g: 0.1544118, b: 0.1544118, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65535
-    ctime2: 0
+    ctime1: 33731
+    ctime2: 65535
     ctime3: 0
     ctime4: 0
     ctime5: 0
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 5975
-    atime2: 59753
+    atime1: 5012
+    atime2: 60524
     atime3: 65535
     atime4: 0
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 2
+    m_NumColorKeys: 3
     m_NumAlphaKeys: 4
   LineColorLockFocus:
     serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 0}
-    key1: {r: 1, g: 0, b: 0, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
+    key0: {r: 0, g: 0.5735294, b: 0.43113583, a: 0}
+    key1: {r: 0, g: 0.42647058, b: 0.37352943, a: 1}
+    key2: {r: 0, g: 0.2889959, b: 0.30147058, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65535
-    ctime2: 0
+    ctime1: 33731
+    ctime2: 65535
     ctime3: 0
     ctime4: 0
     ctime5: 0
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 5975
-    atime2: 59753
+    atime1: 5012
+    atime2: 60524
     atime3: 65535
     atime4: 0
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 2
+    m_NumColorKeys: 3
     m_NumAlphaKeys: 4
   LineCastResolution: 25
   LineBase: {fileID: 114444424106302830}
@@ -313,61 +313,61 @@ MonoBehaviour:
   MinValidDot: 0.2
   LineColorHotSpot:
     serializedVersion: 2
-    key0: {r: 0, g: 1, b: 0, a: 0}
-    key1: {r: 0, g: 1, b: 0, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
+    key0: {r: 0.067241386, g: 0.5735294, b: 0, a: 0}
+    key1: {r: 0, g: 0.42647058, b: 0.0029411525, a: 1}
+    key2: {r: 0.010395525, g: 0.30147058, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65535
-    ctime2: 0
+    ctime1: 33731
+    ctime2: 65535
     ctime3: 0
     ctime4: 0
     ctime5: 0
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 5975
-    atime2: 59753
+    atime1: 5012
+    atime2: 60524
     atime3: 65535
     atime4: 0
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 2
+    m_NumColorKeys: 3
     m_NumAlphaKeys: 4
   LineColorInvalid:
     serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 0}
-    key1: {r: 1, g: 0, b: 0, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
+    key0: {r: 0.5735294, g: 0, b: 0, a: 0}
+    key1: {r: 0.42647058, g: 0, b: 0, a: 1}
+    key2: {r: 0.30147058, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65535
-    ctime2: 0
+    ctime1: 33731
+    ctime2: 65535
     ctime3: 0
     ctime4: 0
     ctime5: 0
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 5975
-    atime2: 59753
+    atime1: 5012
+    atime2: 60524
     atime3: 65535
-    atime4: 0
+    atime4: 65535
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 2
+    m_NumColorKeys: 3
     m_NumAlphaKeys: 4
   ValidLayers:
     serializedVersion: 2
@@ -377,6 +377,26 @@ MonoBehaviour:
     m_Bits: 4
   thumbstickThreshold: 0.2
   disableWhileActive: []
+  parabolaVelocityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  minParabolaVelocity: 3
+  maxParabolaVelocity: 3
   physicsParabolaDataMain: {fileID: 114444424106302830}
 --- !u!114 &114444424106302830
 MonoBehaviour:
