@@ -8,6 +8,7 @@ using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.InputModule.EventData;
 
+
 namespace MixedRealityToolkit.UX.ToolTips
 {
     /// <summary>
@@ -40,11 +41,12 @@ namespace MixedRealityToolkit.UX.ToolTips
         [Range(0f, 5f)]
         public float VanishDelay = 2f;
 
-        [Range (0f, 1f)]
-        public float PivotDistance = 0.25f;
 
         [Range(0.5f, 10.0f)]
-        public float Lifetime = 2.0f;
+        public float Lifetime = 1.0f;
+
+        [Range (0f, 1f)]
+        public float PivotDistance = 0.25f;
 
         public AppearBehaviorEnum AppearBehavior = AppearBehaviorEnum.AppearOnFocusEnter;
         public VanishBehaviorEnum VanishBehavior = VanishBehaviorEnum.VanishOnFocusExit;
@@ -62,23 +64,6 @@ namespace MixedRealityToolkit.UX.ToolTips
         public GameObject ToolTipPrefab;
 
         public Transform Anchor; 
-
-        public void Tapped()
-        {
-            tappedTime = Time.unscaledTime;
-            if (toolTip == null || !toolTip.gameObject.activeSelf)
-            {
-                switch (AppearBehavior)
-                {
-                    case AppearBehaviorEnum.AppearOnTap:
-                        ShowToolTip();
-                        return;
-
-                    default:
-                        break;
-                }
-            }
-        }
 
         public void FocusEnter()
         {
@@ -104,6 +89,29 @@ namespace MixedRealityToolkit.UX.ToolTips
             hasFocus = false;
         }
 
+    
+
+        public void OnInputDown(InputEventData eventData)
+        {
+        }
+
+        public void OnInputUp(InputEventData eventData)
+        {
+            tappedTime = Time.unscaledTime;
+            if (toolTip == null || !toolTip.gameObject.activeSelf)
+            {
+                switch (AppearBehavior)
+                {
+                    case AppearBehaviorEnum.AppearOnTap:
+                        ShowToolTip();
+                        return;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
         private void ShowToolTip()
         {
             StartCoroutine(UpdateTooltip(focusEnterTime, tappedTime));
@@ -118,7 +126,10 @@ namespace MixedRealityToolkit.UX.ToolTips
                 toolTip.transform.position = transform.position;
                 toolTip.transform.parent = transform;
                 toolTip.gameObject.SetActive(false);
+                toolTip.ContentParentTransform.localScale = new Vector3(0.182f, 0.028f, 1.0f);
             }
+
+            //todo handle look at exit enter here 
 
             switch (AppearBehavior)
             {
@@ -144,13 +155,15 @@ namespace MixedRealityToolkit.UX.ToolTips
             connector.FollowType = FollowType;
             connector.PivotMode = PivotMode;
             if (PivotMode == ToolTipConnector.PivotModeEnum.Manual)
+            {
                 toolTip.PivotPosition = transform.TransformPoint(ManualPivotLocalPosition);
+            }
 
             while (toolTip.gameObject.activeSelf)
             {
                 if (RemainBehavior == RemainBehaviorEnum.Timeout)
                 {
-                    if (Time.time - tappedTime >= Lifetime)
+                    if (Time.unscaledTime - tappedTime >= Lifetime)
                     {
                         toolTip.gameObject.SetActive(false);
                         yield break;
@@ -220,33 +233,12 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
-        public void OnInputDown(InputEventData eventData)
-        {
-            
-        }
 
-        public void OnInputUp(InputEventData eventData)
-        {
-            tappedTime = Time.unscaledTime;
-            if (toolTip == null || !toolTip.gameObject.activeSelf)
-            {
-                switch (AppearBehavior)
-                {
-                    case AppearBehaviorEnum.AppearOnTap:
-                        ShowToolTip();
-                        return;
-
-                    default:
-                        break;
-                }
-            }
-        }
 #endif
 
         private float focusEnterTime = 0f;
         private float focusExitTime = 0f;
         private float tappedTime = 0f;
-        private float targetDisappearTime = Mathf.Infinity;
         private bool hasFocus;
         private ToolTip toolTip;
     }

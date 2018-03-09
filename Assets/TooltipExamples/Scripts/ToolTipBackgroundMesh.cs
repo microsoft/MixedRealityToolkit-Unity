@@ -29,6 +29,7 @@ namespace MixedRealityToolkit.UX.ToolTips
 
         protected override void ScaleToFitContent ()
         {
+            return;
             if (BackgroundRenderer == null)
                 return;
 

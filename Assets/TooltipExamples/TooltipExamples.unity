@@ -539,11 +539,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4877995955028244, guid: 3b2729a90daf689408e97dcbcc8e8a4e, type: 2}
       propertyPath: m_LocalScale.x
-      value: 0
+      value: 0.182
       objectReference: {fileID: 0}
     - target: {fileID: 4877995955028244, guid: 3b2729a90daf689408e97dcbcc8e8a4e, type: 2}
       propertyPath: m_LocalScale.y
-      value: 0
+      value: 0.028
       objectReference: {fileID: 0}
     - target: {fileID: 23479976745827762, guid: 3b2729a90daf689408e97dcbcc8e8a4e,
         type: 2}
@@ -563,6 +563,8 @@ GameObject:
   - component: {fileID: 1192265485}
   - component: {fileID: 1192265487}
   - component: {fileID: 1192265486}
+  - component: {fileID: 1192265489}
+  - component: {fileID: 1192265488}
   m_Layer: 0
   m_Name: Platonic
   m_TagString: Untagged
@@ -623,6 +625,47 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1192265484}
+  m_Mesh: {fileID: 4300000, guid: 1e23ec24c22068b4cbf47737c35e277b, type: 3}
+--- !u!114 &1192265488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1192265484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c814c68aa61c8dc4dbcb18cc955ec9b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AppearDelay: 1.25
+  VanishDelay: 2
+  Lifetime: 1
+  PivotDistance: 0.25
+  AppearBehavior: 0
+  VanishBehavior: 0
+  RemainBehavior: 1
+  FollowType: 0
+  PivotMode: 0
+  PivotDirection: 1
+  PivotDirectionOrient: 0
+  ManualPivotDirection: {x: 0, y: 1, z: 0}
+  ManualPivotLocalPosition: {x: 0, y: 1, z: 0}
+  ToolTipText: New Tooltip
+  ToolTipPrefab: {fileID: 0}
+  Anchor: {fileID: 0}
+--- !u!64 &1192265489
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1192265484}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 1
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 1e23ec24c22068b4cbf47737c35e277b, type: 3}
 --- !u!1 &1192552200
 GameObject:
@@ -728,46 +771,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 4992329056269614, guid: 3b2729a90daf689408e97dcbcc8e8a4e, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0.2549
-      objectReference: {fileID: 0}
-    - target: {fileID: 4992329056269614, guid: 3b2729a90daf689408e97dcbcc8e8a4e, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.0479
-      objectReference: {fileID: 0}
-    - target: {fileID: 4992329056269614, guid: 3b2729a90daf689408e97dcbcc8e8a4e, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -0.0533
-      objectReference: {fileID: 0}
-    - target: {fileID: 114697570813435190, guid: 3b2729a90daf689408e97dcbcc8e8a4e,
-        type: 2}
-      propertyPath: contentScale
-      value: 0.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 4838603517195600, guid: 3b2729a90daf689408e97dcbcc8e8a4e, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 4838603517195600, guid: 3b2729a90daf689408e97dcbcc8e8a4e, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 0.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 4838603517195600, guid: 3b2729a90daf689408e97dcbcc8e8a4e, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 0.26
-      objectReference: {fileID: 0}
     - target: {fileID: 1963181076315932, guid: 3b2729a90daf689408e97dcbcc8e8a4e, type: 2}
       propertyPath: m_Name
       value: ToolTipPlated_B
-      objectReference: {fileID: 0}
-    - target: {fileID: 4877995955028244, guid: 3b2729a90daf689408e97dcbcc8e8a4e, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4877995955028244, guid: 3b2729a90daf689408e97dcbcc8e8a4e, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3b2729a90daf689408e97dcbcc8e8a4e, type: 2}
@@ -819,7 +825,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AppearDelay: 1.25
-  VanishDelay: 1.09
+  VanishDelay: 1.22
+  Lifetime: 1.07
   PivotDistance: 0.25
   AppearBehavior: 1
   VanishBehavior: 1
@@ -829,8 +836,8 @@ MonoBehaviour:
   PivotDirection: 1
   PivotDirectionOrient: 0
   ManualPivotDirection: {x: 0, y: 1, z: 0}
-  ManualPivotLocalPosition: {x: -3.18, y: -1.88, z: 8.42}
-  ToolTipText: tooltip test text
+  ManualPivotLocalPosition: {x: -3.18, y: -1.68, z: 8.42}
+  ToolTipText: You clicked me!
   ToolTipPrefab: {fileID: 1963181076315932, guid: 3b2729a90daf689408e97dcbcc8e8a4e,
     type: 2}
   Anchor: {fileID: 1606036650}
