@@ -12,10 +12,10 @@ using MixedRealityToolkit.InputModule.EventData;
 namespace MixedRealityToolkit.UX.ToolTips
 {
     /// <summary>
-    /// Add to any InteractibleObject to spawn ToolTips on tap or on focus, according to preference
+    /// Add to any Object to spawn ToolTips on tap or on focus, according to preference
     /// Applies its follow settings to the spawned ToolTip's ToolTipConnector component
     /// </summary>
-    public class ToolTipSpawner : MonoBehaviour , IInputHandler
+    public class ToolTipSpawner : MonoBehaviour , IInputHandler, IPointerSpecificFocusable
     {
         public enum VanishBehaviorEnum
         {
@@ -41,7 +41,6 @@ namespace MixedRealityToolkit.UX.ToolTips
         [Range(0f, 5f)]
         public float VanishDelay = 2f;
 
-
         [Range(0.5f, 10.0f)]
         public float Lifetime = 1.0f;
 
@@ -61,11 +60,12 @@ namespace MixedRealityToolkit.UX.ToolTips
 
         public string ToolTipText = "New Tooltip";
 
-        public GameObject ToolTipPrefab;
+        [SerializeField]
+        private GameObject toolTipPrefab;
 
-        public Transform Anchor; 
+        public Transform Anchor;
 
-        public void FocusEnter()
+        public void OnFocusEnter(PointerSpecificEventData eventData)
         {
             focusEnterTime = Time.unscaledTime;
             hasFocus = true;
@@ -83,19 +83,13 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
-        public void FocusExit()
+        public void OnFocusExit(PointerSpecificEventData eventData)
         {
             focusExitTime = Time.unscaledTime;
             hasFocus = false;
         }
 
-    
-
         public void OnInputDown(InputEventData eventData)
-        {
-        }
-
-        public void OnInputUp(InputEventData eventData)
         {
             tappedTime = Time.unscaledTime;
             if (toolTip == null || !toolTip.gameObject.activeSelf)
@@ -112,6 +106,10 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
+        public void OnInputUp(InputEventData eventData)
+        {
+        }
+
         private void ShowToolTip()
         {
             StartCoroutine(UpdateTooltip(focusEnterTime, tappedTime));
@@ -121,7 +119,7 @@ namespace MixedRealityToolkit.UX.ToolTips
         {
             if (toolTip == null)
             {
-                GameObject toolTipGo = GameObject.Instantiate(ToolTipPrefab) as GameObject;
+                GameObject toolTipGo = GameObject.Instantiate(toolTipPrefab) as GameObject;
                 toolTip = toolTipGo.GetComponent<ToolTip>();                
                 toolTip.transform.position = transform.position;
                 toolTip.transform.parent = transform;
@@ -163,11 +161,23 @@ namespace MixedRealityToolkit.UX.ToolTips
             {
                 if (RemainBehavior == RemainBehaviorEnum.Timeout)
                 {
-                    if (Time.unscaledTime - tappedTime >= Lifetime)
+                    if (AppearBehavior == AppearBehaviorEnum.AppearOnTap)
                     {
-                        toolTip.gameObject.SetActive(false);
-                        yield break;
+                        if (Time.unscaledTime - tappedTime >= Lifetime)
+                        {
+                            toolTip.gameObject.SetActive(false);
+                            yield break;
+                        }
                     }
+                    else if (AppearBehavior == AppearBehaviorEnum.AppearOnFocusEnter)
+                    {
+                        if (Time.unscaledTime - focusEnterTime >= Lifetime)
+                        {
+                            toolTip.gameObject.SetActive(false);
+                            yield break;
+                        }
+                    }
+
                 }
                 //check whether we're suppose to disappear
                 switch (VanishBehavior)
@@ -232,9 +242,7 @@ namespace MixedRealityToolkit.UX.ToolTips
                 }
             }
         }
-
-
-#endif
+        #endif
 
         private float focusEnterTime = 0f;
         private float focusExitTime = 0f;
