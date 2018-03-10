@@ -22,7 +22,7 @@ namespace MixedRealityToolkit.UX.Dialog
     public class DialogShell : Dialog
     {
         [SerializeField]
-        private int maxCharsPerLine = 60;
+        private int maxCharsPerLine = 45;
 
         [SerializeField]
         private TextMesh titleText;
