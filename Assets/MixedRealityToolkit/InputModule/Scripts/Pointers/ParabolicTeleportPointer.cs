@@ -16,8 +16,8 @@ namespace MixedRealityToolkit.InputModule.Pointers
         [SerializeField]
         [Tooltip("Pointers that you want to disable while teleporting")]
         private BaseControllerPointer[] disableWhileActive;
-        [SerializeField]
-        private AnimationCurve parabolaVelocityCurve = AnimationCurve.Linear(0f, 1f, 1f, 1f);
+        //[SerializeField]
+        //private AnimationCurve parabolaVelocityCurve = AnimationCurve.Linear(0f, 1f, 1f, 1f);
         [SerializeField]
         private float minParabolaVelocity = 3f;
         [SerializeField]
