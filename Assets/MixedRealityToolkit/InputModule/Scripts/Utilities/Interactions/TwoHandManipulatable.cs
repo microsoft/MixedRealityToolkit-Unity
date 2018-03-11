@@ -92,6 +92,11 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             }
         }
 
+        public void SetManipulationMode(TwoHandedManipulation mode)
+        {
+            ManipulationMode = mode;
+        }
+
         private void Awake()
         {
             m_moveLogic = new TwoHandMoveLogic();
