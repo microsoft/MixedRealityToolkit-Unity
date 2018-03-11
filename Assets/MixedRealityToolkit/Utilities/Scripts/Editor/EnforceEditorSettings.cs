@@ -57,14 +57,14 @@ namespace MixedRealityToolkit.Utilities.EditorScript
             {
                 if (EditorUtility.DisplayDialog(
                         "Change the Scripting Runtime Version to 4.x?",
-                        "The Mixed Reality Toolkit would like to change the Scripting Runtime Version to use .NET 4.x.\n" +
-                        "WARNING: If you do not make this change, then it's likely you're build will not complete successfully.\n" +
+                        "The Mixed Reality Toolkit would like to change the Scripting Runtime Version to use .NET 4.x.\n\n" +
+                        "In order for the change to take place the Editor must be restarted.\n\n" +
+                        "WARNING: If you do not make this change, then it's likely you're build will not complete successfully.\n\n" +
                         "Would you like to make this change?",
                         "Enable .NET 4.x",
                         "Later"))
                 {
                     PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
-                    Debug.Log("Updated .NET Scripting runtime: " + PlayerSettings.scriptingRuntimeVersion);
                     EditorApplication.OpenProject(Directory.GetParent(Application.dataPath).ToString());
                 }
             }
