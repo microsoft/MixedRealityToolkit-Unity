@@ -117,21 +117,24 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         {
             set
             {
-                if ((boundingBoxInstance == null) && (boundingBoxPrefab != null))
+                if (boundingBoxPrefab != null)
                 {
-                    // Instantiate Bounding Box from the Prefab
-                    boundingBoxInstance = Instantiate(boundingBoxPrefab) as BoundingBox;
-                }
-               
-                if (value)
-                {
-                    boundingBoxInstance.Target = this.gameObject;
-                    boundingBoxInstance.gameObject.SetActive(true);
-                }
-                else
-                {
-                    boundingBoxInstance.Target = null;
-                    boundingBoxInstance.gameObject.SetActive(false);
+                    if (boundingBoxInstance != null)
+                    {
+                        // Instantiate Bounding Box from the Prefab
+                        boundingBoxInstance = Instantiate(boundingBoxPrefab) as BoundingBox;
+                    }
+
+                    if (value)
+                    {
+                        boundingBoxInstance.Target = this.gameObject;
+                        boundingBoxInstance.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        boundingBoxInstance.Target = null;
+                        boundingBoxInstance.gameObject.SetActive(false);
+                    }
                 }
             }
         }
