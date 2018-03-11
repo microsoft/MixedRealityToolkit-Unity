@@ -119,7 +119,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             {
                 if (boundingBoxPrefab != null)
                 {
-                    if (boundingBoxInstance != null)
+                    if (boundingBoxInstance == null)
                     {
                         // Instantiate Bounding Box from the Prefab
                         boundingBoxInstance = Instantiate(boundingBoxPrefab) as BoundingBox;
