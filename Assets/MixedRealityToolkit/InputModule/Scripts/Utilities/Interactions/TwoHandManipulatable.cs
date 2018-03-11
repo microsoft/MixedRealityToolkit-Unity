@@ -79,6 +79,19 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         // Maps input id -> input source. Then obtain position of input source using currentInputSource.TryGetGripPosition(currentInputSourceId, out inputPosition);
         private readonly Dictionary<uint, IInputSource> m_handsPressedInputSourceMap = new Dictionary<uint, IInputSource>();
 
+        public BoundingBox BoundingBoxPrefab
+        {
+            set
+            {
+                boundingBoxPrefab = value;
+            }
+
+            get
+            {
+                return boundingBoxPrefab;
+            }
+        }
+
         private void Awake()
         {
             m_moveLogic = new TwoHandMoveLogic();
