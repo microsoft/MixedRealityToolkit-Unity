@@ -81,10 +81,17 @@ namespace MixedRealityToolkit.UX.ToolTips
         }
 
         public Vector3 AnchorPosition {
-            get {
+            get
+            {
                 return anchor.transform.position;
             }
         }
+
+        [SerializeField]
+        private bool showBackground = true;
+
+        [SerializeField]
+        private bool showOutline = false;
 
         public Transform ContentParentTransform {
             get {
@@ -222,6 +229,34 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
+        public bool ShowBackground
+        {
+            get
+            {
+                return showBackground;
+            }
+            set
+            {
+                showBackground = value;
+                GetComponent<ToolTipBackgroundMesh>().IsVisible = value;
+            }
+        }
+
+        public bool ShowOutline
+        {
+            get
+            {
+                return showOutline;
+            }
+            set
+            {
+                showOutline = value;
+                GameObject TipBackground = contentParent.transform.GetChild(1).gameObject;
+                Rectangle rectangle = TipBackground.GetComponent < Rectangle >();
+                rectangle.enabled = value;
+            }
+        }
+
         [SerializeField]
         protected TipDisplayModeEnum tipState;
         [SerializeField]
@@ -295,6 +330,8 @@ namespace MixedRealityToolkit.UX.ToolTips
             //EnforceHeirarchy();
             RefreshLocalContent();
             contentParent.SetActive(false);
+            ShowBackground = showBackground;
+            ShowOutline = showOutline;
         }
 
         protected virtual void Update() {

@@ -47,6 +47,12 @@ namespace MixedRealityToolkit.UX.ToolTips
         [Range (0f, 1f)]
         public float PivotDistance = 0.25f;
 
+        [SerializeField]
+        private bool showBackground = true;
+
+        [SerializeField]
+        private bool showOutline = false;
+
         public AppearBehaviorEnum AppearBehavior = AppearBehaviorEnum.AppearOnFocusEnter;
         public VanishBehaviorEnum VanishBehavior = VanishBehaviorEnum.VanishOnFocusExit;
         public RemainBehaviorEnum RemainBehavior = RemainBehaviorEnum.Indefinite;
@@ -122,6 +128,8 @@ namespace MixedRealityToolkit.UX.ToolTips
                 GameObject toolTipGo = GameObject.Instantiate(toolTipPrefab) as GameObject;
                 toolTip = toolTipGo.GetComponent<ToolTip>();
                 toolTip.gameObject.SetActive(false);
+                toolTip.ShowBackground = showBackground;
+                toolTip.ShowOutline = showOutline;
                 toolTip.transform.position = transform.position;
                 toolTip.transform.parent = transform;
                 toolTip.ContentParentTransform.localScale = new Vector3(0.182f, 0.028f, 1.0f);

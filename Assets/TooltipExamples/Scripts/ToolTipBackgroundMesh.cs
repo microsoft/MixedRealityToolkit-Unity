@@ -27,6 +27,17 @@ namespace MixedRealityToolkit.UX.ToolTips
         /// </summary>
         public float Depth = 1f;
 
+        public bool IsVisible
+        {
+            set
+            {
+                if (BackgroundRenderer)
+                {
+                    BackgroundRenderer.enabled = value;
+                }
+            }
+        }
+
         protected override void ScaleToFitContent ()
         {
             return;

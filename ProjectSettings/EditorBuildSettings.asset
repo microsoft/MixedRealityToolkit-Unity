@@ -5,6 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/MixedRealityToolkit-Examples/Input/Scenes/MicrophoneStream.unity
     guid: 0d1edddc695c93840945d97459c6f5cc
+  - enabled: 1
+    path: Assets/TooltipExamples/TooltipExamples.unity
+    guid: f3e468440f9093b4ab46ddfaeaab7405

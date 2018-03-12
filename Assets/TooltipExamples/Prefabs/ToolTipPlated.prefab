@@ -561,6 +561,8 @@ MonoBehaviour:
   ButtonState: 4
   ButtonPressFilter: 1
   RequireGaze: 1
+  showBackground: 1
+  showOutline: 0
   tipState: 1
   groupTipState: 0
   masterTipState: 0
