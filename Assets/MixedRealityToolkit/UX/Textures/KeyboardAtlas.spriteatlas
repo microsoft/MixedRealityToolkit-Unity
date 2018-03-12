@@ -27,10 +27,31 @@ SpriteAtlas:
       enableRotation: 0
       enableTightPacking: 0
     variantMultiplier: 1
-    packables: []
-    bindAsDefault: 1
+    packables:
+    - {fileID: 21300000, guid: 7029cbbbce5f0ac4dbc4e93267bfddf4, type: 3}
+    - {fileID: 21300000, guid: 2775a1cee10328748889e019ab01d248, type: 3}
+    - {fileID: 21300000, guid: b575d7b7d87461b4ea9965b50e367249, type: 3}
+    - {fileID: 21300000, guid: 5eb0b332d494ca84d9c38cf77ba0e12d, type: 3}
+    - {fileID: 21300000, guid: ec8b4073237c9724ba8422f71fda3694, type: 3}
+    - {fileID: 21300000, guid: 11e4524f21fc6434abbbba83d70d0040, type: 3}
+    - {fileID: 21300000, guid: 73830216a21a45e499598b2624ef723e, type: 3}
+    bindAsDefault: 0
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 73830216a21a45e499598b2624ef723e, type: 3}
+  - {fileID: 21300000, guid: 5eb0b332d494ca84d9c38cf77ba0e12d, type: 3}
+  - {fileID: 21300000, guid: ec8b4073237c9724ba8422f71fda3694, type: 3}
+  - {fileID: 21300000, guid: 11e4524f21fc6434abbbba83d70d0040, type: 3}
+  - {fileID: 21300000, guid: 7029cbbbce5f0ac4dbc4e93267bfddf4, type: 3}
+  - {fileID: 21300000, guid: b575d7b7d87461b4ea9965b50e367249, type: 3}
+  - {fileID: 21300000, guid: 2775a1cee10328748889e019ab01d248, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - KeyboardKeyGlyphs_Up
+  - KeyboardKeyGlyphs_Backspace
+  - KeyboardKeyGlyphs_Left
+  - KeyboardKeyGlyphs_Right
+  - KeyboardKeyGlyphs_Close
+  - KeyboardKeyGlyphs_Dictation
+  - ButtonBounds
   m_Tag: KeyboardAtlas
   m_IsVariant: 0

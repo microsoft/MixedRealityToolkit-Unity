@@ -230,7 +230,7 @@ namespace MixedRealityToolkit.Tests.Utilities.Extensions
                 parent.name = names[i];
             }
 
-            Assert.That(parent.transform.GetFullPath(prefix: prefix, delimiter: delimiter), Is.EqualTo(result));
+            Assert.That(parent.transform.GetFullPath(delimiter, prefix), Is.EqualTo(result));
         }
 
         [Test]

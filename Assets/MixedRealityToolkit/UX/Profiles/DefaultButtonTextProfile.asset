@@ -14,7 +14,7 @@ MonoBehaviour:
   Alignment: 1
   Anchor: 7
   Style: 0
-  Size: 48
+  Size: 72
   Color: {r: 1, g: 1, b: 1, a: 1}
   Font: {fileID: 12800000, guid: 86574c70442309b45be5a1c37a37a40b, type: 3}
   AnchorLowerCenterOffset: {x: 0, y: -0.035, z: -0.0075}

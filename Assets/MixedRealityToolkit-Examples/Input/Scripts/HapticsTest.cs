@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace MixedRealityToolkit.Examples.InputModule
 {
-    [RequireComponent(requiredComponent: typeof(SetGlobalListener))]
+    [RequireComponent(typeof(SetGlobalListener))]
     public class HapticsTest : MonoBehaviour, IInputHandler
     {
         void IInputHandler.OnInputDown(InputEventData eventData)

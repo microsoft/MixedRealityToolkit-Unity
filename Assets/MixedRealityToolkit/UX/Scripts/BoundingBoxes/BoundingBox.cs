@@ -110,6 +110,31 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         }
 
         /// <summary>
+        /// Sets the bounding box invisible while not interrupting
+        /// the computation of bounds points.
+        /// </summary>
+        public bool IsVisible
+        {
+            get
+            {
+                return isVisible;
+            }
+            set
+            {
+                if (rendererForVisibility == null)
+                {
+                    Transform scale = transform.GetChild(0);
+                    Transform rig = scale.GetChild(0);
+                    GameObject rigobject = rig.gameObject;
+                    rendererForVisibility = rigobject.gameObject.GetComponent<Renderer>();
+                }
+
+                rendererForVisibility.enabled = value;
+                isVisible = value;
+            }
+        }
+
+        /// <summary>
         /// The current flattened axis, if any
         /// </summary>
         public virtual FlattenModeEnum FlattenedAxis
@@ -174,17 +199,21 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         protected LayerMask ignoreLayers = (1 << 2); // Ignore Raycast Layer
 
         protected Vector3 targetBoundsWorldCenter = Vector3.zero;
+
         protected Vector3 targetBoundsLocalScale = Vector3.zero;
 
         protected Bounds localTargetBounds = new Bounds();
+
         protected List<Vector3> boundsPoints = new List<Vector3>();
 
         protected FlattenModeEnum flattenedAxis = FlattenModeEnum.DoNotFlatten;
+   
+        protected bool isVisible = true;
 
+        protected Renderer rendererForVisibility;
         #endregion
 
-        #region private
-
+        #region
         /// <summary>
         /// Override so we're not overwhelmed by button gizmos
         /// </summary>
@@ -378,15 +407,10 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     scale.z += (largestDimension * flattenedScalePadding);
                     break;
             }
-
-
             scaleTransform.localScale = scale;
-
             Vector3 rotation = target.transform.eulerAngles;
-
             transform.eulerAngles = rotation;
         }
-
         #endregion
 
         #region static utility functions

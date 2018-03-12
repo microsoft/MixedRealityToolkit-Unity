@@ -15,9 +15,9 @@ namespace UnityGLTF
 
         public int MaximumLod = 300;
 
-        public Shader GLTFStandard;
-        public Shader GLTFStandardSpecular;
-        public Shader GLTFConstant;
+        public Shader GLTFStandard = null;
+        public Shader GLTFStandardSpecular = null;
+        public Shader GLTFConstant = null;
 
         public bool addColliders = false;
 

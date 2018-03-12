@@ -3,12 +3,8 @@
 
 using UnityEngine;
 
-#if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
-#else
-using UnityEngine.VR.WSA.Input;
-#endif
 #endif
 
 namespace MixedRealityToolkit.InputModule.Utilities
@@ -18,6 +14,7 @@ namespace MixedRealityToolkit.InputModule.Utilities
     /// </summary>
     public abstract class ControllerFinder : MonoBehaviour
     {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         public MotionControllerInfo.ControllerElementEnum Element
         {
             get { return element; }
@@ -27,7 +24,6 @@ namespace MixedRealityToolkit.InputModule.Utilities
         [SerializeField]
         private MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         public InteractionSourceHandedness Handedness
         {
             get { return handedness; }
@@ -36,12 +32,12 @@ namespace MixedRealityToolkit.InputModule.Utilities
 
         [SerializeField]
         private InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
-#endif
 
         public Transform ElementTransform { get { return elementTransform; } private set { elementTransform = value; } }
         private Transform elementTransform;
 
         protected MotionControllerInfo ControllerInfo;
+#endif
 
         protected virtual void OnEnable()
         {
@@ -51,27 +47,32 @@ namespace MixedRealityToolkit.InputModule.Utilities
             {
                 AddControllerTransform(ControllerInfo);
             }
-#endif
+
             MotionControllerVisualizer.Instance.OnControllerModelLoaded += AddControllerTransform;
             MotionControllerVisualizer.Instance.OnControllerModelUnloaded += RemoveControllerTransform;
+#endif
         }
 
         protected virtual void OnDisable()
         {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             if (MotionControllerVisualizer.IsInitialized)
             {
                 MotionControllerVisualizer.Instance.OnControllerModelLoaded -= AddControllerTransform;
                 MotionControllerVisualizer.Instance.OnControllerModelUnloaded -= RemoveControllerTransform;
             }
+#endif
         }
 
         protected virtual void OnDestroy()
         {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             if (MotionControllerVisualizer.IsInitialized)
             {
                 MotionControllerVisualizer.Instance.OnControllerModelLoaded -= AddControllerTransform;
                 MotionControllerVisualizer.Instance.OnControllerModelUnloaded -= RemoveControllerTransform;
             }
+#endif
         }
 
         protected virtual void AddControllerTransform(MotionControllerInfo newController)

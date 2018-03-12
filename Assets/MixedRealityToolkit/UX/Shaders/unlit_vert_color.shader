@@ -29,22 +29,28 @@ Shader "Custom/UnlitTextureVertColor"
 			#pragma fragment frag
 			//#pragma target 3.0
 
+            #include "UnityCG.cginc"
+
 			struct appdata {
 				float4 pos : POSITION;
 				float2 uv_MainTex : TEXCOORD0;
 				float4 vertColor : COLOR; // Vertex color stored here by vert() method
+                UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
 			struct v2f {
 				float4 pos : SV_POSITION;
 				fixed2 uv : TEXCOORD0;
 				fixed4 color : COLOR;
+                UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			// vertex shader
 			v2f vert(appdata v)
 			{
 				v2f o;
+                UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 				o.pos = UnityObjectToClipPos(v.pos);
 				// just pass the texture coordinate
 				o.uv = v.uv_MainTex;

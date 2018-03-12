@@ -15,7 +15,7 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
         [Header("Icon Settings")]
         [SerializeField]
         [DropDownComponent]
-        private MeshRenderer targetIconRenderer;
+        private MeshRenderer targetIconRenderer = null;
 
         [Tooltip("Turns off the icon entirely")]
         public bool DisableIcon = false;
@@ -30,7 +30,7 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
         [SerializeField]
         [ShowIfBoolValue("OverrideIcon")]
         [Tooltip("Icon to use for override")]
-        private Texture2D iconOverride;
+        private Texture2D iconOverride = null;
 
         [SerializeField]
         [Tooltip("Alpha value for the text mesh component")]
@@ -59,8 +59,8 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
                 {
                     alphaTarget = value;
                     if (Application.isPlaying)
-                    {                        
-                        if (Mathf.Abs (alpha - alphaTarget) < AlphaThreshold)
+                    {
+                        if (Mathf.Abs(alpha - alphaTarget) < AlphaThreshold)
                         {
                             return;
                         }
@@ -100,8 +100,8 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
                 return targetIconRenderer != null ? targetIconRenderer.GetComponent<MeshFilter>() : null;
             }
         }
-        
-        #if UNITY_EDITOR
+
+#if UNITY_EDITOR
         /// <summary>
         /// Called by CompoundButtonSaveInterceptor
         /// Prevents saving a scene with instanced materials / meshes
@@ -111,10 +111,10 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
             ClearInstancedAssets();
 
             SetIconName(iconName);
-            
+
         }
-        #endif
-        
+#endif
+
         public string IconName
         {
             get
@@ -130,20 +130,27 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
         private void SetIconName(string newName)
         {
             // Avoid exploding if possible
-            if (Profile == null) {
+            if (Profile == null)
+            {
                 return;
             }
 
-            if (targetIconRenderer == null) {
+            // Set the name regardless
+            iconName = newName;
+
+            if (targetIconRenderer == null)
+            {
                 return;
             }
 
-            if (DisableIcon) {
+            if (DisableIcon)
+            {
                 targetIconRenderer.enabled = false;
                 return;
             }
 
-            if (Profile.IconMaterial == null || Profile.IconMesh == null) {
+            if (Profile.IconMaterial == null || Profile.IconMesh == null)
+            {
                 return;
             }
 
@@ -156,7 +163,7 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
                 };
             }
             targetIconRenderer.sharedMaterial = instantiatedMaterial;
-            
+
             // Instantiate our local mesh now, if we don't have one
             if (instantiatedMesh == null)
             {
@@ -179,9 +186,8 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
             if (string.IsNullOrEmpty(newName))
             {
                 targetIconRenderer.enabled = false;
-                iconName = newName;
                 return;
-            }            
+            }
 
             // Moment of truth - try to get our icon
             if (!Profile.GetIcon(newName, targetIconRenderer, IconMeshFilter, true))
@@ -191,7 +197,6 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
             }
 
             // If we've made it this far we're golden
-            iconName = newName;
             targetIconRenderer.enabled = true;
             RefreshAlpha();
         }

@@ -16,7 +16,9 @@ namespace MixedRealityToolkit.Examples.Grabbables
     /// </summary>
     public class RotatableObject : BaseUsable
     {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private Vector3 touchPositionFromController = Vector3.zero;
+#endif
         private BaseGrabbable baseGrabbable;
 
         protected override void OnEnable()
