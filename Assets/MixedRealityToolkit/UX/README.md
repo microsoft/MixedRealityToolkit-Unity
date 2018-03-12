@@ -2,8 +2,6 @@
 
 Useful common UX controls that you can leverage in your application.
 
-
-
 ### [Materials](Materials)
 
 Materials used in prefabs
