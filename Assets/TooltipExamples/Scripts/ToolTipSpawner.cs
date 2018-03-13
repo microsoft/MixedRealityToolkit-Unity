@@ -36,7 +36,7 @@ namespace MixedRealityToolkit.UX.ToolTips
         }
 
         [Range(0f, 5f)]
-        public float AppearDelay = 1.25f;
+        public float AppearDelay = 0.0f;
 
         [Range(0f, 5f)]
         public float VanishDelay = 2f;
@@ -53,9 +53,12 @@ namespace MixedRealityToolkit.UX.ToolTips
         [SerializeField]
         private bool showOutline = false;
 
+        [SerializeField]
+        private bool showConnector = true;
+
         public AppearBehaviorEnum AppearBehavior = AppearBehaviorEnum.AppearOnFocusEnter;
         public VanishBehaviorEnum VanishBehavior = VanishBehaviorEnum.VanishOnFocusExit;
-        public RemainBehaviorEnum RemainBehavior = RemainBehaviorEnum.Indefinite;
+        public RemainBehaviorEnum RemainBehavior = RemainBehaviorEnum.Timeout;
 
         public ToolTipConnector.FollowTypeEnum FollowType = ToolTipConnector.FollowTypeEnum.AnchorOnly;
         public ToolTipConnector.PivotModeEnum PivotMode = ToolTipConnector.PivotModeEnum.Manual;
@@ -130,6 +133,7 @@ namespace MixedRealityToolkit.UX.ToolTips
                 toolTip.gameObject.SetActive(false);
                 toolTip.ShowBackground = showBackground;
                 toolTip.ShowOutline = showOutline;
+                toolTip.ShowConnector = showConnector;
                 toolTip.transform.position = transform.position;
                 toolTip.transform.parent = transform;
                 toolTip.ContentParentTransform.localScale = new Vector3(0.182f, 0.028f, 1.0f);

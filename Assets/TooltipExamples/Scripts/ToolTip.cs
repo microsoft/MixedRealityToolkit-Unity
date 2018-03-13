@@ -93,6 +93,9 @@ namespace MixedRealityToolkit.UX.ToolTips
         [SerializeField]
         private bool showOutline = false;
 
+        [SerializeField]
+        private bool showConnector = true;
+
         public Transform ContentParentTransform {
             get {
                 return contentParent.transform;
@@ -257,6 +260,20 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
+        public bool ShowConnector
+        {
+            get
+            {
+                return showConnector;
+            }
+            set
+            {
+                showConnector = value;
+                //LineUnity connectorLine = GetComponent<LineUnity>();
+                //connectorLine.enabled = value;
+            }
+        }
+
         [SerializeField]
         protected TipDisplayModeEnum tipState;
         [SerializeField]
@@ -332,6 +349,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             contentParent.SetActive(false);
             ShowBackground = showBackground;
             ShowOutline = showOutline;
+            ShowConnector = showConnector;
         }
 
         protected virtual void Update() {
