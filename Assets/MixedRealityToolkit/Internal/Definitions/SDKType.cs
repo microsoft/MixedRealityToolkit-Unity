@@ -1,30 +1,33 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-/// <summary>
-/// The SDKType lists the VR SDK's that are supported by the MRTK
-/// Initially, this lists proposed SDK's, not all may be implemented at this time (please see ReleaseNotes for more details)
-/// </summary>
-public enum SDKType
+namespace MixedRealityToolkit.Internal.Definitons
 {
     /// <summary>
-    /// No specified type or Standalone / non-VR type
+    /// The SDKType lists the VR SDK's that are supported by the MRTK
+    /// Initially, this lists proposed SDK's, not all may be implemented at this time (please see ReleaseNotes for more details)
     /// </summary>
-    None,
-    /// <summary>
-    /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and Hololens. 
-    /// </summary>
-    WindowsMR,
-    /// <summary>
-    /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
-    /// </summary>
-    OpenVR,
-    /// <summary>
-    /// The OpenXR platform. SDK to be determined once released.
-    /// </summary>
-    OpenXR,
-    /// <summary>
-    /// Undefined SDK.
-    /// </summary>
-    Other
+    public enum SDKType
+    {
+        /// <summary>
+        /// No specified type or Standalone / non-VR type
+        /// </summary>
+        None,
+        /// <summary>
+        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and Hololens. 
+        /// </summary>
+        WindowsMR,
+        /// <summary>
+        /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
+        /// </summary>
+        OpenVR,
+        /// <summary>
+        /// The OpenXR platform. SDK to be determined once released.
+        /// </summary>
+        OpenXR,
+        /// <summary>
+        /// Undefined SDK.
+        /// </summary>
+        Other
+    }
 }
