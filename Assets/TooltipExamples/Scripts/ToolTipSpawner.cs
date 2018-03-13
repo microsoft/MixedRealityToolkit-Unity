@@ -36,7 +36,7 @@ namespace MixedRealityToolkit.UX.ToolTips
         }
 
         [Range(0f, 5f)]
-        public float AppearDelay = 1.25f;
+        public float AppearDelay = 0.0f;
 
         [Range(0f, 5f)]
         public float VanishDelay = 2f;
@@ -64,12 +64,23 @@ namespace MixedRealityToolkit.UX.ToolTips
         public Vector3 ManualPivotDirection = Vector3.up;
         public Vector3 ManualPivotLocalPosition = Vector3.up;
 
+        private float focusEnterTime = 0f;
+        private float focusExitTime = 0f;
+        private float tappedTime = 0f;
+        private bool hasFocus;
+        private ToolTip toolTip;
+
         public string ToolTipText = "New Tooltip";
 
         [SerializeField]
         private GameObject toolTipPrefab;
 
         public Transform Anchor;
+
+        private void Awake()
+        {
+
+        }
 
         public void OnFocusEnter(PointerSpecificEventData eventData)
         {
@@ -249,11 +260,5 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
         #endif
-
-        private float focusEnterTime = 0f;
-        private float focusExitTime = 0f;
-        private float tappedTime = 0f;
-        private bool hasFocus;
-        private ToolTip toolTip;
     }
 }
