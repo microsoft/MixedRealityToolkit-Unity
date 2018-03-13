@@ -39,9 +39,9 @@ The headset definition defines the headset as defined by the SDK / Unity.
 InputActions defines the set of actions consumed internally within the MRTK.
 Denoting the available buttons / interactions that MRTK supports and exposed as events from the InputSystem.
 
-### InputType
+### ControllerInputType
 
-The InputType identifies the type of button or input being sent to the framework from a controller.
+The ControllerInputType identifies the type of button or input being sent to the framework from a controller.
 This is mainly information only or for advanced users to understand the input coming directly from the controller.
 
 ### SDKType
