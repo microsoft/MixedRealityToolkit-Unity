@@ -798,7 +798,7 @@ Prefab:
         type: 2}
       propertyPath: LineMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: 5a5e5e69986d97c419a1b509e3b7715b, type: 2}
+      objectReference: {fileID: 2100000, guid: 3c8f5655de1232549bc616142c6119d7, type: 2}
     - target: {fileID: 114608972520619298, guid: 3b2729a90daf689408e97dcbcc8e8a4e,
         type: 2}
       propertyPath: lineRenderer
@@ -1235,7 +1235,7 @@ Prefab:
         type: 2}
       propertyPath: LineMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: 5a5e5e69986d97c419a1b509e3b7715b, type: 2}
+      objectReference: {fileID: 2100000, guid: 3c8f5655de1232549bc616142c6119d7, type: 2}
     - target: {fileID: 114608972520619298, guid: 3b2729a90daf689408e97dcbcc8e8a4e,
         type: 2}
       propertyPath: lineRenderer
@@ -1593,7 +1593,7 @@ Prefab:
         type: 2}
       propertyPath: LineMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: 5a5e5e69986d97c419a1b509e3b7715b, type: 2}
+      objectReference: {fileID: 2100000, guid: 3c8f5655de1232549bc616142c6119d7, type: 2}
     - target: {fileID: 114608972520619298, guid: 3b2729a90daf689408e97dcbcc8e8a4e,
         type: 2}
       propertyPath: lineRenderer
@@ -2235,7 +2235,7 @@ Prefab:
         type: 2}
       propertyPath: LineMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: 5a5e5e69986d97c419a1b509e3b7715b, type: 2}
+      objectReference: {fileID: 2100000, guid: 3c8f5655de1232549bc616142c6119d7, type: 2}
     - target: {fileID: 114608972520619298, guid: 3b2729a90daf689408e97dcbcc8e8a4e,
         type: 2}
       propertyPath: lineRenderer
@@ -2723,7 +2723,7 @@ Prefab:
         type: 2}
       propertyPath: LineMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: 5a5e5e69986d97c419a1b509e3b7715b, type: 2}
+      objectReference: {fileID: 2100000, guid: 3c8f5655de1232549bc616142c6119d7, type: 2}
     - target: {fileID: 114608972520619298, guid: 3b2729a90daf689408e97dcbcc8e8a4e,
         type: 2}
       propertyPath: lineRenderer
