@@ -269,8 +269,9 @@ namespace MixedRealityToolkit.UX.ToolTips
             set
             {
                 showConnector = value;
-                //LineUnity connectorLine = GetComponent<LineUnity>();
-                //connectorLine.enabled = value;
+                //todo fix this
+                Line lineScript = GetComponent<Line>();
+                lineScript.enabled = value;
             }
         }
 
