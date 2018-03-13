@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 114608972520619298}
   - component: {fileID: 114560166902750794}
   m_Layer: 0
-  m_Name: ToolTipPlated
+  m_Name: ToolTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -563,6 +563,7 @@ MonoBehaviour:
   RequireGaze: 1
   showBackground: 1
   showOutline: 0
+  showConnector: 1
   tipState: 1
   groupTipState: 0
   masterTipState: 0
