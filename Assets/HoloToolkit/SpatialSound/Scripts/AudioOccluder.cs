@@ -9,6 +9,11 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// Class that implements IAudioInfluencer to provide an occlusion effect.
     /// </summary>
+    /// <remarks>
+    /// For best results, ensure that all sound emitting objects have an attached
+    /// AudioInfluencerManager. Failing to do so may result in incorrect frequency
+    /// and/or volume restoration when the RemoveEffect method is called.
+    /// </remarks>
     public class AudioOccluder 
         : MonoBehaviour, 
         IAudioInfluencer
@@ -75,6 +80,11 @@ namespace HoloToolkit.Unity
         /// Removes the previously applied audio effect.
         /// </summary>
         /// <param name="soundEmittingObject">The GameObject from which the effect is to be removed.</param>
+        /// <remarks>
+        /// For best results, ensure that all sound emitting objects have an attached
+        /// AudioInfluencerManager. Failing to do so may result in incorrect frequency
+        /// and/or volume restoration when the RemoveEffect method is called.
+        /// </remarks>
         public void RemoveEffect(GameObject soundEmittingObject)
         {
             // Audio occlusion is performed using a low pass filter.                

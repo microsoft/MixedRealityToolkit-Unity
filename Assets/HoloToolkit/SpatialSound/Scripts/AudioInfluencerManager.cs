@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity
     /// </summary>
     /// <remarks>
     /// AudioInfluencerManager requires an AudioSource component. If one is not attached, it will be added automatically.
-    /// Each sound playuing game object needs to have an AudioInfluencerManager attached in order to have it's audio influenced.
+    /// Each sound playing game object needs to have an AudioInfluencerManager attached in order to have it's audio influenced.
     /// </remarks>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(AudioSource))]

@@ -7,21 +7,35 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// 
+    /// An audio effect that limits the frequency range of a sound to simulate
+    /// being played over various telephony or radio sources.
     /// </summary>
+    /// <remarks>
+    /// For the best results, also attach an AudioInfluencerManager to the sound
+    /// source. This will ensure that the proper frequencies will be restored
+    /// when audio influencers are used in the scene.
+    /// </remarks>
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(AudioLowPassFilter))]
     [RequireComponent(typeof(AudioHighPassFilter))]
     [DisallowMultipleComponent]
     public class AudioLoFiEffect : MonoBehaviour
     {
+        /// <summary>
+        /// The quality level of the simulated audio source (ex: AM radio).
+        /// </summary>
+        [Tooltip("The quality level of the simulated audio source.")]
         public AudioSourceQuality SourceQuality;
 
+        // The audio filter settings that match the selected source quality.
         private FilterSettings filterSettings;
 
+        // The filters used to simulate the source quality.
         private AudioLowPassFilter lowPassFilter;
         private AudioHighPassFilter highPassFilter;
 
+        // Collection used to look up the filter settings that match the selected
+        // source quality.
         private Dictionary<AudioSourceQuality, FilterSettings> sourceQualityFilterSettings =
             new Dictionary<AudioSourceQuality, FilterSettings>();
 
@@ -58,6 +72,7 @@ namespace HoloToolkit.Unity
             }
         }
 
+        // Populates the source quality filter settings collection.
         private void LoadQualityFilterSettings()
         {
             if (sourceQualityFilterSettings.Keys.Count > 0) { return; }
@@ -79,63 +94,64 @@ namespace HoloToolkit.Unity
                 new FilterSettings(30, 15000));
         }
 
+        /// <summary>
+        /// Source quality options that match common telephony and
+        /// radio broadcast options.
+        /// </summary>
         public enum AudioSourceQuality
         {
             /// <summary>
-            /// 
+            /// Narrow frequency range telephony
             /// </summary>
             NarrowBandTelephone,
 
             /// <summary>
-            /// 
+            /// Wide frequency range telephony
             /// </summary>
             WideBandTelephone,
 
             /// <summary>
-            /// 
+            /// AM radio
             /// </summary>
             AmRadio,
 
             /// <summary>
-            /// 
+            /// FM radio
             /// </summary>
             FmRadio,
 
             /// <summary>
-            /// The Full range quality covers the entire range of human hearing.
-            /// Any reduction of quality is a result of the AudioSpeakerQuality selection.
+            /// Full range of human hearing.
             /// </summary>
-            FullRange,
-
-            // todo
-            ///// <summary>
-            ///// 
-            ///// </summary>
-            //Custom
+            /// <remarks>
+            /// The frequency range used is a bit wider than that of human
+            /// hearing. It closely resembles the range used for audio CDs.
+            /// </remarks>
+            FullRange
         }
 
         /// <summary>
-        /// 
+        /// Settings for the filters used to simulate a low fidelity sound source.
         /// </summary>
         public struct FilterSettings
         {
             /// <summary>
-            /// 
+            /// The frequency below which sound will be heard.
             /// </summary>
             public float LowPassCutoff
             { get; private set; }
 
             /// <summary>
-            /// 
+            /// The frequency above which sound will be heard.
             /// </summary>
             public float HighPassCutoff
             { get; private set; }
 
             /// <summary>
-            /// 
+            /// FilterSettings constructor.
             /// </summary>
-            /// <param name="highPassCutoff"></param>
-            /// <param name="lowPassCutoff"></param>
+            /// <param name="highPassCutoff">High pass filter cutoff frequency.</param>
+            /// <param name="lowPassCutoff">Low pass filter cutoff frequency.</param>
             public FilterSettings(
                 float highPassCutoff,
                 float lowPassCutoff)
@@ -144,16 +160,28 @@ namespace HoloToolkit.Unity
                 LowPassCutoff = lowPassCutoff;
             }
 
+            /// <summary>
+            /// Checks to see if two FilterSettings objects are equivalent.
+            /// </summary>
+            /// <returns>True if equivalent, false otherwise.</returns>
             public static bool operator ==(FilterSettings a, FilterSettings b)
             {
                 return a.Equals(b);
             }
 
+            /// <summary>
+            /// Checks to see if two FilterSettings objects are not equivalent.
+            /// </summary>
+            /// <returns>False if equivalent, true otherwise.</returns>
             public static bool operator !=(FilterSettings a, FilterSettings b)
             {
                 return !(a.Equals(b));
             }
 
+            /// <summary>
+            /// Checks to see if a object is equivalent to this FilterSettings.
+            /// </summary>
+            /// <returns>True if equivalent, false otherwise.</returns>
             public override bool Equals(object obj)
             {
                 if (obj == null)
@@ -176,6 +204,10 @@ namespace HoloToolkit.Unity
                 return true;
             }
 
+            /// <summary>
+            /// Generates a hash code representing this FilterSettings.
+            /// </summary>
+            /// <returns></returns>
             public override int GetHashCode()
             {
                 string s = string.Format(
