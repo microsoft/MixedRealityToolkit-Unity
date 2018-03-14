@@ -13,17 +13,13 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Applies an audio effect.
         /// </summary>
-        /// <param name="emitter">The GameObject on which the effect is to be applied.</param>
-        /// <param name="audioSource">The AudioSource that will be impacted by the effect.</param>
-        void ApplyEffect(GameObject emitter,
-                        AudioSource audioSource);
+        /// <param name="soundEmittingObject">The GameObject on which the effect is to be applied.</param>
+        void ApplyEffect(GameObject soundEmittingObject);
 
         /// <summary>
         /// Removes a previously applied audio effect.
         /// </summary>
-        /// <param name="emitter">The GameObject from which the effect is to be removed.</param>
-        /// <param name="audioSource">The AudioSource that will be impacted by the effect.</param>
-        void RemoveEffect(GameObject emitter,
-                        AudioSource audioSource);
+        /// <param name="soundEmittingObject">The GameObject from which the effect is to be removed.</param>
+        void RemoveEffect(GameObject soundEmittingObject);
     }
 }
