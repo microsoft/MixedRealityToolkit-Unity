@@ -20,8 +20,6 @@ In the scene file, you will be able to find various examples of ToolTip. First g
 
 <img src="/External/ReadMeImages/MRTK_TooltipExampleScene.jpg">
 
-The scene also includes two tooltip groups on the bottom. These ToolTips are layed out to match position of the buttons on the motion controllers. When motion controllers are detected, these ToolTips will be attached automatically to the controllers, using AttachToController script.
-
 ## Directly adding to the scene and attaching to an object
 A ToolTip can be added directly to the Hierarchy and targeted to an object. To use this method, Add a GameObject and a **ToolTip prefab** object to the Scene Hierarchy. In the ToolTip prefab's Inspector panel, expand the Tool Tip (Script). Select a TipState and set other settings. Enter the ToolTip text in the Text field. Finally, expand the ToolTipConnector (Script). Drag the object that is to have the ToolTip from the Hierarchy into the field labelled Target. This attaches the ToolToolTip connector to the object. Finally, this use of ToolTip assumes a ToolTip that is always showing or that is shown/hid in script by changing the TipState property of the ToolTip component.
 
@@ -31,3 +29,9 @@ A ToolTip can be added directly to the Hierarchy and targeted to an object. To u
 A ToolTip can be dynamically added to an object at runtime as well as pre-set to show and hide on a Tap or focus. Simply add the **ToolTipSpawner** script to any GameObject. In the script's Inspector, you can set delays for appearing and disappearing. You can also set a lifetime so that the ToolTip when spawned, will disappear after a duration. You can also set style properties such as Background in the ToolTipSpawner script. This script is pre-populated with the ToiolTip prefab. The GameObject to which the spawned ToolTip is anchored is determined by the object that has been dragged into the Anchor field in the ToolTipSpawner Inspector. This is usually set to the object that has the ToolTipSpawner script.
 
 <img src="/External/ReadMeImages/MRTK_TooltipSpawner.jpg">
+
+## Motion controller Tooltips
+The scene also includes two tooltip groups on the bottom. These ToolTips are layed out to match position of the buttons on the motion controllers. When motion controllers are detected, these ToolTips will be attached automatically to the controllers, using [AttachToController](/Assets/MixedRealityToolkit/InputModule/Scripts/Utilities/AttachToController.cs) script.
+
+<img src="/External/ReadMeImages/MRTK_TooltipMotionControllers1.jpg">
+<img src="/External/ReadMeImages/MRTK_TooltipMotionControllers2.jpg">
