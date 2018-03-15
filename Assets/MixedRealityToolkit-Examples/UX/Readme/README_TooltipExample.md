@@ -14,6 +14,8 @@ In the scene file, you will be able to find various examples of ToolTip. First g
 
 <img src="/External/ReadMeImages/MRTK_TooltipExampleScene.jpg">
 
+The scene also includes two tooltip groups on the bottom. These ToolTips are layed out to match position of the buttons on the motion controllers. When motion controllers are detected, these ToolTips will be attached automatically to the controllers, using AttachToController script.
+
 ## Directly adding to the scene and attaching to an object
 A ToolTip can be added directly to the Hierarchy and targeted to an object. To use this method, Add a GameObject and a ToolTipPlated object to the Scene Hierarchy. In the ToolTIpPlated Inspector, Expand the Tool Tip (Script). Select a TipState and set other settings. Enter the ToolTip text in the Text field. Finally, expand the ToolTipConnector(Script). Drag the object that is to have the ToolTip from the Hierarchy into the field labelled Target. This attaches the ToolToolTip connector to the object. Finally, this use of ToolTipPlated assumes a ToolTip that is always showing or that is shown/hid in script by changing the TipState property of the ToolTip component.
 
