@@ -350,8 +350,8 @@ MonoBehaviour:
   UniformDistortionStrength: 1
   distorters: []
   loops: 0
-  Start: {x: 0.31580007, y: 0.08050001, z: -0.035799973}
-  End: {x: 0.28600004, y: 0.06299998, z: -0.06440002}
+  Start: {x: 0.31580007, y: 0.0805, z: -0.0358}
+  End: {x: 0.28600004, y: 0.06299999, z: -0.06440002}
 --- !u!114 &114262839923521372
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -364,7 +364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toolTip: {fileID: 114697570813435190}
-  BackgroundTransform: {fileID: 4877995955028244}
+  backgroundTransform: {fileID: 4877995955028244}
   BackgroundRenderer: {fileID: 23479976745827762}
   Depth: 1
 --- !u!114 &114299401014778236

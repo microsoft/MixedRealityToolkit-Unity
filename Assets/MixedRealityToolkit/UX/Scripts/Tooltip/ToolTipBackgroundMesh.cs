@@ -13,9 +13,11 @@ namespace MixedRealityToolkit.UX.ToolTips
     public class ToolTipBackgroundMesh : ToolTipBackground
     {
         /// <summary>
-        /// Transform that scale and offset will be applied to.
+        /// 
         /// </summary>
-        public Transform BackgroundTransform;
+        [SerializeField]
+        [Tooltip("Transform that scale and offset will be applied to.")]
+        private Transform backgroundTransform;
 
         /// <summary>
         /// Mesh renderer button for mesh background.
@@ -38,10 +40,22 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
-        protected override void ScaleToFitContent ()
+        public Transform BackgroundTransform
+        {
+            get
+            {
+                return backgroundTransform;
+            }
+
+            set
+            {
+                backgroundTransform = value;
+            }
+        }
+
+        protected override void ScaleToFitContent()
         {
             return;
-
             if (BackgroundRenderer == null)
             {
                 return;
@@ -51,6 +65,10 @@ namespace MixedRealityToolkit.UX.ToolTips
             Vector3 localContentSize = toolTip.LocalContentSize;
             Vector3 localContentOffset = toolTip.LocalContentOffset;
 
+            if (localContentSize.x == 0 || localContentSize.y == 0)
+            {
+                return;
+            }
             // Get the size of the mesh and use this to adjust the local content size on the x / y axis
             // This will accomodate meshes that aren't built to 1,1 scale
             Bounds meshBounds = BackgroundRenderer.GetComponent<MeshFilter>().sharedMesh.bounds;

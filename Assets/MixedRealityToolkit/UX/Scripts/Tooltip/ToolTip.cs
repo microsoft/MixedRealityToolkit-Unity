@@ -37,56 +37,6 @@ namespace MixedRealityToolkit.UX.ToolTips
             Off
         }
 
-        public string ToolTipText {
-            set {
-                if (value != toolTipText) {
-                    toolTipText = value;
-                    RefreshLocalContent();
-                    if (ContentChange != null)
-                        ContentChange.Invoke();
-                }
-            }
-            get {
-                return toolTipText;
-            }
-        }
-
-        public float ContentScale {
-            get {
-                return contentScale;
-            }
-            set {
-                contentScale = value;
-                RefreshLocalContent();
-            }
-        }
-
-        public Vector3 PivotPosition {
-            get {
-                return pivot.transform.position;
-            }
-            set {
-                pivot.transform.position = value;
-            }
-        }
-
-        public Vector3 AttachPointPosition {
-            get {
-                return contentParent.transform.TransformPoint(localAttachPoint) + attachPointOffset;
-            }
-            set {
-                // apply the difference to the offset
-                attachPointOffset = value - contentParent.transform.TransformPoint(localAttachPoint);
-            }
-        }
-
-        public Vector3 AnchorPosition {
-            get
-            {
-                return anchor.transform.position;
-            }
-        }
-
         [SerializeField]
         private bool showBackground = true;
 
@@ -96,29 +46,112 @@ namespace MixedRealityToolkit.UX.ToolTips
         [SerializeField]
         private bool showConnector = true;
 
-        public Transform ContentParentTransform {
-            get {
+        [SerializeField]
+        protected TipDisplayModeEnum tipState;
+
+        [SerializeField]
+        protected TipDisplayModeEnum groupTipState;
+
+        [SerializeField]
+        protected TipDisplayModeEnum masterTipState;
+        #endregion
+
+        public string ToolTipText
+        {
+            set
+            {
+                if (value != toolTipText)
+                {
+                    toolTipText = value;
+                    RefreshLocalContent();
+                    if (ContentChange != null)
+                        ContentChange.Invoke();
+                }
+            }
+            get
+            {
+                return toolTipText;
+            }
+        }
+
+        public float ContentScale
+        {
+            get
+            {
+                return contentScale;
+            }
+            set
+            {
+                contentScale = value;
+                RefreshLocalContent();
+            }
+        }
+
+        public Vector3 PivotPosition
+        {
+            get
+            {
+                return pivot.transform.position;
+            }
+            set
+            {
+                pivot.transform.position = value;
+            }
+        }
+
+        public Vector3 AttachPointPosition
+        {
+            get
+            {
+                return contentParent.transform.TransformPoint(localAttachPoint) + attachPointOffset;
+            }
+            set
+            {
+                // apply the difference to the offset
+                attachPointOffset = value - contentParent.transform.TransformPoint(localAttachPoint);
+            }
+        }
+
+        public Vector3 AnchorPosition
+        {
+            get
+            {
+                return anchor.transform.position;
+            }
+        }
+
+        public Transform ContentParentTransform
+        {
+            get
+            {
                 return contentParent.transform;
             }
         }
 
-        public Vector2 LocalContentSize {
-            get {
+        public Vector2 LocalContentSize
+        {
+            get
+            {
                 return localContentSize;
             }
         }
 
-        public Vector3 LocalContentOffset {
-            get {
+        public Vector3 LocalContentOffset
+        {
+            get
+            {
                 return backgroundOffset;
             }
         }
 
-        public GameObject Anchor {
-            get {
+        public GameObject Anchor
+        {
+            get
+            {
                 return anchor;
             }
-            set {
+            set
+            {
                 anchor = value;
             }
         }
@@ -131,17 +164,22 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
-        public bool IsOn {
-            get {
-                switch (masterTipState) {
+        public bool IsOn
+        {
+            get
+            {
+                switch (masterTipState)
+                {
                     case TipDisplayModeEnum.None:
                     default:
                         // Use our group state
-                        switch (groupTipState) {
+                        switch (groupTipState)
+                        {
                             case TipDisplayModeEnum.None:
                             default:
                                 // Use our local State
-                                switch (tipState) {
+                                switch (tipState)
+                                {
                                     case TipDisplayModeEnum.None:
                                     case TipDisplayModeEnum.Off:
                                     default:
@@ -176,9 +214,12 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
-        public bool HasFocus {
-            get {
-                switch (ButtonState) {
+        public bool HasFocus
+        {
+            get
+            {
+                switch (ButtonState)
+                {
                     case Buttons.Enums.ButtonStateEnum.Targeted:
                     case Buttons.Enums.ButtonStateEnum.ObservationTargeted:
                     case Buttons.Enums.ButtonStateEnum.Pressed:
@@ -190,9 +231,8 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
-        
-
-        public TipDisplayModeEnum TipState {
+        public TipDisplayModeEnum TipState
+        {
             get
             {
                 return tipState;
@@ -203,8 +243,10 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
-        public TipDisplayModeEnum GroupTipState {
-            set {
+        public TipDisplayModeEnum GroupTipState
+        {
+            set
+            {
                 groupTipState = value;
             }
             get
@@ -213,8 +255,10 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
-        public TipDisplayModeEnum MasterTipState {
-            set {
+        public TipDisplayModeEnum MasterTipState
+        {
+            set
+            {
                 masterTipState = value;
             }
             get
@@ -223,11 +267,14 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
-        public ToolTipUtility.AttachPointTypeEnum PivotType {
-            get {
+        public ToolTipUtility.AttachPointTypeEnum PivotType
+        {
+            get
+            {
                 return attachPointType;
             }
-            set {
+            set
+            {
                 attachPointType = value;
             }
         }
@@ -255,7 +302,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             {
                 showOutline = value;
                 GameObject TipBackground = contentParent.transform.GetChild(1).gameObject;
-                Rectangle rectangle = TipBackground.GetComponent < Rectangle >();
+                Rectangle rectangle = TipBackground.GetComponent<Rectangle>();
                 rectangle.enabled = value;
             }
         }
@@ -274,13 +321,6 @@ namespace MixedRealityToolkit.UX.ToolTips
                 lineScript.enabled = value;
             }
         }
-
-        [SerializeField]
-        protected TipDisplayModeEnum tipState;
-        [SerializeField]
-        protected TipDisplayModeEnum groupTipState;
-        [SerializeField]
-        protected TipDisplayModeEnum masterTipState;
 
         // Used for Content Change update in text
         public Action ContentChange;
@@ -327,17 +367,17 @@ namespace MixedRealityToolkit.UX.ToolTips
         [SerializeField]
         protected ToolTipUtility.AttachPointTypeEnum attachPointType = ToolTipUtility.AttachPointTypeEnum.Closest;
 
-        protected Vector2 localContentSize;
-        protected Vector3 localAttachPoint;
-        protected Vector3 attachPointOffset;
-        protected Vector3[] localAttachPointPositions;
-
-        [Tooltip ("The line connecting the anchor to the pivot. If present, this component will be updated automatically.")]
+        [Tooltip("The line connecting the anchor to the pivot. If present, this component will be updated automatically.")]
         [SerializeField]
         protected LineBase toolTipLine;
 
-        #endregion
+        protected Vector2 localContentSize;
 
+        protected Vector3 localAttachPoint;
+
+        protected Vector3 attachPointOffset;
+
+        protected Vector3[] localAttachPointPositions;
 
         protected virtual void OnEnable() {
 
