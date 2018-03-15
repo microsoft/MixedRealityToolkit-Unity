@@ -10,6 +10,10 @@ The example scene demonstrates two ways to display a Tooltip on an object.
 ## Scene file
 [TooltipExamples.unity](/Assets/MixedRealityToolkit-Examples/UX/Scenes/TooltipExamples.unity)
 
+In the scene file, you will be able to find various examples of ToolTip. First group on the left demonstrates the static ToolTip examples that are always visible. In the center, you can see the example of using multiple ToolTips on a single object. Each tooltip has different child object as a target object which works as an anchor. The group on the right shows the examples of dynamically spawning ToolTips.
+
+<img src="/External/ReadMeImages/MRTK_TooltipExampleScene.jpg">
+
 ## Directly adding to the scene and attaching to an object
 A ToolTip can be added directly to the Hierarchy and targeted to an object. To use this method, Add a GameObject and a ToolTipPlated object to the Scene Hierarchy. In the ToolTIpPlated Inspector, Expand the Tool Tip (Script). Select a TipState and set other settings. Enter the ToolTip text in the Text field. Finally, expand the ToolTipConnector(Script). Drag the object that is to have the ToolTip from the Hierarchy into the field labelled Target. This attaches the ToolToolTip connector to the object. Finally, this use of ToolTipPlated assumes a ToolTip that is always showing or that is shown/hid in script by changing the TipState property of the ToolTip component.
 
