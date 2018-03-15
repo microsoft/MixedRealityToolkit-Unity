@@ -14,6 +14,8 @@ Each GameObject that wishes to support audio influences needs to have an AudioIn
 #### AudioOccluder.cs
 Class implementing a simple form of audio occlusion using a low pass filter and volume attenuation.
 
+To be utilized, AudioOccluder.cs requires the GameObject which is emitting the sound to have an AudioInfluecerManager attached.
+
 #### IAudioInfluencer.cs
 Interface defining the methods required of an audio influencer.
 
