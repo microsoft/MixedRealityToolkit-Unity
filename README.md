@@ -6,10 +6,10 @@ The project is aimed at reducing barriers to entry to create mixed reality appli
 
 MixedRealityToolkit-Unity uses code from the base [MixedRealityToolkit](https://github.com/Microsoft/MixedRealityToolkit) and makes it easier to consume in [Unity](https://unity3d.com/).
 
-[![Mixed Reality Academy](External/ReadMeImages/MixedRealityStack-Apps.png)](https://developer.microsoft.com/en-us/windows/mixed-reality/academy)
-[![View the Mixed Reality Companion Kit](External/ReadMeImages/MixedRealityStack-MRTK-Unity.png)](https://github.com/Microsoft/MixedRealityCompanionKit)
-[![Mixed Reality Toolkit GitHub Repo](External/ReadMeImages/MixedRealityStack-MRTK.png)](https://github.com/Microsoft/MixedRealityToolkit)
-[![Read the Mixed Reality Developer Guides](External/ReadMeImages/MixedRealityStack-UWP.png)](https://developer.microsoft.com/en-us/windows/mixed-reality)
+<img src="External/ReadMeImages/MixedRealityStack-Apps.png" width="600">
+<img src="External/ReadMeImages/MixedRealityStack-MRTK-Unity.png" width="600">
+<img src="External/ReadMeImages/MixedRealityStack-MRTK.png" width="600">
+<img src="External/ReadMeImages/MixedRealityStack-UWP.png" width="600">
 
 > Learn more about [Windows Mixed Reality](https://www.microsoft.com/en-gb/windows/windows-mixed-reality) here.
 
