@@ -934,7 +934,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// <param name="shapeData">An array of ShapeResult structures to receive the results of the query</param>
         /// <returns>Number of positions found. This number will never exceed shapeCount (the space provided for the results in shapeData).</returns>
         // Queries (shapes)
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryShape_FindPositionsOnShape(
             [In, MarshalAs(UnmanagedType.LPStr)] string shapeName,          // char*
             [In] float minRadius,
@@ -949,7 +949,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// <param name="shapeCount">Length of the array passed in shapeData, the return value will never exceed this value</param>
         /// <param name="shapeData">An array of ShapeResult structures to receive the results of the query</param>
         /// <returns>Number of shapes found. This number will never exceed shapeCount (the space provided for the results in shapeData).</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryShape_FindShapeHalfDims(
             [In, MarshalAs(UnmanagedType.LPStr)] string shapeName,         // char*
             [In] int shapeCount,                                            // Pass in the space allocated in shapeData
@@ -966,7 +966,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// <param name="shapeConstraints">Length of the shape constraint array passed in the constraints parameter</param>
         /// <param name="constraints">Array of ShapeConstraint structures</param>
         /// <returns></returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int AddShape(
             [In, MarshalAs(UnmanagedType.LPStr)] string shapeName,
             [In] int componentCount,
@@ -978,13 +978,13 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// Runs the shape analysis. This should be called after scanning has been 
         /// finalized and shapes have been defined with AddShape.
         /// </summary>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern void ActivateShapeAnalysis();
 
         /// <summary>
         /// Removes all shapes defined by AddShape.
         /// </summary>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern void RemoveAllShapes();
     }
 }

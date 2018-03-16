@@ -480,7 +480,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// scanning phase has finish and the playspace has been finalized.
         /// </summary>
         /// <returns></returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int Solver_Init();
 
         /// <summary>
@@ -504,7 +504,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// <param name="placementConstraints">Array of ObjectPlacementConstraint structures, defining the constraints</param>
         /// <param name="placementResult">Pointer to an ObjectPlacementResult structure to receive the result of the query </param>
         /// <returns>Zero on failure, one on success</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int Solver_PlaceObject(
             [In, MarshalAs(UnmanagedType.LPStr)] string objectName,
             [In] IntPtr placementDefinition,// ObjectPlacementDefinition
@@ -522,7 +522,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// </summary>
         /// <param name="objectName"></param>
         /// <returns></returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int Solver_RemoveObject(
             [In, MarshalAs(UnmanagedType.LPStr)] string objectName);
 
@@ -532,7 +532,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// Objects placed with Solver_PlaceObject persist until removed
         /// and are considered in subsequent queries by some rules and constraints.
         /// </summary>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Solver_RemoveAllObjects();
     }
 }

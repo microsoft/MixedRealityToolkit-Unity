@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Common;
-using UnityEngine;
 
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.WSA;
 #endif
@@ -18,11 +18,11 @@ namespace MixedRealityToolkit.Boundary
     /// </summary>
     public class BoundaryManager : Singleton<BoundaryManager>
     {
-        [Tooltip("Quad prefab to display as the floor.")]
-        public GameObject FloorQuad;
-        private GameObject floorQuadInstance;
-
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+        [Tooltip("Quad prefab to display as the floor.")]
+        public GameObject FloorQuad = null;
+        private GameObject floorQuadInstance = null;
+
         [SerializeField]
         [Tooltip("Approximate max Y height of your space.")]
         private float boundaryHeight = 10f;
@@ -43,7 +43,6 @@ namespace MixedRealityToolkit.Boundary
         // Testing in the editor found that this moved the floor out of the way enough, and it is only
         // used in the case where a headset isn't attached. Otherwise, the floor is positioned like normal.
         private readonly Vector3 floorPositionInEditor = new Vector3(0f, -3f, 0f);
-#endif
 
         [SerializeField]
         private bool renderFloor = true;
@@ -74,6 +73,7 @@ namespace MixedRealityToolkit.Boundary
                 }
             }
         }
+#endif
 
         protected override void Awake()
         {
@@ -101,7 +101,6 @@ namespace MixedRealityToolkit.Boundary
 
             // Create a volume out of the specified user boundary.
             CalculateBoundaryVolume();
-#endif
         }
 
         private void SetFloorRendering()
@@ -110,6 +109,7 @@ namespace MixedRealityToolkit.Boundary
             {
                 floorQuadInstance.SetActive(renderFloor);
             }
+#endif
         }
 
         private void SetBoundaryRendering()
