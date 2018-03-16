@@ -79,6 +79,24 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         // Maps input id -> input source. Then obtain position of input source using currentInputSource.TryGetGripPosition(currentInputSourceId, out inputPosition);
         private readonly Dictionary<uint, IInputSource> m_handsPressedInputSourceMap = new Dictionary<uint, IInputSource>();
 
+        public BoundingBox BoundingBoxPrefab
+        {
+            set
+            {
+                boundingBoxPrefab = value;
+            }
+
+            get
+            {
+                return boundingBoxPrefab;
+            }
+        }
+
+        public void SetManipulationMode(TwoHandedManipulation mode)
+        {
+            ManipulationMode = mode;
+        }
+
         private void Awake()
         {
             m_moveLogic = new TwoHandMoveLogic();
@@ -117,21 +135,24 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         {
             set
             {
-                if ((boundingBoxInstance == null) && (boundingBoxPrefab != null))
+                if (boundingBoxPrefab != null)
                 {
-                    // Instantiate Bounding Box from the Prefab
-                    boundingBoxInstance = Instantiate(boundingBoxPrefab) as BoundingBox;
-                }
-               
-                if (value)
-                {
-                    boundingBoxInstance.Target = this.gameObject;
-                    boundingBoxInstance.gameObject.SetActive(true);
-                }
-                else
-                {
-                    boundingBoxInstance.Target = null;
-                    boundingBoxInstance.gameObject.SetActive(false);
+                    if (boundingBoxInstance == null)
+                    {
+                        // Instantiate Bounding Box from the Prefab
+                        boundingBoxInstance = Instantiate(boundingBoxPrefab) as BoundingBox;
+                    }
+
+                    if (value)
+                    {
+                        boundingBoxInstance.Target = this.gameObject;
+                        boundingBoxInstance.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        boundingBoxInstance.Target = null;
+                        boundingBoxInstance.gameObject.SetActive(false);
+                    }
                 }
             }
         }
