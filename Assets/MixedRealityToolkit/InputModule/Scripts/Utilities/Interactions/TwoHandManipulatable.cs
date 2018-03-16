@@ -8,11 +8,12 @@ using MixedRealityToolkit.UX.BoundingBoxes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MixedRealityToolkit.InputModule.Utilities.Interactions;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 
-namespace MixedRealityToolkit.InputModule.Utilities.Interactions
+namespace MixedRealityToolkit.InputModule.Utilities.Interations
 {
     /// <summary>
     /// This script allows for an object to be movable, scalable, and rotatable with one or two hands. 
@@ -21,26 +22,41 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
     /// See Assets/MixedRealityToolkit-Examples/Input/Readme/README_TwoHandManipulationTest.md
     /// for instructions on how to use the script.
     /// </summary>
-    public class TwoHandManipulatable : MonoBehaviour, IPointerHandler, ISourceStateHandler
+    public class TwoHandManipulatable : MonoBehaviour, IInputHandler, ISourceStateHandler
     {
-        /// <summary>
-        /// Event that gets raised when user begins manipulating the object
-        /// </summary>
+        // Event that gets raised when user begins manipulating the object
         public event Action StartedManipulating;
-
-        /// <summary>
-        /// Event that gets raised when the user ends manipulation
-        /// </summary>
+        // Event that gets raised when the user ends manipulation
         public event Action StoppedManipulating;
 
-        private enum TwoHandedManipulation
+        [SerializeField]
+        [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
+        private Transform HostTransform = null;
+
+        [SerializeField]
+        [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here. This is optional.")]
+        private BoundingBox boundingBoxPrefab = null;
+
+        public enum TwoHandedManipulation
         {
             Scale,
             Rotate,
             MoveScale,
             RotateScale,
             MoveRotateScale
-        }
+        };
+
+        [SerializeField]
+        [Tooltip("What manipulation will two hands perform?")]
+        private TwoHandedManipulation ManipulationMode = TwoHandedManipulation.Scale;
+
+        [SerializeField]
+        [Tooltip("Constrain rotation along an axis")]
+        private TwoHandRotateLogic.RotationConstraint ConstraintOnRotation = TwoHandRotateLogic.RotationConstraint.None;
+
+        [SerializeField]
+        [Tooltip("If true, grabbing the object with one hand will initiate movement.")]
+        private bool OneHandMovement = true;
 
         [Flags]
         private enum State
@@ -51,95 +67,62 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
             Rotating = 0x100,
             MovingScaling = 0x011,
             RotatingScaling = 0x110,
-            MovingRotatingScaling = 0x111,
-        }
-
-        [SerializeField]
-        [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
-        private Transform hostTransform;
-
-        [SerializeField]
-        [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here. This is optional.")]
-        private BoundingBox boundingBoxPrefab;
-
-        [SerializeField]
-        [Tooltip("What manipulation will two hands perform?")]
-        private TwoHandedManipulation manipulationMode;
-
-        [SerializeField]
-        [Tooltip("Constrain rotation along an axis")]
-        private TwoHandRotateLogic.RotationConstraint constraintOnRotation = TwoHandRotateLogic.RotationConstraint.None;
-
-        [SerializeField]
-        [Tooltip("If true, grabbing the object with one hand will initiate movement.")]
-        private bool oneHandMovement = true;
+            MovingRotatingScaling = 0x111
+        };
 
         private BoundingBox boundingBoxInstance;
         private State currentState;
-        private TwoHandMoveLogic mMoveLogic;
-        private TwoHandScaleLogic mScaleLogic;
-        private TwoHandRotateLogic mRotateLogic;
+        private TwoHandMoveLogic m_moveLogic;
+        private TwoHandScaleLogic m_scaleLogic;
+        private TwoHandRotateLogic m_rotateLogic;
+        // Maps input id -> position of hand
+        private readonly Dictionary<uint, Vector3> m_handsPressedLocationsMap = new Dictionary<uint, Vector3>();
+        // Maps input id -> input source. Then obtain position of input source using currentInputSource.TryGetGripPosition(currentInputSourceId, out inputPosition);
+        private readonly Dictionary<uint, IInputSource> m_handsPressedInputSourceMap = new Dictionary<uint, IInputSource>();
 
-        /// <summary>
-        /// Maps input id -> position of hand
-        /// </summary>
-        private readonly Dictionary<uint, Vector3> handsPressedLocationsMap = new Dictionary<uint, Vector3>();
-
-        /// <summary>
-        /// The input sources that are currently being pressed.
-        /// </summary>
-        private readonly HashSet<IInputSource> pressedInputSources = new HashSet<IInputSource>();
-
-        private bool ShowBoundingBox
+        public BoundingBox BoundingBoxPrefab
         {
             set
             {
-                if (boundingBoxInstance == null && boundingBoxPrefab != null)
-                {
-                    // Instantiate Bounding Box from the Prefab
-                    boundingBoxInstance = Instantiate(boundingBoxPrefab);
-                }
+                boundingBoxPrefab = value;
+            }
 
-                Debug.Assert(boundingBoxInstance != null);
-
-                if (value)
-                {
-                    boundingBoxInstance.Target = gameObject;
-                    boundingBoxInstance.gameObject.SetActive(true);
-                }
-                else
-                {
-                    boundingBoxInstance.Target = null;
-                    boundingBoxInstance.gameObject.SetActive(false);
-                }
+            get
+            {
+                return boundingBoxPrefab;
             }
         }
 
-        #region Unity APIs
+        public void SetManipulationMode(TwoHandedManipulation mode)
+        {
+            ManipulationMode = mode;
+        }
 
         private void Awake()
         {
-            mMoveLogic = new TwoHandMoveLogic();
-            mRotateLogic = new TwoHandRotateLogic(constraintOnRotation);
-            mScaleLogic = new TwoHandScaleLogic();
+            m_moveLogic = new TwoHandMoveLogic();
+            m_rotateLogic = new TwoHandRotateLogic(ConstraintOnRotation);
+            m_scaleLogic = new TwoHandScaleLogic();
         }
 
         private void Start()
         {
-            if (hostTransform == null)
+            if (HostTransform == null)
             {
-                hostTransform = transform;
+                HostTransform = transform;
             }
         }
 
         private void Update()
         {
-            foreach (IInputSource source in pressedInputSources)
+            // Update positions of all hands
+            foreach (var key in m_handsPressedInputSourceMap.Keys)
             {
                 Vector3 inputPosition;
-                if (InteractionInputSources.Instance.TryGetGripPosition(source.SourceId, out inputPosition))
+                var inputSource = m_handsPressedInputSourceMap[key];
+                if (InteractionInputSources.Instance.TryGetGripPosition(inputSource.SourceId, out inputPosition))
                 {
-                    handsPressedLocationsMap[source.SourceId] = inputPosition;
+                    m_handsPressedLocationsMap[key] = inputPosition;
                 }
             }
 
@@ -149,15 +132,79 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
             }
         }
 
-        #endregion Unity APIs
+        private bool showBoundingBox
+        {
+            set
+            {
+                if (boundingBoxPrefab != null)
+                {
+                    if (boundingBoxInstance == null)
+                    {
+                        // Instantiate Bounding Box from the Prefab
+                        boundingBoxInstance = Instantiate(boundingBoxPrefab) as BoundingBox;
+                    }
 
-        #region SourceStateHandling
+                    if (value)
+                    {
+                        boundingBoxInstance.Target = this.gameObject;
+                        boundingBoxInstance.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        boundingBoxInstance.Target = null;
+                        boundingBoxInstance.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
 
-        public void OnSourceDetected(SourceStateEventData eventData) { }
+        private Vector3 GetInputPosition(InputEventData eventData)
+        {
+            Vector3 result;
+            InteractionInputSources.Instance.TryGetGripPosition(eventData.SourceId, out result);
+            return result;
+        }
+
+        public void OnInputDown(InputEventData eventData)
+        {
+            // Add to hand map
+            m_handsPressedLocationsMap[eventData.SourceId] = GetInputPosition(eventData);
+            m_handsPressedInputSourceMap[eventData.SourceId] = eventData.InputSource;
+            UpdateStateMachine();
+            eventData.Use();
+        }
+
+        public void OnInputPressed(InputPressedEventData eventData) { }
+
+        public void OnInputPositionChanged(InputPositionEventData eventData) { }
+
+        public void OnInputUp(InputEventData eventData)
+        {
+            RemoveSourceIdFromHandMap(eventData.SourceId);
+            UpdateStateMachine();
+            eventData.Use();
+        }
+
+        public void OnSourceDetected(SourceStateEventData eventData)
+        {
+        }
+
+        private void RemoveSourceIdFromHandMap(uint sourceId)
+        {
+            if (m_handsPressedLocationsMap.ContainsKey(sourceId))
+            {
+                m_handsPressedLocationsMap.Remove(sourceId);
+            }
+
+            if (m_handsPressedInputSourceMap.ContainsKey(sourceId))
+            {
+                m_handsPressedInputSourceMap.Remove(sourceId);
+            }
+        }
 
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            RemoveSourceIdFromHandMap(eventData.InputSource);
+            RemoveSourceIdFromHandMap(eventData.SourceId);
             UpdateStateMachine();
             eventData.Use();
         }
@@ -166,34 +213,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 
         public void OnSourceRotationChanged(SourceRotationEventData eventData) { }
 
-        #endregion SourceStateHandling
-
-        #region PointerHandling
-
-        public void OnPointerUp(ClickEventData eventData)
-        {
-            RemoveSourceIdFromHandMap(eventData.InputSource);
-            UpdateStateMachine();
-            eventData.Use();
-        }
-
-        public void OnPointerDown(ClickEventData eventData)
-        {
-            // Add to hand map
-            Vector3 result;
-            InteractionInputSources.Instance.TryGetGripPosition(eventData.SourceId, out result);
-            handsPressedLocationsMap[eventData.SourceId] = result;
-            UpdateStateMachine();
-            eventData.Use();
-        }
-
-        public void OnPointerClicked(ClickEventData eventData) { }
-
-        #endregion PointerHandling
-
         private void UpdateStateMachine()
         {
-            var handsPressedCount = handsPressedLocationsMap.Count;
+            var handsPressedCount = m_handsPressedLocationsMap.Count;
             State newState = currentState;
             switch (currentState)
             {
@@ -203,13 +225,14 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
                     {
                         newState = State.Start;
                     }
-                    else if (handsPressedCount == 1 && oneHandMovement)
+                    else
+                        if (handsPressedCount == 1 && OneHandMovement)
                     {
                         newState = State.Moving;
                     }
                     else if (handsPressedCount > 1)
                     {
-                        switch (manipulationMode)
+                        switch (ManipulationMode)
                         {
                             case TwoHandedManipulation.Scale:
                                 newState = State.Scaling;
@@ -249,11 +272,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
             InvokeStateUpdateFunctions(currentState, newState);
             currentState = newState;
         }
-
         private void InvokeStateUpdateFunctions(State oldState, State newState)
         {
             if (newState != oldState)
@@ -261,7 +282,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
                 switch (newState)
                 {
                     case State.Moving:
-                        OnOneHandManipulationStarted();
+                        OnOneHandMoveStarted();
                         break;
                     case State.Start:
                         OnManipulationEnded();
@@ -273,10 +294,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
                     case State.MovingScaling:
                         OnTwoHandManipulationStarted(newState);
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException("newState", newState, null);
                 }
-
                 switch (oldState)
                 {
                     case State.Start:
@@ -287,11 +305,8 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
                     case State.RotatingScaling:
                     case State.MovingRotatingScaling:
                     case State.MovingScaling:
+                        OnTwoHandManipulationEnded();
                         break;
-                    case State.Moving:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("oldState", oldState, null);
                 }
             }
             else
@@ -299,7 +314,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
                 switch (newState)
                 {
                     case State.Moving:
-                        OnOneHandManipulationUpdated();
+                        OnOneHandMoveUpdated();
                         break;
                     case State.Scaling:
                     case State.Rotating:
@@ -308,115 +323,96 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
                     case State.MovingScaling:
                         OnTwoHandManipulationUpdated();
                         break;
-                    case State.Start:
-                        break;
                     default:
-                        throw new ArgumentOutOfRangeException("newState", newState, null);
+                        break;
                 }
             }
+        }
+
+        private void OnTwoHandManipulationUpdated()
+        {
+            var targetRotation = HostTransform.rotation;
+            var targetPosition = HostTransform.position;
+            var targetScale = HostTransform.localScale;
+
+            if ((currentState & State.Moving) > 0)
+            {
+                targetPosition = m_moveLogic.Update(GetHandsCentroid(), targetPosition);
+            }
+            if ((currentState & State.Rotating) > 0)
+            {
+                targetRotation = m_rotateLogic.Update(m_handsPressedLocationsMap, targetRotation);
+            }
+            if ((currentState & State.Scaling) > 0)
+            {
+                targetScale = m_scaleLogic.Update(m_handsPressedLocationsMap);
+            }
+
+            HostTransform.position = targetPosition;
+            HostTransform.rotation = targetRotation;
+            HostTransform.localScale = targetScale;
+        }
+
+        private void OnOneHandMoveUpdated()
+        {
+            var targetPosition = m_moveLogic.Update(m_handsPressedLocationsMap.Values.First(), HostTransform.position);
+
+            HostTransform.position = targetPosition;
+        }
+
+        private void OnTwoHandManipulationEnded()
+        {
+        }
+
+        private Vector3 GetHandsCentroid()
+        {
+            Vector3 result = m_handsPressedLocationsMap.Values.Aggregate(Vector3.zero, (current, state) => current + state);
+            return result / m_handsPressedLocationsMap.Count;
         }
 
         private void OnTwoHandManipulationStarted(State newState)
         {
             if ((newState & State.Rotating) > 0)
             {
-                mRotateLogic.Setup(handsPressedLocationsMap);
+                m_rotateLogic.Setup(m_handsPressedLocationsMap);
             }
-
             if ((newState & State.Moving) > 0)
             {
-                mMoveLogic.Setup(GetHandsCentroid(), hostTransform);
+                m_moveLogic.Setup(GetHandsCentroid(), HostTransform);
             }
-
             if ((newState & State.Scaling) > 0)
             {
-                mScaleLogic.Setup(handsPressedLocationsMap, hostTransform);
+                m_scaleLogic.Setup(m_handsPressedLocationsMap, HostTransform);
             }
         }
 
-        private void OnTwoHandManipulationUpdated()
+        private void OnOneHandMoveStarted()
         {
-            var targetPosition = hostTransform.position;
-            var targetRotation = hostTransform.rotation;
-            var targetScale = hostTransform.localScale;
+            Assert.IsTrue(m_handsPressedLocationsMap.Count == 1);
 
-            if ((currentState & State.Moving) > 0)
-            {
-                targetPosition = mMoveLogic.Update(GetHandsCentroid(), targetPosition);
-            }
-            if ((currentState & State.Rotating) > 0)
-            {
-                targetRotation = mRotateLogic.Update(handsPressedLocationsMap, targetRotation);
-            }
-            if ((currentState & State.Scaling) > 0)
-            {
-                targetScale = mScaleLogic.Update(handsPressedLocationsMap);
-            }
-
-            hostTransform.position = targetPosition;
-            hostTransform.rotation = targetRotation;
-            hostTransform.localScale = targetScale;
+            m_moveLogic.Setup(m_handsPressedLocationsMap.Values.First(), HostTransform);
         }
-
-        private void OnOneHandManipulationStarted()
-        {
-            Assert.IsTrue(handsPressedLocationsMap.Count == 1);
-            mMoveLogic.Setup(handsPressedLocationsMap.Values.First(), hostTransform);
-        }
-
-        private void OnOneHandManipulationUpdated()
-        {
-            hostTransform.position = mMoveLogic.Update(handsPressedLocationsMap.Values.First(), hostTransform.position);
-        }
-
         private void OnManipulationStarted()
         {
             if (StartedManipulating != null)
             {
                 StartedManipulating();
             }
-
             InputManager.Instance.PushModalInputHandler(gameObject);
 
             //Show Bounding Box visual on manipulation interaction
-            ShowBoundingBox = true;
+            showBoundingBox = true;
         }
-
         private void OnManipulationEnded()
         {
             if (StoppedManipulating != null)
             {
                 StoppedManipulating();
             }
-
             InputManager.Instance.PopModalInputHandler();
 
             //Hide Bounding Box visual on release
-            ShowBoundingBox = false;
-        }
-
-        private Vector3 GetHandsCentroid()
-        {
-            Vector3 result = Vector3.zero;
-            foreach (Vector3 value in handsPressedLocationsMap.Values)
-            {
-                result = result + value;
-            }
-
-            return result / handsPressedLocationsMap.Count;
-        }
-
-        private void RemoveSourceIdFromHandMap(IInputSource source)
-        {
-            if (handsPressedLocationsMap.ContainsKey(source.SourceId))
-            {
-                handsPressedLocationsMap.Remove(source.SourceId);
-            }
-
-            if (pressedInputSources.Contains(source))
-            {
-                pressedInputSources.Remove(source);
-            }
+            showBoundingBox = false;
         }
     }
 }

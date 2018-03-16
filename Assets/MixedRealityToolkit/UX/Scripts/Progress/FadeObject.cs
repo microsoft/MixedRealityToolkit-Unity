@@ -13,7 +13,6 @@ namespace MixedRealityToolkit.Examples.InteractiveElements
         private float mFadeCounter = 0;
         private Color mCachedColor;
         private bool mFadingIn = true;
-        private bool mIsFading = false;
 
         //cache material to prevent memory leak
         private Material mCachedMaterial;

@@ -59,9 +59,12 @@ Shader "GLTF/GLTFStandard" {
 
 			#pragma vertex vertBase
 			#pragma fragment fragBase
+
 			#include "GLTFStandardInput.cginc"
+
+#if !SHADER_API_GLES
 			#include "UnityStandardCoreForward.cginc"
-	
+#endif
 			ENDCG
 		}
 		// ------------------------------------------------------------------
@@ -90,9 +93,12 @@ Shader "GLTF/GLTFStandard" {
 
 			#pragma vertex vertAdd
 			#pragma fragment fragAdd
-			#include "GLTFStandardInput.cginc"
-			#include "UnityStandardCoreForward.cginc"
 
+			#include "GLTFStandardInput.cginc"
+
+#if !SHADER_API_GLES
+			#include "UnityStandardCoreForward.cginc"
+#endif
 			ENDCG
 		}
 		// ------------------------------------------------------------------
