@@ -55,14 +55,14 @@ public float MyValue;
  }
  ```
 
-## Code for Performance in mind
+## Best Practices
 Some of the target platforms of this project require us to take performance into consideration.  What this in mind we should always be careful of allocating memory in frequently called code in tight update loops or algorithms.
 
 ---
 
 Use `for` instead of `foreach` when possible.
 
-### <font color="red">Don't:</font>
+### Don't:
 
 ```
 foreach(var item in items)
@@ -107,4 +107,32 @@ private void Update()
     myRenderer.Foo(Bar);
 }
 
+ ```
+
+---
+
+Public classes, structs, and enums should all go in their own files.
+
+> If the class, struct, or enum can be made private then it's okay to be included in the same file.
+
+### Don't:
+
+```
+public class MyClass
+{
+    public struct MyStruct() { }
+    public enum MyEnumType() { }
+    public class MyNestedClass() { }
+}
+```
+
+### Do:
+
+ ```
+public class MyClass
+{
+    private struct MyStruct() { }
+    private enum MyEnumType() { }
+    private class MyNestedClass() { }
+}
  ```
