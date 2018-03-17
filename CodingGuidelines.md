@@ -58,7 +58,9 @@ public float MyValue;
 ## Code for Performance in mind
 Some of the target platforms of this project require us to take performance into consideration.  What this in mind we should always be careful of allocating memory in frequently called code in tight update loops or algorithms.
 
-> Use `for` instead of `foreach` when possible.
+---
+
+Use `for` instead of `foreach` when possible.
 
 ### <font color="red">Don't:</font>
 
@@ -74,7 +76,7 @@ for(int i=0; i < items.length; i++)
 
 ---
 
->Cache values and serialize them in the scene/prefab whenever possible.
+Cache values and serialize them in the scene/prefab whenever possible.
 
 ### Don't:
 
