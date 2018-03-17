@@ -72,6 +72,8 @@ foreach(var item in items)
 for(int i=0; i < items.length; i++)
  ```
 
+---
+
 >Cache values and serialize them in the scene/prefab whenever possible.
 
 ### Don't:
