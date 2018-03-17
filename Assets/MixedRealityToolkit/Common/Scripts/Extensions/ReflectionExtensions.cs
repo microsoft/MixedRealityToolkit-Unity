@@ -3,7 +3,6 @@
 
 namespace MixedRealityToolkit.Common.Extensions
 {
-#if UNITY_WSA && !UNITY_EDITOR
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -16,52 +15,37 @@ namespace MixedRealityToolkit.Common.Extensions
             return type.GetRuntimeEvent(eventName);
         }
 
-        public static MethodInfo GetMethod(this Type type, string methodName)
+        public static MethodInfo GetMethod(this Type type, string methodName, BindingFlags flags = 0x0)
         {
-            return GetMethod(type, methodName, (BindingFlags)0x0);
-        }
-
-        public static MethodInfo GetMethod(this Type type, string methodName, BindingFlags flags)
-        {
-            var result = type.GetTypeInfo().GetDeclaredMethod(methodName);
-            if (((flags & BindingFlags.FlattenHierarchy) != 0) && result == null)
+            while (true)
             {
-                var baseType = type.GetBaseType();
-                if (baseType != null)
+                var result = type.GetTypeInfo().GetDeclaredMethod(methodName);
+                if ((flags & BindingFlags.FlattenHierarchy) != 0 && result == null)
                 {
-                    return GetMethod(baseType, methodName, flags);
+                    var baseType = type.GetBaseType();
+                    if (baseType != null)
+                    {
+                        type = baseType;
+                        continue;
+                    }
                 }
+
+                return result;
             }
-
-            return result;
-        }
-
-        public static MethodInfo GetMethod(this Type type, string methodName, BindingFlags bindingAttr, Object binder, Type[] parameters, Object[] modifiers)
-        {
-            var result = type.GetTypeInfo().GetDeclaredMethod(methodName);
-            if (result == null)
-            {
-                var baseType = type.GetBaseType();
-                if (baseType != null)
-                {
-                    return GetMethod(baseType, methodName, bindingAttr, binder, parameters, modifiers);
-                }
-            }
-
-            return result;
         }
 
         public static MethodInfo GetMethod(this Type type, string methodName, Type[] parameters)
         {
-            return GetMethods(type).Where(m => m.Name == methodName).FirstOrDefault(
-                m =>
+            return GetMethods(type)
+                .Where(methodInfo => methodInfo.Name == methodName)
+                .FirstOrDefault(methodInfo =>
                 {
-                    var types = m.GetParameters().Select(p => p.ParameterType).ToArray();
+                    var types = methodInfo.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
                     if (types.Length == parameters.Length)
                     {
-                        for (int idx = 0; idx < types.Length; idx++)
+                        for (int i = 0; i < types.Length; i++)
                         {
-                            if (types[idx] != parameters[idx])
+                            if (types[i] != parameters[i])
                             {
                                 return false;
                             }
@@ -69,40 +53,23 @@ namespace MixedRealityToolkit.Common.Extensions
 
                         return true;
                     }
-                    else
-                    {
-                        return false;
-                    }
+
+                    return false;
                 }
             );
         }
 
-        public static IEnumerable<MethodInfo> GetMethods(this Type type)
-        {
-            return GetMethods(type, (BindingFlags)0x0);
-        }
-
-        public static IEnumerable<MethodInfo> GetMethods(this Type type, BindingFlags flags)
+        public static IEnumerable<MethodInfo> GetMethods(this Type type, BindingFlags flags = 0x0)
         {
             return type.GetTypeInfo().GetMethods(flags);
         }
 
-        public static IEnumerable<MethodInfo> GetMethods(this TypeInfo type)
-        {
-            return GetMethods(type, (BindingFlags)0x0);
-        }
-
-        public static IEnumerable<MethodInfo> GetMethods(this TypeInfo type, BindingFlags flags)
+        public static IEnumerable<MethodInfo> GetMethods(this TypeInfo type, BindingFlags flags = 0x0)
         {
             return type.DeclaredMethods;
         }
 
-        public static IEnumerable<FieldInfo> GetFields(this Type type)
-        {
-            return GetFields(type, (BindingFlags)0x0);
-        }
-
-        public static IEnumerable<FieldInfo> GetFields(this Type type, BindingFlags flags)
+        public static IEnumerable<FieldInfo> GetFields(this Type type, BindingFlags flags = 0x0)
         {
             return type.GetTypeInfo().DeclaredFields;
         }
@@ -117,12 +84,7 @@ namespace MixedRealityToolkit.Common.Extensions
             return type.GetTypeInfo().DeclaredProperties;
         }
 
-        public static PropertyInfo GetProperty(this Type type, string propertyName)
-        {
-            return GetProperty(type, propertyName, (BindingFlags)0x0);
-        }
-
-        public static PropertyInfo GetProperty(this Type type, string propertyName, BindingFlags flags)
+        public static PropertyInfo GetProperty(this Type type, string propertyName, BindingFlags flags = 0x0)
         {
             return type.GetRuntimeProperty(propertyName);
         }
@@ -172,30 +134,4 @@ namespace MixedRealityToolkit.Common.Extensions
             return type.GetTypeInfo().GetCustomAttributes(attributeType, inherit).ToArray();
         }
     }
-#else
-    using System;
-
-    public static class ReflectionExtensions
-    {
-        public static Type GetTypeInfo(this Type type)
-        {
-            return type;
-        }
-
-        public static Type AsType(this Type type)
-        {
-            return type;
-        }
-
-        public static bool IsEnum(this Type type)
-        {
-            return type.IsEnum;
-        }
-
-        public static bool IsValueType(this Type type)
-        {
-            return type.IsValueType;
-        }
-    }
-#endif
 }
