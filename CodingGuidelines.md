@@ -30,6 +30,37 @@ private void Foo(){ }
 public void Bar(){ }
  ```
 
+## Use Braces
+Always use braces whenever possible.
+
+### Don't:
+
+```
+private Foo()
+{
+    if(Bar==null)
+        DoThing();
+    else
+        DoTheOtherThing();
+}
+```
+
+### Do:
+
+```
+private Foo()
+{
+    if(Bar==null)
+    {
+        DoThing();
+    }
+    else
+    {
+        DoTheOtherThing();
+    }
+}
+```
+
 ## Encapsulation
 Always use private fields and public properties if access to the field is needed from outside the class or struct.
 
