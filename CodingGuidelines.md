@@ -50,7 +50,7 @@ private Foo()
 ```
 private Foo()
 {
-    if(Bar==null)
+    if(Bar==true)
     {
         DoThing();
     }
@@ -121,8 +121,8 @@ void Update()
 ### Do:
 
  ```
- [SerializeField] // You could set the reference in the inspector.
- private Renderer myRenderer;
+[SerializeField] // You could set the reference in the inspector.
+private Renderer myRenderer;
 
 private void Awake()
 {
@@ -137,14 +137,13 @@ private void Update()
 {
     myRenderer.Foo(Bar);
 }
-
  ```
 
 ---
 
 Public classes, structs, and enums should all go in their own files.
 
-> If the class, struct, or enum can be made private then it's okay to be included in the same file.
+>If the class, struct, or enum can be made private then it's okay to be included in the same file.
 
 ### Don't:
 
