@@ -33,8 +33,6 @@ namespace MixedRealityToolkit.Boundary
             UsePresetXAndZWithHeadHeight
         }
 
-        private int frameWaitHack = 0;
-
         [SerializeField]
         [Tooltip("Optional container object reference. If null, this script will move the object it's attached to.")]
         private Transform containerObject = null;
@@ -54,6 +52,7 @@ namespace MixedRealityToolkit.Boundary
 
         private Vector3 contentPosition = Vector3.zero;
 
+        private int frameWaitHack = 0;
 #endif
 
         private void Awake()

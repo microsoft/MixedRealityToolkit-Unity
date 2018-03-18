@@ -534,8 +534,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1501958636844708}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.048, y: -0.36, z: -0.347}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4403470232245482}
@@ -2033,7 +2033,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86772d5ca853e924ba484bc960537c04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Profile: {fileID: 11400000, guid: 041d19d84778e4544a8a7cf1c4783f9c, type: 2}
+  Profile: {fileID: 11400000, guid: 6d4aef9765aeda04cb4bde20802bcbd3, type: 2}
   TargetTransform: {fileID: 4248105129166874}
   Renderer: {fileID: 23313031044303876}
 --- !u!114 &114028961690751552
@@ -2112,7 +2112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86772d5ca853e924ba484bc960537c04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Profile: {fileID: 11400000, guid: 041d19d84778e4544a8a7cf1c4783f9c, type: 2}
+  Profile: {fileID: 11400000, guid: 6d4aef9765aeda04cb4bde20802bcbd3, type: 2}
   TargetTransform: {fileID: 4936809806710096}
   Renderer: {fileID: 23645690056381804}
 --- !u!114 &114259521732163282
@@ -2174,7 +2174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86772d5ca853e924ba484bc960537c04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Profile: {fileID: 11400000, guid: 041d19d84778e4544a8a7cf1c4783f9c, type: 2}
+  Profile: {fileID: 11400000, guid: 6d4aef9765aeda04cb4bde20802bcbd3, type: 2}
   TargetTransform: {fileID: 4038590483307378}
   Renderer: {fileID: 23360340047197928}
 --- !u!114 &114325005779618340
@@ -2252,7 +2252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86772d5ca853e924ba484bc960537c04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Profile: {fileID: 11400000, guid: 041d19d84778e4544a8a7cf1c4783f9c, type: 2}
+  Profile: {fileID: 11400000, guid: 6d4aef9765aeda04cb4bde20802bcbd3, type: 2}
   TargetTransform: {fileID: 4955332276652410}
   Renderer: {fileID: 23256300064422840}
 --- !u!114 &114452527405398690
@@ -2581,7 +2581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86772d5ca853e924ba484bc960537c04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Profile: {fileID: 11400000, guid: 041d19d84778e4544a8a7cf1c4783f9c, type: 2}
+  Profile: {fileID: 11400000, guid: 6d4aef9765aeda04cb4bde20802bcbd3, type: 2}
   TargetTransform: {fileID: 4341909566025854}
   Renderer: {fileID: 23451195546942742}
 --- !u!114 &114793867342317484

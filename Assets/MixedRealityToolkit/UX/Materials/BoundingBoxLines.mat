@@ -8,9 +8,10 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: BoundingBoxLines
   m_Shader: {fileID: 4800000, guid: d45c0efca53019e43891b0f610f8146e, type: 3}
-  m_ShaderKeywords: _BORDER_LIGHT_USES_HOVER_COLOR _DISABLE_ALBEDO_MAP _SPECULAR_HIGHLIGHTS
+  m_ShaderKeywords: _BORDER_LIGHT_USES_HOVER_COLOR _DISABLE_ALBEDO_MAP _INNER_GLOW
+    _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 1
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
   stringTagMap:
@@ -66,7 +67,7 @@ Material:
     - _BorderLightOpaque: 0
     - _BorderLightUsesHoverColor: 1
     - _BorderMinValue: 0.1
-    - _BorderWidth: 0.1
+    - _BorderWidth: 0.241
     - _BumpScale: 1
     - _ClippingPlane: 0
     - _ClippingPlaneBorder: 0
@@ -91,7 +92,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _HoverLight: 0
-    - _InnerGlow: 0
+    - _InnerGlow: 1
     - _Metallic: 0
     - _Mode: 0
     - _NearPlaneFade: 0
@@ -106,7 +107,7 @@ Material:
     - _RoundCornerMargin: 0
     - _RoundCornerRadius: 0.25
     - _RoundCorners: 0
-    - _Smoothness: 0.5
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
