@@ -17,19 +17,19 @@ namespace MixedRealityToolkit.UX.ToolTips
     /// </summary>
     public class ToolTipSpawner : MonoBehaviour , IInputHandler, IPointerSpecificFocusable
     {
-        public enum VanishBehaviorEnum
+        private enum VanishType
         {
             VanishOnFocusExit,
             VanishOnTap,
         }
 
-        public enum AppearBehaviorEnum
+        private enum AppearType
         {
             AppearOnFocusEnter,
             AppearOnTap,
         }
 
-        public enum RemainBehaviorEnum
+        public enum RemainType
         {
             Indefinite,
             Timeout,
@@ -56,14 +56,19 @@ namespace MixedRealityToolkit.UX.ToolTips
         [SerializeField]
         private bool showConnector = true;
 
-        public AppearBehaviorEnum AppearBehavior = AppearBehaviorEnum.AppearOnFocusEnter;
-        public VanishBehaviorEnum VanishBehavior = VanishBehaviorEnum.VanishOnFocusExit;
-        public RemainBehaviorEnum RemainBehavior = RemainBehaviorEnum.Timeout;
+        [SerializeField]
+        private AppearType appearType = AppearType.AppearOnFocusEnter;
 
-        public ToolTipConnector.FollowTypeEnum FollowType = ToolTipConnector.FollowTypeEnum.AnchorOnly;
-        public ToolTipConnector.PivotModeEnum PivotMode = ToolTipConnector.PivotModeEnum.Manual;
-        public ToolTipConnector.PivotDirectionEnum PivotDirection = ToolTipConnector.PivotDirectionEnum.North;
-        public ToolTipConnector.OrientTypeEnum PivotDirectionOrient = ToolTipConnector.OrientTypeEnum.OrientToObject;
+        [SerializeField]
+        private VanishType vanishType = VanishType.VanishOnFocusExit;
+
+        [SerializeField]
+        private RemainType remainType = RemainType.Timeout;
+
+        public ToolTipConnector.ConnectorFollowType FollowType = ToolTipConnector.ConnectorFollowType.AnchorOnly;
+        public ToolTipConnector.ConnnectorPivotMode PivotMode = ToolTipConnector.ConnnectorPivotMode.Manual;
+        public ToolTipConnector.ConnectorPivotDirection PivotDirection = ToolTipConnector.ConnectorPivotDirection.North;
+        public ToolTipConnector.ConnectorOrientType PivotDirectionOrient = ToolTipConnector.ConnectorOrientType.OrientToObject;
         public Vector3 ManualPivotDirection = Vector3.up;
         public Vector3 ManualPivotLocalPosition = Vector3.up;
 
@@ -80,9 +85,9 @@ namespace MixedRealityToolkit.UX.ToolTips
             hasFocus = true;
             if (toolTip == null || !toolTip.gameObject.activeSelf)
             {
-                switch (AppearBehavior)
+                switch (appearType)
                 {
-                    case AppearBehaviorEnum.AppearOnFocusEnter:
+                    case AppearType.AppearOnFocusEnter:
                         ShowToolTip();
                         break;
 
@@ -103,14 +108,9 @@ namespace MixedRealityToolkit.UX.ToolTips
             tappedTime = Time.unscaledTime;
             if (toolTip == null || !toolTip.gameObject.activeSelf)
             {
-                switch (AppearBehavior)
+                if( appearType == AppearType.AppearOnTap)
                 {
-                    case AppearBehaviorEnum.AppearOnTap:
                         ShowToolTip();
-                        return;
-
-                    default:
-                        break;
                 }
             }
         }
@@ -139,17 +139,15 @@ namespace MixedRealityToolkit.UX.ToolTips
                 toolTip.ContentParentTransform.localScale = new Vector3(0.182f, 0.028f, 1.0f);
             }
 
-            switch (AppearBehavior)
+            if( appearType == AppearType.AppearOnFocusEnter)
             {
-                case AppearBehaviorEnum.AppearOnFocusEnter:
-                    // Wait for the appear delay
-                    yield return new WaitForSeconds(AppearDelay);
-                    // If we don't have focus any more, get out of here
-                    if (!hasFocus)
-                    {
-                        yield break;
-                    }
-                    break;
+                // Wait for the appear delay
+                yield return new WaitForSeconds(AppearDelay);
+                // If we don't have focus any more, get out of here
+                if (!hasFocus)
+                {
+                    yield break;
+                }
             }
             
             toolTip.ToolTipText = ToolTipText;
@@ -160,18 +158,19 @@ namespace MixedRealityToolkit.UX.ToolTips
             connector.PivotDirectionOrient = PivotDirectionOrient;
             connector.ManualPivotLocalPosition = ManualPivotLocalPosition;
             connector.ManualPivotDirection = ManualPivotDirection;
-            connector.FollowType = FollowType;
-            connector.PivotMode = PivotMode;
-            if (PivotMode == ToolTipConnector.PivotModeEnum.Manual)
+            connector.FollowingType = FollowType;
+            connector.PivotingMode = PivotMode;
+
+            if (PivotMode == ToolTipConnector.ConnnectorPivotMode.Manual)
             {
                 toolTip.PivotPosition = transform.TransformPoint(ManualPivotLocalPosition);
             }
 
             while (toolTip.gameObject.activeSelf)
             {
-                if (RemainBehavior == RemainBehaviorEnum.Timeout)
+                if (remainType == RemainType.Timeout)
                 {
-                    if (AppearBehavior == AppearBehaviorEnum.AppearOnTap)
+                    if (appearType == AppearType.AppearOnTap)
                     {
                         if (Time.unscaledTime - tappedTime >= Lifetime)
                         {
@@ -179,7 +178,7 @@ namespace MixedRealityToolkit.UX.ToolTips
                             yield break;
                         }
                     }
-                    else if (AppearBehavior == AppearBehaviorEnum.AppearOnFocusEnter)
+                    else if (appearType == AppearType.AppearOnFocusEnter)
                     {
                         if (Time.unscaledTime - focusEnterTime >= Lifetime)
                         {
@@ -190,12 +189,12 @@ namespace MixedRealityToolkit.UX.ToolTips
 
                 }
                 //check whether we're suppose to disappear
-                switch (VanishBehavior)
+                switch (vanishType)
                 {
-                    case VanishBehaviorEnum.VanishOnFocusExit:
+                    case VanishType.VanishOnFocusExit:
                         break;
 
-                    case VanishBehaviorEnum.VanishOnTap:
+                    case VanishType.VanishOnTap:
                         if (tappedTime != tappedTimeOnStart)
                         {
                             toolTip.gameObject.SetActive(false);
@@ -228,15 +227,15 @@ namespace MixedRealityToolkit.UX.ToolTips
                 Gizmos.color = Color.cyan;
                 Transform relativeTo = null;
                 switch (PivotDirectionOrient) {
-                    case ToolTipConnector.OrientTypeEnum.OrientToCamera:
+                    case ToolTipConnector.ConnectorOrientType.OrientToCamera:
                         relativeTo = Camera.main.transform;//Veil.Instance.HeadTransform;
                         break;
 
-                    case ToolTipConnector.OrientTypeEnum.OrientToObject:
+                    case ToolTipConnector.ConnectorOrientType.OrientToObject:
                         relativeTo = (Anchor != null) ? Anchor.transform : transform;
                         break;
                 }
-                if (PivotMode == ToolTipConnector.PivotModeEnum.Automatic) {
+                if (PivotMode == ToolTipConnector.ConnnectorPivotMode.Automatic) {
                     Vector3 targetPosition = (Anchor != null) ? Anchor.transform.position : transform.position;
                     Vector3 toolTipPosition = targetPosition + ToolTipConnector.GetDirectionFromPivotDirection(
                                     PivotDirection,

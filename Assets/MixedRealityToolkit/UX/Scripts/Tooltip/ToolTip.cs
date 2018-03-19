@@ -267,7 +267,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
-        public ToolTipUtility.AttachPointTypeEnum PivotType
+        public ToolTipUtility.AttachPointType PivotType
         {
             get
             {
@@ -365,7 +365,7 @@ namespace MixedRealityToolkit.UX.ToolTips
         protected int fontSize = 30;
 
         [SerializeField]
-        protected ToolTipUtility.AttachPointTypeEnum attachPointType = ToolTipUtility.AttachPointTypeEnum.Closest;
+        protected ToolTipUtility.AttachPointType attachPointType = ToolTipUtility.AttachPointType.Closest;
 
         [Tooltip("The line connecting the anchor to the pivot. If present, this component will be updated automatically.")]
         [SerializeField]

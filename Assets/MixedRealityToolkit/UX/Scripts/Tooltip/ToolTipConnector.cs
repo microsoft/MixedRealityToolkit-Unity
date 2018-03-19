@@ -12,7 +12,7 @@ namespace MixedRealityToolkit.UX.ToolTips
     /// </summary>
     public class ToolTipConnector : MonoBehaviour
     {
-        public enum FollowTypeEnum
+        public enum ConnectorFollowType
         {
             AnchorOnly,             // The anchor will follow the target - pivot remains unaffected
             PositionOnly,           // Anchor and pivot will follow target position, but not rotation
@@ -20,19 +20,19 @@ namespace MixedRealityToolkit.UX.ToolTips
             PositionAndRotation,    // Anchor and pivot will follow target like it's parented
         }
 
-        public enum OrientTypeEnum
+        public enum ConnectorOrientType
         {
             OrientToObject,     // Tooltip will maintain anchor-pivot relationship relative to target object
             OrientToCamera,     // Tooltip will maintain anchor-pivot relationship relative to camera
         }
 
-        public enum PivotModeEnum
+        public enum ConnnectorPivotMode
         {
             Manual,         // Tooltip pivot will be set manually
             Automatic,      // Tooltip pivot will be set relative to object/camera based on specified direction and line length
         }
 
-        public enum PivotDirectionEnum
+        public enum ConnectorPivotDirection
         {
             Manual,         // Direction will be specified manually
             North,
@@ -48,14 +48,27 @@ namespace MixedRealityToolkit.UX.ToolTips
         
         public GameObject Target;
 
-        public FollowTypeEnum FollowType = FollowTypeEnum.AnchorOnly;
-        public PivotModeEnum PivotMode = PivotModeEnum.Manual;
-        public PivotDirectionEnum PivotDirection = PivotDirectionEnum.North;
-        public OrientTypeEnum PivotDirectionOrient = OrientTypeEnum.OrientToObject;
-        public Vector3 ManualPivotDirection = Vector3.up;
-        public Vector3 ManualPivotLocalPosition = Vector3.up;
+        [SerializeField]
+        private ConnectorFollowType connectorFollowType = ConnectorFollowType.AnchorOnly;
+
+        [SerializeField]
+        private ConnnectorPivotMode pivotMode = ConnnectorPivotMode.Manual;
+
+        [SerializeField]
+        private ConnectorPivotDirection pivotDirection = ConnectorPivotDirection.North;
+
+        [SerializeField]
+        private ConnectorOrientType pivotDirectionOrient = ConnectorOrientType.OrientToObject;
+
+        [SerializeField]
+        private Vector3 manualPivotDirection = Vector3.up;
+
+        [SerializeField]
+        private Vector3 manualPivotLocalPosition = Vector3.up;
+
+        [SerializeField]
         [Range(0f, 2f)]
-        public float PivotDistance = 0.25f;
+        private float pivotDistance = 0.25f;
 
         private void OnEnable()
         {
@@ -87,45 +100,45 @@ namespace MixedRealityToolkit.UX.ToolTips
             if (Target == null)
                 return;
 
-            switch (FollowType)
+            switch (connectorFollowType)
             {
-                case FollowTypeEnum.AnchorOnly:
+                case ConnectorFollowType.AnchorOnly:
                 default:
                     // Set the position of the anchor to the target's position
                     // And do nothing else
                     toolTip.Anchor.transform.position = Target.transform.position;
                     break;
 
-                case FollowTypeEnum.PositionOnly:
+                case ConnectorFollowType.PositionOnly:
                     // Move the entire tooltip transform while maintaining the anchor position offset
                     toolTip.transform.position = Target.transform.position;
-                    switch (PivotMode)
+                    switch (PivotingMode)
                     {
-                        case PivotModeEnum.Automatic:
+                        case ConnnectorPivotMode.Automatic:
                             Transform relativeTo = null;
                             switch (PivotDirectionOrient)
                             {
-                                case OrientTypeEnum.OrientToCamera:
+                                case ConnectorOrientType.OrientToCamera:
                                     relativeTo = Camera.main.transform;//Veil.Instance.HeadTransform;
                                     break;
 
-                                case OrientTypeEnum.OrientToObject:
+                                case ConnectorOrientType.OrientToObject:
                                     relativeTo = Target.transform;
                                     break;
                             }
                             toolTip.PivotPosition = Target.transform.position + GetDirectionFromPivotDirection(
                                 PivotDirection,
                                 ManualPivotDirection,
-                                relativeTo) * PivotDistance;
+                                relativeTo) * pivotDistance;
                             break;
 
-                        case PivotModeEnum.Manual:
+                        case ConnnectorPivotMode.Manual:
                             // Do nothing
                             break;
                     }
                     break;
 
-                case FollowTypeEnum.PositionAndYRotation:
+                case ConnectorFollowType.PositionAndYRotation:
                     // Set the transform of the entire tool tip
                     // Set the pivot relative to target/camera
                     toolTip.transform.position = Target.transform.position;
@@ -133,56 +146,56 @@ namespace MixedRealityToolkit.UX.ToolTips
                     eulerAngles.x = 0f;
                     eulerAngles.z = 0f;
                     toolTip.transform.eulerAngles = eulerAngles;
-                    switch (PivotMode)
+                    switch (PivotingMode)
                     {
-                        case PivotModeEnum.Automatic:
+                        case ConnnectorPivotMode.Automatic:
                             Transform relativeTo = null;
                             switch (PivotDirectionOrient)
                             {
-                                case OrientTypeEnum.OrientToCamera:
+                                case ConnectorOrientType.OrientToCamera:
                                     relativeTo = Camera.main.transform;//Veil.Instance.HeadTransform;
                                     break;
 
-                                case OrientTypeEnum.OrientToObject:
+                                case ConnectorOrientType.OrientToObject:
                                     relativeTo = Target.transform;
                                     break;
                             }
-                            Vector3 localPosition = GetDirectionFromPivotDirection(PivotDirection, ManualPivotDirection, relativeTo) * PivotDistance;
+                            Vector3 localPosition = GetDirectionFromPivotDirection(PivotDirection, ManualPivotDirection, relativeTo) * pivotDistance;
                             toolTip.PivotPosition = Target.transform.position + localPosition;
                             break;
 
-                        case PivotModeEnum.Manual:
+                        case ConnnectorPivotMode.Manual:
                             // Do nothing
                             break;
                     }
                     break;
 
-                case FollowTypeEnum.PositionAndRotation:
+                case ConnectorFollowType.PositionAndRotation:
                     // Set the transform of the entire tool tip
                     // Set the pivot relative to target/camera
                     toolTip.transform.position = Target.transform.position;
                     toolTip.transform.rotation = Target.transform.rotation;
-                    switch (PivotMode)
+                    switch (PivotingMode)
                     {
-                        case PivotModeEnum.Automatic:
+                        case ConnnectorPivotMode.Automatic:
                             Transform relativeTo = null;
                             switch (PivotDirectionOrient)
                             {
-                                case OrientTypeEnum.OrientToCamera:
+                                case ConnectorOrientType.OrientToCamera:
                                     relativeTo = Camera.main.transform;//Veil.Instance.HeadTransform;
                                     break;
 
-                                case OrientTypeEnum.OrientToObject:
+                                case ConnectorOrientType.OrientToObject:
                                     relativeTo = Target.transform;
                                     break;
                             }
                             toolTip.PivotPosition = Target.transform.position + GetDirectionFromPivotDirection(
                                 PivotDirection,
                                 ManualPivotDirection,
-                                relativeTo) * PivotDistance;
+                                relativeTo) * pivotDistance;
                             break;
 
-                        case PivotModeEnum.Manual:
+                        case ConnnectorPivotMode.Manual:
                             // Do nothing
                             break;
                     }
@@ -198,6 +211,84 @@ namespace MixedRealityToolkit.UX.ToolTips
         [SerializeField]
         private ToolTip toolTip;
 
+        public ConnectorPivotDirection PivotDirection
+        {
+            get
+            {
+                return pivotDirection;
+            }
+
+            set
+            {
+                pivotDirection = value;
+            }
+        }
+
+        public Vector3 ManualPivotDirection
+        {
+            get
+            {
+                return manualPivotDirection;
+            }
+
+            set
+            {
+                manualPivotDirection = value;
+            }
+        }
+
+        public Vector3 ManualPivotLocalPosition
+        {
+            get
+            {
+                return manualPivotLocalPosition;
+            }
+
+            set
+            {
+                manualPivotLocalPosition = value;
+            }
+        }
+
+        public ConnectorFollowType FollowingType
+        {
+            get
+            {
+                return connectorFollowType;
+            }
+
+            set
+            {
+                connectorFollowType = value;
+            }
+        }
+
+        public ConnectorOrientType PivotDirectionOrient
+        {
+            get
+            {
+                return pivotDirectionOrient;
+            }
+
+            set
+            {
+                pivotDirectionOrient = value;
+            }
+        }
+
+        public ConnnectorPivotMode PivotingMode
+        {
+            get
+            {
+                return pivotMode;
+            }
+
+            set
+            {
+                pivotMode = value;
+            }
+        }
+
         private void OnDrawGizmos ()
         {
             if (Application.isPlaying)
@@ -206,48 +297,48 @@ namespace MixedRealityToolkit.UX.ToolTips
             UpdatePosition();
         }
 
-        public static Vector3 GetDirectionFromPivotDirection (PivotDirectionEnum pivotDirection, Vector3 manualPivotDirection, Transform relativeTo)
+        public static Vector3 GetDirectionFromPivotDirection (ConnectorPivotDirection pivotDirection, Vector3 manualPivotDirection, Transform relativeTo)
         {
             Vector3 dir = Vector3.zero;
             switch (pivotDirection)
             {
-                case PivotDirectionEnum.North:
+                case ConnectorPivotDirection.North:
                     dir = Vector3.up;
                     break;
 
-                case PivotDirectionEnum.NorthEast:
+                case ConnectorPivotDirection.NorthEast:
                     dir = Vector3.Lerp(Vector3.up, Vector3.right, 0.5f).normalized;
                     break;
 
-                case PivotDirectionEnum.East:
+                case ConnectorPivotDirection.East:
                     dir = Vector3.right;
                     break;
 
-                case PivotDirectionEnum.SouthEast:
+                case ConnectorPivotDirection.SouthEast:
                     dir = Vector3.Lerp(Vector3.down, Vector3.right, 0.5f).normalized;
                     break;
 
-                case PivotDirectionEnum.South:
+                case ConnectorPivotDirection.South:
                     dir = Vector3.down;
                     break;
 
-                case PivotDirectionEnum.SouthWest:
+                case ConnectorPivotDirection.SouthWest:
                     dir = Vector3.Lerp(Vector3.down, Vector3.left, 0.5f).normalized;
                     break;
 
-                case PivotDirectionEnum.West:
+                case ConnectorPivotDirection.West:
                     dir = Vector3.left;
                     break;
 
-                case PivotDirectionEnum.NorthWest:
+                case ConnectorPivotDirection.NorthWest:
                     dir = Vector3.Lerp(Vector3.up, Vector3.left, 0.5f).normalized;
                     break;
 
-                case PivotDirectionEnum.InFront:
+                case ConnectorPivotDirection.InFront:
                     dir = Vector3.forward;
                     break;
 
-                case PivotDirectionEnum.Manual:
+                case ConnectorPivotDirection.Manual:
                     dir = manualPivotDirection.normalized;
                     break;
             }
