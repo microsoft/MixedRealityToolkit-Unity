@@ -9,7 +9,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.XR.WSA.Input;
+
+
+//using UnityEngine.XR.WSA.Input;
 
 namespace MixedRealityToolkit.UX.AppBarControl
 {

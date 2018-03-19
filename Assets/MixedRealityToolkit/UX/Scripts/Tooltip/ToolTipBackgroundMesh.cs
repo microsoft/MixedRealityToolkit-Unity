@@ -55,32 +55,25 @@ namespace MixedRealityToolkit.UX.ToolTips
 
         protected override void ScaleToFitContent()
         {
-            return;
-            if (BackgroundRenderer == null)
+            if (BackgroundRenderer != null)
             {
-                return;
+                //Get the local size of the content - this is the scale of the text under the content parent
+                Vector3 localContentSize = toolTip.LocalContentSize;
+                Vector3 localContentOffset = toolTip.LocalContentOffset;
+
+                //Get the size of the mesh and use this to adjust the local content size on the x / y axis
+                //This will accomodate meshes that aren't built to 1,1 scale
+                Bounds meshBounds = BackgroundRenderer.GetComponent<MeshFilter>().sharedMesh.bounds;
+                localContentSize.x /= meshBounds.size.x;
+                localContentSize.y /= meshBounds.size.y;
+                localContentSize.z = Depth;
+               
+                //Don't use the mesh bounds for local content since an offset center may be used for design effect
+                if (localContentSize.x > 0 && localContentSize.y > 0)
+                {
+                    localContentBounds = new Bounds(localContentOffset, localContentSize);
+                }
             }
-
-            // Get the local size of the content - this is the scale of the text under the content parent
-            Vector3 localContentSize = toolTip.LocalContentSize;
-            Vector3 localContentOffset = toolTip.LocalContentOffset;
-
-            if (localContentSize.x == 0 || localContentSize.y == 0)
-            {
-                return;
-            }
-            // Get the size of the mesh and use this to adjust the local content size on the x / y axis
-            // This will accomodate meshes that aren't built to 1,1 scale
-            Bounds meshBounds = BackgroundRenderer.GetComponent<MeshFilter>().sharedMesh.bounds;
-            localContentSize.x /= meshBounds.size.x;
-            localContentSize.y /= meshBounds.size.y;
-            localContentSize.z = Depth;
-
-            localContentBounds = new Bounds(localContentOffset, localContentSize);
-
-            // Don't use the mesh bounds for local content since an offset center may be used for design effect
-            BackgroundTransform.localScale = localContentSize;
-            BackgroundTransform.localPosition = localContentOffset;
         }
 
         private void OnDrawGizmos()
