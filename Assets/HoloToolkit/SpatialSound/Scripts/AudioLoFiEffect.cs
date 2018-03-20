@@ -25,10 +25,10 @@ namespace HoloToolkit.Unity
         /// The quality level of the simulated audio source (ex: AM radio).
         /// </summary>
         [Tooltip("The quality level of the simulated audio source.")]
-        public AudioSourceQuality SourceQuality;
+        public AudioLoFiSourceQuality SourceQuality;
 
         // The audio filter settings that match the selected source quality.
-        private FilterSettings filterSettings;
+        private AudioLoFiFilterSettings filterSettings;
 
         // The filters used to simulate the source quality.
         private AudioLowPassFilter lowPassFilter;
@@ -36,8 +36,8 @@ namespace HoloToolkit.Unity
 
         // Collection used to look up the filter settings that match the selected
         // source quality.
-        private Dictionary<AudioSourceQuality, FilterSettings> sourceQualityFilterSettings =
-            new Dictionary<AudioSourceQuality, FilterSettings>();
+        private Dictionary<AudioLoFiSourceQuality, AudioLoFiFilterSettings> sourceQualityFilterSettings =
+            new Dictionary<AudioLoFiSourceQuality, AudioLoFiFilterSettings>();
 
         private void Awake()
         {
@@ -54,19 +54,19 @@ namespace HoloToolkit.Unity
 
         private void Update()
         {
-            FilterSettings fs = sourceQualityFilterSettings[SourceQuality];
-            if (fs != filterSettings)
+            AudioLoFiFilterSettings newSettings = sourceQualityFilterSettings[SourceQuality];
+            if (newSettings != filterSettings)
             {
                 // If we have an attached AudioInfluencerManager, we need to let it know
                 // about our filter settings change.
-                AudioInfluencerManager influencerManager = gameObject.GetComponent<AudioInfluencerManager>();
+                AudioEmitter influencerManager = gameObject.GetComponent<AudioEmitter>();
                 if (influencerManager != null)
                 {
-                    influencerManager.SetNativeLowPassCutoffFrequency(fs.LowPassCutoff);
-                    influencerManager.SetNativeHighPassCutoffFrequency(fs.HighPassCutoff);
+                    influencerManager.SetNativeLowPassCutoffFrequency(newSettings.LowPassCutoff);
+                    influencerManager.SetNativeHighPassCutoffFrequency(newSettings.HighPassCutoff);
                 }
 
-                filterSettings = fs;
+                filterSettings = newSettings;
                 lowPassFilter.cutoffFrequency = filterSettings.LowPassCutoff;
                 highPassFilter.cutoffFrequency = filterSettings.HighPassCutoff;
             }
@@ -78,145 +78,147 @@ namespace HoloToolkit.Unity
             if (sourceQualityFilterSettings.Keys.Count > 0) { return; }
 
             sourceQualityFilterSettings.Add(
-                AudioSourceQuality.FullRange,
-                new FilterSettings(10, 22000));
+                AudioLoFiSourceQuality.FullRange,
+                new AudioLoFiFilterSettings(10, 22000));
             sourceQualityFilterSettings.Add(
-                AudioSourceQuality.NarrowBandTelephone,
-                new FilterSettings(300, 3400));
+                AudioLoFiSourceQuality.NarrowBandTelephone,
+                new AudioLoFiFilterSettings(300, 3400));
             sourceQualityFilterSettings.Add(
-                AudioSourceQuality.WideBandTelephone,
-                new FilterSettings(50, 7000));
+                AudioLoFiSourceQuality.WideBandTelephone,
+                new AudioLoFiFilterSettings(50, 7000));
             sourceQualityFilterSettings.Add(
-                AudioSourceQuality.AmRadio,
-                new FilterSettings(40, 5000));
+                AudioLoFiSourceQuality.AmRadio,
+                new AudioLoFiFilterSettings(40, 5000));
             sourceQualityFilterSettings.Add(
-                AudioSourceQuality.FmRadio,
-                new FilterSettings(30, 15000));
+                AudioLoFiSourceQuality.FmRadio,
+                new AudioLoFiFilterSettings(30, 15000));
+        }
+    }
+
+    /// <summary>
+    /// Settings for the filters used to simulate a low fidelity sound source.
+    /// </summary>
+    public struct AudioLoFiFilterSettings
+    {
+        /// <summary>
+        /// The frequency below which sound will be heard.
+        /// </summary>
+        public float LowPassCutoff
+        { get; private set; }
+
+        /// <summary>
+        /// The frequency above which sound will be heard.
+        /// </summary>
+        public float HighPassCutoff
+        { get; private set; }
+
+        /// <summary>
+        /// FilterSettings constructor.
+        /// </summary>
+        /// <param name="highPassCutoff">High pass filter cutoff frequency.</param>
+        /// <param name="lowPassCutoff">Low pass filter cutoff frequency.</param>
+        public AudioLoFiFilterSettings(float highPassCutoff, float lowPassCutoff)
+        {
+            HighPassCutoff = highPassCutoff;
+            LowPassCutoff = lowPassCutoff;
         }
 
         /// <summary>
-        /// Source quality options that match common telephony and
-        /// radio broadcast options.
+        /// Checks to see if two FilterSettings objects are equivalent.
         /// </summary>
-        public enum AudioSourceQuality
+        /// <returns>True if equivalent, false otherwise.</returns>
+        public static bool operator ==(AudioLoFiFilterSettings a, AudioLoFiFilterSettings b)
         {
-            /// <summary>
-            /// Narrow frequency range telephony
-            /// </summary>
-            NarrowBandTelephone,
-
-            /// <summary>
-            /// Wide frequency range telephony
-            /// </summary>
-            WideBandTelephone,
-
-            /// <summary>
-            /// AM radio
-            /// </summary>
-            AmRadio,
-
-            /// <summary>
-            /// FM radio
-            /// </summary>
-            FmRadio,
-
-            /// <summary>
-            /// Full range of human hearing.
-            /// </summary>
-            /// <remarks>
-            /// The frequency range used is a bit wider than that of human
-            /// hearing. It closely resembles the range used for audio CDs.
-            /// </remarks>
-            FullRange
+            return a.Equals(b);
         }
 
         /// <summary>
-        /// Settings for the filters used to simulate a low fidelity sound source.
+        /// Checks to see if two FilterSettings objects are not equivalent.
         /// </summary>
-        public struct FilterSettings
+        /// <returns>False if equivalent, true otherwise.</returns>
+        public static bool operator !=(AudioLoFiFilterSettings a, AudioLoFiFilterSettings b)
         {
-            /// <summary>
-            /// The frequency below which sound will be heard.
-            /// </summary>
-            public float LowPassCutoff
-            { get; private set; }
-
-            /// <summary>
-            /// The frequency above which sound will be heard.
-            /// </summary>
-            public float HighPassCutoff
-            { get; private set; }
-
-            /// <summary>
-            /// FilterSettings constructor.
-            /// </summary>
-            /// <param name="highPassCutoff">High pass filter cutoff frequency.</param>
-            /// <param name="lowPassCutoff">Low pass filter cutoff frequency.</param>
-            public FilterSettings(
-                float highPassCutoff,
-                float lowPassCutoff)
-            {
-                HighPassCutoff = highPassCutoff;
-                LowPassCutoff = lowPassCutoff;
-            }
-
-            /// <summary>
-            /// Checks to see if two FilterSettings objects are equivalent.
-            /// </summary>
-            /// <returns>True if equivalent, false otherwise.</returns>
-            public static bool operator ==(FilterSettings a, FilterSettings b)
-            {
-                return a.Equals(b);
-            }
-
-            /// <summary>
-            /// Checks to see if two FilterSettings objects are not equivalent.
-            /// </summary>
-            /// <returns>False if equivalent, true otherwise.</returns>
-            public static bool operator !=(FilterSettings a, FilterSettings b)
-            {
-                return !(a.Equals(b));
-            }
-
-            /// <summary>
-            /// Checks to see if a object is equivalent to this FilterSettings.
-            /// </summary>
-            /// <returns>True if equivalent, false otherwise.</returns>
-            public override bool Equals(object obj)
-            {
-                if (obj == null)
-                {
-                    return false;
-                }
-
-                if (!(obj is FilterSettings))
-                {
-                    return false;
-                }
-
-                FilterSettings other = (FilterSettings)obj;
-                if ((other.LowPassCutoff != LowPassCutoff) ||
-                    (other.HighPassCutoff != HighPassCutoff))
-                {
-                    return false;
-                }
-
-                return true;
-            }
-
-            /// <summary>
-            /// Generates a hash code representing this FilterSettings.
-            /// </summary>
-            /// <returns></returns>
-            public override int GetHashCode()
-            {
-                string s = string.Format(
-                    "[FilterSettings] Low: {0}, High: {1}",
-                    LowPassCutoff,
-                    HighPassCutoff);
-
-                return s.GetHashCode();
-            }
+            return !(a.Equals(b));
         }
+
+        /// <summary>
+        /// Checks to see if a object is equivalent to this FilterSettings.
+        /// </summary>
+        /// <returns>True if equivalent, false otherwise.</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (!(obj is AudioLoFiFilterSettings))
+            {
+                return false;
+            }
+
+            AudioLoFiFilterSettings other = (AudioLoFiFilterSettings)obj;
+            if ((other.LowPassCutoff != LowPassCutoff) ||
+                (other.HighPassCutoff != HighPassCutoff))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Generates a hash code representing this FilterSettings.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            string s = string.Format(
+                "[AudioLoFiFilterSettings] Low: {0}, High: {1}",
+                LowPassCutoff,
+                HighPassCutoff);
+
+            return s.GetHashCode();
+        }
+    }
+
+    /// <summary>
+    /// Source quality options, used by the AudioLoFiEffect, that match common telephony and
+    /// radio broadcast options.
+    /// </summary>
+    public enum AudioLoFiSourceQuality
+    {
+        /// <summary>
+        /// Narrow frequency range telephony.
+        /// </summary>
+        NarrowBandTelephone,
+
+        /// <summary>
+        /// Wide frequency range telephony.
+        /// </summary>
+        WideBandTelephone,
+
+        /// <summary>
+        /// AM radio.
+        /// </summary>
+        AmRadio,
+
+        /// <summary>
+        /// FM radio.
+        /// </summary>
+        /// <remarks>
+        /// The FM radio frequency is quite wide as it relates to human hearing. While it is
+        /// a lower fidelity than FullRange, some users may not hear a difference.
+        /// </remarks>
+        FmRadio,
+
+        /// <summary>
+        /// Full range of human hearing.
+        /// </summary>
+        /// <remarks>
+        /// The frequency range used is a bit wider than that of human
+        /// hearing. It closely resembles the range used for audio CDs.
+        /// </remarks>
+        FullRange
     }
 }

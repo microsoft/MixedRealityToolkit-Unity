@@ -11,12 +11,12 @@ namespace HoloToolkit.Unity
     /// Class which supports IAudioInfluencers being used with audio sources.
     /// </summary>
     /// <remarks>
-    /// AudioInfluencerManager requires an AudioSource component. If one is not attached, it will be added automatically.
-    /// Each sound playing game object needs to have an AudioInfluencerManager attached in order to have it's audio influenced.
+    /// AudioEmitter requires an AudioSource component. If one is not attached, it will be added automatically.
+    /// Each sound playing game object needs to have an AudioEmitter attached in order to have it's audio influenced.
     /// </remarks>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(AudioSource))]
-    public class AudioInfluencerManager : MonoBehaviour
+    public class AudioEmitter : MonoBehaviour
     {
         /// <summary>
         /// Frequency below the nominal range of human hearing.
@@ -185,10 +185,10 @@ namespace HoloToolkit.Unity
             
             for (int i = 0; i < count; i++)
             {
-                IAudioInfluencer ai = hits[i].collider.gameObject.GetComponentInParent<IAudioInfluencer>();
-                if (ai != null)
+                IAudioInfluencer influencer = hits[i].collider.gameObject.GetComponentInParent<IAudioInfluencer>();
+                if (influencer != null)
                 {
-                    influencers.Add(ai);
+                    influencers.Add(influencer);
                 }
             }
 

@@ -10,13 +10,10 @@ namespace HoloToolkit.Unity
     /// Class that implements IAudioInfluencer to provide an occlusion effect.
     /// </summary>
     /// <remarks>
-    /// For best results, ensure that all sound emitting objects have an attached
-    /// AudioInfluencerManager. Failing to do so may result in incorrect frequency
-    /// and/or volume restoration when the RemoveEffect method is called.
+    /// Ensure that all sound emitting objects have an attached AudioEmitter. 
+    /// Failing to do so will result in the desired effect not being applied to the sound.
     /// </remarks>
-    public class AudioOccluder 
-        : MonoBehaviour, 
-        IAudioInfluencer
+    public class AudioOccluder : MonoBehaviour, IAudioInfluencer
     {
         /// <summary>
         /// Frequency above which sound will not be heard after applying occlusion.
@@ -43,6 +40,26 @@ namespace HoloToolkit.Unity
         [Tooltip("Percentage of the audio source volume that will be heard after applying occlusion.")]
         [Range(0.0f, 1.0f)]
         public float VolumePassThrough = 1.0f;
+
+        // Update is not used, but is kept so that this component can be enabled/disabled.
+        private void Update() { }
+
+        /// <summary>
+        /// Applies the audio effect.
+        /// </summary>
+        /// <param name="soundEmittingObject">The GameObject on which the effect is to be applied.</param>
+        /// <param name="audioSource">The AudioSource that is emitting the sound.</param>
+        /// <remarks>
+        /// This method has been deprecated and should be removed in the next major release of the
+        /// Mixed Reality Toolkit.
+        /// </remarks>
+        public void ApplyEffect(GameObject soundEmittingObject, AudioSource audioSource)
+        {
+            // This version of ApplyEffect has been deprecated.
+            // Ignore the provided audioSource as the prefered method will retreive it from
+            // the soundEmittingObject GameObject.
+            ApplyEffect(soundEmittingObject);
+        }
 
         /// <summary>
         /// Applies the audio effect.
@@ -80,19 +97,30 @@ namespace HoloToolkit.Unity
         /// Removes the previously applied audio effect.
         /// </summary>
         /// <param name="soundEmittingObject">The GameObject from which the effect is to be removed.</param>
+        /// <param name="audioSource">The AudioSource that is emitting the sound.</param>
         /// <remarks>
-        /// For best results, ensure that all sound emitting objects have an attached
-        /// AudioInfluencerManager. Failing to do so may result in incorrect frequency
-        /// and/or volume restoration when the RemoveEffect method is called.
+        /// This method has been deprecated and should be removed in the next major release of the
+        /// Mixed Reality Toolkit.
         /// </remarks>
+        public void RemoveEffect(GameObject soundEmittingObject, AudioSource audioSource)
+        {
+            // This version of RemoveEffect has been deprecated.
+            // The provided audioSource has always been ignored as it is not used.
+            RemoveEffect(soundEmittingObject);
+        }
+
+        /// <summary>
+        /// Removes the previously applied audio effect.
+        /// </summary>
+        /// <param name="soundEmittingObject">The GameObject from which the effect is to be removed.</param>
         public void RemoveEffect(GameObject soundEmittingObject)
         {
             // Audio occlusion is performed using a low pass filter.                
             AudioLowPassFilter lowPass = soundEmittingObject.GetComponent<AudioLowPassFilter>();
             if (lowPass == null) { return; }
 
-            float neutralFrequency = AudioInfluencerManager.NeutralHighFrequency;
-            AudioInfluencerManager influencerManager = soundEmittingObject.GetComponent<AudioInfluencerManager>();
+            float neutralFrequency = AudioEmitter.NeutralHighFrequency;
+            AudioEmitter influencerManager = soundEmittingObject.GetComponent<AudioEmitter>();
             if (influencerManager != null)
             {
                 neutralFrequency = influencerManager.GetNativeLowPassCutoffFrequency();
@@ -103,9 +131,5 @@ namespace HoloToolkit.Unity
 
             // Note: Volume attenuation is reset in the AudioInfluencerManager, attached to the sound emitting object.
         }
-
-        // Update is not used, but is kept so that this component can be enabled/disabled.
-        private void Update()
-        { }
     }
 }
