@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.50217825, g: 0.5020953, b: 0.5018046, a: 1}
+  m_IndirectSpecularColor: {r: 0.50224054, g: 0.5020953, b: 0.501867, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -3827,25 +3827,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c814c68aa61c8dc4dbcb18cc955ec9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AppearDelay: 1.25
-  VanishDelay: 1.22
-  Lifetime: 1.07
-  PivotDistance: 0.25
+  defaultDimensions: {x: 0.182, y: 0.028, z: 1}
   showBackground: 1
   showOutline: 0
   showConnector: 1
-  appearType: 0
-  vanishType: 0
+  appearType: 1
+  vanishType: 1
   remainType: 1
-  FollowType: 0
-  PivotMode: 0
-  PivotDirection: 1
-  PivotDirectionOrient: 0
-  ManualPivotDirection: {x: 0, y: 1, z: 0}
-  ManualPivotLocalPosition: {x: -3.18, y: -1.68, z: 8.42}
-  ToolTipText: You clicked me!
+  appearDelay: 0
+  vanishDelay: 2
+  lifetime: 1
   toolTipPrefab: {fileID: 1963181076315932, guid: 3b2729a90daf689408e97dcbcc8e8a4e,
     type: 2}
+  followType: 0
+  pivotMode: 0
+  pivotDirection: 1
+  pivotDirectionOrient: 0
+  manualPivotDirection: {x: 0, y: 1, z: 0}
+  manualPivotLocalPosition: {x: -4.07, y: -1.67, z: 6.75}
+  pivotDistance: 0.087
+  ToolTipText: You clicked me!
   Anchor: {fileID: 1606036650}
 --- !u!1 &1257630937
 GameObject:
@@ -3962,25 +3963,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c814c68aa61c8dc4dbcb18cc955ec9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AppearDelay: 0.23
-  VanishDelay: 2
-  Lifetime: 1
-  PivotDistance: 0.25
+  defaultDimensions: {x: 0.182, y: 0.028, z: 1}
   showBackground: 1
   showOutline: 0
   showConnector: 1
   appearType: 0
   vanishType: 0
   remainType: 1
-  FollowType: 0
-  PivotMode: 0
-  PivotDirection: 1
-  PivotDirectionOrient: 0
-  ManualPivotDirection: {x: 0, y: 1, z: 0}
-  ManualPivotLocalPosition: {x: 1.28, y: 1.23, z: -0.7}
-  ToolTipText: I was focused!
+  appearDelay: 0
+  vanishDelay: 2
+  lifetime: 1
   toolTipPrefab: {fileID: 1963181076315932, guid: 3b2729a90daf689408e97dcbcc8e8a4e,
     type: 2}
+  followType: 0
+  pivotMode: 0
+  pivotDirection: 2
+  pivotDirectionOrient: 1
+  manualPivotDirection: {x: 0, y: 1, z: 0}
+  manualPivotLocalPosition: {x: 1.03, y: 1, z: 0}
+  pivotDistance: 0.218
+  ToolTipText: I was focused!
   Anchor: {fileID: 365752474}
 --- !u!64 &1286762435
 MeshCollider:

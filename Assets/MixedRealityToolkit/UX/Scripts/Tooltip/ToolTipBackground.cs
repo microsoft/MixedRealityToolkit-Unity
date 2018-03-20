@@ -1,11 +1,13 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using UnityEngine;
+using MixedRealityToolkit.Common.Extensions;
 
 namespace MixedRealityToolkit.UX.ToolTips
 {
+    [RequireComponent(typeof(MeshFilter))]
+
     /// <summary>
     /// Base class for a tool tip background
     /// Automatically finds a ToolTip and subscribes to ContentChange action
@@ -13,12 +15,12 @@ namespace MixedRealityToolkit.UX.ToolTips
     /// </summary>
     public abstract class ToolTipBackground : MonoBehaviour
     {
+        [SerializeField]
+        protected ToolTip toolTip;
+
         protected virtual void OnEnable()
         {
-            if (toolTip == null)
-            {
-                toolTip = gameObject.GetComponent<ToolTip>();
-            }
+            toolTip = gameObject.EnsureComponent<ToolTip>();
 
             if (toolTip == null)
             {
@@ -36,8 +38,5 @@ namespace MixedRealityToolkit.UX.ToolTips
         }
 
         protected abstract void ScaleToFitContent();
-
-        [SerializeField]
-        protected ToolTip toolTip;
     }
 }

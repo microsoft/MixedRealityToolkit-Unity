@@ -12,32 +12,47 @@ namespace MixedRealityToolkit.UX.ToolTips
     /// </summary>
     public class ToolTipBackgroundBlob : ToolTipBackground
     {
-        public const float MaxInertia = 5f;
-        public const float MaxDistortion = 1f;
-        public const float MaxRotation = 1f;
-        public const float MinPositionCorrection = 0.1f;
-        public const float MinDistortionCorrection = 0.1f;
-        public const float MinRotationCorrection = 0.1f;
-        public const float MaxPositionCorrection = 5f;
-        public const float MaxDistortionCorrection = 5f;
-        public const float MaxRotationCorrection = 5f;
+        private const float maxInertia = 5f;
+        private const float maxDistortion = 1f;
+        private const float maxRotation = 1f;
+        private const float minPositionCorrection = 0.1f;
+        private const float minDistortionCorrection = 0.1f;
+        private const float minRotationCorrection = 0.1f;
+        private const float maxPositionCorrection = 5f;
+        private const float maxDistortionCorrection = 5f;
+        private const float maxRotationCorrection = 5f;
 
-        [Header("Transform targets")]
+        private Bounds defaultBounds = new Bounds(Vector3.zero, Vector3.one);
+        private MeshFilter backgroundRendererMeshFilter;
+        private Vector3 lastPosition;
+        private Vector3 velocity;
+        private Vector3 distortion;
+        private Vector3 rotation;
+        private Bounds localContentBounds;
+        private Bounds inertialContentBounds;
+
         /// <summary>
         /// Which transforms to use for each type of distortion
         /// See the ToolTipBalloon prefab for an example of which transforms to target
         /// </summary>
-        public Transform PositionTarget;
-        public Transform RotationTarget;
-        public Transform DistortionTarget;
-        public Transform AttachPointOffset;
+        [Header("Transform targets")]
+        [SerializeField]
+        private Transform positionTarget;
+        [SerializeField]
+        private Transform rotationTarget;
+        [SerializeField]
+        private Transform distortionTarget;
+        [SerializeField]
+        private Transform attachPointOffset;
 
         public float BlobInertia {
-            get {
+            get
+            {
                 return blobInertia;
             }
-            set {
-                blobInertia = Mathf.Clamp(value, 0, MaxInertia);
+            set
+            {
+                blobInertia = Mathf.Clamp(value, 0, maxInertia);
             }
         }
 
@@ -46,7 +61,7 @@ namespace MixedRealityToolkit.UX.ToolTips
                 return blobDistortion;
             }
             set {
-                blobDistortion = Mathf.Clamp(value, 0, MaxDistortion);
+                blobDistortion = Mathf.Clamp(value, 0, maxDistortion);
             }
         }
 
@@ -55,7 +70,7 @@ namespace MixedRealityToolkit.UX.ToolTips
                 return blobRotation;
             }
             set {
-                blobRotation = Mathf.Clamp(value, 0, MaxRotation);
+                blobRotation = Mathf.Clamp(value, 0, maxRotation);
             }
         }
 
@@ -64,7 +79,7 @@ namespace MixedRealityToolkit.UX.ToolTips
                 return positionCorrectionStrength;
             }
             set {
-                positionCorrectionStrength = Mathf.Clamp(value, MinPositionCorrection, MaxPositionCorrection);
+                positionCorrectionStrength = Mathf.Clamp(value, minPositionCorrection, maxPositionCorrection);
             }
         }
 
@@ -73,7 +88,7 @@ namespace MixedRealityToolkit.UX.ToolTips
                 return distortionCorrectionStrength;
             }
             set {
-                distortionCorrectionStrength = Mathf.Clamp(value, MinDistortionCorrection, MaxDistortionCorrection);
+                distortionCorrectionStrength = Mathf.Clamp(value, minDistortionCorrection, maxDistortionCorrection);
             }
         }
 
@@ -82,7 +97,7 @@ namespace MixedRealityToolkit.UX.ToolTips
                 return rotationCorrectionStrength;
             }
             set {
-                rotationCorrectionStrength = Mathf.Clamp (value, MinRotationCorrection, MaxRotationCorrection);
+                rotationCorrectionStrength = Mathf.Clamp (value, minRotationCorrection, maxRotationCorrection);
             }
         }
 
@@ -130,10 +145,11 @@ namespace MixedRealityToolkit.UX.ToolTips
         protected override void OnEnable()
         {
             base.OnEnable();
-            lastPosition = PositionTarget.position;
-            inertialContentBounds = new Bounds(Vector3.zero, Vector3.one);
-            localContentBounds = new Bounds(Vector3.zero, Vector3.one);
+            lastPosition = positionTarget.position;
+            inertialContentBounds = defaultBounds;
+            localContentBounds = defaultBounds;
             velocity = Vector3.zero;
+            backgroundRendererMeshFilter = BackgroundRenderer.GetComponent<MeshFilter>();
         }
 
         protected override void ScaleToFitContent()
@@ -144,7 +160,7 @@ namespace MixedRealityToolkit.UX.ToolTips
 
             // Get the size of the mesh and use this to adjust the local content size on the x / y axis
             // This will accomodate meshes that aren't built to 1,1 scale
-            Bounds meshBounds = BackgroundRenderer.GetComponent<MeshFilter>().sharedMesh.bounds;
+            Bounds meshBounds = backgroundRendererMeshFilter.sharedMesh.bounds;
             localContentSize.x /= meshBounds.size.x;
             localContentSize.y /= meshBounds.size.y;
             localContentSize.z = 1;
@@ -156,7 +172,7 @@ namespace MixedRealityToolkit.UX.ToolTips
         private void Update ()
         {
             // Adjust center and size by velocity
-            Vector3 currentPosition = PositionTarget.position;
+            Vector3 currentPosition = positionTarget.position;
             velocity = Vector3.Lerp(velocity, lastPosition - currentPosition, 1f / blobInertia * Time.deltaTime);
             Vector3 currentDistortion = -velocity * blobDistortion;
             distortion = Vector3.Lerp(distortion, currentDistortion, 1f / blobDistortion * Time.deltaTime);
@@ -169,32 +185,23 @@ namespace MixedRealityToolkit.UX.ToolTips
             currentRotation.x = velocity.x * 360;
             currentRotation.z = velocity.z * 360;
             currentRotation.y = velocity.y * 360;
-            currentRotation = RotationTarget.TransformDirection(currentRotation);
+            currentRotation = rotationTarget.TransformDirection(currentRotation);
             rotation = Vector3.Lerp (rotation, currentRotation, 1f / blobRotation * Time.deltaTime);
 
             // Correct the center and size
             inertialContentBounds.center = Vector3.Lerp(inertialContentBounds.center, localContentBounds.center, Time.deltaTime * positionCorrectionStrength);
             inertialContentBounds.size = Vector3.Lerp(inertialContentBounds.size, localContentBounds.size, Time.deltaTime * distortionCorrectionStrength);
-            RotationTarget.localRotation = Quaternion.Lerp(PositionTarget.localRotation, Quaternion.identity, Time.deltaTime * rotationCorrectionStrength);
+            rotationTarget.localRotation = Quaternion.Lerp(positionTarget.localRotation, Quaternion.identity, Time.deltaTime * rotationCorrectionStrength);
 
             // Apply the center and size
-            PositionTarget.localPosition = inertialContentBounds.center + blobOffset;
-            DistortionTarget.localScale = inertialContentBounds.size;
-            RotationTarget.Rotate(velocity * blobRotation * 360);
+            positionTarget.localPosition = inertialContentBounds.center + blobOffset;
+            distortionTarget.localScale = inertialContentBounds.size;
+            rotationTarget.Rotate(velocity * blobRotation * 360);
 
             // Adjust the tool tip attach position
-            toolTip.AttachPointPosition = AttachPointOffset.position;
+            toolTip.AttachPointPosition = attachPointOffset.position;
 
             lastPosition = currentPosition;
-            
-
         }
-
-        private Vector3 lastPosition;
-        private Vector3 velocity;
-        private Vector3 distortion;
-        private Vector3 rotation;
-        private Bounds localContentBounds;
-        private Bounds inertialContentBounds;
     }
 }

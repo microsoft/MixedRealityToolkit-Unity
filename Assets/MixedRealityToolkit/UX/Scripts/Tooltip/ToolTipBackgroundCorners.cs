@@ -50,22 +50,30 @@ namespace MixedRealityToolkit.UX.ToolTips
             Vector3 botRight = new Vector3(localContentSize.x + localContentOffset.x, -localContentSize.y + localContentOffset.y, localContentOffset.x);
             Vector3 botLeft = new Vector3(-localContentSize.x + localContentOffset.x, -localContentSize.y + localContentOffset.y, localContentOffset.x);
             if (cornerTopLeft != null)
+            {
                 cornerTopLeft.localPosition = topLeft;
+            }
 
             if (cornerTopRight != null)
+            {
                 cornerTopRight.localPosition = topRight;
+            }
 
             if (cornerBotRight != null)
+            {
                 cornerBotRight.localPosition = botRight;
+            }
 
             if (cornerBotLeft != null)
+            {
                 cornerBotLeft.localPosition = botLeft;
+            }
 
             // Now set the corner object scale based on preference
             Vector3 globalScale = Vector3.one;
-            switch (scaleMode) {
+            switch (scaleMode)
+            {
                 case ScaleModeEnum.World:
-                default:
                     Vector3 lossyScale = toolTip.ContentParentTransform.lossyScale;
                     globalScale.x /= lossyScale.x;
                     globalScale.y /= lossyScale.y;
@@ -77,19 +85,30 @@ namespace MixedRealityToolkit.UX.ToolTips
                     float smallestDimension = Mathf.Min(Mathf.Min(globalScale.x, globalScale.y), globalScale.z);
                     globalScale = Vector3.one * smallestDimension;
                     break;
+
+                default:
+                    throw new System.ArgumentOutOfRangeException("ScaleMode not set to valid enum value.");
             }
 
             if (cornerTopLeft != null)
+            {
                 cornerTopLeft.localScale = globalScale * cornerScale;
+            }
 
             if (cornerTopRight != null)
+            {
                 cornerTopRight.localScale = globalScale * cornerScale;
+            }
 
             if (cornerBotRight != null)
+            {
                 cornerBotRight.localScale = globalScale * cornerScale;
+            }
 
             if (cornerBotLeft != null)
+            {
                 cornerBotLeft.localScale = globalScale * cornerScale;
+            }
         }
 
         private void OnDrawGizmos()

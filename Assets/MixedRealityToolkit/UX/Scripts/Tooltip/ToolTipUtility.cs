@@ -1,17 +1,18 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using UnityEngine;
 
-public static class ToolTipUtility {
+public static class ToolTipUtility
+{
+    private const int NumPivotLocations = 8;
 
     /// <summary>
     /// Used to find a pivot point that is closest to the 
     /// anchor. This ensures a natural-looking attachment where the connector line
     /// meets the label.
     /// </summary>
-
-    const int NumPivotLocations = 8;
-
-    [Serializable]
     public enum AttachPointType
     {
         // Specific options
@@ -44,10 +45,12 @@ public static class ToolTipUtility {
         float nearDist = Mathf.Infinity;
 
         if (localPivotPositions == null || localPivotPositions.Length < NumPivotLocations)
+        {
             return nearPivot;
+        }
         
-        switch (pivotType) {
-
+        switch (pivotType)
+        {
             case AttachPointType.Center:
                 return nearPivot;
 

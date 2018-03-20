@@ -27,7 +27,7 @@ namespace MixedRealityToolkit.UX.ToolTips
         /// <summary>
         /// The z depth of the mesh background
         /// </summary>
-        public float Depth = 1f;
+        private float depth = 1f;
 
         public bool IsVisible
         {
@@ -66,7 +66,7 @@ namespace MixedRealityToolkit.UX.ToolTips
                 Bounds meshBounds = BackgroundRenderer.GetComponent<MeshFilter>().sharedMesh.bounds;
                 localContentSize.x /= meshBounds.size.x;
                 localContentSize.y /= meshBounds.size.y;
-                localContentSize.z = Depth;
+                localContentSize.z = depth;
                
                 //Don't use the mesh bounds for local content since an offset center may be used for design effect
                 if (localContentSize.x > 0 && localContentSize.y > 0)

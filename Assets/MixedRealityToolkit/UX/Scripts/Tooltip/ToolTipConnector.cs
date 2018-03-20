@@ -1,11 +1,13 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using UnityEngine;
+using MixedRealityToolkit.Common.Extensions;
 
 namespace MixedRealityToolkit.UX.ToolTips
 {
+    [RequireComponent(typeof(MeshFilter))]
+
     /// <summary>
     /// Connects a ToolTip to a target
     /// Maintains that connection even if the target moves
@@ -49,6 +51,9 @@ namespace MixedRealityToolkit.UX.ToolTips
         public GameObject Target;
 
         [SerializeField]
+        private ToolTip toolTip;
+
+        [SerializeField]
         private ConnectorFollowType connectorFollowType = ConnectorFollowType.AnchorOnly;
 
         [SerializeField]
@@ -73,32 +78,30 @@ namespace MixedRealityToolkit.UX.ToolTips
         private void OnEnable()
         {
             if (!FindToolTip())
+            {
                 return;
+            }
 
             ManualPivotLocalPosition = transform.InverseTransformPoint (toolTip.PivotPosition);
         }
 
         private bool FindToolTip()
         {
-            if (toolTip == null)
-            {
-                toolTip = GetComponent<ToolTip>();
-            }
-            if (toolTip == null)
-            {
-                return false;
-            }
-
-            return true;
+            toolTip = gameObject.EnsureComponent<ToolTip>();
+            return toolTip != null;
         }
 
         private void UpdatePosition() {
 
             if (!FindToolTip())
+            {
                 return;
+            }
 
             if (Target == null)
+            {
                 return;
+            }
 
             switch (connectorFollowType)
             {
@@ -207,9 +210,6 @@ namespace MixedRealityToolkit.UX.ToolTips
         {
             UpdatePosition();
         }
-
-        [SerializeField]
-        private ToolTip toolTip;
 
         public ConnectorPivotDirection PivotDirection
         {
