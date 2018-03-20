@@ -26,7 +26,28 @@ namespace HoloToolkit.Unity
         /// </remarks>
         [Tooltip("Frequency above which sound will not be heard after applying occlusion.")]
         [Range(10.0f, 22000.0f)]
-        public float CutoffFrequency = 5000.0f;
+        [SerializeField]
+        private float cutoffFrequency = 5000.0f;
+        public float CutoffFrequency
+        {
+            get { return cutoffFrequency; }
+            set
+            {
+                // set cutoffFrequency and enforce the specified range
+                if (value < 10.0f)
+                {
+                    cutoffFrequency = 10.0f;
+                }
+                else if (value > 22000.0f)
+                {
+                    cutoffFrequency = 22000.0f;
+                }
+                else
+                {
+                    cutoffFrequency = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Percentage of the audio source volume that will be heard after applying occlusion.
@@ -39,7 +60,28 @@ namespace HoloToolkit.Unity
         /// </remarks>
         [Tooltip("Percentage of the audio source volume that will be heard after applying occlusion.")]
         [Range(0.0f, 1.0f)]
-        public float VolumePassThrough = 1.0f;
+        [SerializeField]
+        private float volumePassThrough = 1.0f;
+        public float VolumePassThrough
+        {
+            get { return volumePassThrough; }
+            set
+            {
+                // set cutoffFrequency and enforce the specified range
+                if (value < 10.0f)
+                {
+                    volumePassThrough = 10.0f;
+                }
+                else if (value > 22000.0f)
+                {
+                    volumePassThrough = 22000.0f;
+                }
+                else
+                {
+                    volumePassThrough = value;
+                }
+            }
+        }
 
         // Update is not used, but is kept so that this component can be enabled/disabled.
         private void Update() { }

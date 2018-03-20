@@ -46,7 +46,28 @@ namespace HoloToolkit.Unity
         /// </remarks>
         [Tooltip("Time, in seconds, between audio influence updates.  0 indicates to update every frame.")]
         [Range(0.0f, 1.0f)]
-        public float UpdateInterval = 0.25f;
+        [SerializeField]
+        private float updateInterval = 0.25f;
+        public float UpdateInterval
+        {
+            get { return updateInterval; }
+            set
+            {
+                // set updateInterval and enforce the specified range
+                if (value < 0.0f)
+                {
+                    updateInterval = 0.0f;
+                }
+                else if (value > 1.0f)
+                {
+                    updateInterval = 1.0f;
+                }
+                else
+                {
+                    updateInterval = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Maximum distance, in meters, to look when attempting to find the user and any influencers.
@@ -57,7 +78,28 @@ namespace HoloToolkit.Unity
         /// </remarks>
         [Tooltip("Maximum distance, in meters, to look when attempting to find the user and any influencers.")]
         [Range(1.0f, 50.0f)]
-        public float MaxDistance = 20.0f;
+        [SerializeField]
+        private float maxDistance = 20.0f;
+        public float MaxDistance
+        {
+            get { return maxDistance; }
+            set
+            {
+                // set maxDistance and enforce the specified range
+                if (value < 1.0f)
+                {
+                    maxDistance = 1.0f;
+                }
+                else if (value > 50.0f)
+                {
+                    maxDistance = 50.0f;
+                }
+                else
+                {
+                    maxDistance = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Maximum number of objects that will be considered when looking for influencers. 
@@ -73,23 +115,35 @@ namespace HoloToolkit.Unity
         [SerializeField]
         private int MaxObjects = 10;
 
-        // Time of last audio processing update.
+        /// <summary>
+        /// Time of last audio processing update. 
+        /// </summary>
         private DateTime lastUpdate = DateTime.MinValue;
 
-        // The source of the audio.
+        /// <summary>
+        /// The source of the audio.
+        /// </summary>
         private AudioSource audioSource;
 
-        // The initial volume level of the audio source.
+        /// <summary>
+        /// The initial volume level of the audio source.
+        /// </summary>
         private float initialAudioSourceVolume;
 
-        // The hits returned by Physics.RaycastAll
+        /// <summary>
+        /// The hits returned by Physics.RaycastAll
+        /// </summary>
         private RaycastHit[] hits;
 
-        // The collection of previously applied audio influencers.
+        /// <summary>
+        /// The collection of previously applied audio influencers.
+        /// </summary>
         private List<IAudioInfluencer> previousInfluencers = new List<IAudioInfluencer>();
 
-        // Potential effects manipulated by an audio influencer and their key
-        // properties.
+        /// <summary>
+        /// Potential effects manipulated by an audio influencer and their key
+        /// properties.
+        /// <summary>
         private AudioLowPassFilter lowPassFilter;
         private float nativeLowPassCutoffFrequency;
         private AudioHighPassFilter highPassFilter;
@@ -148,7 +202,7 @@ namespace HoloToolkit.Unity
                 previousInfluencers = influencers;
                 lastUpdate = now;
             }
-	    }
+        }
 
         /// <summary>
         /// Removes the effects applied by specified audio influencers.

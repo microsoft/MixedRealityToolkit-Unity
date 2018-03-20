@@ -25,17 +25,29 @@ namespace HoloToolkit.Unity
         /// The quality level of the simulated audio source (ex: AM radio).
         /// </summary>
         [Tooltip("The quality level of the simulated audio source.")]
-        public AudioLoFiSourceQuality SourceQuality;
+        [SerializeField]
+        private AudioLoFiSourceQuality sourceQuality;
+        public AudioLoFiSourceQuality SourceQuality
+        {
+            get { return sourceQuality; }
+            set { sourceQuality = value;  }
+        }
 
-        // The audio filter settings that match the selected source quality.
+        /// <summary>
+        /// The audio filter settings that match the selected source quality.
+        /// </summary>
         private AudioLoFiFilterSettings filterSettings;
 
-        // The filters used to simulate the source quality.
+        /// <summary>
+        /// The filters used to simulate the source quality.
+        /// </summary>
         private AudioLowPassFilter lowPassFilter;
         private AudioHighPassFilter highPassFilter;
 
-        // Collection used to look up the filter settings that match the selected
-        // source quality.
+        /// <summary>
+        /// Collection used to look up the filter settings that match the selected
+        /// source quality.
+        /// </summary>
         private Dictionary<AudioLoFiSourceQuality, AudioLoFiFilterSettings> sourceQualityFilterSettings =
             new Dictionary<AudioLoFiSourceQuality, AudioLoFiFilterSettings>();
 
@@ -72,7 +84,9 @@ namespace HoloToolkit.Unity
             }
         }
 
-        // Populates the source quality filter settings collection.
+        /// <summary>
+        /// Populates the source quality filter settings collection.
+        /// </summary>
         private void LoadQualityFilterSettings()
         {
             if (sourceQualityFilterSettings.Keys.Count > 0) { return; }
