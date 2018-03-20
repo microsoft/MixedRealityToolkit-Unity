@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.50224054, g: 0.5020953, b: 0.501867, a: 1}
+  m_IndirectSpecularColor: {r: 0.50217825, g: 0.5020953, b: 0.5018046, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -715,8 +715,8 @@ MonoBehaviour:
   HostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  ManipulationMode: 0
-  ConstraintOnRotation: 0
+  ManipulationMode: 1
+  ConstraintOnRotation: 3
   OneHandMovement: 1
 --- !u!65 &687798438
 BoxCollider:
@@ -1428,8 +1428,8 @@ MonoBehaviour:
   HostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  ManipulationMode: 2
-  ConstraintOnRotation: 0
+  ManipulationMode: 1
+  ConstraintOnRotation: 2
   OneHandMovement: 1
 --- !u!65 &1141423121
 BoxCollider:
@@ -1655,8 +1655,8 @@ MonoBehaviour:
   HostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  ManipulationMode: 1
-  ConstraintOnRotation: 2
+  ManipulationMode: 2
+  ConstraintOnRotation: 0
   OneHandMovement: 1
 --- !u!65 &1337778049
 BoxCollider:
@@ -2554,8 +2554,8 @@ MonoBehaviour:
   HostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  ManipulationMode: 1
-  ConstraintOnRotation: 3
+  ManipulationMode: 0
+  ConstraintOnRotation: 0
   OneHandMovement: 1
 --- !u!65 &1886941386
 BoxCollider:
