@@ -5,7 +5,6 @@ using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.Utilities.Attributes;
 using UnityEngine;
-using UnityEngine.Windows.Speech;
 
 namespace MixedRealityToolkit.UX.Buttons.Utilities
 {
@@ -35,12 +34,6 @@ namespace MixedRealityToolkit.UX.Buttons.Utilities
         /// </summary>
         [HideInMRTKInspector]
         public string Keyword = string.Empty;
-
-        /// <summary>
-        /// The confidence level to use for this speech command
-        /// </summary>
-        [HideInMRTKInspector]
-        public ConfidenceLevel ConfidenceLevel = ConfidenceLevel.Medium;
 
         /// <summary>
         /// Variable to keep track of previous button text in case the button text changes after registration.

@@ -8,11 +8,11 @@ namespace MixedRealityToolkit.Examples.Boundary
 {
     public class BoundaryTest : MonoBehaviour
     {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private Material[] defaultMaterials = null;
 
         private void Start()
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             BoundaryManager.Instance.RenderBoundary = true;
             BoundaryManager.Instance.RenderFloor = true;
 
@@ -38,10 +38,6 @@ namespace MixedRealityToolkit.Examples.Boundary
                     defaultMaterials[i].SetColor("_Color", Color.red);
                 }
             }
-#else
-            BoundaryManager.Instance.RenderBoundary = false;
-            BoundaryManager.Instance.RenderFloor = false;
-#endif
         }
 
         private void OnDestroy()
@@ -51,5 +47,6 @@ namespace MixedRealityToolkit.Examples.Boundary
                 Destroy(defaultMaterials[i]);
             }
         }
+#endif
     }
 }

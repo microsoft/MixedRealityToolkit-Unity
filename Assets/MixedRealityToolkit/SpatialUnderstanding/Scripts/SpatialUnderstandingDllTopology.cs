@@ -38,7 +38,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
         // Queries (topology)
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryTopology_FindPositionsOnWalls(
             [In] float minHeightOfWallSpace,
             [In] float minWidthOfWallSpace,
@@ -57,7 +57,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryTopology_FindLargePositionsOnWalls(
             [In] float minHeightOfWallSpace,
             [In] float minWidthOfWallSpace,
@@ -71,7 +71,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// </summary>
         /// <param name="wall">Pointer to a TopologyResult structure, to be filled with the found wall</param>
         /// <returns>Zero if fails, one if success</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryTopology_FindLargestWall(
             [In, Out] IntPtr wall);             // TopologyResult
 
@@ -83,7 +83,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryTopology_FindPositionsOnFloor(
             [In] float minLengthOfFloorSpace,
             [In] float minWidthOfFloorSpace,
@@ -96,7 +96,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryTopology_FindLargestPositionsOnFloor(
             [In] int locationCount,             // Pass in the space allocated in locationData
             [In, Out] IntPtr locationData);     // TopologyResult
@@ -110,7 +110,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryTopology_FindPositionsSittable(
             [In] float minHeight,
             [In] float maxHeight,
@@ -128,7 +128,7 @@ namespace MixedRealityToolkit.SpatialUnderstanding
         /// <param name="locationCount">Number of location results supplied by the user in locationData</param>
         /// <param name="locationData">Location result array of TopologyResult to be filled with the spaces found by the query</param>
         /// <returns>Number of spaces found by the query. This value is limited by the number of results supplied by the caller (locationCount)</returns>
-        [DllImport("SpatialUnderstanding")]
+        [DllImport("SpatialUnderstanding", CallingConvention = CallingConvention.Cdecl)]
         public static extern int QueryTopology_FindLargePositionsSittable(
             [In] float minHeight,
             [In] float maxHeight,

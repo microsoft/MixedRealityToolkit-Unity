@@ -11,6 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54e0bfe5b1c3b6498e6b71642081d47, type: 3}
   m_Name: KeyboardAtlasReference
   m_EditorClassIdentifier: 
-  Prefabs:
+  prefabs:
   - {fileID: 146120, guid: c4e389e44d96da64ea974ab237ce1a9a, type: 2}
-  Atlas: {fileID: 4343727234628468602, guid: f22af9763a172c64d893dd21dcb4105a, type: 2}
+  atlas: {fileID: 4343727234628468602, guid: f22af9763a172c64d893dd21dcb4105a, type: 2}
