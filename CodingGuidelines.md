@@ -2,15 +2,35 @@
 
 This document outlines the recommended coding guidelines for the Mixed Reality Toolkit.  The majority of these suggestions follow the [recommended standards from MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions).
 
+---
+
 ## Spaces vs Tabs
 Please be sure to use 4 spaces when contributing to this project.
+
+---
 
 ## Naming Conventions
 
 Always use `PascalCase` for public properties, and `camelCase` for private properties and fields.
 > The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`.
 
+### Don't:
+
+```
+public string myProperty; // <- Starts with a lower case letter
+private string MyProperty; // <- Starts with an uppercase case letter
+```
+
+### Do:
+
+ ```
+public string MyProperty;
+private string myProperty;
+ ```
+---
+
 ## Access Modifiers
+
 
 Always declare an access modifier for all fields, properties and methods.
 
@@ -19,6 +39,7 @@ Always declare an access modifier for all fields, properties and methods.
 ### Don't:
 
 ```
+// No public / private / internal access modifiers
 void Foo(){ }
 void Bar(){ }
 ```
@@ -26,11 +47,14 @@ void Bar(){ }
 ### Do:
 
  ```
-private void Foo(){ }
+private void foo(){ }
 public void Bar(){ }
  ```
 
+---
+
 ## Use Braces
+
 Always use braces whenever possible.
 
 ### Don't:
@@ -38,10 +62,19 @@ Always use braces whenever possible.
 ```
 private Foo()
 {
-    if(Bar==null)
+    if(Bar==null) // <- missing braces surrounding if action
         DoThing();
     else
         DoTheOtherThing();
+}
+```
+
+### Don't:
+
+```
+private Foo() { // <- Open bracket on same line
+    if(Bar==null) DoThing(); <- if action on same line with no surrounding brackets 
+    else DoTheOtherThing();
 }
 ```
 
@@ -62,6 +95,8 @@ private Foo()
 ```
 
 ## Encapsulation
+---
+
 Always use private fields and public properties if access to the field is needed from outside the class or struct.
 
 If you need to have the ability to edit your field in the inspector, it's best practice to follow the rules for Encapsulation and serialize your backing field.
@@ -77,7 +112,23 @@ public float MyValue;
 ### Do:
 
  ```
- [SerializeField] // Only use this attribute to view/edit in inspector.
+ // private field, only accessible within script (field is not serialized in Unity)
+ private float myValue;
+  ```
+
+### Do:
+
+ ```
+ // Enable private field to be configurable only in editor (field is correctly serialized in Unity)
+ [SerializeField] 
+ private float myValue;
+  ```
+
+ ### Do:
+
+ ```
+ // Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
+ [SerializeField] 
  private float myValue;
  public float MyValue
  {
@@ -86,12 +137,15 @@ public float MyValue;
  }
  ```
 
-## Best Practices
+---
+
+## Best Practices, including Unity recommendations
 Some of the target platforms of this project require us to take performance into consideration.  What this in mind we should always be careful of allocating memory in frequently called code in tight update loops or algorithms.
 
 ---
 
 Use `for` instead of `foreach` when possible.
+---
 
 ### Don't:
 
@@ -102,12 +156,14 @@ foreach(var item in items)
 ### Do:
 
  ```
-for(int i=0; i < items.length; i++)
+int length = items.length; // cache reference to list/array length
+for(int i=0; i < length; i++)
  ```
 
 ---
 
 Cache values and serialize them in the scene/prefab whenever possible.
+---
 
 ### Don't:
 
@@ -121,7 +177,7 @@ void Update()
 ### Do:
 
  ```
-[SerializeField] // You could set the reference in the inspector.
+[SerializeField] // To enable setting the reference in the inspector.
 private Renderer myRenderer;
 
 private void Awake()
@@ -142,6 +198,7 @@ private void Update()
 ---
 
 Public classes, structs, and enums should all go in their own files.
+---
 
 >If the class, struct, or enum can be made private then it's okay to be included in the same file.
 
@@ -159,6 +216,7 @@ public class MyClass
 ### Do:
 
  ```
+ // Private references for use inside the class only
 public class MyClass
 {
     private struct MyStruct() { }
@@ -166,3 +224,69 @@ public class MyClass
     private class MyNestedClass() { }
 }
  ```
+
+ ### Do:
+
+ ```
+ // Public Struct / Enum definitions for use in your class.  Try to make them generic for reuse.
+MyStruct.cs
+public struct MyStruct
+{
+    public string Var1;
+    public string Var2;
+}
+
+MyEnumType.cs
+public enum MuEnumType
+{
+    Value1,
+    Value2 // <- note, no "," on last value to denote end of list.
+}
+
+MyClass.cs
+public class MyClass
+{
+    private MyStruct myStructreference;
+    private MyEnumType myEnumReference;
+}
+ ```
+
+Cache references to materials, do not call the ".material" each time.
+---
+
+Unity will create a new material each time you use ".material", which will cause a memory leak if not cleaned up properly.
+
+### Don't:
+
+```
+public class MyClass
+{
+    void Update() 
+    {
+        Material myMaterial = GetComponent<Renderer>().material;
+        myMaterial.SetColor("_Color", Color.White);
+    }
+}
+```
+
+### Do:
+
+ ```
+ // Private references for use inside the class only
+public class MyClass
+{
+    private Material cachedMaterial;
+
+    private void Awake()
+    {
+        cachedMaterial = GetComponent<Renderer>().material;
+    }
+
+    void Update() 
+    {
+        cachedMaterial.SetColor("_Color", Color.White);
+    }
+}
+ ```
+
+> Alternatively, use Unity's "SharedMaterial" property which does not create a new material each time it is referenced.
