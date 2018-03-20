@@ -18,6 +18,17 @@ namespace HoloToolkit.Unity.SpatialMapping
     [RequireComponent(typeof(Interpolator))]
     public class TapToPlace : MonoBehaviour, IInputClickHandler
     {
+        /// <summary>
+        /// The collider reference point used to place the object.
+        /// </summary>
+        public enum ReferencePoint
+        {
+            None,
+            Bottom,
+            Center,
+            Top
+        }
+
         [Tooltip("Distance from camera to keep the object while placing it.")]
         public float DefaultGazeDistance = 2.0f;
 
@@ -38,8 +49,8 @@ namespace HoloToolkit.Unity.SpatialMapping
         [Tooltip("Setting this to true will allow this behavior to control the DrawMesh property on the spatial mapping.")]
         public bool AllowMeshVisualizationControl = true;
 
-        [Tooltip("Should the center of the Collider be used instead of the gameObjects world transform.")]
-        public bool UseColliderCenter;
+        [Tooltip("Should the Collider be used to place the object instead of the gameObjects world transform.")]
+        public ReferencePoint UseColliderToPlace = ReferencePoint.None;
 
         private Interpolator interpolator;
 
@@ -74,7 +85,18 @@ namespace HoloToolkit.Unity.SpatialMapping
         private void OnEnable()
         {
             Bounds bounds = transform.GetColliderBounds();
-            PlacementPosOffset = transform.position - bounds.center;
+            Vector3 referencePoint = bounds.center;
+
+            if (UseColliderToPlace == ReferencePoint.Top)
+            {
+                referencePoint.y = bounds.max.y;
+            }
+            else if (UseColliderToPlace == ReferencePoint.Bottom)
+            {
+                referencePoint.y = bounds.min.y;
+            }
+
+            PlacementPosOffset = transform.position - referencePoint;
         }
 
         /// <summary>
@@ -107,7 +129,7 @@ namespace HoloToolkit.Unity.SpatialMapping
 
             Vector3 placementPosition = GetPlacementPosition(cameraTransform.position, cameraTransform.forward, DefaultGazeDistance);
 
-            if (UseColliderCenter)
+            if (UseColliderToPlace != ReferencePoint.None)
             {
                 placementPosition += PlacementPosOffset;
             }
