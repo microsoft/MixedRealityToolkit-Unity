@@ -95,10 +95,10 @@ namespace HoloToolkit.Unity
                 AudioLoFiSourceQuality.FullRange,
                 new AudioLoFiFilterSettings(10, 22000));
             sourceQualityFilterSettings.Add(
-                AudioLoFiSourceQuality.NarrowBandTelephone,
+                AudioLoFiSourceQuality.NarrowBandTelephony,
                 new AudioLoFiFilterSettings(300, 3400));
             sourceQualityFilterSettings.Add(
-                AudioLoFiSourceQuality.WideBandTelephone,
+                AudioLoFiSourceQuality.WideBandTelephony,
                 new AudioLoFiFilterSettings(50, 7000));
             sourceQualityFilterSettings.Add(
                 AudioLoFiSourceQuality.AmRadio,
@@ -205,12 +205,12 @@ namespace HoloToolkit.Unity
         /// <summary>
         /// Narrow frequency range telephony.
         /// </summary>
-        NarrowBandTelephone,
+        NarrowBandTelephony,
 
         /// <summary>
         /// Wide frequency range telephony.
         /// </summary>
-        WideBandTelephone,
+        WideBandTelephony,
 
         /// <summary>
         /// AM radio.
