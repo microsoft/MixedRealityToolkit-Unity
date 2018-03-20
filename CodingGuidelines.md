@@ -4,6 +4,67 @@ This document outlines the recommended coding guidelines for the Mixed Reality T
 
 ---
 
+## Script license information headers
+
+All scripts posted to the MRTK should have the standard License header attached, exactly as shown below:
+
+```
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+```
+
+> Any script files submitted without the license header will be rejected
+
+---
+
+## Function / Method summary headers
+
+All classes / structs / enums posted to the MRTK should be described as to it's purpose and use, exactly as shown below:
+
+```
+    /// <summary>
+    /// The Controller definition defines the Controller as defined by the SDK / Unity.
+    /// </summary>
+    public struct Controller
+    {
+        /// <summary>
+        /// The ID assigned to the Controller
+        /// </summary>
+        public string ID;
+    }
+```
+
+> Any script files submitted without function / method summary tags will be rejected.  This also applies to properties and fields defined within the script.
+
+---
+
+## MRTK namespace rules
+
+The vNext structure adheres to a strict namespace culture of mapping the namespace 1-1 with the folder structure of the project.  This ensures that classes are easy to discover and maintain.  It also ensures the dependencies of any class are laid out in the beginning usings of the file.
+
+![](/External/ReadMeImages/MRTK-NameSpaceExample.png)
+
+### Example
+```
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+namespace MixedRealityToolkit.Internal.Definitons
+{
+    /// <summary>
+    /// The ButtonAction defines the set of actions exposed by a controller.
+    /// Denoting the available buttons / interactions that a controller supports.
+    /// </summary>
+    public enum ButtonAction
+    {
+    }
+}
+```
+
+> Absolutely no class / struct / enum or other definition should be entered in to the project without the appropriate namespace definition.
+
+---
+
 ## Spaces vs Tabs
 Please be sure to use 4 spaces instead of tabs when contributing to this project.
 
@@ -130,48 +191,7 @@ private Foo()
 }
 ```
 
-## Encapsulation
 ---
-
-Always use private fields and public properties if access to the field is needed from outside the class or struct.
-
-If you need to have the ability to edit your field in the inspector, it's best practice to follow the rules for Encapsulation and serialize your backing field.
-
->The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`, where a data class is required to have all public fields for the serialization to work.
-
-### Don't:
-
-```
-public float MyValue;
-```
-
-### Do:
-
- ```
- // private field, only accessible within script (field is not serialized in Unity)
- private float myValue;
-  ```
-
-### Do:
-
- ```
- // Enable private field to be configurable only in editor (field is correctly serialized in Unity)
- [SerializeField] 
- private float myValue;
-  ```
-
- ### Do:
-
- ```
- // Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
- [SerializeField] 
- private float myValue;
- public float MyValue
- {
-     get{ return myValue; }
-     set{ myValue = value }
- }
- ```
 
 Public classes, structs, and enums should all go in their own files.
 ---
@@ -232,6 +252,49 @@ public class MyClass
 Some of the target platforms of this project require us to take performance into consideration.  What this in mind we should always be careful of allocating memory in frequently called code in tight update loops or algorithms.
 
 ---
+
+## Encapsulation
+---
+
+Always use private fields and public properties if access to the field is needed from outside the class or struct.
+
+If you need to have the ability to edit your field in the inspector, it's best practice to follow the rules for Encapsulation and serialize your backing field.
+
+>The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`, where a data class is required to have all public fields for the serialization to work.
+
+### Don't:
+
+```
+public float MyValue;
+```
+
+### Do:
+
+ ```
+ // private field, only accessible within script (field is not serialized in Unity)
+ private float myValue;
+  ```
+
+### Do:
+
+ ```
+ // Enable private field to be configurable only in editor (field is correctly serialized in Unity)
+ [SerializeField] 
+ private float myValue;
+  ```
+
+ ### Do:
+
+ ```
+ // Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
+ [SerializeField] 
+ private float myValue;
+ public float MyValue
+ {
+     get{ return myValue; }
+     set{ myValue = value }
+ }
+ ```
 
 Use `for` instead of `foreach` when possible.
 ---
