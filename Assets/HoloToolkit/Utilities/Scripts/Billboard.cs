@@ -29,10 +29,23 @@ namespace HoloToolkit.Unity
         /// The axis about which the object will rotate.
         /// </summary>
         [Tooltip("Specifies the axis about which the object will rotate.")]
-        public PivotAxis PivotAxis = PivotAxis.XY;
+        private PivotAxis pivotAxis = PivotAxis.XY;
+        public PivotAxis PivotAxis
+        {
+            get { return pivotAxis; }
+            set { pivotAxis = value; }
+        }
 
-        [Tooltip("Specifies the target we will orient to. If no Target is specified the main camera will be used.")]
-        public Transform TargetTransform;
+        /// <summary>
+        /// The target we will orient to. If no target is specified, the main camera will be used.
+        /// </summary>
+        [Tooltip("Specifies the target we will orient to. If no target is specified, the main camera will be used.")]
+        private Transform targetTransform;
+        public Transform TargetTransform
+        {
+            get { return targetTransform; }
+            set { targetTransform = value; }
+        }
 
         private void OnEnable()
         {
