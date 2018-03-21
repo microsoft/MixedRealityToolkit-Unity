@@ -96,8 +96,6 @@ private Foo()
 }
  ```
 
----
-
 ## Naming Conventions
 
 Always use `PascalCase` for public / protected / virtual properties, and `camelCase` for private / internal properties and fields.
@@ -274,11 +272,11 @@ public MyClass
 
 ## Best Practices, including Unity recommendations
 
-Some of the target platforms of this project require us to take performance into consideration.  What this in mind we should always be careful of allocating memory in frequently called code in tight update loops or algorithms.
+Some of the target platforms of this project require us to take performance into consideration.  With this in mind we should always be careful of allocating memory in frequently called code in tight update loops or algorithms.
 
 ## Encapsulation
 
-Always use private fields and public properties if access to the field is needed from outside the class or struct.
+Always use private fields and public properties if access to the field is needed from outside the class or struct.  Be sure to co-locate the private field and the public property. This makes it easier to see, at a glance, what backs the property and that the field is modifiable by script.
 
 If you need to have the ability to edit your field in the inspector, it's best practice to follow the rules for Encapsulation and serialize your backing field.
 
@@ -305,12 +303,33 @@ public float MyValue;
  private float myValue;
   ```
 
+---
+
+ ### Don't:
+
+ ```
+ private float myValue1;
+ private float myValue2;
+ 
+ public float MyValue1
+ {
+     get{ return myValue1; }
+     set{ myValue1 = value }
+ }
+ 
+ public float MyValue2
+ {
+     get{ return myValue2; }
+     set{ myValue2 = value }
+ }
+```
+
  ### Do:
 
  ```
  // Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
  [SerializeField] 
- private float myValue;
+ private float myValue; // <- Notice we co-located the backing field above our corrisponding property.
  public float MyValue
  {
      get{ return myValue; }
