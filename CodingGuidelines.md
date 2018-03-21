@@ -17,7 +17,7 @@ Any script files submitted without the license header will be rejected
 
 ## Function / Method summary headers
 
-All classes / structs / enums posted to the MRTK should be described as to it's purpose and use, exactly as shown below:
+All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to it's purpose and use, exactly as shown below:
 
 ```
     /// <summary>
@@ -32,7 +32,9 @@ All classes / structs / enums posted to the MRTK should be described as to it's 
     }
 ```
 
-> Any script files submitted without function / method summary tags will be rejected.  This also applies to properties and fields defined within the script.
+This ensures documentation is properly generated and disseminated for all all classes, methods, and properties.
+
+>Any script files submitted without proper summary tags will be rejected.
 
 ## MRTK namespace rules
 
@@ -234,41 +236,6 @@ public class MyClass
     private MyEnumType myEnumReference;
 }
  ```
- 
- ## Comment all public classes, methods, and properies with xml summary tags.
- 
- To ensure documentation is properly generated and disseminated all classes must include documentation for all classes, methods, and properties.
- 
- ### Don't:
-
-```
-public MyClass
-{
-    public MyVariable { get; set; }
-    
-    public Foo() { }
-}
-```
-
-### Do:
-
-```
-<summary>
-This class does awesome stuff.
-</summary>
-public MyClass
-{
-    <summary>
-    This property is important.
-    </summary>
-    public MyVariable { get; set; }
-    
-    <summary>
-    This method doesn't do anything.
-    </summary>
-    public Foo() { }
-}
-```
 
 ## Best Practices, including Unity recommendations
 
