@@ -75,6 +75,7 @@ private Foo()
     {
         DoThing();
     }
+    
     while(true) // <- no space between while and ()
     {
         Do();
@@ -91,6 +92,7 @@ private Foo()
     {
         DoThing();
     }
+    
     while (true)
     {
         Do();
@@ -100,7 +102,7 @@ private Foo()
 
 ## Naming Conventions
 
-Always use `PascalCase` for public / protected / virtual properties, and `camelCase` for private / internal properties and fields.
+Always use `PascalCase` for public / protected / virtual properties, and `camelCase` for private properties and fields.
 >The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`.
 
 ### Don't:
@@ -128,15 +130,16 @@ Always declare an access modifier for all fields, properties and methods.
 
 ```
 // No public / private access modifiers
-void Foo(){ }
-void Bar(){ }
+void Foo() { }
+void Bar() { }
 ```
 
 ### Do:
 
  ```
-private void foo(){ }
-public void Bar(){ }
+private void Foo() { }
+public void Bar() { }
+protected virtual void FooBar() { }
  ```
 
 ## Use Braces
@@ -388,6 +391,11 @@ public class MyClass
     void Update() 
     {
         cachedMaterial.SetColor("_Color", Color.White);
+    }
+    
+    private void OnDestroy()
+    {
+        Destroy(cachedMaterial);
     }
 }
  ```
