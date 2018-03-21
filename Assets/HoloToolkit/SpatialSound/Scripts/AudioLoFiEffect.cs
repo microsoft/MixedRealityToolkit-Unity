@@ -107,92 +107,95 @@ namespace HoloToolkit.Unity
                 AudioLoFiSourceQuality.FmRadio,
                 new AudioLoFiFilterSettings(30, 15000));
         }
-    }
-
-    /// <summary>
-    /// Settings for the filters used to simulate a low fidelity sound source.
-    /// </summary>
-    public struct AudioLoFiFilterSettings
-    {
-        /// <summary>
-        /// The frequency below which sound will be heard.
-        /// </summary>
-        public float LowPassCutoff
-        { get; private set; }
 
         /// <summary>
-        /// The frequency above which sound will be heard.
+        /// Settings for the filters used to simulate a low fidelity sound source.
         /// </summary>
-        public float HighPassCutoff
-        { get; private set; }
-
-        /// <summary>
-        /// FilterSettings constructor.
-        /// </summary>
-        /// <param name="highPassCutoff">High pass filter cutoff frequency.</param>
-        /// <param name="lowPassCutoff">Low pass filter cutoff frequency.</param>
-        public AudioLoFiFilterSettings(float highPassCutoff, float lowPassCutoff)
+        /// <remarks>
+        /// This struct is soley for the private use of the AudioLoFiEffect class.
+        /// </remarks>
+        private struct AudioLoFiFilterSettings
         {
-            HighPassCutoff = highPassCutoff;
-            LowPassCutoff = lowPassCutoff;
-        }
+            /// <summary>
+            /// The frequency below which sound will be heard.
+            /// </summary>
+            public float LowPassCutoff
+            { get; private set; }
 
-        /// <summary>
-        /// Checks to see if two FilterSettings objects are equivalent.
-        /// </summary>
-        /// <returns>True if equivalent, false otherwise.</returns>
-        public static bool operator ==(AudioLoFiFilterSettings a, AudioLoFiFilterSettings b)
-        {
-            return a.Equals(b);
-        }
+            /// <summary>
+            /// The frequency above which sound will be heard.
+            /// </summary>
+            public float HighPassCutoff
+            { get; private set; }
 
-        /// <summary>
-        /// Checks to see if two FilterSettings objects are not equivalent.
-        /// </summary>
-        /// <returns>False if equivalent, true otherwise.</returns>
-        public static bool operator !=(AudioLoFiFilterSettings a, AudioLoFiFilterSettings b)
-        {
-            return !(a.Equals(b));
-        }
-
-        /// <summary>
-        /// Checks to see if a object is equivalent to this FilterSettings.
-        /// </summary>
-        /// <returns>True if equivalent, false otherwise.</returns>
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
+            /// <summary>
+            /// FilterSettings constructor.
+            /// </summary>
+            /// <param name="highPassCutoff">High pass filter cutoff frequency.</param>
+            /// <param name="lowPassCutoff">Low pass filter cutoff frequency.</param>
+            public AudioLoFiFilterSettings(float highPassCutoff, float lowPassCutoff)
             {
-                return false;
+                HighPassCutoff = highPassCutoff;
+                LowPassCutoff = lowPassCutoff;
             }
 
-            if (!(obj is AudioLoFiFilterSettings))
+            /// <summary>
+            /// Checks to see if two FilterSettings objects are equivalent.
+            /// </summary>
+            /// <returns>True if equivalent, false otherwise.</returns>
+            public static bool operator ==(AudioLoFiFilterSettings a, AudioLoFiFilterSettings b)
             {
-                return false;
+                return a.Equals(b);
             }
 
-            AudioLoFiFilterSettings other = (AudioLoFiFilterSettings)obj;
-            if ((other.LowPassCutoff != LowPassCutoff) ||
-                (other.HighPassCutoff != HighPassCutoff))
+            /// <summary>
+            /// Checks to see if two FilterSettings objects are not equivalent.
+            /// </summary>
+            /// <returns>False if equivalent, true otherwise.</returns>
+            public static bool operator !=(AudioLoFiFilterSettings a, AudioLoFiFilterSettings b)
             {
-                return false;
+                return !(a.Equals(b));
             }
 
-            return true;
-        }
+            /// <summary>
+            /// Checks to see if a object is equivalent to this FilterSettings.
+            /// </summary>
+            /// <returns>True if equivalent, false otherwise.</returns>
+            public override bool Equals(object obj)
+            {
+                if (obj == null)
+                {
+                    return false;
+                }
 
-        /// <summary>
-        /// Generates a hash code representing this FilterSettings.
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            string s = string.Format(
-                "[AudioLoFiFilterSettings] Low: {0}, High: {1}",
-                LowPassCutoff,
-                HighPassCutoff);
+                if (!(obj is AudioLoFiFilterSettings))
+                {
+                    return false;
+                }
 
-            return s.GetHashCode();
+                AudioLoFiFilterSettings other = (AudioLoFiFilterSettings)obj;
+                if ((other.LowPassCutoff != LowPassCutoff) ||
+                    (other.HighPassCutoff != HighPassCutoff))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>
+            /// Generates a hash code representing this FilterSettings.
+            /// </summary>
+            /// <returns></returns>
+            public override int GetHashCode()
+            {
+                string s = string.Format(
+                    "[AudioLoFiFilterSettings] Low: {0}, High: {1}",
+                    LowPassCutoff,
+                    HighPassCutoff);
+
+                return s.GetHashCode();
+            }
         }
     }
 
