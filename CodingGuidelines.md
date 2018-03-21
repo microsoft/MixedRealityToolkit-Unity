@@ -13,9 +13,7 @@ All scripts posted to the MRTK should have the standard License header attached,
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 ```
 
-> Any script files submitted without the license header will be rejected
-
----
+Any script files submitted without the license header will be rejected
 
 ## Function / Method summary headers
 
@@ -36,15 +34,13 @@ All classes / structs / enums posted to the MRTK should be described as to it's 
 
 > Any script files submitted without function / method summary tags will be rejected.  This also applies to properties and fields defined within the script.
 
----
-
 ## MRTK namespace rules
 
 The vNext structure adheres to a strict namespace culture of mapping the namespace 1-1 with the folder structure of the project.  This ensures that classes are easy to discover and maintain.  It also ensures the dependencies of any class are laid out in the beginning usings of the file.
 
 ![](/External/ReadMeImages/MRTK-NameSpaceExample.png)
 
-### Example
+### Do:
 ```
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
@@ -61,9 +57,7 @@ namespace MixedRealityToolkit.Internal.Definitons
 }
 ```
 
-> Absolutely no class / struct / enum or other definition should be entered in to the project without the appropriate namespace definition.
-
----
+Absolutely no class / struct / enum or other definition should be entered in to the project without the appropriate namespace definition.
 
 ## Spaces vs Tabs
 Please be sure to use 4 spaces instead of tabs when contributing to this project.
@@ -107,7 +101,7 @@ private Foo()
 ## Naming Conventions
 
 Always use `PascalCase` for public / protected / virtual properties, and `camelCase` for private / internal properties and fields.
-> The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`.
+>The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`.
 
 ### Don't:
 
@@ -122,12 +116,9 @@ private string MyProperty; // <- Starts with an uppercase case letter
 public string MyProperty;
 protected string MyProperty;
 private string myProperty;
-internal string myProperty;
  ```
----
 
 ## Access Modifiers
-
 
 Always declare an access modifier for all fields, properties and methods.
 
@@ -136,7 +127,7 @@ Always declare an access modifier for all fields, properties and methods.
 ### Don't:
 
 ```
-// No public / private / internal access modifiers
+// No public / private access modifiers
 void Foo(){ }
 void Bar(){ }
 ```
@@ -148,11 +139,9 @@ private void foo(){ }
 public void Bar(){ }
  ```
 
----
-
 ## Use Braces
 
-Always use braces to surround the action of an IF.
+Always use braces after each statement block, and place them on the next line.
 
 ### Don't:
 
@@ -191,12 +180,9 @@ private Foo()
 }
 ```
 
----
+## Public classes, structs, and enums should all go in their own files.
 
-Public classes, structs, and enums should all go in their own files.
----
-
->If the class, struct, or enum can be made private then it's okay to be included in the same file.  This avoid compilations issues with Unity and ensure that proper code abstraction occurs, it also reduces conflicts and breaking changes when code needs to change.
+If the class, struct, or enum can be made private then it's okay to be included in the same file.  This avoid compilations issues with Unity and ensure that proper code abstraction occurs, it also reduces conflicts and breaking changes when code needs to change.
 
 ### Don't:
 
@@ -231,14 +217,18 @@ public struct MyStruct
     public string Var1;
     public string Var2;
 }
+```
 
+```
 MyEnumType.cs
 public enum MuEnumType
 {
     Value1,
     Value2 // <- note, no "," on last value to denote end of list.
 }
+```
 
+```
 MyClass.cs
 public class MyClass
 {
@@ -246,15 +236,47 @@ public class MyClass
     private MyEnumType myEnumReference;
 }
  ```
----
+ 
+ ## Comment all public classes, methods, and properies with xml summary tags.
+ 
+ To ensure documentation is properly generated and disseminated all classes must include documentation for all classes, methods, and properties.
+ 
+ ### Don't:
+
+```
+public MyClass
+{
+    public MyVariable { get; set; }
+    
+    public Foo() { }
+}
+```
+
+### Do:
+
+```
+<summary>
+This class does awesome stuff.
+</summary>
+public MyClass
+{
+    <summary>
+    This property is important.
+    </summary>
+    public MyVariable { get; set; }
+    
+    <summary>
+    This method doesn't do anything.
+    </summary>
+    public Foo() { }
+}
+```
 
 ## Best Practices, including Unity recommendations
+
 Some of the target platforms of this project require us to take performance into consideration.  What this in mind we should always be careful of allocating memory in frequently called code in tight update loops or algorithms.
 
----
-
 ## Encapsulation
----
 
 Always use private fields and public properties if access to the field is needed from outside the class or struct.
 
@@ -296,9 +318,9 @@ public float MyValue;
  }
  ```
 
-Use `for` instead of `foreach` when possible.
----
-> In some cases a foreach is required, e.g. when looping over an IEnumerable.  But for performance benefit, avoid foreach when you can.
+## Use `for` instead of `foreach` when possible.
+
+In some cases a foreach is required, e.g. when looping over an IEnumerable.  But for performance benefit, avoid foreach when you can.
 
 ### Don't:
 
@@ -313,10 +335,9 @@ int length = items.length; // cache reference to list/array length
 for(int i=0; i < length; i++)
  ```
 
----
+## Cache values and serialize them in the scene/prefab whenever possible.
 
-Cache values and serialize them in the scene/prefab whenever possible.
----
+With the HoloLens in mind, it's best to optimize for performance and cache references in the scene or prefab to limit runtime memory allocations.
 
 ### Don't:
 
@@ -348,10 +369,7 @@ private void Update()
 }
  ```
 
----
-
-Cache references to materials, do not call the ".material" each time.
----
+## Cache references to materials, do not call the ".material" each time.
 
 Unity will create a new material each time you use ".material", which will cause a memory leak if not cleaned up properly.
 
@@ -388,4 +406,4 @@ public class MyClass
 }
  ```
 
-> Alternatively, use Unity's "SharedMaterial" property which does not create a new material each time it is referenced.
+>Alternatively, use Unity's "SharedMaterial" property which does not create a new material each time it is referenced.
