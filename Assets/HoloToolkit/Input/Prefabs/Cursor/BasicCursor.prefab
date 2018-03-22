@@ -16,10 +16,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000010362498278}
-  - 114: {fileID: 114000013944631048}
+  - component: {fileID: 4000010362498278}
+  - component: {fileID: 114000013944631048}
   m_Layer: 2
   m_Name: BasicCursor
   m_TagString: Untagged
@@ -32,11 +32,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000011297337134}
-  - 33: {fileID: 33000012790067616}
-  - 23: {fileID: 23000010093703318}
+  - component: {fileID: 4000011297337134}
+  - component: {fileID: 33000012790067616}
+  - component: {fileID: 23000010093703318}
+  - component: {fileID: 114618924224692256}
   m_Layer: 2
   m_Name: CursorVisual
   m_TagString: Untagged
@@ -53,11 +54,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000011297337134}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000011297337134
 Transform:
   m_ObjectHideFlags: 1
@@ -67,10 +68,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.15, y: 1.1500014, z: 2.5000029}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010362498278}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23000010093703318
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -80,12 +81,15 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: a2c9c4679b0c3cf47b3ba3a449c985d7, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -93,12 +97,14 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33000012790067616
 MeshFilter:
@@ -118,9 +124,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afa1ae235bc6cfa43addd1435e2fd822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LoadPointer: {fileID: 0}
   MinCursorDistance: 1
   DefaultCursorDistance: 2
   SurfaceCursorDistance: 0.02
+  UseUnscaledTime: 1
   PositionLerpTime: 0.01
   ScaleLerpTime: 0.01
   RotationLerpTime: 0.01
@@ -134,3 +142,16 @@ MonoBehaviour:
     CursorState: 3
     CursorObject: {fileID: 1000014016047236}
   ParentTransform: {fileID: 0}
+--- !u!114 &114618924224692256
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014016047236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa899d3f9dc64e41871228531b59783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.15
+  color: {r: 0.3, g: 0.3, b: 0.3, a: 1}
