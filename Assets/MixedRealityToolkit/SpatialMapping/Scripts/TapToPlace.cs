@@ -23,17 +23,6 @@ namespace MixedRealityToolkit.SpatialMapping
     [RequireComponent(typeof(Interpolator))]
     public class TapToPlace : MonoBehaviour, IInputClickHandler
     {
-        /// <summary>
-        /// The collider reference point used to place the object.
-        /// </summary>
-        public enum ColliderPlacement
-        {
-            DontUse,
-            UseBottom,
-            UseCenter,
-            UseTop
-        }
-
         [Tooltip("Distance from camera to keep the object while placing it.")]
         public float DefaultGazeDistance = 2.0f;
 
@@ -55,7 +44,7 @@ namespace MixedRealityToolkit.SpatialMapping
         public bool AllowMeshVisualizationControl = true;
 
         [Tooltip("Should the Collider be used to place the object instead of the gameObjects world transform.")]
-        public ColliderPlacement UseColliderToPlace = ColliderPlacement.DontUse;
+        public TapToPlaceColliderPlacement UseColliderToPlace = TapToPlaceColliderPlacement.DontUse;
 
         private Interpolator interpolator;
 
@@ -92,11 +81,11 @@ namespace MixedRealityToolkit.SpatialMapping
             Bounds bounds = transform.GetColliderBounds();
             Vector3 referencePoint = bounds.center;
 
-            if (UseColliderToPlace == ColliderPlacement.UseTop)
+            if (UseColliderToPlace == TapToPlaceColliderPlacement.UseTop)
             {
                 referencePoint.y = bounds.max.y;
             }
-            else if (UseColliderToPlace == ColliderPlacement.UseBottom)
+            else if (UseColliderToPlace == TapToPlaceColliderPlacement.UseBottom)
             {
                 referencePoint.y = bounds.min.y;
             }
@@ -134,7 +123,7 @@ namespace MixedRealityToolkit.SpatialMapping
 
             Vector3 placementPosition = GetPlacementPosition(cameraTransform.position, cameraTransform.forward, DefaultGazeDistance);
 
-            if (UseColliderToPlace != ColliderPlacement.DontUse)
+            if (UseColliderToPlace != TapToPlaceColliderPlacement.DontUse)
             {
                 placementPosition += PlacementPosOffset;
             }
