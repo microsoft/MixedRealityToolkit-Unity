@@ -630,5 +630,5 @@ Shader "MixedRealityToolkit/Standard"
     }
     
     FallBack "VertexLit"
-    CustomEditor "MixedRealityToolkit.Common.EditorScript.StandardShaderGUI"
+    CustomEditor "HoloToolkit.Unity.StandardShaderGUI"
 }
