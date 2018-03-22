@@ -43,8 +43,8 @@ namespace MixedRealityToolkit.SpatialMapping
         [Tooltip("Setting this to true will allow this behavior to control the DrawMesh property on the spatial mapping.")]
         public bool AllowMeshVisualizationControl = true;
 
-        [Tooltip("Should the center of the Collider be used instead of the gameObjects world transform.")]
-        public bool UseColliderCenter;
+        [Tooltip("Should the Collider be used to place the object instead of the gameObjects world transform.")]
+        public TapToPlaceColliderPlacement UseColliderToPlace = TapToPlaceColliderPlacement.DontUse;
 
         private Interpolator interpolator;
 
@@ -79,7 +79,18 @@ namespace MixedRealityToolkit.SpatialMapping
         private void OnEnable()
         {
             Bounds bounds = transform.GetColliderBounds();
-            PlacementPosOffset = transform.position - bounds.center;
+            Vector3 referencePoint = bounds.center;
+
+            if (UseColliderToPlace == TapToPlaceColliderPlacement.UseTop)
+            {
+                referencePoint.y = bounds.max.y;
+            }
+            else if (UseColliderToPlace == TapToPlaceColliderPlacement.UseBottom)
+            {
+                referencePoint.y = bounds.min.y;
+            }
+
+            PlacementPosOffset = transform.position - referencePoint;
         }
 
         /// <summary>
@@ -112,7 +123,7 @@ namespace MixedRealityToolkit.SpatialMapping
 
             Vector3 placementPosition = GetPlacementPosition(cameraTransform.position, cameraTransform.forward, DefaultGazeDistance);
 
-            if (UseColliderCenter)
+            if (UseColliderToPlace != TapToPlaceColliderPlacement.DontUse)
             {
                 placementPosition += PlacementPosOffset;
             }
