@@ -182,7 +182,7 @@ MonoBehaviour:
   ParentGameObjectToPlace: {fileID: 0}
   IsBeingPlaced: 0
   AllowMeshVisualizationControl: 1
-  UseColliderCenter: 0
+  UseColliderToPlace: 0
 --- !u!23 &181528116
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -348,7 +348,7 @@ MonoBehaviour:
   ParentGameObjectToPlace: {fileID: 0}
   IsBeingPlaced: 0
   AllowMeshVisualizationControl: 1
-  UseColliderCenter: 0
+  UseColliderToPlace: 0
 --- !u!23 &532765827
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -590,7 +590,7 @@ MonoBehaviour:
   ParentGameObjectToPlace: {fileID: 0}
   IsBeingPlaced: 0
   AllowMeshVisualizationControl: 1
-  UseColliderCenter: 0
+  UseColliderToPlace: 0
 --- !u!23 &1023018528
 MeshRenderer:
   m_ObjectHideFlags: 0
