@@ -37,13 +37,13 @@ Shader "MixedRealityToolkit/Standard"
 
         // Fluent options.
         [Toggle(_HOVER_LIGHT)] _HoverLight("Hover Light", Float) = 1.0
-        [Toggle(_HOVER_COLOR_OVERRIDE)] _EnableHoverColorOverride("Override Hover Color", Float) = 0.0
+        [Toggle(_HOVER_COLOR_OVERRIDE)] _EnableHoverColorOverride("Hover Color Override", Float) = 0.0
         _HoverColorOverride("Hover Color Override", Color) = (1.0, 1.0, 1.0, 1.0)
         [Toggle(_HOVER_LIGHT_OPAQUE)] _HoverLightOpaque("Hover Light Opaque", Float) = 0.0
-        [Toggle(_HOVER_COLOR_OPAQUE_OVERRIDE)] _EnableHoverColorOpaqueOverride("Override Hover Color Opaque", Float) = 0.0
+        [Toggle(_HOVER_COLOR_OPAQUE_OVERRIDE)] _EnableHoverColorOpaqueOverride("Hover Color Opaque Override", Float) = 0.0
         _HoverColorOpaqueOverride("Hover Color Override for Transparent Pixels", Color) = (1.0, 1.0, 1.0, 1.0)
         [Toggle(_ROUND_CORNERS)] _RoundCorners("Round Corners", Float) = 0.0
-        _RoundCornerRadius("Round Corner Radius", Range(0.0, 0.5)) = 0.25
+        _RoundCornerRadius("Round Corner Radius", Range(0.01, 0.5)) = 0.25
         _RoundCornerMargin("Round Corner Margin", Range(0.0, 0.5)) = 0.0
         [Toggle(_BORDER_LIGHT)] _BorderLight("Border Light", Float) = 0.0
         [Toggle(_BORDER_LIGHT_USES_HOVER_COLOR)] _BorderLightUsesHoverColor("Border Light Uses Hover Color", Float) = 1.0
@@ -264,12 +264,15 @@ Shader "MixedRealityToolkit/Standard"
 #if defined(_ROUND_CORNERS)
             fixed _RoundCornerRadius;
             fixed _RoundCornerMargin;
-            fixed _EdgeSmoothingValue;
 #endif
 
 #if defined(_BORDER_LIGHT)
             fixed _BorderWidth;
             fixed _BorderMinValue;
+#endif
+
+#if defined(_ROUND_CORNERS) || defined(_BORDER_LIGHT)
+            fixed _EdgeSmoothingValue;
 #endif
 
 #if defined(_INNER_GLOW)
@@ -285,16 +288,16 @@ Shader "MixedRealityToolkit/Standard"
 #endif
 
 #if defined(_SPECULAR_HIGHLIGHTS)
-            static const fixed _Shininess = 400.0;
+            static const fixed _Shininess = 800.0;
 #endif
 
 #if defined(_FRESNEL)
-            static const fixed _FresnelPower = 0.25;
-            static const fixed3 _FresnelColor = fixed3(0.5, 0.5, 0.5);
+            static const fixed _FresnelPower = 4.0;
+            static const fixed _FresnelPowerInverse = 1.0 / _FresnelPower;
 #endif
 
 #if defined(_BORDER_LIGHT)
-            static const fixed _BorderPower = 10.0f;
+            static const fixed _BorderPower = 10.0;
             static const fixed _InverseBorderPower = 1.0 / _BorderPower;
 #endif
 
@@ -470,7 +473,7 @@ Shader "MixedRealityToolkit/Standard"
 
                 // Rounded corner clipping.
 #if defined(_ROUND_CORNERS)
-                fixed cornerCircleRadius = _RoundCornerRadius * i.scale.z;
+                fixed cornerCircleRadius = (_RoundCornerRadius - _RoundCornerMargin) * i.scale.z;
                 fixed2 roundCornerPosition = distanceToEdge * 0.5 * i.scale.xy;
                 fixed2 cornerCircleDistance = (i.scale.xy * 0.5) - cornerCircleRadius - _RoundCornerMargin * i.scale.xy;
                 fixed roundCornerClip = RoundCorners(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
@@ -510,12 +513,13 @@ Shader "MixedRealityToolkit/Standard"
 #if defined(_ROUND_CORNERS)
                 borderValue = 1.0 - RoundCorners(roundCornerPosition, cornerCircleDistance, cornerCircleRadius * (1.0 - (_BorderWidth * 2.0)));
 #else
-                borderValue = max(step(i.uv.z, distanceToEdge.x), step(i.uv.w, distanceToEdge.y));
+                borderValue = max(smoothstep(i.uv.z - _EdgeSmoothingValue, i.uv.z + _EdgeSmoothingValue, distanceToEdge.x),
+                                  smoothstep(i.uv.w - _EdgeSmoothingValue, i.uv.w + _EdgeSmoothingValue, distanceToEdge.y));
 #endif
                 borderColor = borderColor * borderValue * max(_BorderMinValue * _InverseBorderPower, pointToHover);
                 albedo.rgb += borderColor;
 #if defined(_BORDER_LIGHT_OPAQUE)
-                albedo.a += 1.0 - step(borderColor.r + borderColor.g + borderColor.b, 0.0);
+                albedo.a = max(albedo.a, borderValue);
 #endif           
 #endif
 
@@ -555,7 +559,7 @@ Shader "MixedRealityToolkit/Standard"
 
 #if defined(_SPECULAR_HIGHLIGHTS)
                 fixed halfVector = max(0.0, dot(worldNormal, normalize(_WorldSpaceLightPos0 + worldViewDir)));
-                fixed specular = pow(halfVector, _Shininess) * _Smoothness;
+                fixed specular = saturate(pow(halfVector, _Shininess * pow(_Smoothness, 4)) * _Smoothness);
 #else
                 fixed specular = 0.0;
 #endif
@@ -574,27 +578,36 @@ Shader "MixedRealityToolkit/Standard"
 
                 // Fresnel lighting.
 #if defined(_FRESNEL)
-                fixed fresnel = 1.0 - dot(worldViewDir, worldNormal);
+                fixed fresnel = 1.0 - saturate(dot(worldViewDir, worldNormal));
 #if defined(_RIM_LIGHT)
                 fixed3 fresnelColor = _RimColor * pow(fresnel, _RimPower);
 #else
-                fixed3 fresnelColor = _FresnelColor * max(pow(fresnel, _FresnelPower), 0.5);
+                fixed3 fresnelColor = unity_AmbientSky.rgb * _FresnelPowerInverse * pow(fresnel, _FresnelPower);
 #endif
 #endif
                 // Final lighting mix.
                 fixed4 output = albedo;
+
+#if defined(_REFLECTIONS) || defined(_DIRECTIONAL_LIGHT)
+                fixed minProperty = min(_Smoothness, _Metallic);
+#endif
+
 #if defined(_REFLECTIONS)
-                output.rgb += ibl;
-                output.rgb = lerp(output.rgb, ibl, min(_Smoothness, _Metallic));
+                output.rgb += ibl * min((1.0 - _Metallic), 0.5);
+                output.rgb = lerp(output.rgb, ibl, minProperty);
 #endif
 
 #if defined(_DIRECTIONAL_LIGHT)
-                output.rgb *= lerp(unity_AmbientSky.rgb + (albedo.rgb *_LightColor0.rgb * diffuse + _LightColor0.rgb * specular), albedo, _Metallic);
-                output.rgb += _LightColor0.rgb * albedo * specular;
+                output.rgb *= lerp(unity_AmbientSky.rgb * 1.5 + (albedo.rgb *_LightColor0.rgb * diffuse + _LightColor0.rgb * specular), albedo, minProperty);
+                output.rgb += (_LightColor0.rgb * albedo * specular) + (_LightColor0.rgb * specular * _Smoothness);
 #endif
 
+#if defined(_FRESNEL)
 #if defined(_RIM_LIGHT)
-                output.rgb += fresnelColor * (1.0 - _Metallic);
+                output.rgb += fresnelColor;
+#else
+                output.rgb += fresnelColor * (1 - minProperty);
+#endif
 #endif
 
 #if defined(_EMISSION)
@@ -630,5 +643,5 @@ Shader "MixedRealityToolkit/Standard"
     }
     
     FallBack "VertexLit"
-    CustomEditor "MixedRealityToolkit.Common.EditorScript.StandardShaderGUI"
+    CustomEditor "HoloToolkit.Unity.StandardShaderGUI"
 }
