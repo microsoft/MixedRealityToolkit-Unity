@@ -9,6 +9,7 @@ Material:
   m_Name: HolographicButtonContent
   m_Shader: {fileID: 4800000, guid: d45c0efca53019e43891b0f610f8146e, type: 3}
   m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT _BORDER_LIGHT_USES_HOVER_COLOR _HOVER_COLOR_OVERRIDE
+    _METALLIC_TEXTURE_ALBEDO_CHANNEL_A
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -87,6 +88,7 @@ Material:
     - _DstBlend: 1
     - _EdgeSmoothingValue: 0.002
     - _EnableEmission: 0
+    - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 1
     - _EnableLightMap: 0
     - _EnableNormalMap: 0
@@ -99,6 +101,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _HoverLight: 0
+    - _HoverLightOpaque: 0
     - _InnerGlow: 0
     - _Metallic: 0
     - _Mode: 4
@@ -131,6 +134,7 @@ Material:
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
     - _HoverColor: {r: 1, g: 0, b: 0, a: 1}
+    - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.828}
     - _RimColor: {r: 1, g: 1, b: 1, a: 0.497}
