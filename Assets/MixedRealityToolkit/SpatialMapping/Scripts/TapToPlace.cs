@@ -9,6 +9,7 @@ using MixedRealityToolkit.InputModule.Gaze;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace MixedRealityToolkit.SpatialMapping
 {
@@ -55,6 +56,26 @@ namespace MixedRealityToolkit.SpatialMapping
 
         private Dictionary<GameObject, int> layerCache = new Dictionary<GameObject, int>();
         private Vector3 PlacementPosOffset;
+        private TapToPlaceEventData placingEventData;
+
+        private static readonly ExecuteEvents.EventFunction<ITapToPlaceHandler> OnPlacingStartedEventHandler =
+            delegate (ITapToPlaceHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<TapToPlaceEventData>(eventData);
+                handler.OnPlacingStarted(casted);
+            };
+
+        private static readonly ExecuteEvents.EventFunction<ITapToPlaceHandler> OnPlacingCompletedEventHandler =
+            delegate (ITapToPlaceHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<TapToPlaceEventData>(eventData);
+                handler.OnPlacingCompleted(casted);
+            };
+
+        protected virtual void Awake()
+        {
+            placingEventData = new TapToPlaceEventData(EventSystem.current);
+        }
 
         protected virtual void Start()
         {
@@ -153,6 +174,12 @@ namespace MixedRealityToolkit.SpatialMapping
             eventData.Use();
         }
 
+        private void RaisePlacingEvent(ExecuteEvents.EventFunction<ITapToPlaceHandler> handler, GameObject selectedObject)
+        {
+            placingEventData.Initialize(selectedObject);
+            ExecuteEvents.Execute(selectedObject, placingEventData, handler);
+        }
+
         private void HandlePlacement()
         {
             if (IsBeingPlaced)
@@ -172,6 +199,8 @@ namespace MixedRealityToolkit.SpatialMapping
 
             ToggleSpatialMesh();
             RemoveWorldAnchor();
+
+            RaisePlacingEvent(OnPlacingStartedEventHandler, layerCacheTarget);
         }
 
         private void StopPlacing()
@@ -182,6 +211,8 @@ namespace MixedRealityToolkit.SpatialMapping
 
             ToggleSpatialMesh();
             AttachWorldAnchor();
+
+            RaisePlacingEvent(OnPlacingCompletedEventHandler, layerCacheTarget);
         }
 
         private void AttachWorldAnchor()
