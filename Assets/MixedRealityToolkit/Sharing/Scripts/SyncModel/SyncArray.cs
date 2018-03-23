@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Common.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,7 +53,7 @@ namespace MixedRealityToolkit.Sharing.SyncModel
         /// <returns>The created data model object of the appropriate type.</returns>
         protected virtual T CreateObject(ObjectElement objectElement)
         {
-            Type objectType = SyncSettings.Instance.GetDataModelType(objectElement.GetObjectType()).AsType();
+            Type objectType = SyncSettings.Instance.GetDataModelType(objectElement.GetObjectType());
             if (!objectType.IsSubclassOf(arrayType) && objectType != arrayType)
             {
                 throw new InvalidCastException(string.Format("Object of incorrect type added to SyncArray: Expected {0}, got {1} ", objectType, objectElement.GetObjectType().GetString()));

@@ -40,22 +40,14 @@ namespace MixedRealityToolkit.Sharing
 
         public string GetDataModelName(Type type)
         {
-            var typeInfo = type.GetTypeInfo();
             string retVal;
-            dataModelTypeToName.TryGetValue(typeInfo, out retVal);
+            dataModelTypeToName.TryGetValue(type, out retVal);
             return retVal;
         }
 
-#if UNITY_WSA && !UNITY_EDITOR
-        public TypeInfo GetDataModelType(string name)
-        {
-            TypeInfo retVal;
-#else
         public Type GetDataModelType(string name)
         {
             Type retVal;
-#endif
-
             dataModelNameToType.TryGetValue(name, out retVal);
             return retVal;
         }
@@ -74,11 +66,7 @@ namespace MixedRealityToolkit.Sharing
                     continue;
                 }
 
-#if UNITY_WSA && !UNITY_EDITOR
                 foreach (TypeInfo type in assembly.GetTypeInfos())
-#else
-                foreach (Type type in assembly.GetTypes())
-#endif
                 {
                     object customAttribute = type.GetCustomAttributes(typeof(SyncDataClassAttribute), false).FirstOrDefault();
                     SyncDataClassAttribute attribute = customAttribute as SyncDataClassAttribute;
@@ -102,14 +90,10 @@ namespace MixedRealityToolkit.Sharing
 
         private static Assembly[] GetAssemblies()
         {
-#if UNITY_WSA && !UNITY_EDITOR
-            return new Assembly[]
+            return new[]
             {
                 typeof(SyncSettings).GetTypeInfo().Assembly
             };
-#else
-            return AppDomain.CurrentDomain.GetAssemblies();
-#endif
         }
     }
 }
