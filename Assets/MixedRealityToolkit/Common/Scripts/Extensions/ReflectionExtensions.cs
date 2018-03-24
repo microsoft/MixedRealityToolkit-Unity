@@ -3,7 +3,6 @@
 
 namespace MixedRealityToolkit.Common.Extensions
 {
-#if UNITY_WSA && !UNITY_EDITOR
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -172,30 +171,4 @@ namespace MixedRealityToolkit.Common.Extensions
             return type.GetTypeInfo().GetCustomAttributes(attributeType, inherit).ToArray();
         }
     }
-#else
-    using System;
-
-    public static class ReflectionExtensions
-    {
-        public static Type GetTypeInfo(this Type type)
-        {
-            return type;
-        }
-
-        public static Type AsType(this Type type)
-        {
-            return type;
-        }
-
-        public static bool IsEnum(this Type type)
-        {
-            return type.IsEnum;
-        }
-
-        public static bool IsValueType(this Type type)
-        {
-            return type.IsValueType;
-        }
-    }
-#endif
 }
