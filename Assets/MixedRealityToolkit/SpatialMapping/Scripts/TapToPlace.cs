@@ -7,9 +7,10 @@ using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.Gaze;
 using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.InputSources;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace MixedRealityToolkit.SpatialMapping
 {
@@ -22,7 +23,7 @@ namespace MixedRealityToolkit.SpatialMapping
     /// </summary>
     [RequireComponent(typeof(Collider))]
     [RequireComponent(typeof(Interpolator))]
-    public class TapToPlace : MonoBehaviour, IInputClickHandler
+    public class TapToPlace : MonoBehaviour, IInputClickHandler, IInputSource
     {
         [Tooltip("Distance from camera to keep the object while placing it.")]
         public float DefaultGazeDistance = 2.0f;
@@ -56,27 +57,7 @@ namespace MixedRealityToolkit.SpatialMapping
 
         private Dictionary<GameObject, int> layerCache = new Dictionary<GameObject, int>();
         private Vector3 PlacementPosOffset;
-        private TapToPlaceEventData placingEventData;
-
-        private static readonly ExecuteEvents.EventFunction<ITapToPlaceHandler> OnPlacingStartedEventHandler =
-            delegate (ITapToPlaceHandler handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<TapToPlaceEventData>(eventData);
-                handler.OnPlacingStarted(casted);
-            };
-
-        private static readonly ExecuteEvents.EventFunction<ITapToPlaceHandler> OnPlacingCompletedEventHandler =
-            delegate (ITapToPlaceHandler handler, BaseEventData eventData)
-            {
-                var casted = ExecuteEvents.ValidateEventData<TapToPlaceEventData>(eventData);
-                handler.OnPlacingCompleted(casted);
-            };
-
-        protected virtual void Awake()
-        {
-            placingEventData = new TapToPlaceEventData(EventSystem.current);
-        }
-
+        
         protected virtual void Start()
         {
             if (PlaceParentOnTap)
@@ -174,12 +155,6 @@ namespace MixedRealityToolkit.SpatialMapping
             eventData.Use();
         }
 
-        private void RaisePlacingEvent(ExecuteEvents.EventFunction<ITapToPlaceHandler> handler, GameObject selectedObject)
-        {
-            placingEventData.Initialize(selectedObject);
-            ExecuteEvents.Execute(selectedObject, placingEventData, handler);
-        }
-
         private void HandlePlacement()
         {
             if (IsBeingPlaced)
@@ -193,14 +168,14 @@ namespace MixedRealityToolkit.SpatialMapping
         }
         private void StartPlacing()
         {
+            RaisePlacingEvent(InputManager.Instance.RaisePlacingStarted);
+
             var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
             layerCacheTarget.SetLayerRecursively(IgnoreRaycastLayer, out layerCache);
             InputManager.Instance.PushModalInputHandler(gameObject);
 
             ToggleSpatialMesh();
             RemoveWorldAnchor();
-
-            RaisePlacingEvent(OnPlacingStartedEventHandler, layerCacheTarget);
         }
 
         private void StopPlacing()
@@ -212,7 +187,21 @@ namespace MixedRealityToolkit.SpatialMapping
             ToggleSpatialMesh();
             AttachWorldAnchor();
 
-            RaisePlacingEvent(OnPlacingCompletedEventHandler, layerCacheTarget);
+            RaisePlacingEvent(InputManager.Instance.RaisePlacingCompleted);
+        }
+
+        private void RaisePlacingEvent(Action<IInputSource, uint, object[]> raisePlacingEvent)
+        {
+            // Set override focused object before trigger the event, otherwise 
+            // the selectedObject defined in the event data might be wrong because,
+            // the object being placed may not have the focus by now (which occurs
+            // for placing completed for example).
+            var focusedObject = InputManager.Instance.OverrideFocusedObject;
+            InputManager.Instance.OverrideFocusedObject = gameObject;
+
+            raisePlacingEvent(this, 0, null);
+
+            InputManager.Instance.OverrideFocusedObject = focusedObject;
         }
 
         private void AttachWorldAnchor()
@@ -295,5 +284,89 @@ namespace MixedRealityToolkit.SpatialMapping
             }
             return headPosition + gazeDirection * defaultGazeDistance;
         }
+
+        #region IInputSource Implementation
+
+        public bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)
+        {
+            sourceKind = InteractionSourceInfo.Other;
+            return false;
+        }
+
+        public bool SupportsInputInfo(uint sourceId, SupportedInputInfo inputInfo)
+        {
+            return (GetSupportedInputInfo(sourceId) & inputInfo) != 0;
+        }
+
+        public bool TryGetPointerPosition(uint sourceId, out Vector3 position)
+        {
+            position = Vector3.zero;
+            return false;
+        }
+
+        public bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
+        {
+            rotation = Quaternion.identity;
+            return false;
+        }
+
+        public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        {
+            pointingRay = default(Ray);
+            return false;
+        }
+
+        public bool TryGetGripPosition(uint sourceId, out Vector3 position)
+        {
+            position = Vector3.zero;
+            return false;
+        }
+
+        public bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
+        {
+            rotation = Quaternion.identity;
+            return false;
+        }
+
+        public SupportedInputInfo GetSupportedInputInfo(uint sourceId)
+        {
+            return SupportedInputInfo.None;
+        }
+
+        public bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
+        {
+            isPressed = false;
+            position = Vector2.zero;
+            return false;
+        }
+
+        public bool TryGetTouchpad(uint sourceId, out bool isPressed, out bool isTouched, out Vector2 position)
+        {
+            isPressed = false;
+            isTouched = false;
+            position = Vector2.zero;
+            return false;
+        }
+
+        public bool TryGetSelect(uint sourceId, out bool isPressed, out double pressedAmount)
+        {
+            isPressed = false;
+            pressedAmount = 0.0;
+            return false;
+        }
+
+        public bool TryGetGrasp(uint sourceId, out bool isPressed)
+        {
+            isPressed = false;
+            return false;
+        }
+
+        public bool TryGetMenu(uint sourceId, out bool isPressed)
+        {
+            isPressed = false;
+            return false;
+        }
+
+        #endregion // IInputSource Implementation
     }
 }

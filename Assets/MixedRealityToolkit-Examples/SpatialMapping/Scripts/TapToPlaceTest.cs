@@ -1,25 +1,27 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.SpatialMapping;
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.InputHandlers;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace MixedRealityToolkit.Examples.SpatialMapping
 {
     /// <summary>
     /// Class to test TapToPlace interactions, such as placement of object events.
     /// </summary>
-    public class TapToPlaceTest : MonoBehaviour, ITapToPlaceHandler
+    public class TapToPlaceTest : MonoBehaviour, IPlacementHandler
     {
-        public void OnPlacingStarted(TapToPlaceEventData eventData)
+        public void OnPlacingStarted(PlacementEventData eventData)
         {
-            Debug.LogFormat("Start placing object {0}", eventData.selectedObject.name);
+            Debug.LogFormat("OnPlacingStarted\r\nSource: {0}  SourceId: {1}  SelectedObject: {2}", eventData.InputSource, eventData.SourceId, eventData.selectedObject.name);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnPlacingCompleted(TapToPlaceEventData eventData)
+        public void OnPlacingCompleted(PlacementEventData eventData)
         {
-            Debug.LogFormat("Completed placing object {0}", eventData.selectedObject.name);
+            Debug.LogFormat("OnPlacingCompleted\r\nSource: {0}  SourceId: {1}  SelectedObject: {2}", eventData.InputSource, eventData.SourceId, eventData.selectedObject.name);
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
     }
 }
