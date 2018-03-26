@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
     /// This script allows for an object to be movable, scalable, and rotatable with one or two hands. 
     /// You may also configure the script on only enable certain manipulations. The script works with 
     /// both HoloLens' gesture input and immersive headset's motion controller input.
-    /// See Assets/MixedRealityToolkit-Examples/Input/Readme/README_TwoHandManipulationTest.md
+    /// See Assets/HoloToolkit-Examples/Input/Readme/README_TwoHandManipulationTest.md
     /// for instructions on how to use the script.
     /// </summary>
     public class TwoHandManipulatable : MonoBehaviour, IInputHandler, ISourceStateHandler
@@ -90,6 +90,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         // Maps input id -> input source. Then obtain position of input source using currentInputSource.TryGetGripPosition(currentInputSourceId, out inputPosition);
         private readonly Dictionary<uint, IInputSource> m_handsPressedInputSourceMap = new Dictionary<uint, IInputSource>();
 
+
         public void SetManipulationMode(TwoHandedManipulation mode)
         {
             ManipulationMode = mode;
@@ -112,7 +113,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
 
         private void Update()
         {
-            // Update positions of all hands
+            //Update positions of all hands
             foreach (var key in m_handsPressedInputSourceMap.Keys)
             {
                 var inputSource = m_handsPressedInputSourceMap[key];
