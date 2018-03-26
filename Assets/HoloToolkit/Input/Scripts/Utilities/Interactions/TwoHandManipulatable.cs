@@ -34,6 +34,19 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         [Tooltip("To visualize the object bounding box, drop the HoloToolKit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here. This is optional.")]
         private BoundingBox boundingBoxPrefab = null;
 
+        public BoundingBox BoundingBoxPrefab
+        {
+            set
+            {
+                boundingBoxPrefab = value;
+            }
+
+            get
+            {
+                return boundingBoxPrefab;
+            }
+        }
+
         public enum TwoHandedManipulation
         {
             Scale,
@@ -76,19 +89,6 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         private readonly Dictionary<uint, Vector3> m_handsPressedLocationsMap = new Dictionary<uint, Vector3>();
         // Maps input id -> input source. Then obtain position of input source using currentInputSource.TryGetGripPosition(currentInputSourceId, out inputPosition);
         private readonly Dictionary<uint, IInputSource> m_handsPressedInputSourceMap = new Dictionary<uint, IInputSource>();
-
-        public BoundingBox BoundingBoxPrefab
-        {
-            set
-            {
-                boundingBoxPrefab = value;
-            }
-
-            get
-            {
-                return boundingBoxPrefab;
-            }
-        }
 
         public void SetManipulationMode(TwoHandedManipulation mode)
         {
