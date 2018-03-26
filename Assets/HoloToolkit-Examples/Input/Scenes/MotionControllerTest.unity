@@ -7671,6 +7671,12 @@ Prefab:
       propertyPath: Cursor
       value: 
       objectReference: {fileID: 1853978899}
+    - target: {fileID: 114742747811649402, guid: 3eddd1c29199313478dd3f912bfab2ab,
+        type: 2}
+      propertyPath: linePointerPrefab
+      value: 
+      objectReference: {fileID: 1071219928950220, guid: 7dd8661d4bacf2546a0237daef280291,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
   m_IsPrefabParent: 0

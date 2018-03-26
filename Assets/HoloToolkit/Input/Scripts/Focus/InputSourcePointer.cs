@@ -48,6 +48,8 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool FocusLocked { get; set; }
 
+        public PointerLine PointerRay { get; set; }
+
         private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.forward) };
 
         [Obsolete("Will be removed in a later version. Use OnPreRaycast / OnPostRaycast instead.")]
@@ -81,7 +83,10 @@ namespace HoloToolkit.Unity.InputModule
 
         public virtual void OnPostRaycast()
         {
-            // Nothing needed
+            if (PointerRay != null)
+            {
+                PointerRay.UpdateRenderedLine(rays, Result);
+            }
         }
 
         public bool OwnsInput(BaseEventData eventData)

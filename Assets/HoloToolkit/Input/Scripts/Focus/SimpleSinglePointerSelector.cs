@@ -31,6 +31,10 @@ namespace HoloToolkit.Unity.InputModule
         private bool autoselectBestAvailable = false;
         public bool AutoselectBestAvailable { get { return autoselectBestAvailable; } set { autoselectBestAvailable = value; } }
 
+        [Tooltip("The line pointer prefab to use, if any.")]
+        [SerializeField]
+        private GameObject linePointerPrefab;
+
         #endregion
 
         #region Data
@@ -287,6 +291,11 @@ namespace HoloToolkit.Unity.InputModule
             inputSourcePointer.OwnAllInput = false;
             inputSourcePointer.ExtentOverride = null;
             inputSourcePointer.PrioritizedLayerMasksOverride = null;
+
+            if (inputSourcePointer.PointerRay == null)
+            {
+                inputSourcePointer.PointerRay = Instantiate(linePointerPrefab).GetComponent<PointerLine>();
+            }
         }
 
         private bool IsInputSourcePointerActive
