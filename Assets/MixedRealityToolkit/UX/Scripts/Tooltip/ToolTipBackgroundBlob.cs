@@ -12,25 +12,6 @@ namespace MixedRealityToolkit.UX.ToolTips
     /// </summary>
     public class ToolTipBackgroundBlob : ToolTipBackground
     {
-        private const float maxInertia = 5f;
-        private const float maxDistortion = 1f;
-        private const float maxRotation = 1f;
-        private const float minPositionCorrection = 0.1f;
-        private const float minDistortionCorrection = 0.1f;
-        private const float minRotationCorrection = 0.1f;
-        private const float maxPositionCorrection = 5f;
-        private const float maxDistortionCorrection = 5f;
-        private const float maxRotationCorrection = 5f;
-
-        private Bounds defaultBounds = new Bounds(Vector3.zero, Vector3.one);
-        private MeshFilter backgroundRendererMeshFilter;
-        private Vector3 lastPosition;
-        private Vector3 velocity;
-        private Vector3 distortion;
-        private Vector3 rotation;
-        private Bounds localContentBounds;
-        private Bounds inertialContentBounds;
-
         /// <summary>
         /// Which transforms to use for each type of distortion
         /// See the ToolTipBalloon prefab for an example of which transforms to target
@@ -38,85 +19,19 @@ namespace MixedRealityToolkit.UX.ToolTips
         [Header("Transform targets")]
         [SerializeField]
         private Transform positionTarget;
+
         [SerializeField]
         private Transform rotationTarget;
+
         [SerializeField]
         private Transform distortionTarget;
+
         [SerializeField]
         private Transform attachPointOffset;
 
-        public float BlobInertia {
-            get
-            {
-                return blobInertia;
-            }
-            set
-            {
-                blobInertia = Mathf.Clamp(value, 0, maxInertia);
-            }
-        }
-
-        public float BlobDistortion {
-            get {
-                return blobDistortion;
-            }
-            set {
-                blobDistortion = Mathf.Clamp(value, 0, maxDistortion);
-            }
-        }
-
-        public float BlobRotation {
-            get {
-                return blobRotation;
-            }
-            set {
-                blobRotation = Mathf.Clamp(value, 0, maxRotation);
-            }
-        }
-
-        public float PositionCorrectionStrength {
-            get {
-                return positionCorrectionStrength;
-            }
-            set {
-                positionCorrectionStrength = Mathf.Clamp(value, minPositionCorrection, maxPositionCorrection);
-            }
-        }
-
-        public float DistortionCorrectionStrength {
-            get {
-                return distortionCorrectionStrength;
-            }
-            set {
-                distortionCorrectionStrength = Mathf.Clamp(value, minDistortionCorrection, maxDistortionCorrection);
-            }
-        }
-
-        public float RotationCorrectionStrength {
-            get {
-                return rotationCorrectionStrength;
-            }
-            set {
-                rotationCorrectionStrength = Mathf.Clamp (value, minRotationCorrection, maxRotationCorrection);
-            }
-        }
-
-        public Vector3 BlobOffset {
-            get {
-                return blobOffset;
-            } set {
-                blobOffset = value;
-            }
-        }
-
-        /// <summary>
-        /// Mesh renderer for mesh background.
-        /// </summary>
-        public MeshRenderer BackgroundRenderer;
-
         [Header("Blob settings")]
         [SerializeField]
-        [Range(0f,5f)]
+        [Range(0f, 5f)]
         private float blobInertia = 0.5f;
 
         [SerializeField]
@@ -141,6 +56,114 @@ namespace MixedRealityToolkit.UX.ToolTips
 
         [SerializeField]
         private Vector3 blobOffset;
+
+        private const float maxInertia = 5f;
+        private const float maxDistortion = 1f;
+        private const float maxRotation = 1f;
+        private const float minPositionCorrection = 0.1f;
+        private const float minDistortionCorrection = 0.1f;
+        private const float minRotationCorrection = 0.1f;
+        private const float maxPositionCorrection = 5f;
+        private const float maxDistortionCorrection = 5f;
+        private const float maxRotationCorrection = 5f;
+
+        private Bounds defaultBounds = new Bounds(Vector3.zero, Vector3.one);
+        private MeshFilter backgroundRendererMeshFilter;
+        private Vector3 lastPosition;
+        private Vector3 velocity;
+        private Vector3 distortion;
+        private Vector3 rotation;
+        private Bounds localContentBounds;
+        private Bounds inertialContentBounds;
+
+        public float BlobInertia
+        {
+            get
+            {
+                return blobInertia;
+            }
+            set
+            {
+                blobInertia = Mathf.Clamp(value, 0, maxInertia);
+            }
+        }
+
+        public float BlobDistortion
+        {
+            get
+            {
+                return blobDistortion;
+            }
+            set
+            {
+                blobDistortion = Mathf.Clamp(value, 0, maxDistortion);
+            }
+        }
+
+        public float BlobRotation
+        {
+            get
+            {
+                return blobRotation;
+            }
+            set
+            {
+                blobRotation = Mathf.Clamp(value, 0, maxRotation);
+            }
+        }
+
+        public float PositionCorrectionStrength
+        {
+            get
+            {
+                return positionCorrectionStrength;
+            }
+            set
+            {
+                positionCorrectionStrength = Mathf.Clamp(value, minPositionCorrection, maxPositionCorrection);
+            }
+        }
+
+        public float DistortionCorrectionStrength
+        {
+            get
+            {
+                return distortionCorrectionStrength;
+            }
+            set
+            {
+                distortionCorrectionStrength = Mathf.Clamp(value, minDistortionCorrection, maxDistortionCorrection);
+            }
+        }
+
+        public float RotationCorrectionStrength
+        {
+            get
+            {
+                return rotationCorrectionStrength;
+            }
+            set
+            {
+                rotationCorrectionStrength = Mathf.Clamp(value, minRotationCorrection, maxRotationCorrection);
+            }
+        }
+
+        public Vector3 BlobOffset
+        {
+            get
+            {
+                return blobOffset;
+            }
+            set
+            {
+                blobOffset = value;
+            }
+        }
+
+        /// <summary>
+        /// Mesh renderer for mesh background.
+        /// </summary>
+        public MeshRenderer BackgroundRenderer;
 
         protected override void OnEnable()
         {
@@ -169,7 +192,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             localContentBounds.center = localContentOffset;
         }
 
-        private void Update ()
+        private void Update()
         {
             // Adjust center and size by velocity
             Vector3 currentPosition = positionTarget.position;
@@ -186,7 +209,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             currentRotation.z = velocity.z * 360;
             currentRotation.y = velocity.y * 360;
             currentRotation = rotationTarget.TransformDirection(currentRotation);
-            rotation = Vector3.Lerp (rotation, currentRotation, 1f / blobRotation * Time.deltaTime);
+            rotation = Vector3.Lerp(rotation, currentRotation, 1f / blobRotation * Time.deltaTime);
 
             // Correct the center and size
             inertialContentBounds.center = Vector3.Lerp(inertialContentBounds.center, localContentBounds.center, Time.deltaTime * positionCorrectionStrength);
