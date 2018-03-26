@@ -23,7 +23,7 @@ namespace MixedRealityToolkit.SpatialMapping
     /// </summary>
     [RequireComponent(typeof(Collider))]
     [RequireComponent(typeof(Interpolator))]
-    public class TapToPlace : MonoBehaviour, IInputClickHandler, IInputSource
+    public class TapToPlace : MonoBehaviour, IInputClickHandler
     {
         [Tooltip("Distance from camera to keep the object while placing it.")]
         public float DefaultGazeDistance = 2.0f;
@@ -57,7 +57,7 @@ namespace MixedRealityToolkit.SpatialMapping
 
         private Dictionary<GameObject, int> layerCache = new Dictionary<GameObject, int>();
         private Vector3 PlacementPosOffset;
-        
+
         protected virtual void Start()
         {
             if (PlaceParentOnTap)
@@ -70,7 +70,7 @@ namespace MixedRealityToolkit.SpatialMapping
 
             if (IsBeingPlaced)
             {
-                StartPlacing();
+                StartPlacing(null);
             }
             else // If we are not starting out with actively placing the object, give it a World Anchor
             {
@@ -151,57 +151,48 @@ namespace MixedRealityToolkit.SpatialMapping
         {
             // On each tap gesture, toggle whether the user is in placing mode.
             IsBeingPlaced = !IsBeingPlaced;
-            HandlePlacement();
+            HandlePlacement(eventData.InputSource);
             eventData.Use();
         }
 
-        private void HandlePlacement()
+        private void HandlePlacement(IInputSource inputSource)
         {
             if (IsBeingPlaced)
             {
-                StartPlacing();
+                StartPlacing(inputSource);
             }
             else
             {
-                StopPlacing();
+                StopPlacing(inputSource);
             }
         }
-        private void StartPlacing()
-        {
-            RaisePlacingEvent(InputManager.Instance.RaisePlacingStarted);
 
+        private void StartPlacing(IInputSource inputSource)
+        {
             var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
             layerCacheTarget.SetLayerRecursively(IgnoreRaycastLayer, out layerCache);
             InputManager.Instance.PushModalInputHandler(gameObject);
+
+            // We have no input source if this call is coming from Start() because,
+            // the object was set to 'IsBeingPlaced'.
+            if (inputSource != null)
+            {
+                InputManager.Instance.RaisePlacingStarted(inputSource, 0);
+            }
 
             ToggleSpatialMesh();
             RemoveWorldAnchor();
         }
 
-        private void StopPlacing()
+        private void StopPlacing(IInputSource inputSource)
         {
             var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
             layerCacheTarget.ApplyLayerCacheRecursively(layerCache);
+            InputManager.Instance.RaisePlacingCompleted(inputSource, 0);
             InputManager.Instance.PopModalInputHandler();
 
             ToggleSpatialMesh();
             AttachWorldAnchor();
-
-            RaisePlacingEvent(InputManager.Instance.RaisePlacingCompleted);
-        }
-
-        private void RaisePlacingEvent(Action<IInputSource, uint, object[]> raisePlacingEvent)
-        {
-            // Set override focused object before trigger the event, otherwise 
-            // the selectedObject defined in the event data might be wrong because,
-            // the object being placed may not have the focus by now (which occurs
-            // for placing completed for example).
-            var focusedObject = InputManager.Instance.OverrideFocusedObject;
-            InputManager.Instance.OverrideFocusedObject = gameObject;
-
-            raisePlacingEvent(this, 0, null);
-
-            InputManager.Instance.OverrideFocusedObject = focusedObject;
         }
 
         private void AttachWorldAnchor()
