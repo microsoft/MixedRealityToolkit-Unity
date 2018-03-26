@@ -12,14 +12,10 @@ namespace MixedRealityToolkit.InputModule.InputSources
     public enum SupportedInputInfo
     {
         None = 0,
-        /// <summary>
-        /// Deprecated: use PointerPosition
-        /// </summary>
+        [Obsolete("use PointerPosition")]
         Position = (1 << 0),
         PointerPosition = (1 << 0),
-        /// <summary>
-        /// Deprecated: use PointerRotation
-        /// </summary>
+        [Obsolete("use PointerRotation")]
         Rotation = (1 << 1),
         PointerRotation = (1 << 1),
         Pointing = (1 << 2),
