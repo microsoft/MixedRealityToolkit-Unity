@@ -177,7 +177,7 @@ namespace MixedRealityToolkit.SpatialMapping
             // the object was set to 'IsBeingPlaced'.
             if (inputSource != null)
             {
-                InputManager.Instance.RaisePlacingStarted(inputSource, 0);
+                InputManager.Instance.RaisePlacingStarted(inputSource, 0, gameObject);
             }
 
             ToggleSpatialMesh();
@@ -188,7 +188,7 @@ namespace MixedRealityToolkit.SpatialMapping
         {
             var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
             layerCacheTarget.ApplyLayerCacheRecursively(layerCache);
-            InputManager.Instance.RaisePlacingCompleted(inputSource, 0);
+            InputManager.Instance.RaisePlacingCompleted(inputSource, 0, gameObject);
             InputManager.Instance.PopModalInputHandler();
 
             ToggleSpatialMesh();

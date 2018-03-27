@@ -14,13 +14,13 @@ namespace MixedRealityToolkit.Examples.SpatialMapping
     {
         public void OnPlacingStarted(PlacementEventData eventData)
         {
-            Debug.LogFormat("OnPlacingStarted\r\nSource: {0}  SourceId: {1}  SelectedObject: {2}", eventData.InputSource, eventData.SourceId, eventData.selectedObject.name);
+            Debug.LogFormat("OnPlacingStarted\r\nSource: {0}  SourceId: {1}  Object: {2}", eventData.InputSource, eventData.SourceId, eventData.ObjectBeingPlaced.name);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
         public void OnPlacingCompleted(PlacementEventData eventData)
         {
-            Debug.LogFormat("OnPlacingCompleted\r\nSource: {0}  SourceId: {1}  SelectedObject: {2}", eventData.InputSource, eventData.SourceId, eventData.selectedObject.name);
+            Debug.LogFormat("OnPlacingCompleted\r\nSource: {0}  SourceId: {1}  Object: {2}", eventData.InputSource, eventData.SourceId, eventData.ObjectBeingPlaced.name);
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
     }

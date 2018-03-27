@@ -928,10 +928,10 @@ namespace MixedRealityToolkit.InputModule
                 handler.OnPlacingStarted(casted);
             };
 
-        public void RaisePlacingStarted(IInputSource source, uint sourceId,  object[] tags = null)
+        public void RaisePlacingStarted(IInputSource source, uint sourceId, GameObject objectBeingPlaced, object[] tags = null)
         {
             // Create input event
-            placementEventData.Initialize(source, sourceId, tags);
+            placementEventData.Initialize(source, sourceId, tags, objectBeingPlaced);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(placementEventData, OnPlacingStartedEventHandler);
@@ -944,10 +944,10 @@ namespace MixedRealityToolkit.InputModule
                 handler.OnPlacingCompleted(casted);
             };
 
-        public void RaisePlacingCompleted(IInputSource source, uint sourceId, object[] tags = null)
+        public void RaisePlacingCompleted(IInputSource source, uint sourceId, GameObject objectBeingPlaced, object[] tags = null)
         {
             // Create input event
-            placementEventData.Initialize(source, sourceId, tags);
+            placementEventData.Initialize(source, sourceId, tags, objectBeingPlaced);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(placementEventData, OnPlacingCompletedEventHandler);
