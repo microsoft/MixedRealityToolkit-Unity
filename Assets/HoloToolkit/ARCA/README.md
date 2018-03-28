@@ -80,7 +80,7 @@ Video Capture
 - Tap the red record button, this should start a countdown before begining to record the screen.
 - To finish recording tap and hold the screen for another 1 second and tap the stop button.
 - Click the preview button (blue button), to watch the recorded video.
-- Open the sharesheet  ![Share sheet](Images/share-icon-apple.png) and click save to camera roll.
+- Open the sharesheet and click save to camera roll.
 
 
 Networking your Application 
