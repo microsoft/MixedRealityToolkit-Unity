@@ -3,16 +3,16 @@
 
 using UnityEngine;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
-    public class Scale3DMarker : MonoBehaviour 
+    public class Scale3DMarker : MonoBehaviour
     {
         [Tooltip("Marker size in meters")]
         public float MarkerSize;
         [Tooltip("An orthoganal camera used for displaying the marker")]
         public Camera OrthographicCamera;
-	
-        void Start () 
+
+        void Start ()
         {
             if(!OrthographicCamera)
             {
@@ -20,18 +20,18 @@ namespace ARCA
             }
 
             float dpi = Screen.dpi;
-		
+
             // Detect iPhoneX and manually set the screen dpi
             if((Screen.width == 2436 && Screen.height == 1125) || (Screen.height == 2436 && Screen.width == 1125))
             {
                 dpi = 458;
             }
-        
+
             float screenSize = Screen.height;
             float screenWidthInMeters = (screenSize / dpi) * 0.0254f;
 
             float scale = (OrthographicCamera.orthographicSize * 2.0f) *  MarkerSize / screenWidthInMeters;
-            transform.localScale = new Vector3(scale, scale, scale);	
+            transform.localScale = new Vector3(scale, scale, scale);
         }
     }
 }

@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
-	public class MarkerDetector 
+	public class MarkerDetector
 	{
 		[DllImport("OpenCVWrapper", EntryPoint="MarkerDetector_Initialize")]
 		internal static extern void InitalizeMarkerDetector();
@@ -20,11 +20,11 @@ namespace ARCA
 		internal static extern bool GetNumMarkersDetected(out int _numMarkersDetected);
 		[DllImport("OpenCVWrapper", EntryPoint="MarkerDetector_GetDetectedMarkerIds")]
 		internal static extern bool GetDetectedMarkerIds(IntPtr _detectedMarkers);
-		[DllImport("OpenCVWrapper", EntryPoint="MarkerDetector_GetDetectedMarkerPose")]	
+		[DllImport("OpenCVWrapper", EntryPoint="MarkerDetector_GetDetectedMarkerPose")]
 		internal static extern bool GetDetectedMarkerPose(int _markerId, out float _xPos, out float _yPos, out float _zPos, out float _xRot, out float _yRot, out float _zRot);
 
 		// Initalize the detection code
-		public void Initialize() 
+		public void Initialize()
 		{
 			InitalizeMarkerDetector();
 		}
@@ -50,14 +50,14 @@ namespace ARCA
 		{
 			int numMarkersDetected;
 			GetNumMarkersDetected(out numMarkersDetected);
-			return numMarkersDetected; 
+			return numMarkersDetected;
 		}
 
 		public bool GetMarkerIds(out int[] _markerIds)
 		{
 			int numMarkersDetected;
 			GetNumMarkersDetected(out numMarkersDetected);
-				
+
 			int[] markerIds = new int[numMarkersDetected];
 			unsafe
 			{
@@ -79,11 +79,11 @@ namespace ARCA
 		{
 			_markerPosition = Vector3.zero;
 			_markerRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-			
+
 			int numMarkersDetected;
-				
+
 			GetNumMarkersDetected(out numMarkersDetected);
-			
+
 			if(numMarkersDetected <= 0)
 			{
 				return false;

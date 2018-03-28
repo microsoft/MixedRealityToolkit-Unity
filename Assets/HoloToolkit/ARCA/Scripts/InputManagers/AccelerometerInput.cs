@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
-    public class AccelerometerInput : Singleton<AccelerometerInput> 
+    public class AccelerometerInput : Singleton<AccelerometerInput>
     {
         public float MinAccelerationThreshold;
 

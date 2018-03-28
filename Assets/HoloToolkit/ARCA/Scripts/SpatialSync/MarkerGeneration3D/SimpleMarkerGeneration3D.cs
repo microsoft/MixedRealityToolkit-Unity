@@ -3,11 +3,11 @@
 
 using UnityEngine;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
-	public class SimpleMarkerGeneration3D : MarkerGeneration3D 
+	public class SimpleMarkerGeneration3D : MarkerGeneration3D
 	{
-		void Start () 
+		void Start ()
 		{
 			Generate();
 		}

@@ -5,14 +5,20 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 #pragma warning disable 649
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
     public class ARCANetworkManager : NetworkManager
     {
+        /// <summary>
+        /// Custom delegate for when a client connects
+        /// </summary>
         public delegate void ClientConnectedCustomEvent();
 
-        //Used to determine whether the app is running in host mode or guest (Mobile)
-        bool isHost;
+        /// <summary>
+        /// Is the device a host or a client? (Hololens or mobile?)
+        /// </summary>
+        private bool isHost;
+
         [Tooltip("Component used to manage the discovery of new devices")]
         public ARCANetworkDiscovery ARCANetworkDiscovery;
 
@@ -23,15 +29,19 @@ namespace ARCA
         [Tooltip("Component that manages the procedure of discovering new devices (mobile)")]
         public NewDeviceDiscovery NewDeviceDiscovery;
 
+        /// <summary>
+        /// Custom callback for when a client connects
+        /// </summary>
         public ClientConnectedCustomEvent OnClientConnectedCustom;
 
         [Tooltip("Component that syncs up the world")]
         public WorldSync WorldSync;
 
-        // Use this for initialization
-        void Start()
+        /// <summary>
+        /// Use this for initialization
+        /// </summary>
+        private void Start()
         {
-            Debug.Log(FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens);
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
             //Auto find components if necessary
             if (NewDeviceDiscovery == null)
@@ -73,10 +83,10 @@ namespace ARCA
         }
 
         /// <summary>
-        ///
+        /// A routine that starts the host, it requires a couple of frames to property start the components
         /// </summary>
         /// <returns></returns>
-        IEnumerator StartHostRoutine()
+        private IEnumerator StartHostRoutine()
         {
             ARCANetworkDiscovery.ManualStart();
             yield return null;
@@ -108,13 +118,17 @@ namespace ARCA
             }
         }
 
-        void OnWorldSync()
+        /// <summary>
+        /// Called on the mobile when the world is sync
+        /// </summary>
+        private void OnWorldSync()
         {
             //Tells the mobile to stop broadcasting which signal the HoloLens to stop the camera
             StartCoroutine(StopBroadcastRoutine());
         }
 
         /// <summary>
+        /// Stops broadcasting, it needs to wait a frame for it to be property stopped
         /// </summary>
         /// <returns></returns>
         IEnumerator StopBroadcastRoutine()

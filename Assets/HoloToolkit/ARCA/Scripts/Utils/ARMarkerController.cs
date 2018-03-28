@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
     public class ARMarkerController : MonoBehaviour
     {
@@ -29,7 +29,7 @@ namespace ARCA
             if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
             {
                 Screen.orientation = ScreenOrientation.AutoRotation;
-            }    
+            }
         }
 
         private void OnDestroy()
@@ -54,7 +54,7 @@ namespace ARCA
             {
                 Destroy(tr.gameObject);
             }
-                
+
             CodeContainer.transform.localScale = new Vector3(1,1,1);
             BackgroundPlane.GetComponent<Renderer>().material.color = Color.white;
             gameObject.SetActive(false);

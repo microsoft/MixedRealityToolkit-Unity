@@ -5,19 +5,25 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 #pragma warning disable 649
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
     /// <summary>
     ///     In this instance the HoloLens will be listening to broadcasts from the mobile device to turn on the camera
     /// </summary>
     public class NewDeviceDiscovery : NetworkDiscovery
     {
-        bool isHost;
+        /// <summary>
+        /// Is the device a host or a client? (Hololens or mobile?)
+        /// </summary>
+        private bool isHost;
 
         [Tooltip("Component used to detect a AR marker from the HoloLens")]
         public MarkerDetectionHololens MarkerDetectionHololens;
 
-        void Awake()
+        /// <summary>
+        /// Used for initialization
+        /// </summary>
+        private void Awake()
         {
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
             //The client doesn't have to wait for the server to be started. Just give it a couple of seconds and then start it

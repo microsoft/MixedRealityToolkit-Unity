@@ -5,12 +5,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
 	public class MarkerGeneration3D : MonoBehaviour
 	{
 	    public delegate void OnMarkerGeneratedEvent(int markerId);
-		[Tooltip("An array of available pre generated markers")] 
+		[Tooltip("An array of available pre generated markers")]
 		public Texture2D[] Markers;
 		[Tooltip("Material applied to white sections of ARCA marker")]
 		public Material WhiteMaterial;
@@ -21,9 +21,9 @@ namespace ARCA
 		[HideInInspector]
 		// The id of the marker generated
 		public int MarkerId;
-		
+
 		protected List<GameObject> Cubes = new List<GameObject>();
-		
+
 		private Texture2D marker;
 		protected int markerResolutionInSquares = 6;
 
@@ -44,5 +44,5 @@ namespace ARCA
 
 			return marker;
 		}
-	} 
+	}
 }

@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
     [CustomEditor(typeof(PlatformSwitcher))]
     public class PlatformSwitcherEditor : Editor

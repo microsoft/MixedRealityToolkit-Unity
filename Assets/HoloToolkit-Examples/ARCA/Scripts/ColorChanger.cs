@@ -1,43 +1,65 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ColorChanger : NetworkBehaviour
-
+namespace HoloToolkit.ARCapture
 {
-    [SyncVar]
-    Color color;
-
-    Renderer objectRenderer;
-
-    float timer;
-
-    void Start()
+    /// <summary>
+    /// Network component that randomly changes the color of its Renderer every given time
+    /// </summary>
+    public class ColorChanger : NetworkBehaviour
     {
-        objectRenderer = GetComponent<Renderer>();
-        UnityEngine.Random.InitState(DateTime.Now.Millisecond);
-        ChangeColor();
-    }
+        /// <summary>
+        /// Current color iteration of the object
+        /// </summary>
+        [SyncVar] private Color color;
 
-    void Update()
-    {
-        if (isServer)
+        /// <summary>
+        /// Renderer to which the color is applied to
+        /// </summary>
+        private Renderer objectRenderer;
+
+        /// <summary>
+        /// Counts the time between color changes
+        /// </summary>
+        private float timer;
+
+        /// <summary>
+        /// Used for initialization
+        /// </summary>
+        private void Start()
         {
-            if (timer > 3.0f)
-            {
-                ChangeColor();
-                timer = 0f;
-            }
-            timer += Time.deltaTime;
+            objectRenderer = GetComponent<Renderer>();
+            UnityEngine.Random.InitState(DateTime.Now.Millisecond);
+            ChangeColor();
         }
-        objectRenderer.material.color = color;
-    }
 
-    void ChangeColor()
-    {
-        color = UnityEngine.Random.ColorHSV();
-        objectRenderer.material.color = color; 
+        /// <summary>
+        /// Called devery frame
+        /// </summary>
+        private void Update()
+        {
+            if (isServer)
+            {
+                if (timer > 3.0f)
+                {
+                    ChangeColor();
+                    timer = 0f;
+                }
+
+                timer += Time.deltaTime;
+            }
+
+            objectRenderer.material.color = color;
+        }
+
+        /// <summary>
+        /// Changes the renderer to a new random color
+        /// </summary>
+        private void ChangeColor()
+        {
+            color = UnityEngine.Random.ColorHSV();
+            objectRenderer.material.color = color;
+        }
     }
 }

@@ -10,7 +10,7 @@ using UnityEngine.Apple.ReplayKit;
 #endif
 using UnityEngine.UI;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
     public class ReplayKitRecorder : MonoBehaviour
     {

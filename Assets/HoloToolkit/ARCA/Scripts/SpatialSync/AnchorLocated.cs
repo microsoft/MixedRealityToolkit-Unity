@@ -4,12 +4,12 @@
 using UnityEngine;
 using UnityEngine.XR.iOS;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
     public class AnchorLocated : MonoBehaviour
     {
         [Tooltip("The 3D marker generator")]
-        public ARCAMarkerGenerator3D MarkerGenerator; 
+        public ARCAMarkerGenerator3D MarkerGenerator;
         public delegate void AnchorLocatedEvent();
         public AnchorLocatedEvent OnAnchorLocated;
 

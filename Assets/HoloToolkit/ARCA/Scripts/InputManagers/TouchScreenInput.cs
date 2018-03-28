@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
     public class PersistentTouch
     {

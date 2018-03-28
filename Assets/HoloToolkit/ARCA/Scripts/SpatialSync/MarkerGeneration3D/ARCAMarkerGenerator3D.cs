@@ -5,9 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
-	public class ARCAMarkerGenerator3D : MarkerGeneration3D 
+	public class ARCAMarkerGenerator3D : MarkerGeneration3D
 	{
 		void Start()
 		{
@@ -29,7 +29,7 @@ namespace ARCA
 
                     int xCoord = ((x * (markerRes / ((markerResolutionInSquares + 2) * 2))) + (markerRes / ((markerResolutionInSquares + 2) * 4)));
                     int yCoord = ((y * (markerRes / ((markerResolutionInSquares + 2) * 2))) + (markerRes / ((markerResolutionInSquares + 2) * 4)));
-				
+
                     float col = marker.GetPixel(xCoord, yCoord).r;
                     float res = 1;
 
@@ -71,7 +71,7 @@ namespace ARCA
         public void StartTransition()
         {
             StartCoroutine(Transition());
-        } 
+        }
 
         void OnDestroy()
         {

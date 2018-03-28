@@ -5,11 +5,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
-	public class MarkerDetectionHololens : MonoBehaviour 
+	public class MarkerDetectionHololens : MonoBehaviour
 	{
-		// Delegate fires when marker with id MarkerId is found 
+		// Delegate fires when marker with id MarkerId is found
 		// markerId: the marker id
 		// pos : the marker position in World-Space
 		// rot : the marker rotation
@@ -25,13 +25,13 @@ namespace ARCA
 		public float AirtapTimeToCapture;
         [Tooltip("Time the camera will be capturing")]
 	    public float CaptureTimeout = 10f;
-	    
+
 		private float currentCaptureTimeout;
         private MarkerDetector detector;
 		private bool capturing = false;
 		private Quaternion startRotation;
 
-		void Start () 
+		void Start ()
 		{
 #if NETFX_CORE
 			detector = new MarkerDetector();
@@ -46,8 +46,8 @@ namespace ARCA
 	        if (!capturing || currentCaptureTimeout <= 0)
 			{
 				return;
-			} 
-				
+			}
+
 	        currentCaptureTimeout -= Time.deltaTime;
 
 	        if (currentCaptureTimeout <= 0 && capturing)
@@ -72,7 +72,7 @@ namespace ARCA
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
 	    public void KeepAliveCapture()
 	    {
@@ -95,8 +95,8 @@ namespace ARCA
 		{
 #if NETFX_CORE
 			detector.Detect(imageData, imageWidth, imageHeight, MarkerSize);
-			Vector3 pos; 
-			Quaternion rot; 
+			Vector3 pos;
+			Quaternion rot;
 			int[] detectedMarkerIds;
 			detector.GetMarkerIds(out detectedMarkerIds);
 

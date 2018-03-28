@@ -7,15 +7,33 @@ using UnityEngine.Networking;
 
 #pragma warning disable 649
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
+    /// <summary>
+    ///
+    /// </summary>
     public class ARCANetworkDiscovery : NetworkDiscovery
     {
+        /// <summary>
+        /// Event that represents a new session has been found
+        /// </summary>
         public delegate void HololensSessionFoundEvent();
 
-        bool isHost;
+        /// <summary>
+        /// Is the device a host or a client? (Hololens or mobile?)
+        /// </summary>
+        private bool isHost;
+
+        /// <summary>
+        /// Discovery starts when the component starts
+        /// </summary>
         public bool AutoStart = true;
+
+        /// <summary>
+        /// Is the discovery component stopping?
+        /// </summary>
         public bool IsStopping;
+
         [Tooltip("Component used to detect a AR marker from the HoloLens")]
         public MarkerDetectionHololens MarkerDetectionHololens;
         [Tooltip("Component that generates the AR codes")]
@@ -23,10 +41,15 @@ namespace ARCA
         [Tooltip("Component that manages the procedure of discovering new devices (mobile)")]
         public NewDeviceDiscovery NewDeviceDiscovery;
 
-        //Called when the phone finds a hololens session with its marker code.
+        /// <summary>
+        /// Called when the phone finds a hololens session with its marker code.
+        /// </summary>
         public HololensSessionFoundEvent OnHololensSessionFound;
 
-        void Awake()
+        /// <summary>
+        /// Use this for initialization
+        /// </summary>
+        private void Awake()
         {
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
             //The client doesn't have to wait for the server to be started. Just give it a couple of seconds and then start it
@@ -82,7 +105,7 @@ namespace ARCA
         /// <param name="markerId"></param>
         /// <param name="pos"></param>
         /// <param name="rot"></param>
-        void OnMarkerDetected( int markerId, Vector3 pos, Quaternion rot )
+        private void OnMarkerDetected( int markerId, Vector3 pos, Quaternion rot )
         {
             var newData = "|" + markerId + "|";
             StartCoroutine(ChangeBroadcastData(newData));
@@ -93,7 +116,7 @@ namespace ARCA
         /// </summary>
         /// <param name="newData"></param>
         /// <returns></returns>
-        IEnumerator ChangeBroadcastData( string newData )
+        private IEnumerator ChangeBroadcastData( string newData )
         {
             if (newData != broadcastData && !IsStopping)
             {
@@ -149,7 +172,7 @@ namespace ARCA
         /// </summary>
         /// <param name="address"></param>
         /// <returns></returns>
-        IEnumerator StopBroadcastAndConnect( string address )
+        private IEnumerator StopBroadcastAndConnect( string address )
         {
             IsStopping = true;
             StopBroadcast();

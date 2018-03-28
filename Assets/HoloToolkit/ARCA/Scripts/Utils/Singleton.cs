@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {

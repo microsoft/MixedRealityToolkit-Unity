@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
     public class WorldSync : NetworkBehaviour
     {

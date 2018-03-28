@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
     public class ConnectionStatusController : MonoBehaviour
     {
@@ -30,7 +30,7 @@ namespace ARCA
             {
                 Text = GetComponent<Text>();
             }
-                
+
             if (ARCANetworkDiscovery == null)
             {
                 ARCANetworkDiscovery = FindObjectOfType<ARCANetworkDiscovery>();

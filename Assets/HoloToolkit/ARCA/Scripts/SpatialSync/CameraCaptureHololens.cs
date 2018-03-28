@@ -9,9 +9,9 @@ using System.Linq;
 using UnityEngine.XR.WSA.WebCam;
 #endif
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
-    public class CameraCaptureHololens : MonoBehaviour 
+    public class CameraCaptureHololens : MonoBehaviour
     {
 		// Executed once a frame has succesfully been captured
         public delegate void FrameCapturesDelegate(List<byte> frameData, int width, int height);
@@ -20,7 +20,7 @@ namespace ARCA
 #if NETFX_CORE
 		private PhotoCapture photoCaptureObject;
 #endif
-        private int photoWidth; 
+        private int photoWidth;
         private int photoHeight;
 
 #if NETFX_CORE
@@ -37,7 +37,7 @@ namespace ARCA
 			}
 			capturing = true;
 #else
-			Debug.LogWarning("Capturing only supported on the HoloLens platform");		
+			Debug.LogWarning("Capturing only supported on the HoloLens platform");
 #endif
         }
 
@@ -66,7 +66,7 @@ namespace ARCA
 		c.cameraResolutionWidth = photoWidth;
 		c.cameraResolutionHeight = photoHeight;
 		c.pixelFormat = CapturePixelFormat.BGRA32;
-		captureObject.StartPhotoModeAsync(c, OnPhotoModeStarted);	
+		captureObject.StartPhotoModeAsync(c, OnPhotoModeStarted);
 	}
 
 	private void OnPhotoModeStarted(PhotoCapture.PhotoCaptureResult result)

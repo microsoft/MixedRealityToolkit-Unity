@@ -8,9 +8,9 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
-	public class PlatformSwitcher : MonoBehaviour 
+	public class PlatformSwitcher : MonoBehaviour
 	{
         [Serializable]
 		public enum Platform
@@ -43,12 +43,12 @@ namespace ARCA
 			for(int i=0; i<transform.childCount; i++)
 			{
 				Transform child = transform.GetChild(i);
-				
+
 				if(child.gameObject.name == "Shared")
 				{
 					continue;
 				}
-					
+
 			    if (child.gameObject.name == "WorldSync")
 				{
 			        continue;

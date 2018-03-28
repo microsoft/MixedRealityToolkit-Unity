@@ -4,7 +4,7 @@ using ARCA;
 using UnityEngine;
 using UnityEditor;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
 	[CustomEditor(typeof(MarkerGeneration3D), true)]
 	public class MarkerGeneration3DEditor : Editor {
