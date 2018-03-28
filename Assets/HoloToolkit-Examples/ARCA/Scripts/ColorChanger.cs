@@ -24,9 +24,6 @@ namespace HoloToolkit.ARCapture
         /// </summary>
         private float timer;
 
-        /// <summary>
-        /// Used for initialization
-        /// </summary>
         private void Start()
         {
             objectRenderer = GetComponent<Renderer>();
@@ -34,9 +31,6 @@ namespace HoloToolkit.ARCapture
             ChangeColor();
         }
 
-        /// <summary>
-        /// Called devery frame
-        /// </summary>
         private void Update()
         {
             if (isServer)

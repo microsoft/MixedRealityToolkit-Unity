@@ -46,9 +46,6 @@ namespace HoloToolkit.ARCapture
         /// </summary>
         public HololensSessionFoundEvent OnHololensSessionFound;
 
-        /// <summary>
-        /// Use this for initialization
-        /// </summary>
         private void Awake()
         {
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;

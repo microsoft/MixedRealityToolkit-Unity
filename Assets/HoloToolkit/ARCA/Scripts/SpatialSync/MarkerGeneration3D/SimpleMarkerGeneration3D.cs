@@ -7,7 +7,7 @@ namespace HoloToolkit.ARCapture
 {
 	public class SimpleMarkerGeneration3D : MarkerGeneration3D
 	{
-		void Start ()
+		private void Start ()
 		{
 			Generate();
 		}

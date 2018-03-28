@@ -15,7 +15,7 @@ namespace HoloToolkit.ARCapture
         public delegate void ClientConnectedCustomEvent();
 
         /// <summary>
-        /// Is the device a host or a client? (Hololens or mobile?)
+        /// Is the device a host or a client? (HoloLens or mobile?)
         /// </summary>
         private bool isHost;
 
@@ -37,9 +37,6 @@ namespace HoloToolkit.ARCapture
         [Tooltip("Component that syncs up the world")]
         public WorldSync WorldSync;
 
-        /// <summary>
-        /// Use this for initialization
-        /// </summary>
         private void Start()
         {
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
@@ -83,7 +80,7 @@ namespace HoloToolkit.ARCapture
         }
 
         /// <summary>
-        /// A routine that starts the host, it requires a couple of frames to property start the components
+        /// A routine that starts the host, it requires a couple of frames to properly start the components
         /// </summary>
         /// <returns></returns>
         private IEnumerator StartHostRoutine()
@@ -119,7 +116,7 @@ namespace HoloToolkit.ARCapture
         }
 
         /// <summary>
-        /// Called on the mobile when the world is sync
+        /// Called on the mobile when the world is synchronized
         /// </summary>
         private void OnWorldSync()
         {
@@ -128,7 +125,7 @@ namespace HoloToolkit.ARCapture
         }
 
         /// <summary>
-        /// Stops broadcasting, it needs to wait a frame for it to be property stopped
+        /// Stops broadcasting, it needs to wait a frame for it to be properly stopped
         /// </summary>
         /// <returns></returns>
         IEnumerator StopBroadcastRoutine()

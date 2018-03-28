@@ -55,7 +55,7 @@ namespace HoloToolkit.ARCapture
                 Destroy(tr.gameObject);
             }
 
-            CodeContainer.transform.localScale = new Vector3(1,1,1);
+            CodeContainer.transform.localScale = Vector3.one;
             BackgroundPlane.GetComponent<Renderer>().material.color = Color.white;
             gameObject.SetActive(false);
         }

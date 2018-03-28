@@ -12,7 +12,7 @@ namespace HoloToolkit.ARCapture
         [Tooltip("An orthoganal camera used for displaying the marker")]
         public Camera OrthographicCamera;
 
-        void Start ()
+        private void Start ()
         {
             if(!OrthographicCamera)
             {

@@ -13,16 +13,13 @@ namespace HoloToolkit.ARCapture
     public class NewDeviceDiscovery : NetworkDiscovery
     {
         /// <summary>
-        /// Is the device a host or a client? (Hololens or mobile?)
+        /// Is the device a host or a client? (HoloLens or mobile?)
         /// </summary>
         private bool isHost;
 
         [Tooltip("Component used to detect a AR marker from the HoloLens")]
         public MarkerDetectionHololens MarkerDetectionHololens;
 
-        /// <summary>
-        /// Used for initialization
-        /// </summary>
         private void Awake()
         {
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
