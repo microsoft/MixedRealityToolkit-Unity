@@ -16,7 +16,7 @@ namespace MixedRealityToolkit.Internal.Definitons
         /// <summary>
         /// The input type of the button, e.g. Analogue, Digital, etc.
         /// </summary>
-        public InputType ButtonInputType;
+        public ControllerInputType ButtonInputType;
 
         /// <summary>
         /// The primary action of the button as defined by the controller SDK.
