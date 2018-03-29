@@ -1,6 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -8,7 +6,6 @@ using UnityEngine.Networking;
 namespace HoloToolkit.ARCapture
 {
     /// <summary>
-    ///
     /// </summary>
     public class ARCANetworkDiscovery : NetworkDiscovery
     {
@@ -18,36 +15,101 @@ namespace HoloToolkit.ARCapture
         public delegate void HololensSessionFoundEvent();
 
         /// <summary>
+        /// Discovery starts when the component starts
+        /// </summary>
+        [SerializeField]
+        private bool autoStart = true;
+
+        /// <summary>
         /// Is the device a host or a client? (Hololens or mobile?)
         /// </summary>
         private bool isHost;
 
         /// <summary>
-        /// Discovery starts when the component starts
-        /// </summary>
-        public bool AutoStart = true;
-
-        /// <summary>
         /// Is the discovery component stopping?
         /// </summary>
-        public bool IsStopping;
+        [SerializeField]
+        private bool isStopping;
 
+        /// <summary>
+        /// Component used to detect a AR marker from the HoloLens
+        /// </summary>
+        [SerializeField]
         [Tooltip("Component used to detect a AR marker from the HoloLens")]
-        public MarkerDetectionHololens MarkerDetectionHololens;
+        private MarkerDetectionHololens markerDetectionHololens;
+
+        /// <summary>
+        /// Component that generates the AR codes
+        /// </summary>
         [Tooltip("Component that generates the AR codes")]
-        public MarkerGeneration3D MarkerGeneration3D;
+        private MarkerGeneration3D markerGeneration3D;
+
+        /// <summary>
+        /// Component that manages the procedure of discovering new devices (mobile)
+        /// </summary>
+        [SerializeField]
         [Tooltip("Component that manages the procedure of discovering new devices (mobile)")]
-        public NewDeviceDiscovery NewDeviceDiscovery;
+        private NewDeviceDiscovery newDeviceDiscovery;
 
         /// <summary>
         /// Called when the phone finds a hololens session with its marker code.
         /// </summary>
         public HololensSessionFoundEvent OnHololensSessionFound;
 
+
+        /// <summary>
+        /// Discovery starts when the component starts
+        /// </summary>
+        public bool AutoStart
+        {
+            get { return autoStart; }
+            set { autoStart = value; }
+        }
+
+        /// <summary>
+        /// Is the discovery component stopping?
+        /// </summary>
+        public bool IsStopping
+        {
+            get { return isStopping; }
+            set { isStopping = value; }
+        }
+
+        /// <summary>
+        /// Component used to detect a AR marker from the HoloLens
+        /// </summary>
+        public MarkerDetectionHololens MarkerDetectionHololens
+        {
+            get { return markerDetectionHololens; }
+            set { markerDetectionHololens = value; }
+        }
+
+        /// <summary>
+        /// Component that generates the AR codes
+        /// </summary>
+        public MarkerGeneration3D MarkerGeneration3D
+        {
+            get { return markerGeneration3D; }
+            set { markerGeneration3D = value; }
+        }
+
+        /// <summary>
+        /// Component that manages the procedure of discovering new devices (mobile)
+        /// </summary>
+        public NewDeviceDiscovery NewDeviceDiscovery
+        {
+            get { return newDeviceDiscovery; }
+            set { newDeviceDiscovery = value; }
+        }
+
+
         private void Awake()
         {
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
-            //The client doesn't have to wait for the server to be started. Just give it a couple of seconds and then start it
+
+            //The client doesn't have to wait for the server to be started, but this works best if the component
+            // waits for the remaining networking bits to have warmed up,
+            // just give it a couple of seconds and then start it
             if (!isHost)
             {
                 Invoke("ManualStart", 3f);
@@ -60,21 +122,15 @@ namespace HoloToolkit.ARCapture
         public void ManualStart()
         {
             //Auto find components if necessary
-            if (MarkerGeneration3D == null)
-            {
-                MarkerGeneration3D = FindObjectOfType<MarkerGeneration3D>();
-            }
-            if (MarkerDetectionHololens == null)
-            {
-                MarkerDetectionHololens = FindObjectOfType<MarkerDetectionHololens>();
-            }
-            if (NewDeviceDiscovery == null)
-            {
-                NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
-            }
+            if (MarkerGeneration3D == null) MarkerGeneration3D = FindObjectOfType<MarkerGeneration3D>();
+            if (MarkerDetectionHololens == null) MarkerDetectionHololens = FindObjectOfType<MarkerDetectionHololens>();
+            if (NewDeviceDiscovery == null) NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
 
             //If it isn't supposed to start listening/broadcasting exit the method
-            if (!AutoStart) return;
+            if (!AutoStart)
+            {
+                return;
+            }
 
             Initialize();
             if (!isHost)
@@ -84,10 +140,7 @@ namespace HoloToolkit.ARCapture
             else
             {
                 StartAsServer();
-                if (MarkerDetectionHololens != null)
-                {
-                    MarkerDetectionHololens.OnMarkerDetected += OnMarkerDetected;
-                }
+                if (MarkerDetectionHololens != null) MarkerDetectionHololens.OnMarkerDetected += OnMarkerDetected;
             }
         }
 
@@ -95,22 +148,21 @@ namespace HoloToolkit.ARCapture
         #region Host
 
         /// <summary>
-        ///     Called on the server when a marker is detected. This will update the broadcast data
+        /// Called on the server when a marker is detected. This will update the broadcast data
         /// </summary>
-        /// <param name="markerId"></param>
-        /// <param name="pos"></param>
-        /// <param name="rot"></param>
+        /// <param name="markerId">ID of the marker detected by the HoloLens</param>
+        /// <param name="pos">World position of the marker</param>
+        /// <param name="rot">Rotation of the marker (as seen from the HoloLens)</param>
         private void OnMarkerDetected( int markerId, Vector3 pos, Quaternion rot )
         {
-            var newData = "|" + markerId + "|";
+            string newData = "|" + markerId + "|";
             StartCoroutine(ChangeBroadcastData(newData));
         }
 
         /// <summary>
-        ///     Runs in a routine since the stop and start of the broadcasting isn't synchronous
+        /// Runs in a routine since the stop and start of the broadcasting isn't synchronous
         /// </summary>
-        /// <param name="newData"></param>
-        /// <returns></returns>
+        /// <param name="newData">New broadcast message</param>
         private IEnumerator ChangeBroadcastData( string newData )
         {
             if (newData != broadcastData && !IsStopping)
@@ -130,20 +182,26 @@ namespace HoloToolkit.ARCapture
 
         #region Client
 
-#if !NETFX_CORE
+        #if !NETFX_CORE
         /// <summary>
-        ///     This method gets called whenever it receives a broadcast. It'll then strip out the message of the
-        ///     broadcast and decide whether it should connect to the sender of the broadcast or not
+        /// This method gets called whenever it receives a broadcast. It'll then strip out the message of the
+        /// broadcast and decide whether it should connect to the sender of the broadcast or not
         /// </summary>
-        /// <param name="fromAddress"></param>
-        /// <param name="data"></param>
+        /// <param name="fromAddress">IP address that broadcasted the message</param>
+        /// <param name="data">Broadcast message read</param>
         public override void OnReceivedBroadcast( string fromAddress, string data )
         {
-            if (isHost) return;
+            if (isHost)
+            {
+                return;
+            }
 
             //The data will be in the format of |number|garbage so we split it by | and get the first one.
             var parsedData = data.Split('|').Where(x => !string.IsNullOrEmpty(x)).ToArray();
-            if (parsedData.Length == 0) return;
+            if (parsedData.Length == 0)
+            {
+                return;
+            }
 
             int parsedMarkerId;
             int.TryParse(parsedData[0], out parsedMarkerId);
@@ -153,20 +211,16 @@ namespace HoloToolkit.ARCapture
             if (parsedMarkerId == MarkerGeneration3D.MarkerId && !IsStopping &&
                 !NetworkManager.singleton.IsClientConnected())
             {
-                if (OnHololensSessionFound != null)
-                {
-                    OnHololensSessionFound();
-                }
+                if (OnHololensSessionFound != null) OnHololensSessionFound();
                 IsStopping = true;
                 StartCoroutine(StopBroadcastAndConnect(fromAddress));
             }
         }
 
         /// <summary>
-        ///     Stops the broadcast, waits for it to be fully stopped and then connects to the hololens
+        /// Stops the broadcast, waits for it to be fully stopped and then connects to the hololens
         /// </summary>
-        /// <param name="address"></param>
-        /// <returns></returns>
+        /// <param name="address">IP address to connect to</param>
         private IEnumerator StopBroadcastAndConnect( string address )
         {
             IsStopping = true;
@@ -178,7 +232,7 @@ namespace HoloToolkit.ARCapture
             IsStopping = false;
         }
 
-#endif
+        #endif
 
         #endregion
     }

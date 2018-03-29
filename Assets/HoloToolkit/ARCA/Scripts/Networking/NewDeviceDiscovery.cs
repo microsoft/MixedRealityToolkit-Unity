@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 namespace HoloToolkit.ARCapture
 {
     /// <summary>
-    ///     In this instance the HoloLens will be listening to broadcasts from the mobile device to turn on the camera
+    /// In this instance the HoloLens will be listening to broadcasts from the mobile device to turn on the camera
     /// </summary>
     public class NewDeviceDiscovery : NetworkDiscovery
     {
@@ -16,13 +16,28 @@ namespace HoloToolkit.ARCapture
         /// </summary>
         private bool isHost;
 
+        /// <summary>
+        /// Component used to detect a AR marker from the HoloLens
+        /// </summary>
+        [SerializeField]
         [Tooltip("Component used to detect a AR marker from the HoloLens")]
-        public MarkerDetectionHololens MarkerDetectionHololens;
+        private MarkerDetectionHololens markerDetectionHololens;
+
+        /// <summary>
+        /// Component used to detect a AR marker from the HoloLens
+        /// </summary>
+        public MarkerDetectionHololens MarkerDetectionHololens
+        {
+            get { return markerDetectionHololens; }
+            set { markerDetectionHololens = value; }
+        }
 
         private void Awake()
         {
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
-            //The client doesn't have to wait for the server to be started. Just give it a couple of seconds and then start it
+            //The client doesn't have to wait for the server to be started, but this works best if the component
+            // waits for the remaining networking bits to have warmed up,
+            // just give it a couple of seconds and then start it
             if (!isHost)
             {
                 Invoke("ManualStart", 4f);
@@ -30,7 +45,7 @@ namespace HoloToolkit.ARCapture
         }
 
         /// <summary>
-        ///     Starts the system. In server mode or client mode depending on isHost
+        /// Starts the system. In server mode or client mode depending on isHost
         /// </summary>
         public void ManualStart()
         {
@@ -58,10 +73,10 @@ namespace HoloToolkit.ARCapture
         #region Host
 
         /// <summary>
-        ///     Called on the HoloLens when receiving a broadcast from a phone. It'll keep alive the scanning
+        /// Called on the HoloLens when receiving a broadcast from a phone. It'll keep alive the scanning
         /// </summary>
-        /// <param name="fromAddress"></param>
-        /// <param name="data"></param>
+        /// <param name="fromAddress">IP address that broadcasted the message</param>
+        /// <param name="data">Broadcast message read</param>
         public override void OnReceivedBroadcast( string fromAddress, string data )
         {
             base.OnReceivedBroadcast(fromAddress, data);

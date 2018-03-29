@@ -1,6 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -14,63 +12,114 @@ namespace HoloToolkit.ARCapture
         public delegate void ClientConnectedCustomEvent();
 
         /// <summary>
+        /// Component used to manage the discovery of new devices
+        /// </summary>
+        [SerializeField] [Tooltip("Component used to manage the discovery of new devices")]
+        private ARCANetworkDiscovery arcaNetworkDiscovery;
+
+        /// <summary>
         /// Is the device a host or a client? (HoloLens or mobile?)
         /// </summary>
         private bool isHost;
 
-        [Tooltip("Component used to manage the discovery of new devices")]
-        public ARCANetworkDiscovery ARCANetworkDiscovery;
+        /// <summary>
+        /// Component used to detect a AR marker from the HoloLens
+        /// </summary>
+        [SerializeField] [Tooltip("Component used to detect a AR marker from the HoloLens")]
+        private MarkerDetectionHololens markerDetectionHololens;
 
-        [Tooltip("Component used to detect a AR marker from the HoloLens")]
-        public MarkerDetectionHololens MarkerDetectionHololens;
-        [Tooltip("Component that generates the AR codes")]
-        public MarkerGeneration3D MarkerGeneration3D;
-        [Tooltip("Component that manages the procedure of discovering new devices (mobile)")]
-        public NewDeviceDiscovery NewDeviceDiscovery;
+        /// <summary>
+        /// Component that generates the AR codes
+        /// </summary>
+        [SerializeField] [Tooltip("Component that generates the AR codes")]
+        private MarkerGeneration3D markerGeneration3D;
+
+        /// <summary>
+        /// Component that manages the procedure of discovering new devices (mobile)
+        /// </summary>
+        [SerializeField] [Tooltip("Component that manages the procedure of discovering new devices (mobile)")]
+        private NewDeviceDiscovery newDeviceDiscovery;
 
         /// <summary>
         /// Custom callback for when a client connects
         /// </summary>
         public ClientConnectedCustomEvent OnClientConnectedCustom;
 
-        [Tooltip("Component that syncs up the world")]
-        public WorldSync WorldSync;
+        /// <summary>
+        /// Component that syncs up the world
+        /// </summary>
+        [SerializeField] [Tooltip("Component that syncs up the world")]
+        private WorldSync worldSync;
+
+        /// <summary>
+        /// Component used to manage the discovery of new devices
+        /// </summary>
+        public ARCANetworkDiscovery ARCANetworkDiscovery
+        {
+            get { return arcaNetworkDiscovery; }
+            set { arcaNetworkDiscovery = value; }
+        }
+
+        /// <summary>
+        /// Component used to detect a AR marker from the HoloLens
+        /// </summary>
+        public MarkerDetectionHololens MarkerDetectionHololens
+        {
+            get { return markerDetectionHololens; }
+            set { markerDetectionHololens = value; }
+        }
+
+        /// <summary>
+        /// Component that generates the AR codes
+        /// </summary>
+        public MarkerGeneration3D MarkerGeneration3D
+        {
+            get { return markerGeneration3D; }
+            set { markerGeneration3D = value; }
+        }
+
+        /// <summary>
+        /// Component that manages the procedure of discovering new devices (mobile)
+        /// </summary>
+        public NewDeviceDiscovery NewDeviceDiscovery
+        {
+            get { return newDeviceDiscovery; }
+            set { newDeviceDiscovery = value; }
+        }
+
+        /// <summary>
+        /// Component that syncs up the world
+        /// </summary>
+        public WorldSync WorldSync
+        {
+            get { return worldSync; }
+            set { worldSync = value; }
+        }
 
         private void Start()
         {
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
             //Auto find components if necessary
-            if (NewDeviceDiscovery == null)
-            {
-                NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
-            }
-            if (ARCANetworkDiscovery == null)
-            {
-                ARCANetworkDiscovery = FindObjectOfType<ARCANetworkDiscovery>();
-            }
+            if (NewDeviceDiscovery == null) NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
+            if (ARCANetworkDiscovery == null) ARCANetworkDiscovery = FindObjectOfType<ARCANetworkDiscovery>();
             //The host needs an aditional component
             if (isHost)
             {
                 if (MarkerDetectionHololens == null)
-                {
                     MarkerDetectionHololens = FindObjectOfType<MarkerDetectionHololens>();
-                }
                 NetworkServer.Reset(); //Reset the server to make sure that it starts clean
                 StartHost();
             }
             else
             {
-                if (MarkerGeneration3D == null)
-                {
-                    MarkerGeneration3D = FindObjectOfType<MarkerGeneration3D>();
-                }
+                if (MarkerGeneration3D == null) MarkerGeneration3D = FindObjectOfType<MarkerGeneration3D>();
 
                 WorldSync.OnWorldSyncCompleteClient += OnWorldSync;
             }
         }
 
         /// <summary>
-        ///     For the client, wait until the server has started and then start the discovery components
+        /// For the client, wait until the server has started and then start the discovery components
         /// </summary>
         public override void OnStartHost()
         {
@@ -81,7 +130,6 @@ namespace HoloToolkit.ARCapture
         /// <summary>
         /// A routine that starts the host, it requires a couple of frames to properly start the components
         /// </summary>
-        /// <returns></returns>
         private IEnumerator StartHostRoutine()
         {
             ARCANetworkDiscovery.ManualStart();
@@ -93,7 +141,7 @@ namespace HoloToolkit.ARCapture
         /// Called on the server.
         /// A new client has connected, sync up the world
         /// </summary>
-        /// <param name="conn"></param>
+        /// <param name="conn">Newly created connection between the server and client</param>
         public override void OnServerConnect( NetworkConnection conn )
         {
             base.OnServerConnect(conn);
@@ -104,14 +152,11 @@ namespace HoloToolkit.ARCapture
         /// Called on the client.
         /// A client has been connected to the server
         /// </summary>
-        /// <param name="conn"></param>
+        /// <param name="conn">Newly created connection between the server and client</param>
         public override void OnClientConnect( NetworkConnection conn )
         {
             base.OnClientConnect(conn);
-            if (OnClientConnectedCustom != null)
-            {
-                OnClientConnectedCustom();
-            }
+            if (OnClientConnectedCustom != null) OnClientConnectedCustom();
         }
 
         /// <summary>
@@ -126,13 +171,9 @@ namespace HoloToolkit.ARCapture
         /// <summary>
         /// Stops broadcasting, it needs to wait a frame for it to be properly stopped
         /// </summary>
-        /// <returns></returns>
-        IEnumerator StopBroadcastRoutine()
+        private IEnumerator StopBroadcastRoutine()
         {
-            if (NewDeviceDiscovery == null)
-            {
-                NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
-            }
+            if (NewDeviceDiscovery == null) NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
             NewDeviceDiscovery.StopBroadcast();
             yield return null;
         }
