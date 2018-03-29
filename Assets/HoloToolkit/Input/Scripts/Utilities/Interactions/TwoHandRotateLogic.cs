@@ -18,52 +18,48 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
     /// </summary>
     public class TwoHandRotateLogic
     {
+        /// <summary>
+        /// Private variables
+        /// </summary>
         private const float MinHandDistanceForPitchM = 0.1f;
         private const float RotationMultiplier = 2f;
-        public enum RotationConstraint
-        {
-            None,
-            XAxisOnly,
-            YAxisOnly,
-            ZAxisOnly
-        };
+        private readonly AxisConstraint m_rotationConstraint;
+        private Vector3 m_previousHandlebarRotation;
 
-        private readonly RotationConstraint m_rotationConstraint;
         /// <summary>
         /// The current rotation constraint might be modified based on disambiguation logic, for example
         /// XOrYBasedOnInitialHandPosition might change the current rotation constraint based on the 
         /// initial hand positions at the start
         /// </summary>
-        private RotationConstraint m_currentRotationConstraint;
-        public RotationConstraint GetCurrentRotationConstraint()
-        {
-            return m_currentRotationConstraint;
-        }
-        private Vector3 m_previousHandlebarRotation;
+        private AxisConstraint currentRotationConstraint;
 
-        public TwoHandRotateLogic(RotationConstraint rotationConstraint)
+        /// <summary>
+        /// Public Accessor for AxisConstraint Property used to constrain Rotation to an axis.
+        /// </summary>
+        public AxisConstraint CurrentRotationConstraint
         {
-            m_rotationConstraint = rotationConstraint;
+            get
+            {
+                return currentRotationConstraint;
+            }
+            set
+            {
+                currentRotationConstraint = value;
+            }
         }
 
-        public void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
-        {
-            m_currentRotationConstraint = m_rotationConstraint;
-            m_previousHandlebarRotation = GetHandlebarDirection(handsPressedMap, manipulationRoot);
-        }
-
-        private Vector3 ProjectHandlebarGivenConstraint(RotationConstraint constraint, Vector3 handlebarRotation, Transform manipulationRoot)
+        private Vector3 ProjectHandlebarGivenConstraint(AxisConstraint constraint, Vector3 handlebarRotation, Transform manipulationRoot)
         {
             Vector3 result = handlebarRotation;
             switch (constraint)
             {
-                case RotationConstraint.XAxisOnly:
+                case AxisConstraint.XAxisOnly:
                     result.x = 0;
                     break;
-                case RotationConstraint.YAxisOnly:
+                case AxisConstraint.YAxisOnly:
                     result.y = 0;
                     break;
-                case RotationConstraint.ZAxisOnly:
+                case AxisConstraint.ZAxisOnly:
                     result.z = 0;
                     break;
             }
@@ -87,12 +83,42 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
             return hand2 - hand1;
         }
 
+        /// <summary>
+        /// Sets Axis Constraint for Rotation operation.
+        /// </summary>
+        /// <param name="rotationConstraint"></param>
+        public TwoHandRotateLogic(AxisConstraint rotationConstraint)
+        {
+            m_rotationConstraint = rotationConstraint;
+        }
+
+        /// <summary>
+        /// Initializes twohand system with controller/hand source info: 
+        /// the Dictionary collection already filled with controller/hand info,
+        /// and the Transform of the GameObject to be manipulated.
+        /// </summary>
+        /// <param name="handsPressedMap"></param>
+        /// <param name="manipulationRoot"></param>
+        public void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
+        {
+            currentRotationConstraint = m_rotationConstraint;
+            m_previousHandlebarRotation = GetHandlebarDirection(handsPressedMap, manipulationRoot);
+        }
+
+      
+        /// <summary>
+        /// Updates internal states based on current Controller/hand states.
+        /// </summary>
+        /// <param name="handsPressedMap"></param>
+        /// <param name="manipulationRoot"></param>
+        /// <param name="currentRotation"></param>
+        /// <returns></returns>
         public Quaternion Update(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot, Quaternion currentRotation)
         {
             var handlebarDirection = GetHandlebarDirection(handsPressedMap, manipulationRoot);
-            var handlebarDirectionProjected = ProjectHandlebarGivenConstraint(m_currentRotationConstraint, handlebarDirection,
+            var handlebarDirectionProjected = ProjectHandlebarGivenConstraint(currentRotationConstraint, handlebarDirection,
                 manipulationRoot);
-            var prevHandlebarDirectionProjected = ProjectHandlebarGivenConstraint(m_currentRotationConstraint,
+            var prevHandlebarDirectionProjected = ProjectHandlebarGivenConstraint(currentRotationConstraint,
                 m_previousHandlebarRotation, manipulationRoot);
             m_previousHandlebarRotation = handlebarDirection;
 
@@ -103,7 +129,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
             rotationDelta.ToAngleAxis(out angle, out axis);
             angle *= RotationMultiplier;
 
-            if (m_currentRotationConstraint == RotationConstraint.YAxisOnly)
+            if (currentRotationConstraint == AxisConstraint.YAxisOnly)
             {
                 // If we are rotating about Y axis, then make sure we rotate about global Y axis.
                 // Since the angle is obtained from a quaternion, we need to properly orient it (up or down) based

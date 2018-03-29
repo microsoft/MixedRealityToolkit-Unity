@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-
 using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Utilities.Interations
@@ -19,17 +18,23 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
     {
         private float m_handRefDistance;
         private float m_objRefDistance;
+        private const float DistanceScale = 2f;
+
         /// <summary>
         /// The initial angle between the hand and the object
         /// </summary>
         private Quaternion m_gazeAngularOffset;
+
         /// <summary>
         /// The initial object position
         /// </summary>
         private Vector3 m_draggingPosition;
 
-        private const float DistanceScale = 2f;
-
+        /// <summary>
+        /// Initialize system with controller/hand states- starting position and current Transform.
+        /// </summary>
+        /// <param name="startHandPositionMeters"></param>
+        /// <param name="manipulationRoot"></param>
         public void Setup(Vector3 startHandPositionMeters, Transform manipulationRoot)
         {
             var newHandPosition = startHandPositionMeters;
@@ -53,6 +58,12 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
             m_draggingPosition = manipulationRoot.position;
         }
 
+        /// <summary>
+        /// Updates gameobject with new position information of controller/hand
+        /// </summary>
+        /// <param name="centroid"></param>
+        /// <param name="manipulationObjectPosition"></param>
+        /// <returns> a Vector3 describing the updated current Position of the gameObject being two-hand manipulated</returns>
         public Vector3 Update(Vector3 centroid, Vector3 manipulationObjectPosition)
         {
             var newHandPosition = centroid;
@@ -86,7 +97,10 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
             return m_draggingPosition;
         }
 
+        ///<summary>
+        /// gets current controller/hand position
         /// <returns>A point that is below and just in front of the head.</returns>
+        ///</summary>
         public static Vector3 GetHandPivotPosition()
         {
             Vector3 pivot = CameraCache.Main.transform.position + new Vector3(0, -0.2f, 0) - CameraCache.Main.transform.forward * 0.2f; // a bit lower and behind
