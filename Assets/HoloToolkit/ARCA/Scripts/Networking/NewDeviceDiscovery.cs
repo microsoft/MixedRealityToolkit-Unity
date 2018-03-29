@@ -4,7 +4,6 @@
 using UnityEngine;
 using UnityEngine.Networking;
 
-#pragma warning disable 649
 namespace HoloToolkit.ARCapture
 {
     /// <summary>
