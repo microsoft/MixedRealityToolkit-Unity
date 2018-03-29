@@ -137,6 +137,7 @@ namespace MixedRealityToolkit.UX.AppBarControl
             icon.Alpha = 0f;
             text.DisableText = true;
             cButton.enabled = false;
+            cButton.transform.Find("FrontPlate").GetComponent<MeshRenderer>().enabled = false;
             cButton.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
         }
 
@@ -148,6 +149,7 @@ namespace MixedRealityToolkit.UX.AppBarControl
             icon.Alpha = 1f;
             text.DisableText = false;
             cButton.enabled = true;
+            cButton.transform.Find("FrontPlate").GetComponent<MeshRenderer>().enabled = true;
             cButton.gameObject.layer = LayerMask.NameToLayer("UI");
         }
 
