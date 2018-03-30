@@ -431,13 +431,17 @@ namespace MixedRealityToolkit.InputModule
             IPointingSource pointingSource;
             FocusManager.Instance.TryGetPointingSource(inputEventData, out pointingSource);
             PointerInputEventData pointerInputEventData = FocusManager.Instance.GetSpecificPointerEventData(pointingSource);
-            if (pointerInputEventData != null && inputEventData.selectedObject != null && pressType == InteractionSourcePressInfo.Select)
+            if (pointerInputEventData != null && pressType == InteractionSourcePressInfo.Select)
             {
                 pointerInputEventData.InputSource = source;
                 pointerInputEventData.SourceId = sourceId;
 
-                ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerUpHandler);
-                ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerClickHandler);
+                if (inputEventData.selectedObject != null)
+                {
+                    ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerUpHandler);
+                    ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerClickHandler);
+                }
+
                 pointerInputEventData.Clear();
             }
         }
@@ -461,7 +465,7 @@ namespace MixedRealityToolkit.InputModule
             IPointingSource pointingSource;
             FocusManager.Instance.TryGetPointingSource(inputEventData, out pointingSource);
             PointerInputEventData pointerInputEventData = FocusManager.Instance.GetSpecificPointerEventData(pointingSource);
-            if (pointerInputEventData != null && inputEventData.selectedObject != null && pressType == InteractionSourcePressInfo.Select)
+            if (pointerInputEventData != null && pressType == InteractionSourcePressInfo.Select)
             {
                 pointerInputEventData.InputSource = source;
                 pointerInputEventData.SourceId = sourceId;
@@ -474,7 +478,10 @@ namespace MixedRealityToolkit.InputModule
                 pointerInputEventData.pressPosition = pointerInputEventData.position;
                 pointerInputEventData.pointerPressRaycast = pointerInputEventData.pointerCurrentRaycast;
 
-                ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerDownHandler);
+                if (inputEventData.selectedObject != null)
+                {
+                    ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerDownHandler);
+                }
             }
         }
 
