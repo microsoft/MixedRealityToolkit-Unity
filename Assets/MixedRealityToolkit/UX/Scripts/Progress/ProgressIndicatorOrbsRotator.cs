@@ -3,16 +3,15 @@
 
 using UnityEngine;
 
-
 namespace MixedRealityToolkit.UX.Progress
 {
     public class ProgressIndicatorOrbsRotator : MonoBehaviour
     {
         [SerializeField]
-        public GameObject[] orbs;
+        private GameObject[] orbs = new GameObject[0];
 
         [SerializeField]
-        private Material orbMaterial;
+        private Material orbMaterial = null;
 
         public float RotationSpeedRawDegrees;
 
@@ -20,13 +19,10 @@ namespace MixedRealityToolkit.UX.Progress
 
         public float Acceleration;
 
-        public int Revolutions;
-
         public bool TestStop = false;
 
         public bool HasAnimationFinished = false;
 
-        private float timeElapsed;
         private int deployedCount;
         private bool timeUpdated;
         private float[] angles;
@@ -44,7 +40,6 @@ namespace MixedRealityToolkit.UX.Progress
             timeSlice = 0;
             timeUpdated = false;
             deployedCount = 1;
-            timeElapsed = 0.0f;
             angles = new float[orbs.Length];
             for (int i = 0; i < angles.Length; ++i)
             {
@@ -53,11 +48,11 @@ namespace MixedRealityToolkit.UX.Progress
 
             dots = new GameObject[5];
             materials = new Material[dots.Length];
-            
+
             for (int i = 0; i < orbs.Length; ++i)
             {
-                materials[i] = (Material)Instantiate(orbMaterial);
-                materials[i].color = new Color(1, 1, 1, 1);
+                materials[i] = Instantiate(orbMaterial);
+                materials[i].color = Color.white;
                 dots[i] = orbs[i].transform.GetChild(0).gameObject;
                 materials[i] = dots[i].GetComponent<Renderer>().sharedMaterial = materials[i];
             }
@@ -86,13 +81,11 @@ namespace MixedRealityToolkit.UX.Progress
             if (timeUpdated == false)
             {
                 timeSlice = 0.0f;
-                timeElapsed = 0.0f;
                 timeUpdated = true;
             }
             else
             {
                 timeSlice = Time.unscaledDeltaTime;
-                timeElapsed += timeSlice;
             }
         }
 
@@ -146,7 +139,7 @@ namespace MixedRealityToolkit.UX.Progress
 
         private void HandleTestStop()
         {
-            if (TestStop == true && stopRequested == false)
+            if (TestStop && stopRequested == false)
             {
                 Stop();
             }
@@ -154,7 +147,7 @@ namespace MixedRealityToolkit.UX.Progress
 
         private void HandleStopping()
         {
-            if (stopRequested == true && materials[orbs.Length - 1].color.a <= 0.01f)
+            if (stopRequested && materials[orbs.Length - 1].color.a <= 0.01f)
             {
                 HasAnimationFinished = true;
             }

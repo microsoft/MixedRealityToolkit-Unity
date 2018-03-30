@@ -1,7 +1,6 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using UnityEngine;
 
 namespace MixedRealityToolkit.UX.ToolTips
@@ -19,36 +18,45 @@ namespace MixedRealityToolkit.UX.ToolTips
         }
 
         [SerializeField]
-        private Transform cornerTopLeft;
+        private Transform cornerTopLeft = null;
+
         [SerializeField]
-        private Transform cornerTopRight;
+        private Transform cornerTopRight = null;
+
         [SerializeField]
-        private Transform cornerBotRight;
+        private Transform cornerBotRight = null;
+
         [SerializeField]
-        private Transform cornerBotLeft;
+        private Transform cornerBotLeft = null;
+
         [SerializeField]
         [Range(0.01f, 2f)]
         private float cornerScale = 1f;
+
         [SerializeField]
         private ScaleModeEnum scaleMode = ScaleModeEnum.World;
-        
-        protected override void ContentChange() {
+
+        protected override void ContentChange()
+        {
             ScaleToFitContent();
         }
 
-        protected override void ScaleToFitContent ()
+        protected override void ScaleToFitContent()
         {
             // Get the local size of the content - this is the scale of the text under the content parent
             Vector3 localContentSize = toolTip.LocalContentSize;
             localContentSize.z = 1;
+
             // Multiply it by 0.5 to get extents
             localContentSize *= 0.5f;
             Vector3 localContentOffset = toolTip.LocalContentOffset;
+
             // Put the corner objects at the corners
-            Vector3 topLeft = new Vector3(-localContentSize.x + localContentOffset.x, localContentSize.y + localContentOffset.y, localContentOffset.x);
-            Vector3 topRight = new Vector3(localContentSize.x + localContentOffset.x, localContentSize.y + localContentOffset.y, localContentOffset.x);
-            Vector3 botRight = new Vector3(localContentSize.x + localContentOffset.x, -localContentSize.y + localContentOffset.y, localContentOffset.x);
-            Vector3 botLeft = new Vector3(-localContentSize.x + localContentOffset.x, -localContentSize.y + localContentOffset.y, localContentOffset.x);
+            var topLeft = new Vector3(-localContentSize.x + localContentOffset.x, localContentSize.y + localContentOffset.y, localContentOffset.x);
+            var topRight = new Vector3(localContentSize.x + localContentOffset.x, localContentSize.y + localContentOffset.y, localContentOffset.x);
+            var botRight = new Vector3(localContentSize.x + localContentOffset.x, -localContentSize.y + localContentOffset.y, localContentOffset.x);
+            var botLeft = new Vector3(-localContentSize.x + localContentOffset.x, -localContentSize.y + localContentOffset.y, localContentOffset.x);
+
             if (cornerTopLeft != null)
             {
                 cornerTopLeft.localPosition = topLeft;
@@ -81,7 +89,6 @@ namespace MixedRealityToolkit.UX.ToolTips
                     break;
 
                 case ScaleModeEnum.Local:
-                    Vector3 localScale = cornerTopLeft.lossyScale;
                     float smallestDimension = Mathf.Min(Mathf.Min(globalScale.x, globalScale.y), globalScale.z);
                     globalScale = Vector3.one * smallestDimension;
                     break;

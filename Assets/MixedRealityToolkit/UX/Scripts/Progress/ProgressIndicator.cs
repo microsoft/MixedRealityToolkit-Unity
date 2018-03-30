@@ -12,28 +12,7 @@ namespace MixedRealityToolkit.UX.Progress
     /// </summary>
     public class ProgressIndicator : Singleton<ProgressIndicator>
     {
-        const float SmoothProgressSpeed = 10f;
-
-        public enum IndicatorStyleEnum
-        {
-            None,           // Don't display an activity indicator
-            StaticIcon,     // Display a static icon
-            AnimatedOrbs,   // Display animated orbs
-            Prefab,         // Display a custom prefab
-        }
-
-        public enum ProgressStyleEnum
-        {
-            None,           // Don't display a progress number
-            Percentage,     // Display progress as a 0-100%
-            ProgressBar     // Display progress as a progress bar
-        }
-
-        public enum MessageStyleEnum
-        {
-            None,           // Don't display a message
-            Visible,        // Display a message
-        }
+        private const float SmoothProgressSpeed = 10f;
 
         public bool IsLoading
         {
@@ -43,53 +22,57 @@ namespace MixedRealityToolkit.UX.Progress
             }
         }
 
-        [SerializeField]
-        private IndicatorStyleEnum defaultIndicatorStyle = IndicatorStyleEnum.AnimatedOrbs;
-        [SerializeField]
-        private ProgressStyleEnum defaultProgressStyle = ProgressStyleEnum.Percentage;
-        [SerializeField]
-        private MessageStyleEnum defaultMessageStyle = MessageStyleEnum.Visible;
-
-        // The default prefab used by the 'Prefab' indicator style
-        [SerializeField]
-        private GameObject defaultPrefab;
-
-        // The default icon used by the 'StaticIcon' indicator style
-        [SerializeField]
-        private GameObject defaultIconPrefab;
-
-        [SerializeField]
-        private GameObject defaultOrbsPrefab;
-
-        // The progress bar container object
-        [SerializeField]
-        private GameObject progressBarContainer;
-
-        // The animated progress bar object
-        [SerializeField]
-        private Transform progressBar;
-
-        // The message text used by the 'Visible' message style
-        [SerializeField]
-        private TextMesh messageText;
-
-        // The progress text used by all non-'None' progress styles
-        [SerializeField]
-        private TextMesh progressText;
-
-        [SerializeField]
-        private Animator animator;
-
-        public float Progress {
-            get {
+        public float Progress
+        {
+            get
+            {
                 return smoothProgress;
             }
         }
 
+        [SerializeField]
+        private IndicatorStyleEnum defaultIndicatorStyle = IndicatorStyleEnum.AnimatedOrbs;
+
+        [SerializeField]
+        private ProgressStyleEnum defaultProgressStyle = ProgressStyleEnum.Percentage;
+
+        //[SerializeField]
+        //private MessageStyleEnum defaultMessageStyle = MessageStyleEnum.Visible;
+
+        // The default prefab used by the 'Prefab' indicator style
+        [SerializeField]
+        private GameObject defaultPrefab = null;
+
+        // The default icon used by the 'StaticIcon' indicator style
+        [SerializeField]
+        private GameObject defaultIconPrefab = null;
+
+        [SerializeField]
+        private GameObject defaultOrbsPrefab = null;
+
+        // The progress bar container object
+        [SerializeField]
+        private GameObject progressBarContainer = null;
+
+        // The animated progress bar object
+        [SerializeField]
+        private Transform progressBar = null;
+
+        // The message text used by the 'Visible' message style
+        [SerializeField]
+        private TextMesh messageText = null;
+
+        // The progress text used by all non-'None' progress styles
+        [SerializeField]
+        private TextMesh progressText = null;
+
+        [SerializeField]
+        private Animator animator = null;
+
         private float smoothProgress = 0f;
         private float targetProgress = 0f;
         private bool closing = false;
-        private GameObject instantiatedCustomObject;
+        private GameObject instantiatedCustomObject = null;
 
         /// <summary>
         /// Format to be used for the progress number
@@ -103,11 +86,10 @@ namespace MixedRealityToolkit.UX.Progress
         /// <param name="progressStyle"></param>
         /// <param name="messageStyle"></param>
         /// <param name="message"></param>
-        /// <param name="icon"></param>
-        public void Open (IndicatorStyleEnum indicatorStyle, ProgressStyleEnum progressStyle, MessageStyleEnum messageStyle, string message = "", GameObject prefab = null)
+        /// <param name="prefab"></param>
+        public void Open(IndicatorStyleEnum indicatorStyle, ProgressStyleEnum progressStyle, MessageStyleEnum messageStyle, string message = "", GameObject prefab = null)
         {
-            if (gameObject.activeSelf)
-                return;
+            if (gameObject.activeSelf) { return; }
 
             // Make sure we aren't parented under anything
             transform.parent = null;
@@ -123,7 +105,7 @@ namespace MixedRealityToolkit.UX.Progress
             // Reset our loading progress
             smoothProgress = 0f;
             targetProgress = 0f;
-            
+
             // Re-enable objects based on our style
             switch (indicatorStyle)
             {
@@ -134,11 +116,11 @@ namespace MixedRealityToolkit.UX.Progress
                     // Instantiate our custom object under our animator
                     if (defaultIconPrefab == null)
                     {
-                        UnityEngine.Debug.LogError("No Icon prefab available in loading dialog, spawning without one");
+                        Debug.LogError("No Icon prefab available in loading dialog, spawning without one");
                     }
                     else
                     {
-                        instantiatedCustomObject = GameObject.Instantiate(defaultIconPrefab) as GameObject;
+                        instantiatedCustomObject = Instantiate(defaultIconPrefab);
                         instantiatedCustomObject.transform.localPosition = new Vector3(0.0f, 13.0f, 0.0f);
                         instantiatedCustomObject.transform.localRotation = Quaternion.identity;
                         instantiatedCustomObject.transform.localScale = new Vector3(10.0f, 10.0f, 10.0f);
@@ -151,7 +133,7 @@ namespace MixedRealityToolkit.UX.Progress
                 case IndicatorStyleEnum.AnimatedOrbs:
                     if (defaultOrbsPrefab != null)
                     {
-                        instantiatedCustomObject = GameObject.Instantiate(defaultOrbsPrefab) as GameObject;
+                        instantiatedCustomObject = Instantiate(defaultOrbsPrefab);
                         instantiatedCustomObject.transform.localPosition = new Vector3(0.0f, 25.0f, 0.0f);
                         //instantiatedCustomObject.transform.localRotation = Quaternion.identity;
                         instantiatedCustomObject.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
@@ -165,11 +147,11 @@ namespace MixedRealityToolkit.UX.Progress
                     // Instantiate our custom object under our animator
                     if (defaultPrefab == null && prefab == null)
                     {
-                        UnityEngine.Debug.LogError("No prefab available in loading dialog, spawning without one");
+                        Debug.LogError("No prefab available in loading dialog, spawning without one");
                     }
                     else
                     {
-                        instantiatedCustomObject = GameObject.Instantiate(defaultPrefab) as GameObject;
+                        instantiatedCustomObject = Instantiate(defaultPrefab);
                         instantiatedCustomObject.transform.localPosition = new Vector3(0.0f, 20.0f, 0.0f);
                         instantiatedCustomObject.transform.localRotation = Quaternion.identity;
                         instantiatedCustomObject.transform.localScale = new Vector3(10.0f, 10.0f, 10.0f);
@@ -179,6 +161,7 @@ namespace MixedRealityToolkit.UX.Progress
                     }
                     break;
             }
+
             animator.SetTrigger("Open");
         }
 
@@ -186,7 +169,7 @@ namespace MixedRealityToolkit.UX.Progress
         /// Opens the dialog with default settings for indicator and progress
         /// </summary>
         /// <param name="message"></param>
-        public void Open (string message)
+        public void Open(string message)
         {
             Open(defaultIndicatorStyle, defaultProgressStyle, MessageStyleEnum.Visible, message, null);
         }
@@ -209,7 +192,7 @@ namespace MixedRealityToolkit.UX.Progress
         /// Has no effect until Open is called.
         /// </summary>
         /// <param name="progress"></param>
-        public void SetProgress (float progress)
+        public void SetProgress(float progress)
         {
             targetProgress = Mathf.Clamp01(progress) * 100;
             // If progress is 100, assume we want to snap to that value
@@ -226,7 +209,7 @@ namespace MixedRealityToolkit.UX.Progress
         /// <summary>
         /// Initiates the process of closing the dialog.
         /// </summary>
-        public void Close ()
+        public void Close()
         {
             if (!gameObject.activeSelf)
                 return;
@@ -244,7 +227,7 @@ namespace MixedRealityToolkit.UX.Progress
             messageText.gameObject.SetActive(false);
         }
 
-        private void Update ()
+        private void Update()
         {
             smoothProgress = Mathf.Lerp(smoothProgress, targetProgress, Time.deltaTime * SmoothProgressSpeed);
             progressBar.localScale = new Vector3(smoothProgress / 100, 1f, 1f);
@@ -261,7 +244,7 @@ namespace MixedRealityToolkit.UX.Progress
                     gameObject.SetActive(false);
                     // Destroy our custom object if we made one
                     if (instantiatedCustomObject != null)
-                        GameObject.Destroy(instantiatedCustomObject);
+                        Destroy(instantiatedCustomObject);
                 }
             }
         }

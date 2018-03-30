@@ -15,10 +15,10 @@ namespace MixedRealityToolkit.Examples.UX
     public class ProgressExamples : MonoBehaviour
     {
         [SerializeField]
-        private GameObject objectToScaleBasedOnHMD;
+        private GameObject objectToScaleBasedOnHMD = null;
 
         [SerializeField]
-        private Vector3 scaleIfImmersive = new Vector3(1.3f, 1.3f, 1);
+        private Vector3 scaleIfImmersive = new Vector3(1.3f, 1.3f, 1f);
 
         [Header("How long to spend on each stage of loading")]
         [SerializeField]
@@ -253,7 +253,7 @@ namespace MixedRealityToolkit.Examples.UX
 #endif
         }
 
-        public void LaunchProgress(ProgressIndicator.IndicatorStyleEnum indicatorStyle, ProgressIndicator.ProgressStyleEnum progressStyle)
+        public void LaunchProgress(IndicatorStyleEnum indicatorStyle, ProgressStyleEnum progressStyle)
         {
             if (ProgressIndicator.Instance.IsLoading)
             {
@@ -262,88 +262,82 @@ namespace MixedRealityToolkit.Examples.UX
 
             switch (indicatorStyle)
             {
-                case ProgressIndicator.IndicatorStyleEnum.None:
+                case IndicatorStyleEnum.None:
                     //progressbar examples all assume IndicatorStyleEnum = None
                     switch (progressStyle)
                     {
-                        case ProgressIndicator.ProgressStyleEnum.Percentage:
+                        case ProgressStyleEnum.Percentage:
                             ProgressIndicator.Instance.Open(
-                                ProgressIndicator.IndicatorStyleEnum.None,
-                                ProgressIndicator.ProgressStyleEnum.Percentage,
-                                ProgressIndicator.MessageStyleEnum.Visible,
+                                IndicatorStyleEnum.None,
+                                ProgressStyleEnum.Percentage,
+                                MessageStyleEnum.Visible,
                                 LeadInMessage);
                             StartCoroutine(LoadOverTime(LoadProgressMessage));
                             break;
 
-                        case ProgressIndicator.ProgressStyleEnum.ProgressBar:
+                        case ProgressStyleEnum.ProgressBar:
                             ProgressIndicator.Instance.Open(
-                                ProgressIndicator.IndicatorStyleEnum.None,
-                                ProgressIndicator.ProgressStyleEnum.ProgressBar,
-                                ProgressIndicator.MessageStyleEnum.Visible,
+                                IndicatorStyleEnum.None,
+                                ProgressStyleEnum.ProgressBar,
+                                MessageStyleEnum.Visible,
                                 LeadInMessage);
                             StartCoroutine(LoadOverTime(LoadProgressBarMessage));
                             break;
 
-                        case ProgressIndicator.ProgressStyleEnum.None:
+                        case ProgressStyleEnum.None:
                             ProgressIndicator.Instance.Open(
-                            ProgressIndicator.IndicatorStyleEnum.None,
-                            ProgressIndicator.ProgressStyleEnum.None,
-                            ProgressIndicator.MessageStyleEnum.Visible,
+                            IndicatorStyleEnum.None,
+                            ProgressStyleEnum.None,
+                            MessageStyleEnum.Visible,
                             LeadInMessage);
                             StartCoroutine(LoadOverTime(LoadTextMessage));
-                        break;
-                     }
+                            break;
+                    }
                     break;
 
-                case ProgressIndicator.IndicatorStyleEnum.AnimatedOrbs:
+                case IndicatorStyleEnum.AnimatedOrbs:
                     ProgressIndicator.Instance.Open(
-                             ProgressIndicator.IndicatorStyleEnum.AnimatedOrbs,
-                             ProgressIndicator.ProgressStyleEnum.None,
-                             ProgressIndicator.MessageStyleEnum.Visible,
+                             IndicatorStyleEnum.AnimatedOrbs,
+                             ProgressStyleEnum.None,
+                             MessageStyleEnum.Visible,
                              LeadInMessage);
                     StartCoroutine(LoadOverTime(LoadOrbsMessage));
                     break;
 
-                case ProgressIndicator.IndicatorStyleEnum.StaticIcon:
+                case IndicatorStyleEnum.StaticIcon:
                     ProgressIndicator.Instance.Open(
-                        ProgressIndicator.IndicatorStyleEnum.StaticIcon,
-                        ProgressIndicator.ProgressStyleEnum.None,
-                        ProgressIndicator.MessageStyleEnum.Visible,
+                        IndicatorStyleEnum.StaticIcon,
+                        ProgressStyleEnum.None,
+                        MessageStyleEnum.Visible,
                         LeadInMessage,
                         null);
                     StartCoroutine(LoadOverTime(LoadIconMessage));
                     break;
 
-                case ProgressIndicator.IndicatorStyleEnum.Prefab:
+                case IndicatorStyleEnum.Prefab:
                     ProgressIndicator.Instance.Open(
-                        ProgressIndicator.IndicatorStyleEnum.Prefab,
-                        ProgressIndicator.ProgressStyleEnum.None,
-                        ProgressIndicator.MessageStyleEnum.Visible,
+                        IndicatorStyleEnum.Prefab,
+                        ProgressStyleEnum.None,
+                        MessageStyleEnum.Visible,
                         LeadInMessage,
                         LoadingPrefab);
                     StartCoroutine(LoadOverTime(LoadPrefabMessage));
-                    break;
-
-                default:
                     break;
             }
         }
 
         protected IEnumerator LoadOverTime(string message)
         {
-            // Wait for lead in time to end (optional)
-            float startTime = Time.time;
             yield return new WaitForSeconds(LeadInTime);
 
-            // Progress must be a number from 0-1 (it will be clamped)
-            // It will be formatted according to 'ProgressFormat' (0.0 by default) and followed with a '%' character 
-            float progress = 0f;
             // While we're in the loading period, update progress and message in 1/4 second intervals
             // Displayed progress is smoothed out so you don't have to update every frame
-            startTime = Time.time;
+            float startTime = Time.time;
             while (Time.time < startTime + LoadingTime)
             {
-                progress = (Time.time - startTime) / LoadingTime;
+                // Progress must be a number from 0-1 (it will be clamped)
+                // It will be formatted according to 'ProgressFormat' (0.0 by default) and followed with a '%' character 
+                float progress = (Time.time - startTime) / LoadingTime;
                 ProgressIndicator.Instance.SetMessage(message);
                 ProgressIndicator.Instance.SetProgress(progress);
                 yield return new WaitForSeconds(Random.Range(0.15f, 0.5f));
@@ -362,8 +356,6 @@ namespace MixedRealityToolkit.Examples.UX
             {
                 yield return null;
             }
-
-            yield break;
         }
     }
 }

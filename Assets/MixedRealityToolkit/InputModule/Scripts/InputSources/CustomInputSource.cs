@@ -4,7 +4,6 @@
 using MixedRealityToolkit.InputModule.Utilities.Interations;
 using System;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace MixedRealityToolkit.InputModule.InputSources
 {
@@ -102,12 +101,12 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
             if (SupportsPosition)
             {
-                supportedInputInfo |= SupportedInputInfo.Position;
+                supportedInputInfo |= SupportedInputInfo.PointerPosition;
             }
 
             if (SupportsRotation)
             {
-                supportedInputInfo |= SupportedInputInfo.Rotation;
+                supportedInputInfo |= SupportedInputInfo.PointerRotation;
             }
 
             if (SupportsRay)
