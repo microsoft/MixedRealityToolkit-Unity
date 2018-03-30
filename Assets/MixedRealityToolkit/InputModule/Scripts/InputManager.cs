@@ -431,7 +431,7 @@ namespace MixedRealityToolkit.InputModule
             IPointingSource pointingSource;
             FocusManager.Instance.TryGetPointingSource(inputEventData, out pointingSource);
             PointerInputEventData pointerInputEventData = FocusManager.Instance.GetSpecificPointerEventData(pointingSource);
-            if (pointerInputEventData != null && pressType == InteractionSourcePressInfo.Select)
+            if (pointerInputEventData != null && inputEventData.selectedObject != null && pressType == InteractionSourcePressInfo.Select)
             {
                 pointerInputEventData.InputSource = source;
                 pointerInputEventData.SourceId = sourceId;
@@ -461,7 +461,7 @@ namespace MixedRealityToolkit.InputModule
             IPointingSource pointingSource;
             FocusManager.Instance.TryGetPointingSource(inputEventData, out pointingSource);
             PointerInputEventData pointerInputEventData = FocusManager.Instance.GetSpecificPointerEventData(pointingSource);
-            if (pointerInputEventData != null && pressType == InteractionSourcePressInfo.Select)
+            if (pointerInputEventData != null && inputEventData.selectedObject != null && pressType == InteractionSourcePressInfo.Select)
             {
                 pointerInputEventData.InputSource = source;
                 pointerInputEventData.SourceId = sourceId;
