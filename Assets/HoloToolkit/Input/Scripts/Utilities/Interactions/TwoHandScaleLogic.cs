@@ -23,8 +23,8 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         /// <summary>
         /// Initialize system with source info from controllers/hands
         /// </summary>
-        /// <param name="handsPressedMap"></param>
-        /// <param name="manipulationRoot"></param>
+        /// <param name="handsPressedMap">Dictionary that maps inputSources to states</param>
+        /// <param name="manipulationRoot">Transform of gameObject to be manipulated</param>
         public virtual void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
         {
             m_startHandDistanceMeters = GetMinDistanceBetweenHands(handsPressedMap);
@@ -34,7 +34,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         /// <summary>
         /// Finds the minimum distance between all pairs of hands
         /// </summary>
-        /// <returns></returns>
+        /// <returns>a float describing the distance between Controllers or Hands</returns>
         private float GetMinDistanceBetweenHands(Dictionary<uint, Vector3> handsPressedMap)
         {
             var result = float.MaxValue;
@@ -58,7 +58,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         /// update Gameobject with new Scale state
         /// </summary>
         /// <param name="handsPressedMap"></param>
-        /// <returns></returns>
+        /// <returns>a Vector3 describing the new Scale of the object being manipulated</returns>
         public virtual Vector3 Update(Dictionary<uint, Vector3> handsPressedMap)
         {
             var ratioMultiplier = GetMinDistanceBetweenHands(handsPressedMap) / m_startHandDistanceMeters;

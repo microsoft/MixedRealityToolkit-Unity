@@ -16,8 +16,11 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
     /// </summary>
     public class TwoHandMoveLogic
     {
-        private float m_handRefDistance;
-        private float m_objRefDistance;
+        /// <summary>
+        /// private variables 
+        /// </summary>
+        private float handRefDistance;
+        private float objRefDistance;
         private const float DistanceScale = 2f;
 
         /// <summary>
@@ -33,8 +36,8 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         /// <summary>
         /// Initialize system with controller/hand states- starting position and current Transform.
         /// </summary>
-        /// <param name="startHandPositionMeters"></param>
-        /// <param name="manipulationRoot"></param>
+        /// <param name="startHandPositionMeters">starting position of Controllers/Hands which determine orientation</param>
+        /// <param name="manipulationRoot">Transform of gameObject being manipulated</param>
         public void Setup(Vector3 startHandPositionMeters, Transform manipulationRoot)
         {
             var newHandPosition = startHandPositionMeters;
@@ -42,8 +45,8 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
             // The pivot is just below and in front of the head.
             var pivotPosition = GetHandPivotPosition();
 
-            m_handRefDistance = Vector3.Distance(newHandPosition, pivotPosition);
-            m_objRefDistance = Vector3.Distance(manipulationRoot.position, pivotPosition);
+            handRefDistance = Vector3.Distance(newHandPosition, pivotPosition);
+            objRefDistance = Vector3.Distance(manipulationRoot.position, pivotPosition);
 
             var objDirectoin = Vector3.Normalize(manipulationRoot.position - pivotPosition);
             var handDirection = Vector3.Normalize(newHandPosition - pivotPosition);
@@ -61,8 +64,8 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         /// <summary>
         /// Updates gameobject with new position information of controller/hand
         /// </summary>
-        /// <param name="centroid"></param>
-        /// <param name="manipulationObjectPosition"></param>
+        /// <param name="centroid">center of translation to be used for Manipulation</param>
+        /// <param name="manipulationObjectPosition">position of gameobject to be manipulated</param>
         /// <returns> a Vector3 describing the updated current Position of the gameObject being two-hand manipulated</returns>
         public Vector3 Update(Vector3 centroid, Vector3 manipulationObjectPosition)
         {
@@ -79,9 +82,9 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
 
             // Compute how far away the object should be based on the ratio of the current to original hand distance
             var currentHandDistance = Vector3.Magnitude(newHandPosition - pivotPosition);
-            var distanceRatio = currentHandDistance / m_handRefDistance;
+            var distanceRatio = currentHandDistance / handRefDistance;
             var distanceOffset = distanceRatio > 0 ? (distanceRatio - 1f) * DistanceScale : 0;
-            var targetDistance = m_objRefDistance + distanceOffset;
+            var targetDistance = objRefDistance + distanceOffset;
 
             var newPosition = pivotPosition + (targetDirection * targetDistance);
 
@@ -92,7 +95,6 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
             }
 
             m_draggingPosition = newPosition;
-
 
             return m_draggingPosition;
         }
