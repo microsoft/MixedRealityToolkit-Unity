@@ -13,42 +13,27 @@ namespace MixedRealityToolkit.Common.Extensions
     {
         public static void RaiseEvent(this Action action)
         {
-            if (action != null)
-            {
-                action();
-            }
+            action?.Invoke();
         }
 
         public static void RaiseEvent<T>(this Action<T> action, T arg)
         {
-            if (action != null)
-            {
-                action(arg);
-            }
+            action?.Invoke(arg);
         }
 
         public static void RaiseEvent<T1, T2>(this Action<T1, T2> action, T1 arg1, T2 arg2)
         {
-            if (action != null)
-            {
-                action(arg1, arg2);
-            }
+            action?.Invoke(arg1, arg2);
         }
 
         public static void RaiseEvent<T1, T2, T3>(this Action<T1, T2, T3> action, T1 arg1, T2 arg2, T3 arg3)
         {
-            if (action != null)
-            {
-                action(arg1, arg2, arg3);
-            }
+            action?.Invoke(arg1, arg2, arg3);
         }
 
         public static void RaiseEvent<T1, T2, T3, T4>(this Action<T1, T2, T3, T4> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
         {
-            if (action != null)
-            {
-                action(arg1, arg2, arg3, arg4);
-            }
+            action?.Invoke(arg1, arg2, arg3, arg4);
         }
     }
 }

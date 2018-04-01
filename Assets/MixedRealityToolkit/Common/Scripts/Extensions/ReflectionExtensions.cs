@@ -25,7 +25,7 @@ namespace MixedRealityToolkit.Common.Extensions
             var result = type.GetTypeInfo().GetDeclaredMethod(methodName);
             if (((flags & BindingFlags.FlattenHierarchy) != 0) && result == null)
             {
-                var baseType = type.GetBaseType();
+                var baseType = type.GetTypeInfo().BaseType;
                 if (baseType != null)
                 {
                     return GetMethod(baseType, methodName, flags);
@@ -40,7 +40,7 @@ namespace MixedRealityToolkit.Common.Extensions
             var result = type.GetTypeInfo().GetDeclaredMethod(methodName);
             if (result == null)
             {
-                var baseType = type.GetBaseType();
+                var baseType = type.GetTypeInfo().BaseType;
                 if (baseType != null)
                 {
                     return GetMethod(baseType, methodName, bindingAttr, binder, parameters, modifiers);
