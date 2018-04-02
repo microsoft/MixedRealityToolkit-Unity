@@ -64,6 +64,5 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
             var ratioMultiplier = GetMinDistanceBetweenHands(handsPressedMap) / m_startHandDistanceMeters;
             return m_startObjectScale * ratioMultiplier;
         }
-
     }
 }
