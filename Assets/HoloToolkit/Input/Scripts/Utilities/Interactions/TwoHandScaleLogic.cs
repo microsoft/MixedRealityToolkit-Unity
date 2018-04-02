@@ -59,7 +59,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         /// </summary>
         /// <param name="handsPressedMap"></param>
         /// <returns>a Vector3 describing the new Scale of the object being manipulated</returns>
-        public virtual Vector3 Update(Dictionary<uint, Vector3> handsPressedMap)
+        public virtual Vector3 UpdateMap(Dictionary<uint, Vector3> handsPressedMap)
         {
             var ratioMultiplier = GetMinDistanceBetweenHands(handsPressedMap) / m_startHandDistanceMeters;
             return m_startObjectScale * ratioMultiplier;

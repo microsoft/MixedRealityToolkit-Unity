@@ -80,7 +80,6 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         /// <returns>A Vector3 describing the direction of the line connecting the inputSources</returns>
         private Vector3 GetHandlebarDirection(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
         {
-            Assert.IsTrue(handsPressedMap.Count > 1);
             var handsEnumerator = handsPressedMap.Values.GetEnumerator();
             handsEnumerator.MoveNext();
             var hand1 = handsEnumerator.Current;
@@ -127,10 +126,8 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         public Quaternion Update(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot, Quaternion currentRotation)
         {
             var handlebarDirection = GetHandlebarDirection(handsPressedMap, manipulationRoot);
-            var handlebarDirectionProjected = ProjectHandlebarGivenConstraint(currentRotationConstraint, handlebarDirection,
-                manipulationRoot);
-            var prevHandlebarDirectionProjected = ProjectHandlebarGivenConstraint(currentRotationConstraint,
-                previousHandlebarRotation, manipulationRoot);
+            var handlebarDirectionProjected = ProjectHandlebarGivenConstraint(currentRotationConstraint, handlebarDirection, manipulationRoot);
+            var prevHandlebarDirectionProjected = ProjectHandlebarGivenConstraint(currentRotationConstraint, previousHandlebarRotation, manipulationRoot);
             previousHandlebarRotation = handlebarDirection;
 
             var rotationDelta = Quaternion.FromToRotation(prevHandlebarDirectionProjected, handlebarDirectionProjected);

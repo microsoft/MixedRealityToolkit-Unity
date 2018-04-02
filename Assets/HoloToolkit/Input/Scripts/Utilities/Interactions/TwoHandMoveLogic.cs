@@ -22,6 +22,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         private float handRefDistance;
         private float objRefDistance;
         private const float DistanceScale = 2f;
+        private static readonly Vector3 initialMove = new Vector3(0, -0.2f, 0);
 
         /// <summary>
         /// The initial angle between the hand and the object
@@ -105,7 +106,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         ///</summary>
         public static Vector3 GetHandPivotPosition()
         {
-            Vector3 pivot = CameraCache.Main.transform.position + new Vector3(0, -0.2f, 0) - CameraCache.Main.transform.forward * 0.2f; // a bit lower and behind
+            Vector3 pivot = CameraCache.Main.transform.position + initialMove - CameraCache.Main.transform.forward * 0.2f; // a bit lower and behind
             return pivot;
         }
     }

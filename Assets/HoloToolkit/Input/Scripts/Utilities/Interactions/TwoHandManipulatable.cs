@@ -21,16 +21,6 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
     /// </summary>
     public class TwoHandManipulatable : MonoBehaviour, IInputHandler, ISourceStateHandler
     {
-        /// <summary>
-        /// Event that gets raised when user begins manipulating the object
-        /// </summary>
-        public event Action StartedManipulating;
-
-        /// <summary>
-        /// Event that gets raised when the user ends manipulation
-        /// </summary>
-        public event Action StoppedManipulating;
-
         [SerializeField]
         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
         private Transform HostTransform = null;
@@ -38,6 +28,18 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the HoloToolKit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here. This is optional.")]
         private BoundingBox boundingBoxPrefab = null;
+
+        /// <summary>
+        /// enum describing range of affine xforms that are allowed.
+        /// </summary>
+        private enum TwoHandedManipulation
+        {
+            Scale,
+            Rotate,
+            MoveScale,
+            RotateScale,
+            MoveRotateScale
+        };
 
         /// <summary>
         /// Reference to the Prefab from which clone is instantiated.
@@ -54,18 +56,6 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
                 return boundingBoxPrefab;
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public enum TwoHandedManipulation
-        {
-            Scale,
-            Rotate,
-            MoveScale,
-            RotateScale,
-            MoveRotateScale
-        };
 
         [SerializeField]
         [Tooltip("What manipulation will two hands perform?")]
@@ -142,7 +132,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         /// <summary>
         /// SetManipulationMode
         /// </summary>
-        public void SetManipulationMode(TwoHandedManipulation mode)
+        private void SetManipulationMode(TwoHandedManipulation mode)
         {
             ManipulationMode = mode;
         }
@@ -186,7 +176,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
 
         private Vector3 GetInputPosition(InputEventData eventData)
         {
-            Vector3 result = Vector3.zero;
+            Vector3 result;
             eventData.InputSource.TryGetGripPosition(eventData.SourceId, out result);
             return result;
         }
@@ -229,9 +219,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         /// <summary>
         /// OnSourceDetected Event Handler
         /// </summary>
-        public void OnSourceDetected(SourceStateEventData eventData)
-        {
-        }
+        public void OnSourceDetected(SourceStateEventData eventData){}
 
         /// <summary>
         /// OnSourceLost
@@ -379,7 +367,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
             }
             if ((currentState & State.Scaling) > 0)
             {
-                targetScale = m_scaleLogic.Update(m_handsPressedLocationsMap);
+                targetScale = m_scaleLogic.UpdateMap(m_handsPressedLocationsMap);
             }
 
             HostTransform.position = targetPosition;
@@ -429,10 +417,6 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
 
         private void OnManipulationStarted()
         {
-            if (StartedManipulating != null)
-            {
-                StartedManipulating();
-            }
             InputManager.Instance.PushModalInputHandler(gameObject);
 
             //Show Bounding Box visual on manipulation interaction
@@ -441,10 +425,6 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
 
         private void OnManipulationEnded()
         {
-            if (StoppedManipulating != null)
-            {
-                StoppedManipulating();
-            }
             InputManager.Instance.PopModalInputHandler();
 
             //Hide Bounding Box visual on release

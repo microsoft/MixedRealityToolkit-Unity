@@ -292,8 +292,12 @@ namespace HoloToolkit.Unity.UX
         /// <summary>
         /// Method which instantiates new Transforms 
         /// if they have not been declared earlier.
-        /// The variable scaleTransform represents the transform 
-        /// belonging
+        /// Method assigns the variable scaleTransform 
+        /// which represents the transform 
+        /// to which the boundingbox aligns itself. It can be assigned
+        /// directly if 'this' already has a Transform. If not
+        /// it gets set by instantiating a new Transform.
+        /// Once it is set- the new transform becomes the parent of scaleTransform.
         /// </summary>
         protected virtual void CreateTransforms()
         {
