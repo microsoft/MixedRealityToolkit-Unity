@@ -53,7 +53,7 @@ namespace MixedRealityToolkit.Build
         /// <returns></returns>
         private static string GetBasicAuthHeader(ConnectInfo connectionInfo, bool isGetRequest = false)
         {
-            var auth = string.Format("{0}{1}:{2}", BuildDeployPrefs.UseSSL && !isGetRequest ? "auto-" : "", connectionInfo.User, connectionInfo.Password);
+            var auth = string.Format("{0}{1}:{2}", BuildDeployPreferences.UseSSL && !isGetRequest ? "auto-" : "", connectionInfo.User, connectionInfo.Password);
             auth = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(auth));
             return string.Format("Basic {0}", auth);
         }
@@ -679,7 +679,7 @@ namespace MixedRealityToolkit.Build
         /// <returns></returns>
         private static string FinalizeUrl(string targetUrl)
         {
-            string ssl = BuildDeployPrefs.UseSSL ? "s" : string.Empty;
+            string ssl = BuildDeployPreferences.UseSSL ? "s" : string.Empty;
 
             if (targetUrl.Contains("Local Machine"))
             {

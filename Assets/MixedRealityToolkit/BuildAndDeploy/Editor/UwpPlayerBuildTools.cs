@@ -2,13 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Build.DataStructures;
-using MixedRealityToolkit.Common.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Xml;
 using UnityEditor;
 using UnityEngine;
@@ -18,8 +15,13 @@ namespace MixedRealityToolkit.Build
     /// <summary>
     /// Class containing various utility methods to build a WSA solution from a Unity project.
     /// </summary>
-    public static class BuildSLNUtilities
+    public static class UwpPlayerBuildTools
     {
+        // Build configurations. Exactly one of these should be defined for any given build.
+        public const string BuildSymbolDebug = "DEBUG";
+        public const string BuildSymbolRelease = "RELEASE";
+        public const string BuildSymbolMaster = "MASTER";
+
         /// <summary>
         /// A method capable of configuring <see cref="BuildInfo"/> settings.
         /// </summary>
@@ -33,24 +35,6 @@ namespace MixedRealityToolkit.Build
         public static event BuildInfoConfigurationMethod OverrideBuildDefaults;
 
         /// <summary>
-        /// Call this method to give other code an opportunity to override <see cref="BuildInfo"/> defaults.
-        /// </summary>
-        /// <param name="toConfigure">>The settings to configure.</param>
-        /// <seealso cref="OverrideBuildDefaults"/>
-        public static void RaiseOverrideBuildDefaults(ref BuildInfo toConfigure)
-        {
-            if (OverrideBuildDefaults != null)
-            {
-                OverrideBuildDefaults(ref toConfigure);
-            }
-        }
-
-        // Build configurations. Exactly one of these should be defined for any given build.
-        public const string BuildSymbolDebug = "DEBUG";
-        public const string BuildSymbolRelease = "RELEASE";
-        public const string BuildSymbolMaster = "MASTER";
-
-        /// <summary>
         /// Event triggered when a build starts.
         /// </summary>
         public static event Action<BuildInfo> BuildStarted;
@@ -60,10 +44,63 @@ namespace MixedRealityToolkit.Build
         /// </summary>
         public static event Action<BuildInfo, string> BuildCompleted;
 
-        public static void PerformBuild(BuildInfo buildInfo)
+        /// <summary>
+        /// Call this method to give other code an opportunity to override <see cref="BuildInfo"/> defaults.
+        /// </summary>
+        /// <param name="toConfigure">The settings to configure.</param>
+        /// <seealso cref="OverrideBuildDefaults"/>
+        public static void RaiseOverrideBuildDefaults(ref BuildInfo toConfigure)
+        {
+            OverrideBuildDefaults?.Invoke(ref toConfigure);
+        }
+
+        /// <summary>
+        /// Get the Unity Project Root Path.
+        /// </summary>
+        /// <returns></returns>
+        public static string GetProjectPath()
+        {
+            return Path.GetDirectoryName(Path.GetFullPath(Application.dataPath));
+        }
+
+        private static void CopyBuildDirectory(string sourceDirectoryPath, string destinationDirectoryPath, CopyDirectoryInfo directoryInfo)
+        {
+            sourceDirectoryPath = Path.Combine(sourceDirectoryPath, directoryInfo.Source);
+            destinationDirectoryPath = Path.Combine(destinationDirectoryPath, directoryInfo.Destination ?? directoryInfo.Source);
+
+            Debug.Log($"{(directoryInfo.Recursive ? "Recursively copying" : "Copying")} \"{sourceDirectoryPath}\\{directoryInfo.Filter}\" to \"{destinationDirectoryPath}\"");
+
+            foreach (string sourceFilePath
+                in Directory.GetFiles(
+                    sourceDirectoryPath,
+                    directoryInfo.Filter,
+                    directoryInfo.Recursive ?
+                        SearchOption.AllDirectories :
+                        SearchOption.TopDirectoryOnly))
+            {
+                string destinationFilePath = Path.GetDirectoryName(sourceFilePath.Replace(sourceDirectoryPath, destinationDirectoryPath));
+                Debug.Assert(!string.IsNullOrEmpty(destinationFilePath));
+
+                try
+                {
+                    Directory.CreateDirectory(destinationFilePath);
+                    Debug.Assert(File.Exists(destinationFilePath));
+                    File.SetAttributes(destinationFilePath, FileAttributes.Normal);
+                    File.Copy(sourceFilePath, destinationFilePath, true);
+                    File.SetAttributes(destinationFilePath, FileAttributes.Normal);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogError($"Failed to copy \"{sourceFilePath}\" to \"{destinationFilePath}\" with \"{exception}\"");
+                }
+            }
+        }
+
+        public static void BuildUwpPlayer(BuildInfo buildInfo)
         {
             BuildTargetGroup buildTargetGroup = GetGroup(buildInfo.BuildTarget);
             string oldBuildSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup);
+
             if (!string.IsNullOrEmpty(oldBuildSymbols))
             {
                 if (buildInfo.HasConfigurationSymbol())
@@ -82,6 +119,7 @@ namespace MixedRealityToolkit.Build
                 {
                     buildInfo.AppendSymbols(BuildSymbolDebug);
                 }
+
             }
 
             if (buildInfo.HasAnySymbols(BuildSymbolDebug))
@@ -91,9 +129,9 @@ namespace MixedRealityToolkit.Build
 
             if (buildInfo.HasAnySymbols(BuildSymbolRelease))
             {
-                //Unity automatically adds the DEBUG symbol if the BuildOptions.Development flag is
-                //specified. In order to have debug symbols and the RELEASE symbols we have to
-                //inject the symbol Unity relies on to enable the /debug+ flag of csc.exe which is "DEVELOPMENT_BUILD"
+                // Unity automatically adds the DEBUG symbol if the BuildOptions.Development flag is
+                // specified. In order to have debug symbols and the RELEASE symbols we have to
+                // inject the symbol Unity relies on to enable the /debug+ flag of csc.exe which is "DEVELOPMENT_BUILD"
                 buildInfo.AppendSymbols("DEVELOPMENT_BUILD");
             }
 
@@ -128,23 +166,26 @@ namespace MixedRealityToolkit.Build
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, buildInfo.BuildSymbols);
             }
 
-            string buildError = "Error";
+            // For the WSA player, Unity builds into a target directory.
+            // For other players, the OutputPath parameter indicates the
+            // path to the target executable to build.
+            if (buildInfo.BuildTarget == BuildTarget.WSAPlayer)
+            {
+                Directory.CreateDirectory(buildInfo.OutputDirectory);
+            }
+
+            OnPreProcessBuild(buildInfo);
+
+            EditorUtility.DisplayProgressBar("Build Pipeline", "Herding all the cats...", 0.25f);
+
+            string buildError = "ERROR";
             try
             {
-                // For the WSA player, Unity builds into a target directory.
-                // For other players, the OutputPath parameter indicates the
-                // path to the target executable to build.
-                if (buildInfo.BuildTarget == BuildTarget.WSAPlayer)
-                {
-                    Directory.CreateDirectory(buildInfo.OutputDirectory);
-                }
-
-                OnPreProcessBuild(buildInfo);
                 buildError = BuildPipeline.BuildPlayer(
                     buildInfo.Scenes.ToArray(),
                     buildInfo.OutputDirectory,
                     buildInfo.BuildTarget,
-                    buildInfo.BuildOptions).ToString();
+                    buildInfo.BuildOptions);
 
                 if (buildError.StartsWith("Error"))
                 {
@@ -163,18 +204,39 @@ namespace MixedRealityToolkit.Build
                 PlayerSettings.colorSpace = oldColorSpace;
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, oldBuildSymbols);
 
-                if (oldWSAUWPBuildType.HasValue)
-                {
-                    EditorUserBuildSettings.wsaUWPBuildType = oldWSAUWPBuildType.Value;
-                }
+                EditorUserBuildSettings.wsaUWPBuildType = oldWSAUWPBuildType.Value;
 
                 EditorUserBuildSettings.wsaGenerateReferenceProjects = oldWSAGenerateReferenceProjects;
-
                 EditorUserBuildSettings.SwitchActiveBuildTarget(oldBuildTargetGroup, oldBuildTarget);
             }
         }
 
-        public static void ParseBuildCommandLine(ref BuildInfo buildInfo)
+        /// <summary>
+        /// Used to trigger a build from the command line for continuous integration.
+        /// </summary>
+        public static void BuildUwpPlayer_CommandLine()
+        {
+            var buildInfo = new BuildInfo
+            {
+                // Use scenes from the editor build settings.
+                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
+
+                // Configure a post build action to throw appropriate error code.
+                PostBuildAction = (innerBuildInfo, buildError) =>
+                {
+                    if (!string.IsNullOrEmpty(buildError))
+                    {
+                        EditorApplication.Exit(1);
+                    }
+                }
+            };
+
+            RaiseOverrideBuildDefaults(ref buildInfo);
+            ParseBuildCommandLine(ref buildInfo);
+            BuildUwpPlayer(buildInfo);
+        }
+
+        private static void ParseBuildCommandLine(ref BuildInfo buildInfo)
         {
             string[] arguments = Environment.GetCommandLineArgs();
 
@@ -190,7 +252,6 @@ namespace MixedRealityToolkit.Build
                 else if (string.Equals(arguments[i], "-wsaSDK", StringComparison.InvariantCultureIgnoreCase))
                 {
                     string wsaSdkArg = arguments[++i];
-
                     buildInfo.WSASdk = (WSASDK)Enum.Parse(typeof(WSASDK), wsaSdkArg);
                 }
                 else if (string.Equals(arguments[i], "-wsaUwpSdk", StringComparison.InvariantCultureIgnoreCase))
@@ -209,6 +270,14 @@ namespace MixedRealityToolkit.Build
                 {
                     buildInfo.OutputDirectory = arguments[++i];
                 }
+                else if (string.Equals(arguments[i], "-x86", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    buildInfo.BuildPlatform = arguments[++i].Substring(1);
+                }
+                else if (string.Equals(arguments[i], "-x64", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    buildInfo.BuildPlatform = arguments[++i].Substring(1);
+                }
                 else if (string.Equals(arguments[i], "-buildDesc", StringComparison.InvariantCultureIgnoreCase))
                 {
                     ParseBuildDescriptionFile(arguments[++i], ref buildInfo);
@@ -221,33 +290,9 @@ namespace MixedRealityToolkit.Build
             }
         }
 
-        public static void PerformBuild_CommandLine()
+        private static void ParseBuildDescriptionFile(string filename, ref BuildInfo buildInfo)
         {
-            var buildInfo = new BuildInfo
-            {
-                // Use scenes from the editor build settings.
-                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
-
-                // Configure a post build action to throw appropriate error code.
-                PostBuildAction = (innerBuildInfo, buildError) =>
-                {
-                    if (!string.IsNullOrEmpty(buildError))
-                    {
-                        EditorApplication.Exit(1);
-                    }
-                }
-            };
-
-            RaiseOverrideBuildDefaults(ref buildInfo);
-
-            ParseBuildCommandLine(ref buildInfo);
-
-            PerformBuild(buildInfo);
-        }
-
-        public static void ParseBuildDescriptionFile(string filename, ref BuildInfo buildInfo)
-        {
-            Debug.Log(string.Format(CultureInfo.InvariantCulture, "Build: Using \"{0}\" as build description", filename));
+            Debug.Log($"Build: Using \"{filename}\" as build description");
 
             // Parse the XML file
             var reader = new XmlTextReader(filename);
@@ -286,7 +331,7 @@ namespace MixedRealityToolkit.Build
             }
         }
 
-        private static IEnumerable<string> ReadSceneList(XmlTextReader reader)
+        private static IEnumerable<string> ReadSceneList(XmlReader reader)
         {
             var result = new List<string>();
             while (reader.Read())
@@ -301,7 +346,7 @@ namespace MixedRealityToolkit.Build
                                 if (string.Equals(reader.Name, "Name", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     result.Add(reader.Value);
-                                    Debug.Log(string.Format(CultureInfo.InvariantCulture, "Build: Adding scene \"{0}\"", reader.Value));
+                                    Debug.Log($"Build: Adding scene \"{reader.Value}\"");
                                 }
                             }
                         }
@@ -319,7 +364,7 @@ namespace MixedRealityToolkit.Build
             return result;
         }
 
-        private static IEnumerable<CopyDirectoryInfo> ReadCopyList(XmlTextReader reader)
+        private static IEnumerable<CopyDirectoryInfo> ReadCopyList(XmlReader reader)
         {
             var result = new List<CopyDirectoryInfo>();
             while (reader.Read())
@@ -330,7 +375,7 @@ namespace MixedRealityToolkit.Build
                         if (string.Equals(reader.Name, "Copy", StringComparison.InvariantCultureIgnoreCase))
                         {
                             string source = null;
-                            string dest = null;
+                            string destination = null;
                             string filter = null;
                             bool recursive = false;
 
@@ -342,7 +387,7 @@ namespace MixedRealityToolkit.Build
                                 }
                                 else if (string.Equals(reader.Name, "Destination", StringComparison.InvariantCultureIgnoreCase))
                                 {
-                                    dest = reader.Value;
+                                    destination = reader.Value;
                                 }
                                 else if (string.Equals(reader.Name, "Recursive", StringComparison.InvariantCultureIgnoreCase))
                                 {
@@ -356,12 +401,12 @@ namespace MixedRealityToolkit.Build
 
                             if (source != null)
                             {
-                                // Either the file specifies the Destination as well, or else CopyDirectory will use Source for Destination
+                                // Either the file specifies the Destination as well, or else CopyBuildDirectory will use Source for Destination
                                 var info = new CopyDirectoryInfo { Source = source };
 
-                                if (dest != null)
+                                if (destination != null)
                                 {
-                                    info.Destination = dest;
+                                    info.Destination = destination;
                                 }
 
                                 if (filter != null)
@@ -371,7 +416,7 @@ namespace MixedRealityToolkit.Build
 
                                 info.Recursive = recursive;
 
-                                Debug.Log(string.Format(CultureInfo.InvariantCulture, @"Build: Adding {0}copy ""{1}\{2}"" => ""{3}""", info.Recursive ? "Recursive " : "", info.Source, info.Filter, info.Destination ?? info.Source));
+                                Debug.Log($"Build: Adding {(info.Recursive ? "Recursive " : "")} copy \"{info.Source}\\{info.Filter}\" => \"{info.Destination ?? info.Source}\"");
 
                                 result.Add(info);
                             }
@@ -388,73 +433,46 @@ namespace MixedRealityToolkit.Build
             return result;
         }
 
-        public static void CopyDirectory(string sourceDirectoryPath, string destinationDirectoryPath, CopyDirectoryInfo directoryInfo)
-        {
-            sourceDirectoryPath = Path.Combine(sourceDirectoryPath, directoryInfo.Source);
-            destinationDirectoryPath = Path.Combine(destinationDirectoryPath, directoryInfo.Destination ?? directoryInfo.Source);
-
-            Debug.Log(string.Format(CultureInfo.InvariantCulture, @"{0} ""{1}\{2}"" to ""{3}""", directoryInfo.Recursive ? "Recursively copying" : "Copying", sourceDirectoryPath, directoryInfo.Filter, destinationDirectoryPath));
-
-            foreach (string sourceFilePath in Directory.GetFiles(sourceDirectoryPath, directoryInfo.Filter, directoryInfo.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
-            {
-                string destinationFilePath = sourceFilePath.Replace(sourceDirectoryPath, destinationDirectoryPath);
-                try
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(destinationFilePath));
-                    if (File.Exists(destinationFilePath))
-                    {
-                        File.SetAttributes(destinationFilePath, FileAttributes.Normal);
-                    }
-                    File.Copy(sourceFilePath, destinationFilePath, true);
-                    File.SetAttributes(destinationFilePath, FileAttributes.Normal);
-                }
-                catch (Exception exception)
-                {
-                    Debug.LogError(string.Format(CultureInfo.InvariantCulture, "Failed to copy \"{0}\" to \"{1}\" with \"{2}\"", sourceFilePath, destinationFilePath, exception));
-                }
-            }
-        }
-
         private static void OnPreProcessBuild(BuildInfo buildInfo)
         {
             // Raise the global event for listeners
-            BuildStarted.RaiseEvent(buildInfo);
+            BuildStarted?.Invoke(buildInfo);
 
             // Call the pre-build action, if any
-            if (buildInfo.PreBuildAction != null)
-            {
-                buildInfo.PreBuildAction(buildInfo);
-            }
+            buildInfo.PreBuildAction?.Invoke(buildInfo);
         }
 
-        private static void OnPostProcessBuild(BuildInfo buildInfo, string buildError)
+        private static async void OnPostProcessBuild(BuildInfo buildInfo, string buildError)
         {
             if (string.IsNullOrEmpty(buildError))
             {
+                string outputProjectDirectoryPath = Path.Combine(GetProjectPath(), buildInfo.OutputDirectory);
                 if (buildInfo.CopyDirectories != null)
                 {
                     string inputProjectDirectoryPath = GetProjectPath();
-                    string outputProjectDirectoryPath = Path.Combine(GetProjectPath(), buildInfo.OutputDirectory);
                     foreach (var directory in buildInfo.CopyDirectories)
                     {
-                        CopyDirectory(inputProjectDirectoryPath, outputProjectDirectoryPath, directory);
+                        CopyBuildDirectory(inputProjectDirectoryPath, outputProjectDirectoryPath, directory);
                     }
+                }
+
+                if (buildInfo.IsCommandLine && buildInfo.BuildAppx)
+                {
+                    await UwpAppxBuildTools.BuildAppxAsync(
+                            PlayerSettings.productName,
+                            true,
+                            buildInfo.Configuration,
+                            buildInfo.BuildPlatform,
+                            outputProjectDirectoryPath,
+                            true);
                 }
             }
 
             // Raise the global event for listeners
-            BuildCompleted.RaiseEvent(buildInfo, buildError);
+            BuildCompleted?.Invoke(buildInfo, buildError);
 
             // Call the post-build action, if any
-            if (buildInfo.PostBuildAction != null)
-            {
-                buildInfo.PostBuildAction(buildInfo, buildError);
-            }
-        }
-
-        public static string GetProjectPath()
-        {
-            return Path.GetDirectoryName(Path.GetFullPath(Application.dataPath));
+            buildInfo.PostBuildAction?.Invoke(buildInfo, buildError);
         }
     }
 }

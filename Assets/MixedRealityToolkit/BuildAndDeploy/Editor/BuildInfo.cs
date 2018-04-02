@@ -26,6 +26,23 @@ namespace MixedRealityToolkit.Build
 
         public BuildTarget BuildTarget { get; set; }
 
+        public string Configuration
+        {
+            get
+            {
+                if (!HasConfigurationSymbol() || HasAnySymbols(UwpPlayerBuildTools.BuildSymbolDebug))
+                {
+                    return UwpPlayerBuildTools.BuildSymbolDebug;
+                }
+
+                return HasAnySymbols(UwpPlayerBuildTools.BuildSymbolRelease) ?
+                        UwpPlayerBuildTools.BuildSymbolRelease :
+                        UwpPlayerBuildTools.BuildSymbolMaster;
+            }
+        }
+
+        public string BuildPlatform { get; set; }
+
         public WSASDK? WSASdk { get; set; }
 
         public string WSAUwpSdk { get; set; }
@@ -38,11 +55,14 @@ namespace MixedRealityToolkit.Build
 
         public bool IsCommandLine { get; set; }
 
+        public bool BuildAppx => HasAnySymbols("-buildAppx");
+
         public string BuildSymbols { get; private set; }
 
         public BuildInfo()
         {
             BuildSymbols = string.Empty;
+            BuildPlatform = "x86";
         }
 
         public void AppendSymbols(params string[] symbol)
@@ -76,18 +96,18 @@ namespace MixedRealityToolkit.Build
         public bool HasConfigurationSymbol()
         {
             return HasAnySymbols(
-                BuildSLNUtilities.BuildSymbolDebug,
-                BuildSLNUtilities.BuildSymbolRelease,
-                BuildSLNUtilities.BuildSymbolMaster);
+                UwpPlayerBuildTools.BuildSymbolDebug,
+                UwpPlayerBuildTools.BuildSymbolRelease,
+                UwpPlayerBuildTools.BuildSymbolMaster);
         }
 
         public static IEnumerable<string> RemoveConfigurationSymbols(string symbols)
         {
             return symbols.Split(';').Except(new[]
             {
-                BuildSLNUtilities.BuildSymbolDebug,
-                BuildSLNUtilities.BuildSymbolRelease,
-                BuildSLNUtilities.BuildSymbolMaster
+                UwpPlayerBuildTools.BuildSymbolDebug,
+                UwpPlayerBuildTools.BuildSymbolRelease,
+                UwpPlayerBuildTools.BuildSymbolMaster
             });
         }
 

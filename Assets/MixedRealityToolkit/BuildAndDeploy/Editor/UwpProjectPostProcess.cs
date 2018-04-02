@@ -75,7 +75,7 @@ namespace MixedRealityToolkit.Build
 
                     if (match.Success)
                     {
-                        UpdateDefineConstants(node["DefineConstants"], match.Groups["Configuration"].Value, match.Groups["Platform"].Value);
+                        UpdateDefineConstants(node["DefineConstants"], match.Groups["Configuration"].Value);
                     }
                 }
             }
@@ -83,7 +83,7 @@ namespace MixedRealityToolkit.Build
             WriteXmlDocumentToFile(projectDocument, filename);
         }
 
-        private static void UpdateDefineConstants(XmlNode defineConstants, string configuration, string platform)
+        private static void UpdateDefineConstants(XmlNode defineConstants, string configuration)
         {
             if (defineConstants == null)
             {
@@ -93,13 +93,12 @@ namespace MixedRealityToolkit.Build
             IEnumerable<string> symbols = defineConstants.InnerText.Split(';').Except(new[]
             {
                 string.Empty,
-                BuildSLNUtilities.BuildSymbolDebug,
-                BuildSLNUtilities.BuildSymbolRelease,
-                BuildSLNUtilities.BuildSymbolMaster
+                UwpPlayerBuildTools.BuildSymbolDebug,
+                UwpPlayerBuildTools.BuildSymbolRelease,
+                UwpPlayerBuildTools.BuildSymbolMaster
             }).Union(new[] { configuration.ToUpperInvariant() });
 
             defineConstants.InnerText = string.Join(";", symbols.ToArray());
-            //UnityEngine.Debug.LogFormat("Updating defines for Configuration|Platform: {0}|{1} => {2}", configuration, platform, defineConstants.InnerText);
         }
 
         private static void WriteXmlDocumentToFile(XmlNode document, string fullPath)

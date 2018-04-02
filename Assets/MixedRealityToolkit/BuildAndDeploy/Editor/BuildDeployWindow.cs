@@ -22,14 +22,41 @@ namespace MixedRealityToolkit.Build
     /// </summary>
     public class BuildDeployWindow : EditorWindow
     {
+        #region Internal Types
+
+        private enum BuildDeployTab
+        {
+            UnityBuildOptions,
+            AppxBuildOptions,
+            DeployOptions
+        }
+
+        private enum BuildPlatformEnum
+        {
+            x86 = 1,
+            x64 = 2
+        }
+
+        private enum BuildConfigEnum
+        {
+            Debug = 0,
+            Release = 1,
+            Master = 2
+        }
+
+        #endregion Internal Types
+
+        #region Constants and Readonly Values
+
+        private const string LocalMachine = "Local Machine";
+
+        private const string LocalIpAddress = "127.0.0.1";
+
+        private const string EmptyIpAddress = "0.0.0.0";
+
         private const float UpdateBuildsPeriod = 1.0f;
 
-        private const string SdkVersion =
-#if UNITY_2017_2_OR_NEWER
-                "10.0.16299.0";
-#else
-                "10.0.15063.0";
-#endif
+        private const string SdkVersion = "10.0.16299.0";
 
         private readonly string[] tabNames = { "Unity Build Options", "Appx Build Options", "Deploy Options" };
 
@@ -42,6 +69,8 @@ namespace MixedRealityToolkit.Build
         private readonly List<string> builds = new List<string>(0);
 
         private static readonly List<string> appPackageDirectories = new List<string>(0);
+
+        #endregion Constants and Readonly Values
 
         #region Labels
 
@@ -71,65 +100,35 @@ namespace MixedRealityToolkit.Build
 
         private readonly GUIContent uninstallLabel = new GUIContent("Uninstall First", "Uninstall application before installing");
 
-        #endregion
-
-        private enum BuildDeployTab
-        {
-            UnityBuildOptions,
-            AppxBuildOptions,
-            DeployOptions
-        }
-
-        private enum BuildPlatformEnum
-        {
-            x86 = 1,
-            x64 = 2
-        }
-
-        private enum BuildConfigEnum
-        {
-            Debug = 0,
-            Release = 1,
-            Master = 2
-        }
+        #endregion Labels
 
         #region Properties
 
-        private static bool ShouldOpenSLNBeEnabled
-        {
-            get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
-        }
+        private static bool ShouldOpenSLNBeEnabled => !string.IsNullOrEmpty(BuildDeployPreferences.BuildDirectory);
 
-        private static bool ShouldBuildSLNBeEnabled
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory) &&
-                       !string.IsNullOrEmpty(PlayerSettings.WSA.certificatePath);
-            }
-        }
+        private static bool ShouldBuildSLNBeEnabled => !isBuilding &&
+                                                       !UwpAppxBuildTools.IsBuilding &&
+                                                       !BuildPipeline.isBuildingPlayer &&
+                                                       !string.IsNullOrEmpty(BuildDeployPreferences.BuildDirectory);
 
-        private static bool ShouldBuildAppxBeEnabled
-        {
-            get
-            {
-                return ShouldBuildSLNBeEnabled &&
-                  !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory) &&
-                  !string.IsNullOrEmpty(BuildDeployPrefs.MsBuildVersion) &&
-                  !string.IsNullOrEmpty(BuildDeployPrefs.BuildConfig);
-            }
-        }
+        private static bool ShouldBuildAppxBeEnabled => ShouldBuildSLNBeEnabled &&
+                                                        !string.IsNullOrEmpty(BuildDeployPreferences.BuildDirectory) &&
+                                                        !string.IsNullOrEmpty(BuildDeployPreferences.BuildConfig);
 
-        private static bool DevicePortalConnectionEnabled
-        {
-            get { return (portalConnections.Connections.Count > 1 || IsHoloLensConnectedUsb) && !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
-        }
+        private static bool DevicePortalConnectionEnabled => (portalConnections.Connections.Count > 1 || IsHoloLensConnectedUsb) &&
+                                                             !string.IsNullOrEmpty(BuildDeployPreferences.BuildDirectory);
 
         private static bool CanInstall
         {
             get
             {
-                return Directory.Exists(BuildDeployPrefs.AbsoluteBuildDirectory) && !string.IsNullOrEmpty(familyPackageName);
+                bool canInstall = true;
+                if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+                {
+                    canInstall = DevicePortalConnectionEnabled;
+                }
+
+                return canInstall && Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory) && !string.IsNullOrEmpty(familyPackageName);
             }
         }
 
@@ -159,7 +158,7 @@ namespace MixedRealityToolkit.Build
             }
         }
 
-        #endregion // Properties
+        #endregion Properties
 
         #region Fields
 
@@ -175,11 +174,13 @@ namespace MixedRealityToolkit.Build
 
         private BuildDeployTab currentTab = BuildDeployTab.UnityBuildOptions;
 
+        private static bool isBuilding;
         private static bool isAppRunning;
+
         private static int currentConnectionInfoIndex;
         private static DevicePortalConnections portalConnections;
 
-        #endregion // Fields
+        #endregion Fields
 
         #region Methods
 
@@ -211,7 +212,7 @@ namespace MixedRealityToolkit.Build
 
             UpdateBuilds();
 
-            portalConnections = JsonUtility.FromJson<DevicePortalConnections>(BuildDeployPrefs.DevicePortalConnections);
+            portalConnections = JsonUtility.FromJson<DevicePortalConnections>(BuildDeployPreferences.DevicePortalConnections);
             UpdatePortalConnections();
         }
 
@@ -230,22 +231,20 @@ namespace MixedRealityToolkit.Build
                 EditorGUILayout.BeginHorizontal();
 
                 // Build directory (and save setting, if it's changed)
-                string curBuildDirectory = BuildDeployPrefs.BuildDirectory;
+                string curBuildDirectory = BuildDeployPreferences.BuildDirectory;
                 EditorGUILayout.LabelField(buildDirectoryLabel, GUILayout.Width(96));
-                string newBuildDirectory = EditorGUILayout.TextField(
-                        curBuildDirectory,
-                        GUILayout.Width(64), GUILayout.ExpandWidth(true));
+                string newBuildDirectory = EditorGUILayout.TextField(curBuildDirectory, GUILayout.Width(64), GUILayout.ExpandWidth(true));
 
                 if (newBuildDirectory != curBuildDirectory)
                 {
-                    BuildDeployPrefs.BuildDirectory = newBuildDirectory;
+                    BuildDeployPreferences.BuildDirectory = newBuildDirectory;
                 }
 
-                GUI.enabled = Directory.Exists(BuildDeployPrefs.AbsoluteBuildDirectory);
+                GUI.enabled = Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
 
                 if (GUILayout.Button("Open Build Directory", GUILayout.Width(quarterWidth)))
                 {
-                    EditorApplication.delayCall += () => Process.Start(BuildDeployPrefs.AbsoluteBuildDirectory);
+                    EditorApplication.delayCall += () => Process.Start(BuildDeployPreferences.AbsoluteBuildDirectory);
                 }
 
                 GUI.enabled = true;
@@ -271,12 +270,9 @@ namespace MixedRealityToolkit.Build
             bool canInstall = CanInstall;
 
             // Build & Run button...
-            if (GUILayout.Button(CanInstall
-                ? buildAllThenInstallLabel
-                : buildAllLabel,
-                GUILayout.Width(halfWidth - 20)))
+            if (GUILayout.Button(CanInstall ? buildAllThenInstallLabel : buildAllLabel, GUILayout.Width(halfWidth - 20)))
             {
-                EditorApplication.delayCall += () => { BuildAll(canInstall); };
+                EditorApplication.delayCall += () => BuildAll(canInstall);
             }
 
             GUI.enabled = true;
@@ -286,26 +282,11 @@ namespace MixedRealityToolkit.Build
                 EditorApplication.ExecuteMenuItem("Edit/Project Settings/Player");
             }
 
-            // If Xbox Controller support is enabled and we're targeting the HoloLens device,
-            // Enable the HID capability.
-            if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
-            {
-                PlayerSettings.WSA.SetCapability(
-                    PlayerSettings.WSACapability.HumanInterfaceDevice,
-                    EditorPrefsUtility.GetEditorPref("Enable Xbox Controller Support", false));
-
-                BuildDeployPrefs.BuildPlatform = BuildPlatformEnum.x86.ToString();
-            }
-            else
-            {
-                PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.HumanInterfaceDevice, false);
-            }
-
             EditorGUILayout.EndHorizontal();
             GUILayout.EndVertical();
             GUILayout.Space(10);
 
-            #endregion
+            #endregion Quick Options
 
             currentTab = (BuildDeployTab)GUILayout.Toolbar(SessionState.GetInt("_MRTK_BuildWindow_Tab", (int)currentTab), tabNames);
             SessionState.SetInt("_MRTK_BuildWindow_Tab", (int)currentTab);
@@ -342,22 +323,20 @@ namespace MixedRealityToolkit.Build
             EditorGUILayout.BeginHorizontal();
 
             // Build directory (and save setting, if it's changed)
-            string curBuildDirectory = BuildDeployPrefs.BuildDirectory;
+            string curBuildDirectory = BuildDeployPreferences.BuildDirectory;
             EditorGUILayout.LabelField(buildDirectoryLabel, GUILayout.Width(96));
-            string newBuildDirectory = EditorGUILayout.TextField(
-                curBuildDirectory,
-                GUILayout.Width(64), GUILayout.ExpandWidth(true));
+            string newBuildDirectory = EditorGUILayout.TextField(curBuildDirectory, GUILayout.Width(64), GUILayout.ExpandWidth(true));
 
             if (newBuildDirectory != curBuildDirectory)
             {
-                BuildDeployPrefs.BuildDirectory = newBuildDirectory;
+                BuildDeployPreferences.BuildDirectory = newBuildDirectory;
             }
 
-            GUI.enabled = Directory.Exists(BuildDeployPrefs.AbsoluteBuildDirectory);
+            GUI.enabled = Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
 
             if (GUILayout.Button("Open Build Directory", GUILayout.Width(halfWidth)))
             {
-                EditorApplication.delayCall += () => Process.Start(BuildDeployPrefs.AbsoluteBuildDirectory);
+                EditorApplication.delayCall += () => Process.Start(BuildDeployPreferences.AbsoluteBuildDirectory);
             }
 
             GUI.enabled = true;
@@ -371,7 +350,7 @@ namespace MixedRealityToolkit.Build
             if (GUILayout.Button("Open in Visual Studio", GUILayout.Width(halfWidth)))
             {
                 // Open SLN
-                string slnFilename = Path.Combine(BuildDeployPrefs.BuildDirectory, PlayerSettings.productName + ".sln");
+                string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
 
                 if (File.Exists(slnFilename))
                 {
@@ -382,7 +361,7 @@ namespace MixedRealityToolkit.Build
                     "We couldn't find the Project's Solution. Would you like to Build the project now?",
                     "Yes, Build", "No"))
                 {
-                    EditorApplication.delayCall += () => BuildDeployTools.BuildSLN(BuildDeployPrefs.BuildDirectory);
+                    EditorApplication.delayCall += BuildUnityProject;
                 }
             }
 
@@ -409,7 +388,7 @@ namespace MixedRealityToolkit.Build
 
             if (GUILayout.Button("Build Unity Project", GUILayout.Width(halfWidth)))
             {
-                EditorApplication.delayCall += () => BuildDeployTools.BuildSLN(BuildDeployPrefs.BuildDirectory);
+                EditorApplication.delayCall += BuildUnityProject;
             }
 
             GUI.enabled = true;
@@ -448,12 +427,12 @@ namespace MixedRealityToolkit.Build
             // Throw exception if user has no Windows 10 SDK installed
             if (currentSDKVersionIndex < 0)
             {
-                Debug.LogErrorFormat("Unable to find the required Windows 10 SDK Target!\n" +
-                                     "Please be sure to install the {0} SDK from Visual Studio Installer.", SdkVersion);
+                Debug.LogError("Unable to find the required Windows 10 SDK Target!\n" +
+                               $"Please be sure to install the {SdkVersion} SDK from Visual Studio Installer.");
                 GUILayout.EndHorizontal();
 
-                EditorGUILayout.HelpBox(string.Format("Unable to find the required Windows 10 SDK Target!\n" +
-                                        "Please be sure to install the {0} SDK from Visual Studio Installer.", SdkVersion), MessageType.Error);
+                EditorGUILayout.HelpBox("Unable to find the required Windows 10 SDK Target!\n" +
+                                        $"Please be sure to install the {SdkVersion} SDK from Visual Studio Installer.", MessageType.Error);
 
                 GUILayout.BeginHorizontal();
             }
@@ -468,17 +447,14 @@ namespace MixedRealityToolkit.Build
 
             if (newScriptingBackend != curScriptingBackend)
             {
-                bool canUpdate = !Directory.Exists(BuildDeployPrefs.AbsoluteBuildDirectory);
+                bool canUpdate = !Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
 
                 if (!canUpdate &&
                     EditorUtility.DisplayDialog("Attention!",
-                        string.Format("Build path contains project built with {0} scripting backend, while current project is using {1} scripting backend.\n\n" +
-                                      "Switching to a new scripting backend requires us to delete all the data currently in your build folder and rebuild the Unity Player!",
-                            newScriptingBackend.ToString(),
-                            curScriptingBackend.ToString()),
+                        $"Build path contains project built with {newScriptingBackend.ToString()} scripting backend, while current project is using {curScriptingBackend.ToString()} scripting backend.\n\nSwitching to a new scripting backend requires us to delete all the data currently in your build folder and rebuild the Unity Player!",
                         "Okay", "Cancel"))
                 {
-                    Directory.Delete(BuildDeployPrefs.AbsoluteBuildDirectory, true);
+                    Directory.Delete(BuildDeployPreferences.AbsoluteBuildDirectory, true);
                 }
 
                 if (canUpdate)
@@ -499,7 +475,7 @@ namespace MixedRealityToolkit.Build
             GUILayout.FlexibleSpace();
 
             // Build config (and save setting, if it's changed)
-            string curBuildConfigString = BuildDeployPrefs.BuildConfig;
+            string curBuildConfigString = BuildDeployPreferences.BuildConfig;
 
             BuildConfigEnum buildConfigOption;
             if (curBuildConfigString.ToLower().Equals("master"))
@@ -521,7 +497,7 @@ namespace MixedRealityToolkit.Build
 
             if (buildConfigString != curBuildConfigString)
             {
-                BuildDeployPrefs.BuildConfig = buildConfigString;
+                BuildDeployPreferences.BuildConfig = buildConfigString;
             }
 
             GUILayout.EndHorizontal();
@@ -529,7 +505,7 @@ namespace MixedRealityToolkit.Build
             GUILayout.FlexibleSpace();
 
             // Build Platform (and save setting, if it's changed)
-            string curBuildPlatformString = BuildDeployPrefs.BuildPlatform;
+            string curBuildPlatformString = BuildDeployPreferences.BuildPlatform;
             var buildPlatformOption = BuildPlatformEnum.x86;
 
             if (curBuildPlatformString.ToLower().Equals("x86"))
@@ -557,7 +533,7 @@ namespace MixedRealityToolkit.Build
 
             if (newBuildPlatformString != curBuildPlatformString)
             {
-                BuildDeployPrefs.BuildPlatform = newBuildPlatformString;
+                BuildDeployPreferences.BuildPlatform = newBuildPlatformString;
             }
 
             GUILayout.EndHorizontal();
@@ -568,7 +544,7 @@ namespace MixedRealityToolkit.Build
 
             // Auto Increment version
             EditorGUIUtility.labelWidth = 96;
-            bool curIncrementVersion = BuildDeployPrefs.IncrementBuildVersion;
+            bool curIncrementVersion = BuildDeployPreferences.IncrementBuildVersion;
             bool newIncrementVersion = EditorGUILayout.Toggle(autoIncrementLabel, curIncrementVersion);
 
             // Restore previous label width
@@ -576,7 +552,7 @@ namespace MixedRealityToolkit.Build
 
             if (newIncrementVersion != curIncrementVersion)
             {
-                BuildDeployPrefs.IncrementBuildVersion = newIncrementVersion;
+                BuildDeployPreferences.IncrementBuildVersion = newIncrementVersion;
             }
 
             EditorGUILayout.LabelField(versionNumberLabel, GUILayout.Width(96));
@@ -604,12 +580,12 @@ namespace MixedRealityToolkit.Build
             // Force rebuild
             previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 50;
-            bool curForceRebuildAppx = BuildDeployPrefs.ForceRebuild;
+            bool curForceRebuildAppx = BuildDeployPreferences.ForceRebuild;
             bool newForceRebuildAppx = EditorGUILayout.Toggle("Rebuild", curForceRebuildAppx);
 
             if (newForceRebuildAppx != curForceRebuildAppx)
             {
-                BuildDeployPrefs.ForceRebuild = newForceRebuildAppx;
+                BuildDeployPreferences.ForceRebuild = newForceRebuildAppx;
             }
 
             // Restore previous label width
@@ -620,27 +596,15 @@ namespace MixedRealityToolkit.Build
 
             if (GUILayout.Button("Build APPX", GUILayout.Width(halfWidth)))
             {
-                // Check if SLN exists
-                string slnFilename = Path.Combine(BuildDeployPrefs.BuildDirectory, PlayerSettings.productName + ".sln");
+                // Check if solution exists
+                string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
 
                 if (File.Exists(slnFilename))
                 {
-                    // Build APPX
-                    EditorApplication.delayCall += () =>
-                    {
-                        BuildDeployTools.BuildAppxFromSLN(
-                            PlayerSettings.productName,
-                            BuildDeployTools.DefaultMSBuildVersion,
-                            BuildDeployPrefs.ForceRebuild,
-                            BuildDeployPrefs.BuildConfig,
-                            BuildDeployPrefs.BuildPlatform,
-                            BuildDeployPrefs.BuildDirectory,
-                            BuildDeployPrefs.IncrementBuildVersion);
-                    };
+                    EditorApplication.delayCall += BuildAppx;
                 }
                 else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the solution. Would you like to Build it?", "Yes, Build", "No"))
                 {
-                    // Build SLN then APPX
                     EditorApplication.delayCall += () => BuildAll(install: false);
                 }
 
@@ -652,12 +616,12 @@ namespace MixedRealityToolkit.Build
             GUILayout.FlexibleSpace();
 
             // Open AppX packages location
-            string appxBuildPath = Path.GetFullPath(BuildDeployPrefs.BuildDirectory + "/" + PlayerSettings.productName + "/AppPackages");
+            string appxBuildPath = Path.GetFullPath($"{BuildDeployPreferences.BuildDirectory}/{PlayerSettings.productName}/AppPackages");
             GUI.enabled = builds.Count > 0 && !string.IsNullOrEmpty(appxBuildPath);
 
             if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(halfWidth)))
             {
-                EditorApplication.delayCall += () => Process.Start("explorer.exe", "/f /open," + appxBuildPath);
+                EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
             }
 
             GUI.enabled = true;
@@ -699,7 +663,7 @@ namespace MixedRealityToolkit.Build
                             var newIps = new List<string>();
                             foreach (var adapter in networkInfo.Adapters)
                             {
-                                newIps.AddRange(from address in adapter.IpAddresses where !address.IpAddress.Contains("0.0.0.0") select address.IpAddress);
+                                newIps.AddRange(from address in adapter.IpAddresses where !address.IpAddress.Contains(EmptyIpAddress) select address.IpAddress);
                             }
 
                             if (newIps.Count == 0)
@@ -751,26 +715,25 @@ namespace MixedRealityToolkit.Build
 
             var previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 64;
-            bool useSSL = EditorGUILayout.Toggle(useSSLLabel, BuildDeployPrefs.UseSSL);
+            bool useSSL = EditorGUILayout.Toggle(useSSLLabel, BuildDeployPreferences.UseSSL);
             EditorGUIUtility.labelWidth = previousLabelWidth;
 
             currentConnectionInfoIndex = EditorGUILayout.Popup(
                 SessionState.GetInt("_MRTK_BuildWindow_CurrentDeviceIndex", 0), targetIps, GUILayout.Width(halfWidth - 48));
 
             var currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
-
             bool currentConnectionIsLocal = IsLocalConnection(currentConnection);
 
             if (currentConnectionIsLocal)
             {
-                currentConnection.MachineName = "Local Machine";
+                currentConnection.MachineName = LocalMachine;
             }
 
             GUI.enabled = IsValidIpAddress(currentConnection.IP);
 
             if (GUILayout.Button(addConnectionLabel, GUILayout.Width(20)))
             {
-                portalConnections.Connections.Add(new ConnectInfo("0.0.0.0", currentConnection.User, currentConnection.Password));
+                portalConnections.Connections.Add(new ConnectInfo(EmptyIpAddress, currentConnection.User, currentConnection.Password));
                 currentConnectionInfoIndex++;
                 currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
                 UpdatePortalConnections();
@@ -803,10 +766,7 @@ namespace MixedRealityToolkit.Build
             GUILayout.FlexibleSpace();
 
             GUI.enabled = !currentConnectionIsLocal;
-            currentConnection.IP = EditorGUILayout.TextField(
-                ipAddressLabel,
-                currentConnection.IP,
-                GUILayout.Width(halfWidth));
+            currentConnection.IP = EditorGUILayout.TextField(ipAddressLabel, currentConnection.IP, GUILayout.Width(halfWidth));
             GUI.enabled = true;
 
             GUILayout.EndHorizontal();
@@ -822,30 +782,24 @@ namespace MixedRealityToolkit.Build
 
             EditorGUIUtility.labelWidth = 152;
 
-            bool processAll = EditorGUILayout.Toggle(
-                doAllLabel,
-                BuildDeployPrefs.TargetAllConnections,
-                GUILayout.Width(176));
+            bool processAll = EditorGUILayout.Toggle(doAllLabel, BuildDeployPreferences.TargetAllConnections, GUILayout.Width(176));
 
             EditorGUIUtility.labelWidth = 86;
 
-            bool fullReinstall = EditorGUILayout.Toggle(
-                uninstallLabel,
-                BuildDeployPrefs.FullReinstall,
-                GUILayout.ExpandWidth(false));
+            bool fullReinstall = EditorGUILayout.Toggle(uninstallLabel, BuildDeployPreferences.FullReinstall, GUILayout.ExpandWidth(false));
             EditorGUIUtility.labelWidth = previousLabelWidth;
 
             if (EditorGUI.EndChangeCheck())
             {
                 SessionState.SetInt("_MRTK_BuildWindow_CurrentDeviceIndex", currentConnectionInfoIndex);
-                BuildDeployPrefs.TargetAllConnections = processAll;
-                BuildDeployPrefs.FullReinstall = fullReinstall;
-                BuildDeployPrefs.UseSSL = useSSL;
+                BuildDeployPreferences.TargetAllConnections = processAll;
+                BuildDeployPreferences.FullReinstall = fullReinstall;
+                BuildDeployPreferences.UseSSL = useSSL;
 
                 // Format our local connection
-                if (currentConnection.IP.Contains("127.0.0.1"))
+                if (currentConnection.IP.Contains(LocalIpAddress))
                 {
-                    currentConnection.IP = "Local Machine";
+                    currentConnection.IP = LocalMachine;
                 }
 
                 portalConnections.Connections[currentConnectionInfoIndex] = currentConnection;
@@ -992,7 +946,7 @@ namespace MixedRealityToolkit.Build
                     GUI.enabled = true;
 
                     // Log file
-                    string localLogPath = string.Format("%USERPROFILE%\\AppData\\Local\\Packages\\{0}\\TempState\\UnityPlayer.log", PlayerSettings.productName);
+                    string localLogPath = $"%USERPROFILE%\\AppData\\Local\\Packages\\{PlayerSettings.productName}\\TempState\\UnityPlayer.log";
                     bool localLogExists = File.Exists(localLogPath);
 
                     GUI.enabled = localLogExists || canLaunchRemote || canLaunchLocal;
@@ -1015,7 +969,7 @@ namespace MixedRealityToolkit.Build
                     GUI.enabled = true;
 
                     GUILayout.Space(8);
-                    GUILayout.Label(new GUIContent(packageName + " (" + directoryDate + ")"));
+                    GUILayout.Label(new GUIContent($"{packageName} ({directoryDate})"));
                     EditorGUILayout.EndHorizontal();
                 }
 
@@ -1026,28 +980,54 @@ namespace MixedRealityToolkit.Build
             GUILayout.EndVertical();
         }
 
-        #endregion // Methods
+        #endregion Methods
 
         #region Utilities
 
-        private void BuildAll(bool install = true)
+        private static void BuildUnityProject()
         {
+            Debug.Assert(!isBuilding);
+            isBuilding = true;
+            UwpAppxBuildTools.BuildUnityPlayer(BuildDeployPreferences.BuildDirectory);
+            isBuilding = false;
+        }
+
+        private static async void BuildAppx()
+        {
+            Debug.Assert(!isBuilding);
+            isBuilding = true;
+            EditorAssemblyReloadManager.LockReloadAssemblies = true;
+            await UwpAppxBuildTools.BuildAppxAsync(
+                PlayerSettings.productName,
+                BuildDeployPreferences.ForceRebuild,
+                BuildDeployPreferences.BuildConfig,
+                BuildDeployPreferences.BuildPlatform,
+                BuildDeployPreferences.BuildDirectory,
+                BuildDeployPreferences.IncrementBuildVersion);
+            EditorAssemblyReloadManager.LockReloadAssemblies = false;
+            isBuilding = false;
+        }
+
+        private async void BuildAll(bool install = true)
+        {
+            Debug.Assert(!isBuilding);
+            isBuilding = true;
+            EditorAssemblyReloadManager.LockReloadAssemblies = true;
+
             // First build SLN
-            if (!BuildDeployTools.BuildSLN(BuildDeployPrefs.BuildDirectory, false))
+            if (!UwpAppxBuildTools.BuildUnityPlayer(BuildDeployPreferences.BuildDirectory, false))
             {
                 return;
             }
 
-            // Next, APPX
-            if (!BuildDeployTools.BuildAppxFromSLN(
+            // Then build APPX
+            if (!await UwpAppxBuildTools.BuildAppxAsync(
                 PlayerSettings.productName,
-                BuildDeployPrefs.MsBuildVersion,
-                BuildDeployPrefs.ForceRebuild,
-                BuildDeployPrefs.BuildConfig,
-                BuildDeployPrefs.BuildPlatform,
-                BuildDeployPrefs.BuildDirectory,
-                BuildDeployPrefs.IncrementBuildVersion,
-                showDialog: !install))
+                BuildDeployPreferences.ForceRebuild,
+                BuildDeployPreferences.BuildConfig,
+                BuildDeployPreferences.BuildPlatform,
+                BuildDeployPreferences.BuildDirectory,
+                BuildDeployPreferences.IncrementBuildVersion))
             {
                 return;
             }
@@ -1057,7 +1037,7 @@ namespace MixedRealityToolkit.Build
             {
                 string fullBuildLocation = CalcMostRecentBuild();
 
-                if (BuildDeployPrefs.TargetAllConnections)
+                if (BuildDeployPreferences.TargetAllConnections)
                 {
                     InstallAppOnDevicesList(fullBuildLocation, portalConnections);
                 }
@@ -1066,6 +1046,9 @@ namespace MixedRealityToolkit.Build
                     InstallOnTargetDevice(fullBuildLocation, portalConnections.Connections[currentConnectionInfoIndex]);
                 }
             }
+
+            EditorAssemblyReloadManager.LockReloadAssemblies = false;
+            isBuilding = false;
         }
 
         private void UpdateBuilds()
@@ -1075,7 +1058,7 @@ namespace MixedRealityToolkit.Build
             try
             {
                 appPackageDirectories.Clear();
-                string[] buildList = Directory.GetDirectories(BuildDeployPrefs.AbsoluteBuildDirectory, "*", SearchOption.AllDirectories);
+                string[] buildList = Directory.GetDirectories(BuildDeployPreferences.AbsoluteBuildDirectory, "*", SearchOption.AllDirectories);
                 foreach (string appBuild in buildList)
                 {
                     if (appBuild.Contains("AppPackages") && !appBuild.Contains("AppPackages\\"))
@@ -1128,41 +1111,39 @@ namespace MixedRealityToolkit.Build
                 currentConnectionInfoIndex = portalConnections.Connections.Count - 1;
             }
 
-            targetIps[0] = "Local Machine";
+            targetIps[0] = LocalMachine;
             for (int i = 1; i < targetIps.Length; i++)
             {
                 targetIps[i] = portalConnections.Connections[i].MachineName;
             }
 
-            BuildDeployPrefs.DevicePortalConnections = JsonUtility.ToJson(portalConnections);
+            BuildDeployPreferences.DevicePortalConnections = JsonUtility.ToJson(portalConnections);
             Repaint();
         }
 
         private static bool IsLocalConnection(ConnectInfo connection)
         {
-            return connection.IP.Contains("Local Machine") || connection.IP.Contains("127.0.0.1");
+            return connection.IP.Contains(LocalMachine) ||
+                   connection.IP.Contains(LocalIpAddress);
         }
 
         private static bool IsCredentialsValid(ConnectInfo connection)
         {
-            return !string.IsNullOrEmpty(connection.User) && !string.IsNullOrEmpty(connection.IP);
+            return !string.IsNullOrEmpty(connection.User) &&
+                   !string.IsNullOrEmpty(connection.IP);
         }
 
         private static bool IsValidIpAddress(string ip)
         {
-            if (string.IsNullOrEmpty(ip))
+            if (string.IsNullOrEmpty(ip) ||
+                ip.Contains(EmptyIpAddress))
             {
                 return false;
             }
 
-            if (ip.Contains("Local Machine"))
+            if (ip.Contains(LocalMachine))
             {
                 return true;
-            }
-
-            if (ip.Contains("0.0.0.0"))
-            {
-                return false;
             }
 
             var subAddresses = ip.Split('.');
@@ -1177,11 +1158,11 @@ namespace MixedRealityToolkit.Build
             }
 
             // Find the manifest
-            string[] manifests = Directory.GetFiles(BuildDeployPrefs.AbsoluteBuildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
+            string[] manifests = Directory.GetFiles(BuildDeployPreferences.AbsoluteBuildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
 
             if (manifests.Length == 0)
             {
-                Debug.LogError("Unable to find manifest file for build (in path - " + BuildDeployPrefs.AbsoluteBuildDirectory + ")");
+                Debug.LogError($"Unable to find manifest file for build (in path - {BuildDeployPreferences.AbsoluteBuildDirectory})");
                 return string.Empty;
             }
 
@@ -1211,11 +1192,11 @@ namespace MixedRealityToolkit.Build
                 }
             }
 
-            Debug.LogError("Unable to find PackageFamilyName in manifest file (" + manifest + ")");
+            Debug.LogError($"Unable to find PackageFamilyName in manifest file ({manifest})");
             return string.Empty;
         }
 
-        #endregion
+        #endregion Utilities
 
         #region Device Portal Commands
 
@@ -1225,7 +1206,9 @@ namespace MixedRealityToolkit.Build
 
             if (IsHoloLensConnectedUsb)
             {
-                usbMachine = BuildDeployPortal.GetMachineName(targetDevices.Connections.FirstOrDefault(targetDevice => targetDevice.IP.Contains("Local Machine")));
+                usbMachine = BuildDeployPortal.GetMachineName(
+                    targetDevices.Connections.FirstOrDefault(
+                        targetDevice => targetDevice.IP.Contains(LocalMachine)));
             }
 
             for (int i = 0; i < targetDevices.Connections.Count; i++)
@@ -1239,7 +1222,7 @@ namespace MixedRealityToolkit.Build
 
                 if (IsHoloLensConnectedUsb)
                 {
-                    if (isLocalMachine || usbMachine != null && usbMachine.ComputerName != targetDevices.Connections[i].MachineName)
+                    if (isLocalMachine || usbMachine?.ComputerName != targetDevices.Connections[i].MachineName)
                     {
                         BuildDeployPortal.OpenWebPortal(targetDevices.Connections[i]);
                     }
@@ -1274,7 +1257,7 @@ namespace MixedRealityToolkit.Build
                     {
                         FileName = "powershell.exe",
                         CreateNoWindow = false,
-                        Arguments = string.Format("-executionpolicy bypass -File \"{0}\"", installerFiles[0].FullName)
+                        Arguments = $"-executionpolicy bypass -File \"{installerFiles[0].FullName}\""
                     };
 
                     var process = new Process { StartInfo = pInfo };
@@ -1296,7 +1279,7 @@ namespace MixedRealityToolkit.Build
 
             if (files.Length == 0)
             {
-                Debug.LogErrorFormat("No APPX found in folder build folder ({0})", buildPath);
+                Debug.LogError($"No APPX found in folder build folder ({buildPath})");
                 return;
             }
 
@@ -1315,25 +1298,18 @@ namespace MixedRealityToolkit.Build
                 return;
             }
 
-            if (BuildDeployPrefs.FullReinstall)
+            if (BuildDeployPreferences.FullReinstall)
             {
                 UninstallAppOnDevicesList(targetList);
             }
 
-            try
+            for (int i = 0; i < targetList.Connections.Count; i++)
             {
-                for (int i = 0; i < targetList.Connections.Count; i++)
-                {
-                    EditorUtility.DisplayProgressBar("Installing on devices",
-                        string.Format("Installing on {0}", targetList.Connections[i].MachineName),
-                        i / (float)targetList.Connections.Count);
-
-                    InstallOnTargetDevice(buildPath, targetList.Connections[i]);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e.Message);
+                EditorUtility.DisplayProgressBar(
+                    "Installing on devices",
+                    $"Installing on {targetList.Connections[i].MachineName}",
+                    i / (float)targetList.Connections.Count);
+                InstallOnTargetDevice(buildPath, targetList.Connections[i]);
             }
 
             EditorUtility.ClearProgressBar();
@@ -1349,7 +1325,7 @@ namespace MixedRealityToolkit.Build
                 {
                     FileName = "powershell.exe",
                     CreateNoWindow = true,
-                    Arguments = string.Format("-windowstyle hidden -nologo Get-AppxPackage *{0}* | Remove-AppxPackage", packageFamilyName)
+                    Arguments = $"-windowstyle hidden -nologo Get-AppxPackage *{packageFamilyName}* | Remove-AppxPackage"
                 };
 
                 var process = new Process { StartInfo = pInfo };
@@ -1373,17 +1349,13 @@ namespace MixedRealityToolkit.Build
                 return;
             }
 
-            try
+            for (int i = 0; i < targetList.Connections.Count; i++)
             {
-                for (int i = 0; i < targetList.Connections.Count; i++)
-                {
-                    EditorUtility.DisplayProgressBar("Uninstalling on devices", string.Format("Uninstalling ({0})", targetList.Connections[i].IP), i / (float)targetList.Connections.Count);
-                    UninstallAppOnTargetDevice(packageFamilyName, targetList.Connections[i], false);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e.ToString());
+                EditorUtility.DisplayProgressBar(
+                    "Uninstalling on devices",
+                    $"Uninstalling {packageFamilyName} on {targetList.Connections[i].IP}",
+                    i / (float)targetList.Connections.Count);
+                UninstallAppOnTargetDevice(packageFamilyName, targetList.Connections[i], false);
             }
 
             EditorUtility.ClearProgressBar();
@@ -1393,19 +1365,15 @@ namespace MixedRealityToolkit.Build
         {
             string packageFamilyName = CalcPackageFamilyName();
 
-            if (string.IsNullOrEmpty(packageFamilyName))
-            {
-                return false;
-            }
-
-            if (IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb)
+            if (string.IsNullOrEmpty(packageFamilyName) ||
+                IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb)
             {
                 return false;
             }
 
             if (showDialog)
             {
-                EditorUtility.DisplayProgressBar("Launching Application", string.Format("Launching {0} on {1}", packageFamilyName, targetDevice.MachineName), 0.25f);
+                EditorUtility.DisplayProgressBar("Launching Application", $"Launching {packageFamilyName} on {targetDevice.MachineName}", 0.25f);
             }
 
             bool success = !BuildDeployPortal.IsAppRunning(PlayerSettings.productName, targetDevice) &&
@@ -1424,9 +1392,8 @@ namespace MixedRealityToolkit.Build
             for (int i = 0; i < targetDevices.Connections.Count; i++)
             {
                 EditorUtility.DisplayProgressBar("Launching App on devices",
-                    string.Format("Launching on {0}", targetDevices.Connections[i].IP),
+                    $"Launching app on {targetDevices.Connections[i].MachineName}",
                     i / (float)targetDevices.Connections.Count);
-
                 LaunchAppOnTargetDevice(targetDevices.Connections[i], false);
             }
         }
@@ -1435,19 +1402,15 @@ namespace MixedRealityToolkit.Build
         {
             string packageFamilyName = CalcPackageFamilyName();
 
-            if (string.IsNullOrEmpty(packageFamilyName))
-            {
-                return false;
-            }
-
-            if (IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb)
+            if (string.IsNullOrEmpty(packageFamilyName) ||
+                IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb)
             {
                 return false;
             }
 
             if (showDialog)
             {
-                EditorUtility.DisplayProgressBar("Stopping Application", string.Format("Stopping {0} on {1}", packageFamilyName, targetDevice.MachineName), 0.5f);
+                EditorUtility.DisplayProgressBar("Stopping Application", $"Stopping {packageFamilyName} on {targetDevice.MachineName}", 0.5f);
             }
 
             bool success = BuildDeployPortal.IsAppRunning(PlayerSettings.productName, targetDevice) &&
@@ -1466,7 +1429,7 @@ namespace MixedRealityToolkit.Build
             for (int i = 0; i < targetDevices.Connections.Count; i++)
             {
                 EditorUtility.DisplayProgressBar("Stopping Application on devices",
-                    string.Format("Stopping on {0}", targetDevices.Connections[i].MachineName),
+                    $"Stopping on {targetDevices.Connections[i].MachineName}",
                     i / (float)targetDevices.Connections.Count);
                 KillAppOnTargetDevice(targetDevices.Connections[i], false);
             }
@@ -1504,6 +1467,6 @@ namespace MixedRealityToolkit.Build
             }
         }
 
-        #endregion
+        #endregion Device Portal Commands
     }
 }
