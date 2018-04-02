@@ -32,9 +32,16 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
         }
 
         /// <summary>
-        /// Finds the minimum distance between all pairs of hands
+        /// update Gameobject with new Scale state
         /// </summary>
-        /// <returns>a float describing the distance between Controllers or Hands</returns>
+        /// <param name="handsPressedMap"></param>
+        /// <returns>a Vector3 describing the new Scale of the object being manipulated</returns>
+        public virtual Vector3 UpdateMap(Dictionary<uint, Vector3> handsPressedMap)
+        {
+            var ratioMultiplier = GetMinDistanceBetweenHands(handsPressedMap) / m_startHandDistanceMeters;
+            return m_startObjectScale * ratioMultiplier;
+        }
+
         private float GetMinDistanceBetweenHands(Dictionary<uint, Vector3> handsPressedMap)
         {
             var result = float.MaxValue;
@@ -52,17 +59,6 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interations
                 }
             }
             return result;
-        }
-
-        /// <summary>
-        /// update Gameobject with new Scale state
-        /// </summary>
-        /// <param name="handsPressedMap"></param>
-        /// <returns>a Vector3 describing the new Scale of the object being manipulated</returns>
-        public virtual Vector3 UpdateMap(Dictionary<uint, Vector3> handsPressedMap)
-        {
-            var ratioMultiplier = GetMinDistanceBetweenHands(handsPressedMap) / m_startHandDistanceMeters;
-            return m_startObjectScale * ratioMultiplier;
         }
     }
 }
