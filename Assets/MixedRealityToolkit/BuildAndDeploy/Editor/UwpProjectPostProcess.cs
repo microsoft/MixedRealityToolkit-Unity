@@ -122,10 +122,7 @@ namespace MixedRealityToolkit.Build
             }
             finally
             {
-                if (fileStream != null)
-                {
-                    fileStream.Dispose();
-                }
+                fileStream?.Dispose();
             }
         }
     }

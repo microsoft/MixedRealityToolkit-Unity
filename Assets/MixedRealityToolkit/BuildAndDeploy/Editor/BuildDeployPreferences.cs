@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Build.DataStructures;
+using MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures;
 using MixedRealityToolkit.Common.EditorScript;
 using System;
 using System.IO;
@@ -80,7 +80,7 @@ namespace MixedRealityToolkit.Build
                     EditorPref_ConnectInfos,
                     JsonUtility.ToJson(
                         new DevicePortalConnections(
-                            new ConnectInfo("127.0.0.1", string.Empty, string.Empty, "Local Machine"))));
+                            new DeviceInfo("127.0.0.1", string.Empty, string.Empty, "Local Machine"))));
             }
             set { EditorPrefsUtility.SetEditorPref(EditorPref_ConnectInfos, value); }
         }

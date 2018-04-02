@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Build.DataStructures;
+using MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures;
 using MixedRealityToolkit.Build.USB;
 using System;
 using System.Collections.Generic;
@@ -9,10 +9,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using MixedRealityToolkit.Build.WindowsDevicePortal;
 using MixedRealityToolkit.Common.EditorScript;
+using MixedRealityToolkit.Common.RestUtility;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
+using FileInfo = System.IO.FileInfo;
 
 namespace MixedRealityToolkit.Build
 {
@@ -365,7 +368,6 @@ namespace MixedRealityToolkit.Build
                 }
             }
 
-
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
 
@@ -639,74 +641,11 @@ namespace MixedRealityToolkit.Build
             EditorGUI.BeginChangeCheck();
             GUILayout.BeginHorizontal();
 
-            // Launch app...
             GUI.enabled = IsHoloLensConnectedUsb;
 
             if (GUILayout.Button(pairHoloLensUsbLabel, GUILayout.Width(quarterWidth)))
             {
-                EditorApplication.delayCall += () =>
-                {
-                    var newConnection = default(ConnectInfo);
-
-                    foreach (var targetDevice in portalConnections.Connections)
-                    {
-                        if (!IsLocalConnection(targetDevice))
-                        {
-                            continue;
-                        }
-
-                        var machineName = BuildDeployPortal.GetMachineName(targetDevice);
-                        var networkInfo = BuildDeployPortal.GetNetworkInfo(targetDevice);
-
-                        if (networkInfo != null)
-                        {
-                            var newIps = new List<string>();
-                            foreach (var adapter in networkInfo.Adapters)
-                            {
-                                newIps.AddRange(from address in adapter.IpAddresses where !address.IpAddress.Contains(EmptyIpAddress) select address.IpAddress);
-                            }
-
-                            if (newIps.Count == 0)
-                            {
-                                Debug.LogWarning("This HoloLens is not connected to any networks and cannot be paired.");
-                            }
-
-                            foreach (var ip in newIps)
-                            {
-                                if (portalConnections.Connections.Any(connection => connection.IP == ip))
-                                {
-                                    Debug.LogFormat("Already paired");
-                                    continue;
-                                }
-
-                                newConnection.IP = ip;
-                                newConnection.User = targetDevice.User;
-                                newConnection.Password = targetDevice.Password;
-
-                                if (machineName != null)
-                                {
-                                    newConnection.MachineName = machineName.ComputerName;
-                                }
-                            }
-                        }
-                    }
-
-                    if (IsValidIpAddress(newConnection.IP))
-                    {
-                        portalConnections.Connections.Add(newConnection);
-                        for (var i = 0; i < portalConnections.Connections.Count; i++)
-                        {
-                            if (portalConnections.Connections[i].IP == newConnection.IP)
-                            {
-                                currentConnectionInfoIndex = i;
-                                SessionState.SetInt("_MRTK_BuildWindow_CurrentDeviceIndex", currentConnectionInfoIndex);
-                                break;
-                            }
-                        }
-
-                        UpdatePortalConnections();
-                    }
-                };
+                EditorApplication.delayCall += PairDevice;
             }
 
             GUI.enabled = true;
@@ -733,7 +672,7 @@ namespace MixedRealityToolkit.Build
 
             if (GUILayout.Button(addConnectionLabel, GUILayout.Width(20)))
             {
-                portalConnections.Connections.Add(new ConnectInfo(EmptyIpAddress, currentConnection.User, currentConnection.Password));
+                portalConnections.Connections.Add(new DeviceInfo(EmptyIpAddress, currentConnection.User, currentConnection.Password));
                 currentConnectionInfoIndex++;
                 currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
                 UpdatePortalConnections();
@@ -795,6 +734,7 @@ namespace MixedRealityToolkit.Build
                 BuildDeployPreferences.TargetAllConnections = processAll;
                 BuildDeployPreferences.FullReinstall = fullReinstall;
                 BuildDeployPreferences.UseSSL = useSSL;
+                Rest.UseSSL = useSSL;
 
                 // Format our local connection
                 if (currentConnection.IP.Contains(LocalIpAddress))
@@ -818,16 +758,7 @@ namespace MixedRealityToolkit.Build
                 {
                     EditorApplication.delayCall += () =>
                     {
-                        var machineName = BuildDeployPortal.GetMachineName(currentConnection);
-
-                        if (machineName != null)
-                        {
-                            currentConnection.MachineName = machineName.ComputerName;
-                        }
-
-                        portalConnections.Connections[currentConnectionInfoIndex] = currentConnection;
-                        UpdatePortalConnections();
-                        Repaint();
+                        ConnectToDevice(currentConnection);
                     };
                 }
 
@@ -925,7 +856,7 @@ namespace MixedRealityToolkit.Build
                                 }
                                 else
                                 {
-                                    isAppRunning = !KillAppOnTargetDevice(currentConnection);
+                                    KillAppOnTargetDevice(currentConnection);
                                 }
                             }
                             else
@@ -937,7 +868,7 @@ namespace MixedRealityToolkit.Build
                                 }
                                 else
                                 {
-                                    isAppRunning = LaunchAppOnTargetDevice(currentConnection);
+                                    LaunchAppOnTargetDevice(currentConnection);
                                 }
                             }
                         };
@@ -983,6 +914,76 @@ namespace MixedRealityToolkit.Build
         #endregion Methods
 
         #region Utilities
+
+        private async void ConnectToDevice(DeviceInfo currentConnection)
+        {
+            var machineName = await DevicePortal.GetMachineNameAsync(currentConnection);
+            currentConnection.MachineName = machineName?.ComputerName;
+            portalConnections.Connections[currentConnectionInfoIndex] = currentConnection;
+            UpdatePortalConnections();
+            Repaint();
+        }
+
+        private async void PairDevice()
+        {
+            DeviceInfo newConnection = null;
+
+            for (var i = 0; i < portalConnections.Connections.Count; i++)
+            {
+                var targetDevice = portalConnections.Connections[i];
+                if (!IsLocalConnection(targetDevice))
+                {
+                    continue;
+                }
+
+                var machineName = await DevicePortal.GetMachineNameAsync(targetDevice);
+                var networkInfo = await DevicePortal.GetIpConfigInfoAsync(targetDevice);
+
+                if (machineName != null && networkInfo != null)
+                {
+                    var newIps = new List<string>();
+                    foreach (var adapter in networkInfo.Adapters)
+                    {
+                        newIps.AddRange(from address in adapter.IpAddresses
+                                        where !address.IpAddress.Contains(EmptyIpAddress)
+                                        select address.IpAddress);
+                    }
+
+                    if (newIps.Count == 0)
+                    {
+                        Debug.LogWarning("This HoloLens is not connected to any networks and cannot be paired.");
+                    }
+
+                    for (var j = 0; j < newIps.Count; j++)
+                    {
+                        var newIp = newIps[j];
+                        if (portalConnections.Connections.Any(connection => connection.IP == newIp))
+                        {
+                            Debug.LogFormat("Already paired");
+                            continue;
+                        }
+
+                        newConnection = new DeviceInfo(newIp, targetDevice.User, targetDevice.Password, machineName.ComputerName);
+                    }
+                }
+            }
+
+            if (newConnection != null && IsValidIpAddress(newConnection.IP))
+            {
+                portalConnections.Connections.Add(newConnection);
+                for (var i = 0; i < portalConnections.Connections.Count; i++)
+                {
+                    if (portalConnections.Connections[i].IP == newConnection.IP)
+                    {
+                        currentConnectionInfoIndex = i;
+                        SessionState.SetInt("_BuildWindow_CurrentDeviceIndex", currentConnectionInfoIndex);
+                        break;
+                    }
+                }
+
+                UpdatePortalConnections();
+            }
+        }
 
         private static void BuildUnityProject()
         {
@@ -1121,13 +1122,13 @@ namespace MixedRealityToolkit.Build
             Repaint();
         }
 
-        private static bool IsLocalConnection(ConnectInfo connection)
+        private static bool IsLocalConnection(DeviceInfo connection)
         {
             return connection.IP.Contains(LocalMachine) ||
                    connection.IP.Contains(LocalIpAddress);
         }
 
-        private static bool IsCredentialsValid(ConnectInfo connection)
+        private static bool IsCredentialsValid(DeviceInfo connection)
         {
             return !string.IsNullOrEmpty(connection.User) &&
                    !string.IsNullOrEmpty(connection.IP);
@@ -1200,15 +1201,13 @@ namespace MixedRealityToolkit.Build
 
         #region Device Portal Commands
 
-        private static void OpenDevicePortal(DevicePortalConnections targetDevices)
+        private static async void OpenDevicePortal(DevicePortalConnections targetDevices)
         {
             MachineName usbMachine = null;
 
             if (IsHoloLensConnectedUsb)
             {
-                usbMachine = BuildDeployPortal.GetMachineName(
-                    targetDevices.Connections.FirstOrDefault(
-                        targetDevice => targetDevice.IP.Contains(LocalMachine)));
+                usbMachine = await DevicePortal.GetMachineNameAsync(targetDevices.Connections.FirstOrDefault(targetDevice => targetDevice.IP.Contains("Local Machine")));
             }
 
             for (int i = 0; i < targetDevices.Connections.Count; i++)
@@ -1224,20 +1223,20 @@ namespace MixedRealityToolkit.Build
                 {
                     if (isLocalMachine || usbMachine?.ComputerName != targetDevices.Connections[i].MachineName)
                     {
-                        BuildDeployPortal.OpenWebPortal(targetDevices.Connections[i]);
+                        DevicePortal.OpenWebPortal(targetDevices.Connections[i]);
                     }
                 }
                 else
                 {
                     if (!isLocalMachine)
                     {
-                        BuildDeployPortal.OpenWebPortal(targetDevices.Connections[i]);
+                        DevicePortal.OpenWebPortal(targetDevices.Connections[i]);
                     }
                 }
             }
         }
 
-        private static void InstallOnTargetDevice(string buildPath, ConnectInfo targetDevice)
+        private static async void InstallOnTargetDevice(string buildPath, DeviceInfo targetDevice)
         {
             isAppRunning = false;
 
@@ -1246,6 +1245,11 @@ namespace MixedRealityToolkit.Build
             if (string.IsNullOrEmpty(packageFamilyName))
             {
                 return;
+            }
+
+            if (BuildDeployPreferences.FullReinstall)
+            {
+                UninstallAppOnTargetDevice(packageFamilyName, targetDevice);
             }
 
             if (IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb || buildPath.Contains("x64"))
@@ -1279,14 +1283,14 @@ namespace MixedRealityToolkit.Build
 
             if (files.Length == 0)
             {
-                Debug.LogError($"No APPX found in folder build folder ({buildPath})");
+                Debug.LogErrorFormat("No APPX found in folder build folder ({0})", buildPath);
                 return;
             }
 
-            BuildDeployPortal.IsAppInstalled(packageFamilyName, targetDevice);
-
-            // Kick off the install
-            BuildDeployPortal.InstallApp(files[0].FullName, targetDevice);
+            if (!await DevicePortal.IsAppInstalledAsync(packageFamilyName, targetDevice))
+            {
+                await DevicePortal.InstallAppAsync(files[0].FullName, targetDevice);
+            }
         }
 
         private static void InstallAppOnDevicesList(string buildPath, DevicePortalConnections targetList)
@@ -1298,24 +1302,13 @@ namespace MixedRealityToolkit.Build
                 return;
             }
 
-            if (BuildDeployPreferences.FullReinstall)
-            {
-                UninstallAppOnDevicesList(targetList);
-            }
-
             for (int i = 0; i < targetList.Connections.Count; i++)
             {
-                EditorUtility.DisplayProgressBar(
-                    "Installing on devices",
-                    $"Installing on {targetList.Connections[i].MachineName}",
-                    i / (float)targetList.Connections.Count);
                 InstallOnTargetDevice(buildPath, targetList.Connections[i]);
             }
-
-            EditorUtility.ClearProgressBar();
         }
 
-        private static void UninstallAppOnTargetDevice(string packageFamilyName, ConnectInfo currentConnection, bool showDialog = true)
+        private static async void UninstallAppOnTargetDevice(string packageFamilyName, DeviceInfo currentConnection)
         {
             isAppRunning = false;
 
@@ -1333,9 +1326,9 @@ namespace MixedRealityToolkit.Build
             }
             else
             {
-                if (BuildDeployPortal.IsAppInstalled(packageFamilyName, currentConnection))
+                if (await DevicePortal.IsAppInstalledAsync(packageFamilyName, currentConnection))
                 {
-                    BuildDeployPortal.UninstallApp(packageFamilyName, currentConnection, showDialog);
+                    await DevicePortal.UninstallAppAsync(packageFamilyName, currentConnection);
                 }
             }
         }
@@ -1351,91 +1344,59 @@ namespace MixedRealityToolkit.Build
 
             for (int i = 0; i < targetList.Connections.Count; i++)
             {
-                EditorUtility.DisplayProgressBar(
-                    "Uninstalling on devices",
-                    $"Uninstalling {packageFamilyName} on {targetList.Connections[i].IP}",
-                    i / (float)targetList.Connections.Count);
-                UninstallAppOnTargetDevice(packageFamilyName, targetList.Connections[i], false);
+                UninstallAppOnTargetDevice(packageFamilyName, targetList.Connections[i]);
             }
-
-            EditorUtility.ClearProgressBar();
         }
 
-        private static bool LaunchAppOnTargetDevice(ConnectInfo targetDevice, bool showDialog = true)
+        private static async void LaunchAppOnTargetDevice(DeviceInfo targetDevice)
         {
             string packageFamilyName = CalcPackageFamilyName();
 
             if (string.IsNullOrEmpty(packageFamilyName) ||
                 IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb)
             {
-                return false;
+                return;
             }
 
-            if (showDialog)
+            if (!await DevicePortal.IsAppRunningAsync(PlayerSettings.productName, targetDevice))
             {
-                EditorUtility.DisplayProgressBar("Launching Application", $"Launching {packageFamilyName} on {targetDevice.MachineName}", 0.25f);
+                isAppRunning = await DevicePortal.LaunchAppAsync(packageFamilyName, targetDevice);
             }
-
-            bool success = !BuildDeployPortal.IsAppRunning(PlayerSettings.productName, targetDevice) &&
-                            BuildDeployPortal.LaunchApp(packageFamilyName, targetDevice, false);
-
-            if (showDialog)
-            {
-                EditorUtility.ClearProgressBar();
-            }
-
-            return success;
         }
 
         private static void LaunchAppOnDeviceList(DevicePortalConnections targetDevices)
         {
             for (int i = 0; i < targetDevices.Connections.Count; i++)
             {
-                EditorUtility.DisplayProgressBar("Launching App on devices",
-                    $"Launching app on {targetDevices.Connections[i].MachineName}",
-                    i / (float)targetDevices.Connections.Count);
-                LaunchAppOnTargetDevice(targetDevices.Connections[i], false);
+                LaunchAppOnTargetDevice(targetDevices.Connections[i]);
             }
         }
 
-        private static bool KillAppOnTargetDevice(ConnectInfo targetDevice, bool showDialog = true)
+        private static async void KillAppOnTargetDevice(DeviceInfo targetDevice)
         {
             string packageFamilyName = CalcPackageFamilyName();
 
             if (string.IsNullOrEmpty(packageFamilyName) ||
                 IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb)
             {
-                return false;
+                return;
             }
 
-            if (showDialog)
+            if (await DevicePortal.IsAppRunningAsync(PlayerSettings.productName, targetDevice))
             {
-                EditorUtility.DisplayProgressBar("Stopping Application", $"Stopping {packageFamilyName} on {targetDevice.MachineName}", 0.5f);
+                isAppRunning = !await DevicePortal.KillAppAsync(packageFamilyName, targetDevice);
             }
-
-            bool success = BuildDeployPortal.IsAppRunning(PlayerSettings.productName, targetDevice) &&
-                           BuildDeployPortal.KillApp(packageFamilyName, targetDevice, false);
-
-            if (showDialog)
-            {
-                EditorUtility.ClearProgressBar();
-            }
-
-            return success;
         }
 
         private static void KillAppOnDeviceList(DevicePortalConnections targetDevices)
         {
             for (int i = 0; i < targetDevices.Connections.Count; i++)
             {
-                EditorUtility.DisplayProgressBar("Stopping Application on devices",
-                    $"Stopping on {targetDevices.Connections[i].MachineName}",
-                    i / (float)targetDevices.Connections.Count);
-                KillAppOnTargetDevice(targetDevices.Connections[i], false);
+                KillAppOnTargetDevice(targetDevices.Connections[i]);
             }
         }
 
-        private static void OpenLogFileForTargetDevice(ConnectInfo targetDevice, string localLogPath)
+        private static async void OpenLogFileForTargetDevice(DeviceInfo targetDevice, string localLogPath)
         {
             string packageFamilyName = CalcPackageFamilyName();
 
@@ -1452,7 +1413,8 @@ namespace MixedRealityToolkit.Build
 
             if (!IsLocalConnection(targetDevice) || IsHoloLensConnectedUsb)
             {
-                BuildDeployPortal.DeviceLogFile_View(packageFamilyName, targetDevice);
+                string logFilePath = await DevicePortal.DownloadLogFileAsync(packageFamilyName, targetDevice);
+                Process.Start(logFilePath);
                 return;
             }
 

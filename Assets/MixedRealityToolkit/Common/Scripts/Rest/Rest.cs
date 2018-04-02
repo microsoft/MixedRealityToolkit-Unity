@@ -7,7 +7,7 @@ using MixedRealityToolkit.Common.Extensions;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace MixedRealityToolkit.Common.Rest
+namespace MixedRealityToolkit.Common.RestUtility
 {
     public static class Rest
     {
@@ -84,6 +84,21 @@ namespace MixedRealityToolkit.Common.Rest
         public static async Task<Response> PostAsync(string query, Dictionary<string, string> headers = null)
         {
             using (var webRequest = UnityWebRequest.Post(query, null as string))
+            {
+                return await ProcessRequestAsync(webRequest, headers);
+            }
+        }
+
+        /// <summary>
+        /// Rest POST.
+        /// </summary>
+        /// <param name="query">Finalized Endpoint Query with parameters.</param>
+        /// <param name="formData">Form Data.</param>
+        /// <param name="headers">Optional header information for the request.</param>
+        /// <returns>The response data.</returns>
+        public static async Task<Response> PostAsync(string query, WWWForm formData, Dictionary<string, string> headers = null)
+        {
+            using (var webRequest = UnityWebRequest.Post(query, formData))
             {
                 return await ProcessRequestAsync(webRequest, headers);
             }
