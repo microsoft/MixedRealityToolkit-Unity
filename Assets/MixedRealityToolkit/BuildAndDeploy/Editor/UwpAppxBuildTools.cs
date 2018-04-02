@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using MixedRealityToolkit.Common.EditorScript;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;

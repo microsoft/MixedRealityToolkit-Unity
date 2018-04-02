@@ -3,13 +3,13 @@
 
 using MixedRealityToolkit.Build.DataStructures;
 using MixedRealityToolkit.Build.USB;
-using MixedRealityToolkit.Common.EditorScript;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using MixedRealityToolkit.Common.EditorScript;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
