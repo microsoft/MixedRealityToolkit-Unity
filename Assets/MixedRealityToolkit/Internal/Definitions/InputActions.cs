@@ -7,7 +7,6 @@ namespace MixedRealityToolkit.Internal.Definitions
     /// InputActions defines the set of actions consumed internally within the MRTK.
     /// Denoting the available buttons / interactions that MRTK supports and exposed as events from the InputSystem.
     /// </summary>
-    [System.Flags]
     public enum InputActions
     {
         LeftTrigger             = 0,

@@ -12,18 +12,18 @@ namespace MixedRealityToolkit.Internal.Definitions
         /// <summary>
         /// No  controller state provided by the SDK.
         /// </summary>
-        None,
+        None        = 0,
         /// <summary>
         /// The controller is currently fully tracked and has accurate positioning.
         /// </summary>
-        Tracked,
+        Tracked     = 1,
         /// <summary>
         /// The controller is currently not tracked and has relative positioning.
         /// </summary>
-        NotTracked,
+        NotTracked  = 2,
         /// <summary>
         /// Reserved, for systems that provide alternate tracking.
         /// </summary>
-        Other
+        Other       = 4
     }
 }

@@ -7,7 +7,6 @@ namespace MixedRealityToolkit.Internal.Definitions
     /// The ButtonAction defines the set of actions exposed by a controller.
     /// Denoting the available buttons / interactions that a controller supports.
     /// </summary>
-    [System.Flags]
     public enum ButtonAction
     {
         Trigger             = 0,
