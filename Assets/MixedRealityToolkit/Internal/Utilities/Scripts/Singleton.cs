@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Internal.Utilities
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 {
     /// <summary>
     /// Singleton behavior class, used for components that should only have one instance.

@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Internal.Definitions;
-using Microsoft.MixedReality.Internal.Definitons;
-using Microsoft.MixedReality.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Internal.Managers
+namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 {
     public class MixedRealityManager : Utilities.Singleton<MixedRealityManager>
     {
@@ -49,11 +48,11 @@ namespace Microsoft.MixedReality.Internal.Managers
         {
             base.Awake();
 
-            //MixedRealityToolkit - Active SDK Discovery
+            //Microsoft.MixedReality.Toolkit - Active SDK Discovery
 
-            //MixedRealityToolkit - SDK Initialization
+            //Microsoft.MixedReality.Toolkit - SDK Initialization
 
-            //MixedRealityToolkit - Managers initialization
+            //Microsoft.MixedReality.Toolkit - Managers initialization
 
             if (ActiveProfile.EnableBoundary)
             {
