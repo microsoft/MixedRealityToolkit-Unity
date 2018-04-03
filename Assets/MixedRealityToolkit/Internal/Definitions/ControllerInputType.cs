@@ -14,6 +14,10 @@ namespace MixedRealityToolkit.Internal.Definitions
         /// </summary>
         None = 0,
         /// <summary>
+        /// Raw stream from input (proxy only).
+        /// </summary>
+        Raw,
+        /// <summary>
         /// Digital On/Off input.
         /// </summary>
         Digital,
@@ -32,10 +36,6 @@ namespace MixedRealityToolkit.Internal.Definitions
         /// <summary>
         /// Position AND Rotation analogue input.
         /// </summary>
-        SixDoF,
-        /// <summary>
-        /// Raw stream from input (proxy only).
-        /// </summary>
-        Raw,
+        SixDoF
     }
 }

@@ -9,7 +9,8 @@ namespace MixedRealityToolkit.Internal.Definitions
     /// </summary>
     public enum InputActions
     {
-        LeftTrigger = 0,
+        Raw = 0,
+        LeftTrigger,
         LeftTriggerPress,
         LeftTriggerHold,
         RightTrigger,
@@ -45,7 +46,6 @@ namespace MixedRealityToolkit.Internal.Definitions
         ActionNine,
         ActionTen,
         ActionEleven,
-        ActionTwelve,
-        Raw,
+        ActionTwelve
     }
 }

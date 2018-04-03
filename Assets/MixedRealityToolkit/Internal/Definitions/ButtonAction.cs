@@ -9,7 +9,8 @@ namespace MixedRealityToolkit.Internal.Definitions
     /// </summary>
     public enum ButtonAction
     {
-        Trigger = 0,
+        None = 0,
+        Trigger,
         Grab,
         ThumbStick,
         ThumbStickButton,
