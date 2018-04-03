@@ -71,7 +71,7 @@ namespace MixedRealityToolkit.Build
 
         private readonly List<string> builds = new List<string>(0);
 
-        private static readonly List<string> appPackageDirectories = new List<string>(0);
+        private static readonly List<string> AppPackageDirectories = new List<string>(0);
 
         #endregion Constants and Readonly Values
 
@@ -180,8 +180,8 @@ namespace MixedRealityToolkit.Build
         private static bool isBuilding;
         private static bool isAppRunning;
 
-        private static int currentConnectionInfoIndex;
-        private static DevicePortalConnections portalConnections;
+        private static int currentConnectionInfoIndex = 0;
+        private static DevicePortalConnections portalConnections = null;
 
         #endregion Fields
 
@@ -291,8 +291,8 @@ namespace MixedRealityToolkit.Build
 
             #endregion Quick Options
 
-            currentTab = (BuildDeployTab)GUILayout.Toolbar(SessionState.GetInt("_MRTK_BuildWindow_Tab", (int)currentTab), tabNames);
-            SessionState.SetInt("_MRTK_BuildWindow_Tab", (int)currentTab);
+            currentTab = (BuildDeployTab)GUILayout.Toolbar(SessionState.GetInt("_BuildWindow_Tab", (int)currentTab), tabNames);
+            SessionState.SetInt("_BuildWindow_Tab", (int)currentTab);
 
             GUILayout.Space(10);
 
@@ -636,6 +636,7 @@ namespace MixedRealityToolkit.Build
         {
             Debug.Assert(portalConnections.Connections.Count != 0);
             Debug.Assert(currentConnectionInfoIndex >= 0);
+            Debug.Assert(currentConnectionInfoIndex <= portalConnections.Connections.Count - 1);
 
             GUILayout.BeginVertical();
             EditorGUI.BeginChangeCheck();
@@ -657,8 +658,7 @@ namespace MixedRealityToolkit.Build
             bool useSSL = EditorGUILayout.Toggle(useSSLLabel, BuildDeployPreferences.UseSSL);
             EditorGUIUtility.labelWidth = previousLabelWidth;
 
-            currentConnectionInfoIndex = EditorGUILayout.Popup(
-                SessionState.GetInt("_MRTK_BuildWindow_CurrentDeviceIndex", 0), targetIps, GUILayout.Width(halfWidth - 48));
+            currentConnectionInfoIndex = EditorGUILayout.Popup(SessionState.GetInt("_BuildWindow_CurrentDeviceIndex", 0), targetIps, GUILayout.Width(halfWidth - 48));
 
             var currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
             bool currentConnectionIsLocal = IsLocalConnection(currentConnection);
@@ -730,7 +730,7 @@ namespace MixedRealityToolkit.Build
 
             if (EditorGUI.EndChangeCheck())
             {
-                SessionState.SetInt("_MRTK_BuildWindow_CurrentDeviceIndex", currentConnectionInfoIndex);
+                SessionState.SetInt("_BuildWindow_CurrentDeviceIndex", currentConnectionInfoIndex);
                 BuildDeployPreferences.TargetAllConnections = processAll;
                 BuildDeployPreferences.FullReinstall = fullReinstall;
                 BuildDeployPreferences.UseSSL = useSSL;
@@ -1058,18 +1058,18 @@ namespace MixedRealityToolkit.Build
 
             try
             {
-                appPackageDirectories.Clear();
+                AppPackageDirectories.Clear();
                 string[] buildList = Directory.GetDirectories(BuildDeployPreferences.AbsoluteBuildDirectory, "*", SearchOption.AllDirectories);
                 foreach (string appBuild in buildList)
                 {
                     if (appBuild.Contains("AppPackages") && !appBuild.Contains("AppPackages\\"))
                     {
-                        appPackageDirectories.AddRange(Directory.GetDirectories(appBuild));
+                        AppPackageDirectories.AddRange(Directory.GetDirectories(appBuild));
                     }
                 }
 
                 IEnumerable<string> selectedDirectories =
-                    from string directory in appPackageDirectories
+                    from string directory in AppPackageDirectories
                     orderby Directory.GetLastWriteTime(directory) descending
                     select Path.GetFullPath(directory);
                 builds.AddRange(selectedDirectories);
@@ -1118,7 +1118,21 @@ namespace MixedRealityToolkit.Build
                 targetIps[i] = portalConnections.Connections[i].MachineName;
             }
 
-            BuildDeployPreferences.DevicePortalConnections = JsonUtility.ToJson(portalConnections);
+            var devicePortalConnections = new DevicePortalConnections();
+            for (var i = 0; i < portalConnections.Connections.Count; i++)
+            {
+                devicePortalConnections.Connections.Add(portalConnections.Connections[i]);
+            }
+
+            for (var i = 0; i < portalConnections.Connections.Count; i++)
+            {
+                if (!IsValidIpAddress(devicePortalConnections.Connections[i].IP))
+                {
+                    devicePortalConnections.Connections.RemoveAt(i);
+                }
+            }
+
+            BuildDeployPreferences.DevicePortalConnections = JsonUtility.ToJson(devicePortalConnections);
             Repaint();
         }
 
@@ -1136,8 +1150,7 @@ namespace MixedRealityToolkit.Build
 
         private static bool IsValidIpAddress(string ip)
         {
-            if (string.IsNullOrEmpty(ip) ||
-                ip.Contains(EmptyIpAddress))
+            if (string.IsNullOrEmpty(ip) || ip.Contains(EmptyIpAddress))
             {
                 return false;
             }
@@ -1153,7 +1166,7 @@ namespace MixedRealityToolkit.Build
 
         private static string CalcPackageFamilyName()
         {
-            if (appPackageDirectories.Count == 0)
+            if (AppPackageDirectories.Count == 0)
             {
                 return string.Empty;
             }
