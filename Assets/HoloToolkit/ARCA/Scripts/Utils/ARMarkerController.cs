@@ -5,15 +5,56 @@ using UnityEngine;
 
 namespace HoloToolkit.ARCapture
 {
+    /// <summary>
+    /// Controls displaying of the AR marker on the mobile device
+    /// </summary>
     public class ARMarkerController : MonoBehaviour
     {
+        /// <summary>
+        /// Background plane
+        /// </summary>
         [Tooltip("Background plane")]
-        public GameObject BackgroundPlane;
+        [SerializeField]
+        private GameObject backgroundPlane;
+        /// <summary>
+        /// Background plane
+        /// </summary>
+        public GameObject BackgroundPlane
+        {
+            get
+            {
+                return backgroundPlane;
+            }
 
+            set
+            {
+                backgroundPlane = value;
+            }
+        }
+
+        /// <summary>
+        /// GameObject that will contain the code
+        /// </summary>
         [Tooltip("GameObject that will contain the code")]
-        public GameObject CodeContainer;
+        [SerializeField]
+        private GameObject codeContainer;
+        /// <summary>
+        /// GameObject that will contain the code
+        /// </summary>
+        public GameObject CodeContainer
+        {
+            get
+            {
+                return codeContainer;
+            }
 
-        void OnEnable()
+            set
+            {
+                codeContainer = value;
+            }
+        }
+
+        private void OnEnable()
         {
             // Setting screen rotation to portrait when dispalying AR code
             if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
@@ -37,18 +78,24 @@ namespace HoloToolkit.ARCapture
             OnDismiss();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             OnDismiss();
         }
 
+        /// <summary>
+        /// Called on mobile when the HoloLens finds the marker
+        /// </summary>
         public void OnCodeFound()
         {
             Handheld.Vibrate();
             TurnOffMarker();
         }
 
-        void TurnOffMarker()
+        /// <summary>
+        /// Turns off the markers visuals, executed on the mobile
+        /// </summary>
+        private void TurnOffMarker()
         {
             foreach(Transform tr in CodeContainer.transform)
             {
