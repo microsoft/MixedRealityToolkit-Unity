@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace HoloToolkit.ARCapture
+namespace HoloToolkit.ARCapture.Example
 {
     /// <summary>
     /// Network component that randomly changes the color of its Renderer every given time

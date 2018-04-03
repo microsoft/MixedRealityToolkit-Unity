@@ -1,19 +1,25 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.using UnityEngine;
+// Licensed under the MIT License. See LICENSE in the project root for license information
 
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.ARCapture
 {
+    /// <summary>
+    /// Controls the generation of AR markers from a pool.
+    /// </summary>
 	public class ARCAMarkerGenerator3D : MarkerGeneration3D
 	{
-		void Start()
+		private void Start()
 		{
 			Generate();
 		}
 
+	    /// <summary>
+	    /// Generates an AR marker and puts it in the scene
+	    /// The marker starts rotated in the scene, so it can't be read at this stage
+	    /// </summary>
 		public override void Generate()
 		{
 			Texture2D marker = GetMarker();
@@ -21,25 +27,23 @@ namespace HoloToolkit.ARCapture
 			// Assume the marker is square
             int markerRes = marker.width;
 
-			for(int x = 0; x<(markerResolutionInSquares + 2) * 2; x++)
+			for(int x = 0; x<(MarkerResolutionInSquares + 2) * 2; x++)
             {
-                for(int y = 0; y<(markerResolutionInSquares + 2) * 2; y++)
+                for(int y = 0; y<(MarkerResolutionInSquares + 2) * 2; y++)
                 {
-                    int index = x * (markerResolutionInSquares + 2) * 4 + y;
-
-                    int xCoord = ((x * (markerRes / ((markerResolutionInSquares + 2) * 2))) + (markerRes / ((markerResolutionInSquares + 2) * 4)));
-                    int yCoord = ((y * (markerRes / ((markerResolutionInSquares + 2) * 2))) + (markerRes / ((markerResolutionInSquares + 2) * 4)));
+                    int xCoord = ((x * (markerRes / ((MarkerResolutionInSquares + 2) * 2))) + (markerRes / ((MarkerResolutionInSquares + 2) * 4)));
+                    int yCoord = ((y * (markerRes / ((MarkerResolutionInSquares + 2) * 2))) + (markerRes / ((MarkerResolutionInSquares + 2) * 4)));
 
                     float col = marker.GetPixel(xCoord, yCoord).r;
-                    float res = 1;
+                    var res = 1f;
 
-                    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     Destroy(cube.GetComponent<Collider>());
                     cube.layer = gameObject.layer;
-                    float height = 0.0f;
+                    var height = 0.0f;
                     cube.transform.parent = transform;
                     cube.transform.localPosition = new Vector3((float)xCoord / (float)markerRes - 0.5f, height, (float)yCoord / (float)markerRes - 0.5f);
-                    float scale = 1.0f/((markerResolutionInSquares+2)*2) / res;
+                    var scale = 1.0f/((MarkerResolutionInSquares+2)*2) / res;
                     scale += 0.001f;
                     cube.transform.localScale = new Vector3(scale, scale, scale);
 
@@ -57,10 +61,10 @@ namespace HoloToolkit.ARCapture
 
             transform.localRotation = Quaternion.Euler(-40f, -65f, 55f);
 
-            BlackMaterial.SetFloat("_TransitionCompletion", 0.0f);
+		    BlackMaterial.SetFloat("_TransitionCompletion", 0.0f);
 		}
 
-        void Update()
+	    private void Update()
         {
             if(Input.GetKeyDown(KeyCode.Space))
             {
@@ -68,20 +72,27 @@ namespace HoloToolkit.ARCapture
             }
         }
 
+	    /// <summary>
+	    /// Starts the transition routine
+	    /// </summary>
         public void StartTransition()
         {
             StartCoroutine(Transition());
         }
 
-        void OnDestroy()
+	    private void OnDestroy()
         {
             BlackMaterial.SetFloat("_TransitionCompletion", 0.0f);
         }
 
-        IEnumerator Transition()
+	    /// <summary>
+	    /// Transitions from the rotated state to face the camera
+	    /// </summary>
+	    /// <returns></returns>
+	    private IEnumerator Transition()
         {
-            float timer = 0;
-            float transitionTime = 4.0f;
+            var timer = 0f;
+            const float transitionTime = 4.0f;
 
             while(timer < transitionTime)
             {

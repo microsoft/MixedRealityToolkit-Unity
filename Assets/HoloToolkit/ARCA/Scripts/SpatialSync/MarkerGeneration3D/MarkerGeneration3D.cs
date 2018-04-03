@@ -10,25 +10,79 @@ namespace HoloToolkit.ARCapture
 	public class MarkerGeneration3D : MonoBehaviour
 	{
 	    public delegate void OnMarkerGeneratedEvent(int markerId);
+
+	    /// <summary>
+	    /// An array of available pre generated markers
+	    /// </summary>
 		[Tooltip("An array of available pre generated markers")]
-		public Texture2D[] Markers;
+	    [SerializeField]
+		private Texture2D[] markers;
+
+	    /// <summary>
+	    /// Material applied to white sections of ARCA marker
+	    /// </summary>
 		[Tooltip("Material applied to white sections of ARCA marker")]
-		public Material WhiteMaterial;
+	    [SerializeField]
+		protected Material WhiteMaterial;
+
+        /// <summary>
+        /// Material applied to black sections of ARCA marker
+        /// </summary>
 		[Tooltip("Material applied to black sections of ARCA marker")]
-		public Material BlackMaterial;
-		// Execute once 3D marker has been generated
+        [SerializeField]
+		protected Material BlackMaterial;
+
+		///Execute once 3D marker has been generated
 	    public OnMarkerGeneratedEvent OnMarkerGenerated;
+
+	    /// <summary>
+	    /// // The id of the marker generated
+	    /// </summary>
 		[HideInInspector]
-		// The id of the marker generated
-		public int MarkerId;
+		private int markerId;
 
-		protected List<GameObject> Cubes = new List<GameObject>();
+	    /// <summary>
+	    /// List of cubes that form the marker
+	    /// </summary>
+		protected readonly List<GameObject> Cubes = new List<GameObject>();
 
+	    /// <summary>
+	    /// Texture from which the marker is generated
+	    /// </summary>
 		private Texture2D marker;
-		protected int markerResolutionInSquares = 6;
 
-		public virtual void Generate() { }
+	    /// <summary>
+	    /// The resolution in squares for the marker.
+	    /// </summary>
+	    protected const int MarkerResolutionInSquares = 6;
 
+	    /// <summary>
+	    /// An array of available pre generated markers
+	    /// </summary>
+	    public Texture2D[] Markers
+	    {
+	        get { return markers; }
+	        set { markers = value; }
+	    }
+
+	    /// <summary>
+	    /// // The id of the marker generated
+	    /// </summary>
+	    public int MarkerId
+	    {
+	        get { return markerId; }
+	        set { markerId = value; }
+	    }
+
+	    /// <summary>
+	    /// Base function to generate a marker
+	    /// </summary>
+	    public virtual void Generate() { }
+
+	    /// <summary>
+	    /// Randomly gets a marker texture from the pool
+	    /// </summary>
+	    /// <returns></returns>
 		protected Texture2D GetMarker()
 		{
 			if(!marker)

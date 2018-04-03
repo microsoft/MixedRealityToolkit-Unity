@@ -11,6 +11,9 @@ using UnityEngine.XR.WSA.WebCam;
 
 namespace HoloToolkit.ARCapture
 {
+    /// <summary>
+    /// Manages the camera capture on the HoloLens
+    /// </summary>
     public class CameraCaptureHololens : MonoBehaviour
     {
 		// Executed once a frame has succesfully been captured
@@ -18,16 +21,35 @@ namespace HoloToolkit.ARCapture
         public FrameCapturesDelegate OnFrameCapture;
 
 #if NETFX_CORE
+
+        /// <summary>
+        /// Manages the camera capture
+        /// </summary>
 		private PhotoCapture photoCaptureObject;
+
+        /// <summary>
+        /// Is the HoloLens capturing photos?
+        /// </summary>
+        private bool capturing = false;
 #endif
+        /// <summary>
+        /// Width of the photo taken
+        /// </summary>
         private int photoWidth;
+
+        /// <summary>
+        /// Height of the photo taken
+        /// </summary>
         private int photoHeight;
 
-#if NETFX_CORE
-		private bool capturing = false;
-#endif
+        /// <summary>
+        /// Texture to which the photo will be saved to
+        /// </summary>
         private Texture2D targetTexture;
 
+        /// <summary>
+        /// Starts capturing photos
+        /// </summary>
         public void StartCapture()
         {
 #if NETFX_CORE
@@ -41,6 +63,9 @@ namespace HoloToolkit.ARCapture
 #endif
         }
 
+        /// <summary>
+        /// Stops capturing photos
+        /// </summary>
         public void StopCapture()
         {
 #if NETFX_CORE
@@ -54,73 +79,93 @@ namespace HoloToolkit.ARCapture
 #endif
         }
 
+
 #if NETFX_CORE
-	private void OnPhotoCaptureCreated(PhotoCapture captureObject)
-	{
-		photoCaptureObject = captureObject;
 
-		CameraParameters c = new CameraParameters();
-		c.hologramOpacity = 0.0f;
-		photoHeight = 504;
-		photoWidth = 896;
-		c.cameraResolutionWidth = photoWidth;
-		c.cameraResolutionHeight = photoHeight;
-		c.pixelFormat = CapturePixelFormat.BGRA32;
-		captureObject.StartPhotoModeAsync(c, OnPhotoModeStarted);
-	}
+        /// <summary>
+        /// Called when a capture object has been created, it configures the camera for the capture process
+        /// </summary>
+        /// <param name="captureObject">Contains the camera intent to open</param>
+        private void OnPhotoCaptureCreated(PhotoCapture captureObject)
+        {
+            photoCaptureObject = captureObject;
 
-	private void OnPhotoModeStarted(PhotoCapture.PhotoCaptureResult result)
-   	{
-    	if (result.success)
-		{
-           	photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
-		}
-       	else
-		{
-           	Debug.LogError("Unable to start photo mode!");
-		}
-   	}
+            CameraParameters c = new CameraParameters();
+            c.hologramOpacity = 0.0f;
+            photoHeight = 504;
+            photoWidth = 896;
+            c.cameraResolutionWidth = photoWidth;
+            c.cameraResolutionHeight = photoHeight;
+            c.pixelFormat = CapturePixelFormat.BGRA32;
+            captureObject.StartPhotoModeAsync(c, OnPhotoModeStarted);
+        }
 
-	private void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
-	{
-		if (result.success)
-		{
-			if(targetTexture != null)
-			{
-				Destroy(targetTexture);
-			}
+        /// <summary>
+        /// Called when the photo mode starts, if it's successfull then it'll start taking photos
+        /// </summary>
+        /// <param name="result">Result of the intent of starting the camera</param>
+        private void OnPhotoModeStarted(PhotoCapture.PhotoCaptureResult result)
+        {
+            if (result.success)
+            {
+                photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
+            }
+            else
+            {
+                Debug.LogError("Unable to start photo mode!");
+            }
+        }
 
-			targetTexture = new Texture2D(896, 504, TextureFormat.RGB24, false);
-			// Copy the raw image data into our target texture
-			photoCaptureFrame.UploadImageDataToTexture(targetTexture);
+        /// <summary>
+        /// Called when a photo has been captured to memory, if successfull,
+        /// it'll copy the photo to the target texture
+        /// </summary>
+        /// <param name="result">Result of the photo process</param>
+        /// <param name="photoCaptureFrame">Contains the photo information</param>
+        private void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
+        {
+            if (result.success)
+            {
+                if(targetTexture != null)
+                {
+                    Destroy(targetTexture);
+                }
 
-			if(OnFrameCapture != null)
-			{
-				OnFrameCapture(targetTexture.GetRawTextureData().ToList(), photoWidth, photoHeight);
-			}
-		}
-		else
-		{
-			Debug.LogError("Failed to capturing image");
-		}
+                targetTexture = new Texture2D(896, 504, TextureFormat.RGB24, false);
+                // Copy the raw image data into our target texture
+                photoCaptureFrame.UploadImageDataToTexture(targetTexture);
 
-		photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
-	}
+                if(OnFrameCapture != null)
+                {
+                    OnFrameCapture(targetTexture.GetRawTextureData().ToList(), photoWidth, photoHeight);
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to capturing image");
+            }
 
-	private void OnStoppedPhotoMode(PhotoCapture.PhotoCaptureResult result)
-	{
-		photoCaptureObject.Dispose();
-		photoCaptureObject = null;
-		capturing = false;
-	}
+            photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
+        }
 
-	private void OnDestroy()
-	{
-		if(capturing)
-		{
-			photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
-		}
-	}
+        /// <summary>
+        /// Called when the photo mode stops
+        /// </summary>
+        /// <param name="result">Result of the intent of stopping the photo mode</param>
+        private void OnStoppedPhotoMode(PhotoCapture.PhotoCaptureResult result)
+        {
+            photoCaptureObject.Dispose();
+            photoCaptureObject = null;
+            capturing = false;
+        }
+
+        private void OnDestroy()
+        {
+            if(capturing)
+            {
+                photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
+            }
+        }
 #endif
     }
 }

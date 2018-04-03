@@ -10,64 +10,186 @@ using UnityEngine.Networking;
 
 namespace HoloToolkit.ARCapture
 {
+    /// <summary>
+    /// Manages the sync of the world between the HoloLens and the mobile
+    /// </summary>
     public class WorldSync : NetworkBehaviour
     {
+        /// <summary>
+        /// Transform of the content container
+        /// </summary>
         [Tooltip("Transform of the content container")]
-        public Transform WorldRoot;
+        [SerializeField]
+        private Transform worldRoot;
 
+        /// <summary>
+        /// Component for sending hololens webcam feed to the marker detection code
+        /// </summary>
         [Tooltip("Component for sending hololens webcam feed to the marker detection code")]
-        public MarkerDetectionHololens HololensMarkerDetector;
+        [SerializeField]
+        private MarkerDetectionHololens hololensMarkerDetector;
 
+        /// <summary>
+        /// Number of captures used to find find a average position/rotation
+        /// </summary>
         [Tooltip("Number of captures used to find find a average position/rotation")]
-        public int NumCapturesRequired;
+        [SerializeField]
+        private int numCapturesRequired;
 
+        /// <summary>
+        /// The maximum distance between a capture and the average of the number of captures required
+        /// </summary>
         [Tooltip("The maximum distance between a capture and the average of the number of captures required")]
-        public float MarkerCaptureErrorDistance;
+        [SerializeField]
+        private float markerCaptureErrorDistance;
 
+        /// <summary>
+        /// The offset from the marker position displayed on screen and the phones camera
+        /// </summary>
         [Tooltip("The offset from the marker position displayed on screen and the phones camera")]
-        public Vector3 OffsetBetweenMarkerAndCamera;
+        [SerializeField]
+        private Vector3 offsetBetweenMarkerAndCamera;
 
+        /// <summary>
+        /// Event fired after the marker position/rotation has been found
+        /// </summary>
         [Tooltip("Event fired after the marker position/rotation has been found")]
-        public UnityEvent OnDetectedMobile;
+        [SerializeField]
+        private UnityEvent onDetectedMobile;
 
-        [Tooltip("")] public MarkerGeneration3D MarkerGeneration3D;
+        /// <summary>
+        /// Marker generation component
+        /// </summary>
+        [Tooltip("Marker generation component")]
+        [SerializeField]
+        private MarkerGeneration3D markerGeneration3D;
 
+        /// <summary>
+        /// Event for when the world sync
+        /// </summary>
         public delegate void OnWorldSyncCompleteEvent();
 
-        // Invoked once world adjustment has finished
+        /// <summary>
+        /// Invoked once world adjustment has finished
+        /// </summary>
         public OnWorldSyncCompleteEvent OnWorldSyncComplete;
+
+        /// <summary>
+        /// Invoked on the client once world adjustment has finished
+        /// </summary>
         public OnWorldSyncCompleteEvent OnWorldSyncCompleteClient;
 
-        // String used to sync transform information
-        // stored in the format: xPos:yPos:zPos:yRot
+        /// <summary>
+        /// String used to sync transform information
+        /// stored in the format: xPos:yPos:zPos:yRot
+        /// </summary>
         [SyncVar(hook = "AdjustOrientation")]
         private string syncedTransformString;
 
-        // Position of the marker in World-Space
+        /// <summary>
+        /// Position of the marker in World-Space
+        /// </summary>
         private Vector3 orientationPosition;
 
-        // Y axis rotation of the marker in World-Space
+        /// <summary>
+        /// Y axis rotation of the marker in World-Space
+        /// </summary>
         private float orientationRotation;
+
+        /// <summary>
+        /// List of positions where the marker was found. It'll be used to create the average position
+        /// </summary>
         private List<Vector3> positions = new List<Vector3>();
+
+        /// <summary>
+        /// List of rotations where the marker was found. It'll be used to create the average rotation
+        /// </summary>
         private List<Quaternion> rotations = new List<Quaternion>();
+
+        /// <summary>
+        /// Transform of the content container
+        /// </summary>
+        public Transform WorldRoot
+        {
+            get { return worldRoot; }
+            set { worldRoot = value; }
+        }
+
+        /// <summary>
+        /// Component for sending hololens webcam feed to the marker detection code
+        /// </summary>
+        public MarkerDetectionHololens HololensMarkerDetector
+        {
+            get { return hololensMarkerDetector; }
+            set { hololensMarkerDetector = value; }
+        }
+
+        /// <summary>
+        /// Number of captures used to find find a average position/rotation
+        /// </summary>
+        public int NumCapturesRequired
+        {
+            get { return numCapturesRequired; }
+            set { numCapturesRequired = value; }
+        }
+
+        /// <summary>
+        /// The maximum distance between a capture and the average of the number of captures required
+        /// </summary>
+        public float MarkerCaptureErrorDistance
+        {
+            get { return markerCaptureErrorDistance; }
+            set { markerCaptureErrorDistance = value; }
+        }
+
+        /// <summary>
+        /// Event fired after the marker position/rotation has been found
+        /// </summary>
+        public UnityEvent OnDetectedMobile
+        {
+            get { return onDetectedMobile; }
+            set { onDetectedMobile = value; }
+        }
+
+        /// <summary>
+        /// Marker generation component
+        /// </summary>
+        public MarkerGeneration3D Generation3D
+        {
+            get { return markerGeneration3D; }
+            set { markerGeneration3D = value; }
+        }
 
         void OnDestroy()
         {
             HololensMarkerDetector.OnMarkerDetected -= UpdatePositionAndRotation;
         }
 
+        /// <summary>
+        /// Starts the sync process
+        /// </summary>
         public void StartSyncing()
         {
             HololensMarkerDetector.OnMarkerDetected -= UpdatePositionAndRotation;
             HololensMarkerDetector.OnMarkerDetected += UpdatePositionAndRotation;
         }
 
+        /// <summary>
+        /// Stops the sync process
+        /// </summary>
         public void StopSyncing()
         {
             HololensMarkerDetector.OnMarkerDetected -= UpdatePositionAndRotation;
         }
 
-        void UpdatePositionAndRotation( int markerId, Vector3 pos, Quaternion rot )
+        /// <summary>
+        /// Takes various photos and logs the position and rotation on each iteration
+        /// Once that finishes it finds the average position and rotation for the entire process
+        /// </summary>
+        /// <param name="markerId">Id of the marker</param>
+        /// <param name="pos">Position where the marker was found</param>
+        /// <param name="rot">Rotation of the marker</param>
+        private void UpdatePositionAndRotation( int markerId, Vector3 pos, Quaternion rot )
         {
             if (positions.Count < NumCapturesRequired)
             {
@@ -77,8 +199,8 @@ namespace HoloToolkit.ARCapture
             else
             {
                 // Find the average marker position
-                Vector3 averagePosition = Vector3.zero;
-                for (int i = 0; i < positions.Count; i++)
+                var averagePosition = Vector3.zero;
+                for (var i = 0; i < positions.Count; i++)
                 {
                     averagePosition += positions[i];
                 }
@@ -98,9 +220,7 @@ namespace HoloToolkit.ARCapture
                 }
 
                 // Find the average marker rotation
-                Quaternion averageRotation = Quaternion.identity;
-                averageRotation =
-                    Quaternion.Lerp(rotations[2], Quaternion.Lerp(rotations[0], rotations[1], 0.5f), 0.5f);
+                var averageRotation = Quaternion.Lerp(rotations[2], Quaternion.Lerp(rotations[0], rotations[1], 0.5f), 0.5f);
 
                 syncedTransformString = averagePosition.x + ":" + averagePosition.y + ":" + averagePosition.z + ":" +
                                         averageRotation.eulerAngles.y + ":" + markerId;
@@ -117,7 +237,11 @@ namespace HoloToolkit.ARCapture
             }
         }
 
-        void AdjustOrientation( string str )
+        /// <summary>
+        /// Adjust the orientation on the client to match the HoloLens's
+        /// </summary>
+        /// <param name="str"></param>
+        private void AdjustOrientation( string str )
         {
             var isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
             if (!isHost)
@@ -132,7 +256,7 @@ namespace HoloToolkit.ARCapture
                     orientationRotation = float.Parse(strings[3], CultureInfo.InvariantCulture.NumberFormat);
                     markerId = int.Parse(strings[4], CultureInfo.InvariantCulture.NumberFormat);
 
-                    if (markerId == MarkerGeneration3D.MarkerId)
+                    if (markerId == Generation3D.MarkerId)
                     {
                         AdjustWorld();
                         if (OnWorldSyncCompleteClient != null)
@@ -146,7 +270,10 @@ namespace HoloToolkit.ARCapture
             syncedTransformString = str;
         }
 
-        void AdjustWorld()
+        /// <summary>
+        /// Adjusts the world in the client to match the HoloLens's world
+        /// </summary>
+        private void AdjustWorld()
         {
             if (isServer)
             {
@@ -163,7 +290,7 @@ namespace HoloToolkit.ARCapture
             WorldRoot.transform.eulerAngles -= new Vector3(0, orientationRotation - 180, 0);
 
             // adjust container to 0,0 of HL
-            WorldRoot.transform.Translate(-orientationPosition + OffsetBetweenMarkerAndCamera, Space.Self);
+            WorldRoot.transform.Translate(-orientationPosition + offsetBetweenMarkerAndCamera, Space.Self);
 
             OnDetectedMobile.Invoke();
         }

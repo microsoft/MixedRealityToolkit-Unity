@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.using UnityEngine;
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.ARCapture
 {
+    /// <summary>
+    /// Manages the capture process on the HoloLens
+    /// </summary>
 	public class MarkerDetectionHololens : MonoBehaviour
 	{
 		// Delegate fires when marker with id MarkerId is found
@@ -15,33 +17,113 @@ namespace HoloToolkit.ARCapture
 		// rot : the marker rotation
 		public delegate void OnMarkerDetectedDelegate(int markerId, Vector3 pos, Quaternion rot);
 		public OnMarkerDetectedDelegate OnMarkerDetected;
+
+	    /// <summary>
+	    /// A component for capturing photos from the HoloLens webcam
+	    /// </summary>
 		[Tooltip("A component for capturing photos from the HoloLens webcam")]
-		public CameraCaptureHololens HoloLensCapture;
+	    [SerializeField]
+		private CameraCaptureHololens holoLensCapture;
+
+	    /// <summary>
+	    /// The physical size of the marker to search for in metres
+	    /// </summary>
 		[Tooltip("The physical size of the marker to search for in metres")]
-		public float MarkerSize = 0.05f;
+	    [SerializeField]
+		private float markerSize = 0.05f;
+
+	    /// <summary>
+	    /// Sound played when the hololens enters capturing mode
+	    /// </summary>
 		[Tooltip("Sound played when the hololens enters capturing mode")]
-		public AudioSource SuccessSound;
+	    [SerializeField]
+		private AudioSource successSound;
+
+	    /// <summary>
+	    /// Time the user has to hold an airtap before entering capturing mode
+	    /// </summary>
 		[Tooltip("Time the user has to hold an airtap before entering capturing mode")]
-		public float AirtapTimeToCapture;
+	    [SerializeField]
+		private float airtapTimeToCapture;
+
+	    /// <summary>
+	    /// Time the camera will be capturing
+	    /// </summary>
         [Tooltip("Time the camera will be capturing")]
-	    public float CaptureTimeout = 10f;
+	    [SerializeField]
+	    private float captureTimeout = 10f;
 
+        /// <summary>
+        /// Timeout to automatically stop capturing photos
+        /// </summary>
 		private float currentCaptureTimeout;
-        private MarkerDetector detector;
-		private bool capturing = false;
-		private Quaternion startRotation;
 
-		void Start ()
+	    /// <summary>
+	    /// Component used to detect markers
+	    /// </summary>
+        private MarkerDetector detector;
+
+	    /// <summary>
+	    /// Is the HoloLens capturing?
+	    /// </summary>
+		private bool capturing;
+
+	    /// <summary>
+	    /// A component for capturing photos from the HoloLens webcam
+	    /// </summary>
+	    public CameraCaptureHololens HoloLensCapture
+	    {
+	        get { return holoLensCapture; }
+	        set { holoLensCapture = value; }
+	    }
+
+	    /// <summary>
+	    /// The physical size of the marker to search for in metres
+	    /// </summary>
+	    public float MarkerSize
+	    {
+	        get { return markerSize; }
+	        set { markerSize = value; }
+	    }
+
+	    /// <summary>
+	    /// Sound played when the hololens enters capturing mode
+	    /// </summary>
+	    public AudioSource SuccessSound
+	    {
+	        get { return successSound; }
+	        set { successSound = value; }
+	    }
+
+	    /// <summary>
+	    /// Time the user has to hold an airtap before entering capturing mode
+	    /// </summary>
+	    public float AirtapTimeToCapture
+	    {
+	        get { return airtapTimeToCapture; }
+	        set { airtapTimeToCapture = value; }
+	    }
+
+	    /// <summary>
+	    /// Time the camera will be capturing
+	    /// </summary>
+	    public float CaptureTimeout
+	    {
+	        get { return captureTimeout; }
+	        set { captureTimeout = value; }
+	    }
+
+	    private void Start ()
 		{
 #if NETFX_CORE
 			detector = new MarkerDetector();
 			detector.Initialize();
 
-			HoloLensCapture.OnFrameCapture += ProcessImage;
+			holoLensCapture.OnFrameCapture += ProcessImage;
 #endif
 		}
 
-	    void Update()
+	    private void Update()
 	    {
 	        if (!capturing || currentCaptureTimeout <= 0)
 			{
@@ -57,13 +139,16 @@ namespace HoloToolkit.ARCapture
 			}
 	    }
 
+	    /// <summary>
+	    /// Starts capturing photos
+	    /// </summary>
 		public void StartCapture()
 		{
 		    currentCaptureTimeout = CaptureTimeout;
 #if NETFX_CORE
             if(!capturing)
 			{
-            	HoloLensCapture.StartCapture();
+            	holoLensCapture.StartCapture();
             }
 #else
             Debug.LogWarning("Capturing only supported on HoloLens platform");
@@ -72,29 +157,39 @@ namespace HoloToolkit.ARCapture
         }
 
         /// <summary>
-        ///
+        /// Restarts the timeout to keep alive the capturing process
         /// </summary>
 	    public void KeepAliveCapture()
 	    {
 	        currentCaptureTimeout = CaptureTimeout;
 	    }
 
+	    /// <summary>
+	    /// Stops capturing photos
+	    /// </summary>
 		public void StopCapture()
 		{
 			capturing = false;
 		    currentCaptureTimeout = 0;
 
 #if NETFX_CORE
-			HoloLensCapture.StopCapture();
+			holoLensCapture.StopCapture();
 #else
             Debug.LogWarning("Capturing only supported on HoloLens platform");
 #endif
 		}
 
-		void ProcessImage(List<byte> imageData, int imageWidth, int imageHeight)
+	    /// <summary>
+	    /// Process the image to figure out whether a marker has been detected
+	    /// If it has, it'll notify it
+	    /// </summary>
+	    /// <param name="imageData">The captured image</param>
+	    /// <param name="imageWidth">Width of the image</param>
+	    /// <param name="imageHeight">Height of the image</param>
+	    private void ProcessImage(List<byte> imageData, int imageWidth, int imageHeight)
 		{
 #if NETFX_CORE
-			detector.Detect(imageData, imageWidth, imageHeight, MarkerSize);
+			detector.Detect(imageData, imageWidth, imageHeight, markerSize);
 			Vector3 pos;
 			Quaternion rot;
 			int[] detectedMarkerIds;
@@ -118,11 +213,11 @@ namespace HoloToolkit.ARCapture
 #endif
 		}
 
-		void OnDestroy()
+	    private void OnDestroy()
 		{
 #if NETFX_CORE
 			detector.Terminate();
-			HoloLensCapture.OnFrameCapture -= ProcessImage;
+			holoLensCapture.OnFrameCapture -= ProcessImage;
 #endif
 		}
 	}

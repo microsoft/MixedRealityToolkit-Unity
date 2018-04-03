@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace HoloToolkit.ARCapture
 {
+    /// <summary>
+    /// Manages the OpenCV wrapper to detect a marker.
+    /// </summary>
 	public class MarkerDetector
 	{
 		[DllImport("OpenCVWrapper", EntryPoint="MarkerDetector_Initialize")]
@@ -23,18 +26,29 @@ namespace HoloToolkit.ARCapture
 		[DllImport("OpenCVWrapper", EntryPoint="MarkerDetector_GetDetectedMarkerPose")]
 		internal static extern bool GetDetectedMarkerPose(int _markerId, out float _xPos, out float _yPos, out float _zPos, out float _xRot, out float _yRot, out float _zRot);
 
-		// Initalize the detection code
+		/// <summary>
+		/// Initalize the detection code
+		/// </summary>
 		public void Initialize()
 		{
 			InitalizeMarkerDetector();
 		}
 
-		// Terminate the detection code
+	    /// <summary>
+	    /// Terminate the detection code
+	    /// </summary>
 		public void Terminate()
 		{
 			TerminateMarkerDetector();
 		}
 
+	    /// <summary>
+	    /// Tries to detect a marker in a given image
+	    /// </summary>
+	    /// <param name="_imageData">The image data</param>
+	    /// <param name="_width">Width of the image</param>
+	    /// <param name="_height">Height of the image</param>
+	    /// <param name="_markerSize">Size of the marker</param>
 		public bool Detect(List<byte> _imageData, int _width, int _height, float _markerSize)
 		{
 			unsafe
@@ -46,6 +60,9 @@ namespace HoloToolkit.ARCapture
 			}
 		}
 
+	    /// <summary>
+	    /// Returns the number of markers detected in a
+	    /// </summary>
 		public int GetNumMarkersDetected()
 		{
 			int numMarkersDetected;
@@ -53,6 +70,10 @@ namespace HoloToolkit.ARCapture
 			return numMarkersDetected;
 		}
 
+	    /// <summary>
+	    /// Returns in an out variable the ids of the detected markers
+	    /// </summary>
+	    /// <param name="_markerIds">Out var, it'll contain the ids of the detected markers</param>
 		public bool GetMarkerIds(out int[] _markerIds)
 		{
 			int numMarkersDetected;
@@ -75,6 +96,12 @@ namespace HoloToolkit.ARCapture
 			}
 		}
 
+	    /// <summary>
+	    /// Gets the position and rotation of a given marker
+	    /// </summary>
+	    /// <param name="_markerId">if of the marker</param>
+	    /// <param name="_markerPosition">out var, contains the position of the marker</param>
+	    /// <param name="_markerRotation">out var, contains the rotation of the marker</param>
 		public bool GetMarkerPose(int _markerId, out Vector3 _markerPosition, out Quaternion _markerRotation)
 		{
 			_markerPosition = Vector3.zero;

@@ -1,50 +1,132 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.using UnityEngine;
-
-using System;
+﻿using System.Runtime.Serialization;
 using UnityEngine;
-using HoloToolkit.Unity.InputModule;
+using UnityEngine.UI;
+
 #if PLATFORM_IOS
 using UnityEngine.iOS;
 using UnityEngine.Apple.ReplayKit;
 #endif
-using UnityEngine.UI;
 
 namespace HoloToolkit.ARCapture
 {
+    /// <summary>
+    /// Records and replays screencaptures recorded from the iPhone
+    /// </summary>
     public class ReplayKitRecorder : MonoBehaviour
     {
-        [Tooltip("Record button gameObject")]
-		public GameObject RecordButton;
-
-        [Tooltip("Recording countdown button gameObject")]
-        public GameObject RecordCountdownButton;
-
-        [Tooltip("Record countdown textfield")]
-        public Text RecordCountdownText;
-
-        [Tooltip("Stop button gameObject")]
-        public GameObject StopButton;
-
+        /// <summary>
+        /// Controls container gameObject
+        /// </summary>
         [Tooltip("Controls container gameObject")]
-        public GameObject Controls;
+        [SerializeField]
+        private GameObject controls;
 
+        /// <summary>
+        /// Seconds to countdown before recording
+        /// </summary>
+        private int countDownNumber = 3;
+
+        /// <summary>
+        /// If an error ocurred, this variable will hold the last error message
+        /// </summary>
+        private string lastError = "";
+
+        /// <summary>
+        /// Is the component preparing for recording (Counting down)
+        /// </summary>
+        private bool preparingForRecording;
+
+        /// <summary>
+        /// Record button gameObject
+        /// </summary>
+        [Tooltip("Record button gameObject")] public GameObject RecordButton;
+
+        /// <summary>
+        /// Recording countdown button gameObject
+        /// </summary>
+        [Tooltip("Recording countdown button gameObject")]
+        [SerializeField]
+        private GameObject recordCountdownButton;
+
+        /// <summary>
+        /// Record countdown textfield
+        /// </summary>
+        [Tooltip("Record countdown textfield")]
+        [SerializeField]
+        private Text recordCountdownText;
+
+        /// <summary>
+        /// Used to check whether the component is recording or not
+        /// </summary>
+        private bool recording = false;
+
+        /// <summary>
+        /// Replay (preview) button gameObject
+        /// </summary>
         [Tooltip("Replay (preview) button gameObject")]
-        public GameObject ReplayButton;
+        [SerializeField]
+        private GameObject replayButton;
 
-		private string lastError = "";
-		private bool preparingForRecording = false;
-		private bool recording = false;
-		private int countDownNumber = 3;
+        /// <summary>
+        /// Stop button gameObject
+        /// </summary>
+        [Tooltip("Stop button gameObject")]
+        [SerializeField]
+        private GameObject stopButton;
 
-		void Start()
-		{
+        /// <summary>
+        /// Controls container gameObject
+        /// </summary>
+        public GameObject Controls
+        {
+            get { return Controls; }
+            set { Controls = value; }
+        }
+
+        /// <summary>
+        /// Recording countdown button gameObject
+        /// </summary>
+        public GameObject RecordCountdownButton
+        {
+            get { return recordCountdownButton; }
+            set { recordCountdownButton = value; }
+        }
+
+        /// <summary>
+        /// Record countdown textfield
+        /// </summary>
+        public Text RecordCountdownText
+        {
+            get { return recordCountdownText; }
+            set { recordCountdownText = value; }
+        }
+
+        /// <summary>
+        /// Replay (preview) button gameObject
+        /// </summary>
+        public GameObject ReplayButton
+        {
+            get { return replayButton; }
+            set { replayButton = value; }
+        }
+
+        /// <summary>
+        /// Stop button gameObject
+        /// </summary>
+        public GameObject StopButton
+        {
+            get { return stopButton; }
+            set { stopButton = value; }
+        }
+
+        private void Start()
+        {
             RecordCountdownButton.SetActive(false);
-		}
+        }
 
-		void Update()
-		{
-            #if PLATFORM_IOS
+        private void Update()
+        {
+#if PLATFORM_IOS
 			recording = ReplayKit.isRecording;
 
 			if(recording)
@@ -82,9 +164,12 @@ namespace HoloToolkit.ARCapture
         #endif
         }
 
+        /// <summary>
+        /// Sets up the components and variables to start recording
+        /// </summary>
         public void PrepareForRecording()
-		{
-            #if PLATFORM_IOS
+        {
+#if PLATFORM_IOS
 			if(!ReplayKit.APIAvailable)
 			{
 				return;
@@ -98,26 +183,32 @@ namespace HoloToolkit.ARCapture
             #endif
         }
 
+        /// <summary>
+        /// Displays a countdown before recording. At the end of it, it starts recording
+        /// </summary>
         public void Countdown()
-		{
-			RecordCountdownText.text = countDownNumber.ToString();
-			if(countDownNumber >= 1)
-			{
-				countDownNumber--;
-				Invoke("Countdown", 1f);
-			}
-			else
-			{
-				countDownNumber = 3;
+        {
+            RecordCountdownText.text = countDownNumber.ToString();
+            if (countDownNumber >= 1)
+            {
+                countDownNumber--;
+                Invoke("Countdown", 1f);
+            }
+            else
+            {
+                countDownNumber = 3;
                 RecordCountdownButton.SetActive(false);
-				preparingForRecording = false;
-				StartRecording();
-			}
-		}
+                preparingForRecording = false;
+                StartRecording();
+            }
+        }
 
-		public void StartRecording()
-		{
-            #if PLATFORM_IOS
+        /// <summary>
+        /// Starts the recording process
+        /// </summary>
+        public void StartRecording()
+        {
+#if PLATFORM_IOS
 			if(!ReplayKit.APIAvailable)
             {
 				return;
@@ -131,9 +222,12 @@ namespace HoloToolkit.ARCapture
             #endif
         }
 
+        /// <summary>
+        /// Stops the recording process
+        /// </summary>
         public void StopRecording()
-		{
-            #if PLATFORM_IOS
+        {
+#if PLATFORM_IOS
 			if(recording)
 			{
 				ReplayKit.StopRecording();
@@ -142,11 +236,14 @@ namespace HoloToolkit.ARCapture
             #endif
         }
 
+        /// <summary>
+        /// Plays the last recorded video
+        /// </summary>
         public void PlayPreview()
-		{
-			#if PLATFORM_IOS
+        {
+#if PLATFORM_IOS
 			ReplayKit.Preview();
 			#endif
-		}
+        }
     }
 }

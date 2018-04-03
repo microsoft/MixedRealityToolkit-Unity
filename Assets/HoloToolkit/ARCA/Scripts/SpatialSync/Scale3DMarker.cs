@@ -5,12 +5,42 @@ using UnityEngine;
 
 namespace HoloToolkit.ARCapture
 {
+    /// <summary>
+    /// Manages the scale of the marker to fit in different screen sizes
+    /// </summary>
     public class Scale3DMarker : MonoBehaviour
     {
+        /// <summary>
+        /// Marker size in meters
+        /// </summary>
         [Tooltip("Marker size in meters")]
-        public float MarkerSize;
+        [SerializeField]
+        private float markerSize;
+
+        /// <summary>
+        /// An orthoganal camera used for displaying the marker
+        /// </summary>
         [Tooltip("An orthoganal camera used for displaying the marker")]
-        public Camera OrthographicCamera;
+        [SerializeField]
+        private Camera orthographicCamera;
+
+        /// <summary>
+        /// Marker size in meters
+        /// </summary>
+        public float MarkerSize
+        {
+            get { return markerSize; }
+            set { markerSize = value; }
+        }
+
+        /// <summary>
+        /// An orthoganal camera used for displaying the marker
+        /// </summary>
+        public Camera OrthographicCamera
+        {
+            get { return orthographicCamera; }
+            set { orthographicCamera = value; }
+        }
 
         private void Start ()
         {
