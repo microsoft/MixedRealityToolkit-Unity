@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace MixedRealityToolkit.Internal.Definitons
+namespace MixedRealityToolkit.Internal.Definitions
 {
     /// <summary>
     /// InputActions defines the set of actions consumed internally within the MRTK.

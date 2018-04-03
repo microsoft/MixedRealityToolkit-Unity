@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Internal.Definitons
+namespace MixedRealityToolkit.Internal.Definitions
 {
     /// <summary>
     /// The Controller definition defines the Controller as defined by the SDK / Unity.
@@ -24,6 +24,7 @@ namespace MixedRealityToolkit.Internal.Definitons
         /// Outputs the current position of the controller, as defined by the SDK / Unity.
         /// </summary>
         public Vector3 Position;
+
         /// <summary>
         /// Outputs the current rotation of the controller, as defined by the SDK / Unity.
         /// </summary>

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Internal.Definitons
+namespace MixedRealityToolkit.Internal.Definitions
 {
     /// <summary>
     /// The headset definition defines the headset as defined by the SDK / Unity.
@@ -24,6 +24,7 @@ namespace MixedRealityToolkit.Internal.Definitons
         /// Outputs the current position of the headset, as defined by the SDK / Unity.
         /// </summary>
         public Vector3 Position;
+
         /// <summary>
         /// Outputs the current rotation of the headset, as defined by the SDK / Unity.
         /// </summary>
