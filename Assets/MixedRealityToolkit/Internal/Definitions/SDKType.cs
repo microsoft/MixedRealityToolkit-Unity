@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Internal.Definitons
+namespace MixedRealityToolkit.Internal.Definitions
 {
     /// <summary>
     /// The SDKType lists the VR SDK's that are supported by the MRTK
@@ -12,7 +12,11 @@ namespace Microsoft.MixedReality.Internal.Definitons
         /// <summary>
         /// No specified type or Standalone / non-VR type
         /// </summary>
-        None,
+        None = 0,
+        /// <summary>
+        /// Undefined SDK.
+        /// </summary>
+        Other,
         /// <summary>
         /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and Hololens. 
         /// </summary>
@@ -24,10 +28,7 @@ namespace Microsoft.MixedReality.Internal.Definitons
         /// <summary>
         /// The OpenXR platform. SDK to be determined once released.
         /// </summary>
-        OpenXR,
-        /// <summary>
-        /// Undefined SDK.
-        /// </summary>
-        Other
+        OpenXR
+
     }
 }
