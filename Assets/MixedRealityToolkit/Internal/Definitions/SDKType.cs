@@ -12,22 +12,22 @@ namespace MixedRealityToolkit.Internal.Definitions
         /// <summary>
         /// No specified type or Standalone / non-VR type
         /// </summary>
-        None        = 0,
+        None = 0,
         /// <summary>
         /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and Hololens. 
         /// </summary>
-        WindowsMR   = 1,
+        WindowsMR,
         /// <summary>
         /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
         /// </summary>
-        OpenVR      = 2,
+        OpenVR,
         /// <summary>
         /// The OpenXR platform. SDK to be determined once released.
         /// </summary>
-        OpenXR      = 4,
+        OpenXR,
         /// <summary>
         /// Undefined SDK.
         /// </summary>
-        Other       = 8
+        Other
     }
 }

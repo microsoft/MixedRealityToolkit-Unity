@@ -9,43 +9,43 @@ namespace MixedRealityToolkit.Internal.Definitions
     /// </summary>
     public enum InputActions
     {
-        LeftTrigger             = 0,
-        LeftTriggerPress        = 1,
-        LeftTriggerHold         = 2,
-        RightTrigger            = 4,
-        RightTriggerPressed     = 8,
-        RightTriggerHold        = 16,
-        LeftTouch               = 32,
-        LeftTouchTouched        = 64,
-        LeftTouchPressed        = 128,
-        RightTouch              = 256,
-        RightTouchTouched       = 512,
-        RightTouchPressed       = 1024,
-        LeftThumbstick          = 2048,
-        LeftThumbstickPressed   = 4096,
-        RightThumbstick         = 8192,
-        RightThumbstickPressed  = 16384,
+        LeftTrigger = 0,
+        LeftTriggerPress,
+        LeftTriggerHold,
+        RightTrigger,
+        RightTriggerPressed,
+        RightTriggerHold,
+        LeftTouch,
+        LeftTouchTouched,
+        LeftTouchPressed,
+        RightTouch,
+        RightTouchTouched,
+        RightTouchPressed,
+        LeftThumbstick,
+        LeftThumbstickPressed,
+        RightThumbstick,
+        RightThumbstickPressed,
         /// <summary>
         /// Grab
         /// </summary>
-        ActionOne               = 32768,
+        ActionOne,
         /// <summary>
         /// Menu
         /// </summary>
-        ActionTwo               = 65536,
+        ActionTwo,
         /// <summary>
         /// Start
         /// </summary>
-        ActionThree             = 131072,
-        ActionFour              = 262144,
-        ActionFive              = 524288,
-        ActionSix               = 1048576,
-        ActionSeven             = 2097152,
-        ActionEight             = 4194304,
-        ActionNine              = 8388608,
-        ActionTen               = 16777216,
-        ActionEleven            = 33554432,
-        ActionTwelve            = 67108864,
-        Raw                     = 134217728,
+        ActionThree,
+        ActionFour,
+        ActionFive,
+        ActionSix,
+        ActionSeven,
+        ActionEight,
+        ActionNine,
+        ActionTen,
+        ActionEleven,
+        ActionTwelve,
+        Raw,
     }
 }

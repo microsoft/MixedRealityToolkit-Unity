@@ -12,30 +12,30 @@ namespace MixedRealityToolkit.Internal.Definitions
         /// <summary>
         /// No Specified type.
         /// </summary>
-        None        = 0,
+        None = 0,
         /// <summary>
         /// Digital On/Off input.
         /// </summary>
-        Digital     = 1,
+        Digital,
         /// <summary>
         /// Single Axis analogue input.
         /// </summary>
-        SingleAxis  = 2,
+        SingleAxis,
         /// <summary>
         /// Dual Axis analogue input.
         /// </summary>
-        DualAxis    = 4,
+        DualAxis,
         /// <summary>
         /// Dual Axis analogue input.
         /// </summary>
-        ThreeDoF    = 8,
+        ThreeDoF,
         /// <summary>
         /// Position AND Rotation analogue input.
         /// </summary>
-        SixDoF      = 16,
+        SixDoF,
         /// <summary>
         /// Raw stream from input (proxy only).
         /// </summary>
-        Raw         = 32,
+        Raw,
     }
 }

@@ -9,24 +9,24 @@ namespace MixedRealityToolkit.Internal.Definitions
     /// </summary>
     public enum ButtonAction
     {
-        Trigger             = 0,
-        Grab                = 1,
-        ThumbStick          = 2,
-        ThumbStickButton    = 4,
-        Touchpad            = 8,
-        TouchpadTouch       = 16,
-        TouchpadButton      = 32,
-        Start               = 64,
-        Menu                = 128,
-        ButtonOne           = 256,
-        ButtonTwo           = 512,
-        ButtonThree         = 1024,
-        ButtonFour          = 2048,
-        ButtonFive          = 4096,
-        ButtonSix           = 8192,
-        ButtonSeven         = 16384,
-        ButtonEight         = 32768,
-        ButtonNine          = 65536,
-        ButtonTen           = 131072
+        Trigger = 0,
+        Grab,
+        ThumbStick,
+        ThumbStickButton,
+        Touchpad,
+        TouchpadTouch,
+        TouchpadButton,
+        Start,
+        Menu,
+        ButtonOne,
+        ButtonTwo,
+        ButtonThree,
+        ButtonFour,
+        ButtonFive,
+        ButtonSix,
+        ButtonSeven,
+        ButtonEight,
+        ButtonNine,
+        ButtonTen
     }
 }
