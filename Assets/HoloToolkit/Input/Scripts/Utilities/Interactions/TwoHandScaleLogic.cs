@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule.Utilities.Interations
+namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
 {
     /// <summary>
     /// Implements a scale logic that will scale an object based on the 

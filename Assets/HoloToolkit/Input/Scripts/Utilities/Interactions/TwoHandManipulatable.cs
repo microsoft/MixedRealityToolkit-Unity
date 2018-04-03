@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 
-namespace HoloToolkit.Unity.InputModule.Utilities.Interations
+namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
 {
     /// <summary>
     /// This script allows for an object to be movable, scalable, and rotatable with one or two hands. 

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule.Utilities.Interations
+namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
 {
     /// <summary>
     /// Implements a movement logic that uses the model of angular rotations along a sphere whose 

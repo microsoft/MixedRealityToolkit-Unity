@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace HoloToolkit.Unity.InputModule.Utilities.Interations
+namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
 {
     /// <summary>
     /// Implements common logic for rotating holograms using a handlebar metaphor. 
