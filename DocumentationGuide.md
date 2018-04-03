@@ -29,7 +29,7 @@ If a class, struct or enum is being added to the MRTK, it's purpose must be desc
 ```
     /// <summary>
     /// AudioOccluder implements IAudioInfluencer to provide an occlusion effect.
-    /// </summary><< >>
+    /// </summary>
 ```
 
 If there are any class level dependencies, they should be documented in a remarks block, immediately below the summary.
@@ -57,7 +57,7 @@ As part of a PME summary block, the meaning and purpose of parameters and return
         /// Sets the cached native cutoff frequency of the attached low pass filter.
         /// </summary>
         /// <param name="frequency">The new low pass filter cutoff frequency.</param>
-        /// <returns>The new cutoff frequency value.</remarks>
+        /// <returns>The new cutoff frequency value.</returns>
 
 ```
 
@@ -70,9 +70,10 @@ Dependencies should include extension and/or platform dependencies.
 
 ```
     /// <remarks>
-    /// Introduced in MRTK version: 2018.06.0 
-    /// Requires installation of: ImaginarySDK v2.1
+    /// Introduced in MRTK version: 2018.06.0
+    /// Minimum Unity version: 2018.0.0f1
     /// Minimum Operating System: Windows 10.0.11111.0
+    /// Requires installation of: ImaginarySDK v2.1
     /// </remarks>
 ```
 
