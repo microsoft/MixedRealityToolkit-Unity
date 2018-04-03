@@ -10,8 +10,14 @@ using UnityEditor;
 
 namespace HoloToolkit.ARCapture
 {
+    /// <summary>
+    /// Utility to switch scene state between HoloLens and mobile platforms
+    /// </summary>
 	public class PlatformSwitcher : MonoBehaviour
 	{
+        /// <summary>
+        /// Available platforms
+        /// </summary>
         [Serializable]
 		public enum Platform
 		{
@@ -19,10 +25,32 @@ namespace HoloToolkit.ARCapture
 			IPhone
 		}
 
+        /// <summary>
+        /// The current active platform
+        /// </summary>
         [SerializeField]
-		public Platform TargetPlatform;
+        private Platform targetPlatform;
+        /// <summary>
+        /// The current active platform
+        /// </summary>
+        public Platform TargetPlatform
+        {
+            get
+            {
+                return targetPlatform;
+            }
 
-		public void SwitchPlatform(Platform platform)
+            set
+            {
+                targetPlatform = value;
+            }
+        }
+
+        /// <summary>
+        /// Switches scene state between iPhone and HoloLens platforms
+        /// </summary>
+        /// <param name="platform">The target platform</param>
+        public void SwitchPlatform(Platform platform)
 		{
 #if UNITY_EDITOR
 			TargetPlatform = platform;
@@ -40,6 +68,7 @@ namespace HoloToolkit.ARCapture
 					break;
 			}
 
+            // Disables platform root objects for inactive platforms
 			for(int i=0; i<transform.childCount; i++)
 			{
 				Transform child = transform.GetChild(i);
