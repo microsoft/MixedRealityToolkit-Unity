@@ -14,6 +14,10 @@ namespace MixedRealityToolkit.Internal.Definitions
         /// </summary>
         None = 0,
         /// <summary>
+        /// Undefined SDK.
+        /// </summary>
+        Other,
+        /// <summary>
         /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and Hololens. 
         /// </summary>
         WindowsMR,
@@ -24,10 +28,7 @@ namespace MixedRealityToolkit.Internal.Definitions
         /// <summary>
         /// The OpenXR platform. SDK to be determined once released.
         /// </summary>
-        OpenXR,
-        /// <summary>
-        /// Undefined SDK.
-        /// </summary>
-        Other
+        OpenXR
+
     }
 }
