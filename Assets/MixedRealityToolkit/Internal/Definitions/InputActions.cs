@@ -7,36 +7,37 @@ namespace MixedRealityToolkit.Internal.Definitions
     /// InputActions defines the set of actions consumed internally within the MRTK.
     /// Denoting the available buttons / interactions that MRTK supports and exposed as events from the InputSystem.
     /// </summary>
+    [System.Flags]
     public enum InputActions
     {
-        LeftTrigger,
-        LeftTriggerPress,
-        LeftTriggerHold,
-        RightTrigger,
-        RightTriggerPressed,
-        RightTriggerHold,
-        LeftTouch,
-        LeftTouchTouched,
-        LeftTouchPressed,
-        RightTouch,
-        RightTouchTouched,
-        RightTouchPressed,
-        LeftThumbstick,
-        LeftThumbstickPressed,
-        RightThumbstick,
-        RightThumbstickPressed,
-        ActionOne, // (Grab)
-        ActionTwo, // (Menu)
-        ActionThree, //(Start)
-        ActionFour,
-        ActionFive,
-        ActionSix,
-        ActionSeven,
-        ActionEight,
-        ActionNine,
-        ActionTen,
-        ActionEleven,
-        ActionTwelve,
-        Raw,
+        LeftTrigger             = 0,
+        LeftTriggerPress        = 1,
+        LeftTriggerHold         = 2,
+        RightTrigger            = 4,
+        RightTriggerPressed     = 8,
+        RightTriggerHold        = 16,
+        LeftTouch               = 32,
+        LeftTouchTouched        = 64,
+        LeftTouchPressed        = 128,
+        RightTouch              = 256,
+        RightTouchTouched       = 512,
+        RightTouchPressed       = 1024,
+        LeftThumbstick          = 2048,
+        LeftThumbstickPressed   = 4096,
+        RightThumbstick         = 8192,
+        RightThumbstickPressed  = 16384,
+        ActionOne               = 32768, // (Grab)
+        ActionTwo               = 65536, // (Menu)
+        ActionThree             = 131072, //(Start)
+        ActionFour              = 262144,
+        ActionFive              = 524288,
+        ActionSix               = 1048576,
+        ActionSeven             = 2097152,
+        ActionEight             = 4194304,
+        ActionNine              = 8388608,
+        ActionTen               = 16777216,
+        ActionEleven            = 33554432,
+        ActionTwelve            = 67108864,
+        Raw                     = 134217728,
     }
 }
