@@ -93,8 +93,8 @@ namespace MixedRealityToolkit.InputModule.InputSources
             public override SupportedInputInfo GetSupportedInputInfo()
             {
                 var retVal = SupportedInputInfo.None;
-                retVal |= GetSupportFlag(PointerPosition, SupportedInputInfo.Position);
-                retVal |= GetSupportFlag(PointerRotation, SupportedInputInfo.Rotation);
+                retVal |= GetSupportFlag(PointerPosition, SupportedInputInfo.PointerPosition);
+                retVal |= GetSupportFlag(PointerRotation, SupportedInputInfo.PointerRotation);
                 retVal |= GetSupportFlag(PointingRay, SupportedInputInfo.Pointing);
                 retVal |= GetSupportFlag(Thumbstick, SupportedInputInfo.Thumbstick);
                 retVal |= GetSupportFlag(Touchpad, SupportedInputInfo.Touch);

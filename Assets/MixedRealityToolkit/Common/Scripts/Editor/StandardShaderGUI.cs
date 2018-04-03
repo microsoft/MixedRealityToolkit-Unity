@@ -545,7 +545,6 @@ namespace MixedRealityToolkit.Common.EditorScript
             {
                 materialEditor.ShaderProperty(roundCornerRadius, Styles.roundCornerRadius, 2);
                 materialEditor.ShaderProperty(roundCornerMargin, Styles.roundCornerMargin, 2);
-                materialEditor.ShaderProperty(edgeSmoothingValue, Styles.edgeSmoothingValue, 2);
             }
 
             materialEditor.ShaderProperty(borderLight, Styles.borderLight);
@@ -570,6 +569,11 @@ namespace MixedRealityToolkit.Common.EditorScript
                 {
                     materialEditor.ShaderProperty(borderMinValue, Styles.borderMinValue, 2);
                 }
+            }
+
+            if (PropertyEnabled(roundCorners) || PropertyEnabled(borderLight))
+            {
+                materialEditor.ShaderProperty(edgeSmoothingValue, Styles.edgeSmoothingValue);
             }
 
             materialEditor.ShaderProperty(innerGlow, Styles.innerGlow);

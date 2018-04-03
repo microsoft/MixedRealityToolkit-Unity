@@ -277,7 +277,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstanding
         void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
         {
             // If the source has positional info and there is currently no visible source
-            if (eventData.InputSource.SupportsInputInfo(SupportedInputInfo.Position))
+            if (eventData.InputSource.SupportsInputInfo(SupportedInputInfo.GripPosition))
             {
                 trackedHandsCount++;
             }
@@ -285,7 +285,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstanding
 
         void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.InputSource.SupportsInputInfo(SupportedInputInfo.Position))
+            if (eventData.InputSource.SupportsInputInfo(SupportedInputInfo.GripPosition))
             {
                 trackedHandsCount--;
             }

@@ -237,14 +237,10 @@ namespace MixedRealityToolkit.InputModule.Focus
             if (!TryGetFocusDetails(eventData, out focusDetails)) { return null; }
 
             IPointer pointer;
-            if (TryGetPointingSource(eventData, out pointer))
-            {
-                GraphicInputEventData graphicInputEventData = GetSpecificPointerGraphicEventData(pointer);
-                Debug.Assert(graphicInputEventData != null);
-                graphicInputEventData.selectedObject = focusDetails.Object;
-            }
-
-            return focusDetails.Object;
+            TryGetPointingSource(eventData, out pointer);
+            GraphicInputEventData graphicInputEventData = GetSpecificPointerGraphicEventData(pointer);
+            Debug.Assert(graphicInputEventData != null);
+            return graphicInputEventData.selectedObject;
         }
 
         /// <summary>

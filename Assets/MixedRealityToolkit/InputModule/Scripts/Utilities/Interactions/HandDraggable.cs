@@ -353,9 +353,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
             InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind);
             if (sourceKind != InteractionSourceKind.Hand)
             {
-                if (!eventData.InputSource.SupportsInputInfo(SupportedInputInfo.Position))
+                if (!eventData.InputSource.SupportsInputInfo(SupportedInputInfo.GripPosition))
                 {
-                    // The input source must provide positional data for this script to be usable
+                    // The input source must provide grip positional data for this script to be usable
                     return;
                 }
             }

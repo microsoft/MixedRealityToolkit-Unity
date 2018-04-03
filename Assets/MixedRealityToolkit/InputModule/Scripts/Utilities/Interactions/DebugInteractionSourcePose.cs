@@ -19,10 +19,16 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
         public bool TryGetFunctionsReturnTrue { get; set; }
         public bool IsPositionAvailable { get; set; }
         public bool IsRotationAvailable { get; set; }
+        public bool IsGripPositionAvailable { get; set; }
+        public bool IsGripRotationAvailable { get; set; }
 
         public Vector3 Position { get; set; }
+        public Vector3 GripPosition { get; set; }
         public Vector3 Velocity { get; set; }
+
         public Quaternion Rotation { get; set; }
+        public Quaternion GripRotation { get; set; }
+
         public Ray? PointerRay { get; set; }
 
         public DebugInteractionSourcePose()
@@ -30,6 +36,8 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
             TryGetFunctionsReturnTrue = false;
             IsPositionAvailable = false;
             IsRotationAvailable = false;
+            IsGripPositionAvailable = false;
+            IsGripRotationAvailable = false;
             Position = new Vector3(0, 0, 0);
             Velocity = new Vector3(0, 0, 0);
             Rotation = Quaternion.identity;
@@ -38,7 +46,11 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
         public bool TryGetPosition(out Vector3 position)
         {
             position = Position;
-            return TryGetFunctionsReturnTrue;
+            if (!TryGetFunctionsReturnTrue)     // TODO: bug? does not test IsPositionAvailable (see TryGetRotation)
+            {
+                return false;
+            }
+            return true;
         }
 
         public bool TryGetVelocity(out Vector3 velocity)
@@ -62,6 +74,26 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
             }
 
             pointerRay = (Ray)PointerRay;
+            return true;
+        }
+
+        public bool TryGetGripPosition(out Vector3 position)
+        {
+            position = GripPosition;
+            if (!TryGetFunctionsReturnTrue)     // TODO: should test IsGripPositionAvailable? (see TryGetPosition)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool TryGetGripRotation(out Quaternion rotation)
+        {
+            rotation = GripRotation;
+            if (!TryGetFunctionsReturnTrue || !IsGripRotationAvailable)
+            {
+                return false;
+            }
             return true;
         }
     }

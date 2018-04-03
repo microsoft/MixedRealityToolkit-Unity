@@ -589,7 +589,7 @@ namespace MixedRealityToolkit.InputModule
 
         private void ExecutePointerDown(GraphicInputEventData graphicInputEventData)
         {
-            if (graphicInputEventData != null)
+            if (graphicInputEventData != null && graphicInputEventData.selectedObject != null)
             {
                 ExecuteEvents.ExecuteHierarchy(clickEventData.selectedObject, graphicInputEventData, ExecuteEvents.pointerDownHandler);
             }
@@ -692,8 +692,12 @@ namespace MixedRealityToolkit.InputModule
         {
             if (graphicInputEventData != null)
             {
-                ExecuteEvents.ExecuteHierarchy(clickEventData.selectedObject, graphicInputEventData, ExecuteEvents.pointerUpHandler);
-                ExecuteEvents.ExecuteHierarchy(clickEventData.selectedObject, graphicInputEventData, ExecuteEvents.pointerClickHandler);
+                if (graphicInputEventData.selectedObject != null)
+                {
+                    ExecuteEvents.ExecuteHierarchy(clickEventData.selectedObject, graphicInputEventData, ExecuteEvents.pointerUpHandler);
+                    ExecuteEvents.ExecuteHierarchy(clickEventData.selectedObject, graphicInputEventData, ExecuteEvents.pointerClickHandler);
+                }
+
                 graphicInputEventData.Clear();
             }
         }

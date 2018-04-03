@@ -32,7 +32,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
             public readonly Ray ScreenPointRay;
             public float Lifetime;
 
-            public TouchInputSource(string name, Touch touch, Ray ray) : base(name, SupportedInputInfo.Position | SupportedInputInfo.Pointing)
+            public TouchInputSource(string name, Touch touch, Ray ray) : base(name, SupportedInputInfo.PointerPosition | SupportedInputInfo.Pointing)
             {
                 TouchData = touch;
                 ScreenPointRay = ray;

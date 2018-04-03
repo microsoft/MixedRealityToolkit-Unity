@@ -278,7 +278,7 @@ MonoBehaviour:
   ParentGameObjectToPlace: {fileID: 942915099}
   IsBeingPlaced: 0
   AllowMeshVisualizationControl: 1
-  UseColliderCenter: 0
+  UseColliderToPlace: 0
 --- !u!114 &632692719
 MonoBehaviour:
   m_ObjectHideFlags: 0

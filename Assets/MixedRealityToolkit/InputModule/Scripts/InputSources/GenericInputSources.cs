@@ -107,8 +107,8 @@ namespace MixedRealityToolkit.InputModule.InputSources
                     var inputSource = new GenericInputSource(
                         joystickNames[i],
                         SupportedInputInfo.Pointing |
-                        SupportedInputInfo.Position |
-                        SupportedInputInfo.Rotation |
+                        SupportedInputInfo.PointerPosition |
+                        SupportedInputInfo.PointerRotation |
                         SupportedInputInfo.Menu |
                         SupportedInputInfo.Grasp |
                         SupportedInputInfo.Touch |

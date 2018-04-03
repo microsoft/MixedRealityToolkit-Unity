@@ -31,6 +31,9 @@ namespace MixedRealityToolkit.InputModule.InputSources
                 IsMenuButtonDown = false;
                 MenuButtonStateChanged = false;
 
+                IsThumbstickPressed = false;
+                ThumbstickStateChanged = false;
+
                 IsGrasped = false;
                 GraspStateChanged = false;
 
@@ -46,16 +49,24 @@ namespace MixedRealityToolkit.InputModule.InputSources
             public bool IsMenuButtonDown;
             public bool MenuButtonStateChanged;
 
+            public bool IsThumbstickPressed;
+            public bool ThumbstickStateChanged;
+
             public bool IsGrasped;
             public bool GraspStateChanged;
 
             public bool ManipulationInProgress;
             public bool HoldInProgress;
             public Vector3 CumulativeDelta;
+            public Vector3 CumulativeGripDelta;
         }
 
+        [Tooltip("This property now represents Pointer position (contrast with Grip position)")]
         public bool SupportsPosition;
+        [Tooltip("This property now represents Pointer rotation (contrast with Grip rotation)")]
         public bool SupportsRotation;
+        public bool SupportsGripPosition;
+        public bool SupportsGripRotation;
         public bool SupportsRay;
         public bool SupportsMenuButton;
         public bool SupportsGrasp;
@@ -65,8 +76,14 @@ namespace MixedRealityToolkit.InputModule.InputSources
         public InteractionSourceKind SourceKind;
 #endif
 
+        [Tooltip("This property now represents controller's Pointer position (contrast with controller Grip position)")]
         public Vector3 ControllerPosition;
+        [Tooltip("This property now represents controller's Pointer rotation (contrast with controller Grip rotation)")]
         public Quaternion ControllerRotation;
+
+        public Vector3 ControllerGripPosition;
+        public Quaternion ControllerGripRotation;
+
         public Ray? PointingRay;
 
         [SerializeField]
@@ -92,17 +109,27 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
             if (SupportsPosition)
             {
-                supportedInputInfo |= SupportedInputInfo.Position;
+                supportedInputInfo |= SupportedInputInfo.PointerPosition;
             }
 
             if (SupportsRotation)
             {
-                supportedInputInfo |= SupportedInputInfo.Rotation;
+                supportedInputInfo |= SupportedInputInfo.PointerRotation;
             }
 
             if (SupportsRay)
             {
                 supportedInputInfo |= SupportedInputInfo.Pointing;
+            }
+
+            if (SupportsGripPosition)
+            {
+                supportedInputInfo |= SupportedInputInfo.GripPosition;
+            }
+
+            if (SupportsGripRotation)
+            {
+                supportedInputInfo |= SupportedInputInfo.GripRotation;
             }
 
             if (SupportsMenuButton)
@@ -150,9 +177,28 @@ namespace MixedRealityToolkit.InputModule.InputSources
             return false;
         }
 
-        public bool TryGetThumbstick(out bool isPressed, out Vector2 position)
+        public bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
         {
-            isPressed = false;
+            if (SupportsGripRotation)
+            {
+                rotation = ControllerGripRotation;
+                return true;
+            }
+
+            rotation = Quaternion.identity;
+            return false;
+        }
+
+        public bool TryGetThumbstick(uint sourceId, out bool isPressed, out Vector2 position)
+        {
+            isPressed = currentButtonStates.IsThumbstickPressed;
+
+            if (SupportsGripPosition)
+            {
+                position = ControllerGripPosition;
+                return true;
+            }
+
             position = Vector2.zero;
             return false;
         }
@@ -322,6 +368,25 @@ namespace MixedRealityToolkit.InputModule.InputSources
             if (SupportsRay)
             {
                 PointingRay = source.SourcePose.PointerRay;
+            }
+
+            if (SupportsGripPosition)
+            {
+                Vector3 controllerGripPosition;
+                if (source.SourcePose.TryGetGripPosition(out controllerGripPosition))
+                {
+                    currentButtonStates.CumulativeGripDelta += controllerGripPosition - ControllerGripPosition;
+                    ControllerGripPosition = controllerGripPosition;
+                }
+            }
+
+            if (SupportsGripRotation)
+            {
+                Quaternion controllerGripRotation;
+                if (source.SourcePose.TryGetGripRotation(out controllerGripRotation))
+                {
+                    ControllerGripRotation = controllerGripRotation;
+                }
             }
 
             if (SupportsMenuButton)

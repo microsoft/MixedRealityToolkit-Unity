@@ -2,10 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_WSA
+using MixedRealityToolkit.Utilities;
+using UnityEngine;
 #if !UNITY_2017_2_OR_NEWER
 using UnityEngine.VR.WSA.Input;
 #else
-using MixedRealityToolkit.Utilities;
 using UnityEngine.XR.WSA.Input;
 #if !UNITY_EDITOR
 using System;
@@ -15,6 +16,8 @@ using Windows.Foundation;
 using Windows.Perception;
 using Windows.Storage.Streams;
 using Windows.UI.Input.Spatial;
+#elif UNITY_EDITOR_WIN
+using System.Runtime.InteropServices;
 #endif
 #endif
 #endif
@@ -26,6 +29,14 @@ namespace MixedRealityToolkit.Common.Extensions
     /// </summary>
     public static class InteractionSourceExtensions
     {
+#if UNITY_EDITOR_WIN && UNITY_WSA
+        [DllImport("EditorMotionController")]
+        private static extern bool StartHaptics([In] uint controllerId, [In] float intensity, [In] float durationInSeconds);
+
+        [DllImport("EditorMotionController")]
+        private static extern bool StopHaptics([In] uint controllerId);
+#endif
+
         // This value is standardized according to www.usb.org/developers/hidpage/HUTRR63b_-_Haptics_Page_Redline.pdf
         private const ushort ContinuousBuzzWaveform = 0x1004;
 
@@ -37,7 +48,7 @@ namespace MixedRealityToolkit.Common.Extensions
 
         public static void StartHaptics(this InteractionSource interactionSource, float intensity, float durationInSeconds)
         {
-            if (!WindowsApiChecker.UniversalApiContractV4_IsAvailable)
+            if (!WindowsApiChecker.UniversalApiContractV4_IsAvailable && !Application.isEditor)
             {
                 return;
             }
@@ -70,12 +81,14 @@ namespace MixedRealityToolkit.Common.Extensions
                     }
                 }
             }, true);
+#elif UNITY_EDITOR_WIN && UNITY_2017_2_OR_NEWER
+            StartHaptics(interactionSource.id, intensity, durationInSeconds);
 #endif
         }
 
         public static void StopHaptics(this InteractionSource interactionSource)
         {
-            if (!WindowsApiChecker.UniversalApiContractV4_IsAvailable)
+            if (!WindowsApiChecker.UniversalApiContractV4_IsAvailable && !Application.isEditor)
             {
                 return;
             }
@@ -93,6 +106,8 @@ namespace MixedRealityToolkit.Common.Extensions
                     }
                 }
             }, true);
+#elif UNITY_EDITOR_WIN && UNITY_2017_2_OR_NEWER
+            StopHaptics(interactionSource.id);
 #endif
         }
 
