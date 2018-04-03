@@ -26,9 +26,18 @@ namespace MixedRealityToolkit.Internal.Definitions
         LeftThumbstickPressed   = 4096,
         RightThumbstick         = 8192,
         RightThumbstickPressed  = 16384,
-        ActionOne               = 32768, // (Grab)
-        ActionTwo               = 65536, // (Menu)
-        ActionThree             = 131072, //(Start)
+        /// <summary>
+        /// Grab
+        /// </summary>
+        ActionOne               = 32768,
+        /// <summary>
+        /// Menu
+        /// </summary>
+        ActionTwo               = 65536,
+        /// <summary>
+        /// Start
+        /// </summary>
+        ActionThree             = 131072,
         ActionFour              = 262144,
         ActionFive              = 524288,
         ActionSix               = 1048576,

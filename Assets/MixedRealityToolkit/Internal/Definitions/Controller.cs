@@ -13,36 +13,36 @@ namespace MixedRealityToolkit.Internal.Definitions
         /// <summary>
         /// The ID assigned to the Controller
         /// </summary>
-        public string ID;
+        public string Id { get; set; }
 
         /// <summary>
         /// The designated hand that the controller is managing, as defined by the SDK / Unity.
         /// </summary>
-        public Handedness Handedness;
+        public Handedness Handedness { get; set; }
 
         /// <summary>
         /// Outputs the current position of the controller, as defined by the SDK / Unity.
         /// </summary>
-        public Vector3 Position;
+        public Vector3 Position { get; set; }
 
         /// <summary>
         /// Outputs the current rotation of the controller, as defined by the SDK / Unity.
         /// </summary>
-        public Quaternion Rotation;
+        public Quaternion Rotation { get; set; }
 
         /// <summary>
         /// Outputs the current state of the controller, whether it is tracked or not. As defined by the SDK / Unity.
         /// </summary>
-        public ControllerState ControllerState;
+        public ControllerState ControllerState { get; set; }
 
         /// <summary>
         /// Details the list of available buttons / interactions available from the controller.
         /// </summary>
-        public ButtonDefinition[] Buttons;
+        public ButtonDefinition[] Buttons { get; set; }
 
         /// <summary>
         /// List the available capabilities of the controller for a simpler lookup.
         /// </summary>
-        public ButtonAction[] Capabilities;
+        public ButtonAction[] Capabilities { get; set; }
     }
 }

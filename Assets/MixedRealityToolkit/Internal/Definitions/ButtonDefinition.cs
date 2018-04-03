@@ -11,16 +11,16 @@ namespace MixedRealityToolkit.Internal.Definitions
         /// <summary>
         /// The ID assigned to the Button
         /// </summary>
-        public string ID;
+        public string Id { get; set; }
 
         /// <summary>
         /// The input type of the button, e.g. Analogue, Digital, etc.
         /// </summary>
-        public ControllerInputType ButtonInputType;
+        public ControllerInputType ButtonInputType { get; set; }
 
         /// <summary>
         /// The primary action of the button as defined by the controller SDK.
         /// </summary>
-        public ButtonAction ButtonAction;
+        public ButtonAction ButtonAction { get; set; }
     }
 }
