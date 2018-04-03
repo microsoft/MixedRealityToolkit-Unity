@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-#if PLATFORM_IOS
+#if UNITY_IOS
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
 using System.IO;
@@ -15,7 +15,7 @@ namespace ARKit.Utils
 
 		public static byte[] SerializeToByteArray(this object obj)
 		{
-			#if PLATFORM_IOS
+			#if UNITY_IOS
 			if (obj == null)
 			{
 				return null;
@@ -33,7 +33,7 @@ namespace ARKit.Utils
 
 		public static T Deserialize<T>(this byte[] byteArray) where T : class
 		{
-			#if PLATFORM_IOS
+			#if UNITY_IOS
 			if (byteArray == null)
 			{
 				return null;

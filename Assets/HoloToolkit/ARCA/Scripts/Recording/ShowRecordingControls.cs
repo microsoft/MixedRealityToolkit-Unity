@@ -50,17 +50,17 @@ namespace ARCA
             set { timeToDisplayMenu = value; }
         }
 
-        public void OnHoldStarted( HoldEventData eventData )
+        public void OnHoldStarted(HoldEventData eventData)
         {
             HoldEventStart();
         }
 
-        public void OnHoldCompleted( HoldEventData eventData )
+        public void OnHoldCompleted(HoldEventData eventData)
         {
             HoldEventEnd();
         }
 
-        public void OnHoldCanceled( HoldEventData eventData )
+        public void OnHoldCanceled(HoldEventData eventData)
         {
             HoldEventCancelled();
         }

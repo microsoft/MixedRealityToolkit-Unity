@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-#if PLATFORM_IOS
+#if UNITY_IOS
 using UnityEngine.iOS;
 using UnityEngine.Apple.ReplayKit;
 #endif
@@ -126,7 +126,7 @@ namespace HoloToolkit.ARCapture
 
         private void Update()
         {
-#if PLATFORM_IOS
+#if UNITY_IOS
 			recording = ReplayKit.isRecording;
 
 			if(recording)
@@ -169,7 +169,7 @@ namespace HoloToolkit.ARCapture
         /// </summary>
         public void PrepareForRecording()
         {
-#if PLATFORM_IOS
+#if UNITY_IOS
 			if(!ReplayKit.APIAvailable)
 			{
 				return;
@@ -208,7 +208,7 @@ namespace HoloToolkit.ARCapture
         /// </summary>
         public void StartRecording()
         {
-#if PLATFORM_IOS
+#if UNITY_IOS
 			if(!ReplayKit.APIAvailable)
             {
 				return;
@@ -227,7 +227,7 @@ namespace HoloToolkit.ARCapture
         /// </summary>
         public void StopRecording()
         {
-#if PLATFORM_IOS
+#if UNITY_IOS
 			if(recording)
 			{
 				ReplayKit.StopRecording();
@@ -241,7 +241,7 @@ namespace HoloToolkit.ARCapture
         /// </summary>
         public void PlayPreview()
         {
-#if PLATFORM_IOS
+#if UNITY_IOS
 			ReplayKit.Preview();
 			#endif
         }

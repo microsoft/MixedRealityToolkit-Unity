@@ -90,7 +90,7 @@ namespace HoloToolkit.ARCapture
         {
             photoCaptureObject = captureObject;
 
-            CameraParameters c = new CameraParameters();
+            var c = new CameraParameters();
             c.hologramOpacity = 0.0f;
             photoHeight = 504;
             photoWidth = 896;

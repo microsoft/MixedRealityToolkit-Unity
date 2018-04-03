@@ -55,10 +55,10 @@ namespace HoloToolkit.ARCapture
         /// Called by the API. It checks whether an anchor has been located and signals
         /// the marker generator so that it can create and show an AR marker
         /// </summary>
-        /// <param name="cam"></param>
-        private void FrameUpdated( UnityARCamera cam )
+        /// <param name="arCamera"></param>
+        private void FrameUpdated( UnityARCamera arCamera )
         {
-            if (cam.pointCloudData.Length > 4)
+            if (arCamera.pointCloudData.Length > 4)
             {
                 if (OnAnchorLocated != null) OnAnchorLocated();
                 if (!transitioned)
