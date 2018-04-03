@@ -16,13 +16,12 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
     /// </summary>
     public class TwoHandMoveLogic
     {
-        /// <summary>
-        /// private variables 
-        /// </summary>
+        #region private members
         private float handRefDistance;
         private float objRefDistance;
         private const float DistanceScale = 2f;
         private static readonly Vector3 initialMove = new Vector3(0, -0.2f, 0);
+        #endregion
 
         /// <summary>
         /// The initial angle between the hand and the object
