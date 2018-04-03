@@ -22,7 +22,7 @@ Requirements
 ------------
 
 - ARCA currently uses UNET for its network discovery and spatial syncronizing.  This means all interactivity during the application needs to be synced between the devices.
-- Unity 2017.2.1f1
+- Unity 2017.2.1p2
 - Hardware
     - A HoloLens
     - Windows PC running Windows 10
