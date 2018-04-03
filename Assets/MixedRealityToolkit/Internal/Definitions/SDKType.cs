@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace MixedRealityToolkit.Internal.Definitons
+namespace Microsoft.MixedReality.Internal.Definitons
 {
     /// <summary>
     /// The SDKType lists the VR SDK's that are supported by the MRTK
