@@ -19,7 +19,7 @@ namespace MixedRealityToolkit.UX.AppBarControl
         private Vector3 hiddenOffset;
         private Vector3 manipulationOffset;
         private CompoundButton cButton;
-        private MeshRenderer highlightMesh;
+        private Renderer highlightMeshRenderer;
         private CompoundButtonText text;
         private CompoundButtonIcon icon;
         private AppBar parentToolBar;
@@ -40,7 +40,7 @@ namespace MixedRealityToolkit.UX.AppBarControl
             text = GetComponent<CompoundButtonText>();
             text.Text = template.Text;
             icon = GetComponent<CompoundButtonIcon>();
-            highlightMesh = cButton.transform.Find("FrontPlate").GetComponent<MeshRenderer>();
+            highlightMeshRenderer = cButton.GetComponent<CompoundButtonMesh>().Renderer;
 
             if (customIconProfile != null)
             {
@@ -140,7 +140,7 @@ namespace MixedRealityToolkit.UX.AppBarControl
             icon.Alpha = 0f;
             text.DisableText = true;
             cButton.enabled = false;
-            highlightMesh.enabled = false;
+            highlightMeshRenderer.enabled = false;
             cButton.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
         }
 
@@ -152,7 +152,7 @@ namespace MixedRealityToolkit.UX.AppBarControl
             icon.Alpha = 1f;
             text.DisableText = false;
             cButton.enabled = true;
-            highlightMesh.enabled = true;
+            highlightMeshRenderer.enabled = true;
             cButton.gameObject.layer = LayerMask.NameToLayer("UI");
         }
 
