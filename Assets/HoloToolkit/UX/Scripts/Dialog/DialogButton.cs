@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace HoloToolkit.UX.Buttons
 {
+    /// <summary>
+    /// Handling click event and dismiss dialog
+    /// </summary>
     public class DialogButton : MonoBehaviour
     {
         private DialogShell _parentDialog;

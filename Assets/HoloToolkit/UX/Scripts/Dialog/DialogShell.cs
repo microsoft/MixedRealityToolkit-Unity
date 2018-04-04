@@ -8,11 +8,9 @@ using HoloToolkit.UX.Buttons;
 using System.Collections.Generic;
 using HoloToolkit.Unity;
 
-
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
 #endif
-
 
 namespace HoloToolkit.UX.Dialog
 {

@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Examples.UX
 {
+    /// <summary>
+    /// Demonstrates how to launch Dialog UI with different number of buttons
+    /// </summary>
     public class DialogExampleLaunchButton : MonoBehaviour
     {
         [SerializeField]

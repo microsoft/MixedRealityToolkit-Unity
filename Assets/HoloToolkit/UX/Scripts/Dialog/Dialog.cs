@@ -13,6 +13,7 @@ namespace HoloToolkit.UX.Dialog
     /// And to tell whatever launched the dialog which button was pressed
     /// Can be extended to include more information for dialog construction
     /// (eg detailed messages, button names, colors etc)
+    /// </summary>
     public abstract class Dialog : InteractionReceiver
     {
         public enum StateEnum
