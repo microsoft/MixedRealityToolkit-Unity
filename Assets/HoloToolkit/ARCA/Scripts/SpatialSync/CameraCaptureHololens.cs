@@ -90,14 +90,14 @@ namespace HoloToolkit.ARCapture
         {
             photoCaptureObject = captureObject;
 
-            var c = new CameraParameters();
-            c.hologramOpacity = 0.0f;
+            var cameraParameters = new CameraParameters();
+            cameraParameters.hologramOpacity = 0.0f;
             photoHeight = 504;
             photoWidth = 896;
-            c.cameraResolutionWidth = photoWidth;
-            c.cameraResolutionHeight = photoHeight;
-            c.pixelFormat = CapturePixelFormat.BGRA32;
-            captureObject.StartPhotoModeAsync(c, OnPhotoModeStarted);
+            cameraParameters.cameraResolutionWidth = photoWidth;
+            cameraParameters.cameraResolutionHeight = photoHeight;
+            cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
+            captureObject.StartPhotoModeAsync(cameraParameters, OnPhotoModeStarted);
         }
 
         /// <summary>
