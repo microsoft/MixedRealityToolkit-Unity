@@ -70,6 +70,14 @@ namespace HoloToolkit.Sharing
 
         protected override void Start()
         {
+            if (SharingStage.Instance.connectOnAwake)
+            {
+                StartManager();
+            }
+        }
+
+        public void StartManager()
+        {
             base.Start();
 
             if (SharingStage.Instance != null)

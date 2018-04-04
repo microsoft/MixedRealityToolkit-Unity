@@ -33,42 +33,29 @@ namespace HoloToolkit.Sharing.Tests
             }
         }
 
-        public void SpawnBasicSyncObject()
+        public bool SpawnSyncObject(SyncSpawnedObject o, Vector3 position, Quaternion rotation)
         {
-            Vector3 position = Random.onUnitSphere * 2;
-            Quaternion rotation = Random.rotation;
-
-            var spawnedObject = new SyncSpawnedObject();
-
-            spawnManager.Spawn(spawnedObject, position, rotation, spawnParentTransform.gameObject, "SpawnedObject", false);
+            if (!spawnManager.Spawn(o, position, rotation, spawnParentTransform.gameObject, o.Name.Value, false))
+                return false;
+            return true;
         }
 
-        public void SpawnCustomSyncObject()
+        public SyncSpawnedObject SearchSyncObject(Type type)
         {
-            Vector3 position = Random.onUnitSphere * 2;
-            Quaternion rotation = Random.rotation;
-
-            var spawnedObject = new SyncSpawnTestSphere();
-            spawnedObject.TestFloat.Value = Random.Range(0f, 100f);
-
-            spawnManager.Spawn(spawnedObject, position, rotation, spawnParentTransform.gameObject, "SpawnTestSphere", false);
+            foreach (var elt in SharingStage.Instance.Root.InstantiatedPrefabs.GetDataArray())
+                if (elt.GetType() == type)
+                    return elt;
+            return null;
         }
 
-        /// <summary>
-        /// Deletes any sync object that inherits from SyncSpawnObject.
-        /// </summary>
-        public void DeleteSyncObject()
+        public void DeleteSyncObject(GameObject o)
         {
-            GameObject hitObject = GazeManager.Instance.HitObject;
-            if (hitObject != null)
-            {
-                var syncModelAccessor = hitObject.GetComponent<DefaultSyncModelAccessor>();
-                if (syncModelAccessor != null)
-                {
-                    var syncSpawnObject = (SyncSpawnedObject)syncModelAccessor.SyncModel;
-                    spawnManager.Delete(syncSpawnObject);
-                }
-            }
+            spawnManager.Delete((SyncSpawnedObject)o.GetComponent<DefaultSyncModelAccessor>().SyncModel);
+        }
+
+        public void DeleteSyncObject(SyncSpawnedObject o)
+        {
+            spawnManager.Delete(o);
         }
     }
 }

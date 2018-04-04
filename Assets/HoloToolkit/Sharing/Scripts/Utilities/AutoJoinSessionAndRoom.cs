@@ -52,7 +52,14 @@ namespace HoloToolkit.Sharing.Utilities
 
         private void Start()
         {
-            // SharingStage should be valid at this point, but we may not be connected.
+            if (SharingStage.Instance.connectOnAwake)
+            {
+                StartConnection();
+            }
+        }
+
+        public void StartConnection()
+        {
             if (SharingStage.Instance.IsConnected)
             {
                 SharingManagerConnected();

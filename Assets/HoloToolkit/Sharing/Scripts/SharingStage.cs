@@ -233,9 +233,9 @@ namespace HoloToolkit.Sharing
             {
                 AutoDiscoverInit();
             }
-            else
+            else if (connectOnAwake)
             {
-                ManagerInit(connectOnAwake);
+                ManagerInit(true);
             }
         }
 
