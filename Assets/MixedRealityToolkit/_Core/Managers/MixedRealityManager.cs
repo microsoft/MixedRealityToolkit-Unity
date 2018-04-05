@@ -14,10 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
         #region Mixed Reality Manager Events
 
-        public event InitialiseHandler InitializeEvent;
+        public event InitializeHandler InitializeEvent;
         public event UpdateHandler UpdateEvent;
         public event DestroyHandler DestroyEvent;
-        public delegate void InitialiseHandler();
+        public delegate void InitializeHandler();
         public delegate void UpdateHandler();
         public delegate void DestroyHandler();
 
