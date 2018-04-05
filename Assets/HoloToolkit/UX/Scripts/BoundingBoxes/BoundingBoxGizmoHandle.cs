@@ -10,34 +10,15 @@ using UnityEngine.XR.WSA;
 
 namespace HoloToolkit.Unity.UX
 {
+    /// <summary>
+    /// Logic for the gizmo handles in Bounding Box
+    /// </summary>
     public class BoundingBoxGizmoHandle : MonoBehaviour, IInputHandler, ISourceStateHandler
     {
-        public enum RotationType
-        {
-            objectCoordinates,
-            globalCoordinates
-        }
-        public enum HandMotionType
-        {
-            handRotatesToRotateObject,
-            handMovesToRotateObject
-        }
-        public enum TransformType
-        {
-            Rotation,
-            Scale
-        };
-        public enum AxisToAffect
-        {
-            X,
-            Y,
-            Z
-        };
-
         private BoundingBoxRig rig;
         private Transform transformToAffect;
-        private TransformType affineType;
-        private AxisToAffect axis;
+        private BoundingBoxGizmoHandleTransformType affineType;
+        private BoundingBoxGizmoHandleAxisToAffect axis;
         private Vector3 initialHandPosition;
         private Vector3 initialScale;
         private Vector3 initialPosition;
@@ -52,10 +33,10 @@ namespace HoloToolkit.Unity.UX
         private float minimumScaleNav = 0.001f;
         private float scaleRate = 1.0f;
         private float maxScale = 10.0f;
-        private RotationType rotationCoordinateSystem;
-        private HandMotionType handMotionForRotation;
+        private BoundingBoxGizmoHandleRotationType rotationCoordinateSystem;
+        private BoundingBoxGizmoHandleHandMotionType handMotionForRotation;
 
-        public TransformType AffineType
+        public BoundingBoxGizmoHandleTransformType AffineType
         {
             get
             {
@@ -67,7 +48,7 @@ namespace HoloToolkit.Unity.UX
                 affineType = value;
             }
         }
-        public AxisToAffect Axis
+        public BoundingBoxGizmoHandleAxisToAffect Axis
         {
             get
             {
@@ -103,7 +84,7 @@ namespace HoloToolkit.Unity.UX
                 transformToAffect = value;
             }
         }
-        public RotationType RotationCoordinateSystem
+        public BoundingBoxGizmoHandleRotationType RotationCoordinateSystem
         {
             get
             {
@@ -114,7 +95,7 @@ namespace HoloToolkit.Unity.UX
                 rotationCoordinateSystem = value;
             }
         }
-        public HandMotionType HandMotionForRotation
+        public BoundingBoxGizmoHandleHandMotionType HandMotionForRotation
         {
             get
             {
@@ -187,13 +168,13 @@ namespace HoloToolkit.Unity.UX
                 }
 
                 //calculate affines
-                if (this.AffineType == TransformType.Scale)
+                if (this.AffineType == BoundingBoxGizmoHandleTransformType.Scale)
                 {
                     ApplyScale(currentHandPosition);
                 }
-                else if (this.AffineType == TransformType.Rotation)
+                else if (this.AffineType == BoundingBoxGizmoHandleTransformType.Rotation)
                 {
-                    if (isHandRotationAvailable && handMotionForRotation == HandMotionType.handRotatesToRotateObject)
+                    if (isHandRotationAvailable && handMotionForRotation == BoundingBoxGizmoHandleHandMotionType.handRotatesToRotateObject)
                     {
                         ApplyRotation(currentHandOrientation);
                     }
@@ -267,15 +248,15 @@ namespace HoloToolkit.Unity.UX
                 angle = -angle;
             }
 
-            if (rotationCoordinateSystem == RotationType.globalCoordinates)
+            if (rotationCoordinateSystem == BoundingBoxGizmoHandleRotationType.globalCoordinates)
             {
-                Vector3 newEulers = (Axis == AxisToAffect.X ? new Vector3(angle, 0, 0) : Axis == AxisToAffect.Y ? new Vector3(0, angle, 0) : new Vector3(0, 0, angle));
+                Vector3 newEulers = (Axis == BoundingBoxGizmoHandleAxisToAffect.X ? new Vector3(angle, 0, 0) : Axis == BoundingBoxGizmoHandleAxisToAffect.Y ? new Vector3(0, angle, 0) : new Vector3(0, 0, angle));
                 newEulers += initialOrientation;
                 transformToAffect.rotation = Quaternion.Euler(newEulers);
             }
             else
             {
-                Vector3 axis = (Axis == AxisToAffect.X ? new Vector3(1,0,0) : Axis == AxisToAffect.Y ? new Vector3(0,1,0) : new Vector3(0,0,1) );
+                Vector3 axis = (Axis == BoundingBoxGizmoHandleAxisToAffect.X ? new Vector3(1,0,0) : Axis == BoundingBoxGizmoHandleAxisToAffect.Y ? new Vector3(0,1,0) : new Vector3(0,0,1) );
                 transformToAffect.localRotation = initialRotation;
                 transformToAffect.Rotate(axis, angle * 5.0f);
             }
@@ -292,15 +273,15 @@ namespace HoloToolkit.Unity.UX
             delta.Scale(rotationFromPositionScale);
 
             Vector3 newEulers = new Vector3(0, 0, 0);
-            if (Axis == AxisToAffect.X)
+            if (Axis == BoundingBoxGizmoHandleAxisToAffect.X)
             {
                 newEulers = new Vector3(-delta.y, 0, 0);
             }
-            else if (Axis == AxisToAffect.Y)
+            else if (Axis == BoundingBoxGizmoHandleAxisToAffect.Y)
             {
                 newEulers = new Vector3(0, delta.x, 0);
             }
-            else if (Axis == AxisToAffect.Z)
+            else if (Axis == BoundingBoxGizmoHandleAxisToAffect.Z)
             {
                 newEulers = new Vector3(0, 0, delta.y);
             }
@@ -309,14 +290,14 @@ namespace HoloToolkit.Unity.UX
                 newEulers.Scale(new Vector3(-1.0f, -1.0f, -1.0f));
             }
 
-            if (rotationCoordinateSystem == RotationType.globalCoordinates)
+            if (rotationCoordinateSystem == BoundingBoxGizmoHandleRotationType.globalCoordinates)
             {
                 newEulers += initialOrientation;
                 transformToAffect.rotation = Quaternion.Euler(newEulers);
             }
             else
             {
-                Vector3 axis = (Axis == AxisToAffect.X ? new Vector3(1, 0, 0) : Axis == AxisToAffect.Y ? new Vector3(0, 1, 0) : new Vector3(0, 0,1));
+                Vector3 axis = (Axis == BoundingBoxGizmoHandleAxisToAffect.X ? new Vector3(1, 0, 0) : Axis == BoundingBoxGizmoHandleAxisToAffect.Y ? new Vector3(0, 1, 0) : new Vector3(0, 0,1));
                 transformToAffect.localRotation = initialRotation;
                 float angle = newEulers.x != 0 ? newEulers.x : newEulers.y != 0 ? newEulers.y : newEulers.z;
                 transformToAffect.Rotate(axis, angle * 2.0f);
@@ -341,7 +322,7 @@ namespace HoloToolkit.Unity.UX
         {
             inputDownEventData = null;
 
-            if (this.AffineType == TransformType.Scale)
+            if (this.AffineType == BoundingBoxGizmoHandleTransformType.Scale)
             {
                 cachedRenderer.sharedMaterial = Rig.ScaleHandleMaterial;
             }

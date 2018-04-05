@@ -33,10 +33,10 @@ namespace HoloToolkit.Unity.UX
         private float maxScale = 2.0f;
 
         [SerializeField]
-        private BoundingBoxGizmoHandle.RotationType rotationType = BoundingBoxGizmoHandle.RotationType.objectCoordinates;
+        private BoundingBoxGizmoHandleRotationType rotationType = BoundingBoxGizmoHandleRotationType.objectCoordinates;
 
         [SerializeField]
-        private BoundingBoxGizmoHandle.HandMotionType handMotionToRotate = BoundingBoxGizmoHandle.HandMotionType.handRotatesToRotateObject;
+        private BoundingBoxGizmoHandleHandMotionType handMotionToRotate = BoundingBoxGizmoHandleHandMotionType.handRotatesToRotateObject;
 
         [Header("Preset Components")]
         [SerializeField]
@@ -230,8 +230,8 @@ namespace HoloToolkit.Unity.UX
                     rigScaleGizmoHandles[i].ScaleRate = scaleRate;
                     rigScaleGizmoHandles[i].MaxScale = maxScale;
                     rigScaleGizmoHandles[i].TransformToAffect = objectToBound.transform;
-                    rigScaleGizmoHandles[i].Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-                    rigScaleGizmoHandles[i].AffineType = BoundingBoxGizmoHandle.TransformType.Scale;
+                    rigScaleGizmoHandles[i].Axis = BoundingBoxGizmoHandleAxisToAffect.Y;
+                    rigScaleGizmoHandles[i].AffineType = BoundingBoxGizmoHandleTransformType.Scale;
                 }
             }
 
@@ -264,25 +264,25 @@ namespace HoloToolkit.Unity.UX
                     rigRotateGizmoHandles[i].HandMotionForRotation = handMotionToRotate;
                     rigRotateGizmoHandles[i].RotationCoordinateSystem = rotationType;
                     rigRotateGizmoHandles[i].TransformToAffect = objectToBound.transform;
-                    rigRotateGizmoHandles[i].AffineType = BoundingBoxGizmoHandle.TransformType.Rotation;
+                    rigRotateGizmoHandles[i].AffineType = BoundingBoxGizmoHandleTransformType.Rotation;
                    
                 }
 
                 //set axis to affect
-                rigRotateGizmoHandles[0].Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-                rigRotateGizmoHandles[1].Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-                rigRotateGizmoHandles[2].Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
-                rigRotateGizmoHandles[3].Axis = BoundingBoxGizmoHandle.AxisToAffect.Y;
+                rigRotateGizmoHandles[0].Axis = BoundingBoxGizmoHandleAxisToAffect.Y;
+                rigRotateGizmoHandles[1].Axis = BoundingBoxGizmoHandleAxisToAffect.Y;
+                rigRotateGizmoHandles[2].Axis = BoundingBoxGizmoHandleAxisToAffect.Y;
+                rigRotateGizmoHandles[3].Axis = BoundingBoxGizmoHandleAxisToAffect.Y;
 
-                rigRotateGizmoHandles[4].Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
-                rigRotateGizmoHandles[5].Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
-                rigRotateGizmoHandles[6].Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
-                rigRotateGizmoHandles[7].Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
+                rigRotateGizmoHandles[4].Axis = BoundingBoxGizmoHandleAxisToAffect.Z;
+                rigRotateGizmoHandles[5].Axis = BoundingBoxGizmoHandleAxisToAffect.Z;
+                rigRotateGizmoHandles[6].Axis = BoundingBoxGizmoHandleAxisToAffect.Z;
+                rigRotateGizmoHandles[7].Axis = BoundingBoxGizmoHandleAxisToAffect.Z;
 
-                rigRotateGizmoHandles[8].Axis  = BoundingBoxGizmoHandle.AxisToAffect.X;
-                rigRotateGizmoHandles[9].Axis  = BoundingBoxGizmoHandle.AxisToAffect.X;
-                rigRotateGizmoHandles[10].Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
-                rigRotateGizmoHandles[11].Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
+                rigRotateGizmoHandles[8].Axis  = BoundingBoxGizmoHandleAxisToAffect.X;
+                rigRotateGizmoHandles[9].Axis  = BoundingBoxGizmoHandleAxisToAffect.X;
+                rigRotateGizmoHandles[10].Axis = BoundingBoxGizmoHandleAxisToAffect.X;
+                rigRotateGizmoHandles[11].Axis = BoundingBoxGizmoHandleAxisToAffect.X;
 
                 //set lefthandedness
                 rigRotateGizmoHandles[0].IsLeftHandedRotation = false;
