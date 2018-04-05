@@ -44,7 +44,7 @@ If there are any class level dependencies, they should be documented in a remark
 Pull Requests submitted without summaries for classes, strutures or enums will not be approved.
 
 ### Property, Method, Event Summary Blocks
-As with classes, structures and enums, PMEs (and fields) are to be documented with summary blocks, regardless of code visibility (public, private, protected and internal). The documentation generation tool is responsible for filtering out and publishing only the public and protected features.
+Properties, methods and events (PMEs) as well as fields are to be documented with summary blocks, regardless of code visibility (public, private, protected and internal). The documentation generation tool is responsible for filtering out and publishing only the public and protected features.
 
 NOTE: A summary block is **not** required for Unity methods (ex: Awake, Start, Update).
 
