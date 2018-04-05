@@ -76,7 +76,7 @@ namespace HoloToolkit.Sharing.Utilities
 
         private void OnEnable()
         {
-            if (firstRun)
+            if (firstRun && SharingStage.Instance.connectOnAwake)
             {
                 firstRun = false;
                 isTryingToConnect = true;
@@ -200,7 +200,12 @@ namespace HoloToolkit.Sharing.Utilities
 
             isTryingToConnect = true;
             connectionIndicator.color = Color.yellow;
-            SharingStage.Instance.ConnectToServer(ipAddress.text, SharingStage.Instance.ServerPort);
+
+            SharingStage.Instance.ServerAddress = ipAddress.text;
+            SharingStage.Instance.ManagerInit(true);
+            AutoJoinSessionAndRoom.Instance.StartConnection();
+            ((SharingWorldAnchorManager)SharingWorldAnchorManager.Instance).StartManager();
+
             CheckConnection();
         }
 
