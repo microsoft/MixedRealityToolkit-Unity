@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.UX.BoundingBoxes
+namespace HoloToolkit.Unity.UX
 {
     /// <summary>
     /// Base class for bounding box objects
