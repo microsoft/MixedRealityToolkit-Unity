@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.UX
 {
+    /// <summary>
+    /// Button logic for the App Bar. Determines position of the button in the App Bar, visibility based on the current mode.
+    /// </summary>
     public class AppBarButton : MonoBehaviour
     {
         private ButtonIconProfile customIconProfile;

@@ -11,6 +11,9 @@ using UnityEngine.Events;
 
 namespace HoloToolkit.Unity.UX
 {
+    /// <summary>
+    /// Logic for the App Bar. Generates buttons, manages states.
+    /// </summary>
     public class AppBar : InteractionReceiver
     {
         private float buttonWidth = 1.50f;
