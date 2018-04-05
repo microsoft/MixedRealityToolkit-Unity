@@ -7,9 +7,8 @@ If you have any questions, please reach out on the [HoloLens forums](https://for
 
 1. [Make a proposal](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) (either new, or for one of the elements in our backlog)
 2. Implement the proposal and its tests.
-3. Rebase commits to tell a compelling story.
-4. Start a pull request & address comments.
-5. Merge.
+3. Start a pull request & address comments.
+4. Merge.
 
 # Proposal
 
@@ -28,26 +27,11 @@ Note:  If you wish to work on something that already exists on our backlog, you 
 3. Instructions for getting the project building and running the tests are in the [README](README.md). 
 4. Make small and frequent commits that include tests which could be a unity scene showing usage of your feature.
 5. Make sure that all the tests continue to pass.
-6. Ensure the code is [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; Store -> Create App Packages. Follow the prompts and run WACK tests. Make sure they all succeed.
-7. Ensure you update the [README](README.md) with additional documentation as needed.
-8. Also update the [MixedRealityToolkit-Unity wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki) if you think it will be useful for other developers.
-
-# Rebase commits
-
-The commits in your pull request should tell a story about how the code got from point A to point B. 
-Good stories are edited, so you'll want to rebase your commits so that they tell a good story.
-
-Each commit should build and pass all of the tests. 
-If you want to add new tests for functionality that's not yet written, ensure the tests are added disabled.
-
-Don't forget to run git diff --check to catch those annoying whitespace changes.
- 
-Please follow the established [Git convention for commit messages](https://www.git-scm.com/book/en/v2/Distributed-Git-Contributing-to-a-Project#Commit-Guidelines). 
-The first line is a summary in the imperative, about 50 characters or less, and should not end with a period. 
-An optional, longer description must be preceded by an empty line and should be wrapped at around 72 characters. 
-This helps with various outputs from Git or other tools.
-
-You can update message of local commits you haven't pushed yet using git commit --amend or git rebase --interactivewith reword command.
+6. Follow the [Coding Guidelines](/CodingGuidelines.md).
+7. Ensure the code and feature(s) are documented as describred in the [Documentation Guidelines](/DocumentationGuidelines.md).
+8. Ensure the code is [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; Store -> Create App Packages. Follow the prompts and run WACK tests. Make sure they all succeed.
+9. Ensure you update the [README](README.md) with additional documentation as needed.
+10. Also update the [MixedRealityToolkit-Unity wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki) if you think it will be useful for other developers.
 
 # Pull request
 
