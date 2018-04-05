@@ -54,6 +54,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             //Microsoft.MixedReality.Toolkit - Managers initialization
 
+            if (ActiveProfile.EnableInputSystem)
+            {
+                //Enable Input (example initializer)
+                //AddManager(typeof(InputModule.InputManager), new InputModule.InputManager());
+            }
+
             if (ActiveProfile.EnableBoundary)
             {
                 //Enable Boundary
@@ -62,11 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (ActiveProfile.EnableControllers)
             {
                 //Enable Motion Controllers
-            }
-
-            if (ActiveProfile.EnableInputSystem)
-            {
-                //Enable Input
             }
 
             if (ActiveProfile.EnableFocus)
