@@ -3,14 +3,14 @@
 This folder contains all the individual features of the MRTK, providing systems to assist in VR/XR/AR solutions
 The Core folder is required and should not be removed, whereas the other feature folders are completely optional. Wither use the versions provided by the toolkit, or roll your own.
 
-# In this Volder
+# In this Folder
 ---
 
 ## _Core
 
 The Core folder contains all the internal functions and utilities nessasary for the operation of the Mixed Reality Toolkit.  
 
-> ### THIS FOLDER SHOULD NOT BE REMOVED
+> ### THIS FOLDER MUST NOT BE REMOVED
 
 ---
 
