@@ -5,7 +5,7 @@
 using HoloToolkit.Unity.Buttons;
 using UnityEngine;
 
-namespace HoloToolkit.UX.AppBarControl
+namespace HoloToolkit.Unity.UX
 {
     public class AppBarButton : MonoBehaviour
     {

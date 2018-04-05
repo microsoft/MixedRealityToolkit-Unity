@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.UX.BoundingBoxes
+namespace HoloToolkit.Unity.UX
 {
     /// <summary>
     /// Listens to a BoundingBoxManipulate object and draws a gizmo around the target object

@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA;
 #endif
 
-namespace HoloToolkit.UX.BoundingBoxes
+namespace HoloToolkit.Unity.UX
 {
     public class BoundingBoxGizmoHandle : MonoBehaviour, IInputHandler, ISourceStateHandler
     {

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.UX.BoundingBoxes
+namespace HoloToolkit.Unity.UX
 {
     /// <summary>
     /// Draws a bounding box gizmo in the style of the hololens shell

@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace HoloToolkit.UX.BoundingBoxes
+namespace HoloToolkit.Unity.UX
 {
     public class Duplicator : MonoBehaviour
     {

@@ -4,13 +4,12 @@
 using HoloToolkit.Unity.Buttons;
 using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity.Receivers;
-using HoloToolkit.UX.BoundingBoxes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace HoloToolkit.UX.AppBarControl
+namespace HoloToolkit.Unity.UX
 {
     public class AppBar : InteractionReceiver
     {
