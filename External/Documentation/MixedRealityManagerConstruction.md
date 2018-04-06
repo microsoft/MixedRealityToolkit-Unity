@@ -31,6 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.<Feature>
     /// </summary>
     public class MyManager : BaseManager
     {
+        /// <summary>
+        /// MyManager constructor
+        /// </summary>
         public MyManager()
         {
             //Attach to Manager events
@@ -43,20 +46,41 @@ namespace Microsoft.MixedReality.Toolkit.<Feature>
             MyManagerProperty2 = MixedRealityManager.Instance.ActiveProfile.ManagerProperty2;
         }
 
+        /// <summary>
+        /// IMixedRealityManager Initialize function, called once the Mixed Reality Manager has finished registering all managers
+        /// Subscription required to the "InitializeEvent" event of the MixedRealityManager
+        /// </summary>
         void InitializeInternal()
         {
             //Initialize stuff 
-
-            //Get References to another managers, if required.  Only request in Initialize to ensure the manager exists.
-            var OtherManager = MixedRealityManager.Instance.GetManager<MyOtherManagerInterface>();
-
         }
 
+        /// <summary>
+        /// Optional Update function to perform per-frame updates of the manager
+        /// Subscription required to the "UpdateEvent" event of the MixedRealityManager
+        /// </summary>
         void Update()
         {
-            //Update stuff 
+            if (Enabled)
+            {
+                //Update stuff 
+
+            }
         }
 
+        /// <summary>
+        /// Optional ProfileUpdate function to allow reconfiguration when the active configuration profile of the Mixed Reality Manager is replaced
+        /// Subscription required to the "ProfileUpdateEvent" event of the MixedRealityManager
+        /// </summary>
+        private void ProfileUpdate()
+        {
+            //React to profile change
+        }
+
+        /// <summary>
+        /// Optional Destroy function to perform cleanup of the manager before the Mixed Reality Manager is destroyed
+        /// Subscription required to the "DestroyEvent" event of the MixedRealityManager
+        /// </summary>
         void Destroy()
         {
             //Destroy stuff 

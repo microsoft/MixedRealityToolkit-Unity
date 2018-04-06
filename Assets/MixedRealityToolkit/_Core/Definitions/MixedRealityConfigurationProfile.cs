@@ -14,11 +14,29 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Configuration Profile")]
     public class MixedRealityConfigurationProfile : ScriptableObject, ISerializationCallbackReceiver
     {
-        [SerializeField]
-        private IManager[] initialManagers;
+        #region Manager Registry properties
 
+        /// <summary>
+        /// Serialized list of managers for the Mixed Reality manager
+        /// </summary>
+        [SerializeField]
+        private IMixedRealityManager[] initialManagers;
+
+        /// <summary>
+        /// Serialized list of the Interface types for the Mixed Reality manager
+        /// </summary>
+        [SerializeField]
+        private Type[] initialManagertypes;
+
+        /// <summary>
+        /// Dictionary list of active managers used by the Mixed Reality Manager at runtime
+        /// </summary>
         [NonSerialized]
-        public Dictionary<Type, IManager> ActiveManagers = new Dictionary<Type, IManager>();
+        public Dictionary<Type, IMixedRealityManager> ActiveManagers = new Dictionary<Type, IMixedRealityManager>();
+
+        #endregion
+
+        #region Mixed Reality Manager configurable properties
 
         #region Input System
 
@@ -63,17 +81,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         #endregion
 
+        #endregion
 
         #region ISerializationCallbackReceiver Interface
 
+        /// <summary>
+        /// Unity function to prepare data for serialization, unused in the Mixed Reality Toolkit
+        /// </summary>
         public void OnBeforeSerialize() { }
 
+        /// <summary>
+        /// Unity function to resolve data from serialization when a project is loaded
+        /// </summary>
         public void OnAfterDeserialize()
         {
+            // From the serialized fields for the MixedRealityConfigurationProfile, populate the Active managers list
+            // *NOte This will only take effect once the Mixed Reality Toolkit has a custom editor for the MixedRealityConfigurationProfile
             int managerCount = initialManagers.Length;
             for (int i = 0; i < managerCount; i++)
             {
-                ActiveManagers.Add(initialManagers[i].GetType(), initialManagers[i]);
+                ActiveManagers.Add(initialManagertypes[i].GetType(), initialManagers[i]);
             }
         }
 

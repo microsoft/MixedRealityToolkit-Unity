@@ -4,13 +4,8 @@
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
 {
     /// <summary>
-    /// Generic interface for all Mixed Reality Managers
+    /// Manager interface for a Boundary system in the Mixed Reality Toolkit
+    /// All replacement systems for providing Boundary functionality should derive from this interface
     /// </summary>
-    public interface IManager
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        void Initialize();
-    }
+    public interface IMixedRealityBoundarySystem : IMixedRealityManager { }
 }

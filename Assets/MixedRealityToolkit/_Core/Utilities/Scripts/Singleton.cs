@@ -56,6 +56,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         private static bool searchForInstance = true;
 
+        /// <summary>
+        /// Expose an assertion whether the Singleton class is initialized.
+        /// </summary>
         public static void AssertIsInitialized()
         {
             Debug.Assert(IsInitialized, string.Format("The {0} singleton has not been initialized.", typeof(T).Name));
@@ -72,6 +75,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             }
         }
 
+        /// <summary>
+        /// Static function to determine if the Singleton class has been initialized or not.
+        /// </summary>
+        /// <returns></returns>
         public static bool ConfirmInitialized()
         {
             T access = Instance; // assigning the Instance to access is used.
@@ -82,8 +89,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         //[SerializeField]
         //private bool dontDestroyParentRootOnLoad = true;
 
+        /// <summary>
+        /// Lock property for the Singleton to prevent reinitialization
+        /// </summary>
         private readonly object initializedLock = new object();
 
+        /// <summary>
+        /// Initialize method for the Singleton, called from the Unity "Awake" method
+        /// </summary>
         protected void Initialize()
         {
             lock (initializedLock)

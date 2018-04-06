@@ -6,19 +6,20 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
-    /// 
+    /// The base manager implements the IMixedRealityManager interface and provides default properties for all managers
     /// </summary>
-    public class BaseManager : Interfaces.IManager
+    public class BaseManager : Interfaces.IMixedRealityManager
     {
 
         /// <summary>
-        /// 
+        /// Controls whether the manager is enabled and active in the scene
         /// </summary>
         [SerializeField]
+        [Tooltip("Is the selected manager enabled")]
         private bool enabled;
 
         /// <summary>
-        /// 
+        /// public property for the enabled property, used to control whether the selected manager is active or not
         /// </summary>
         public bool Enabled
         {
@@ -26,6 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
             set { enabled = value; }
         }
 
+        /// <summary>
+        /// Virtual method for the IMixedRealityManager interface
+        /// Subscription required to the "InitializeEvent" event of the MixedRealityManager
+        /// </summary>
         public virtual void Initialize() { }
     }
 }
