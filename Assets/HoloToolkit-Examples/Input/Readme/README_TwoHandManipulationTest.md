@@ -1,6 +1,6 @@
 # Two Hand Manipulation & normal mode Bounding Box
 ![Two Hand Manipulation](/External/ReadMeImages/MRTK_TwoHandManipulation.jpg)
-This example shows how you can make any object interactable with [TwoHandManipulatable script](https://github.com/johnppella/MixedRealityToolkit-Unity/blob/Feature_UX_BoundingBox_TwoHandManipulation/Assets/MixedRealityToolkit/InputModule/Scripts/Utilities/Interactions/TwoHandManipulatable.cs). This script allows for an object to be movable, scalable, and rotatable with one or two hands. You may also configure the script on only enable certain manipulations. The script works with both HoloLens' gesture input and immersive headset's motion controller input.
+This example shows how you can make any object interactable with [TwoHandManipulatable script](/Assets/HoloToolkit/Input/Scripts/Utilities/Interactions/TwoHandManipulatable.cs). This script allows for an object to be movable, scalable, and rotatable with one or two hands. You may also configure the script on only enable certain manipulations. The script works with both HoloLens' gesture input and immersive headset's motion controller input.
 
 **Demo Video**: https://gfycat.com/ColossalEnlightenedAntipodesgreenparakeet
 
@@ -15,7 +15,7 @@ The example also includes Bounding Box for the normal mode. In normal mode, Boun
 
 
 ### Unity Scene ###
-[TwoHandManipulationTest.unity](/Assets/MixedRealityToolkit-Examples/Input/Scenes/TwoHandManipulationTest.unity)
+[TwoHandManipulationTest.unity](/Assets/HoloToolkit-Examples/Input/Scenes/TwoHandManipulationTest.unity)
 ![TwoHandManipulation Scene](/External/ReadMeImages/MRTK_TwoHandManipulationScene.jpg)
 
 In the Hierarchy panel, you can find multiple objects that have TwoHandManipulatable script under SceneContent. Notice how each example object has a collider on it. The collider defines the 'hittable area' for the manipulatable--grabbing any collidable that is on the script's GameObject or any descendant will activate the script. 
@@ -26,7 +26,7 @@ In the Hierarchy panel, you can find multiple objects that have TwoHandManipulat
 Simply assign TwoHandManipulatable script to any GameObject to make it manipulatable.
 The script has several configurable options:
 - **HostTransform**: Use this to specify the transform that the scripts manipulates. By default it is the GameObject that this script is on.
-- **Bounding Box Prefab**: To visualize the object bounding box, drop the [BoundingBoxBasic.prefab](/Assets/MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab) here. This is optional.
+- **Bounding Box Prefab**: To visualize the object bounding box, drop the [BoundingBoxBasic.prefab](/Assets/HoloToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab) here. This is optional.
 
 - **Manipulation Mode**: Specify the enabled manipulations.
 
@@ -40,5 +40,5 @@ The script has several configurable options:
 ![BoundingBox Basic Prefab](/External/ReadMeImages/MRTK_BoundingBoxBasicPrefab.jpg)
 
 
-**TwoHandManipulatable** script uses optional [**BoundingBoxBasic prefab**](/Assets/MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab) to visualize the borders on manipulation interaction. It shows/hides BoundingBoxBasic in **OnManipulationStarted** and **OnManipulationEnded** event. **TwoHandManipulatable** script can work without BoundingBox visualization. Simply don't assign the BoundingBoxBasic prefab in the Inspector panel.
+**TwoHandManipulatable** script uses optional [**BoundingBoxBasic prefab**](/Assets/HoloToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab) to visualize the borders on manipulation interaction. It shows/hides BoundingBoxBasic in **OnManipulationStarted** and **OnManipulationEnded** event. **TwoHandManipulatable** script can work without BoundingBox visualization. Simply don't assign the BoundingBoxBasic prefab in the Inspector panel.
 
