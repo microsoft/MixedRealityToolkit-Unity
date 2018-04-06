@@ -1,6 +1,7 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿//
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-
+//
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,16 +30,112 @@ namespace HoloToolkit.Unity.UX
             FlattenAuto,    // Flatten the smallest relative axis if it falls below threshold
         }
 
-        #region public
+        /// <summary>
+        /// The target object. GameObject that the BoundingBox surrounds.
+        /// </summary>
+        [Header("Objects")]
+        [Tooltip("The target object")]
+        [SerializeField]
+        protected GameObject target;
 
-        public Action OnFlattenedAxisChange;
+        /// <summary>
+        /// "The transform used to scale the bounding box (will be auto-generated)
+        /// </summary>
+        [Tooltip("The transform used to scale the bounding box (will be auto-generated)")]
+        [SerializeField]
+        protected Transform scaleTransform = null;
 
-        public virtual FlattenModeEnum FlattenPreference {
-            get { return flattenPreference; }
-            set { flattenPreference = value; }
+        /// <summary>
+        /// Flattening behavior setting. Which axis will be considered flat?
+        /// </summary>
+        [Header("Flattening & Padding")]
+        [Tooltip("Flattening behavior setting.")]
+        [SerializeField]
+        protected FlattenModeEnum flattenPreference = FlattenModeEnum.FlattenAuto;
+
+        /// <summary>
+        /// Public property describing axis intended to be regarded as flat.
+        /// </summary>
+        public virtual FlattenModeEnum FlattenPreference
+        {
+            get
+            {
+                return flattenPreference;
+            }
+            set
+            {
+                flattenPreference = value;
+            }
         }
 
-        public virtual BoundsCalculationMethodEnum BoundsCalculationMethod {
+        /// <summary>
+        /// The relative % size of an axis must meet before being auto-flattened.
+        /// </summary>
+        [Tooltip("The relative % size of an axis must meet before being auto-flattened")]
+        [SerializeField]
+        protected float flattenAxisThreshold = 0.025f;
+
+        /// <summary>
+        /// The relative % size of a flattened axis
+        /// </summary>
+        [Tooltip("The relative % size of a flattened axis")]
+        [SerializeField]
+        protected float flattenedAxisThickness = 0.01f;
+
+        /// <summary>
+        /// How much to pad the scale of the box to fit around objects (as % of largest dimension)
+        /// </summary>
+        [Tooltip("How much to pad the scale of the box to fit around objects (as % of largest dimension)")]
+        [SerializeField]
+        protected float scalePadding = 0.05f;
+
+        /// <summary>
+        /// How much to pad the scale of the box on an axis that's flattened
+        /// </summary>
+        [Tooltip("How much to pad the scale of the box on an axis that's flattened")]
+        [SerializeField]
+        protected float flattenedScalePadding = 0f;
+
+        /// <summary>
+        /// Method used to calculate the bounds of the object.
+        /// </summary>
+        [Header("Bounds Calculation")]
+        [Tooltip("Method used to calculate the bounds of the object.")]
+        [SerializeField]
+        protected BoundsCalculationMethodEnum boundsCalculationMethod = BoundsCalculationMethodEnum.MeshFilterBounds;
+
+        /// <summary>
+        /// Any renderers on this layer will be ignored when calculating object bounds
+        /// </summary>
+        [Tooltip("Any renderers on this layer will be ignored when calculating object bounds")]
+        [SerializeField]
+        protected LayerMask ignoreLayers = (1 << 2); // Ignore Raycast Layer
+
+        protected Vector3 targetBoundsWorldCenter = Vector3.zero;
+
+        protected Vector3 targetBoundsLocalScale = Vector3.zero;
+
+        protected Bounds localTargetBounds = new Bounds();
+
+        protected List<Vector3> boundsPoints = new List<Vector3>();
+
+        protected FlattenModeEnum flattenedAxis = FlattenModeEnum.DoNotFlatten;
+
+        protected bool isVisible = true;
+
+        protected Renderer rendererForVisibility;
+
+        /// <summary>
+        /// Event Handler- called when the FlattenedAxis property is changed.
+        /// </summary>
+        public Action OnFlattenedAxisChange;
+
+        /// <summary>
+        /// instruction to boundingBox which determines which of several methods
+        /// to use to calculate the bounds of the gameObject it surrounds.
+        /// </summary>
+        public virtual BoundsCalculationMethodEnum BoundsCalculationMethod
+        {
             get { return boundsCalculationMethod; }
             set { boundsCalculationMethod = value; }
         }
@@ -61,7 +158,8 @@ namespace HoloToolkit.Unity.UX
                     target = value;
                 }
 
-                if (!isActiveAndEnabled) {
+                if (!isActiveAndEnabled)
+                {
                     return;
                 }
 
@@ -147,70 +245,13 @@ namespace HoloToolkit.Unity.UX
                 if (flattenedAxis != value)
                 {
                     flattenedAxis = value;
-                    if (OnFlattenedAxisChange != null) {
+                    if (OnFlattenedAxisChange != null)
+                    {
                         OnFlattenedAxisChange();
                     }
                 }
             }
         }
-
-        #endregion
-
-        #region protected
-
-        [Header("Objects")]
-        [Tooltip("The target object")]
-        [SerializeField]
-        protected GameObject target;
-
-        [Tooltip("The transform used to scale the bounding box (will be auto-generated)")]
-        [SerializeField]
-        protected Transform scaleTransform = null;
-
-        [Header("Flattening & Padding")]
-        [Tooltip("Flattening behavior setting.")]
-        [SerializeField]
-        protected FlattenModeEnum flattenPreference = FlattenModeEnum.FlattenAuto;
-
-        [Tooltip("The relative % size of an axis must meet before being auto-flattened")]
-        [SerializeField]
-        protected float flattenAxisThreshold = 0.025f;
-
-        [Tooltip("The relative % size of a flattened axis")]
-        [SerializeField]
-        protected float flattenedAxisThickness = 0.01f;
-
-        [Tooltip("How much to pad the scale of the box to fit around objects (as % of largest dimension)")]
-        [SerializeField]
-        protected float scalePadding = 0.05f;
-
-        [Tooltip("How much to pad the scale of the box on an axis that's flattened")]
-        [SerializeField]
-        protected float flattenedScalePadding = 0f;
-
-        [Header("Bounds Calculation")]
-        [Tooltip("Method used to calculate the bounds of the object.")]
-        [SerializeField]
-        protected BoundsCalculationMethodEnum boundsCalculationMethod = BoundsCalculationMethodEnum.MeshFilterBounds;
-
-        [Tooltip("Any renderers on this layer will be ignored when calculating object bounds")]
-        [SerializeField]
-        protected LayerMask ignoreLayers = (1 << 2); // Ignore Raycast Layer
-
-        protected Vector3 targetBoundsWorldCenter = Vector3.zero;
-
-        protected Vector3 targetBoundsLocalScale = Vector3.zero;
-
-        protected Bounds localTargetBounds = new Bounds();
-
-        protected List<Vector3> boundsPoints = new List<Vector3>();
-
-        protected FlattenModeEnum flattenedAxis = FlattenModeEnum.DoNotFlatten;
-   
-        protected bool isVisible = true;
-
-        protected Renderer rendererForVisibility;
-        #endregion
 
         #region
         /// <summary>
@@ -238,6 +279,9 @@ namespace HoloToolkit.Unity.UX
         }
 #endif
 
+        /// <summary>
+        /// private Update function provided by MonoBehaviour
+        /// </summary>
         protected virtual void Update()
         {
             CreateTransforms();
@@ -245,19 +289,36 @@ namespace HoloToolkit.Unity.UX
             UpdateScaleTransform();
         }
 
+        /// <summary>
+        /// Method which instantiates new Transforms 
+        /// if they have not been declared earlier.
+        /// Method assigns the variable scaleTransform 
+        /// which represents the transform 
+        /// to which the boundingbox aligns itself. It can be assigned
+        /// directly if 'this' already has a Transform. If not
+        /// it gets set by instantiating a new Transform.
+        /// Once it is set- the new transform becomes the parent of scaleTransform.
+        /// </summary>
         protected virtual void CreateTransforms()
         {
-            if (scaleTransform == null) {
-                scaleTransform = transform.Find("Scale");
+            if (scaleTransform == null)
+            {
+                scaleTransform = transform;
             }
 
-            if (scaleTransform == null) {
+            if (scaleTransform == null)
+            {
                 scaleTransform = new GameObject("Scale").transform;
             }
 
             scaleTransform.parent = transform;
         }
 
+        /// <summary>
+        /// re-calculates the Bounding box extrema (corners)
+        /// of the axis aligned cube that bounds the Target gameObject.
+        /// This method takes into account flattening.
+        /// </summary>
         protected virtual void RefreshTargetBounds()
         {
             if (target == null)
@@ -315,26 +376,35 @@ namespace HoloToolkit.Unity.UX
             UpdateFlattenedAxis();
         }
 
-        protected virtual void UpdateFlattenedAxis() {
-
+        /// <summary>
+        /// recomputes flattening if axis to be flattened has changed.
+        /// </summary>
+        protected virtual void UpdateFlattenedAxis()
+        {
             // Find the maximum size of the new bounds
             float maxAxisThickness = Mathf.Max(Mathf.Max(targetBoundsLocalScale.x, targetBoundsLocalScale.y), targetBoundsLocalScale.z);
 
             FlattenModeEnum newFlattenedAxis = FlattenModeEnum.DoNotFlatten;
-            switch (flattenPreference) {
+            switch (flattenPreference)
+            {
                 case FlattenModeEnum.DoNotFlatten:
                     // Do nothing
                     break;
 
                 case FlattenModeEnum.FlattenAuto:
                     // Flattening order of preference - z, y, x
-                    if (Mathf.Abs(targetBoundsLocalScale.z / maxAxisThickness) < flattenAxisThreshold) {
+                    if (Mathf.Abs(targetBoundsLocalScale.z / maxAxisThickness) < flattenAxisThreshold)
+                    {
                         newFlattenedAxis = FlattenModeEnum.FlattenZ;
                         targetBoundsLocalScale.z = flattenedAxisThickness * maxAxisThickness;
-                    } else if (Mathf.Abs(targetBoundsLocalScale.y / maxAxisThickness) < flattenAxisThreshold) {
+                    }
+                    else if (Mathf.Abs(targetBoundsLocalScale.y / maxAxisThickness) < flattenAxisThreshold)
+                    {
                         newFlattenedAxis = FlattenModeEnum.FlattenY;
                         targetBoundsLocalScale.y = flattenedAxisThickness * maxAxisThickness;
-                    } else if (Mathf.Abs(targetBoundsLocalScale.x / maxAxisThickness) < flattenAxisThreshold) {
+                    }
+                    else if (Mathf.Abs(targetBoundsLocalScale.x / maxAxisThickness) < flattenAxisThreshold)
+                    {
                         newFlattenedAxis = FlattenModeEnum.FlattenX;
                         targetBoundsLocalScale.x = flattenedAxisThickness * maxAxisThickness;
                     }
@@ -365,7 +435,8 @@ namespace HoloToolkit.Unity.UX
         protected virtual void UpdateScaleTransform()
         {
             // If we don't have a target, nothing to do here
-            if (target == null) {
+            if (target == null)
+            {
                 return;
             }
             // Get position of object based on renderers
@@ -413,7 +484,12 @@ namespace HoloToolkit.Unity.UX
         #endregion
 
         #region static utility functions
-
+        /// <summary>
+        /// Method to get bounding box points using Collider method.
+        /// </summary>
+        /// <param name="target">gameObject that boundingBox bounds.</param>
+        /// <param name="boundsPoints">array reference that gets filled with points</param>
+        /// <param name="ignoreLayers">layerMask to simplify search</param>
         public static void GetColliderBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
         {
             Collider[] colliders = target.GetComponentsInChildren<Collider>();
@@ -474,6 +550,12 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
+        /// <summary>
+        /// GetRenderBoundsPoints gets bounding box points using RenderBounds
+        /// </summary>
+        /// <param name="target">gameObject that boundingbox bounds</param>
+        /// <param name="boundsPoints">array reference that gets filled with points</param>
+        /// <param name="ignoreLayers">layerMask to simplify search</param>
         public static void GetRenderBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
         {
             Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
@@ -490,6 +572,12 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
+        /// <summary>
+        /// GetMeshFilterBoundsPoints - gets boundingbox points using MeshFilter method.
+        /// </summary>
+        /// <param name="target">gameObject that boundingbox bounds</param>
+        /// <param name="boundsPoints">array reference that gets filled with points</param>
+        /// <param name="ignoreLayers">layerMask to simplify search</param>
         public static void GetMeshFilterBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
         {
             MeshFilter[] meshFilters = target.GetComponentsInChildren<MeshFilter>();
@@ -515,8 +603,6 @@ namespace HoloToolkit.Unity.UX
 
         private static Vector3[] corners = null;
         private static Vector3[] rectTransformCorners = new Vector3[4];
-
         #endregion
-
     }
 }
