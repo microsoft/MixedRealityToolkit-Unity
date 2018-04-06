@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml;
 using MixedRealityToolkit.Build.WindowsDevicePortal;
 using MixedRealityToolkit.Common.EditorScript;
@@ -131,11 +132,11 @@ namespace MixedRealityToolkit.Build
                     canInstall = DevicePortalConnectionEnabled;
                 }
 
-                return canInstall && Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory) && !string.IsNullOrEmpty(familyPackageName);
+                return canInstall && Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory) && !string.IsNullOrEmpty(PackageName);
             }
         }
 
-        private static string familyPackageName;
+        private static string PackageName { get; set; }
 
         private static bool IsHoloLensConnectedUsb
         {
@@ -318,6 +319,8 @@ namespace MixedRealityToolkit.Build
             {
                 UpdateBuilds();
             }
+
+            Repaint();
         }
 
         private void UnityBuildGUI()
@@ -830,7 +833,7 @@ namespace MixedRealityToolkit.Build
                             }
                             else
                             {
-                                UninstallAppOnTargetDevice(familyPackageName, currentConnection);
+                                UninstallAppOnTargetDevice(currentConnection);
                             }
                         };
                     }
@@ -1079,7 +1082,7 @@ namespace MixedRealityToolkit.Build
                 // unused
             }
 
-            familyPackageName = CalcPackageFamilyName();
+            UpdatePackageName();
 
             timeLastUpdatedBuilds = Time.realtimeSinceStartup;
         }
@@ -1115,6 +1118,11 @@ namespace MixedRealityToolkit.Build
             targetIps[0] = LocalMachine;
             for (int i = 1; i < targetIps.Length; i++)
             {
+                if (string.IsNullOrEmpty(portalConnections.Connections[i].MachineName))
+                {
+                    portalConnections.Connections[i].MachineName = portalConnections.Connections[i].IP;
+                }
+
                 targetIps[i] = portalConnections.Connections[i].MachineName;
             }
 
@@ -1164,7 +1172,7 @@ namespace MixedRealityToolkit.Build
             return subAddresses.Length > 3;
         }
 
-        private static string CalcPackageFamilyName()
+        private static string UpdatePackageName()
         {
             if (AppPackageDirectories.Count == 0)
             {
@@ -1196,7 +1204,7 @@ namespace MixedRealityToolkit.Build
                                 {
                                     if (reader.Name.Equals("name", StringComparison.OrdinalIgnoreCase))
                                     {
-                                        return reader.Value;
+                                        return PackageName = reader.Value;
                                     }
                                 }
                             }
@@ -1253,16 +1261,14 @@ namespace MixedRealityToolkit.Build
         {
             isAppRunning = false;
 
-            string packageFamilyName = CalcPackageFamilyName();
-
-            if (string.IsNullOrEmpty(packageFamilyName))
+            if (string.IsNullOrEmpty(PackageName))
             {
                 return;
             }
 
             if (BuildDeployPreferences.FullReinstall)
             {
-                UninstallAppOnTargetDevice(packageFamilyName, targetDevice);
+                await UninstallAppOnTargetDeviceAsync(targetDevice);
             }
 
             if (IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb || buildPath.Contains("x64"))
@@ -1300,7 +1306,7 @@ namespace MixedRealityToolkit.Build
                 return;
             }
 
-            if (!await DevicePortal.IsAppInstalledAsync(packageFamilyName, targetDevice))
+            if (!await DevicePortal.IsAppInstalledAsync(PackageName, targetDevice))
             {
                 await DevicePortal.InstallAppAsync(files[0].FullName, targetDevice);
             }
@@ -1308,9 +1314,7 @@ namespace MixedRealityToolkit.Build
 
         private static void InstallAppOnDevicesList(string buildPath, DevicePortalConnections targetList)
         {
-            string packageFamilyName = CalcPackageFamilyName();
-
-            if (string.IsNullOrEmpty(packageFamilyName))
+            if (string.IsNullOrEmpty(PackageName))
             {
                 return;
             }
@@ -1321,17 +1325,21 @@ namespace MixedRealityToolkit.Build
             }
         }
 
-        private static async void UninstallAppOnTargetDevice(string packageFamilyName, DeviceInfo currentConnection)
+        private static async void UninstallAppOnTargetDevice(DeviceInfo currentConnection)
         {
             isAppRunning = false;
+            await UninstallAppOnTargetDeviceAsync(currentConnection);
+        }
 
+        private static async Task UninstallAppOnTargetDeviceAsync(DeviceInfo currentConnection)
+        {
             if (IsLocalConnection(currentConnection) && !IsHoloLensConnectedUsb)
             {
                 var pInfo = new ProcessStartInfo
                 {
                     FileName = "powershell.exe",
                     CreateNoWindow = true,
-                    Arguments = $"-windowstyle hidden -nologo Get-AppxPackage *{packageFamilyName}* | Remove-AppxPackage"
+                    Arguments = $"-windowstyle hidden -nologo Get-AppxPackage *{PackageName}* | Remove-AppxPackage"
                 };
 
                 var process = new Process { StartInfo = pInfo };
@@ -1339,41 +1347,37 @@ namespace MixedRealityToolkit.Build
             }
             else
             {
-                if (await DevicePortal.IsAppInstalledAsync(packageFamilyName, currentConnection))
+                if (await DevicePortal.IsAppInstalledAsync(PackageName, currentConnection))
                 {
-                    await DevicePortal.UninstallAppAsync(packageFamilyName, currentConnection);
+                    await DevicePortal.UninstallAppAsync(PackageName, currentConnection);
                 }
             }
         }
 
-        private static void UninstallAppOnDevicesList(DevicePortalConnections targetList)
+        private static async void UninstallAppOnDevicesList(DevicePortalConnections targetList)
         {
-            string packageFamilyName = CalcPackageFamilyName();
-
-            if (string.IsNullOrEmpty(packageFamilyName))
+            if (string.IsNullOrEmpty(PackageName))
             {
                 return;
             }
 
             for (int i = 0; i < targetList.Connections.Count; i++)
             {
-                UninstallAppOnTargetDevice(packageFamilyName, targetList.Connections[i]);
+                await UninstallAppOnTargetDeviceAsync(targetList.Connections[i]);
             }
         }
 
         private static async void LaunchAppOnTargetDevice(DeviceInfo targetDevice)
         {
-            string packageFamilyName = CalcPackageFamilyName();
-
-            if (string.IsNullOrEmpty(packageFamilyName) ||
+            if (string.IsNullOrEmpty(PackageName) ||
                 IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb)
             {
                 return;
             }
 
-            if (!await DevicePortal.IsAppRunningAsync(PlayerSettings.productName, targetDevice))
+            if (!await DevicePortal.IsAppRunningAsync(PackageName, targetDevice))
             {
-                isAppRunning = await DevicePortal.LaunchAppAsync(packageFamilyName, targetDevice);
+                isAppRunning = await DevicePortal.LaunchAppAsync(PackageName, targetDevice);
             }
         }
 
@@ -1387,17 +1391,15 @@ namespace MixedRealityToolkit.Build
 
         private static async void KillAppOnTargetDevice(DeviceInfo targetDevice)
         {
-            string packageFamilyName = CalcPackageFamilyName();
-
-            if (string.IsNullOrEmpty(packageFamilyName) ||
+            if (string.IsNullOrEmpty(PackageName) ||
                 IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb)
             {
                 return;
             }
 
-            if (await DevicePortal.IsAppRunningAsync(PlayerSettings.productName, targetDevice))
+            if (await DevicePortal.IsAppRunningAsync(PackageName, targetDevice))
             {
-                isAppRunning = !await DevicePortal.KillAppAsync(packageFamilyName, targetDevice);
+                isAppRunning = !await DevicePortal.StopAppAsync(PackageName, targetDevice);
             }
         }
 
@@ -1411,9 +1413,7 @@ namespace MixedRealityToolkit.Build
 
         private static async void OpenLogFileForTargetDevice(DeviceInfo targetDevice, string localLogPath)
         {
-            string packageFamilyName = CalcPackageFamilyName();
-
-            if (string.IsNullOrEmpty(packageFamilyName))
+            if (string.IsNullOrEmpty(PackageName))
             {
                 return;
             }
@@ -1426,7 +1426,7 @@ namespace MixedRealityToolkit.Build
 
             if (!IsLocalConnection(targetDevice) || IsHoloLensConnectedUsb)
             {
-                string logFilePath = await DevicePortal.DownloadLogFileAsync(packageFamilyName, targetDevice);
+                string logFilePath = await DevicePortal.DownloadLogFileAsync(PackageName, targetDevice);
                 Process.Start(logFilePath);
                 return;
             }

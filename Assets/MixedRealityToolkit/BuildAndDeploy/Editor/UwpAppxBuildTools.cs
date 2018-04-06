@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using MixedRealityToolkit.Common.EditorScript;
+using MixedRealityToolkit.Common.Extensions;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -154,10 +155,10 @@ namespace MixedRealityToolkit.Build
             // Before building, need to run a nuget restore to generate a json.lock file. Failing to do
             // this breaks the build in VS RTM
             if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET &&
-                (!RestoreNugetPackages(nugetPath, storePath) ||
-                 !RestoreNugetPackages(nugetPath, $"{storePath}\\{productName}") ||
-                 EditorUserBuildSettings.wsaGenerateReferenceProjects && !RestoreNugetPackages(nugetPath, assemblyCSharp) ||
-                 EditorUserBuildSettings.wsaGenerateReferenceProjects && restoreFirstPass && !RestoreNugetPackages(nugetPath, assemblyCSharpFirstPass)))
+                (!await RestoreNugetPackagesAsync(nugetPath, storePath) ||
+                 !await RestoreNugetPackagesAsync(nugetPath, $"{storePath}\\{productName}") ||
+                 EditorUserBuildSettings.wsaGenerateReferenceProjects && !await RestoreNugetPackagesAsync(nugetPath, assemblyCSharp) ||
+                 EditorUserBuildSettings.wsaGenerateReferenceProjects && restoreFirstPass && !await RestoreNugetPackagesAsync(nugetPath, assemblyCSharpFirstPass)))
             {
                 Debug.LogError("Failed to restore nuget packages!");
                 return IsBuilding = false;
@@ -170,100 +171,73 @@ namespace MixedRealityToolkit.Build
                 return IsBuilding = false;
             }
 
-            // Now do the actual build
-            var pInfo = new ProcessStartInfo
-            {
-                FileName = msBuildPath,
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                Arguments = $"\"{solutionProjectPath}\" /t:{(forceRebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildConfig} /p:Platform={buildPlatform} /verbosity:m"
-            };
+            // Now do the actual appx build
+            var processResult = await new Process().StartProcessAsync(
+                msBuildPath,
+                $"\"{solutionProjectPath}\" /t:{(forceRebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildConfig} /p:Platform={buildPlatform} /verbosity:m",
+                true);
 
-            int exitCode = await BuildAppxAsync(pInfo);
-
-            if (exitCode == 0)
+            if (processResult.ExitCode == 0)
             {
                 Debug.Log("Appx Build Successful!");
             }
-            else if (exitCode == -1073741510)
+            else if (processResult.ExitCode == -1073741510)
             {
                 Debug.LogWarning("The build was terminated either by user's keyboard input CTRL+C or CTRL+Break or closing command prompt window.");
             }
-            else if (exitCode != 0)
+            else if (processResult.ExitCode != 0)
             {
-                Debug.LogError($"{PlayerSettings.productName} appx build Failed! (ErrorCode: {exitCode})");
+                Debug.LogError($"{PlayerSettings.productName} appx build Failed! (ErrorCode: {processResult.ExitCode})");
             }
 
             IsBuilding = false;
-            return exitCode == 0;
+            return processResult.ExitCode == 0;
         }
 
         private static async Task<string> FindMsBuildPathAsync()
         {
-            // For MSBuild 15+ we should to use vswhere to give us the correct instance
-            string output = $@"/C vswhere -version 15.0 -products * -requires Microsoft.Component.MSBuild -property installationPath";
+            var result = await new Process().StartProcessAsync(
+                new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    Arguments = $@"/C vswhere -version 15.0 -products * -requires Microsoft.Component.MSBuild -property installationPath",
+                    WorkingDirectory = VsInstallerPath
+                });
 
-            var vswherePInfo = new ProcessStartInfo
+            foreach (var path in result.Output)
             {
-                FileName = "cmd.exe",
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = false,
-                Arguments = output,
-                WorkingDirectory = VsInstallerPath
-            };
+                if (!string.IsNullOrEmpty(path))
+                {
+                    string[] paths = path.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-            using (var vswhereP = new Process())
-            {
-                vswhereP.StartInfo = vswherePInfo;
-                vswhereP.Start();
-                output = await vswhereP.StandardOutput.ReadToEndAsync();
-                vswhereP.WaitForExit();
+                    if (paths.Length > 0)
+                    {
+                        // if there are multiple visual studio installs,
+                        // prefer enterprise, then pro, then community
+                        string bestPath = paths.OrderBy(p => p.ToLower().Contains("enterprise"))
+                            .ThenBy(p => p.ToLower().Contains("professional"))
+                            .ThenBy(p => p.ToLower().Contains("community")).First();
+
+                        return $@"{bestPath}\MSBuild\15.0\Bin\MSBuild.exe";
+                    }
+                }
             }
 
-            string[] paths = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (paths.Length > 0)
-            {
-                // if there are multiple visual studio installs,
-                // prefer enterprise, then pro, then community
-                string bestPath = paths.OrderBy(p => p.ToLower().Contains("enterprise"))
-                                        .ThenBy(p => p.ToLower().Contains("professional"))
-                                        .ThenBy(p => p.ToLower().Contains("community")).First();
-
-                return $@"{bestPath}\MSBuild\15.0\Bin\MSBuild.exe";
-            }
-
-            Debug.LogError("Unable to find a valid path to a Visual Studio Instance!");
             return string.Empty;
         }
 
-        private static bool RestoreNugetPackages(string nugetPath, string storePath)
+        private static async Task<bool> RestoreNugetPackagesAsync(string nugetPath, string storePath)
         {
             Debug.Assert(File.Exists(nugetPath));
             Debug.Assert(Directory.Exists(storePath));
 
-            var nugetPInfo = new ProcessStartInfo
-            {
-                FileName = nugetPath,
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                Arguments = $"restore \"{storePath}/project.json\""
-            };
+            await new Process().StartProcessAsync(nugetPath, $"restore \"{storePath}/project.json\"");
 
-            using (var nugetP = new Process())
-            {
-                nugetP.StartInfo = nugetPInfo;
-                nugetP.Start();
-                nugetP.WaitForExit();
-                nugetP.Close();
-                nugetP.Dispose();
-            }
-
-            return File.Exists($"{storePath}\\project.lock.json");
+            return File.Exists($"{storePath}\\project.lock.json"); ;
         }
 
         private static bool IncrementPackageVersion()
@@ -309,47 +283,6 @@ namespace MixedRealityToolkit.Build
             versionAttr.Value = newVersion.ToString();
             rootNode.Save(manifest);
             return true;
-        }
-
-        private static async Task<int> BuildAppxAsync(ProcessStartInfo pInfo)
-        {
-            // there is no non-generic TaskCompletionSource
-            var tcs = new TaskCompletionSource<int>();
-
-            var process = new Process
-            {
-                StartInfo = pInfo,
-                EnableRaisingEvents = true
-            };
-
-            process.Exited += (sender, args) =>
-            {
-                tcs.SetResult(process.ExitCode);
-                process.Close();
-                process.Dispose();
-            };
-
-            process.ErrorDataReceived += (sender, args) =>
-            {
-                if (!string.IsNullOrEmpty(args.Data))
-                {
-                    Debug.LogError(args.Data);
-                }
-            };
-
-            process.OutputDataReceived += (sender, args) =>
-            {
-                if (!string.IsNullOrEmpty(args.Data))
-                {
-                    Debug.Log(args.Data);
-                }
-            };
-
-            process.Start();
-            process.BeginErrorReadLine();
-            process.BeginOutputReadLine();
-
-            return await tcs.Task;
         }
     }
 }
