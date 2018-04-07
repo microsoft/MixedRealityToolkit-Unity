@@ -9,11 +9,11 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 {
     /// <summary>
-    /// The Mixed Reality manager is responsible for coordinating the operation of the Mixed Reality Toolkit
-    /// It provides a service registry for all active managers that are used within a project as well as providing the active configuration profile for the project
+    /// The Mixed Reality manager is responsible for coordinating the operation of the Mixed Reality Toolkit.
+    /// It provides a service registry for all active managers that are used within a project as well as providing the active configuration profile for the project.
     /// The Profile can be swapped out at any time to meet the needs of your project.
     /// </summary>
-    public class MixedRealityManager : Utilities.Singleton<MixedRealityManager>
+    public class MixedRealityManager : MonoBehaviour
     {
         #region Mixed Reality Manager Profile configuration
 
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         [SerializeField]
         [Tooltip("The current active configuration for the Mixed Reality project")]
-        private MixedRealityConfigurationProfile activeProfile;
+        private MixedRealityConfigurationProfile activeProfile = null;
 
         /// <summary>
         /// The public property of the Active Profile, ensuring events are raised on the change of the configuration
@@ -31,90 +31,45 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         public MixedRealityConfigurationProfile ActiveProfile
         {
             get { return activeProfile; }
-            set { activeProfile = value; if (ProfileUpdateEvent != null) ProfileUpdateEvent.Invoke(); }
+            set { activeProfile = value; }
         }
 
-        #endregion
+        #endregion Mixed Reality Manager Profile configuration
 
         #region Active SDK components
 
         /// <summary>
         /// The Active Controllers property lists all the controllers detected by the Mixed Reality manager on startup
         /// </summary>
-        [SerializeField]
-        [Tooltip("The collection of currently active / detected controllers")]
-        private Controller[] activeControllers;
+        //[SerializeField]
+        //[Tooltip("The collection of currently active / detected controllers")]
+        //private Controller[] activeControllers = null;
+
+        ///// <summary>
+        ///// The Active Headset property maintains the Headsets/SDK detected by the Mixed Reality manager on startup
+        ///// </summary>
+        //[SerializeField]
+        //[Tooltip("The currently active / detected Headset or SDK")]
+        //private Headset activeHeadset = default(Headset);
+
+        #endregion Active SDK components
 
         /// <summary>
-        /// The Active Headset property maintains the Headsets/SDK detected by the Mixed Reality manager on startup
+        /// Function called when the instance is assigned.
+        /// Once all managers are registered and properties updated, the Mixed Reality Manager will initialize all active managers.
+        /// This ensures all managers can reference each other once started.
         /// </summary>
-        [SerializeField]
-        [Tooltip("The currently active / detected Headset or SDK")]
-        private Headset activeHeadset;
-
-        #endregion
-
-        #region Mixed Reality Manager Events
-
-        /// <summary>
-        /// Delegate for the Initialize event
-        /// </summary>
-        public delegate void InitializeHandler();
-        /// <summary>
-        /// Initialize event called after all managers have been registered. Informs all managers to initialize (Awake)
-        /// </summary>
-        public event InitializeHandler InitializeEvent;
-
-        /// <summary>
-        /// Delegate for the Update event
-        /// </summary>
-        public delegate void UpdateHandler();
-        /// <summary>
-        /// The Update event delegates the MonoBehaviour update message, informing all active managers to update (which is faster as managers are not bound to a MonoBehaviour)
-        /// </summary>
-        public event UpdateHandler UpdateEvent;
-
-        /// <summary>
-        /// Delegate for the Destroy event
-        /// </summary>
-        public delegate void DestroyHandler();
-        /// <summary>
-        /// The Destroy event is fired before the Mixed Reality Manager is destroyed in a scene and informs all active managers to clean up prior to close. Linked to the MonoBehaviour Destroy event.
-        /// </summary>
-        public event DestroyHandler DestroyEvent;
-
-        /// <summary>
-        /// Delegate for the Profile Update event
-        /// </summary>
-        public delegate void ProfileUpdateHandler();
-        /// <summary>
-        /// The ProfileUpdate event fires whenever the MixedRealityManager active profile is replaced.
-        /// *Note Profile options cannot be changed once the project is running.
-        /// </summary>
-        public event ProfileUpdateHandler ProfileUpdateEvent;
-
-        #endregion
-
-        #region Mixed Reality Manager Methods
-
-        /// <summary>
-        /// The InitializeInternal method is called when the Singleton Manager is initialized (MonoBehaviour Awake)
-        /// Once all managers are registered and properties updated, the Mixed Reality Manager will initialize all active managers.  This ensures all managers can reference each other once started.
-        /// </summary>
-        protected override void InitializeInternal()
+        private void Initialize()
         {
-            base.Awake();
-
             #region ActiveSDK Discovery
-            //Microsoft.MixedReality.Toolkit - Active SDK Discovery
-            #endregion
+            // TODO Microsoft.MixedReality.Toolkit - Active SDK Discovery
+            #endregion ActiveSDK Discovery
 
             #region SDK Initialization
-            //Microsoft.MixedReality.Toolkit - SDK Initialization
-            #endregion
+            // TODO Microsoft.MixedReality.Toolkit - SDK Initialization
+            #endregion SDK Initialization
 
             #region Managers Initialization
-            //Microsoft.MixedReality.Toolkit - Managers initialization
 
             //If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.EnableInputSystem)
@@ -124,46 +79,158 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
 
             //If the Boundary system has been selected for initialization in the Active profile, enable it in the project
-            if (ActiveProfile.EnableBoundary)
+            if (ActiveProfile.EnableBoundarySystem)
             {
                 //Enable Boundary (example initializer)
                 AddManager(typeof(IMixedRealityBoundarySystem), new InputSystem.MixedRealityBoundaryManager());
             }
 
-            if (ActiveProfile.EnableControllers)
-            {
-                //Enable Motion Controllers
-            }
+            #endregion Managers Initialization
+        }
 
-            if (ActiveProfile.EnableFocus)
-            {
-                //Enable Focus
-            }
-            #endregion
+        #region Monobehaviour Implementation
 
-            if (InitializeEvent != null) InitializeEvent.Invoke();
+        private static MixedRealityManager instance;
+
+        /// <summary>
+        /// Returns the Singleton instance of the classes type.
+        /// If no instance is found, then we search for an instance in the scene.
+        /// If more than one instance is found, we throw an error and no instance is returned.
+        /// </summary>
+        public static MixedRealityManager Instance
+        {
+            get
+            {
+                if (IsInitialized)
+                {
+                    return instance;
+                }
+
+                if (!searchForInstance)
+                {
+                    return null;
+                }
+
+                MixedRealityManager[] objects = FindObjectsOfType<MixedRealityManager>();
+                searchForInstance = false;
+
+                if (objects.Length == 1)
+                {
+                    objects[0].InitializeInternal();
+                    return instance;
+                }
+
+                Debug.LogError($"Expected exactly 1 MixedRealityManager but found {objects.Length}.");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Flag to search for instance the first time Instance property is called.
+        /// Subsequent attempts will generally switch this flag false, unless the instance was destroyed.
+        /// </summary>
+        // ReSharper disable once StaticMemberInGenericType
+        private static bool searchForInstance = true;
+
+        /// <summary>
+        /// Expose an assertion whether the MixedRealityManager class is initialized.
+        /// </summary>
+        public static void AssertIsInitialized()
+        {
+            Debug.Assert(IsInitialized, "The MixedRealityManager has not been initialized.");
+        }
+
+        /// <summary>
+        /// Returns whether the instance has been initialized or not.
+        /// </summary>
+        public static bool IsInitialized => instance != null;
+
+        /// <summary>
+        /// Static function to determine if the MixedRealityManager class has been initialized or not.
+        /// </summary>
+        /// <returns></returns>
+        public static bool ConfirmInitialized()
+        {
+            // ReSharper disable once UnusedVariable
+            // Assigning the Instance to access is used Implicitly.
+            MixedRealityManager access = Instance;
+            return IsInitialized;
+        }
+
+        /// <summary>
+        /// Lock property for the Mixed Reality Manager to prevent reinitialization
+        /// </summary>
+        private readonly object initializedLock = new object();
+
+        private void InitializeInternal()
+        {
+            lock (initializedLock)
+            {
+                if (IsInitialized) { return; }
+
+                instance = this;
+                DontDestroyOnLoad(instance.transform.root);
+                Initialize();
+            }
+        }
+
+        /// <summary>
+        /// Base Awake method that sets the Singleton's unique instance.
+        /// Called by Unity when initializing a MonoBehaviour.
+        /// Scripts that extend Singleton should be sure to call base.Awake() unless they want
+        /// lazy initialization
+        /// </summary>
+        private void Awake()
+        {
+            if (IsInitialized && instance != this)
+            {
+                if (Application.isEditor)
+                {
+                    DestroyImmediate(this);
+                }
+                else
+                {
+                    Destroy(this);
+                }
+
+                Debug.LogWarning($"Trying to instantiate a second instance of the Mixed Reality Manager. Additional Instance was destroyed");
+            }
+            else if (!IsInitialized)
+            {
+                InitializeInternal();
+                searchForInstance = false;
+            }
         }
 
         /// <summary>
         /// The MonoBehaviour Update event, which is then circulated to all active managers
         /// </summary>
-        void Update()
+        private void Update()
         {
-            if (UpdateEvent != null) UpdateEvent.Invoke();
+            foreach (var manager in ActiveProfile.ActiveManagers)
+            {
+                manager.Value.Update();
+            }
         }
 
         /// <summary>
         /// The MonoBehaviour Destroy event, which is then circulated to all active managers prior to the Mixed Reality Manager being destroyed
         /// </summary>
-        protected override void OnDestroy()
+        private void OnDestroy()
         {
-            if (DestroyEvent != null) DestroyEvent.Invoke();
+            foreach (var manager in ActiveProfile.ActiveManagers)
+            {
+                manager.Value.Destroy();
+            }
 
-            //Final destroy - needs to be last
-            base.OnDestroy();
+            if (instance == this)
+            {
+                instance = null;
+                searchForInstance = true;
+            }
         }
 
-        #endregion
+        #endregion Monobehaviour Implementation
 
         #region Manager Container Management
 
@@ -174,10 +241,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// <param name="manager">The Instance of the manager class to register</param>
         public void AddManager(Type type, IMixedRealityManager manager)
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
-            if (manager == null)
-                throw new ArgumentNullException("manager");
+            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (manager == null) { throw new ArgumentNullException(nameof(manager)); }
 
             if (GetManager(type) == null)
             {
@@ -192,14 +257,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// <returns></returns>
         public IMixedRealityManager GetManager(Type type)
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
+            if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
             IMixedRealityManager manager;
-            if (ActiveProfile.ActiveManagers.TryGetValue(type, out manager))
-                return manager;
-
-            return null;
+            return ActiveProfile.ActiveManagers.TryGetValue(type, out manager) ? manager : null;
         }
 
         /// <summary>
@@ -209,7 +270,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         public void RemoveManager(Type type)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
 
             ActiveProfile.ActiveManagers.Remove(type);
         }
@@ -225,7 +288,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             var manager = GetManager(typeof(T));
 
             if (manager == null)
+            {
                 return default(T);
+            }
 
             return (T)manager;
         }
@@ -238,14 +303,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// <returns>True, there is a manager registered with the selected interface, False, no manager found for that interface</returns>
         public bool ManagerExists<T>() where T : class
         {
-            var manager = GetManager(typeof(T));
-
-            if (manager == null)
-                return true;
-
-            return false;
+            return GetManager(typeof(T)) == null;
         }
 
-        #endregion
+        #endregion Manager Container Management
     }
 }
