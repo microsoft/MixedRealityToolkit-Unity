@@ -1,17 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures;
+using MixedRealityToolkit.Common.AsyncUtilities;
+using MixedRealityToolkit.Common.RestUtility;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures;
 using UnityEngine;
 using UnityEngine.Networking;
-using MixedRealityToolkit.Common.Extensions;
-using MixedRealityToolkit.Common.RestUtility;
 using Debug = UnityEngine.Debug;
 using FileInfo = System.IO.FileInfo;
 

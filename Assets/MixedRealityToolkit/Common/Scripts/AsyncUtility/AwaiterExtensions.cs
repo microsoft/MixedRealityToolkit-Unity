@@ -33,7 +33,7 @@ using MixedRealityToolkit.Common.AsyncUtilities.Internal;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace MixedRealityToolkit.Common.Extensions
+namespace MixedRealityToolkit.Common.AsyncUtilities
 {
     /// <summary>
     /// We could just add a generic GetAwaiter to YieldInstruction and CustomYieldInstruction
