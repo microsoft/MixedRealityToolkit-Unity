@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Internal.Definitions
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
     /// The headset definition defines the headset as defined by the SDK / Unity.

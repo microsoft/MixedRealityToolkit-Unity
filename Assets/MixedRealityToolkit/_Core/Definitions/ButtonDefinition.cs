@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace MixedRealityToolkit.Internal.Definitions
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
     /// A ButtonDefinition maps the capabilities of a selected controllers buttons, one definition should exist for each button profile.

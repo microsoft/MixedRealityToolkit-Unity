@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Internal.Definitions
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
     /// The Controller definition defines the Controller as defined by the SDK / Unity.

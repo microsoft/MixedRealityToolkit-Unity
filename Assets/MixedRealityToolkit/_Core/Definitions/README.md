@@ -6,6 +6,10 @@ This folder contains all the MRTK Internal description definitions and enums.
 
 The list of definitions for Internal MRTK structures and enums are listed below.
 
+### BaseManager
+
+The BaseManager is the base class for all Mixed Reality Toolkit manager classes.
+This minimises the use of MonoBehaviour's and provides a faster framework.
 
 ### ButtonAction
 
@@ -19,6 +23,11 @@ A Button Definition maps the capabilities of a selected controllers buttons, one
 ### Controller
 
 The Controller definition defines the Controller as defined by the SDK / Unity.
+
+### ControllerInputType
+
+The ControllerInputType identifies the type of button or input being sent to the framework from a controller.
+This is mainly information only or for advanced users to understand the input coming directly from the controller.
 
 ### ControllerState
 
@@ -34,15 +43,15 @@ It is up to the developer to determine whether this affects the use of a control
 
 The headset definition defines the headset as defined by the SDK / Unity.
 
-### InputAction
+### InputActions
 
 InputActions defines the set of actions consumed internally within the MRTK.
 Denoting the available buttons / interactions that MRTK supports and exposed as events from the InputSystem.
 
-### ControllerInputType
+### MixedRealityConfigurationProfile
 
-The ControllerInputType identifies the type of button or input being sent to the framework from a controller.
-This is mainly information only or for advanced users to understand the input coming directly from the controller.
+The MixedRealityConfigurationProfile is a Scriptable Object definition for creating profiles for the Mixed Reality Toolkit.
+This will instruct the toolkit how to operate and which managers to use within a project, centralizing all the configuration required for the project.
 
 ### SDKType
 
