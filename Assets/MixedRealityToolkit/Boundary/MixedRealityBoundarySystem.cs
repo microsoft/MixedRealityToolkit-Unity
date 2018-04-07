@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         {
             // TODO define any constructor requirements
         }
+
         /// <summary>
         /// The initialize function is used to setup the manager once created.
         /// This method is called once all managers have been registered in the Mixed Reality Manager.
