@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -249,7 +252,7 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
             string fileName = Path.GetFileName(appFullPath);
             string certFullPath = Path.ChangeExtension(appFullPath, ".cer");
             string certName = Path.GetFileName(certFullPath);
-            string depPath = Path.GetDirectoryName(appFullPath) + @"\Dependencies\x86\";
+            string depPath = $@"{Path.GetDirectoryName(appFullPath)}\Dependencies\x86\";
 
             var form = new WWWForm();
 
@@ -302,7 +305,7 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
 
             if (!response.Successful)
             {
-                Debug.LogErrorFormat("Failed to install {0} on {1}.", fileName, targetDevice.MachineName);
+                Debug.Log($"Failed to install {fileName} on {targetDevice.MachineName}.");
                 return false;
             }
 
@@ -316,10 +319,10 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
                 switch (status)
                 {
                     case AppInstallStatus.InstallSuccess:
-                        Debug.LogFormat("Successfully installed {0} on {1}.", fileName, targetDevice.MachineName);
+                        Debug.Log($"Successfully installed {fileName} on {targetDevice.MachineName}.");
                         return true;
                     case AppInstallStatus.InstallFail:
-                        Debug.LogErrorFormat("Failed to install {0} on {1}.", fileName, targetDevice.MachineName);
+                        Debug.Log($"Failed to install {fileName} on {targetDevice.MachineName}.");
                         return false;
                 }
             }
@@ -424,7 +427,7 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
             }
 
             string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?package={WWW.EscapeURL(EncodeTo64(applicationInfo.PackageFullName))}";
-            Rest.Response response = await Rest.DeleteAsync(query, targetDevice.Authorization);
+            Response response = await Rest.DeleteAsync(query, targetDevice.Authorization);
             return response.Successful;
         }
 
@@ -495,10 +498,10 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// <param name="wifiNetwork">The network to connect to.</param>
         /// <param name="password">Password for network access.</param>
         /// <returns>True, if connection successful.</returns>
-        public static async Task<Rest.Response> ConnectToWiFiNetworkAsync(DeviceInfo targetDevice, InterfaceInfo interfaceInfo, WirelessNetworkInfo wifiNetwork, string password)
+        public static async Task<Response> ConnectToWiFiNetworkAsync(DeviceInfo targetDevice, InterfaceInfo interfaceInfo, WirelessNetworkInfo wifiNetwork, string password)
         {
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
-            if (!isAuth) { return new Rest.Response(false, "Unable to authenticate with device", 403); }
+            if (!isAuth) { return new Response(false, "Unable to authenticate with device", null, 401); }
 
             string query = string.Format(WiFiNetworkQuery, FinalizeUrl(targetDevice.IP),
                 $"?interface={interfaceInfo.GUID}&ssid={EncodeTo64(wifiNetwork.SSID)}&op=connect&createprofile=yes&key={password}");
@@ -595,7 +598,7 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
             return success;
         }
 
-        private static async Task<Rest.Response> DevicePortalAuthorizationAsync(DeviceInfo targetDevice)
+        private static async Task<Response> DevicePortalAuthorizationAsync(DeviceInfo targetDevice)
         {
             UnityWebRequest webRequest = UnityWebRequest.Get(FinalizeUrl(targetDevice.IP));
 
@@ -610,20 +613,22 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
                 if (webRequest.responseCode == 401)
                 {
                     Debug.LogError($"Invalid Credentials: {webRequest.responseCode}");
-                    return new Rest.Response(false, "Invalid Credentials", webRequest.responseCode);
+                    return new Response(false, "Invalid Credentials", null, webRequest.responseCode);
                 }
 
                 if (webRequest.GetResponseHeaders() == null)
                 {
-                    return new Rest.Response(false, "Device Not Found", webRequest.responseCode);
+                    Debug.LogError($"Device Not Found: {webRequest.responseCode}");
+                    return new Response(false, "Device Not Found", null, webRequest.responseCode);
                 }
 
-                string responseHeaders = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
+                string responseHeaders = webRequest.GetResponseHeaders()
+                    .Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
                 Debug.LogError($"REST Auth Error: {webRequest.responseCode}\n{webRequest.downloadHandler?.text}{responseHeaders}");
-                return new Rest.Response(false, webRequest.downloadHandler?.text, webRequest.responseCode);
+                return new Response(false, webRequest.downloadHandler?.text, null, webRequest.responseCode);
             }
 
-            return new Rest.Response(true, webRequest.GetResponseHeader("Set-Cookie"), webRequest.responseCode);
+            return new Response(true, webRequest.GetResponseHeader("Set-Cookie"), null, webRequest.responseCode);
         }
 
         public static string EncodeTo64(string toEncode)
