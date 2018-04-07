@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         [Tooltip("Enable the Input System on Startup")]
         [SerializeField]
         private bool enableInputSystem = true;
-        public bool EnableInputSystem { get { return enableInputSystem; } }
+        public bool EnableInputSystem { get { return enableInputSystem; } private set { enableInputSystem = value; } }
 
         /// <summary>
         /// Enable and configure the controller rendering for the Mixed Reality Toolkit
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         [Tooltip("Enable the Motion Controllers on Startup")]
         [SerializeField]
         private bool enableControllers = true;
-        public bool EnableControllers { get { return enableControllers; } }
+        public bool EnableControllers { get { return enableControllers; } private set { enableControllers = value; } }
 
         /// <summary>
         /// Enable and configure the Boundary component on the Mixed Reality Camera
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         [Tooltip("Enable the Boundary on Startup")]
         [SerializeField]
         private bool enableBoundarySystem = true;
-        public bool EnableBoundarySystem { get { return enableBoundarySystem; } }
+        public bool EnableBoundarySystem { get { return enableBoundarySystem; } private set { enableBoundarySystem = value; } }
 
         #endregion Mixed Reality Manager configurable properties
 

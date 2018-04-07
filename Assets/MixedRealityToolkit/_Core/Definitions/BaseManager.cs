@@ -11,22 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     public class BaseManager : Interfaces.IMixedRealityManager
     {
         /// <summary>
-        /// Controls whether the manager is enabled and active in the scene
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Is the selected manager enabled")]
-        private bool enabled;
-
-        /// <summary>
-        /// public property for the enabled property, used to control whether the selected manager is active or not
-        /// </summary>
-        public bool Enabled
-        {
-            get { return enabled; }
-            set { enabled = value; }
-        }
-
-        /// <summary>
         /// The initialize function is used to setup the manager once created.
         /// This method is called once all managers have been registered in the Mixed Reality Manager.
         /// </summary>

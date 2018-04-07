@@ -32,10 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// </summary>
         public override void Update()
         {
-            if (Enabled)
-            {
-                // TODO Update stuff 
-            }
+            // TODO Update stuff 
         }
 
         /// <summary>
