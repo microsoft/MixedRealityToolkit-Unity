@@ -20,90 +20,85 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// Serialized list of managers for the Mixed Reality manager
         /// </summary>
         [SerializeField]
-        private IMixedRealityManager[] initialManagers;
+        private IMixedRealityManager[] initialManagers = null;
 
         /// <summary>
         /// Serialized list of the Interface types for the Mixed Reality manager
         /// </summary>
         [SerializeField]
-        private Type[] initialManagertypes;
+        private Type[] initialManagerTypes = null;
 
         /// <summary>
         /// Dictionary list of active managers used by the Mixed Reality Manager at runtime
         /// </summary>
-        [NonSerialized]
-        public Dictionary<Type, IMixedRealityManager> ActiveManagers = new Dictionary<Type, IMixedRealityManager>();
+        public Dictionary<Type, IMixedRealityManager> ActiveManagers { get; } = new Dictionary<Type, IMixedRealityManager>();
 
-        #endregion
+        #endregion Manager Registry properties
 
         #region Mixed Reality Manager configurable properties
-
-        #region Input System
 
         /// <summary>
         /// Enable and configure the Input System component for the Mixed Reality Toolkit
         /// </summary>
         [Header("Input Settings")]
         [Tooltip("Enable the Input System on Startup")]
-        public bool EnableInputSystem;
-
-        #endregion
-
-        #region Boundary
-
-        [Header("Boundary Settings")]
-        /// <summary>
-        /// Enable and configure the Boundary component on the Mixed Reality Camera
-        /// </summary>
-        [Tooltip("Enable the Boundary on Startup")]
-        public bool EnableBoundary;
-
-        #endregion
-
-        #region Motion Controllers
+        [SerializeField]
+        private bool enableInputSystem = true;
+        public bool EnableInputSystem { get { return enableInputSystem; } set { enableInputSystem = value; } }
 
         /// <summary>
         /// Enable and configure the controller rendering for the Mixed Reality Toolkit
         /// </summary>
-        [Header("Motion Controllers")]
         [Tooltip("Enable the Motion Controllers on Startup")]
-        public bool EnableControllers;
-
-        #endregion
-
-        #region Focus Control
-
-        [Header("Focus Options")]
-        /// <summary>
-        /// Enable and configure the Focus component for the Mixed Reality Toolkit
-        /// </summary>
-        public bool EnableFocus;
-
-        #endregion
-
-        #endregion
-
-        #region ISerializationCallbackReceiver Interface
+        [SerializeField]
+        private bool enableControllers = true;
+        public bool EnableControllers { get { return enableControllers; } set { enableControllers = value; } }
 
         /// <summary>
-        /// Unity function to prepare data for serialization, unused in the Mixed Reality Toolkit
+        /// Enable and configure the Boundary component on the Mixed Reality Camera
         /// </summary>
-        public void OnBeforeSerialize() { }
+        [Header("Boundary Settings")]
+        [Tooltip("Enable the Boundary on Startup")]
+        [SerializeField]
+        private bool enableBoundarySystem = true;
+        public bool EnableBoundarySystem { get { return enableBoundarySystem; } set { enableBoundarySystem = value; } }
+
+        #endregion Mixed Reality Manager configurable properties
+
+        #region ISerializationCallbackReceiver Implementation
+
+        /// <summary>
+        /// Unity function to prepare data for serialization.
+        /// </summary>
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+            var count = ActiveManagers.Count;
+            initialManagers = new IMixedRealityManager[count];
+            initialManagerTypes = new Type[count];
+
+            foreach (var manager in ActiveManagers)
+            {
+                --count;
+                initialManagers[count] = manager.Value;
+                initialManagerTypes[count] = manager.Key;
+            }
+        }
 
         /// <summary>
         /// Unity function to resolve data from serialization when a project is loaded
         /// </summary>
-        public void OnAfterDeserialize()
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             // From the serialized fields for the MixedRealityConfigurationProfile, populate the Active managers list
-            // *NOte This will only take effect once the Mixed Reality Toolkit has a custom editor for the MixedRealityConfigurationProfile
-            int managerCount = initialManagers.Length;
-            for (int i = 0; i < managerCount; i++)
+            // *Note This will only take effect once the Mixed Reality Toolkit has a custom editor for the MixedRealityConfigurationProfile
+
+            ActiveManagers.Clear();
+            for (int i = 0; i < initialManagers.Length; i++)
             {
-                ActiveManagers.Add(initialManagertypes[i].GetType(), initialManagers[i]);
+                ActiveManagers.Add(initialManagerTypes[i], initialManagers[i]);
             }
         }
 
-        #endregion
+        #endregion  ISerializationCallbackReceiver Implementation
     }
 }
