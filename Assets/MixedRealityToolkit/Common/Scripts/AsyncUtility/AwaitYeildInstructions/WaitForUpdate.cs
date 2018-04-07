@@ -20,37 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.Common.AsyncAwaitUtilities.CoroutineAwaiters
+namespace MixedRealityToolkit.Common.AsyncUtilities.AwaitYieldInstructions
 {
-    public static class UnityCoroutineAwaiters
+    /// <summary>
+    /// This can be used as a way to return to the main unity thread 
+    /// when using multiple threads with async methods.
+    /// </summary>
+    public class WaitForUpdate : CustomYieldInstruction
     {
-        public static WaitForUpdate NextFrame { get; } = new WaitForUpdate();
-
-        public static WaitForFixedUpdate FixedUpdate { get; } = new WaitForFixedUpdate();
-
-        public static WaitForEndOfFrame EndOfFrame { get; } = new WaitForEndOfFrame();
-
-        public static WaitForSeconds Seconds(float seconds)
-        {
-            return new WaitForSeconds(seconds);
-        }
-
-        public static WaitForSecondsRealtime SecondsRealtime(float seconds)
-        {
-            return new WaitForSecondsRealtime(seconds);
-        }
-
-        public static WaitUntil Until(Func<bool> predicate)
-        {
-            return new WaitUntil(predicate);
-        }
-
-        public static WaitWhile While(Func<bool> predicate)
-        {
-            return new WaitWhile(predicate);
-        }
+        public override bool keepWaiting => false;
     }
 }

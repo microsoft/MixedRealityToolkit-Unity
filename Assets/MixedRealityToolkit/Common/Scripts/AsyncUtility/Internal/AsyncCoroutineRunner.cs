@@ -22,7 +22,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.Common.AsyncAwaitUtilities.Internal
+namespace MixedRealityToolkit.Common.AsyncUtilities.Internal
 {
     /// <summary>
     /// This Async Coroutine Runner is just a helper object to

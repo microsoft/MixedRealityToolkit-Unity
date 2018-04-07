@@ -23,7 +23,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace MixedRealityToolkit.Common.AsyncAwaitUtilities.CoroutineAwaiters
+namespace MixedRealityToolkit.Common.AsyncUtilities.AwaitYieldInstructions
 {
     public class WaitForBackgroundThread
     {
