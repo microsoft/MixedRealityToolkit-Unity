@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.Threading;
 using UnityEngine;
 
@@ -9,7 +12,7 @@ namespace MixedRealityToolkit.Common.AsyncAwaitUtilities.Internal
         private static System.Reflection.MethodInfo executionMethod;
 
         /// <summary>
-        /// Hack to get Unity Editor to Execute in edit mode.
+        /// Hack to get Unity Editor to execute continuations in edit mode.
         /// </summary>
         private static void ExecuteContinuations()
         {
@@ -22,8 +25,7 @@ namespace MixedRealityToolkit.Common.AsyncAwaitUtilities.Internal
 
             if (executionMethod == null)
             {
-                executionMethod = context.GetType().GetMethod("Exec",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                executionMethod = context.GetType().GetMethod("Exec", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             }
 
             executionMethod?.Invoke(context, null);

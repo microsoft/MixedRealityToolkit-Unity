@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +21,7 @@ namespace MixedRealityToolkit.Common.Extensions
     /// but instead we add specific methods to each derived class to allow for return values
     /// that make the most sense for the specific instruction type.
     /// </summary>
-    public static class EnumeratorAwaitExtensions
+    public static class AwaiterExtensions
     {
         public static SimpleCoroutineAwaiter GetAwaiter(this WaitForSeconds instruction)
         {
@@ -68,7 +71,6 @@ namespace MixedRealityToolkit.Common.Extensions
             return awaiter;
         }
 
-        // Return itself so you can do things like (await new WWW(url)).bytes
         public static SimpleCoroutineAwaiter<WWW> GetAwaiter(this WWW instruction)
         {
             return GetAwaiterReturnSelf(instruction);
@@ -134,6 +136,10 @@ namespace MixedRealityToolkit.Common.Extensions
             }
         }
 
+        /// <summary>
+        /// Processes Coroutine and notifies completion with result.
+        /// </summary>
+        /// <typeparam name="T">The result type.</typeparam>
         public class SimpleCoroutineAwaiter<T> : INotifyCompletion
         {
             private Exception exception;
@@ -179,6 +185,9 @@ namespace MixedRealityToolkit.Common.Extensions
             }
         }
 
+        /// <summary>
+        /// Processes Coroutine and notifies completion.
+        /// </summary>
         public class SimpleCoroutineAwaiter : INotifyCompletion
         {
             private Exception exception;
