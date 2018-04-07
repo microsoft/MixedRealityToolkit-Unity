@@ -12,6 +12,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
     public class MixedRealityBoundaryManager : BaseManager, IMixedRealityBoundarySystem
     {
         /// <summary>
+        /// MixedRealityBoundaryManager constructor
+        /// </summary>
+        public MixedRealityBoundaryManager()
+        {
+            // TODO define any constructor requirements
+        }
+        /// <summary>
         /// The initialize function is used to setup the manager once created.
         /// This method is called once all managers have been registered in the Mixed Reality Manager.
         /// </summary>
@@ -25,7 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// </summary>
         public override void Update()
         {
-            // TODO Update stuff 
+            if (Enabled)
+            {
+                // TODO Update stuff 
+            }
         }
 
         /// <summary>

@@ -31,7 +31,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         public MixedRealityConfigurationProfile ActiveProfile
         {
             get { return activeProfile; }
-            set { activeProfile = value; }
+            set { activeProfile = value; ResetConfiguration(); }
+        }
+
+        private void ResetConfiguration()
+        {
+            foreach (var manager in ActiveProfile.ActiveManagers)
+            {
+                manager.Value.Reset();
+            }
         }
 
         #endregion Mixed Reality Manager Profile configuration
@@ -84,11 +92,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 //Enable Boundary (example initializer)
                 AddManager(typeof(IMixedRealityBoundarySystem), new InputSystem.MixedRealityBoundaryManager());
             }
+            foreach (var manager in ActiveProfile.ActiveManagers)
+            {
+                manager.Value.Initialize();
+            }
 
             #endregion Managers Initialization
         }
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         private static MixedRealityManager instance;
 
@@ -230,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
         }
 
-        #endregion Monobehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
         #region Manager Container Management
 
