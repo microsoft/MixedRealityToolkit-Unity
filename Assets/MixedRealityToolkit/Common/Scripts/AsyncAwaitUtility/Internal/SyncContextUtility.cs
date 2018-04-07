@@ -25,6 +25,9 @@ using UnityEngine;
 
 namespace MixedRealityToolkit.Common.AsyncAwaitUtilities.Internal
 {
+    /// <summary>
+    /// Utility class to assist in thread and context synchronization.
+    /// </summary>
     public static class SyncContextUtility
     {
 #if UNITY_EDITOR
@@ -62,8 +65,14 @@ namespace MixedRealityToolkit.Common.AsyncAwaitUtilities.Internal
             UnityThreadId = Thread.CurrentThread.ManagedThreadId;
         }
 
+        /// <summary>
+        /// This Unity Player's Thread Id.
+        /// </summary>
         public static int UnityThreadId { get; private set; }
 
+        /// <summary>
+        /// This Unity Player's Synchronization Context.
+        /// </summary>
         public static SynchronizationContext UnitySynchronizationContext { get; private set; }
     }
 }
