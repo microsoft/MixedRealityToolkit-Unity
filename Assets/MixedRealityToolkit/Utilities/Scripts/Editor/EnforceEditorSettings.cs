@@ -3,6 +3,7 @@
 
 using System;
 using System.Globalization;
+using System.IO;
 using UnityEngine;
 using UnityEditor;
 using MixedRealityToolkit.Common.EditorScript;
@@ -19,8 +20,6 @@ namespace MixedRealityToolkit.Utilities.EditorScript
 
         static EnforceEditorSettings()
         {
-            #region Editor Settings
-
             if (!IsNewEditorSession())
             {
                 return;
@@ -52,7 +51,21 @@ namespace MixedRealityToolkit.Utilities.EditorScript
                 }
             }
 
-            #endregion
+            if (PlayerSettings.scriptingRuntimeVersion != ScriptingRuntimeVersion.Latest)
+            {
+                if (EditorUtility.DisplayDialog(
+                        "Change the Scripting Runtime Version to 4.x?",
+                        "The Mixed Reality Toolkit would like to change the Scripting Runtime Version to use .NET 4.x.\n\n" +
+                        "In order for the change to take place the Editor must be restarted.\n\n" +
+                        "WARNING: If you do not make this change, then your project will fail to compile.\n\n" +
+                        "Would you like to make this change?",
+                        "Enable .NET 4.x",
+                        "Later"))
+                {
+                    PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
+                    EditorApplication.OpenProject(Directory.GetParent(Application.dataPath).ToString());
+                }
+            }
         }
 
         /// <summary>
