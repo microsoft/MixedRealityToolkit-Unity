@@ -16,29 +16,6 @@ namespace HoloToolkit.UX.Dialog
     /// </summary>
     public abstract class Dialog : InteractionReceiver
     {
-        //public enum DialogState
-        //{
-        //    Uninitialized,
-        //    Opening,
-        //    WaitingForInput,
-        //    InputReceived,
-        //    Closing,
-        //    Closed,
-        //}
-
-        //[Flags]
-        //public enum DialogButtonType
-        //{
-        //    None = 0,
-        //    Close = 1,
-        //    Confirm = 2,
-        //    Cancel = 4,
-        //    Accept = 8,
-        //    Yes = 16,
-        //    No = 32,
-        //    OK = 64,
-        //}
-
         /// <summary>
         /// Where the instantiated buttons will be placed
         /// </summary>
