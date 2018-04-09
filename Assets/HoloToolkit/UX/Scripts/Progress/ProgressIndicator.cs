@@ -251,7 +251,9 @@ namespace HoloToolkit.UX.Progress
                     gameObject.SetActive(false);
                     // Destroy our custom object if we made one
                     if (instantiatedCustomObject != null)
+                    {
                         GameObject.Destroy(instantiatedCustomObject);
+                    }
                 }
             }
         }
