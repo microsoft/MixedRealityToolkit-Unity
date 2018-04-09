@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
@@ -55,6 +55,11 @@ namespace HoloToolkit.Unity.InputModule
         public bool SupportsGrasp;
         public bool RaiseEventsBasedOnVisibility;
         public InteractionSourceInfo SourceKind;
+
+        //Navigation Gesture Emulation vars
+        Vector3 NavigatorValues = Vector3.zero; //holds the navigation gesture values [-1,1]
+        Vector2 railUsedCurrently = Vector2.one;
+        bool    isNavigatorUsingRails = false;
 
         public Vector3 ControllerPosition;
         public Quaternion ControllerRotation;
@@ -262,6 +267,12 @@ namespace HoloToolkit.Unity.InputModule
             currentlyVisible = false;
             visibilityChanged = false;
             controllerId = (uint)Random.value;
+
+            InteractionInputSource inputSource = FindObjectOfType<InteractionInputSource>();
+            if (inputSource != null)
+            {
+                isNavigatorUsingRails = inputSource.UseRailsNavigation;
+            }
         }
 
         private void Update()
@@ -411,6 +422,11 @@ namespace HoloToolkit.Unity.InputModule
                     {
                         InputManager.Instance.RaiseManipulationCompleted(this, controllerId, currentButtonStates.CumulativeDelta);
                         currentButtonStates.ManipulationInProgress = false;
+
+                        //Navigation Gesture Emulation
+                        InputManager.Instance.RaiseNavigationCompleted(this, controllerId, NavigatorValues);
+                        NavigatorValues = Vector3.zero;
+                        railUsedCurrently = Vector2.one;
                     }
                     // Clicks and holds are based on time, and both are overruled by manipulations.
                     else if (currentButtonStates.HoldInProgress)
@@ -445,6 +461,14 @@ namespace HoloToolkit.Unity.InputModule
 
                         InputManager.Instance.RaiseManipulationStarted(this, controllerId);
                         currentButtonStates.ManipulationInProgress = true;
+
+                        //Navigation Gesture Emulation
+                        InputManager.Instance.RaiseNavigationStarted(this, controllerId);
+                        NavigatorValues = Vector3.zero;
+                        if (isNavigatorUsingRails)
+                        {
+                            railUsedCurrently = (currentButtonStates.CumulativeDelta.x >= manipulationStartMovementThreshold) ? new Vector2(1, 0) : new Vector2(0, 1);
+                        }
                     }
                     // Holds are triggered by time.
                     else if (!currentButtonStates.HoldInProgress && (time - currentButtonStates.SelectDownStartTime >= MaxClickDuration))
@@ -456,6 +480,11 @@ namespace HoloToolkit.Unity.InputModule
                 else
                 {
                     InputManager.Instance.RaiseManipulationUpdated(this, controllerId, currentButtonStates.CumulativeDelta);
+
+                    //Navigation Gesture Emulation
+                    NavigatorValues.x = Mathf.Clamp(currentButtonStates.CumulativeDelta.x*5, -1.0f, 1.0f) * railUsedCurrently.x;
+                    NavigatorValues.y = Mathf.Clamp(currentButtonStates.CumulativeDelta.y*5, -1.0f, 1.0f) * railUsedCurrently.y;
+                    InputManager.Instance.RaiseNavigationUpdated(this, controllerId, NavigatorValues);
                 }
             }
 
