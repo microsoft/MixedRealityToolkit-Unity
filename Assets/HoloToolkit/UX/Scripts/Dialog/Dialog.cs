@@ -16,28 +16,28 @@ namespace HoloToolkit.UX.Dialog
     /// </summary>
     public abstract class Dialog : InteractionReceiver
     {
-        public enum StateEnum
-        {
-            Uninitialized,
-            Opening,
-            WaitingForInput,
-            InputReceived,
-            Closing,
-            Closed,
-        }
+        //public enum DialogState
+        //{
+        //    Uninitialized,
+        //    Opening,
+        //    WaitingForInput,
+        //    InputReceived,
+        //    Closing,
+        //    Closed,
+        //}
 
-        [Flags]
-        public enum ButtonTypeEnum
-        {
-            None = 0,
-            Close = 1,
-            Confirm = 2,
-            Cancel = 4,
-            Accept = 8,
-            Yes = 16,
-            No = 32,
-            OK = 64,
-        }
+        //[Flags]
+        //public enum DialogButtonType
+        //{
+        //    None = 0,
+        //    Close = 1,
+        //    Confirm = 2,
+        //    Cancel = 4,
+        //    Accept = 8,
+        //    Yes = 16,
+        //    No = 32,
+        //    OK = 64,
+        //}
 
         /// <summary>
         /// Where the instantiated buttons will be placed
@@ -49,7 +49,7 @@ namespace HoloToolkit.UX.Dialog
         /// Current state of the dialog
         /// Can be used to monitor state in place of events
         /// </summary>
-        public StateEnum State
+        public DialogState State
         {
             get
             {
@@ -79,7 +79,7 @@ namespace HoloToolkit.UX.Dialog
 
         protected void Launch(DialogResult newResult)
         {
-            if (state != StateEnum.Uninitialized)
+            if (state != DialogState.Uninitialized)
             {
                 return;
             }
@@ -100,19 +100,19 @@ namespace HoloToolkit.UX.Dialog
             FinalizeLayout();
 
             // Open dialog
-            state = StateEnum.Opening;
+            state = DialogState.Opening;
             yield return StartCoroutine(OpenDialog());
-            state = StateEnum.WaitingForInput;
+            state = DialogState.WaitingForInput;
             // Wait for input
-            while (state == StateEnum.WaitingForInput)
+            while (state == DialogState.WaitingForInput)
             {
                 UpdateDialog();
                 yield return null;
             }
             // Close dialog
-            state = StateEnum.Closing;
+            state = DialogState.Closing;
             yield return StartCoroutine(CloseDialog());
-            state = StateEnum.Closed;
+            state = DialogState.Closed;
             // Callback
             if (OnClosed != null)
             {
@@ -170,7 +170,7 @@ namespace HoloToolkit.UX.Dialog
         protected abstract void SetTitleAndMessage();
 
         protected DialogResult result;
-        private StateEnum state = StateEnum.Uninitialized;
+        private DialogState state = DialogState.Uninitialized;
 
         /// <summary>
         /// Instantiates a dialog and passes it a result
@@ -195,7 +195,7 @@ namespace HoloToolkit.UX.Dialog
         /// <param name="title"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static Dialog Open(GameObject dialogPrefab, ButtonTypeEnum buttons, string title, string message)
+        public static Dialog Open(GameObject dialogPrefab, DialogButtonType buttons, string title, string message)
         {
             GameObject dialogGameObject = GameObject.Instantiate(dialogPrefab) as GameObject;
             Dialog dialog = dialogGameObject.GetComponent<Dialog>();

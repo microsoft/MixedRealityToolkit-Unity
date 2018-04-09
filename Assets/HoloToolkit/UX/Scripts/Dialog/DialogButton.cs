@@ -12,9 +12,13 @@ namespace HoloToolkit.UX.Buttons
     /// </summary>
     public class DialogButton : MonoBehaviour
     {
-        private DialogShell _parentDialog;
         private Button buttonComponent;
 
+        private DialogShell _parentDialog;
+
+        /// <summary>
+        /// A reference to the Dialog that this button is on.
+        /// </summary>
         public DialogShell ParentDialog
         {
             get
@@ -27,7 +31,10 @@ namespace HoloToolkit.UX.Buttons
             }
         }
 
-        public Dialog.Dialog.ButtonTypeEnum ButtonTypeEnum;
+        /// <summary>
+        /// The type description of the button
+        /// </summary>
+        public Dialog.DialogButtonType ButtonTypeEnum;
 
         private void OnEnable()
         {
@@ -43,6 +50,11 @@ namespace HoloToolkit.UX.Buttons
             }
         }
 
+        /// <summary>
+        /// event handler that runs when button is clicked.
+        /// Dismisses the parent dialog.
+        /// </summary>
+        /// <param name="obj"></param>
         public void OnButtonClicked(GameObject obj)
         {
             if (_parentDialog != null)
@@ -52,6 +64,10 @@ namespace HoloToolkit.UX.Buttons
             }
         }
 
+        /// <summary>
+        /// Setter Method to set the Text at the top of the Dialog.
+        /// </summary>
+        /// <param name="title"></param>
         public void SetTitle(string title)
         {
             CompoundButtonText compoundButtonText = GetComponent<CompoundButtonText>();

@@ -14,27 +14,9 @@ namespace HoloToolkit.UX.Progress
     {
         const float SmoothProgressSpeed = 10f;
 
-        public enum IndicatorStyleEnum
-        {
-            None,           // Don't display an activity indicator
-            StaticIcon,     // Display a static icon
-            AnimatedOrbs,   // Display animated orbs
-            Prefab,         // Display a custom prefab
-        }
-
-        public enum ProgressStyleEnum
-        {
-            None,           // Don't display a progress number
-            Percentage,     // Display progress as a 0-100%
-            ProgressBar     // Display progress as a progress bar
-        }
-
-        public enum MessageStyleEnum
-        {
-            None,           // Don't display a message
-            Visible,        // Display a message
-        }
-
+        /// <summary>
+        /// Property describing the loading status of progress indicator
+        /// </summary>
         public bool IsLoading
         {
             get
@@ -48,7 +30,7 @@ namespace HoloToolkit.UX.Progress
         [SerializeField]
         private ProgressStyleEnum defaultProgressStyle = ProgressStyleEnum.Percentage;
         [SerializeField]
-        private MessageStyleEnum defaultMessageStyle = MessageStyleEnum.Visible;
+        private ProgressMessageStyleEnum defaultMessageStyle = ProgressMessageStyleEnum.Visible;
 
         // The default prefab used by the 'Prefab' indicator style
         [SerializeField]
@@ -80,8 +62,10 @@ namespace HoloToolkit.UX.Progress
         [SerializeField]
         private Animator animator;
 
-        public float Progress {
-            get {
+        public float Progress
+        {
+            get 
+            {
                 return smoothProgress;
             }
         }
@@ -104,10 +88,12 @@ namespace HoloToolkit.UX.Progress
         /// <param name="messageStyle"></param>
         /// <param name="message"></param>
         /// <param name="icon"></param>
-        public void Open (IndicatorStyleEnum indicatorStyle, ProgressStyleEnum progressStyle, MessageStyleEnum messageStyle, string message = "", GameObject prefab = null)
+        public void Open (IndicatorStyleEnum indicatorStyle, ProgressStyleEnum progressStyle, ProgressMessageStyleEnum messageStyle, string message = "", GameObject prefab = null)
         {
             if (gameObject.activeSelf)
+            {
                 return;
+            }
 
             // Make sure we aren't parented under anything
             transform.parent = null;
@@ -117,7 +103,7 @@ namespace HoloToolkit.UX.Progress
             gameObject.SetActive(true);
             progressText.gameObject.SetActive(progressStyle == ProgressStyleEnum.Percentage);
             progressBarContainer.gameObject.SetActive(progressStyle == ProgressStyleEnum.ProgressBar);
-            messageText.gameObject.SetActive(messageStyle != MessageStyleEnum.None);
+            messageText.gameObject.SetActive(messageStyle != ProgressMessageStyleEnum.None);
             messageText.text = message;
 
             // Reset our loading progress
@@ -188,7 +174,7 @@ namespace HoloToolkit.UX.Progress
         /// <param name="message"></param>
         public void Open (string message)
         {
-            Open(defaultIndicatorStyle, defaultProgressStyle, MessageStyleEnum.Visible, message, null);
+            Open(defaultIndicatorStyle, defaultProgressStyle, ProgressMessageStyleEnum.Visible, message, null);
         }
 
         /// <summary>
@@ -199,7 +185,9 @@ namespace HoloToolkit.UX.Progress
         public void SetMessage(string message)
         {
             if (!gameObject.activeSelf)
+            {
                 return;
+            }
 
             messageText.text = message;
         }
@@ -229,7 +217,9 @@ namespace HoloToolkit.UX.Progress
         public void Close ()
         {
             if (!gameObject.activeSelf)
+            {
                 return;
+            }
 
             closing = true;
             progressText.gameObject.SetActive(false);

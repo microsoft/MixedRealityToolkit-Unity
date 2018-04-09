@@ -8,16 +8,10 @@ namespace HoloToolkit.Examples.InteractiveElements
     public class FadeObject : MonoBehaviour
     {
         private float fadeTime = 0.5f;
-        private bool autoFadeIn = false;
 
-        private float mFadeCounter = 0;
-        private Color mCachedColor;
-        private bool mFadingIn = true;
-        private bool mIsFading = false;
-
-        //cache material to prevent memory leak
-        private Material mCachedMaterial;
-
+        /// <summary>
+        /// How long will the Fade effect last
+        /// </summary>
         public float FadeTime
         {
             get
@@ -31,6 +25,11 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
         }
 
+        private bool autoFadeIn = false;
+
+        /// <summary>
+        /// Does the Fade effect occure automatically
+        /// </summary>
         public bool AutoFadeIn
         {
             get
@@ -43,6 +42,14 @@ namespace HoloToolkit.Examples.InteractiveElements
                 autoFadeIn = value;
             }
         }
+
+        private float mFadeCounter = 0;
+        private Color mCachedColor;
+        private bool mFadingIn = true;
+        private bool mIsFading = false;
+
+        //cache material to prevent memory leak
+        private Material mCachedMaterial;
 
         private void Awake()
         {
@@ -66,6 +73,10 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
         }
 
+        /// <summary>
+        /// Begins the Fade in effect
+        /// </summary>
+        /// <param name="resetStartValue">should value return to original</param>
         public void FadeIn(bool resetStartValue)
         {
             if (mCachedMaterial != null)
@@ -83,6 +94,10 @@ namespace HoloToolkit.Examples.InteractiveElements
             mFadingIn = true;
         }
 
+        /// <summary>
+        /// Resets the color to original before fade effect
+        /// </summary>
+        /// <param name="value">value to set the alpha to</param>
         public void ResetFade(float value)
         {
             if (mCachedMaterial != null)
@@ -95,6 +110,10 @@ namespace HoloToolkit.Examples.InteractiveElements
             mFadeCounter = 0;
         }
 
+        /// <summary>
+        /// start the Fade out effect.
+        /// </summary>
+        /// <param name="resetStartValue">should original value be reset</param>
         public void FadeOut(bool resetStartValue)
         {
             if (mCachedMaterial != null)
@@ -147,6 +166,10 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
         }
 
+        /// <summary>
+        /// Event handler when object is deleted
+        /// This cleans up cached material.
+        /// </summary>
         public void OnDestroy()
         {
             Destroy(mCachedMaterial);

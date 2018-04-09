@@ -25,6 +25,12 @@ namespace HoloToolkit.Examples.UX
         [SerializeField]
         private int numButtons = 1;
 
+        private TextMesh resultTextMesh;
+
+        /// <summary>
+        /// Used to report the dialogResult. OK, Cancel etc.
+        /// The button that was clicked to respond to the Dialog.
+        /// </summary>
         public GameObject ResultText
         {
             get
@@ -38,10 +44,20 @@ namespace HoloToolkit.Examples.UX
             }
         }
 
+        /// <summary>
+        /// Property to get and set the number of buttons that will be generated
+        /// on the Dialog.
+        /// </summary>
         public int NumButtons { get; set; }
 
-
-        protected IEnumerator LaunchDialog(Dialog.ButtonTypeEnum buttons, string title, string message)
+        /// <summary>
+        /// This function is called to set the settings for the dialog and then open it.
+        /// </summary>
+        /// <param name="buttons">Enum describing the number of buttons that will be created on the Dialog</param>
+        /// <param name="title">This string will appear at the top of the Dialog</param>
+        /// <param name="message">This string will appear in the body of the Dialog</param>
+        /// <returns>IEnumerator used for Coroutine funtions in Unity</returns>
+        protected IEnumerator LaunchDialog(DialogButtonType buttons, string title, string message)
         {
             isDialogLaunched = true;
 
@@ -52,7 +68,7 @@ namespace HoloToolkit.Examples.UX
             dialog.OnClosed += OnClosed;
 
             // Wait for dialog to close
-            while (dialog.State < Dialog.StateEnum.InputReceived)
+            while (dialog.State < DialogState.InputReceived)
             {
                 yield return null;
             }
@@ -65,6 +81,7 @@ namespace HoloToolkit.Examples.UX
 
         private void OnEnable()
         {
+            resultTextMesh = ResultText.GetComponent<TextMesh>();
             GetComponent<Button>().OnButtonClicked += OnButtonClicked;
         }
 
@@ -75,20 +92,24 @@ namespace HoloToolkit.Examples.UX
                 if (numButtons == 1)
                 {
                     // Launch Dialog with single button
-                    StartCoroutine(LaunchDialog(Dialog.ButtonTypeEnum.OK, "Single Button Dialog", "Dialogs and flyouts are transient UI elements that appear when something happens that requires notification, approval, or additional information from the user."));
+                    StartCoroutine(LaunchDialog(DialogButtonType.OK, "Single Button Dialog", "Dialogs and flyouts are transient UI elements that appear when something happens that requires notification, approval, or additional information from the user."));
                 }
                 else if (numButtons == 2)
                 {
                     // Launch Dialog with two buttons
-                    StartCoroutine(LaunchDialog(Dialog.ButtonTypeEnum.Yes | Dialog.ButtonTypeEnum.No, "Two Buttons Dialog", "Dialogs and flyouts are transient UI elements that appear when something happens that requires notification, approval, or additional information from the user."));
+                    StartCoroutine(LaunchDialog(DialogButtonType.Yes | DialogButtonType.No, "Two Buttons Dialog", "Dialogs and flyouts are transient UI elements that appear when something happens that requires notification, approval, or additional information from the user."));
                 }
             }
         }
 
+        /// <summary>
+        /// Event Handler that fires when Dialog is closed- when a button on the Dialog is clicked.
+        /// </summary>
+        /// <param name="result">Returns a description of the result, which button was clicked</param>
         protected void OnClosed(DialogResult result)
         {
             // Get the result text from the Dialog
-            ResultText.GetComponent<TextMesh>().text = result.Result.ToString();
+            resultTextMesh.text = result.Result.ToString();
         }
     }
 }

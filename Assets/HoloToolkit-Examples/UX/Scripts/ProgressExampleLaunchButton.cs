@@ -11,13 +11,17 @@ namespace HoloToolkit.Examples.UX
     {
         [Header("Which Indicator style is desired?")]
         [SerializeField]
-        private ProgressIndicator.IndicatorStyleEnum indicatorStyle;
+        private IndicatorStyleEnum indicatorStyle;
 
         [Header("Which Progress style is desired?")]
         [SerializeField]
-        private ProgressIndicator.ProgressStyleEnum progressStyle;
+        private ProgressStyleEnum progressStyle;
 
-        public ProgressIndicator.IndicatorStyleEnum IndicatorStyle
+        /// <summary>
+        /// Property that determines whether the indicator of the progress indicator
+        /// is  None,  StaticIcon, AnimatedOrbs, or an instantiated Prefab.
+        /// </summary>
+        public IndicatorStyleEnum IndicatorStyle
         {
             get
             {
@@ -30,7 +34,10 @@ namespace HoloToolkit.Examples.UX
             }
         }
 
-        public ProgressIndicator.ProgressStyleEnum ProgressStyle
+        /// <summary>
+        /// Property indicating the Progress style:  None, Percentage, ProgressBar
+        /// </summary>
+        public ProgressStyleEnum ProgressStyle
         {
             get
             {
@@ -43,9 +50,12 @@ namespace HoloToolkit.Examples.UX
             }
         }
 
-        private void OnEnable()
+        private Button button;
+
+        private void Start()
         {
-            GetComponent<Button>().OnButtonClicked += OnButtonClicked;
+            button = GetComponent<Button>();
+            button.OnButtonClicked += OnButtonClicked;
         }
 
         private void OnButtonClicked(GameObject obj)

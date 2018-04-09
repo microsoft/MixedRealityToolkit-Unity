@@ -12,7 +12,7 @@ namespace HoloToolkit.UX.Dialog
         /// <summary>
         /// The button press that closed the dialog
         /// </summary>
-        private Dialog.ButtonTypeEnum result = Dialog.ButtonTypeEnum.Close;
+        private DialogButtonType result = DialogButtonType.Close;
 
         /// <summary>
         /// Title for the dialog to display
@@ -27,8 +27,12 @@ namespace HoloToolkit.UX.Dialog
         /// <summary>
         /// Which buttons to generate
         /// </summary>
-        private Dialog.ButtonTypeEnum buttons = Dialog.ButtonTypeEnum.Close;
+        private DialogButtonType buttons = DialogButtonType.Close;
 
+        /// <summary>
+        /// The public property to get and set the Title
+        /// string (topmost) on the Dialog.
+        /// </summary>
         public string Title
         {
             get
@@ -42,6 +46,10 @@ namespace HoloToolkit.UX.Dialog
             }
         }
 
+        /// <summary>
+        /// The public property to get and set the Message
+        /// string of the dialog.
+        /// </summary>
         public string Message
         {
             get
@@ -55,7 +63,11 @@ namespace HoloToolkit.UX.Dialog
             }
         }
 
-        public Dialog.ButtonTypeEnum Buttons
+        /// <summary>
+        /// Property defining the button type[s]
+        /// on the dialog.
+        /// </summary>
+        public DialogButtonType Buttons
         {
             get
             {
@@ -68,7 +80,11 @@ namespace HoloToolkit.UX.Dialog
             }
         }
 
-        public Dialog.ButtonTypeEnum Result
+        /// <summary>
+        /// Property reporting the Result of the Dialog:
+        /// Which button was clicked to dismiss it.
+        /// </summary>
+        public DialogButtonType Result
         {
             get
             {

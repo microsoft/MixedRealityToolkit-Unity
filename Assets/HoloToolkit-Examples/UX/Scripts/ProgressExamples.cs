@@ -234,7 +234,7 @@ namespace HoloToolkit.Examples.UX
             }
         }
 
-        public void LaunchProgress(ProgressIndicator.IndicatorStyleEnum indicatorStyle, ProgressIndicator.ProgressStyleEnum progressStyle)
+        public void LaunchProgress(IndicatorStyleEnum indicatorStyle, ProgressStyleEnum progressStyle)
         {
             if (ProgressIndicator.Instance.IsLoading)
             {
@@ -243,63 +243,63 @@ namespace HoloToolkit.Examples.UX
 
             switch (indicatorStyle)
             {
-                case ProgressIndicator.IndicatorStyleEnum.None:
+                case IndicatorStyleEnum.None:
                     //progressbar examples all assume IndicatorStyleEnum = None
                     switch (progressStyle)
                     {
-                        case ProgressIndicator.ProgressStyleEnum.Percentage:
+                        case ProgressStyleEnum.Percentage:
                             ProgressIndicator.Instance.Open(
-                                ProgressIndicator.IndicatorStyleEnum.None,
-                                ProgressIndicator.ProgressStyleEnum.Percentage,
-                                ProgressIndicator.MessageStyleEnum.Visible,
+                                IndicatorStyleEnum.None,
+                                ProgressStyleEnum.Percentage,
+                                ProgressMessageStyleEnum.Visible,
                                 LeadInMessage);
                             StartCoroutine(LoadOverTime(LoadProgressMessage));
                             break;
 
-                        case ProgressIndicator.ProgressStyleEnum.ProgressBar:
+                        case ProgressStyleEnum.ProgressBar:
                             ProgressIndicator.Instance.Open(
-                                ProgressIndicator.IndicatorStyleEnum.None,
-                                ProgressIndicator.ProgressStyleEnum.ProgressBar,
-                                ProgressIndicator.MessageStyleEnum.Visible,
+                                IndicatorStyleEnum.None,
+                                ProgressStyleEnum.ProgressBar,
+                                ProgressMessageStyleEnum.Visible,
                                 LeadInMessage);
                             StartCoroutine(LoadOverTime(LoadProgressBarMessage));
                             break;
 
-                        case ProgressIndicator.ProgressStyleEnum.None:
+                        case ProgressStyleEnum.None:
                             ProgressIndicator.Instance.Open(
-                            ProgressIndicator.IndicatorStyleEnum.None,
-                            ProgressIndicator.ProgressStyleEnum.None,
-                            ProgressIndicator.MessageStyleEnum.Visible,
+                            IndicatorStyleEnum.None,
+                            ProgressStyleEnum.None,
+                            ProgressMessageStyleEnum.Visible,
                             LeadInMessage);
                             StartCoroutine(LoadOverTime(LoadTextMessage));
                         break;
                      }
                     break;
 
-                case ProgressIndicator.IndicatorStyleEnum.AnimatedOrbs:
+                case IndicatorStyleEnum.AnimatedOrbs:
                     ProgressIndicator.Instance.Open(
-                             ProgressIndicator.IndicatorStyleEnum.AnimatedOrbs,
-                             ProgressIndicator.ProgressStyleEnum.None,
-                             ProgressIndicator.MessageStyleEnum.Visible,
+                             IndicatorStyleEnum.AnimatedOrbs,
+                             ProgressStyleEnum.None,
+                             ProgressMessageStyleEnum.Visible,
                              LeadInMessage);
                     StartCoroutine(LoadOverTime(LoadOrbsMessage));
                     break;
 
-                case ProgressIndicator.IndicatorStyleEnum.StaticIcon:
+                case IndicatorStyleEnum.StaticIcon:
                     ProgressIndicator.Instance.Open(
-                        ProgressIndicator.IndicatorStyleEnum.StaticIcon,
-                        ProgressIndicator.ProgressStyleEnum.None,
-                        ProgressIndicator.MessageStyleEnum.Visible,
+                        IndicatorStyleEnum.StaticIcon,
+                        ProgressStyleEnum.None,
+                        ProgressMessageStyleEnum.Visible,
                         LeadInMessage,
                         null);
                     StartCoroutine(LoadOverTime(LoadIconMessage));
                     break;
 
-                case ProgressIndicator.IndicatorStyleEnum.Prefab:
+                case IndicatorStyleEnum.Prefab:
                     ProgressIndicator.Instance.Open(
-                        ProgressIndicator.IndicatorStyleEnum.Prefab,
-                        ProgressIndicator.ProgressStyleEnum.None,
-                        ProgressIndicator.MessageStyleEnum.Visible,
+                        IndicatorStyleEnum.Prefab,
+                        ProgressStyleEnum.None,
+                        ProgressMessageStyleEnum.Visible,
                         LeadInMessage,
                         LoadingPrefab);
                     StartCoroutine(LoadOverTime(LoadPrefabMessage));

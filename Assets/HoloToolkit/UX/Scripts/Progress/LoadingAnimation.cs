@@ -118,14 +118,19 @@ namespace HoloToolkit.Examples.UX
         {
             //e -= s;
             if ((v /= 0.5f) < 1)
+            {
                 return e / 2 * v * v * v * v + s;
+            }
 
             return -e / 2 * ((v -= 2) * v * v * v - 2) + s;
         }
 
         private void Update()
         {
-            if (IsPaused) return;
+            if (IsPaused)
+            {
+                return;
+            }
 
             float percentage = mTime / RevolutionSpeed;
 
