@@ -9,6 +9,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.UX
 {
+    /// <summary>
+    /// Duplicates target object of the Bounding Box. 
+    /// </summary>
     public class Duplicator : MonoBehaviour
     {
         public enum StateEnum

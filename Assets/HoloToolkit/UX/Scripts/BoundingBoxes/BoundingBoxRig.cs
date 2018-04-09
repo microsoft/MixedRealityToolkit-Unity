@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.UX
 {
+    /// <summary>
+    /// Constructs the scale and rotate gizmo handles for the Bounding Box 
+    /// </summary>
     public class BoundingBoxRig : MonoBehaviour
     {
         [Header("Flattening")]
