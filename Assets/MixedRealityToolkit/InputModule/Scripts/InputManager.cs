@@ -56,6 +56,7 @@ namespace MixedRealityToolkit.InputModule
         private PointerSpecificEventData pointerSpecificEventData;
         private InputPositionEventData inputPositionEventData;
         private SelectPressedEventData selectPressedEventData;
+        private PlacementEventData placementEventData;
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         private SpeechEventData speechEventData;
         private DictationEventData dictationEventData;
@@ -212,6 +213,7 @@ namespace MixedRealityToolkit.InputModule
             sourceRotationEventData = new SourceRotationEventData(EventSystem.current);
             sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
             xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
+            placementEventData = new PlacementEventData(EventSystem.current);
 #if UNITY_WSA || UNITY_STANDALONE_WIN
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
@@ -923,6 +925,42 @@ namespace MixedRealityToolkit.InputModule
         }
 
         #endregion // Dictation Events
+
+        #region Placement Events
+
+        private static readonly ExecuteEvents.EventFunction<IPlacementHandler> OnPlacingStartedEventHandler =
+            delegate (IPlacementHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<PlacementEventData>(eventData);
+                handler.OnPlacingStarted(casted);
+            };
+
+        public void RaisePlacingStarted(IInputSource source, uint sourceId, GameObject objectBeingPlaced, object[] tags = null)
+        {
+            // Create input event
+            placementEventData.Initialize(source, sourceId, tags, objectBeingPlaced);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(placementEventData, OnPlacingStartedEventHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IPlacementHandler> OnPlacingCompletedEventHandler =
+            delegate (IPlacementHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<PlacementEventData>(eventData);
+                handler.OnPlacingCompleted(casted);
+            };
+
+        public void RaisePlacingCompleted(IInputSource source, uint sourceId, GameObject objectBeingPlaced, object[] tags = null)
+        {
+            // Create input event
+            placementEventData.Initialize(source, sourceId, tags, objectBeingPlaced);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(placementEventData, OnPlacingCompletedEventHandler);
+        }
+
+        #endregion
 #endif
 
         #region Helpers
