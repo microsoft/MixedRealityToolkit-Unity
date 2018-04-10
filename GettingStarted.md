@@ -75,6 +75,8 @@ Open or create your project in Unity.
 Enable .NET 4.x via `Edit -> Proejct Settings -> Player -> Other Settings` and update the Runtime Scripting Version to the lastest.
 (Depending on your version of the editor, it could be .NET Core 2).
 
+![Enable .NET 4.x Support](/External/ReadMeImages/RuntimeScriptingSettings.PNG "Enable .NET 4.x Suppport")
+
 > Important! failing to enable this setting will prevent the package from working correctly.
 
 Then import the MRTK asset using `Assets -> Import Package -> Custom Package…` [Navigate to the package 
