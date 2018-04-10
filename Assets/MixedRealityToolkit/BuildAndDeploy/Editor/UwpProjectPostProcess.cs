@@ -23,7 +23,11 @@ namespace MixedRealityToolkit.Build
         public static void Execute(string buildRootPath)
         {
             UpdateProjectFile(Path.Combine(buildRootPath, @"GeneratedProjects\UWP\Assembly-CSharp\Assembly-CSharp.csproj"));
-            UpdateProjectFile(Path.Combine(buildRootPath, @"GeneratedProjects\UWP\Assembly-CSharp-firstpass\Assembly-CSharp-firstpass.csproj"));
+            string firstPassPath = Path.Combine(buildRootPath, @"GeneratedProjects\UWP\Assembly-CSharp-firstpass\Assembly-CSharp-firstpass.csproj");
+            if (File.Exists(firstPassPath))
+            {
+                UpdateProjectFile(firstPassPath);
+            }
         }
 
         /// <summary>
@@ -35,7 +39,7 @@ namespace MixedRealityToolkit.Build
         {
             if (!File.Exists(filename))
             {
-                UnityEngine.Debug.LogWarningFormat("Unable to find file \"{0}\", double check that the build succeeded and that the C# Projects are set to be generated.", filename);
+                UnityEngine.Debug.LogWarning($"Unable to find file \"{filename}\", double check that the build succeeded and that the C# Projects are set to be generated.");
                 return;
             }
 
@@ -44,13 +48,13 @@ namespace MixedRealityToolkit.Build
 
             if (projectDocument.DocumentElement == null)
             {
-                UnityEngine.Debug.LogWarningFormat("Unable to load file \"{0}\", double check that the build succeeded and that the C# Projects are set to be generated.", filename);
+                UnityEngine.Debug.LogWarning($"Unable to load file \"{filename}\", double check that the build succeeded and that the C# Projects are set to be generated.");
                 return;
             }
 
             if (projectDocument.DocumentElement.Name != "Project")
             {
-                UnityEngine.Debug.LogWarningFormat("The loaded project \"{0}\", does not appear to be a MSBuild Project file.", filename);
+                UnityEngine.Debug.LogWarningFormat($"The loaded project \"{filename}\", does not appear to be a MSBuild Project file.");
                 return;
             }
 

@@ -53,7 +53,7 @@ namespace MixedRealityToolkit.Common.RestUtility
         /// <param name="headers">Optional header information for the request.</param>
         /// <param name="timeout">Optional time in seconds before request expires.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> GetAsync(string query, Dictionary<string, string> headers = null, int timeout = 0)
+        public static async Task<Response> GetAsync(string query, Dictionary<string, string> headers = null, int timeout = -1)
         {
             using (var webRequest = UnityWebRequest.Get(query))
             {
@@ -72,7 +72,7 @@ namespace MixedRealityToolkit.Common.RestUtility
         /// <param name="headers">Optional header information for the request.</param>
         /// <param name="timeout">Optional time in seconds before request expires.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> PostAsync(string query, Dictionary<string, string> headers = null, int timeout = 0)
+        public static async Task<Response> PostAsync(string query, Dictionary<string, string> headers = null, int timeout = -1)
         {
             using (var webRequest = UnityWebRequest.Post(query, null as string))
             {
@@ -88,7 +88,7 @@ namespace MixedRealityToolkit.Common.RestUtility
         /// <param name="headers">Optional header information for the request.</param>
         /// <param name="timeout">Optional time in seconds before request expires.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> PostAsync(string query, WWWForm formData, Dictionary<string, string> headers = null, int timeout = 0)
+        public static async Task<Response> PostAsync(string query, WWWForm formData, Dictionary<string, string> headers = null, int timeout = -1)
         {
             using (var webRequest = UnityWebRequest.Post(query, formData))
             {
@@ -104,7 +104,7 @@ namespace MixedRealityToolkit.Common.RestUtility
         /// <param name="headers">Optional header information for the request.</param>
         /// <param name="timeout">Optional time in seconds before request expires.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> PostAsync(string query, string jsonData, Dictionary<string, string> headers = null, int timeout = 0)
+        public static async Task<Response> PostAsync(string query, string jsonData, Dictionary<string, string> headers = null, int timeout = -1)
         {
             using (var webRequest = UnityWebRequest.Post(query, "POST"))
             {
@@ -125,7 +125,7 @@ namespace MixedRealityToolkit.Common.RestUtility
         /// <param name="bodyData">The raw data to post.</param>
         /// <param name="timeout">Optional time in seconds before request expires.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> PostAsync(string query, byte[] bodyData, Dictionary<string, string> headers = null, int timeout = 0)
+        public static async Task<Response> PostAsync(string query, byte[] bodyData, Dictionary<string, string> headers = null, int timeout = -1)
         {
             using (var webRequest = UnityWebRequest.Post(query, "POST"))
             {
@@ -148,7 +148,7 @@ namespace MixedRealityToolkit.Common.RestUtility
         /// <param name="headers">Optional header information for the request.</param>
         /// <param name="timeout">Optional time in seconds before request expires.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> PutAsync(string query, string jsonData, Dictionary<string, string> headers = null, int timeout = 0)
+        public static async Task<Response> PutAsync(string query, string jsonData, Dictionary<string, string> headers = null, int timeout = -1)
         {
             using (var webRequest = UnityWebRequest.Put(query, jsonData))
             {
@@ -165,7 +165,7 @@ namespace MixedRealityToolkit.Common.RestUtility
         /// <param name="headers">Optional header information for the request.</param>
         /// <param name="timeout">Optional time in seconds before request expires.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> PutAsync(string query, byte[] bodyData, Dictionary<string, string> headers = null, int timeout = 0)
+        public static async Task<Response> PutAsync(string query, byte[] bodyData, Dictionary<string, string> headers = null, int timeout = -1)
         {
             using (var webRequest = UnityWebRequest.Put(query, bodyData))
             {
@@ -185,7 +185,7 @@ namespace MixedRealityToolkit.Common.RestUtility
         /// <param name="headers">Optional header information for the request.</param>
         /// <param name="timeout">Optional time in seconds before request expires.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> DeleteAsync(string query, Dictionary<string, string> headers = null, int timeout = 0)
+        public static async Task<Response> DeleteAsync(string query, Dictionary<string, string> headers = null, int timeout = -1)
         {
             using (var webRequest = UnityWebRequest.Delete(query))
             {
@@ -197,7 +197,7 @@ namespace MixedRealityToolkit.Common.RestUtility
 
         private static async Task<Response> ProcessRequestAsync(UnityWebRequest webRequest, int timeout, Dictionary<string, string> headers = null)
         {
-            if (timeout > 1)
+            if (timeout > 0)
             {
                 webRequest.timeout = timeout;
             }
@@ -233,13 +233,11 @@ namespace MixedRealityToolkit.Common.RestUtility
 
                 if (webRequest.GetResponseHeaders() == null)
                 {
-                    Debug.LogError($"No Response Headers {webRequest.responseCode}");
-                    return new Response(false, "No Response Headers", null, webRequest.responseCode);
+                    return new Response(false, "Device Unavailable", null, webRequest.responseCode);
                 }
 
-                string responseHeaders = webRequest.GetResponseHeaders()
-                    .Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
-                Debug.LogError($"REST Error: {webRequest.responseCode}\n{webRequest.downloadHandler?.text}{responseHeaders}");
+                string responseHeaders = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
+                //Debug.LogError($"REST Error: {webRequest.responseCode}\n{webRequest.downloadHandler?.text}{responseHeaders}");
                 return new Response(false, $"{responseHeaders}\n{webRequest.downloadHandler?.text}", null, webRequest.responseCode);
             }
 

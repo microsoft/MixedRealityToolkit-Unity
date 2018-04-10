@@ -25,5 +25,22 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures
         public int EstimatedTime;
         public int MaximumCapacity;
         public int RemainingCapacity;
+
+        public bool IsCharging => AcOnline != 0;
+
+        [NonSerialized]
+        private float percentRemaining = 0f;
+        public float PercentRemaining
+        {
+            get
+            {
+                if (percentRemaining > 0f)
+                {
+                    return percentRemaining;
+                }
+
+                return percentRemaining = RemainingCapacity / (float)MaximumCapacity;
+            }
+        }
     }
 }

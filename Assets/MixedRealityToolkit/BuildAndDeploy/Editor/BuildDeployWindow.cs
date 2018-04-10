@@ -1019,35 +1019,29 @@ namespace MixedRealityToolkit.Build
             EditorAssemblyReloadManager.LockReloadAssemblies = true;
 
             // First build SLN
-            if (!UwpAppxBuildTools.BuildUnityPlayer(BuildDeployPreferences.BuildDirectory, false))
+            if (UwpAppxBuildTools.BuildUnityPlayer(BuildDeployPreferences.BuildDirectory, false))
             {
-                return;
-            }
-
-            // Then build APPX
-            if (!await UwpAppxBuildTools.BuildAppxAsync(
-                PlayerSettings.productName,
-                BuildDeployPreferences.ForceRebuild,
-                BuildDeployPreferences.BuildConfig,
-                BuildDeployPreferences.BuildPlatform,
-                BuildDeployPreferences.BuildDirectory,
-                BuildDeployPreferences.IncrementBuildVersion))
-            {
-                return;
-            }
-
-            // Next, Install
-            if (install)
-            {
-                string fullBuildLocation = CalcMostRecentBuild();
-
-                if (BuildDeployPreferences.TargetAllConnections)
+                if (await UwpAppxBuildTools.BuildAppxAsync(
+                    PlayerSettings.productName,
+                    BuildDeployPreferences.ForceRebuild,
+                    BuildDeployPreferences.BuildConfig,
+                    BuildDeployPreferences.BuildPlatform,
+                    BuildDeployPreferences.BuildDirectory,
+                    BuildDeployPreferences.IncrementBuildVersion))
                 {
-                    InstallAppOnDevicesList(fullBuildLocation, portalConnections);
-                }
-                else
-                {
-                    InstallOnTargetDevice(fullBuildLocation, portalConnections.Connections[currentConnectionInfoIndex]);
+                    if (install)
+                    {
+                        string fullBuildLocation = CalcMostRecentBuild();
+
+                        if (BuildDeployPreferences.TargetAllConnections)
+                        {
+                            await InstallAppOnDevicesListAsync(fullBuildLocation, portalConnections);
+                        }
+                        else
+                        {
+                            await InstallOnTargetDeviceAsync(fullBuildLocation, portalConnections.Connections[currentConnectionInfoIndex]);
+                        }
+                    }
                 }
             }
 
@@ -1259,6 +1253,11 @@ namespace MixedRealityToolkit.Build
 
         private static async void InstallOnTargetDevice(string buildPath, DeviceInfo targetDevice)
         {
+            await InstallOnTargetDeviceAsync(buildPath, targetDevice);
+        }
+
+        private static async Task InstallOnTargetDeviceAsync(string buildPath, DeviceInfo targetDevice)
+        {
             isAppRunning = false;
 
             if (string.IsNullOrEmpty(PackageName))
@@ -1306,13 +1305,15 @@ namespace MixedRealityToolkit.Build
                 return;
             }
 
-            if (!await DevicePortal.IsAppInstalledAsync(PackageName, targetDevice))
-            {
-                await DevicePortal.InstallAppAsync(files[0].FullName, targetDevice);
-            }
+            await DevicePortal.InstallAppAsync(files[0].FullName, targetDevice);
         }
 
-        private static void InstallAppOnDevicesList(string buildPath, DevicePortalConnections targetList)
+        private static async void InstallAppOnDevicesList(string buildPath, DevicePortalConnections targetList)
+        {
+            await InstallAppOnDevicesListAsync(buildPath, targetList);
+        }
+
+        private static async Task InstallAppOnDevicesListAsync(string buildPath, DevicePortalConnections targetList)
         {
             if (string.IsNullOrEmpty(PackageName))
             {
@@ -1321,7 +1322,7 @@ namespace MixedRealityToolkit.Build
 
             for (int i = 0; i < targetList.Connections.Count; i++)
             {
-                InstallOnTargetDevice(buildPath, targetList.Connections[i]);
+                await InstallOnTargetDeviceAsync(buildPath, targetList.Connections[i]);
             }
         }
 
@@ -1427,7 +1428,12 @@ namespace MixedRealityToolkit.Build
             if (!IsLocalConnection(targetDevice) || IsHoloLensConnectedUsb)
             {
                 string logFilePath = await DevicePortal.DownloadLogFileAsync(PackageName, targetDevice);
-                Process.Start(logFilePath);
+
+                if (!string.IsNullOrEmpty(logFilePath))
+                {
+                    Process.Start(logFilePath);
+                }
+
                 return;
             }
 

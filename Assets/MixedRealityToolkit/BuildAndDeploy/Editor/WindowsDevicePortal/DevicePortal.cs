@@ -164,23 +164,23 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// <summary>
         /// Determines if the target application is currently running on the target device.
         /// </summary>
-        /// <param name="packageFullName"></param>
+        /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
         /// <returns>True, if application is currently installed on device.</returns>
-        public static async Task<bool> IsAppInstalledAsync(string packageFullName, DeviceInfo targetDevice)
+        public static async Task<bool> IsAppInstalledAsync(string packageName, DeviceInfo targetDevice)
         {
-            return await GetApplicationInfoAsync(packageFullName, targetDevice) != null;
+            return await GetApplicationInfoAsync(packageName, targetDevice) != null;
         }
 
         /// <summary>
         /// Determines if the target application is running on the target device.
         /// </summary>
-        /// <param name="packageFullName"></param>
+        /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
         /// <returns>True, if the application is running.</returns>
-        public static async Task<bool> IsAppRunningAsync(string packageFullName, DeviceInfo targetDevice)
+        public static async Task<bool> IsAppRunningAsync(string packageName, DeviceInfo targetDevice)
         {
-            var appInfo = await GetApplicationInfoAsync(packageFullName, targetDevice);
+            var appInfo = await GetApplicationInfoAsync(packageName, targetDevice);
 
             if (appInfo == null)
             {
@@ -207,20 +207,23 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// <summary>
         /// Gets the <see cref="ApplicationInfo"/> of the target application on the target device.
         /// </summary>
-        /// <param name="packageFullName"></param>
+        /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
         /// <returns>Returns the <see cref="ApplicationInfo"/> of the target application from the target device.</returns>
-        private static async Task<ApplicationInfo> GetApplicationInfoAsync(string packageFullName, DeviceInfo targetDevice)
+        private static async Task<ApplicationInfo> GetApplicationInfoAsync(string packageName, DeviceInfo targetDevice)
         {
             var appList = await GetAllInstalledAppsAsync(targetDevice);
-            if (appList != null)
+
+            for (int i = 0; i < appList?.InstalledPackages.Length; ++i)
             {
-                for (int i = 0; i < appList.InstalledPackages.Length; ++i)
+                if (appList.InstalledPackages[i].PackageFullName.Equals(packageName, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (appList.InstalledPackages[i].PackageFamilyName.Equals(packageFullName, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return appList.InstalledPackages[i];
-                    }
+                    return appList.InstalledPackages[i];
+                }
+
+                if (appList.InstalledPackages[i].PackageFamilyName.Equals(packageName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return appList.InstalledPackages[i];
                 }
             }
 
@@ -252,7 +255,7 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
             string fileName = Path.GetFileName(appFullPath);
             string certFullPath = Path.ChangeExtension(appFullPath, ".cer");
             string certName = Path.GetFileName(certFullPath);
-            string depPath = $@"{Path.GetDirectoryName(appFullPath)}\Dependencies\x86\";
+            string depPath = Path.GetDirectoryName(appFullPath) + @"\Dependencies\x86\";
 
             var form = new WWWForm();
 
@@ -305,7 +308,7 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
 
             if (!response.Successful)
             {
-                Debug.Log($"Failed to install {fileName} on {targetDevice.MachineName}.");
+                Debug.LogErrorFormat("Failed to install {0} on {1}.", fileName, targetDevice.MachineName);
                 return false;
             }
 
@@ -319,10 +322,10 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
                 switch (status)
                 {
                     case AppInstallStatus.InstallSuccess:
-                        Debug.Log($"Successfully installed {fileName} on {targetDevice.MachineName}.");
+                        Debug.LogFormat("Successfully installed {0} on {1}.", fileName, targetDevice.MachineName);
                         return true;
                     case AppInstallStatus.InstallFail:
-                        Debug.Log($"Failed to install {fileName} on {targetDevice.MachineName}.");
+                        Debug.LogErrorFormat("Failed to install {0} on {1}.", fileName, targetDevice.MachineName);
                         return false;
                 }
             }
@@ -361,16 +364,16 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// <summary>
         /// Uninstalls the target application on the target device
         /// </summary>
-        /// <param name="packageFullName"></param>
+        /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
         /// <returns>True, if uninstall was a success.</returns>
-        public static async Task<bool> UninstallAppAsync(string packageFullName, DeviceInfo targetDevice)
+        public static async Task<bool> UninstallAppAsync(string packageName, DeviceInfo targetDevice)
         {
-            ApplicationInfo applicationInfo = await GetApplicationInfoAsync(packageFullName, targetDevice);
+            ApplicationInfo applicationInfo = await GetApplicationInfoAsync(packageName, targetDevice);
 
             if (applicationInfo == null)
             {
-                Debug.Log($"Application '{packageFullName}' not found");
+                Debug.Log($"Application '{packageName}' not found");
                 return false;
             }
 
@@ -379,11 +382,11 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
 
             if (response.Successful)
             {
-                Debug.LogFormat("Successfully uninstalled {0} on {1}.", packageFullName, targetDevice.MachineName);
+                Debug.LogFormat("Successfully uninstalled {0} on {1}.", packageName, targetDevice.MachineName);
             }
             else
             {
-                Debug.LogErrorFormat("Failed to uninstall {0} on {1}", packageFullName, targetDevice.MachineName);
+                Debug.LogErrorFormat("Failed to uninstall {0} on {1}", packageName, targetDevice.MachineName);
             }
 
             return response.Successful;
@@ -392,13 +395,13 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// <summary>
         /// Launches the target application on the target device.
         /// </summary>
-        /// <param name="packageFullName"></param>
+        /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
         /// <returns>True, if application was successfully launched and is currently running on the target device.</returns>
-        public static async Task<bool> LaunchAppAsync(string packageFullName, DeviceInfo targetDevice)
+        public static async Task<bool> LaunchAppAsync(string packageName, DeviceInfo targetDevice)
         {
             // Find the app description
-            ApplicationInfo applicationInfo = await GetApplicationInfoAsync(packageFullName, targetDevice);
+            ApplicationInfo applicationInfo = await GetApplicationInfoAsync(packageName, targetDevice);
 
             if (applicationInfo == null)
             {
@@ -414,12 +417,12 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// <summary>
         /// Stops the target application on the target device.
         /// </summary>
-        /// <param name="packageFullName"></param>
+        /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
         /// <returns>true, if application was successfully stopped.</returns>
-        public static async Task<bool> StopAppAsync(string packageFullName, DeviceInfo targetDevice)
+        public static async Task<bool> StopAppAsync(string packageName, DeviceInfo targetDevice)
         {
-            ApplicationInfo applicationInfo = await GetApplicationInfoAsync(packageFullName, targetDevice);
+            ApplicationInfo applicationInfo = await GetApplicationInfoAsync(packageName, targetDevice);
             if (applicationInfo == null)
             {
                 Debug.LogError("Application not found");
@@ -434,16 +437,16 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// <summary>
         /// Downloads and launches the Log file for the target application on the target device.
         /// </summary>
-        /// <param name="packageFullName"></param>
+        /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
         /// <returns>The path of the downloaded log file.</returns>
-        public static async Task<string> DownloadLogFileAsync(string packageFullName, DeviceInfo targetDevice)
+        public static async Task<string> DownloadLogFileAsync(string packageName, DeviceInfo targetDevice)
         {
-            ApplicationInfo applicationInfo = await GetApplicationInfoAsync(packageFullName, targetDevice);
+            ApplicationInfo applicationInfo = await GetApplicationInfoAsync(packageName, targetDevice);
 
             if (applicationInfo == null)
             {
-                Debug.LogWarningFormat("{0} not installed on target device", packageFullName);
+                Debug.LogWarningFormat("{0} not installed on target device", packageName);
                 return string.Empty;
             }
 
@@ -501,7 +504,7 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         public static async Task<Response> ConnectToWiFiNetworkAsync(DeviceInfo targetDevice, InterfaceInfo interfaceInfo, WirelessNetworkInfo wifiNetwork, string password)
         {
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
-            if (!isAuth) { return new Response(false, "Unable to authenticate with device", null, 401); }
+            if (!isAuth) { return new Response(false, "Unable to authenticate with device", null, 403); }
 
             string query = string.Format(WiFiNetworkQuery, FinalizeUrl(targetDevice.IP),
                 $"?interface={interfaceInfo.GUID}&ssid={EncodeTo64(wifiNetwork.SSID)}&op=connect&createprofile=yes&key={password}");
@@ -618,12 +621,10 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
 
                 if (webRequest.GetResponseHeaders() == null)
                 {
-                    Debug.LogError($"Device Not Found: {webRequest.responseCode}");
                     return new Response(false, "Device Not Found", null, webRequest.responseCode);
                 }
 
-                string responseHeaders = webRequest.GetResponseHeaders()
-                    .Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
+                string responseHeaders = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
                 Debug.LogError($"REST Auth Error: {webRequest.responseCode}\n{webRequest.downloadHandler?.text}{responseHeaders}");
                 return new Response(false, webRequest.downloadHandler?.text, null, webRequest.responseCode);
             }
