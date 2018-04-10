@@ -19,20 +19,38 @@ namespace HoloToolkit.Unity.Buttons
         /// Current Button State
         /// </summary>
         [Header("Basic Settings")]
+        [SerializeField]
         [Tooltip("Current State of the Button")]
-        public ButtonStateEnum ButtonState = ButtonStateEnum.Observation;
+        private ButtonStateEnum buttonState = ButtonStateEnum.Observation;
+        public ButtonStateEnum ButtonState
+        {
+            get { return buttonState; }
+            set { buttonState = value; }
+        }
 
         /// <summary>
         /// Filter to apply for the correct button source
         /// </summary>
+        [SerializeField]
         [Tooltip("Filter for press info for click or press event")]
-        public InteractionSourcePressInfo ButtonPressFilter = InteractionSourcePressInfo.Select;
+        private InteractionSourcePressInfo buttonPressFilter = InteractionSourcePressInfo.Select;
+        public InteractionSourcePressInfo ButtonPressFilter
+        {
+            get { return buttonPressFilter; }
+            set { buttonPressFilter = value; }
+        }
 
         /// <summary>
         /// If true the interactable will deselect when you look off of the object
         /// </summary>
+        [SerializeField]
         [Tooltip("If RequireGaze then looking away will deselect object")]
-        public bool RequireGaze = true;
+        private bool requireGaze = true;
+        public bool RequireGaze
+        {
+            get { return requireGaze; }
+            set { requireGaze = value; }
+        }
 
         /// <summary>
         /// Event to receive button state change
@@ -114,7 +132,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <param name="eventData"></param>
         public void OnInputDown(InputEventData eventData)
         {
-            if (enabled)
+            if (enabled && !m_disabled)
             {
                 if(ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
                 {
@@ -133,7 +151,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <param name="eventData"></param>
         public void OnInputUp(InputEventData eventData)
         {
-            if (enabled)
+            if (enabled && !m_disabled)
             {
                 if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
                 {
@@ -148,7 +166,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <param name="eventData"></param>
         public void OnInputClicked(InputClickedEventData eventData)
         {
-            if (enabled)
+            if (enabled && !m_disabled)
             {
                 if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
                 {
