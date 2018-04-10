@@ -181,6 +181,8 @@ namespace MixedRealityToolkit.Build
         private static bool isBuilding;
         private static bool isAppRunning;
 
+        [SerializeField]
+        private int lastSessionConnectionInfoIndex;
         private static int currentConnectionInfoIndex = 0;
         private static DevicePortalConnections portalConnections = null;
 
@@ -202,6 +204,11 @@ namespace MixedRealityToolkit.Build
             Setup();
         }
 
+        private void OnDestroy()
+        {
+            lastSessionConnectionInfoIndex = currentConnectionInfoIndex;
+        }
+
         private void Setup()
         {
             titleContent = new GUIContent("Build Window");
@@ -216,6 +223,7 @@ namespace MixedRealityToolkit.Build
 
             UpdateBuilds();
 
+            currentConnectionInfoIndex = lastSessionConnectionInfoIndex;
             portalConnections = JsonUtility.FromJson<DevicePortalConnections>(BuildDeployPreferences.DevicePortalConnections);
             UpdatePortalConnections();
         }
@@ -1138,19 +1146,16 @@ namespace MixedRealityToolkit.Build
                 devicePortalConnections.Connections.Add(portalConnections.Connections[i]);
             }
 
-            if (portalConnections.Connections.Count == devicePortalConnections.Connections.Count)
+            for (var i = 0; i < portalConnections.Connections.Count; i++)
             {
-                for (var i = 0; i < portalConnections.Connections.Count; i++)
+                if (!IsValidIpAddress(devicePortalConnections.Connections[i].IP))
                 {
-                    if (!IsValidIpAddress(devicePortalConnections.Connections[i].IP))
-                    {
-                        devicePortalConnections.Connections.RemoveAt(i);
-                    }
+                    devicePortalConnections.Connections.RemoveAt(i);
                 }
-
-                BuildDeployPreferences.DevicePortalConnections = JsonUtility.ToJson(devicePortalConnections);
             }
 
+            BuildDeployPreferences.DevicePortalConnections = JsonUtility.ToJson(devicePortalConnections);
+            lastSessionConnectionInfoIndex = currentConnectionInfoIndex;
             Repaint();
         }
 
