@@ -183,7 +183,7 @@ namespace HoloToolkit.UX.ToolTips
                     toolTip.Anchor.transform.position = Target.transform.position;
                     break;
 
-                case ConnectorFollowType.PositionOnly:
+                case ConnectorFollowType.Position:
                     // Move the entire tooltip transform while maintaining the anchor position offset
                     toolTip.transform.position = Target.transform.position;
                     switch (PivotingMode)
@@ -212,7 +212,7 @@ namespace HoloToolkit.UX.ToolTips
                     }
                     break;
 
-                case ConnectorFollowType.PositionAndYRotation:
+                case ConnectorFollowType.YRotation:
                     // Set the transform of the entire tool tip
                     // Set the pivot relative to target/camera
                     toolTip.transform.position = Target.transform.position;
@@ -244,7 +244,7 @@ namespace HoloToolkit.UX.ToolTips
                     }
                     break;
 
-                case ConnectorFollowType.PositionAndRotation:
+                case ConnectorFollowType.XRotation:
                     // Set the transform of the entire tool tip
                     // Set the pivot relative to target/camera
                     toolTip.transform.position = Target.transform.position;

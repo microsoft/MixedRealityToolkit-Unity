@@ -1,20 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-
-using UnityEngine;
-using HoloToolkit.Unity;
+using System;
 
 namespace HoloToolkit.UX.ToolTips
 {
     /// <summary>
     /// How does the Tooltip track with its parent object
     /// </summary>
+    [Flags]
     public enum ConnectorFollowType
     {
-        AnchorOnly,             // The anchor will follow the target - pivot remains unaffected
-        PositionOnly,           // Anchor and pivot will follow target position, but not rotation
-        PositionAndYRotation,   // Anchor and pivot will follow target like it's parented, but only on Y axis
-        PositionAndRotation,    // Anchor and pivot will follow target like it's parented
+        AnchorOnly = 1<<0,             // The anchor will follow the target - pivot remains unaffected
+        Position = 1<<1,               // Anchor and pivot will follow target position, but not rotation
+        YRotation = 1<<2,   // Anchor and pivot will follow target like it's parented, but only on Y axis
+        XRotation = 1<<3,    // Anchor and pivot will follow target like it's parented
     }
     /// <summary>
     /// how does the tooltip rotate about the connector
@@ -37,7 +36,7 @@ namespace HoloToolkit.UX.ToolTips
     /// </summary>
     public enum ConnectorPivotDirection
     {
-        Manual,         // Direction will be specified manually
+        Manual = 0,         // Direction will be specified manually
         North,
         NorthEast,
         East,
@@ -48,6 +47,4 @@ namespace HoloToolkit.UX.ToolTips
         NorthWest,
         InFront,
     }
-
-
 }

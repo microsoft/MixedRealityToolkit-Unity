@@ -12,7 +12,7 @@ namespace HoloToolkit.UX.ToolTips
         /// <summary>
         /// No state to have from Manager
         /// </summary>
-        None,
+        None = 0,
         /// <summary>
         /// Tips are always on
         /// </summary>
