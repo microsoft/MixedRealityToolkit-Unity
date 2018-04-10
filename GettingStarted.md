@@ -72,6 +72,11 @@ If you've never cloned a repo before then you should consider using the GitHub d
 
 Open or create your project in Unity.
 
+Enable .NET 4.x via `Edit -> Proejct Settings -> Player -> Other Settings` and update the Runtime Scripting Version to the lastest.
+(Depending on your version of the editor, it could be .NET Core 2).
+
+> Important! failing to enable this setting will prevent the package from working correctly.
+
 Then import the MRTK asset using `Assets -> Import Package -> Custom Package…` [Navigate to the package 
 you have either downloaded or exported above].
 
