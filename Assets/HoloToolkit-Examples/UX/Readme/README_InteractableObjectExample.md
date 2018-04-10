@@ -11,38 +11,38 @@ This is the base of the button component. You will need this script to build any
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButton_Inspector.jpg)
 
-### [Compound Button Mesh](/Assets/HoloToolkit/UX/Scripts/Buttons/CompoundButtonMesh.cs) ###
+### [Compound Button Mesh](/Assets/HoloToolkit/UX/Scripts/Buttons/Utilities/CompoundButtonMesh.cs) ###
 Use this script to use various types of custom mesh. You can use your own 3D models imported from 3D modeling software. Using this script, you can easily change the scale, offset of the mesh or material properties such as color for the different input interaction states. To create an Interactable Object using script, it is recommended to create an empty GameObject as a container and put the 3D mesh model under it as child component. This will prevent unexpected behavior from different scaling or offset values.
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonMesh_Inspector.jpg)
 
-### [Compound Button Icon](/Assets/HoloToolkit/UX/Scripts/Buttons/CompoundButtonIcon.cs) ###
+### [Compound Button Icon](/Assets/HoloToolkit/UX/Scripts/Buttons/Utilities/CompoundButtonIcon.cs) ###
 Using this scripts, you can use Texture 2D assets to display icons. To assgin your custom icon texture, expand **DefaultButtonIconProfileTexture**. You will be able to find empty slots for the Texture 2D asset. Once you assign Texture 2D asset, you can select the icon using the drop down on the bottom of the profile section.
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonIcon_Inspector.jpg)
 ![Compound Button Icon Texture](/External/ReadMeImages/MRTK_CompoundButtonIconTexture.jpg)
 
-### [Compound Button Text](/Assets/HoloToolkit/UX/Scripts/Buttons/CompoundButtonText.cs) ###
+### [Compound Button Text](/Assets/HoloToolkit/UX/Scripts/Buttons/Utilities/CompoundButtonText.cs) ###
 This scripts helps you manage a TextMesh component to display text on your button. This script can be used in conjunction with a CompoundButtonSpeech component to automatically link your button to spoken keywords.
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonText_Inspector.jpg)
 
-### [Compound Button Sound](/Assets/HoloToolkit/UX/Scripts/Buttons/CompoundButtonSounds.cs) ###
+### [Compound Button Sound](/Assets/HoloToolkit/UX/Scripts/Buttons/Utilities/CompoundButtonSounds.cs) ###
 Use this script to add audio feedback for the different input interaction states.
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonSound_Inspector.jpg)
 
-### [Compound Button Anim](/Assets/HoloToolkit/UX/Scripts/Buttons/CompoundButtonAnim.cs) ###
+### [Compound Button Anim](/Assets/HoloToolkit/UX/Scripts/Buttons/Utilities/CompoundButtonAnim.cs) ###
 This is the base of the button component. You will need this script to build any types of Interactable Objects.
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonAnim_Inspector.jpg)
 
-### [Compound Button Speech](/Assets/HoloToolkit/UX/Scripts/Buttons/CompoundButtonSpeech.cs) ###
+### [Compound Button Speech](/Assets/HoloToolkit/UX/Scripts/Buttons/Utilities/CompoundButtonSpeech.cs) ###
 Use this script to automatically register keywords for your button in the Speech Manager (This script is experimental and still being tested).
 
 ![Compound Button](/External/ReadMeImages/MRTK_CompoundButtonSpeech_Inspector.jpg)
 
-### [Compound Button Toggle](/Assets/HoloToolkit/UX/Scripts/Buttons/CompoundButtonToggle.cs) ###
+### [Compound Button Toggle](/Assets/HoloToolkit/UX/Scripts/Buttons/Utilities/CompoundButtonToggle.cs) ###
 Use this script to add toggle on/off state.
 
 ## Receiver ##
