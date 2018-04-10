@@ -639,7 +639,10 @@ namespace MixedRealityToolkit.Build
         {
             Debug.Assert(portalConnections.Connections.Count != 0);
             Debug.Assert(currentConnectionInfoIndex >= 0);
-            Debug.Assert(currentConnectionInfoIndex <= portalConnections.Connections.Count - 1);
+            if (currentConnectionInfoIndex > portalConnections.Connections.Count - 1)
+            {
+                currentConnectionInfoIndex = 0;
+            }
 
             GUILayout.BeginVertical();
             EditorGUI.BeginChangeCheck();
@@ -661,7 +664,7 @@ namespace MixedRealityToolkit.Build
             bool useSSL = EditorGUILayout.Toggle(useSSLLabel, BuildDeployPreferences.UseSSL);
             EditorGUIUtility.labelWidth = previousLabelWidth;
 
-            currentConnectionInfoIndex = EditorGUILayout.Popup(SessionState.GetInt("_BuildWindow_CurrentDeviceIndex", 0), targetIps, GUILayout.Width(halfWidth - 48));
+            currentConnectionInfoIndex = EditorGUILayout.Popup(currentConnectionInfoIndex, targetIps, GUILayout.Width(halfWidth - 48));
 
             var currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
             bool currentConnectionIsLocal = IsLocalConnection(currentConnection);
@@ -733,7 +736,6 @@ namespace MixedRealityToolkit.Build
 
             if (EditorGUI.EndChangeCheck())
             {
-                SessionState.SetInt("_BuildWindow_CurrentDeviceIndex", currentConnectionInfoIndex);
                 BuildDeployPreferences.TargetAllConnections = processAll;
                 BuildDeployPreferences.FullReinstall = fullReinstall;
                 BuildDeployPreferences.UseSSL = useSSL;
@@ -974,14 +976,24 @@ namespace MixedRealityToolkit.Build
             if (newConnection != null && IsValidIpAddress(newConnection.IP))
             {
                 portalConnections.Connections.Add(newConnection);
+                DeviceInfo removedDevice = null;
                 for (var i = 0; i < portalConnections.Connections.Count; i++)
                 {
                     if (portalConnections.Connections[i].IP == newConnection.IP)
                     {
                         currentConnectionInfoIndex = i;
-                        SessionState.SetInt("_BuildWindow_CurrentDeviceIndex", currentConnectionInfoIndex);
-                        break;
                     }
+
+                    // If we were trying to add a new device, but didn't finish before pressing pair, let's remove it.
+                    if (!IsValidIpAddress(portalConnections.Connections[i].IP))
+                    {
+                        removedDevice = portalConnections.Connections[i];
+                    }
+                }
+
+                if (removedDevice != null)
+                {
+                    portalConnections.Connections.Remove(removedDevice);
                 }
 
                 UpdatePortalConnections();
@@ -1126,15 +1138,19 @@ namespace MixedRealityToolkit.Build
                 devicePortalConnections.Connections.Add(portalConnections.Connections[i]);
             }
 
-            for (var i = 0; i < portalConnections.Connections.Count; i++)
+            if (portalConnections.Connections.Count == devicePortalConnections.Connections.Count)
             {
-                if (!IsValidIpAddress(devicePortalConnections.Connections[i].IP))
+                for (var i = 0; i < portalConnections.Connections.Count; i++)
                 {
-                    devicePortalConnections.Connections.RemoveAt(i);
+                    if (!IsValidIpAddress(devicePortalConnections.Connections[i].IP))
+                    {
+                        devicePortalConnections.Connections.RemoveAt(i);
+                    }
                 }
+
+                BuildDeployPreferences.DevicePortalConnections = JsonUtility.ToJson(devicePortalConnections);
             }
 
-            BuildDeployPreferences.DevicePortalConnections = JsonUtility.ToJson(devicePortalConnections);
             Repaint();
         }
 
