@@ -10,17 +10,17 @@ namespace HoloToolkit.UX.ToolTips
     [Flags]
     public enum ConnectorFollowType
     {
-        AnchorOnly = 1<<0,             // The anchor will follow the target - pivot remains unaffected
-        Position = 1<<1,               // Anchor and pivot will follow target position, but not rotation
-        YRotation = 1<<2,   // Anchor and pivot will follow target like it's parented, but only on Y axis
-        XRotation = 1<<3,    // Anchor and pivot will follow target like it's parented
+        AnchorOnly = 0x0,   // The anchor will follow the target - pivot remains unaffected
+        Position   = 0x1,   // Anchor and pivot will follow target position, but not rotation
+        YRotation  = 0x2,   // Anchor and pivot will follow target like it's parented, but only on Y axis
+        XRotation  = 0x4,   // Anchor and pivot will follow target like it's parented
     }
     /// <summary>
     /// how does the tooltip rotate about the connector
     /// </summary>
     public enum ConnectorOrientType
     {
-        OrientToObject,     // Tooltip will maintain anchor-pivot relationship relative to target object
+        OrientToObject = 0,     // Tooltip will maintain anchor-pivot relationship relative to target object
         OrientToCamera,     // Tooltip will maintain anchor-pivot relationship relative to camera
     }
     /// <summary>
@@ -28,7 +28,7 @@ namespace HoloToolkit.UX.ToolTips
     /// </summary>
     public enum ConnnectorPivotMode
     {
-        Manual,         // Tooltip pivot will be set manually
+        Manual = 0,         // Tooltip pivot will be set manually
         Automatic,      // Tooltip pivot will be set relative to object/camera based on specified direction and line length
     }
     /// <summary>

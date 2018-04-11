@@ -128,6 +128,20 @@ namespace HoloToolkit.UX.ToolTips
         [SerializeField]
         [Range(0f, 2f)]
         private float pivotDistance = 0.25f;
+        /// <summary>
+        /// Set Distance from object that Tooltip pivots around.
+        /// </summary>
+        public float PivotDistance
+        {
+            get
+            {
+                return pivotDistance;
+            }
+            set
+            {
+                pivotDistance = Mathf.Min( 2.0f, Mathf.Max( 0,value));
+            }
+        }
 
         private GameObject target;
         /// <summary>
@@ -139,7 +153,6 @@ namespace HoloToolkit.UX.ToolTips
             {
                 return target;
             }
-
             set
             {
                 target = value;
@@ -162,8 +175,8 @@ namespace HoloToolkit.UX.ToolTips
             return toolTip != null;
         }
 
-        private void UpdatePosition() {
-
+        private void UpdatePosition()
+        {
             if (!FindToolTip())
             {
                 return;
@@ -203,7 +216,7 @@ namespace HoloToolkit.UX.ToolTips
                             toolTip.PivotPosition = Target.transform.position + GetDirectionFromPivotDirection(
                                 PivotDirection,
                                 ManualPivotDirection,
-                                relativeTo) * pivotDistance;
+                                relativeTo) * PivotDistance;
                             break;
 
                         case ConnnectorPivotMode.Manual:
@@ -234,7 +247,7 @@ namespace HoloToolkit.UX.ToolTips
                                     relativeTo = Target.transform;
                                     break;
                             }
-                            Vector3 localPosition = GetDirectionFromPivotDirection(PivotDirection, ManualPivotDirection, relativeTo) * pivotDistance;
+                            Vector3 localPosition = GetDirectionFromPivotDirection(PivotDirection, ManualPivotDirection, relativeTo) * PivotDistance;
                             toolTip.PivotPosition = Target.transform.position + localPosition;
                             break;
 
@@ -266,7 +279,7 @@ namespace HoloToolkit.UX.ToolTips
                             toolTip.PivotPosition = Target.transform.position + GetDirectionFromPivotDirection(
                                 PivotDirection,
                                 ManualPivotDirection,
-                                relativeTo) * pivotDistance;
+                                relativeTo) * PivotDistance;
                             break;
 
                         case ConnnectorPivotMode.Manual:
@@ -282,14 +295,15 @@ namespace HoloToolkit.UX.ToolTips
             UpdatePosition();
         }
 
-        private void OnDrawGizmos ()
+        private void OnDrawGizmos()
         {
             if (Application.isPlaying)
+            {
                 return;
+            }
             
             UpdatePosition();
         }
-
 
         /// <summary>
         /// Computes the director of the connector 

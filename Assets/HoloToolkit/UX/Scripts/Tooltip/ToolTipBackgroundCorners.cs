@@ -8,7 +8,6 @@ namespace HoloToolkit.UX.ToolTips
 {
     /// <summary>
     /// Renders meshes at the corners of a tool tip
-    /// TODO implement color changes
     /// </summary>
     public class ToolTipBackgroundCorners : ToolTipBackground
     {
@@ -37,7 +36,7 @@ namespace HoloToolkit.UX.ToolTips
             ScaleToFitContent();
         }
 
-        protected override void ScaleToFitContent ()
+        protected override void ScaleToFitContent()
         {
             // Get the local size of the content - this is the scale of the text under the content parent
             Vector3 localContentSize = toolTip.LocalContentSize;

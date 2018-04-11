@@ -13,11 +13,15 @@ namespace HoloToolkit.UX.ToolTips
     public class ToolTipBackgroundMesh : ToolTipBackground
     {
         /// <summary>
-        /// 
+        /// Transform that scale and offset will be applied to.
         /// </summary>
         [SerializeField]
         [Tooltip("Transform that scale and offset will be applied to.")]
         private Transform backgroundTransform;
+
+        private float depth = 1f;
+
+        protected Bounds localContentBounds;
 
         /// <summary>
         /// Mesh renderer button for mesh background.
@@ -25,10 +29,8 @@ namespace HoloToolkit.UX.ToolTips
         public MeshRenderer BackgroundRenderer;
 
         /// <summary>
-        /// The z depth of the mesh background
+        /// Determines whether background of Tooltip is visible.
         /// </summary>
-        private float depth = 1f;
-
         public bool IsVisible
         {
             set
@@ -40,6 +42,9 @@ namespace HoloToolkit.UX.ToolTips
             }
         }
 
+        /// <summary>
+        /// The Transform for the background of the Tooltip.
+        /// </summary>
         public Transform BackgroundTransform
         {
             get
@@ -90,6 +95,6 @@ namespace HoloToolkit.UX.ToolTips
             ScaleToFitContent();
         }
 
-        protected Bounds localContentBounds;
+
     }
 }

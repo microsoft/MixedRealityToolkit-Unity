@@ -5,12 +5,23 @@ using UnityEngine;
 
 namespace HoloToolkit.UX.ToolTips
 {
+    /// <summary>
+    /// Static class providing useful functions for
+    /// finding ToolTip Attachpoint information.
+    /// </summary>
     public static class ToolTipUtility
     {
         private const int NumPivotLocations = 8;
 
-        //Note: Avoid running this query in Update function because calculating Vector3.Distance requires sqr root calculation (expensive)
-        //Instead, find strategic moments to update nearest pivot (i.e. only once when ToolTip becomes active)
+        /// <summary>
+        /// Avoid running this query in Update function because calculating Vector3.Distance requires sqr root calculation (expensive)
+        /// Instead, find strategic moments to update nearest pivot (i.e. only once when ToolTip becomes active)
+        /// </summary>
+        /// <param name="anchor">Transform of object serving as anchor for tooltip</param>
+        /// <param name="contentParent">Transform for the tooltip content</param>
+        /// <param name="localPivotPositions">list of positions to find the closest</param>
+        /// <param name="pivotType">pivot type needed for calculation of closest</param>
+        /// <returns>Vector3 the point in localPivotPositions which is closest to the anchor position</returns>
         public static Vector3 FindClosestAttachPointToAnchor(Transform anchor, Transform contentParent, Vector3[] localPivotPositions, ToolTipAttachPointType pivotType)
         {
             Vector3 nearPivot = Vector3.zero;
@@ -71,9 +82,16 @@ namespace HoloToolkit.UX.ToolTips
                     break;
 
                 default:
-                    // For all other types, just use the array position
-                    // TODO error checking for array size (?)
-                    nearPivot = localPivotPositions[(int)pivotType];
+                    // For all other types, just use the array position or contentParent
+                    //position if there is no array provided.
+                    if (localPivotPositions == null || localPivotPositions.Length == 0)
+                    {
+                        nearPivot = contentParent.position;
+                    }
+                    else
+                    {
+                        nearPivot = localPivotPositions[(int)pivotType];
+                    }
                     break;
             }
 

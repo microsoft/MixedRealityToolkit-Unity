@@ -206,7 +206,7 @@ namespace HoloToolkit.UX.ToolTips
             localContentBounds.center = localContentOffset;
         }
 
-        private void Update ()
+        private void Update()
         {
             // Adjust center and size by velocity
             Vector3 currentPosition = positionTarget.position;

@@ -31,7 +31,6 @@ namespace HoloToolkit.UX.ToolTips
             Timeout,
         }
 
-
         [SerializeField]
         private Vector3 defaultDimensions = new Vector3(0.182f, 0.028f, 1.0f);
 
@@ -96,7 +95,6 @@ namespace HoloToolkit.UX.ToolTips
         [SerializeField]
         private Transform Anchor;
 
-
         private float focusEnterTime = 0f;
 
         private float focusExitTime = 0f;
@@ -147,10 +145,11 @@ namespace HoloToolkit.UX.ToolTips
             }
         }
 
-        public void OnInputUp(InputEventData eventData)
-        {
-        }
-
+        /// <summary>
+        /// this Handler intentionally empty
+        /// </summary>
+        /// <param name="eventData"></param>
+        public void OnInputUp(InputEventData eventData){}
 
         private void ShowToolTip()
         {
