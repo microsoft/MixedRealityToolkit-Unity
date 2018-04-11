@@ -1,9 +1,6 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.UX
@@ -58,13 +55,6 @@ namespace HoloToolkit.Unity.UX
         [SerializeField]
         protected GameObject zyHandlesObject;
 
-        #endregion
-
-        #region custom editor
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(BoundingBoxGizmoShell))]
-        public class CustomEditor : MRTKEditor  { }
-#endif
         #endregion
     }
 }
