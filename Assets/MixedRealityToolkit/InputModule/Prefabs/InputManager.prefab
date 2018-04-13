@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4000011656901714}
   - component: {fileID: 114000012009196210}
   - component: {fileID: 114000011980027866}
-  - component: {fileID: 114000012434513746}
   - component: {fileID: 114708646396671696}
   - component: {fileID: 114821864844007854}
   m_Layer: 0
@@ -233,18 +232,6 @@ MonoBehaviour:
   stabilizer: {fileID: 114000011980027866}
   gazeTransform: {fileID: 0}
   debugDrawRay: 0
---- !u!114 &114000012434513746
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011070707148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b160d197a8ca1894796ae263bafec0ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyParentRootOnLoad: 1
 --- !u!114 &114000012864906760
 MonoBehaviour:
   m_ObjectHideFlags: 1
