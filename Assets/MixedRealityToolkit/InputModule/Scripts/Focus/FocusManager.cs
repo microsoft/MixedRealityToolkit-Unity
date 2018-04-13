@@ -26,7 +26,7 @@ namespace MixedRealityToolkit.InputModule.Focus
         [SerializeField]
         private static float pointingExtent = 10f;
 
-        public static float GlobalPointingExtent { get { return pointingExtent; } }
+        public static float GlobalPointingExtent => pointingExtent;
 
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
@@ -211,7 +211,7 @@ namespace MixedRealityToolkit.InputModule.Focus
         private void Start()
         {
             // Register the cursor as a global listener to get source events.
-            InputManager.Instance.AddGlobalListener(gameObject);
+            InputManager.AddGlobalListener(gameObject);
         }
 
         private void Update()
@@ -336,8 +336,7 @@ namespace MixedRealityToolkit.InputModule.Focus
         /// <returns></returns>
         public GraphicInputEventData GetSpecificPointerGraphicEventData(IPointer pointer)
         {
-            var pointerData = GetPointerData(pointer);
-            return pointerData == null ? null : pointerData.GraphicEventData;
+            return GetPointerData(pointer)?.GraphicEventData;
         }
 
         #endregion Focus Details by IPointer
@@ -391,7 +390,7 @@ namespace MixedRealityToolkit.InputModule.Focus
         /// <returns>True, if registered, otherwise false.</returns>
         public bool IsPointerRegistered(IPointer pointer)
         {
-            Debug.Assert(pointer.PointerId != 0, string.Format("{0} does not have a valid pointer id!", pointer));
+            Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
             return GetPointerData(pointer) != null;
         }
 
@@ -402,7 +401,7 @@ namespace MixedRealityToolkit.InputModule.Focus
         /// <returns>True, if the pointer was registered, false if the pointer was previously registered.</returns>
         public bool RegisterPointer(IPointer pointer)
         {
-            Debug.Assert(pointer.PointerId != 0, string.Format("{0} does not have a valid pointer id!", pointer));
+            Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
             Debug.Assert(gazeManagerPointingData == null || pointer.PointerId != gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be registered on source detected.");
 
             if (IsPointerRegistered(pointer)) { return false; }
@@ -418,7 +417,7 @@ namespace MixedRealityToolkit.InputModule.Focus
         /// <returns>True, if the pointer was unregistered, false if the pointer was not registered.</returns>
         public bool UnregisterPointer(IPointer pointer)
         {
-            Debug.Assert(pointer.PointerId != 0, string.Format("{0} does not have a valid pointer id!", pointer));
+            Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
             Debug.Assert(pointer.PointerId != gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be unregistered on source lost.");
 
             PointerData pointerData = GetPointerData(pointer);
@@ -441,10 +440,10 @@ namespace MixedRealityToolkit.InputModule.Focus
 
                 if (!objectIsStillFocusedByOtherPointer)
                 {
-                    InputManager.Instance.RaiseFocusExit(pointer, unfocusedObject);
+                    InputManager.RaiseFocusExit(pointer, unfocusedObject);
                 }
 
-                InputManager.Instance.RaisePreFocusChangedEvent(pointer, unfocusedObject, null);
+                InputManager.RaisePreFocusChangedEvent(pointer, unfocusedObject, null);
             }
 
             pointers.Remove(pointerData);
@@ -789,21 +788,21 @@ namespace MixedRealityToolkit.InputModule.Focus
                 GameObject pendingUnfocusObject = change.PreviousPointerTarget;
                 GameObject pendingFocusObject = change.CurrentPointerTarget;
 
-                InputManager.Instance.RaisePreFocusChangedEvent(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                InputManager.RaisePreFocusChangedEvent(change.Pointer, pendingUnfocusObject, pendingFocusObject);
 
                 if (pendingOverallFocusExitSet.Contains(pendingUnfocusObject))
                 {
-                    InputManager.Instance.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
+                    InputManager.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
                     pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
                 }
 
                 if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))
                 {
-                    InputManager.Instance.RaiseFocusEnter(change.Pointer, pendingFocusObject);
+                    InputManager.RaiseFocusEnter(change.Pointer, pendingFocusObject);
                     pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                 }
 
-                InputManager.Instance.OnFocusChangedEvent(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                InputManager.OnFocusChangedEvent(change.Pointer, pendingUnfocusObject, pendingFocusObject);
             }
 
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);

@@ -706,7 +706,6 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
         private void InitializeSources()
         {
-            InputManager.AssertIsInitialized();
             FocusManager.AssertIsInitialized();
 
 #if UNITY_WSA
@@ -725,7 +724,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
                 // NOTE: We update the source state data, in case an app wants to query it on source detected.
                 UpdateInteractionSource(states[i], inputSource);
-                InputManager.Instance.RaiseSourceDetected(inputSource);
+                InputManager.RaiseSourceDetected(inputSource);
             }
 
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
@@ -781,7 +780,8 @@ namespace MixedRealityToolkit.InputModule.InputSources
                 var pointerObject = Instantiate(pointerOption.PointerPrefab);
                 var pointer = pointerObject.GetComponent<BaseControllerPointer>();
                 pointer.Handedness = (Handedness)interactionSource.handedness;
-                pointer.PointerName = string.Format("{0}_{1}_{2}", interactionSource.handedness, interactionSource.kind, pointer.GetType().Name);
+                pointer.PointerName =
+                    $"{interactionSource.handedness}_{interactionSource.kind}_{pointer.GetType().Name}";
                 pointerList.Add(pointer);
             }
 
@@ -795,10 +795,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
             var sourceData = new InteractionInputSource(
                 interactionSource,
-                string.Format("{0}{1}",
-                    interactionSource.handedness == InteractionSourceHandedness.Unknown ?
-                        "" : string.Format("{0}_", interactionSource.handedness),
-                    interactionSource.kind),
+                $"{(interactionSource.handedness == InteractionSourceHandedness.Unknown ? "" : $"{interactionSource.handedness}_")}{interactionSource.kind}",
                 pointerSceneObjects, pointers);
 
             interactionInputSources.Add(sourceData);
@@ -810,7 +807,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
         {
             if (interactionSource == null) { return; }
 
-            InputManager.Instance.RaiseSourceLost(interactionSource);
+            InputManager.RaiseSourceLost(interactionSource);
             interactionInputSources.Remove(interactionSource);
 
             for (var j = 0; j < interactionSource.PointerSceneObjects.Length; j++)
@@ -945,14 +942,14 @@ namespace MixedRealityToolkit.InputModule.InputSources
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
             UpdateInteractionSource(args.state, inputSource);
 
-            InputManager.Instance.RaiseSourceDetected(inputSource);
+            InputManager.RaiseSourceDetected(inputSource);
         }
 
         private void InteractionManager_InteractionSourcePressed(InteractionSourcePressedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.state.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseOnInputDown(inputSource, args.pressType, (Handedness)args.state.source.handedness);
+            InputManager.RaiseOnInputDown(inputSource, args.pressType, (Handedness)args.state.source.handedness);
         }
 
         private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs args)
@@ -967,39 +964,39 @@ namespace MixedRealityToolkit.InputModule.InputSources
 
             if (inputSource.PositionUpdated)
             {
-                InputManager.Instance.RaiseSourcePositionChanged(inputSource, inputSource.PointerPosition.CurrentReading, inputSource.GripPosition.CurrentReading, (Handedness)args.state.source.handedness);
+                InputManager.RaiseSourcePositionChanged(inputSource, inputSource.PointerPosition.CurrentReading, inputSource.GripPosition.CurrentReading, (Handedness)args.state.source.handedness);
             }
 
             if (inputSource.RotationUpdated)
             {
-                InputManager.Instance.RaiseSourceRotationChanged(inputSource, inputSource.PointerRotation.CurrentReading, inputSource.GripRotation.CurrentReading, (Handedness)args.state.source.handedness);
+                InputManager.RaiseSourceRotationChanged(inputSource, inputSource.PointerRotation.CurrentReading, inputSource.GripRotation.CurrentReading, (Handedness)args.state.source.handedness);
             }
 
             if (inputSource.ThumbstickPositionUpdated)
             {
-                InputManager.Instance.RaiseInputPositionChanged(inputSource, inputSource.Thumbstick.CurrentReading.Position, InteractionSourcePressType.Thumbstick, (Handedness)args.state.source.handedness);
+                InputManager.RaiseInputPositionChanged(inputSource, inputSource.Thumbstick.CurrentReading.Position, InteractionSourcePressType.Thumbstick, (Handedness)args.state.source.handedness);
             }
 
             if (inputSource.TouchpadPositionUpdated)
             {
-                InputManager.Instance.RaiseInputPositionChanged(inputSource, inputSource.Touchpad.CurrentReading.AxisButton.Position, InteractionSourcePressType.Touchpad, (Handedness)args.state.source.handedness);
+                InputManager.RaiseInputPositionChanged(inputSource, inputSource.Touchpad.CurrentReading.AxisButton.Position, InteractionSourcePressType.Touchpad, (Handedness)args.state.source.handedness);
             }
 
             if (inputSource.TouchpadTouchedUpdated)
             {
                 if (inputSource.Touchpad.CurrentReading.Touched)
                 {
-                    InputManager.Instance.RaiseOnInputDown(inputSource, InteractionSourcePressType.Touchpad, (Handedness)args.state.source.handedness);
+                    InputManager.RaiseOnInputDown(inputSource, InteractionSourcePressType.Touchpad, (Handedness)args.state.source.handedness);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseOnInputUp(inputSource, InteractionSourcePressType.Touchpad, (Handedness)args.state.source.handedness);
+                    InputManager.RaiseOnInputUp(inputSource, InteractionSourcePressType.Touchpad, (Handedness)args.state.source.handedness);
                 }
             }
 
             if (inputSource.SelectPressedAmountUpdated)
             {
-                InputManager.Instance.RaiseOnInputPressed(inputSource, inputSource.Select.CurrentReading.PressedAmount, InteractionSourcePressType.Select, (Handedness)args.state.source.handedness);
+                InputManager.RaiseOnInputPressed(inputSource, inputSource.Select.CurrentReading.PressedAmount, InteractionSourcePressType.Select, (Handedness)args.state.source.handedness);
             }
         }
 
@@ -1007,7 +1004,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.state.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseOnInputUp(inputSource, args.pressType, (Handedness)args.state.source.handedness);
+            InputManager.RaiseOnInputUp(inputSource, args.pressType, (Handedness)args.state.source.handedness);
         }
 
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
@@ -1023,84 +1020,84 @@ namespace MixedRealityToolkit.InputModule.InputSources
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseInputClicked(inputSource.Pointers[0], args.tapCount, InteractionSourcePressType.Select, (Handedness)args.source.handedness);
+            InputManager.RaiseInputClicked(inputSource.Pointers[0], args.tapCount, InteractionSourcePressType.Select, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_HoldStarted(HoldStartedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseHoldStarted(inputSource, (Handedness)args.source.handedness);
+            InputManager.RaiseHoldStarted(inputSource, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_HoldCanceled(HoldCanceledEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseHoldCanceled(inputSource, (Handedness)args.source.handedness);
+            InputManager.RaiseHoldCanceled(inputSource, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_HoldCompleted(HoldCompletedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseHoldCompleted(inputSource, (Handedness)args.source.handedness);
+            InputManager.RaiseHoldCompleted(inputSource, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_ManipulationStarted(ManipulationStartedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseManipulationStarted(inputSource, (Handedness)args.source.handedness);
+            InputManager.RaiseManipulationStarted(inputSource, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_ManipulationUpdated(ManipulationUpdatedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseManipulationUpdated(inputSource, args.cumulativeDelta, (Handedness)args.source.handedness);
+            InputManager.RaiseManipulationUpdated(inputSource, args.cumulativeDelta, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_ManipulationCompleted(ManipulationCompletedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseManipulationCompleted(inputSource, args.cumulativeDelta, (Handedness)args.source.handedness);
+            InputManager.RaiseManipulationCompleted(inputSource, args.cumulativeDelta, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_ManipulationCanceled(ManipulationCanceledEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseManipulationCanceled(inputSource, (Handedness)args.source.handedness);
+            InputManager.RaiseManipulationCanceled(inputSource, (Handedness)args.source.handedness);
         }
 
         private void NavigationGestureRecognizer_NavigationStarted(NavigationStartedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseNavigationStarted(inputSource, (Handedness)args.source.handedness);
+            InputManager.RaiseNavigationStarted(inputSource, (Handedness)args.source.handedness);
         }
 
         private void NavigationGestureRecognizer_NavigationUpdated(NavigationUpdatedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseNavigationUpdated(inputSource, args.normalizedOffset, (Handedness)args.source.handedness);
+            InputManager.RaiseNavigationUpdated(inputSource, args.normalizedOffset, (Handedness)args.source.handedness);
         }
 
         private void NavigationGestureRecognizer_NavigationCompleted(NavigationCompletedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseNavigationCompleted(inputSource, args.normalizedOffset, (Handedness)args.source.handedness);
+            InputManager.RaiseNavigationCompleted(inputSource, args.normalizedOffset, (Handedness)args.source.handedness);
         }
 
         private void NavigationGestureRecognizer_NavigationCanceled(NavigationCanceledEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            InputManager.Instance.RaiseNavigationCanceled(inputSource, (Handedness)args.source.handedness);
+            InputManager.RaiseNavigationCanceled(inputSource, (Handedness)args.source.handedness);
         }
 
         #endregion Raise GestureRecognizer Events

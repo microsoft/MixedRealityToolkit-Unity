@@ -310,10 +310,10 @@ namespace MixedRealityToolkit.InputModule.Cursors
         protected virtual void RegisterManagers()
         {
             // Register the cursor as a global listener, so that it can always get input events it cares about
-            InputManager.Instance.AddGlobalListener(gameObject);
+            InputManager.AddGlobalListener(gameObject);
 
             // Setup the cursor to be able to respond to input being globally enabled / disabled
-            if (InputManager.Instance.IsInputEnabled)
+            if (InputManager.IsInputEnabled)
             {
                 OnInputEnabled();
             }
@@ -322,8 +322,8 @@ namespace MixedRealityToolkit.InputModule.Cursors
                 OnInputDisabled();
             }
 
-            InputManager.Instance.InputEnabled += OnInputEnabled;
-            InputManager.Instance.InputDisabled += OnInputDisabled;
+            InputManager.InputEnabled += OnInputEnabled;
+            InputManager.InputDisabled += OnInputDisabled;
         }
 
         /// <summary>
@@ -331,12 +331,9 @@ namespace MixedRealityToolkit.InputModule.Cursors
         /// </summary>
         protected virtual void UnregisterManagers()
         {
-            if (InputManager.IsInitialized)
-            {
-                InputManager.Instance.InputEnabled -= OnInputEnabled;
-                InputManager.Instance.InputDisabled -= OnInputDisabled;
-                InputManager.Instance.RemoveGlobalListener(gameObject);
-            }
+            InputManager.InputEnabled -= OnInputEnabled;
+            InputManager.InputDisabled -= OnInputDisabled;
+            InputManager.RemoveGlobalListener(gameObject);
         }
 
         /// <summary>

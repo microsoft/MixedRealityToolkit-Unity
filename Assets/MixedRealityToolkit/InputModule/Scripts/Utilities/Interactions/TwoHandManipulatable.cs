@@ -398,7 +398,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             {
                 StartedManipulating();
             }
-            InputManager.Instance.PushModalInputHandler(gameObject);
+            InputManager.PushModalInputHandler(gameObject);
 
             //Show Bounding Box visual on manipulation interaction
             showBoundingBox = true;
@@ -409,7 +409,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             {
                 StoppedManipulating();
             }
-            InputManager.Instance.PopModalInputHandler();
+            InputManager.PopModalInputHandler();
 
             //Hide Bounding Box visual on release
             showBoundingBox = false;

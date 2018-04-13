@@ -48,7 +48,7 @@
 //            {
 //                CurrentGestureState = GestureState.SelectButtonPressed;
 
-//                InputManager.Instance.RaisePointerDown(eventData.InputSource);
+//                InputManager.RaisePointerDown(eventData.InputSource);
 
 //                HoldStartedRoutine = StartCoroutine(HandleHoldStarted(eventData));
 //            }
@@ -69,7 +69,7 @@
 
 //        protected virtual void HandleSelectButtonReleased(XboxControllerEventData eventData)
 //        {
-//            InputManager.Instance.RaisePointerUp(eventData.InputSource);
+//            InputManager.RaisePointerUp(eventData.InputSource);
 
 //            if (HoldStartedRoutine != null)
 //            {
@@ -79,13 +79,13 @@
 //            switch (CurrentGestureState)
 //            {
 //                case GestureState.NavigationStarted:
-//                    InputManager.Instance.RaiseNavigationCompleted(eventData.InputSource, Vector3.zero);
+//                    InputManager.RaiseNavigationCompleted(eventData.InputSource, Vector3.zero);
 //                    break;
 //                case GestureState.HoldStarted:
-//                    InputManager.Instance.RaiseHoldCompleted(eventData.InputSource);
+//                    InputManager.RaiseHoldCompleted(eventData.InputSource);
 //                    break;
 //                default:
-//                    InputManager.Instance.RaiseInputClicked(eventData.InputSource, 1);
+//                    InputManager.RaiseInputClicked(eventData.InputSource, 1);
 //                    break;
 //            }
 
@@ -103,7 +103,7 @@
 
 //            CurrentGestureState = GestureState.HoldStarted;
 
-//            InputManager.Instance.RaiseHoldStarted(eventData.InputSource);
+//            InputManager.RaiseHoldStarted(eventData.InputSource);
 //        }
 
 //        protected virtual void HandleNavigation(XboxControllerEventData eventData)
@@ -121,18 +121,18 @@
 //            {
 //                if (CurrentGestureState == GestureState.HoldStarted)
 //                {
-//                    InputManager.Instance.RaiseHoldCanceled(eventData.InputSource);
+//                    InputManager.RaiseHoldCanceled(eventData.InputSource);
 //                }
 
 //                CurrentGestureState = GestureState.NavigationStarted;
 
 //                // Raise navigation started event.
-//                InputManager.Instance.RaiseNavigationStarted(eventData.InputSource);
+//                InputManager.RaiseNavigationStarted(eventData.InputSource);
 //            }
 //            else
 //            {
 //                // Raise navigation updated event.
-//                InputManager.Instance.RaiseNavigationUpdated(eventData.InputSource, NormalizedOffset);
+//                InputManager.RaiseNavigationUpdated(eventData.InputSource, NormalizedOffset);
 //            }
 //        }
 //    }

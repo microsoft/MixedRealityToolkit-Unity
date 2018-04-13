@@ -29,7 +29,6 @@ namespace MixedRealityToolkit.Tests.Input
             //Create a main camera and add input manager, event system and gaze manager to it
             var inputManagerContainer = TestUtils.CreateMainCamera().gameObject;
             inputManagerContainer.AddComponent<EventSystem>();
-            inputManagerContainer.AddComponent<InputManager>();
             inputManagerContainer.AddComponent<FocusManager>();
             inputManagerContainer.AddComponent<GazeManager>();
 
@@ -49,9 +48,9 @@ namespace MixedRealityToolkit.Tests.Input
         {
             CreateGlobalTestHandler().CallInitialization();
 
-            InputManager.Instance.PushInputDisable();
+            InputManager.PushInputDisable();
             FireTestEvent();
-            InputManager.Instance.PopInputDisable();
+            InputManager.PopInputDisable();
 
             Assert.That(receivedEventSources, Is.Empty);
         }
@@ -61,9 +60,9 @@ namespace MixedRealityToolkit.Tests.Input
         {
             CreateGlobalTestHandler().CallInitialization();
 
-            InputManager.Instance.enabled = false;
+            InputManager.PushInputDisable();
             FireTestEvent();
-            InputManager.Instance.enabled = true;
+            InputManager.PopInputDisable();
 
             Assert.That(receivedEventSources, Is.Empty);
         }
@@ -128,9 +127,9 @@ namespace MixedRealityToolkit.Tests.Input
         {
             var modalHandler = CreateTestHandler().CallInitialization();
 
-            InputManager.Instance.PushModalInputHandler(modalHandler);
+            InputManager.PushModalInputHandler(modalHandler);
             FireTestEvent();
-            InputManager.Instance.PopModalInputHandler();
+            InputManager.PopModalInputHandler();
 
             Assert.That(receivedEventSources, Is.Not.Empty);
         }
@@ -141,11 +140,11 @@ namespace MixedRealityToolkit.Tests.Input
             var modalHandler1 = CreateTestHandler().CallInitialization();
             var modalHandler2 = CreateTestHandler().CallInitialization();
 
-            InputManager.Instance.PushModalInputHandler(modalHandler1);
-            InputManager.Instance.PushModalInputHandler(modalHandler2);
+            InputManager.PushModalInputHandler(modalHandler1);
+            InputManager.PushModalInputHandler(modalHandler2);
             FireTestEvent();
-            InputManager.Instance.PopModalInputHandler();
-            InputManager.Instance.PopModalInputHandler();
+            InputManager.PopModalInputHandler();
+            InputManager.PopModalInputHandler();
 
             Assert.That(receivedEventSources.Count, Is.EqualTo(1));
             Assert.That(receivedEventSources[0], Is.EqualTo(modalHandler2));
@@ -156,9 +155,9 @@ namespace MixedRealityToolkit.Tests.Input
         {
             var fallbackHandler = CreateTestHandler().CallInitialization();
 
-            InputManager.Instance.PushFallbackInputHandler(fallbackHandler);
+            InputManager.PushFallbackInputHandler(fallbackHandler);
             FireTestEvent();
-            InputManager.Instance.PopFallbackInputHandler();
+            InputManager.PopFallbackInputHandler();
 
             Assert.That(receivedEventSources, Is.Not.Empty);
         }
@@ -170,9 +169,9 @@ namespace MixedRealityToolkit.Tests.Input
             var modalHandler = CreateTestHandler().CallInitialization();
 
             FocusManager.Instance.OverrideFocusedObject = focusedHandler;
-            InputManager.Instance.PushModalInputHandler(modalHandler);
+            InputManager.PushModalInputHandler(modalHandler);
             FireTestEvent();
-            InputManager.Instance.PopModalInputHandler();
+            InputManager.PopModalInputHandler();
 
             Assert.That(receivedEventSources.Count, Is.EqualTo(1));
             Assert.That(receivedEventSources[0], Is.EqualTo(modalHandler));
@@ -186,9 +185,9 @@ namespace MixedRealityToolkit.Tests.Input
             focusedHandler.transform.SetParent(modalHandler.transform);
 
             FocusManager.Instance.OverrideFocusedObject = focusedHandler;
-            InputManager.Instance.PushModalInputHandler(modalHandler);
+            InputManager.PushModalInputHandler(modalHandler);
             FireTestEvent();
-            InputManager.Instance.PopModalInputHandler();
+            InputManager.PopModalInputHandler();
 
             Assert.That(receivedEventSources.Count, Is.EqualTo(1));
             Assert.That(receivedEventSources[0], Is.EqualTo(focusedHandler));
@@ -204,12 +203,12 @@ namespace MixedRealityToolkit.Tests.Input
             var fallbackHandler = CreateTestHandler().CallInitialization();
 
             FocusManager.Instance.OverrideFocusedObject = focusedHandler;
-            InputManager.Instance.PushFallbackInputHandler(fallbackHandler);
+            InputManager.PushFallbackInputHandler(fallbackHandler);
 
             FireTestEvent();
             Assert.That(receivedEventSources, Is.EquivalentTo(new List<GameObject> { globalHandler1, globalHandler2, focusedHandler }));
 
-            InputManager.Instance.PushModalInputHandler(modalHandler);
+            InputManager.PushModalInputHandler(modalHandler);
             FireTestEvent();
             Assert.That(receivedEventSources, Is.EquivalentTo(new List<GameObject> { globalHandler1, globalHandler2, modalHandler }));
 
@@ -221,8 +220,8 @@ namespace MixedRealityToolkit.Tests.Input
             FireTestEvent();
             Assert.That(receivedEventSources, Is.EquivalentTo(new List<GameObject> { globalHandler1, globalHandler2, fallbackHandler }));
 
-            InputManager.Instance.PopModalInputHandler();
-            InputManager.Instance.PopFallbackInputHandler();
+            InputManager.PopModalInputHandler();
+            InputManager.PopFallbackInputHandler();
         }
 
         [Test]
@@ -230,7 +229,7 @@ namespace MixedRealityToolkit.Tests.Input
         {
             var focusedHandler = CreateCubeTestHandler().CallInitialization();
 
-            InputManager.Instance.RaisePreFocusChangedEvent(GazeManager.Instance.Pointers[0], null, focusedHandler);
+            InputManager.RaisePreFocusChangedEvent(GazeManager.Instance.Pointers[0], null, focusedHandler);
 
             Assert.That(receivedEventSources.Count, Is.EqualTo(1));
             Assert.That(receivedEventSources[0], Is.EqualTo(focusedHandler));
@@ -263,7 +262,7 @@ namespace MixedRealityToolkit.Tests.Input
         private void FireTestEvent()
         {
             receivedEventSources = new List<GameObject>();
-            InputManager.Instance.HandleEvent(new InputEventData(EventSystem.current), TestEventHandler.OnTestHandler);
+            InputManager.HandleEvent(new InputEventData(EventSystem.current), TestEventHandler.OnTestHandler);
         }
 
         private void OnEventFired(GameObject source, BaseEventData baseEventData)

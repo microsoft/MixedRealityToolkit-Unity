@@ -12,7 +12,7 @@ namespace MixedRealityToolkit.Examples.Utilities
     {
         private void Start()
         {
-            InputManager.Instance.PushFallbackInputHandler(gameObject);
+            InputManager.PushFallbackInputHandler(gameObject);
         }
 
         public void OnPointerUp(ClickEventData eventData) { }

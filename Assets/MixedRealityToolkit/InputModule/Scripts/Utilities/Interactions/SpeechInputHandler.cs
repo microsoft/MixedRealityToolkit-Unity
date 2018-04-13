@@ -48,7 +48,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
         {
             if (IsGlobalListener)
             {
-                InputManager.Instance.AddGlobalListener(gameObject);
+                InputManager.AddGlobalListener(gameObject);
             }
         }
 
@@ -80,17 +80,17 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 
         protected virtual void OnDisable()
         {
-            if (InputManager.Instance != null && IsGlobalListener)
+            if (IsGlobalListener)
             {
-                InputManager.Instance.RemoveGlobalListener(gameObject);
+                InputManager.RemoveGlobalListener(gameObject);
             }
         }
 
         protected virtual void OnDestroy()
         {
-            if (InputManager.Instance != null && IsGlobalListener)
+            if (IsGlobalListener)
             {
-                InputManager.Instance.RemoveGlobalListener(gameObject);
+                InputManager.RemoveGlobalListener(gameObject);
             }
         }
 

@@ -104,7 +104,7 @@ namespace MixedRealityToolkit.InputModule
 
             state = TeleportStateEnum.Initiating;
 
-            InputManager.Instance.RaiseTeleportIntent(currentPointer);
+            InputManager.RaiseTeleportIntent(currentPointer);
 
             while (isActiveAndEnabled)
             {
@@ -131,7 +131,7 @@ namespace MixedRealityToolkit.InputModule
                 // Do the teleport
                 if (state == TeleportStateEnum.Teleporting)
                 {
-                    InputManager.Instance.RaiseTeleportStarted(currentPointer);
+                    InputManager.RaiseTeleportStarted(currentPointer);
 
                     Debug.Assert(helperTransform != null, "Can't teleport without a valid helper transform!");
 
@@ -171,11 +171,11 @@ namespace MixedRealityToolkit.InputModule
                     // Un-parent the play bounds
                     playBounds.parent = playBoundsParent;
 
-                    InputManager.Instance.RaiseTeleportCompleted(currentPointer);
+                    InputManager.RaiseTeleportCompleted(currentPointer);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseTeleportCanceled(currentPointer);
+                    InputManager.RaiseTeleportCanceled(currentPointer);
                 }
 
                 // Now that we're done with teleporting, reset state

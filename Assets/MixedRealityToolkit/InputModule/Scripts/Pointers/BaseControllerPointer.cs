@@ -62,13 +62,13 @@ namespace MixedRealityToolkit.InputModule.Pointers
         protected override void OnAttachToController()
         {
             // Subscribe to interaction events
-            InputManager.Instance.AddGlobalListener(gameObject);
+            InputManager.AddGlobalListener(gameObject);
         }
 
         protected override void OnDetachFromController()
         {
             // Unsubscribe from interaction events
-            InputManager.Instance.RemoveGlobalListener(gameObject);
+            InputManager.RemoveGlobalListener(gameObject);
         }
 
         /// <summary>
@@ -127,7 +127,6 @@ namespace MixedRealityToolkit.InputModule.Pointers
         protected virtual void Start()
         {
             FocusManager.AssertIsInitialized();
-            InputManager.AssertIsInitialized();
             Debug.Assert(InputManager.GlobalListeners.Contains(FocusManager.Instance.gameObject));
             Debug.Assert(InputSourceParent != null, "This Pointer must have a Input Source Assigned");
 
@@ -169,7 +168,7 @@ namespace MixedRealityToolkit.InputModule.Pointers
             if (CursorPrefab != null)
             {
                 var cursorObj = Instantiate(CursorPrefab, transform);
-                cursorObj.name = string.Format("{0}_Cursor", name);
+                cursorObj.name = $"{name}_Cursor";
                 BaseCursor = cursorObj.GetComponent<BaseCursor>();
                 Debug.Assert(BaseCursor != null, "Failed to load cursor");
                 BaseCursor.Pointer = this;

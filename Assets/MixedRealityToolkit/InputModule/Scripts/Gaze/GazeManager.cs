@@ -263,7 +263,6 @@ namespace MixedRealityToolkit.InputModule.Gaze
         protected virtual void Start()
         {
             FocusManager.AssertIsInitialized();
-            InputManager.AssertIsInitialized();
             Debug.Assert(InputManager.GlobalListeners.Contains(FocusManager.Instance.gameObject));
 
             SourceId = InputManager.GenerateNewSourceId();
@@ -309,7 +308,7 @@ namespace MixedRealityToolkit.InputModule.Gaze
 
         private void OnDisable()
         {
-            InputManager.Instance.RaiseSourceLost(this);
+            InputManager.RaiseSourceLost(this);
 
             if (Pointers[0].BaseCursor != null)
             {
@@ -338,7 +337,7 @@ namespace MixedRealityToolkit.InputModule.Gaze
                 Pointers[0].BaseCursor.enabled = true;
             }
 
-            InputManager.Instance.RaiseSourceDetected(this);
+            InputManager.RaiseSourceDetected(this);
         }
 
         private bool FindGazeTransform()

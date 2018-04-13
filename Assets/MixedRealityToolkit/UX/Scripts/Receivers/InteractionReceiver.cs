@@ -63,7 +63,7 @@ namespace MixedRealityToolkit.UX.Receivers
         /// </summary>
         public virtual void OnEnable()
         {
-            InputManager.Instance.AddGlobalListener(gameObject);
+            InputManager.AddGlobalListener(gameObject);
         }
 
         /// <summary>
@@ -71,10 +71,7 @@ namespace MixedRealityToolkit.UX.Receivers
         /// </summary>
         public virtual void OnDisable()
         {
-            if (InputManager.IsInitialized)
-            {
-                InputManager.Instance.RemoveGlobalListener(gameObject);
-            }
+            InputManager.RemoveGlobalListener(gameObject);
         }
 
         /// <summary>

@@ -354,7 +354,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 cachedRenderer.sharedMaterial = Rig.RotateHandleMaterial;
             }
 
-            InputManager.Instance.PopModalInputHandler();
+            InputManager.PopModalInputHandler();
             Rig.FocusOnHandle(null);
         }
 
@@ -370,7 +370,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             initialHandOrientation  = GetHandOrientation(eventData.SourceId);
             initialScaleOrigin      = transformToAffect.position - transform.position;
 
-            InputManager.Instance.PushModalInputHandler(gameObject);
+            InputManager.PushModalInputHandler(gameObject);
 
             cachedRenderer.sharedMaterial = Rig.InteractingMaterial;
             Rig.FocusOnHandle(gameObject);

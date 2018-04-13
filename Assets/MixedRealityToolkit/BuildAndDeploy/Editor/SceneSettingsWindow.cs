@@ -71,12 +71,6 @@ namespace MixedRealityToolkit.Build
 
             if (Values[SceneSetting.AddInputSystem])
             {
-                var inputManager = FindObjectOfType<InputManager>();
-                if (inputManager != null)
-                {
-                    DestroyImmediate(inputManager.gameObject);
-                }
-
                 var eventSystems = FindObjectsOfType<EventSystem>();
                 foreach (var eventSystem in eventSystems)
                 {

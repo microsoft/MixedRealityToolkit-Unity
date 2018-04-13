@@ -184,9 +184,12 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstanding
                     // Start showing the stats when they are no longer zero
                     if (stats.TotalSurfaceArea > kMinAreaForStats)
                     {
-                        string subDisplayText = string.Format("totalArea={0:0.0}, horiz={1:0.0}, wall={2:0.0}", stats.TotalSurfaceArea, stats.HorizSurfaceArea, stats.WallSurfaceArea);
-                        subDisplayText += string.Format("\nnumFloorCells={0}, numCeilingCells={1}, numPlatformCells={2}", stats.NumFloor, stats.NumCeiling, stats.NumPlatform);
-                        subDisplayText += string.Format("\npaintMode={0}, seenCells={1}, notSeen={2}", stats.CellCount_IsPaintMode, stats.CellCount_IsSeenQualtiy_Seen + stats.CellCount_IsSeenQualtiy_Good, stats.CellCount_IsSeenQualtiy_None);
+                        string subDisplayText =
+                            $"totalArea={stats.TotalSurfaceArea:0.0}, horiz={stats.HorizSurfaceArea:0.0}, wall={stats.WallSurfaceArea:0.0}";
+                        subDisplayText +=
+                            $"\nnumFloorCells={stats.NumFloor}, numCeilingCells={stats.NumCeiling}, numPlatformCells={stats.NumPlatform}";
+                        subDisplayText +=
+                            $"\npaintMode={stats.CellCount_IsPaintMode}, seenCells={stats.CellCount_IsSeenQualtiy_Seen + stats.CellCount_IsSeenQualtiy_Good}, notSeen={stats.CellCount_IsSeenQualtiy_None}";
                         return subDisplayText;
                     }
                     return "";
@@ -209,7 +212,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstanding
             Vector3 sceneOrigin = CameraCache.Main.transform.position;
             Parent_Scene.transform.position = sceneOrigin;
             MappingObserver.SetObserverOrigin(sceneOrigin);
-            InputManager.Instance.AddGlobalListener(gameObject);
+            InputManager.AddGlobalListener(gameObject);
 
 
             var keywordsToActions = new Dictionary<string, Action>
@@ -226,7 +229,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstanding
 
         protected override void OnDestroy()
         {
-            InputManager.Instance.RemoveGlobalListener(gameObject);
+            InputManager.RemoveGlobalListener(gameObject);
         }
 
         private void Update_DebugDisplay()

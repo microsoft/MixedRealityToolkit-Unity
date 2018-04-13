@@ -130,10 +130,10 @@ namespace MixedRealityToolkit.Examples.UX
         /// </summary>
         private void HandleStartGesture()
         {
-            InputManager.Instance.ClearModalInputStack();
+            InputManager.ClearModalInputStack();
 
             // Add self as a modal input handler, to get all inputs during the manipulation
-            InputManager.Instance.PushModalInputHandler(gameObject);
+            InputManager.PushModalInputHandler(gameObject);
 
             mCurrentInputSource = mTempInputSource;
             mCurrentInputSourceId = mTempInputSourceId;
@@ -218,7 +218,7 @@ namespace MixedRealityToolkit.Examples.UX
                 mStartHeadRay,
                 lost ? GestureManipulationState.Lost : GestureManipulationState.None);
 
-            InputManager.Instance.ClearModalInputStack();
+            InputManager.ClearModalInputStack();
 
             if (HasFocus)
             {

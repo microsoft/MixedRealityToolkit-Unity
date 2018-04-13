@@ -17,7 +17,6 @@ namespace MixedRealityToolkit.InputModule.InputSources
     {
         public GenericInputSource(string name, SupportedInputInfo _supportedInputInfo, IPointer[] pointers = null)
         {
-            InputManager.AssertIsInitialized();
             GazeManager.AssertIsInitialized();
 
             SourceId = InputManager.GenerateNewSourceId();

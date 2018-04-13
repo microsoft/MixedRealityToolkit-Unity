@@ -30,7 +30,7 @@ namespace MixedRealityToolkit.Examples.InputModule
 
         private void OnButtonPressed(TestButton source)
         {
-            InputManager.Instance.PushInputDisable();
+            InputManager.PushInputDisable();
             StartCoroutine(WaitForTime(TimeToWait));
         }
 
@@ -45,7 +45,7 @@ namespace MixedRealityToolkit.Examples.InputModule
                 yield return null;
             }
 
-            InputManager.Instance.PopInputDisable();
+            InputManager.PopInputDisable();
             button.Selected = false;
             textMesh.text = "Wait";
 

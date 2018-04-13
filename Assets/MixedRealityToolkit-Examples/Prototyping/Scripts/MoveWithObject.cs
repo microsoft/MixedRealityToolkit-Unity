@@ -105,7 +105,7 @@ namespace MixedRealityToolkit.Examples.Prototyping
 
             if (ReferenceInteractive != null)
             {
-                InputManager.Instance.PushModalInputHandler(ReferenceInteractive);
+                InputManager.PushModalInputHandler(ReferenceInteractive);
             }
         }
 
@@ -119,7 +119,7 @@ namespace MixedRealityToolkit.Examples.Prototyping
 
             if (ReferenceInteractive != null)
             {
-                InputManager.Instance.PopModalInputHandler();
+                InputManager.PopModalInputHandler();
             }
         }
 

@@ -217,7 +217,7 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
             {
                 // If we are the local player then we want to have airtaps 
                 // sent to this object so that projectiles can be spawned.
-                InputManager.Instance.AddGlobalListener(gameObject);
+                InputManager.AddGlobalListener(gameObject);
                 InitializeLocalPlayer();
             }
             else
@@ -298,7 +298,7 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
         {
             if (isLocalPlayer)
             {
-                InputManager.Instance.RemoveGlobalListener(gameObject);
+                InputManager.RemoveGlobalListener(gameObject);
             }
         }
 

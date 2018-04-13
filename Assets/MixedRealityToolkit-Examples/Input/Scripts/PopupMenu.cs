@@ -74,12 +74,12 @@ namespace MixedRealityToolkit.Examples.InputModule
 
             if (isModal)
             {
-                InputManager.Instance.PushModalInputHandler(gameObject);
+                InputManager.PushModalInputHandler(gameObject);
             }
 
             if (closeOnNonTargetedTap)
             {
-                InputManager.Instance.PushFallbackInputHandler(gameObject);
+                InputManager.PushFallbackInputHandler(gameObject);
             }
 
             // the visual was activated via an interaction outside of the menu, let anyone who cares know
@@ -101,12 +101,12 @@ namespace MixedRealityToolkit.Examples.InputModule
 
             if (isModal)
             {
-                InputManager.Instance.PopModalInputHandler();
+                InputManager.PopModalInputHandler();
             }
 
             if (closeOnNonTargetedTap)
             {
-                InputManager.Instance.PopFallbackInputHandler();
+                InputManager.PopFallbackInputHandler();
             }
 
             CurrentPopupState = PopupState.Closed;

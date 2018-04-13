@@ -131,16 +131,12 @@ namespace MixedRealityToolkit.Utilities
             foreach (ControllerState controllerState in controllers.Values)
             {
                 // Debug message
-                toReturn += string.Format("Hand: {0}\nPointer: Position: {1} Rotation: {2}\n" +
-                                          "Grip: Position: {3} Rotation: {4}\nGrasped: {5} " +
-                                          "MenuPressed: {6}\nSelect: Pressed: {7} PressedAmount: {8}\n" +
-                                          "Thumbstick: Pressed: {9} Position: {10}\nTouchpad: Pressed: {11} " +
-                                          "Touched: {12} Position: {13}\n\n",
-                                          controllerState.Handedness, controllerState.PointerPosition, controllerState.PointerRotation.eulerAngles,
-                                          controllerState.GripPosition, controllerState.GripRotation.eulerAngles, controllerState.Grasped,
-                                          controllerState.MenuPressed, controllerState.SelectPressed, controllerState.SelectPressedAmount,
-                                          controllerState.ThumbstickPressed, controllerState.ThumbstickPosition, controllerState.TouchpadPressed,
-                                          controllerState.TouchpadTouched, controllerState.TouchpadPosition);
+                toReturn +=
+                    $"Hand: {controllerState.Handedness}\nPointer: Position: {controllerState.PointerPosition} Rotation: {controllerState.PointerRotation.eulerAngles}\n" +
+                    $"Grip: Position: {controllerState.GripPosition} Rotation: {controllerState.GripRotation.eulerAngles}\nGrasped: {controllerState.Grasped} " +
+                    $"MenuPressed: {controllerState.MenuPressed}\nSelect: Pressed: {controllerState.SelectPressed} PressedAmount: {controllerState.SelectPressedAmount}\n" +
+                    $"Thumbstick: Pressed: {controllerState.ThumbstickPressed} Position: {controllerState.ThumbstickPosition}\nTouchpad: Pressed: {controllerState.TouchpadPressed} " +
+                    $"Touched: {controllerState.TouchpadTouched} Position: {controllerState.TouchpadPosition}\n\n";
 
                 // Text label display
                 if (controllerState.Handedness.Equals(InteractionSourceHandedness.Left))

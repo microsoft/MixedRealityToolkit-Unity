@@ -119,7 +119,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
             //       can be active at once.
 
             // Add self as a modal input handler, to get all inputs during the manipulation
-            InputManager.Instance.PushModalInputHandler(gameObject);
+            InputManager.PushModalInputHandler(gameObject);
 
             isDragging = true;
 
@@ -299,7 +299,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
             }
 
             // Remove self as a modal input handler
-            InputManager.Instance.PopModalInputHandler();
+            InputManager.PopModalInputHandler();
 
             isDragging = false;
             currentInputSourceId = 0;

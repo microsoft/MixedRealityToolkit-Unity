@@ -48,7 +48,6 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
 
         private bool Moving;
         private int layerMask;
-        private InputManager inputManager;
         public Vector3 movementOffset = Vector3.zero;
         private bool isOpaque = false;
 
@@ -70,8 +69,6 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
             }
 
             layerMask = SpatialMappingManager.Instance.LayerMask;
-            inputManager = InputManager.Instance;
-
         }
 
         // Update is called once per frame
@@ -113,7 +110,7 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
                 Moving = !Moving;
                 if (Moving)
                 {
-                    inputManager.AddGlobalListener(gameObject);
+                    InputManager.AddGlobalListener(gameObject);
                     if (SpatialMappingManager.Instance != null)
                     {
                         SpatialMappingManager.Instance.DrawVisualMeshes = true;
@@ -121,7 +118,7 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
                 }
                 else
                 {
-                    inputManager.RemoveGlobalListener(gameObject);
+                    InputManager.RemoveGlobalListener(gameObject);
                     if (SpatialMappingManager.Instance != null)
                     {
                         SpatialMappingManager.Instance.DrawVisualMeshes = false;

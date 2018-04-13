@@ -15,7 +15,7 @@ namespace MixedRealityToolkit.Utilities
 
         private void Start()
         {
-            InputManager.Instance.AddGlobalListener(gameObject);
+            InputManager.AddGlobalListener(gameObject);
         }
 
         public void OnPointerUp(ClickEventData eventData) { }
@@ -34,7 +34,7 @@ namespace MixedRealityToolkit.Utilities
 
         private void GotoNextScene()
         {
-            InputManager.Instance.RemoveGlobalListener(gameObject);
+            InputManager.RemoveGlobalListener(gameObject);
 
             if (!string.IsNullOrEmpty(NextSceneName))
             {

@@ -17,7 +17,7 @@ namespace MixedRealityToolkit.Examples.InputModule
 
         private void Start()
         {
-            InputManager.Instance.PushFallbackInputHandler(gameObject);
+            InputManager.PushFallbackInputHandler(gameObject);
         }
 
         void IInputHandler.OnInputUp(InputEventData eventData)

@@ -26,7 +26,7 @@ namespace MixedRealityToolkit.Examples.GazeRuler
 
         private void Start()
         {
-            InputManager.Instance.PushFallbackInputHandler(gameObject);
+            InputManager.PushFallbackInputHandler(gameObject);
 
             // inti measure mode
             switch (Mode)

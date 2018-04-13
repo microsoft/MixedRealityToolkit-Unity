@@ -284,7 +284,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
         {
             if (!RaiseEventsBasedOnVisibility)
             {
-                InputManager.Instance.RaiseSourceDetected(this);
+                InputManager.RaiseSourceDetected(this);
             }
         }
 
@@ -292,7 +292,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
         {
             if (!RaiseEventsBasedOnVisibility)
             {
-                InputManager.Instance.RaiseSourceLost(this);
+                InputManager.RaiseSourceLost(this);
             }
         }
 
@@ -414,7 +414,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
             {
                 if (currentButtonStates.IsSelectButtonDown)
                 {
-                    InputManager.Instance.RaisePointerDown(GazeManager.Instance.Pointers[0]);
+                    InputManager.RaisePointerDown(GazeManager.Instance.Pointers[0]);
                 }
                 // New up presses require sending different events depending on whether it's also a click, hold, or manipulation.
                 else
@@ -422,22 +422,22 @@ namespace MixedRealityToolkit.InputModule.InputSources
                     // A gesture is always either a click, a hold or a manipulation.
                     if (currentButtonStates.ManipulationInProgress)
                     {
-                        InputManager.Instance.RaiseManipulationCompleted(this, currentButtonStates.CumulativeDelta);
+                        InputManager.RaiseManipulationCompleted(this, currentButtonStates.CumulativeDelta);
                         currentButtonStates.ManipulationInProgress = false;
                     }
                     // Clicks and holds are based on time, and both are overruled by manipulations.
                     else if (currentButtonStates.HoldInProgress)
                     {
-                        InputManager.Instance.RaiseHoldCompleted(this);
+                        InputManager.RaiseHoldCompleted(this);
                         currentButtonStates.HoldInProgress = false;
                     }
                     else
                     {
                         // We currently only support single taps in editor.
-                        InputManager.Instance.RaiseInputClicked(GazeManager.Instance.Pointers[0], 1);
+                        InputManager.RaiseInputClicked(GazeManager.Instance.Pointers[0], 1);
                     }
 
-                    InputManager.Instance.RaisePointerUp(GazeManager.Instance.Pointers[0]);
+                    InputManager.RaisePointerUp(GazeManager.Instance.Pointers[0]);
                 }
             }
             // If the select state hasn't changed, but it's down, that means it might
@@ -452,23 +452,23 @@ namespace MixedRealityToolkit.InputModule.InputSources
                         // Starting a manipulation will cancel an existing hold.
                         if (currentButtonStates.HoldInProgress)
                         {
-                            InputManager.Instance.RaiseHoldCanceled(this);
+                            InputManager.RaiseHoldCanceled(this);
                             currentButtonStates.HoldInProgress = false;
                         }
 
-                        InputManager.Instance.RaiseManipulationStarted(this);
+                        InputManager.RaiseManipulationStarted(this);
                         currentButtonStates.ManipulationInProgress = true;
                     }
                     // Holds are triggered by time.
                     else if (!currentButtonStates.HoldInProgress && (time - currentButtonStates.SelectDownStartTime >= MaxClickDuration))
                     {
-                        InputManager.Instance.RaiseHoldStarted(this);
+                        InputManager.RaiseHoldStarted(this);
                         currentButtonStates.HoldInProgress = true;
                     }
                 }
                 else
                 {
-                    InputManager.Instance.RaiseManipulationUpdated(this, currentButtonStates.CumulativeDelta);
+                    InputManager.RaiseManipulationUpdated(this, currentButtonStates.CumulativeDelta);
                 }
             }
 
@@ -476,11 +476,11 @@ namespace MixedRealityToolkit.InputModule.InputSources
             {
                 if (currentButtonStates.IsMenuButtonDown)
                 {
-                    InputManager.Instance.RaisePointerDown(GazeManager.Instance.Pointers[0]);
+                    InputManager.RaisePointerDown(GazeManager.Instance.Pointers[0]);
                 }
                 else
                 {
-                    InputManager.Instance.RaisePointerUp(GazeManager.Instance.Pointers[0]);
+                    InputManager.RaisePointerUp(GazeManager.Instance.Pointers[0]);
                 }
             }
 
@@ -488,11 +488,11 @@ namespace MixedRealityToolkit.InputModule.InputSources
             {
                 if (currentButtonStates.IsGrasped)
                 {
-                    InputManager.Instance.RaisePointerDown(GazeManager.Instance.Pointers[0]);
+                    InputManager.RaisePointerDown(GazeManager.Instance.Pointers[0]);
                 }
                 else
                 {
-                    InputManager.Instance.RaisePointerUp(GazeManager.Instance.Pointers[0]);
+                    InputManager.RaisePointerUp(GazeManager.Instance.Pointers[0]);
                 }
             }
         }
@@ -507,11 +507,11 @@ namespace MixedRealityToolkit.InputModule.InputSources
             {
                 if (currentlyVisible)
                 {
-                    InputManager.Instance.RaiseSourceDetected(this);
+                    InputManager.RaiseSourceDetected(this);
                 }
                 else
                 {
-                    InputManager.Instance.RaiseSourceLost(this);
+                    InputManager.RaiseSourceLost(this);
                 }
 
                 visibilityChanged = false;

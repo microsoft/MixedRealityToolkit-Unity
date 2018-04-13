@@ -101,20 +101,18 @@ namespace MixedRealityToolkit.InputModule.Keyboard
             if (!delayInitialization)
             {
                 // The first time we call OnEnable we skip this.
-                InputManager.Instance.RaiseSourceDetected(this);
+                InputManager.RaiseSourceDetected(this);
             }
         }
 
         private void Start()
         {
-            InputManager.AssertIsInitialized();
-
             SourceId = InputManager.GenerateNewSourceId();
 
             if (delayInitialization)
             {
                 delayInitialization = false;
-                InputManager.Instance.RaiseSourceDetected(this);
+                InputManager.RaiseSourceDetected(this);
             }
         }
 
@@ -125,24 +123,24 @@ namespace MixedRealityToolkit.InputModule.Keyboard
                 var keyCode = (KeyCode)i;
                 if (Input.GetKeyDown(keyCode))
                 {
-                    InputManager.Instance.RaiseOnInputDown(this, keyCode);
+                    InputManager.RaiseOnInputDown(this, keyCode);
                 }
 
                 if (Input.GetKey(keyCode))
                 {
-                    InputManager.Instance.RaiseOnInputPressed(this, keyCode);
+                    InputManager.RaiseOnInputPressed(this, keyCode);
                 }
 
                 if (Input.GetKeyUp(keyCode))
                 {
-                    InputManager.Instance.RaiseOnInputUp(this, keyCode);
+                    InputManager.RaiseOnInputUp(this, keyCode);
                 }
             }
         }
 
         private void OnDisable()
         {
-            InputManager.Instance.RaiseSourceLost(this);
+            InputManager.RaiseSourceLost(this);
         }
 
         #endregion Monobehaiour Implementation

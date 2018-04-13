@@ -174,13 +174,13 @@ namespace MixedRealityToolkit.SpatialMapping
         {
             var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
             layerCacheTarget.SetLayerRecursively(IgnoreRaycastLayer, out layerCache);
-            InputManager.Instance.PushModalInputHandler(gameObject);
+            InputManager.PushModalInputHandler(gameObject);
 
             // We have no input source if this call is coming from Start() because,
             // the object was set to 'IsBeingPlaced'.
             if (inputSource != null)
             {
-                InputManager.Instance.RaisePlacingStarted(inputSource, gameObject);
+                InputManager.RaisePlacingStarted(inputSource, gameObject);
             }
 
             ToggleSpatialMesh();
@@ -191,8 +191,8 @@ namespace MixedRealityToolkit.SpatialMapping
         {
             var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
             layerCacheTarget.ApplyLayerCacheRecursively(layerCache);
-            InputManager.Instance.RaisePlacingCompleted(inputSource, gameObject);
-            InputManager.Instance.PopModalInputHandler();
+            InputManager.RaisePlacingCompleted(inputSource, gameObject);
+            InputManager.PopModalInputHandler();
 
             ToggleSpatialMesh();
             AttachWorldAnchor();

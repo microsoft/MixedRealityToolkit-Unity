@@ -92,10 +92,10 @@ namespace MixedRealityToolkit.InputModule.InputSources
                 }
             }
 
-            var newTouch = new TouchInputSource(string.Format("Touch {0}", touch.fingerId), touch, ray);
+            var newTouch = new TouchInputSource($"Touch {touch.fingerId}", touch, ray);
             activeTouches.Add(newTouch);
-            InputManager.Instance.RaiseSourceDetected(newTouch);
-            InputManager.Instance.RaiseHoldStarted(newTouch);
+            InputManager.RaiseSourceDetected(newTouch);
+            InputManager.RaiseHoldStarted(newTouch);
         }
 
         private void RemoveTouch(Touch touch)
@@ -108,25 +108,25 @@ namespace MixedRealityToolkit.InputModule.InputSources
                     {
                         if (knownTouch.Lifetime < K_CONTACT_EPSILON)
                         {
-                            InputManager.Instance.RaiseHoldCanceled(knownTouch);
+                            InputManager.RaiseHoldCanceled(knownTouch);
                         }
                         else if (knownTouch.Lifetime < MaxTapContactTime)
                         {
-                            InputManager.Instance.RaiseHoldCanceled(knownTouch);
-                            InputManager.Instance.RaiseInputClicked(knownTouch.Pointers[0], knownTouch.TouchData.tapCount);
+                            InputManager.RaiseHoldCanceled(knownTouch);
+                            InputManager.RaiseInputClicked(knownTouch.Pointers[0], knownTouch.TouchData.tapCount);
                         }
                         else
                         {
-                            InputManager.Instance.RaiseHoldCompleted(knownTouch);
+                            InputManager.RaiseHoldCompleted(knownTouch);
                         }
                     }
                     else
                     {
-                        InputManager.Instance.RaiseHoldCanceled(knownTouch);
+                        InputManager.RaiseHoldCanceled(knownTouch);
                     }
 
                     activeTouches.Remove(knownTouch);
-                    InputManager.Instance.RaiseSourceLost(knownTouch);
+                    InputManager.RaiseSourceLost(knownTouch);
                 }
             }
         }

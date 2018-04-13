@@ -70,7 +70,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
                     {
                         if (inputSource.SourceName.Equals(joystickNames[i]))
                         {
-                            InputManager.Instance.RaiseSourceLost(inputSource);
+                            InputManager.RaiseSourceLost(inputSource);
                             InputSources.Remove(inputSource);
                         }
                     }
@@ -95,7 +95,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
                 {
                     var inputSource = new GenericInputSource(joystickNames[i], SupportedInputInfo.Thumbstick);
                     InputSources.Add(inputSource);
-                    InputManager.Instance.RaiseSourceDetected(inputSource);
+                    InputManager.RaiseSourceDetected(inputSource);
                 }
                 // Joysticks with pointers
                 else if (joystickNames[i].Equals(OculusRemote) ||
@@ -114,7 +114,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
                         SupportedInputInfo.Touch |
                         SupportedInputInfo.Thumbstick);
                     InputSources.Add(inputSource);
-                    InputManager.Instance.RaiseSourceDetected(inputSource);
+                    InputManager.RaiseSourceDetected(inputSource);
                 }
                 else
                 {

@@ -14,15 +14,15 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interactions
         {
             if (IsGlobalListener)
             {
-                InputManager.Instance.AddGlobalListener(gameObject);
+                InputManager.AddGlobalListener(gameObject);
             }
         }
 
         protected virtual void OnDisable()
         {
-            if (IsGlobalListener && InputManager.Instance != null)
+            if (IsGlobalListener)
             {
-                InputManager.Instance.RemoveGlobalListener(gameObject);
+                InputManager.RemoveGlobalListener(gameObject);
             }
         }
 
