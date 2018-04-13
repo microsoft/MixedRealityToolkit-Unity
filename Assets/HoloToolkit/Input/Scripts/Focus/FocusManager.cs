@@ -343,25 +343,20 @@ namespace HoloToolkit.Unity.InputModule
 
         public GameObject TryGetFocusedObject(BaseEventData eventData)
         {
-            FocusDetails? details = TryGetFocusDetails(eventData);
-
-            if (details == null)
-            {
-                return null;
-            }
-
             IPointingSource pointingSource;
             TryGetPointingSource(eventData, out pointingSource);
             PointerInputEventData pointerInputEventData = GetSpecificPointerEventData(pointingSource);
 
             Debug.Assert(pointerInputEventData != null);
-            pointerInputEventData.selectedObject = details.Value.Object;
-
-            return details.Value.Object;
+            return pointerInputEventData.selectedObject;
         }
 
         public bool TryGetPointingSource(BaseEventData eventData, out IPointingSource pointingSource)
         {
+            // pre-initialize pointingSource to null, assuming we will return false
+            pointingSource = null;
+            if (eventData == null) { return false; }
+
             for (int i = 0; i < pointers.Count; i++)
             {
                 if (pointers[i].PointingSource.OwnsInput(eventData))
@@ -371,7 +366,6 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            pointingSource = null;
             return false;
         }
 
@@ -440,7 +434,11 @@ namespace HoloToolkit.Unity.InputModule
         public PointerInputEventData GetSpecificPointerEventData(IPointingSource pointer)
         {
             PointerData pointerEventData;
-            return GetPointerData(pointer, out pointerEventData) ? pointerEventData.UnityUIPointerData : null;
+
+            if (!GetPointerData(pointer, out pointerEventData)) { return null; }
+
+            pointerEventData.UnityUIPointerData.selectedObject = GetFocusedObject(pointer);
+            return pointerEventData.UnityUIPointerData;
         }
 
         public float GetPointingExtent(IPointingSource pointingSource)
