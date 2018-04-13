@@ -12,7 +12,7 @@ namespace MixedRealityToolkit.Examples.InputModule
     /// Test MonoBehaviour that simply prints out a message very time a supported event is received from the input module.
     /// This is used to make sure that the input module routes events appropriately to game objects.
     /// </summary>
-    public class InputTest : MonoBehaviour, IInputHandler, IInputClickHandler, IFocusable, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler, IPointerClickHandler
+    public class InputTest : MonoBehaviour, IInputHandler, IInputClickHandler, IFocusable, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler, IPointerClickHandler, IPlacementHandler
     {
         [Tooltip("Set to true if gestures update (ManipulationUpdated, NavigationUpdated) should be logged. Note that this can impact performance.")]
         public bool LogGesturesUpdateEvents = false;
@@ -181,6 +181,26 @@ namespace MixedRealityToolkit.Examples.InputModule
                 eventData.NormalizedOffset.x,
                 eventData.NormalizedOffset.y,
                 eventData.NormalizedOffset.z);
+
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+        }
+
+        public void OnPlacingStarted(PlacementEventData eventData)
+        {
+            Debug.LogFormat("OnPlacingStarted\r\nSource: {0}  SourceId: {1}  Object: {2}",
+                eventData.InputSource,
+                eventData.SourceId,
+                eventData.ObjectBeingPlaced.name);
+
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+        }
+
+        public void OnPlacingCompleted(PlacementEventData eventData)
+        {
+            Debug.LogFormat("OnPlacingCompleted\r\nSource: {0}  SourceId: {1}  Object: {2}",
+                eventData.InputSource,
+                eventData.SourceId,
+                eventData.ObjectBeingPlaced.name);
 
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }

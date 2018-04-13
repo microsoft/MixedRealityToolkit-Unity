@@ -17,13 +17,8 @@ namespace MixedRealityToolkit.Sharing
     /// </summary>
     public class SyncSettings
     {
-#if UNITY_WSA && !UNITY_EDITOR
         private readonly Dictionary<TypeInfo, string> dataModelTypeToName = new Dictionary<TypeInfo, string>();
         private readonly Dictionary<string, TypeInfo> dataModelNameToType = new Dictionary<string, TypeInfo>();
-#else
-        private readonly Dictionary<Type, string> dataModelTypeToName = new Dictionary<Type, string>();
-        private readonly Dictionary<string, Type> dataModelNameToType = new Dictionary<string, Type>();
-#endif
 
         private static SyncSettings instance;
         public static SyncSettings Instance
@@ -46,15 +41,9 @@ namespace MixedRealityToolkit.Sharing
             return retVal;
         }
 
-#if UNITY_WSA && !UNITY_EDITOR
         public TypeInfo GetDataModelType(string name)
         {
             TypeInfo retVal;
-#else
-        public Type GetDataModelType(string name)
-        {
-            Type retVal;
-#endif
 
             dataModelNameToType.TryGetValue(name, out retVal);
             return retVal;
@@ -74,11 +63,7 @@ namespace MixedRealityToolkit.Sharing
                     continue;
                 }
 
-#if UNITY_WSA && !UNITY_EDITOR
                 foreach (TypeInfo type in assembly.GetTypeInfos())
-#else
-                foreach (Type type in assembly.GetTypes())
-#endif
                 {
                     object customAttribute = type.GetCustomAttributes(typeof(SyncDataClassAttribute), false).FirstOrDefault();
                     SyncDataClassAttribute attribute = customAttribute as SyncDataClassAttribute;
@@ -102,14 +87,10 @@ namespace MixedRealityToolkit.Sharing
 
         private static Assembly[] GetAssemblies()
         {
-#if UNITY_WSA && !UNITY_EDITOR
             return new Assembly[]
             {
                 typeof(SyncSettings).GetTypeInfo().Assembly
             };
-#else
-            return AppDomain.CurrentDomain.GetAssemblies();
-#endif
         }
     }
 }
