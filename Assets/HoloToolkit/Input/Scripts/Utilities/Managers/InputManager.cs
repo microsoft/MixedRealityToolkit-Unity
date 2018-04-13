@@ -435,10 +435,10 @@ namespace HoloToolkit.Unity.InputModule
                 pointerInputEventData.InputSource = source;
                 pointerInputEventData.SourceId = sourceId;
 
-                if (inputEventData.selectedObject != null)
+                if (pointerInputEventData.selectedObject != null)
                 {
-                    ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerUpHandler);
-                    ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerClickHandler);
+                    ExecuteEvents.ExecuteHierarchy(pointerInputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerUpHandler);
+                    ExecuteEvents.ExecuteHierarchy(pointerInputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerClickHandler);
                 }
 
                 pointerInputEventData.Clear();
@@ -477,9 +477,9 @@ namespace HoloToolkit.Unity.InputModule
                 pointerInputEventData.pressPosition = pointerInputEventData.position;
                 pointerInputEventData.pointerPressRaycast = pointerInputEventData.pointerCurrentRaycast;
 
-                if (inputEventData.selectedObject != null)
+                if (pointerInputEventData.selectedObject != null)
                 {
-                    ExecuteEvents.ExecuteHierarchy(inputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerDownHandler);
+                    ExecuteEvents.ExecuteHierarchy(pointerInputEventData.selectedObject, pointerInputEventData, ExecuteEvents.pointerDownHandler);
                 }
             }
         }
