@@ -72,6 +72,13 @@ If you've never cloned a repo before then you should consider using the GitHub d
 
 Open or create your project in Unity.
 
+Enable .NET 4.x via `Edit -> Project Settings -> Player -> Other Settings` and update the Runtime Scripting Version to the latest.
+(Depending on your version of the editor, it could be .NET Core 2).
+
+![Enable .NET 4.x Support](/External/ReadMeImages/RuntimeScriptingSettings.PNG "Enable .NET 4.x Support")
+
+> Important! failing to enable this setting will prevent the package from working correctly.
+
 Then import the MRTK asset using `Assets -> Import Package -> Custom Package…` [Navigate to the package 
 you have either downloaded or exported above].
 
@@ -125,7 +132,7 @@ Alternatively, you can setup your scene manually as follows:
 
 5. Add the `DefaultCursor.prefab` (found under MixedRealityToolkit/Input/Prefabs/Cursor) and add that Object to the **InputManager** Cursor parameter (to avoid it being searched for on scene start) 
 
-> **For Hololens**
+> **For HoloLens**
 > Optionally, if you wish to enable spatial mapping in your scene for HoloLens, you can add the `SpatialMapping.prefab` (found under MixedRealityToolkit/SpatialMapping/Prefabs) to your 'Managers' object.  Be aware that you must also enable `Spatial Perception` Capabilities: `Edit/Project Settings/Player -> Inspector -> Publishing Settings/Capabilities`.
 
 # 5 Building your project 
