@@ -353,6 +353,10 @@ namespace HoloToolkit.Unity.InputModule
 
         public bool TryGetPointingSource(BaseEventData eventData, out IPointingSource pointingSource)
         {
+            // pre-initialize pointingSource to null, assuming we will return false
+            pointingSource = null;
+            if (eventData == null) { return false; }
+
             for (int i = 0; i < pointers.Count; i++)
             {
                 if (pointers[i].PointingSource.OwnsInput(eventData))
@@ -362,7 +366,6 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 
-            pointingSource = null;
             return false;
         }
 
