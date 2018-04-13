@@ -733,7 +733,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
             InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
 #else
-            RecognizerStart = RecognizerStartBehavior.ManualStart;
+            recognizerStart = RecognizerStartBehavior.ManualStart;
 #endif
         }
 
