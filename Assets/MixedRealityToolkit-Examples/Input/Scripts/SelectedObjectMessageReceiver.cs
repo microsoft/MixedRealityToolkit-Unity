@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace MixedRealityToolkit.Examples.InputModule
     /// This particular implementation controls object appearance by changing its color when selected.
     /// </summary>
     [RequireComponent(typeof(Renderer))]
-    public class SelectedObjectMessageReceiver : MonoBehaviour, IInputClickHandler
+    public class SelectedObjectMessageReceiver : MonoBehaviour, IPointerHandler
     {
         [Tooltip("Object color changes to this when selected.")]
         public Color SelectedColor = Color.red;
@@ -40,10 +41,15 @@ namespace MixedRealityToolkit.Examples.InputModule
             DestroyImmediate(cachedMaterial);
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
             OnClearSelection();
-            if (eventData.selectedObject == gameObject)
+
+            if (FocusManager.Instance.GetFocusedObject(eventData) == gameObject)
             {
                 OnSelectObject();
             }

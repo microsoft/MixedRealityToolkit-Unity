@@ -7,12 +7,13 @@ using UnityEngine.EventSystems;
 
 namespace MixedRealityToolkit.InputModule.EventData
 {
-    public class DictationEventData : InputEventData
+    public class DictationEventData : BaseInputEventData
     {
         /// <summary>
         /// String result of the current dictation.
         /// </summary>
         public string DictationResult { get; private set; }
+
         /// <summary>
         /// Audio Clip of the last Dictation recording Session.
         /// </summary>
@@ -20,9 +21,9 @@ namespace MixedRealityToolkit.InputModule.EventData
 
         public DictationEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, string dictationResult, AudioClip dictationAudioClip = null)
+        public void Initialize(IInputSource inputSource, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
         {
-            BaseInitialize(inputSource, sourceId, tag);
+            BaseInitialize(inputSource, tags);
             DictationResult = dictationResult;
             DictationAudioClip = dictationAudioClip;
         }

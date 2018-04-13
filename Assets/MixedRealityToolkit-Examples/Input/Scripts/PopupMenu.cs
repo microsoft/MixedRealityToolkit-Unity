@@ -115,7 +115,7 @@ namespace MixedRealityToolkit.Examples.InputModule
             cancelledCallback = null;
             deactivatedCallback = null;
 
-            if (cancelButton)
+            if (cancelButton != null)
             {
                 cancelButton.Selected = false;
             }
@@ -150,6 +150,10 @@ namespace MixedRealityToolkit.Examples.InputModule
 
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
+
+        void IInputHandler.OnInputPressed(InputPressedEventData eventData) { }
+
+        void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData) { }
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {

@@ -20,25 +20,20 @@ namespace MixedRealityToolkit.Examples.InputModule
             InputManager.Instance.PushFallbackInputHandler(gameObject);
         }
 
-        void IInputHandler.OnInputDown(InputEventData eventData)
-        {
-            // Nothing.
-        }
-
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            if (eventData.PressType == InteractionSourcePressInfo.Select)
+            FocusDetails focusDetails;
+            if (FocusManager.Instance.TryGetFocusDetails(eventData, out focusDetails))
             {
-                FocusDetails? focusDetails = FocusManager.Instance.TryGetFocusDetails(eventData);
-
-                if (focusDetails != null)
-                {
-                    particles.transform.position = focusDetails.Value.Point;
-                    particles.Emit(60);
-
-                    eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
-                }
+                particles.transform.position = focusDetails.Point;
+                particles.Emit(60);
             }
         }
+
+        void IInputHandler.OnInputDown(InputEventData eventData) { }
+
+        void IInputHandler.OnInputPressed(InputPressedEventData eventData) { }
+
+        void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData) { }
     }
 }

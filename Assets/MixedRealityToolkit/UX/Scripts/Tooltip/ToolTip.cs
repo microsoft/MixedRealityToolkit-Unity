@@ -1,7 +1,6 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using System;
 using UnityEngine;
 using MixedRealityToolkit.UX.Buttons;
@@ -171,25 +170,24 @@ namespace MixedRealityToolkit.UX.ToolTips
                 switch (masterTipState)
                 {
                     case TipDisplayModeEnum.None:
-                    default:
                         // Use our group state
                         switch (groupTipState)
                         {
                             case TipDisplayModeEnum.None:
-                            default:
                                 // Use our local State
                                 switch (tipState)
                                 {
                                     case TipDisplayModeEnum.None:
                                     case TipDisplayModeEnum.Off:
-                                    default:
                                         return false;
 
                                     case TipDisplayModeEnum.On:
                                         return true;
 
                                     case TipDisplayModeEnum.OnFocus:
-                                        return HasFocus;
+                                        return CheckFocus;
+                                    default:
+                                        throw new ArgumentOutOfRangeException();
                                 }
 
                             case TipDisplayModeEnum.On:
@@ -199,7 +197,10 @@ namespace MixedRealityToolkit.UX.ToolTips
                                 return false;
 
                             case TipDisplayModeEnum.OnFocus:
-                                return HasFocus;
+                                return CheckFocus;
+
+                            default:
+                                throw new ArgumentOutOfRangeException();
                         }
 
                     case TipDisplayModeEnum.On:
@@ -209,12 +210,15 @@ namespace MixedRealityToolkit.UX.ToolTips
                         return false;
 
                     case TipDisplayModeEnum.OnFocus:
-                        return HasFocus;
+                        return CheckFocus;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
         }
 
-        public bool HasFocus
+        private bool CheckFocus
         {
             get
             {
@@ -223,11 +227,14 @@ namespace MixedRealityToolkit.UX.ToolTips
                     case Buttons.Enums.ButtonStateEnum.Targeted:
                     case Buttons.Enums.ButtonStateEnum.ObservationTargeted:
                     case Buttons.Enums.ButtonStateEnum.Pressed:
-                        return true;
-
+                        FocusEnabled = true;
+                        break;
                     default:
-                        return false;
+                        FocusEnabled = false;
+                        break;
                 }
+
+                return HasFocus;
             }
         }
 
@@ -379,7 +386,8 @@ namespace MixedRealityToolkit.UX.ToolTips
 
         protected Vector3[] localAttachPointPositions;
 
-        protected virtual void OnEnable() {
+        protected virtual void OnEnable()
+        {
 
             // Get our line if it exists
             if (toolTipLine == null)
@@ -393,7 +401,8 @@ namespace MixedRealityToolkit.UX.ToolTips
             ShowConnector = showConnector;
         }
 
-        protected virtual void Update() {
+        protected virtual void Update()
+        {
             // Enable / disable our line if it exists
             if (toolTipLine != null)
             {
@@ -402,15 +411,19 @@ namespace MixedRealityToolkit.UX.ToolTips
                 toolTipLine.LastPoint = AttachPointPosition;
             }
 
-            if (IsOn) {
+            if (IsOn)
+            {
                 contentParent.SetActive(true);
                 localAttachPoint = ToolTipUtility.FindClosestAttachPointToAnchor(anchor.transform, contentParent.transform, localAttachPointPositions, attachPointType);
-            } else {
+            }
+            else
+            {
                 contentParent.SetActive(false);
             }
         }
 
-        protected virtual void RefreshLocalContent() {
+        protected virtual void RefreshLocalContent()
+        {
 
             // Set the scale of the pivot
             contentParent.transform.localScale = Vector3.one * contentScale;
@@ -418,7 +431,8 @@ namespace MixedRealityToolkit.UX.ToolTips
             // Set the content using a text mesh by default
             // This function can be overridden for tooltips that use Unity UI
             TextMesh text = label.GetComponent<TextMesh>();
-            if (text != null && !string.IsNullOrEmpty(toolTipText)) {
+            if (text != null && !string.IsNullOrEmpty(toolTipText))
+            {
                 text.fontSize = fontSize;
                 text.text = toolTipText.Trim();
                 text.lineSpacing = 1;
@@ -434,28 +448,35 @@ namespace MixedRealityToolkit.UX.ToolTips
             localAttachPoint = ToolTipUtility.FindClosestAttachPointToAnchor(anchor.transform, contentParent.transform, localAttachPointPositions, attachPointType);
         }
 
-        protected virtual bool EnforceHeirarchy() {
+        protected virtual bool EnforceHeirarchy()
+        {
 
             Transform pivotTransform = transform.Find("Pivot");
             Transform anchorTransform = transform.Find("Anchor");
-            if (pivotTransform == null || anchorTransform == null) {
-                if (Application.isPlaying) {
+            if (pivotTransform == null || anchorTransform == null)
+            {
+                if (Application.isPlaying)
+                {
                     Debug.LogError("Found error in heirarchy, disabling.");
                     enabled = false;
                 }
                 return false;
             }
             Transform contentParentTransform = pivotTransform.Find("ContentParent");
-            if (contentParentTransform == null) {
-                if (Application.isPlaying) {
+            if (contentParentTransform == null)
+            {
+                if (Application.isPlaying)
+                {
                     Debug.LogError("Found error in heirarchy, disabling.");
                     enabled = false;
                 }
                 return false;
             }
             Transform labelTransform = contentParentTransform.Find("Label");
-            if (labelTransform == null) {
-                if (Application.isPlaying) {
+            if (labelTransform == null)
+            {
+                if (Application.isPlaying)
+                {
                     Debug.LogError("Found error in heirarchy, disabling.");
                     enabled = false;
                 }
@@ -478,13 +499,15 @@ namespace MixedRealityToolkit.UX.ToolTips
             return true;
         }
 
-        #if UNITY_EDITOR
-        void OnDrawGizmos() {
+#if UNITY_EDITOR
+        void OnDrawGizmos()
+        {
 
             if (Application.isPlaying)
                 return;
 
-            if (!EnforceHeirarchy()) {
+            if (!EnforceHeirarchy())
+            {
                 return;
             }
 
@@ -496,6 +519,6 @@ namespace MixedRealityToolkit.UX.ToolTips
                 toolTipLine.LastPoint = AttachPointPosition;
             }
         }
-        #endif
+#endif
     }
 }

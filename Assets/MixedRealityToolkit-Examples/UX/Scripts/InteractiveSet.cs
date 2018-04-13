@@ -81,7 +81,7 @@ namespace MixedRealityToolkit.Examples.UX
                 return;
             }
 
-            Interactives[index].OnInputClicked(null);
+            Interactives[index].OnPointerClicked(null);
         }
 
         /// <summary>

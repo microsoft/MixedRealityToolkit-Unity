@@ -4,7 +4,7 @@
 using MixedRealityToolkit.Common;
 using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.InputModule;
-using MixedRealityToolkit.InputModule.Cursor;
+using MixedRealityToolkit.InputModule.Cursors;
 using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.Utilities;
 using UnityEditor;
@@ -32,14 +32,6 @@ namespace MixedRealityToolkit.Build
         /// </summary>
         private const string InputSystemPrefabGUID = "3eddd1c29199313478dd3f912bfab2ab";
 
-        /// <summary>
-        /// Can be found in the meta file of the camera prefab.  We use the GUID in case people move the toolkit folders &amp; assets around in their own projects.
-        /// <remarks>Currently points to the DefaultCursor.prefab</remarks>
-        /// </summary>
-        private const string DefaultCursorPrefabGUID = "a611e772ef8ddf64d8106a9cbb70f31c";
-
-        #region Nested Types
-
         public enum SceneSetting
         {
             AddMixedRealityCamera,
@@ -48,8 +40,6 @@ namespace MixedRealityToolkit.Build
             AddDefaultCursor,
             UpdateCanvases
         }
-
-        #endregion // Nested Types
 
         #region Overrides / Event Handlers
 
@@ -67,7 +57,6 @@ namespace MixedRealityToolkit.Build
 
             if (Values[SceneSetting.CameraToOrigin])
             {
-
                 var mainCamera = CameraCache.Refresh(Camera.main);
 
                 if (mainCamera == null)
@@ -120,19 +109,6 @@ namespace MixedRealityToolkit.Build
                 }
             }
 
-            if (Values[SceneSetting.AddDefaultCursor])
-            {
-                var cursors = FindObjectsOfType<BaseCursor>();
-                foreach (var cursor in cursors)
-                {
-                    DestroyImmediate(cursor.gameObject.GetParentRoot());
-                }
-
-                PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(DefaultCursorPrefabGUID)));
-
-                FindObjectOfType<InputManager>().GetComponent<SimpleSinglePointerSelector>().Cursor = FindObjectOfType<BaseCursor>();
-            }
-
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
 
             Close();
@@ -146,9 +122,7 @@ namespace MixedRealityToolkit.Build
             }
         }
 
-        protected override void OnGuiChanged()
-        {
-        }
+        protected override void OnGuiChanged() { }
 
         protected override void LoadStrings()
         {
@@ -195,6 +169,7 @@ namespace MixedRealityToolkit.Build
             minSize = new Vector2(350, 250);
             maxSize = minSize;
         }
-        #endregion // Overrides / Event Handlers
+
+        #endregion Overrides / Event Handlers
     }
 }

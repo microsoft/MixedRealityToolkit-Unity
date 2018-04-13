@@ -60,7 +60,7 @@ namespace MixedRealityToolkit.Examples.Sharing
         /// </summary>
         public void DeleteSyncObject()
         {
-            GameObject hitObject = GazeManager.Instance.HitObject;
+            GameObject hitObject = GazeManager.GazeTarget;
             if (hitObject != null)
             {
                 var syncModelAccessor = hitObject.GetComponent<DefaultSyncModelAccessor>();

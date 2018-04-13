@@ -47,8 +47,6 @@ namespace MixedRealityToolkit.UX.Progress
         private IndicatorStyleEnum defaultIndicatorStyle = IndicatorStyleEnum.AnimatedOrbs;
         [SerializeField]
         private ProgressStyleEnum defaultProgressStyle = ProgressStyleEnum.Percentage;
-        [SerializeField]
-        private MessageStyleEnum defaultMessageStyle = MessageStyleEnum.Visible;
 
         // The default prefab used by the 'Prefab' indicator style
         [SerializeField]

@@ -1,13 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.Focus;
+using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.Examples.UX.Controls;
+using MixedRealityToolkit.Examples.UX.Widgets;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Collections.Generic;
-using MixedRealityToolkit.InputModule.InputHandlers;
-using MixedRealityToolkit.Examples.UX.Widgets;
-using MixedRealityToolkit.InputModule.EventData;
-using MixedRealityToolkit.Examples.UX.Controls;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
@@ -22,20 +23,14 @@ namespace MixedRealityToolkit.Examples.UX
     /// InteractiveEffects are behaviors that listen for updates from Interactive, which allows for visual feedback to be customized and placed on
     /// individual elements of the Interactive GameObject
     /// </summary>
-    public class Interactive : MonoBehaviour, IInputClickHandler, IFocusable, IInputHandler
+    public class Interactive : FocusTarget, IPointerHandler, IInputHandler
     {
-
         public GameObject ParentObject;
 
         /// <summary>
         /// Should the button listen to input?
         /// </summary>
         public bool IsEnabled = true;
-
-        /// <summary>
-        /// Does the GameObject currently have focus?
-        /// </summary>
-        public bool HasGaze { get; protected set; }
 
         /// <summary>
         /// Is the Tap currently in the down state?
@@ -108,7 +103,7 @@ namespace MixedRealityToolkit.Examples.UX
 
         protected List<InteractiveWidget> mInteractiveWidgets = new List<InteractiveWidget>();
 
-        protected virtual void Awake()
+        private void Awake()
         {
             if (ParentObject == null)
             {
@@ -154,10 +149,11 @@ namespace MixedRealityToolkit.Examples.UX
             UpdateEffects();
         }
 
-        /// <summary>
-        /// An OnTap event occurred
-        /// </summary>
-        public virtual void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public virtual void OnPointerClicked(ClickEventData eventData)
         {
             if (!IsEnabled)
             {
@@ -180,14 +176,15 @@ namespace MixedRealityToolkit.Examples.UX
         /// <summary>
         /// The gameObject received gaze
         /// </summary>
-        public virtual void OnFocusEnter()
+        /// <param name="eventData"></param>
+        public override void OnFocusEnter(FocusEventData eventData)
         {
+            base.OnFocusEnter(eventData);
+
             if (!IsEnabled)
             {
                 return;
             }
-
-            HasGaze = true;
 
             SetKeywordListener(true);
 
@@ -197,9 +194,11 @@ namespace MixedRealityToolkit.Examples.UX
         /// <summary>
         /// The gameObject no longer has gaze
         /// </summary>
-        public virtual void OnFocusExit()
+        /// <param name="eventData"></param>
+        public override void OnFocusExit(FocusEventData eventData)
         {
-            HasGaze = false;
+            base.OnFocusEnter(eventData);
+
             EndHoldDetection();
             mRollOffTimer = 0;
             mCheckRollOff = true;
@@ -269,7 +268,7 @@ namespace MixedRealityToolkit.Examples.UX
         /// </summary>
         public virtual void OnInputDown(InputEventData eventData)
         {
-            if (!HasGaze)
+            if (!HasFocus)
             {
                 return;
             }
@@ -286,6 +285,10 @@ namespace MixedRealityToolkit.Examples.UX
 
             OnDownEvent.Invoke();
         }
+
+        public virtual void OnInputPressed(InputPressedEventData eventData) { }
+
+        public virtual void OnInputPositionChanged(InputPositionEventData eventData) { }
 
         /// <summary>
         /// All tab, hold, and gesture events are completed
@@ -401,11 +404,11 @@ namespace MixedRealityToolkit.Examples.UX
         {
 
             // Check to make sure the recognized keyword matches, then invoke the corresponding method.
-            if (args.text == Keyword && (!KeywordRequiresGaze || HasGaze) && IsEnabled)
+            if (args.text == Keyword && (!KeywordRequiresGaze || HasFocus) && IsEnabled)
             {
                 if (mKeywordDictionary == null)
                 {
-                    OnInputClicked(null);
+                    OnPointerClicked(null);
                 }
             }
         }
@@ -421,7 +424,7 @@ namespace MixedRealityToolkit.Examples.UX
                 // all states
                 if (IsSelected)
                 {
-                    if (HasGaze)
+                    if (HasFocus)
                     {
                         if (HasDown)
                         {
@@ -446,7 +449,7 @@ namespace MixedRealityToolkit.Examples.UX
                 }
                 else
                 {
-                    if (HasGaze)
+                    if (HasFocus)
                     {
                         if (HasDown)
                         {
@@ -542,7 +545,7 @@ namespace MixedRealityToolkit.Examples.UX
 
         protected virtual void OnDisable()
         {
-            OnFocusExit();
+            OnFocusExit(null);
         }
     }
 }

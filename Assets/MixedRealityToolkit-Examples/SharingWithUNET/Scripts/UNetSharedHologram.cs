@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 
 namespace MixedRealityToolkit.Examples.SharingWithUNET
 {
-    public class UNetSharedHologram : NetworkBehaviour, IInputClickHandler
+    public class UNetSharedHologram : NetworkBehaviour, IPointerHandler
     {
         /// <summary>
         /// The position relative to the shared world anchor.
@@ -102,7 +102,11 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
             return retval;
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
             if (isOpaque == false)
             {

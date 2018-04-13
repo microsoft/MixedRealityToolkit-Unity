@@ -19,9 +19,9 @@ namespace MixedRealityToolkit.InputModule.EventData
 
         public PlacementEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, GameObject objectBeingPlaced)
+        public void Initialize(IInputSource inputSource, object[] tags, GameObject objectBeingPlaced)
         {
-            BaseInitialize(inputSource, sourceId, tag);
+            BaseInitialize(inputSource, tags);
             ObjectBeingPlaced = objectBeingPlaced;
         }
     }

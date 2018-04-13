@@ -10,7 +10,7 @@ namespace MixedRealityToolkit.Utilities
     /// <summary>
     /// Toggles if the debug window is visible or not.
     /// </summary>
-    public class ToggleDebugWindow : MonoBehaviour, IInputClickHandler
+    public class ToggleDebugWindow : MonoBehaviour, IPointerHandler
     {
         /// <summary>
         /// Current state of the debug window.
@@ -27,11 +27,15 @@ namespace MixedRealityToolkit.Utilities
             UpdateChildren();
         }
 
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
         /// <summary>
         /// When the user clicks this control, we toggle the state of the DebugWindow
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerClicked(ClickEventData eventData)
         {
             debugEnabled = !debugEnabled;
             UpdateChildren();

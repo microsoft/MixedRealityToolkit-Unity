@@ -13,5 +13,7 @@ namespace MixedRealityToolkit.InputModule.InputHandlers
     {
         void OnSourceDetected(SourceStateEventData eventData);
         void OnSourceLost(SourceStateEventData eventData);
+        void OnSourcePositionChanged(SourcePositionEventData eventData);
+        void OnSourceRotationChanged(SourceRotationEventData eventData);
     }
 }

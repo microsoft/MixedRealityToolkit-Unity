@@ -5,7 +5,7 @@ using MixedRealityToolkit.Common;
 using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.InputHandlers;
-using MixedRealityToolkit.InputModule.InputSources;
+using MixedRealityToolkit.InputModule.Utilities;
 using MixedRealityToolkit.SpatialMapping;
 using MixedRealityToolkit.SpatialUnderstanding;
 using System;
@@ -19,7 +19,7 @@ using UnityEngine.Windows.Speech;
 
 namespace MixedRealityToolkit.Examples.SpatialUnderstanding
 {
-    public class AppState : Singleton<AppState>, ISourceStateHandler, IInputClickHandler
+    public class AppState : Singleton<AppState>, ISourceStateHandler, IPointerHandler
     {
         // Consts
         public float kMinAreaForStats = 5.0f;
@@ -67,7 +67,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstanding
             {
                 // Only allow this when we are actually scanning
                 if ((SpatialUnderstandingManager.Instance.ScanState != SpatialUnderstandingManager.ScanStates.Scanning) ||
-                    (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding))
+                   (!SpatialUnderstandingManager.Instance.AllowSpatialUnderstanding))
                 {
                     return false;
                 }
@@ -205,7 +205,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstanding
         // Functions
         private void Start()
         {
-            // Default the scene & the MixedRealityToolkit objects to the camera
+            // Default the scene & the HoloToolkit objects to the camera
             Vector3 sceneOrigin = CameraCache.Main.transform.position;
             Parent_Scene.transform.position = sceneOrigin;
             MappingObserver.SetObserverOrigin(sceneOrigin);
@@ -229,7 +229,7 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstanding
             InputManager.Instance.RemoveGlobalListener(gameObject);
         }
 
-        private void Update_DebugDisplay(float deltaTime)
+        private void Update_DebugDisplay()
         {
             // Basic checks
             if (DebugDisplay == null)
@@ -246,13 +246,11 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstanding
         private void Update_KeyboardInput(float deltaTime)
         {
             // Toggle SurfaceMapping & CustomUnderstandingMesh visibility
-            if (Input.GetKeyDown(KeyCode.BackQuote) &&
-                (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift)))
+            if (Input.GetKeyDown(KeyCode.BackQuote) && (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift)))
             {
                 ToggleScannedMesh();
             }
-            else if (Input.GetKeyDown(KeyCode.BackQuote) &&
-                     (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+            else if (Input.GetKeyDown(KeyCode.BackQuote) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
             {
                 ToggleProcessedMesh();
             }
@@ -272,28 +270,36 @@ namespace MixedRealityToolkit.Examples.SpatialUnderstanding
 
         private void Update()
         {
-            Update_DebugDisplay(Time.deltaTime);
+            Update_DebugDisplay();
             Update_KeyboardInput(Time.deltaTime);
         }
 
-        public void OnSourceDetected(SourceStateEventData eventData)
+        void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
         {
             // If the source has positional info and there is currently no visible source
-            if (eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.GripPosition))
+            if (eventData.InputSource.SupportsInputInfo(SupportedInputInfo.GripPosition))
             {
                 trackedHandsCount++;
             }
         }
 
-        public void OnSourceLost(SourceStateEventData eventData)
+        void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.GripPosition))
+            if (eventData.InputSource.SupportsInputInfo(SupportedInputInfo.GripPosition))
             {
                 trackedHandsCount--;
             }
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        void ISourceStateHandler.OnSourcePositionChanged(SourcePositionEventData eventData) { }
+
+        void ISourceStateHandler.OnSourceRotationChanged(SourceRotationEventData eventData) { }
+
+        void IPointerHandler.OnPointerUp(ClickEventData eventData) { }
+
+        void IPointerHandler.OnPointerDown(ClickEventData eventData) { }
+
+        void IPointerHandler.OnPointerClicked(ClickEventData eventData)
         {
             if ((SpatialUnderstandingManager.Instance.ScanState == SpatialUnderstandingManager.ScanStates.Scanning) &&
                 !SpatialUnderstandingManager.Instance.ScanStatsReportStillWorking)

@@ -206,7 +206,7 @@ namespace MixedRealityToolkit.UX.AppBarControl
             }
         }
 
-        protected override void InputClicked(GameObject obj, InputClickedEventData eventData)
+        protected override void InputClicked(GameObject obj, ClickEventData eventData)
         {
             if (Time.time < lastTimeTapped + coolDownTime)
             {

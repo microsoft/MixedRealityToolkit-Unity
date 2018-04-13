@@ -8,6 +8,7 @@ using MixedRealityToolkit.UX.BoundingBoxes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MixedRealityToolkit.InputModule.Utilities.Interactions;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -117,9 +118,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             // Update positions of all hands
             foreach (var key in m_handsPressedInputSourceMap.Keys)
             {
+                Vector3 inputPosition;
                 var inputSource = m_handsPressedInputSourceMap[key];
-                Vector3 inputPosition = Vector3.zero;
-                if (inputSource.TryGetGripPosition(key, out inputPosition))
+                if (InteractionInputSources.Instance.TryGetGripPosition(inputSource.SourceId, out inputPosition))
                 {
                     m_handsPressedLocationsMap[key] = inputPosition;
                 }
@@ -159,8 +160,8 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
         private Vector3 GetInputPosition(InputEventData eventData)
         {
-            Vector3 result = Vector3.zero;
-            eventData.InputSource.TryGetGripPosition(eventData.SourceId, out result);
+            Vector3 result;
+            InteractionInputSources.Instance.TryGetGripPosition(eventData.SourceId, out result);
             return result;
         }
 
@@ -172,6 +173,10 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             UpdateStateMachine();
             eventData.Use();
         }
+
+        public void OnInputPressed(InputPressedEventData eventData) { }
+
+        public void OnInputPositionChanged(InputPositionEventData eventData) { }
 
         public void OnInputUp(InputEventData eventData)
         {
@@ -203,6 +208,10 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             UpdateStateMachine();
             eventData.Use();
         }
+
+        public void OnSourcePositionChanged(SourcePositionEventData eventData) { }
+
+        public void OnSourceRotationChanged(SourceRotationEventData eventData) { }
 
         private void UpdateStateMachine()
         {
@@ -332,7 +341,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             }
             if ((currentState & State.Rotating) > 0)
             {
-                targetRotation = m_rotateLogic.Update(m_handsPressedLocationsMap, HostTransform, targetRotation);
+                targetRotation = m_rotateLogic.Update(m_handsPressedLocationsMap, targetRotation);
             }
             if ((currentState & State.Scaling) > 0)
             {
@@ -365,7 +374,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         {
             if ((newState & State.Rotating) > 0)
             {
-                m_rotateLogic.Setup(m_handsPressedLocationsMap, HostTransform);
+                m_rotateLogic.Setup(m_handsPressedLocationsMap);
             }
             if ((newState & State.Moving) > 0)
             {

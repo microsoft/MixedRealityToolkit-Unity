@@ -1,16 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.Focus;
 using UnityEngine;
 
 namespace MixedRealityToolkit.Examples.InputModule
 {
     /// <summary>
-    /// This class implements IFocusable to respond to gaze changes.
+    /// This class implements IFocusHandler to respond to gaze changes.
     /// It highlights the object being gazed at.
     /// </summary>
-    public class GazeResponder : MonoBehaviour, IFocusable
+    public class GazeResponder : FocusTarget
     {
         private Material[] defaultMaterials;
 
@@ -19,8 +20,18 @@ namespace MixedRealityToolkit.Examples.InputModule
             defaultMaterials = GetComponent<Renderer>().materials;
         }
 
-        public void OnFocusEnter()
+        private void OnDestroy()
         {
+            foreach (var material in defaultMaterials)
+            {
+                Destroy(material);
+            }
+        }
+
+        public override void OnFocusEnter(FocusEventData eventData)
+        {
+            base.OnFocusEnter(eventData);
+
             for (int i = 0; i < defaultMaterials.Length; i++)
             {
                 // Highlight the material when gaze enters using the shader property.
@@ -28,20 +39,14 @@ namespace MixedRealityToolkit.Examples.InputModule
             }
         }
 
-        public void OnFocusExit()
+        public override void OnFocusExit(FocusEventData eventData)
         {
+            base.OnFocusExit(eventData);
+
             for (int i = 0; i < defaultMaterials.Length; i++)
             {
                 // Remove highlight on material when gaze exits.
                 defaultMaterials[i].SetFloat("_Gloss", 1.0f);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            foreach (var material in defaultMaterials)
-            {
-                Destroy(material);
             }
         }
     }

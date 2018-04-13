@@ -30,7 +30,7 @@ namespace MixedRealityToolkit.SpatialSound.Effects
         public AudioLoFiSourceQuality SourceQuality
         {
             get { return sourceQuality; }
-            set { sourceQuality = value;  }
+            set { sourceQuality = value; }
         }
 
         /// <summary>
@@ -119,21 +119,19 @@ namespace MixedRealityToolkit.SpatialSound.Effects
             /// <summary>
             /// The frequency below which sound will be heard.
             /// </summary>
-            public float LowPassCutoff
-            { get; private set; }
+            public float LowPassCutoff { get; private set; }
 
             /// <summary>
             /// The frequency above which sound will be heard.
             /// </summary>
-            public float HighPassCutoff
-            { get; private set; }
+            public float HighPassCutoff { get; private set; }
 
             /// <summary>
             /// FilterSettings constructor.
             /// </summary>
             /// <param name="highPassCutoff">High pass filter cutoff frequency.</param>
             /// <param name="lowPassCutoff">Low pass filter cutoff frequency.</param>
-            public AudioLoFiFilterSettings(float highPassCutoff, float lowPassCutoff)
+            public AudioLoFiFilterSettings(float highPassCutoff, float lowPassCutoff) : this()
             {
                 HighPassCutoff = highPassCutoff;
                 LowPassCutoff = lowPassCutoff;
