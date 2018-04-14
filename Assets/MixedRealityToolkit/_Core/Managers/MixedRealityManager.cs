@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using UnityEngine;
 
@@ -132,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     return instance;
                 }
 
-                Debug.LogError($"Expected exactly 1 MixedRealityManager but found {objects.Length}.");
+                DebugUtilities.DebugLogError($"Expected exactly 1 MixedRealityManager but found {objects.Length}.");
                 return null;
             }
         }
@@ -149,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         public static void AssertIsInitialized()
         {
-            Debug.Assert(IsInitialized, "The MixedRealityManager has not been initialized.");
+            DebugUtilities.DebugAssert(IsInitialized, "The MixedRealityManager has not been initialized.");
         }
 
         /// <summary>
@@ -205,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     Destroy(this);
                 }
 
-                Debug.LogWarning($"Trying to instantiate a second instance of the Mixed Reality Manager. Additional Instance was destroyed");
+                DebugUtilities.DebugLogWarning($"Trying to instantiate a second instance of the Mixed Reality Manager. Additional Instance was destroyed");
             }
             else if (!IsInitialized)
             {

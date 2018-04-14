@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using UnityEngine;
 
@@ -58,8 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <returns></returns>
         public static Vector3 GetPointByDistance(RayStep[] steps, float distance)
         {
-            Debug.Assert(steps != null);
-            Debug.Assert(steps.Length > 0);
+            DebugUtilities.DebugAssert(steps != null);
+            DebugUtilities.DebugAssert(steps.Length > 0);
 
             Vector3 point = Vector3.zero;
             float remainingDistance = distance;
@@ -95,8 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <returns></returns>
         public static RayStep GetStepByDistance(RayStep[] steps, float distance)
         {
-            Debug.Assert(steps != null);
-            Debug.Assert(steps.Length > 0);
+            DebugUtilities.DebugAssert(steps != null);
+            DebugUtilities.DebugAssert(steps.Length > 0);
 
             RayStep step = new RayStep();
             float remainingDistance = distance;
@@ -132,8 +133,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <returns></returns>
         public static Vector3 GetDirectionByDistance(RayStep[] steps, float distance)
         {
-            Debug.Assert(steps != null);
-            Debug.Assert(steps.Length > 0);
+            DebugUtilities.DebugAssert(steps != null);
+            DebugUtilities.DebugAssert(steps.Length > 0);
 
             return GetStepByDistance(steps, distance).Direction;
         }

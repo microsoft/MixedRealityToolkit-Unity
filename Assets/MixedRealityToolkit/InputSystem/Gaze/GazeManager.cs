@@ -281,7 +281,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
             {
                 var cursorObj = Instantiate(cursorPrefab, transform);
                 Pointers[0].BaseCursor = cursorObj.GetComponent<BaseCursor>();
-                Debug.Assert(Pointers[0].BaseCursor != null, "Failed to load cursor");
+                DebugUtilities.DebugAssert(Pointers[0].BaseCursor != null, "Failed to load cursor");
 
                 Pointers[0].BaseCursor.Pointer = Pointers[0];
             }
@@ -356,7 +356,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
                 return true;
             }
 
-            Debug.LogError("Gaze Manager was not given a GazeTransform and no main camera exists to default to!");
+            DebugUtilities.DebugLogError("Gaze Manager was not given a GazeTransform and no main camera exists to default to!");
             return false;
         }
 

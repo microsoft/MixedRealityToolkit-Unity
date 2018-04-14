@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_WSA
@@ -629,7 +630,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         {
             if (capability.IsAvailable)
             {
-                Debug.Assert(capability.IsSupported);
+                DebugUtilities.DebugAssert(capability.IsSupported);
 
                 reading = capability.CurrentReading;
                 return true;
@@ -757,7 +758,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
 
             foreach (var pointerOption in pointerOptions)
             {
-                Debug.Assert(pointerOption.TargetController != Handedness.None, "Interaction Source Pointer must be set to Left, Right, or Both.");
+                DebugUtilities.DebugAssert(pointerOption.TargetController != Handedness.None, "Interaction Source Pointer must be set to Left, Right, or Both.");
 
                 if (interactionSource.handedness == InteractionSourceHandedness.Unknown ||
                     interactionSource.handedness == InteractionSourceHandedness.Left && pointerOption.TargetController == Handedness.Right ||
@@ -815,8 +816,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         /// <param name="sourceData">GenericInputPointingSource structure to update.</param>
         private static void UpdateInteractionSource(InteractionSourceState interactionSourceState, InteractionInputSource sourceData)
         {
-            Debug.Assert(interactionSourceState.source.id == sourceData.Source.id, "An UpdateSourceState call happened with mismatched source ID.");
-            Debug.Assert(interactionSourceState.source.kind == sourceData.Source.kind, "An UpdateSourceState call happened with mismatched source kind.");
+            DebugUtilities.DebugAssert(interactionSourceState.source.id == sourceData.Source.id, "An UpdateSourceState call happened with mismatched source ID.");
+            DebugUtilities.DebugAssert(interactionSourceState.source.kind == sourceData.Source.kind, "An UpdateSourceState call happened with mismatched source kind.");
 
             Vector3 newPointerPosition;
             sourceData.PointerPosition.IsAvailable = interactionSourceState.sourcePose.TryGetPosition(out newPointerPosition, InteractionSourceNode.Pointer);

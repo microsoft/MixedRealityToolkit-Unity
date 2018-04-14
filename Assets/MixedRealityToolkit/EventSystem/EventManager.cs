@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -24,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal
         public static void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
             where T : IEventSystemHandler
         {
-            Debug.Assert(!eventData.used);
+            DebugUtilities.DebugAssert(!eventData.used);
 
             for (int i = 0; i < EventListeners.Count; i++)
             {
@@ -38,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal
         /// <param name="listener"></param>
         public static void Register(GameObject listener)
         {
-            Debug.Assert(!EventListeners.Contains(listener), $"{listener.name} is already registered to receive events!");
+            DebugUtilities.DebugAssert(!EventListeners.Contains(listener), $"{listener.name} is already registered to receive events!");
             EventListeners.Add(listener);
         }
 
@@ -48,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal
         /// <param name="listener"></param>
         public static void Unregister(GameObject listener)
         {
-            Debug.Assert(EventListeners.Contains(listener), $"{listener.name} was never registered!");
+            DebugUtilities.DebugAssert(EventListeners.Contains(listener), $"{listener.name} was never registered!");
             EventListeners.Remove(listener);
         }
 

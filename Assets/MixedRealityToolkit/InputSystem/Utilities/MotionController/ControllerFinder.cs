@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 #if UNITY_WSA
@@ -40,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             {
                 if (value == (Handedness.Left & Handedness.Right) || value == Handedness.None)
                 {
-                    Debug.LogWarning("Controller Finder must have a valid handedness.");
+                    DebugUtilities.DebugLogWarning("Controller Finder must have a valid handedness.");
                     handedness = Handedness.Left;
                 }
                 else
@@ -64,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
         {
             if (handedness == (Handedness.Left & Handedness.Right) || handedness == Handedness.None)
             {
-                Debug.LogWarning($"{gameObject.name} Controller Finder must have a valid handedness.");
+                DebugUtilities.DebugLogWarning($"{gameObject.name} Controller Finder must have a valid handedness.");
                 handedness = Handedness.Left;
             }
         }
@@ -103,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             {
                 if (!newController.TryGetElement(element, out elementTransform))
                 {
-                    Debug.LogError("Unable to find element of type " + element + " under controller " + newController.ControllerParent.name + "; not attaching.");
+                    DebugUtilities.DebugLogError("Unable to find element of type " + element + " under controller " + newController.ControllerParent.name + "; not attaching.");
                     return;
                 }
                 ControllerInfo = newController;

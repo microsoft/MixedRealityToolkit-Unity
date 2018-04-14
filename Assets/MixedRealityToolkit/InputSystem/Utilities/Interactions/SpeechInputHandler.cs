@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -65,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
 
                 if (responses.ContainsKey(keyword))
                 {
-                    Debug.LogError($"Duplicate keyword \'{keyword}\' specified in \'{gameObject.name}\'.");
+                    DebugUtilities.DebugLogError($"Duplicate keyword \'{keyword}\' specified in \'{gameObject.name}\'.");
                 }
                 else
                 {

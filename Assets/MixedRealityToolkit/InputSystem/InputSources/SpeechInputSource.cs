@@ -4,6 +4,7 @@
 using System;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputMapping;
 using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN
@@ -99,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             }
             else
             {
-                Debug.LogError("Must have at least one keyword specified in the Inspector on " + gameObject.name + ".");
+                DebugUtilities.DebugLogError("Must have at least one keyword specified in the Inspector on " + gameObject.name + ".");
             }
         }
 

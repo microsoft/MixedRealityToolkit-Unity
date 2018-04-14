@@ -3,6 +3,7 @@
 
 using System;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 
 #if UNITY_EDITOR_WIN
 using System.Runtime.InteropServices;
@@ -98,11 +99,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             {
                 if (AlternateLeftController == null && AlternateRightController == null)
                 {
-                    Debug.Log("If using glTF, please specify a material on " + name + ". Otherwise, please specify controller alternates.");
+                    DebugUtilities.DebugLog("If using glTF, please specify a material on " + name + ". Otherwise, please specify controller alternates.");
                 }
                 else if (AlternateLeftController == null || AlternateRightController == null)
                 {
-                    Debug.Log("Only one alternate is specified, and no material is specified for the glTF model. Please set the material or the " + ((AlternateLeftController == null) ? "left" : "right") + " controller alternate on " + name + ".");
+                    DebugUtilities.DebugLog("Only one alternate is specified, and no material is specified for the glTF model. Please set the material or the " + ((AlternateLeftController == null) ? "left" : "right") + " controller alternate on " + name + ".");
                 }
             }
 
@@ -275,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             {
                 if (AlternateLeftController == null)
                 {
-                    Debug.LogWarning("Always use the alternate left model is set on " + name + ", but the alternate left controller model was not specified.");
+                    DebugUtilities.DebugLogWarning("Always use the alternate left model is set on " + name + ", but the alternate left controller model was not specified.");
                     yield return LoadSourceControllerModel(source);
                 }
                 else
@@ -287,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             {
                 if (AlternateRightController == null)
                 {
-                    Debug.LogWarning("Always use the alternate right model is set on " + name + ", but the alternate right controller model was not specified.");
+                    DebugUtilities.DebugLogWarning("Always use the alternate right model is set on " + name + ", but the alternate right controller model was not specified.");
                     yield return LoadSourceControllerModel(source);
                 }
                 else
@@ -308,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 
             if (GLTFMaterial == null)
             {
-                Debug.Log("If using glTF, please specify a material on " + name + ".");
+                DebugUtilities.DebugLog("If using glTF, please specify a material on " + name + ".");
                 yield break;
             }
 
@@ -318,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 
             if (modelTask == null)
             {
-                Debug.Log("Model task is null; loading alternate.");
+                DebugUtilities.DebugLog("Model task is null; loading alternate.");
                 LoadAlternateControllerModel(source);
                 yield break;
             }
@@ -332,14 +333,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 
             if (modelStream == null)
             {
-                Debug.Log("Model stream is null; loading alternate.");
+                DebugUtilities.DebugLog("Model stream is null; loading alternate.");
                 LoadAlternateControllerModel(source);
                 yield break;
             }
 
             if (modelStream.Size == 0)
             {
-                Debug.Log("Model stream is empty; loading alternate.");
+                DebugUtilities.DebugLog("Model stream is empty; loading alternate.");
                 LoadAlternateControllerModel(source);
                 yield break;
             }
@@ -369,7 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             }
             else
             {
-                Debug.Log("Unable to load controller models; loading alternate.");
+                DebugUtilities.DebugLog("Unable to load controller models; loading alternate.");
                 LoadAlternateControllerModel(source);
                 yield break;
             }

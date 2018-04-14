@@ -1,15 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputSources;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Windows.Speech;
@@ -137,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         public static void PopInputDisable()
         {
             --disabledRefCount;
-            Debug.Assert(disabledRefCount >= 0, "Tried to pop more input disable than the amount pushed.");
+            DebugUtilities.DebugAssert(disabledRefCount >= 0, "Tried to pop more input disable than the amount pushed.");
 
             if (disabledRefCount == 0)
             {
@@ -264,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 return;
             }
 
-            Debug.Assert(!eventData.used);
+            DebugUtilities.DebugAssert(!eventData.used);
 
             GameObject focusedObject = FocusManager.GetFocusedObject(eventData);
 
@@ -359,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         private static void AddSource(IInputSource source)
         {
-            Debug.Assert(!DetectedInputSources.Contains(source), $"{source.SourceName} has already been registered with the Input Manager!");
+            DebugUtilities.DebugAssert(!DetectedInputSources.Contains(source), $"{source.SourceName} has already been registered with the Input Manager!");
 
             DetectedInputSources.Add(source);
 
@@ -384,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         private static void RemoveSource(IInputSource source)
         {
-            Debug.Assert(DetectedInputSources.Contains(source), $"{source.SourceName} was never registered with the Input Manager!");
+            DebugUtilities.DebugAssert(DetectedInputSources.Contains(source), $"{source.SourceName} was never registered with the Input Manager!");
 
             DetectedInputSources.Remove(source);
 

@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.InputSources;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 #if UNITY_WSA
@@ -341,18 +341,18 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// </summary>
         protected virtual void UpdateCursorTransform()
         {
-            Debug.Assert(Pointer != null, "No Pointer has been assigned!");
+            DebugUtilities.DebugAssert(Pointer != null, "No Pointer has been assigned!");
 
             FocusDetails focusDetails;
             if (!FocusManager.TryGetFocusDetails(Pointer, out focusDetails))
             {
                 if (FocusManager.IsPointerRegistered(Pointer))
                 {
-                    Debug.LogErrorFormat("{0}: Unable to get focus details for {1}!", name, pointer.GetType().Name);
+                    DebugUtilities.DebugLogErrorFormat("{0}: Unable to get focus details for {1}!", name, pointer.GetType().Name);
                 }
                 else
                 {
-                    Debug.LogErrorFormat("{0} has not been registered!", pointer.GetType().Name);
+                    DebugUtilities.DebugLogErrorFormat("{0} has not been registered!", pointer.GetType().Name);
                 }
 
                 return;

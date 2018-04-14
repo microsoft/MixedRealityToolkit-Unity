@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
                  directionRollingStats.CurrentStandardDeviation > DirectionStandardDeviationReset)) // the standard deviation of directions is high
             {
                 // We've detected that the user's gaze is no longer fixed, so stop stabilizing so that gaze is responsive.
-                //Debug.LogFormat("Reset {0} {1} {2} {3}", positionRollingStats.standardDeviation, positionRollingStats.standardDeviationsAway, directionRollignStats.standardDeviation, directionRollignStats.standardDeviationsAway);
+                //DebugUtilities.DebugLogFormat("Reset {0} {1} {2} {3}", positionRollingStats.standardDeviation, positionRollingStats.standardDeviationsAway, directionRollignStats.standardDeviation, directionRollignStats.standardDeviationsAway);
                 positionRollingStats.Reset();
                 directionRollingStats.Reset();
             }

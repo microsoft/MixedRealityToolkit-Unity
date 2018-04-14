@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
@@ -28,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 
         private void Start()
         {
-            Debug.Assert(Canvas != null);
+            DebugUtilities.DebugAssert(Canvas != null);
 
             if (Canvas.isRootCanvas && Canvas.renderMode == RenderMode.WorldSpace)
             {
