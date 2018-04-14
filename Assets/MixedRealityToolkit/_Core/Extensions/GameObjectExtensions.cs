@@ -94,5 +94,45 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             LayerMask gameObjectMask = 1 << gameObject.layer;
             return (gameObjectMask & layerMask) == gameObjectMask;
         }
+
+        /// <summary>
+        /// Apply the specified delegate to all objects in the hierarchy under a specified game object.
+        /// </summary>
+        /// <param name="root">Root game object of the hierarchy.</param>
+        /// <param name="action">Delegate to apply.</param>
+        public static void ApplyToHierarchy(this GameObject root, Action<GameObject> action)
+        {
+            action(root);
+            foreach (var item in root.GetComponentsInChildren<Transform>())
+            {
+                action(item.gameObject);
+            }
+        }
+
+        /// <summary>
+        /// Find the first component of type <typeparamref name="T"/> in the ancestors of the specified game object.
+        /// </summary>
+        /// <typeparam name="T">Type of component to find.</typeparam>
+        /// <param name="gameObject">Game object for which ancestors must be considered.</param>
+        /// <param name="includeSelf">Indicates whether the specified game object should be included.</param>
+        /// <returns>The component of type <typeparamref name="T"/>. Null if it none was found.</returns>
+        public static T FindAncestorComponent<T>(this GameObject gameObject, bool includeSelf = true) where T : Component
+        {
+            return gameObject.transform.FindAncestorComponent<T>(includeSelf);
+        }
+
+        /// <summary>
+        /// Perform an action on every component of type T that is on this GameObject
+        /// </summary>
+        /// <typeparam name="T">Component Type</typeparam>
+        /// <param name="g">this gameObject</param>
+        /// <param name="action">Action to perform.</param>
+        public static void ForEachComponent<T>(this GameObject g, Action<T> action)
+        {
+            foreach (T i in g.GetComponents<T>())
+            {
+                action(i);
+            }
+        }
     }
 }

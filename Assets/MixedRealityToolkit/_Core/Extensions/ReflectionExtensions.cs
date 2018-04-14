@@ -1,13 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-
+    /// <summary>
+    /// Extension methods for .Net reflection functions
+    /// </summary>
     public static class ReflectionExtensions
     {
         public static EventInfo GetEvent(this Type type, string eventName)

@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
+    /// <summary>
+    /// Extension methods for Unity's Transform class
+    /// </summary>
     public static class TransformExtensions
     {
         /// <summary>
@@ -115,6 +118,46 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         public static bool IsParentOrChildOf(this Transform transform1, Transform transform2)
         {
             return transform1.IsChildOf(transform2) || transform2.IsChildOf(transform1);
+        }
+
+        /// <summary>
+        /// Find the first component of type <typeparamref name="T"/> in the ancestors of the specified transform.
+        /// </summary>
+        /// <typeparam name="T">Type of component to find.</typeparam>
+        /// <param name="startTransform">Transform for which ancestors must be considered.</param>
+        /// <param name="includeSelf">Indicates whether the specified transform should be included.</param>
+        /// <returns>The component of type <typeparamref name="T"/>. Null if it none was found.</returns>
+        public static T FindAncestorComponent<T>(this Transform startTransform, bool includeSelf = true) where T : Component
+        {
+            foreach (Transform transform in startTransform.EnumerateAncestors(includeSelf))
+            {
+                T component = transform.GetComponent<T>();
+                if (component != null)
+                {
+                    return component;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Enumerates the ancestors of the specified transform.
+        /// </summary>
+        /// <param name="startTransform">Transform for which ancestors must be returned.</param>
+        /// <param name="includeSelf">Indicates whether the specified transform should be included.</param>
+        /// <returns>An enumeration of all ancestor transforms of the specified start transform.</returns>
+        public static IEnumerable<Transform> EnumerateAncestors(this Transform startTransform, bool includeSelf)
+        {
+            if (!includeSelf)
+            {
+                startTransform = startTransform.parent;
+            }
+
+            for (Transform transform = startTransform; transform != null; transform = transform.parent)
+            {
+                yield return transform;
+            }
         }
     }
 }

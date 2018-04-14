@@ -8,6 +8,9 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
+    /// <summary>
+    /// Extension methods for Unity's EventSystem 
+    /// </summary>
     public static class EventSystemExtensions
     {
         private static readonly List<RaycastResult> RaycastResults = new List<RaycastResult>();
@@ -24,6 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             return PrioritizeRaycastResult(layerMasks);
         }
 
+        /// <summary>
+        /// Sorts the available Raycasts in to a priority order for query
+        /// </summary>
+        /// <param name="priority"></param>
+        /// <returns></returns>
         private static RaycastResult PrioritizeRaycastResult(LayerMask[] priority)
         {
             ComparableRaycastResult maxResult = default(ComparableRaycastResult);

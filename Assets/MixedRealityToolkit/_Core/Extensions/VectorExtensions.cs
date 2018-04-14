@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
     /// <summary>
-    /// A collection of useful extension methods for Unity's Vector structs.
+    /// Extension methods for Unity's Vector struct
     /// </summary>
     public static class VectorExtensions
     {

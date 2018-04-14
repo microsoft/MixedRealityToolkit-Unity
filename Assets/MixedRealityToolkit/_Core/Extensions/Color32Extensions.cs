@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
     /// <summary>
-    /// Extension methods for Unity's Color32 class
+    /// Extension methods for Unity's Color32 struct
     /// </summary>
     public static class Color32Extensions
     {

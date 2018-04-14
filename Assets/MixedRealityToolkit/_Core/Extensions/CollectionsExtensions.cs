@@ -6,43 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
     /// <summary>
-    /// A class with general purpose extensions methods.
+    /// Extension methods for .Net Collection objects, e.g. Lists, Dictionarys, Arrays
     /// </summary>
-    public static class Extensions
+    public static class CollectionsExtensions
     {
-        /// <summary>
-        /// Returns the absolute duration of the curve from first to last key frame
-        /// </summary>
-        /// <param name="curve">The animation curve to check duration of.</param>
-        /// <returns>Returns 0 if the curve is null or has less than 1 frame, otherwise returns time difference between first and last frame.</returns>
-        public static float Duration(this AnimationCurve curve)
-        {
-            if (curve == null || curve.length <= 1)
-            {
-                return 0.0f;
-            }
-
-            return Mathf.Abs(curve[curve.length - 1].time - curve[0].time);
-        }
-
-        /// <summary>
-        /// Determines whether or not a ray is valid.
-        /// </summary>
-        /// <param name="ray">The ray being tested.</param>
-        /// <returns>True if the ray is valid, false otherwise.</returns>
-        public static bool IsValid(this Ray ray)
-        {
-            return ray.direction != Vector3.zero;
-        }
-
-        #region Collections
-
         /// <summary>
         /// Creates a read-only wrapper around an existing collection.
         /// </summary>
@@ -141,81 +112,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             }
         }
 
-        #endregion
-
-        #region Numerics
-
-        /// <summary>
-        /// Checks if two numbers are approximately equal. Similar to <see cref="Mathf.Approximately(float, float)"/>, but the tolerance
-        /// can be specified.
-        /// </summary>
-        /// <param name="number">One of the numbers to compare.</param>
-        /// <param name="other">The other number to compare.</param>
-        /// <param name="tolerance">The amount of tolerance to allow while still considering the numbers approximately equal.</param>
-        /// <returns>True if the difference between the numbers is less than or equal to the tolerance, false otherwise.</returns>
-        public static bool Approximately(this float number, float other, float tolerance)
-        {
-            return Mathf.Abs(number - other) <= tolerance;
-        }
-
-        /// <summary>
-        /// Checks if two numbers are approximately equal. Similar to <see cref="Mathf.Approximately(float, float)"/>, but the tolerance
-        /// can be specified.
-        /// </summary>
-        /// <param name="number">One of the numbers to compare.</param>
-        /// <param name="other">The other number to compare.</param>
-        /// <param name="tolerance">The amount of tolerance to allow while still considering the numbers approximately equal.</param>
-        /// <returns>True if the difference between the numbers is less than or equal to the tolerance, false otherwise.</returns>
-        public static bool Approximately(this double number, double other, double tolerance)
-        {
-            return Math.Abs(number - other) <= tolerance;
-        }
-
-        #endregion
-
-        #region UnityEngine.Object
-
-        public static void DontDestroyOnLoad(this Object target)
-        {
-#if UNITY_EDITOR // Skip Don't Destroy On Load when editor isn't playing so test runner passes.
-            if (UnityEditor.EditorApplication.isPlaying)
-#endif
-                Object.DontDestroyOnLoad(target);
-        }
-
-        #endregion
-
-        #region Comparer
-
-        /// <summary>
-        /// Gets a comparer that sorts elements in the opposite order of the original comparer.
-        /// </summary>
-        /// <typeparam name="TElement">The type of element the comparer compares.</typeparam>
-        /// <param name="originalComparer">The comparer whose order should be reversed.</param>
-        /// <returns>A comparer that sorts elements in the opposite order of <paramref name="originalComparer"/>.</returns>
-        public static IComparer<TElement> GetReversed<TElement>(this IComparer<TElement> originalComparer)
-        {
-            return new ReverseComparer<TElement>(originalComparer);
-        }
-
-        private class ReverseComparer<TElement> :
-            IComparer<TElement>
-        {
-            private readonly IComparer<TElement> originalComparer;
-
-            public ReverseComparer(IComparer<TElement> originalComparer)
-            {
-                DebugUtilities.DebugAssert(originalComparer != null, "originalComparer cannot be null.");
-
-                this.originalComparer = originalComparer;
-            }
-
-            public int Compare(TElement left, TElement right)
-            {
-                return originalComparer.Compare(right, left);
-            }
-        }
-
-        #endregion
     }
 }
