@@ -10,15 +10,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
     {
         public static void DebugAssert(bool condition, string message)
         {
-#if UNITY_EDITOR
             Debug.Assert(condition, message);
-#endif
         }
+
         public static void DebugAssert(bool condition)
         {
-#if UNITY_EDITOR
             Debug.Assert(condition);
-#endif
         }
 
         public static void DebugLogError(string message)
