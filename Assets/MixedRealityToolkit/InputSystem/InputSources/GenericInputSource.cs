@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             {
                 if (Pointers[i].PointerId == pointer.PointerId)
                 {
-                    DebugUtilities.DebugLogWarningFormat("This pointer has already been added to {0}.", SourceName);
+                    DebugUtilities.DebugLogWarning($"This pointer has already been added to {SourceName}.");
                     return;
                 }
             }

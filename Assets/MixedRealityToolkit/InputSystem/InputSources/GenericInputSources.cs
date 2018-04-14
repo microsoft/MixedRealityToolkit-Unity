@@ -113,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
                 }
                 else
                 {
-                    DebugUtilities.DebugLogWarningFormat("Unimplemented Controller Type: {0}", joystickNames[i]);
+                    DebugUtilities.DebugLogWarning($"Unimplemented Controller Type: {joystickNames[i]}");
                 }
             }
 

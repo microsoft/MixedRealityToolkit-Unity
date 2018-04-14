@@ -348,11 +348,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             {
                 if (FocusManager.IsPointerRegistered(Pointer))
                 {
-                    DebugUtilities.DebugLogErrorFormat("{0}: Unable to get focus details for {1}!", name, pointer.GetType().Name);
+                    DebugUtilities.DebugLogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
                 }
                 else
                 {
-                    DebugUtilities.DebugLogErrorFormat("{0} has not been registered!", pointer.GetType().Name);
+                    DebugUtilities.DebugLogError($"{pointer.GetType().Name} has not been registered!");
                 }
 
                 return;

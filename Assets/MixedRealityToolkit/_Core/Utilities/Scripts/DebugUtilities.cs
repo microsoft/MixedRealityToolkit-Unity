@@ -25,24 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 #endif
         }
 
-        public static void DebugLogErrorFormat(string format, params object[] args)
-        {
-#if UNITY_EDITOR
-            Debug.LogErrorFormat(format, args);
-#endif
-        }
-
         public static void DebugLogWarning(string message)
         {
 #if UNITY_EDITOR
             Debug.LogWarning(message);
-#endif
-        }
-
-        public static void DebugLogWarningFormat(string format, params object[] args)
-        {
-#if UNITY_EDITOR
-            Debug.LogWarningFormat(format, args);
 #endif
         }
 
