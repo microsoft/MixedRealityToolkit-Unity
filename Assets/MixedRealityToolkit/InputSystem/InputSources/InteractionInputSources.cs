@@ -4,8 +4,11 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 #if UNITY_WSA
@@ -62,6 +65,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         /// </summary>
         private static readonly HashSet<InteractionInputSource> interactionInputSources = new HashSet<InteractionInputSource>();
 
+        private IMixedRealityInputSystem inputSystem;
+
         #region IInputSource Capabilities and GenericInputPointingSource
 
         private class InteractionInputSource : GenericInputSource
@@ -71,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             public readonly BaseControllerPointer[] PointerSceneObjects;
 
             public InteractionInputSource(InteractionSource source, string name, BaseControllerPointer[] pointerSceneObjects, IPointer[] pointers)
-                : base(name, SupportedInputInfo.None, pointers)
+                : base(name, new[] { InputType.None }, pointers)
             {
                 Source = source;
                 PointerSceneObjects = pointerSceneObjects;
@@ -84,24 +89,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             public InteractionInputSource(string name) : base(name, SupportedInputInfo.None) { }
 #endif
 
-            public override SupportedInputInfo GetSupportedInputInfo()
+            private static InputType GetSupportFlag<TReading>(SourceCapability<TReading> capability, InputType flagIfSupported)
             {
-                var retVal = SupportedInputInfo.None;
-                retVal |= GetSupportFlag(PointerPosition, SupportedInputInfo.PointerPosition);
-                retVal |= GetSupportFlag(PointerRotation, SupportedInputInfo.PointerRotation);
-                retVal |= GetSupportFlag(PointingRay, SupportedInputInfo.Pointing);
-                retVal |= GetSupportFlag(Thumbstick, SupportedInputInfo.Thumbstick);
-                retVal |= GetSupportFlag(Touchpad, SupportedInputInfo.Touch);
-                retVal |= GetSupportFlag(Select, SupportedInputInfo.Select);
-                retVal |= GetSupportFlag(Menu, SupportedInputInfo.Menu);
-                retVal |= GetSupportFlag(Grasp, SupportedInputInfo.Grasp);
-
-                return retVal;
-            }
-
-            private static SupportedInputInfo GetSupportFlag<TReading>(SourceCapability<TReading> capability, SupportedInputInfo flagIfSupported)
-            {
-                return capability.IsSupported ? flagIfSupported : SupportedInputInfo.None;
+                return capability.IsSupported ? flagIfSupported : InputType.None;
             }
 
             public void Reset()
@@ -200,6 +190,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
 
         private void Awake()
         {
+            inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+
 #if UNITY_WSA
             GestureRecognizer = new GestureRecognizer();
 
@@ -356,24 +348,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
 
         #region GenericInputPointingSource Methods
 
-        /// <summary>
-        /// Get the Supported Input Info for the specified Input Source.
-        /// </summary>
-        /// <param name="sourceId"></param>
-        /// <returns><see cref="SupportedInputInfo"/></returns>
-        public SupportedInputInfo GetSupportedInputInfo(uint sourceId)
-        {
-            foreach (var inputSource in interactionInputSources)
-            {
-                if (inputSource.SourceId == sourceId)
-                {
-                    return inputSource.GetSupportedInputInfo();
-                }
-            }
-
-            return SupportedInputInfo.None;
-        }
-
 #if UNITY_WSA
 
         /// <summary>
@@ -382,7 +356,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         /// <param name="sourceId"></param>
         /// <param name="sourceKind"></param>
         /// <returns>True if data is available.</returns>
-        public bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
+        public static bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
         {
             foreach (var inputSource in interactionInputSources)
             {
@@ -465,7 +439,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         /// <param name="sourceId"></param>
         /// <param name="position"></param>
         /// <returns>True if data is available.</returns>
-        public bool TryGetGripPosition(uint sourceId, out Vector3 position)
+        public static bool TryGetGripPosition(uint sourceId, out Vector3 position)
         {
             foreach (var inputSource in interactionInputSources)
             {
@@ -713,7 +687,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
 
                 // NOTE: We update the source state data, in case an app wants to query it on source detected.
                 UpdateInteractionSource(states[i], inputSource);
-                MixedRealityInputManager.RaiseSourceDetected(inputSource);
+                inputSystem.RaiseSourceDetected(inputSource);
             }
 
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
@@ -796,7 +770,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         {
             if (interactionSource == null) { return; }
 
-            MixedRealityInputManager.RaiseSourceLost(interactionSource);
+            inputSystem.RaiseSourceLost(interactionSource);
             interactionInputSources.Remove(interactionSource);
 
             for (var j = 0; j < interactionSource.PointerSceneObjects.Length; j++)
@@ -930,15 +904,38 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
 
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
             UpdateInteractionSource(args.state, inputSource);
-
-            MixedRealityInputManager.RaiseSourceDetected(inputSource);
+            inputSystem.RaiseSourceDetected(inputSource);
         }
 
         private void InteractionManager_InteractionSourcePressed(InteractionSourcePressedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.state.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseOnInputDown(inputSource, args.pressType, (Handedness)args.state.source.handedness);
+            InputType inputType;
+            switch (args.pressType)
+            {
+                case InteractionSourcePressType.None:
+                    inputType = InputType.None;
+                    break;
+                case InteractionSourcePressType.Select:
+                    inputType = InputType.Select;
+                    break;
+                case InteractionSourcePressType.Menu:
+                    inputType = InputType.Menu;
+                    break;
+                case InteractionSourcePressType.Grasp:
+                    inputType = InputType.Grip;
+                    break;
+                case InteractionSourcePressType.Touchpad:
+                    inputType = InputType.Touchpad;
+                    break;
+                case InteractionSourcePressType.Thumbstick:
+                    inputType = InputType.ThumbStick;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            inputSystem.RaiseOnInputDown(inputSource, inputType, (Handedness)args.state.source.handedness);
         }
 
         private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs args)
@@ -953,39 +950,39 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
 
             if (inputSource.PositionUpdated)
             {
-                MixedRealityInputManager.RaiseSourcePositionChanged(inputSource, inputSource.PointerPosition.CurrentReading, inputSource.GripPosition.CurrentReading, (Handedness)args.state.source.handedness);
+                inputSystem.RaiseSourcePositionChanged(inputSource, inputSource.PointerPosition.CurrentReading, inputSource.GripPosition.CurrentReading, (Handedness)args.state.source.handedness);
             }
 
             if (inputSource.RotationUpdated)
             {
-                MixedRealityInputManager.RaiseSourceRotationChanged(inputSource, inputSource.PointerRotation.CurrentReading, inputSource.GripRotation.CurrentReading, (Handedness)args.state.source.handedness);
+                inputSystem.RaiseSourceRotationChanged(inputSource, inputSource.PointerRotation.CurrentReading, inputSource.GripRotation.CurrentReading, (Handedness)args.state.source.handedness);
             }
 
             if (inputSource.ThumbstickPositionUpdated)
             {
-                MixedRealityInputManager.RaiseInputPositionChanged(inputSource, inputSource.Thumbstick.CurrentReading.Position, InteractionSourcePressType.Thumbstick, (Handedness)args.state.source.handedness);
+                inputSystem.RaiseDualAxisInputChanged(inputSource, InputType.ThumbStick, inputSource.Thumbstick.CurrentReading.Position, (Handedness)args.state.source.handedness);
             }
 
             if (inputSource.TouchpadPositionUpdated)
             {
-                MixedRealityInputManager.RaiseInputPositionChanged(inputSource, inputSource.Touchpad.CurrentReading.AxisButton.Position, InteractionSourcePressType.Touchpad, (Handedness)args.state.source.handedness);
+                inputSystem.RaiseDualAxisInputChanged(inputSource, InputType.Touchpad, inputSource.Touchpad.CurrentReading.AxisButton.Position, (Handedness)args.state.source.handedness);
             }
 
             if (inputSource.TouchpadTouchedUpdated)
             {
                 if (inputSource.Touchpad.CurrentReading.Touched)
                 {
-                    MixedRealityInputManager.RaiseOnInputDown(inputSource, InteractionSourcePressType.Touchpad, (Handedness)args.state.source.handedness);
+                    inputSystem.RaiseOnInputDown(inputSource, InputType.Touchpad, (Handedness)args.state.source.handedness);
                 }
                 else
                 {
-                    MixedRealityInputManager.RaiseOnInputUp(inputSource, InteractionSourcePressType.Touchpad, (Handedness)args.state.source.handedness);
+                    inputSystem.RaiseOnInputUp(inputSource, InputType.Touchpad, (Handedness)args.state.source.handedness);
                 }
             }
 
             if (inputSource.SelectPressedAmountUpdated)
             {
-                MixedRealityInputManager.RaiseOnInputPressed(inputSource, inputSource.Select.CurrentReading.PressedAmount, InteractionSourcePressType.Select, (Handedness)args.state.source.handedness);
+                inputSystem.RaiseOnInputPressed(inputSource, (float)inputSource.Select.CurrentReading.PressedAmount, InputType.Select, (Handedness)args.state.source.handedness);
             }
         }
 
@@ -993,7 +990,33 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.state.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseOnInputUp(inputSource, args.pressType, (Handedness)args.state.source.handedness);
+
+            InputType inputType;
+            switch (args.pressType)
+            {
+                case InteractionSourcePressType.None:
+                    inputType = InputType.None;
+                    break;
+                case InteractionSourcePressType.Select:
+                    inputType = InputType.Select;
+                    break;
+                case InteractionSourcePressType.Menu:
+                    inputType = InputType.Menu;
+                    break;
+                case InteractionSourcePressType.Grasp:
+                    inputType = InputType.Grip;
+                    break;
+                case InteractionSourcePressType.Touchpad:
+                    inputType = InputType.Touchpad;
+                    break;
+                case InteractionSourcePressType.Thumbstick:
+                    inputType = InputType.ThumbStick;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            inputSystem.RaiseOnInputUp(inputSource, inputType, (Handedness)args.state.source.handedness);
         }
 
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
@@ -1009,84 +1032,84 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseInputClicked(inputSource.Pointers[0], args.tapCount, InteractionSourcePressType.Select, (Handedness)args.source.handedness);
+            inputSystem.RaiseInputClicked(inputSource.Pointers[0], args.tapCount, InputType.Select, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_HoldStarted(HoldStartedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseHoldStarted(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseHoldStarted(inputSource, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_HoldCanceled(HoldCanceledEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseHoldCanceled(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseHoldCanceled(inputSource, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_HoldCompleted(HoldCompletedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseHoldCompleted(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseHoldCompleted(inputSource, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_ManipulationStarted(ManipulationStartedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseManipulationStarted(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseManipulationStarted(inputSource, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_ManipulationUpdated(ManipulationUpdatedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseManipulationUpdated(inputSource, args.cumulativeDelta, (Handedness)args.source.handedness);
+            inputSystem.RaiseManipulationUpdated(inputSource, args.cumulativeDelta, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_ManipulationCompleted(ManipulationCompletedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseManipulationCompleted(inputSource, args.cumulativeDelta, (Handedness)args.source.handedness);
+            inputSystem.RaiseManipulationCompleted(inputSource, args.cumulativeDelta, (Handedness)args.source.handedness);
         }
 
         private void GestureRecognizer_ManipulationCanceled(ManipulationCanceledEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseManipulationCanceled(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseManipulationCanceled(inputSource, (Handedness)args.source.handedness);
         }
 
         private void NavigationGestureRecognizer_NavigationStarted(NavigationStartedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseNavigationStarted(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseNavigationStarted(inputSource, (Handedness)args.source.handedness);
         }
 
         private void NavigationGestureRecognizer_NavigationUpdated(NavigationUpdatedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseNavigationUpdated(inputSource, args.normalizedOffset, (Handedness)args.source.handedness);
+            inputSystem.RaiseNavigationUpdated(inputSource, args.normalizedOffset, (Handedness)args.source.handedness);
         }
 
         private void NavigationGestureRecognizer_NavigationCompleted(NavigationCompletedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseNavigationCompleted(inputSource, args.normalizedOffset, (Handedness)args.source.handedness);
+            inputSystem.RaiseNavigationCompleted(inputSource, args.normalizedOffset, (Handedness)args.source.handedness);
         }
 
         private void NavigationGestureRecognizer_NavigationCanceled(NavigationCanceledEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            MixedRealityInputManager.RaiseNavigationCanceled(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseNavigationCanceled(inputSource, (Handedness)args.source.handedness);
         }
 
         #endregion Raise GestureRecognizer Events

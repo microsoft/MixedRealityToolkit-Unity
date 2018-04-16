@@ -3,7 +3,9 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
+using System.Linq;
+using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
@@ -16,23 +18,40 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
     /// Note that a hold-started is raised as soon as a contact exceeds the Epsilon value;
     /// if the contact subsequently qualifies as a tap then a hold-canceled is also raised.
     /// </summary>
-    public class TouchscreenInputSource : MonoBehaviour
+    [DisallowMultipleComponent]
+    public class TouchscreenInputSource : BaseInputSource
     {
         private const float K_CONTACT_EPSILON = 2.0f / 60.0f;
+
+        public override InputType[] Capabilities => new[] { InputType.Pointer, InputType.PointerPosition };
+
+        public override IPointer[] Pointers
+        {
+            get
+            {
+                var pointers = new IPointer[activeTouches.Count];
+                int count = 0;
+                foreach (var touch in activeTouches)
+                {
+                    pointers[count++] = touch;
+                }
+                return pointers;
+            }
+        }
 
         [SerializeField]
         [Tooltip("Time in seconds to determine if the contact registers as a tap or a hold")]
         protected float MaxTapContactTime = 0.5f;
 
-        private readonly HashSet<TouchInputSource> activeTouches = new HashSet<TouchInputSource>();
+        private readonly HashSet<TouchPointer> activeTouches = new HashSet<TouchPointer>();
 
-        private class TouchInputSource : GenericInputSource
+        private class TouchPointer : GenericPointer
         {
             public readonly Touch TouchData;
             public readonly Ray ScreenPointRay;
             public float Lifetime;
 
-            public TouchInputSource(string name, Touch touch, Ray ray) : base(name, SupportedInputInfo.PointerPosition | SupportedInputInfo.Pointing)
+            public TouchPointer(string name, Touch touch, Ray ray, IInputSource inputSource) : base(name, inputSource)
             {
                 TouchData = touch;
                 ScreenPointRay = ray;
@@ -40,9 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             }
         }
 
-        #region Unity Methods
+        #region Monobehaviour Implementation
 
-        private void Start()
+        private void Awake()
         {
             // Disable the input source if not supported by the device
             if (!Input.touchSupported)
@@ -77,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             }
         }
 
-        #endregion Unity Methods
+        #endregion Monobehaviour Implementation
 
         #region Input Touch Events
 
@@ -92,10 +111,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
                 }
             }
 
-            var newTouch = new TouchInputSource($"Touch {touch.fingerId}", touch, ray);
+            if (activeTouches.Count == 0)
+            {
+                InputSystem.RaiseSourceDetected(this);
+            }
+
+            var newTouch = new TouchPointer($"Touch {touch.fingerId}", touch, ray, this);
             activeTouches.Add(newTouch);
-            MixedRealityInputManager.RaiseSourceDetected(newTouch);
-            MixedRealityInputManager.RaiseHoldStarted(newTouch);
+            InputSystem.RaisePointerDown(newTouch);
+            InputSystem.RaiseHoldStarted(this);
         }
 
         private void RemoveTouch(Touch touch)
@@ -108,46 +132,49 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
                     {
                         if (knownTouch.Lifetime < K_CONTACT_EPSILON)
                         {
-                            MixedRealityInputManager.RaiseHoldCanceled(knownTouch);
+                            InputSystem.RaiseHoldCanceled(this);
                         }
                         else if (knownTouch.Lifetime < MaxTapContactTime)
                         {
-                            MixedRealityInputManager.RaiseHoldCanceled(knownTouch);
-                            MixedRealityInputManager.RaiseInputClicked(knownTouch.Pointers[0], knownTouch.TouchData.tapCount);
+                            InputSystem.RaiseHoldCanceled(this);
+                            InputSystem.RaiseInputClicked(knownTouch, knownTouch.TouchData.tapCount);
                         }
                         else
                         {
-                            MixedRealityInputManager.RaiseHoldCompleted(knownTouch);
+                            InputSystem.RaiseHoldCompleted(this);
                         }
                     }
                     else
                     {
-                        MixedRealityInputManager.RaiseHoldCanceled(knownTouch);
+                        InputSystem.RaiseHoldCanceled(this);
                     }
 
+                    InputSystem.RaisePointerUp(knownTouch);
                     activeTouches.Remove(knownTouch);
-                    MixedRealityInputManager.RaiseSourceLost(knownTouch);
+
+                    if (activeTouches.Count == 0)
+                    {
+                        InputSystem.RaiseSourceLost(this);
+                    }
                 }
             }
         }
 
         #endregion Input Touch Events
 
-        #region Base Input Source Implementation
-
         /// <summary>
-        /// Searches through the list of active touches for the input with the matching sourceId.
+        /// Searches through the list of active touches for the input with the matching  Pointer Id.
         /// </summary>
-        /// <param name="sourceId">T</param>
+        /// <param name="pointerId">T</param>
         /// <param name="touch"></param>
-        /// <returns><see cref="TouchInputSource"/></returns>
-        private bool TryGetTouchInputSource(int sourceId, out TouchInputSource touch)
+        /// <returns><see cref="TouchPointer"/></returns>
+        private bool TryGetTouchPointer(uint pointerId, out TouchPointer touch)
         {
-            foreach (var _touch in activeTouches)
+            foreach (var activeTouch in activeTouches)
             {
-                if (_touch.SourceId == sourceId)
+                if (activeTouch.PointerId == pointerId)
                 {
-                    touch = _touch;
+                    touch = activeTouch;
                     return true;
                 }
             }
@@ -157,15 +184,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         }
 
         /// <summary>
-        /// Try to get the current Pointer Position input reading from the specified Input Source.
+        /// Try to get the current Pointer Position input reading from the specified Pointer Id.
         /// </summary>
-        /// <param name="sourceId"></param>
+        /// <param name="pointerId"></param>
         /// <param name="position"></param>
         /// <returns>True if data is available.</returns>
-        public bool TryGetPointerPosition(uint sourceId, out Vector3 position)
+        public bool TryGetPointerPosition(uint pointerId, out Vector3 position)
         {
-            TouchInputSource knownTouch;
-            if (TryGetTouchInputSource((int)sourceId, out knownTouch))
+            TouchPointer knownTouch;
+            if (TryGetTouchPointer(pointerId, out knownTouch))
             {
                 position = knownTouch.TouchData.position;
                 return true;
@@ -176,15 +203,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         }
 
         /// <summary>
-        /// Try to get the current Pointing Ray input reading from the specified Input Source.
+        /// Try to get the current Pointing Ray input reading from the specified Pointer Id.
         /// </summary>
-        /// <param name="sourceId"></param>
+        /// <param name="pointerId"></param>
         /// <param name="pointingRay"></param>
         /// <returns>True if data is available.</returns>
-        public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
+        public bool TryGetPointingRay(uint pointerId, out Ray pointingRay)
         {
-            TouchInputSource knownTouch;
-            if (TryGetTouchInputSource((int)sourceId, out knownTouch))
+            TouchPointer knownTouch;
+            if (TryGetTouchPointer(pointerId, out knownTouch))
             {
                 pointingRay = knownTouch.ScreenPointRay;
                 return true;
@@ -193,20 +220,5 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             pointingRay = default(Ray);
             return false;
         }
-
-        /// <summary>
-        /// Get the Supported Input Info for the specified Input Source.
-        /// </summary>
-        /// <param name="sourceId"></param>
-        /// <returns><see cref="SupportedInputInfo"/></returns>
-        public SupportedInputInfo GetSupportedInputInfo(uint sourceId)
-        {
-            TouchInputSource knownTouch;
-            return TryGetTouchInputSource((int)sourceId, out knownTouch)
-                ? knownTouch.GetSupportedInputInfo()
-                : SupportedInputInfo.None;
-        }
-
-        #endregion Base Input Source Implementation
     }
 }

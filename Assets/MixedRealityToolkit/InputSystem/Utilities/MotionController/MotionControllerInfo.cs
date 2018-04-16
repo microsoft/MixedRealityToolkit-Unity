@@ -157,7 +157,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
         /// thumbstick, and touchpad animation.
         /// </summary>
         /// <param name="childTransforms">The transforms of the glTF model.</param>
-        public void LoadInfo(Transform[] childTransforms)
+        /// <param name="motionControllerVisualizer"></param>
+        public void LoadInfo(Transform[] childTransforms, MotionControllerVisualizer motionControllerVisualizer)
         {
             foreach (Transform child in childTransforms)
             {
@@ -170,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
                 switch (child.name.ToLower())
                 {
                     case "touch":
-                        touchpadTouchVisualizer = MotionControllerVisualizer.SpawnTouchpadVisualizer(child);
+                        touchpadTouchVisualizer = motionControllerVisualizer.SpawnTouchpadVisualizer(child);
                         break;
                     case "pointing_pose":
                         pointingPose = child.gameObject;

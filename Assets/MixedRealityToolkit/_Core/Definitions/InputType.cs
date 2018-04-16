@@ -4,30 +4,33 @@
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
-    /// The ButtonAction defines the set of actions exposed by a controller.
+    /// The InputType defines the types of input exposed by a controller.
     /// Denoting the available buttons / interactions that a controller supports.
     /// </summary>
-    public enum ButtonAction
+    public enum InputType
     {
         None = 0,
+        Pointer,
+        PointerPosition,
+        PointerRotation,
+        ButtonPress,
+        ButtonTouch,
         Trigger,
-        Grab,
+        TriggerTouch,
+        TriggerPress,
+        Grip,
+        GripTouch,
+        GripPress,
+        GripPosition,
+        GripRotation,
         ThumbStick,
-        ThumbStickButton,
+        ThumbStickPress,
         Touchpad,
         TouchpadTouch,
-        TouchpadButton,
+        TouchpadPress,
+        Select,
+        Voice,
         Start,
         Menu,
-        ButtonOne,
-        ButtonTwo,
-        ButtonThree,
-        ButtonFour,
-        ButtonFive,
-        ButtonSix,
-        ButtonSeven,
-        ButtonEight,
-        ButtonNine,
-        ButtonTen
     }
 }

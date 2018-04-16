@@ -10,24 +10,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     public enum InputActions
     {
         Raw = 0,
-        LeftTrigger,
-        LeftTriggerPress,
-        LeftTriggerHold,
-        RightTrigger,
-        RightTriggerPressed,
-        RightTriggerHold,
-        LeftTouch,
-        LeftTouchTouched,
-        LeftTouchPressed,
-        RightTouch,
-        RightTouchTouched,
-        RightTouchPressed,
-        LeftThumbstick,
-        LeftThumbstickPressed,
-        RightThumbstick,
-        RightThumbstickPressed,
+        Trigger,
+        TriggerPress,
+        TriggerHold,
+        Touch,
+        TouchTouched,
+        TouchPressed,
+        Thumbstick,
+        ThumbstickPressed,
         /// <summary>
-        /// Grab
+        /// Grip
         /// </summary>
         ActionOne,
         /// <summary>

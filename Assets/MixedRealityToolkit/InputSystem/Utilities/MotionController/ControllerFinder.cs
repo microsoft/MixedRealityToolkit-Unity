@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
     /// <summary>
     /// ControllerFinder is a base class providing simple event handling for getting/releasing MotionController Transforms
     /// </summary>
-    public abstract class ControllerFinder : MonoBehaviour
+    public abstract class ControllerFinder : MotionControllerVisualizer
     {
         public MotionControllerInfo.ControllerElementEnum Element
         {
@@ -73,25 +73,25 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
         {
 #if UNITY_WSA
             // Look if the controller has loaded.
-            if (MotionControllerVisualizer.TryGetControllerModel((InteractionSourceHandedness)Handedness, out ControllerInfo))
+            if (TryGetControllerModel((InteractionSourceHandedness)Handedness, out ControllerInfo))
             {
                 AddControllerTransform(ControllerInfo);
             }
 #endif
-            MotionControllerVisualizer.OnControllerModelLoaded += AddControllerTransform;
-            MotionControllerVisualizer.OnControllerModelUnloaded += RemoveControllerTransform;
+            OnControllerModelLoaded += AddControllerTransform;
+            OnControllerModelUnloaded += RemoveControllerTransform;
         }
 
         protected virtual void OnDisable()
         {
-            MotionControllerVisualizer.OnControllerModelLoaded -= AddControllerTransform;
-            MotionControllerVisualizer.OnControllerModelUnloaded -= RemoveControllerTransform;
+            OnControllerModelLoaded -= AddControllerTransform;
+            OnControllerModelUnloaded -= RemoveControllerTransform;
         }
 
         protected virtual void OnDestroy()
         {
-            MotionControllerVisualizer.OnControllerModelLoaded -= AddControllerTransform;
-            MotionControllerVisualizer.OnControllerModelUnloaded -= RemoveControllerTransform;
+            OnControllerModelLoaded -= AddControllerTransform;
+            OnControllerModelUnloaded -= RemoveControllerTransform;
         }
 
         #endregion Monobehaviour Implementation
@@ -101,9 +101,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 #if UNITY_WSA
             if (newController.Handedness == (InteractionSourceHandedness)handedness)
             {
+                Transform elementTransform;
                 if (!newController.TryGetElement(element, out elementTransform))
                 {
-                    Debug.LogError("Unable to find element of type " + element + " under controller " + newController.ControllerParent.name + "; not attaching.");
+                    Debug.LogError($"Unable to find element of type {element} under controller {newController.ControllerParent.name}; not attaching.");
                     return;
                 }
                 ControllerInfo = newController;

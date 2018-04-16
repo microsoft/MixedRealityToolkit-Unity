@@ -38,11 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// <summary>
         /// Details the list of available buttons / interactions available from the controller.
         /// </summary>
-        public ButtonDefinition[] Buttons { get; set; }
+        public InteractionDefinition[] Interactions { get; set; }
 
         /// <summary>
         /// List the available capabilities of the controller for a simpler lookup.
         /// </summary>
-        public ButtonAction[] Capabilities { get; set; }
+        public InputType[] Capabilities { get; set; }
     }
 }

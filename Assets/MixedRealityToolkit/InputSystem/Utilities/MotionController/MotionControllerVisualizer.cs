@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_EDITOR_WIN
@@ -12,7 +13,7 @@ using System.Runtime.InteropServices;
 using System.Collections;
 using System.IO;
 using UnityEngine.XR.WSA.Input;
-using UnityGLTF;
+//using UnityGLTF;
 
 #if !UNITY_EDITOR
 using Windows.Foundation;
@@ -59,8 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
         [Tooltip("This material will be used on the loaded glTF controller model. This does not affect the above overrides.")]
         protected UnityEngine.Material GltfMaterial;
 
-        private static UnityEngine.Material gltfMaterial;
-
 #if UNITY_WSA
         // This will be used to keep track of our controllers, indexed by their unique source ID.
         private Dictionary<string, MotionControllerInfo> controllerDictionary = new Dictionary<string, MotionControllerInfo>(0);
@@ -81,7 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
         private void Awake()
         {
             touchpadTouchedOverride = TouchpadTouchedOverride;
-            gltfMaterial = GltfMaterial;
 
 #if UNITY_WSA
             foreach (var sourceState in InteractionManager.GetCurrentReading())
@@ -94,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 
             Application.onBeforeRender += Application_onBeforeRender;
 
-            if (GLTFMaterial == null)
+            if (GltfMaterial == null)
             {
                 if (AlternateLeftController == null && AlternateRightController == null)
                 {
@@ -144,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
                 MotionControllerInfo currentController;
                 if (sourceState.source.kind == InteractionSourceKind.Controller && controllerDictionary.TryGetValue(GenerateKey(sourceState.source), out currentController))
                 {
-                    if (AnimateControllerModel)
+                    if (animateControllerModel)
                     {
                         currentController.AnimateSelect(sourceState.selectPressedAmount);
 
@@ -188,13 +186,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
         private bool ValidRotation(Quaternion newRotation)
         {
             return !float.IsNaN(newRotation.x) && !float.IsNaN(newRotation.y) && !float.IsNaN(newRotation.z) && !float.IsNaN(newRotation.w) &&
-                !float.IsInfinity(newRotation.x) && !float.IsInfinity(newRotation.y) && !float.IsInfinity(newRotation.z) && !float.IsInfinity(newRotation.w);
+                   !float.IsInfinity(newRotation.x) && !float.IsInfinity(newRotation.y) && !float.IsInfinity(newRotation.z) && !float.IsInfinity(newRotation.w);
         }
 
         private bool ValidPosition(Vector3 newPosition)
         {
             return !float.IsNaN(newPosition.x) && !float.IsNaN(newPosition.y) && !float.IsNaN(newPosition.z) &&
-                !float.IsInfinity(newPosition.x) && !float.IsInfinity(newPosition.y) && !float.IsInfinity(newPosition.z);
+                   !float.IsInfinity(newPosition.x) && !float.IsInfinity(newPosition.y) && !float.IsInfinity(newPosition.z);
         }
 
 #if UNITY_WSA
@@ -207,9 +205,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
         {
             string key = GenerateKey(source);
 
-            MotionControllerInfo controllerInfo;
             if (source.kind == InteractionSourceKind.Controller)
             {
+                MotionControllerInfo controllerInfo;
+
                 if (!controllerDictionary.ContainsKey(key) && !loadingControllers.Contains(key))
                 {
                     StartCoroutine(LoadControllerModel(source));
@@ -227,10 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 
                     controllerInfo.ControllerParent.SetActive(true);
 
-                    if (OnControllerModelLoaded != null)
-                    {
-                        OnControllerModelLoaded(controllerInfo);
-                    }
+                    OnControllerModelLoaded?.Invoke(controllerInfo);
                 }
             }
         }
@@ -248,10 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
                 MotionControllerInfo controllerInfo;
                 if (controllerDictionary != null && controllerDictionary.TryGetValue(GenerateKey(source), out controllerInfo))
                 {
-                    if (OnControllerModelUnloaded != null)
-                    {
-                        OnControllerModelUnloaded(controllerInfo);
-                    }
+                    OnControllerModelUnloaded?.Invoke(controllerInfo);
 
                     if (controllerInfo.Handedness == InteractionSourceHandedness.Left)
                     {
@@ -271,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
         {
             loadingControllers.Add(GenerateKey(source));
 
-            if (AlwaysUseAlternateLeftModel && source.handedness == InteractionSourceHandedness.Left)
+            if (alwaysUseAlternateLeftModel && source.handedness == InteractionSourceHandedness.Left)
             {
                 if (AlternateLeftController == null)
                 {
@@ -283,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
                     LoadAlternateControllerModel(source);
                 }
             }
-            else if (AlwaysUseAlternateRightModel && source.handedness == InteractionSourceHandedness.Right)
+            else if (alwaysUseAlternateRightModel && source.handedness == InteractionSourceHandedness.Right)
             {
                 if (AlternateRightController == null)
                 {
@@ -306,9 +299,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             byte[] fileBytes;
             GameObject controllerModelGameObject;
 
-            if (GLTFMaterial == null)
+            if (GltfMaterial == null)
             {
-                Debug.Log("If using glTF, please specify a material on " + name + ".");
+                Debug.Log($"If using glTF, please specify a material on {name}.");
                 yield break;
             }
 
@@ -376,12 +369,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 #endif
 
             controllerModelGameObject = new GameObject { name = "glTFController" };
-            var gltfScript = controllerModelGameObject.AddComponent<GLTFComponent>();
-            gltfScript.GLTFConstant = gltfScript.GLTFStandard = gltfScript.GLTFStandardSpecular = GLTFMaterial.shader;
-            gltfScript.UseStream = true;
-            gltfScript.GLTFStream = new MemoryStream(fileBytes);
+            //var gltfScript = controllerModelGameObject.AddComponent<GLTFComponent>();
+            //gltfScript.GLTFConstant = gltfScript.GLTFStandard = gltfScript.GLTFStandardSpecular = gltfMaterial.shader;
+            //gltfScript.UseStream = true;
+            //gltfScript.GLTFStream = new MemoryStream(fileBytes);
 
-            yield return gltfScript.WaitForModelLoad();
+            //yield return gltfScript.WaitForModelLoad();
 
             FinishControllerSetup(controllerModelGameObject, source.handedness, GenerateKey(source));
         }
@@ -408,14 +401,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 
         private string GenerateKey(InteractionSource source)
         {
-            return source.vendorId + "/" + source.productId + "/" + source.productVersion + "/" + source.handedness;
+            return $"{source.vendorId}/{source.productId}/{source.productVersion}/{source.handedness}";
         }
 
         private void FinishControllerSetup(GameObject controllerModelGameObject, InteractionSourceHandedness handedness, string dictionaryKey)
         {
             var parentGameObject = new GameObject
             {
-                name = handedness + "Controller"
+                name = $"{handedness} Controller"
             };
 
             parentGameObject.transform.parent = transform;
@@ -423,7 +416,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 
             var newControllerInfo = new MotionControllerInfo(parentGameObject, handedness);
 
-            newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>());
+            newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>(), this);
 
             if (handedness == InteractionSourceHandedness.Left)
             {
@@ -434,10 +427,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
                 rightControllerModel = newControllerInfo;
             }
 
-            if (OnControllerModelLoaded != null)
-            {
-                OnControllerModelLoaded(newControllerInfo);
-            }
+            OnControllerModelLoaded?.Invoke(newControllerInfo);
 
             loadingControllers.Remove(dictionaryKey);
             controllerDictionary.Add(dictionaryKey, newControllerInfo);
@@ -450,20 +440,19 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
                 controller = leftControllerModel;
                 return true;
             }
-            else if (handedness == InteractionSourceHandedness.Right && rightControllerModel != null)
+
+            if (handedness == InteractionSourceHandedness.Right && rightControllerModel != null)
             {
                 controller = rightControllerModel;
                 return true;
             }
-            else
-            {
-                controller = null;
-                return false;
-            }
+
+            controller = null;
+            return false;
         }
 #endif
 
-        public static GameObject SpawnTouchpadVisualizer(Transform parentTransform)
+        public GameObject SpawnTouchpadVisualizer(Transform parentTransform)
         {
             GameObject touchVisualizer;
             if (touchpadTouchedOverride != null)
@@ -474,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             {
                 touchVisualizer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 touchVisualizer.transform.localScale = new Vector3(0.0025f, 0.0025f, 0.0025f);
-                touchVisualizer.GetComponent<Renderer>().sharedMaterial = gltfMaterial;
+                touchVisualizer.GetComponent<Renderer>().sharedMaterial = GltfMaterial;
             }
 
             Destroy(touchVisualizer.GetComponent<Collider>());

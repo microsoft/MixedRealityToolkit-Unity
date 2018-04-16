@@ -4,10 +4,10 @@
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
-    /// The ControllerInputType identifies the type of button or input being sent to the framework from a controller.
+    /// The AxisType identifies the type of button or input being sent to the framework from a controller.
     /// This is mainly information only or for advanced users to understand the input coming directly from the controller.
     /// </summary>
-    public enum ControllerInputType
+    public enum AxisType
     {
         /// <summary>
         /// No Specified type.

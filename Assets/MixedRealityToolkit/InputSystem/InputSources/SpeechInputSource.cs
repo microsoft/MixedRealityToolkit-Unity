@@ -3,10 +3,10 @@
 
 using System;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputMapping;
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using UnityEngine;
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
@@ -24,6 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
     /// </summary>
     public class SpeechInputSource : BaseInputSource
     {
+        public override InputType[] Capabilities => new[] { InputType.Voice };
+
         /// <summary>
         /// This enumeration gives the manager two different ways to handle the recognizer. Both will
         /// set up the recognizer and add all keywords. The first causes the recognizer to start
@@ -34,23 +36,24 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         /// <summary>
         /// Keywords are persistent across all scenes.  This Speech Input Source instance will not be destroyed when loading a new scene.
         /// </summary>
-        [Tooltip("Keywords are persistent across all scenes.  This Speech Input Source instance will not be destroyed when loading a new scene.")]
         [SerializeField]
+        [Tooltip("Keywords are persistent across all scenes.  This Speech Input Source instance will not be destroyed when loading a new scene.")]
         private bool persistentKeywords;
 
-        [Tooltip("Whether the recognizer should be activated on start.")]
         [SerializeField]
+        [Tooltip("Whether the recognizer should be activated on start.")]
         private RecognizerStartBehavior recognizerStart;
 
-        [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
         [SerializeField]
+        [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
         private KeywordAndKeyCode[] keywords;
+
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
         /// </summary>
         public KeywordAndKeyCode[] Keywords => keywords;
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         /// <summary>
         /// The serialized data of this field will be lost when switching between platforms and re-serializing this class.
         /// </summary>
@@ -62,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
 
         #region Monobehaviour Implementations
 
-        protected virtual void OnEnable()
+        private void OnEnable()
         {
             if (keywordRecognizer != null && recognizerStart == RecognizerStartBehavior.AutoStart)
             {
@@ -70,26 +73,24 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             }
         }
 
-        protected virtual void Start()
+        private void Start()
         {
             if (persistentKeywords)
             {
                 DontDestroyOnLoad(gameObject);
             }
 
-            SourceId = MixedRealityInputManager.GenerateNewSourceId();
-
             int keywordCount = keywords.Length;
             if (keywordCount > 0)
             {
-                var keywords = new string[keywordCount];
+                var newKeywords = new string[keywordCount];
 
                 for (int index = 0; index < keywordCount; index++)
                 {
-                    keywords[index] = this.keywords[index].Keyword;
+                    newKeywords[index] = keywords[index].Keyword;
                 }
 
-                keywordRecognizer = new KeywordRecognizer(keywords, recognitionConfidenceLevel);
+                keywordRecognizer = new KeywordRecognizer(newKeywords, recognitionConfidenceLevel);
                 keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
                 if (recognizerStart == RecognizerStartBehavior.AutoStart)
@@ -99,11 +100,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             }
             else
             {
-                Debug.LogError("Must have at least one keyword specified in the Inspector on " + gameObject.name + ".");
+                Debug.LogError($"Must have at least one keyword specified in the Inspector on {gameObject.name}.");
             }
         }
 
-        protected virtual void Update()
+        private void Update()
         {
             if (keywordRecognizer != null && keywordRecognizer.IsRunning)
             {
@@ -117,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             }
         }
 
-        protected virtual void OnDisable()
+        private void OnDisable()
         {
             if (keywordRecognizer != null)
             {
@@ -125,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             }
         }
 
-        protected virtual void OnDestroy()
+        private void OnDestroy()
         {
             if (keywordRecognizer != null)
             {
@@ -142,9 +143,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             OnPhraseRecognized(args.confidence, args.phraseDuration, args.phraseStartTime, args.semanticMeanings, args.text);
         }
 
-        protected virtual void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
+        private void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
         {
-            MixedRealityInputManager.RaiseSpeechKeywordPhraseRecognized(this, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+            InputSystem.RaiseSpeechKeywordPhraseRecognized(this, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
         }
 
         /// <summary>
@@ -171,15 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             }
         }
 
-#endif // UNITY_WSA || UNITY_STANDALONE_WIN
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-        #region Base Input Source Methods
-
-        public override SupportedInputInfo GetSupportedInputInfo()
-        {
-            return SupportedInputInfo.Voice;
-        }
-
-        #endregion Base Input Source Methods
     }
 }

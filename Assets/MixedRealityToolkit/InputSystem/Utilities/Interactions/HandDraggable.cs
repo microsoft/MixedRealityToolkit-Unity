@@ -6,6 +6,9 @@ using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputSources;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
@@ -72,6 +75,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
         private uint currentInputSourceId;
         private Rigidbody hostRigidbody;
         private bool hostRigidbodyWasKinematic;
+        private IMixedRealityInputSystem inputSystem;
+
+        private void Awake()
+        {
+            inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+        }
 
         private void Start()
         {
@@ -114,11 +123,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
                 return;
             }
 
-            // TODO: robertes: Fix push/pop and single-handler model so that multiple HandDraggable components
-            //       can be active at once.
+            // TODO: robertes: Fix push/pop and single-handler model so that multiple HandDraggable components can be active at once.
 
             // Add self as a modal input handler, to get all inputs during the manipulation
-            MixedRealityInputManager.PushModalInputHandler(gameObject);
+            inputSystem.PushModalInputHandler(gameObject);
 
             isDragging = true;
 
@@ -133,15 +141,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
             Vector3 inputPosition = Vector3.zero;
 #if UNITY_WSA
             InteractionSourceKind sourceKind;
-            InteractionInputSources.Instance.TryGetSourceKind(currentInputSourceId, out sourceKind);
+            InteractionInputSources.TryGetSourceKind(currentInputSourceId, out sourceKind);
 
             switch (sourceKind)
             {
                 case InteractionSourceKind.Hand:
-                    InteractionInputSources.Instance.TryGetGripPosition(currentInputSourceId, out inputPosition);
+                    InteractionInputSources.TryGetGripPosition(currentInputSourceId, out inputPosition);
                     break;
                 case InteractionSourceKind.Controller:
-                    InteractionInputSources.Instance.TryGetPointerPosition(currentInputSourceId, out inputPosition);
+                    InteractionInputSources.TryGetPointerPosition(currentInputSourceId, out inputPosition);
                     break;
             }
 #else
@@ -298,7 +306,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
             }
 
             // Remove self as a modal input handler
-            MixedRealityInputManager.PopModalInputHandler();
+            inputSystem.PopModalInputHandler();
 
             isDragging = false;
             currentInputSourceId = 0;
@@ -349,17 +357,17 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
 
 #if UNITY_WSA
             InteractionSourceKind sourceKind;
-            InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind);
+            InteractionInputSources.TryGetSourceKind(eventData.SourceId, out sourceKind);
             if (sourceKind != InteractionSourceKind.Hand)
             {
-                if (!eventData.InputSource.SupportsInputInfo(SupportedInputInfo.GripPosition))
+                if (!eventData.InputSource.SupportsInputCapability(new[] { InputType.GripPosition }))
                 {
                     // The input source must provide grip positional data for this script to be usable
                     return;
                 }
             }
 #else
-            if (!eventData.InputSource.SupportsInputInfo(SupportedInputInfo.PointerPosition))
+            if (!eventData.InputSource.SupportsInputCapability(SupportedInputInfo.PointerPosition))
             {
                 // The input source must provide positional data for this script to be usable
                 return;
@@ -371,7 +379,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
             currentInputSourceId = eventData.SourceId;
 
             FocusDetails focusDetails;
-            Vector3 initialDraggingPosition = FocusManager.TryGetFocusDetails(eventData, out focusDetails)
+            Vector3 initialDraggingPosition = inputSystem.FocusProvider.TryGetFocusDetails(eventData, out focusDetails)
                 ? focusDetails.Point
                 : HostTransform.position;
 
@@ -380,7 +388,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
 
         void IInputHandler.OnInputPressed(InputPressedEventData eventData) { }
 
-        void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData) { }
+        void IInputHandler.OnDualAxisInputChanged(InputDualAxisPositionEventData eventData) { }
 
         void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
 

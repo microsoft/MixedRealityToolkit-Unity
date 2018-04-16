@@ -3,7 +3,9 @@
 
 using System.Collections;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
@@ -13,21 +15,47 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
     /// </summary>
     public abstract class BaseInputSource : MonoBehaviour, IInputSource
     {
-        public uint SourceId { get; protected set; }
+        private static IMixedRealityInputSystem inputSystem = null;
+        public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
-        public string SourceName
+        private uint sourceId = 0;
+        public uint SourceId
+        {
+            get
+            {
+                if (sourceId == 0)
+                {
+                    sourceId = InputSystem.GenerateNewSourceId();
+                }
+
+                return sourceId;
+            }
+        }
+
+        public virtual string SourceName
         {
             get { return name; }
             set { name = value; }
         }
 
-        public IPointer[] Pointers { get { return null; } }
+        public virtual IPointer[] Pointers => null;
 
-        public abstract SupportedInputInfo GetSupportedInputInfo();
+        public virtual InputType[] Capabilities => new[] { InputType.None };
 
-        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
+        public bool SupportsInputCapability(InputType[] inputInfo)
         {
-            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
+            for (int i = 0; i < Capabilities.Length; i++)
+            {
+                for (int j = 0; j < inputInfo.Length; j++)
+                {
+                    if (Capabilities[i] == inputInfo[j])
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         #region IEquality Implementation

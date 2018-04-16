@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
 using Microsoft.MixedReality.Toolkit.InputSystem.Cursors;
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputSources;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
@@ -15,7 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
     /// <summary>
     /// The gaze manager manages everything related to a gaze ray that can interact with other objects.
     /// </summary>
-    public class GazeManager : MonoBehaviour, IInputSource
+    [DisallowMultipleComponent]
+    public class GazeProvider : BaseInputSource, IGazeProvider
     {
         [SerializeField]
         [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
@@ -28,8 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         [Tooltip("Maximum distance at which the gaze can collide with an object.")]
         private float maxGazeCollisionDistance = 10.0f;
 
-        public static float MaxGazeCollisionDistance { get; private set; }
-
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
         ///
@@ -39,13 +37,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         ///
         /// int sr = LayerMask.GetMask("SR");
         /// int nonSR = Physics.DefaultRaycastLayers & ~sr;
-        /// GazeManager.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };
+        /// GazeProvider.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };
         /// </summary>
         [SerializeField]
         [Tooltip("The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.\n\nExample Usage:\n\n// Allow the cursor to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)\n\nint sr = LayerMask.GetMask(\"SR\");\nint nonSR = Physics.DefaultRaycastLayers & ~sr;\nGazeManager.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };")]
         private LayerMask[] raycastLayerMasks = { Physics.DefaultRaycastLayers };
-
-        public static LayerMask[] RaycastLayerMasks { get; private set; }
 
         /// <summary>
         /// Current stabilization method, used to smooth out the gaze ray data.
@@ -55,8 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         [Tooltip("Stabilizer, if any, used to smooth out the gaze ray data.")]
         private BaseRayStabilizer stabilizer;
 
-        public static BaseRayStabilizer Stabilizer { get; private set; }
-
         /// <summary>
         /// Transform that should be used as the source of the gaze position and rotation.
         /// Defaults to the main camera.
@@ -64,8 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         [SerializeField]
         [Tooltip("Transform that should be used to represent the gaze position and rotation. Defaults to CameraCache.Main")]
         private Transform gazeTransform;
-
-        public static Transform GazeTransform { get; private set; }
 
         [SerializeField]
         [Tooltip("True to draw a debug view of the ray.")]
@@ -96,12 +88,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         /// <summary>
         /// Origin of the gaze.
         /// </summary>
-        public static Vector3 GazeOrigin => Pointers[0].Rays[0].Origin;
+        public static Vector3 GazeOrigin => GazePointer.Rays[0].Origin;
 
         /// <summary>
         /// Normal of the gaze.
         /// </summary>
-        public static Vector3 GazeDirection => Pointers[0].Rays[0].Direction;
+        public static Vector3 GazeDirection => GazePointer.Rays[0].Direction;
 
         private static float lastHitDistance = 2.0f;
 
@@ -109,80 +101,84 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         #region IInputSource Implementation
 
-        uint IInputSource.SourceId => SourceId;
+        public override string SourceName => "Gaze";
 
-        public static uint SourceId { get; protected set; }
-
-        public string SourceName => "Gaze";
-
-        IPointer[] IInputSource.Pointers => Pointers;
-
-        public static IPointer[] Pointers { get; } = new IPointer[1];
-
-        public SupportedInputInfo GetSupportedInputInfo()
+        public static IPointer GazePointer { get; private set; } = null;
+        private IPointer[] pointers = null;
+        public override IPointer[] Pointers
         {
-            return SupportedInputInfo.Pointing;
-        }
+            get
+            {
+                if (GazePointer == null)
+                {
+                    GazePointer = new InternalGazePointer("Gaze Pointer", this, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
+                    pointers = new[] { GazePointer };
+                }
 
-        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
-        {
-            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
+                return pointers;
+            }
         }
 
         #endregion IInputSource Implementation
 
         #region IPointer Implementation
 
-        private class GazePointer : GenericPointer
+        private class InternalGazePointer : GenericPointer
         {
-            public GazePointer(string pointerName, IInputSource inputSourceParent) : base(pointerName, inputSourceParent)
+            private readonly Transform gazeTransform;
+            private readonly BaseRayStabilizer stabilizer;
+
+            public InternalGazePointer(string pointerName, IInputSource inputSourceParent, LayerMask[] raycastLayerMasks, float pointerExtent, Transform gazeTransform, BaseRayStabilizer stabilizer)
+                    : base(pointerName, inputSourceParent)
             {
-                PrioritizedLayerMasksOverride = RaycastLayerMasks;
-                PointerExtent = MaxGazeCollisionDistance;
+                PrioritizedLayerMasksOverride = raycastLayerMasks;
+                PointerExtent = pointerExtent;
+                this.gazeTransform = gazeTransform;
+                this.stabilizer = stabilizer;
                 InteractionEnabled = true;
             }
 
             public override void OnPreRaycast()
             {
-                if (GazeTransform == null)
+                if (gazeTransform == null)
                 {
-                    Pointers[0].Rays[0] = default(RayStep);
+                    Rays[0] = default(RayStep);
                 }
                 else
                 {
-                    Vector3 newGazeOrigin = GazeTransform.position;
-                    Vector3 newGazeNormal = GazeTransform.forward;
+                    Vector3 newGazeOrigin = gazeTransform.position;
+                    Vector3 newGazeNormal = gazeTransform.forward;
 
                     // Update gaze info from stabilizer
-                    if (Stabilizer != null)
+                    if (stabilizer != null)
                     {
-                        Stabilizer.UpdateStability(newGazeOrigin, GazeTransform.rotation);
-                        newGazeOrigin = Stabilizer.StablePosition;
-                        newGazeNormal = Stabilizer.StableRay.direction;
+                        stabilizer.UpdateStability(newGazeOrigin, gazeTransform.rotation);
+                        newGazeOrigin = stabilizer.StablePosition;
+                        newGazeNormal = stabilizer.StableRay.direction;
                     }
 
-                    Pointers[0].Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * (Pointers[0].PointerExtent ?? FocusManager.GlobalPointingExtent)));
+                    Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent)));
                 }
 
-                HitPosition = Pointers[0].Rays[0].Origin + (lastHitDistance * Pointers[0].Rays[0].Direction);
+                HitPosition = Rays[0].Origin + (lastHitDistance * Rays[0].Direction);
             }
 
             public override void OnPostRaycast()
             {
-                HitInfo = Pointers[0].Result.End.LastRaycastHit;
-                GazeTarget = Pointers[0].Result.End.Object;
+                HitInfo = Result.End.LastRaycastHit;
+                GazeTarget = Result.End.Object;
 
-                if (Pointers[0].Result.End.Object != null)
+                if (Result.End.Object != null)
                 {
-                    lastHitDistance = (Pointers[0].Result.End.Point - Pointers[0].Rays[0].Origin).magnitude;
-                    HitPosition = Pointers[0].Rays[0].Origin + (lastHitDistance * Pointers[0].Rays[0].Direction);
-                    HitNormal = Pointers[0].Result.End.Normal;
+                    lastHitDistance = (Result.End.Point - Rays[0].Origin).magnitude;
+                    HitPosition = Rays[0].Origin + (lastHitDistance * Rays[0].Direction);
+                    HitNormal = Result.End.Normal;
                 }
             }
 
             public override bool TryGetPointerPosition(out Vector3 position)
             {
-                position = GazeTransform.position;
+                position = gazeTransform.position;
                 return true;
             }
 
@@ -201,66 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         #endregion IPointer Implementation
 
-        #region IEquality Implementation
-
-        private bool Equals(IInputSource other)
-        {
-            return base.Equals(other) && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) { return false; }
-            if (ReferenceEquals(this, obj)) { return true; }
-            if (obj.GetType() != GetType()) { return false; }
-
-            return Equals((IInputSource)obj);
-        }
-
-        public static bool Equals(IInputSource left, IInputSource right)
-        {
-            return left.SourceId == right.SourceId;
-        }
-
-        bool IEqualityComparer.Equals(object x, object y)
-        {
-            var left = (IInputSource)x;
-            var right = (IInputSource)y;
-            if (left != null && right != null)
-            {
-                return Equals(left, right);
-            }
-
-            return false;
-        }
-
-        int IEqualityComparer.GetHashCode(object obj)
-        {
-            return obj.GetHashCode();
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int)SourceId;
-                hashCode = (hashCode * 397) ^ (SourceName != null ? SourceName.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
-
-        #endregion IEquality Implementation
-
         #region Monobehaiour Implementation
-
-        private void Awake()
-        {
-            Stabilizer = stabilizer;
-            GazeTransform = gazeTransform;
-            RaycastLayerMasks = raycastLayerMasks;
-            MaxGazeCollisionDistance = maxGazeCollisionDistance;
-        }
 
         protected virtual void OnEnable()
         {
@@ -273,9 +210,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private void Start()
         {
-            SourceId = MixedRealityInputManager.GenerateNewSourceId();
-
-            Pointers[0] = new GazePointer("Gaze Pointer", this);
 
             if (cursorPrefab != null)
             {
@@ -316,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private void OnDisable()
         {
-            MixedRealityInputManager.RaiseSourceLost(this);
+            InputSystem.RaiseSourceLost(this);
 
             if (Pointers[0].BaseCursor != null)
             {
@@ -343,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
                 Pointers[0].BaseCursor.enabled = true;
             }
 
-            MixedRealityInputManager.RaiseSourceDetected(this);
+            InputSystem.RaiseSourceDetected(this);
         }
 
         private bool FindGazeTransform()

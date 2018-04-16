@@ -5,18 +5,21 @@ using System;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
 {
+    [DisallowMultipleComponent]
     public class SpeechInputHandler : MonoBehaviour, ISpeechHandler
     {
-
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
         /// </summary>
         public KeywordAndResponse[] Keywords => keywords;
+
         [SerializeField]
         [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
         private KeywordAndResponse[] keywords = new KeywordAndResponse[0];
@@ -35,20 +38,26 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
         [SerializeField]
         private bool persistentKeywords;
 
-        [NonSerialized]
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
+
+        private IMixedRealityInputSystem inputSystem;
 
         #region Monobehaviour Implementation
 
-        protected virtual void OnEnable()
+        private void Awake()
+        {
+            inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+        }
+
+        private void OnEnable()
         {
             if (isGlobalListener)
             {
-                MixedRealityInputManager.AddGlobalListener(gameObject);
+                inputSystem.Register(gameObject);
             }
         }
 
-        protected virtual void Start()
+        private void Start()
         {
             if (persistentKeywords)
             {
@@ -74,19 +83,19 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
             }
         }
 
-        protected virtual void OnDisable()
+        private void OnDisable()
         {
             if (isGlobalListener)
             {
-                MixedRealityInputManager.RemoveGlobalListener(gameObject);
+                inputSystem.Unregister(gameObject);
             }
         }
 
-        protected virtual void OnDestroy()
+        private void OnDestroy()
         {
             if (isGlobalListener)
             {
-                MixedRealityInputManager.RemoveGlobalListener(gameObject);
+                inputSystem.Unregister(gameObject);
             }
         }
 
