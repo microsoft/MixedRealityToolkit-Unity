@@ -22,14 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
         /// <summary>
-        /// Minimum distance for cursor if nothing is hit
-        /// </summary>
-        [SerializeField]
-        [Header("Cursor Distance")]
-        [Tooltip("The minimum distance the cursor can be with nothing hit")]
-        private float minCursorDistance = 1.0f;
-
-        /// <summary>
         /// Maximum distance for cursor if nothing is hit
         /// </summary>
         [Tooltip("The maximum distance the cursor can be with nothing hit")]

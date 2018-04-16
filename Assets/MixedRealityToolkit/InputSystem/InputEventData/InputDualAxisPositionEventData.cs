@@ -11,11 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.EventData
     public class InputDualAxisPositionEventData : InputEventData
     {
         /// <summary>
-        /// The Dual Axis Input Type
-        /// </summary>
-        public InputType InputType { get; private set; }
-
-        /// <summary>
         /// Two values, typically from -1.0 to 1.0 in the X-axis and Y-axis, representing where the input control is positioned.
         /// Typically this is Touch or Joystick data.
         /// </summary>
@@ -25,15 +20,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.EventData
 
         public void Initialize(IInputSource inputSource, InputType inputType, Vector2 position, object[] tags = null)
         {
-            BaseInitialize(inputSource, tags);
-            InputType = inputType;
+            Initialize(inputSource, inputType, tags);
             DualAxisPosition = position;
         }
 
         public void Initialize(IInputSource inputSource, InputType inputType, Vector2 position, Handedness handedness, object[] tags = null)
         {
-            Initialize(inputSource, handedness, tags);
-            InputType = inputType;
+            Initialize(inputSource, inputType, handedness, tags);
             DualAxisPosition = position;
         }
     }

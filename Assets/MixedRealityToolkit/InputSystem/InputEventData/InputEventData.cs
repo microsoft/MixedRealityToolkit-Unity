@@ -28,6 +28,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.EventData
             KeyCode = KeyCode.None;
             InputType = InputType.None;
         }
+
+        public void Initialize(IInputSource inputSource, InputType inputType, object[] tags)
+        {
+            BaseInitialize(inputSource, tags);
+            Handedness = Handedness.None;
+            KeyCode = KeyCode.None;
+            InputType = inputType;
+        }
+
         public void Initialize(IInputSource inputSource, KeyCode keyCode, object[] tags)
         {
             BaseInitialize(inputSource, tags);
