@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.InputSystem.InputSources;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.EventData
 {

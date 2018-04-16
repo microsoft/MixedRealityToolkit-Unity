@@ -2,12 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 using System.Text;
 using UnityEngine.Windows.Speech;
 #endif
@@ -18,9 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
     /// Singleton class that implements the DictationRecognizer to convert the user's speech to text.
     /// The DictationRecognizer exposes dictation functionality and supports registering and listening for hypothesis and phrase completed events.
     /// </summary>
-    public class DictationInputManager : MonoBehaviour, IInputSource
+    public class DictationInputManager : BaseInputSource
     {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         /// <summary>
         /// Caches the text currently being displayed in dictation display text.
         /// </summary>
@@ -58,84 +57,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         private static bool hasFailed;
         private static bool hasListener;
 
-#endif // UNITY_WSA || UNITY_STANDALONE_WIN
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         #region IInputSource Implementation
 
         private static IInputSource source;
 
-        public uint SourceId { get; protected set; }
+        public override string SourceName => "Dictation";
 
-        public string SourceName => "Dictation";
-
-        public IPointer[] Pointers => null;
-
-        public SupportedInputInfo GetSupportedInputInfo()
-        {
-            return SupportedInputInfo.Voice;
-        }
-
-        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
-        {
-            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
-        }
+        public override InputType[] Capabilities => new[] { InputType.Voice };
 
         #endregion IInputSource Implementation
-
-        #region IEquality Implementation
-
-        private bool Equals(IInputSource other)
-        {
-            return base.Equals(other) && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) { return false; }
-            if (ReferenceEquals(this, obj)) { return true; }
-            if (obj.GetType() != GetType()) { return false; }
-
-            return Equals((IInputSource)obj);
-        }
-
-        public static bool Equals(IInputSource left, IInputSource right)
-        {
-            return left.SourceId == right.SourceId;
-        }
-
-        bool IEqualityComparer.Equals(object x, object y)
-        {
-            var left = (IInputSource)x;
-            var right = (IInputSource)y;
-            if (left != null && right != null)
-            {
-                return Equals(left, right);
-            }
-
-            return false;
-        }
-
-        int IEqualityComparer.GetHashCode(object obj)
-        {
-            return obj.GetHashCode();
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int)SourceId;
-                hashCode = (hashCode * 397) ^ (SourceName != null ? SourceName.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
-
-        #endregion IEquality Implementation
-
+        
         #region Monobehaviour Implementation
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         private void Awake()
         {
             source = this;
@@ -151,11 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             Microphone.GetDeviceCaps(DeviceName, out minSamplingRate, out samplingRate);
         }
 
-        private void Start()
-        {
-            SourceId = MixedRealityInputManager.GenerateNewSourceId();
-        }
-
         private void LateUpdate()
         {
             if (IsListening && !Microphone.IsRecording(DeviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
@@ -167,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             if (!hasFailed && dictationRecognizer.Status == SpeechSystemStatus.Failed)
             {
                 hasFailed = true;
-                MixedRealityInputManager.RaiseDictationError(this, "Dictation recognizer has failed!");
+                InputSystem.RaiseDictationError(this, "Dictation recognizer has failed!");
             }
         }
 
@@ -189,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         /// <returns></returns>
         public static IEnumerator StartRecording(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
         {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             if (IsListening || isTransitioning)
             {
                 DebugUtilities.DebugLogWarning("Unable to start recording");
@@ -202,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             if (listener != null)
             {
                 hasListener = true;
-                MixedRealityInputManager.PushModalInputHandler(listener);
+                InputSystem.PushModalInputHandler(listener);
             }
 
             if (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
@@ -221,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
 
             while (dictationRecognizer.Status == SpeechSystemStatus.Failed)
             {
-                MixedRealityInputManager.RaiseDictationError(source, "Dictation recognizer failed to start!");
+                InputSystem.RaiseDictationError(source, "Dictation recognizer failed to start!");
                 yield break;
             }
 
@@ -245,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         /// </summary>
         public static IEnumerator StopRecording()
         {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             if (!IsListening || isTransitioning)
             {
                 DebugUtilities.DebugLogWarning("Unable to stop recording");
@@ -257,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
 
             if (hasListener)
             {
-                MixedRealityInputManager.PopModalInputHandler();
+                InputSystem.PopModalInputHandler();
                 hasListener = false;
             }
 
@@ -282,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
 
         #region Dictation Recognizer Callbacks
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         /// <summary>
         /// This event is fired while the user is talking. As the recognizer listens, it provides text of what it's heard so far.
@@ -293,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             // We don't want to append to textSoFar yet, because the hypothesis may have changed on the next event.
             dictationResult = $"{textSoFar} {text}...";
 
-            MixedRealityInputManager.RaiseDictationHypothesis(source, dictationResult);
+            InputSystem.RaiseDictationHypothesis(source, dictationResult);
         }
 
         /// <summary>
@@ -307,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
 
             dictationResult = textSoFar.ToString();
 
-            MixedRealityInputManager.RaiseDictationResult(source, dictationResult);
+            InputSystem.RaiseDictationResult(source, dictationResult);
         }
 
         /// <summary>
@@ -325,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
                 dictationResult = "Dictation has timed out. Please try again.";
             }
 
-            MixedRealityInputManager.RaiseDictationComplete(source, dictationResult, dictationAudioClip);
+            InputSystem.RaiseDictationComplete(source, dictationResult, dictationAudioClip);
             textSoFar = null;
             dictationResult = string.Empty;
         }
@@ -339,12 +270,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         {
             dictationResult = $"{error}\nHRESULT: {hresult}";
 
-            MixedRealityInputManager.RaiseDictationError(source, dictationResult);
+            InputSystem.RaiseDictationError(source, dictationResult);
             textSoFar = null;
             dictationResult = string.Empty;
         }
 
-#endif // UNITY_WSA || UNITY_STANDALONE_WIN
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         #endregion // Dictation Recognizer Callbacks
     }

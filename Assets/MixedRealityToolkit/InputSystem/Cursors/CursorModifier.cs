@@ -4,6 +4,8 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
@@ -58,6 +60,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         [Tooltip("Cursor animation parameters to set when this object is focused. Leave empty for none.")]
         private AnimatorParameter[] cursorParameters;
 
+        private IMixedRealityInputSystem inputSystem;
+
+        private void Awake()
+        {
+            inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+        }
+
         #region ICursorModifier Implementation
 
         public AnimatorParameter[] CursorParameters => cursorParameters;
@@ -77,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             }
 
             FocusDetails focusDetails;
-            if (FocusManager.TryGetFocusDetails(cursor.Pointer, out focusDetails))
+            if (inputSystem.FocusProvider.TryGetFocusDetails(cursor.Pointer, out focusDetails))
             {
                 // Else, consider the modifiers on the cursor modifier, but don't snap
                 return focusDetails.Point + HostTransform.TransformVector(CursorOffset);

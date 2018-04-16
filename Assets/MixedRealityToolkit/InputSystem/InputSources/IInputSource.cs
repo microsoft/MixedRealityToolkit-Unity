@@ -3,7 +3,7 @@
 
 using System.Collections;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
 {
@@ -22,12 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         /// <summary>
         /// Returns the input info that the input source can provide.
         /// </summary>
-        SupportedInputInfo GetSupportedInputInfo();
+        InputType[] Capabilities { get; }
 
         /// <summary>
-        /// Returns whether the input source supports the specified input info type.
+        /// Returns whether the input source supports the specified input types.
         /// </summary>
-        /// <param name="inputInfo">Input info type that we want to get information about.</param>
-        bool SupportsInputInfo(SupportedInputInfo inputInfo);
+        /// <param name="inputInfo">Input types that we want to get information about.</param>
+        bool SupportsInputCapability(InputType[] inputInfo);
     }
 }

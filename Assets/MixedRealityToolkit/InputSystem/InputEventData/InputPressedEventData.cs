@@ -2,14 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.InputSources;
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-#if UNITY_WSA
-using UnityEngine.XR.WSA.Input;
-#endif
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.EventData
 {
@@ -46,12 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.EventData
             PressedAmount = pressedAmount;
         }
 
-#if UNITY_WSA
-        public void Initialize(IInputSource inputSource, double pressedAmount, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, double pressedAmount, InputType inputType, Handedness handedness, object[] tags = null)
         {
-            Initialize(inputSource, pressType, handedness, tags);
+            Initialize(inputSource, inputType, handedness, tags);
             PressedAmount = pressedAmount;
         }
-#endif
     }
 }

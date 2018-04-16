@@ -7,6 +7,8 @@ using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputSources;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
@@ -18,16 +20,19 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
     {
         public GenericPointer(string pointerName, IInputSource inputSourceParent)
         {
-            PointerId = FocusManager.GenerateNewPointerId();
+            InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+            PointerId = InputSystem.FocusProvider.GenerateNewPointerId();
             PointerName = pointerName;
             InputSourceParent = inputSourceParent;
         }
 
-        public uint PointerId { get; private set; }
+        public IMixedRealityInputSystem InputSystem { get; }
+
+        public uint PointerId { get; }
 
         public string PointerName { get; set; }
 
-        public IInputSource InputSourceParent { get; private set; }
+        public IInputSource InputSourceParent { get; }
 
         public BaseCursor BaseCursor { get; set; }
 
@@ -62,13 +67,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             Ray pointingRay;
             if (TryGetPointingRay(out pointingRay))
             {
-                rays[0].CopyRay(pointingRay, (PointerExtent ?? FocusManager.GlobalPointingExtent));
+                rays[0].CopyRay(pointingRay, (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent));
             }
 
             if (RayStabilizer != null)
             {
                 RayStabilizer.UpdateStability(rays[0].Origin, rays[0].Direction);
-                rays[0].CopyRay(RayStabilizer.StableRay, (PointerExtent ?? FocusManager.GlobalPointingExtent));
+                rays[0].CopyRay(RayStabilizer.StableRay, (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent));
             }
         }
 

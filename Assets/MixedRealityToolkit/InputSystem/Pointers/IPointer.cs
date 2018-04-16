@@ -7,12 +7,15 @@ using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputSources;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 {
     public interface IPointer : IEqualityComparer
     {
+        IMixedRealityInputSystem InputSystem { get; }
+
         uint PointerId { get; }
 
         string PointerName { get; set; }

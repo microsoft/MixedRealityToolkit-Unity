@@ -5,10 +5,6 @@ using Microsoft.MixedReality.Toolkit.InputSystem.InputSources;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using UnityEngine.EventSystems;
 
-#if UNITY_WSA
-using UnityEngine.XR.WSA.Input;
-#endif
-
 namespace Microsoft.MixedReality.Toolkit.InputSystem.EventData
 {
     /// <summary>
@@ -17,30 +13,28 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.EventData
     public class ClickEventData : InputEventData
     {
         /// <summary>
-        /// Number of Clicks or Taps that triggered the event.
+        /// Number of Clicks, Taps, or Presses that triggered the event.
         /// </summary>
-        public int ClickCount { get; private set; }
+        public int Count { get; private set; }
 
         public ClickEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, int clickCount, object[] tags = null)
+        public void Initialize(IInputSource inputSource, int count, object[] tags = null)
         {
             BaseInitialize(inputSource, tags);
-            ClickCount = clickCount;
+            Count = count;
         }
 
-        public void Initialize(IInputSource inputSource, int clickCount, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, int count, Handedness handedness, object[] tags = null)
         {
             Initialize(inputSource, handedness, tags);
-            ClickCount = clickCount;
+            Count = count;
         }
 
-#if UNITY_WSA
-        public void Initialize(IInputSource inputSource, int clickCount, InteractionSourcePressType pressType, Handedness handedness, object[] tags = null)
+        public void Initialize(IInputSource inputSource, int count, InputType inputType, Handedness handedness, object[] tags = null)
         {
-            Initialize(inputSource, pressType, handedness, tags);
-            ClickCount = clickCount;
+            Initialize(inputSource, inputType, handedness, tags);
+            Count = count;
         }
-#endif
     }
 }

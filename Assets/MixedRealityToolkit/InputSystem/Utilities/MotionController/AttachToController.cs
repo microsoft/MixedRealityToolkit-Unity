@@ -47,13 +47,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 
 #if UNITY_WSA
             // Look if the controller has loaded.
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel((InteractionSourceHandedness)Handedness, out ControllerInfo))
+            if (TryGetControllerModel((InteractionSourceHandedness)Handedness, out ControllerInfo))
             {
                 AddControllerTransform(ControllerInfo);
             }
 
-            MotionControllerVisualizer.Instance.OnControllerModelLoaded += AddControllerTransform;
-            MotionControllerVisualizer.Instance.OnControllerModelUnloaded += RemoveControllerTransform;
+            OnControllerModelLoaded += AddControllerTransform;
+            OnControllerModelUnloaded += RemoveControllerTransform;
 #endif 
         }
 

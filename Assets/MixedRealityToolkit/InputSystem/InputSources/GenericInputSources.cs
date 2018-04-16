@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,8 +39,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
         protected readonly HashSet<GenericInputSource> InputSources = new HashSet<GenericInputSource>();
 
         private float deviceRefreshTimer;
+        private IMixedRealityInputSystem inputSystem;
 
-        protected virtual void Update()
+        private void Awake()
+        {
+            inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+        }
+
+        private void Update()
         {
             deviceRefreshTimer += Time.unscaledDeltaTime;
 
@@ -49,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
             }
         }
 
-        protected virtual void RefreshDevices()
+        private void RefreshDevices()
         {
             var joystickNames = Input.GetJoystickNames();
 
@@ -65,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
                     {
                         if (inputSource.SourceName.Equals(joystickNames[i]))
                         {
-                            MixedRealityInputManager.RaiseSourceLost(inputSource);
+                            inputSystem.RaiseSourceLost(inputSource);
                             InputSources.Remove(inputSource);
                         }
                     }
@@ -82,34 +90,50 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
                     continue;
                 }
 
-                // Joysticks without pointers
                 if (joystickNames[i].Equals(XboxController) ||
                     joystickNames[i].Equals(XboxOneForWindows) ||
                     joystickNames[i].Equals(XboxBluetoothGamePad) ||
                     joystickNames[i].Equals(XboxWirelessController))
                 {
-                    var inputSource = new GenericInputSource(joystickNames[i], SupportedInputInfo.Thumbstick);
+                    var inputSource = new GenericInputSource(joystickNames[i], new[]
+                    {
+                        InputType.ButtonPress,
+                        InputType.Trigger,
+                        InputType.TriggerPress,
+                        InputType.ThumbStick,
+                        InputType.ThumbStickPress,
+                        InputType.Menu,
+                        InputType.Select,
+                    });
+
                     InputSources.Add(inputSource);
-                    MixedRealityInputManager.RaiseSourceDetected(inputSource);
+                    inputSystem.RaiseSourceDetected(inputSource);
                 }
-                // Joysticks with pointers
-                else if (joystickNames[i].Equals(OculusRemote) ||
-                         joystickNames[i].Equals(OculusTouchLeft) ||
+                else if (joystickNames[i].Equals(OculusTouchLeft) ||
                          joystickNames[i].Equals(OculusTouchRight) ||
                          joystickNames[i].Equals(OpenVRControllerLeft) ||
                          joystickNames[i].Equals(OpenVRControllerRight))
                 {
                     var inputSource = new GenericInputSource(
-                        joystickNames[i],
-                        SupportedInputInfo.Pointing |
-                        SupportedInputInfo.PointerPosition |
-                        SupportedInputInfo.PointerRotation |
-                        SupportedInputInfo.Menu |
-                        SupportedInputInfo.Grasp |
-                        SupportedInputInfo.Touch |
-                        SupportedInputInfo.Thumbstick);
+                        joystickNames[i], new[]
+                        {
+                            InputType.Pointer,
+                            InputType.PointerPosition,
+                            InputType.PointerRotation,
+                            InputType.Grip,
+                            InputType.GripPress,
+                            InputType.GripPosition,
+                            InputType.GripRotation,
+                            InputType.ButtonPress,
+                            InputType.Trigger,
+                            InputType.TriggerPress,
+                            InputType.ThumbStick,
+                            InputType.ThumbStickPress,
+                            InputType.Menu,
+                            InputType.Select,
+                        });
                     InputSources.Add(inputSource);
-                    MixedRealityInputManager.RaiseSourceDetected(inputSource);
+                    inputSystem.RaiseSourceDetected(inputSource);
                 }
                 else
                 {

@@ -4,23 +4,24 @@
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
-    /// A ButtonDefinition maps the capabilities of a selected controllers buttons, one definition should exist for each button profile.
+    /// A InteractionDefinition maps the capabilities of controllers, one definition should exist for each interaction profile.<para/>
+    /// <remarks>Interactions can be any input the controller supports such as buttons, triggers, joysticks, dpads, and more.</remarks>
     /// </summary>
-    public struct ButtonDefinition
+    public struct InteractionDefinition
     {
         /// <summary>
-        /// The ID assigned to the Button
+        /// The ID assigned to the Input
         /// </summary>
         public string Id { get; set; }
 
         /// <summary>
-        /// The input type of the button, e.g. Analogue, Digital, etc.
+        /// The axis type of the button, e.g. Analogue, Digital, etc.
         /// </summary>
-        public ControllerInputType ButtonInputType { get; set; }
+        public AxisType AxisType { get; set; }
 
         /// <summary>
         /// The primary action of the button as defined by the controller SDK.
         /// </summary>
-        public ButtonAction ButtonAction { get; set; }
+        public InputType InputType { get; set; }
     }
 }

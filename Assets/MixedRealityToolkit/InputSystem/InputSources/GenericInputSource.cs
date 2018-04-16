@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
+using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
@@ -16,12 +18,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
     /// </summary>
     public class GenericInputSource : IInputSource
     {
-        public GenericInputSource(string name, SupportedInputInfo _supportedInputInfo, IPointer[] pointers = null)
+        private static IMixedRealityInputSystem inputSystem = null;
+        public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+
+        public GenericInputSource(string name, InputType[] capabilities, IPointer[] pointers = null)
         {
-            SourceId = MixedRealityInputManager.GenerateNewSourceId();
+            SourceId = InputSystem.GenerateNewSourceId();
             SourceName = name;
-            supportedInputInfo = _supportedInputInfo;
-            Pointers = pointers ?? GazeManager.Pointers;
+            Capabilities = capabilities;
+            Pointers = pointers ?? new[] { GazeProvider.GazePointer };
         }
 
         public uint SourceId { get; private set; }
@@ -30,16 +35,22 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
 
         public IPointer[] Pointers { get; private set; }
 
-        private SupportedInputInfo supportedInputInfo;
+        public InputType[] Capabilities { get; private set; }
 
-        public virtual SupportedInputInfo GetSupportedInputInfo()
+        public bool SupportsInputCapability(InputType[] inputInfo)
         {
-            return supportedInputInfo;
-        }
+            for (int i = 0; i < Capabilities.Length; i++)
+            {
+                for (int j = 0; j < inputInfo.Length; j++)
+                {
+                    if (Capabilities[i] == inputInfo[j])
+                    {
+                        return true;
+                    }
+                }
+            }
 
-        public bool SupportsInputInfo(SupportedInputInfo inputInfo)
-        {
-            return (GetSupportedInputInfo() & inputInfo) == inputInfo;
+            return false;
         }
 
         public virtual void AddPointer(IPointer pointer)

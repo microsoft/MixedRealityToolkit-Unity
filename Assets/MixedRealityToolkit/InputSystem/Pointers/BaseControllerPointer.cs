@@ -8,12 +8,14 @@ using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputSources;
 using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections;
 using UnityEngine;
 
 #if UNITY_WSA
-using UnityEngine.XR.WSA.Input;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
@@ -23,6 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
     /// </summary>
     public abstract class BaseControllerPointer : AttachToController, IInputHandler, IPointer
     {
+        private IMixedRealityInputSystem inputSystem = null;
+        public IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+
         [Header("Cursor")]
         [SerializeField]
         protected GameObject CursorPrefab;
@@ -49,28 +54,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         [SerializeField]
         private KeyCode activeHoldKeyCode = KeyCode.None;
 
-#if UNITY_WSA
         [SerializeField]
-        private InteractionSourcePressType activeHoldPressType = InteractionSourcePressType.Select;
+        private InputType activeHoldPressType = InputType.Select;
 
         [SerializeField]
-        private InteractionSourcePressType interactionEnabledPressType = InteractionSourcePressType.Select;
-#endif
+        private InputType interactionEnabledPressType = InputType.Select;
 
         [SerializeField]
         private bool interactionRequiresHold = false;
-
-        protected override void OnAttachToController()
-        {
-            // Subscribe to interaction events
-            MixedRealityInputManager.AddGlobalListener(gameObject);
-        }
-
-        protected override void OnDetachFromController()
-        {
-            // Unsubscribe from interaction events
-            MixedRealityInputManager.RemoveGlobalListener(gameObject);
-        }
 
         /// <summary>
         /// True if select is pressed right now
@@ -118,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
             if (!delayPointerRegistration)
             {
-                FocusManager.RegisterPointer(this);
+                InputSystem.FocusProvider.RegisterPointer(this);
             }
         }
 
@@ -126,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             DebugUtilities.DebugAssert(InputSourceParent != null, "This Pointer must have a Input Source Assigned");
 
-            FocusManager.RegisterPointer(this);
+            InputSystem.FocusProvider.RegisterPointer(this);
             delayPointerRegistration = false;
 
             SetCursor();
@@ -142,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
                 BaseCursor.enabled = false;
             }
 
-            FocusManager.UnregisterPointer(this);
+            InputSystem.FocusProvider.UnregisterPointer(this);
         }
 
         protected override void OnDestroy()
@@ -156,6 +147,18 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         }
 
         #endregion  Monobehaviour Implementation
+
+        protected override void OnAttachToController()
+        {
+            // Subscribe to interaction events
+            inputSystem.Register(gameObject);
+        }
+
+        protected override void OnDetachFromController()
+        {
+            // Unsubscribe from interaction events
+            inputSystem.Unregister(gameObject);
+        }
 
         public void SetCursor(GameObject newCursor = null)
         {
@@ -189,13 +192,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         #region IPointer Implementation
 
         private uint pointerId;
+
         public uint PointerId
         {
             get
             {
                 if (pointerId == 0)
                 {
-                    pointerId = FocusManager.GenerateNewPointerId();
+                    pointerId = InputSystem.FocusProvider.GenerateNewPointerId();
                 }
 
                 return pointerId;
@@ -227,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         public float? PointerExtent
         {
             get { return pointerExtent; }
-            set { pointerExtent = value ?? FocusManager.GlobalPointingExtent; }
+            set { pointerExtent = value ?? InputSystem.FocusProvider.GlobalPointingExtent; }
         }
 
         public RayStep[] Rays { get; protected set; }
@@ -322,14 +326,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             {
                 bool interactionPressed = false;
 #if UNITY_WSA
-                interactionPressed = eventData.PressType == activeHoldPressType;
+                interactionPressed = eventData.InputType == activeHoldPressType;
 #endif
                 if (interactionRequiresHold && (eventData.KeyCode == activeHoldKeyCode || interactionPressed))
                 {
                     InteractionEnabled = false;
                 }
 #if UNITY_WSA
-                interactionPressed = eventData.PressType == interactionEnabledPressType;
+                interactionPressed = eventData.InputType == interactionEnabledPressType;
 #endif
                 if (eventData.KeyCode == interactionEnabledKeyCode || interactionPressed)
                 {
@@ -344,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             {
                 bool interactionPressed = false;
 #if UNITY_WSA
-                interactionPressed = eventData.PressType == activeHoldPressType;
+                interactionPressed = eventData.InputType == activeHoldPressType;
 #endif
                 if (interactionRequiresHold && (eventData.KeyCode == activeHoldKeyCode || interactionPressed))
                 {
@@ -352,7 +356,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
                 }
 
 #if UNITY_WSA
-                interactionPressed = eventData.PressType == interactionEnabledPressType;
+                interactionPressed = eventData.InputType == interactionEnabledPressType;
 #endif
                 if (eventData.KeyCode == interactionEnabledKeyCode || interactionPressed)
                 {
@@ -366,7 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         /// <summary>
         /// Updates target point orientation via thumbstick
         /// </summary>
-        public virtual void OnInputPositionChanged(InputPositionEventData eventData) { }
+        public virtual void OnDualAxisInputChanged(InputDualAxisPositionEventData eventData) { }
 
         #endregion  IInputHandler Implementation
     }

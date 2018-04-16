@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
@@ -13,12 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
     {
         private void OnEnable()
         {
-            MixedRealityInputManager.AddGlobalListener(gameObject);
+            MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>().Register(gameObject);
         }
 
         private void OnDisable()
         {
-            MixedRealityInputManager.RemoveGlobalListener(gameObject);
+            MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>().Unregister(gameObject);
         }
     }
 }

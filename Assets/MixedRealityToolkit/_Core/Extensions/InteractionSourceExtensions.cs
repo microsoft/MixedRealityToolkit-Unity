@@ -2,11 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_WSA
-using MixedRealityToolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
-#if !UNITY_2017_2_OR_NEWER
-using UnityEngine.VR.WSA.Input;
-#else
 using UnityEngine.XR.WSA.Input;
 #if !UNITY_EDITOR
 using System;
@@ -19,8 +16,7 @@ using Windows.UI.Input.Spatial;
 #elif UNITY_EDITOR_WIN
 using System.Runtime.InteropServices;
 #endif
-#endif
-#endif
+#endif // UNITY_WSA
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
@@ -35,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 
         [DllImport("EditorMotionController")]
         private static extern bool StopHaptics([In] uint controllerId);
-#endif
+#endif // UNITY_EDITOR_WIN && UNITY_WSA
 
         // This value is standardized according to www.usb.org/developers/hidpage/HUTRR63b_-_Haptics_Page_Redline.pdf
         private const ushort ContinuousBuzzWaveform = 0x1004;
@@ -53,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
                 return;
             }
 
-#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
+#if !UNITY_EDITOR
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
@@ -81,9 +77,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
                     }
                 }
             }, true);
-#elif UNITY_EDITOR_WIN && UNITY_2017_2_OR_NEWER
+#elif UNITY_EDITOR_WIN
             StartHaptics(interactionSource.id, intensity, durationInSeconds);
-#endif
+#endif // !UNITY_EDITOR
         }
 
         public static void StopHaptics(this InteractionSource interactionSource)
@@ -93,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
                 return;
             }
 
-#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
+#if !UNITY_EDITOR
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
@@ -106,12 +102,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
                     }
                 }
             }, true);
-#elif UNITY_EDITOR_WIN && UNITY_2017_2_OR_NEWER
+#elif UNITY_EDITOR_WIN
             StopHaptics(interactionSource.id);
-#endif
+#endif // !UNITY_EDITOR
         }
 
-#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
+#if !UNITY_EDITOR
         public static IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(this InteractionSource interactionSource)
         {
             IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
@@ -134,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 
             return returnValue;
         }
-#endif
-#endif
+#endif // !UNITY_EDITOR
+#endif // UNITY_WSA
     }
 }

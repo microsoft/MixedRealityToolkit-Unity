@@ -12,19 +12,19 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers
     public interface IInputHandler : IEventSystemHandler
     {
         /// <summary>
-        /// Input Up updates from Buttons, Keys, or any other simple input.
+        /// Input Up updates from Interactions, Keys, or any other simple input.
         /// </summary>
         /// <param name="eventData"></param>
         void OnInputUp(InputEventData eventData);
 
         /// <summary>
-        /// Input Down updates from Buttons, Keys, or any other simple input.
+        /// Input Down updates from Interactions, Keys, or any other simple input.
         /// </summary>
         /// <param name="eventData"></param>
         void OnInputDown(InputEventData eventData);
 
         /// <summary>
-        /// Input Pressed updates from Buttons, Keys, or any other simple input.
+        /// Input Pressed updates from Interactions, Keys, or any other simple input.
         /// <remarks>Includes the Pressed Amount if available.</remarks>
         /// </summary>
         /// <param name="eventData"></param>
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers
         /// <summary>
         /// Input Position updates from Thumbsticks, Touchpads, or any other simple input with a position.
         /// </summary>
-        /// <param name="eventData">InputPositionEventData</param>
-        void OnInputPositionChanged(InputPositionEventData eventData);
+        /// <param name="eventData">InputDualAxisPositionEventData</param>
+        void OnDualAxisInputChanged(InputDualAxisPositionEventData eventData);
     }
 }
