@@ -14,20 +14,17 @@ namespace HoloToolkit.UX.ToolTips
         // Specific options
         // These double as array positions
         BotMiddle = 0,
-        TopMiddle = 1,
-        RightMiddle = 2,
-        LeftMiddle = 3,
-        BotRightCorner = 4,
-        BotLeftCorner = 5,
-        TopRightCorner = 6,
-        TopLeftCorner = 7,
+        TopMiddle,
+        RightMiddle,
+        LeftMiddle,
+        BotRightCorner,
+        BotLeftCorner,
+        TopRightCorner,
+        TopLeftCorner,
         // Automatic options
         Center,
         Closest,
         ClosestMiddle,
-        ClosestCorner,
-        // Smoothly interpolate between positions
-        // (UNIMPLEMENTED)
-        //Continuous,
+        ClosestCorner
     }
 }
