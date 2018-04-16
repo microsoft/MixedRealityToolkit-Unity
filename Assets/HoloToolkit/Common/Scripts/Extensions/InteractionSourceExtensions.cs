@@ -28,13 +28,14 @@ namespace HoloToolkit.Unity
     /// </summary>
     public static class InteractionSourceExtensions
     {
+#if UNITY_2017_2_OR_NEWER
 #if UNITY_EDITOR_WIN && UNITY_WSA
         [DllImport("EditorMotionController")]
         private static extern bool StartHaptics([In] uint controllerId, [In] float intensity, [In] float durationInSeconds);
 
         [DllImport("EditorMotionController")]
         private static extern bool StopHaptics([In] uint controllerId);
-#endif
+#endif // UNITY_EDITOR_WIN && UNITY_WSA
 
         // This value is standardized according to www.usb.org/developers/hidpage/HUTRR63b_-_Haptics_Page_Redline.pdf
         private const ushort ContinuousBuzzWaveform = 0x1004;
@@ -52,7 +53,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
+#if !UNITY_EDITOR
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
@@ -80,9 +81,9 @@ namespace HoloToolkit.Unity
                     }
                 }
             }, true);
-#elif UNITY_EDITOR_WIN && UNITY_2017_2_OR_NEWER
+#elif UNITY_EDITOR_WIN
             StartHaptics(interactionSource.id, intensity, durationInSeconds);
-#endif
+#endif // !UNITY_EDITOR
         }
 
         public static void StopHaptics(this InteractionSource interactionSource)
@@ -92,7 +93,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
+#if !UNITY_EDITOR
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
@@ -105,12 +106,12 @@ namespace HoloToolkit.Unity
                     }
                 }
             }, true);
-#elif UNITY_EDITOR_WIN && UNITY_2017_2_OR_NEWER
+#elif UNITY_EDITOR_WIN
             StopHaptics(interactionSource.id);
-#endif
+#endif // !UNITY_EDITOR
         }
 
-#if !UNITY_EDITOR && UNITY_2017_2_OR_NEWER
+#if !UNITY_EDITOR
         public static IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(this InteractionSource interactionSource)
         {
             IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
@@ -133,7 +134,8 @@ namespace HoloToolkit.Unity
 
             return returnValue;
         }
-#endif
-#endif
+#endif // !UNITY_EDITOR
+#endif // UNITY_WSA
+#endif // UNITY_2017_2_OR_NEWER
     }
 }

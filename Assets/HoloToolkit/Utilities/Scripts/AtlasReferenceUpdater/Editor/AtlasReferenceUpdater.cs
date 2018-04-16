@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity
     [InitializeOnLoad]
     public class AtlasReferenceUpdater : UnityEditor.AssetModificationProcessor
     {
+#if UNITY_2017_1_OR_NEWER
         private static readonly List<AtlasPrefabReference> References = new List<AtlasPrefabReference>();
 
         static AtlasReferenceUpdater()
@@ -115,5 +116,6 @@ namespace HoloToolkit.Unity
             return prefabs.SelectMany(p => p.GetComponentsInChildren<Image>())
                 .Select(img => img.sprite).Where(img => img != null).Distinct();
         }
+#endif // UNITY_2017_1_OR_NEWER
     }
 }

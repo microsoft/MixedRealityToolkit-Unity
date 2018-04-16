@@ -9,6 +9,8 @@ namespace HoloToolkit.Unity
 {
     public static class SpriteAtlasExtensions
     {
+// SpriteAtlast requires Unity 2017.1 or later
+#if UNITY_2017_1_OR_NEWER
         public const string SpritePackables = "m_EditorData.packables";
 
         public static void SetSprites(this SpriteAtlas spriteAtlas, IList<Sprite> sprites)
@@ -31,5 +33,6 @@ namespace HoloToolkit.Unity
             }
             return false;
         }
+#endif // UNITY_2017_1_OR_NEWER
     }
 }
