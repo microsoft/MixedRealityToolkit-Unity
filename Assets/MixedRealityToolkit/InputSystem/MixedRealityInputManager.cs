@@ -8,11 +8,15 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
+using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem
 {
@@ -28,6 +32,16 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// List of the Interaction Input Sources as detected by the input manager like hands or motion controllers.
         /// </summary>
         public HashSet<IInputSource> DetectedInputSources { get; } = new HashSet<IInputSource>();
+
+        /// <summary>
+        /// The current Focus Provider that's been implemented by this Input System.
+        /// </summary>
+        public IFocusProvider FocusProvider { get; private set; }
+
+        /// <summary>
+        /// The current Gaze Provider that's been implemented by this Input System.
+        /// </summary>
+        public IGazeProvider GazeProvider { get; private set; }
 
         private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
@@ -67,7 +81,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// </summary>
         public override void Initialize()
         {
-            InitializeEventDatas();
+            base.Initialize();
+            InitializeInternal();
         }
 
         /// <summary>
@@ -75,11 +90,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// </summary>
         public override void Reset()
         {
-            InitializeEventDatas();
+            base.Reset();
+            InitializeInternal();
         }
 
-        private void InitializeEventDatas()
+        private void InitializeInternal()
         {
+            FocusProvider = CameraCache.Main.gameObject.EnsureComponent<FocusProvider>();
+            GazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
+
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
             sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
             sourceRotationEventData = new SourceRotationEventData(EventSystem.current);
@@ -100,6 +119,17 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+        }
+
+        public override void Destroy()
+        {
+            Object.Destroy(CameraCache.Main.gameObject.GetComponent<FocusProvider>());
+            FocusProvider = null;
+
+            Object.Destroy(CameraCache.Main.gameObject.GetComponent<GazeProvider>());
+            GazeProvider = null;
+
+            base.Destroy();
         }
 
         #endregion IMixedRealityManager Implementation
@@ -190,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// <param name="listener">Listener to add.</param>
         public override void Register(GameObject listener)
         {
-            Debug.Assert(!EventListeners.Contains(listener), $"{listener.name} is already registered to receive events!");
+            Debug.Assert(!EventListeners.Contains(listener), $"{listener.name} is already registered to receive input events!");
             EventListeners.Add(listener);
         }
 
@@ -200,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
         {
-            Debug.Assert(EventListeners.Contains(listener), $"{listener.name} was never registered!");
+            Debug.Assert(EventListeners.Contains(listener), $"{listener.name} was never registered for input events!");
             EventListeners.Remove(listener);
         }
 
@@ -341,10 +371,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
             return newId;
         }
-
-        public IGazeProvider GazeProvider { get; }
-
-        public IFocusProvider FocusProvider { get; }
 
         public void RaiseSourceDetected(IInputSource source, object[] tags = null)
         {
