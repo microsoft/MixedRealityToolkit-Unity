@@ -496,8 +496,6 @@ namespace HoloToolkit.Unity.UX
                     bounds[i] = m.MultiplyPoint(bounds[i]);
                     bounds[i] += boxInstance.TargetBoundsCenter;
                 }
-#else
-#warning "GetBounds() using rotation is not supported on this version of Unity. Recommend updating to 2017.1 or newer."
 #endif // UNITY_2017_1_OR_NEWER
                 return bounds;
             }

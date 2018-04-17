@@ -261,8 +261,6 @@ namespace HoloToolkit.Unity.UX
                 transformToAffect.localRotation = initialRotation;
                 transformToAffect.Rotate(axis, angle * 5.0f);
             }
-#else
-#warning "ApplyRotation(Quaternion currentHandOrientation) is not supported on this version of Unity. Recommend updating to 2017.1 or newer."
 #endif // UNITY_2017_1_OR_NEWER
         }
         private void ApplyRotation(Vector3 currentHandPosition)
