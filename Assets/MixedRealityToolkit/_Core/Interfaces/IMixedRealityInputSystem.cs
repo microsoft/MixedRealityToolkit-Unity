@@ -25,12 +25,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         HashSet<IInputSource> DetectedInputSources { get; }
 
         /// <summary>
+        /// The current Focus Provider that's been implemented by this Input System.
+        /// </summary>
+        IFocusProvider FocusProvider { get; }
+
+        /// <summary>
+        /// The current Gaze Provider that's been implemented by this Input System.
+        /// </summary>
+        IGazeProvider GazeProvider { get; }
+
+        /// <summary>
         /// Indicates if input is currently enabled or not.
         /// </summary>
         bool IsInputEnabled { get; }
 
         /// <summary>
-        /// Push a disabled input state onto the input manager.
+        /// Push a disabled input state onto the Input System.
         /// While input is disabled no events will be sent out and the cursor displays
         /// a waiting animation.
         /// </summary>
@@ -87,10 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// </summary>
         /// <returns>a new unique Id for the input source.</returns>
         uint GenerateNewSourceId();
-
-        IGazeProvider GazeProvider { get; }
-
-        IFocusProvider FocusProvider { get; }
 
         void RaiseSourceDetected(IInputSource source, object[] tags = null);
 

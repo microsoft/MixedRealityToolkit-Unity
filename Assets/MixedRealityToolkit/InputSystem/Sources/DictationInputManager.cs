@@ -4,7 +4,6 @@
 using System.Collections;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 using System.Text;
@@ -123,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             if (IsListening || isTransitioning)
             {
-                DebugUtilities.DebugLogWarning("Unable to start recording");
+                Debug.LogWarning("Unable to start recording");
                 yield break;
             }
 
@@ -166,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             textSoFar = new StringBuilder();
             isTransitioning = false;
 #else
-            DebugUtilities.DebugLogWarning("Unable to start recording!  Dictation is unsupported for this platform.");
+            Debug.LogWarning("Unable to start recording!  Dictation is unsupported for this platform.");
             return null;
 #endif
         }
@@ -179,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             if (!IsListening || isTransitioning)
             {
-                DebugUtilities.DebugLogWarning("Unable to stop recording");
+                Debug.LogWarning("Unable to stop recording");
                 yield break;
             }
 

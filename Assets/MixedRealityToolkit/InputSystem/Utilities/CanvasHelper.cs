@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
@@ -30,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 
         private void Start()
         {
-            DebugUtilities.DebugAssert(Canvas != null);
+             Debug.Assert(Canvas != null);
 
             if (Canvas.isRootCanvas && Canvas.renderMode == RenderMode.WorldSpace)
             {

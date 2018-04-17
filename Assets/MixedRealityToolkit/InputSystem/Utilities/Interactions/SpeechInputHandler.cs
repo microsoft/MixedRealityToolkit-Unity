@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -74,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
 
                 if (responses.ContainsKey(keyword))
                 {
-                    DebugUtilities.DebugLogError($"Duplicate keyword \'{keyword}\' specified in \'{gameObject.name}\'.");
+                    Debug.LogError($"Duplicate keyword \'{keyword}\' specified in \'{gameObject.name}\'.");
                 }
                 else
                 {

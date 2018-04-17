@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -137,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 }
                 else
                 {
-                    DebugUtilities.DebugLogWarning($"Unimplemented Controller Type: {joystickNames[i]}");
+                    Debug.LogWarning($"Unimplemented Controller Type: {joystickNames[i]}");
                 }
             }
 

@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <param name="target"></param>
         public static void DontDestroyOnLoad(this Object target)
         {
-#if UNITY_EDITOR // 
+#if UNITY_EDITOR
             if (UnityEditor.EditorApplication.isPlaying)
 #endif
                 Object.DontDestroyOnLoad(target);

@@ -11,7 +11,6 @@ using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections;
 using UnityEngine;
 
@@ -115,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         protected virtual void Start()
         {
-            DebugUtilities.DebugAssert(InputSourceParent != null, "This Pointer must have a Input Source Assigned");
+             Debug.Assert(InputSourceParent != null, "This Pointer must have a Input Source Assigned");
 
             InputSystem.FocusProvider.RegisterPointer(this);
             delayPointerRegistration = false;
@@ -169,9 +168,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
                 var cursorObj = Instantiate(CursorPrefab, transform);
                 cursorObj.name = $"{name}_Cursor";
                 BaseCursor = cursorObj.GetComponent<BaseCursor>();
-                DebugUtilities.DebugAssert(BaseCursor != null, "Failed to load cursor");
+                 Debug.Assert(BaseCursor != null, "Failed to load cursor");
                 BaseCursor.Pointer = this;
-                DebugUtilities.DebugAssert(BaseCursor.Pointer != null, "Failed to assign cursor!");
+                 Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");
             }
         }
 

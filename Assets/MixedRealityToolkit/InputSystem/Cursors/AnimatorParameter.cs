@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using UnityEngine;
 
@@ -39,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
                     nameStringHash = Animator.StringToHash(Name);
                 }
 
-                DebugUtilities.DebugAssert(nameStringHash != null);
+                 Debug.Assert(nameStringHash != null);
                 return nameStringHash.Value;
             }
         }

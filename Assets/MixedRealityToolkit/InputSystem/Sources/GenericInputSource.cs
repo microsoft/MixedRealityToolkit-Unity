@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
@@ -59,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             {
                 if (Pointers[i].PointerId == pointer.PointerId)
                 {
-                    DebugUtilities.DebugLogWarning($"This pointer has already been added to {SourceName}.");
+                    Debug.LogWarning($"This pointer has already been added to {SourceName}.");
                     return;
                 }
             }

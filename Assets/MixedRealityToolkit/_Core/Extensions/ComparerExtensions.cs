@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
@@ -22,14 +22,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             return new ReverseComparer<TElement>(originalComparer);
         }
 
-        private class ReverseComparer<TElement> :
-            IComparer<TElement>
+        private class ReverseComparer<TElement> : IComparer<TElement>
         {
             private readonly IComparer<TElement> originalComparer;
 
             public ReverseComparer(IComparer<TElement> originalComparer)
             {
-                DebugUtilities.DebugAssert(originalComparer != null, "originalComparer cannot be null.");
+                 Debug.Assert(originalComparer != null, "originalComparer cannot be null.");
 
                 this.originalComparer = originalComparer;
             }

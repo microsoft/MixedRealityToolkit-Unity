@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 
                 if (effectiveComparer.Compare(element, nextElement) > 0)
                 {
-                    DebugUtilities.DebugAssert(false, "elements must already be sorted to call this method.");
+                     Debug.Assert(false, "elements must already be sorted to call this method.");
                     break;
                 }
             }

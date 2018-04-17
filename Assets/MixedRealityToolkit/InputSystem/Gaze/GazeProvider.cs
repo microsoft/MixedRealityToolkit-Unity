@@ -3,8 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Cursors;
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
@@ -215,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
             {
                 var cursorObj = Instantiate(cursorPrefab, transform);
                 Pointers[0].BaseCursor = cursorObj.GetComponent<BaseCursor>();
-                DebugUtilities.DebugAssert(Pointers[0].BaseCursor != null, "Failed to load cursor");
+                 Debug.Assert(Pointers[0].BaseCursor != null, "Failed to load cursor");
 
                 Pointers[0].BaseCursor.Pointer = Pointers[0];
             }
@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
                 return true;
             }
 
-            DebugUtilities.DebugLogError("Gaze Manager was not given a GazeTransform and no main camera exists to default to!");
+            Debug.LogError("Gaze Manager was not given a GazeTransform and no main camera exists to default to!");
             return false;
         }
 

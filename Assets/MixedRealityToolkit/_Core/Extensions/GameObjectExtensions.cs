@@ -125,11 +125,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// Perform an action on every component of type T that is on this GameObject
         /// </summary>
         /// <typeparam name="T">Component Type</typeparam>
-        /// <param name="g">this gameObject</param>
+        /// <param name="gameObject">this gameObject</param>
         /// <param name="action">Action to perform.</param>
-        public static void ForEachComponent<T>(this GameObject g, Action<T> action)
+        public static void ForEachComponent<T>(this GameObject gameObject, Action<T> action)
         {
-            foreach (T i in g.GetComponents<T>())
+            foreach (T i in gameObject.GetComponents<T>())
             {
                 action(i);
             }
