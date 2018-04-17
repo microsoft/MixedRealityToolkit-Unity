@@ -353,6 +353,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
 
         private void OnTwoHandManipulationUpdated()
         {
+#if UNITY_2017_2_OR_NEWER
             var targetRotation = HostTransform.rotation;
             var targetPosition = HostTransform.position;
             var targetScale = HostTransform.localScale;
@@ -373,6 +374,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
             HostTransform.position = targetPosition;
             HostTransform.rotation = targetRotation;
             HostTransform.localScale = targetScale;
+#endif // UNITY_2017_2_OR_NEWER
         }
 
         private void OnOneHandMoveUpdated()
@@ -384,6 +386,9 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
 
         private void OnTwoHandManipulationEnded()
         {
+#if UNITY_2017_2_OR_NEWER
+            // This implementation currently does nothing
+#endif // UNITY_2017_2_OR_NEWER
         }
 
         private Vector3 GetHandsCentroid()
@@ -394,6 +399,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
 
         private void OnTwoHandManipulationStarted(State newState)
         {
+#if UNITY_2017_2_OR_NEWER
             if ((newState & State.Rotating) > 0)
             {
                 m_rotateLogic.Setup(m_handsPressedLocationsMap, HostTransform);
@@ -406,6 +412,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
             {
                 m_scaleLogic.Setup(m_handsPressedLocationsMap, HostTransform);
             }
+#endif // UNITY_2017_2_OR_NEWER
         }
 
         private void OnOneHandMoveStarted()
