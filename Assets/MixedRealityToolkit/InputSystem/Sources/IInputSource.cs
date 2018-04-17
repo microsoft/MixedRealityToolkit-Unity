@@ -5,7 +5,7 @@ using System.Collections;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
+namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 {
     /// <summary>
     /// Interface for an input source.

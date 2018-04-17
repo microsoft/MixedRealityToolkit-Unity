@@ -11,7 +11,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
+namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 {
     /// <summary>
     /// Base class for input sources that don't inherit from MonoBehaviour.

@@ -15,7 +15,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
+namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 {
     /// <summary>
     /// Input sources for gestures and interaction source information from the WSA APIs, which gives access to various system-supported gestures

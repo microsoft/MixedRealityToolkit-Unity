@@ -11,7 +11,7 @@ using System.Text;
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
+namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 {
     /// <summary>
     /// Singleton class that implements the DictationRecognizer to convert the user's speech to text.

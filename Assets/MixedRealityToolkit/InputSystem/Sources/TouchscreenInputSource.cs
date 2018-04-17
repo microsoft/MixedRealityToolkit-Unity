@@ -9,7 +9,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.InputSources
+namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 {
     /// <summary>
     /// Input source supporting basic touchscreen input:

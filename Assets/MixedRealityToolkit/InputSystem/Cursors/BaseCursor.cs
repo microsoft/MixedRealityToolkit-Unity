@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.InputSources;
+using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
@@ -21,14 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
     public abstract class BaseCursor : MonoBehaviour, ICursor
     {
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
-
-        /// <summary>
-        /// Minimum distance for cursor if nothing is hit
-        /// </summary>
-        [SerializeField]
-        [Header("Cursor Distance")]
-        [Tooltip("The minimum distance the cursor can be with nothing hit")]
-        private float minCursorDistance = 1.0f;
 
         /// <summary>
         /// Maximum distance for cursor if nothing is hit
