@@ -9,7 +9,6 @@ namespace HoloToolkit.Unity
 {
     public static class SpriteAtlasExtensions
     {
-// SpriteAtlast requires Unity 2017.1 or later
 #if UNITY_2017_1_OR_NEWER
         public const string SpritePackables = "m_EditorData.packables";
 
