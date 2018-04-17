@@ -347,7 +347,11 @@ namespace HoloToolkit.Unity.InputModule
             TryGetPointingSource(eventData, out pointingSource);
             PointerInputEventData pointerInputEventData = GetSpecificPointerEventData(pointingSource);
 
-            Debug.Assert(pointerInputEventData != null);
+            // GetSpecificPointerEventData can return null. Be sure to handle that case.
+            if (pointerInputEventData == null)
+            {
+                return null;
+            }
             return pointerInputEventData.selectedObject;
         }
 
