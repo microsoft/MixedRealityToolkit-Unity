@@ -240,6 +240,113 @@ public class MyClass
 }
  ```
 
+## Initilise Enums.
+
+To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initilize the enum by just adding the first (starter) value.
+
+> E.G. Value 1 = 0  (Remaining values are not required)
+
+### Don't:
+
+```
+public enum MyEnum
+{
+    Value1, <- no initilizer
+    Value2,
+    Value3
+}
+```
+
+### Do:
+
+ ```
+public enum MyEnum
+{
+    Value1 = 0,
+    Value2,
+    Value3
+}
+ ```
+
+## Order Enums for appropriate extension.
+
+It is critical that if an Enum is likely to be extended in the future, to order defaults at the top of the Enum, this ensures Enum indexes are not affected with new additions.
+
+### Don't:
+
+```
+public enum SDKType
+{
+    WIndows MR,
+    Open VR,
+    Open XR,
+    None, <- default value not at start
+    Other <- anonymous value left to end of enum
+}
+```
+
+### Do:
+
+ ```
+    /// <summary>
+    /// The SDKType lists the VR SDK's that are supported by the MRTK
+    /// Initially, this lists proposed SDK's, not all may be implemented at this time (please see ReleaseNotes for more details)
+    /// </summary>
+    public enum SDKType
+    {
+        /// <summary>
+        /// No specified type or Standalone / non-VR type
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Undefined SDK.
+        /// </summary>
+        Other,
+        /// <summary>
+        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and Hololens. 
+        /// </summary>
+        WindowsMR,
+        /// <summary>
+        /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
+        /// </summary>
+        OpenVR,
+        /// <summary>
+        /// The OpenXR platform. SDK to be determined once released.
+        /// </summary>
+        OpenXR
+    }
+```
+
+## Review Enum use for Bitfields.
+
+If there is a possibility for an enum to require multiple states as a value, e.g. Handedness = Left & Right. Then the Enum needs to be decorated correctly with BitFlags to enable it to be used correctly
+
+> The Handedness.cs file has a concrete implementation for this
+
+### Don't:
+
+```
+public enum MyEnum
+{
+    None,
+    Left,
+    Right
+}
+```
+
+### Do:
+
+ ```
+ [flags]
+public enum MyEnum
+{
+    None = 0  << 0,
+    Left = 0  << 1,
+    Right = 0 << 2
+}
+ ```
+
+
 ## Best Practices, including Unity recommendations
 
 Some of the target platforms of this project require us to take performance into consideration.  With this in mind we should always be careful of allocating memory in frequently called code in tight update loops or algorithms.
