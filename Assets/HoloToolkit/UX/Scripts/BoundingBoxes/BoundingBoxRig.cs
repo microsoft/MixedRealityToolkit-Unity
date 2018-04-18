@@ -489,13 +489,14 @@ namespace HoloToolkit.Unity.UX
                 BoundingBox.GetMeshFilterBoundsPoints(clone, bounds, mask);
                 Vector3 centroid = boxInstance.TargetBoundsCenter;
                 GameObject.Destroy(clone);
+#if UNITY_2017_1_OR_NEWER
                 Matrix4x4 m = Matrix4x4.Rotate(objectToBound.transform.rotation);
                 for (int i = 0; i < bounds.Count; ++i)
                 {
                     bounds[i] = m.MultiplyPoint(bounds[i]);
                     bounds[i] += boxInstance.TargetBoundsCenter;
                 }
-
+#endif // UNITY_2017_1_OR_NEWER
                 return bounds;
             }
 

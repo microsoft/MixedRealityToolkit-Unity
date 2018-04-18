@@ -543,7 +543,7 @@ Prefab:
         type: 2}
       propertyPath: m_Text
       value: "BoundingBoxRig \n+ TwoHandManipulatable script\n(Move/Rotate/Scale with
-        two hands)"
+        two hands)\nNote: Some behaviors require \nUnity 2017.2 or Newer"
       objectReference: {fileID: 0}
     - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
         type: 2}
@@ -1759,7 +1759,7 @@ Prefab:
     - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
         type: 2}
       propertyPath: m_Text
-      value: Flat option
+      value: "Flat option\nNote: Some behaviors require \nUnity 2017.2 or Newer"
       objectReference: {fileID: 0}
     - target: {fileID: 102000010767390410, guid: bfdc7f60d7205c84f82a4806a5352d60,
         type: 2}
