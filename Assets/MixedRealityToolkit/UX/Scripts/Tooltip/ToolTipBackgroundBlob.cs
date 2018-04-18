@@ -1,7 +1,6 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using UnityEngine;
 
 namespace MixedRealityToolkit.UX.ToolTips
@@ -18,16 +17,16 @@ namespace MixedRealityToolkit.UX.ToolTips
         /// </summary>
         [Header("Transform targets")]
         [SerializeField]
-        private Transform positionTarget;
+        private Transform positionTarget = null;
 
         [SerializeField]
-        private Transform rotationTarget;
+        private Transform rotationTarget = null;
 
         [SerializeField]
-        private Transform distortionTarget;
+        private Transform distortionTarget = null;
 
         [SerializeField]
-        private Transform attachPointOffset;
+        private Transform attachPointOffset = null;
 
         [Header("Blob settings")]
         [SerializeField]
@@ -55,26 +54,28 @@ namespace MixedRealityToolkit.UX.ToolTips
         private float rotationCorrectionStrength = 1f;
 
         [SerializeField]
-        private Vector3 blobOffset;
+        private Vector3 blobOffset = Vector3.zero;
 
-        private const float maxInertia = 5f;
-        private const float maxDistortion = 1f;
-        private const float maxRotation = 1f;
-        private const float minPositionCorrection = 0.1f;
-        private const float minDistortionCorrection = 0.1f;
-        private const float minRotationCorrection = 0.1f;
-        private const float maxPositionCorrection = 5f;
-        private const float maxDistortionCorrection = 5f;
-        private const float maxRotationCorrection = 5f;
+        [SerializeField]
+        private MeshFilter backgroundRendererMeshFilter = null;
 
-        private Bounds defaultBounds = new Bounds(Vector3.zero, Vector3.one);
-        private MeshFilter backgroundRendererMeshFilter;
-        private Vector3 lastPosition;
-        private Vector3 velocity;
-        private Vector3 distortion;
-        private Vector3 rotation;
-        private Bounds localContentBounds;
-        private Bounds inertialContentBounds;
+        private const float MaxInertia = 5f;
+        private const float MaxDistortion = 1f;
+        private const float MaxRotation = 1f;
+        private const float MinPositionCorrection = 0.1f;
+        private const float MinDistortionCorrection = 0.1f;
+        private const float MinRotationCorrection = 0.1f;
+        private const float MaxPositionCorrection = 5f;
+        private const float MaxDistortionCorrection = 5f;
+        private const float MaxRotationCorrection = 5f;
+
+        private readonly Bounds defaultBounds = new Bounds(Vector3.zero, Vector3.one);
+        private Vector3 lastPosition = Vector3.zero;
+        private Vector3 velocity = Vector3.zero;
+        private Vector3 distortion = Vector3.zero;
+        private Vector3 rotation = Vector3.zero;
+        private Bounds localContentBounds = new Bounds(Vector3.zero, Vector3.one);
+        private Bounds inertialContentBounds = new Bounds(Vector3.zero, Vector3.one);
 
         public float BlobInertia
         {
@@ -84,7 +85,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
             set
             {
-                blobInertia = Mathf.Clamp(value, 0, maxInertia);
+                blobInertia = Mathf.Clamp(value, 0, MaxInertia);
             }
         }
 
@@ -96,7 +97,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
             set
             {
-                blobDistortion = Mathf.Clamp(value, 0, maxDistortion);
+                blobDistortion = Mathf.Clamp(value, 0, MaxDistortion);
             }
         }
 
@@ -108,7 +109,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
             set
             {
-                blobRotation = Mathf.Clamp(value, 0, maxRotation);
+                blobRotation = Mathf.Clamp(value, 0, MaxRotation);
             }
         }
 
@@ -120,7 +121,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
             set
             {
-                positionCorrectionStrength = Mathf.Clamp(value, minPositionCorrection, maxPositionCorrection);
+                positionCorrectionStrength = Mathf.Clamp(value, MinPositionCorrection, MaxPositionCorrection);
             }
         }
 
@@ -132,7 +133,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
             set
             {
-                distortionCorrectionStrength = Mathf.Clamp(value, minDistortionCorrection, maxDistortionCorrection);
+                distortionCorrectionStrength = Mathf.Clamp(value, MinDistortionCorrection, MaxDistortionCorrection);
             }
         }
 
@@ -144,7 +145,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
             set
             {
-                rotationCorrectionStrength = Mathf.Clamp(value, minRotationCorrection, maxRotationCorrection);
+                rotationCorrectionStrength = Mathf.Clamp(value, MinRotationCorrection, MaxRotationCorrection);
             }
         }
 
@@ -160,11 +161,6 @@ namespace MixedRealityToolkit.UX.ToolTips
             }
         }
 
-        /// <summary>
-        /// Mesh renderer for mesh background.
-        /// </summary>
-        public MeshRenderer BackgroundRenderer;
-
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -172,7 +168,6 @@ namespace MixedRealityToolkit.UX.ToolTips
             inertialContentBounds = defaultBounds;
             localContentBounds = defaultBounds;
             velocity = Vector3.zero;
-            backgroundRendererMeshFilter = BackgroundRenderer.GetComponent<MeshFilter>();
         }
 
         protected override void ScaleToFitContent()
@@ -182,7 +177,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             Vector3 localContentOffset = toolTip.LocalContentOffset;
 
             // Get the size of the mesh and use this to adjust the local content size on the x / y axis
-            // This will accomodate meshes that aren't built to 1,1 scale
+            // This will accommodate meshes that aren't built to 1,1 scale
             Bounds meshBounds = backgroundRendererMeshFilter.sharedMesh.bounds;
             localContentSize.x /= meshBounds.size.x;
             localContentSize.y /= meshBounds.size.y;

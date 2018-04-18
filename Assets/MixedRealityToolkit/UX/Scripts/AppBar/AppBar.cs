@@ -8,13 +8,13 @@ using MixedRealityToolkit.UX.BoundingBoxes;
 using MixedRealityToolkit.UX.Buttons.Profiles;
 using MixedRealityToolkit.UX.Receivers;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace MixedRealityToolkit.UX.AppBarControl
 {
     public class AppBar : InteractionReceiver
     {
-        private float buttonWidth = 1.50f;
+        private const float ButtonWidth = 1.50f;
+        private const float CoolDownTime = 0.5f;
 
         /// <summary>
         /// How many custom buttons can be added to the toolbar
@@ -33,67 +33,6 @@ namespace MixedRealityToolkit.UX.AppBarControl
         /// </summary>
         public float HoverOffsetZ = 0f;
 
-        /// <summary>
-        /// Class used for building toolbar buttons
-        /// (not yet in use)
-        /// </summary>
-        [Serializable]
-        public struct ButtonTemplate
-        {
-            public ButtonTemplate(ButtonTypeEnum type, string name, string icon, string text, int defaultPosition, int manipulationPosition)
-            {
-                Type = type;
-                Name = name;
-                Icon = icon;
-                Text = text;
-                DefaultPosition = defaultPosition;
-                ManipulationPosition = manipulationPosition;
-                EventTarget = null;
-                OnTappedEvent = null;
-            }
-
-            public bool IsEmpty
-            {
-                get
-                {
-                    return string.IsNullOrEmpty(Name);
-                }
-            }
-
-            public int DefaultPosition;
-            public int ManipulationPosition;
-            public ButtonTypeEnum Type;
-            public string Name;
-            public string Icon;
-            public string Text;
-            public InteractionReceiver EventTarget;
-            public UnityEvent OnTappedEvent;
-        }
-
-        [Flags]
-        public enum ButtonTypeEnum
-        {
-            Custom = 0,
-            Remove = 1,
-            Adjust = 2,
-            Hide = 4,
-            Show = 8,
-            Done = 16
-        }
-
-        public enum AppBarDisplayTypeEnum
-        {
-            Manipulation,
-            Standalone
-        }
-
-        public enum AppBarStateEnum
-        {
-            Default,
-            Manipulation,
-            Hidden
-        }
-
         public BoundingBox BoundingBox
         {
             get
@@ -106,27 +45,9 @@ namespace MixedRealityToolkit.UX.AppBarControl
             }
         }
 
-        public GameObject SquareButtonPrefab;
+        public int NumDefaultButtons { get; private set; }
 
-        public int NumDefaultButtons
-        {
-            get
-            {
-                return numDefaultButtons;
-            }
-        }
-
-        public int NumManipulationButtons
-        {
-            get
-            {
-                return numManipulationButtons;
-            }
-        }
-
-        public bool UseRemove = true;
-        public bool UseAdjust = true;
-        public bool UseHide = true;
+        public int NumManipulationButtons { get; private set; }
 
         public ButtonTemplate[] Buttons
         {
@@ -140,52 +61,52 @@ namespace MixedRealityToolkit.UX.AppBarControl
             }
         }
 
-        public ButtonTemplate[] DefaultButtons
-        {
-            get
-            {
-                return defaultButtons;
-            }
-        }
+        public ButtonTemplate[] DefaultButtons { get; private set; }
+
+        public GameObject SquareButtonPrefab = null;
+
+        public bool UseRemove = true;
+
+        public bool UseAdjust = true;
+
+        public bool UseHide = true;
 
         public AppBarDisplayTypeEnum DisplayType = AppBarDisplayTypeEnum.Manipulation;
+
         public AppBarStateEnum State = AppBarStateEnum.Default;
 
         /// <summary>
         /// Custom icon profile
         /// If null, the profile in the SquareButtonPrefab object will be used
         /// </summary>
-        public ButtonIconProfile CustomButtonIconProfile;
+        public ButtonIconProfile CustomButtonIconProfile = null;
 
         [SerializeField]
         private ButtonTemplate[] buttons = new ButtonTemplate[MaxCustomButtons];
 
         [SerializeField]
-        private Transform buttonParent;
+        private Transform buttonParent = null;
 
         [SerializeField]
-        private GameObject baseRenderer;
+        private GameObject baseRenderer = null;
 
         [SerializeField]
-        private GameObject backgroundBar;
+        private GameObject backgroundBar = null;
 
         [SerializeField]
-        private BoundingBox boundingBox;
+        private BoundingBox boundingBox = null;
 
-        private ButtonTemplate[] defaultButtons;
-        private Vector3[] forwards = new Vector3[4];
+        private readonly Vector3[] forwards = new Vector3[4];
+
         private Vector3 targetBarSize = Vector3.one;
         private float lastTimeTapped = 0f;
-        private float coolDownTime = 0.5f;
-        private int numDefaultButtons;
-        private int numHiddenButtons;
-        private int numManipulationButtons;
+        private int numHiddenButtons = 0;
 
         public void Reset()
         {
             State = AppBarStateEnum.Default;
             FollowBoundingBox(false);
-            lastTimeTapped = Time.time + coolDownTime;
+            lastTimeTapped = Time.time + CoolDownTime;
         }
 
         public void Start()
@@ -194,9 +115,9 @@ namespace MixedRealityToolkit.UX.AppBarControl
             if (interactables.Count == 0)
             {
                 RefreshTemplates();
-                for (int i = 0; i < defaultButtons.Length; i++)
+                for (int i = 0; i < DefaultButtons.Length; i++)
                 {
-                    CreateButton(defaultButtons[i], null);
+                    CreateButton(DefaultButtons[i], null);
                 }
 
                 for (int i = 0; i < buttons.Length; i++)
@@ -206,9 +127,34 @@ namespace MixedRealityToolkit.UX.AppBarControl
             }
         }
 
+        private void Update()
+        {
+            FollowBoundingBox(true);
+
+            switch (State)
+            {
+                case AppBarStateEnum.Default:
+                    targetBarSize = new Vector3(NumDefaultButtons * ButtonWidth, ButtonWidth, 1f);
+                    break;
+
+                case AppBarStateEnum.Hidden:
+                    targetBarSize = new Vector3(numHiddenButtons * ButtonWidth, ButtonWidth, 1f);
+                    break;
+
+                case AppBarStateEnum.Manipulation:
+                    targetBarSize = new Vector3(NumManipulationButtons * ButtonWidth, ButtonWidth, 1f);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            backgroundBar.transform.localScale = Vector3.Lerp(backgroundBar.transform.localScale, targetBarSize, 0.5f);
+        }
+
         protected override void InputClicked(GameObject obj, InputClickedEventData eventData)
         {
-            if (Time.time < lastTimeTapped + coolDownTime)
+            if (Time.time < lastTimeTapped + CoolDownTime)
             {
                 return;
             }
@@ -265,24 +211,24 @@ namespace MixedRealityToolkit.UX.AppBarControl
             switch (template.Type)
             {
                 case ButtonTypeEnum.Custom:
-                    numDefaultButtons++;
+                    NumDefaultButtons++;
                     break;
 
                 case ButtonTypeEnum.Adjust:
-                    numDefaultButtons++;
+                    NumDefaultButtons++;
                     break;
 
                 case ButtonTypeEnum.Done:
-                    numManipulationButtons++;
+                    NumManipulationButtons++;
                     break;
 
                 case ButtonTypeEnum.Remove:
-                    numManipulationButtons++;
-                    numDefaultButtons++;
+                    NumManipulationButtons++;
+                    NumDefaultButtons++;
                     break;
 
                 case ButtonTypeEnum.Hide:
-                    numDefaultButtons++;
+                    NumDefaultButtons++;
                     break;
 
                 case ButtonTypeEnum.Show:
@@ -363,31 +309,6 @@ namespace MixedRealityToolkit.UX.AppBarControl
             transform.eulerAngles = eulerAngles;
         }
 
-        private void Update()
-        {
-            FollowBoundingBox(true);
-
-            switch (State)
-            {
-                case AppBarStateEnum.Default:
-                    targetBarSize = new Vector3(numDefaultButtons * buttonWidth, buttonWidth, 1f);
-                    break;
-
-                case AppBarStateEnum.Hidden:
-                    targetBarSize = new Vector3(numHiddenButtons * buttonWidth, buttonWidth, 1f);
-                    break;
-
-                case AppBarStateEnum.Manipulation:
-                    targetBarSize = new Vector3(numManipulationButtons * buttonWidth, buttonWidth, 1f);
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            backgroundBar.transform.localScale = Vector3.Lerp(backgroundBar.transform.localScale, targetBarSize, 0.5f);
-        }
-
         private void RefreshTemplates()
         {
             int numCustomButtons = 0;
@@ -418,15 +339,8 @@ namespace MixedRealityToolkit.UX.AppBarControl
                 defaultButtonsList.Add(GetDefaultButtonTemplateFromType(ButtonTypeEnum.Hide, numCustomButtons, UseHide, UseAdjust));
                 defaultButtonsList.Add(GetDefaultButtonTemplateFromType(ButtonTypeEnum.Show, numCustomButtons, UseHide, UseAdjust));
             }
-            defaultButtons = defaultButtonsList.ToArray();
+            DefaultButtons = defaultButtonsList.ToArray();
         }
-
-#if UNITY_EDITOR
-        public void EditorRefreshTemplates()
-        {
-            RefreshTemplates();
-        }
-#endif
 
         /// <summary>
         /// Generates a template for a default button based on type
@@ -435,7 +349,7 @@ namespace MixedRealityToolkit.UX.AppBarControl
         /// <param name="numCustomButtons"></param>
         /// <param name="useHide"></param>
         /// <param name="useAdjust"></param>
-        /// <returns></returns>
+        /// <returns><see cref="ButtonTemplate"/></returns>
         private static ButtonTemplate GetDefaultButtonTemplateFromType(ButtonTypeEnum type, int numCustomButtons, bool useHide, bool useAdjust)
         {
             // Button position is based on custom buttons

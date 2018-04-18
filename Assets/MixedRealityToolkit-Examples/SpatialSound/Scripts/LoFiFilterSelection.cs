@@ -12,23 +12,23 @@ namespace MixedRealityToolkit.Examples.SpatialSound
     {
         [Tooltip("Material used when the emitter is set to Narrow Band Telephony")]
         [SerializeField]
-        private Material NarrowBandTelephony;
+        private Material narrowBandTelephony = null;
 
         [Tooltip("Material used when the emitter is set to AM Radio")]
         [SerializeField]
-        private Material AmRadio;
+        private Material amRadio = null;
 
         [Tooltip("Material used when the emitter is set to Full Range")]
         [SerializeField]
-        private Material FullRange;
+        private Material fullRange = null;
 
         [Tooltip("Material used when the emitter is set to an unknown quality")]
         [SerializeField]
-        private Material UnknownQuality;
+        private Material unknownQuality = null;
 
-        private AudioLoFiEffect loFiEffect;
+        private AudioLoFiEffect loFiEffect = null;
 
-        private Renderer emitterRenderer;
+        private Renderer emitterRenderer = null;
 
         private void Start()
         {
@@ -91,21 +91,21 @@ namespace MixedRealityToolkit.Examples.SpatialSound
 
         private void SetEmitterMaterial(AudioLoFiSourceQuality sourceQuality)
         {
-            Material emitterMaterial = UnknownQuality;
+            Material emitterMaterial = unknownQuality;
 
             // Determine the material for the emitter based on the source quality.
             switch (sourceQuality)
             {
                 case AudioLoFiSourceQuality.NarrowBandTelephony:
-                    emitterMaterial = NarrowBandTelephony;
+                    emitterMaterial = narrowBandTelephony;
                     break;
 
                 case AudioLoFiSourceQuality.AmRadio:
-                    emitterMaterial = AmRadio;
+                    emitterMaterial = amRadio;
                     break;
 
                 case AudioLoFiSourceQuality.FullRange:
-                    emitterMaterial = FullRange;
+                    emitterMaterial = fullRange;
                     break;
             }
 
