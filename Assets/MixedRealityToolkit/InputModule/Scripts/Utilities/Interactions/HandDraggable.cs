@@ -10,14 +10,18 @@ using MixedRealityToolkit.InputModule.InputSources;
 using System;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Utilities.Interations
+#if UNITY_WSA
+using UnityEngine.XR.WSA.Input;
+#endif
+
+namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 {
     /// <summary>
     /// Component that allows dragging an object with your hand on HoloLens.
     /// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions,
     /// and then repositioning the object based on that.
     /// </summary>
-    public class HandDraggable : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler
+    public class HandDraggable : FocusTarget, IInputHandler, ISourceStateHandler
     {
         /// <summary>
         /// Event triggered when dragging starts.
@@ -56,7 +60,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         public bool IsDraggingEnabled = true;
 
         private bool isDragging;
-        private bool isGazed;
         private Vector3 objRefForward;
         private Vector3 objRefUp;
         private float objRefDistance;
@@ -67,7 +70,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         private Vector3 draggingPosition;
         private Quaternion draggingRotation;
 
-        private IInputSource currentInputSource;
         private uint currentInputSourceId;
         private Rigidbody hostRigidbody;
         private bool hostRigidbodyWasKinematic;
@@ -87,11 +89,6 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             if (isDragging)
             {
                 StopDragging();
-            }
-
-            if (isGazed)
-            {
-                OnFocusExit();
             }
         }
 
@@ -122,7 +119,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             //       can be active at once.
 
             // Add self as a modal input handler, to get all inputs during the manipulation
-            InputManager.Instance.PushModalInputHandler(gameObject);
+            InputManager.PushModalInputHandler(gameObject);
 
             isDragging = true;
 
@@ -135,20 +132,21 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             Transform cameraTransform = CameraCache.Main.transform;
 
             Vector3 inputPosition = Vector3.zero;
-#if UNITY_2017_2_OR_NEWER
-            InteractionSourceInfo sourceKind;
-            currentInputSource.TryGetSourceKind(currentInputSourceId, out sourceKind);
+#if UNITY_WSA
+            InteractionSourceKind sourceKind;
+            InteractionInputSources.Instance.TryGetSourceKind(currentInputSourceId, out sourceKind);
+
             switch (sourceKind)
             {
-                case InteractionSourceInfo.Hand:
-                    currentInputSource.TryGetGripPosition(currentInputSourceId, out inputPosition);
+                case InteractionSourceKind.Hand:
+                    InteractionInputSources.Instance.TryGetGripPosition(currentInputSourceId, out inputPosition);
                     break;
-                case InteractionSourceInfo.Controller:
-                    currentInputSource.TryGetPointerPosition(currentInputSourceId, out inputPosition);
+                case InteractionSourceKind.Controller:
+                    InteractionInputSources.Instance.TryGetPointerPosition(currentInputSourceId, out inputPosition);
                     break;
             }
 #else
-            currentInputSource.TryGetPointerPosition(currentInputSourceId, out inputPosition);
+            InteractionInputSources.Instance.TryGetPointerPosition(currentInputSourceId, out inputPosition);
 #endif
 
             Vector3 pivotPosition = GetHandPivotPosition(cameraTransform);
@@ -214,20 +212,20 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             Transform cameraTransform = CameraCache.Main.transform;
 
             Vector3 inputPosition = Vector3.zero;
-#if UNITY_2017_2_OR_NEWER
-            InteractionSourceInfo sourceKind;
-            currentInputSource.TryGetSourceKind(currentInputSourceId, out sourceKind);
+#if UNITY_WSA
+            InteractionSourceKind sourceKind;
+            InteractionInputSources.Instance.TryGetSourceKind(currentInputSourceId, out sourceKind);
             switch (sourceKind)
             {
-                case InteractionSourceInfo.Hand:
-                    currentInputSource.TryGetGripPosition(currentInputSourceId, out inputPosition);
+                case InteractionSourceKind.Hand:
+                    InteractionInputSources.Instance.TryGetGripPosition(currentInputSourceId, out inputPosition);
                     break;
-                case InteractionSourceInfo.Controller:
-                    currentInputSource.TryGetPointerPosition(currentInputSourceId, out inputPosition);
+                case InteractionSourceKind.Controller:
+                    InteractionInputSources.Instance.TryGetPointerPosition(currentInputSourceId, out inputPosition);
                     break;
             }
 #else
-            currentInputSource.TryGetPointerPosition(currentInputSourceId, out inputPosition);
+            InteractionInputSources.Instance.TryGetPointerPosition(currentInputSourceId, out inputPosition);
 #endif
 
             Vector3 pivotPosition = GetHandPivotPosition(cameraTransform);
@@ -301,10 +299,9 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             }
 
             // Remove self as a modal input handler
-            InputManager.Instance.PopModalInputHandler();
+            InputManager.PopModalInputHandler();
 
             isDragging = false;
-            currentInputSource = null;
             currentInputSourceId = 0;
             if (hostRigidbody != null)
             {
@@ -313,40 +310,29 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             StoppedDragging.RaiseEvent();
         }
 
-        public void OnFocusEnter()
+        public override void OnFocusEnter(FocusEventData eventData)
         {
+            base.OnFocusEnter(eventData);
+
             if (!IsDraggingEnabled)
             {
                 return;
             }
-
-            if (isGazed)
-            {
-                return;
-            }
-
-            isGazed = true;
         }
 
-        public void OnFocusExit()
+        public override void OnFocusExit(FocusEventData eventData)
         {
+            base.OnFocusEnter(eventData);
+
             if (!IsDraggingEnabled)
             {
                 return;
             }
-
-            if (!isGazed)
-            {
-                return;
-            }
-
-            isGazed = false;
         }
 
-        public void OnInputUp(InputEventData eventData)
+        void IInputHandler.OnInputUp(InputEventData eventData)
         {
-            if (currentInputSource != null &&
-                eventData.SourceId == currentInputSourceId)
+            if (eventData.SourceId == currentInputSourceId)
             {
                 eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
 
@@ -354,7 +340,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
             }
         }
 
-        public void OnInputDown(InputEventData eventData)
+        void IInputHandler.OnInputDown(InputEventData eventData)
         {
             if (isDragging)
             {
@@ -362,19 +348,19 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                 return;
             }
 
-#if UNITY_2017_2_OR_NEWER
-            InteractionSourceInfo sourceKind;
-            eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceKind);
-            if (sourceKind != InteractionSourceInfo.Hand)
+#if UNITY_WSA
+            InteractionSourceKind sourceKind;
+            InteractionInputSources.Instance.TryGetSourceKind(eventData.SourceId, out sourceKind);
+            if (sourceKind != InteractionSourceKind.Hand)
             {
-                if (!eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.GripPosition))
+                if (!eventData.InputSource.SupportsInputInfo(SupportedInputInfo.GripPosition))
                 {
                     // The input source must provide grip positional data for this script to be usable
                     return;
                 }
             }
 #else
-            if (!eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.Position))
+            if (!eventData.InputSource.SupportsInputInfo(SupportedInputInfo.Position))
             {
                 // The input source must provide positional data for this script to be usable
                 return;
@@ -383,29 +369,32 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
 
-            currentInputSource = eventData.InputSource;
             currentInputSourceId = eventData.SourceId;
 
-            FocusDetails? details = FocusManager.Instance.TryGetFocusDetails(eventData);
-
-            Vector3 initialDraggingPosition = (details == null)
-                ? HostTransform.position
-                : details.Value.Point;
+            FocusDetails focusDetails;
+            Vector3 initialDraggingPosition = FocusManager.Instance.TryGetFocusDetails(eventData, out focusDetails)
+                ? focusDetails.Point
+                : HostTransform.position;
 
             StartDragging(initialDraggingPosition);
         }
 
-        public void OnSourceDetected(SourceStateEventData eventData)
-        {
-            // Nothing to do
-        }
+        void IInputHandler.OnInputPressed(InputPressedEventData eventData) { }
 
-        public void OnSourceLost(SourceStateEventData eventData)
+        void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData) { }
+
+        void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
+
+        void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            if (currentInputSource != null && eventData.SourceId == currentInputSourceId)
+            if (eventData.SourceId == currentInputSourceId)
             {
                 StopDragging();
             }
         }
+
+        void ISourceStateHandler.OnSourcePositionChanged(SourcePositionEventData eventData) { }
+
+        void ISourceStateHandler.OnSourceRotationChanged(SourceRotationEventData eventData) { }
     }
 }

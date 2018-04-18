@@ -13,9 +13,9 @@ namespace MixedRealityToolkit.InputModule.EventData
     {
         public SourceStateEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag)
+        public void Initialize(IInputSource inputSource, object[] tags)
         {
-            BaseInitialize(inputSource, sourceId, tag);
+            BaseInitialize(inputSource, tags);
         }
     }
 }

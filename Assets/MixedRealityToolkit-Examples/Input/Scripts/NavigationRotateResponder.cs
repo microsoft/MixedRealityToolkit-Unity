@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.InputModule.EventData;
+using MixedRealityToolkit.InputModule.Focus;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using UnityEngine;
 
@@ -44,18 +44,18 @@ namespace MixedRealityToolkit.Examples.InputModule
         public void OnNavigationCanceled(NavigationEventData eventData)
         {
             navigationDelta = Vector3.zero;
-            InputManager.Instance.OverrideFocusedObject = null;
+            FocusManager.Instance.OverrideFocusedObject = null;
         }
 
         public void OnNavigationCompleted(NavigationEventData eventData)
         {
             navigationDelta = Vector3.zero;
-            InputManager.Instance.OverrideFocusedObject = null;
+            FocusManager.Instance.OverrideFocusedObject = null;
         }
 
         public void OnNavigationStarted(NavigationEventData eventData)
         {
-            InputManager.Instance.OverrideFocusedObject = gameObject;
+            FocusManager.Instance.OverrideFocusedObject = gameObject;
             navigationDelta = eventData.NormalizedOffset;
         }
 

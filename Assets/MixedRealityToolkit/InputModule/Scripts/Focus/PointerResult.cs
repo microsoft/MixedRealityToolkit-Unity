@@ -13,9 +13,9 @@ namespace MixedRealityToolkit.InputModule.Focus
 
         public FocusDetails End { get; protected set; }
 
-        public GameObject PreviousEndObject { get; protected set; }
+        public GameObject CurrentPointerTarget { get; protected set; }
 
-        public RaycastHit LastRaycastHit { get; protected set; }
+        public GameObject PreviousPointerTarget { get; protected set; }
 
         /// <summary>
         /// The index of the step that produced the last raycast hit

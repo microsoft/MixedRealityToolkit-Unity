@@ -87,7 +87,6 @@ namespace MixedRealityToolkit.InputModule
 
         public void ApplySettingsForOpaqueDisplay()
         {
-            Debug.Log("Display is Opaque");
             CameraCache.Main.clearFlags = CameraClearFlags_OpaqueDisplay;
             CameraCache.Main.nearClipPlane = NearClipPlane_OpaqueDisplay;
             CameraCache.Main.backgroundColor = BackgroundColor_OpaqueDisplay;
@@ -96,7 +95,6 @@ namespace MixedRealityToolkit.InputModule
 
         public void ApplySettingsForTransparentDisplay()
         {
-            Debug.Log("Display is Transparent");
             CameraCache.Main.clearFlags = CameraClearFlags_TransparentDisplay;
             CameraCache.Main.backgroundColor = BackgroundColor_TransparentDisplay;
             CameraCache.Main.nearClipPlane = NearClipPlane_TransparentDisplay;

@@ -7,14 +7,6 @@ using MixedRealityToolkit.InputModule.Utilities;
 using System.Collections;
 using UnityEngine;
 
-#if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
-using UnityEngine.XR.WSA.Input;
-#else
-using UnityEngine.VR.WSA.Input;
-#endif
-#endif
-
 namespace MixedRealityToolkit.Utilities.Solvers
 {
     /// <summary>
@@ -113,27 +105,23 @@ namespace MixedRealityToolkit.Utilities.Solvers
                         break;
 
                     case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerLeft:
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-                        solverHandler.Handedness = InteractionSourceHandedness.Left;
+                        solverHandler.Handedness = Handedness.Left;
                         while (solverHandler.ElementTransform == null)
                         {
                             yield return null;
                         }
                         //Base transform target to Motion controller transform
                         solverHandler.TransformTarget = solverHandler.ElementTransform;
-#endif
                         break;
 
                     case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight:
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-                        solverHandler.Handedness = InteractionSourceHandedness.Right;
+                        solverHandler.Handedness = Handedness.Right;
                         while (solverHandler.ElementTransform != null)
                         {
                             yield return null;
                         }
                         //Base transform target to Motion controller transform
                         solverHandler.TransformTarget = solverHandler.ElementTransform;
-#endif
                         break;
                 }
         }

@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.SpatialSound.Effects;
+using UnityEngine;
 
 namespace MixedRealityToolkit.Examples.SpatialSound
 {
-    public class LoFiFilterSelection : MonoBehaviour, IInputClickHandler
+    public class LoFiFilterSelection : MonoBehaviour, IPointerHandler
     {
         [Tooltip("Material used when the emitter is set to Narrow Band Telephony")]
         [SerializeField]
@@ -44,6 +44,7 @@ namespace MixedRealityToolkit.Examples.SpatialSound
             if (loFiEffect == null)
             {
                 Debug.LogError("LoFiFilterSelection requires an AudioLoFiEffect to be attached to the game object.");
+                return;
             }
 
             // Set the material of the emitter object to match that of the
@@ -51,10 +52,38 @@ namespace MixedRealityToolkit.Examples.SpatialSound
             SetEmitterMaterial(loFiEffect.SourceQuality);
         }
 
-        /// <summary>
-        /// Changes the AudioLoFiEffect source quality on click.
-        /// </summary>
-        public void OnInputClicked(InputClickedEventData data)
+        private void SetEmitterMaterial(AudioLoFiSourceQuality sourceQuality)
+        {
+            Material emitterMaterial = UnknownQuality;
+
+            // Determine the material for the emitter based on the source quality.
+            switch (sourceQuality)
+            {
+                case AudioLoFiSourceQuality.NarrowBandTelephony:
+                    emitterMaterial = NarrowBandTelephony;
+                    break;
+
+                case AudioLoFiSourceQuality.AmRadio:
+                    emitterMaterial = AmRadio;
+                    break;
+
+                case AudioLoFiSourceQuality.FullRange:
+                    emitterMaterial = FullRange;
+                    break;
+            }
+
+            // Set the material on the emitter.
+            if (emitterRenderer != null)
+            {
+                emitterRenderer.sharedMaterial = emitterMaterial;
+            }
+        }
+
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
             // Make sure we found an AudioLoFiEffect script.
             if (loFiEffect == null) { return; }
@@ -86,34 +115,7 @@ namespace MixedRealityToolkit.Examples.SpatialSound
             loFiEffect.SourceQuality = sourceQuality;
 
             // Mark the event as used, so it doesn't fall through to other handlers.
-            data.Use();
-        }
-
-        private void SetEmitterMaterial(AudioLoFiSourceQuality sourceQuality)
-        {
-            Material emitterMaterial = UnknownQuality;
-
-            // Determine the material for the emitter based on the source quality.
-            switch (sourceQuality)
-            {
-                case AudioLoFiSourceQuality.NarrowBandTelephony:
-                    emitterMaterial = NarrowBandTelephony;
-                    break;
-
-                case AudioLoFiSourceQuality.AmRadio:
-                    emitterMaterial = AmRadio;
-                    break;
-
-                case AudioLoFiSourceQuality.FullRange:
-                    emitterMaterial = FullRange;
-                    break;
-            }
-
-            // Set the material on the emitter.
-            if (emitterRenderer != null)
-            {
-                emitterRenderer.sharedMaterial = emitterMaterial;
-            }
+            eventData.Use();
         }
     }
 }

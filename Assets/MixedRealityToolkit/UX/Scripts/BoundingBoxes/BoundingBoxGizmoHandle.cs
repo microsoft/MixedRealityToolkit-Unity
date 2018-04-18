@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.InputModule.InputHandlers;
+using MixedRealityToolkit.InputModule.InputSources;
 using UnityEngine;
-
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA;
 #endif
@@ -27,13 +29,13 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         {
             Rotation,
             Scale
-        };
+        }
         public enum AxisToAffect
         {
             X,
             Y,
             Z
-        };
+        }
 
         private BoundingBoxRig rig;
         private Transform transformToAffect;
@@ -177,22 +179,21 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         {
             if (inputDownEventData != null)
             {
-                Vector3 currentHandPosition = Vector3.zero;
                 Quaternion currentHandOrientation = Quaternion.identity;
 
                 //set values from hand
-                currentHandPosition = GetHandPosition(inputDownEventData.SourceId);
+                Vector3 currentHandPosition = GetHandPosition(inputDownEventData.SourceId);
                 if (isHandRotationAvailable)
                 {
                     currentHandOrientation = GetHandOrientation(inputDownEventData.SourceId);
                 }
 
                 //calculate affines
-                if (this.AffineType == TransformType.Scale)
+                if (AffineType == TransformType.Scale)
                 {
                     ApplyScale(currentHandPosition);
                 }
-                else if (this.AffineType == TransformType.Rotation)
+                else if (AffineType == TransformType.Rotation)
                 {
                     if (isHandRotationAvailable && handMotionForRotation == HandMotionType.handRotatesToRotateObject)
                     {
@@ -208,16 +209,18 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
         private Vector3 GetHandPosition(uint sourceId)
         {
-            Vector3 handPosition = new Vector3(0, 0, 0);
-            inputDownEventData.InputSource.TryGetGripPosition(sourceId, out handPosition);
+            Vector3 handPosition;
+            InteractionInputSources.Instance.TryGetGripPosition(sourceId, out handPosition);
             return handPosition;
         }
+
         private Quaternion GetHandOrientation(uint sourceId)
         {
-            Quaternion handOrientation = Quaternion.identity;
-            inputDownEventData.InputSource.TryGetGripRotation(sourceId, out handOrientation);
+            Quaternion handOrientation;
+            InteractionInputSources.Instance.TryGetGripRotation(sourceId, out handOrientation);
             return handOrientation;
         }
+
         private void ApplyScale(Vector3 currentHandPosition)
         {
             if ((transformToAffect.position - initialHandPosition).magnitude > minimumScaleNav)
@@ -342,7 +345,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         {
             inputDownEventData = null;
 
-            if (this.AffineType == TransformType.Scale)
+            if (AffineType == TransformType.Scale)
             {
                 cachedRenderer.sharedMaterial = Rig.ScaleHandleMaterial;
             }
@@ -351,7 +354,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 cachedRenderer.sharedMaterial = Rig.RotateHandleMaterial;
             }
 
-            MixedRealityToolkit.InputModule.InputManager.Instance.PopModalInputHandler();
+            InputManager.PopModalInputHandler();
             Rig.FocusOnHandle(null);
         }
 
@@ -365,14 +368,23 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             initialOrientation      = transformToAffect.rotation.eulerAngles;
             initialRotation         = transformToAffect.rotation;
             initialHandOrientation  = GetHandOrientation(eventData.SourceId);
-            initialScaleOrigin      = transformToAffect.position - this.transform.position;
+            initialScaleOrigin      = transformToAffect.position - transform.position;
 
-            MixedRealityToolkit.InputModule.InputManager.Instance.PushModalInputHandler(gameObject);
+            InputManager.PushModalInputHandler(gameObject);
 
             cachedRenderer.sharedMaterial = Rig.InteractingMaterial;
-            Rig.FocusOnHandle(this.gameObject);
+            Rig.FocusOnHandle(gameObject);
             eventData.Use();
         }
+
+        public void OnInputPressed(InputPressedEventData eventData)
+        {
+        }
+
+        public void OnInputPositionChanged(InputPositionEventData eventData)
+        {
+        }
+
         public void OnInputUp(InputEventData eventData)
         {
             inputDownEventData = null;
@@ -394,6 +406,16 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 ResetRigHandles();
             }
             eventData.Use();
+        }
+
+        public void OnSourcePositionChanged(SourcePositionEventData eventData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnSourceRotationChanged(SourceRotationEventData eventData)
+        {
+            throw new NotImplementedException();
         }
     }
 }

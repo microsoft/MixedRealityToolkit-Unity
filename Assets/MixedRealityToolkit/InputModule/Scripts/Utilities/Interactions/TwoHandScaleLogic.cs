@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Utilities.Interations
+namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 {
     /// <summary>
     /// Implements a scale logic that will scale an object based on the 
@@ -17,23 +17,28 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
     /// </summary>
     public class TwoHandScaleLogic
     {
-        private Vector3 m_startObjectScale;
-        private float m_startHandDistanceMeters;
+        private Vector3 startObjectScale;
+        private float startHandDistanceMeters;
 
         public virtual void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
         {
-            m_startHandDistanceMeters = GetMinDistanceBetweenHands(handsPressedMap);
-            m_startObjectScale = manipulationRoot.transform.localScale;
+            startHandDistanceMeters = GetMinDistanceBetweenHands(handsPressedMap);
+            startObjectScale = manipulationRoot.transform.localScale;
+        }
+
+        public virtual Vector3 Update(Dictionary<uint, Vector3> handsPressedMap)
+        {
+            return startObjectScale * (GetMinDistanceBetweenHands(handsPressedMap) / startHandDistanceMeters);
         }
 
         /// <summary>
         /// Finds the minimum distance between all pairs of hands
         /// </summary>
         /// <returns></returns>
-        private float GetMinDistanceBetweenHands(Dictionary<uint, Vector3> handsPressedMap)
+        private static float GetMinDistanceBetweenHands(Dictionary<uint, Vector3> handsPressedMap)
         {
             var result = float.MaxValue;
-            Vector3[] handLocations = new Vector3[handsPressedMap.Values.Count];
+            var handLocations = new Vector3[handsPressedMap.Values.Count];
             handsPressedMap.Values.CopyTo(handLocations, 0);
             for (int i = 0; i < handLocations.Length; i++)
             {
@@ -46,14 +51,8 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
                     }
                 }
             }
+
             return result;
         }
-
-        public virtual Vector3 Update(Dictionary<uint, Vector3> handsPressedMap)
-        {
-            var ratioMultiplier = GetMinDistanceBetweenHands(handsPressedMap) / m_startHandDistanceMeters;
-            return m_startObjectScale * ratioMultiplier;
-        }
-
     }
 }

@@ -3,10 +3,9 @@
 //
 using System.Collections;
 using UnityEngine;
-using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.InputModule.InputHandlers;
 using MixedRealityToolkit.InputModule.EventData;
-
+using MixedRealityToolkit.InputModule.Focus;
 
 namespace MixedRealityToolkit.UX.ToolTips
 {
@@ -14,7 +13,7 @@ namespace MixedRealityToolkit.UX.ToolTips
     /// Add to any Object to spawn ToolTips on tap or on focus, according to preference
     /// Applies its follow settings to the spawned ToolTip's ToolTipConnector component
     /// </summary>
-    public class ToolTipSpawner : MonoBehaviour , IInputHandler, IPointerSpecificFocusable
+    public class ToolTipSpawner : FocusTarget, IInputHandler
     {
         private enum VanishType
         {
@@ -100,7 +99,6 @@ namespace MixedRealityToolkit.UX.ToolTips
         [SerializeField]
         private Transform Anchor;
 
-
         private float focusEnterTime = 0f;
 
         private float focusExitTime = 0f;
@@ -111,8 +109,10 @@ namespace MixedRealityToolkit.UX.ToolTips
 
         private ToolTip toolTip;
 
-        public void OnFocusEnter(PointerSpecificEventData eventData)
+        public override void OnFocusEnter(FocusEventData eventData)
         {
+            base.OnFocusEnter(eventData);
+
             focusEnterTime = Time.unscaledTime;
             hasFocus = true;
             if (toolTip == null || !toolTip.gameObject.activeSelf)
@@ -122,15 +122,14 @@ namespace MixedRealityToolkit.UX.ToolTips
                     case AppearType.AppearOnFocusEnter:
                         ShowToolTip();
                         break;
-
-                    default:
-                        break;
                 }
             }
         }
 
-        public void OnFocusExit(PointerSpecificEventData eventData)
+        public override void OnFocusExit(FocusEventData eventData)
         {
+            base.OnFocusExit(eventData);
+
             focusExitTime = Time.unscaledTime;
             hasFocus = false;
         }
@@ -140,23 +139,25 @@ namespace MixedRealityToolkit.UX.ToolTips
             tappedTime = Time.unscaledTime;
             if (toolTip == null || !toolTip.gameObject.activeSelf)
             {
-                if( appearType == AppearType.AppearOnTap)
+                if (appearType == AppearType.AppearOnTap)
                 {
-                        ShowToolTip();
+                    ShowToolTip();
                 }
             }
         }
 
-        public void OnInputUp(InputEventData eventData)
-        {
-        }
+        public void OnInputPressed(InputPressedEventData eventData) { }
+
+        public void OnInputPositionChanged(InputPositionEventData eventData) { }
+
+        public void OnInputUp(InputEventData eventData) { }
 
         private void ShowToolTip()
         {
-            StartCoroutine(UpdateTooltip(focusEnterTime, tappedTime));
+            StartCoroutine(UpdateTooltip(tappedTime));
         }
 
-        private IEnumerator UpdateTooltip(float focusEnterTimeOnStart, float tappedTimeOnStart)
+        private IEnumerator UpdateTooltip(float tappedTimeOnStart)
         {
             if (toolTip == null)
             {
@@ -171,7 +172,7 @@ namespace MixedRealityToolkit.UX.ToolTips
                 toolTip.ContentParentTransform.localScale = defaultDimensions;
             }
 
-            if( appearType == AppearType.AppearOnFocusEnter)
+            if (appearType == AppearType.AppearOnFocusEnter)
             {
                 // Wait for the appear delay
                 yield return new WaitForSeconds(appearDelay);
@@ -181,7 +182,7 @@ namespace MixedRealityToolkit.UX.ToolTips
                     yield break;
                 }
             }
-            
+
             toolTip.ToolTipText = ToolTipText;
             toolTip.gameObject.SetActive(true);
             ToolTipConnector connector = toolTip.GetComponent<ToolTipConnector>();
@@ -248,7 +249,7 @@ namespace MixedRealityToolkit.UX.ToolTips
             yield break;
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             if (Application.isPlaying)
@@ -258,7 +259,8 @@ namespace MixedRealityToolkit.UX.ToolTips
             {
                 Gizmos.color = Color.cyan;
                 Transform relativeTo = null;
-                switch (pivotDirectionOrient) {
+                switch (pivotDirectionOrient)
+                {
                     case ToolTipConnector.ConnectorOrientType.OrientToCamera:
                         relativeTo = Camera.main.transform;//Veil.Instance.HeadTransform;
                         break;
@@ -267,7 +269,8 @@ namespace MixedRealityToolkit.UX.ToolTips
                         relativeTo = (Anchor != null) ? Anchor.transform : transform;
                         break;
                 }
-                if (pivotMode == ToolTipConnector.ConnnectorPivotMode.Automatic) {
+                if (pivotMode == ToolTipConnector.ConnnectorPivotMode.Automatic)
+                {
                     Vector3 targetPosition = (Anchor != null) ? Anchor.transform.position : transform.position;
                     Vector3 toolTipPosition = targetPosition + ToolTipConnector.GetDirectionFromPivotDirection(
                                     pivotDirection,
@@ -275,14 +278,16 @@ namespace MixedRealityToolkit.UX.ToolTips
                                     relativeTo) * pivotDistance;
                     Gizmos.DrawLine(targetPosition, toolTipPosition);
                     Gizmos.DrawWireCube(toolTipPosition, Vector3.one * 0.05f);
-                } else {
+                }
+                else
+                {
                     Vector3 targetPosition = (Anchor != null) ? Anchor.transform.position : transform.position;
-                    Vector3 toolTipPosition = transform.TransformPoint (manualPivotLocalPosition);
+                    Vector3 toolTipPosition = transform.TransformPoint(manualPivotLocalPosition);
                     Gizmos.DrawLine(targetPosition, toolTipPosition);
                     Gizmos.DrawWireCube(toolTipPosition, Vector3.one * 0.05f);
                 }
             }
         }
-        #endif
+#endif
     }
 }

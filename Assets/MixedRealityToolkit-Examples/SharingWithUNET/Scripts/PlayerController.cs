@@ -15,7 +15,7 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
     /// Controls player behavior (local and remote).
     /// </summary>
     [NetworkSettings(sendInterval = 0.033f)]
-    public class PlayerController : NetworkBehaviour, IInputClickHandler
+    public class PlayerController : NetworkBehaviour, IPointerHandler
     {
         private static PlayerController _Instance = null;
         /// <summary>
@@ -217,7 +217,7 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
             {
                 // If we are the local player then we want to have airtaps 
                 // sent to this object so that projectiles can be spawned.
-                InputManager.Instance.AddGlobalListener(gameObject);
+                InputManager.AddGlobalListener(gameObject);
                 InitializeLocalPlayer();
             }
             else
@@ -298,7 +298,7 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
         {
             if (isLocalPlayer)
             {
-                InputManager.Instance.RemoveGlobalListener(gameObject);
+                InputManager.RemoveGlobalListener(gameObject);
             }
         }
 
@@ -331,7 +331,11 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
             Destroy(nextBullet, 8.0f);
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
             if (isLocalPlayer)
             {

@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 
 namespace MixedRealityToolkit.Examples.SharingWithUNET
 {
-    public class UNetSharedHologram : NetworkBehaviour, IInputClickHandler
+    public class UNetSharedHologram : NetworkBehaviour, IPointerHandler
     {
         /// <summary>
         /// The position relative to the shared world anchor.
@@ -48,7 +48,6 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
 
         private bool Moving;
         private int layerMask;
-        private InputManager inputManager;
         public Vector3 movementOffset = Vector3.zero;
         private bool isOpaque = false;
 
@@ -70,8 +69,6 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
             }
 
             layerMask = SpatialMappingManager.Instance.LayerMask;
-            inputManager = InputManager.Instance;
-
         }
 
         // Update is called once per frame
@@ -102,14 +99,18 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
             return retval;
         }
 
-        public void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public void OnPointerClicked(ClickEventData eventData)
         {
             if (isOpaque == false)
             {
                 Moving = !Moving;
                 if (Moving)
                 {
-                    inputManager.AddGlobalListener(gameObject);
+                    InputManager.AddGlobalListener(gameObject);
                     if (SpatialMappingManager.Instance != null)
                     {
                         SpatialMappingManager.Instance.DrawVisualMeshes = true;
@@ -117,7 +118,7 @@ namespace MixedRealityToolkit.Examples.SharingWithUNET
                 }
                 else
                 {
-                    inputManager.RemoveGlobalListener(gameObject);
+                    InputManager.RemoveGlobalListener(gameObject);
                     if (SpatialMappingManager.Instance != null)
                     {
                         SpatialMappingManager.Instance.DrawVisualMeshes = false;

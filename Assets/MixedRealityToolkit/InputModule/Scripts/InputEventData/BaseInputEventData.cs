@@ -9,7 +9,7 @@ namespace MixedRealityToolkit.InputModule.EventData
     /// <summary>
     /// Base class of all input events.
     /// </summary>
-    public abstract class BaseInputEventData : BaseEventData, IInputSourceInfoProvider
+    public abstract class BaseInputEventData : BaseEventData
     {
         /// <summary>
         /// The source the input event originates from.
@@ -24,18 +24,16 @@ namespace MixedRealityToolkit.InputModule.EventData
         /// <summary>
         /// An optional, input-source-dependent object to be associated with this event.
         /// </summary>
-        public object Tag { get; private set; }
+        public object[] Tags { get; private set; }
 
-        public BaseInputEventData(EventSystem eventSystem) : base(eventSystem)
-        {
-        }
+        public BaseInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        protected virtual void BaseInitialize(IInputSource inputSource, uint sourceId, object tag)
+        protected void BaseInitialize(IInputSource inputSource, object[] tags)
         {
             Reset();
             InputSource = inputSource;
-            SourceId = sourceId;
-            Tag = tag;
+            SourceId = InputSource.SourceId;
+            Tags = tags;
         }
     }
 }

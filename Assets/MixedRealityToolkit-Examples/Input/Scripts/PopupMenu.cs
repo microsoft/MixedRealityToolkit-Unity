@@ -74,12 +74,12 @@ namespace MixedRealityToolkit.Examples.InputModule
 
             if (isModal)
             {
-                InputManager.Instance.PushModalInputHandler(gameObject);
+                InputManager.PushModalInputHandler(gameObject);
             }
 
             if (closeOnNonTargetedTap)
             {
-                InputManager.Instance.PushFallbackInputHandler(gameObject);
+                InputManager.PushFallbackInputHandler(gameObject);
             }
 
             // the visual was activated via an interaction outside of the menu, let anyone who cares know
@@ -101,12 +101,12 @@ namespace MixedRealityToolkit.Examples.InputModule
 
             if (isModal)
             {
-                InputManager.Instance.PopModalInputHandler();
+                InputManager.PopModalInputHandler();
             }
 
             if (closeOnNonTargetedTap)
             {
-                InputManager.Instance.PopFallbackInputHandler();
+                InputManager.PopFallbackInputHandler();
             }
 
             CurrentPopupState = PopupState.Closed;
@@ -115,7 +115,7 @@ namespace MixedRealityToolkit.Examples.InputModule
             cancelledCallback = null;
             deactivatedCallback = null;
 
-            if (cancelButton)
+            if (cancelButton != null)
             {
                 cancelButton.Selected = false;
             }
@@ -150,6 +150,10 @@ namespace MixedRealityToolkit.Examples.InputModule
 
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
+
+        void IInputHandler.OnInputPressed(InputPressedEventData eventData) { }
+
+        void IInputHandler.OnInputPositionChanged(InputPositionEventData eventData) { }
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {

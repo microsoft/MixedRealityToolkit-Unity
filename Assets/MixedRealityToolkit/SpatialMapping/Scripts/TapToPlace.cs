@@ -22,7 +22,7 @@ namespace MixedRealityToolkit.SpatialMapping
     /// </summary>
     [RequireComponent(typeof(Collider))]
     [RequireComponent(typeof(Interpolator))]
-    public class TapToPlace : MonoBehaviour, IInputClickHandler
+    public class TapToPlace : MonoBehaviour, IPointerHandler
     {
         [Tooltip("Distance from camera to keep the object while placing it.")]
         public float DefaultGazeDistance = 2.0f;
@@ -55,7 +55,7 @@ namespace MixedRealityToolkit.SpatialMapping
         private const int IgnoreRaycastLayer = 2;
 
         private Dictionary<GameObject, int> layerCache = new Dictionary<GameObject, int>();
-        private Vector3 PlacementPosOffset;
+        private Vector3 placementPosOffset;
 
         protected virtual void Start()
         {
@@ -91,7 +91,7 @@ namespace MixedRealityToolkit.SpatialMapping
                 referencePoint.y = bounds.min.y;
             }
 
-            PlacementPosOffset = transform.position - referencePoint;
+            placementPosOffset = transform.position - referencePoint;
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace MixedRealityToolkit.SpatialMapping
 
             if (UseColliderToPlace != TapToPlaceColliderPlacement.DontUse)
             {
-                placementPosition += PlacementPosOffset;
+                placementPosition += placementPosOffset;
             }
 
             // Here is where you might consider adding intelligence
@@ -146,7 +146,11 @@ namespace MixedRealityToolkit.SpatialMapping
             interpolator.SetTargetRotation(Quaternion.Euler(0, cameraTransform.localEulerAngles.y, 0));
         }
 
-        public virtual void OnInputClicked(InputClickedEventData eventData)
+        public void OnPointerUp(ClickEventData eventData) { }
+
+        public void OnPointerDown(ClickEventData eventData) { }
+
+        public virtual void OnPointerClicked(ClickEventData eventData)
         {
             // On each tap gesture, toggle whether the user is in placing mode.
             IsBeingPlaced = !IsBeingPlaced;
@@ -170,13 +174,13 @@ namespace MixedRealityToolkit.SpatialMapping
         {
             var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
             layerCacheTarget.SetLayerRecursively(IgnoreRaycastLayer, out layerCache);
-            InputManager.Instance.PushModalInputHandler(gameObject);
+            InputManager.PushModalInputHandler(gameObject);
 
             // We have no input source if this call is coming from Start() because,
             // the object was set to 'IsBeingPlaced'.
             if (inputSource != null)
             {
-                InputManager.Instance.RaisePlacingStarted(inputSource, 0, gameObject);
+                InputManager.RaisePlacingStarted(inputSource, gameObject);
             }
 
             ToggleSpatialMesh();
@@ -187,8 +191,8 @@ namespace MixedRealityToolkit.SpatialMapping
         {
             var layerCacheTarget = PlaceParentOnTap ? ParentGameObjectToPlace : gameObject;
             layerCacheTarget.ApplyLayerCacheRecursively(layerCache);
-            InputManager.Instance.RaisePlacingCompleted(inputSource, 0, gameObject);
-            InputManager.Instance.PopModalInputHandler();
+            InputManager.RaisePlacingCompleted(inputSource, gameObject);
+            InputManager.PopModalInputHandler();
 
             ToggleSpatialMesh();
             AttachWorldAnchor();
@@ -230,11 +234,9 @@ namespace MixedRealityToolkit.SpatialMapping
         private static Vector3 GetPlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
         {
             RaycastHit hitInfo;
-            if (SpatialMappingRaycast(headPosition, gazeDirection, out hitInfo))
-            {
-                return hitInfo.point;
-            }
-            return GetGazePlacementPosition(headPosition, gazeDirection, defaultGazeDistance);
+            return SpatialMappingRaycast(headPosition, gazeDirection, out hitInfo) ?
+                hitInfo.point :
+                GetGazePlacementPosition(headPosition, gazeDirection, defaultGazeDistance);
         }
 
         /// <summary>
@@ -255,6 +257,7 @@ namespace MixedRealityToolkit.SpatialMapping
                     return true;
                 }
             }
+
             spatialMapHit = new RaycastHit();
             return false;
         }
@@ -268,10 +271,11 @@ namespace MixedRealityToolkit.SpatialMapping
         /// <returns>Placement position in front of the user</returns>
         private static Vector3 GetGazePlacementPosition(Vector3 headPosition, Vector3 gazeDirection, float defaultGazeDistance)
         {
-            if (GazeManager.Instance.HitObject != null)
+            if (GazeManager.GazeTarget != null)
             {
-                return GazeManager.Instance.HitPosition;
+                return GazeManager.HitPosition;
             }
+
             return headPosition + gazeDirection * defaultGazeDistance;
         }
     }

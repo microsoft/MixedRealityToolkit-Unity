@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MixedRealityToolkit.InputModule.Utilities.Interations
+namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 {
     public class SpeechInputHandler : MonoBehaviour, ISpeechHandler
     {
@@ -48,7 +48,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         {
             if (IsGlobalListener)
             {
-                InputManager.Instance.AddGlobalListener(gameObject);
+                InputManager.AddGlobalListener(gameObject);
             }
         }
 
@@ -80,17 +80,17 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
         protected virtual void OnDisable()
         {
-            if (InputManager.Instance != null && IsGlobalListener)
+            if (IsGlobalListener)
             {
-                InputManager.Instance.RemoveGlobalListener(gameObject);
+                InputManager.RemoveGlobalListener(gameObject);
             }
         }
 
         protected virtual void OnDestroy()
         {
-            if (InputManager.Instance != null && IsGlobalListener)
+            if (IsGlobalListener)
             {
-                InputManager.Instance.RemoveGlobalListener(gameObject);
+                InputManager.RemoveGlobalListener(gameObject);
             }
         }
 

@@ -12,15 +12,12 @@ namespace MixedRealityToolkit.InputModule.Utilities
     {
         private void OnEnable()
         {
-            InputManager.Instance.AddGlobalListener(gameObject);
+            InputManager.AddGlobalListener(gameObject);
         }
 
         private void OnDisable()
         {
-            if (InputManager.Instance != null)
-            {
-                InputManager.Instance.RemoveGlobalListener(gameObject);
-            }
+            InputManager.RemoveGlobalListener(gameObject);
         }
     }
 }

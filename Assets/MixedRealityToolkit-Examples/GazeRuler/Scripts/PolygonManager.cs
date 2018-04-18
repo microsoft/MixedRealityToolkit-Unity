@@ -20,13 +20,13 @@ namespace MixedRealityToolkit.Examples.GazeRuler
         /// <summary>
         ///  handle new point users place
         /// </summary>
-        /// <param name="LinePrefab"></param>
-        /// <param name="PointPrefab"></param>
-        /// <param name="TextPrefab"></param>
-        public void AddPoint(GameObject LinePrefab, GameObject PointPrefab, GameObject TextPrefab)
+        /// <param name="linePrefab"></param>
+        /// <param name="pointPrefab"></param>
+        /// <param name="textPrefab"></param>
+        public void AddPoint(GameObject linePrefab, GameObject pointPrefab, GameObject textPrefab)
         {
-            var hitPoint = GazeManager.Instance.HitPosition;
-            var point = (GameObject)Instantiate(PointPrefab, hitPoint, Quaternion.identity);
+            var hitPoint = GazeManager.HitPosition;
+            var point = (GameObject)Instantiate(pointPrefab, hitPoint, Quaternion.identity);
             var newPoint = new Point
             {
                 Position = hitPoint,
@@ -54,7 +54,7 @@ namespace MixedRealityToolkit.Examples.GazeRuler
                     var centerPos = (CurrentPolygon.Points[index] + CurrentPolygon.Points[index - 1]) * 0.5f;
                     var direction = CurrentPolygon.Points[index] - CurrentPolygon.Points[index - 1];
                     var distance = Vector3.Distance(CurrentPolygon.Points[index], CurrentPolygon.Points[index - 1]);
-                    var line = (GameObject)Instantiate(LinePrefab, centerPos, Quaternion.LookRotation(direction));
+                    var line = (GameObject)Instantiate(linePrefab, centerPos, Quaternion.LookRotation(direction));
                     line.transform.localScale = new Vector3(distance, 0.005f, 0.005f);
                     line.transform.Rotate(Vector3.down, 90f);
                     line.transform.parent = CurrentPolygon.Root.transform;
@@ -67,9 +67,9 @@ namespace MixedRealityToolkit.Examples.GazeRuler
         /// <summary>
         /// finish current geometry
         /// </summary>
-        /// <param name="LinePrefab"></param>
-        /// <param name="TextPrefab"></param>
-        public void ClosePolygon(GameObject LinePrefab, GameObject TextPrefab)
+        /// <param name="linePrefab"></param>
+        /// <param name="textPrefab"></param>
+        public void ClosePolygon(GameObject linePrefab, GameObject textPrefab)
         {
             if (CurrentPolygon != null)
             {
@@ -79,7 +79,7 @@ namespace MixedRealityToolkit.Examples.GazeRuler
                 var centerPos = (CurrentPolygon.Points[index] + CurrentPolygon.Points[0]) * 0.5f;
                 var direction = CurrentPolygon.Points[index] - CurrentPolygon.Points[0];
                 var distance = Vector3.Distance(CurrentPolygon.Points[index], CurrentPolygon.Points[0]);
-                var line = (GameObject)Instantiate(LinePrefab, centerPos, Quaternion.LookRotation(direction));
+                var line = (GameObject)Instantiate(linePrefab, centerPos, Quaternion.LookRotation(direction));
                 line.transform.localScale = new Vector3(distance, 0.005f, 0.005f);
                 line.transform.Rotate(Vector3.down, 90f);
                 line.transform.parent = CurrentPolygon.Root.transform;
@@ -92,7 +92,7 @@ namespace MixedRealityToolkit.Examples.GazeRuler
                 var centerPoint = vect / (index + 1);
                 var direction1 = CurrentPolygon.Points[1] - CurrentPolygon.Points[0];
                 var directionF = Vector3.Cross(direction, direction1);
-                var tip = (GameObject)Instantiate(TextPrefab, centerPoint, Quaternion.LookRotation(directionF));//anchor.x + anchor.y + anchor.z < 0 ? -1 * anchor : anchor));
+                var tip = (GameObject)Instantiate(textPrefab, centerPoint, Quaternion.LookRotation(directionF));//anchor.x + anchor.y + anchor.z < 0 ? -1 * anchor : anchor));
 
                 // unit is ㎡
                 tip.GetComponent<TextMesh>().text = area + "㎡";

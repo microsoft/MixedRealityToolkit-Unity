@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.InputModule.InputSources;
-using System;
+using MixedRealityToolkit.InputModule.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,13 +19,17 @@ namespace MixedRealityToolkit.InputModule.EventData
         /// </summary>
         public Vector3 NormalizedOffset { get; private set; }
 
-        public NavigationEventData(EventSystem eventSystem) : base(eventSystem)
+        public NavigationEventData(EventSystem eventSystem) : base(eventSystem) { }
+
+        public void Initialize(IInputSource inputSource, Vector3 normalizedOffset, object[] tags = null)
         {
+            BaseInitialize(inputSource, tags);
+            NormalizedOffset = normalizedOffset;
         }
 
-        public void Initialize(IInputSource inputSource, uint sourceId, object tag, Vector3 normalizedOffset)
+        public void Initialize(IInputSource inputSource, Vector3 normalizedOffset, Handedness handedness, object[] tags = null)
         {
-            BaseInitialize(inputSource, sourceId, tag);
+            Initialize(inputSource, handedness, tags);
             NormalizedOffset = normalizedOffset;
         }
     }

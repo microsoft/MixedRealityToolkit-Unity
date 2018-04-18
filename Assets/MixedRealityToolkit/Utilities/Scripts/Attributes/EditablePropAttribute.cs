@@ -51,7 +51,14 @@ namespace MixedRealityToolkit.Utilities.Attributes
                     break;
 
                 default:
-                    throw new NotImplementedException("No drawer for type " + prop.PropertyType.Name);
+                    if (prop.PropertyType.IsEnum) {
+                        Enum enumValue = (Enum)prop.GetValue(target, null);
+                        enumValue = EditorGUILayout.EnumPopup(!string.IsNullOrEmpty(CustomLabel) ? CustomLabel : SplitCamelCase(prop.Name), enumValue);
+                        prop.SetValue(target, enumValue, null);
+                    } else {
+                        throw new NotImplementedException("No drawer for type " + prop.PropertyType.Name);
+                    }
+                    break;
             }
         }
 #endif

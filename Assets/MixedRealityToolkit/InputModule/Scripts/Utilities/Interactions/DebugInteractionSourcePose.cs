@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace MixedRealityToolkit.InputModule.Utilities.Interations
+namespace MixedRealityToolkit.InputModule.Utilities.Interactions
 {
     /// <summary>
     /// Since the InteractionSourcePose is internal to UnityEngine.VR.WSA.Input,
@@ -16,18 +16,20 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         /// TryGetPosition and TryGetVelocity will return true or not. Here
         /// we manually emulate this state with TryGetFunctionsReturnTrue.
         /// </summary>
-        public bool TryGetFunctionsReturnTrue;
-        public bool IsPositionAvailable;
-        public bool IsRotationAvailable;
-        public bool IsGripPositionAvailable;
-        public bool IsGripRotationAvailable;
+        public bool TryGetFunctionsReturnTrue { get; set; }
+        public bool IsPositionAvailable { get; set; }
+        public bool IsRotationAvailable { get; set; }
+        public bool IsGripPositionAvailable { get; set; }
+        public bool IsGripRotationAvailable { get; set; }
 
-        public Vector3 Position;
-        public Vector3 Velocity;
-        public Quaternion Rotation;
-        public Ray? PointerRay;
-        public Vector3 GripPosition;
-        public Quaternion GripRotation;
+        public Vector3 Position { get; set; }
+        public Vector3 GripPosition { get; set; }
+        public Vector3 Velocity { get; set; }
+
+        public Quaternion Rotation { get; set; }
+        public Quaternion GripRotation { get; set; }
+
+        public Ray? PointerRay { get; set; }
 
         public DebugInteractionSourcePose()
         {
@@ -54,30 +56,24 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
         public bool TryGetVelocity(out Vector3 velocity)
         {
             velocity = Velocity;
-            if (!TryGetFunctionsReturnTrue)
-            {
-                return false;
-            }
-            return true;
+            return TryGetFunctionsReturnTrue;
         }
 
         public bool TryGetRotation(out Quaternion rotation)
         {
             rotation = Rotation;
-            if (!TryGetFunctionsReturnTrue || !IsRotationAvailable)
-            {
-                return false;
-            }
-            return true;
+            return TryGetFunctionsReturnTrue && IsRotationAvailable;
         }
 
         public bool TryGetPointerRay(out Ray pointerRay)
         {
-            pointerRay = (Ray)PointerRay;
+            pointerRay = default(Ray);
             if (PointerRay == null)
             {
                 return false;
             }
+
+            pointerRay = (Ray)PointerRay;
             return true;
         }
 
