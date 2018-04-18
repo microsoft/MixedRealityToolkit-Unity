@@ -1,4 +1,6 @@
-﻿using MixedRealityToolkit.Sharing;
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using MixedRealityToolkit.Sharing;
 using System;
 using UnityEngine;
 
