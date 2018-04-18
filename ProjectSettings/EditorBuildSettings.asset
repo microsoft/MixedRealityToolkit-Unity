@@ -4,4 +4,7 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/HoloToolkit-Examples/UX/Scenes/TooltipExamples.unity
+    guid: eaa14d9b1dee01c49991fa3ce799c8d7
