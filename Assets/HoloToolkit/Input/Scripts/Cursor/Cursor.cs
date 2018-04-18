@@ -35,11 +35,19 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("The maximum distance the cursor can be with nothing hit")]
         public float DefaultCursorDistance = 2.0f;
 
+
+        /// <summary>
+        /// The CursorDistance means the distance from the Cursor to the camera or hit 
+        /// </summary>
+        [Tooltip("The CursorDistance is from the cursor to the camera or not,if not,it means to the hit")]
+        public bool IsCameraCursorDistance = false;
+
+
         /// <summary>
         /// Surface distance to place the cursor off of the surface at
         /// </summary>
-        [Tooltip("The distance from the hit surface to place the cursor")]
-        public float SurfaceCursorDistance = 0.02f;
+        [Tooltip("The distance from the hit surface or camera to place the cursor")]
+        public float CursorDistance = 0.02f;
 
         [Header("Motion")]
         [Tooltip("When lerping, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
@@ -318,7 +326,16 @@ namespace HoloToolkit.Unity.InputModule
                     // (This may not be strictly accurate for extremely wobbly pointers, but it should produce usable results)
                     float distanceToTarget = Vector3.Distance(Pointer.Rays[0].Origin, focusDetails.Point);
                     lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, distanceToTarget);
-                    targetPosition = focusDetails.Point + (lookForward * SurfaceCursorDistance);
+
+                    if (IsCameraCursorDistance)
+                    {
+                        targetPosition = Pointer.Rays[0].Origin - (lookForward * CursorDistance);
+                    }
+                    else
+                    {
+                        targetPosition = focusDetails.Point + (lookForward * CursorDistance);
+                    }
+
                     Vector3 lookRotation = Vector3.Slerp(focusDetails.Normal, lookForward, LookRotationBlend);
                     targetRotation = Quaternion.LookRotation(lookRotation == Vector3.zero ? lookForward : lookRotation, Vector3.up);
                 }
