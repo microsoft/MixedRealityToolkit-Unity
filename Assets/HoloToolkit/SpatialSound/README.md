@@ -7,13 +7,22 @@ Scripts related to the audio features.
 Edit -> Project Settings -> Audio -> Spatializer. You can confirm this setting by adding an AudioSource component to an object and making sure the "Spatialize" checkbox is present.
 
 #### AudioEmitter.cs
-A class that encapsulates an AudioSource and supports applying audio influences, for example occlusion.
+A class that uses an attached AudioSource and a subset of the Unity Audio Filters to support applying and managing audio influences, for example occlusion.
+
+Each GameObject that wishes to support audio influences needs to have an AudioInfluencerManager script attached.
 
 #### AudioOccluder.cs
 Class implementing a simple form of audio occlusion using a low pass filter and volume attenuation.
 
+To be utilized, AudioOccluder.cs requires the GameObject which is emitting the sound to have an AudioEmitter attached.
+
 #### IAudioInfluencer.cs
 Interface defining the methods required of an audio influencer.
+
+#### AudioLoFiEffect.cs
+Class implementing a low fidelity effect on an AudioSource. Provides built in support for telephony and radio (AM / FM) settings to allow easy simulation of audio being played via the selected meduim.
+
+AudioLoFiEffect is aware of and supports the AudioEmitter script to ensure that any changes made to the effect are correctly accounted for when audio influences are removed.
 
 #### UAudioManager\UAudioManager.cs
 1. Allows sound designers to set up audio events with playback behaviors.

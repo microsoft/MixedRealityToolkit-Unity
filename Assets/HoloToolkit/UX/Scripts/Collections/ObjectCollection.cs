@@ -123,7 +123,7 @@ namespace HoloToolkit.Unity.Collections
 
             for (int i = 0; i < NodeList.Count; i++)
             {
-                if (NodeList[i].transform == null || (IgnoreInactiveTransforms && !NodeList[i].transform.gameObject.activeSelf))
+                if (NodeList[i].transform == null || (IgnoreInactiveTransforms && !NodeList[i].transform.gameObject.activeSelf) || NodeList[i].transform.parent==null || !(NodeList[i].transform.parent.gameObject==this.gameObject))
                 {
                     emptyNodes.Add(NodeList[i]);
                 }
