@@ -53,6 +53,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4000013144497514}
+  - component: {fileID: 108047025051955252}
   m_Layer: 2
   m_Name: CursorOffHolograms
   m_TagString: Untagged
@@ -142,6 +143,42 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012100030190}
   m_Mesh: {fileID: 4300000, guid: c1000081192be7347a0ad0c380ed6171, type: 3}
+--- !u!108 &108047025051955252
+Light:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013615056792}
+  m_Enabled: 1
+  serializedVersion: 8
+  m_Type: 2
+  m_Color: {r: 0.8039216, g: 0.6431373, b: 0.9529412, a: 1}
+  m_Intensity: 1
+  m_Range: 0.05
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 1
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 4
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 0
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!114 &114000013851064060
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -188,6 +225,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfa899d3f9dc64e41871228531b59783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Radius: 0.15
-  Color: {r: 1, g: 1, b: 1, a: 1}
-  Intensity: 0.3
+  radius: 0.05
+  color: {r: 0.3, g: 0.3, b: 0.3, a: 1}
