@@ -224,6 +224,7 @@ namespace HoloToolkit.Unity.UX
         }
         private void ApplyRotation(Quaternion currentHandOrientation)
         {
+#if UNITY_2017_1_OR_NEWER
             Matrix4x4 m = Matrix4x4.Rotate(initialHandOrientation);
             Vector3 initRay = new Vector3(0, 0, 1);
             initRay = m.MultiplyPoint(initRay);
@@ -260,6 +261,7 @@ namespace HoloToolkit.Unity.UX
                 transformToAffect.localRotation = initialRotation;
                 transformToAffect.Rotate(axis, angle * 5.0f);
             }
+#endif // UNITY_2017_1_OR_NEWER
         }
         private void ApplyRotation(Vector3 currentHandPosition)
         {
