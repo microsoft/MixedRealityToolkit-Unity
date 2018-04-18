@@ -3846,8 +3846,8 @@ MonoBehaviour:
   manualPivotDirection: {x: 0, y: 1, z: 0}
   manualPivotLocalPosition: {x: -4.07, y: -1.67, z: 6.75}
   pivotDistance: 0.087
-  ToolTipText: You clicked me!
-  Anchor: {fileID: 1606036650}
+  toolTipText: You clicked me!
+  anchor: {fileID: 1606036650}
 --- !u!1 &1257630937
 GameObject:
   m_ObjectHideFlags: 0
@@ -3982,8 +3982,8 @@ MonoBehaviour:
   manualPivotDirection: {x: 0, y: 1, z: 0}
   manualPivotLocalPosition: {x: 1.03, y: 1, z: 0}
   pivotDistance: 0.218
-  ToolTipText: I was focused!
-  Anchor: {fileID: 365752474}
+  toolTipText: I was focused!
+  anchor: {fileID: 365752474}
 --- !u!64 &1286762435
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4774,7 +4774,7 @@ Prefab:
     - target: {fileID: 114065498733854586, guid: 3b2729a90daf689408e97dcbcc8e8a4e,
         type: 2}
       propertyPath: Start.x
-      value: 0.26222
+      value: 0.26290002
       objectReference: {fileID: 0}
     - target: {fileID: 114065498733854586, guid: 3b2729a90daf689408e97dcbcc8e8a4e,
         type: 2}
