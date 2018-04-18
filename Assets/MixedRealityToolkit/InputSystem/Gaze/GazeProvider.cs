@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
     /// The gaze manager manages everything related to a gaze ray that can interact with other objects.
     /// </summary>
     [DisallowMultipleComponent]
-    public class GazeProvider : BaseInputSource, IGazeProvider
+    public class GazeProvider : BaseInputSource, IMixedRealityGazeProvider
     {
         [SerializeField]
         [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]

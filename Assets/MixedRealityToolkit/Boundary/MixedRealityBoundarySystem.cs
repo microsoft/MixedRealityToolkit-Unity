@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
     /// </summary>
     public class MixedRealityBoundaryManager : BaseManager, IMixedRealityBoundarySystem
     {
-        IMixedRealityInputSystem inputSystem;
+        private IMixedRealityInputSystem inputSystem = null;
         
         /// <summary>
         /// MixedRealityBoundaryManager constructor

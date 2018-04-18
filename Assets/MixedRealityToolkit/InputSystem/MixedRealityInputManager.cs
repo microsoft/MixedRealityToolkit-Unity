@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
     /// <summary>
     /// The Input system controls the orchestration of input events in a scene
     /// </summary>
-    public class MixedRealityInputManager : EventManager, IMixedRealityInputSystem
+    public class MixedRealityInputManager : MixedRealityEventManager, IMixedRealityInputSystem
     {
         public event Action InputEnabled;
         public event Action InputDisabled;
@@ -36,12 +36,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// <summary>
         /// The current Focus Provider that's been implemented by this Input System.
         /// </summary>
-        public IFocusProvider FocusProvider { get; private set; }
+        public IMixedRealityFocusProvider FocusProvider { get; private set; }
 
         /// <summary>
         /// The current Gaze Provider that's been implemented by this Input System.
         /// </summary>
-        public IGazeProvider GazeProvider { get; private set; }
+        public IMixedRealityGazeProvider GazeProvider { get; private set; }
 
         private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();

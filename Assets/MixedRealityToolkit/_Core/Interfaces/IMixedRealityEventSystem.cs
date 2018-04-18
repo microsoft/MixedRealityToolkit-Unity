@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
 {
-    public interface IEventSystemManager : IMixedRealityManager
+    public interface IMixedRealityEventSystem : IMixedRealityManager
     {
         List<GameObject> EventListeners { get; }
         void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler;
