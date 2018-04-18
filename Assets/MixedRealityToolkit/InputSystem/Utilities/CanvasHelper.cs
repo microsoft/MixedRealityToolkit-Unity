@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 
         private void Start()
         {
-            Debug.Assert(Canvas != null);
+             Debug.Assert(Canvas != null);
 
             if (Canvas.isRootCanvas && Canvas.renderMode == RenderMode.WorldSpace)
             {

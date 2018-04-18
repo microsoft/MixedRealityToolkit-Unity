@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Internal
+namespace Microsoft.MixedReality.Toolkit.Internal.Events
 {
     public class EventManager : BaseManager, IEventSystemManager
     {
@@ -21,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal
         /// <param name="eventHandler">Event Handler delegate</param>
         public virtual void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
-            Debug.Assert(!eventData.used);
+             Debug.Assert(!eventData.used);
 
             for (int i = 0; i < EventListeners.Count; i++)
             {
@@ -35,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal
         /// <param name="listener"><see cref="GameObject"/> to add to <see cref="EventListeners"/>.</param>
         public virtual void Register(GameObject listener)
         {
-            Debug.Assert(!EventListeners.Contains(listener), $"{listener.name} is already registered to receive events!");
+             Debug.Assert(!EventListeners.Contains(listener), $"{listener.name} is already registered to receive events!");
             EventListeners.Add(listener);
         }
 
@@ -45,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal
         /// <param name="listener"><see cref="GameObject"/> to remove from <see cref="EventListeners"/>.</param>
         public virtual void Unregister(GameObject listener)
         {
-            Debug.Assert(EventListeners.Contains(listener), $"{listener.name} was never registered!");
+             Debug.Assert(EventListeners.Contains(listener), $"{listener.name} was never registered!");
             EventListeners.Remove(listener);
         }
 

@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
+    /// <summary>
+    /// Extension methods for the Unity's Camera class
+    /// </summary>
     public static class CameraExtensions
     {
         /// <summary>

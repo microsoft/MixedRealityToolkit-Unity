@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
+    /// <summary>
+    /// Extension methods for Unity's Bounds struct
+    /// </summary>
     public static class BoundsExtensions
     {
         // Corners

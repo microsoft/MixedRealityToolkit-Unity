@@ -1,13 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
+    /// <summary>
+    /// Extension methods for Unity's EventSystem 
+    /// </summary>
     public static class EventSystemExtensions
     {
         private static readonly List<RaycastResult> RaycastResults = new List<RaycastResult>();
@@ -24,6 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             return PrioritizeRaycastResult(layerMasks);
         }
 
+        /// <summary>
+        /// Sorts the available Raycasts in to a priority order for query
+        /// </summary>
+        /// <param name="priority"></param>
+        /// <returns></returns>
         private static RaycastResult PrioritizeRaycastResult(LayerMask[] priority)
         {
             ComparableRaycastResult maxResult = default(ComparableRaycastResult);

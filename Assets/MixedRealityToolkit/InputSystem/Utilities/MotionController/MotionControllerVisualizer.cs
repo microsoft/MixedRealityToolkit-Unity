@@ -11,7 +11,6 @@ using System.Runtime.InteropServices;
 
 #if UNITY_WSA
 using System.Collections;
-using System.IO;
 using UnityEngine.XR.WSA.Input;
 //using UnityGLTF;
 

@@ -1,19 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Events;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Object = UnityEngine.Object;
@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
             var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
 
-            Debug.Assert(!baseInputEventData.used);
+             Debug.Assert(!baseInputEventData.used);
 
             GameObject focusedObject = FocusProvider.GetFocusedObject(baseInputEventData);
 
@@ -220,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// <param name="listener">Listener to add.</param>
         public override void Register(GameObject listener)
         {
-            Debug.Assert(!EventListeners.Contains(listener), $"{listener.name} is already registered to receive input events!");
+             Debug.Assert(!EventListeners.Contains(listener), $"{listener.name} is already registered to receive input events!");
             EventListeners.Add(listener);
         }
 
@@ -230,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
         {
-            Debug.Assert(EventListeners.Contains(listener), $"{listener.name} was never registered for input events!");
+             Debug.Assert(EventListeners.Contains(listener), $"{listener.name} was never registered for input events!");
             EventListeners.Remove(listener);
         }
 
@@ -260,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         public void PopInputDisable()
         {
             --disabledRefCount;
-            Debug.Assert(disabledRefCount >= 0, "Tried to pop more input disable than the amount pushed.");
+             Debug.Assert(disabledRefCount >= 0, "Tried to pop more input disable than the amount pushed.");
 
             if (disabledRefCount == 0)
             {
@@ -382,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         private void AddSource(IInputSource source)
         {
-            Debug.Assert(!DetectedInputSources.Contains(source), $"{source.SourceName} has already been registered with the Input Manager!");
+             Debug.Assert(!DetectedInputSources.Contains(source), $"{source.SourceName} has already been registered with the Input Manager!");
 
             DetectedInputSources.Add(source);
 
@@ -407,7 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         private void RemoveSource(IInputSource source)
         {
-            Debug.Assert(DetectedInputSources.Contains(source), $"{source.SourceName} was never registered with the Input Manager!");
+             Debug.Assert(DetectedInputSources.Contains(source), $"{source.SourceName} was never registered with the Input Manager!");
 
             DetectedInputSources.Remove(source);
 

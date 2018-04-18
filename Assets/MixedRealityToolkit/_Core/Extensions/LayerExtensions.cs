@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
+    /// <summary>
+    /// Extension methods for Unity's LayerMask struct
+    /// </summary>
     public static class LayerExtensions
     {
         private const int InvalidLayer = -1;

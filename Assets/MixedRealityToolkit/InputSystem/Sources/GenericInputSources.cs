@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
@@ -137,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 }
                 else
                 {
-                    Debug.LogWarningFormat("Unimplemented Controller Type: {0}", joystickNames[i]);
+                    Debug.LogWarning($"Unimplemented Controller Type: {joystickNames[i]}");
                 }
             }
 

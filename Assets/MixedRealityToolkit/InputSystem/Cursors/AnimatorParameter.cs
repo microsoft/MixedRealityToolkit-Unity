@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
                     nameStringHash = Animator.StringToHash(Name);
                 }
 
-                Debug.Assert(nameStringHash != null);
+                 Debug.Assert(nameStringHash != null);
                 return nameStringHash.Value;
             }
         }

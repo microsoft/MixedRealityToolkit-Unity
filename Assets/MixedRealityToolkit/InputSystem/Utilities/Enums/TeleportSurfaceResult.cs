@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
     [Serializable]
     public enum TeleportSurfaceResult
     {
-        None,
+        None = 0,
         Valid,
         Invalid,
         HotSpot,

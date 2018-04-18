@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         public static void AssertIsInitialized()
         {
-            Debug.Assert(IsInitialized, "The MixedRealityManager has not been initialized.");
+             Debug.Assert(IsInitialized, "The MixedRealityManager has not been initialized.");
         }
 
         /// <summary>

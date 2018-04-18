@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
+    /// <summary>
+    /// Extension methods for the .Net IEnumerable class
+    /// </summary>
     public static class EnumerableExtensions
     {
         /// <summary>

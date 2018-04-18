@@ -313,18 +313,18 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// </summary>
         protected virtual void UpdateCursorTransform()
         {
-            Debug.Assert(Pointer != null, "No Pointer has been assigned!");
+             Debug.Assert(Pointer != null, "No Pointer has been assigned!");
 
             FocusDetails focusDetails;
             if (!Pointer.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
             {
                 if (Pointer.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
                 {
-                    Debug.LogErrorFormat("{0}: Unable to get focus details for {1}!", name, pointer.GetType().Name);
+                    Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
                 }
                 else
                 {
-                    Debug.LogErrorFormat("{0} has not been registered!", pointer.GetType().Name);
+                    Debug.LogError($"{pointer.GetType().Name} has not been registered!");
                 }
 
                 return;
