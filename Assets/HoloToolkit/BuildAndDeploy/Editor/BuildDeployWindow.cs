@@ -99,11 +99,7 @@ namespace HoloToolkit.Unity
 
         private static bool ShouldBuildSLNBeEnabled
         {
-            get
-            {
-                return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory) &&
-                       !string.IsNullOrEmpty(PlayerSettings.WSA.certificatePath);
-            }
+            get { return !string.IsNullOrEmpty(BuildDeployPrefs.BuildDirectory); }
         }
 
         private static bool ShouldBuildAppxBeEnabled
