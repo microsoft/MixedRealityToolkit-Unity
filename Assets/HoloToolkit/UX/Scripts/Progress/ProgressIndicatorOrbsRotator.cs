@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace HoloToolkit.UX.Progress
 {
+    /// <summary>
+    /// This class manages the 'rotating circle of dots' effect
+    /// that is used as a Progress Indicator effect.
+    /// </summary>
     public class ProgressIndicatorOrbsRotator : MonoBehaviour
     {
         [SerializeField]
@@ -15,15 +19,10 @@ namespace HoloToolkit.UX.Progress
         private Material orbMaterial;
 
         public float RotationSpeedRawDegrees;
-
         public float SpacingDegrees;
-
         public float Acceleration;
-
         public int Revolutions;
-
         public bool TestStop = false;
-
         public bool HasAnimationFinished = false;
 
         private float timeElapsed;
@@ -63,6 +62,12 @@ namespace HoloToolkit.UX.Progress
             }
         }
 
+        public void Stop()
+        {
+            stopRequested = true;
+            rotationWhenStopped = angles[0];
+        }
+
         private void Update()
         {
             if (HasAnimationFinished == false)
@@ -75,11 +80,6 @@ namespace HoloToolkit.UX.Progress
             }
         }
 
-        public void Stop()
-        {
-            stopRequested = true;
-            rotationWhenStopped = angles[0];
-        }
 
         private void UpdateTime()
         {

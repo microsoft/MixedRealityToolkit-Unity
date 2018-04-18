@@ -6,12 +6,15 @@ using HoloToolkit.Examples.InteractiveElements;
 
 namespace HoloToolkit.Examples.UX
 {
+    /// <summary>
+    /// This class is used to setup and execute each of the loading animation effects of a progress indicator.
+    /// </summary>
     public class LoadingAnimation : MonoBehaviour
     {
         [SerializeField]
         private GameObject[] orbs;
-        private bool mStartingLoader = false;
-        private int mStartingIndex;
+        private bool startingLoader = false;
+        private int startingIndex;
 
         public Vector3 CenterPoint = new Vector3();
         public Vector3 Axis = Vector3.forward;
@@ -23,14 +26,14 @@ namespace HoloToolkit.Examples.UX
         public bool SmoothEaseInOut = false;
         public float SmoothRatio = 0.65f;
 
-        private float mAngle = 0;
-        private float mTime = 0;
-        private int mRevolutionsCount = 0;
-        private bool mLoopPause = false;
-        private int mFadeIndex = 0;
-        private bool mCheckLoopPause = false;
-        private Vector3 mPositionVector;
-        private Vector3 mRotatedPositionVector;
+        private float angle = 0;
+        private float timeValue = 0;
+        private int revolutionsCount = 0;
+        private bool loopPause = false;
+        private int fadeIndex = 0;
+        private bool checkLoopPause = false;
+        private Vector3 positionVector;
+        private Vector3 rotatedPositionVector;
         private LoadingAnimation loadingAnimation;
 
         public GameObject[] Orbs
@@ -48,12 +51,12 @@ namespace HoloToolkit.Examples.UX
 
         private void Start()
         {
-            mPositionVector = transform.up;
+            positionVector = transform.up;
 
-            if (!Mathf.Approximately(Vector3.Angle(Axis, mPositionVector), 90))
+            if (!Mathf.Approximately(Vector3.Angle(Axis, positionVector), 90))
             {
-                mPositionVector = transform.forward;
-                if (!Mathf.Approximately(Vector3.Angle(Axis, mPositionVector), 90))
+                positionVector = transform.forward;
+                if (!Mathf.Approximately(Vector3.Angle(Axis, positionVector), 90))
                 {
                     float x = Mathf.Abs(Axis.x);
                     float y = Mathf.Abs(Axis.y);
@@ -62,19 +65,19 @@ namespace HoloToolkit.Examples.UX
                     if (x > y && x > z)
                     {
                         // left or right - cross with the z axis
-                        mPositionVector = Vector3.Cross(Axis * Radius, Vector3.forward);
+                        positionVector = Vector3.Cross(Axis * Radius, Vector3.forward);
                     }
 
                     if (z > y && z > x)
                     {
                         // forward or backward - cross with the x axis
-                        mPositionVector = Vector3.Cross(Axis * Radius, Vector3.right);
+                        positionVector = Vector3.Cross(Axis * Radius, Vector3.right);
                     }
 
                     if (y > z && y > x)
                     {
                         // up or down - cross with the x axis
-                        mPositionVector = Vector3.Cross(Axis * Radius, Vector3.right);
+                        positionVector = Vector3.Cross(Axis * Radius, Vector3.right);
                     }
                 }
             }
@@ -90,9 +93,9 @@ namespace HoloToolkit.Examples.UX
                 fade.ResetFade(0);
             }
 
-            mStartingLoader = true;
-            mStartingIndex = 0;
-            mRevolutionsCount = 0;
+            startingLoader = true;
+            startingIndex = 0;
+            revolutionsCount = 0;
             IsPaused = false;
         }
 
@@ -111,7 +114,7 @@ namespace HoloToolkit.Examples.UX
 
         public void ResetOrbit()
         {
-            mAngle = 0;
+            angle = 0;
         }
 
         public float QuartEaseInOut(float s, float e, float v)
@@ -132,7 +135,7 @@ namespace HoloToolkit.Examples.UX
                 return;
             }
 
-            float percentage = mTime / RevolutionSpeed;
+            float percentage = timeValue / RevolutionSpeed;
 
             for (int i = 0; i < Orbs.Length; ++i)
             {
@@ -148,91 +151,91 @@ namespace HoloToolkit.Examples.UX
                     float linearSmoothing = 1 * (orbPercentage * (1 - SmoothRatio));
                     orbPercentage = QuartEaseInOut(0, 1, orbPercentage) * SmoothRatio + linearSmoothing;
                 }
-                mAngle = 0 - (orbPercentage) * 360;
+                angle = 0 - (orbPercentage) * 360;
 
-                if (mStartingLoader)
+                if (startingLoader)
                 {
                     if (orbPercentage >= 0 && orbPercentage < 0.5f)
                     {
-                        if (i == mStartingIndex)
+                        if (i == startingIndex)
                         {
                             orb.SetActive(true);
                             if (i >= Orbs.Length - 1)
                             {
-                                mStartingLoader = false;
+                                startingLoader = false;
                             }
-                            mStartingIndex += 1;
+                            startingIndex += 1;
                         }
                     }
                 }
 
-                orb.transform.Rotate(Axis, mAngle);
-                mRotatedPositionVector = Quaternion.AngleAxis(mAngle, Axis) * mPositionVector * Radius;
-                orb.transform.localPosition = CenterPoint + mRotatedPositionVector;
+                orb.transform.Rotate(Axis, angle);
+                rotatedPositionVector = Quaternion.AngleAxis(angle, Axis) * positionVector * Radius;
+                orb.transform.localPosition = CenterPoint + rotatedPositionVector;
 
-                if (mCheckLoopPause != mLoopPause)
+                if (checkLoopPause != loopPause)
                 {
-                    if (mLoopPause && orbPercentage > 0.25f)
+                    if (loopPause && orbPercentage > 0.25f)
                     {
-                        if (i == mFadeIndex)
+                        if (i == fadeIndex)
                         {
                             FadeObject fade = orb.GetComponent<FadeObject>();
                             fade.FadeOut(false);
                             if (i >= Orbs.Length - 1)
                             {
-                                mCheckLoopPause = mLoopPause;
+                                checkLoopPause = loopPause;
                             }
-                            mFadeIndex += 1;
+                            fadeIndex += 1;
                         }
 
                     }
 
-                    if (!mLoopPause && orbPercentage > 0.5f)
+                    if (!loopPause && orbPercentage > 0.5f)
                     {
-                        if (i == mFadeIndex)
+                        if (i == fadeIndex)
                         {
                             FadeObject fade = orb.GetComponent<FadeObject>();
                             fade.FadeIn(false);
                             if (i >= Orbs.Length - 1)
                             {
-                                mCheckLoopPause = mLoopPause;
+                                checkLoopPause = loopPause;
                             }
-                            mFadeIndex += 1;
+                            fadeIndex += 1;
                         }
                     }
 
                 }
             }
 
-            mTime += Time.deltaTime;
-            if (!mLoopPause)
+            timeValue += Time.deltaTime;
+            if (!loopPause)
             {
-                if (mTime >= RevolutionSpeed)
+                if (timeValue >= RevolutionSpeed)
                 {
-                    mTime = mTime - RevolutionSpeed;
+                    timeValue = timeValue - RevolutionSpeed;
 
-                    mRevolutionsCount += 1;
+                    revolutionsCount += 1;
 
-                    if (mRevolutionsCount >= Revolutions && Revolutions > 0)
+                    if (revolutionsCount >= Revolutions && Revolutions > 0)
                     {
-                        mLoopPause = true;
-                        mFadeIndex = 0;
-                        mRevolutionsCount = 0;
+                        loopPause = true;
+                        fadeIndex = 0;
+                        revolutionsCount = 0;
                         loadingAnimation.gameObject.SetActive(false);
                     }
                 }
             }
             else
             {
-                if (mTime >= RevolutionSpeed)
+                if (timeValue >= RevolutionSpeed)
                 {
-                    mTime = 0;
-                    mRevolutionsCount += 1;
-                    if (mRevolutionsCount >= Revolutions * 0.25f)
+                    timeValue = 0;
+                    revolutionsCount += 1;
+                    if (revolutionsCount >= Revolutions * 0.25f)
                     {
-                        mFadeIndex = 0;
-                        mLoopPause = false;
-                        mRevolutionsCount = 0;
+                        fadeIndex = 0;
+                        loopPause = false;
+                        revolutionsCount = 0;
                     }
                 }
             }

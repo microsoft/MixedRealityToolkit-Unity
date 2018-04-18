@@ -22,19 +22,14 @@ namespace HoloToolkit.UX.Dialog
         [SerializeField]
         protected Transform buttonParent;
 
-        /// <summary>
-        /// Current state of the dialog
-        /// Can be used to monitor state in place of events
-        /// </summary>
+        protected DialogResult result;
+
+        protected DialogState state = DialogState.Uninitialized;
         public DialogState State
         {
             get
             {
                 return state;
-            }
-            set
-            {
-                state = value;
             }
         }
 
@@ -103,7 +98,8 @@ namespace HoloToolkit.UX.Dialog
         }
 
         /// <summary>
-        /// Opens the dialog - state will be set to WaitingForInput afterwards
+        /// Opens the dialog - state must be set to WaitingForInput afterwards
+        /// Overridden in inherited class.
         /// </summary>
         /// <returns></returns>
         protected virtual IEnumerator OpenDialog()
@@ -145,9 +141,6 @@ namespace HoloToolkit.UX.Dialog
         /// Eg using TextMesh components 
         /// </summary>
         protected abstract void SetTitleAndMessage();
-
-        protected DialogResult result;
-        private DialogState state = DialogState.Uninitialized;
 
         /// <summary>
         /// Instantiates a dialog and passes it a result

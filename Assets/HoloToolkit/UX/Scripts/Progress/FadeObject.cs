@@ -5,8 +5,14 @@ using UnityEngine;
 
 namespace HoloToolkit.Examples.InteractiveElements
 {
+    /// <summary>
+    /// This class describes and performs a fade.
+    /// It can be used to create a fadeIn or a fadeOut or both.
+    /// Additionally, it can be set to automatically begin when script awakens.
+    /// </summary>
     public class FadeObject : MonoBehaviour
     {
+        [SerializeField]
         private float fadeTime = 0.5f;
 
         /// <summary>
@@ -43,18 +49,18 @@ namespace HoloToolkit.Examples.InteractiveElements
             }
         }
 
-        private float mFadeCounter = 0;
-        private Color mCachedColor;
-        private bool mFadingIn = true;
-        private bool mIsFading = false;
+        private float fadeCounter = 0;
+        private Color cachedColor;
+        private bool fadingIn = true;
+        private bool isFading = false;
 
         //cache material to prevent memory leak
-        private Material mCachedMaterial;
+        private Material cachedMaterial;
 
         private void Awake()
         {
-            mCachedMaterial = this.GetComponent<Renderer>().material;
-            mCachedColor = mCachedMaterial.color;
+            cachedMaterial = this.GetComponent<Renderer>().material;
+            cachedColor = cachedMaterial.color;
         }
 
         private void Start()
@@ -76,22 +82,22 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <summary>
         /// Begins the Fade in effect
         /// </summary>
-        /// <param name="resetStartValue">should value return to original</param>
-        public void FadeIn(bool resetStartValue)
+        /// <param name="resetFade">should value return to original</param>
+        public void FadeIn(bool resetFade)
         {
-            if (mCachedMaterial != null)
+            if (cachedMaterial != null)
             {
-                mCachedColor = mCachedMaterial.color;
+                cachedColor = cachedMaterial.color;
             }
 
-            if (resetStartValue && mCachedMaterial)
+            if (resetFade && cachedMaterial)
             {
-                mCachedColor.a = 0;
-                mCachedMaterial.color = mCachedColor;
+                cachedColor.a = 0;
+                cachedMaterial.color = cachedColor;
             }
 
-            mFadeCounter = 0;
-            mFadingIn = true;
+            fadeCounter = 0;
+            fadingIn = true;
         }
 
         /// <summary>
@@ -100,14 +106,14 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <param name="value">value to set the alpha to</param>
         public void ResetFade(float value)
         {
-            if (mCachedMaterial != null)
+            if (cachedMaterial != null)
             {
-                mCachedColor = mCachedMaterial.color;
-                mCachedColor.a = value;
-                mCachedMaterial.color = mCachedColor;
+                cachedColor = cachedMaterial.color;
+                cachedColor.a = value;
+                cachedMaterial.color = cachedColor;
             }
 
-            mFadeCounter = 0;
+            fadeCounter = 0;
         }
 
         /// <summary>
@@ -116,52 +122,52 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// <param name="resetStartValue">should original value be reset</param>
         public void FadeOut(bool resetStartValue)
         {
-            if (mCachedMaterial != null)
+            if (cachedMaterial != null)
             {
-                mCachedColor = mCachedMaterial.color;
+                cachedColor = cachedMaterial.color;
             }
 
-            if (resetStartValue && mCachedMaterial)
+            if (resetStartValue && cachedMaterial)
             {
-                mCachedColor.a = 1;
-                mCachedMaterial.color = mCachedColor;
+                cachedColor.a = 1;
+                cachedMaterial.color = cachedColor;
             }
 
-            mFadeCounter = 0;
-            mFadingIn = false;
+            fadeCounter = 0;
+            fadingIn = false;
         }
 
         private void Update()
         {
-            if (mFadeCounter < FadeTime)
+            if (fadeCounter < FadeTime)
             {
-                mFadeCounter += Time.deltaTime;
-                if (mFadeCounter > FadeTime)
+                fadeCounter += Time.deltaTime;
+                if (fadeCounter > FadeTime)
                 {
-                    mFadeCounter = FadeTime;
+                    fadeCounter = FadeTime;
                 }
 
-                float percent = mFadeCounter / FadeTime;
+                float percent = fadeCounter / FadeTime;
 
-                if (!mFadingIn)
+                if (!fadingIn)
                 {
                     percent = 1 - percent;
-                    if (percent < mCachedColor.a)
+                    if (percent < cachedColor.a)
                     {
-                        mCachedColor.a = percent;
+                        cachedColor.a = percent;
                     }
                 }
                 else
                 {
-                    if (percent > mCachedColor.a)
+                    if (percent > cachedColor.a)
                     {
-                        mCachedColor.a = percent;
+                        cachedColor.a = percent;
                     }
                 }
 
-                if (mCachedMaterial != null)
+                if (cachedMaterial != null)
                 {
-                    mCachedMaterial.color = mCachedColor;
+                    cachedMaterial.color = cachedColor;
                 }
             }
         }
@@ -172,7 +178,7 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// </summary>
         public void OnDestroy()
         {
-            Destroy(mCachedMaterial);
+            Destroy(cachedMaterial);
         }
     }
 }

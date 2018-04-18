@@ -239,8 +239,8 @@ namespace HoloToolkit.UX.Progress
             smoothProgress = Mathf.Lerp(smoothProgress, targetProgress, Time.deltaTime * SmoothProgressSpeed);
             progressBar.localScale = new Vector3(smoothProgress / 100, 1f, 1f);
             progressText.text = smoothProgress.ToString(ProgressFormat) + "%";
-            // If we're closing, wait for the animator to reach the closed state
 
+            // If we're closing, wait for the animator to reach the closed state
             if (closing)
             {
                 if (animator.GetCurrentAnimatorStateInfo(0).IsName("Closed"))
@@ -249,6 +249,7 @@ namespace HoloToolkit.UX.Progress
                     closing = false;
                     transform.parent = null;
                     gameObject.SetActive(false);
+
                     // Destroy our custom object if we made one
                     if (instantiatedCustomObject != null)
                     {

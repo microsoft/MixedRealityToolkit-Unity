@@ -106,9 +106,40 @@ namespace HoloToolkit.UX.Dialog
             oneButtonSet = new GameObject[1];
             twoButtonSet = new GameObject[2];
 
-            //Activate/Deactivate buttons and set Titles
-            foreach (Transform child in transform)
+            //Find all buttons on dialog...
+            List<DialogButton> buttonsOnDialog = GetAllDialogButtons();
+
+            //set desired buttons active and the rest inactive
+            SetButtonsActiveStates(buttonsOnDialog, buttonTypes.Count);
+
+            //set titles and types
+            if (buttonTypes.Count > 0)
             {
+                int step = buttonTypes.Count == 2 ? 1 : 0;
+                for (int i = 0; i < buttonTypes.Count; ++i)
+                {
+                    twoButtonSet[i] = buttonsOnDialog[i + step].gameObject;
+                    buttonsOnDialog[i+step].SetTitle(buttonTypes[i].ToString());
+                    buttonsOnDialog[i + step].ButtonTypeEnum = buttonTypes[i];
+                }
+            }
+        }  
+
+        private void SetButtonsActiveStates(List<DialogButton> buttons, int count)
+        {
+            for (int i = 0; i < buttons.Count; ++i)
+            {
+                buttons[i].ParentDialog = this;
+                buttons[i].gameObject.SetActive(count == 1 && i == 0 ? true : (count == 2 && i > 0 ? true : false));
+            }
+        }
+
+        private List<DialogButton> GetAllDialogButtons()
+        {
+            List<DialogButton> buttonsOnDialog = new List<DialogButton>();
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                Transform child = transform.GetChild(i);
                 if (child.name == "ButtonParent")
                 {
                     for (int childIndex = 0; childIndex < child.transform.childCount; ++childIndex)
@@ -119,44 +150,13 @@ namespace HoloToolkit.UX.Dialog
                             DialogButton button = t.GetComponent<DialogButton>();
                             if (button != null)
                             {
-                                button.ParentDialog = this;
-
-                                if (button.name.Contains("ButtonOne") )
-                                {
-                                    button.gameObject.SetActive(buttonTypes.Count == 1);
-
-                                    if (buttonTypes.Count == 1)
-                                    {
-                                        oneButtonSet[0] = button.gameObject;
-                                        button.SetTitle(buttonTypes[0].ToString());
-                                        button.ButtonTypeEnum = buttonTypes[0];
-                                    }
-                                }
-                                else if (button.name.Contains("ButtonTwo"))
-                                {
-                                    button.gameObject.SetActive(buttonTypes.Count > 1);
-
-                                    if (buttonTypes.Count > 1)
-                                    {
-                                        if (button.name.Contains("A"))
-                                        {
-                                            twoButtonSet[0] = button.gameObject;
-                                            button.SetTitle(buttonTypes[0].ToString());
-                                            button.ButtonTypeEnum = buttonTypes[0];
-                                        }
-                                        else if (button.name.Contains("B"))
-                                        {
-                                            twoButtonSet[1] = button.gameObject;
-                                            button.SetTitle(buttonTypes[1].ToString());
-                                            button.ButtonTypeEnum = buttonTypes[1];
-                                        }
-                                    }
-                                }
+                                buttonsOnDialog.Add(button);
                             }
                         }
                     }
                 }
             }
+            return buttonsOnDialog;
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace HoloToolkit.UX.Dialog
         /// </summary>
         public void DismissDialog()
         {
-            State = DialogState.InputReceived;
+            state = DialogState.InputReceived;
         }
     }
 }

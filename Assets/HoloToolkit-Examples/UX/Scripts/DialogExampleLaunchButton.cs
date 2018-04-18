@@ -21,12 +21,6 @@ namespace HoloToolkit.Examples.UX
 
         [SerializeField]
         private GameObject resultText;
-
-        [SerializeField]
-        private int numButtons = 1;
-
-        private TextMesh resultTextMesh;
-
         /// <summary>
         /// Used to report the dialogResult. OK, Cancel etc.
         /// The button that was clicked to respond to the Dialog.
@@ -44,11 +38,11 @@ namespace HoloToolkit.Examples.UX
             }
         }
 
-        /// <summary>
-        /// Property to get and set the number of buttons that will be generated
-        /// on the Dialog.
-        /// </summary>
-        public int NumButtons { get; set; }
+        [SerializeField]
+        [Range(0,2)]
+        private int numButtons = 1;
+
+        private TextMesh resultTextMesh;
 
         /// <summary>
         /// This function is called to set the settings for the dialog and then open it.

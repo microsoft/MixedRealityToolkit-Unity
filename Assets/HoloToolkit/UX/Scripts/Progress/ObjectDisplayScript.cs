@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace HoloToolkit.Examples.UX
 {
+    /// <summary>
+    /// This class manages how a gameobject rotates and/or scales
+    /// when activated as part of a Progress Indicator effect.
+    /// </summary>
     public class ObjectDisplayScript : MonoBehaviour
     {
         [Header("How fast does object rotate?")]

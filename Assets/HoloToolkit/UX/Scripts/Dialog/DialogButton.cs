@@ -14,7 +14,7 @@ namespace HoloToolkit.UX.Buttons
     {
         private Button buttonComponent;
 
-        private DialogShell _parentDialog;
+        private DialogShell parentDialog;
 
         /// <summary>
         /// A reference to the Dialog that this button is on.
@@ -23,11 +23,11 @@ namespace HoloToolkit.UX.Buttons
         {
             get
             {
-                return _parentDialog;
+                return parentDialog;
             }
             set
             {
-                _parentDialog = value;
+                parentDialog = value;
             }
         }
 
@@ -57,10 +57,10 @@ namespace HoloToolkit.UX.Buttons
         /// <param name="obj"></param>
         public void OnButtonClicked(GameObject obj)
         {
-            if (_parentDialog != null)
+            if (parentDialog != null)
             {
-                _parentDialog.Result.Result = ButtonTypeEnum;
-                _parentDialog.DismissDialog();
+                parentDialog.Result.Result = ButtonTypeEnum;
+                parentDialog.DismissDialog();
             }
         }
 
