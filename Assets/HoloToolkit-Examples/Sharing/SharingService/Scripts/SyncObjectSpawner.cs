@@ -38,10 +38,7 @@ namespace HoloToolkit.Sharing.Tests
         /// </summary>
         public bool SpawnSyncObject(SyncSpawnedObject syncObject, Vector3 position, Quaternion rotation)
         {
-            if (!spawnManager.Spawn(syncObject, position, rotation, spawnParentTransform.gameObject, syncObject.Name.Value, false)) {
-                return false;
-            }
-            return true;
+            return spawnManager.Spawn(syncObject, position, rotation, spawnParentTransform.gameObject, syncObject.Name.Value, false)
         }
 
         /// <summary>
