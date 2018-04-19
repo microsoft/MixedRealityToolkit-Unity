@@ -3,7 +3,7 @@ guid: 61a6f0d3d48e97148991dd176179e9ca
 timeCreated: 1476807724
 licenseType: Pro
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 22
   fileIDToRecycleName:
     100000: Button
     100002: ButtonOutline
@@ -77,10 +77,102 @@ ModelImporter:
     4300022: SliderBar
     4300024: SliderKnob
     4300026: SliderFill
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Button
+    second: {fileID: 2100000, guid: 9729329bbe949b74e9add14f837713f7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ButtonOutlineInner
+    second: {fileID: 2100000, guid: 89d6663ae3219d74a80865fc0bb257b7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ButtonOutlineOuter
+    second: {fileID: 2100000, guid: daa875d156606f5469df63d2c43b40f8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CheckBoxButton
+    second: {fileID: 2100000, guid: 471cd2931ade3d147b640131e71d9ad9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CheckBoxCheck
+    second: {fileID: 2100000, guid: 02183eecee283e647b4e8660f71bb271, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CheckBoxOutlineInner
+    second: {fileID: 2100000, guid: 1717b66610aaace4a95a67d06d9f6b7a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CheckBoxOutlineOuter
+    second: {fileID: 2100000, guid: 970c8a6564852574f9ba8959ffcd47f8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RadialButton
+    second: {fileID: 2100000, guid: 6591140d84a894b40b30c9d4bbf36f05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RadialDot
+    second: {fileID: 2100000, guid: 08c5909f6b9eb2d48b324e9ee0d1d25c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RadialOutlineInner
+    second: {fileID: 2100000, guid: 4e6ab96b68d31ad4b920fb4aa0746d60, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RadialOutlineOuter
+    second: {fileID: 2100000, guid: ce9c2d5de8e47f14f87bccf8e074e3df, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SliderBar
+    second: {fileID: 2100000, guid: 58f93ae3db1fbb147926ef242e2368f0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SliderFill
+    second: {fileID: 2100000, guid: e8d601f4d2f361846b72278ab0564fcd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SliderKnob
+    second: {fileID: 2100000, guid: c14476f5af89ed6478ccadb46db7169f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ToggleButton
+    second: {fileID: 2100000, guid: d833294ed93dde940ae5341d13b57093, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ToggleDot
+    second: {fileID: 2100000, guid: 8df6b7fdc4641dc4fb6b445498f2e2d7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ToggleOutlineInner
+    second: {fileID: 2100000, guid: af1f168df1f1e3140948a624cef5fa19, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ToggleOutlineOuter
+    second: {fileID: 2100000, guid: 6ec6873404984254a94a061272dd932c, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -93,12 +185,14 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -106,7 +200,10 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    importVisibility: 0
     importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -122,6 +219,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
+    normalCalculationMode: 0
   importAnimation: 0
   copyAvatar: 0
   humanDescription:
