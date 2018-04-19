@@ -15,6 +15,24 @@ namespace HoloToolkit.UX.ToolTips
     public class ToolTipConnector : MonoBehaviour
     {
         [SerializeField]
+        private GameObject target;
+
+        /// <summary>
+        /// The GameObject to which the tooltip is connected
+        /// </summary>
+        public GameObject Target
+        {
+            get
+            {
+                return target;
+            }
+            set
+            {
+                target = value;
+            }
+        }
+
+        [SerializeField]
         private ToolTip toolTip;
 
         [SerializeField]
@@ -140,22 +158,6 @@ namespace HoloToolkit.UX.ToolTips
             set
             {
                 pivotDistance = Mathf.Min( 2.0f, Mathf.Max( 0,value));
-            }
-        }
-
-        private GameObject target;
-        /// <summary>
-        /// the gameobject to which the tooltip is connected
-        /// </summary>
-        public GameObject Target
-        {
-            get
-            {
-                return target;
-            }
-            set
-            {
-                target = value;
             }
         }
 
