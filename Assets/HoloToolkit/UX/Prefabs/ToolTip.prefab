@@ -134,7 +134,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1692073572347358}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.28600004, y: 0.06299999, z: -0.06440002}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4838603517195600}
@@ -176,7 +176,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1963181076315932}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.08, y: -1.09, z: 15.48}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 15.419085, y: 15.419087, z: 15.419087}
   m_Children:
   - {fileID: 4992329056269614}
@@ -191,7 +191,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1159203306281736}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.2414105, y: 0.0262718, z: -0.05522596}
+  m_LocalPosition: {x: 0.0298, y: 0.01750001, z: 0.02860002}
   m_LocalScale: {x: 0.0025, y: 0.0025, z: 0.0025}
   m_Children: []
   m_Father: {fileID: 4958700347904618}
@@ -245,7 +245,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 39f69838f0b22ec4586a86766451e312, type: 2}
+  - {fileID: 2100000, guid: 151c96065fff785478dd7e3d33953d55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -350,8 +350,8 @@ MonoBehaviour:
   UniformDistortionStrength: 1
   distorters: []
   loops: 0
-  Start: {x: 0.24141052, y: 0.026271796, z: -0.05522596}
-  End: {x: 0.28600004, y: 0.063, z: -0.06440002}
+  Start: {x: 0.029800002, y: 0.01750001, z: 0.02860002}
+  End: {x: 0, y: 0, z: 0}
 --- !u!114 &114262839923521372
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95fc46e61b058e54ab022d6f28b0ec6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 0}
+  target: {fileID: 0}
   toolTip: {fileID: 114697570813435190}
   connectorFollowType: 0
   pivotMode: 0
@@ -513,7 +513,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  WidthMultiplier: 0.25
+  WidthMultiplier: 0.05
   ColorOffset: 0
   WidthOffset: 0
   RotationOffset: 0
