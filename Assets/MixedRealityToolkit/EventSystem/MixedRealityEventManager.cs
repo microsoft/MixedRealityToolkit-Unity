@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Events
 {
-    public class EventManager : BaseManager, IEventSystemManager
+    public class MixedRealityEventManager : BaseManager, IMixedRealityEventSystem
     {
         #region IEventSystemManager Implementation
 

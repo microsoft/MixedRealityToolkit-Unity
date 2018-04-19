@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
     /// Manager interface for a Input system in the Mixed Reality Toolkit
     /// All replacement systems for providing Input System functionality should derive from this interface
     /// </summary>
-    public interface IMixedRealityInputSystem : IEventSystemManager
+    public interface IMixedRealityInputSystem : IMixedRealityEventSystem
     {
         event Action InputEnabled;
         event Action InputDisabled;
@@ -27,12 +27,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// <summary>
         /// The current Focus Provider that's been implemented by this Input System.
         /// </summary>
-        IFocusProvider FocusProvider { get; }
+        IMixedRealityFocusProvider FocusProvider { get; }
 
         /// <summary>
         /// The current Gaze Provider that's been implemented by this Input System.
         /// </summary>
-        IGazeProvider GazeProvider { get; }
+        IMixedRealityGazeProvider GazeProvider { get; }
 
         /// <summary>
         /// Indicates if input is currently enabled or not.

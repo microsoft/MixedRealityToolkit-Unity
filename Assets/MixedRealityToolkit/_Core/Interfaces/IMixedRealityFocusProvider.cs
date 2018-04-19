@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
 {
-    public interface IFocusProvider : ISourceStateHandler
+    public interface IMixedRealityFocusProvider : ISourceStateHandler
     {
         float GlobalPointingExtent { get; }
         Camera UIRaycastCamera { get; }

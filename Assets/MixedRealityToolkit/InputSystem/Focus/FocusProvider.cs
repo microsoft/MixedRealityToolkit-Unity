@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
     /// Focus manager handles the focused objects per input source.
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     /// </summary>
-    public class FocusProvider : MonoBehaviour, IFocusProvider
+    public class FocusProvider : MonoBehaviour, IMixedRealityFocusProvider
     {
         private IMixedRealityInputSystem inputSystem = null;
         public IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         [SerializeField]
         private float pointingExtent = 10f;
 
-        float IFocusProvider.GlobalPointingExtent => pointingExtent;
+        float IMixedRealityFocusProvider.GlobalPointingExtent => pointingExtent;
 
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
