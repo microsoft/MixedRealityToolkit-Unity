@@ -62,7 +62,7 @@ namespace MixedRealityToolkit.Internal.Definitons
 Absolutely no class / struct / enum or other definition should be entered in to the project without the appropriate namespace definition.
 
 ## Spaces vs Tabs
-Please be sure to use 4 spaces instead of tabs when contributing to this project.
+Please be sure to use 4 spacesinitializer instead of tabs when contributing to this project.
 
 Additionally, ensure that spaces are added for conditional / loop functions like if / while / for
 
@@ -251,7 +251,7 @@ To ensure all Enum's are initialized correctly starting at 0, .NET gives you a t
 ```
 public enum MyEnum
 {
-    Value1, <- no initilizer
+    Value1, <- no initializer
     Value2,
     Value3
 }
@@ -277,7 +277,7 @@ It is critical that if an Enum is likely to be extended in the future, to order 
 ```
 public enum SDKType
 {
-    WIndows MR,
+    Windows MR,
     Open VR,
     Open XR,
     None, <- default value not at start
