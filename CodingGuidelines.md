@@ -62,7 +62,7 @@ namespace MixedRealityToolkit.Internal.Definitons
 Absolutely no class / struct / enum or other definition should be entered in to the project without the appropriate namespace definition.
 
 ## Spaces vs Tabs
-Please be sure to use 4 spacesinitializer instead of tabs when contributing to this project.
+Please be sure to use 4 spaces instead of tabs when contributing to this project.
 
 Additionally, ensure that spaces are added for conditional / loop functions like if / while / for
 
