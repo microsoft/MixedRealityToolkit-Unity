@@ -251,7 +251,7 @@ To ensure all Enum's are initialized correctly starting at 0, .NET gives you a t
 ```
 public enum MyEnum
 {
-    Value1, <- no initilizer
+    Value1, <- no initializer
     Value2,
     Value3
 }
@@ -277,7 +277,7 @@ It is critical that if an Enum is likely to be extended in the future, to order 
 ```
 public enum SDKType
 {
-    WIndows MR,
+    Windows MR,
     Open VR,
     Open XR,
     None, <- default value not at start
