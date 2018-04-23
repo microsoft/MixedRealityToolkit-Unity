@@ -62,7 +62,7 @@ namespace HoloToolkit.Unity.InputModule
             for (int index = 0; index < keywordCount; index++)
             {
                 KeywordAndResponse keywordAndResponse = Keywords[index];
-                string keyword = keywordAndResponse.Keyword.ToLower();
+                string keyword = keywordAndResponse.Keyword.ToLower().TrimEnd();
 
                 if (responses.ContainsKey(keyword))
                 {
