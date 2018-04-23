@@ -9,6 +9,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     public class BaseManager : Interfaces.IMixedRealityManager
     {
         /// <summary>
+        /// Optional Name attribute if multiple managers of the same type are required, enables targeting a manager for action
+        /// </summary>
+        public virtual string Name { get; set; }
+
+        /// <summary>
+        /// Optional Priority to reorder registered managers based on their respective priority, reduces the risk of race conditions by prioritizing the order in which managers are evaluated.
+        /// </summary>
+        public virtual uint Priority { get; set; }
+
+        /// <summary>
         /// The initialize function is used to setup the manager once created.
         /// This method is called once all managers have been registered in the Mixed Reality Manager.
         /// </summary>
@@ -23,6 +33,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// Optional Update function to perform per-frame updates of the manager.
         /// </summary>
         public virtual void Update() { }
+
+        /// <summary>
+        /// Optional Disable function to pause the manager.
+        /// </summary>
+        public virtual void Disable() { }
+
+        /// <summary>
+        /// Optional Enable function to enable / re-enable the manager.
+        /// </summary>
+        public virtual void Enable() { }
 
         /// <summary>
         /// Optional Destroy function to perform cleanup of the manager before the Mixed Reality Manager is destroyed.
