@@ -1,0 +1,10 @@
+{
+    "name": "MixedRealityToolkit-Examples",
+    "references": [
+        "MixedRealityToolkit"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

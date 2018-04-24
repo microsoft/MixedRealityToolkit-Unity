@@ -1,0 +1,14 @@
+{
+    "name": "MixedReality-Tests",
+    "references": [
+        "MixedRealityToolkit"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

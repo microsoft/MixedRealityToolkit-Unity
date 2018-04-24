@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
     public class MixedRealityBoundaryManager : BaseManager, IMixedRealityBoundarySystem
     {
         private IMixedRealityInputSystem inputSystem = null;
-        
+
         /// <summary>
         /// MixedRealityBoundaryManager constructor
         /// </summary>
@@ -32,19 +32,19 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <summary>
-        /// Optional Update function to perform per-frame updates of the manager
-        /// </summary>
-        public override void Update()
-        {
-            // TODO Update stuff 
-        }
-
-        /// <summary>
         /// Optional ProfileUpdate function to allow reconfiguration when the active configuration profile of the Mixed Reality Manager is replaced
         /// </summary>
         public override void Reset()
         {
             // TODO React to profile change
+        }
+
+        /// <summary>
+        /// Optional Update function to perform per-frame updates of the manager
+        /// </summary>
+        public override void Update()
+        {
+            // TODO Update stuff 
         }
 
         /// <summary>

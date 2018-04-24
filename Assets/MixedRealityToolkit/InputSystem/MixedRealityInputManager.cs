@@ -85,15 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             InitializeInternal();
         }
 
-        /// <summary>
-        /// Optional ProfileUpdate function to allow reconfiguration when the active configuration profile of the Mixed Reality Manager is replaced
-        /// </summary>
-        public override void Reset()
-        {
-            base.Reset();
-            InitializeInternal();
-        }
-
         private void InitializeInternal()
         {
             FocusProvider = CameraCache.Main.gameObject.EnsureComponent<FocusProvider>();
@@ -119,6 +110,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+        }
+
+        /// <summary>
+        /// Optional ProfileUpdate function to allow reconfiguration when the active configuration profile of the Mixed Reality Manager is replaced
+        /// </summary>
+        public override void Reset()
+        {
+            base.Reset();
+            InitializeInternal();
         }
 
         public override void Destroy()

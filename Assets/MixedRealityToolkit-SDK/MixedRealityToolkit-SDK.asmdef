@@ -1,0 +1,10 @@
+{
+    "name": "MixedRealityToolkit-SDK",
+    "references": [
+        "MixedRealityToolkit"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
