@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using System;
 using MixedRealityToolkit.UX.AppBarControl;
 using UnityEngine;
 
@@ -9,6 +10,16 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 {
     public class BoundingBoxRig : MonoBehaviour
     {
+        /// <summary>
+        /// Fired when the rig is activated.
+        /// </summary>
+        public event Action Activated;
+
+        /// <summary>
+        /// Fired when the rig is deactivated.
+        /// </summary>
+        public event Action Deactivated;
+
         [Header("Flattening")]
         [SerializeField]
         [Tooltip("Choose this option if Rig is to be applied to a 2D object.")]
