@@ -72,6 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         [HideInInspector]
         public List<Tuple<Type,IMixedRealityManager>> MixedRealityComponents { get; } = new List<Tuple<Type, IMixedRealityManager>>();
 
+        private int MixedRealityComponentsCount = 0;
+
         #endregion
 
         #region Active SDK components
@@ -166,12 +168,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 {
                     return instance;
                 }
-//Modified to enable Unit Tests
-#if UNITY_EDITOR
-                if (UnityEditor.EditorApplication.isPlaying && !searchForInstance)
-#else
-                if (!searchForInstance)
-#endif
+
+                if (Application.isPlaying && !searchForInstance)
                 {
                     return null;
                     }
@@ -235,15 +233,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
                 instance = this;
                 
-//Modified to enable Unit Tests
-#if UNITY_EDITOR
-                if (UnityEditor.EditorApplication.isPlaying)
+                if (Application.isPlaying)
                 {
-#endif
                     DontDestroyOnLoad(instance.transform.root);
-#if UNITY_EDITOR
                 }
-#endif
+
                 Initialize();
             }
         }
@@ -273,6 +267,25 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
                 InitializeInternal();
                 searchForInstance = false;
+            }
+        }
+
+
+        /// <summary>
+        /// The MonoBehaviour OnEnable event, which is then circulated to all active managers
+        /// </summary>
+        private void OnEnable()
+        {
+            // Enable all active managers in the registry
+            foreach (var manager in ActiveProfile.ActiveManagers)
+            {
+                manager.Value.Enable();
+            }
+
+            // Enable all registered runtime components
+            foreach (var manager in MixedRealityComponents)
+            {
+                manager.Item2.Enable();
             }
         }
 
@@ -320,24 +333,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             foreach (var manager in MixedRealityComponents)
             {
                 manager.Item2.Disable();
-            }
-        }
-
-        /// <summary>
-        /// The MonoBehaviour OnEnable event, which is then circulated to all active managers
-        /// </summary>
-        private void OnEnable()
-        {
-            // Enable all active managers in the registry
-            foreach (var manager in ActiveProfile.ActiveManagers)
-            {
-                manager.Value.Enable();
-            }
-
-            // Enable all registered runtime components
-            foreach (var manager in MixedRealityComponents)
-            {
-                manager.Item2.Enable();
             }
         }
 
@@ -401,6 +396,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
                 MixedRealityComponents.Add(new Tuple<Type, IMixedRealityManager>(type, manager));
                 manager.Initialize();
+                MixedRealityComponentsCount = MixedRealityComponents.Count;
             }
         }
 
@@ -427,7 +423,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
             else
             {
-                manager = MixedRealityComponents.Where(t => t.Item1.Name == type.Name).Select(t => t.Item2).FirstOrDefault();
+                GetComponentByType(type, out manager);
             }
             return manager;
         }
@@ -456,7 +452,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
             else
             {
-                manager = MixedRealityComponents.Where(t => t.Item1.Name == type.Name && t.Item2.Name == name).Select(t => t.Item2).FirstOrDefault();
+                GetComponentByTypeandName(type, name, out manager);
             }
             return manager;
         }
@@ -476,7 +472,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         /// <param name="type">The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem</param>
         /// <returns>An array of Managers that meet the search criteria</returns>
-        public IEnumerable<IMixedRealityManager> GetManagers(Type type, string name)
+        public List<IMixedRealityManager> GetManagers(Type type, string name)
         {
             if (!ActiveProfile)
             {
@@ -486,25 +482,43 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
-            IEnumerable<IMixedRealityManager> manager = null;
+            List<IMixedRealityManager> managers = new List<IMixedRealityManager>();
 
             if (IsCoreManagerType(type))
             {
-                ActiveProfile.ActiveManagers.Where(t => t.GetType() == type);
+                foreach (var manager in ActiveProfile.ActiveManagers)
+                {
+                    if(manager.Key.Name == type.Name)
+                    {
+                        managers.Add(manager.Value);
+                    }
+                }
             }
             else
             {
                 //If no name provided, return all components of the same type. Else return the type/name combination.
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    manager = MixedRealityComponents.Where(t => t.Item1.Name == type.Name).Select(t => t.Item2);
+                    for (int i = 0; i < MixedRealityComponentsCount; i++)
+                    {
+                        if (MixedRealityComponents[i].Item1.Name == type.Name)
+                        {
+                            managers.Add(MixedRealityComponents[i].Item2);
+                        }
+                    }
                 }
                 else
                 {
-                    manager = MixedRealityComponents.Where(t => t.Item1.Name == type.Name && t.Item2.Name == name).Select(t => t.Item2);
+                    for (int i = 0; i < MixedRealityComponentsCount; i++)
+                    {
+                        if (MixedRealityComponents[i].Item1.Name == type.Name && MixedRealityComponents[i].Item2.Name == name)
+                        {
+                            managers.Add(MixedRealityComponents[i].Item2);
+                        }
+                    }
                 }
             }
-            return manager;
+            return managers;
         }
 
         /// <summary>
@@ -560,7 +574,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
             else
             {
-                foreach (var manager in MixedRealityComponents.Where(t => t.Item1.Name == type.Name).Select(t => t.Item2))
+                foreach (var manager in GetManagers(type))
                 {
                     manager.Disable();
                 }
@@ -582,7 +596,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
             else
             {
-                foreach (var manager in MixedRealityComponents.Where(t => t.Item1.Name == type.Name && t.Item2.Name == name).Select(t => t.Item2))
+                foreach (var manager in GetManagers(type, name))
                 {
                     manager.Disable();
                 }
@@ -603,7 +617,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
             else
             {
-                foreach (var manager in MixedRealityComponents.Where(t => t.Item1.Name == type.Name).Select(t => t.Item2))
+                foreach (var manager in GetManagers(type))
                 {
                     manager.Enable();
                 }
@@ -625,7 +639,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
             else
             {
-                foreach (var manager in MixedRealityComponents.Where(t => t.Item1.Name == type.Name && t.Item2.Name == name).Select(t => t.Item2))
+                foreach (var manager in GetManagers(type, name))
                 {
                     manager.Enable();
                 }
@@ -665,6 +679,45 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         {
             return  type == typeof(IMixedRealityInputSystem) ||
                     type == typeof(IMixedRealityBoundarySystem);
+        }
+
+        /// <summary>
+        /// Retrieve the first component from the registry that meets the selected type
+        /// </summary>
+        /// <param name="type">Interface type of the component being requested</param>
+        /// <param name="manager">return parameter of the function</param>
+        private void GetComponentByType(Type type, out IMixedRealityManager manager)
+        {
+            manager = null;
+
+            for (int i = 0; i < MixedRealityComponentsCount; i++)
+            {
+                if (MixedRealityComponents[i].Item1.Name == type.Name)
+                {
+                    manager = MixedRealityComponents[i].Item2;
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Retrieve the first component from the registry that meets the selected type and name
+        /// </summary>
+        /// <param name="type">Interface type of the component being requested</param>
+        /// <param name="name">Name of the specific manager</param>
+        /// <param name="manager">return parameter of the function</param>
+        private void GetComponentByTypeandName(Type type, string name, out IMixedRealityManager manager)
+        {
+            manager = null;
+
+            for (int i = 0; i < MixedRealityComponentsCount; i++)
+            {
+                if (MixedRealityComponents[i].Item1.Name == type.Name && MixedRealityComponents[i].Item2.Name == name)
+                {
+                    manager = MixedRealityComponents[i].Item2;
+                    break;
+                }
+            }
         }
 
         #endregion Manager Container Management

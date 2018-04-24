@@ -93,12 +93,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
             // *Note This will only take effect once the Mixed Reality Toolkit has a custom editor for the MixedRealityConfigurationProfile
 
             ActiveManagers.Clear();
-            if (initialManagers != null && initialManagers.Length > 0)
+            for (int i = 0; i < initialManagers?.Length; i++)
             {
-                for (int i = 0; i < initialManagers.Length; i++)
-                {
-                    Managers.MixedRealityManager.Instance.AddManager(initialManagerTypes[i], initialManagers[i]);
-                }
+                Managers.MixedRealityManager.Instance.AddManager(initialManagerTypes[i], initialManagers[i]);
             }
         }
 

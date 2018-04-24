@@ -30,6 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         void Reset();
 
         /// <summary>
+        /// Optional Enable function to enable / re-enable the manager.
+        /// </summary>
+        void Enable();
+
+        /// <summary>
         /// Optional Update function to perform per-frame updates of the manager.
         /// </summary>
         void Update();
@@ -38,11 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// Optional Disable function to pause the manager.
         /// </summary>
         void Disable();
-
-        /// <summary>
-        /// Optional Enable function to enable / re-enable the manager.
-        /// </summary>
-        void Enable();
 
         /// <summary>
         /// Optional Destroy function to perform cleanup of the manager before the Mixed Reality Manager is destroyed.
