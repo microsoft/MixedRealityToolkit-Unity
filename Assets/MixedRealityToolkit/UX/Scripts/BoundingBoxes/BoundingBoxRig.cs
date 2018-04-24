@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System;
+using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.UX.AppBarControl;
 using UnityEngine;
 
@@ -181,11 +182,13 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
         public void Activate()
         {
+            ActionExtensions.RaiseEvent(Activated);
             ShowRig = true;
         }
 
         public void Deactivate()
         {
+            ActionExtensions.RaiseEvent(Deactivated);
             ShowRig = false;
         }
 
