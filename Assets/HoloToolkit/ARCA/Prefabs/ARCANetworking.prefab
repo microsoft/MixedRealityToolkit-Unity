@@ -150,11 +150,10 @@ MonoBehaviour:
   m_ShowGUI: 0
   m_OffsetX: 0
   m_OffsetY: 0
-  AutoStart: 1
-  IsStopping: 0
-  MarkerDetectionHololens: {fileID: 0}
-  MarkerGeneration3D: {fileID: 0}
-  NewDeviceDiscovery: {fileID: 0}
+  autoStart: 1
+  isStopping: 0
+  markerDetectionHololens: {fileID: 0}
+  newDeviceDiscovery: {fileID: 0}
 --- !u!114 &114498555872222614
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -237,11 +236,11 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
-  ARCANetworkDiscovery: {fileID: 114460822705235868}
-  MarkerDetectionHololens: {fileID: 0}
-  MarkerGeneration3D: {fileID: 0}
-  NewDeviceDiscovery: {fileID: 114601526261401662}
-  WorldSync: {fileID: 0}
+  arcaNetworkDiscovery: {fileID: 114460822705235868}
+  markerDetectionHololens: {fileID: 0}
+  markerGeneration3D: {fileID: 0}
+  newDeviceDiscovery: {fileID: 114601526261401662}
+  worldSync: {fileID: 0}
 --- !u!114 &114601526261401662
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -263,4 +262,4 @@ MonoBehaviour:
   m_ShowGUI: 0
   m_OffsetX: 0
   m_OffsetY: 0
-  MarkerDetectionHololens: {fileID: 0}
+  markerDetectionHololens: {fileID: 0}

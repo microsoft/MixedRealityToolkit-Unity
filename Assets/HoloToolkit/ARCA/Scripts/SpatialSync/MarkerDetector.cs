@@ -29,9 +29,18 @@ namespace HoloToolkit.ARCapture
 		/// <summary>
 		/// Initalize the detection code
 		/// </summary>
-		public void Initialize()
+		public bool Initialize()
 		{
-			InitalizeMarkerDetector();
+			try
+			{
+				InitalizeMarkerDetector();
+				return true;
+			}
+			catch (Exception e)
+			{
+				Debug.LogError(e);
+				throw;
+			}
 		}
 
 	    /// <summary>
@@ -39,7 +48,15 @@ namespace HoloToolkit.ARCapture
 	    /// </summary>
 		public void Terminate()
 		{
-			TerminateMarkerDetector();
+			try
+			{
+				TerminateMarkerDetector();
+			}
+			catch (Exception e)
+			{
+				Debug.LogError(e);
+				throw;
+			}
 		}
 
 	    /// <summary>
@@ -51,12 +68,20 @@ namespace HoloToolkit.ARCapture
 	    /// <param name="_markerSize">Size of the marker</param>
 		public bool Detect(List<byte> _imageData, int _width, int _height, float _markerSize)
 		{
-			unsafe
+			try
 			{
-				fixed (byte* fbyteArray = _imageData.ToArray())
+				unsafe
 				{
-					return DetectMarkers(_width, _height, new IntPtr(fbyteArray), _markerSize);
+					fixed (byte* fbyteArray = _imageData.ToArray())
+					{
+						return DetectMarkers(_width, _height, new IntPtr(fbyteArray), _markerSize);
+					}
 				}
+			}
+			catch (Exception e)
+			{
+				Debug.LogError(e);
+				throw;
 			}
 		}
 
@@ -65,9 +90,17 @@ namespace HoloToolkit.ARCapture
 	    /// </summary>
 		public int GetNumMarkersDetected()
 		{
-			int numMarkersDetected;
-			GetNumMarkersDetected(out numMarkersDetected);
-			return numMarkersDetected;
+			try
+			{
+				int numMarkersDetected;
+				GetNumMarkersDetected(out numMarkersDetected);
+				return numMarkersDetected;
+			}
+			catch (Exception e)
+			{
+				Debug.LogError(e);
+				throw;
+			}
 		}
 
 	    /// <summary>
@@ -76,23 +109,31 @@ namespace HoloToolkit.ARCapture
 	    /// <param name="_markerIds">Out var, it'll contain the ids of the detected markers</param>
 		public bool GetMarkerIds(out int[] _markerIds)
 		{
-			int numMarkersDetected;
-			GetNumMarkersDetected(out numMarkersDetected);
-
-			int[] markerIds = new int[numMarkersDetected];
-			unsafe
+			try
 			{
-				fixed(int* fmarkerIds = markerIds)
-				{
-					bool success = GetDetectedMarkerIds(new IntPtr(fmarkerIds));
-					_markerIds = new int[numMarkersDetected];
-					for(int i=0; i<numMarkersDetected; i++)
-					{
-						_markerIds[i] = fmarkerIds[i];
-					}
+				int numMarkersDetected;
+				GetNumMarkersDetected(out numMarkersDetected);
 
-					return success;
+				int[] markerIds = new int[numMarkersDetected];
+				unsafe
+				{
+					fixed(int* fmarkerIds = markerIds)
+					{
+						bool success = GetDetectedMarkerIds(new IntPtr(fmarkerIds));
+						_markerIds = new int[numMarkersDetected];
+						for(int i=0; i<numMarkersDetected; i++)
+						{
+							_markerIds[i] = fmarkerIds[i];
+						}
+
+						return success;
+					}
 				}
+			}
+			catch (Exception e)
+			{
+				Debug.LogError(e);
+				throw;
 			}
 		}
 
@@ -104,44 +145,50 @@ namespace HoloToolkit.ARCapture
 	    /// <param name="_markerRotation">out var, contains the rotation of the marker</param>
 		public bool GetMarkerPose(int _markerId, out Vector3 _markerPosition, out Quaternion _markerRotation)
 		{
-			_markerPosition = Vector3.zero;
-			_markerRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
-
-			int numMarkersDetected;
-
-			GetNumMarkersDetected(out numMarkersDetected);
-
-			if(numMarkersDetected <= 0)
+			try
 			{
+				_markerPosition = Vector3.zero;
+				_markerRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+
+				int numMarkersDetected;
+
+				GetNumMarkersDetected(out numMarkersDetected);
+
+				if(numMarkersDetected <= 0)
+				{
+					return false;
+				}
+
+				float xPos, yPos, zPos, xRot, yRot, zRot;
+				bool success = GetDetectedMarkerPose(_markerId, out xPos, out yPos, out zPos, out xRot, out yRot, out zRot);
+				if(success)
+				{
+					Debug.Log("Found marker with id: " + _markerId);
+
+					// Account for the offset of the hololens camera from the transform pos
+					Vector3 position = new Vector3(xPos, yPos, zPos);
+					Vector3 offset = new Vector3(0.00f, 0.0f, 0.06f);
+					position += offset;
+					_markerPosition = Camera.main.cameraToWorldMatrix.MultiplyPoint(new Vector3(position.x, -position.y, -position.z));
+
+					Vector3 rotation = new Vector3(xRot, yRot, zRot);
+					float theta = rotation.magnitude;
+					rotation.Normalize();
+					_markerRotation = Camera.main.transform.rotation * Quaternion.AngleAxis(theta * Mathf.Rad2Deg, rotation);
+					_markerRotation = Quaternion.Euler(_markerRotation.eulerAngles.x,_markerRotation.eulerAngles.y, -_markerRotation.eulerAngles.z);
+
+					return true;
+				}
+
+				Debug.Log("Could not find marker with id: " + _markerId);
+
 				return false;
 			}
-
-			float xPos, yPos, zPos, xRot, yRot, zRot;
-			bool success = GetDetectedMarkerPose(_markerId, out xPos, out yPos, out zPos, out xRot, out yRot, out zRot);
-			if(success)
+			catch (Exception e)
 			{
-				Debug.Log("Found marker with id: " + _markerId);
-
-				// Account for the offset of the hololens camera from the transform pos
-				Vector3 position = new Vector3(xPos, yPos, zPos);
-				Vector3 offset = new Vector3(0.00f, 0.0f, 0.06f);
-				position += offset;
-				_markerPosition = Camera.main.cameraToWorldMatrix.MultiplyPoint(new Vector3(position.x, -position.y, -position.z));
-
-				Vector3 rotation = new Vector3(xRot, yRot, zRot);
-				float theta = rotation.magnitude;
-				rotation.Normalize();
-				_markerRotation = Camera.main.transform.rotation * Quaternion.AngleAxis(theta * Mathf.Rad2Deg, rotation);
-				_markerRotation = Quaternion.Euler(_markerRotation.eulerAngles.x,_markerRotation.eulerAngles.y, -_markerRotation.eulerAngles.z);
-
-				return true;
+				Debug.LogError(e);
+				throw;
 			}
-			else
-			{
-				Debug.Log("Could not find marker with id: " + _markerId);
-			}
-
-			return false;
 		}
 	}
 }

@@ -1,7 +1,10 @@
-﻿using HoloToolkit.Unity.InputModule;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
-namespace ARCA
+namespace HoloToolkit.ARCapture
 {
     /// <summary>
     /// Controls the display of the recording UI.
@@ -106,7 +109,10 @@ namespace ARCA
 
         private void Update()
         {
-            if (holding) heldTimer += Time.deltaTime;
+            if (holding)
+            {
+                heldTimer += Time.deltaTime;
+            }
 
             if (heldTimer > TimeToDisplayMenu)
             {

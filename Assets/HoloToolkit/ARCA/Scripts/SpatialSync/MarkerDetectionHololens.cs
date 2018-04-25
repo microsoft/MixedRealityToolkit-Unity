@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.using UnityEngine;
 
+using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace HoloToolkit.ARCapture
@@ -114,14 +116,25 @@ namespace HoloToolkit.ARCapture
 	    }
 
 	    private void Start ()
-		{
+	    {
 #if NETFX_CORE
+			try
+            {
+			    OpenCVUtils.CheckOpenCVWrapperHasLoaded();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+				gameObject.SetActive(false);
+                throw;
+            }
+
 			detector = new MarkerDetector();
 			detector.Initialize();
 
 			holoLensCapture.OnFrameCapture += ProcessImage;
 #endif
-		}
+	    }
 
 	    private void Update()
 	    {

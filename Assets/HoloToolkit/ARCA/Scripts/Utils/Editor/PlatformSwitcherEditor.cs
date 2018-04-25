@@ -20,7 +20,7 @@ namespace HoloToolkit.ARCapture
             if (GUILayout.Button("Hololens", GUILayout.Height(70)))
             {
                 platformSwitcher.SwitchPlatform(PlatformSwitcher.Platform.Hololens);
-                serializedObject.FindProperty("TargetPlatform").enumValueIndex = (int)PlatformSwitcher.Platform.Hololens;
+                serializedObject.FindProperty("targetPlatform").enumValueIndex = (int)PlatformSwitcher.Platform.Hololens;
                 EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WSA, BuildTarget.WSAPlayer);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClientServer, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.PrivateNetworkClientServer, true);
@@ -33,7 +33,7 @@ namespace HoloToolkit.ARCapture
             if (GUILayout.Button("IPhone", GUILayout.Height(70)))
             {
                 platformSwitcher.SwitchPlatform(PlatformSwitcher.Platform.IPhone);
-                serializedObject.FindProperty("TargetPlatform").enumValueIndex = (int)PlatformSwitcher.Platform.IPhone;
+                serializedObject.FindProperty("targetPlatform").enumValueIndex = (int)PlatformSwitcher.Platform.IPhone;
                 EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
                 PlayerSettings.iOS.cameraUsageDescription = "Camera required for ARKit";
             }

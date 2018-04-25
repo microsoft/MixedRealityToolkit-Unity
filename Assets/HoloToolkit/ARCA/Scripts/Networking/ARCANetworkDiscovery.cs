@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -108,6 +109,18 @@ namespace HoloToolkit.ARCapture
 
         private void Awake()
         {
+#if NETFX_CORE
+            try
+            {
+			    OpenCVUtils.CheckOpenCVWrapperHasLoaded();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+				gameObject.SetActive(false);
+                throw;
+            }
+#endif
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
 
             //The client doesn't have to wait for the server to be started, but this works best if the component

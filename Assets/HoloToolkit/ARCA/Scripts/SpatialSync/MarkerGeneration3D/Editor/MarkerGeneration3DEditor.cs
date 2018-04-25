@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using ARCA;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 
 namespace HoloToolkit.ARCapture
@@ -11,7 +8,7 @@ namespace HoloToolkit.ARCapture
 
 		public override void OnInspectorGUI()
 		{
-			base.DrawDefaultInspector();
+			DrawDefaultInspector();
 
 			if(GUILayout.Button("Generate"))
 			{

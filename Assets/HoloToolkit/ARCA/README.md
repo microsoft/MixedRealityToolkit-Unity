@@ -20,7 +20,7 @@ Current Features
 
 Requirements
 ------------
-
+- OpenCV 3.4
 - ARCA currently uses UNET for its network discovery and spatial syncronizing.  This means all interactivity during the application needs to be synced between the devices.
 - Unity 2017.2.1p2
 - Hardware
@@ -34,6 +34,30 @@ Requirements
 - Apple developer account, free or paid ( https://developer.apple.com/ )
 - Microsoft Visual Studio 2017
 
+Building OpenCV For UWP
+-----------------------
+- Open a Command Prompt
+- Run the following commands:
+    -  git clone https://github.com/Microsoft/vcpkg
+    -  cd vcpkg
+    -  .\bootstrap-vcpkg.bat
+    -  .\vcpkg integrate install
+    -  .\vcpkg install opencv[contrib]:x86-uwp --recurse
+- Building the native plugin:
+    - git clone https://github.com/Microsoft/MixedRealityToolkit.git
+    - Open the .sln file located in MixedRealityToolkit\ARCA\OpenCVWrapper\OpenCVWrapper.sln
+    - Set the build options to Release and build the solution.
+    - Copy the following files from the directory **MixedRealityToolkit\ARCA\OpenCVWrapper\Release\OpenCVWrapper** to the directory **HoloToolkit\ARCA\Plugins\WSA\x86\\**
+    - opencv_aruco341.dll
+    - opencv_calib3d341.dll
+    - opencv_core341.dll
+    - opencv_features2d341.dll
+    - opencv_flann341.dll
+    - opencv_imgproc341.dll
+    - zlib1.dll
+    - OpenCVWrapper.dll
+
+ 
 Project Setup
 -------------
 

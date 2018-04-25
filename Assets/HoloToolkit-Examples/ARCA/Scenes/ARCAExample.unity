@@ -231,17 +231,17 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114045268312575714, guid: 697d5b22e978c7f47b6060eb66fb4f71,
         type: 2}
-      propertyPath: ARCANetworkDiscovery
+      propertyPath: arcaNetworkDiscovery
       value: 
       objectReference: {fileID: 792985336}
     - target: {fileID: 114045268312575714, guid: 697d5b22e978c7f47b6060eb66fb4f71,
         type: 2}
-      propertyPath: ARCANetworkManager
+      propertyPath: arcaNetworkManager
       value: 
       objectReference: {fileID: 792985337}
     - target: {fileID: 114656237134187744, guid: 697d5b22e978c7f47b6060eb66fb4f71,
         type: 2}
-      propertyPath: WorldRoot
+      propertyPath: worldRoot
       value: 
       objectReference: {fileID: 812885015}
     m_RemovedComponents: []
@@ -350,53 +350,22 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114498555872222614, guid: 9795b755752f7804bbde8b25bad5ef1c,
         type: 2}
-      propertyPath: WorldSync
-      value: 
-      objectReference: {fileID: 1300892938}
-    - target: {fileID: 114498555872222614, guid: 9795b755752f7804bbde8b25bad5ef1c,
-        type: 2}
-      propertyPath: m_DontDestroyOnLoad
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114601526261401662, guid: 9795b755752f7804bbde8b25bad5ef1c,
-        type: 2}
-      propertyPath: m_ShowGUI
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114498555872222614, guid: 9795b755752f7804bbde8b25bad5ef1c,
-        type: 2}
-      propertyPath: m_LogLevel
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114498555872222614, guid: 9795b755752f7804bbde8b25bad5ef1c,
-        type: 2}
-      propertyPath: NewDeviceDiscovery
-      value: 
-      objectReference: {fileID: 792985335}
-    - target: {fileID: 114498555872222614, guid: 9795b755752f7804bbde8b25bad5ef1c,
-        type: 2}
-      propertyPath: ARCANetworkDiscovery
-      value: 
-      objectReference: {fileID: 792985336}
-    - target: {fileID: 114498555872222614, guid: 9795b755752f7804bbde8b25bad5ef1c,
-        type: 2}
-      propertyPath: MarkerDetectionHololens
+      propertyPath: markerDetectionHololens
       value: 
       objectReference: {fileID: 501939547}
     - target: {fileID: 114498555872222614, guid: 9795b755752f7804bbde8b25bad5ef1c,
         type: 2}
-      propertyPath: MarkerGeneration3D
+      propertyPath: markerGeneration3D
       value: 
       objectReference: {fileID: 501939546}
+    - target: {fileID: 114498555872222614, guid: 9795b755752f7804bbde8b25bad5ef1c,
+        type: 2}
+      propertyPath: worldSync
+      value: 
+      objectReference: {fileID: 1300892938}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9795b755752f7804bbde8b25bad5ef1c, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &792985335 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114601526261401662, guid: 9795b755752f7804bbde8b25bad5ef1c,
-    type: 2}
-  m_PrefabInternal: {fileID: 792985334}
-  m_Script: {fileID: 11500000, guid: 038296434a290944e8a314232f8d755c, type: 3}
 --- !u!114 &792985336 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114460822705235868, guid: 9795b755752f7804bbde8b25bad5ef1c,

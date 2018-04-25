@@ -166,7 +166,7 @@ namespace HoloToolkit.ARCapture
         }
 
         /// <summary>
-        /// Sets text displayed on screen once marker has been detected, 
+        /// Sets text displayed on screen once marker has been detected,
         /// before mobile has connected to session
         /// </summary>
         private void PromptConnecting()
@@ -176,7 +176,7 @@ namespace HoloToolkit.ARCapture
 
         /// <summary>
         /// Sets text displayed on screen once marker has been detected,
-        /// mobile has connected to the HoloLens session, but before 
+        /// mobile has connected to the HoloLens session, but before
         /// the world space has been synchronized
         /// </summary>
         private void PromptAlmostThere()

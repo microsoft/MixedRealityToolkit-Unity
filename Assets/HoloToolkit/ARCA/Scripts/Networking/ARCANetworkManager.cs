@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -101,6 +102,18 @@ namespace HoloToolkit.ARCapture
 
         private void Start()
         {
+#if NETFX_CORE
+            try
+            {
+			    OpenCVUtils.CheckOpenCVWrapperHasLoaded();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+				gameObject.SetActive(false);
+                throw;
+            }
+#endif
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
             //Auto find components if necessary
             if (NewDeviceDiscovery == null) NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();

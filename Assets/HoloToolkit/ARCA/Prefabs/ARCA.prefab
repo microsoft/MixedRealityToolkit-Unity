@@ -370,7 +370,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1631645493537092
 GameObject:
   m_ObjectHideFlags: 1
@@ -474,7 +474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1761213580146476
 GameObject:
   m_ObjectHideFlags: 1
@@ -1301,11 +1301,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed6dfeb7f4f52ab4885439f7e5c7cc8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Text: {fileID: 114215284944161600}
-  ARCANetworkDiscovery: {fileID: 0}
-  ARCANetworkManager: {fileID: 0}
-  WorldSync: {fileID: 114656237134187744}
-  AnchorLocated: {fileID: 114359249297235840}
+  text: {fileID: 114215284944161600}
+  arcaNetworkDiscovery: {fileID: 0}
+  arcaNetworkManager: {fileID: 0}
+  worldSync: {fileID: 114656237134187744}
+  anchorLocated: {fileID: 114359249297235840}
 --- !u!114 &114101587611864294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1317,7 +1317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0b031a91d31d4a6487ce77e6fffedb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Markers:
+  markers:
   - {fileID: 2800000, guid: cb64baf96fafde947b5ff87caedfac2a, type: 3}
   - {fileID: 2800000, guid: 3c8869b1066c5bf4ca22724b7178d646, type: 3}
   - {fileID: 2800000, guid: 9b7d11d4f9e0d3e40925a6a0674a1e9b, type: 3}
@@ -1371,7 +1371,6 @@ MonoBehaviour:
   - {fileID: 2800000, guid: d45ee85ac12eeab479b1a13234ad98cf, type: 3}
   WhiteMaterial: {fileID: 2100000, guid: b473ed97a1f454f238793f98aecec1ab, type: 2}
   BlackMaterial: {fileID: 2100000, guid: 1f7953bd03a7841ba8d9aab3c09df276, type: 2}
-  MarkerId: 0
 --- !u!114 &114105858980320838
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1476,12 +1475,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d57d378df3c240859711b297a4b5ada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controls: {fileID: 1301739009612896}
   RecordButton: {fileID: 1957423376801416}
-  RecordCountdownButton: {fileID: 1219216612122520}
-  RecordCountdownText: {fileID: 114322282963196494}
-  StopButton: {fileID: 1156604737359446}
-  Controls: {fileID: 1301739009612896}
-  ReplayButton: {fileID: 1164768152426930}
+  recordCountdownButton: {fileID: 1219216612122520}
+  recordCountdownText: {fileID: 114322282963196494}
+  replayButton: {fileID: 1164768152426930}
+  stopButton: {fileID: 1156604737359446}
 --- !u!114 &114205012734007540
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1707,11 +1706,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63d5fe4536868454585ceef2ab4a79a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HoloLensCapture: {fileID: 114993702501139078}
-  MarkerSize: 0.0205
-  SuccessSound: {fileID: 82852308779464482}
-  AirtapTimeToCapture: 0
-  CaptureTimeout: 1
+  holoLensCapture: {fileID: 114993702501139078}
+  markerSize: 0.0205
+  successSound: {fileID: 82852308779464482}
+  airtapTimeToCapture: 0
+  captureTimeout: 1
 --- !u!114 &114330629290143936
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1741,7 +1740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a25e45127614664b7e0e0b965b94f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MarkerGenerator: {fileID: 114101587611864294}
+  markerGenerator: {fileID: 114101587611864294}
 --- !u!114 &114486563073949434
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1891,8 +1890,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a4821e0fe5454d0999ea6e95576de63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RecordingControls: {fileID: 1301739009612896}
-  TimeToDisplayMenu: 1
+  recordingControls: {fileID: 1301739009612896}
+  timeToDisplayMenu: 1
 --- !u!114 &114592110692263834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1916,8 +1915,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa7f57f94e351b47ba7f11c8088c840, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MarkerSize: 0.03
-  OrthographicCamera: {fileID: 20221270127937912}
+  markerSize: 0.03
+  orthographicCamera: {fileID: 20221270127937912}
 --- !u!114 &114615616618406480
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2064,12 +2063,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b5cdd7fbfb5e4eaeb300d545eb3a519, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WorldRoot: {fileID: 0}
-  HololensMarkerDetector: {fileID: 114323876434529424}
-  NumCapturesRequired: 3
-  MarkerCaptureErrorDistance: 0.05
-  OffsetBetweenMarkerAndCamera: {x: 0, y: 0, z: 0}
-  OnDetectedMobile:
+  worldRoot: {fileID: 0}
+  hololensMarkerDetector: {fileID: 114323876434529424}
+  numCapturesRequired: 3
+  markerCaptureErrorDistance: 0.05
+  offsetBetweenMarkerAndCamera: {x: 0, y: 0, z: 0}
+  onDetectedMobile:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114919036148823972}
@@ -2107,7 +2106,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  MarkerGeneration3D: {fileID: 114101587611864294}
+  markerGeneration3D: {fileID: 114101587611864294}
 --- !u!114 &114695673673311718
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2140,7 +2139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aecafb2e9b0fbb4f8261d25b111cc93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetPlatform: 0
+  targetPlatform: 1
 --- !u!114 &114745006052247130
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2364,8 +2363,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 401184f1f55ba46499d5f9e9e5c45ede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackgroundPlane: {fileID: 1943297951356152}
-  CodeContainer: {fileID: 1517045326671526}
+  backgroundPlane: {fileID: 1943297951356152}
+  codeContainer: {fileID: 1517045326671526}
 --- !u!114 &114841663395492022
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2421,8 +2420,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ebf26637c0e9c84298eecd26e4747d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetAlpha: 0
-  Duration: 0.5
+  targetAlpha: 0
+  duration: 0.5
 --- !u!114 &114946862946110846
 MonoBehaviour:
   m_ObjectHideFlags: 1
