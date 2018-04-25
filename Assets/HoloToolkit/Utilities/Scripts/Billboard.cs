@@ -29,6 +29,7 @@ namespace HoloToolkit.Unity
         /// The axis about which the object will rotate.
         /// </summary>
         [Tooltip("Specifies the axis about which the object will rotate.")]
+        [SerializeField]
         private PivotAxis pivotAxis = PivotAxis.XY;
         public PivotAxis PivotAxis
         {
@@ -40,6 +41,7 @@ namespace HoloToolkit.Unity
         /// The target we will orient to. If no target is specified, the main camera will be used.
         /// </summary>
         [Tooltip("Specifies the target we will orient to. If no target is specified, the main camera will be used.")]
+        [SerializeField]
         private Transform targetTransform;
         public Transform TargetTransform
         {
@@ -76,12 +78,12 @@ namespace HoloToolkit.Unity
             {
                 case PivotAxis.X:
                     directionToTarget.x = 0.0f;
-                    targetUpVector = Vector3.up;
+                    targetUpVector = transform.up;
                     break;
 
                 case PivotAxis.Y:
                     directionToTarget.y = 0.0f;
-                    targetUpVector = Vector3.up;
+                    targetUpVector = transform.up;
                     break;
 
                 case PivotAxis.Z:
@@ -90,7 +92,7 @@ namespace HoloToolkit.Unity
                     break;
 
                 case PivotAxis.XY:
-                    targetUpVector = Vector3.up;
+                    targetUpVector = transform.up;
                     break;
 
                 case PivotAxis.XZ:
