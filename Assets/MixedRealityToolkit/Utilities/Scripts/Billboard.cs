@@ -30,6 +30,7 @@ namespace MixedRealityToolkit.Utilities
         /// The axis about which the object will rotate.
         /// </summary>
         [Tooltip("Specifies the axis about which the object will rotate.")]
+        [SerializeField]
         public PivotAxis PivotAxis = PivotAxis.XY;
 
         [Tooltip("Specifies the target we will orient to. If no Target is specified the main camera will be used.")]
@@ -64,12 +65,12 @@ namespace MixedRealityToolkit.Utilities
             {
                 case PivotAxis.X:
                     directionToTarget.x = 0.0f;
-                    targetUpVector = Vector3.up;
+                    targetUpVector = transform.up;
                     break;
 
                 case PivotAxis.Y:
                     directionToTarget.y = 0.0f;
-                    targetUpVector = Vector3.up;
+                    targetUpVector = transform.up;
                     break;
 
                 case PivotAxis.Z:
@@ -78,7 +79,7 @@ namespace MixedRealityToolkit.Utilities
                     break;
 
                 case PivotAxis.XY:
-                    targetUpVector = Vector3.up;
+                    targetUpVector = transform.up;
                     break;
 
                 case PivotAxis.XZ:
