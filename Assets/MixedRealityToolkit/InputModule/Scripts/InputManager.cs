@@ -970,7 +970,7 @@ namespace MixedRealityToolkit.InputModule
             delegate (IBoundingBoxRigActivityHandler handler, BaseEventData eventData)
             {
                 BoundingBoxRigActivityEventData casted = ExecuteEvents.ValidateEventData<BoundingBoxRigActivityEventData>(eventData);
-                handler.OnActivated(casted);
+                handler.OnBoundingBoxRigActivated(casted);
             };
 
         public void RaiseBoundingBoxRigActivated(IInputSource source, uint sourceId, GameObject boundingBoxRiggedObject, object[] tags = null)
@@ -986,7 +986,7 @@ namespace MixedRealityToolkit.InputModule
             delegate (IBoundingBoxRigActivityHandler handler, BaseEventData eventData)
             {
                 BoundingBoxRigActivityEventData casted = ExecuteEvents.ValidateEventData<BoundingBoxRigActivityEventData>(eventData);
-                handler.OnDeactivated(casted);
+                handler.OnBoundingBoxRigDeactivated(casted);
             };
 
         public void RaiseBoundingBoxRigDeactivated(IInputSource source, uint sourceId, GameObject boundingBoxRiggedObject, object[] tags = null)

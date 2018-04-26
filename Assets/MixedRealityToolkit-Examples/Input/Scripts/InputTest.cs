@@ -205,14 +205,14 @@ namespace MixedRealityToolkit.Examples.InputModule
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnActivated(BoundingBoxRigActivityEventData eventData)
+        public void OnBoundingBoxRigActivated(BoundingBoxRigActivityEventData eventData)
         {
             Debug.LogFormat("OnBoundingBoxRigActivated\r\nObject: {0}", eventData.BoundingBoxRiggedObject.name);
 
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnDeactivated(BoundingBoxRigActivityEventData eventData)
+        public void OnBoundingBoxRigDeactivated(BoundingBoxRigActivityEventData eventData)
         {
             Debug.LogFormat("OnBoundingBoxRigDeactivated\r\nObject: {0}", eventData.BoundingBoxRiggedObject.name);
 

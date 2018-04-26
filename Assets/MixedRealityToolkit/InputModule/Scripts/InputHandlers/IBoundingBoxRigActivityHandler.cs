@@ -11,8 +11,8 @@ namespace MixedRealityToolkit.InputModule.InputHandlers
     /// </summary>
     public interface IBoundingBoxRigActivityHandler : IEventSystemHandler
     {
-        void OnActivated(BoundingBoxRigActivityEventData eventData);
+        void OnBoundingBoxRigActivated(BoundingBoxRigActivityEventData eventData);
 
-        void OnDeactivated(BoundingBoxRigActivityEventData eventData);
+        void OnBoundingBoxRigDeactivated(BoundingBoxRigActivityEventData eventData);
     }
 }
