@@ -19,7 +19,7 @@ namespace HoloToolkit.SpectatorView
         /// Component used to manage the discovery of new devices
         /// </summary>
         [SerializeField] [Tooltip("Component used to manage the discovery of new devices")]
-        private SpectatorViewNetworkDiscovery arcaNetworkDiscovery;
+        private SpectatorViewNetworkDiscovery spectatorViewNetworkDiscovery;
 
         /// <summary>
         /// Is the device a host or a client? (HoloLens or mobile?)
@@ -58,10 +58,10 @@ namespace HoloToolkit.SpectatorView
         /// <summary>
         /// Component used to manage the discovery of new devices
         /// </summary>
-        public SpectatorViewNetworkDiscovery ARCANetworkDiscovery
+        public SpectatorViewNetworkDiscovery SpectatorViewNetworkDiscovery
         {
-            get { return arcaNetworkDiscovery; }
-            set { arcaNetworkDiscovery = value; }
+            get { return spectatorViewNetworkDiscovery; }
+            set { spectatorViewNetworkDiscovery = value; }
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace HoloToolkit.SpectatorView
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
             //Auto find components if necessary
             if (NewDeviceDiscovery == null) NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
-            if (ARCANetworkDiscovery == null) ARCANetworkDiscovery = FindObjectOfType<SpectatorViewNetworkDiscovery>();
+            if (SpectatorViewNetworkDiscovery == null) SpectatorViewNetworkDiscovery = FindObjectOfType<SpectatorViewNetworkDiscovery>();
             //The host needs an aditional component
             if (isHost)
             {
@@ -148,7 +148,7 @@ namespace HoloToolkit.SpectatorView
         /// </summary>
         private IEnumerator StartHostRoutine()
         {
-            ARCANetworkDiscovery.ManualStart();
+            SpectatorViewNetworkDiscovery.ManualStart();
             yield return null;
             NewDeviceDiscovery.ManualStart();
         }

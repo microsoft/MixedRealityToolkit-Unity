@@ -38,20 +38,20 @@ namespace HoloToolkit.SpectatorView
         /// </summary>
         [Tooltip("SpectatorViewNetworkDiscovery")]
         [SerializeField]
-        private SpectatorViewNetworkDiscovery arcaNetworkDiscovery;
+        private SpectatorViewNetworkDiscovery spectatorViewNetworkDiscovery;
         /// <summary>
         /// SpectatorViewNetworkDiscovery
         /// </summary>
-        public SpectatorViewNetworkDiscovery ARCANetworkDiscovery
+        public SpectatorViewNetworkDiscovery SpectatorViewNetworkDiscovery
         {
             get
             {
-                return arcaNetworkDiscovery;
+                return spectatorViewNetworkDiscovery;
             }
 
             set
             {
-                arcaNetworkDiscovery = value;
+                spectatorViewNetworkDiscovery = value;
             }
         }
 
@@ -128,9 +128,9 @@ namespace HoloToolkit.SpectatorView
                 Text = GetComponent<Text>();
             }
 
-            if (ARCANetworkDiscovery == null)
+            if (SpectatorViewNetworkDiscovery == null)
             {
-                ARCANetworkDiscovery = FindObjectOfType<SpectatorViewNetworkDiscovery>();
+                SpectatorViewNetworkDiscovery = FindObjectOfType<SpectatorViewNetworkDiscovery>();
             }
 
             if (SpectatorViewNetworkManager == null)
@@ -150,8 +150,8 @@ namespace HoloToolkit.SpectatorView
 
             // Suscribe to Anchor and Network events
             AnchorLocated.OnAnchorLocated += PromptShowToHoloLens;
-            ARCANetworkDiscovery.OnHololensSessionFound += PromptConnecting;
-            ARCANetworkDiscovery.OnHololensSessionFound += PromptAlmostThere;
+            SpectatorViewNetworkDiscovery.OnHololensSessionFound += PromptConnecting;
+            SpectatorViewNetworkDiscovery.OnHololensSessionFound += PromptAlmostThere;
 
             // First status
             Text.text = "Locating Floor...";
@@ -188,8 +188,8 @@ namespace HoloToolkit.SpectatorView
         {
             // Unsubscribe from events
             AnchorLocated.OnAnchorLocated -= PromptShowToHoloLens;
-            ARCANetworkDiscovery.OnHololensSessionFound -= PromptConnecting;
-            ARCANetworkDiscovery.OnHololensSessionFound -= PromptAlmostThere;
+            SpectatorViewNetworkDiscovery.OnHololensSessionFound -= PromptConnecting;
+            SpectatorViewNetworkDiscovery.OnHololensSessionFound -= PromptAlmostThere;
         }
     }
 }
