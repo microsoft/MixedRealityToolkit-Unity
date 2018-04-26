@@ -17,8 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         private static readonly RaycastResultComparer RaycastResultComparer = new RaycastResultComparer();
 
         /// <summary>
-        /// Executes a raycast all and returns the closest element. Fixes the current issue with Unity's raycast sorting which does not 
-        /// consider separate canvases.
+        /// Executes a raycast all and returns the closest element.
+        /// Fixes the current issue with Unity's raycast sorting which does not consider separate canvases.
         /// </summary>
         /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
         public static RaycastResult Raycast(this EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks)
@@ -28,10 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         }
 
         /// <summary>
-        /// Sorts the available Raycasts in to a priority order for query
+        /// Sorts the available Raycasts in to a priority order for query.
         /// </summary>
-        /// <param name="priority"></param>
-        /// <returns></returns>
+        /// <param name="priority">The layer mask priority.</param>
+        /// <returns><see cref="RaycastResult"/></returns>
         private static RaycastResult PrioritizeRaycastResult(LayerMask[] priority)
         {
             ComparableRaycastResult maxResult = default(ComparableRaycastResult);

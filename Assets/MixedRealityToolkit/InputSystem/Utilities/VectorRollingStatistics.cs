@@ -12,29 +12,29 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
     public class VectorRollingStatistics
     {
         /// <summary>
-        /// Current standard deviation of the positions of the vectors
+        /// Current standard deviation of the positions of the vectors.
         /// </summary>
-        public float CurrentStandardDeviation { get; set; }
+        public float CurrentStandardDeviation { get; private set; }
 
         /// <summary>
         /// Difference to standardDeviation when the latest sample was added.
         /// </summary>
-        public float StandardDeviationDeltaAfterLatestSample { get; set; }
+        public float StandardDeviationDeltaAfterLatestSample { get; private set; }
 
         /// <summary>
         /// How many standard deviations the latest sample was away.
         /// </summary>
-        public float StandardDeviationsAwayOfLatestSample { get; set; }
+        public float StandardDeviationsAwayOfLatestSample { get; private set; }
 
         /// <summary>
         /// The average position.
         /// </summary>
-        public Vector3 Average { get; set; }
+        public Vector3 Average { get; private set; }
 
         /// <summary>
         /// The number of samples in the current set (may be 0 - maxSamples)
         /// </summary>
-        public float ActualSampleCount { get; set; }
+        public float ActualSampleCount { get; private set; }
 
         /// <summary>
         /// Keeps track of the index into the sample list for the rolling average.
@@ -92,6 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             StandardDeviationDeltaAfterLatestSample = 0.0f;
             StandardDeviationsAwayOfLatestSample = 0.0f;
             Average = Vector3.zero;
+
             if (samples != null)
             {
                 for (int index = 0; index < samples.Length; index++)

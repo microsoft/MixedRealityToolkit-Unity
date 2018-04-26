@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         [SerializeField]
         private Renderer[] renderers = null;
 
-        private int clipPlaneID;
+        private int clipPlaneId;
         private Material[] materials;
         private MaterialPropertyBlock materialPropertyBlock;
 
@@ -32,10 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             ToggleClippingPlane(false);
         }
 
-#if UNITY_EDITOR
         private void Update()
         {
-            if (Application.isPlaying)
+            if (Application.isPlaying || Application.isEditor)
             {
                 return;
             }
@@ -43,7 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             Initialize();
             UpdatePlanePosition();
         }
-#endif
 
         private void LateUpdate()
         {
@@ -80,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         private void Initialize()
         {
-            clipPlaneID = Shader.PropertyToID("_ClipPlane");
+            clipPlaneId = Shader.PropertyToID("_ClipPlane");
 
             materials = new Material[renderers.Length];
 
@@ -117,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
                 }
 
                 renderer.GetPropertyBlock(materialPropertyBlock);
-                materialPropertyBlock.SetVector(clipPlaneID, plane);
+                materialPropertyBlock.SetVector(clipPlaneId, plane);
                 renderer.SetPropertyBlock(materialPropertyBlock);
             }
         }

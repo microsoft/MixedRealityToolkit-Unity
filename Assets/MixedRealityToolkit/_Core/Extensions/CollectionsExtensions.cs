@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
     /// <summary>
-    /// Extension methods for .Net Collection objects, e.g. Lists, Dictionarys, Arrays
+    /// Extension methods for .Net Collection objects, e.g. Lists, Dictionaries, Arrays
     /// </summary>
     public static class CollectionsExtensions
     {
@@ -51,19 +51,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         {
             var effectiveComparer = comparer ?? Comparer<TElement>.Default;
 
-#if DEBUG || UNITY_EDITOR
-            for (int iElement = 0; iElement < elements.Count - 1; iElement++)
+            if (Application.isEditor)
             {
-                var element = elements[iElement];
-                var nextElement = elements[iElement + 1];
-
-                if (effectiveComparer.Compare(element, nextElement) > 0)
+                for (int iElement = 0; iElement < elements.Count - 1; iElement++)
                 {
-                     Debug.Assert(false, "elements must already be sorted to call this method.");
-                    break;
+                    var element = elements[iElement];
+                    var nextElement = elements[iElement + 1];
+
+                    if (effectiveComparer.Compare(element, nextElement) > 0)
+                    {
+                        Debug.LogWarning("Elements must already be sorted to call this method.");
+                        break;
+                    }
                 }
             }
-#endif
 
             int searchResult = elements.BinarySearch(toInsert, effectiveComparer);
 

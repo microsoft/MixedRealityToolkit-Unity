@@ -13,18 +13,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
     public static class MathUtils
     {
         /// <summary>
-        /// Takes a point in the coordinate space specified by the "from" transform and transforms it to be the correct point in the coordinate space specified by the "to" transform
-        /// applies rotation, scale and translation
+        /// Takes a point in the coordinate space specified by the "from" transform and transforms it to be the correct
+        /// point in the coordinate space specified by the "to" transform applies rotation, scale and translation.
         /// </summary>
         /// <param name="from"></param>
         /// <param name="to"></param>
-        /// <param name="ptInFrom"></param>
+        /// <param name="fromPoint"></param>
         /// <returns></returns>
-        public static Vector3 TransformPointFromTo(Transform from, Transform to, Vector3 ptInFrom)
+        public static Vector3 TransformPointFromTo(Transform from, Transform to, Vector3 fromPoint)
         {
-            Vector3 ptInWorld = (from == null) ? ptInFrom : from.TransformPoint(ptInFrom);
-            Vector3 ptInTo = (to == null) ? ptInWorld : to.InverseTransformPoint(ptInWorld);
-            return ptInTo;
+            Vector3 worldPoint = (from == null) ? fromPoint : from.TransformPoint(fromPoint);
+            return (to == null) ? worldPoint : to.InverseTransformPoint(worldPoint);
         }
 
         /// <summary>
@@ -33,13 +32,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// </summary>
         /// <param name="from"></param>
         /// <param name="to"></param>
-        /// <param name="dirInFrom"></param>
-        /// <returns></returns>
-        public static Vector3 TransformDirectionFromTo(Transform from, Transform to, Vector3 dirInFrom)
+        /// <param name="fromDirection"></param>
+        /// <returns>Direction to.</returns>
+        public static Vector3 TransformDirectionFromTo(Transform from, Transform to, Vector3 fromDirection)
         {
-            Vector3 dirInWorld = (from == null) ? dirInFrom : from.TransformDirection(dirInFrom);
-            Vector3 dirInTo = (to == null) ? dirInWorld : to.InverseTransformDirection(dirInWorld);
-            return dirInTo;
+            Vector3 worldDirection = (from == null) ? fromDirection : from.TransformDirection(fromDirection);
+            return (to == null) ? worldDirection : to.InverseTransformDirection(worldDirection);
         }
 
         /// <summary>

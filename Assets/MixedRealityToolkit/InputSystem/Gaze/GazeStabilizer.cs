@@ -12,27 +12,33 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
     /// </summary>
     public class GazeStabilizer : BaseRayStabilizer
     {
-        [Tooltip("Number of samples that you want to iterate on.")]
+
+        /// <summary>
+        /// Number of samples to iterate on.
+        /// </summary>
+        public int StoredStabilitySamples => storedStabilitySamples;
+        [SerializeField]
         [Range(40, 120)]
-        public int StoredStabilitySamples = 60;
+        [Tooltip("Number of samples that you want to iterate on.")]
+        private int storedStabilitySamples = 60;
 
+        /// <summary>
+        /// The stabilized position.
+        /// </summary>
+        public override Vector3 StablePosition => stablePosition;
         private Vector3 stablePosition;
-        public override Vector3 StablePosition
-        {
-            get { return stablePosition; }
-        }
 
+        /// <summary>
+        /// The stabilized rotation.
+        /// </summary>
         private Quaternion stableRotation;
-        public override Quaternion StableRotation
-        {
-            get { return stableRotation; }
-        }
+        public override Quaternion StableRotation => stableRotation;
 
+        /// <summary>
+        /// The stabilized position.
+        /// </summary>
+        public override Ray StableRay => stableRay;
         private Ray stableRay;
-        public override Ray StableRay
-        {
-            get { return stableRay; }
-        }
 
         /// <summary>
         /// Calculates standard deviation and averages for the gaze position.
@@ -72,10 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         /// </summary>
         private const float StabalizedLerpBoost = 10.0f;
 
-        private void Awake()
+        public GazeStabilizer()
         {
-            directionRollingStats.Init(StoredStabilitySamples);
-            positionRollingStats.Init(StoredStabilitySamples);
+            directionRollingStats.Init(storedStabilitySamples);
+            positionRollingStats.Init(storedStabilitySamples);
         }
 
         /// <summary>
@@ -90,12 +96,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
             directionRollingStats.AddSample(gazeDirection);
 
             float lerpPower = UnstabalizedLerpFactor;
-            if (positionRollingStats.ActualSampleCount > MinimumSamplesRequiredToStabalize && // we have enough samples and...
-                (positionRollingStats.CurrentStandardDeviation > PositionStandardDeviationReset || // the standard deviation of positions is high or...
-                 directionRollingStats.CurrentStandardDeviation > DirectionStandardDeviationReset)) // the standard deviation of directions is high
+
+            if (positionRollingStats.ActualSampleCount > MinimumSamplesRequiredToStabalize &&      // we have enough samples and...
+               (positionRollingStats.CurrentStandardDeviation > PositionStandardDeviationReset ||  // the standard deviation of positions is high or...
+                directionRollingStats.CurrentStandardDeviation > DirectionStandardDeviationReset)) // the standard deviation of directions is high
             {
                 // We've detected that the user's gaze is no longer fixed, so stop stabilizing so that gaze is responsive.
-                //Debug.LogFormat("Reset {0} {1} {2} {3}", positionRollingStats.standardDeviation, positionRollingStats.standardDeviationsAway, directionRollignStats.standardDeviation, directionRollignStats.standardDeviationsAway);
+                // Debug.Log($"Reset {positionRollingStats.CurrentStandardDeviation} {positionRollingStats.StandardDeviationsAwayOfLatestSample} {directionRollingStats.CurrentStandardDeviation} {directionRollingStats.StandardDeviationsAwayOfLatestSample}");
                 positionRollingStats.Reset();
                 directionRollingStats.Reset();
             }

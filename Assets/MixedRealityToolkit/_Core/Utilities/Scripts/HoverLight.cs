@@ -15,12 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         [SerializeField]
         [Range(0.0f, 1.0f)]
         private float radius = 0.15f;
+
         [SerializeField]
         private Color color = new Color(0.3f, 0.3f, 0.3f, 1.0f);
 
-        private int hoverPositionID;
-        private int hoverRadiusID;
-        private int hoverColorID;
+        private int hoverPositionId;
+        private int hoverRadiusId;
+        private int hoverColorId;
 
         public float Radius
         {
@@ -58,10 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             UpdateHoverLight();
         }
 
-#if UNITY_EDITOR
         private void Update()
         {
-            if (Application.isPlaying)
+            if (Application.isPlaying || Application.isEditor)
             {
                 return;
             }
@@ -69,7 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             Initialize();
             UpdateHoverLight();
         }
-#endif
 
         private void LateUpdate()
         {
@@ -95,19 +94,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         private void Initialize()
         {
-            hoverPositionID = Shader.PropertyToID("_HoverPosition");
-            hoverRadiusID = Shader.PropertyToID("_HoverRadius");
-            hoverColorID = Shader.PropertyToID("_HoverColor");
+            hoverPositionId = Shader.PropertyToID("_HoverPosition");
+            hoverRadiusId = Shader.PropertyToID("_HoverRadius");
+            hoverColorId = Shader.PropertyToID("_HoverColor");
         }
 
         private void UpdateHoverLight()
         {
-            Shader.SetGlobalVector(hoverPositionID, transform.position);
-            Shader.SetGlobalFloat(hoverRadiusID, Radius);
-            Shader.SetGlobalVector(hoverColorID, new Vector4(Color.r,
-                                                              Color.g,
-                                                              Color.b,
-                                                              isActiveAndEnabled ? 1.0f : 0.0f));
+            Shader.SetGlobalVector(hoverPositionId, transform.position);
+            Shader.SetGlobalFloat(hoverRadiusId, Radius);
+            Shader.SetGlobalVector(hoverColorId, new Vector4(Color.r,
+                                                             Color.g,
+                                                             Color.b,
+                                                             isActiveAndEnabled ? 1.0f : 0.0f));
         }
     }
 }

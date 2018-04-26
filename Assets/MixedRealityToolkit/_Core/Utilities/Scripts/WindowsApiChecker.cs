@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using UnityEngine;
+
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 {
     /// <summary>
@@ -10,18 +12,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
     /// </summary>
     public static class WindowsApiChecker
     {
-        static WindowsApiChecker()
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        public static void CheckApiContracts()
         {
-#if !UNITY_EDITOR && UNITY_WSA
+#if !UNITY_EDITOR && (UNITY_WSA || UNITY_STANDALONE_WIN)
+            UniversalApiContractV6_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 6);
             UniversalApiContractV5_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5);
             UniversalApiContractV4_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 4);
             UniversalApiContractV3_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 3);
 #else
+            UniversalApiContractV6_IsAvailable = false;
             UniversalApiContractV5_IsAvailable = false;
             UniversalApiContractV4_IsAvailable = false;
             UniversalApiContractV3_IsAvailable = false;
 #endif
         }
+
+        /// <summary>
+        /// Is the Universal API Contract v5.0 Available?
+        /// </summary>
+        public static bool UniversalApiContractV6_IsAvailable { get; private set; }
 
         /// <summary>
         /// Is the Universal API Contract v5.0 Available?
