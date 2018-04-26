@@ -3,6 +3,7 @@
 
 using MixedRealityToolkit.InputModule.InputSources;
 using UnityEngine.EventSystems;
+using UnityEngine;
 
 namespace MixedRealityToolkit.InputModule.EventData
 {
@@ -11,11 +12,17 @@ namespace MixedRealityToolkit.InputModule.EventData
     /// </summary>
     public class BoundingBoxActivityEventData : BaseInputEventData
     {
+        /// <summary>
+        /// The bounding box rigged object.
+        /// </summary>
+        public GameObject BoundingBoxRiggedObject { get; private set; }
+
         public BoundingBoxActivityEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource source, uint sourceId, object tag)
+        public void Initialize(IInputSource source, uint sourceId, object tag, GameObject boundingBoxRiggedObject)
         {
             BaseInitialize(source, SourceId, tag);
+            BoundingBoxRiggedObject = boundingBoxRiggedObject;
         }
     }
 }
