@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <param name="fromPoint"></param>
-        /// <returns></returns>
+        /// <returns>Point to.</returns>
         public static Vector3 TransformPointFromTo(Transform from, Transform to, Vector3 fromPoint)
         {
             Vector3 worldPoint = (from == null) ? fromPoint : from.TransformPoint(fromPoint);

@@ -8,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 {
     /// <summary>
-    /// Compares the Raycast Results from Unity's Graphic & Physics Raycasters.
+    /// Compares the Raycast Results from Unity's Graphic &amp; Physics Raycasters.
     /// </summary>
     public class RaycastResultComparer : IComparer<ComparableRaycastResult>
     {
