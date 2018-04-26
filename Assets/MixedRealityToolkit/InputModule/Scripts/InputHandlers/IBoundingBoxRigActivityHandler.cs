@@ -9,10 +9,10 @@ namespace MixedRealityToolkit.InputModule.InputHandlers
     /// <summary>
     /// Interface to implement reacting to bounding box rig's activation or deactivation.
     /// </summary>
-    public interface IBoundingBoxActivityHandler : IEventSystemHandler
+    public interface IBoundingBoxRigActivityHandler : IEventSystemHandler
     {
-        void OnActivated(BoundingBoxActivityEventData eventData);
+        void OnActivated(BoundingBoxRigActivityEventData eventData);
 
-        void OnDeactivated(BoundingBoxActivityEventData eventData);
+        void OnDeactivated(BoundingBoxRigActivityEventData eventData);
     }
 }
