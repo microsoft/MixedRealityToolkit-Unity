@@ -33,11 +33,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         [SerializeField]
         [Tooltip("Whether the recognizer should be activated on start.")]
-        private RecognizerStartBehavior recognizerStart;
+        private RecognizerStartBehavior recognizerStart = RecognizerStartBehavior.AutoStart;
 
         [SerializeField]
         [Tooltip("Set to true to use the use rails (guides) for the navigation gesture, as opposed to full 3D navigation.")]
-        private bool useRailsNavigation;
+        private bool useRailsNavigation = false;
 
         [Serializable]
         private struct ControllerPointerOptions
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 }
             }
 #else
-            public InteractionInputSource(string name) : base(name, SupportedInputInfo.None) { }
+            public InteractionInputSource(string name) : base(name, InputType.None) { }
 #endif
 
             private static InputType GetSupportFlag<TReading>(SourceCapability<TReading> capability, InputType flagIfSupported)

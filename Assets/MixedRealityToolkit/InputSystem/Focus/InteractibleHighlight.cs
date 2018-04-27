@@ -92,13 +92,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         private Color outlineColor = Color.white;
 
         [SerializeField]
-        private Renderer[] targetRenderers;
+        private Renderer[] targetRenderers = null;
 
         [SerializeField]
-        private Material highlightMat;
+        private Material highlightMat = null;
 
         [SerializeField]
-        private Material overlayMat;
+        private Material overlayMat = null;
 
         [SerializeField]
         private MatStyleEnum targetStyle = MatStyleEnum.Highlight;

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.InputSystem.InputMapping;
 using UnityEditor;
 using UnityEngine;
@@ -28,3 +29,4 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.EditorScript
         }
     }
 }
+#endif
