@@ -19,9 +19,9 @@ namespace MixedRealityToolkit.InputModule.EventData
 
         public BoundingBoxRigActivityEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource source, uint sourceId, GameObject boundingBoxRiggedObject, object[] tags = null)
+        public void Initialize(GameObject boundingBoxRiggedObject, object[] tags = null)
         {
-            BaseInitialize(source, SourceId, tags);
+            BaseInitialize(null, 0, tags);
             BoundingBoxRiggedObject = boundingBoxRiggedObject;
         }
     }

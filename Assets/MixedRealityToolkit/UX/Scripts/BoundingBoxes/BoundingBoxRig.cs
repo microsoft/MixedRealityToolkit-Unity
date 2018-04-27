@@ -171,13 +171,13 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
         public void Activate()
         {
-            InputManager.Instance.RaiseBoundingBoxRigActivated(null, 0, gameObject);
+            InputManager.Instance.RaiseBoundingBoxRigActivated(gameObject);
             ShowRig = true;
         }
 
         public void Deactivate()
         {
-            InputManager.Instance.RaiseBoundingBoxRigDeactivated(null, 0, gameObject);
+            InputManager.Instance.RaiseBoundingBoxRigDeactivated(gameObject);
             ShowRig = false;
         }
 
