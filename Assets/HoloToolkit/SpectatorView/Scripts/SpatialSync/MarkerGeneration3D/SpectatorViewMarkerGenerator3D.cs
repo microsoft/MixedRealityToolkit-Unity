@@ -25,39 +25,39 @@ namespace HoloToolkit.Unity.SpectatorView
 			Texture2D marker = GetMarker();
 
 			// Assume the marker is square
-            int markerRes = marker.width;
+			int markerRes = marker.width;
 
 			for(int x = 0; x<(MarkerResolutionInSquares + 2) * 2; x++)
-            {
-                for(int y = 0; y<(MarkerResolutionInSquares + 2) * 2; y++)
-                {
-                    int xCoord = ((x * (markerRes / ((MarkerResolutionInSquares + 2) * 2))) + (markerRes / ((MarkerResolutionInSquares + 2) * 4)));
-                    int yCoord = ((y * (markerRes / ((MarkerResolutionInSquares + 2) * 2))) + (markerRes / ((MarkerResolutionInSquares + 2) * 4)));
+			{
+				for(int y = 0; y<(MarkerResolutionInSquares + 2) * 2; y++)
+				{
+					int xCoord = ((x * (markerRes / ((MarkerResolutionInSquares + 2) * 2))) + (markerRes / ((MarkerResolutionInSquares + 2) * 4)));
+					int yCoord = ((y * (markerRes / ((MarkerResolutionInSquares + 2) * 2))) + (markerRes / ((MarkerResolutionInSquares + 2) * 4)));
 
-                    float col = marker.GetPixel(xCoord, yCoord).r;
-                    var res = 1f;
+					float col = marker.GetPixel(xCoord, yCoord).r;
+					var res = 1f;
 
-                    var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    Destroy(cube.GetComponent<Collider>());
-                    cube.layer = gameObject.layer;
-                    var height = 0.0f;
-                    cube.transform.parent = transform;
-                    cube.transform.localPosition = new Vector3((float)xCoord / (float)markerRes - 0.5f, height, (float)yCoord / (float)markerRes - 0.5f);
-                    var scale = 1.0f/((MarkerResolutionInSquares+2)*2) / res;
-                    scale += 0.001f;
-                    cube.transform.localScale = new Vector3(scale, scale, scale);
+					var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+					Destroy(cube.GetComponent<Collider>());
+					cube.layer = gameObject.layer;
+					var height = 0.0f;
+					cube.transform.parent = transform;
+					cube.transform.localPosition = new Vector3((float)xCoord / (float)markerRes - 0.5f, height, (float)yCoord / (float)markerRes - 0.5f);
+					var scale = 1.0f/((MarkerResolutionInSquares+2)*2) / res;
+					scale += 0.001f;
+					cube.transform.localScale = new Vector3(scale, scale, scale);
 
-                    Cubes.Add(cube);
-                    if (col > 0.1f)
-                    {
-                        cube.GetComponent<Renderer>().enabled = false;
-                    }
-                    else
-                    {
-                        cube.GetComponent<Renderer>().sharedMaterial = BlackMaterial;
-                    }
-                }
-            }
+					Cubes.Add(cube);
+					if (col > 0.1f)
+					{
+						cube.GetComponent<Renderer>().enabled = false;
+					}
+					else
+					{
+						cube.GetComponent<Renderer>().sharedMaterial = BlackMaterial;
+					}
+				}
+			}
 
             transform.localRotation = Quaternion.Euler(-40f, -65f, 55f);
 

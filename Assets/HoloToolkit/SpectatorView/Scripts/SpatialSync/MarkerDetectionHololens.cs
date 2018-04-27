@@ -34,9 +34,9 @@ namespace HoloToolkit.Unity.SpectatorView
 	    [SerializeField]
 		private float markerSize = 0.05f;
 
-	    /// <summary>
-	    /// Sound played when the hololens enters capturing mode
-	    /// </summary>
+		/// <summary>
+		/// Sound played when the hololens enters capturing mode
+		/// </summary>
 		[Tooltip("Sound played when the hololens enters capturing mode")]
 	    [SerializeField]
 		private AudioSource successSound;
@@ -145,7 +145,7 @@ namespace HoloToolkit.Unity.SpectatorView
 
 	        currentCaptureTimeout -= Time.deltaTime;
 
-	        if (currentCaptureTimeout <= 0 && capturing)
+			if (currentCaptureTimeout <= 0 && capturing)
 			{
 				Debug.Log("Capture timed out");
                 StopCapture();
@@ -159,7 +159,7 @@ namespace HoloToolkit.Unity.SpectatorView
 		{
 		    currentCaptureTimeout = CaptureTimeout;
 #if NETFX_CORE
-            if(!capturing)
+			if(!capturing)
 			{
             	holoLensCapture.StartCapture();
             }

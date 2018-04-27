@@ -18,37 +18,37 @@ namespace HoloToolkit.Unity.SpectatorView
 		[SerializeField]
 		private Texture2D[] markers;
 
-	    /// <summary>
-	    /// Material applied to white sections of SpectatorView marker
-	    /// </summary>
+		/// <summary>
+		/// Material applied to white sections of SpectatorView marker
+		/// </summary>
 		[Tooltip("Material applied to white sections of SpectatorView marker")]
 		[SerializeField]
 		protected Material WhiteMaterial;
 
-        /// <summary>
-        /// Material applied to black sections of SpectatorView marker
-        /// </summary>
+		/// <summary>
+		/// Material applied to black sections of SpectatorView marker
+		/// </summary>
 		[Tooltip("Material applied to black sections of SpectatorView marker")]
-        [SerializeField]
+		[SerializeField]
 		protected Material BlackMaterial;
 
 		///Execute once 3D marker has been generated
 	    public OnMarkerGeneratedEvent OnMarkerGenerated;
 
-	    /// <summary>
-	    /// // The id of the marker generated
-	    /// </summary>
+		/// <summary>
+		/// // The id of the marker generated
+		/// </summary>
 		[HideInInspector]
 		private int markerId;
 
-	    /// <summary>
-	    /// List of cubes that form the marker
-	    /// </summary>
+		/// <summary>
+		/// List of cubes that form the marker
+		/// </summary>
 		protected readonly List<GameObject> Cubes = new List<GameObject>();
 
-	    /// <summary>
-	    /// Texture from which the marker is generated
-	    /// </summary>
+		/// <summary>
+		/// Texture from which the marker is generated
+		/// </summary>
 		private Texture2D marker;
 
 	    /// <summary>

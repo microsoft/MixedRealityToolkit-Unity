@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.ARCapture
+namespace HoloToolkit.Unity.SpectatorView
 {
     /// <summary>
     /// Controls displaying of the AR marker on the mobile device

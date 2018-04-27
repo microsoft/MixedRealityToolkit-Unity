@@ -100,9 +100,9 @@ namespace HoloToolkit.Unity.SpectatorView
         }
 
         /// <summary>
-        /// AnchorLocated
+        /// Object to detect whether the world anchor has been located
         /// </summary>
-        [Tooltip("AnchorLocated")]
+        [Tooltip("Object to detect whether the world anchor has been located")]
         [SerializeField]
         private AnchorLocated anchorLocated;
         /// <summary>
