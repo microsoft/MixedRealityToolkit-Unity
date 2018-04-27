@@ -10,14 +10,14 @@ namespace MixedRealityToolkit.InputModule.EventData
     /// <summary>
     /// Describes activity of a bounding box rig events.
     /// </summary>
-    public class BoundingBoxRigActivityEventData : BaseEventData
+    public class BoundingBoxEventData : BaseEventData
     {
         /// <summary>
         /// The bounding box rigged object.
         /// </summary>
         public GameObject BoundingBoxRiggedObject { get; private set; }
 
-        public BoundingBoxRigActivityEventData(EventSystem eventSystem) : base(eventSystem) { }
+        public BoundingBoxEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         public void Initialize(GameObject boundingBoxRiggedObject)
         {

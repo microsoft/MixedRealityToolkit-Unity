@@ -57,7 +57,7 @@ namespace MixedRealityToolkit.InputModule
         private InputPositionEventData inputPositionEventData;
         private SelectPressedEventData selectPressedEventData;
         private PlacementEventData placementEventData;
-        private BoundingBoxRigActivityEventData boundingBoxActivityEventData;
+        private BoundingBoxEventData boundingBoxActivityEventData;
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         private SpeechEventData speechEventData;
         private DictationEventData dictationEventData;
@@ -215,7 +215,7 @@ namespace MixedRealityToolkit.InputModule
             sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
             xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
             placementEventData = new PlacementEventData(EventSystem.current);
-            boundingBoxActivityEventData = new BoundingBoxRigActivityEventData(EventSystem.current);
+            boundingBoxActivityEventData = new BoundingBoxEventData(EventSystem.current);
 #if UNITY_WSA || UNITY_STANDALONE_WIN
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
@@ -966,10 +966,10 @@ namespace MixedRealityToolkit.InputModule
 #endif
 
         #region Bounding Box Rig Activity Events
-        private static readonly ExecuteEvents.EventFunction<IBoundingBoxRigActivityHandler> OnBoundingBoxRigActivatedEventHandler =
-            delegate (IBoundingBoxRigActivityHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<IBoundingBoxStateHandler> OnBoundingBoxRigActivatedEventHandler =
+            delegate (IBoundingBoxStateHandler handler, BaseEventData eventData)
             {
-                BoundingBoxRigActivityEventData casted = ExecuteEvents.ValidateEventData<BoundingBoxRigActivityEventData>(eventData);
+                BoundingBoxEventData casted = ExecuteEvents.ValidateEventData<BoundingBoxEventData>(eventData);
                 handler.OnBoundingBoxRigActivated(casted);
             };
 
@@ -982,10 +982,10 @@ namespace MixedRealityToolkit.InputModule
             HandleEvent(boundingBoxActivityEventData, OnBoundingBoxRigActivatedEventHandler);
         }
 
-        private static readonly ExecuteEvents.EventFunction<IBoundingBoxRigActivityHandler> OnBoundingBoxRigDeactivatedEventHandler =
-            delegate (IBoundingBoxRigActivityHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<IBoundingBoxStateHandler> OnBoundingBoxRigDeactivatedEventHandler =
+            delegate (IBoundingBoxStateHandler handler, BaseEventData eventData)
             {
-                BoundingBoxRigActivityEventData casted = ExecuteEvents.ValidateEventData<BoundingBoxRigActivityEventData>(eventData);
+                BoundingBoxEventData casted = ExecuteEvents.ValidateEventData<BoundingBoxEventData>(eventData);
                 handler.OnBoundingBoxRigDeactivated(casted);
             };
 

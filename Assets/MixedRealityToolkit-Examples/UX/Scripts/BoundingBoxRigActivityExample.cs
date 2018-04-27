@@ -8,14 +8,14 @@ using MixedRealityToolkit.InputModule.EventData;
 
 namespace MixedRealityToolkit.Examples.UX
 {
-    public class BoundingBoxRigActivityExample : MonoBehaviour, IBoundingBoxRigActivityHandler
+    public class BoundingBoxRigActivityExample : MonoBehaviour, IBoundingBoxStateHandler
     {
-        public void OnBoundingBoxRigActivated(BoundingBoxRigActivityEventData eventData)
+        public void OnBoundingBoxRigActivated(BoundingBoxEventData eventData)
         {
             Debug.LogFormat("{0}'s bounding box rig is activated", eventData.BoundingBoxRiggedObject.name);
         }
 
-        public void OnBoundingBoxRigDeactivated(BoundingBoxRigActivityEventData eventData)
+        public void OnBoundingBoxRigDeactivated(BoundingBoxEventData eventData)
         {
             Debug.LogFormat("{0}'s bounding box rig is deactivated", eventData.BoundingBoxRiggedObject.name);
         }

@@ -12,7 +12,7 @@ namespace MixedRealityToolkit.Examples.InputModule
     /// Test MonoBehaviour that simply prints out a message very time a supported event is received from the input module.
     /// This is used to make sure that the input module routes events appropriately to game objects.
     /// </summary>
-    public class InputTest : MonoBehaviour, IInputHandler, IInputClickHandler, IFocusable, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler, IPointerClickHandler, IPlacementHandler, IBoundingBoxRigActivityHandler
+    public class InputTest : MonoBehaviour, IInputHandler, IInputClickHandler, IFocusable, ISourceStateHandler, IHoldHandler, IManipulationHandler, INavigationHandler, IPointerClickHandler, IPlacementHandler, IBoundingBoxStateHandler
     {
         [Tooltip("Set to true if gestures update (ManipulationUpdated, NavigationUpdated) should be logged. Note that this can impact performance.")]
         public bool LogGesturesUpdateEvents = false;
@@ -205,14 +205,14 @@ namespace MixedRealityToolkit.Examples.InputModule
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnBoundingBoxRigActivated(BoundingBoxRigActivityEventData eventData)
+        public void OnBoundingBoxRigActivated(BoundingBoxEventData eventData)
         {
             Debug.LogFormat("OnBoundingBoxRigActivated\r\nObject: {0}", eventData.BoundingBoxRiggedObject.name);
 
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
-        public void OnBoundingBoxRigDeactivated(BoundingBoxRigActivityEventData eventData)
+        public void OnBoundingBoxRigDeactivated(BoundingBoxEventData eventData)
         {
             Debug.LogFormat("OnBoundingBoxRigDeactivated\r\nObject: {0}", eventData.BoundingBoxRiggedObject.name);
 
