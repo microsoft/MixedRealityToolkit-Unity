@@ -3,7 +3,7 @@
 using UnityEngine;
 using UnityEngine.XR.iOS;
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
     /// <summary>
     /// Detects when an anchor has been located
@@ -18,7 +18,8 @@ namespace HoloToolkit.SpectatorView
         /// <summary>
         /// The 3D marker generator
         /// </summary>
-        [SerializeField] [Tooltip("The 3D marker generator")]
+        [SerializeField]
+        [Tooltip("The 3D marker generator")]
         private SpectatorViewMarkerGenerator3D markerGenerator;
 
         /// <summary>
@@ -27,7 +28,7 @@ namespace HoloToolkit.SpectatorView
         public AnchorLocatedEvent OnAnchorLocated;
 
         /// <summary>
-        ///
+        /// Flag to indicated whether the 3D marker has been displayed
         /// </summary>
         private bool transitioned;
 
@@ -42,7 +43,10 @@ namespace HoloToolkit.SpectatorView
 
         private void Start()
         {
-            if (MarkerGenerator == null) MarkerGenerator = FindObjectOfType<SpectatorViewMarkerGenerator3D>();
+            if (MarkerGenerator == null)
+            {
+                MarkerGenerator = FindObjectOfType<SpectatorViewMarkerGenerator3D>();
+            }
             UnityARSessionNativeInterface.ARFrameUpdatedEvent += FrameUpdated;
         }
 

@@ -9,7 +9,7 @@ using System.Linq;
 using UnityEngine.XR.WSA.WebCam;
 #endif
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
     /// <summary>
     /// Manages the camera capture on the HoloLens
@@ -21,7 +21,6 @@ namespace HoloToolkit.SpectatorView
         public FrameCapturesDelegate OnFrameCapture;
 
 #if NETFX_CORE
-
         /// <summary>
         /// Manages the camera capture
         /// </summary>
@@ -32,6 +31,7 @@ namespace HoloToolkit.SpectatorView
         /// </summary>
         private bool capturing = false;
 #endif
+
         /// <summary>
         /// Width of the photo taken
         /// </summary>
@@ -56,8 +56,8 @@ namespace HoloToolkit.SpectatorView
 			if(!capturing)
 			{
 				PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
+			    capturing = true;
 			}
-			capturing = true;
 #else
 			Debug.LogWarning("Capturing only supported on the HoloLens platform");
 #endif
@@ -78,7 +78,6 @@ namespace HoloToolkit.SpectatorView
 			Debug.LogWarning("Capturing only supported on the HoloLens platform");
 #endif
         }
-
 
 #if NETFX_CORE
 
@@ -161,10 +160,7 @@ namespace HoloToolkit.SpectatorView
 
         private void OnDestroy()
         {
-            if(capturing)
-            {
-                photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
-            }
+            StopCapture();
         }
 #endif
     }

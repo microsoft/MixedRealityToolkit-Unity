@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
     /// <summary>
     /// Manages the sync of the world between the HoloLens and the mobile

@@ -65,7 +65,6 @@ namespace HoloToolkit.ARCapture
 
         private void OnDismiss()
         {
-
             // Setting screen rotation to autorotation when AR code is dismissed
             if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
             {

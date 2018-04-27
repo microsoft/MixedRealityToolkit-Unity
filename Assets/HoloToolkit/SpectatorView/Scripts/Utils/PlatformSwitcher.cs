@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
     /// <summary>
     /// Utility to switch scene state between HoloLens and mobile platforms

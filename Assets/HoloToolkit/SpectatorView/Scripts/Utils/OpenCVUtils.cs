@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
 	/// <summary>
 	/// Utility function to ensure the OpenCVWrapper has been successfully loaded

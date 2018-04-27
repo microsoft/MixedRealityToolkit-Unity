@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.ARCapture
+namespace HoloToolkit.Unity.SpectatorView
 {
     /// <summary>
     /// Manages the scale of the marker to fit in different screen sizes

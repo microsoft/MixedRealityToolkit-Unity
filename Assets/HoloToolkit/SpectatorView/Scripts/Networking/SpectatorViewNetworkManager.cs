@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
     public class SpectatorViewNetworkManager : NetworkManager
     {
@@ -18,7 +18,8 @@ namespace HoloToolkit.SpectatorView
         /// <summary>
         /// Component used to manage the discovery of new devices
         /// </summary>
-        [SerializeField] [Tooltip("Component used to manage the discovery of new devices")]
+        [SerializeField]
+        [Tooltip("Component used to manage the discovery of new devices")]
         private SpectatorViewNetworkDiscovery spectatorViewNetworkDiscovery;
 
         /// <summary>
@@ -29,19 +30,22 @@ namespace HoloToolkit.SpectatorView
         /// <summary>
         /// Component used to detect a AR marker from the HoloLens
         /// </summary>
-        [SerializeField] [Tooltip("Component used to detect a AR marker from the HoloLens")]
+        [SerializeField]
+        [Tooltip("Component used to detect a AR marker from the HoloLens")]
         private MarkerDetectionHololens markerDetectionHololens;
 
         /// <summary>
         /// Component that generates the AR codes
         /// </summary>
-        [SerializeField] [Tooltip("Component that generates the AR codes")]
+        [SerializeField]
+        [Tooltip("Component that generates the AR codes")]
         private MarkerGeneration3D markerGeneration3D;
 
         /// <summary>
         /// Component that manages the procedure of discovering new devices (mobile)
         /// </summary>
-        [SerializeField] [Tooltip("Component that manages the procedure of discovering new devices (mobile)")]
+        [SerializeField]
+        [Tooltip("Component that manages the procedure of discovering new devices (mobile)")]
         private NewDeviceDiscovery newDeviceDiscovery;
 
         /// <summary>
@@ -52,7 +56,8 @@ namespace HoloToolkit.SpectatorView
         /// <summary>
         /// Component that syncs up the world
         /// </summary>
-        [SerializeField] [Tooltip("Component that syncs up the world")]
+        [SerializeField]
+        [Tooltip("Component that syncs up the world")]
         private WorldSync worldSync;
 
         /// <summary>
@@ -110,25 +115,37 @@ namespace HoloToolkit.SpectatorView
             catch (Exception e)
             {
                 Debug.LogError(e);
-				gameObject.SetActive(false);
-                throw;
+                gameObject.SetActive(false);
+                return;
             }
 #endif
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
-            //Auto find components if necessary
-            if (NewDeviceDiscovery == null) NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
-            if (SpectatorViewNetworkDiscovery == null) SpectatorViewNetworkDiscovery = FindObjectOfType<SpectatorViewNetworkDiscovery>();
-            //The host needs an aditional component
+            // Auto find components if necessary
+            if (NewDeviceDiscovery == null)
+            {
+                NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
+            }
+
+            if (SpectatorViewNetworkDiscovery == null)
+            {
+                SpectatorViewNetworkDiscovery = FindObjectOfType<SpectatorViewNetworkDiscovery>();
+            }
+            // The host needs an aditional component
             if (isHost)
             {
                 if (MarkerDetectionHololens == null)
+                {
                     MarkerDetectionHololens = FindObjectOfType<MarkerDetectionHololens>();
-                NetworkServer.Reset(); //Reset the server to make sure that it starts clean
+                }
+                NetworkServer.Reset(); // Reset the server to make sure that it starts clean
                 StartHost();
             }
             else
             {
-                if (MarkerGeneration3D == null) MarkerGeneration3D = FindObjectOfType<MarkerGeneration3D>();
+                if (MarkerGeneration3D == null)
+                {
+                    MarkerGeneration3D = FindObjectOfType<MarkerGeneration3D>();
+                }
 
                 WorldSync.OnWorldSyncCompleteClient += OnWorldSync;
             }
@@ -172,7 +189,10 @@ namespace HoloToolkit.SpectatorView
         public override void OnClientConnect( NetworkConnection conn )
         {
             base.OnClientConnect(conn);
-            if (OnClientConnectedCustom != null) OnClientConnectedCustom();
+            if (OnClientConnectedCustom != null)
+            {
+                OnClientConnectedCustom();
+            }
         }
 
         /// <summary>
@@ -180,7 +200,7 @@ namespace HoloToolkit.SpectatorView
         /// </summary>
         private void OnWorldSync()
         {
-            //Tells the mobile to stop broadcasting which signal the HoloLens to stop the camera
+            // Tells the mobile to stop broadcasting which signal the HoloLens to stop the camera
             StartCoroutine(StopBroadcastRoutine());
         }
 
@@ -189,7 +209,10 @@ namespace HoloToolkit.SpectatorView
         /// </summary>
         private IEnumerator StopBroadcastRoutine()
         {
-            if (NewDeviceDiscovery == null) NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
+            if (NewDeviceDiscovery == null)
+            {
+                NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
+            }
             NewDeviceDiscovery.StopBroadcast();
             yield return null;
         }

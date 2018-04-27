@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
     /// <summary>
     /// Manages the capture process on the HoloLens
@@ -24,7 +24,7 @@ namespace HoloToolkit.SpectatorView
 	    /// A component for capturing photos from the HoloLens webcam
 	    /// </summary>
 		[Tooltip("A component for capturing photos from the HoloLens webcam")]
-	    [SerializeField]
+		[SerializeField]
 		private CameraCaptureHololens holoLensCapture;
 
 	    /// <summary>
@@ -45,13 +45,13 @@ namespace HoloToolkit.SpectatorView
 	    /// Time the user has to hold an airtap before entering capturing mode
 	    /// </summary>
 		[Tooltip("Time the user has to hold an airtap before entering capturing mode")]
-	    [SerializeField]
+		[SerializeField]
 		private float airtapTimeToCapture;
 
 	    /// <summary>
 	    /// Time the camera will be capturing
 	    /// </summary>
-        [Tooltip("Time the camera will be capturing")]
+		[Tooltip("Time the camera will be capturing")]
 	    [SerializeField]
 	    private float captureTimeout = 10f;
 
@@ -119,14 +119,14 @@ namespace HoloToolkit.SpectatorView
 	    {
 #if NETFX_CORE
 			try
-            {
-			    OpenCVUtils.CheckOpenCVWrapperHasLoaded();
-            }
+			{
+				OpenCVUtils.CheckOpenCVWrapperHasLoaded();
+			}
             catch (Exception e)
             {
                 Debug.LogError(e);
 				gameObject.SetActive(false);
-                throw;
+                return;
             }
 
 			detector = new MarkerDetector();
@@ -139,7 +139,7 @@ namespace HoloToolkit.SpectatorView
 	    private void Update()
 	    {
 	        if (!capturing || currentCaptureTimeout <= 0)
-			{
+	        {
 				return;
 			}
 
@@ -183,7 +183,7 @@ namespace HoloToolkit.SpectatorView
 		public void StopCapture()
 		{
 			capturing = false;
-		    currentCaptureTimeout = 0;
+			currentCaptureTimeout = 0;
 
 #if NETFX_CORE
 			holoLensCapture.StopCapture();

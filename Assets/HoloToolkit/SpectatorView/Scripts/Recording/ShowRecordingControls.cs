@@ -4,7 +4,7 @@
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
-namespace HoloToolkit.ARCapture
+namespace HoloToolkit.Unity.SpectatorView
 {
     /// <summary>
     /// Controls the display of the recording UI.
@@ -33,6 +33,7 @@ namespace HoloToolkit.ARCapture
         /// </summary>
         [Tooltip("Tap and hold time to show controls")]
         [SerializeField]
+        [Range(0.1f, 2.0f)]
         private float timeToDisplayMenu = 1.0f;
 
         /// <summary>

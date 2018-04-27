@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.ARCapture
+namespace HoloToolkit.Unity.SpectatorView
 {
     /// <summary>
     /// Utility for fading out marker
@@ -58,8 +58,7 @@ namespace HoloToolkit.ARCapture
         /// </summary>
         private Material mat;
 
-
-        void Start()
+        private void Start()
         {
             if (mat == null)
             {

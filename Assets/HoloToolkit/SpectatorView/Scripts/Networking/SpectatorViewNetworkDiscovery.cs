@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
     /// <summary>
     /// </summary>
@@ -59,7 +59,6 @@ namespace HoloToolkit.SpectatorView
         /// Called when the phone finds a hololens session with its marker code.
         /// </summary>
         public HololensSessionFoundEvent OnHololensSessionFound;
-
 
         /// <summary>
         /// Discovery starts when the component starts
@@ -117,13 +116,13 @@ namespace HoloToolkit.SpectatorView
             catch (Exception e)
             {
                 Debug.LogError(e);
-				gameObject.SetActive(false);
-                throw;
+                gameObject.SetActive(false);
+                return;
             }
 #endif
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
 
-            //The client doesn't have to wait for the server to be started, but this works best if the component
+            // The client doesn't have to wait for the server to be started, but this works best if the component
             // waits for the remaining networking bits to have warmed up,
             // just give it a couple of seconds and then start it
             if (!isHost)
@@ -137,12 +136,23 @@ namespace HoloToolkit.SpectatorView
         /// </summary>
         public void ManualStart()
         {
-            //Auto find components if necessary
-            if (MarkerGeneration3D == null) MarkerGeneration3D = FindObjectOfType<MarkerGeneration3D>();
-            if (MarkerDetectionHololens == null) MarkerDetectionHololens = FindObjectOfType<MarkerDetectionHololens>();
-            if (NewDeviceDiscovery == null) NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
+            // Auto find components if necessary
+            if (MarkerGeneration3D == null)
+            {
+                MarkerGeneration3D = FindObjectOfType<MarkerGeneration3D>();
+            }
 
-            //If it isn't supposed to start listening/broadcasting exit the method
+            if (MarkerDetectionHololens == null)
+            {
+                MarkerDetectionHololens = FindObjectOfType<MarkerDetectionHololens>();
+            }
+
+            if (NewDeviceDiscovery == null)
+            {
+                NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
+            }
+
+            // If it isn't supposed to start listening/broadcasting exit the method
             if (!AutoStart)
             {
                 return;
@@ -156,10 +166,12 @@ namespace HoloToolkit.SpectatorView
             else
             {
                 StartAsServer();
-                if (MarkerDetectionHololens != null) MarkerDetectionHololens.OnMarkerDetected += OnMarkerDetected;
+                if (MarkerDetectionHololens != null)
+                {
+                    MarkerDetectionHololens.OnMarkerDetected += OnMarkerDetected;
+                }
             }
         }
-
 
         #region Host
 
@@ -220,14 +232,22 @@ namespace HoloToolkit.SpectatorView
             }
 
             int parsedMarkerId;
-            int.TryParse(parsedData[0], out parsedMarkerId);
+            if (!int.TryParse(parsedData[0], out parsedMarkerId))
+            {
+                Debug.LogError("Error parsing broadcast data!");
+                return;
+            }
+
 
             //We found a server which data was our last generated markerId. That means that server just scanned our maker.
             //Join it!
             if (parsedMarkerId == MarkerGeneration3D.MarkerId && !IsStopping &&
                 !NetworkManager.singleton.IsClientConnected())
             {
-                if (OnHololensSessionFound != null) OnHololensSessionFound();
+                if (OnHololensSessionFound != null)
+                {
+                    OnHololensSessionFound();
+                }
                 IsStopping = true;
                 StartCoroutine(StopBroadcastAndConnect(fromAddress));
             }

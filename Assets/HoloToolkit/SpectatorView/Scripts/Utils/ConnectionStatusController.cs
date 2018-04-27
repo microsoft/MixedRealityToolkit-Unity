@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
     /// <summary>
     /// Controls an on screen text field to display connection status to the user
@@ -78,9 +78,9 @@ namespace HoloToolkit.SpectatorView
         }
 
         /// <summary>
-        /// WorldSync
+        /// Object responsible for aligning holograms on mobile and HoloLens
         /// </summary>
-        [Tooltip("WorldSync")]
+        [Tooltip("Object responsible for aligning holograms on mobile and HoloLens")]
         [SerializeField]
         private WorldSync worldSync;
         /// <summary>
@@ -154,7 +154,10 @@ namespace HoloToolkit.SpectatorView
             SpectatorViewNetworkDiscovery.OnHololensSessionFound += PromptAlmostThere;
 
             // First status
-            Text.text = "Locating Floor...";
+            if (Text != null)
+            {
+                Text.text = "Locating Floor...";
+            }
         }
 
         /// <summary>

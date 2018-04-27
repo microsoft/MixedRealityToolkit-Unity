@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
 	[CustomEditor(typeof(MarkerGeneration3D), true)]
-	public class MarkerGeneration3DEditor : Editor {
-
+	public class MarkerGeneration3DEditor : Editor
+	{
 		public override void OnInspectorGUI()
 		{
 			DrawDefaultInspector();

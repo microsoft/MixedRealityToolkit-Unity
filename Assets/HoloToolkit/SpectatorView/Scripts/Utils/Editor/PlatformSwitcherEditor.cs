@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
     [CustomEditor(typeof(PlatformSwitcher))]
     public class PlatformSwitcherEditor : Editor

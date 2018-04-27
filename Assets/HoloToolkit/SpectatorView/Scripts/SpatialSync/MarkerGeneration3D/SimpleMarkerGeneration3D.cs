@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
 	public class SimpleMarkerGeneration3D : MarkerGeneration3D
 	{

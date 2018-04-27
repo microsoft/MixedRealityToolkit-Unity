@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
     /// <summary>
     /// In this instance the HoloLens will be listening to broadcasts from the mobile device to turn on the camera
@@ -42,13 +42,13 @@ namespace HoloToolkit.SpectatorView
             }
             catch (Exception e)
             {
-                Debug.LogError(e);
+				Debug.LogError(e);
 				gameObject.SetActive(false);
-                throw;
+                return;
             }
 #endif
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
-            //The client doesn't have to wait for the server to be started, but this works best if the component
+            // The client doesn't have to wait for the server to be started, but this works best if the component
             // waits for the remaining networking bits to have warmed up,
             // just give it a couple of seconds and then start it
             if (!isHost)
@@ -64,10 +64,10 @@ namespace HoloToolkit.SpectatorView
         {
             Initialize();
 
-            //In this case the host will be listening for a phone to ping it in order to switch on the camera
+            // In this case the host will be listening for a phone to ping it in order to switch on the camera
             if (isHost)
             {
-                //As a host, we start listening for a ping to turn on the camera
+                // As a host, we start listening for a ping to turn on the camera
                 if (MarkerDetectionHololens == null)
                 {
                     MarkerDetectionHololens = FindObjectOfType<MarkerDetectionHololens>();
@@ -81,7 +81,7 @@ namespace HoloToolkit.SpectatorView
         }
 
 
-        //When discovering new devices the host listens to broadcasts to tell it to start looking for devices
+        // When discovering new devices the host listens to broadcasts to tell it to start looking for devices
 
         #region Host
 

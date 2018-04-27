@@ -20,9 +20,19 @@ Current Features
 
 Requirements
 ------------
-- SpectatorView plugin, which can be found here: https://github.com/Microsoft/MixedRealityToolkit/SpectatorViewPlugin
-- SpectatorView currently uses UNET for its network discovery and spatial syncronizing.  This means all interactivity during the application needs to be synced between the devices.
-- Unity 2017.2.1p2
+- SpectatorView plugin and required OpenCV binaries, which can be found here: https://github.com/Microsoft/MixedRealityToolkit/SpectatorViewPlugin, listed here:
+    - opencv_aruco341.dll
+    - opencv_calib3d341.dll
+    - opencv_core341.dll
+    - opencv_features2d341.dll
+    - opencv_flann341.dll
+    - opencv_imgproc341.dll
+    - zlib1.dll
+    - SpectatorViewPlugin.dll
+- UnityARKitPlugin
+    - This can be downloaded from the asset store here: https://assetstore.unity.com/packages/essentials/tutorial-projects/unity-arkit-plugin-92515
+- SpectatorView uses UNET for its network discovery and spatial syncronizing.  This means all interactivity during the application needs to be synced between the devices.
+- Unity 2017.2.1p2 or later
 - Hardware
     - A HoloLens
     - Windows PC running Windows 10
@@ -41,22 +51,20 @@ Building the SpectatorView Native Plugin
  
 Project Setup
 -------------
-
 - Prepare your scene
     - Ensure all visable gameobjects, within your scene, are contained under a world root gameobject.
     ![World Root](Images/WorldRoot.png)
 
 - Add the SpectatorView prefab (Assets/SpectatorView/Prefabs/SpectatorView.prefab) into your scene.
 - Add the SpectatorViewNetworking prefab (Assets/SpectatorView/Prefabs/SpectatorViewNetworking.prefab) into your scene.
-- OPTIONAL: Select the SpectatorViewNetworking gameobject and on the SpectatorViewNetworingManager component, there's a few things you can link up. If left untouched this component will search for necessary scripts at runtime.
+- Select the SpectatorViewNetworking gameobject and on the SpectatorViewNetworingManager component, there's a few things you can link up. If left untouched this component will search for necessary scripts at runtime.
     - Marker Detection Hololens -> SpectatorView/Hololens/MarkerDetection
     - Marker Generation 3D -> SpectatorView/IPhone/SyncMarker/3DMarker
     ![SpectatorView Network Discovery](Images/SpectatorViewNetworkDiscovery.png)
 
 Building for the Different Platforms
 ------------------------------------
-
-- When building for iOS ensure to remove the GLTF component of MRTK as this is not yet compatibile with this platform.  This may will be fixed in a later release. 
+- When building for iOS ensure to remove the GLTF component of MRTK as this is not yet compatibile with this platform. 
 - At the top level of the SpectatorView prefab there is a component called 'Platform Switcher'.
 ![Platform Switcher](Images/PlatformSwticher.png)
 - Select the platform you want to build for.
@@ -66,7 +74,6 @@ Building for the Different Platforms
 
 Running your Application
 ------------------------
-
 - Once you have a built and deployed a version of you application on the iPhone and on the HoloLens you should be able to connect them.
 - Ensure that both devices are on the same WIFI network.
 - Start the application on the both devices, in no specific order.
@@ -80,24 +87,21 @@ Running your Application
 
 Video Capture
 -------------
-
 - To capture and save a video from the iPhone, tap and hold the screen for 1 second.  This should open the recording menu.
 - Tap the red record button, this should start a countdown before begining to record the screen.
 - To finish recording tap and hold the screen for another 1 second and tap the stop button.
 - Click the preview button (blue button), to watch the recorded video.
 - Open the sharesheet and click save to camera roll.
 
-
 Networking your Application 
 ---------------------------
-
 - SpectatorView uses UNET for its networking and manages all host-client connections for you.
-- However any app specific data has to be synced and implemented by you, using e.g. SyncVars, NetworkTransform, NetworkBehaviour.
+- Any app specific data has to be synced and implemented by you, using e.g. SyncVars, NetworkTransform, NetworkBehaviour.
 - For more information and tutorials on Unity Networking please visit https://unity3d.com/learn/tutorials/s/multiplayer-networking
 
 Example Scene
 -------------
-- An example scene can be found in SpectatorView.Examples/Scenes/SpectatorViewExample.unity
+- An example scene can be found in HoloToolkit-Examples\SpectatorView\Scenes\SpectatorViewExample.unity
 
 Troubleshooting
 ---------------
@@ -131,9 +135,4 @@ Troubleshooting
 - The HoloLens camera turns on but is not able to scan the marker.
     - Ensure that you build all versions of the application using the same Unity Editor instance (do not close Unity between builds).  This is due to an unknown issue with Unity.
 
-Licenses
---------
-
-- OpenCV - (3-clause BSD License) https://opencv.org/license.html
-- Unity ARKit - (MIT License) https://www.assetstore.unity3d.com/en/#!/content/92515
 

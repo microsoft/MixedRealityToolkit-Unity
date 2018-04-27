@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
 	public class MarkerGeneration3D : MonoBehaviour
 	{
@@ -15,14 +15,14 @@ namespace HoloToolkit.SpectatorView
 	    /// An array of available pre generated markers
 	    /// </summary>
 		[Tooltip("An array of available pre generated markers")]
-	    [SerializeField]
+		[SerializeField]
 		private Texture2D[] markers;
 
 	    /// <summary>
 	    /// Material applied to white sections of SpectatorView marker
 	    /// </summary>
 		[Tooltip("Material applied to white sections of SpectatorView marker")]
-	    [SerializeField]
+		[SerializeField]
 		protected Material WhiteMaterial;
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace HoloToolkit.SpectatorView
 			if(!marker)
 			{
 				UnityEngine.Random.InitState(DateTime.Now.Millisecond);
-			    MarkerId = UnityEngine.Random.Range(0, Markers.Length);
+				MarkerId = UnityEngine.Random.Range(0, Markers.Length);
                 marker = Markers[MarkerId];
 			    if (OnMarkerGenerated != null)
 				{

@@ -10,7 +10,7 @@ using UnityEngine.iOS;
 using UnityEngine.Apple.ReplayKit;
 #endif
 
-namespace HoloToolkit.SpectatorView
+namespace HoloToolkit.Unity.SpectatorView
 {
     /// <summary>
     /// Records and replays screencaptures recorded from the iPhone
@@ -27,6 +27,8 @@ namespace HoloToolkit.SpectatorView
         /// <summary>
         /// Seconds to countdown before recording
         /// </summary>
+        [Tooltip("Seconds to countdown before recording")]
+        [SerializeField]
         private int countDownNumber = 3;
 
         /// <summary>
@@ -42,7 +44,8 @@ namespace HoloToolkit.SpectatorView
         /// <summary>
         /// Record button gameObject
         /// </summary>
-        [Tooltip("Record button gameObject")] public GameObject RecordButton;
+        [Tooltip("Record button gameObject")]
+        public GameObject RecordButton;
 
         /// <summary>
         /// Recording countdown button gameObject
@@ -183,7 +186,7 @@ namespace HoloToolkit.SpectatorView
 			RecordButton.SetActive(false);
 			Countdown();
 			RecordCountdownButton.GetComponent<Animation>().Play();
-            #endif
+#endif
         }
 
         /// <summary>
@@ -192,7 +195,7 @@ namespace HoloToolkit.SpectatorView
         public void Countdown()
         {
             RecordCountdownText.text = countDownNumber.ToString();
-            if (countDownNumber >= 1)
+            if (countDownNumber != 0)
             {
                 countDownNumber--;
                 Invoke("Countdown", 1f);
@@ -213,7 +216,7 @@ namespace HoloToolkit.SpectatorView
         {
 #if UNITY_IOS
 			if(!ReplayKit.APIAvailable)
-            {
+			{
 				return;
             }
 
@@ -222,7 +225,7 @@ namespace HoloToolkit.SpectatorView
 				ReplayKit.StartRecording(true, true);
 				Controls.SetActive(false);
 			}
-            #endif
+#endif
         }
 
         /// <summary>
@@ -236,7 +239,7 @@ namespace HoloToolkit.SpectatorView
 				ReplayKit.StopRecording();
 				RecordButton.SetActive(true);
 			}
-            #endif
+#endif
         }
 
         /// <summary>
@@ -246,7 +249,7 @@ namespace HoloToolkit.SpectatorView
         {
 #if UNITY_IOS
 			ReplayKit.Preview();
-			#endif
+#endif
         }
     }
 }
