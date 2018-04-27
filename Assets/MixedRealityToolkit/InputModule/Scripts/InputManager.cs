@@ -973,10 +973,10 @@ namespace MixedRealityToolkit.InputModule
                 handler.OnBoundingBoxRigActivated(casted);
             };
 
-        public void RaiseBoundingBoxRigActivated(GameObject boundingBoxRiggedObject, object[] tags = null)
+        public void RaiseBoundingBoxRigActivated(GameObject boundingBoxRiggedObject)
         {
             // Create input event
-            boundingBoxActivityEventData.Initialize(boundingBoxRiggedObject, tags);
+            boundingBoxActivityEventData.Initialize(boundingBoxRiggedObject);
 
             // Pass to the handler through HandleEvent to perform the fallback logic
             HandleEvent(boundingBoxActivityEventData, OnBoundingBoxRigActivatedEventHandler);
@@ -989,10 +989,10 @@ namespace MixedRealityToolkit.InputModule
                 handler.OnBoundingBoxRigDeactivated(casted);
             };
 
-        public void RaiseBoundingBoxRigDeactivated(GameObject boundingBoxRiggedObject, object[] tags = null)
+        public void RaiseBoundingBoxRigDeactivated(GameObject boundingBoxRiggedObject)
         {
             // Create input event
-            boundingBoxActivityEventData.Initialize(boundingBoxRiggedObject, tags);
+            boundingBoxActivityEventData.Initialize(boundingBoxRiggedObject);
 
             // Pass to the handler through HandleEvent to perform the fallback logic
             HandleEvent(boundingBoxActivityEventData, OnBoundingBoxRigDeactivatedEventHandler);
