@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         private void Update()
         {
-            if (Application.isPlaying || Application.isEditor)
+            if (Application.isPlaying || !Application.isEditor)
             {
                 return;
             }
