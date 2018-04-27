@@ -4,7 +4,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MixedRealityToolkit.SpatialMapping.RemoteMapping
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+namespace HoloToolkit.Unity.SpatialMapping
 {
     public class FileSurfaceObserver : SpatialMappingSource
     {
@@ -55,7 +59,7 @@ namespace MixedRealityToolkit.SpatialMapping.RemoteMapping
         private void Update()
         {
             // Keyboard commands for saving and loading a remotely generated mesh file.
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WSA
             // S - saves the active mesh
             if (Input.GetKeyUp(SaveFileKey))
             {
@@ -71,4 +75,21 @@ namespace MixedRealityToolkit.SpatialMapping.RemoteMapping
 #endif
         }
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(FileSurfaceObserver))]
+    public class FileSurfaceObserverEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            // Quick way for the user to get access to the room file location.
+            if (GUILayout.Button("Open File Location"))
+            {
+                System.Diagnostics.Process.Start(MeshSaver.MeshFolderName);
+            }
+        }
+    }
+#endif
 }
