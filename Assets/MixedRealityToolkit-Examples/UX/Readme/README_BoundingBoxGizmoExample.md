@@ -33,7 +33,7 @@ When you select one of the gizmo, it is highlighted and other gizmos becomes inv
 ### [BoundingBoxRig script](/Assets/MixedRealityToolkit/UX/Scripts/BoundingBoxes/BoundingBoxRig.cs) ###
 This script gets added as a Component to a GameObject. An object with this script as a Component will appear with an AppBar floating in front of it. The BoundingBoxRig script creates a rig of corner and mid-edge handles for scaling and rotating an object. The Adjust button in the AppBar turns on and off the rig. This script cooperates with the TwoHandedManipulation script.
 
-You can also watch the activity of a bounding box rig by using the `IBoundingBoxRigActivityHandler` interface, which enables you to see whether a rig is being activated or deactivated through the `OnBoundingBoxRigActivated` and `OnBoundingBoxRigDeactivated` hooks.
+You can also watch the activity of a bounding box rig by using the `IBoundingBoxStateHandler` interface, which enables you to see whether a rig is being activated or deactivated through the `OnBoundingBoxRigActivated` and `OnBoundingBoxRigDeactivated` hooks.
 
 
 ### [BoundingBoxGizmoHandle script](/Assets/MixedRealityToolkit/UX/Scripts/BoundingBoxes/BoundingBoxGizmoHandle.cs) ###
