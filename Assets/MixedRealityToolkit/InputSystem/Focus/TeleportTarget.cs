@@ -8,34 +8,19 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 {
     public class TeleportTarget : InteractableHighlight, ITeleportTarget
     {
-        [Header("Hot Spot Options")]
         [SerializeField]
-        private bool overrideOrientation;
+        [Header("Hot Spot Options")]
+        private bool overrideOrientation = false;
 
-        public Vector3 Position
-        {
-            get { return transform.position; }
-        }
+        public Vector3 Position => transform.position;
 
-        public Vector3 Normal
-        {
-            get { return transform.up; }
-        }
+        public Vector3 Normal => transform.up;
 
-        public bool IsActive
-        {
-            get { return isActiveAndEnabled; }
-        }
+        public bool IsActive => isActiveAndEnabled;
 
-        public bool OverrideTargetOrientation
-        {
-            get { return overrideOrientation; }
-        }
+        public bool OverrideTargetOrientation => overrideOrientation;
 
-        public float TargetOrientation
-        {
-            get { return transform.eulerAngles.y; }
-        }
+        public float TargetOrientation => transform.eulerAngles.y;
 
         public override void OnBeforeFocusChange(FocusEventData eventData)
         {

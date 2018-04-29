@@ -24,8 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// </summary>
     public class SpeechInputSource : BaseInputSource
     {
-        public override InputType[] Capabilities => new[] { InputType.Voice };
-
         /// <summary>
         /// This enumeration gives the manager two different ways to handle the recognizer. Both will
         /// set up the recognizer and add all keywords. The first causes the recognizer to start
@@ -38,20 +36,22 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// </summary>
         [SerializeField]
         [Tooltip("Keywords are persistent across all scenes.  This Speech Input Source instance will not be destroyed when loading a new scene.")]
-        private bool persistentKeywords;
+        private bool persistentKeywords = false;
 
         [SerializeField]
         [Tooltip("Whether the recognizer should be activated on start.")]
-        private RecognizerStartBehavior recognizerStart;
+        private RecognizerStartBehavior recognizerStart = RecognizerStartBehavior.AutoStart;
 
         [SerializeField]
         [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
-        private KeywordAndKeyCode[] keywords;
+        private KeywordAndKeyCode[] keywords = null;
 
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
         /// </summary>
         public KeywordAndKeyCode[] Keywords => keywords;
+
+        public override InputType[] Capabilities => new[] { InputType.Voice };
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         /// <summary>

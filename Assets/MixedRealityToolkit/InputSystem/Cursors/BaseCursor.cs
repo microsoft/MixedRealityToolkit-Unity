@@ -63,19 +63,19 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// </summary>
         [SerializeField]
         [Header("Transform References")]
-        private Transform primaryCursorVisual;
+        private Transform primaryCursorVisual = null;
 
         /// <summary>
         /// Indicates if the source is detected.
         /// </summary>
-        protected bool IsHandDetected;
+        protected bool IsHandDetected = false;
 
         /// <summary>
         /// Indicates pointer or air tap down
         /// </summary>
-        protected bool IsPointerDown;
+        protected bool IsPointerDown = false;
 
-        protected GameObject TargetedObject;
+        protected GameObject TargetedObject = null;
 
         private uint visibleHandsCount = 0;
         private bool isVisible = true;

@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
     {
         [SerializeField]
         [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
-        private GameObject cursorPrefab;
+        private GameObject cursorPrefab = null;
 
         /// <summary>
         /// Maximum distance at which the gaze can collide with an object.
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         /// </summary>
         [SerializeField]
         [Tooltip("Stabilizer, if any, used to smooth out the gaze ray data.")]
-        private BaseRayStabilizer stabilizer;
+        private BaseRayStabilizer stabilizer = null;
 
         /// <summary>
         /// Transform that should be used as the source of the gaze position and rotation.
@@ -57,11 +57,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         /// </summary>
         [SerializeField]
         [Tooltip("Transform that should be used to represent the gaze position and rotation. Defaults to CameraCache.Main")]
-        private Transform gazeTransform;
+        private Transform gazeTransform = null;
 
         [SerializeField]
         [Tooltip("True to draw a debug view of the ray.")]
-        private bool debugDrawRay;
+        private bool debugDrawRay = false;
 
         /// <summary>
         /// The game object that is currently being gazed at, if any.

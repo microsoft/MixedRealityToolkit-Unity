@@ -13,42 +13,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         private const int InvalidLayer = -1;
 
         #region Local layers
+
         private static int defaultLayer = InvalidLayer;
         private static int surfaceLayer = InvalidLayer;
         private static int interactionLayer = InvalidLayer;
         private static int activationLayer = InvalidLayer;
+
         #endregion
 
-        public static int Default
-        {
-            get
-            {
-                return GetLayerNumber(ref defaultLayer, "Default");
-            }
-        }
+        public static int Default => GetLayerNumber(ref defaultLayer, "Default");
 
-        public static int Surface
-        {
-            get
-            {
-                return GetLayerNumber(ref surfaceLayer, "SR");
-            }
-        }
-        public static int Interaction
-        {
-            get
-            {
-                return GetLayerNumber(ref interactionLayer, "Interaction");
-            }
-        }
+        public static int Surface => GetLayerNumber(ref surfaceLayer, "SR");
 
-        public static int Activation
-        {
-            get
-            {
-                return GetLayerNumber(ref activationLayer, "Activation");
-            }
-        }
+        public static int Interaction => GetLayerNumber(ref interactionLayer, "Interaction");
+
+        public static int Activation => GetLayerNumber(ref activationLayer, "Activation");
 
         /// <summary>
         /// Look through the layerMaskList and find the index in that list for which the supplied layer is part of
@@ -68,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 
                 i++;
             }
+
             return -1;
         }
 
@@ -105,6 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             {
                 cache = LayerMask.NameToLayer(layerName);
             }
+
             return cache;
         }
     }

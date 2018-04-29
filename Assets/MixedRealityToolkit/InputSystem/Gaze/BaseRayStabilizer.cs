@@ -6,10 +6,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 {
     /// <summary>
-    /// A base class for a stabilizer that takes an input position and rotation, and performs operations on them
-    /// to stabilize, or smooth deltas, in the data. 
+    /// A base class for a stabilizer that takes an input position and rotation,
+    /// and performs operations on them to stabilize, or smooth deltas, in the data.
     /// </summary>
-    public abstract class BaseRayStabilizer : MonoBehaviour
+    public abstract class BaseRayStabilizer
     {
         /// <summary>
         /// The stabilized position.

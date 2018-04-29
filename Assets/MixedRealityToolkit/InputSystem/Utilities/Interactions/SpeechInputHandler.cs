@@ -28,14 +28,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
         /// </summary>
         [Tooltip("Determines if this handler is a global listener, not connected to a specific GameObject.")]
         [SerializeField]
-        private bool isGlobalListener;
+        private bool isGlobalListener = false;
 
         /// <summary>
         /// Keywords are persistent across all scenes.  This Speech Input Source instance will not be destroyed when loading a new scene.
         /// </summary>
         [Tooltip("Keywords are persistent across all scenes.  This Speech Input Handler instance will not be destroyed when loading a new scene.")]
         [SerializeField]
-        private bool persistentKeywords;
+        private bool persistentKeywords = false;
 
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
 

@@ -26,11 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 
         private bool hasFocus;
 
-        public bool HasFocus { get { return FocusEnabled && hasFocus; } }
+        public bool HasFocus => FocusEnabled && hasFocus;
 
-        private readonly List<IPointer> focusers = new List<IPointer>(0);
-
-        public List<IPointer> Focusers { get { return focusers; } }
+        public List<IPointer> Focusers { get; } = new List<IPointer>(0);
 
         public virtual void OnFocusEnter(FocusEventData eventData) { }
 

@@ -4,22 +4,12 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 {
-    public struct ComparableRaycastResult
-    {
-        public readonly int LayerMaskIndex;
-        public readonly RaycastResult RaycastResult;
-
-        public ComparableRaycastResult(RaycastResult raycastResult, int layerMaskIndex = 0)
-        {
-            RaycastResult = raycastResult;
-            LayerMaskIndex = layerMaskIndex;
-        }
-    }
-
+    /// <summary>
+    /// Compares the Raycast Results from Unity's Graphic &amp; Physics Raycasters.
+    /// </summary>
     public class RaycastResultComparer : IComparer<ComparableRaycastResult>
     {
         private static readonly List<Func<ComparableRaycastResult, ComparableRaycastResult, int>> Comparers = new List<Func<ComparableRaycastResult, ComparableRaycastResult, int>>
@@ -46,28 +36,28 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         private static int CompareRaycastsByLayerMaskPrioritization(ComparableRaycastResult left, ComparableRaycastResult right)
         {
-            //Lower is better, -1 is not relevant
+            // Lower is better, -1 is not relevant.
             return right.LayerMaskIndex.CompareTo(left.LayerMaskIndex);
         }
 
         private static int CompareRaycastsBySortingLayer(ComparableRaycastResult left, ComparableRaycastResult right)
         {
-            //Higher is better
+            // Higher is better.
             return left.RaycastResult.sortingLayer.CompareTo(right.RaycastResult.sortingLayer);
         }
 
         private static int CompareRaycastsBySortingOrder(ComparableRaycastResult left, ComparableRaycastResult right)
         {
-            //Higher is better
+            // Higher is better.
             return left.RaycastResult.sortingOrder.CompareTo(right.RaycastResult.sortingOrder);
         }
 
         private static int CompareRaycastsByCanvasDepth(ComparableRaycastResult left, ComparableRaycastResult right)
         {
-            //Module is the graphic raycaster on the canvases.
+            // Module is the graphic raycaster on the canvases.
             if (left.RaycastResult.module.transform.IsParentOrChildOf(right.RaycastResult.module.transform))
             {
-                //Higher is better
+                // Higher is better.
                 return left.RaycastResult.depth.CompareTo(right.RaycastResult.depth);
             }
             return 0;
@@ -75,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         private static int CompareRaycastsByDistance(ComparableRaycastResult left, ComparableRaycastResult right)
         {
-            //Lower is better
+            // Lower is better.
             return right.RaycastResult.distance.CompareTo(left.RaycastResult.distance);
         }
     }
