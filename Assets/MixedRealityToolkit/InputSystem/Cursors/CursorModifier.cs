@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
 
         [SerializeField]
         [Tooltip("Cursor animation parameters to set when this object is focused. Leave empty for none.")]
-        private AnimatorParameter[] cursorParameters;
+        private AnimatorParameter[] cursorParameters = null;
 
         private IMixedRealityInputSystem inputSystem;
 
