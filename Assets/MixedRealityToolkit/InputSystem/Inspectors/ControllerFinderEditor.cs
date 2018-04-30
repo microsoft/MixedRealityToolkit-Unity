@@ -5,13 +5,20 @@ using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.EditorScript
+namespace Microsoft.MixedReality.Toolkit.InputSystem.Inspectors
 {
     [CustomEditor(typeof(ControllerFinder))]
     public abstract class ControllerFinderEditor : Editor
     {
+        private static GUIStyle controllerOptionsGuiStyle;
+
         private SerializedProperty handednessProperty;
         private SerializedProperty elementProperty;
+
+        protected virtual void Awake()
+        {
+            controllerOptionsGuiStyle = new GUIStyle("Label") { fontStyle = FontStyle.Bold };
+        }
 
         protected virtual void OnEnable()
         {
@@ -24,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.EditorScript
             serializedObject.Update();
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Controller Options", new GUIStyle("Label") { fontStyle = FontStyle.Bold });
+            EditorGUILayout.LabelField("Controller Options", controllerOptionsGuiStyle);
             EditorGUILayout.Space();
             EditorGUI.indentLevel++;
 

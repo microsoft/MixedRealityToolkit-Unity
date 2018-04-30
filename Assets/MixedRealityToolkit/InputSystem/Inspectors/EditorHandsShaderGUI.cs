@@ -3,9 +3,9 @@
 
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.EditorScript
+namespace Microsoft.MixedReality.Toolkit.InputSystem.Inspectors
 {
-    public class EditorHandsMaterialInspector : ShaderGUI
+    public class EditorHandsShaderGUI : ShaderGUI
     {
         public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
         {

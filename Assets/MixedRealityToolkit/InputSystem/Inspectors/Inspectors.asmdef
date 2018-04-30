@@ -1,7 +1,7 @@
 {
-    "name": "InputSystemEditor",
+    "name": "Microsoft.MixedReality.Toolkit.InputSystem.Inspectors",
     "references": [
-        "MixedRealityToolkit"
+        "Microsoft.MixedReality.Toolkit"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

@@ -4,10 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
-#if UNITY_WSA
-using UnityEngine.XR.WSA;
-#endif
-
 namespace Microsoft.MixedReality.Toolkit.InputSystem
 {
     /// <summary>
@@ -58,22 +54,22 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         [Tooltip("Set the desired quality for your application for HoloLens.")]
         private int holoLensQualityLevel = 0;
 
-        private static DisplayType CurrentDisplayType { get; set; }
+        private static DisplayType currentDisplayType;
 
-        public static bool IsOpaque => CurrentDisplayType == DisplayType.Opaque;
+        public static bool IsOpaque => currentDisplayType == DisplayType.Opaque;
 
         private void Start()
         {
-            CurrentDisplayType = DisplayType.Opaque;
+            currentDisplayType = DisplayType.Opaque;
 
 #if UNITY_WSA
-            if (!HolographicSettings.IsDisplayOpaque)
+            if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
             {
-                CurrentDisplayType = DisplayType.Transparent;
+                currentDisplayType = DisplayType.Transparent;
             }
 #endif
 
-            if (CurrentDisplayType == DisplayType.Opaque)
+            if (currentDisplayType == DisplayType.Opaque)
             {
                 ApplySettingsForOpaqueDisplay();
             }

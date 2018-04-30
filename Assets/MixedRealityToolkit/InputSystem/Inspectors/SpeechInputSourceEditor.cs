@@ -5,11 +5,15 @@ using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.EditorScript
+namespace Microsoft.MixedReality.Toolkit.InputSystem.Inspectors
 {
     [CustomEditor(typeof(SpeechInputSource))]
-    public class SpeechInputSourceEditor : UnityEditor.Editor
+    public class SpeechInputSourceEditor : Editor
     {
+        private static readonly GUIContent removeButtonContent = new GUIContent("-", "Remove keyword");
+        private static readonly GUIContent addButtonContent = new GUIContent("+", "Add keyword");
+        private static readonly GUILayoutOption miniButtonWidth = GUILayout.Width(20.0f);
+
         private SerializedProperty persistentKeywordsProperty;
         private SerializedProperty recognizerStart;
         private SerializedProperty confidenceLevel;
@@ -31,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.EditorScript
             EditorGUILayout.PropertyField(persistentKeywordsProperty);
             EditorGUILayout.PropertyField(recognizerStart);
             EditorGUILayout.PropertyField(confidenceLevel);
-            
+
             // the Keywords field
             ShowList(keywordsAndKeys);
             serializedObject.ApplyModifiedProperties();
@@ -43,51 +47,46 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.EditorScript
             }
         }
 
-        private static GUIContent removeButtonContent = new GUIContent("-", "Remove keyword");
-        private static GUIContent addButtonContent = new GUIContent("+", "Add keyword");
-        private static GUILayoutOption miniButtonWidth = GUILayout.Width(20.0f);
-
         private static void ShowList(SerializedProperty list)
         {
             // property name with expansion widget
             EditorGUILayout.PropertyField(list);
 
-            if (list.isExpanded)
+            if (!list.isExpanded) { return; }
+
+            EditorGUI.indentLevel++;
+
+            // header row
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Keyword");
+            EditorGUILayout.LabelField("Key Shortcut");
+            EditorGUILayout.EndHorizontal();
+
+            // keyword rows
+            for (int index = 0; index < list.arraySize; index++)
             {
-                EditorGUI.indentLevel++;
-
-                // header row
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Keyword");
-                EditorGUILayout.LabelField("Key Shortcut");
-                EditorGUILayout.EndHorizontal();
-
-                // keyword rows
-                for (int index = 0; index < list.arraySize; index++)
+                // the element
+                EditorGUILayout.PropertyField(list.GetArrayElementAtIndex(index));
+                // the remove element button
+                if (GUILayout.Button(removeButtonContent, EditorStyles.miniButton, miniButtonWidth))
                 {
-                    EditorGUILayout.BeginHorizontal();
-                    // the element
-                    EditorGUILayout.PropertyField(list.GetArrayElementAtIndex(index));
-                    // the remove element button
-                    if (GUILayout.Button(removeButtonContent, EditorStyles.miniButton, miniButtonWidth))
-                    {
-                        list.DeleteArrayElementAtIndex(index);
-                    }
-                    EditorGUILayout.EndHorizontal();
-                }
-
-                // add button row
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.FlexibleSpace();
-                // the add element button
-                if (GUILayout.Button(addButtonContent, EditorStyles.miniButton, miniButtonWidth))
-                {
-                    list.InsertArrayElementAtIndex(list.arraySize);
+                    list.DeleteArrayElementAtIndex(index);
                 }
                 EditorGUILayout.EndHorizontal();
-
-                EditorGUI.indentLevel--;
             }
+
+            // add button row
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            // the add element button
+            if (GUILayout.Button(addButtonContent, EditorStyles.miniButton, miniButtonWidth))
+            {
+                list.InsertArrayElementAtIndex(list.arraySize);
+            }
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUI.indentLevel--;
         }
     }
 }
