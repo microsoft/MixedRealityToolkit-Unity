@@ -1,8 +1,10 @@
 {
-    "name": "MixedRealityToolkitSetup",
+    "name": "MixedRealityToolkit.Utilities.Editor.Setup",
     "references": [],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false
 }

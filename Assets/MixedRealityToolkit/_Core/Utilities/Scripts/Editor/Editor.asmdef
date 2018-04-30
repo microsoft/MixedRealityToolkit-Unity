@@ -1,5 +1,5 @@
 {
-    "name": "MixedRealityToolkitUtilitiesEditor",
+    "name": "MixedRealityToolkit.Utilities.Editor",
     "references": [
         "MixedRealityToolkit"
     ],
