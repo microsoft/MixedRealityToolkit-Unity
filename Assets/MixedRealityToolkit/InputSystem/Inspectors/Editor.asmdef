@@ -1,5 +1,5 @@
 {
-    "name": "InputSystemEditor",
+    "name": "InputSystem.Inspectors",
     "references": [
         "MixedRealityToolkit"
     ],
