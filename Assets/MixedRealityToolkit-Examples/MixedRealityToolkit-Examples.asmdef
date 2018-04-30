@@ -1,7 +1,7 @@
 {
-    "name": "MixedRealityToolkit-Examples",
+    "name": "Microsoft.MixedReality.Toolkit.Examples",
     "references": [
-        "MixedRealityToolkit"
+        "Microsoft.MixedReality.Toolkit"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
