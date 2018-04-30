@@ -8,13 +8,18 @@ using Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.EditorScript
+namespace Microsoft.MixedReality.Toolkit.InputSystem.Inspectors
 {
     [CustomEditor(typeof(SpeechInputHandler))]
     public class SpeechInputHandlerEditor : Editor
     {
-        private SerializedProperty keywordsProperty;
+        private static readonly GUIContent RemoveButtonContent = new GUIContent("-", "Remove keyword");
+        private static readonly GUIContent AddButtonContent = new GUIContent("+", "Add keyword");
+        private static readonly GUILayoutOption MiniButtonWidth = GUILayout.Width(20.0f);
+
         private string[] registeredKeywords;
+
+        private SerializedProperty keywordsProperty;
         private SerializedProperty isGlobalListenerProperty;
         private SerializedProperty persistentKeywordsProperty;
 
@@ -54,10 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.EditorScript
                 }
             }
         }
-
-        private static readonly GUIContent RemoveButtonContent = new GUIContent("-", "Remove keyword");
-        private static readonly GUIContent AddButtonContent = new GUIContent("+", "Add keyword");
-        private static readonly GUILayoutOption MiniButtonWidth = GUILayout.Width(20.0f);
 
         private void ShowList(SerializedProperty list)
         {

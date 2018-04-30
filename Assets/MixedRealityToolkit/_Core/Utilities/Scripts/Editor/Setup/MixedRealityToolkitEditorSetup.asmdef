@@ -1,8 +1,6 @@
 {
-    "name": "MixedRealityToolkit",
-    "references": [
-        "MixedRealityToolkitSetup"
-    ],
+    "name": "MixedRealityToolkitSetup",
+    "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],

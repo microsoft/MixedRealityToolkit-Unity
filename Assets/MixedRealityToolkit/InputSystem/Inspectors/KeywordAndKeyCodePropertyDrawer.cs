@@ -5,19 +5,19 @@ using Microsoft.MixedReality.Toolkit.InputSystem.InputMapping;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.EditorScript
+namespace Microsoft.MixedReality.Toolkit.InputSystem.Inspectors
 {
     [CustomPropertyDrawer(typeof(KeywordAndKeyCode))]
-    public class KeywordAndKeyCodeDrawer : PropertyDrawer
+    public class KeywordAndKeyCodePropertyDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent content)
         {
             EditorGUI.BeginProperty(rect, content, property);
 
             // calculate field rectangle with half of total drawer length for each
-            float fieldWidth = rect.width * 0.5f;
-            Rect keywordRect = new Rect(rect.x, rect.y, fieldWidth, rect.height);
-            Rect keyCodeRect = new Rect(rect.x + fieldWidth, rect.y, fieldWidth, rect.height);
+            var fieldWidth = rect.width * 0.5f;
+            var keywordRect = new Rect(rect.x, rect.y, fieldWidth, rect.height);
+            var keyCodeRect = new Rect(rect.x + fieldWidth, rect.y, fieldWidth, rect.height);
 
             // the Keyword field without label
             EditorGUI.PropertyField(keywordRect, property.FindPropertyRelative("Keyword"), GUIContent.none);

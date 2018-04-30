@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
@@ -9,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.EditorScript
+namespace Microsoft.MixedReality.Toolkit.InputSystem.Inspectors
 {
     /// <summary>
     /// Helper class to assign the UIRaycastCamera when creating a new canvas object and assigning the world space render mode.

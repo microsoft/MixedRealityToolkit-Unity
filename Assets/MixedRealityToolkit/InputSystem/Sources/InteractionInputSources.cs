@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 }
             }
 #else
-            public InteractionInputSource(string name) : base(name, InputType.None) { }
+            public InteractionInputSource(string name) : base(name, new[] { InputType.None }) { }
 #endif
 
             private static InputType GetSupportFlag<TReading>(SourceCapability<TReading> capability, InputType flagIfSupported)
