@@ -14,10 +14,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup
     public class EnforceEditorSettings
     {
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
+        private const string BuildTargetKey = "_MixedRealityToolkit_Editor_Settings_CurrentBuildTarget";
+
+        private static BuildTargetGroup currentBuildTargetGroup = BuildTargetGroup.Unknown;
 
         static EnforceEditorSettings()
         {
-            if (!IsNewEditorSession())
+            if (!IsNewSession())
             {
                 return;
             }
@@ -49,6 +52,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup
                 {
                     EditorSettings.externalVersionControl = "Visible Meta Files";
                     Debug.Log("Updated external version control mode: " + EditorSettings.externalVersionControl);
+                    refresh = true;
+                }
+            }
+
+            var currentScriptingBackend = PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup);
+
+            if (currentScriptingBackend != ScriptingImplementation.IL2CPP)
+            {
+                if (EditorUtility.DisplayDialog(
+                    "Change the Scripting Backend to IL2CPP?",
+                    "The Mixed Reality Toolkit would like to change the Scripting Backend to use IL2CPP.\n\n" +
+                    "Would you like to make this change?",
+                    "Enable IL2CPP",
+                    "Later"))
+                {
+                    PlayerSettings.SetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup, ScriptingImplementation.IL2CPP);
+                    Debug.Log("Updated Scripting Backend to use IL2CPP");
                     refresh = true;
                 }
             }
@@ -101,13 +121,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup
         }
 
         /// <summary>
-        /// Returns true the first time it is called within this editor session, and
-        /// false for all subsequent calls.
+        /// Returns true the first time it is called within this editor session, and false for all subsequent calls.
+        /// <remarks>A new session is also true if the editor build target is changed.</remarks>
         /// </summary>
-        private static bool IsNewEditorSession()
+        private static bool IsNewSession()
         {
-            if (!SessionState.GetBool(SessionKey, false))
+            if (currentBuildTargetGroup == BuildTargetGroup.Unknown)
             {
+                currentBuildTargetGroup = (BuildTargetGroup)SessionState.GetInt(BuildTargetKey, (int)EditorUserBuildSettings.selectedBuildTargetGroup);
+            }
+
+            if (!SessionState.GetBool(SessionKey, false) || currentBuildTargetGroup != EditorUserBuildSettings.selectedBuildTargetGroup)
+            {
+                currentBuildTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+                SessionState.SetInt(BuildTargetKey, (int)EditorUserBuildSettings.selectedBuildTargetGroup);
                 SessionState.SetBool(SessionKey, true);
                 return true;
             }
