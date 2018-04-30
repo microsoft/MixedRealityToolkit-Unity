@@ -47,6 +47,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
 
         [SerializeField]
         [Tooltip("What manipulation will two hands perform?")]
+        [EnumFlags]
         private TwoHandManipulatableMode ManipulationMode = TwoHandManipulatableMode.Scale;
 
         [SerializeField]
