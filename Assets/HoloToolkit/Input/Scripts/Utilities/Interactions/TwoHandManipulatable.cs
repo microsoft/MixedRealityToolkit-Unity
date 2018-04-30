@@ -30,18 +30,6 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
         private BoundingBox boundingBoxPrefab = null;
 
         /// <summary>
-        /// enum describing range of affine xforms that are allowed.
-        /// </summary>
-        private enum TwoHandedManipulation
-        {
-            Scale,
-            Rotate,
-            MoveScale,
-            RotateScale,
-            MoveRotateScale
-        };
-
-        /// <summary>
         /// Reference to the Prefab from which clone is instantiated.
         /// </summary>
         public BoundingBox BoundingBoxPrefab
@@ -59,7 +47,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
 
         [SerializeField]
         [Tooltip("What manipulation will two hands perform?")]
-        private TwoHandedManipulation ManipulationMode = TwoHandedManipulation.Scale;
+        private TwoHandManipulatableMode ManipulationMode = TwoHandManipulatableMode.Scale;
 
         [SerializeField]
         [Tooltip("Constrain rotation along an axis")]
@@ -132,7 +120,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
         /// <summary>
         /// SetManipulationMode
         /// </summary>
-        private void SetManipulationMode(TwoHandedManipulation mode)
+        public void SetManipulationMode(TwoHandManipulatableMode mode)
         {
             ManipulationMode = mode;
         }
@@ -255,19 +243,19 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
                     {
                         switch (ManipulationMode)
                         {
-                            case TwoHandedManipulation.Scale:
+                            case TwoHandManipulatableMode.Scale:
                                 newState = State.Scaling;
                                 break;
-                            case TwoHandedManipulation.Rotate:
+                            case TwoHandManipulatableMode.Rotate:
                                 newState = State.Rotating;
                                 break;
-                            case TwoHandedManipulation.MoveScale:
+                            case TwoHandManipulatableMode.MoveScale:
                                 newState = State.MovingScaling;
                                 break;
-                            case TwoHandedManipulation.RotateScale:
+                            case TwoHandManipulatableMode.RotateScale:
                                 newState = State.RotatingScaling;
                                 break;
-                            case TwoHandedManipulation.MoveRotateScale:
+                            case TwoHandManipulatableMode.MoveRotateScale:
                                 newState = State.MovingRotatingScaling;
                                 break;
                             default:
