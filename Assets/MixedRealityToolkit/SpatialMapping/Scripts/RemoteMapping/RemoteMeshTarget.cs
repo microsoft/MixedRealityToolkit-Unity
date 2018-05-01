@@ -15,7 +15,7 @@ using System.Net.Sockets;
 using System.Collections.Concurrent;
 #endif
 
-namespace HoloToolkit.Unity.SpatialMapping
+namespace MixedRealityToolkit.SpatialMapping.RemoteMapping
 {
     /// <summary>
     /// RemoteMeshTarget will listen for meshes being sent from a remote system (HoloLens).
@@ -192,6 +192,9 @@ namespace HoloToolkit.Unity.SpatialMapping
         /// </summary>
         private TcpClient networkClient;
 
+        /// <summary>
+        /// Tracks if a client is connected.
+        /// </summary>
         private bool clientConnected = false;
 
         // Use this for initialization.
