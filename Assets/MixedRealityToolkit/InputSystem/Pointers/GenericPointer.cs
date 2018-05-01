@@ -5,10 +5,10 @@ using System.Collections;
 using Microsoft.MixedReality.Toolkit.InputSystem.Cursors;
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
-using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public IInputSource InputSourceParent { get; }
 
-        public BaseCursor BaseCursor { get; set; }
+        public ICursor BaseCursor { get; set; }
 
         public ICursorModifier CursorModifier { get; set; }
 
@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public PointerResult Result { get; set; }
 
-        public BaseRayStabilizer RayStabilizer { get; set; }
+        public IBaseRayStabilizer RayStabilizer { get; set; }
 
         public virtual void OnPreRaycast()
         {

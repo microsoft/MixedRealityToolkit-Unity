@@ -2,20 +2,17 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Cursors;
-using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
-using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatas.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using System.Collections;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
-
-#if UNITY_WSA
-#endif
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 {
@@ -101,10 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             base.OnEnable();
             SelectPressed = false;
 
-            if (BaseCursor != null)
-            {
-                BaseCursor.enabled = true;
-            }
+            BaseCursor?.SetVisibility(true);
 
             if (!delayPointerRegistration)
             {
@@ -114,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         protected virtual void Start()
         {
-             Debug.Assert(InputSourceParent != null, "This Pointer must have a Input Source Assigned");
+            Debug.Assert(InputSourceParent != null, "This Pointer must have a Input Source Assigned");
 
             InputSystem.FocusProvider.RegisterPointer(this);
             delayPointerRegistration = false;
@@ -129,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
             if (BaseCursor != null)
             {
-                BaseCursor.enabled = false;
+                BaseCursor.SetVisibility(false);
             }
 
             InputSystem.FocusProvider.UnregisterPointer(this);
@@ -139,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             if (BaseCursor != null)
             {
-                Destroy(BaseCursor.gameObject);
+                Destroy(BaseCursor.GetGameObjectReference());
             }
 
             base.OnDestroy();
@@ -168,9 +162,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
                 var cursorObj = Instantiate(CursorPrefab, transform);
                 cursorObj.name = $"{name}_Cursor";
                 BaseCursor = cursorObj.GetComponent<BaseCursor>();
-                 Debug.Assert(BaseCursor != null, "Failed to load cursor");
+                Debug.Assert(BaseCursor != null, "Failed to load cursor");
                 BaseCursor.Pointer = this;
-                 Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");
+                Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");
             }
         }
 
@@ -213,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public IInputSource InputSourceParent { get; set; }
 
-        public BaseCursor BaseCursor { get; set; }
+        public ICursor BaseCursor { get; set; }
 
         public ICursorModifier CursorModifier { get; set; }
 
@@ -241,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public PointerResult Result { get; set; }
 
-        public BaseRayStabilizer RayStabilizer { get; set; }
+        public IBaseRayStabilizer RayStabilizer { get; set; }
 
         public virtual void OnPreRaycast() { }
 

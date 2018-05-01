@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
-using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatas.Input;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 #if UNITY_WSA
@@ -313,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// </summary>
         protected virtual void UpdateCursorTransform()
         {
-             Debug.Assert(Pointer != null, "No Pointer has been assigned!");
+            Debug.Assert(Pointer != null, "No Pointer has been assigned!");
 
             FocusDetails focusDetails;
             if (!Pointer.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
@@ -386,6 +385,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             {
                 primaryCursorVisual.gameObject.SetActive(visible);
             }
+        }
+
+        /// <summary>
+        /// Returns the <see cref="BaseCursor"/>'s <see cref="GameObject"/> reference.
+        /// </summary>
+        /// <returns></returns>
+        public GameObject GetGameObjectReference()
+        {
+            return gameObject;
         }
 
         /// <summary>

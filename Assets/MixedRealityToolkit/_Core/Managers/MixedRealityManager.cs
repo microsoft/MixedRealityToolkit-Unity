@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Managers
@@ -123,14 +124,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (ActiveProfile.EnableInputSystem)
             {
                 //Enable Input (example initializer)
-                AddManager(typeof(IMixedRealityInputSystem), new InputSystem.MixedRealityInputManager());
+                // TODO --->>>>AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
             }
 
             //If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.EnableBoundarySystem)
             {
                 //Enable Boundary (example initializer)
-                AddManager(typeof(IMixedRealityBoundarySystem), new InputSystem.MixedRealityBoundaryManager());
+                AddManager(typeof(IMixedRealityBoundarySystem), new MixedRealityBoundaryManager());
             }
 
             //TODO should this be optional?

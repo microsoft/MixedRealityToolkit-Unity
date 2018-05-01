@@ -1,16 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
-using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Events;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatas.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
@@ -36,12 +34,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// <summary>
         /// The current Focus Provider that's been implemented by this Input System.
         /// </summary>
-        public IMixedRealityFocusProvider FocusProvider { get; private set; }
+        public IFocusProvider FocusProvider { get; private set; }
 
         /// <summary>
         /// The current Gaze Provider that's been implemented by this Input System.
         /// </summary>
-        public IMixedRealityGazeProvider GazeProvider { get; private set; }
+        public IGazeProvider GazeProvider { get; private set; }
 
         private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
@@ -152,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
             var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
 
-             Debug.Assert(!baseInputEventData.used);
+            Debug.Assert(!baseInputEventData.used);
 
             GameObject focusedObject = FocusProvider.GetFocusedObject(baseInputEventData);
 
@@ -220,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// <param name="listener">Listener to add.</param>
         public override void Register(GameObject listener)
         {
-             Debug.Assert(!EventListeners.Contains(listener), $"{listener.name} is already registered to receive input events!");
+            Debug.Assert(!EventListeners.Contains(listener), $"{listener.name} is already registered to receive input events!");
             EventListeners.Add(listener);
         }
 
@@ -230,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
         {
-             Debug.Assert(EventListeners.Contains(listener), $"{listener.name} was never registered for input events!");
+            Debug.Assert(EventListeners.Contains(listener), $"{listener.name} was never registered for input events!");
             EventListeners.Remove(listener);
         }
 
@@ -260,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         public void PopInputDisable()
         {
             --disabledRefCount;
-             Debug.Assert(disabledRefCount >= 0, "Tried to pop more input disable than the amount pushed.");
+            Debug.Assert(disabledRefCount >= 0, "Tried to pop more input disable than the amount pushed.");
 
             if (disabledRefCount == 0)
             {
@@ -382,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         private void AddSource(IInputSource source)
         {
-             Debug.Assert(!DetectedInputSources.Contains(source), $"{source.SourceName} has already been registered with the Input Manager!");
+            Debug.Assert(!DetectedInputSources.Contains(source), $"{source.SourceName} has already been registered with the Input Manager!");
 
             DetectedInputSources.Add(source);
 
@@ -407,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         private void RemoveSource(IInputSource source)
         {
-             Debug.Assert(DetectedInputSources.Contains(source), $"{source.SourceName} was never registered with the Input Manager!");
+            Debug.Assert(DetectedInputSources.Contains(source), $"{source.SourceName} was never registered with the Input Manager!");
 
             DetectedInputSources.Remove(source);
 
@@ -491,7 +489,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             // Raise Focus Events on the pointers cursor if it has one.
             if (pointer.BaseCursor != null)
             {
-                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.gameObject, focusEventData, OnPreFocusChangedHandler);
+                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GetGameObjectReference(), focusEventData, OnPreFocusChangedHandler);
             }
         }
 
@@ -526,7 +524,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             // Raise Focus Events on the pointers cursor if it has one.
             if (pointer.BaseCursor != null)
             {
-                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.gameObject, focusEventData, OnFocusChangedHandler);
+                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GetGameObjectReference(), focusEventData, OnFocusChangedHandler);
             }
         }
 

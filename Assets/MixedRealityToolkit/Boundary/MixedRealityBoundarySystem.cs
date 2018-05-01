@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 {
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene

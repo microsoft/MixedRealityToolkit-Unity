@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
-using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatas.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
     /// Focus manager handles the focused objects per input source.
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     /// </summary>
-    public class FocusProvider : MonoBehaviour, IMixedRealityFocusProvider
+    public class FocusProvider : MonoBehaviour, IFocusProvider
     {
         private IMixedRealityInputSystem inputSystem = null;
         public IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         [SerializeField]
         private float pointingExtent = 10f;
 
-        float IMixedRealityFocusProvider.GlobalPointingExtent => pointingExtent;
+        float IFocusProvider.GlobalPointingExtent => pointingExtent;
 
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                         graphicData = new GraphicInputEventData(EventSystem.current);
                     }
 
-                     Debug.Assert(graphicData != null);
+                    Debug.Assert(graphicData != null);
 
                     return graphicData;
                 }
@@ -248,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             IPointer pointer;
             TryGetPointingSource(eventData, out pointer);
             GraphicInputEventData graphicInputEventData = GetSpecificPointerGraphicEventData(pointer);
-             Debug.Assert(graphicInputEventData != null);
+            Debug.Assert(graphicInputEventData != null);
             return graphicInputEventData.selectedObject;
         }
 
@@ -312,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             if (!TryGetFocusDetails(pointingSource, out focusDetails)) { return null; }
 
             GraphicInputEventData graphicInputEventData = GetSpecificPointerGraphicEventData(pointingSource);
-             Debug.Assert(graphicInputEventData != null);
+            Debug.Assert(graphicInputEventData != null);
             graphicInputEventData.selectedObject = focusDetails.Object;
 
             return focusDetails.Object;
@@ -377,7 +377,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// </summary>
         public void UpdateCanvasEventSystems()
         {
-             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusProvider before updating your canvases.");
+            Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusProvider before updating your canvases.");
 
             // This will also find disabled GameObjects in the scene.
             // Warning! this look up is very expensive!
@@ -399,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <returns>True, if registered, otherwise false.</returns>
         public bool IsPointerRegistered(IPointer pointer)
         {
-             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
+            Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
             return GetPointerData(pointer) != null;
         }
 
@@ -410,8 +410,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <returns>True, if the pointer was registered, false if the pointer was previously registered.</returns>
         public bool RegisterPointer(IPointer pointer)
         {
-             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
-             Debug.Assert(gazeManagerPointingData == null || pointer.PointerId != gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be registered on source detected.");
+            Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
+            Debug.Assert(gazeManagerPointingData == null || pointer.PointerId != gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be registered on source detected.");
 
             if (IsPointerRegistered(pointer)) { return false; }
 
@@ -426,8 +426,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <returns>True, if the pointer was unregistered, false if the pointer was not registered.</returns>
         public bool UnregisterPointer(IPointer pointer)
         {
-             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
-             Debug.Assert(pointer.PointerId != gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be unregistered on source lost.");
+            Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
+            Debug.Assert(pointer.PointerId != gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be unregistered on source lost.");
 
             PointerData pointerData = GetPointerData(pointer);
             if (pointerData == null) { return false; }
@@ -560,8 +560,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             RayStep rayStep = default(RayStep);
             RaycastHit physicsHit = default(RaycastHit);
 
-             Debug.Assert(pointer.Pointer.Rays != null, "No valid rays for pointer");
-             Debug.Assert(pointer.Pointer.Rays.Length > 0, "No valid rays for pointer");
+            Debug.Assert(pointer.Pointer.Rays != null, "No valid rays for pointer");
+            Debug.Assert(pointer.Pointer.Rays.Length > 0, "No valid rays for pointer");
 
             // Check raycast for each step in the pointing source
             for (int i = 0; i < pointer.Pointer.Rays.Length; i++)
@@ -651,16 +651,16 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <param name="prioritizedLayerMasks"></param>
         private void RaycastGraphics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-             Debug.Assert(pointer.End.Point != Vector3.zero, "No pointer source end point found to raycast against!");
-             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusProvider before you can process uGUI raycasting.");
+            Debug.Assert(pointer.End.Point != Vector3.zero, "No pointer source end point found to raycast against!");
+            Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusProvider before you can process uGUI raycasting.");
 
             RaycastResult raycastResult = default(RaycastResult);
             bool overridePhysicsRaycast = false;
             RayStep rayStep = default(RayStep);
             int rayStepIndex = 0;
 
-             Debug.Assert(pointer.Pointer.Rays != null, "No valid rays for pointer");
-             Debug.Assert(pointer.Pointer.Rays.Length > 0, "No valid rays for pointer");
+            Debug.Assert(pointer.Pointer.Rays != null, "No valid rays for pointer");
+            Debug.Assert(pointer.Pointer.Rays.Length > 0, "No valid rays for pointer");
 
             // Cast rays for every step until we score a hit
             for (int i = 0; i < pointer.Pointer.Rays.Length; i++)
@@ -752,9 +752,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// </summary>
         private void UpdateFocusedObjects()
         {
-             Debug.Assert(pendingPointerSpecificFocusChange.Count == 0);
-             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
-             Debug.Assert(pendingOverallFocusEnterSet.Count == 0);
+            Debug.Assert(pendingPointerSpecificFocusChange.Count == 0);
+            Debug.Assert(pendingOverallFocusExitSet.Count == 0);
+            Debug.Assert(pendingOverallFocusEnterSet.Count == 0);
 
             // NOTE: We compute the set of events to send before sending the first event
             //       just in case someone responds to the event by adding/removing a
@@ -813,8 +813,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 InputSystem.OnFocusChangedEvent(change.Pointer, pendingUnfocusObject, pendingFocusObject);
             }
 
-             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
-             Debug.Assert(pendingOverallFocusEnterSet.Count == 0);
+            Debug.Assert(pendingOverallFocusExitSet.Count == 0);
+            Debug.Assert(pendingOverallFocusEnterSet.Count == 0);
             pendingPointerSpecificFocusChange.Clear();
         }
 
@@ -822,7 +822,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 
         #region ISourceState Implementation
 
-        void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
+        public void OnSourceDetected(SourceStateEventData eventData)
         {
             // If our input source does not have any pointers, then skip.
             if (eventData.InputSource.Pointers == null) { return; }
@@ -834,14 +834,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 // Special Registration for Gaze
                 if (eventData.InputSource.SourceId == InputSystem.GazeProvider.SourceId)
                 {
-                     Debug.Assert(gazeManagerPointingData == null, "Gaze Manager Pointer Data was already registered!");
+                    Debug.Assert(gazeManagerPointingData == null, "Gaze Manager Pointer Data was already registered!");
 
                     if (gazeManagerPointingData == null)
                     {
                         gazeManagerPointingData = new PointerData(sourcePointer);
                     }
 
-                     Debug.Assert(gazeManagerPointingData != null);
+                    Debug.Assert(gazeManagerPointingData != null);
                 }
             }
         }

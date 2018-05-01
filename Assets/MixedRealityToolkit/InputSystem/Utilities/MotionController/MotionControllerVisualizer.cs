@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_EDITOR_WIN
@@ -11,6 +10,7 @@ using System.Runtime.InteropServices;
 
 #if UNITY_WSA
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.XR.WSA.Input;
 //using UnityGLTF;
 

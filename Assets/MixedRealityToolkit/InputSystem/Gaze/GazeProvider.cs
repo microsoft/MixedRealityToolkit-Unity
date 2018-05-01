@@ -2,10 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Cursors;
-using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
@@ -15,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
     /// The gaze manager manages everything related to a gaze ray that can interact with other objects.
     /// </summary>
     [DisallowMultipleComponent]
-    public class GazeProvider : BaseInputSource, IMixedRealityGazeProvider
+    public class GazeProvider : BaseInputSource, IGazeProvider
     {
         [SerializeField]
         [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
@@ -215,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
             {
                 var cursorObj = Instantiate(cursorPrefab, transform);
                 Pointers[0].BaseCursor = cursorObj.GetComponent<BaseCursor>();
-                 Debug.Assert(Pointers[0].BaseCursor != null, "Failed to load cursor");
+                Debug.Assert(Pointers[0].BaseCursor != null, "Failed to load cursor");
 
                 Pointers[0].BaseCursor.Pointer = Pointers[0];
             }
@@ -251,18 +250,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         private void OnDisable()
         {
             InputSystem.RaiseSourceLost(this);
-
-            if (Pointers[0].BaseCursor != null)
-            {
-                Pointers[0].BaseCursor.enabled = false;
-            }
+            Pointers[0].BaseCursor?.SetVisibility(false);
         }
 
         private void OnDestroy()
         {
             if (Pointers[0].BaseCursor != null)
             {
-                Destroy(Pointers[0].BaseCursor.gameObject);
+                Destroy(Pointers[0].BaseCursor.GetGameObjectReference());
             }
         }
 
@@ -272,11 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private void RegisterSource()
         {
-            if (Pointers[0].BaseCursor != null)
-            {
-                Pointers[0].BaseCursor.enabled = true;
-            }
-
+            Pointers[0].BaseCursor?.SetVisibility(true);
             InputSystem.RaiseSourceDetected(this);
         }
 

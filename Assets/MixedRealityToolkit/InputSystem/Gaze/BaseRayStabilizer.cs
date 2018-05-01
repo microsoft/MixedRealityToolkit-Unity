@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
@@ -9,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
     /// A base class for a stabilizer that takes an input position and rotation,
     /// and performs operations on them to stabilize, or smooth deltas, in the data.
     /// </summary>
-    public abstract class BaseRayStabilizer
+    public abstract class BaseRayStabilizer : IBaseRayStabilizer
     {
         /// <summary>
         /// The stabilized position.

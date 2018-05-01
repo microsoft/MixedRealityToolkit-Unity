@@ -3,6 +3,7 @@
 
 using System.Collections;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
@@ -67,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         public override InputType[] Capabilities => new[] { InputType.Voice };
 
         #endregion IInputSource Implementation
-        
+
         #region Monobehaviour Implementation
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN

@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using NUnit.Framework;
 using UnityEngine;
@@ -57,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             CreateMixedRealityConfiguration(MixedRealityManager.Instance);
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(Internal.Interfaces.IMixedRealityInputSystem), new InputSystem.MixedRealityInputManager());
+            //MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Tests
             Assert.IsNotNull(MixedRealityManager.Instance.ActiveProfile);
@@ -74,10 +77,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             CreateMixedRealityConfiguration(MixedRealityManager.Instance);
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(Internal.Interfaces.IMixedRealityInputSystem), new InputSystem.MixedRealityInputManager());
+            //MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             // Retrieve Input System
-            var inputSystem = MixedRealityManager.Instance.GetManager<Internal.Interfaces.IMixedRealityInputSystem>();
+            var inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
 
             // Tests
             Assert.IsNotNull(inputSystem);
@@ -90,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             CreateMixedRealityConfiguration(MixedRealityManager.Instance);
 
             //Check for Input System
-            var inputSystemExists = MixedRealityManager.Instance.ManagerExists<Internal.Interfaces.IMixedRealityInputSystem>();
+            var inputSystemExists = MixedRealityManager.Instance.ManagerExists<IMixedRealityInputSystem>();
 
             // Tests
             Assert.IsFalse(inputSystemExists);
@@ -104,10 +107,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             CreateMixedRealityConfiguration(MixedRealityManager.Instance);
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(Internal.Interfaces.IMixedRealityInputSystem), new InputSystem.MixedRealityInputManager());
+            //MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             //Check for Input System
-            var inputSystemExists = MixedRealityManager.Instance.ManagerExists<Internal.Interfaces.IMixedRealityInputSystem>();
+            var inputSystemExists = MixedRealityManager.Instance.ManagerExists<IMixedRealityInputSystem>();
 
             // Tests
             Assert.IsTrue(inputSystemExists);
@@ -135,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             // Create The MR Manager & Test configuration
             CreateMixedRealityConfiguration(MixedRealityManager.Instance);
-            
+
             //Add test component
             MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1());
 
@@ -165,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Tests
-            Assert.AreEqual(i,3);
+            Assert.AreEqual(i, 3);
         }
 
         [Test]
@@ -207,13 +210,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             CreateMixedRealityConfiguration(MixedRealityManager.Instance);
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(Internal.Interfaces.IMixedRealityInputSystem), new InputSystem.MixedRealityInputManager());
+            //MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             //Add test component 1
             MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1());
 
             //Add test component 2
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager2), new TestComponentManager2() { Name = "Test2-1" });
+            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test2-1" });
 
             // Tests
             Assert.IsNotNull(MixedRealityManager.Instance.ActiveProfile);
@@ -229,26 +232,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             CreateMixedRealityConfiguration(MixedRealityManager.Instance);
 
             // Add Input System
-            MixedRealityManager.Instance.AddManager(typeof(Internal.Interfaces.IMixedRealityInputSystem), new InputSystem.MixedRealityInputManager());
+            //MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             //Add test component 1
             MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1());
 
             //Add test component 2
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager2), new TestComponentManager2() { Name = "Test2-2" });
+            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test2-2" });
 
             //Retrieve Test component 2-2
-            TestComponentManager2 component2_2 = (TestComponentManager2)MixedRealityManager.Instance.GetManager(typeof(ITestComponentManager2),"Test2-2");
+            TestComponentManager2 component2_2 = (TestComponentManager2)MixedRealityManager.Instance.GetManager(typeof(ITestComponentManager2), "Test2-2");
 
             // Component 2-2 Tests
-            Assert.IsNotNull(component2_2.inputSystem);
+            Assert.IsNotNull(component2_2.InputSystem);
             Assert.AreEqual(component2_2.Name, "Test2-2");
 
             //Retrieve Test component 2-1
             TestComponentManager2 component2_1 = (TestComponentManager2)MixedRealityManager.Instance.GetManager(typeof(ITestComponentManager2), "Test2-1");
 
             // Component 2-1 Tests
-            Assert.IsNotNull(component2_1.inputSystem);
+            Assert.IsNotNull(component2_1.InputSystem);
             Assert.AreEqual(component2_1.Name, "Test2-1");
 
         }
@@ -295,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private static void CreateMixedRealityConfiguration(MixedRealityManager mixedRealityManager)
         {
-            var mrConfiguration = ScriptableObject.CreateInstance<Internal.Definitions.MixedRealityConfigurationProfile>();
+            var mrConfiguration = ScriptableObject.CreateInstance<MixedRealityConfigurationProfile>();
             mixedRealityManager.ActiveProfile = mrConfiguration;
         }
 
@@ -304,21 +307,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
     #region Test Components
 
-    public interface ITestComponentManager1 : Internal.Interfaces.IMixedRealityManager { }
+    public interface ITestComponentManager1 : IMixedRealityManager { }
 
-    public interface ITestComponentManager2 : Internal.Interfaces.IMixedRealityManager { }
+    public interface ITestComponentManager2 : IMixedRealityManager { }
 
 
-    internal class TestComponentManager1 : Internal.Definitions.BaseManager, ITestComponentManager1
+    internal class TestComponentManager1 : BaseManager, ITestComponentManager1
     {
-        /// <summary>
-        /// TestComponentManager1 constructor
-        /// </summary>
-        public TestComponentManager1()
-        {
-            // TODO define any constructor requirements
-        }
-
         /// <summary>
         /// The initialize function is used to setup the manager once created.
         /// This method is called once all managers have been registered in the Mixed Reality Manager.
@@ -353,17 +348,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
     }
 
-    internal class TestComponentManager2 : Internal.Definitions.BaseManager, ITestComponentManager2
+    internal class TestComponentManager2 : BaseManager, ITestComponentManager2
     {
-        public Internal.Interfaces.IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// TestComponentManager2 constructor
-        /// </summary>
-        public TestComponentManager2()
-        {
-            // TODO define any constructor requirements
-        }
+        public IMixedRealityInputSystem InputSystem = null;
 
         /// <summary>
         /// The initialize function is used to setup the manager once created.
@@ -372,7 +359,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public override void Initialize()
         {
             // TODO Initialize stuff 
-            inputSystem = MixedRealityManager.Instance.GetManager<Internal.Interfaces.IMixedRealityInputSystem>();
+            InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
         }
 
         /// <summary>

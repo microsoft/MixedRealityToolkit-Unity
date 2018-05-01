@@ -3,7 +3,7 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatas.Input;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
