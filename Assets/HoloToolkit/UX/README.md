@@ -14,7 +14,7 @@ Useful common UX controls that you can leverage in your application.
 Audio files used in Mixed Reality Toolkit.
 
 ## [Fonts](Fonts)
-Open-source fonts used in Mixed Reality Toolkit. Selawik is Microsoft's open-source font. Please see Text Prefab README for more information about optimized text.
+Open-source fonts used in Mixed Reality Toolkit. Selawik is Microsoft's open-source font. Please see [Text Prefab README](/Assets/HoloToolkit/UX/README_TextPrefab.md) for more information about optimized text.
 
 ## [Materials](Materials)
 Materials used in prefabs. You can find default color materials made with MixedRealityToolkit/Standard shader.
