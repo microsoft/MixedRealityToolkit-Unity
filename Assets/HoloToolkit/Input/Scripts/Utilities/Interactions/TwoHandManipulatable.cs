@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity.UX;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -23,7 +21,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
     {
         [SerializeField]
         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
-        private Transform HostTransform = null;
+        private Transform hostTransform = null;
 
         [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the HoloToolKit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here. This is optional.")]
@@ -47,34 +45,21 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
 
         [SerializeField]
         [Tooltip("What manipulation will two hands perform?")]
-        [EnumFlags]
-        private TwoHandManipulatableMode ManipulationMode = TwoHandManipulatableMode.Scale;
+        private ManipulationMode manipulationMode = ManipulationMode.Scale;
 
         [SerializeField]
         [Tooltip("Constrain rotation along an axis")]
-        private AxisConstraint ConstraintOnRotation = AxisConstraint.None;
+        private AxisConstraint constraintOnRotation = AxisConstraint.None;
 
         [SerializeField]
         [Tooltip("If true, grabbing the object with one hand will initiate movement.")]
-        private bool OneHandMovement = true;
-
-        [Flags]
-        private enum State
-        {
-            Start = 0x000,
-            Moving = 0x001,
-            Scaling = 0x010,
-            Rotating = 0x100,
-            MovingScaling = 0x011,
-            RotatingScaling = 0x110,
-            MovingRotatingScaling = 0x111
-        };
+        private bool oneHandMovement = true;
 
         /// <summary>
         /// private properties that store transform information.
         /// </summary>
         private BoundingBox boundingBoxInstance;
-        private State currentState;
+        private ManipulationMode currentState;
         private TwoHandMoveLogic m_moveLogic;
         private TwoHandScaleLogic m_scaleLogic;
         private TwoHandRotateLogic m_rotateLogic;
@@ -106,7 +91,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
 
                     if (value)
                     {
-                        boundingBoxInstance.Target = this.gameObject;
+                        boundingBoxInstance.Target = gameObject;
                         boundingBoxInstance.gameObject.SetActive(true);
                     }
                     else
@@ -121,9 +106,9 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
         /// <summary>
         /// SetManipulationMode
         /// </summary>
-        public void SetManipulationMode(TwoHandManipulatableMode mode)
+        public void SetManipulationMode(ManipulationMode mode)
         {
-            ManipulationMode = mode;
+            manipulationMode = mode;
         }
 
         /// <summary>
@@ -132,15 +117,15 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
         private void Awake()
         {
             m_moveLogic = new TwoHandMoveLogic();
-            m_rotateLogic = new TwoHandRotateLogic(ConstraintOnRotation);
+            m_rotateLogic = new TwoHandRotateLogic(constraintOnRotation);
             m_scaleLogic = new TwoHandScaleLogic();
         }
 
         private void Start()
         {
-            if (HostTransform == null)
+            if (hostTransform == null)
             {
-                HostTransform = transform;
+                hostTransform = transform;
             }
         }
 
@@ -150,14 +135,14 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
             foreach (var key in m_handsPressedInputSourceMap.Keys)
             {
                 var inputSource = m_handsPressedInputSourceMap[key];
-                Vector3 inputPosition = Vector3.zero;
+                Vector3 inputPosition;
                 if (inputSource.TryGetGripPosition(key, out inputPosition))
                 {
                     m_handsPressedLocationsMap[key] = inputPosition;
                 }
             }
 
-            if (currentState != State.Start)
+            if (currentState != ManipulationMode.None)
             {
                 UpdateStateMachine();
             }
@@ -208,7 +193,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
         /// <summary>
         /// OnSourceDetected Event Handler
         /// </summary>
-        public void OnSourceDetected(SourceStateEventData eventData){}
+        public void OnSourceDetected(SourceStateEventData eventData) { }
 
         /// <summary>
         /// OnSourceLost
@@ -226,96 +211,82 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
         private void UpdateStateMachine()
         {
             var handsPressedCount = m_handsPressedLocationsMap.Count;
-            State newState = currentState;
+            ManipulationMode newState = currentState;
+
             switch (currentState)
             {
-                case State.Start:
-                case State.Moving:
+                case ManipulationMode.None:
+                case ManipulationMode.Move:
                     if (handsPressedCount == 0)
                     {
-                        newState = State.Start;
+                        newState = ManipulationMode.None;
                     }
-                    else
-                        if (handsPressedCount == 1 && OneHandMovement)
+                    else if (handsPressedCount == 1 && oneHandMovement)
                     {
-                        newState = State.Moving;
+                        newState = ManipulationMode.Move;
                     }
                     else if (handsPressedCount > 1)
                     {
-                        switch (ManipulationMode)
-                        {
-                            case TwoHandManipulatableMode.Scale:
-                                newState = State.Scaling;
-                                break;
-                            case TwoHandManipulatableMode.Rotate:
-                                newState = State.Rotating;
-                                break;
-                            case TwoHandManipulatableMode.MoveScale:
-                                newState = State.MovingScaling;
-                                break;
-                            case TwoHandManipulatableMode.RotateScale:
-                                newState = State.RotatingScaling;
-                                break;
-                            case TwoHandManipulatableMode.MoveRotateScale:
-                                newState = State.MovingRotatingScaling;
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
+                        newState = manipulationMode;
                     }
                     break;
-                case State.Scaling:
-                case State.Rotating:
-                case State.MovingScaling:
-                case State.RotatingScaling:
-                case State.MovingRotatingScaling:
+                case ManipulationMode.Scale:
+                case ManipulationMode.Rotate:
+                case ManipulationMode.MoveAndScale:
+                case ManipulationMode.MoveAndRotate:
+                case ManipulationMode.RotateAndScale:
+                case ManipulationMode.MoveScaleAndRotate:
                     // TODO: if < 2, make this go to start state ('drop it')
                     if (handsPressedCount == 0)
                     {
-                        newState = State.Start;
+                        newState = ManipulationMode.None;
                     }
                     else if (handsPressedCount == 1)
                     {
-                        newState = State.Moving;
+                        newState = ManipulationMode.Move;
                     }
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
+
             InvokeStateUpdateFunctions(currentState, newState);
             currentState = newState;
         }
 
-        private void InvokeStateUpdateFunctions(State oldState, State newState)
+        private void InvokeStateUpdateFunctions(ManipulationMode oldState, ManipulationMode newState)
         {
             if (newState != oldState)
             {
                 switch (newState)
                 {
-                    case State.Moving:
-                        OnOneHandMoveStarted();
-                        break;
-                    case State.Start:
+                    case ManipulationMode.None:
                         OnManipulationEnded();
                         break;
-                    case State.RotatingScaling:
-                    case State.MovingRotatingScaling:
-                    case State.Scaling:
-                    case State.Rotating:
-                    case State.MovingScaling:
+                    case ManipulationMode.Move:
+                        OnOneHandMoveStarted();
+                        break;
+                    case ManipulationMode.Scale:
+                    case ManipulationMode.Rotate:
+                    case ManipulationMode.MoveAndScale:
+                    case ManipulationMode.MoveAndRotate:
+                    case ManipulationMode.RotateAndScale:
+                    case ManipulationMode.MoveScaleAndRotate:
                         OnTwoHandManipulationStarted(newState);
                         break;
                 }
+
                 switch (oldState)
                 {
-                    case State.Start:
+                    case ManipulationMode.None:
                         OnManipulationStarted();
                         break;
-                    case State.Scaling:
-                    case State.Rotating:
-                    case State.RotatingScaling:
-                    case State.MovingRotatingScaling:
-                    case State.MovingScaling:
+                    case ManipulationMode.Move:
+                        break;
+                    case ManipulationMode.Scale:
+                    case ManipulationMode.Rotate:
+                    case ManipulationMode.MoveAndScale:
+                    case ManipulationMode.MoveAndRotate:
+                    case ManipulationMode.RotateAndScale:
+                    case ManipulationMode.MoveScaleAndRotate:
                         OnTwoHandManipulationEnded();
                         break;
                 }
@@ -324,17 +295,18 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
             {
                 switch (newState)
                 {
-                    case State.Moving:
+                    case ManipulationMode.None:
+                        break;
+                    case ManipulationMode.Move:
                         OnOneHandMoveUpdated();
                         break;
-                    case State.Scaling:
-                    case State.Rotating:
-                    case State.RotatingScaling:
-                    case State.MovingRotatingScaling:
-                    case State.MovingScaling:
+                    case ManipulationMode.Scale:
+                    case ManipulationMode.Rotate:
+                    case ManipulationMode.MoveAndScale:
+                    case ManipulationMode.MoveAndRotate:
+                    case ManipulationMode.RotateAndScale:
+                    case ManipulationMode.MoveScaleAndRotate:
                         OnTwoHandManipulationUpdated();
-                        break;
-                    default:
                         break;
                 }
             }
@@ -343,34 +315,36 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
         private void OnTwoHandManipulationUpdated()
         {
 #if UNITY_2017_2_OR_NEWER
-            var targetRotation = HostTransform.rotation;
-            var targetPosition = HostTransform.position;
-            var targetScale = HostTransform.localScale;
+            var targetRotation = hostTransform.rotation;
+            var targetPosition = hostTransform.position;
+            var targetScale = hostTransform.localScale;
 
-            if ((currentState & State.Moving) > 0)
+            if ((currentState & ManipulationMode.Move) > 0)
             {
                 targetPosition = m_moveLogic.Update(GetHandsCentroid(), targetPosition);
             }
-            if ((currentState & State.Rotating) > 0)
+
+            if ((currentState & ManipulationMode.Rotate) > 0)
             {
-                targetRotation = m_rotateLogic.Update(m_handsPressedLocationsMap, HostTransform, targetRotation);
+                targetRotation = m_rotateLogic.Update(m_handsPressedLocationsMap, hostTransform, targetRotation);
             }
-            if ((currentState & State.Scaling) > 0)
+
+            if ((currentState & ManipulationMode.Scale) > 0)
             {
                 targetScale = m_scaleLogic.UpdateMap(m_handsPressedLocationsMap);
             }
 
-            HostTransform.position = targetPosition;
-            HostTransform.rotation = targetRotation;
-            HostTransform.localScale = targetScale;
+            hostTransform.position = targetPosition;
+            hostTransform.rotation = targetRotation;
+            hostTransform.localScale = targetScale;
 #endif // UNITY_2017_2_OR_NEWER
         }
 
         private void OnOneHandMoveUpdated()
         {
-            var targetPosition = m_moveLogic.Update(m_handsPressedLocationsMap.Values.First(), HostTransform.position);
+            var targetPosition = m_moveLogic.Update(m_handsPressedLocationsMap.Values.First(), hostTransform.position);
 
-            HostTransform.position = targetPosition;
+            hostTransform.position = targetPosition;
         }
 
         private void OnTwoHandManipulationEnded()
@@ -386,20 +360,22 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
             return result / m_handsPressedLocationsMap.Count;
         }
 
-        private void OnTwoHandManipulationStarted(State newState)
+        private void OnTwoHandManipulationStarted(ManipulationMode newState)
         {
 #if UNITY_2017_2_OR_NEWER
-            if ((newState & State.Rotating) > 0)
+            if ((newState & ManipulationMode.Rotate) > 0)
             {
-                m_rotateLogic.Setup(m_handsPressedLocationsMap, HostTransform);
+                m_rotateLogic.Setup(m_handsPressedLocationsMap, hostTransform);
             }
-            if ((newState & State.Moving) > 0)
+
+            if ((newState & ManipulationMode.Move) > 0)
             {
-                m_moveLogic.Setup(GetHandsCentroid(), HostTransform);
+                m_moveLogic.Setup(GetHandsCentroid(), hostTransform);
             }
-            if ((newState & State.Scaling) > 0)
+
+            if ((newState & ManipulationMode.Scale) > 0)
             {
-                m_scaleLogic.Setup(m_handsPressedLocationsMap, HostTransform);
+                m_scaleLogic.Setup(m_handsPressedLocationsMap, hostTransform);
             }
 #endif // UNITY_2017_2_OR_NEWER
         }
@@ -408,7 +384,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
         {
             Assert.IsTrue(m_handsPressedLocationsMap.Count == 1);
 
-            m_moveLogic.Setup(m_handsPressedLocationsMap.Values.First(), HostTransform);
+            m_moveLogic.Setup(m_handsPressedLocationsMap.Values.First(), hostTransform);
         }
 
         private void OnManipulationStarted()
