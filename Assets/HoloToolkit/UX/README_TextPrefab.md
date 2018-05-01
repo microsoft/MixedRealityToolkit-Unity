@@ -19,7 +19,7 @@ Open-source fonts included in Mixed Reality Toolkit.
 ![Importing Segoe UI font file](/External/ReadMeImages/TextPrefabInstructions01.png)
 
 1. Assign font texture to 3DTextSegoeUI.mat material. 
-![Assigning font texture](External/ReadMeImages/TextPrefabInstructions02.png)
+![Assigning font texture](/External/ReadMeImages/TextPrefabInstructions02.png)
 
 2. On 3DTextSegoeUI.mat material, select the shader Custom/3DTextShader.shader. 
 ![Assigning shader](/External/ReadMeImages/TextPrefabInstructions03.png)
