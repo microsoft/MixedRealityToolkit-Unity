@@ -66,7 +66,7 @@ Building for the Different Platforms
 ------------------------------------
 - When building for iOS ensure to remove the GLTF component of MRTK as this is not yet compatibile with this platform. 
 - At the top level of the SpectatorView prefab there is a component called 'Platform Switcher'.
-![Platform Switcher](Images/PlatformSwticher.png)
+![Platform Switcher](Images/PlatformSwitcher.png)
 - Select the platform you want to build for.
 - If selecting 'Hololens' you should see all gameobjects beneath the iPhone gameobject in the SpectatorView prefab become inactive and all the gameobjects under 'Hololens' become active.
 - This can take a little while as depending on the platform you choose the HoloToolkit is being added or removed from the project.
