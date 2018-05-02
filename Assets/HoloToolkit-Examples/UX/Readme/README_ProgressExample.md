@@ -50,7 +50,6 @@ ProgressIndicator.Instance.Open(
 
 StartCoroutine(LoadOverTime(LoadTextMessage));
 </pre>
-
 The LoadOverTime function, also found in this script, fakes a loading sequence. To implement the ProgressIndicator during an actual loading sequence, Start a Coroutine with a function like LoadOverTime. In your LoadOverTime function, make sure to update the ProgressIndicator object with the actual loading progress.
 <pre>
 while (your loading operation is not complete)
