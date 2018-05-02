@@ -40,7 +40,7 @@ In a LaunchFunction() called by a Coroutine:
 ## Properties
 The Dialog will stay in the user's field of view while the user can use gaze or controller targeting to make a button selection. Tag-along and billboarding interaction is achieved by using **Solver scripts**. When you select Dialog.prefab, you will be able to find Solver scripts for the size and distance control. In **SolverConstantViewSize**, you can adjust **Target View Percent V** value to modify the size of the Dialog window.
 
-You can find more detailed information about the [Solver System on this README page](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/Dev_Working_Branch/Assets/MixedRealityToolkit-Examples/Utilities/Readme/README_SolverSystem.md).
+You can find more detailed information about the [Solver System on this README page](/Assets/MixedRealityToolkit-Examples/Utilities/Readme/README_SolverSystem.md).
 
 <img src="/External/ReadMeImages/MRTK_Dialog_Inspector.jpg" width="450">
 
