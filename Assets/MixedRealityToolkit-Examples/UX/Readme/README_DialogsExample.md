@@ -15,14 +15,14 @@ Dialog prefab is located under MixedRealityToolkit/UX/Prefabs folder and dynamic
 You can find the code example in **LaunchDialogScript.cs** under SceneContent > SquareButton. It demonstrates the instantiation and response to a Dialog using the function Launch Dialog. The Dialog can be specified to have a single button, useful for communicating information to the user. The Dialog can also be configured to display two buttons, allowing the user to make a choice. The name of the selected button is returned to the script that opens the Dialog. 
 
 An instance of the Dialog is created using: 
- 
+```
 //fill dialogPrefab in the inspector:
 [Serialize]
 private Dialog dialogPrefab;
 
 //then call:
 Dialog dialog = Dialog.Open(dialogPrefab.gameObject, buttons, title, message);
- 
+``` 
 The second argument to the Open function defines the caption or captions that the button(s) will have. 
 They are identified by defining an enumerated value using Dialog.ButtonTypeEnum. 
 To define two buttons, simply bitwise OR two enumerations:
