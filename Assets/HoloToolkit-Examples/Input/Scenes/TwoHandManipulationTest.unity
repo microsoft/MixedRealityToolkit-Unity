@@ -715,7 +715,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  manipulationMode: 1
+  manipulationMode: 4
   constraintOnRotation: 3
   oneHandMovement: 1
 --- !u!65 &687798438
@@ -1428,7 +1428,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  manipulationMode: 1
+  manipulationMode: 4
   constraintOnRotation: 2
   oneHandMovement: 1
 --- !u!65 &1141423121
@@ -1655,7 +1655,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  manipulationMode: 2
+  manipulationMode: 3
   constraintOnRotation: 0
   oneHandMovement: 1
 --- !u!65 &1337778049
@@ -2451,7 +2451,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  manipulationMode: 4
+  manipulationMode: 7
   constraintOnRotation: 0
   oneHandMovement: 1
 --- !u!1 &1838090887
@@ -2554,7 +2554,7 @@ MonoBehaviour:
   hostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  manipulationMode: 0
+  manipulationMode: 2
   constraintOnRotation: 0
   oneHandMovement: 1
 --- !u!65 &1886941386
