@@ -16,13 +16,15 @@ namespace HoloToolkit.Unity.SpectatorView
         /// <summary>
         /// Controls container gameObject
         /// </summary>
-        [Tooltip("Controls container gameObject")] [SerializeField]
+        [Tooltip("Controls container gameObject")] 
+        [SerializeField]
         private GameObject controls;
 
         /// <summary>
         /// Seconds to countdown before recording
         /// </summary>
-        [Tooltip("Seconds to countdown before recording")] [SerializeField]
+        [Tooltip("Seconds to countdown before recording")] 
+        [SerializeField]
         private int countDownNumber = 3;
 
         /// <summary>
@@ -38,18 +40,21 @@ namespace HoloToolkit.Unity.SpectatorView
         /// <summary>
         /// Record button gameObject
         /// </summary>
-        [Tooltip("Record button gameObject")] public GameObject RecordButton;
+        [Tooltip("Record button gameObject")] 
+        public GameObject RecordButton;
 
         /// <summary>
         /// Recording countdown button gameObject
         /// </summary>
-        [Tooltip("Recording countdown button gameObject")] [SerializeField]
+        [Tooltip("Recording countdown button gameObject")] 
+        [SerializeField]
         private GameObject recordCountdownButton;
 
         /// <summary>
         /// Record countdown textfield
         /// </summary>
-        [Tooltip("Record countdown textfield")] [SerializeField]
+        [Tooltip("Record countdown textfield")] 
+        [SerializeField]
         private Text recordCountdownText;
 
         /// <summary>
@@ -60,13 +65,15 @@ namespace HoloToolkit.Unity.SpectatorView
         /// <summary>
         /// Replay (preview) button gameObject
         /// </summary>
-        [Tooltip("Replay (preview) button gameObject")] [SerializeField]
+        [Tooltip("Replay (preview) button gameObject")] 
+        [SerializeField]
         private GameObject replayButton;
 
         /// <summary>
         /// Stop button gameObject
         /// </summary>
-        [Tooltip("Stop button gameObject")] [SerializeField]
+        [Tooltip("Stop button gameObject")] 
+        [SerializeField]
         private GameObject stopButton;
 
         /// <summary>
