@@ -8,12 +8,15 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
     /// Sorting type for collections
     /// </summary>
     [Flags]
-    public enum TwoHandManipulatableMode
+    public enum ManipulationMode
     {
-        Scale = (1 << 0),
-        Rotate = (1 << 1),
-        MoveScale = (1 << 2),
-        RotateScale = (1 << 3),
-        MoveRotateScale = (1 << 4),
+        None = 0,
+        Move = 1 << 0,
+        Scale = 1 << 1,
+        Rotate = 1 << 2,
+        MoveAndScale = Move | Scale,
+        MoveAndRotate = Move | Rotate,
+        RotateAndScale = Rotate | Scale,
+        MoveScaleAndRotate = Move | Scale | Rotate,
     }
 }
