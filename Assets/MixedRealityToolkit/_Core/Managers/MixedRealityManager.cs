@@ -3,10 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Managers
@@ -70,10 +70,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// <summary>
         /// Local component registry for the Mixed Reality Manager, to allow runtime use of the Manager.
         /// </summary>
-        [HideInInspector]
         public List<Tuple<Type, IMixedRealityManager>> MixedRealityComponents { get; } = new List<Tuple<Type, IMixedRealityManager>>();
 
-        private int MixedRealityComponentsCount = 0;
+        private int mixedRealityComponentsCount = 0;
 
         #endregion
 
@@ -116,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (!ActiveProfile)
             {
                 Debug.LogError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Manager");
-                this.gameObject.SetActive(false);
+                gameObject.SetActive(false);
                 return;
             }
 
@@ -124,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (ActiveProfile.EnableInputSystem)
             {
                 //Enable Input (example initializer)
-                // TODO --->>>>AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+                //AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
             }
 
             //If the Boundary system has been selected for initialization in the Active profile, enable it in the project
@@ -397,7 +396,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
                 MixedRealityComponents.Add(new Tuple<Type, IMixedRealityManager>(type, manager));
                 manager.Initialize();
-                MixedRealityComponentsCount = MixedRealityComponents.Count;
+                mixedRealityComponentsCount = MixedRealityComponents.Count;
             }
         }
 
@@ -503,7 +502,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 //If no name provided, return all components of the same type. Else return the type/name combination.
                 if (string.IsNullOrWhiteSpace(managerName))
                 {
-                    for (int i = 0; i < MixedRealityComponentsCount; i++)
+                    for (int i = 0; i < mixedRealityComponentsCount; i++)
                     {
                         if (MixedRealityComponents[i].Item1.Name == type.Name)
                         {
@@ -513,7 +512,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 }
                 else
                 {
-                    for (int i = 0; i < MixedRealityComponentsCount; i++)
+                    for (int i = 0; i < mixedRealityComponentsCount; i++)
                     {
                         if (MixedRealityComponents[i].Item1.Name == type.Name && MixedRealityComponents[i].Item2.Name == managerName)
                         {
@@ -696,7 +695,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         {
             manager = null;
 
-            for (int i = 0; i < MixedRealityComponentsCount; i++)
+            for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
                 if (MixedRealityComponents[i].Item1.Name == type.Name)
                 {
@@ -716,7 +715,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         {
             manager = null;
 
-            for (int i = 0; i < MixedRealityComponentsCount; i++)
+            for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
                 if (MixedRealityComponents[i].Item1.Name == type.Name && MixedRealityComponents[i].Item2.Name == managerName)
                 {
