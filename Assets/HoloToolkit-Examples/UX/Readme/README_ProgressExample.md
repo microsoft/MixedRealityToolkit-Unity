@@ -25,7 +25,7 @@ Different types of Progress control can be opened by pressing these buttons in t
 
 ## ProgressIndicator Prefab
 
-The **ProgressIndicator prefab** is located in HoloToolkit/UX/Prefabs/Progress. It is composed of **ProgressIndicator** script and **Solver** scripts for the billboarding and tag-along behavior.
+The **ProgressIndicator prefab** is located in [HoloToolkit/UX/Prefabs/Progress](/Assets/HoloToolkit/UX/Prefabs/Progress). It is composed of **ProgressIndicator** script and **Solver** scripts for the billboarding and tag-along behavior.
 
 ![ProgressIndicator Properties](/External/ReadMeImages/MRTK_ProgressIndicatorInspector.jpg)
 
