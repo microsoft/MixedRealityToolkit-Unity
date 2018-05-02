@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.UX.AppBarControl;
 using UnityEngine;
 
@@ -170,11 +171,13 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
 
         public void Activate()
         {
+            InputManager.Instance.RaiseBoundingBoxRigActivated(gameObject);
             ShowRig = true;
         }
 
         public void Deactivate()
         {
+            InputManager.Instance.RaiseBoundingBoxRigDeactivated(gameObject);
             ShowRig = false;
         }
 

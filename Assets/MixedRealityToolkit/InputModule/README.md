@@ -37,6 +37,7 @@ Game objects that want to consume input events can implement one or many **input
 - **IDictationHandler** for speech to text dictation.
 - **IGamePadHandler** for generic gamepad events.
 - **IXboxControllerHandler** for Xbox One Controller events.
+- **IBoundingBoxStateHandler** for Bounding Box Rig events.
 
 The **input manager** listens to the various events coming from the input sources, and also takes into account the gaze. Currently, that gaze is always coming from the GazeManager class, but this could be extended to support multiple gaze sources if the need arises.
 
@@ -265,6 +266,9 @@ Event data for an event that represents the amount of depression of a trigger.
 ##### XboxControllerEventData.cs
 Event data for an event coming from an Xbox controller source.
 
+##### BoundingBoxEventData.cs
+Event data for an event coming from a bounding box rig in the scene.
+
 #### InputHandlers
 
 ##### IControllerInputHandler.cs
@@ -316,6 +320,9 @@ Interface that a game object can implement to react to a keyword being recognize
 
 ##### IXboxControllerHandler.cs
 Interface that a game object can implement to react to Xbox Controller events.
+
+##### IBoundingBoxStateHandler.cs
+Interface that a game object behavior can implement to react to bounding box rig events.
 
 #### InputSources
 
