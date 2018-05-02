@@ -9,7 +9,7 @@ Dialog is a transient UI element which appears when something happens that requi
 https://gfycat.com/ConventionalDirtyKiskadee
 
 ## Dialog prefab and DialogShell script
-Dialog prefab is located under HoloToolkit/UX/Prefabs folder and dynamically instantiated with Unity's Instantiate() function. This prefab contains **DialogShell** script and **Solver** scripts.
+Dialog prefab is located under [HoloToolkit/UX/Prefabs](/Assets/HoloToolkit/UX/Prefabs) folder and dynamically instantiated with Unity's Instantiate() function. This prefab contains **DialogShell** script and **Solver** scripts.
 
 ## How to display a Dialog control
 You can find the code example in **LaunchDialogScript.cs** under SceneContent > SquareButton. It demonstrates the instantiation and response to a Dialog using the function Launch Dialog. The Dialog can be specified to have a single button, useful for communicating information to the user. The Dialog can also be configured to display two buttons, allowing the user to make a choice. The name of the selected button is returned to the script that opens the Dialog. 
