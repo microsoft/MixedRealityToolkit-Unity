@@ -13,22 +13,22 @@ namespace HoloToolkit.Unity.SpectatorView
     /// </summary>
 	public class MarkerDetector
 	{
-		[DllImport("OpenCVWrapper", EntryPoint="MarkerDetector_Initialize")]
+		[DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_Initialize")]
 		internal static extern void InitalizeMarkerDetector();
 
-		[DllImport("OpenCVWrapper", EntryPoint="MarkerDetector_Terminate")]
+		[DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_Terminate")]
 		internal static extern void TerminateMarkerDetector();
 
-		[DllImport("OpenCVWrapper", EntryPoint="MarkerDetector_DetectMarkers")]
+		[DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_DetectMarkers")]
 		internal static extern bool DetectMarkers(int _imageWidth, int _imageHeight, IntPtr _imageDate, float _markerSize);
 
-		[DllImport("OpenCVWrapper", EntryPoint="MarkerDetector_GetNumMarkersDetected")]
+		[DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_GetNumMarkersDetected")]
 		internal static extern bool GetNumMarkersDetected(out int _numMarkersDetected);
 
-		[DllImport("OpenCVWrapper", EntryPoint="MarkerDetector_GetDetectedMarkerIds")]
+		[DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_GetDetectedMarkerIds")]
 		internal static extern bool GetDetectedMarkerIds(IntPtr _detectedMarkers);
 
-		[DllImport("OpenCVWrapper", EntryPoint="MarkerDetector_GetDetectedMarkerPose")]
+		[DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_GetDetectedMarkerPose")]
 		internal static extern bool GetDetectedMarkerPose(int _markerId, out float _xPos, out float _yPos, out float _zPos, out float _xRot, out float _yRot, out float _zRot);
 
 		/// <summary>
