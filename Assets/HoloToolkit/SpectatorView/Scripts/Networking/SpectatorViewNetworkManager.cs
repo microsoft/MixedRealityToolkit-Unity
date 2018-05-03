@@ -175,7 +175,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// A new client has connected, sync up the world
         /// </summary>
         /// <param name="conn">Newly created connection between the server and client</param>
-        public override void OnServerConnect( NetworkConnection conn )
+        public override void OnServerConnect(NetworkConnection conn)
         {
             base.OnServerConnect(conn);
             WorldSync.StartSyncing();
@@ -186,7 +186,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// A client has been connected to the server
         /// </summary>
         /// <param name="conn">Newly created connection between the server and client</param>
-        public override void OnClientConnect( NetworkConnection conn )
+        public override void OnClientConnect(NetworkConnection conn)
         {
             base.OnClientConnect(conn);
             if (OnClientConnectedCustom != null)

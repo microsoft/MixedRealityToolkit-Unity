@@ -18,6 +18,12 @@ Current Features
 - Share sheet so you can Save the Video, email it, or share it with other supporting apps.
 
 
+Licenses
+--------
+- OpenCV - (3-clause BSD License) https://opencv.org/license.html
+- Unity ARKit - (MIT License) https://bitbucket.org/Unity-Technologies/unity-arkit-plugin/src/3691df77caca2095d632c5e72ff4ffa68ced111f/LICENSES/MIT_LICENSE?at=default&fileviewer=file-view-default
+
+
 Requirements
 ------------
 - SpectatorView plugin and required OpenCV binaries, which can be found here: https://github.com/Microsoft/MixedRealityToolkit/SpectatorViewPlugin, listed here:

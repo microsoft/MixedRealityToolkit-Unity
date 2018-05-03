@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.using UnityEngine;
 
 using System.Collections;
@@ -67,6 +67,14 @@ namespace HoloToolkit.Unity.SpectatorView
             {
                 mat = GetComponent<Renderer>().material;
             }
+        }
+
+        /// <summary>
+        /// Destroys material before death
+        /// </summary>
+        private void OnDestroy()
+		{
+            Destroy(mat);
         }
 
         /// <summary>

@@ -18,9 +18,9 @@ namespace HoloToolkit.Examples.SpectatorView
         [SyncVar] private Color color;
 
         /// <summary>
-        /// Renderer to which the color is applied to
+        /// Material to operate on
         /// </summary>
-        private Renderer objectRenderer;
+        private Material mat;
 
         /// <summary>
         /// Counts the time between color changes
@@ -29,7 +29,7 @@ namespace HoloToolkit.Examples.SpectatorView
 
         private void Start()
         {
-            objectRenderer = GetComponent<Renderer>();
+            mat = GetComponent<Renderer>().material;
             UnityEngine.Random.InitState(DateTime.Now.Millisecond);
             ChangeColor();
         }
@@ -47,7 +47,7 @@ namespace HoloToolkit.Examples.SpectatorView
                 timer += Time.deltaTime;
             }
 
-            objectRenderer.material.color = color;
+            material.color = color;
         }
 
         /// <summary>
@@ -56,7 +56,15 @@ namespace HoloToolkit.Examples.SpectatorView
         private void ChangeColor()
         {
             color = UnityEngine.Random.ColorHSV();
-            objectRenderer.material.color = color;
+            material.color = color;
+        }
+
+        /// <summary>
+        /// Destroys the changed material
+        /// </summary>
+        private void OnDestroy()
+        {
+            Destroy(mat);
         }
     }
 }
