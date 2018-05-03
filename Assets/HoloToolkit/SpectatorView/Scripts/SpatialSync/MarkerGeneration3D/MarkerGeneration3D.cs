@@ -38,7 +38,6 @@ namespace HoloToolkit.Unity.SpectatorView
         /// <summary>
         /// // The id of the marker generated
         /// </summary>
-        [HideInInspector]
         private int markerId;
 
         /// <summary>

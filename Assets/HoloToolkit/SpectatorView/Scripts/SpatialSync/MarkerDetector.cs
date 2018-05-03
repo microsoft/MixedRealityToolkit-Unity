@@ -153,7 +153,7 @@ namespace HoloToolkit.Unity.SpectatorView
             try
             {
                 _markerPosition = Vector3.zero;
-                _markerRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+                _markerRotation = Quaternion.identity;
 
                 int numMarkersDetected;
 
@@ -168,24 +168,24 @@ namespace HoloToolkit.Unity.SpectatorView
                 bool success = GetDetectedMarkerPose(_markerId, out xPos, out yPos, out zPos, out xRot, out yRot, out zRot);
                 if(success)
                 {
-                    Debug.Log("Found marker with id: " + _markerId);
+                    //Debug.Log("Found marker with id: " + _markerId);
 
                     // Account for the offset of the hololens camera from the transform pos
                     Vector3 position = new Vector3(xPos, yPos, zPos);
                     Vector3 offset = new Vector3(0.00f, 0.0f, 0.06f);
                     position += offset;
-                    _markerPosition = Camera.main.cameraToWorldMatrix.MultiplyPoint(new Vector3(position.x, -position.y, -position.z));
+                    _markerPosition = CameraCache.Main.cameraToWorldMatrix.MultiplyPoint(new Vector3(position.x, -position.y, -position.z));
 
                     Vector3 rotation = new Vector3(xRot, yRot, zRot);
                     float theta = rotation.magnitude;
                     rotation.Normalize();
-                    _markerRotation = Camera.main.transform.rotation * Quaternion.AngleAxis(theta * Mathf.Rad2Deg, rotation);
+                    _markerRotation = CameraCache.Main.transform.rotation * Quaternion.AngleAxis(theta * Mathf.Rad2Deg, rotation);
                     _markerRotation = Quaternion.Euler(_markerRotation.eulerAngles.x,_markerRotation.eulerAngles.y, -_markerRotation.eulerAngles.z);
 
                     return true;
                 }
 
-                Debug.Log("Could not find marker with id: " + _markerId);
+                Debug.LogWarning("Could not find marker with id: " + _markerId);
 
                 return false;
             }

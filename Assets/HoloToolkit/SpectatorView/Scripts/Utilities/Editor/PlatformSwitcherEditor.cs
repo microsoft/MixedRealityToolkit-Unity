@@ -9,7 +9,6 @@ namespace HoloToolkit.Unity.SpectatorView
     [CustomEditor(typeof(PlatformSwitcher))]
     public class PlatformSwitcherEditor : Editor
     {
-
         public override void OnInspectorGUI()
         {
             PlatformSwitcher platformSwitcher = (PlatformSwitcher)target;
@@ -27,7 +26,6 @@ namespace HoloToolkit.Unity.SpectatorView
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.WebCam, true);
                 PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true);
             }
-
 
             // Editor button for iOS platfrom and functionality
             if (GUILayout.Button("IPhone", GUILayout.Height(70)))

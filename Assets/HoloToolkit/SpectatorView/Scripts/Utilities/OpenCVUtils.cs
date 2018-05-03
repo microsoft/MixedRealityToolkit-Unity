@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity.SpectatorView
     /// <summary>
     /// Utility function to ensure the OpenCVWrapper has been successfully loaded
     /// </summary>
-    public class OpenCVUtils : MonoBehaviour
+    public static class OpenCVUtils
     {
         /// <summary>
         /// Utility function to ensure the OpenCVWrapper has been successfully loaded

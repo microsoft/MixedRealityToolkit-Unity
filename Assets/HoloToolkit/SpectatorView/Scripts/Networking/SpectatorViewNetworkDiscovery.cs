@@ -181,7 +181,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// <param name="markerId">ID of the marker detected by the HoloLens</param>
         /// <param name="pos">World position of the marker</param>
         /// <param name="rot">Rotation of the marker (as seen from the HoloLens)</param>
-        private void OnMarkerDetected( int markerId, Vector3 pos, Quaternion rot )
+        private void OnMarkerDetected(int markerId, Vector3 pos, Quaternion rot)
         {
             string newData = "|" + markerId + "|";
             StartCoroutine(ChangeBroadcastData(newData));
@@ -191,7 +191,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// Runs in a routine since the stop and start of the broadcasting isn't synchronous
         /// </summary>
         /// <param name="newData">New broadcast message</param>
-        private IEnumerator ChangeBroadcastData( string newData )
+        private IEnumerator ChangeBroadcastData(string newData)
         {
             if (newData != broadcastData && !IsStopping)
             {
@@ -210,14 +210,14 @@ namespace HoloToolkit.Unity.SpectatorView
 
         #region Client
 
-        #if !NETFX_CORE
+#if !NETFX_CORE
         /// <summary>
         /// This method gets called whenever it receives a broadcast. It'll then strip out the message of the
         /// broadcast and decide whether it should connect to the sender of the broadcast or not
         /// </summary>
         /// <param name="fromAddress">IP address that broadcasted the message</param>
         /// <param name="data">Broadcast message read</param>
-        public override void OnReceivedBroadcast( string fromAddress, string data )
+        public override void OnReceivedBroadcast(string fromAddress, string data)
         {
             if (isHost)
             {
@@ -257,7 +257,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// Stops the broadcast, waits for it to be fully stopped and then connects to the hololens
         /// </summary>
         /// <param name="address">IP address to connect to</param>
-        private IEnumerator StopBroadcastAndConnect( string address )
+        private IEnumerator StopBroadcastAndConnect(string address)
         {
             IsStopping = true;
             StopBroadcast();
@@ -268,7 +268,7 @@ namespace HoloToolkit.Unity.SpectatorView
             IsStopping = false;
         }
 
-        #endif
+#endif
 
         #endregion
     }

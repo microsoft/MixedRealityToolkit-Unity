@@ -38,7 +38,6 @@ namespace HoloToolkit.Unity.SpectatorView
                     var res = 1f;
 
                     var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    Destroy(cube.GetComponent<Collider>());
                     cube.layer = gameObject.layer;
                     var height = 0.0f;
                     cube.transform.parent = transform;

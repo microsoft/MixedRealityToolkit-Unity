@@ -74,6 +74,21 @@ namespace HoloToolkit.Unity.SpectatorView
             InputManager.Instance.AddGlobalListener(gameObject);
         }
 
+        private void Update()
+        {
+            if (holding)
+            {
+                heldTimer += Time.deltaTime;
+            }
+
+            if (heldTimer > TimeToDisplayMenu)
+            {
+                ShowControls();
+                heldTimer = 0.0f;
+                holding = false;
+            }
+        }
+
         /// <summary>
         /// Holding starts
         /// </summary>
@@ -106,21 +121,6 @@ namespace HoloToolkit.Unity.SpectatorView
         private void ShowControls()
         {
             RecordingControls.SetActive(true);
-        }
-
-        private void Update()
-        {
-            if (holding)
-            {
-                heldTimer += Time.deltaTime;
-            }
-
-            if (heldTimer > TimeToDisplayMenu)
-            {
-                ShowControls();
-                heldTimer = 0.0f;
-                holding = false;
-            }
         }
     }
 }

@@ -164,7 +164,7 @@ namespace HoloToolkit.Unity.SpectatorView
                 holoLensCapture.StartCapture();
             }
 #else
-            Debug.LogWarning("Capturing only supported on HoloLens platform");
+            Debug.LogWarning("Capturing is not supported on this platform");
 #endif
             capturing = true;
         }
@@ -188,7 +188,7 @@ namespace HoloToolkit.Unity.SpectatorView
 #if NETFX_CORE
             holoLensCapture.StopCapture();
 #else
-            Debug.LogWarning("Capturing only supported on HoloLens platform");
+            Debug.LogWarning("Capturing is not supported on this platform");
 #endif
         }
 

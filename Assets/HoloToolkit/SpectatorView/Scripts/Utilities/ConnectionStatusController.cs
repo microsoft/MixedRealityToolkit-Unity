@@ -17,6 +17,7 @@ namespace HoloToolkit.Unity.SpectatorView
         [SerializeField]
         [Tooltip("UI Textfield to display status")]
         private Text text;
+
         /// <summary>
         /// UI Textfield to display status
         /// </summary>

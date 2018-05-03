@@ -102,7 +102,7 @@ namespace HoloToolkit.Unity.SpectatorView
             }
 
             CodeContainer.transform.localScale = Vector3.one;
-            BackgroundPlane.GetComponent<Renderer>().material.color = Color.white;
+            BackgroundPlane.GetComponent<Renderer>().sharedMaterial.color = Color.white;
             gameObject.SetActive(false);
         }
     }

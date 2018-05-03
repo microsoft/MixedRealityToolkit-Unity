@@ -70,14 +70,6 @@ namespace HoloToolkit.Unity.SpectatorView
         }
 
         /// <summary>
-        /// Destroys material before death
-        /// </summary>
-        private void OnDestroy()
-        {
-            Destroy(mat);
-        }
-
-        /// <summary>
         /// Start the alpha fade coroutine
         /// </summary>
         public void StartEffect()

@@ -166,7 +166,7 @@ namespace HoloToolkit.Unity.SpectatorView
                     RecordButton.SetActive(true);
                 }
             }
-        #endif
+#endif
         }
 
         /// <summary>
@@ -185,6 +185,8 @@ namespace HoloToolkit.Unity.SpectatorView
             RecordButton.SetActive(false);
             Countdown();
             RecordCountdownButton.GetComponent<Animation>().Play();
+#else
+            Debug.LogWarning("Not impletmenting on the current platform");
 #endif
         }
 
@@ -224,6 +226,8 @@ namespace HoloToolkit.Unity.SpectatorView
                 ReplayKit.StartRecording(true, true);
                 Controls.SetActive(false);
             }
+#else
+            Debug.LogWarning("Not implemented on the current platform");
 #endif
         }
 
@@ -238,6 +242,8 @@ namespace HoloToolkit.Unity.SpectatorView
                 ReplayKit.StopRecording();
                 RecordButton.SetActive(true);
             }
+#else
+            Debug.LogWarning("Not implemented on the current platform");
 #endif
         }
 
@@ -248,6 +254,8 @@ namespace HoloToolkit.Unity.SpectatorView
         {
 #if UNITY_IOS
             ReplayKit.Preview();
+#else
+            Debug.LogWarning("Not implemented on the current platform");
 #endif
         }
     }

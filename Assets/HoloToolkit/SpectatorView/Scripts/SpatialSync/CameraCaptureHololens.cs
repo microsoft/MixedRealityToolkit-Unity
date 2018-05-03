@@ -46,6 +46,15 @@ namespace HoloToolkit.Unity.SpectatorView
         /// Texture to which the photo will be saved to
         /// </summary>
         private Texture2D targetTexture;
+        
+        /// <summary>
+        /// Vertical resolution of the capture camera image
+        /// </summary>
+        private const int VerticalCameraResolution = 504;
+        /// <summary>
+        /// Horizontal resolution of the capture camera image
+        /// </summary>
+        private const int HorizontalCameraResolution = 896;
 
         /// <summary>
         /// Starts capturing photos
@@ -59,7 +68,7 @@ namespace HoloToolkit.Unity.SpectatorView
                 capturing = true;
             }
 #else
-            Debug.LogWarning("Capturing only supported on the HoloLens platform");
+            Debug.LogWarning("Capturing isn't supported on this platform");
 #endif
         }
 
@@ -75,7 +84,7 @@ namespace HoloToolkit.Unity.SpectatorView
             }
             capturing = false;
 #else
-            Debug.LogWarning("Capturing only supported on the HoloLens platform");
+            Debug.LogWarning("Capturing isn't supported on this platform");
 #endif
         }
 
@@ -91,8 +100,8 @@ namespace HoloToolkit.Unity.SpectatorView
 
             var cameraParameters = new CameraParameters();
             cameraParameters.hologramOpacity = 0.0f;
-            photoHeight = 504;
-            photoWidth = 896;
+            photoHeight = VerticalCameraResolution;
+            photoWidth = HorizontalCameraResolution;
             cameraParameters.cameraResolutionWidth = photoWidth;
             cameraParameters.cameraResolutionHeight = photoHeight;
             cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
@@ -130,7 +139,7 @@ namespace HoloToolkit.Unity.SpectatorView
                     Destroy(targetTexture);
                 }
 
-                targetTexture = new Texture2D(896, 504, TextureFormat.RGB24, false);
+                targetTexture = new Texture2D(HorizontalCameraResolution, VerticalCameraResolution, TextureFormat.RGB24, false);
                 // Copy the raw image data into our target texture
                 photoCaptureFrame.UploadImageDataToTexture(targetTexture);
 

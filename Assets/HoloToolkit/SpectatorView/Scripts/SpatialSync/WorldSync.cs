@@ -214,7 +214,7 @@ namespace HoloToolkit.Unity.SpectatorView
                     {
                         positions.Clear();
                         rotations.Clear();
-                        //No point continuing with the execution. Return and let it all begin again. s
+                        // No point continuing with the execution. Return and let it all begin again.
                         return;
                     }
                 }

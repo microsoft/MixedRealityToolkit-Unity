@@ -19,7 +19,7 @@ namespace HoloToolkit.Unity.SpectatorView
         {
             foreach(GameObject cube in Cubes)
             {
-                DestroyImmediate(cube);
+                Destroy(cube);
             }
             Cubes.Clear();
 
@@ -35,7 +35,6 @@ namespace HoloToolkit.Unity.SpectatorView
                     int xCoord = ((x * (markerRes / ((MarkerResolutionInSquares + 2)))) + (markerRes / ((MarkerResolutionInSquares + 2) * 2)));
                     int yCoord = ((y * (markerRes / ((MarkerResolutionInSquares + 2)))) + (markerRes / ((MarkerResolutionInSquares + 2)* 2)));
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    Destroy(cube.GetComponent<Collider>());
                     float col = marker.GetPixel(xCoord, yCoord).r;
                     float res = 1;
 
