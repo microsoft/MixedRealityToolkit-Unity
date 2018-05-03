@@ -82,7 +82,7 @@ namespace MixedRealityToolkit.Examples.UX.Controls
         protected override void Awake()
         {
             base.Awake();
-            
+
             if (Knob != null)
             {
                 mStartCenter.z = Knob.transform.localPosition.z;
@@ -147,10 +147,10 @@ namespace MixedRealityToolkit.Examples.UX.Controls
             }
 
             base.ManipulationUpdate(startGesturePosition, currentGesturePosition, startHeadOrigin, startHeadRay, gestureState);
-            
+
             // get the current delta
-            float delta =  (CurrentDistance > 0) ? CurrentPercentage : -CurrentPercentage;
-            
+            float delta = (CurrentDistance > 0) ? CurrentPercentage : -CurrentPercentage;
+
             // combine the delta with the current slider position so the slider does not start over every time
             mDeltaValue = Mathf.Clamp01(delta + mCachedValue);
 
@@ -162,7 +162,7 @@ namespace MixedRealityToolkit.Examples.UX.Controls
             {
                 SliderValue = mDeltaValue * mValueSpan * 2 - mValueSpan;
             }
-            
+
             UpdateVisuals();
 
             if (gestureState == GestureInteractive.GestureManipulationState.None)
@@ -199,33 +199,33 @@ namespace MixedRealityToolkit.Examples.UX.Controls
             }
             AutoSliderTimerCounter = 0;
         }
-		
+
         /// <summary>
         /// set the distance of the slider
         /// </summary>
         /// <param name="min"></param>
         /// <param name="max"></param>
-		public void SetSpan(float min, float max)
-		{
-			mValueSpan = max - min;
-			MaxSliderValue = max;
-			MinSliderValue = min;
-		}
+        public void SetSpan(float min, float max)
+        {
+            mValueSpan = max - min;
+            MaxSliderValue = max;
+            MinSliderValue = min;
+        }
 
         /// <summary>
         /// override the slider value
         /// </summary>
         /// <param name="value"></param>
-		public void SetSliderValue(float value)
-		{
-			if(GestureStarted)
-			{
-				return;
-			}
-			
-			mSliderValue = Mathf.Clamp(value, MinSliderValue, MaxSliderValue);
-			mDeltaValue = SliderValue / MaxSliderValue;
-			UpdateVisuals();
+        public void SetSliderValue(float value)
+        {
+            if (GestureStarted)
+            {
+                return;
+            }
+
+            mSliderValue = Mathf.Clamp(value, MinSliderValue, MaxSliderValue);
+            mDeltaValue = SliderValue / MaxSliderValue;
+            UpdateVisuals();
             mCachedValue = mDeltaValue;
 
         }
@@ -314,7 +314,7 @@ namespace MixedRealityToolkit.Examples.UX.Controls
                 }
 
                 mDeltaValue = (AutoSliderValue - mCachedValue) * AutoSliderTimerCounter / AutoSliderTime + mCachedValue;
-                
+
                 if (!Centered)
                 {
                     SliderValue = mDeltaValue * mValueSpan;
