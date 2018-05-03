@@ -88,7 +88,7 @@ At the time that feature complete is declared for the Alpha release, three new b
 - development_MRTK (single development branch for future MRTK work)
 - alpha (stabilization branch for the Alpha release) 
 
-Once the branches are created, MRTK-Version-Next will be deleted.
+Once the branches are created, MRTK-Version-Next will be deleted and [Dev_Working_Branch](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/Dev_Working_Branch) will be locked (no Pull Requests accepted).
 
 ## Post-Version Next release
 With the release of Version Next, the default branch for the repository will change to release_MRTK and [master](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/master)  will be branched to become HoloToolkit_SustainedEngineering. At the time of the branching, master will be deleted.
