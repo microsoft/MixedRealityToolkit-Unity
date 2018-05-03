@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity.SpectatorView
     /// </summary>
     public class CameraCaptureHololens : MonoBehaviour
     {
-		// Executed once a frame has succesfully been captured
+        // Executed once a frame has succesfully been captured
         public delegate void FrameCapturesDelegate(List<byte> frameData, int width, int height);
         public FrameCapturesDelegate OnFrameCapture;
 
@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// <summary>
         /// Manages the camera capture
         /// </summary>
-		private PhotoCapture photoCaptureObject;
+        private PhotoCapture photoCaptureObject;
 
         /// <summary>
         /// Is the HoloLens capturing photos?
@@ -53,13 +53,13 @@ namespace HoloToolkit.Unity.SpectatorView
         public void StartCapture()
         {
 #if NETFX_CORE
-			if(!capturing)
-			{
-				PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
-			    capturing = true;
-			}
+            if(!capturing)
+            {
+                PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
+                capturing = true;
+            }
 #else
-			Debug.LogWarning("Capturing only supported on the HoloLens platform");
+            Debug.LogWarning("Capturing only supported on the HoloLens platform");
 #endif
         }
 
@@ -69,13 +69,13 @@ namespace HoloToolkit.Unity.SpectatorView
         public void StopCapture()
         {
 #if NETFX_CORE
-			if(capturing)
-			{
-				photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
-			}
-			capturing = false;
+            if(capturing)
+            {
+                photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
+            }
+            capturing = false;
 #else
-			Debug.LogWarning("Capturing only supported on the HoloLens platform");
+            Debug.LogWarning("Capturing only supported on the HoloLens platform");
 #endif
         }
 

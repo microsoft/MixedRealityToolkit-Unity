@@ -13,17 +13,17 @@ namespace HoloToolkit.Unity.SpectatorView
     /// <summary>
     /// Utility to switch scene state between HoloLens and mobile platforms
     /// </summary>
-	public class PlatformSwitcher : MonoBehaviour
-	{
+    public class PlatformSwitcher : MonoBehaviour
+    {
         /// <summary>
         /// Available platforms
         /// </summary>
         [Serializable]
-		public enum Platform
-		{
-			Hololens = 0,
-			IPhone
-		}
+        public enum Platform
+        {
+            Hololens = 0,
+            IPhone
+        }
 
         /// <summary>
         /// The current active platform
@@ -51,41 +51,41 @@ namespace HoloToolkit.Unity.SpectatorView
         /// </summary>
         /// <param name="platform">The target platform</param>
         public void SwitchPlatform(Platform platform)
-		{
+        {
 #if UNITY_EDITOR
-			TargetPlatform = platform;
+            TargetPlatform = platform;
 
-			string platformGameObjectName = "";
+            string platformGameObjectName = "";
 
-			switch(platform)
-			{
-				case Platform.Hololens:
-					platformGameObjectName = "Hololens";
-					break;
+            switch(platform)
+            {
+                case Platform.Hololens:
+                    platformGameObjectName = "Hololens";
+                    break;
 
-				case Platform.IPhone:
-					platformGameObjectName = "IPhone";
-					break;
-			}
+                case Platform.IPhone:
+                    platformGameObjectName = "IPhone";
+                    break;
+            }
 
             // Disables platform root objects for inactive platforms
-			for(int i=0; i<transform.childCount; i++)
-			{
-				Transform child = transform.GetChild(i);
+            for(int i=0; i<transform.childCount; i++)
+            {
+                Transform child = transform.GetChild(i);
 
-				if(child.gameObject.name == "Shared")
-				{
-					continue;
-				}
+                if(child.gameObject.name == "Shared")
+                {
+                    continue;
+                }
 
-			    if (child.gameObject.name == "WorldSync")
-				{
-			        continue;
-				}
+                if (child.gameObject.name == "WorldSync")
+                {
+                    continue;
+                }
 
                 child.gameObject.SetActive(child.name == platformGameObjectName);
-			}
+            }
 #endif
-		}
-	}
+        }
+    }
 }

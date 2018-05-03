@@ -38,12 +38,12 @@ namespace HoloToolkit.Unity.SpectatorView
 #if NETFX_CORE
             try
             {
-			    OpenCVUtils.CheckOpenCVWrapperHasLoaded();
+                OpenCVUtils.CheckOpenCVWrapperHasLoaded();
             }
             catch (Exception e)
             {
-				Debug.LogError(e);
-				gameObject.SetActive(false);
+                Debug.LogError(e);
+                gameObject.SetActive(false);
                 return;
             }
 #endif

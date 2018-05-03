@@ -14,8 +14,8 @@ namespace UnityEngine.XR.iOS
         int currentAlignmentIndex = 0;
         int currentPlaneIndex = 0;
 
-    	// Use this for initialization
-    	void Start () {
+        // Use this for initialization
+        void Start () {
             runOptions [0] = UnityARSessionRunOption.ARSessionRunOptionRemoveExistingAnchors | UnityARSessionRunOption.ARSessionRunOptionResetTracking;
             runOptions [1] = UnityARSessionRunOption.ARSessionRunOptionResetTracking;
             runOptions [2] = UnityARSessionRunOption.ARSessionRunOptionRemoveExistingAnchors;
@@ -28,12 +28,12 @@ namespace UnityEngine.XR.iOS
             planeOptions [0] = UnityARPlaneDetection.Horizontal;
             planeOptions [1] = UnityARPlaneDetection.None;
 
-    	}
-    	
-    	// Update is called once per frame
-    	void Update () {
-    		
-    	}
+        }
+        
+        // Update is called once per frame
+        void Update () {
+            
+        }
 
         void OnGUI()
         {
@@ -63,7 +63,7 @@ namespace UnityEngine.XR.iOS
                 currentAlignmentIndex = (currentAlignmentIndex + 1) % 3;
             }
 
-			string planeOptionStr = currentPlaneIndex == 0 ? "Horizontal":  "None";
+            string planeOptionStr = currentPlaneIndex == 0 ? "Horizontal":  "None";
             if (GUI.Button (new Rect (500, 200, 150, 50), "PlaneOption:" + planeOptionStr)) {
                 currentPlaneIndex = (currentPlaneIndex + 1) % 2;
             }

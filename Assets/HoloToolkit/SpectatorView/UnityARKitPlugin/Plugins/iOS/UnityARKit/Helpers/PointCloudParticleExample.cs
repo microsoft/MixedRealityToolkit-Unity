@@ -12,21 +12,21 @@ public class PointCloudParticleExample : MonoBehaviour {
     private ParticleSystem currentPS;
     private ParticleSystem.Particle [] particles;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         UnityARSessionNativeInterface.ARFrameUpdatedEvent += ARFrameUpdated;
         currentPS = Instantiate (pointCloudParticlePrefab);
         frameUpdated = false;
-	}
-	
+    }
+    
     public void ARFrameUpdated(UnityARCamera camera)
     {
         m_PointCloudData = camera.pointCloudData;
         frameUpdated = true;
     }
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update () {
         if (frameUpdated) {
             if (m_PointCloudData != null && m_PointCloudData.Length > 0) {
                 int numParticles = Mathf.Min (m_PointCloudData.Length, maxPointsToShow);
@@ -46,5 +46,5 @@ public class PointCloudParticleExample : MonoBehaviour {
             }
             frameUpdated = false;
         }
-	}
+    }
 }

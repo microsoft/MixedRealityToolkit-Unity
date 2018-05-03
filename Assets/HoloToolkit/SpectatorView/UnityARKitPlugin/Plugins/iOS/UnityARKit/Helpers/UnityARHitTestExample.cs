@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace UnityEngine.XR.iOS
 {
-	public class UnityARHitTestExample : MonoBehaviour
-	{
-		public Transform m_HitTransform;
+    public class UnityARHitTestExample : MonoBehaviour
+    {
+        public Transform m_HitTransform;
 
         bool HitTestWithResultType (ARPoint point, ARHitTestResultType resultTypes)
         {
@@ -21,19 +21,19 @@ namespace UnityEngine.XR.iOS
             }
             return false;
         }
-		
-		// Update is called once per frame
-		void Update () {
-			if (Input.touchCount > 0 && m_HitTransform != null)
-			{
-				var touch = Input.GetTouch(0);
-				if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved)
-				{
-					var screenPosition = Camera.main.ScreenToViewportPoint(touch.position);
-					ARPoint point = new ARPoint {
-						x = screenPosition.x,
-						y = screenPosition.y
-					};
+        
+        // Update is called once per frame
+        void Update () {
+            if (Input.touchCount > 0 && m_HitTransform != null)
+            {
+                var touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved)
+                {
+                    var screenPosition = Camera.main.ScreenToViewportPoint(touch.position);
+                    ARPoint point = new ARPoint {
+                        x = screenPosition.x,
+                        y = screenPosition.y
+                    };
 
                     // prioritize reults types
                     ARHitTestResultType[] resultTypes = {
@@ -43,7 +43,7 @@ namespace UnityEngine.XR.iOS
                         ARHitTestResultType.ARHitTestResultTypeHorizontalPlane, 
                         ARHitTestResultType.ARHitTestResultTypeFeaturePoint
                     }; 
-					
+                    
                     foreach (ARHitTestResultType resultType in resultTypes)
                     {
                         if (HitTestWithResultType (point, resultType))
@@ -51,11 +51,11 @@ namespace UnityEngine.XR.iOS
                             return;
                         }
                     }
-				}
-			}
-		}
+                }
+            }
+        }
 
-	
-	}
+    
+    }
 }
 

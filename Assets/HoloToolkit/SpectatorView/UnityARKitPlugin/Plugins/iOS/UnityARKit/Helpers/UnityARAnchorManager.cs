@@ -4,56 +4,56 @@ using System.Linq;
 
 namespace UnityEngine.XR.iOS
 {
-	public class UnityARAnchorManager 
-	{
+    public class UnityARAnchorManager 
+    {
 
 
-		private Dictionary<string, ARPlaneAnchorGameObject> planeAnchorMap;
+        private Dictionary<string, ARPlaneAnchorGameObject> planeAnchorMap;
 
 
         public UnityARAnchorManager ()
-		{
-			planeAnchorMap = new Dictionary<string,ARPlaneAnchorGameObject> ();
-			UnityARSessionNativeInterface.ARAnchorAddedEvent += AddAnchor;
-			UnityARSessionNativeInterface.ARAnchorUpdatedEvent += UpdateAnchor;
-			UnityARSessionNativeInterface.ARAnchorRemovedEvent += RemoveAnchor;
+        {
+            planeAnchorMap = new Dictionary<string,ARPlaneAnchorGameObject> ();
+            UnityARSessionNativeInterface.ARAnchorAddedEvent += AddAnchor;
+            UnityARSessionNativeInterface.ARAnchorUpdatedEvent += UpdateAnchor;
+            UnityARSessionNativeInterface.ARAnchorRemovedEvent += RemoveAnchor;
 
-		}
+        }
 
 
-		public void AddAnchor(ARPlaneAnchor arPlaneAnchor)
-		{
-			Debug.Log("Add anchor in manager");
-			GameObject go = UnityARUtility.CreatePlaneInScene (arPlaneAnchor);
-			go.AddComponent<DontDestroyOnLoad> ();  //this is so these GOs persist across scene loads
-			ARPlaneAnchorGameObject arpag = new ARPlaneAnchorGameObject ();
-			arpag.planeAnchor = arPlaneAnchor;
-			arpag.gameObject = go;
-			planeAnchorMap.Add (arPlaneAnchor.identifier, arpag);
-		}
+        public void AddAnchor(ARPlaneAnchor arPlaneAnchor)
+        {
+            Debug.Log("Add anchor in manager");
+            GameObject go = UnityARUtility.CreatePlaneInScene (arPlaneAnchor);
+            go.AddComponent<DontDestroyOnLoad> ();  //this is so these GOs persist across scene loads
+            ARPlaneAnchorGameObject arpag = new ARPlaneAnchorGameObject ();
+            arpag.planeAnchor = arPlaneAnchor;
+            arpag.gameObject = go;
+            planeAnchorMap.Add (arPlaneAnchor.identifier, arpag);
+        }
 
-		public void RemoveAnchor(ARPlaneAnchor arPlaneAnchor)
-		{
-						Debug.Log("Remove anchor in manager");
+        public void RemoveAnchor(ARPlaneAnchor arPlaneAnchor)
+        {
+                        Debug.Log("Remove anchor in manager");
 
-			if (planeAnchorMap.ContainsKey (arPlaneAnchor.identifier)) {
-				ARPlaneAnchorGameObject arpag = planeAnchorMap [arPlaneAnchor.identifier];
-				GameObject.Destroy (arpag.gameObject);
-				planeAnchorMap.Remove (arPlaneAnchor.identifier);
-			}
-		}
+            if (planeAnchorMap.ContainsKey (arPlaneAnchor.identifier)) {
+                ARPlaneAnchorGameObject arpag = planeAnchorMap [arPlaneAnchor.identifier];
+                GameObject.Destroy (arpag.gameObject);
+                planeAnchorMap.Remove (arPlaneAnchor.identifier);
+            }
+        }
 
-		public void UpdateAnchor(ARPlaneAnchor arPlaneAnchor)
-		{
-						Debug.Log("Update anchor in manager");
+        public void UpdateAnchor(ARPlaneAnchor arPlaneAnchor)
+        {
+                        Debug.Log("Update anchor in manager");
 
-			if (planeAnchorMap.ContainsKey (arPlaneAnchor.identifier)) {
-				ARPlaneAnchorGameObject arpag = planeAnchorMap [arPlaneAnchor.identifier];
-				UnityARUtility.UpdatePlaneWithAnchorTransform (arpag.gameObject, arPlaneAnchor);
-				arpag.planeAnchor = arPlaneAnchor;
-				planeAnchorMap [arPlaneAnchor.identifier] = arpag;
-			}
-		}
+            if (planeAnchorMap.ContainsKey (arPlaneAnchor.identifier)) {
+                ARPlaneAnchorGameObject arpag = planeAnchorMap [arPlaneAnchor.identifier];
+                UnityARUtility.UpdatePlaneWithAnchorTransform (arpag.gameObject, arPlaneAnchor);
+                arpag.planeAnchor = arPlaneAnchor;
+                planeAnchorMap [arPlaneAnchor.identifier] = arpag;
+            }
+        }
 
         public void Destroy()
         {
@@ -64,10 +64,10 @@ namespace UnityEngine.XR.iOS
             planeAnchorMap.Clear ();
         }
 
-		public List<ARPlaneAnchorGameObject> GetCurrentPlaneAnchors()
-		{
-			return planeAnchorMap.Values.ToList ();
-		}
-	}
+        public List<ARPlaneAnchorGameObject> GetCurrentPlaneAnchors()
+        {
+            return planeAnchorMap.Values.ToList ();
+        }
+    }
 }
 

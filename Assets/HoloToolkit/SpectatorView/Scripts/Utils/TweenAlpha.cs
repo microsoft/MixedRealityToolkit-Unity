@@ -73,7 +73,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// Destroys material before death
         /// </summary>
         private void OnDestroy()
-		{
+        {
             Destroy(mat);
         }
 

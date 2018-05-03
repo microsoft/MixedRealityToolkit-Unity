@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace UnityEngine.XR.iOS
 {
-	public class UnityARGeneratePlane : MonoBehaviour
-	{
-		public GameObject planePrefab;
+    public class UnityARGeneratePlane : MonoBehaviour
+    {
+        public GameObject planePrefab;
         private UnityARAnchorManager unityARAnchorManager;
 
-		// Use this for initialization
-		void Start () {
+        // Use this for initialization
+        void Start () {
             unityARAnchorManager = new UnityARAnchorManager();
-			UnityARUtility.InitializePlanePrefab (planePrefab);
-		}
+            UnityARUtility.InitializePlanePrefab (planePrefab);
+        }
 
         void OnDestroy()
         {
@@ -28,6 +28,6 @@ namespace UnityEngine.XR.iOS
                 GUI.Box(new Rect(100, 200, 800, 60), string.Format ("Extent: x:{0}, y:{1}, z:{2}", ap.extent.x, ap.extent.y, ap.extent.z));
             }
         }
-	}
+    }
 }
 

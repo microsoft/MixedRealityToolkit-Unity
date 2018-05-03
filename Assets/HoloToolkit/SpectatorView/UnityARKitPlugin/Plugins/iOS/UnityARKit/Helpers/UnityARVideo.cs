@@ -13,46 +13,46 @@ namespace UnityEngine.XR.iOS
         private CommandBuffer m_VideoCommandBuffer;
         private Texture2D _videoTextureY;
         private Texture2D _videoTextureCbCr;
-		private Matrix4x4 _displayTransform;
+        private Matrix4x4 _displayTransform;
 
-		private bool bCommandBufferInitialized;
+        private bool bCommandBufferInitialized;
 
-		public void Start()
-		{
-			UnityARSessionNativeInterface.ARFrameUpdatedEvent += UpdateFrame;
-			bCommandBufferInitialized = false;
-		}
+        public void Start()
+        {
+            UnityARSessionNativeInterface.ARFrameUpdatedEvent += UpdateFrame;
+            bCommandBufferInitialized = false;
+        }
 
-		void UpdateFrame(UnityARCamera cam)
-		{
-			_displayTransform = new Matrix4x4();
-			_displayTransform.SetColumn(0, cam.displayTransform.column0);
-			_displayTransform.SetColumn(1, cam.displayTransform.column1);
-			_displayTransform.SetColumn(2, cam.displayTransform.column2);
-			_displayTransform.SetColumn(3, cam.displayTransform.column3);		
-		}
+        void UpdateFrame(UnityARCamera cam)
+        {
+            _displayTransform = new Matrix4x4();
+            _displayTransform.SetColumn(0, cam.displayTransform.column0);
+            _displayTransform.SetColumn(1, cam.displayTransform.column1);
+            _displayTransform.SetColumn(2, cam.displayTransform.column2);
+            _displayTransform.SetColumn(3, cam.displayTransform.column3);        
+        }
 
-		void InitializeCommandBuffer()
-		{
-			m_VideoCommandBuffer = new CommandBuffer(); 
-			m_VideoCommandBuffer.Blit(null, BuiltinRenderTextureType.CurrentActive, m_ClearMaterial);
-			GetComponent<Camera>().AddCommandBuffer(CameraEvent.BeforeForwardOpaque, m_VideoCommandBuffer);
-			bCommandBufferInitialized = true;
+        void InitializeCommandBuffer()
+        {
+            m_VideoCommandBuffer = new CommandBuffer(); 
+            m_VideoCommandBuffer.Blit(null, BuiltinRenderTextureType.CurrentActive, m_ClearMaterial);
+            GetComponent<Camera>().AddCommandBuffer(CameraEvent.BeforeForwardOpaque, m_VideoCommandBuffer);
+            bCommandBufferInitialized = true;
 
-		}
+        }
 
-		void OnDestroy()
-		{
-			GetComponent<Camera>().RemoveCommandBuffer(CameraEvent.BeforeForwardOpaque, m_VideoCommandBuffer);
-			UnityARSessionNativeInterface.ARFrameUpdatedEvent -= UpdateFrame;
-			bCommandBufferInitialized = false;
-		}
+        void OnDestroy()
+        {
+            GetComponent<Camera>().RemoveCommandBuffer(CameraEvent.BeforeForwardOpaque, m_VideoCommandBuffer);
+            UnityARSessionNativeInterface.ARFrameUpdatedEvent -= UpdateFrame;
+            bCommandBufferInitialized = false;
+        }
 
 #if !UNITY_EDITOR
 
         public void OnPreRender()
         {
-			ARTextureHandles handles = UnityARSessionNativeInterface.GetARSessionNativeInterface ().GetARVideoTextureHandles();
+            ARTextureHandles handles = UnityARSessionNativeInterface.GetARSessionNativeInterface ().GetARVideoTextureHandles();
             if (handles.textureY == System.IntPtr.Zero || handles.textureCbCr == System.IntPtr.Zero)
             {
                 return;
@@ -85,32 +85,32 @@ namespace UnityEngine.XR.iOS
             _videoTextureY.UpdateExternalTexture(handles.textureY);
             _videoTextureCbCr.UpdateExternalTexture(handles.textureCbCr);
 
-			m_ClearMaterial.SetMatrix("_DisplayTransform", _displayTransform);
+            m_ClearMaterial.SetMatrix("_DisplayTransform", _displayTransform);
         }
 #else
 
-		public void SetYTexure(Texture2D YTex)
-		{
-			_videoTextureY = YTex;
-		}
+        public void SetYTexure(Texture2D YTex)
+        {
+            _videoTextureY = YTex;
+        }
 
-		public void SetUVTexure(Texture2D UVTex)
-		{
-			_videoTextureCbCr = UVTex;
-		}
+        public void SetUVTexure(Texture2D UVTex)
+        {
+            _videoTextureCbCr = UVTex;
+        }
 
-		public void OnPreRender()
-		{
+        public void OnPreRender()
+        {
 
-			if (!bCommandBufferInitialized) {
-				InitializeCommandBuffer ();
-			}
+            if (!bCommandBufferInitialized) {
+                InitializeCommandBuffer ();
+            }
 
-			m_ClearMaterial.SetTexture("_textureY", _videoTextureY);
-			m_ClearMaterial.SetTexture("_textureCbCr", _videoTextureCbCr);
+            m_ClearMaterial.SetTexture("_textureY", _videoTextureY);
+            m_ClearMaterial.SetTexture("_textureCbCr", _videoTextureCbCr);
 
-			m_ClearMaterial.SetMatrix("_DisplayTransform", _displayTransform);
-		}
+            m_ClearMaterial.SetMatrix("_DisplayTransform", _displayTransform);
+        }
  
 #endif
     }

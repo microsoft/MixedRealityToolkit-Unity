@@ -2,21 +2,21 @@
 
 namespace UnityEngine.XR.iOS
 {
-	public struct ARPlaneAnchor 
-	{
+    public struct ARPlaneAnchor 
+    {
 
-		public string identifier;
+        public string identifier;
 
-		/**
- 		The transformation matrix that defines the anchor's rotation, translation and scale in world coordinates.
-		 */
-		public Matrix4x4 transform;
+        /**
+         The transformation matrix that defines the anchor's rotation, translation and scale in world coordinates.
+         */
+        public Matrix4x4 transform;
 
-		/**
-		 The alignment of the plane.
-		 */
+        /**
+         The alignment of the plane.
+         */
 
-		public ARPlaneAnchorAlignment alignment;
+        public ARPlaneAnchorAlignment alignment;
 
         /**
         The center of the plane in the anchor’s coordinate space.
@@ -30,6 +30,6 @@ namespace UnityEngine.XR.iOS
         public Vector3 extent;
 
 
-	}
+    }
 }
 

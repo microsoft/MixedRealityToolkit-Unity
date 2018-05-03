@@ -111,7 +111,7 @@ namespace HoloToolkit.Unity.SpectatorView
 #if NETFX_CORE
             try
             {
-			    OpenCVUtils.CheckOpenCVWrapperHasLoaded();
+                OpenCVUtils.CheckOpenCVWrapperHasLoaded();
             }
             catch (Exception e)
             {
