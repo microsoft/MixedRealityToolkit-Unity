@@ -287,7 +287,7 @@ public enum AudioFormat
 
  ```
     /// <summary>
-    /// AudiorFormat lists the supported / known formats of audio data
+    /// AudioFormat lists the supported / known formats of audio data
     /// </summary>
     public enum AudioFormat
     {
@@ -334,12 +334,13 @@ public enum MyEnum
 ### Do:
 
  ```
- [flags]
+[flags]
 public enum MyEnum
 {
     None = 1  << 0,
     Left = 1  << 1,
-    Right = 1 << 2
+    Right = 1 << 2,
+    Both = Left | Right
 }
  ```
 
@@ -365,14 +366,19 @@ public float MyValue;
 ### Do:
 
  ```
- // private field, only accessible within script (field is not serialized in Unity)
+ /// <summary>
+ /// A value that is accessible within script only (it is not serialized in Unity for visibility in the Inspector)
+ /// </summary>
  private float myValue;
-  ```
+ ```
 
 ### Do:
 
  ```
- // Enable private field to be configurable only in editor (field is correctly serialized in Unity)
+ /// <summary>
+ /// A value that is serialized in Unity for setting via the Inspector (not modifiable from other scripts)
+ /// </summary>
+ [Tooltip("A value that is serialized in Unity for setting via the Inspector (not modifiable from other scripts)")]
  [SerializeField] 
  private float myValue;
   ```
@@ -382,34 +388,37 @@ public float MyValue;
  ### Don't:
 
  ```
- private float myValue1;
- private float myValue2;
+private float myValue1;
+private float myValue2;
+
+public float MyValue1
+{
+    get{ return myValue1; }
+    set{ myValue1 = value }
+}
  
- public float MyValue1
- {
-     get{ return myValue1; }
-     set{ myValue1 = value }
- }
- 
- public float MyValue2
- {
-     get{ return myValue2; }
-     set{ myValue2 = value }
- }
+public float MyValue2
+{
+    get{ return myValue2; }
+    set{ myValue2 = value }
+}
 ```
 
  ### Do:
 
  ```
- // Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
- [SerializeField] 
- private float myValue; // <- Notice we co-located the backing field above our corrisponding property.
- public float MyValue
- {
-     get{ return myValue; }
-     set{ myValue = value }
- }
- ```
+/// <summary>
+/// A value that is serialized in Unity for setting via the Inspector and is modifiable from other scripts
+/// </summary>
+[Tooltip("A value that is serialized in Unity for setting via the Inspector and is modifiable from other scripts")]
+[SerializeField] 
+private float myValue; // <- Notice we co-located the backing field above our corrisponding property.
+public float MyValue
+{
+    get{ return myValue; }
+    set{ myValue = value }
+}
+```
 
 ## Use `for` instead of `foreach` when possible.
 
