@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using HoloToolkit.Unity.UX;
+using HoloToolkit.Unity.InputModule;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -130,11 +130,13 @@ namespace HoloToolkit.Unity.UX
 
         public void Activate()
         {
+            InputManager.Instance.RaiseBoundingBoxRigActivated(gameObject);
             ShowRig = true;
         }
 
         public void Deactivate()
         {
+            InputManager.Instance.RaiseBoundingBoxRigDeactivated(gameObject);
             ShowRig = false;
         }
 
