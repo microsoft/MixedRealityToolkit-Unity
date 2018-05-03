@@ -47,7 +47,7 @@ namespace HoloToolkit.Examples.SpectatorView
                 timer += Time.deltaTime;
             }
 
-            material.color = color;
+            mat.color = color;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace HoloToolkit.Examples.SpectatorView
         private void ChangeColor()
         {
             color = UnityEngine.Random.ColorHSV();
-            material.color = color;
+            mat.color = color;
         }
 
         /// <summary>
