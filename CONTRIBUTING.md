@@ -8,8 +8,9 @@ If you have any questions, please reach out on the [HoloLens forums](https://for
 1. [Make a proposal](https://github.com/Microsoft/HoloToolkit-Unity/issues) (either new, or for one of the elements in our backlog)
 2. Identify the appropriate development branch
 3. Implement the proposal and its tests.
-4. Start a pull request & address comments.
-5. Merge.
+4. Ensure that your implementation meets the [coding guidelines](CodingGuidelines.md).
+5. Start a pull request & address comments.
+6. Merge.
 
 # Proposal
 
