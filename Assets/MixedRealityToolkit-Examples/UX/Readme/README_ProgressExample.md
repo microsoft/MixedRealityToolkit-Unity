@@ -25,7 +25,7 @@ Different types of Progress control can be opened by pressing these buttons in t
 
 ## ProgressIndicator Prefab
 
-The **ProgressIndicator prefab** is located in MixedRealityToolkit/UX/Prefabs/Progress. It is composed of **ProgressIndicator** script and **Solver** scripts for the billboarding and tag-along behavior.
+The **ProgressIndicator prefab** is located in [MixedRealityToolkit/UX/Prefabs/Progress](/Assets/MixedRealityToolkit/UX/Prefabs/Progress). It is composed of **ProgressIndicator** script and **Solver** scripts for the billboarding and tag-along behavior.
 
 ![ProgressIndicator Properties](/External/ReadMeImages/MRTK_ProgressIndicatorInspector.jpg)
 
@@ -41,7 +41,7 @@ In the example scene, each button is labeled with the variation of the ProgressI
 In these buttons, you can find **ProgressButton** script along with Compound Button scripts. **ProgressButton** script contains simple code to call LaunchProgress() in **ProgressExamples** script on OnButtonClicked event. In **ProgressExamples** script, you can find the code for displaying Progress control.
 
 It looks like this: 
-<pre>
+```
 ProgressIndicator.Instance.Open(
                             ProgressIndicator.IndicatorStyleEnum.None,
                             ProgressIndicator.ProgressStyleEnum.None,
@@ -49,34 +49,29 @@ ProgressIndicator.Instance.Open(
                             LeadInMessage);
 
 StartCoroutine(LoadOverTime(LoadTextMessage));
-</pre>
-
+```
 The LoadOverTime function, also found in this script, fakes a loading sequence. To implement the ProgressIndicator during an actual loading sequence, Start a Coroutine with a function like LoadOverTime. In your LoadOverTime function, make sure to update the ProgressIndicator object with the actual loading progress.
-<pre>
+```
 while (your loading operation is not complete)
 {
     LoadingDialog.Instance.SetMessage( <loading progress message> );
     LoadingDialog.Instance.SetProgress<percent loaded>
     yield return new WaitForSeconds(<amount of time between updates ie 0.25 seconds>);
 }
-</pre>
+```
 
 You can give an optional message to be displayed by the ProgressIndicator when load is complete, such as "finished!".
-<pre>
+```
 ProgressIndicator.Instance.SetMessage(FinishMessage);
 ProgressIndicator.Instance.SetProgress(1f);
 yield return new WaitForSeconds(<amount of time to hold message ie 1.5 secs>);
-</pre>
+```
 
 To close the ProgressIndicator, call the Close() function and wait for the IsLoading state to become false.
-<pre>
+```
 LoadingDialog.Instance.Close();
 while (LoadingDialog.Instance.IsLoading)
 {
     yield return null;
 }
-</pre>
-
-
- 
- 
+```
