@@ -189,7 +189,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// <param name="markerId">Id of the marker</param>
         /// <param name="pos">Position where the marker was found</param>
         /// <param name="rot">Rotation of the marker</param>
-        private void UpdatePositionAndRotation( int markerId, Vector3 pos, Quaternion rot )
+        private void UpdatePositionAndRotation(int markerId, Vector3 pos, Quaternion rot)
         {
             if (positions.Count < NumCapturesRequired)
             {
@@ -222,8 +222,10 @@ namespace HoloToolkit.Unity.SpectatorView
                 // Find the average marker rotation
                 var averageRotation = Quaternion.Lerp(rotations[2], Quaternion.Lerp(rotations[0], rotations[1], 0.5f), 0.5f);
 
-                syncedTransformString = averagePosition.x + ":" + averagePosition.y + ":" + averagePosition.z + ":" +
-                                        averageRotation.eulerAngles.y + ":" + markerId;
+                syncedTransformString = string.Format("{0}:{1}:{2}:{3}:{4}",
+                                                       averagePosition.x, averagePosition.y, averagePosition.z,
+                                                       averageRotation.eulerAngles.y,
+                                                       markerId);
 
                 if (OnWorldSyncComplete != null)
                 {
@@ -241,12 +243,12 @@ namespace HoloToolkit.Unity.SpectatorView
         /// Adjust the orientation on the client to match the HoloLens's
         /// </summary>
         /// <param name="str"></param>
-        private void AdjustOrientation( string str )
+        private void AdjustOrientation(string str)
         {
             var isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
             if (!isHost)
             {
-                string[] strings = str.Split(new Char[] {':'});
+                string[] strings = str.Split(new Char[] { ':' });
                 int markerId;
                 if (strings.Length >= 4)
                 {
