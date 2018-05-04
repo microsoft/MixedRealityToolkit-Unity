@@ -42,17 +42,19 @@ namespace HoloToolkit.Unity.SpectatorView
             set { orthographicCamera = value; }
         }
 
-        private void Start ()
+        private void Start()
         {
-            if(!OrthographicCamera)
+            if (!OrthographicCamera)
             {
                 return;
             }
 
             float dpi = Screen.dpi;
 
-            // Detect iPhoneX and manually set the screen dpi
-            if((Screen.width == 2436 && Screen.height == 1125) || (Screen.height == 2436 && Screen.width == 1125))
+            // Screen.dpi returns an incorrect value for the iPhoneX
+            // Look for screens with its dimensions (in both orientations)
+            // and manually set the screen dpi here.
+            if ((Screen.width == 2436 && Screen.height == 1125) || (Screen.height == 2436 && Screen.width == 1125))
             {
                 dpi = 458;
             }
@@ -60,7 +62,7 @@ namespace HoloToolkit.Unity.SpectatorView
             float screenSize = Screen.height;
             float screenWidthInMeters = (screenSize / dpi) * 0.0254f;
 
-            float scale = (OrthographicCamera.orthographicSize * 2.0f) *  MarkerSize / screenWidthInMeters;
+            float scale = (OrthographicCamera.orthographicSize * 2.0f) * MarkerSize / screenWidthInMeters;
             transform.localScale = new Vector3(scale, scale, scale);
         }
     }
