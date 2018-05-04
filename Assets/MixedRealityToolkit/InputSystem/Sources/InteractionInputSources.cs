@@ -3,16 +3,17 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
+using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+#else
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
@@ -69,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <summary>
         /// Dictionary linking each source ID to its data.
         /// </summary>
-        private static readonly HashSet<InteractionInputSource> interactionInputSources = new HashSet<InteractionInputSource>();
+        private static readonly HashSet<InteractionInputSource> SourceList = new HashSet<InteractionInputSource>();
 
         private IMixedRealityInputSystem inputSystem;
 
@@ -364,7 +365,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <returns>True if data is available.</returns>
         public static bool TryGetSourceKind(uint sourceId, out InteractionSourceKind sourceKind)
         {
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 if (inputSource.SourceId == sourceId)
                 {
@@ -387,7 +388,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <returns>True if data is available.</returns>
         public bool TryGetPointingRay(uint sourceId, out Ray pointingRay)
         {
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 if (inputSource.SourceId == sourceId && TryGetReading(inputSource.PointingRay, out pointingRay))
                 {
@@ -407,7 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <returns>True if data is available.</returns>
         public static bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 if (inputSource.SourceId == sourceId && TryGetReading(inputSource.PointerPosition, out position))
                 {
@@ -427,7 +428,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <returns>True if data is available.</returns>
         public bool TryGetPointerRotation(uint sourceId, out Quaternion rotation)
         {
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 if (inputSource.SourceId == sourceId && TryGetReading(inputSource.PointerRotation, out rotation))
                 {
@@ -447,7 +448,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <returns>True if data is available.</returns>
         public static bool TryGetGripPosition(uint sourceId, out Vector3 position)
         {
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 if (inputSource.SourceId == sourceId && TryGetReading(inputSource.GripPosition, out position))
                 {
@@ -467,7 +468,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <returns>True if data is available.</returns>
         public bool TryGetGripRotation(uint sourceId, out Quaternion rotation)
         {
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 if (inputSource.SourceId == sourceId && TryGetReading(inputSource.GripRotation, out rotation))
                 {
@@ -488,7 +489,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <returns>True if data is available.</returns>
         public bool TryGetThumbstick(uint sourceId, out bool thumbstickPressed, out Vector2 thumbstickPosition)
         {
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 AxisButton2D thumbstick;
                 if (inputSource.SourceId == sourceId && TryGetReading(inputSource.Thumbstick, out thumbstick))
@@ -515,7 +516,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         public bool TryGetTouchpad(uint sourceId, out bool touchpadPressed, out bool touchpadTouched, out Vector2 touchpadPosition)
         {
 
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 TouchpadData touchpad;
                 if (inputSource.SourceId == sourceId && TryGetReading(inputSource.Touchpad, out touchpad))
@@ -542,7 +543,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <returns>True if data is available.</returns>
         public bool TryGetSelect(uint sourceId, out bool selectPressed, out double selectPressedAmount)
         {
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 AxisButton1D select;
                 if (inputSource.SourceId == sourceId && TryGetReading(inputSource.Select, out select))
@@ -566,7 +567,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <returns>True if data is available.</returns>
         public bool TryGetGrasp(uint sourceId, out bool graspPressed)
         {
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 if (inputSource.SourceId == sourceId && TryGetReading(inputSource.Grasp, out graspPressed))
                 {
@@ -586,7 +587,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <returns>True if data is available.</returns>
         public bool TryGetMenu(uint sourceId, out bool menuPressed)
         {
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 if (inputSource.SourceId == sourceId && TryGetReading(inputSource.Menu, out menuPressed))
                 {
@@ -627,7 +628,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         public void StartHaptics(uint sourceId, float intensity)
         {
 #if UNITY_WSA
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 if (inputSource.SourceId == sourceId)
                 {
@@ -646,7 +647,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         public void StartHaptics(uint sourceId, float intensity, float durationInSeconds)
         {
 #if UNITY_WSA
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 if (inputSource.SourceId == sourceId)
                 {
@@ -663,7 +664,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         public void StopHaptics(uint sourceId)
         {
 #if UNITY_WSA
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 if (inputSource.SourceId == sourceId)
                 {
@@ -714,7 +715,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <returns>The source data requested.</returns>
         private InteractionInputSource GetOrAddInteractionSource(InteractionSource interactionSource)
         {
-            foreach (var inputSource in interactionInputSources)
+            foreach (var inputSource in SourceList)
             {
                 if (interactionSource.kind == InteractionSourceKind.Other &&
                     inputSource.Source.kind == InteractionSourceKind.Hand)
@@ -767,7 +768,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 $"{(interactionSource.handedness == InteractionSourceHandedness.Unknown ? "" : $"{interactionSource.handedness}_")}{interactionSource.kind}",
                 pointerSceneObjects, pointers);
 
-            interactionInputSources.Add(sourceData);
+            SourceList.Add(sourceData);
 
             return sourceData;
         }
@@ -777,7 +778,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             if (interactionSource == null) { return; }
 
             inputSystem.RaiseSourceLost(interactionSource);
-            interactionInputSources.Remove(interactionSource);
+            SourceList.Remove(interactionSource);
 
             for (var j = 0; j < interactionSource.PointerSceneObjects.Length; j++)
             {

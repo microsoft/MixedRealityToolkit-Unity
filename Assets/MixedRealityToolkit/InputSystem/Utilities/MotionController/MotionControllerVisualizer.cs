@@ -268,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             {
                 if (AlternateLeftController == null)
                 {
-                    Debug.LogWarning("Always use the alternate left model is set on " + name + ", but the alternate left controller model was not specified.");
+                    Debug.LogWarning($"Always use the alternate left model is set on {name}, but the alternate left controller model was not specified.");
                     yield return LoadSourceControllerModel(source);
                 }
                 else
@@ -280,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             {
                 if (AlternateRightController == null)
                 {
-                    Debug.LogWarning("Always use the alternate right model is set on " + name + ", but the alternate right controller model was not specified.");
+                    Debug.LogWarning($"Always use the alternate right model is set on {name}, but the alternate right controller model was not specified.");
                     yield return LoadSourceControllerModel(source);
                 }
                 else

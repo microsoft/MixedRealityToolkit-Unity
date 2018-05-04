@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (ActiveProfile.EnableInputSystem)
             {
                 //Enable Input (example initializer)
-                //AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
+                AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystem) as IMixedRealityInputSystem);
             }
 
             //If the Boundary system has been selected for initialization in the Active profile, enable it in the project
@@ -135,19 +135,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             //TODO should this be optional?
             //Sort the managers based on Priority
-            var orderedManagers = ActiveProfile.ActiveManagers.OrderBy(m => m.Value.Priority);
+            var orderedManagers = ActiveProfile.ActiveManagers.OrderBy(m => m.Value.Priority).ToArray();
             ActiveProfile.ActiveManagers.Clear();
             foreach (var manager in orderedManagers)
             {
                 AddManager(manager.Key, manager.Value);
             }
-            orderedManagers = null;
 
             //Initialize all managers
             foreach (var manager in ActiveProfile.ActiveManagers)
             {
                 manager.Value.Initialize();
             }
+
             #endregion Managers Initialization
         }
 

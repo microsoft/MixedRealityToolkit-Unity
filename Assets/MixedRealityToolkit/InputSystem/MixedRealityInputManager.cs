@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.EventDatas.Input;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
@@ -151,6 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
 
             Debug.Assert(!baseInputEventData.used);
+            Debug.Assert(eventData != null);
 
             GameObject focusedObject = FocusProvider.GetFocusedObject(baseInputEventData);
 

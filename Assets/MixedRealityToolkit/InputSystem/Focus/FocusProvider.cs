@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.EventDatas.Input;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
@@ -202,24 +202,45 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         {
             if (uiRaycastCamera == null)
             {
-                Debug.LogWarning("No UIRaycastCamera assigned! Falling back to the UIRaycastCamera.\n" +
-                                 "It's highly recommended to use the UIRaycastCamera found on the EventSystem of this MixedRealityInputManager.");
-                uiRaycastCamera = GetComponentInChildren<Camera>();
+                Debug.LogWarning("No UIRaycastCamera assigned! Creating a new UIRaycastCamera.");
+                var cameraObject = new GameObject();
+                cameraObject.name = "UIRaycastCamera";
+                cameraObject.transform.parent = transform;
+                cameraObject.transform.localPosition = Vector3.zero;
+                cameraObject.transform.localRotation = Quaternion.identity;
+                uiRaycastCamera = cameraObject.AddComponent<Camera>();
+                uiRaycastCamera.enabled = false;
+                uiRaycastCamera.clearFlags = CameraClearFlags.Depth;
+                uiRaycastCamera.cullingMask = CameraCache.Main.cullingMask;
+                uiRaycastCamera.orthographic = true;
+                uiRaycastCamera.orthographicSize = 0.5f;
+                uiRaycastCamera.nearClipPlane = 0.1f;
+                uiRaycastCamera.farClipPlane = 1000f;
+                uiRaycastCamera.rect = new Rect(0, 0, 1, 1);
+                uiRaycastCamera.depth = 0;
+                uiRaycastCamera.renderingPath = RenderingPath.UsePlayerSettings;
+                uiRaycastCamera.targetTexture = null;
+                uiRaycastCamera.useOcclusionCulling = false;
+                uiRaycastCamera.allowHDR = false;
+                uiRaycastCamera.allowMSAA = false;
+                uiRaycastCamera.allowDynamicResolution = false;
+                uiRaycastCamera.targetDisplay = 1;
+                uiRaycastCamera.stereoTargetEye = StereoTargetEyeMask.Both;
             }
 
-            if (uiRaycastCamera != null)
+            if (EventSystem.current == null)
             {
-                UIRaycastCamera = uiRaycastCamera;
+                Debug.LogWarning("No Event System found in scene! Adding components to the UIRaycastCamera.");
+                uiRaycastCamera.gameObject.AddComponent<EventSystem>();
+                uiRaycastCamera.gameObject.AddComponent<StandaloneInputModule>();
             }
-            else
-            {
-                Debug.LogError("Error initializing UIRaycast Camera!");
-            }
+
+            UIRaycastCamera = uiRaycastCamera;
         }
 
         private void Start()
         {
-            // Register the cursor as a global listener to get source events.
+            // Register the FocusProvider as a global listener to get input events.
             InputSystem.Register(gameObject);
         }
 

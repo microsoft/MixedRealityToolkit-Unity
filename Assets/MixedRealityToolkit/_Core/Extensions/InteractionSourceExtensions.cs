@@ -118,11 +118,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
                 {
                     IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView().GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
 
-                    foreach (SpatialInteractionSourceState sourceState in sources)
+                    for (var i = 0; i < sources.Count; i++)
                     {
-                        if (sourceState.Source.Id.Equals(interactionSource.id))
+                        if (sources[i].Source.Id.Equals(interactionSource.id))
                         {
-                            returnValue = sourceState.Source.Controller.TryGetRenderableModelAsync();
+                            returnValue = sources[i].Source.Controller.TryGetRenderableModelAsync();
                         }
                     }
                 }, true);
