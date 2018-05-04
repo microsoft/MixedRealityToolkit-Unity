@@ -238,7 +238,7 @@ namespace HoloToolkit.UI.Keyboard
             m_ObjectBounds = new Vector3(canvasBounds.size.x * rect.localScale.x, canvasBounds.size.y * rect.localScale.y, canvasBounds.size.z * rect.localScale.z);
 
             // Actually find microphone key in the keyboard
-            var dictationButton = Utils.GetChildRecursive(gameObject.transform, "Dictation");
+            var dictationButton = HoloToolkit.Unity.Utils.GetChildRecursive(gameObject.transform, "Dictation");
             if (dictationButton != null)
             {
                 var dictationIcon = dictationButton.Find("keyboard_closeIcon");
