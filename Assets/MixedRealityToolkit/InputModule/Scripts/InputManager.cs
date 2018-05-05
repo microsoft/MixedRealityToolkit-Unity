@@ -57,6 +57,7 @@ namespace MixedRealityToolkit.InputModule
         private InputPositionEventData inputPositionEventData;
         private SelectPressedEventData selectPressedEventData;
         private PlacementEventData placementEventData;
+        private BoundingBoxEventData boundingBoxActivityEventData;
 #if UNITY_WSA || UNITY_STANDALONE_WIN
         private SpeechEventData speechEventData;
         private DictationEventData dictationEventData;
@@ -214,6 +215,7 @@ namespace MixedRealityToolkit.InputModule
             sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
             xboxControllerEventData = new XboxControllerEventData(EventSystem.current);
             placementEventData = new PlacementEventData(EventSystem.current);
+            boundingBoxActivityEventData = new BoundingBoxEventData(EventSystem.current);
 #if UNITY_WSA || UNITY_STANDALONE_WIN
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
@@ -962,6 +964,40 @@ namespace MixedRealityToolkit.InputModule
 
         #endregion
 #endif
+
+        #region Bounding Box Rig Activity Events
+        private static readonly ExecuteEvents.EventFunction<IBoundingBoxStateHandler> OnBoundingBoxRigActivatedEventHandler =
+            delegate (IBoundingBoxStateHandler handler, BaseEventData eventData)
+            {
+                BoundingBoxEventData casted = ExecuteEvents.ValidateEventData<BoundingBoxEventData>(eventData);
+                handler.OnBoundingBoxRigActivated(casted);
+            };
+
+        public void RaiseBoundingBoxRigActivated(GameObject boundingBoxRiggedObject)
+        {
+            // Create input event
+            boundingBoxActivityEventData.Initialize(boundingBoxRiggedObject);
+
+            // Pass to the handler through HandleEvent to perform the fallback logic
+            HandleEvent(boundingBoxActivityEventData, OnBoundingBoxRigActivatedEventHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IBoundingBoxStateHandler> OnBoundingBoxRigDeactivatedEventHandler =
+            delegate (IBoundingBoxStateHandler handler, BaseEventData eventData)
+            {
+                BoundingBoxEventData casted = ExecuteEvents.ValidateEventData<BoundingBoxEventData>(eventData);
+                handler.OnBoundingBoxRigDeactivated(casted);
+            };
+
+        public void RaiseBoundingBoxRigDeactivated(GameObject boundingBoxRiggedObject)
+        {
+            // Create input event
+            boundingBoxActivityEventData.Initialize(boundingBoxRiggedObject);
+
+            // Pass to the handler through HandleEvent to perform the fallback logic
+            HandleEvent(boundingBoxActivityEventData, OnBoundingBoxRigDeactivatedEventHandler);
+        }
+        #endregion
 
         #region Helpers
 

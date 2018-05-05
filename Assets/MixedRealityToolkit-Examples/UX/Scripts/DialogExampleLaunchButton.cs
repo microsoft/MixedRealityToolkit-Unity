@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.InputModule.EventData;
 using MixedRealityToolkit.UX.Dialog;
 using MixedRealityToolkit.UX.Buttons;
 using System.Collections;
@@ -12,13 +11,13 @@ namespace MixedRealityToolkit.Examples.UX
     public class DialogExampleLaunchButton : MonoBehaviour
     {
         [SerializeField]
-        private Dialog dialogPrefab;
+        private Dialog dialogPrefab = null;
 
         [SerializeField]
-        private bool isDialogLaunched;
+        private bool isDialogLaunched = false;
 
         [SerializeField]
-        private GameObject resultText;
+        private GameObject resultText = null;
 
         [SerializeField]
         private int numButtons = 1;
@@ -38,7 +37,6 @@ namespace MixedRealityToolkit.Examples.UX
 
         public int NumButtons { get; set; }
 
-
         protected IEnumerator LaunchDialog(Dialog.ButtonTypeEnum buttons, string title, string message)
         {
             isDialogLaunched = true;
@@ -57,8 +55,6 @@ namespace MixedRealityToolkit.Examples.UX
 
             //only let one dialog be created at a time
             isDialogLaunched = false;
-
-            yield break;
         }
 
         private void OnEnable()

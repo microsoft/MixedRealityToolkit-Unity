@@ -474,7 +474,7 @@ namespace MixedRealityToolkit.InputModule.InputSources
                 retVal |= GetSupportFlag(sourceData.Grasp, SupportedInputInfo.Grasp);
             }
 #endif
-			return retVal;
+            return retVal;
         }
 
         public override bool TryGetSourceKind(uint sourceId, out InteractionSourceInfo sourceKind)

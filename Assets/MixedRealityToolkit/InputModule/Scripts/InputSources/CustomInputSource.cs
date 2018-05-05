@@ -4,7 +4,6 @@
 using MixedRealityToolkit.InputModule.Utilities.Interations;
 using System;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace MixedRealityToolkit.InputModule.InputSources
 {

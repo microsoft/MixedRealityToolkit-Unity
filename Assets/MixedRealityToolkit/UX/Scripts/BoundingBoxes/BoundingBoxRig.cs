@@ -1,12 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
 using System.Collections.Generic;
-using MixedRealityToolkit.InputModule.Utilities.Interations;
-using MixedRealityToolkit.UX.BoundingBoxes;
-using MixedRealityToolkit.Examples.InputModule;
-using MixedRealityToolkit.UX.Buttons;
+using MixedRealityToolkit.InputModule;
 using MixedRealityToolkit.UX.AppBarControl;
 using UnityEngine;
 
@@ -17,17 +13,17 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         [Header("Flattening")]
         [SerializeField]
         [Tooltip("Choose this option if Rig is to be applied to a 2D object.")]
-        private BoundingBox.FlattenModeEnum flattenedAxis;
+        private BoundingBox.FlattenModeEnum flattenedAxis = BoundingBox.FlattenModeEnum.DoNotFlatten;
 
         [Header("Customization Settings")]
         [SerializeField]
-        private Material scaleHandleMaterial;
+        private Material scaleHandleMaterial = null;
 
         [SerializeField]
-        private Material rotateHandleMaterial;
+        private Material rotateHandleMaterial = null;
 
         [SerializeField]
-        private Material interactingMaterial;
+        private Material interactingMaterial = null;
 
         [Header("Behavior")]
         [SerializeField]
@@ -46,35 +42,40 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         [Header("Preset Components")]
         [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
-        private BoundingBox boundingBoxPrefab;
+        private BoundingBox boundingBoxPrefab = null;
 
         [SerializeField]
         [Tooltip("AppBar prefab.")]
-        private AppBar appBarPrefab;
+        private AppBar appBarPrefab = null;
 
-        private BoundingBox boxInstance;
+        private BoundingBox boxInstance = null;
 
-        private GameObject objectToBound;
+        private GameObject objectToBound = null;
 
-        private AppBar appBarInstance;
+        private AppBar appBarInstance = null;
 
-        private GameObject[] rotateHandles;
+        private GameObject[] rotateHandles = null;
 
-        private GameObject[] cornerHandles;
+        private GameObject[] cornerHandles = null;
 
-        private List<Vector3> handleCentroids;
+        private List<Vector3> handleCentroids = null;
 
-        private GameObject transformRig;
+        private BoundingBoxGizmoHandle[] rigScaleGizmoHandles = null;
 
-        private BoundingBoxGizmoHandle[] rigScaleGizmoHandles;
-
-        private BoundingBoxGizmoHandle[] rigRotateGizmoHandles;
+        private BoundingBoxGizmoHandle[] rigRotateGizmoHandles = null;
 
         private bool showRig = false;
 
-        private Vector3 scaleHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
-
-        private Vector3 rotateHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
+        private readonly Vector3 scaleHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
+        private readonly Vector3 rotateHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
+        private readonly Vector3 upperLeftFrontVector = new Vector3(0.5f, 0.5f, 0.5f);
+        private readonly Vector3 upperLeftBackVector = new Vector3(0.5f, 0.5f, -0.5f);
+        private readonly Vector3 lowerLeftFrontVector = new Vector3(0.5f, -0.5f, 0.5f);
+        private readonly Vector3 lowerLeftBackVector = new Vector3(0.5f, -0.5f, -0.5f);
+        private readonly Vector3 upperRightFrontVector = new Vector3(-0.5f, 0.5f, 0.5f);
+        private readonly Vector3 upperRightBackVector = new Vector3(-0.5f, 0.5f, -0.5f);
+        private readonly Vector3 lowerRightFrontVector = new Vector3(-0.5f, -0.5f, 0.5f);
+        private readonly Vector3 lowerRightBackVector = new Vector3(-0.5f, -0.5f, -0.5f);
 
         private bool destroying = false;
 
@@ -130,13 +131,53 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
         }
 
+        private bool ShowRig
+        {
+            get
+            {
+                return showRig;
+            }
+            set
+            {
+                if (destroying) { return; }
+
+                if (value)
+                {
+                    UpdateBoundsPoints();
+                    UpdateHandles();
+                }
+
+                if (boxInstance != null)
+                {
+                    boxInstance.IsVisible = value;
+                }
+
+                if (cornerHandles != null && rotateHandles != null)
+                {
+                    for (var i = 0; i < cornerHandles.Length; i++)
+                    {
+                        cornerHandles[i].SetActive(value);
+                    }
+
+                    for (var i = 0; i < rotateHandles.Length; i++)
+                    {
+                        rotateHandles[i].SetActive(value);
+                    }
+                }
+
+                showRig = value;
+            }
+        }
+
         public void Activate()
         {
+            InputManager.Instance.RaiseBoundingBoxRigActivated(gameObject);
             ShowRig = true;
         }
 
         public void Deactivate()
         {
+            InputManager.Instance.RaiseBoundingBoxRigDeactivated(gameObject);
             ShowRig = false;
         }
 
@@ -166,18 +207,17 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
         }
 
-
         private void Start()
         {
-            objectToBound = this.gameObject;
+            objectToBound = gameObject;
 
-            boxInstance = Instantiate(BoundingBoxPrefab) as BoundingBox;
+            boxInstance = Instantiate(BoundingBoxPrefab);
             boxInstance.Target = objectToBound;
             boxInstance.FlattenPreference = flattenedAxis;
 
             BuildRig();
 
-            appBarInstance = Instantiate(appBarPrefab) as AppBar;
+            appBarInstance = Instantiate(appBarPrefab);
             appBarInstance.BoundingBox = boxInstance;
 
             boxInstance.IsVisible = false;
@@ -204,21 +244,14 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             handleCentroids = GetBounds();
         }
 
-        private void CreateHandles()
-        {
-            ClearHandles();
-            UpdateCornerHandles();
-            UpdateRotateHandles();
-            ParentHandles();
-            UpdateHandles();
-        }
-
         private void UpdateCornerHandles()
         {
             if (handleCentroids != null)
             {
                 GetBounds();
             }
+
+            Debug.Assert(handleCentroids != null);
 
             if (cornerHandles == null)
             {
@@ -270,7 +303,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     rigRotateGizmoHandles[i].RotationCoordinateSystem = rotationType;
                     rigRotateGizmoHandles[i].TransformToAffect = objectToBound.transform;
                     rigRotateGizmoHandles[i].AffineType = BoundingBoxGizmoHandle.TransformType.Rotation;
-                   
+
                 }
 
                 //set axis to affect
@@ -284,8 +317,8 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 rigRotateGizmoHandles[6].Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
                 rigRotateGizmoHandles[7].Axis = BoundingBoxGizmoHandle.AxisToAffect.Z;
 
-                rigRotateGizmoHandles[8].Axis  = BoundingBoxGizmoHandle.AxisToAffect.X;
-                rigRotateGizmoHandles[9].Axis  = BoundingBoxGizmoHandle.AxisToAffect.X;
+                rigRotateGizmoHandles[8].Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
+                rigRotateGizmoHandles[9].Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
                 rigRotateGizmoHandles[10].Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
                 rigRotateGizmoHandles[11].Axis = BoundingBoxGizmoHandle.AxisToAffect.X;
 
@@ -306,6 +339,8 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 rigRotateGizmoHandles[11].IsLeftHandedRotation = true;
             }
 
+            Debug.Assert(handleCentroids != null);
+
             rotateHandles[0].transform.localPosition = (handleCentroids[2] + handleCentroids[0]) * 0.5f;
             rotateHandles[1].transform.localPosition = (handleCentroids[3] + handleCentroids[1]) * 0.5f;
             rotateHandles[2].transform.localPosition = (handleCentroids[6] + handleCentroids[4]) * 0.5f;
@@ -320,17 +355,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             rotateHandles[11].transform.localPosition = (handleCentroids[3] + handleCentroids[7]) * 0.5f;
         }
 
-        private void ParentHandles()
-        {
-            transformRig.transform.position = boxInstance.transform.position;
-            transformRig.transform.rotation = boxInstance.transform.rotation;
-
-            Vector3 invScale = objectToBound.transform.localScale;
-
-            transformRig.transform.localScale = new Vector3(0.5f / invScale.x, 0.5f / invScale.y, 0.5f / invScale.z);
-            transformRig.transform.parent = objectToBound.transform;
-        }
-
         private void UpdateHandles()
         {
             UpdateCornerHandles();
@@ -343,8 +367,9 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             {
                 for (int i = 0; i < cornerHandles.Length; ++i)
                 {
-                    GameObject.Destroy(cornerHandles[i]);
+                    Destroy(cornerHandles[i]);
                 }
+
                 cornerHandles = null;
                 handleCentroids = null;
             }
@@ -376,121 +401,67 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             ClearRotateHandles();
         }
 
-        private GameObject BuildRig()
+        private void BuildRig()
         {
             Vector3 scale = objectToBound.transform.localScale;
 
-            GameObject rig = new GameObject();
-            rig.name = "center";
+            var rig = new GameObject { name = "center" };
             rig.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
             rig.transform.localScale = new Vector3(1.0f / scale.x, 1.0f / scale.y, 1.0f / scale.z);
 
-            GameObject upperLeftFront = new GameObject();
-            upperLeftFront.name = "upperleftfront";
-            upperLeftFront.transform.SetPositionAndRotation(new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity);
-            upperLeftFront.transform.localScale = new Vector3(1, 1, 1);
+            var upperLeftFront = new GameObject { name = "upperleftfront" };
+            upperLeftFront.transform.SetPositionAndRotation(upperLeftFrontVector, Quaternion.identity);
+            upperLeftFront.transform.localScale = Vector3.one;
             upperLeftFront.transform.parent = rig.transform;
 
-            GameObject upperLeftBack = new GameObject();
-            upperLeftBack.name = "upperleftback";
-            upperLeftBack.transform.SetPositionAndRotation(new Vector3(0.5f, 0.5f, -0.5f), Quaternion.identity);
-            upperLeftBack.transform.localScale = new Vector3(1, 1, 1);
+            var upperLeftBack = new GameObject { name = "upperleftback" };
+            upperLeftBack.transform.SetPositionAndRotation(upperLeftBackVector, Quaternion.identity);
+            upperLeftBack.transform.localScale = Vector3.one;
             upperLeftBack.transform.parent = rig.transform;
 
-            GameObject lowerLeftFront = new GameObject();
-            lowerLeftFront.name = "lowerleftfront";
-            lowerLeftFront.transform.SetPositionAndRotation(new Vector3(0.5f, -0.5f, 0.5f), Quaternion.identity);
-            lowerLeftFront.transform.localScale = new Vector3(1, 1, 1);
+            var lowerLeftFront = new GameObject { name = "lowerleftfront" };
+            lowerLeftFront.transform.SetPositionAndRotation(lowerLeftFrontVector, Quaternion.identity);
+            lowerLeftFront.transform.localScale = Vector3.one;
             lowerLeftFront.transform.parent = rig.transform;
 
-            GameObject lowerLeftBack = new GameObject();
-            lowerLeftBack.name = "lowerleftback";
-            lowerLeftBack.transform.SetPositionAndRotation(new Vector3(0.5f, -0.5f, -0.5f), Quaternion.identity);
-            lowerLeftBack.transform.localScale = new Vector3(1, 1, 1);
+            var lowerLeftBack = new GameObject { name = "lowerleftback" };
+            lowerLeftBack.transform.SetPositionAndRotation(lowerLeftBackVector, Quaternion.identity);
+            lowerLeftBack.transform.localScale = Vector3.one;
             lowerLeftBack.transform.parent = rig.transform;
 
-            GameObject upperRightFront = new GameObject();
-            upperRightFront.name = "upperrightfront";
-            upperRightFront.transform.SetPositionAndRotation(new Vector3(-0.5f, 0.5f, 0.5f), Quaternion.identity);
-            upperRightFront.transform.localScale = new Vector3(1, 1, 1);
+            var upperRightFront = new GameObject { name = "upperrightfront" };
+            upperRightFront.transform.SetPositionAndRotation(upperRightFrontVector, Quaternion.identity);
+            upperRightFront.transform.localScale = Vector3.one;
             upperRightFront.transform.parent = rig.transform;
 
-            GameObject upperRightBack = new GameObject();
-            upperRightBack.name = "upperrightback";
-            upperRightBack.transform.SetPositionAndRotation(new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
-            upperRightBack.transform.localScale = new Vector3(1, 1, 1);
+            var upperRightBack = new GameObject { name = "upperrightback" };
+            upperRightBack.transform.SetPositionAndRotation(upperRightBackVector, Quaternion.identity);
+            upperRightBack.transform.localScale = Vector3.one;
             upperRightBack.transform.parent = rig.transform;
 
-            GameObject lowerRightFront = new GameObject();
-            lowerRightFront.name = "lowerrightfront";
-            lowerRightFront.transform.SetPositionAndRotation(new Vector3(-0.5f, -0.5f, 0.5f), Quaternion.identity);
-            lowerRightFront.transform.localScale = new Vector3(1, 1, 1);
+            var lowerRightFront = new GameObject { name = "lowerrightfront" };
+            lowerRightFront.transform.SetPositionAndRotation(lowerRightFrontVector, Quaternion.identity);
+            lowerRightFront.transform.localScale = Vector3.one;
             lowerRightFront.transform.parent = rig.transform;
 
-            GameObject lowerRightBack = new GameObject();
-            lowerRightBack.name = "lowerrightback";
-            lowerRightBack.transform.SetPositionAndRotation(new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
-            lowerRightBack.transform.localScale = new Vector3(1, 1, 1);
+            var lowerRightBack = new GameObject { name = "lowerrightback" };
+            lowerRightBack.transform.SetPositionAndRotation(lowerRightBackVector, Quaternion.identity);
+            lowerRightBack.transform.localScale = Vector3.one;
             lowerRightBack.transform.parent = rig.transform;
-
-            transformRig = rig;
-
-            return rig;
         }
-
-        private bool ShowRig
-        {
-            get
-            {
-                return showRig;
-            }
-            set
-            {
-                if (destroying == false)
-                {
-                    if (value == true)
-                    {
-                        UpdateBoundsPoints();
-                        UpdateHandles();
-                    }
-
-                    if (boxInstance != null)
-                    {
-                        boxInstance.IsVisible = value;
-                    }
-
-                    if (cornerHandles != null && rotateHandles != null)
-                    {
-                        foreach (GameObject handle in cornerHandles)
-                        {
-                            handle.SetActive(value);
-                        }
-                        foreach (GameObject handle in rotateHandles)
-                        {
-                            handle.SetActive(value);
-                        }
-                    }
-
-                    showRig = value;
-                }
-            }
-        }
-
-
 
         private List<Vector3> GetBounds()
         {
             if (objectToBound != null)
             {
-                List<Vector3> bounds = new List<Vector3>();
-                LayerMask mask = new LayerMask();
+                var bounds = new List<Vector3>();
+                var mask = new LayerMask();
 
                 GameObject clone = GameObject.Instantiate(boxInstance.gameObject);
                 clone.transform.localRotation = Quaternion.identity;
                 clone.transform.position = Vector3.zero;
                 BoundingBox.GetMeshFilterBoundsPoints(clone, bounds, mask);
-                Vector3 centroid = boxInstance.TargetBoundsCenter;
-                GameObject.Destroy(clone);
+                Destroy(clone);
                 Matrix4x4 m = Matrix4x4.Rotate(objectToBound.transform.rotation);
                 for (int i = 0; i < bounds.Count; ++i)
                 {
@@ -502,29 +473,6 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             }
 
             return null;
-        }
-
-        private BoundingBox.FlattenModeEnum GetBestAxisToFlatten()
-        {
-            int index = handleCentroids.Count - 8;
-            float width = (handleCentroids[index + 0] - handleCentroids[index + 4]).magnitude;
-            float height = (handleCentroids[index + 0] - handleCentroids[index + 2]).magnitude;
-            float depth = (handleCentroids[index + 0] - handleCentroids[index + 1]).magnitude;
-
-            if (width < height && width < depth)
-            {
-                return BoundingBox.FlattenModeEnum.FlattenX;
-            }
-            else if (height < width && height < depth)
-            {
-                return BoundingBox.FlattenModeEnum.FlattenY;
-            }
-            else if (depth < height && depth < width)
-            {
-                return BoundingBox.FlattenModeEnum.FlattenZ;
-            }
-          
-            return BoundingBox.FlattenModeEnum.DoNotFlatten;
         }
     }
 }

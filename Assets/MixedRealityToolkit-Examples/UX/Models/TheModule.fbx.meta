@@ -3,7 +3,7 @@ guid: 2c11bf713819a084d8cb4c35db20d042
 timeCreated: 1497914841
 licenseType: Pro
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 22
   fileIDToRecycleName:
     100000: BackBody
     100002: Backpack
@@ -170,10 +170,57 @@ ModelImporter:
     4300056: Legs2
     4300058: Legs3
     4300060: Legs4
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black
+    second: {fileID: 2100000, guid: 752ea8dd54d61934c9ec6ff6944b210a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BlackWindow
+    second: {fileID: 2100000, guid: 35260f6bb9758ac46b9ab4e36c76ef0d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ClearWindow
+    second: {fileID: 2100000, guid: 1b607b6bb9cc98a498c6f6dee15f294c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Default
+    second: {fileID: 2100000, guid: 7ec11ba6765c221499591f5692c4bc18, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gold
+    second: {fileID: 2100000, guid: c278288142ab34047ad4ff4450d0f640, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GreenGas
+    second: {fileID: 2100000, guid: e70925e937e9a22439a20a2f682391e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RedLight
+    second: {fileID: 2100000, guid: 5d4f3b74350d8694ca2ef0d14246bd38, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White
+    second: {fileID: 2100000, guid: 3639569bc17f0cf41a8920605a72dcd8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WhiteLight
+    second: {fileID: 2100000, guid: 7af45ca6d440a78459aa7942adb3a9a9, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 1
     materialSearch: 2
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -186,12 +233,14 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -199,7 +248,10 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -215,6 +267,7 @@ ModelImporter:
     normalSmoothAngle: 45
     normalImportMode: 0
     tangentImportMode: 0
+    normalCalculationMode: 0
   importAnimation: 0
   copyAvatar: 0
   humanDescription:

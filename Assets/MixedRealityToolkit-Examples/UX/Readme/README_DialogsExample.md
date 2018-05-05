@@ -9,20 +9,20 @@ Dialog is a transient UI element which appears when something happens that requi
 https://gfycat.com/ConventionalDirtyKiskadee
 
 ## Dialog prefab and DialogShell script
-Dialog prefab is located under MixedRealityToolkit/UX/Prefabs folder and dynamically instantiated with Unity's Instantiate() function. This prefab contains **DialogShell** script and **Solver** scripts.
+Dialog prefab is located under [MixedRealityToolkit/UX/Prefabs](/Assets/MixedRealityToolkit/UX/Prefabs) folder and dynamically instantiated with Unity's Instantiate() function. This prefab contains **DialogShell** script and **Solver** scripts.
 
 ## How to display a Dialog control
 You can find the code example in **LaunchDialogScript.cs** under SceneContent > SquareButton. It demonstrates the instantiation and response to a Dialog using the function Launch Dialog. The Dialog can be specified to have a single button, useful for communicating information to the user. The Dialog can also be configured to display two buttons, allowing the user to make a choice. The name of the selected button is returned to the script that opens the Dialog. 
 
 An instance of the Dialog is created using: 
- 
+```
 //fill dialogPrefab in the inspector:
 [Serialize]
 private Dialog dialogPrefab;
 
 //then call:
 Dialog dialog = Dialog.Open(dialogPrefab.gameObject, buttons, title, message);
- 
+``` 
 The second argument to the Open function defines the caption or captions that the button(s) will have. 
 They are identified by defining an enumerated value using Dialog.ButtonTypeEnum. 
 To define two buttons, simply bitwise OR two enumerations:
@@ -40,7 +40,7 @@ In a LaunchFunction() called by a Coroutine:
 ## Properties
 The Dialog will stay in the user's field of view while the user can use gaze or controller targeting to make a button selection. Tag-along and billboarding interaction is achieved by using **Solver scripts**. When you select Dialog.prefab, you will be able to find Solver scripts for the size and distance control. In **SolverConstantViewSize**, you can adjust **Target View Percent V** value to modify the size of the Dialog window.
 
-You can find more detailed information about the [Solver System on this README page](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/Dev_Working_Branch/Assets/MixedRealityToolkit-Examples/Utilities/Readme/README_SolverSystem.md).
+You can find more detailed information about the [Solver System on this README page](/Assets/MixedRealityToolkit-Examples/Utilities/Readme/README_SolverSystem.md).
 
 <img src="/External/ReadMeImages/MRTK_Dialog_Inspector.jpg" width="450">
 

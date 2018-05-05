@@ -291,7 +291,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1670758749238574}
-  m_Text: Text
+  m_Text: I am a Tool Tip
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -350,7 +350,7 @@ MonoBehaviour:
   UniformDistortionStrength: 1
   distorters: []
   loops: 0
-  Start: {x: 0.31580007, y: 0.0805, z: -0.0358}
+  Start: {x: 0.31580004, y: 0.0805, z: -0.0358}
   End: {x: 0.28600004, y: 0.06299999, z: -0.06440002}
 --- !u!114 &114262839923521372
 MonoBehaviour:
@@ -366,7 +366,6 @@ MonoBehaviour:
   toolTip: {fileID: 114697570813435190}
   backgroundTransform: {fileID: 4877995955028244}
   BackgroundRenderer: {fileID: 23479976745827762}
-  Depth: 1
 --- !u!114 &114299401014778236
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -449,14 +448,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
-  FollowType: 0
-  PivotMode: 1
-  PivotDirection: 1
-  PivotDirectionOrient: 0
-  ManualPivotDirection: {x: 0, y: 1, z: 0}
-  ManualPivotLocalPosition: {x: 0, y: 1, z: 0}
-  PivotDistance: 0.25
   toolTip: {fileID: 114697570813435190}
+  connectorFollowType: 0
+  pivotMode: 0
+  pivotDirection: 1
+  pivotDirectionOrient: 0
+  manualPivotDirection: {x: 0, y: 1, z: 0}
+  manualPivotLocalPosition: {x: 0, y: 1, z: 0}
+  pivotDistance: 0.25
 --- !u!114 &114608972520619298
 MonoBehaviour:
   m_ObjectHideFlags: 1
