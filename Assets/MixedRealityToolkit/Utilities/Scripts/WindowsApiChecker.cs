@@ -13,15 +13,21 @@ namespace MixedRealityToolkit.Utilities
         static WindowsApiChecker()
         {
 #if !UNITY_EDITOR && UNITY_WSA
+            UniversalApiContractV6_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 6);
             UniversalApiContractV5_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5);
             UniversalApiContractV4_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 4);
             UniversalApiContractV3_IsAvailable = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 3);
 #else
+            UniversalApiContractV6_IsAvailable = false;
             UniversalApiContractV5_IsAvailable = false;
             UniversalApiContractV4_IsAvailable = false;
             UniversalApiContractV3_IsAvailable = false;
 #endif
         }
+        /// <summary>
+        /// Is the Universal API Contract v6.0 Available?
+        /// </summary>
+        public static bool UniversalApiContractV6_IsAvailable { get; private set; }
 
         /// <summary>
         /// Is the Universal API Contract v5.0 Available?

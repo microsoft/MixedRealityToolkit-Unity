@@ -12,6 +12,10 @@ using UnityEngine.Networking;
 
 namespace MixedRealityToolkit.Common.RestUtility
 {
+
+    /// <summary>
+    /// REST Class for CRUD Transactions.
+    /// </summary>
     public static class Rest
     {
         /// <summary>
@@ -226,10 +230,7 @@ namespace MixedRealityToolkit.Common.RestUtility
 
             if (webRequest.isNetworkError || webRequest.isHttpError)
             {
-                if (webRequest.responseCode == 401)
-                {
-                    return new Response(false, "Invalid Credentials", null, webRequest.responseCode);
-                }
+                if (webRequest.responseCode == 401) { return new Response(false, "Invalid Credentials", null, webRequest.responseCode); }
 
                 if (webRequest.GetResponseHeaders() == null)
                 {
@@ -237,8 +238,8 @@ namespace MixedRealityToolkit.Common.RestUtility
                 }
 
                 string responseHeaders = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
-                //Debug.LogError($"REST Error: {webRequest.responseCode}\n{webRequest.downloadHandler?.text}{responseHeaders}");
-                return new Response(false, $"{responseHeaders}\n{webRequest.downloadHandler?.text}", null, webRequest.responseCode);
+                Debug.LogError($"REST Error: {webRequest.responseCode}\n{webRequest.downloadHandler?.text}{responseHeaders}");
+                return new Response(false, $"{responseHeaders}\n{webRequest.downloadHandler?.text}", webRequest.downloadHandler?.data, webRequest.responseCode);
             }
 
             return new Response(true, webRequest.downloadHandler?.text, webRequest.downloadHandler?.data, webRequest.responseCode);

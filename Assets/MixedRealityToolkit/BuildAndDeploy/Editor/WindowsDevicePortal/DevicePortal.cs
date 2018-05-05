@@ -8,8 +8,8 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using MixedRealityToolkit.Common.Extensions;
 using UnityEngine;
 using UnityEngine.Networking;
 using Debug = UnityEngine.Debug;
@@ -73,7 +73,19 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
 
             string query = string.Format(GetDeviceOsInfoQuery, FinalizeUrl(targetDevice.IP));
             var response = await Rest.GetAsync(query, targetDevice.Authorization);
-            return response.Successful ? JsonUtility.FromJson<DeviceOsInfo>(response.ResponseBody) : null;
+
+            if (!response.Successful)
+            {
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    return await GetDeviceOsInfoAsync(targetDevice);
+                }
+
+                Debug.LogError(response.ResponseBody);
+                return null;
+            }
+
+            return JsonUtility.FromJson<DeviceOsInfo>(response.ResponseBody);
         }
 
         /// <summary>
@@ -88,7 +100,19 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
 
             string query = string.Format(GetMachineNameQuery, FinalizeUrl(targetDevice.IP));
             var response = await Rest.GetAsync(query, targetDevice.Authorization);
-            return response.Successful ? JsonUtility.FromJson<MachineName>(response.ResponseBody) : null;
+
+            if (!response.Successful)
+            {
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    return await GetMachineNameAsync(targetDevice);
+                }
+
+                Debug.LogError(response.ResponseBody);
+                return null;
+            }
+
+            return JsonUtility.FromJson<MachineName>(response.ResponseBody);
         }
 
         /// <summary>
@@ -103,7 +127,19 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
 
             string query = string.Format(GetBatteryQuery, FinalizeUrl(targetDevice.IP));
             var response = await Rest.GetAsync(query, targetDevice.Authorization);
-            return response.Successful ? JsonUtility.FromJson<BatteryInfo>(response.ResponseBody) : null;
+
+            if (!response.Successful)
+            {
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    return await GetBatteryStateAsync(targetDevice);
+                }
+
+                Debug.LogError(response.ResponseBody);
+                return null;
+            }
+
+            return JsonUtility.FromJson<BatteryInfo>(response.ResponseBody);
         }
 
         /// <summary>
@@ -118,7 +154,19 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
 
             string query = string.Format(GetPowerStateQuery, FinalizeUrl(targetDevice.IP));
             var response = await Rest.GetAsync(query, targetDevice.Authorization);
-            return response.Successful ? JsonUtility.FromJson<PowerStateInfo>(response.ResponseBody) : null;
+
+            if (!response.Successful)
+            {
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    await GetPowerStateAsync(targetDevice);
+                }
+
+                //Debug.LogError(response.ResponseBody);
+                return null;
+            }
+
+            return JsonUtility.FromJson<PowerStateInfo>(response.ResponseBody);
         }
 
         /// <summary>
@@ -132,6 +180,7 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
             if (!isAuth) { return false; }
 
             var response = await Rest.PostAsync(string.Format(RestartDeviceQuery, FinalizeUrl(targetDevice.IP)), targetDevice.Authorization);
+
             if (response.Successful)
             {
                 bool hasRestarted = false;
@@ -140,11 +189,31 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
                 while (!hasRestarted)
                 {
                     response = await Rest.GetAsync(query, targetDevice.Authorization);
+
+                    if (!response.Successful)
+                    {
+                        if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                        {
+                            continue;
+                        }
+
+                        Debug.LogError(response.ResponseBody);
+                        return false;
+                    }
+
                     hasRestarted = response.Successful;
                 }
+
+                return true;
             }
 
-            return response.Successful;
+            if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+            {
+                await RestartAsync(targetDevice);
+            }
+
+            Debug.LogError(response.ResponseBody);
+            return false;
         }
 
         /// <summary>
@@ -158,7 +227,19 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
             if (!isAuth) { return false; }
 
             var response = await Rest.PostAsync(string.Format(ShutdownDeviceQuery, FinalizeUrl(targetDevice.IP)), targetDevice.Authorization);
-            return response.Successful;
+
+            if (!response.Successful)
+            {
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    return await ShutdownAsync(targetDevice);
+                }
+
+                Debug.LogError(response.ResponseBody);
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -169,6 +250,7 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// <returns>True, if application is currently installed on device.</returns>
         public static async Task<bool> IsAppInstalledAsync(string packageName, DeviceInfo targetDevice)
         {
+            Debug.Assert(!string.IsNullOrEmpty(packageName));
             return await GetApplicationInfoAsync(packageName, targetDevice) != null;
         }
 
@@ -177,13 +259,20 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
+        /// <param name="appInfo">Optional cached <see cref="ApplicationInfo"/>.</param>
         /// <returns>True, if the application is running.</returns>
-        public static async Task<bool> IsAppRunningAsync(string packageName, DeviceInfo targetDevice)
+        public static async Task<bool> IsAppRunningAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
         {
-            var appInfo = await GetApplicationInfoAsync(packageName, targetDevice);
+            Debug.Assert(!string.IsNullOrEmpty(packageName));
 
             if (appInfo == null)
             {
+                appInfo = await GetApplicationInfoAsync(packageName, targetDevice);
+            }
+
+            if (appInfo == null)
+            {
+                Debug.LogError($"{packageName} not installed.");
                 return false;
             }
 
@@ -199,8 +288,16 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
                         return true;
                     }
                 }
+
+                return false;
             }
 
+            if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+            {
+                return await IsAppRunningAsync(packageName, targetDevice, appInfo);
+            }
+
+            Debug.LogError($"{response.ResponseBody}");
             return false;
         }
 
@@ -212,6 +309,7 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// <returns>Returns the <see cref="ApplicationInfo"/> of the target application from the target device.</returns>
         private static async Task<ApplicationInfo> GetApplicationInfoAsync(string packageName, DeviceInfo targetDevice)
         {
+            Debug.Assert(!string.IsNullOrEmpty(packageName));
             var appList = await GetAllInstalledAppsAsync(targetDevice);
 
             for (int i = 0; i < appList?.InstalledPackages.Length; ++i)
@@ -236,7 +334,19 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
             if (!isAuth) { return null; }
 
             var response = await Rest.GetAsync(string.Format(PackagesQuery, FinalizeUrl(targetDevice.IP)), targetDevice.Authorization);
-            return response.Successful ? JsonUtility.FromJson<InstalledApps>(response.ResponseBody) : null;
+
+            if (!response.Successful)
+            {
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    return await GetAllInstalledAppsAsync(targetDevice);
+                }
+
+                Debug.LogError(response.ResponseBody);
+                return null;
+            }
+
+            return JsonUtility.FromJson<InstalledApps>(response.ResponseBody);
         }
 
         /// <summary>
@@ -248,6 +358,7 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// <returns>True, if Installation was a success.</returns>
         public static async Task<bool> InstallAppAsync(string appFullPath, DeviceInfo targetDevice, bool waitForDone = true)
         {
+            Debug.Assert(!string.IsNullOrEmpty(appFullPath));
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
             if (!isAuth) { return false; }
 
@@ -255,7 +366,7 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
             string fileName = Path.GetFileName(appFullPath);
             string certFullPath = Path.ChangeExtension(appFullPath, ".cer");
             string certName = Path.GetFileName(certFullPath);
-            string depPath = Path.GetDirectoryName(appFullPath) + @"\Dependencies\x86\";
+            string depPath = $@"{Path.GetDirectoryName(appFullPath)}\Dependencies\x86\";
 
             var form = new WWWForm();
 
@@ -308,7 +419,12 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
 
             if (!response.Successful)
             {
-                Debug.LogErrorFormat("Failed to install {0} on {1}.", fileName, targetDevice.MachineName);
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    return await InstallAppAsync(appFullPath, targetDevice, waitForDone);
+                }
+
+                Debug.LogError($"Failed to install {fileName} on {targetDevice.MachineName}.");
                 return false;
             }
 
@@ -322,10 +438,10 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
                 switch (status)
                 {
                     case AppInstallStatus.InstallSuccess:
-                        Debug.LogFormat("Successfully installed {0} on {1}.", fileName, targetDevice.MachineName);
+                        Debug.Log($"Successfully installed {fileName} on {targetDevice.MachineName}.");
                         return true;
                     case AppInstallStatus.InstallFail:
-                        Debug.LogErrorFormat("Failed to install {0} on {1}.", fileName, targetDevice.MachineName);
+                        Debug.LogError($"Failed to install {fileName} on {targetDevice.MachineName}.");
                         return false;
                 }
             }
@@ -351,7 +467,7 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
                     return AppInstallStatus.InstallSuccess;
                 }
 
-                Debug.LogErrorFormat("{0} ({1})", status.Reason, status.CodeText);
+                Debug.LogError($"{status.Reason}\n{status.CodeText}");
             }
             else
             {
@@ -366,18 +482,24 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
+        /// <param name="appInfo">Optional cached <see cref="ApplicationInfo"/>.</param>
         /// <returns>True, if uninstall was a success.</returns>
-        public static async Task<bool> UninstallAppAsync(string packageName, DeviceInfo targetDevice)
+        public static async Task<bool> UninstallAppAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
         {
-            ApplicationInfo applicationInfo = await GetApplicationInfoAsync(packageName, targetDevice);
+            Debug.Assert(!string.IsNullOrEmpty(packageName));
 
-            if (applicationInfo == null)
+            if (appInfo == null)
             {
-                Debug.Log($"Application '{packageName}' not found");
+                appInfo = await GetApplicationInfoAsync(packageName, targetDevice);
+            }
+
+            if (appInfo == null)
+            {
+                Debug.LogWarning($"Application '{packageName}' not found");
                 return false;
             }
 
-            string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={WWW.EscapeURL(applicationInfo.PackageFullName)}";
+            string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={WWW.EscapeURL(appInfo.PackageFullName)}";
             var response = await Rest.DeleteAsync(query, targetDevice.Authorization);
 
             if (response.Successful)
@@ -385,11 +507,19 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
                 Debug.LogFormat("Successfully uninstalled {0} on {1}.", packageName, targetDevice.MachineName);
             }
             else
+            if (!response.Successful)
             {
-                Debug.LogErrorFormat("Failed to uninstall {0} on {1}", packageName, targetDevice.MachineName);
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    return await UninstallAppAsync(packageName, targetDevice);
+                }
+
+                Debug.LogError($"Failed to uninstall {packageName} on {targetDevice.MachineName}");
+                Debug.LogError(response.ResponseBody);
+                return false;
             }
 
-            return response.Successful;
+            return true;
         }
 
         /// <summary>
@@ -397,21 +527,43 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
+        /// <param name="appInfo">Optional cached <see cref="ApplicationInfo"/>.</param>
         /// <returns>True, if application was successfully launched and is currently running on the target device.</returns>
-        public static async Task<bool> LaunchAppAsync(string packageName, DeviceInfo targetDevice)
+        public static async Task<bool> LaunchAppAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
         {
-            // Find the app description
-            ApplicationInfo applicationInfo = await GetApplicationInfoAsync(packageName, targetDevice);
+            Debug.Assert(!string.IsNullOrEmpty(packageName));
 
-            if (applicationInfo == null)
+            if (appInfo == null)
             {
-                Debug.LogWarning("Application not found");
+                appInfo = await GetApplicationInfoAsync(packageName, targetDevice);
+            }
+
+            if (appInfo == null)
+            {
+                Debug.LogWarning($"Application '{packageName}' not found");
                 return false;
             }
 
-            string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?appid={WWW.EscapeURL(EncodeTo64(applicationInfo.PackageRelativeId))}&package={WWW.EscapeURL(applicationInfo.PackageFullName)}";
+            string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?appid={WWW.EscapeURL(appInfo.PackageRelativeId.EncodeTo64())}&package={WWW.EscapeURL(appInfo.PackageFullName)}";
             var response = await Rest.PostAsync(query, targetDevice.Authorization);
-            return response.Successful;
+
+            if (!response.Successful)
+            {
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    return await LaunchAppAsync(packageName, targetDevice);
+                }
+
+                Debug.LogError($"{response.ResponseCode}|{response.ResponseBody}");
+                return false;
+            }
+
+            while (!await IsAppRunningAsync(packageName, targetDevice, appInfo))
+            {
+                await new WaitForSeconds(1f);
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -419,19 +571,43 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
+        /// <param name="appInfo">Optional cached <see cref="ApplicationInfo"/>.</param>
         /// <returns>true, if application was successfully stopped.</returns>
-        public static async Task<bool> StopAppAsync(string packageName, DeviceInfo targetDevice)
+        public static async Task<bool> StopAppAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
         {
-            ApplicationInfo applicationInfo = await GetApplicationInfoAsync(packageName, targetDevice);
-            if (applicationInfo == null)
+            Debug.Assert(!string.IsNullOrEmpty(packageName));
+
+            if (appInfo == null)
             {
-                Debug.LogError("Application not found");
+                appInfo = await GetApplicationInfoAsync(packageName, targetDevice);
+            }
+
+            if (appInfo == null)
+            {
+                Debug.LogWarning($"Application '{packageName}' not found");
                 return false;
             }
 
-            string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?package={WWW.EscapeURL(EncodeTo64(applicationInfo.PackageFullName))}";
+            string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?package={WWW.EscapeURL(appInfo.PackageFullName.EncodeTo64())}";
             Response response = await Rest.DeleteAsync(query, targetDevice.Authorization);
-            return response.Successful;
+
+            if (!response.Successful)
+            {
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    return await StopAppAsync(packageName, targetDevice);
+                }
+
+                Debug.LogError(response.ResponseBody);
+                return false;
+            }
+
+            while (!await IsAppRunningAsync(packageName, targetDevice, appInfo))
+            {
+                await new WaitForSeconds(1f);
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -439,27 +615,40 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="targetDevice"></param>
+        /// <param name="appInfo">Optional cached <see cref="ApplicationInfo"/>.</param>
         /// <returns>The path of the downloaded log file.</returns>
-        public static async Task<string> DownloadLogFileAsync(string packageName, DeviceInfo targetDevice)
+        public static async Task<string> DownloadLogFileAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
         {
-            ApplicationInfo applicationInfo = await GetApplicationInfoAsync(packageName, targetDevice);
+            Debug.Assert(!string.IsNullOrEmpty(packageName));
 
-            if (applicationInfo == null)
+            if (appInfo == null)
             {
-                Debug.LogWarningFormat("{0} not installed on target device", packageName);
+                appInfo = await GetApplicationInfoAsync(packageName, targetDevice);
+            }
+
+            if (appInfo == null)
+            {
+                Debug.LogWarning($"Application '{packageName}' not found");
                 return string.Empty;
             }
 
             string logFile = $"{Application.temporaryCachePath}/{targetDevice.MachineName}_{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}_deviceLog.txt";
-            var response = await Rest.GetAsync(string.Format(FileQuery, FinalizeUrl(targetDevice.IP), applicationInfo.PackageFullName), targetDevice.Authorization);
+            var response = await Rest.GetAsync(string.Format(FileQuery, FinalizeUrl(targetDevice.IP), appInfo.PackageFullName), targetDevice.Authorization);
 
-            if (response.Successful)
+            if (!response.Successful)
             {
-                File.WriteAllText(logFile, response.ResponseBody);
-                return logFile;
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    return await DownloadLogFileAsync(packageName, targetDevice);
+                }
+
+                Debug.LogError(response.ResponseBody);
+                return string.Empty;
             }
 
-            return string.Empty;
+            File.WriteAllText(logFile, response.ResponseBody);
+            return logFile;
+
         }
 
         /// <summary>
@@ -474,7 +663,19 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
 
             string query = string.Format(IpConfigQuery, FinalizeUrl(targetDevice.IP));
             var response = await Rest.GetAsync(query, targetDevice.Authorization);
-            return response.Successful ? JsonUtility.FromJson<IpConfigInfo>(response.ResponseBody) : null;
+
+            if (!response.Successful)
+            {
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    return await GetIpConfigInfoAsync(targetDevice);
+                }
+
+                Debug.LogError(response.ResponseBody);
+                return null;
+            }
+
+            return JsonUtility.FromJson<IpConfigInfo>(response.ResponseBody);
         }
 
         /// <summary>
@@ -490,7 +691,19 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
 
             string query = string.Format(WiFiNetworkQuery, FinalizeUrl(targetDevice.IP), $"s?interface={interfaceInfo.GUID}");
             var response = await Rest.GetAsync(query, targetDevice.Authorization);
-            return response.Successful ? JsonUtility.FromJson<AvailableWiFiNetworks>(response.ResponseBody) : null;
+
+            if (!response.Successful)
+            {
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    return await GetAvailableWiFiNetworksAsync(targetDevice, interfaceInfo);
+                }
+
+                Debug.LogError(response.ResponseBody);
+                return null;
+            }
+
+            return JsonUtility.FromJson<AvailableWiFiNetworks>(response.ResponseBody);
         }
 
         /// <summary>
@@ -506,8 +719,10 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
             if (!isAuth) { return new Response(false, "Unable to authenticate with device", null, 403); }
 
-            string query = string.Format(WiFiNetworkQuery, FinalizeUrl(targetDevice.IP),
-                $"?interface={interfaceInfo.GUID}&ssid={EncodeTo64(wifiNetwork.SSID)}&op=connect&createprofile=yes&key={password}");
+            string query = string.Format(
+                WiFiNetworkQuery,
+                FinalizeUrl(targetDevice.IP),
+                $"?interface={interfaceInfo.GUID}&ssid={wifiNetwork.SSID.EncodeTo64()}&op=connect&createprofile=yes&key={password}");
             return await Rest.PostAsync(query, targetDevice.Authorization);
         }
 
@@ -523,7 +738,19 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
 
             string query = string.Format(WiFiInterfacesQuery, FinalizeUrl(targetDevice.IP));
             var response = await Rest.GetAsync(query, targetDevice.Authorization);
-            return response.Successful ? JsonUtility.FromJson<NetworkInterfaces>(response.ResponseBody) : null;
+
+            if (!response.Successful)
+            {
+                if (response.ResponseCode == 403 && await RefreshCsrfTokenAsync(targetDevice))
+                {
+                    return await GetWiFiNetworkInterfacesAsync(targetDevice);
+                }
+
+                Debug.LogError(response.ResponseBody);
+                return null;
+            }
+
+            return JsonUtility.FromJson<NetworkInterfaces>(response.ResponseBody);
         }
 
         /// <summary>
@@ -545,6 +772,29 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
             return $@"http{ssl}://{targetUrl}";
         }
 
+        /// <summary>
+        /// Refreshes the CSRF Token in case the device or it's portal was restarted.
+        /// </summary>
+        /// <param name="targetDevice"></param>
+        /// <returns>True, if refresh was successful.</returns>
+        public static async Task<bool> RefreshCsrfTokenAsync(DeviceInfo targetDevice)
+        {
+            if (!targetDevice.Authorization.ContainsKey("cookie"))
+            {
+                Debug.LogError("Resetting Auth failed!");
+                return false;
+            }
+
+            targetDevice.Authorization.Remove("cookie");
+
+            return await EnsureAuthenticationAsync(targetDevice);
+        }
+
+        /// <summary>
+        /// Makes sure the Authentication Headers and CSRF Tokens are set.
+        /// </summary>
+        /// <param name="targetDevice"></param>
+        /// <returns>True if Authentication is successful, otherwise false.</returns>
         public static async Task<bool> EnsureAuthenticationAsync(DeviceInfo targetDevice)
         {
             string auth = Rest.GetBasicAuthentication(targetDevice.User, targetDevice.Password);
@@ -564,12 +814,13 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
             {
                 var response = await DevicePortalAuthorizationAsync(targetDevice);
                 success = response.Successful;
+
                 if (success)
                 {
                     targetDevice.CsrfToken = response.ResponseBody;
 
-                    // Strip the beginning of the cookie
-                    targetDevice.CsrfToken = targetDevice.CsrfToken?.Replace("CSRF-Token=", string.Empty);
+                    // Strip the beginning of the cookie header
+                    targetDevice.CsrfToken = targetDevice.CsrfToken.Replace("CSRF-Token=", string.Empty);
                 }
 
                 if (!string.IsNullOrEmpty(targetDevice.CsrfToken))
@@ -603,10 +854,9 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
 
         private static async Task<Response> DevicePortalAuthorizationAsync(DeviceInfo targetDevice)
         {
-            UnityWebRequest webRequest = UnityWebRequest.Get(FinalizeUrl(targetDevice.IP));
+            var webRequest = UnityWebRequest.Get(FinalizeUrl(targetDevice.IP));
 
             webRequest.timeout = 5;
-
             webRequest.SetRequestHeader("Authorization", targetDevice.Authorization["Authorization"]);
 
             await webRequest.SendWebRequest();
@@ -615,35 +865,20 @@ namespace MixedRealityToolkit.Build.WindowsDevicePortal
             {
                 if (webRequest.responseCode == 401)
                 {
-                    Debug.LogError($"Invalid Credentials: {webRequest.responseCode}");
                     return new Response(false, "Invalid Credentials", null, webRequest.responseCode);
                 }
 
                 if (webRequest.GetResponseHeaders() == null)
                 {
-                    return new Response(false, "Device Not Found", null, webRequest.responseCode);
+                    return new Response(false, "Device Not Found | No Response Headers", null, webRequest.responseCode);
                 }
 
                 string responseHeaders = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
                 Debug.LogError($"REST Auth Error: {webRequest.responseCode}\n{webRequest.downloadHandler?.text}{responseHeaders}");
-                return new Response(false, webRequest.downloadHandler?.text, null, webRequest.responseCode);
+                return new Response(false, webRequest.downloadHandler?.text, webRequest.downloadHandler?.data, webRequest.responseCode);
             }
 
-            return new Response(true, webRequest.GetResponseHeader("Set-Cookie"), null, webRequest.responseCode);
-        }
-
-        public static string EncodeTo64(string toEncode)
-        {
-            byte[] toEncodeAsBytes = Encoding.ASCII.GetBytes(toEncode);
-            string returnValue = Convert.ToBase64String(toEncodeAsBytes);
-            return returnValue;
-        }
-
-        public static string DecodeFrom64(string encodedData)
-        {
-            byte[] encodedDataAsBytes = Convert.FromBase64String(encodedData);
-            string returnValue = Encoding.ASCII.GetString(encodedDataAsBytes);
-            return returnValue;
+            return new Response(true, webRequest.GetResponseHeader("Set-Cookie"), webRequest.downloadHandler?.data, webRequest.responseCode);
         }
     }
 }

@@ -148,16 +148,12 @@ namespace MixedRealityToolkit.Build
                     case ProjectSetting.BuildWsaUwp:
                     case ProjectSetting.WsaEnableXR:
                     case ProjectSetting.WsaUwpBuildToD3D:
-                    case ProjectSetting.DotNetScriptingBackend:
                     case ProjectSetting.SetDefaultSpatialMappingLayer:
                         Values[(ProjectSetting)i] = true;
                         break;
+                    case ProjectSetting.DotNetScriptingBackend:
                     case ProjectSetting.TargetOccludedDevices:
-                        Values[(ProjectSetting)i] = EditorPrefsUtility.GetEditorPref(Names[(ProjectSetting)i], false);
-                        break;
                     case ProjectSetting.SharingServices:
-                        Values[(ProjectSetting)i] = EditorPrefsUtility.GetEditorPref(Names[(ProjectSetting)i], false);
-                        break;
                     case ProjectSetting.UseInputManagerAxes:
                         Values[(ProjectSetting)i] = EditorPrefsUtility.GetEditorPref(Names[(ProjectSetting)i], false);
                         break;
@@ -165,7 +161,6 @@ namespace MixedRealityToolkit.Build
                         throw new ArgumentOutOfRangeException();
                 }
             }
-
         }
 
         private void UpdateSettings(BuildTarget currentBuildTarget)
@@ -433,8 +428,9 @@ namespace MixedRealityToolkit.Build
 
             Names[ProjectSetting.DotNetScriptingBackend] = "Enable .NET scripting backend";
             Descriptions[ProjectSetting.DotNetScriptingBackend] =
-                "Recommended\n\n" +
-                "If you have the .NET unity module installed this will update the backend scripting profile, otherwise the scripting backend will be IL2CPP.";
+                "<color=#ffff00ff><b>Not</b></color> Recommended\n\n" +
+                "If you have the .NET unity module installed this will update the backend scripting profile, otherwise the scripting backend will be IL2CPP.\n\n" +
+                "<color=#ff0000ff><b>Warning!</b></color> The .NET Scripting backed has been depreciated in Unity beginning in 2018.1.";
 
             Names[ProjectSetting.SetDefaultSpatialMappingLayer] = "Set Default Spatial Mapping Layer";
             Descriptions[ProjectSetting.SetDefaultSpatialMappingLayer] =

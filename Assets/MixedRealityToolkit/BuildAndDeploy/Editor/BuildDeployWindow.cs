@@ -1,5 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
-// Copyright (c) Rafael Rivera.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures;
@@ -61,7 +60,7 @@ namespace MixedRealityToolkit.Build
 
         private const float UpdateBuildsPeriod = 1.0f;
 
-        private const string SdkVersion = "10.0.16299.0";
+        private const string SdkVersion = "10.0.17134.0";
 
         private readonly string[] tabNames = { "Unity Build Options", "Appx Build Options", "Deploy Options" };
 
@@ -108,6 +107,8 @@ namespace MixedRealityToolkit.Build
         #endregion Labels
 
         #region Properties
+
+        private static bool IsValidSdkInstalled { get; set; } = true;
 
         private static bool ShouldOpenSLNBeEnabled => !string.IsNullOrEmpty(BuildDeployPreferences.BuildDirectory);
 
@@ -279,8 +280,14 @@ namespace MixedRealityToolkit.Build
 
             EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup((int)EditorUserBuildSettings.wsaSubtarget, deviceNames);
 
-            GUI.enabled = ShouldBuildSLNBeEnabled;
             bool canInstall = CanInstall;
+
+            if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens && !IsHoloLensConnectedUsb)
+            {
+                canInstall = IsHoloLensConnectedUsb;
+            }
+
+            GUI.enabled = ShouldBuildSLNBeEnabled;
 
             // Build & Run button...
             if (GUILayout.Button(CanInstall ? buildAllThenInstallLabel : buildAllLabel, GUILayout.Width(halfWidth - 20)))
@@ -436,22 +443,35 @@ namespace MixedRealityToolkit.Build
                 }
             }
 
-            EditorGUILayout.LabelField("Required SDK Version: " + SdkVersion);
+            EditorGUILayout.LabelField("Required SDK Version: " + SdkVersion, GUILayout.Width(halfWidth - 16));
 
             // Throw exception if user has no Windows 10 SDK installed
             if (currentSDKVersionIndex < 0)
             {
-                Debug.LogError("Unable to find the required Windows 10 SDK Target!\n" +
-                               $"Please be sure to install the {SdkVersion} SDK from Visual Studio Installer.");
+                if (IsValidSdkInstalled)
+                {
+                    Debug.LogError($"Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {SdkVersion} SDK from Visual Studio Installer.");
+                }
+
                 GUILayout.EndHorizontal();
-
-                EditorGUILayout.HelpBox("Unable to find the required Windows 10 SDK Target!\n" +
-                                        $"Please be sure to install the {SdkVersion} SDK from Visual Studio Installer.", MessageType.Error);
-
-                GUILayout.BeginHorizontal();
+                EditorGUILayout.HelpBox($"Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {SdkVersion} SDK from Visual Studio Installer.", MessageType.Error);
+                GUILayout.EndVertical();
+                IsValidSdkInstalled = false;
+                return;
             }
 
+            IsValidSdkInstalled = true;
+
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
+
+            if (curScriptingBackend == ScriptingImplementation.WinRTDotNET)
+            {
+                EditorGUILayout.HelpBox(".NET Scripting backend is depreciated, please use IL2CPP.", MessageType.Warning);
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+            }
+
             var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup(
                 "Scripting Backend",
                 (int)curScriptingBackend,
@@ -784,7 +804,7 @@ namespace MixedRealityToolkit.Build
             // Open web portal
             if (GUILayout.Button("Open Device Portal", GUILayout.Width(quarterWidth)))
             {
-                EditorApplication.delayCall += () => OpenDevicePortal(portalConnections);
+                EditorApplication.delayCall += () => OpenDevicePortal(portalConnections, currentConnection);
             }
 
             GUI.enabled = true;
@@ -1238,7 +1258,7 @@ namespace MixedRealityToolkit.Build
 
         #region Device Portal Commands
 
-        private static async void OpenDevicePortal(DevicePortalConnections targetDevices)
+        private static async void OpenDevicePortal(DevicePortalConnections targetDevices, DeviceInfo currentConnection)
         {
             MachineName usbMachine = null;
 
@@ -1247,9 +1267,11 @@ namespace MixedRealityToolkit.Build
                 usbMachine = await DevicePortal.GetMachineNameAsync(targetDevices.Connections.FirstOrDefault(targetDevice => targetDevice.IP.Contains("Local Machine")));
             }
 
+
             for (int i = 0; i < targetDevices.Connections.Count; i++)
             {
                 bool isLocalMachine = IsLocalConnection(targetDevices.Connections[i]);
+                bool isTargetedConnection = currentConnection.IP == targetDevices.Connections[i].IP;
 
                 if (isLocalMachine && !IsHoloLensConnectedUsb)
                 {
@@ -1260,6 +1282,11 @@ namespace MixedRealityToolkit.Build
                 {
                     if (isLocalMachine || usbMachine?.ComputerName != targetDevices.Connections[i].MachineName)
                     {
+                        if (BuildDeployPreferences.TargetAllConnections && !isTargetedConnection)
+                        {
+                            continue;
+                        }
+
                         DevicePortal.OpenWebPortal(targetDevices.Connections[i]);
                     }
                 }
@@ -1267,6 +1294,11 @@ namespace MixedRealityToolkit.Build
                 {
                     if (!isLocalMachine)
                     {
+                        if (BuildDeployPreferences.TargetAllConnections && !isTargetedConnection)
+                        {
+                            continue;
+                        }
+
                         DevicePortal.OpenWebPortal(targetDevices.Connections[i]);
                     }
                 }

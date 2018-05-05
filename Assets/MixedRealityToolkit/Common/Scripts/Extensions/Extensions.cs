@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -38,6 +39,20 @@ namespace MixedRealityToolkit.Common.Extensions
         public static bool IsValid(this Ray ray)
         {
             return (ray.direction != Vector3.zero);
+        }
+
+        public static string EncodeTo64(this string toEncode)
+        {
+            byte[] toEncodeAsBytes = Encoding.ASCII.GetBytes(toEncode);
+            string returnValue = Convert.ToBase64String(toEncodeAsBytes);
+            return returnValue;
+        }
+
+        public static string DecodeFrom64(this string encodedData)
+        {
+            byte[] encodedDataAsBytes = Convert.FromBase64String(encodedData);
+            string returnValue = Encoding.ASCII.GetString(encodedDataAsBytes);
+            return returnValue;
         }
 
         #region Collections

@@ -62,12 +62,21 @@ namespace MixedRealityToolkit.Build
                 WSAUwpSdk = EditorUserBuildSettings.wsaUWPSDK,
 
                 // Configure a post build action that will compile the generated solution
+#if UNITY_2018_1_OR_NEWER
+                PostBuildAction = async (innerBuildInfo, buildReport) =>
+                {
+                    if (buildReport.summary.result != BuildResult.Succeeded)
+                    {
+                        EditorUtility.DisplayDialog($"{PlayerSettings.productName} WindowsStoreApp Build {buildReport.summary.result}!", "See console for details", "OK");
+                    }
+#else
                 PostBuildAction = async (innerBuildInfo, buildError) =>
                 {
                     if (!string.IsNullOrEmpty(buildError))
                     {
                         EditorUtility.DisplayDialog($"{PlayerSettings.productName} WindowsStoreApp Build Failed!", buildError, "OK");
                     }
+#endif
                     else
                     {
                         if (showDialog)
@@ -139,6 +148,14 @@ namespace MixedRealityToolkit.Build
             string unity = Path.GetDirectoryName(EditorApplication.applicationPath);
             System.Diagnostics.Debug.Assert(unity != null, "Unable to determine the unity editor path.");
             string storePath = Path.GetFullPath(Path.Combine(Path.Combine(Application.dataPath, ".."), buildDirectory));
+            string assemblyCSharp = $"{storePath}/GeneratedProjects/UWP/Assembly-CSharp";
+
+            if (!Directory.Exists(assemblyCSharp))
+            {
+                Debug.LogError("Custom Assembly Definitions not currently supported by the Build Window.");
+                return IsBuilding = false;
+            }
+
             string solutionProjectPath = Path.GetFullPath(Path.Combine(storePath, $@"{productName}.sln"));
 
             // Bug in Unity editor that doesn't copy project.json and project.lock.json files correctly if solutionProjectPath is not in a folder named UWP.
@@ -147,14 +164,12 @@ namespace MixedRealityToolkit.Build
                 File.Copy($@"{unity}\Data\PlaybackEngines\MetroSupport\Tools\project.json", $"{storePath}\\project.json");
             }
 
-            string nugetPath = Path.Combine(unity, @"Data\PlaybackEngines\MetroSupport\Tools\NuGet.exe");
-            string assemblyCSharp = $"{storePath}/GeneratedProjects/UWP/Assembly-CSharp";
             string assemblyCSharpFirstPass = $"{storePath}/GeneratedProjects/UWP/Assembly-CSharp-firstpass";
             bool restoreFirstPass = Directory.Exists(assemblyCSharpFirstPass);
+            string nugetPath = Path.Combine(unity, @"Data\PlaybackEngines\MetroSupport\Tools\NuGet.exe");
 
-            // Before building, need to run a nuget restore to generate a json.lock file. Failing to do
-            // this breaks the build in VS RTM
-            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET &&
+            // Before building, need to run a nuget restore to generate a json.lock file. Failing to do this breaks the build in VS RTM
+            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.Mono2x &&
                 (!await RestoreNugetPackagesAsync(nugetPath, storePath) ||
                  !await RestoreNugetPackagesAsync(nugetPath, $"{storePath}\\{productName}") ||
                  EditorUserBuildSettings.wsaGenerateReferenceProjects && !await RestoreNugetPackagesAsync(nugetPath, assemblyCSharp) ||
@@ -165,7 +180,7 @@ namespace MixedRealityToolkit.Build
             }
 
             // Ensure that the generated .appx version increments by modifying Package.appxmanifest
-            if (incrementVersion && !IncrementPackageVersion())
+            if (!SetPackageVersion(incrementVersion))
             {
                 Debug.LogError("Failed to increment package version!");
                 return IsBuilding = false;
@@ -189,6 +204,8 @@ namespace MixedRealityToolkit.Build
             {
                 Debug.LogError($"{PlayerSettings.productName} appx build Failed! (ErrorCode: {processResult.ExitCode})");
             }
+
+            AssetDatabase.SaveAssets();
 
             IsBuilding = false;
             return processResult.ExitCode == 0;
@@ -240,7 +257,7 @@ namespace MixedRealityToolkit.Build
             return File.Exists($"{storePath}\\project.lock.json"); ;
         }
 
-        private static bool IncrementPackageVersion()
+        private static bool SetPackageVersion(bool increment)
         {
             // Find the manifest, assume the one we want is the first one
             string[] manifests = Directory.GetFiles(BuildDeployPreferences.AbsoluteBuildDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
@@ -277,7 +294,7 @@ namespace MixedRealityToolkit.Build
             // Package versions are always of the form Major.Minor.Build.Revision.
             // Note: Revision number reserved for Windows Store, and a value other than 0 will fail WACK.
             var version = PlayerSettings.WSA.packageVersion;
-            var newVersion = new Version(version.Major, version.Minor, version.Build + 1, version.Revision);
+            var newVersion = new Version(version.Major, version.Minor, increment ? version.Build + 1 : version.Build, version.Revision);
 
             PlayerSettings.WSA.packageVersion = newVersion;
             versionAttr.Value = newVersion.ToString();

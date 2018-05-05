@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,10 +38,17 @@ namespace MixedRealityToolkit.Build
         /// </summary>
         public static event Action<BuildInfo> BuildStarted;
 
+#if UNITY_2018_1_OR_NEWER
+        /// <summary>
+        /// Event triggered when a build completes.
+        /// </summary>
+        public static event Action<BuildInfo, BuildReport> BuildCompleted;
+#else
         /// <summary>
         /// Event triggered when a build completes.
         /// </summary>
         public static event Action<BuildInfo, string> BuildCompleted;
+#endif
 
         /// <summary>
         /// Call this method to give other code an opportunity to override <see cref="BuildInfo"/> defaults.
@@ -178,23 +184,34 @@ namespace MixedRealityToolkit.Build
 
             EditorUtility.DisplayProgressBar("Build Pipeline", "Herding all the cats...", 0.25f);
 
-            string buildError = "ERROR";
+#if UNITY_2018_1_OR_NEWER
+            BuildReport buildReport = default(BuildReport);
+#else
+            string buildReport = "ERROR";
+#endif
             try
             {
-                buildError = BuildPipeline.BuildPlayer(
+                buildReport = BuildPipeline.BuildPlayer(
                     buildInfo.Scenes.ToArray(),
                     buildInfo.OutputDirectory,
                     buildInfo.BuildTarget,
                     buildInfo.BuildOptions);
 
-                if (buildError.StartsWith("Error"))
+#if UNITY_2018_1_OR_NEWER
+                if (buildReport.summary.result != BuildResult.Succeeded)
                 {
-                    throw new Exception(buildError);
+                    throw new Exception($"Build Result: {buildReport.summary.result.ToString()}");
                 }
+#else
+                if (buildReport.StartsWith("Error"))
+                {
+                    throw new Exception(buildReport);
+                }
+#endif
             }
             finally
             {
-                OnPostProcessBuild(buildInfo, buildError);
+                OnPostProcessBuild(buildInfo, buildReport);
 
                 if (buildInfo.BuildTarget == BuildTarget.WSAPlayer && EditorUserBuildSettings.wsaGenerateReferenceProjects)
                 {
@@ -222,9 +239,13 @@ namespace MixedRealityToolkit.Build
                 Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
 
                 // Configure a post build action to throw appropriate error code.
-                PostBuildAction = (innerBuildInfo, buildError) =>
+                PostBuildAction = (innerBuildInfo, buildReport) =>
                 {
-                    if (!string.IsNullOrEmpty(buildError))
+#if UNITY_2018_1_OR_NEWER
+                    if (buildReport.summary.result != BuildResult.Succeeded)
+#else
+                    if (!string.IsNullOrEmpty(buildReport))
+#endif
                     {
                         EditorApplication.Exit(1);
                     }
@@ -442,9 +463,15 @@ namespace MixedRealityToolkit.Build
             buildInfo.PreBuildAction?.Invoke(buildInfo);
         }
 
-        private static async void OnPostProcessBuild(BuildInfo buildInfo, string buildError)
+#if UNITY_2018_1_OR_NEWER
+        private static async void OnPostProcessBuild(BuildInfo buildInfo, BuildReport buildReport)
         {
-            if (string.IsNullOrEmpty(buildError))
+            if (buildReport.summary.result == BuildResult.Succeeded)
+#else
+        private static async void OnPostProcessBuild(BuildInfo buildInfo, string buildReport)
+        {
+            if (string.IsNullOrEmpty(buildReport))
+#endif
             {
                 string outputProjectDirectoryPath = Path.Combine(GetProjectPath(), buildInfo.OutputDirectory);
                 if (buildInfo.CopyDirectories != null)
@@ -469,10 +496,10 @@ namespace MixedRealityToolkit.Build
             }
 
             // Raise the global event for listeners
-            BuildCompleted?.Invoke(buildInfo, buildError);
+            BuildCompleted?.Invoke(buildInfo, buildReport);
 
             // Call the post-build action, if any
-            buildInfo.PostBuildAction?.Invoke(buildInfo, buildError);
+            buildInfo.PostBuildAction?.Invoke(buildInfo, buildReport);
         }
     }
 }
