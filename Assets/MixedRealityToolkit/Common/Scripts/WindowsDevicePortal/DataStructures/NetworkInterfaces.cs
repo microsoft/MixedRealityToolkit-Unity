@@ -3,12 +3,11 @@
 
 using System;
 
-namespace MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures
+namespace MixedRealityToolkit.Common.WindowsDevicePortal.DataStructures
 {
     [Serializable]
-    public class PowerStateInfo
+    public class NetworkInterfaces
     {
-        public bool LowPowerState;
-        public bool LowPowerStateAvailable;
+        public InterfaceInfo[] Interfaces;
     }
 }

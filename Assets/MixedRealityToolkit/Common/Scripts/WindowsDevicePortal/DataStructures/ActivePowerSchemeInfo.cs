@@ -3,11 +3,11 @@
 
 using System;
 
-namespace MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures
+namespace MixedRealityToolkit.Common.WindowsDevicePortal.DataStructures
 {
     [Serializable]
-    public class IpConfigInfo
+    public class ActivePowerSchemeInfo
     {
-        public AdapterInfo[] Adapters;
+        public string ActivePowerScheme;
     }
 }

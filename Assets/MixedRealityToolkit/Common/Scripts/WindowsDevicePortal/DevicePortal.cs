@@ -1,21 +1,21 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures;
 using MixedRealityToolkit.Common.AsyncUtilities;
+using MixedRealityToolkit.Common.Extensions;
 using MixedRealityToolkit.Common.RestUtility;
+using MixedRealityToolkit.Common.WindowsDevicePortal.DataStructures;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using MixedRealityToolkit.Common.Extensions;
 using UnityEngine;
 using UnityEngine.Networking;
 using Debug = UnityEngine.Debug;
 using FileInfo = System.IO.FileInfo;
 
-namespace MixedRealityToolkit.Build.WindowsDevicePortal
+namespace MixedRealityToolkit.Common.WindowsDevicePortal
 {
     /// <summary>
     /// Function used to communicate with Windows 10 devices through the device portal REST APIs.

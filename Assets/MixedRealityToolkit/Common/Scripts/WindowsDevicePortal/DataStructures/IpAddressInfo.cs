@@ -3,11 +3,12 @@
 
 using System;
 
-namespace MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures
+namespace MixedRealityToolkit.Common.WindowsDevicePortal.DataStructures
 {
     [Serializable]
-    public class ProcessList
+    public class IpAddressInfo
     {
-        public ProcessInfo[] Processes;
+        public string IpAddress;
+        public string Mask;
     }
 }

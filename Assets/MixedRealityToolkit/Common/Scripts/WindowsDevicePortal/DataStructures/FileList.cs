@@ -3,11 +3,11 @@
 
 using System;
 
-namespace MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures
+namespace MixedRealityToolkit.Common.WindowsDevicePortal.DataStructures
 {
     [Serializable]
-    public class InstalledApps
+    public class FileList
     {
-        public ApplicationInfo[] InstalledPackages;
+        public FileInfo[] Items;
     }
 }

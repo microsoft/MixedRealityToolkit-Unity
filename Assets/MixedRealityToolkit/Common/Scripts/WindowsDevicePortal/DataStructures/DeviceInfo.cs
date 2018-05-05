@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using MixedRealityToolkit.Common.RestUtility;
 
-namespace MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures
+namespace MixedRealityToolkit.Common.WindowsDevicePortal.DataStructures
 {
     [Serializable]
     public class DeviceInfo

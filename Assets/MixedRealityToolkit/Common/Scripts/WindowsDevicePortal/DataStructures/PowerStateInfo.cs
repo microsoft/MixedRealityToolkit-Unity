@@ -3,11 +3,12 @@
 
 using System;
 
-namespace MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures
+namespace MixedRealityToolkit.Common.WindowsDevicePortal.DataStructures
 {
     [Serializable]
-    public class MachineName
+    public class PowerStateInfo
     {
-        public string ComputerName;
+        public bool LowPowerState;
+        public bool LowPowerStateAvailable;
     }
 }

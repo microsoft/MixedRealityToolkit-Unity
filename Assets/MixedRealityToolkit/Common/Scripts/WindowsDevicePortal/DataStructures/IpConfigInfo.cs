@@ -3,13 +3,11 @@
 
 using System;
 
-namespace MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures
+namespace MixedRealityToolkit.Common.WindowsDevicePortal.DataStructures
 {
     [Serializable]
-    public class DHCPInfo
+    public class IpConfigInfo
     {
-        public int LeaseExpires;
-        public int LeaseObtained;
-        public IpAddressInfo Address;
+        public AdapterInfo[] Adapters;
     }
 }

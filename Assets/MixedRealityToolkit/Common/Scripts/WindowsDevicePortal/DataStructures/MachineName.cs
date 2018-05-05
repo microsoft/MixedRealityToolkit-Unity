@@ -3,12 +3,11 @@
 
 using System;
 
-namespace MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures
+namespace MixedRealityToolkit.Common.WindowsDevicePortal.DataStructures
 {
     [Serializable]
-    public class IpAddressInfo
+    public class MachineName
     {
-        public string IpAddress;
-        public string Mask;
+        public string ComputerName;
     }
 }
