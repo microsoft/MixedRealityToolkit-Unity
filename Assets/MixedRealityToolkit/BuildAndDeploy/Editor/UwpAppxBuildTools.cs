@@ -148,14 +148,6 @@ namespace MixedRealityToolkit.Build
             string unity = Path.GetDirectoryName(EditorApplication.applicationPath);
             System.Diagnostics.Debug.Assert(unity != null, "Unable to determine the unity editor path.");
             string storePath = Path.GetFullPath(Path.Combine(Path.Combine(Application.dataPath, ".."), buildDirectory));
-            string assemblyCSharp = $"{storePath}/GeneratedProjects/UWP/Assembly-CSharp";
-
-            if (!Directory.Exists(assemblyCSharp))
-            {
-                Debug.LogError("Custom Assembly Definitions not currently supported by the Build Window.");
-                return IsBuilding = false;
-            }
-
             string solutionProjectPath = Path.GetFullPath(Path.Combine(storePath, $@"{productName}.sln"));
 
             // Bug in Unity editor that doesn't copy project.json and project.lock.json files correctly if solutionProjectPath is not in a folder named UWP.
@@ -164,6 +156,7 @@ namespace MixedRealityToolkit.Build
                 File.Copy($@"{unity}\Data\PlaybackEngines\MetroSupport\Tools\project.json", $"{storePath}\\project.json");
             }
 
+            string assemblyCSharp = $"{storePath}/GeneratedProjects/UWP/Assembly-CSharp";
             string assemblyCSharpFirstPass = $"{storePath}/GeneratedProjects/UWP/Assembly-CSharp-firstpass";
             bool restoreFirstPass = Directory.Exists(assemblyCSharpFirstPass);
             string nugetPath = Path.Combine(unity, @"Data\PlaybackEngines\MetroSupport\Tools\NuGet.exe");
