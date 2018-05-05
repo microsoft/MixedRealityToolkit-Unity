@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
     /// <summary>
     /// Base Component for handling Focus on GameObjects.
     /// </summary>
-    public class FocusTarget : MonoBehaviour, IFocusHandler
+    public class FocusTarget : MonoBehaviour, IMixedRealityFocusHandler
     {
         [SerializeField]
         [Tooltip("Does this GameObject start with Focus Enabled?")]
@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 
         public bool HasFocus => FocusEnabled && hasFocus;
 
-        public List<IPointer> Focusers { get; } = new List<IPointer>(0);
+        public List<IMixedRealityPointer> Focusers { get; } = new List<IMixedRealityPointer>(0);
 
         public virtual void OnFocusEnter(FocusEventData eventData) { }
 

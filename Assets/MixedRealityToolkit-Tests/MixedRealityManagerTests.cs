@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class MixedRealityManagerTests
     {
-        public static void CreateMixedRealityManager()
+        public void CreateMixedRealityManager()
         {
             // Create The MR Manager
             GameObject go = GameObject.Find("Mixed Reality Manager");

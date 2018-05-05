@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
+    /// <summary>
+    /// Describes an Input Event with voice dictation.
+    /// </summary>
     public class DictationEventData : BaseInputEventData
     {
         /// <summary>
@@ -18,9 +21,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         public AudioClip DictationAudioClip { get; private set; }
 
+        /// <inheritdoc />
         public DictationEventData(UnityEngine.EventSystems.EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
+        /// <summary>
+        /// Used to initialize/reset the event and populate the data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="dictationResult"></param>
+        /// <param name="dictationAudioClip"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
         {
             BaseInitialize(inputSource, tags);
             DictationResult = dictationResult;

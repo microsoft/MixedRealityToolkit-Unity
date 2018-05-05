@@ -13,9 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
     /// <summary>
     /// Base Class for pointers that don't inherit from MonoBehaviour.
     /// </summary>
-    public class GenericPointer : IPointer
+    public class GenericPointer : IMixedRealityPointer
     {
-        public GenericPointer(string pointerName, IInputSource inputSourceParent)
+        public GenericPointer(string pointerName, IMixedRealityInputSource inputSourceParent)
         {
             InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
             PointerId = InputSystem.FocusProvider.GenerateNewPointerId();
@@ -29,9 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public string PointerName { get; set; }
 
-        public IInputSource InputSourceParent { get; }
+        public IMixedRealityInputSource InputSourceParent { get; }
 
-        public ICursor BaseCursor { get; set; }
+        public IMixedRealityCursor BaseCursor { get; set; }
 
         public ICursorModifier CursorModifier { get; set; }
 
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
-        public IFocusHandler FocusTarget { get; set; }
+        public IMixedRealityFocusHandler FocusTarget { get; set; }
 
         public PointerResult Result { get; set; }
 
@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         #region IEquality Implementation
 
-        public static bool Equals(IPointer left, IPointer right)
+        public static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)
         {
             return left.Equals(right);
         }
@@ -112,10 +112,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             if (ReferenceEquals(this, obj)) { return true; }
             if (obj.GetType() != GetType()) { return false; }
 
-            return Equals((IPointer)obj);
+            return Equals((IMixedRealityPointer)obj);
         }
 
-        private bool Equals(IPointer other)
+        private bool Equals(IMixedRealityPointer other)
         {
             return other != null && PointerId == other.PointerId && string.Equals(PointerName, other.PointerName);
         }

@@ -8,15 +8,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 {
     /// <summary>
     /// Interface for an input source.
-    /// An input source can be anything that a user can use to interact with a device.
+    /// An input source can be any user defined action that generally comes from a physical controller, sensor, or device.
     /// </summary>
-    public interface IInputSource : IEqualityComparer
+    public interface IMixedRealityInputSource : IEqualityComparer
     {
         uint SourceId { get; }
 
         string SourceName { get; }
 
-        IPointer[] Pointers { get; }
+        IMixedRealityPointer[] Pointers { get; }
 
         /// <summary>
         /// Returns the input info that the input source can provide.

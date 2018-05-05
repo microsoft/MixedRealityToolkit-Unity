@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
+    /// <summary>
+    /// Describes Dual Axis Positional Event data, usually generated from a Joystick, or Touch input source.
+    /// </summary>
     public class InputDualAxisPositionEventData : InputEventData
     {
         /// <summary>
@@ -15,17 +18,33 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         public Vector2 DualAxisPosition { get; private set; }
 
+        /// <inheritdoc />
         public InputDualAxisPositionEventData(UnityEngine.EventSystems.EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, InputType inputType, Vector2 position, object[] tags = null)
+        /// <summary>
+        /// Populates the event with data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="inputType"></param>
+        /// <param name="position"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, Vector2 position, object[] tags = null)
         {
             Initialize(inputSource, inputType, tags);
             DualAxisPosition = position;
         }
 
-        public void Initialize(IInputSource inputSource, InputType inputType, Vector2 position, Handedness handedness, object[] tags = null)
+        /// <summary>
+        /// Used to initialize/reset the event and populate the data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="inputType"></param>
+        /// <param name="position"></param>
+        /// <param name="handedness"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, Vector2 position, Handedness handedness, object[] tags = null)
         {
-            Initialize(inputSource, inputType, handedness, tags);
+            Initialize(inputSource, handedness, inputType, tags);
             DualAxisPosition = position;
         }
     }

@@ -7,14 +7,14 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
     /// <summary>
-    /// Base class of all input events.
+    /// Base class of all Input Events.
     /// </summary>
     public abstract class BaseInputEventData : BaseEventData
     {
         /// <summary>
         /// The source the input event originates from.
         /// </summary>
-        public IInputSource InputSource { get; private set; }
+        public IMixedRealityInputSource InputSource { get; private set; }
 
         /// <summary>
         /// The id of the source the event is from, for instance the hand id.
@@ -26,9 +26,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         public object[] Tags { get; private set; }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="eventSystem">Typically will be <see cref="EventSystem.current"/></param>
         public BaseInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        protected void BaseInitialize(IInputSource inputSource, object[] tags)
+        /// <summary>
+        /// Used to initialize/reset the event and populate the data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="tags"></param>
+        protected void BaseInitialize(IMixedRealityInputSource inputSource, object[] tags)
         {
             Reset();
             InputSource = inputSource;

@@ -14,12 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// <summary>
     /// Base class for input sources that don't inherit from MonoBehaviour.
     /// </summary>
-    public class GenericInputSource : IInputSource
+    public class GenericInputSource : IMixedRealityInputSource
     {
         private static IMixedRealityInputSystem inputSystem = null;
         public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
-        public GenericInputSource(string name, InputType[] capabilities, IPointer[] pointers = null)
+        public GenericInputSource(string name, InputType[] capabilities, IMixedRealityPointer[] pointers = null)
         {
             SourceId = InputSystem.GenerateNewSourceId();
             SourceName = name;
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         public string SourceName { get; private set; }
 
-        public IPointer[] Pointers { get; private set; }
+        public IMixedRealityPointer[] Pointers { get; private set; }
 
         public InputType[] Capabilities { get; private set; }
 
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             return false;
         }
 
-        public virtual void AddPointer(IPointer pointer)
+        public virtual void AddPointer(IMixedRealityPointer pointer)
         {
             for (int i = 0; i < Pointers.Length; i++)
             {
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 }
             }
 
-            var newPointers = new IPointer[Pointers.Length + 1];
+            var newPointers = new IMixedRealityPointer[Pointers.Length + 1];
 
             // Set our new pointer at the end.
             newPointers[newPointers.Length - 1] = pointer;
@@ -74,9 +74,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             }
         }
 
-        public virtual void RemovePointer(IPointer pointer)
+        public virtual void RemovePointer(IMixedRealityPointer pointer)
         {
-            var oldPointerList = new List<IPointer>(Pointers.Length);
+            var oldPointerList = new List<IMixedRealityPointer>(Pointers.Length);
 
             for (int i = 0; i < Pointers.Length; i++)
             {
@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             Pointers = oldPointerList.ToArray();
         }
 
-        public virtual bool TryGetPointerPosition(IPointer pointer, out Vector3 position)
+        public virtual bool TryGetPointerPosition(IMixedRealityPointer pointer, out Vector3 position)
         {
             foreach (var sourcePointer in Pointers)
             {
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             return false;
         }
 
-        public virtual bool TryGetPointingRay(IPointer pointer, out Ray pointingRay)
+        public virtual bool TryGetPointingRay(IMixedRealityPointer pointer, out Ray pointingRay)
         {
             foreach (var sourcePointer in Pointers)
             {
@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             return false;
         }
 
-        public virtual bool TryGetPointerRotation(IPointer pointer, out Quaternion rotation)
+        public virtual bool TryGetPointerRotation(IMixedRealityPointer pointer, out Quaternion rotation)
         {
             foreach (var sourcePointer in Pointers)
             {
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         #region IEquality Implementation
 
-        public static bool Equals(IInputSource left, IInputSource right)
+        public static bool Equals(IMixedRealityInputSource left, IMixedRealityInputSource right)
         {
             return left.Equals(right);
         }
@@ -149,10 +149,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             if (ReferenceEquals(this, obj)) { return true; }
             if (obj.GetType() != GetType()) { return false; }
 
-            return Equals((IInputSource)obj);
+            return Equals((IMixedRealityInputSource)obj);
         }
 
-        private bool Equals(IInputSource other)
+        private bool Equals(IMixedRealityInputSource other)
         {
             return other != null && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
         }

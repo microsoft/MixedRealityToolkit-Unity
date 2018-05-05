@@ -15,23 +15,30 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
     /// </summary>
     public interface IMixedRealityInputSystem : IMixedRealityEventSystem
     {
+        /// <summary>
+        /// Event that's raised when the Input is enabled.
+        /// </summary>
         event Action InputEnabled;
+
+        /// <summary>
+        /// Event that's raised when the Input is disabled.
+        /// </summary>
         event Action InputDisabled;
 
         /// <summary>
         /// List of the Interaction Input Sources as detected by the input manager like hands or motion controllers.
         /// </summary>
-        HashSet<IInputSource> DetectedInputSources { get; }
+        HashSet<IMixedRealityInputSource> DetectedInputSources { get; }
 
         /// <summary>
         /// The current Focus Provider that's been implemented by this Input System.
         /// </summary>
-        IFocusProvider FocusProvider { get; }
+        IMixedRealityFocusProvider FocusProvider { get; }
 
         /// <summary>
         /// The current Gaze Provider that's been implemented by this Input System.
         /// </summary>
-        IGazeProvider GazeProvider { get; }
+        IMixedRealityGazeProvider GazeProvider { get; }
 
         /// <summary>
         /// Indicates if input is currently enabled or not.
@@ -97,139 +104,193 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <returns>a new unique Id for the input source.</returns>
         uint GenerateNewSourceId();
 
-        void RaiseSourceDetected(IInputSource source, object[] tags = null);
+        void RaiseSourceDetected(IMixedRealityInputSource source, object[] tags = null);
 
-        void RaiseSourceLost(IInputSource source, object[] tags = null);
+        void RaiseSourceLost(IMixedRealityInputSource source, object[] tags = null);
 
-        void RaiseSourcePositionChanged(IInputSource source, Vector3 pointerPosition, Vector3 gripPosition, object[] tags = null);
+        void RaiseSourcePositionChanged(IMixedRealityInputSource source, Vector3 pointerPosition, Vector3 gripPosition, object[] tags = null);
 
-        void RaiseSourcePositionChanged(IInputSource source, Vector3 pointerPosition, Vector3 gripPosition, Handedness sourceHandedness, object[] tags = null);
+        void RaiseSourcePositionChanged(IMixedRealityInputSource source, Handedness sourceHandedness, Vector3 pointerPosition, Vector3 gripPosition, object[] tags = null);
 
-        void RaiseSourceRotationChanged(IInputSource source, Quaternion pointerRotation, Quaternion gripRotation, Handedness sourceHandedness, object[] tags = null);
+        void RaiseSourceRotationChanged(IMixedRealityInputSource source, Quaternion pointerRotation, Quaternion gripRotation, object[] tags = null);
 
-        void RaisePreFocusChangedEvent(IPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
+        void RaiseSourceRotationChanged(IMixedRealityInputSource source, Handedness sourceHandedness, Quaternion pointerRotation, Quaternion gripRotation, object[] tags = null);
 
-        void OnFocusChangedEvent(IPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
+        void RaisePreFocusChangedEvent(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
 
-        void RaiseFocusEnter(IPointer pointer, GameObject focusedObject);
+        void OnFocusChangedEvent(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
 
-        void RaiseFocusExit(IPointer pointer, GameObject unfocusedObject);
+        void RaiseFocusEnter(IMixedRealityPointer pointer, GameObject focusedObject);
 
-        void RaisePointerDown(IPointer pointer, object[] tags = null);
+        void RaiseFocusExit(IMixedRealityPointer pointer, GameObject unfocusedObject);
 
-        void RaisePointerDown(IPointer pointer, Handedness handedness, object[] tags = null);
+        void RaisePointerDown(IMixedRealityPointer pointer, object[] tags = null);
 
-        void RaisePointerDown(IPointer pointer, InputType inputType, Handedness handedness, object[] tags = null);
+        void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, object[] tags = null);
 
-        void RaiseInputClicked(IPointer pointer, int tapCount, object[] tags = null);
+        void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, InputType inputType, object[] tags = null);
 
-        void RaiseInputClicked(IPointer pointer, int count, Handedness handedness, object[] tags = null);
+        void RaiseInputClicked(IMixedRealityPointer pointer, int tapCount, object[] tags = null);
 
-        void RaiseInputClicked(IPointer pointer, int count, InputType inputType, Handedness handedness, object[] tags = null);
+        void RaiseInputClicked(IMixedRealityPointer pointer, Handedness handedness, int count, object[] tags = null);
 
-        void RaisePointerUp(IPointer pointer, object[] tags = null);
+        void RaiseInputClicked(IMixedRealityPointer pointer, Handedness handedness, InputType inputType, int count, object[] tags = null);
 
-        void RaisePointerUp(IPointer pointer, Handedness handedness, object[] tags = null);
+        void RaisePointerUp(IMixedRealityPointer pointer, object[] tags = null);
 
-        void RaisePointerUp(IPointer pointer, InputType inputType, Handedness handedness, object[] tags = null);
+        void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, object[] tags = null);
 
-        void RaiseOnInputDown(IInputSource source, object[] tags = null);
+        void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, InputType inputType, object[] tags = null);
 
-        void RaiseOnInputDown(IInputSource source, KeyCode keyCode, object[] tags = null);
+        void RaiseOnInputDown(IMixedRealityInputSource source, object[] tags = null);
 
-        void RaiseOnInputDown(IInputSource source, Handedness handedness, object[] tags = null);
+        void RaiseOnInputDown(IMixedRealityInputSource source, KeyCode keyCode, object[] tags = null);
 
-        void RaiseOnInputDown(IInputSource source, KeyCode keyCode, Handedness handedness, object[] tags = null);
+        void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, object[] tags = null);
 
-        void RaiseOnInputDown(IInputSource source, InputType inputType, Handedness handedness, object[] tags = null);
+        void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode, object[] tags = null);
 
-        void RaiseOnInputPressed(IInputSource source, object[] tags = null);
+        void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, InputType inputType, object[] tags = null);
 
-        void RaiseOnInputPressed(IInputSource source, KeyCode keyCode, object[] tags = null);
+        /// <summary>
+        /// Raise Input Pressed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="tags"></param>
+        void RaiseOnInputPressed(IMixedRealityInputSource source, object[] tags = null);
 
-        void RaiseOnInputPressed(IInputSource source, double pressAmount, object[] tags = null);
+        /// <summary>
+        /// Raise Input Pressed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="keyCode"></param>
+        /// <param name="tags"></param>
+        void RaiseOnInputPressed(IMixedRealityInputSource source, KeyCode keyCode, object[] tags = null);
 
-        void RaiseOnInputPressed(IInputSource source, KeyCode keyCode, double pressAmount, object[] tags = null);
+        /// <summary>
+        /// Raise Input Pressed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="pressAmount"></param>
+        /// <param name="tags"></param>
+        void RaiseOnInputPressed(IMixedRealityInputSource source, double pressAmount, object[] tags = null);
 
-        void RaiseOnInputPressed(IInputSource source, double pressAmount, Handedness handedness, object[] tags = null);
+        /// <summary>
+        /// Raise Input Pressed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="handedness"></param>
+        /// <param name="pressAmount"></param>
+        /// <param name="tags"></param>
+        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, double pressAmount, object[] tags = null);
 
-        void RaiseOnInputPressed(IInputSource source, KeyCode keyCode, double pressAmount, Handedness handedness, object[] tags = null);
+        /// <summary>
+        /// Raise Input Pressed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="keyCode"></param>
+        /// <param name="pressAmount"></param>
+        /// <param name="tags"></param>
+        void RaiseOnInputPressed(IMixedRealityInputSource source, KeyCode keyCode, double pressAmount, object[] tags = null);
 
-        void RaiseOnInputPressed(IInputSource source, float pressAmount, InputType inputType, Handedness handedness, object[] tags = null);
+        /// <summary>
+        /// Raise Input Pressed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="inputType"></param>
+        /// <param name="pressAmount"></param>
+        /// <param name="tags"></param>
+        void RaiseOnInputPressed(IMixedRealityInputSource source, InputType inputType, double pressAmount, object[] tags = null);
 
-        void RaiseOnInputUp(IInputSource source, object[] tags = null);
+        /// <summary>
+        /// Raise Input Pressed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="handedness"></param>
+        /// <param name="keyCode"></param>
+        /// <param name="pressAmount"></param>
+        /// <param name="tags"></param>
+        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode, double pressAmount, object[] tags = null);
 
-        void RaiseOnInputUp(IInputSource source, KeyCode keyCode, object[] tags = null);
+        /// <summary>
+        /// Raise Input Pressed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="handedness"></param>
+        /// <param name="inputType"></param>
+        /// <param name="pressAmount"></param>
+        /// <param name="tags"></param>
+        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, InputType inputType, float pressAmount, object[] tags = null);
 
-        void RaiseOnInputUp(IInputSource source, Handedness handedness, object[] tags = null);
+        void RaiseOnInputUp(IMixedRealityInputSource source, object[] tags = null);
 
-        void RaiseOnInputUp(IInputSource source, KeyCode keyCode, Handedness handedness, object[] tags = null);
+        void RaiseOnInputUp(IMixedRealityInputSource source, KeyCode keyCode, object[] tags = null);
 
-        void RaiseOnInputUp(IInputSource source, InputType inputType, Handedness handedness, object[] tags = null);
+        void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, object[] tags = null);
 
-        void RaiseDualAxisInputChanged(IInputSource source, InputType inputType, Vector2 inputPosition, object[] tags = null);
+        void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode, object[] tags = null);
 
-        void RaiseDualAxisInputChanged(IInputSource source, InputType inputType, Vector2 inputPosition, Handedness handedness, object[] tags = null);
+        void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, InputType inputType, object[] tags = null);
 
-        void RaiseHoldStarted(IInputSource source, object[] tags = null);
+        void RaiseDualAxisInputChanged(IMixedRealityInputSource source, InputType inputType, Vector2 inputPosition, object[] tags = null);
 
-        void RaiseHoldStarted(IInputSource source, Handedness handedness, object[] tags = null);
+        void RaiseDualAxisInputChanged(IMixedRealityInputSource source, Handedness handedness, InputType inputType, Vector2 inputPosition, object[] tags = null);
 
-        void RaiseHoldCompleted(IInputSource source, object[] tags = null);
+        void RaiseHoldStarted(IMixedRealityInputSource source, object[] tags = null);
 
-        void RaiseHoldCompleted(IInputSource source, Handedness handedness, object[] tags = null);
+        void RaiseHoldStarted(IMixedRealityInputSource source, Handedness handedness, object[] tags = null);
 
-        void RaiseHoldCanceled(IInputSource source, object[] tags = null);
+        void RaiseHoldCompleted(IMixedRealityInputSource source, object[] tags = null);
 
-        void RaiseHoldCanceled(IInputSource source, Handedness handedness, object[] tags = null);
+        void RaiseHoldCompleted(IMixedRealityInputSource source, Handedness handedness, object[] tags = null);
 
-        void RaiseNavigationStarted(IInputSource source, object[] tags = null);
+        void RaiseHoldCanceled(IMixedRealityInputSource source, object[] tags = null);
 
-        void RaiseNavigationStarted(IInputSource source, Handedness handedness, object[] tags = null);
+        void RaiseHoldCanceled(IMixedRealityInputSource source, Handedness handedness, object[] tags = null);
 
-        void RaiseNavigationUpdated(IInputSource source, Vector3 normalizedOffset, object[] tags = null);
+        void RaiseNavigationStarted(IMixedRealityInputSource source, object[] tags = null);
 
-        void RaiseNavigationUpdated(IInputSource source, Vector3 normalizedOffset, Handedness handedness, object[] tags = null);
+        void RaiseNavigationStarted(IMixedRealityInputSource source, Handedness handedness, object[] tags = null);
 
-        void RaiseNavigationCompleted(IInputSource source, Vector3 normalizedOffset, object[] tags = null);
+        void RaiseNavigationUpdated(IMixedRealityInputSource source, Vector3 normalizedOffset, object[] tags = null);
 
-        void RaiseNavigationCompleted(IInputSource source, Vector3 normalizedOffset, Handedness handedness, object[] tags = null);
+        void RaiseNavigationUpdated(IMixedRealityInputSource source, Handedness handedness, Vector3 normalizedOffset, object[] tags = null);
 
-        void RaiseNavigationCanceled(IInputSource source, object[] tags = null);
+        void RaiseNavigationCompleted(IMixedRealityInputSource source, Vector3 normalizedOffset, object[] tags = null);
 
-        void RaiseNavigationCanceled(IInputSource source, Handedness handedness, object[] tags = null);
+        void RaiseNavigationCompleted(IMixedRealityInputSource source, Handedness handedness, Vector3 normalizedOffset, object[] tags = null);
 
-        void RaiseManipulationStarted(IInputSource source, object[] tags = null);
+        void RaiseNavigationCanceled(IMixedRealityInputSource source, object[] tags = null);
 
-        void RaiseManipulationStarted(IInputSource source, Handedness handedness, object[] tags = null);
+        void RaiseNavigationCanceled(IMixedRealityInputSource source, Handedness handedness, object[] tags = null);
 
-        void RaiseManipulationUpdated(IInputSource source, Vector3 cumulativeDelta, object[] tags = null);
+        void RaiseManipulationStarted(IMixedRealityInputSource source, object[] tags = null);
 
-        void RaiseManipulationUpdated(IInputSource source, Vector3 cumulativeDelta, Handedness handedness, object[] tags = null);
+        void RaiseManipulationStarted(IMixedRealityInputSource source, Handedness handedness, object[] tags = null);
 
-        void RaiseManipulationCompleted(IInputSource source, Vector3 cumulativeDelta, object[] tags = null);
+        void RaiseManipulationUpdated(IMixedRealityInputSource source, Vector3 cumulativeDelta, object[] tags = null);
 
-        void RaiseManipulationCompleted(IInputSource source, Vector3 cumulativeDelta, Handedness handedness, object[] tags = null);
+        void RaiseManipulationUpdated(IMixedRealityInputSource source, Handedness handedness, Vector3 cumulativeDelta, object[] tags = null);
 
-        void RaiseManipulationCanceled(IInputSource source, object[] tags = null);
+        void RaiseManipulationCompleted(IMixedRealityInputSource source, Vector3 cumulativeDelta, object[] tags = null);
 
-        void RaiseManipulationCanceled(IInputSource source, Handedness handedness, object[] tags = null);
+        void RaiseManipulationCompleted(IMixedRealityInputSource source, Handedness handedness, Vector3 cumulativeDelta, object[] tags = null);
 
-        void RaisePlacingStarted(IInputSource source, GameObject objectBeingPlaced, object[] tags = null);
+        void RaiseManipulationCanceled(IMixedRealityInputSource source, object[] tags = null);
 
-        void RaisePlacingCompleted(IInputSource source, GameObject objectBeingPlaced, object[] tags = null);
+        void RaiseManipulationCanceled(IMixedRealityInputSource source, Handedness handedness, object[] tags = null);
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-        void RaiseSpeechKeywordPhraseRecognized(IInputSource source, UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string text, object[] tags = null);
+        void RaiseSpeechKeywordPhraseRecognized(IMixedRealityInputSource source, UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string text, object[] tags = null);
 
-        void RaiseDictationHypothesis(IInputSource source, string dictationHypothesis, AudioClip dictationAudioClip = null, object[] tags = null);
+        void RaiseDictationHypothesis(IMixedRealityInputSource source, string dictationHypothesis, AudioClip dictationAudioClip = null, object[] tags = null);
 
-        void RaiseDictationResult(IInputSource source, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null);
+        void RaiseDictationResult(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null);
 
-        void RaiseDictationComplete(IInputSource source, string dictationResult, AudioClip dictationAudioClip, object[] tags = null);
+        void RaiseDictationComplete(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip, object[] tags = null);
 
-        void RaiseDictationError(IInputSource source, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null);
+        void RaiseDictationError(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null);
 
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
     }

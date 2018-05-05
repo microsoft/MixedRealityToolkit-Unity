@@ -4,31 +4,51 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
     /// <summary>
-    /// Describes an input event that a source moving.
+    /// Describes an input event that involves an Input Source's spatial position.
     /// </summary>
     public class SourcePositionEventData : InputEventData
     {
         /// <summary>
-        /// The new position of the source.
+        /// The Pointer Position of the Input Source.
         /// </summary>
         public Vector3 PointerPosition { get; private set; }
 
+        /// <summary>
+        /// The Grip Position of the Input Source.
+        /// </summary>
         public Vector3 GripPosition { get; private set; }
 
-        public SourcePositionEventData(UnityEngine.EventSystems.EventSystem eventSystem) : base(eventSystem) { }
+        /// <inheritdoc />
+        public SourcePositionEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, Vector3 pointerPosition, Vector3 gripPosition, object[] tags = null)
+        /// <summary>
+        /// Populates the event with data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="pointerPosition"></param>
+        /// <param name="gripPosition"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, Vector3 pointerPosition, Vector3 gripPosition, object[] tags = null)
         {
             BaseInitialize(inputSource, tags);
             PointerPosition = pointerPosition;
             GripPosition = gripPosition;
         }
 
-        public void Initialize(IInputSource inputSource, Vector3 pointerPosition, Vector3 gripPosition, Handedness handedness, object[] tags = null)
+        /// <summary>
+        /// Populates the event with data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="handedness"></param>
+        /// <param name="pointerPosition"></param>
+        /// <param name="gripPosition"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, Vector3 pointerPosition, Vector3 gripPosition, object[] tags = null)
         {
             Initialize(inputSource, handedness, tags);
             PointerPosition = pointerPosition;

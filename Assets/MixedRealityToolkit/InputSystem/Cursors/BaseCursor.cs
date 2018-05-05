@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.
     /// </summary>
-    public abstract class BaseCursor : MonoBehaviour, ICursor
+    public abstract class BaseCursor : MonoBehaviour, IMixedRealityCursor
     {
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
@@ -84,12 +84,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         private Vector3 targetScale;
         private Quaternion targetRotation;
 
-        #region ICursor Implementation
+        #region IMixedRealityCursor Implementation
 
         /// <summary>
         /// The pointer that this cursor should follow and process input from.
         /// </summary>
-        public virtual IPointer Pointer
+        public virtual IMixedRealityPointer Pointer
         {
             get { return pointer; }
             set
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             }
         }
 
-        private IPointer pointer;
+        private IMixedRealityPointer pointer;
 
         private IMixedRealityInputSystem inputSystem;
 
@@ -122,9 +122,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             }
         }
 
-        #endregion ICursor Implementation
+        #endregion IMixedRealityCursor Implementation
 
-        #region ISourceStateHandler Implementation
+        #region IMixedRealitySourceStateHandler Implementation
 
         /// <summary>
         /// Input source detected callback for the cursor
@@ -173,9 +173,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
 
         public virtual void OnSourceRotationChanged(SourceRotationEventData eventData) { }
 
-        #endregion ISourceStateHandler Implementation
+        #endregion IMixedRealitySourceStateHandler Implementation
 
-        #region IFocusChangedHandler Implementation
+        #region IMixedRealityFocusChangedHandler Implementation
 
         /// <summary>
         /// Updates the currently targeted object and cursor modifier upon getting
@@ -191,9 +191,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
 
         public virtual void OnFocusChanged(FocusEventData eventData) { }
 
-        #endregion IFocusChangedHandler Implementation
+        #endregion IMixedRealityFocusChangedHandler Implementation
 
-        #region IPointerHandler Implementation
+        #region IMixedRealityPointerHandler Implementation
 
         /// <summary>
         /// Function for receiving OnPointerDown events from InputManager
@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             }
         }
 
-        #endregion IPointerHandler Implementation
+        #endregion IMixedRealityPointerHandler Implementation
 
         #region MonoBehaviour Impementation
 

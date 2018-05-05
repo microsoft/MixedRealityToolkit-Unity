@@ -3,5 +3,8 @@
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 {
-    public interface IGazeProvider : IInputSource { }
+    /// <summary>
+    /// Implements the Gaze Provider for an Input Source.
+    /// </summary>
+    public interface IMixedRealityGazeProvider : IMixedRealityInputSource { }
 }

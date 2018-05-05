@@ -8,24 +8,28 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 {
-    public interface IFocusProvider : ISourceStateHandler
+
+    /// <summary>
+    /// Implements the Focus Provider for handling focus of pointers.
+    /// </summary>
+    public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler
     {
         float GlobalPointingExtent { get; }
         Camera UIRaycastCamera { get; }
         GameObject OverrideFocusedObject { get; }
         GameObject GetFocusedObject(BaseInputEventData eventData);
         bool TryGetFocusDetails(BaseInputEventData eventData, out FocusDetails focusDetails);
-        bool TryGetPointingSource(BaseInputEventData eventData, out IPointer pointer);
-        GameObject GetFocusedObject(IPointer pointingSource);
-        bool TryGetFocusDetails(IPointer pointer, out FocusDetails focusDetails);
-        GraphicInputEventData GetSpecificPointerGraphicEventData(IPointer pointer);
+        bool TryGetPointingSource(BaseInputEventData eventData, out IMixedRealityPointer pointer);
+        GameObject GetFocusedObject(IMixedRealityPointer pointingSource);
+        bool TryGetFocusDetails(IMixedRealityPointer pointer, out FocusDetails focusDetails);
+        GraphicInputEventData GetSpecificPointerGraphicEventData(IMixedRealityPointer pointer);
         uint GenerateNewPointerId();
-        bool IsPointerRegistered(IPointer pointer);
-        bool RegisterPointer(IPointer pointer);
-        bool UnregisterPointer(IPointer pointer);
+        bool IsPointerRegistered(IMixedRealityPointer pointer);
+        bool RegisterPointer(IMixedRealityPointer pointer);
+        bool UnregisterPointer(IMixedRealityPointer pointer);
     }
 
-    public interface ICursorModifier : IFocusChangedHandler
+    public interface ICursorModifier : IMixedRealityFocusChangedHandler
     {
         Transform HostTransform { get; set; }
         Vector3 CursorOffset { get; set; }
@@ -46,21 +50,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// </summary>
         /// <param name="cursor">Cursor that is being modified.</param>
         /// <returns>New position for the cursor</returns>
-        Vector3 GetModifiedPosition(ICursor cursor);
+        Vector3 GetModifiedPosition(IMixedRealityCursor cursor);
 
         /// <summary>
         /// Returns the cursor rotation after considering this modifier.
         /// </summary>
         /// <param name="cursor">Cursor that is being modified.</param>
         /// <returns>New rotation for the cursor</returns>
-        Quaternion GetModifiedRotation(ICursor cursor);
+        Quaternion GetModifiedRotation(IMixedRealityCursor cursor);
 
         /// <summary>
         /// Returns the cursor local scale after considering this modifier.
         /// </summary>
         /// <param name="cursor">Cursor that is being modified.</param>
         /// <returns>New local scale for the cursor</returns>
-        Vector3 GetModifiedScale(ICursor cursor);
+        Vector3 GetModifiedScale(IMixedRealityCursor cursor);
 
         /// <summary>
         /// Returns the modified transform for the cursor after considering this modifier.
@@ -69,10 +73,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="position">Modified position.</param>
         /// <param name="rotation">Modified rotation.</param>
         /// <param name="scale">Modified scale.</param>
-        void GetModifiedTransform(ICursor cursor, out Vector3 position, out Quaternion rotation, out Vector3 scale);
+        void GetModifiedTransform(IMixedRealityCursor cursor, out Vector3 position, out Quaternion rotation, out Vector3 scale);
     }
 
-    public interface ITeleportTarget : IFocusChangedHandler
+    public interface ITeleportTarget : IMixedRealityFocusChangedHandler
     {
         Vector3 Position { get; }
         Vector3 Normal { get; }

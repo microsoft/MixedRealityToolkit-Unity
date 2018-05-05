@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
     /// <summary>
     /// Interface to implement to react to manipulation gestures.
     /// </summary>
-    public interface IManipulationHandler : IEventSystemHandler
+    public interface IMixedRealityManipulationHandler : IEventSystemHandler
     {
         void OnManipulationStarted(ManipulationEventData eventData);
         void OnManipulationUpdated(ManipulationEventData eventData);

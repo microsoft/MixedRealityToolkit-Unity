@@ -6,11 +6,11 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers
 {
-    /// <summary>
-    /// Interface to implement to react to speech recognition.
-    /// </summary>
-    public interface ISpeechHandler : IEventSystemHandler
+    public interface IMixedRealityTeleportHandler : IEventSystemHandler
     {
-        void OnSpeechKeywordRecognized(SpeechEventData eventData);
+        void OnTeleportIntent(TeleportEventData eventData);
+        void OnTeleportStarted(TeleportEventData eventData);
+        void OnTeleportCompleted(TeleportEventData eventData);
+        void OnTeleportCanceled(TeleportEventData eventData);
     }
 }

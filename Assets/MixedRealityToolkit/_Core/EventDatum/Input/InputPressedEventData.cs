@@ -4,10 +4,13 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
+    /// <summary>
+    /// Describes an Input Event where a button, key, or trigger was pressed.
+    /// </summary>
     public class InputPressedEventData : InputEventData
     {
         /// <summary>
@@ -15,35 +18,85 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         public double PressedAmount { get; private set; }
 
-        public InputPressedEventData(UnityEngine.EventSystems.EventSystem eventSystem) : base(eventSystem) { }
+        /// <inheritdoc />
+        public InputPressedEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, double pressedAmount, object[] tags = null)
+        /// <summary>
+        /// Populates the event with data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="pressedAmount"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, double pressedAmount, object[] tags = null)
         {
             Initialize(inputSource, tags);
             PressedAmount = pressedAmount;
         }
 
-        public void Initialize(IInputSource inputSource, KeyCode keyCode, double pressedAmount, object[] tags = null)
-        {
-            Initialize(inputSource, keyCode, tags);
-            PressedAmount = pressedAmount;
-        }
-
-        public void Initialize(IInputSource inputSource, double pressedAmount, Handedness handedness, object[] tags = null)
+        /// <summary>
+        /// Populates the event with data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="handedness"></param>
+        /// <param name="pressedAmount"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, double pressedAmount, object[] tags = null)
         {
             Initialize(inputSource, handedness, tags);
             PressedAmount = pressedAmount;
         }
 
-        public void Initialize(IInputSource inputSource, KeyCode keyCode, double pressedAmount, Handedness handedness, object[] tags = null)
+        /// <summary>
+        /// Populates the event with data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="keyCode"></param>
+        /// <param name="pressedAmount"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, KeyCode keyCode, double pressedAmount, object[] tags = null)
         {
-            Initialize(inputSource, keyCode, handedness, tags);
+            Initialize(inputSource, keyCode, tags);
             PressedAmount = pressedAmount;
         }
 
-        public void Initialize(IInputSource inputSource, double pressedAmount, InputType inputType, Handedness handedness, object[] tags = null)
+        /// <summary>
+        /// Populates the event with data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="inputType"></param>
+        /// <param name="pressedAmount"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, double pressedAmount, object[] tags = null)
         {
-            Initialize(inputSource, inputType, handedness, tags);
+            Initialize(inputSource, inputType, tags);
+            PressedAmount = pressedAmount;
+        }
+
+        /// <summary>
+        /// Populates the event with data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="handedness"></param>
+        /// <param name="keyCode"></param>
+        /// <param name="pressedAmount"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, KeyCode keyCode, double pressedAmount, object[] tags = null)
+        {
+            Initialize(inputSource, handedness, keyCode, tags);
+            PressedAmount = pressedAmount;
+        }
+
+        /// <summary>
+        /// Populates the event with data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="handedness"></param>
+        /// <param name="inputType"></param>
+        /// <param name="pressedAmount"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputType inputType, double pressedAmount, object[] tags = null)
+        {
+            Initialize(inputSource, handedness, inputType, tags);
             PressedAmount = pressedAmount;
         }
     }

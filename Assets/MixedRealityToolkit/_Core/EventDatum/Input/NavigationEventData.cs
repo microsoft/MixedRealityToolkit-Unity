@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
@@ -18,15 +19,29 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         public Vector3 NormalizedOffset { get; private set; }
 
-        public NavigationEventData(UnityEngine.EventSystems.EventSystem eventSystem) : base(eventSystem) { }
+        /// <inheritdoc />
+        public NavigationEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, Vector3 normalizedOffset, object[] tags = null)
+        /// <summary>
+        /// Populates the event with data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="normalizedOffset"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, Vector3 normalizedOffset, object[] tags = null)
         {
             BaseInitialize(inputSource, tags);
             NormalizedOffset = normalizedOffset;
         }
 
-        public void Initialize(IInputSource inputSource, Vector3 normalizedOffset, Handedness handedness, object[] tags = null)
+        /// <summary>
+        /// Populates the event with data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="handedness"></param>
+        /// <param name="normalizedOffset"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, Vector3 normalizedOffset, object[] tags = null)
         {
             Initialize(inputSource, handedness, tags);
             NormalizedOffset = normalizedOffset;

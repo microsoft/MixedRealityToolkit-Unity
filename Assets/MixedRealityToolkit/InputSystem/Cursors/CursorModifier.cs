@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
     /// Component that can be added to any game object with a collider to modify 
     /// how a cursor reacts when on that collider.
     /// </summary>
-    public class CursorModifier : MonoBehaviour, ICursorModifier, IFocusChangedHandler
+    public class CursorModifier : MonoBehaviour, ICursorModifier, IMixedRealityFocusChangedHandler
     {
 
         [SerializeField]
@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// <returns></returns>
         public bool GetCursorVisibility() => HideCursorOnFocus;
 
-        public Vector3 GetModifiedPosition(ICursor cursor)
+        public Vector3 GetModifiedPosition(IMixedRealityCursor cursor)
         {
             if (SnapCursor)
             {
@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             return Vector3.zero;
         }
 
-        public Quaternion GetModifiedRotation(ICursor cursor)
+        public Quaternion GetModifiedRotation(IMixedRealityCursor cursor)
         {
             RayStep lastStep = cursor.Pointer.Rays[cursor.Pointer.Rays.Length - 1];
             Vector3 forward = UseGazeBasedNormal ? -lastStep.Direction : HostTransform.rotation * CursorNormal;
@@ -179,12 +179,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
                 : cursor.Rotation;
         }
 
-        public Vector3 GetModifiedScale(ICursor cursor)
+        public Vector3 GetModifiedScale(IMixedRealityCursor cursor)
         {
             return CursorScaleOffset;
         }
 
-        public void GetModifiedTransform(ICursor cursor, out Vector3 position, out Quaternion rotation, out Vector3 scale)
+        public void GetModifiedTransform(IMixedRealityCursor cursor, out Vector3 position, out Quaternion rotation, out Vector3 scale)
         {
             position = GetModifiedPosition(cursor);
             rotation = GetModifiedRotation(cursor);
@@ -193,9 +193,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
 
         #endregion ICursorModifier Implementation
 
-        #region IFocusChangedHandler Implementation
+        #region IMixedRealityFocusChangedHandler Implementation
 
-        void IFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData)
+        void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData)
         {
             if (eventData.NewFocusedObject == gameObject)
             {
@@ -208,8 +208,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             }
         }
 
-        void IFocusChangedHandler.OnFocusChanged(FocusEventData eventData) { }
+        void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData) { }
 
-        #endregion IFocusChangedHandler Implementation
+        #endregion IMixedRealityFocusChangedHandler Implementation
     }
 }

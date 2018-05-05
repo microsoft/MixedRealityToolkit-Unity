@@ -4,8 +4,11 @@
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events
+namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events.Handlers
 {
+    /// <summary>
+    /// Interface to implement generic events.
+    /// </summary>
     public interface IMixedRealityEventHandler : IEventSystemHandler
     {
         void OnEventRaised(GenericBaseEventData eventData);

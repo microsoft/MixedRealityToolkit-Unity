@@ -12,7 +12,7 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
 {
     [DisallowMultipleComponent]
-    public class SpeechInputHandler : MonoBehaviour, ISpeechHandler
+    public class SpeechInputHandler : MonoBehaviour, IMixedRealitySpeechHandler
     {
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
@@ -100,9 +100,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
 
         #endregion Monobehaviour Implementation
 
-        #region ISpeechHandler Implementation
+        #region IMixedRealitySpeechHandler Implementation
 
-        void ISpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
+        void IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
             UnityEvent keywordResponse;
 
@@ -113,6 +113,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
             }
         }
 
-        #endregion  ISpeechHandler Implementation
+        #endregion  IMixedRealitySpeechHandler Implementation
     }
 }

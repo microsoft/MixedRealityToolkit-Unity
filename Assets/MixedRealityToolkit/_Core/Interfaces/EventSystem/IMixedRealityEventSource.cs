@@ -5,6 +5,9 @@ using System.Collections;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events
 {
+    /// <summary>
+    /// Interface to implement an event source.
+    /// </summary>
     public interface IMixedRealityEventSource : IEqualityComparer
     {
         uint SourceId { get; }

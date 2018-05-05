@@ -11,8 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
     /// </summary>
     public class GraphicInputEventData : PointerEventData
     {
-        public GraphicInputEventData(UnityEngine.EventSystems.EventSystem eventSystem) : base(eventSystem) { }
+        /// <inheritdoc />
+        public GraphicInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
+        /// <summary>
+        /// Clears the pointer data and calls the base <see cref="PointerEventData"/>'s Reset method.
+        /// </summary>
         public void Clear()
         {
             Reset();

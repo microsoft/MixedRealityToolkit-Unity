@@ -8,7 +8,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 {
-    public interface IPointer : IEqualityComparer
+    /// <summary>
+    /// Cursor Interface for handling pointers.
+    /// </summary>
+    public interface IMixedRealityPointer : IEqualityComparer
     {
         IMixedRealityInputSystem InputSystem { get; }
 
@@ -16,9 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 
         string PointerName { get; set; }
 
-        IInputSource InputSourceParent { get; }
+        IMixedRealityInputSource InputSourceParent { get; }
 
-        ICursor BaseCursor { get; set; }
+        IMixedRealityCursor BaseCursor { get; set; }
 
         ICursorModifier CursorModifier { get; set; }
 
@@ -34,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 
         LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
-        IFocusHandler FocusTarget { get; set; }
+        IMixedRealityFocusHandler FocusTarget { get; set; }
 
         PointerResult Result { get; set; }
 

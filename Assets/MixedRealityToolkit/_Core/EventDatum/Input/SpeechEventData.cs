@@ -3,6 +3,8 @@
 
 using System;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using UnityEngine.EventSystems;
+
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
@@ -29,7 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         public string RecognizedText { get; private set; }
 
-        public SpeechEventData(UnityEngine.EventSystems.EventSystem eventSystem) : base(eventSystem) { }
+        /// <inheritdoc />
+        public SpeechEventData(EventSystem eventSystem) : base(eventSystem) { }
 
 #if UNITY_WSA  || UNITY_STANDALONE_WIN
 
@@ -43,7 +46,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         public SemanticMeaning[] SemanticMeanings { get; private set; }
 
-        public void Initialize(IInputSource inputSource, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText, object[] tags = null)
+        /// <summary>
+        /// Populates the event with data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="confidence"></param>
+        /// <param name="phraseDuration"></param>
+        /// <param name="phraseStartTime"></param>
+        /// <param name="semanticMeanings"></param>
+        /// <param name="recognizedText"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText, object[] tags = null)
         {
             BaseInitialize(inputSource, tags);
             Confidence = confidence;

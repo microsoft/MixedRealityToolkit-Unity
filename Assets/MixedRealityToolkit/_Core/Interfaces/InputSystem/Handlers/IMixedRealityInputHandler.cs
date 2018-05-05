@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
     /// <summary>
     /// Interface to implement to react to simple generic input.
     /// </summary>
-    public interface IInputHandler : IEventSystemHandler
+    public interface IMixedRealityInputHandler : IEventSystemHandler
     {
         /// <summary>
         /// Input Up updates from Interactions, Keys, or any other simple input.

@@ -7,12 +7,12 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers
 {
     /// <summary>
-    /// Interface to implement to react to hold gestures.
+    /// Interface to implement to react to simple pointer input.
     /// </summary>
-    public interface IHoldHandler : IEventSystemHandler
+    public interface IMixedRealityPointerHandler : IEventSystemHandler
     {
-        void OnHoldStarted(InputEventData eventData);
-        void OnHoldCompleted(InputEventData eventData);
-        void OnHoldCanceled(InputEventData eventData);
+        void OnPointerUp(ClickEventData eventData);
+        void OnPointerDown(ClickEventData eventData);
+        void OnPointerClicked(ClickEventData eventData);
     }
 }

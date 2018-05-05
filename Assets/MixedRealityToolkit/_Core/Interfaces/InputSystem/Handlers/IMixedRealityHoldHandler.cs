@@ -7,12 +7,12 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers
 {
     /// <summary>
-    /// Interface to implement reacting to placement of objects.
+    /// Interface to implement to react to hold gestures.
     /// </summary>
-    public interface IPlacementHandler : IEventSystemHandler
+    public interface IMixedRealityHoldHandler : IEventSystemHandler
     {
-        void OnPlacingStarted(PlacementEventData eventData);
-
-        void OnPlacingCompleted(PlacementEventData eventData);
+        void OnHoldStarted(InputEventData eventData);
+        void OnHoldCompleted(InputEventData eventData);
+        void OnHoldCanceled(InputEventData eventData);
     }
 }

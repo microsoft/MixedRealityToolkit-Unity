@@ -7,11 +7,16 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers
 {
     /// <summary>
-    /// Interface to implement to react to focus changed events.
+    /// Interface to implement dictation events.
     /// </summary>
-    public interface IFocusChangedHandler : IEventSystemHandler
+    public interface IMixedRealityDictationHandler : IEventSystemHandler
     {
-        void OnBeforeFocusChange(FocusEventData eventData);
-        void OnFocusChanged(FocusEventData eventData);
+        void OnDictationHypothesis(DictationEventData eventData);
+
+        void OnDictationResult(DictationEventData eventData);
+
+        void OnDictationComplete(DictationEventData eventData);
+
+        void OnDictationError(DictationEventData eventData);
     }
 }

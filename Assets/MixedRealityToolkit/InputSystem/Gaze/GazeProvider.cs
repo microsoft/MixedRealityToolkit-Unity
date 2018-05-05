@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
     /// The gaze manager manages everything related to a gaze ray that can interact with other objects.
     /// </summary>
     [DisallowMultipleComponent]
-    public class GazeProvider : BaseInputSource, IGazeProvider
+    public class GazeProvider : BaseInputSource, IMixedRealityGazeProvider
     {
         [SerializeField]
         [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
@@ -98,13 +98,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private bool delayInitialization = true;
 
-        #region IInputSource Implementation
+        #region IMixedRealityInputSource Implementation
 
         public override string SourceName => "Gaze";
 
-        public static IPointer GazePointer { get; private set; } = null;
-        private IPointer[] pointers = null;
-        public override IPointer[] Pointers
+        public static IMixedRealityPointer GazePointer { get; private set; } = null;
+        private IMixedRealityPointer[] pointers = null;
+        public override IMixedRealityPointer[] Pointers
         {
             get
             {
@@ -118,16 +118,16 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
             }
         }
 
-        #endregion IInputSource Implementation
+        #endregion IMixedRealityInputSource Implementation
 
-        #region IPointer Implementation
+        #region IMixedRealityPointer Implementation
 
         private class InternalGazePointer : GenericPointer
         {
             private readonly Transform gazeTransform;
             private readonly BaseRayStabilizer stabilizer;
 
-            public InternalGazePointer(string pointerName, IInputSource inputSourceParent, LayerMask[] raycastLayerMasks, float pointerExtent, Transform gazeTransform, BaseRayStabilizer stabilizer)
+            public InternalGazePointer(string pointerName, IMixedRealityInputSource inputSourceParent, LayerMask[] raycastLayerMasks, float pointerExtent, Transform gazeTransform, BaseRayStabilizer stabilizer)
                     : base(pointerName, inputSourceParent)
             {
                 PrioritizedLayerMasksOverride = raycastLayerMasks;
@@ -194,7 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
             }
         }
 
-        #endregion IPointer Implementation
+        #endregion IMixedRealityPointer Implementation
 
         #region Monobehaiour Implementation
 

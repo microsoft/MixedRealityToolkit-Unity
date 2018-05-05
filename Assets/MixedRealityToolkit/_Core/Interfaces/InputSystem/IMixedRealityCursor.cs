@@ -9,12 +9,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
     /// <summary>
     /// Cursor Interface for handling input events and setting visibility.
     /// </summary>
-    public interface ICursor : IFocusChangedHandler, ISourceStateHandler, IPointerHandler
+    public interface IMixedRealityCursor : IMixedRealityFocusChangedHandler, IMixedRealitySourceStateHandler, IMixedRealityPointerHandler
     {
         /// <summary>
         /// The pointer this cursor is associated with.
         /// </summary>
-        IPointer Pointer { get; set; }
+        IMixedRealityPointer Pointer { get; set; }
 
         /// <summary>
         /// Position of the cursor.

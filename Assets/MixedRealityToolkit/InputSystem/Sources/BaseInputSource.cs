@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// <summary>
     /// Base class for input sources that inherit from MonoBehaviour.
     /// </summary>
-    public abstract class BaseInputSource : MonoBehaviour, IInputSource
+    public abstract class BaseInputSource : MonoBehaviour, IMixedRealityInputSource
     {
         private static IMixedRealityInputSystem inputSystem = null;
         public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             set { name = value; }
         }
 
-        public virtual IPointer[] Pointers => null;
+        public virtual IMixedRealityPointer[] Pointers => null;
 
         public virtual InputType[] Capabilities => new[] { InputType.None };
 
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         #region IEquality Implementation
 
-        private bool Equals(IInputSource other)
+        private bool Equals(IMixedRealityInputSource other)
         {
             return other != null && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
         }
@@ -70,18 +70,18 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             if (ReferenceEquals(this, obj)) { return true; }
             if (obj.GetType() != GetType()) { return false; }
 
-            return Equals((IInputSource)obj);
+            return Equals((IMixedRealityInputSource)obj);
         }
 
-        public static bool Equals(IInputSource left, IInputSource right)
+        public static bool Equals(IMixedRealityInputSource left, IMixedRealityInputSource right)
         {
             return left.SourceId == right.SourceId;
         }
 
         bool IEqualityComparer.Equals(object x, object y)
         {
-            var left = (IInputSource)x;
-            var right = (IInputSource)y;
+            var left = (IMixedRealityInputSource)x;
+            var right = (IMixedRealityInputSource)y;
             if (left != null && right != null)
             {
                 return Equals(left, right);

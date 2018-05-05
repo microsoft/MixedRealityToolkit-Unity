@@ -5,6 +5,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
+
 #if !UNITY_EDITOR
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ using Windows.UI.Input.Spatial;
 #elif UNITY_EDITOR_WIN
 using System.Runtime.InteropServices;
 #endif
+
 #endif // UNITY_WSA
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions

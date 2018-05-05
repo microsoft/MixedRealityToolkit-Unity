@@ -9,19 +9,17 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 {
-    public class MixedRealityEventManager : BaseManager, IMixedRealityEventSystem
+    /// <summary>
+    /// Event System Manager that can be inherited from to give other managers event capabilities.
+    /// </summary>
+    public abstract class MixedRealityEventManager : BaseManager, IMixedRealityEventSystem
     {
         #region IEventSystemManager Implementation
 
+        /// <inheritdoc />
         public List<GameObject> EventListeners { get; } = new List<GameObject>();
 
-        /// <summary>
-        /// The main function for handling and forwarding all events to their intended recipients.
-        /// <para><remarks>See: https://docs.unity3d.com/Manual/MessagingSystem.html </remarks></para>
-        /// </summary>
-        /// <typeparam name="T">Event Handler Interface Type</typeparam>
-        /// <param name="eventData">Event Data</param>
-        /// <param name="eventHandler">Event Handler delegate</param>
+        /// <inheritdoc />
         public virtual void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
             Debug.Assert(!eventData.used);
@@ -32,20 +30,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
         }
 
-        /// <summary>
-        /// Register a <see cref="GameObject"/> to listen to events.
-        /// </summary>
-        /// <param name="listener"><see cref="GameObject"/> to add to <see cref="EventListeners"/>.</param>
+        /// <inheritdoc />
         public virtual void Register(GameObject listener)
         {
             Debug.Assert(!EventListeners.Contains(listener), $"{listener.name} is already registered to receive events!");
             EventListeners.Add(listener);
         }
 
-        /// <summary>
-        /// Unregister a <see cref="GameObject"/> from listening to events.
-        /// </summary>
-        /// <param name="listener"><see cref="GameObject"/> to remove from <see cref="EventListeners"/>.</param>
+        /// <inheritdoc />
         public virtual void Unregister(GameObject listener)
         {
             Debug.Assert(EventListeners.Contains(listener), $"{listener.name} was never registered!");

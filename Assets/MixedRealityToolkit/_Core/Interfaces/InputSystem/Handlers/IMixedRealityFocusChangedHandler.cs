@@ -7,13 +7,11 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers
 {
     /// <summary>
-    /// Interface to implement to react to navigation gestures.
+    /// Interface to implement to react to focus changed events.
     /// </summary>
-    public interface INavigationHandler : IEventSystemHandler
+    public interface IMixedRealityFocusChangedHandler : IEventSystemHandler
     {
-        void OnNavigationStarted(NavigationEventData eventData);
-        void OnNavigationUpdated(NavigationEventData eventData);
-        void OnNavigationCompleted(NavigationEventData eventData);
-        void OnNavigationCanceled(NavigationEventData eventData);
+        void OnBeforeFocusChange(FocusEventData eventData);
+        void OnFocusChanged(FocusEventData eventData);
     }
 }

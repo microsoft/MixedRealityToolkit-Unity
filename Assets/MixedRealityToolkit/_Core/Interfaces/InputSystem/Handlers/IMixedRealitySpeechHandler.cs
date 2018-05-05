@@ -7,12 +7,10 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers
 {
     /// <summary>
-    /// Interface to implement to react to simple pointer input.
+    /// Interface to implement to react to speech recognition.
     /// </summary>
-    public interface IPointerHandler : IEventSystemHandler
+    public interface IMixedRealitySpeechHandler : IEventSystemHandler
     {
-        void OnPointerUp(ClickEventData eventData);
-        void OnPointerDown(ClickEventData eventData);
-        void OnPointerClicked(ClickEventData eventData);
+        void OnSpeechKeywordRecognized(SpeechEventData eventData);
     }
 }

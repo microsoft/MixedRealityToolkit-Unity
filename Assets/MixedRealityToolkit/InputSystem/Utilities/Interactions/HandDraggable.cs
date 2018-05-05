@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
     /// Dragging is done by calculating the angular delta and z-delta between the current and previous hand positions,
     /// and then repositioning the object based on that.
     /// </summary>
-    public class HandDraggable : FocusTarget, IInputHandler, ISourceStateHandler
+    public class HandDraggable : FocusTarget, IMixedRealityInputHandler, IMixedRealitySourceStateHandler
     {
         /// <summary>
         /// Event triggered when dragging starts.
@@ -337,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
             }
         }
 
-        void IInputHandler.OnInputUp(InputEventData eventData)
+        void IMixedRealityInputHandler.OnInputUp(InputEventData eventData)
         {
             if (eventData.SourceId == currentInputSourceId)
             {
@@ -347,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
             }
         }
 
-        void IInputHandler.OnInputDown(InputEventData eventData)
+        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData)
         {
             if (isDragging)
             {
@@ -386,13 +386,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
             StartDragging(initialDraggingPosition);
         }
 
-        void IInputHandler.OnInputPressed(InputPressedEventData eventData) { }
+        void IMixedRealityInputHandler.OnInputPressed(InputPressedEventData eventData) { }
 
-        void IInputHandler.OnDualAxisInputChanged(InputDualAxisPositionEventData eventData) { }
+        void IMixedRealityInputHandler.OnDualAxisInputChanged(InputDualAxisPositionEventData eventData) { }
 
-        void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
+        void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
 
-        void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
+        void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
             if (eventData.SourceId == currentInputSourceId)
             {
@@ -400,8 +400,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
             }
         }
 
-        void ISourceStateHandler.OnSourcePositionChanged(SourcePositionEventData eventData) { }
+        void IMixedRealitySourceStateHandler.OnSourcePositionChanged(SourcePositionEventData eventData) { }
 
-        void ISourceStateHandler.OnSourceRotationChanged(SourceRotationEventData eventData) { }
+        void IMixedRealitySourceStateHandler.OnSourceRotationChanged(SourceRotationEventData eventData) { }
     }
 }

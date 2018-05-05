@@ -3,11 +3,12 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
     /// <summary>
-    /// Describes an input event that involves a tap.
+    /// Describes an Input Event that involves a tap, click, or touch.
     /// </summary>
     public class ClickEventData : InputEventData
     {
@@ -16,23 +17,45 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         public int Count { get; private set; }
 
-        public ClickEventData(UnityEngine.EventSystems.EventSystem eventSystem) : base(eventSystem) { }
+        /// <inheritdoc />
+        public ClickEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IInputSource inputSource, int count, object[] tags = null)
+        /// <summary>
+        /// Used to initialize/reset the event and populate the data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="count"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, int count, object[] tags = null)
         {
             BaseInitialize(inputSource, tags);
             Count = count;
         }
 
-        public void Initialize(IInputSource inputSource, int count, Handedness handedness, object[] tags = null)
+        /// <summary>
+        /// Used to initialize/reset the event and populate the data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="count"></param>
+        /// <param name="handedness"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, int count, Handedness handedness, object[] tags = null)
         {
             Initialize(inputSource, handedness, tags);
             Count = count;
         }
 
-        public void Initialize(IInputSource inputSource, int count, InputType inputType, Handedness handedness, object[] tags = null)
+        /// <summary>
+        /// Used to initialize/reset the event and populate the data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="count"></param>
+        /// <param name="inputType"></param>
+        /// <param name="handedness"></param>
+        /// <param name="tags"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, int count, InputType inputType, Handedness handedness, object[] tags = null)
         {
-            Initialize(inputSource, inputType, handedness, tags);
+            Initialize(inputSource, handedness, inputType, tags);
             Count = count;
         }
     }

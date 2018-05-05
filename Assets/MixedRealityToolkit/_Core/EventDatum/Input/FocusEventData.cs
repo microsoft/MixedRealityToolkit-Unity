@@ -8,14 +8,14 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
     /// <summary>
-    /// Event dispatched associated with a specific pointer.
+    /// Describes an Input Event associated with a specific pointer's focus state change.
     /// </summary>
     public class FocusEventData : BaseEventData
     {
         /// <summary>
         /// The pointer associated with this event.
         /// </summary>
-        public IPointer Pointer { get; private set; }
+        public IMixedRealityPointer Pointer { get; private set; }
 
         /// <summary>
         /// The old focused object.
@@ -27,15 +27,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         public GameObject NewFocusedObject { get; private set; }
 
-        public FocusEventData(UnityEngine.EventSystems.EventSystem eventSystem) : base(eventSystem) { }
+        /// <inheritdoc />
+        public FocusEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IPointer pointer)
+        /// <summary>
+        /// Used to initialize/reset the event and populate the data.
+        /// </summary>
+        /// <param name="pointer"></param>
+        public void Initialize(IMixedRealityPointer pointer)
         {
             Reset();
             Pointer = pointer;
         }
 
-        public void Initialize(IPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        /// <summary>
+        /// Used to initialize/reset the event and populate the data.
+        /// </summary>
+        /// <param name="pointer"></param>
+        /// <param name="oldFocusedObject"></param>
+        /// <param name="newFocusedObject"></param>
+        public void Initialize(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
             Reset();
             Pointer = pointer;

@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
     /// <summary>
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
-    public abstract class BaseControllerPointer : AttachToController, IInputHandler, IPointer
+    public abstract class BaseControllerPointer : AttachToController, IMixedRealityInputHandler, IMixedRealityPointer
     {
         private IMixedRealityInputSystem inputSystem = null;
         public IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             SelectPressed = false;
         }
 
-        #region IPointer Implementation
+        #region IMixedRealityPointer Implementation
 
         private uint pointerId;
 
@@ -203,9 +203,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             set { gameObject.name = value; }
         }
 
-        public IInputSource InputSourceParent { get; set; }
+        public IMixedRealityInputSource InputSourceParent { get; set; }
 
-        public ICursor BaseCursor { get; set; }
+        public IMixedRealityCursor BaseCursor { get; set; }
 
         public ICursorModifier CursorModifier { get; set; }
 
@@ -229,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
-        public IFocusHandler FocusTarget { get; set; }
+        public IMixedRealityFocusHandler FocusTarget { get; set; }
 
         public PointerResult Result { get; set; }
 
@@ -265,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         #region IEquality Implementation
 
-        public static bool Equals(IPointer left, IPointer right)
+        public static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)
         {
             return left.Equals(right);
         }
@@ -281,10 +281,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             if (ReferenceEquals(this, obj)) { return true; }
             if (obj.GetType() != GetType()) { return false; }
 
-            return Equals((IPointer)obj);
+            return Equals((IMixedRealityPointer)obj);
         }
 
-        private bool Equals(IPointer other)
+        private bool Equals(IMixedRealityPointer other)
         {
             return other != null && PointerId == other.PointerId && string.Equals(PointerName, other.PointerName);
         }
@@ -307,9 +307,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         #endregion IEquality Implementation
 
-        #endregion IPointer Implementation
+        #endregion IMixedRealityPointer Implementation
 
-        #region IInputHandler Implementation
+        #region IMixedRealityInputHandler Implementation
 
         public virtual void OnInputUp(InputEventData eventData)
         {
@@ -363,6 +363,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         /// </summary>
         public virtual void OnDualAxisInputChanged(InputDualAxisPositionEventData eventData) { }
 
-        #endregion  IInputHandler Implementation
+        #endregion  IMixedRealityInputHandler Implementation
     }
 }
