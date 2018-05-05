@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Build.WindowsDevicePortal.DataStructures;
+using MixedRealityToolkit.Common.WindowsDevicePortal.DataStructures;
 using MixedRealityToolkit.Build.USB;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
-using MixedRealityToolkit.Build.WindowsDevicePortal;
+using MixedRealityToolkit.Common.WindowsDevicePortal;
 using MixedRealityToolkit.Common.EditorScript;
 using MixedRealityToolkit.Common.RestUtility;
 using UnityEditor;
