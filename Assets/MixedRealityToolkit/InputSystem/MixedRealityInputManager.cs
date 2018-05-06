@@ -50,12 +50,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private SourcePositionEventData sourcePositionEventData;
         private SourceRotationEventData sourceRotationEventData;
 
-        private ClickEventData clickEventData;
         private FocusEventData focusEventData;
-
         private InputEventData inputEventData;
         private InputPressedEventData inputPressedEventData;
-        private InputDualAxisPositionEventData inputDualAxisPositionEventData;
+        private ClickEventData clickEventData;
+        private DualAxisInputEventData dualAxisInputEventData;
 
         private NavigationEventData navigationEventData;
         private ManipulationEventData manipulationEventData;
@@ -88,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
             inputEventData = new InputEventData(EventSystem.current);
             inputPressedEventData = new InputPressedEventData(EventSystem.current);
-            inputDualAxisPositionEventData = new InputDualAxisPositionEventData(EventSystem.current);
+            dualAxisInputEventData = new DualAxisInputEventData(EventSystem.current);
 
             navigationEventData = new NavigationEventData(EventSystem.current);
             manipulationEventData = new ManipulationEventData(EventSystem.current);
@@ -945,26 +944,26 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler> OnDualAxisInputChanged =
             delegate (IMixedRealityInputHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<InputDualAxisPositionEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<DualAxisInputEventData>(eventData);
                 handler.OnDualAxisInputChanged(casted);
             };
 
         public void RaiseDualAxisInputChanged(IMixedRealityInputSource source, InputType inputType, Vector2 inputPosition, object[] tags = null)
         {
             // Create input event
-            inputDualAxisPositionEventData.Initialize(source, inputType, inputPosition, tags);
+            dualAxisInputEventData.Initialize(source, inputType, inputPosition, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputDualAxisPositionEventData, OnDualAxisInputChanged);
+            HandleEvent(dualAxisInputEventData, OnDualAxisInputChanged);
         }
 
         public void RaiseDualAxisInputChanged(IMixedRealityInputSource source, Handedness handedness, InputType inputType, Vector2 inputPosition, object[] tags = null)
         {
             // Create input event
-            inputDualAxisPositionEventData.Initialize(source, inputType, inputPosition, handedness, tags);
+            dualAxisInputEventData.Initialize(source, inputType, inputPosition, handedness, tags);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputDualAxisPositionEventData, OnDualAxisInputChanged);
+            HandleEvent(dualAxisInputEventData, OnDualAxisInputChanged);
         }
 
         #endregion Input DualAxis Changed

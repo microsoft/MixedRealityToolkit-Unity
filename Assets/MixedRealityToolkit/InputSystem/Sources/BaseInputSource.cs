@@ -41,13 +41,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         public virtual InputType[] Capabilities => new[] { InputType.None };
 
-        public bool SupportsInputCapability(InputType[] inputInfo)
+        public bool SupportsInputCapability(InputType[] capabilities)
         {
             for (int i = 0; i < Capabilities.Length; i++)
             {
-                for (int j = 0; j < inputInfo.Length; j++)
+                for (int j = 0; j < capabilities.Length; j++)
                 {
-                    if (Capabilities[i] == inputInfo[j])
+                    if (Capabilities[i] == capabilities[j])
                     {
                         return true;
                     }
@@ -61,7 +61,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         private bool Equals(IMixedRealityInputSource other)
         {
-            return other != null && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
+            return other != null &&
+                   SourceId == other.SourceId &&
+                   string.Equals(SourceName, other.SourceName);
         }
 
         public override bool Equals(object obj)
@@ -80,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         bool IEqualityComparer.Equals(object x, object y)
         {
-            var left = (IMixedRealityInputSource)x;
+            var left  = (IMixedRealityInputSource)x;
             var right = (IMixedRealityInputSource)y;
             if (left != null && right != null)
             {

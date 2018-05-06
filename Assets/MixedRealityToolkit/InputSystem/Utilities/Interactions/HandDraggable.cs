@@ -388,7 +388,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
 
         void IMixedRealityInputHandler.OnInputPressed(InputPressedEventData eventData) { }
 
-        void IMixedRealityInputHandler.OnDualAxisInputChanged(InputDualAxisPositionEventData eventData) { }
+        void IMixedRealityInputHandler.OnDualAxisInputChanged(DualAxisInputEventData eventData) { }
 
         void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
 

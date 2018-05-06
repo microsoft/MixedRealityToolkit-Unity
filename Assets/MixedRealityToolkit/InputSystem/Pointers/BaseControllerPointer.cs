@@ -361,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         /// <summary>
         /// Updates target point orientation via thumbstick
         /// </summary>
-        public virtual void OnDualAxisInputChanged(InputDualAxisPositionEventData eventData) { }
+        public virtual void OnDualAxisInputChanged(DualAxisInputEventData eventData) { }
 
         #endregion  IMixedRealityInputHandler Implementation
     }

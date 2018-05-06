@@ -3,10 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
@@ -14,12 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// <summary>
     /// Base class for input sources that don't inherit from MonoBehaviour.
     /// </summary>
-    public class GenericInputSource : IMixedRealityInputSource
+    public class BaseGenericInputSource : IMixedRealityInputSource
     {
         private static IMixedRealityInputSystem inputSystem = null;
         public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
-        public GenericInputSource(string name, InputType[] capabilities, IMixedRealityPointer[] pointers = null)
+        public BaseGenericInputSource(string name, InputType[] capabilities, IMixedRealityPointer[] pointers = null)
         {
             SourceId = InputSystem.GenerateNewSourceId();
             SourceName = name;
@@ -27,21 +27,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             Pointers = pointers ?? new[] { GazeProvider.GazePointer };
         }
 
-        public uint SourceId { get; private set; }
+        public uint SourceId { get; }
 
-        public string SourceName { get; private set; }
+        public string SourceName { get; }
 
         public IMixedRealityPointer[] Pointers { get; private set; }
 
-        public InputType[] Capabilities { get; private set; }
+        public InputType[] Capabilities { get; }
 
-        public bool SupportsInputCapability(InputType[] inputInfo)
+        public bool SupportsInputCapability(InputType[] capabilities)
         {
             for (int i = 0; i < Capabilities.Length; i++)
             {
-                for (int j = 0; j < inputInfo.Length; j++)
+                for (int j = 0; j < capabilities.Length; j++)
                 {
-                    if (Capabilities[i] == inputInfo[j])
+                    if (Capabilities[i] == capabilities[j])
                     {
                         return true;
                     }

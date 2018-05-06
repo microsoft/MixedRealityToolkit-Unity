@@ -37,6 +37,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         TouchpadPress,
         Select,
         Start,
-        Menu
+        Menu,
+        Thumb,
+        IndexFinger,
+        MiddleFinger,
+        RingFinger,
+        PinkyFinger,
     }
 }

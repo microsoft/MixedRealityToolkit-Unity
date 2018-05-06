@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         #region IMixedRealityInputSource Capabilities and GenericInputPointingSource
 
-        private class InteractionInputSource : GenericInputSource
+        private class InteractionInputSource : BaseGenericInputSource
         {
 #if UNITY_WSA
             public readonly InteractionSource Source;

@@ -34,6 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
         /// Input Position updates from Thumbsticks, Touchpads, or any other simple input with a position.
         /// </summary>
         /// <param name="eventData">InputDualAxisPositionEventData</param>
-        void OnDualAxisInputChanged(InputDualAxisPositionEventData eventData);
+        void OnDualAxisInputChanged(DualAxisInputEventData eventData);
     }
 }

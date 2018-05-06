@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         protected float DeviceRefreshInterval = 3.0f;
         protected string[] LastDeviceList;
 
-        protected readonly HashSet<GenericInputSource> InputSources = new HashSet<GenericInputSource>();
+        protected readonly HashSet<BaseGenericInputSource> InputSources = new HashSet<BaseGenericInputSource>();
 
         private float deviceRefreshTimer;
         private IMixedRealityInputSystem inputSystem;
@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                     joystickNames[i].Equals(XboxBluetoothGamePad) ||
                     joystickNames[i].Equals(XboxWirelessController))
                 {
-                    var inputSource = new GenericInputSource(joystickNames[i], new[]
+                    var inputSource = new BaseGenericInputSource(joystickNames[i], new[]
                     {
                         InputType.ButtonPress,
                         InputType.Trigger,
@@ -113,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                          joystickNames[i].Equals(OpenVRControllerLeft) ||
                          joystickNames[i].Equals(OpenVRControllerRight))
                 {
-                    var inputSource = new GenericInputSource(
+                    var inputSource = new BaseGenericInputSource(
                         joystickNames[i], new[]
                         {
                             InputType.Pointer,
