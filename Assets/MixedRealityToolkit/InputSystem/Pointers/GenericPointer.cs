@@ -2,13 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
-using Microsoft.MixedReality.Toolkit.InputSystem.Cursors;
-using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
-using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
-using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
@@ -16,9 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
     /// <summary>
     /// Base Class for pointers that don't inherit from MonoBehaviour.
     /// </summary>
-    public class GenericPointer : IPointer
+    public class GenericPointer : IMixedRealityPointer
     {
-        public GenericPointer(string pointerName, IInputSource inputSourceParent)
+        public GenericPointer(string pointerName, IMixedRealityInputSource inputSourceParent)
         {
             InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
             PointerId = InputSystem.FocusProvider.GenerateNewPointerId();
@@ -32,9 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public string PointerName { get; set; }
 
-        public IInputSource InputSourceParent { get; }
+        public IMixedRealityInputSource InputSourceParent { get; }
 
-        public BaseCursor BaseCursor { get; set; }
+        public IMixedRealityCursor BaseCursor { get; set; }
 
         public ICursorModifier CursorModifier { get; set; }
 
@@ -56,11 +53,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
-        public IFocusHandler FocusTarget { get; set; }
+        public IMixedRealityFocusHandler FocusTarget { get; set; }
 
         public PointerResult Result { get; set; }
 
-        public BaseRayStabilizer RayStabilizer { get; set; }
+        public IBaseRayStabilizer RayStabilizer { get; set; }
 
         public virtual void OnPreRaycast()
         {
@@ -99,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         #region IEquality Implementation
 
-        public static bool Equals(IPointer left, IPointer right)
+        public static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)
         {
             return left.Equals(right);
         }
@@ -115,10 +112,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             if (ReferenceEquals(this, obj)) { return true; }
             if (obj.GetType() != GetType()) { return false; }
 
-            return Equals((IPointer)obj);
+            return Equals((IMixedRealityPointer)obj);
         }
 
-        private bool Equals(IPointer other)
+        private bool Equals(IMixedRealityPointer other)
         {
             return other != null && PointerId == other.PointerId && string.Equals(PointerName, other.PointerName);
         }

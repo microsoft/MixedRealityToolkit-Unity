@@ -4,6 +4,9 @@
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
@@ -37,31 +40,60 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         #region Mixed Reality Manager configurable properties
 
+        [SerializeField]
+        [Header("Input Settings")]
+        [Tooltip("Enable the Input System on Startup")]
+        private bool enableInputSystem = true;
+
         /// <summary>
         /// Enable and configure the Input System component for the Mixed Reality Toolkit
         /// </summary>
-        [Header("Input Settings")]
-        [Tooltip("Enable the Input System on Startup")]
+        public bool EnableInputSystem
+        {
+            get { return enableInputSystem; }
+            private set { enableInputSystem = value; }
+        }
+
         [SerializeField]
-        private bool enableInputSystem = true;
-        public bool EnableInputSystem { get { return enableInputSystem; } private set { enableInputSystem = value; } }
+        [Tooltip("Input System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealityInputSystem), ClassGrouping.None)]
+        private SystemType inputSystem;
+
+        /// <summary>
+        /// Input System Script File to instantiate at runtime.
+        /// </summary>
+        public SystemType InputSystem
+        {
+            get { return inputSystem; }
+            private set { inputSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable the Motion Controllers on Startup")]
+        private bool enableControllers = true;
 
         /// <summary>
         /// Enable and configure the controller rendering for the Mixed Reality Toolkit
         /// </summary>
-        [Tooltip("Enable the Motion Controllers on Startup")]
+        public bool EnableControllers
+        {
+            get { return enableControllers; }
+            private set { enableControllers = value; }
+        }
+
         [SerializeField]
-        private bool enableControllers = true;
-        public bool EnableControllers { get { return enableControllers; } private set { enableControllers = value; } }
+        [Header("Boundary Settings")]
+        [Tooltip("Enable the Boundary on Startup")]
+        private bool enableBoundarySystem = true;
 
         /// <summary>
         /// Enable and configure the Boundary component on the Mixed Reality Camera
         /// </summary>
-        [Header("Boundary Settings")]
-        [Tooltip("Enable the Boundary on Startup")]
-        [SerializeField]
-        private bool enableBoundarySystem = true;
-        public bool EnableBoundarySystem { get { return enableBoundarySystem; } private set { enableBoundarySystem = value; } }
+        public bool EnableBoundarySystem
+        {
+            get { return enableBoundarySystem; }
+            private set { enableBoundarySystem = value; }
+        }
 
         #endregion Mixed Reality Manager configurable properties
 

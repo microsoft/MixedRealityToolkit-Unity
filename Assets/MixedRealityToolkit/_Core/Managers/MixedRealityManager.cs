@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -69,10 +70,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// <summary>
         /// Local component registry for the Mixed Reality Manager, to allow runtime use of the Manager.
         /// </summary>
-        [HideInInspector]
         public List<Tuple<Type, IMixedRealityManager>> MixedRealityComponents { get; } = new List<Tuple<Type, IMixedRealityManager>>();
 
-        private int MixedRealityComponentsCount = 0;
+        private int mixedRealityComponentsCount = 0;
 
         #endregion
 
@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (!ActiveProfile)
             {
                 Debug.LogError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Manager");
-                this.gameObject.SetActive(false);
+                gameObject.SetActive(false);
                 return;
             }
 
@@ -123,31 +123,31 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (ActiveProfile.EnableInputSystem)
             {
                 //Enable Input (example initializer)
-                AddManager(typeof(IMixedRealityInputSystem), new InputSystem.MixedRealityInputManager());
+                AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystem) as IMixedRealityInputSystem);
             }
 
             //If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.EnableBoundarySystem)
             {
                 //Enable Boundary (example initializer)
-                AddManager(typeof(IMixedRealityBoundarySystem), new InputSystem.MixedRealityBoundaryManager());
+                AddManager(typeof(IMixedRealityBoundarySystem), new MixedRealityBoundaryManager());
             }
 
             //TODO should this be optional?
             //Sort the managers based on Priority
-            var orderedManagers = ActiveProfile.ActiveManagers.OrderBy(m => m.Value.Priority);
+            var orderedManagers = ActiveProfile.ActiveManagers.OrderBy(m => m.Value.Priority).ToArray();
             ActiveProfile.ActiveManagers.Clear();
             foreach (var manager in orderedManagers)
             {
                 AddManager(manager.Key, manager.Value);
             }
-            orderedManagers = null;
 
             //Initialize all managers
             foreach (var manager in ActiveProfile.ActiveManagers)
             {
                 manager.Value.Initialize();
             }
+
             #endregion Managers Initialization
         }
 
@@ -396,7 +396,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
                 MixedRealityComponents.Add(new Tuple<Type, IMixedRealityManager>(type, manager));
                 manager.Initialize();
-                MixedRealityComponentsCount = MixedRealityComponents.Count;
+                mixedRealityComponentsCount = MixedRealityComponents.Count;
             }
         }
 
@@ -502,7 +502,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 //If no name provided, return all components of the same type. Else return the type/name combination.
                 if (string.IsNullOrWhiteSpace(managerName))
                 {
-                    for (int i = 0; i < MixedRealityComponentsCount; i++)
+                    for (int i = 0; i < mixedRealityComponentsCount; i++)
                     {
                         if (MixedRealityComponents[i].Item1.Name == type.Name)
                         {
@@ -512,7 +512,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 }
                 else
                 {
-                    for (int i = 0; i < MixedRealityComponentsCount; i++)
+                    for (int i = 0; i < mixedRealityComponentsCount; i++)
                     {
                         if (MixedRealityComponents[i].Item1.Name == type.Name && MixedRealityComponents[i].Item2.Name == managerName)
                         {
@@ -695,7 +695,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         {
             manager = null;
 
-            for (int i = 0; i < MixedRealityComponentsCount; i++)
+            for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
                 if (MixedRealityComponents[i].Item1.Name == type.Name)
                 {
@@ -715,7 +715,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         {
             manager = null;
 
-            for (int i = 0; i < MixedRealityComponentsCount; i++)
+            for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
                 if (MixedRealityComponents[i].Item1.Name == type.Name && MixedRealityComponents[i].Item2.Name == managerName)
                 {

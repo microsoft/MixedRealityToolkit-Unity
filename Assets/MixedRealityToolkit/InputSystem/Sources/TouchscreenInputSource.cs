@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
@@ -24,11 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         public override InputType[] Capabilities => new[] { InputType.Pointer, InputType.PointerPosition };
 
-        public override IPointer[] Pointers
+        public override IMixedRealityPointer[] Pointers
         {
             get
             {
-                var pointers = new IPointer[activeTouches.Count];
+                var pointers = new IMixedRealityPointer[activeTouches.Count];
                 int count = 0;
                 foreach (var touch in activeTouches)
                 {
@@ -50,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             public readonly Ray ScreenPointRay;
             public float Lifetime;
 
-            public TouchPointer(string name, Touch touch, Ray ray, IInputSource inputSource) : base(name, inputSource)
+            public TouchPointer(string name, Touch touch, Ray ray, IMixedRealityInputSource inputSource) : base(name, inputSource)
             {
                 TouchData = touch;
                 ScreenPointRay = ray;

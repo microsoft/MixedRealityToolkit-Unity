@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_EDITOR_WIN
@@ -11,13 +10,14 @@ using System.Runtime.InteropServices;
 
 #if UNITY_WSA
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.XR.WSA.Input;
 //using UnityGLTF;
 
 #if !UNITY_EDITOR
 using Windows.Foundation;
 using Windows.Storage.Streams;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+
 #endif
 #endif
 
@@ -268,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             {
                 if (AlternateLeftController == null)
                 {
-                    Debug.LogWarning("Always use the alternate left model is set on " + name + ", but the alternate left controller model was not specified.");
+                    Debug.LogWarning($"Always use the alternate left model is set on {name}, but the alternate left controller model was not specified.");
                     yield return LoadSourceControllerModel(source);
                 }
                 else
@@ -280,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             {
                 if (AlternateRightController == null)
                 {
-                    Debug.LogWarning("Always use the alternate right model is set on " + name + ", but the alternate right controller model was not specified.");
+                    Debug.LogWarning($"Always use the alternate right model is set on {name}, but the alternate right controller model was not specified.");
                     yield return LoadSourceControllerModel(source);
                 }
                 else

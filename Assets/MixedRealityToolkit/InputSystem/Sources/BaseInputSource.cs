@@ -2,9 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
@@ -13,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// <summary>
     /// Base class for input sources that inherit from MonoBehaviour.
     /// </summary>
-    public abstract class BaseInputSource : MonoBehaviour, IInputSource
+    public abstract class BaseInputSource : MonoBehaviour, IMixedRealityInputSource
     {
         private static IMixedRealityInputSystem inputSystem = null;
         public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
@@ -38,17 +37,17 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             set { name = value; }
         }
 
-        public virtual IPointer[] Pointers => null;
+        public virtual IMixedRealityPointer[] Pointers => null;
 
         public virtual InputType[] Capabilities => new[] { InputType.None };
 
-        public bool SupportsInputCapability(InputType[] inputInfo)
+        public bool SupportsInputCapability(InputType[] capabilities)
         {
             for (int i = 0; i < Capabilities.Length; i++)
             {
-                for (int j = 0; j < inputInfo.Length; j++)
+                for (int j = 0; j < capabilities.Length; j++)
                 {
-                    if (Capabilities[i] == inputInfo[j])
+                    if (Capabilities[i] == capabilities[j])
                     {
                         return true;
                     }
@@ -60,9 +59,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         #region IEquality Implementation
 
-        private bool Equals(IInputSource other)
+        private bool Equals(IMixedRealityInputSource other)
         {
-            return other != null && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
+            return other != null &&
+                   SourceId == other.SourceId &&
+                   string.Equals(SourceName, other.SourceName);
         }
 
         public override bool Equals(object obj)
@@ -71,18 +72,18 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             if (ReferenceEquals(this, obj)) { return true; }
             if (obj.GetType() != GetType()) { return false; }
 
-            return Equals((IInputSource)obj);
+            return Equals((IMixedRealityInputSource)obj);
         }
 
-        public static bool Equals(IInputSource left, IInputSource right)
+        public static bool Equals(IMixedRealityInputSource left, IMixedRealityInputSource right)
         {
             return left.SourceId == right.SourceId;
         }
 
         bool IEqualityComparer.Equals(object x, object y)
         {
-            var left = (IInputSource)x;
-            var right = (IInputSource)y;
+            var left  = (IMixedRealityInputSource)x;
+            var right = (IMixedRealityInputSource)y;
             if (left != null && right != null)
             {
                 return Equals(left, right);

@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
-using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
-using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
@@ -14,10 +14,24 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
     /// Component that can be added to any game object with a collider to modify 
     /// how a cursor reacts when on that collider.
     /// </summary>
-    public class CursorModifier : MonoBehaviour, ICursorModifier
+    public class CursorModifier : MonoBehaviour, ICursorModifier, IMixedRealityFocusChangedHandler
     {
+
         [SerializeField]
+        [Tooltip("Cursor animation parameters to set when this object is focused. Leave empty for none.")]
+        private AnimatorParameter[] cursorParameters = null;
+
+        private IMixedRealityInputSystem inputSystem;
+
+        private void Awake()
+        {
+            inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+        }
+
+        #region ICursorModifier Implementation
+
         [Tooltip("Transform for which this cursor modifier applies its various properties.")]
+        [SerializeField]
         private Transform hostTransform;
 
         /// <summary>
@@ -38,36 +52,95 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         }
 
         [Tooltip("How much a cursor should be offset from the surface of the object when overlapping.")]
-        public Vector3 CursorOffset = Vector3.zero;
-
-        [Tooltip("Direction of the cursor offset.")]
-        public Vector3 CursorNormal = Vector3.back;
-
-        [Tooltip("Scale of the cursor when looking at this object.")]
-        public Vector3 CursorScaleOffset = Vector3.one;
-
-        [Tooltip("Should the cursor snap to the object.")]
-        public bool SnapCursor = false;
-
-        [Tooltip("If true, the normal from the pointing vector will be used to orient the cursor " +
-                 "instead of the targeted object's normal at point of contact.")]
-        public bool UseGazeBasedNormal = false;
-
-        [Tooltip("Should the cursor be hiding when this object is focused.")]
-        public bool HideCursorOnFocus = false;
-
         [SerializeField]
-        [Tooltip("Cursor animation parameters to set when this object is focused. Leave empty for none.")]
-        private AnimatorParameter[] cursorParameters = null;
+        private Vector3 cursorOffset = Vector3.zero;
 
-        private IMixedRealityInputSystem inputSystem;
-
-        private void Awake()
+        public Vector3 CursorOffset
         {
-            inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+            get
+            {
+                return cursorOffset;
+            }
+            set
+            {
+                cursorOffset = value;
+            }
         }
 
-        #region ICursorModifier Implementation
+        [Tooltip("Direction of the cursor offset.")]
+        [SerializeField]
+        private Vector3 cursorNormal = Vector3.back;
+        public Vector3 CursorNormal
+        {
+            get
+            {
+                return cursorNormal;
+            }
+            set
+            {
+                cursorNormal = value;
+            }
+        }
+
+        [Tooltip("Scale of the cursor when looking at this object.")]
+        [SerializeField]
+        private Vector3 cursorScaleOffset = Vector3.one;
+        public Vector3 CursorScaleOffset
+        {
+            get
+            {
+                return cursorScaleOffset;
+            }
+            set
+            {
+                cursorScaleOffset = value;
+            }
+        }
+
+        [Tooltip("Should the cursor snap to the object.")]
+        [SerializeField]
+        private bool snapCursor = false;
+        public bool SnapCursor
+        {
+            get
+            {
+                return snapCursor;
+            }
+            set
+            {
+                snapCursor = value;
+            }
+        }
+
+        [Tooltip("If true, the normal from the pointing vector will be used to orient the cursor instead of the targeted object's normal at point of contact.")]
+        [SerializeField]
+        private bool useGazeBasedNormal = false;
+        public bool UseGazeBasedNormal
+        {
+            get
+            {
+                return useGazeBasedNormal;
+            }
+            set
+            {
+                useGazeBasedNormal = value;
+            }
+        }
+
+        [Tooltip("Should the cursor be hiding when this object is focused.")]
+        [SerializeField]
+        private bool hideCursorOnFocus = false;
+        public bool HideCursorOnFocus
+        {
+            get
+            {
+                return hideCursorOnFocus;
+            }
+            set
+            {
+                hideCursorOnFocus = value;
+            }
+        }
 
         public AnimatorParameter[] CursorParameters => cursorParameters;
 
@@ -77,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// <returns></returns>
         public bool GetCursorVisibility() => HideCursorOnFocus;
 
-        public Vector3 GetModifiedPosition(ICursor cursor)
+        public Vector3 GetModifiedPosition(IMixedRealityCursor cursor)
         {
             if (SnapCursor)
             {
@@ -95,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             return Vector3.zero;
         }
 
-        public Quaternion GetModifiedRotation(ICursor cursor)
+        public Quaternion GetModifiedRotation(IMixedRealityCursor cursor)
         {
             RayStep lastStep = cursor.Pointer.Rays[cursor.Pointer.Rays.Length - 1];
             Vector3 forward = UseGazeBasedNormal ? -lastStep.Direction : HostTransform.rotation * CursorNormal;
@@ -106,12 +179,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
                 : cursor.Rotation;
         }
 
-        public Vector3 GetModifiedScale(ICursor cursor)
+        public Vector3 GetModifiedScale(IMixedRealityCursor cursor)
         {
             return CursorScaleOffset;
         }
 
-        public void GetModifiedTransform(ICursor cursor, out Vector3 position, out Quaternion rotation, out Vector3 scale)
+        public void GetModifiedTransform(IMixedRealityCursor cursor, out Vector3 position, out Quaternion rotation, out Vector3 scale)
         {
             position = GetModifiedPosition(cursor);
             rotation = GetModifiedRotation(cursor);
@@ -120,9 +193,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
 
         #endregion ICursorModifier Implementation
 
-        #region IFocusChangedHandler Implementation
+        #region IMixedRealityFocusChangedHandler Implementation
 
-        void IFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData)
+        void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData)
         {
             if (eventData.NewFocusedObject == gameObject)
             {
@@ -135,8 +208,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             }
         }
 
-        void IFocusChangedHandler.OnFocusChanged(FocusEventData eventData) { }
+        void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData) { }
 
-        #endregion IFocusChangedHandler Implementation
+        #endregion IMixedRealityFocusChangedHandler Implementation
     }
 }

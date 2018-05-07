@@ -54,6 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         public override InputType[] Capabilities => new[] { InputType.Voice };
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+
         /// <summary>
         /// The serialized data of this field will be lost when switching between platforms and re-serializing this class.
         /// </summary>

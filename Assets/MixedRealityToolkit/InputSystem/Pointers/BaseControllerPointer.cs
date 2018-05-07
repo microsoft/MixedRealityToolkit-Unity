@@ -2,27 +2,22 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Cursors;
-using Microsoft.MixedReality.Toolkit.InputSystem.EventData;
-using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
-using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
-using Microsoft.MixedReality.Toolkit.InputSystem.InputHandlers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using System.Collections;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
-
-#if UNITY_WSA
-#endif
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 {
     /// <summary>
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
-    public abstract class BaseControllerPointer : AttachToController, IInputHandler, IPointer
+    public abstract class BaseControllerPointer : AttachToController, IMixedRealityInputHandler, IMixedRealityPointer
     {
         private IMixedRealityInputSystem inputSystem = null;
         public IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
@@ -101,10 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             base.OnEnable();
             SelectPressed = false;
 
-            if (BaseCursor != null)
-            {
-                BaseCursor.enabled = true;
-            }
+            BaseCursor?.SetVisibility(true);
 
             if (!delayPointerRegistration)
             {
@@ -114,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         protected virtual void Start()
         {
-             Debug.Assert(InputSourceParent != null, "This Pointer must have a Input Source Assigned");
+            Debug.Assert(InputSourceParent != null, "This Pointer must have a Input Source Assigned");
 
             InputSystem.FocusProvider.RegisterPointer(this);
             delayPointerRegistration = false;
@@ -129,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
             if (BaseCursor != null)
             {
-                BaseCursor.enabled = false;
+                BaseCursor.SetVisibility(false);
             }
 
             InputSystem.FocusProvider.UnregisterPointer(this);
@@ -139,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             if (BaseCursor != null)
             {
-                Destroy(BaseCursor.gameObject);
+                Destroy(BaseCursor.GetGameObjectReference());
             }
 
             base.OnDestroy();
@@ -168,9 +160,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
                 var cursorObj = Instantiate(CursorPrefab, transform);
                 cursorObj.name = $"{name}_Cursor";
                 BaseCursor = cursorObj.GetComponent<BaseCursor>();
-                 Debug.Assert(BaseCursor != null, "Failed to load cursor");
+                Debug.Assert(BaseCursor != null, "Failed to load cursor");
                 BaseCursor.Pointer = this;
-                 Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");
+                Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");
             }
         }
 
@@ -188,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             SelectPressed = false;
         }
 
-        #region IPointer Implementation
+        #region IMixedRealityPointer Implementation
 
         private uint pointerId;
 
@@ -211,9 +203,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             set { gameObject.name = value; }
         }
 
-        public IInputSource InputSourceParent { get; set; }
+        public IMixedRealityInputSource InputSourceParent { get; set; }
 
-        public BaseCursor BaseCursor { get; set; }
+        public IMixedRealityCursor BaseCursor { get; set; }
 
         public ICursorModifier CursorModifier { get; set; }
 
@@ -237,11 +229,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
-        public IFocusHandler FocusTarget { get; set; }
+        public IMixedRealityFocusHandler FocusTarget { get; set; }
 
         public PointerResult Result { get; set; }
 
-        public BaseRayStabilizer RayStabilizer { get; set; }
+        public IBaseRayStabilizer RayStabilizer { get; set; }
 
         public virtual void OnPreRaycast() { }
 
@@ -273,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         #region IEquality Implementation
 
-        public static bool Equals(IPointer left, IPointer right)
+        public static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)
         {
             return left.Equals(right);
         }
@@ -289,10 +281,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             if (ReferenceEquals(this, obj)) { return true; }
             if (obj.GetType() != GetType()) { return false; }
 
-            return Equals((IPointer)obj);
+            return Equals((IMixedRealityPointer)obj);
         }
 
-        private bool Equals(IPointer other)
+        private bool Equals(IMixedRealityPointer other)
         {
             return other != null && PointerId == other.PointerId && string.Equals(PointerName, other.PointerName);
         }
@@ -315,9 +307,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         #endregion IEquality Implementation
 
-        #endregion IPointer Implementation
+        #endregion IMixedRealityPointer Implementation
 
-        #region IInputHandler Implementation
+        #region IMixedRealityInputHandler Implementation
 
         public virtual void OnInputUp(InputEventData eventData)
         {
@@ -369,8 +361,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         /// <summary>
         /// Updates target point orientation via thumbstick
         /// </summary>
-        public virtual void OnDualAxisInputChanged(InputDualAxisPositionEventData eventData) { }
+        public virtual void OnDualAxisInputChanged(DualAxisInputEventData eventData) { }
 
-        #endregion  IInputHandler Implementation
+        #endregion  IMixedRealityInputHandler Implementation
     }
 }

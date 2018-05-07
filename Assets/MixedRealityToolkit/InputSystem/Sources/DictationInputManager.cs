@@ -3,6 +3,7 @@
 
 using System.Collections;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
@@ -58,16 +59,16 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-        #region IInputSource Implementation
+        #region IMixedRealityInputSource Implementation
 
-        private static IInputSource source;
+        private static IMixedRealityInputSource source;
 
         public override string SourceName => "Dictation";
 
         public override InputType[] Capabilities => new[] { InputType.Voice };
 
-        #endregion IInputSource Implementation
-        
+        #endregion IMixedRealityInputSource Implementation
+
         #region Monobehaviour Implementation
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
