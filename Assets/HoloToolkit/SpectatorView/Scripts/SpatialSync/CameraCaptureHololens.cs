@@ -3,10 +3,14 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 #if NETFX_CORE
+using System.Linq;
+#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.WebCam;
+#else
+using UnityEngine.VR.WSA.WebCam;
+#endif
 #endif
 
 namespace HoloToolkit.Unity.SpectatorView
