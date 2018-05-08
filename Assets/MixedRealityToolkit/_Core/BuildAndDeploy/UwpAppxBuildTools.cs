@@ -154,14 +154,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Build
             string nugetPath = Path.Combine(unity, @"Data\PlaybackEngines\MetroSupport\Tools\NuGet.exe");
 
             // Before building, need to run a nuget restore to generate a json.lock file. Failing to do this breaks the build in VS RTM
-            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.Mono2x &&
-                (!await RestoreNugetPackagesAsync(nugetPath, storePath) ||
-                 !await RestoreNugetPackagesAsync(nugetPath, $"{storePath}\\{productName}") ||
-                 EditorUserBuildSettings.wsaGenerateReferenceProjects && !await RestoreNugetPackagesAsync(nugetPath, assemblyCSharp) ||
-                 EditorUserBuildSettings.wsaGenerateReferenceProjects && restoreFirstPass && !await RestoreNugetPackagesAsync(nugetPath, assemblyCSharpFirstPass)))
+            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
             {
-                Debug.LogError("Failed to restore nuget packages!");
-                return IsBuilding = false;
+                if (!await RestoreNugetPackagesAsync(nugetPath, storePath) ||
+                    !await RestoreNugetPackagesAsync(nugetPath, $"{storePath}\\{productName}") ||
+                    EditorUserBuildSettings.wsaGenerateReferenceProjects && !await RestoreNugetPackagesAsync(nugetPath, assemblyCSharp) ||
+                    EditorUserBuildSettings.wsaGenerateReferenceProjects && restoreFirstPass && !await RestoreNugetPackagesAsync(nugetPath, assemblyCSharpFirstPass))
+                {
+                    Debug.LogError("Failed to restore nuget packages!");
+                    return IsBuilding = false;
+                }
             }
 
             // Ensure that the generated .appx version increments by modifying Package.appxmanifest
