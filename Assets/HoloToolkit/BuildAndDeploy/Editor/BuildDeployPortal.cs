@@ -96,11 +96,11 @@ namespace HoloToolkit.Unity
                     }
 
                     if (
-#if UNITY_2017_2_OR_NEWER
+#if UNITY_2017_1_OR_NEWER
                         webRequest.isNetworkError || webRequest.isHttpError && 
 #else
                         webRequest.isError &&
-#endif
+#endif // UNITY_2017_1_OR_NEWER
                         webRequest.responseCode != 401)
                     {
                         string response = string.Empty;
@@ -186,11 +186,11 @@ namespace HoloToolkit.Unity
                     EditorUtility.ClearProgressBar();
 
                     if (
-#if UNITY_2017_2_OR_NEWER
-                        webRequest.isNetworkError || webRequest.isHttpError && 
+#if UNITY_2017_1_OR_NEWER
+                        webRequest.isNetworkError || webRequest.isHttpError &&
 #else
                         webRequest.isError &&
-#endif
+#endif // UNITY_2017_1_OR_NEWER
                         webRequest.responseCode != 401)
                     {
                         string response = string.Empty;
@@ -262,11 +262,11 @@ namespace HoloToolkit.Unity
                     EditorUtility.ClearProgressBar();
 
                     if (
-#if UNITY_2017_2_OR_NEWER
-                        webRequest.isNetworkError || webRequest.isHttpError && 
+#if UNITY_2017_1_OR_NEWER
+                        webRequest.isNetworkError || webRequest.isHttpError &&
 #else
                         webRequest.isError &&
-#endif
+#endif // UNITY_2017_1_OR_NEWER
                         webRequest.responseCode != 401)
                     {
                         string response = string.Empty;
