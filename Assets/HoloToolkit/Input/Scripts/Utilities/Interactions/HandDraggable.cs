@@ -367,13 +367,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
 #else
-            if (!eventData.InputSource.SupportsInputInfo(
-                eventData.SourceId, 
-#if UNITY_2017_1_OR_NEWER
-                SupportedInputInfo.PointerPosition))
-#else
-                SupportedInputInfo.Position))
-#endif // UNITY_2017_1_OR_NEWER
+            if (!eventData.InputSource.SupportsInputInfo(eventData.SourceId, SupportedInputInfo.PointerPosition))
             {
                 // The input source must provide positional data for this script to be usable
                 return;
