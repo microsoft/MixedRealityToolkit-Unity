@@ -503,7 +503,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Build
 
             // Build config (and save setting, if it's changed)
             string curBuildConfigString = BuildDeployPreferences.BuildConfig;
-            EditorUserBuildSettings.SetWSADotNetNative(WSABuildType.Debug, true);
+
             WSABuildType buildConfigOption;
             if (curBuildConfigString.ToLower().Equals("master"))
             {
