@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.using UnityEngine;
 
-using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
+
+#if NETFX_CORE
+using System;
+#endif
 
 namespace HoloToolkit.Unity.SpectatorView
 {
