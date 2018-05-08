@@ -41,13 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Build
             x64 = 2
         }
 
-        private enum BuildConfigEnum
-        {
-            Debug = 0,
-            Release = 1,
-            Master = 2
-        }
-
         #endregion Internal Types
 
         #region Constants and Readonly Values
@@ -510,22 +503,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Build
 
             // Build config (and save setting, if it's changed)
             string curBuildConfigString = BuildDeployPreferences.BuildConfig;
-
-            BuildConfigEnum buildConfigOption;
+            EditorUserBuildSettings.SetWSADotNetNative(WSABuildType.Debug, true);
+            WSABuildType buildConfigOption;
             if (curBuildConfigString.ToLower().Equals("master"))
             {
-                buildConfigOption = BuildConfigEnum.Master;
+                buildConfigOption = WSABuildType.Master;
             }
             else if (curBuildConfigString.ToLower().Equals("release"))
             {
-                buildConfigOption = BuildConfigEnum.Release;
+                buildConfigOption = WSABuildType.Release;
             }
             else
             {
-                buildConfigOption = BuildConfigEnum.Debug;
+                buildConfigOption = WSABuildType.Debug;
             }
 
-            buildConfigOption = (BuildConfigEnum)EditorGUILayout.EnumPopup("Build Configuration", buildConfigOption, GUILayout.Width(halfWidth));
+            EditorUserBuildSettings.GetWSADotNetNative(buildConfigOption);
+            buildConfigOption = (WSABuildType)EditorGUILayout.EnumPopup("Build Configuration", buildConfigOption, GUILayout.Width(halfWidth));
 
             string buildConfigString = buildConfigOption.ToString();
 
