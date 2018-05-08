@@ -9,6 +9,10 @@ using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_2018_1_OR_NEWER
+using UnityEditor.Build.Reporting;
+#endif
+
 namespace MixedRealityToolkit.Build
 {
     /// <summary>

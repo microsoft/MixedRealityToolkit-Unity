@@ -65,7 +65,7 @@ namespace MixedRealityToolkit.Build
 #if UNITY_2018_1_OR_NEWER
                 PostBuildAction = async (innerBuildInfo, buildReport) =>
                 {
-                    if (buildReport.summary.result != BuildResult.Succeeded)
+                    if (buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
                     {
                         EditorUtility.DisplayDialog($"{PlayerSettings.productName} WindowsStoreApp Build {buildReport.summary.result}!", "See console for details", "OK");
                     }
