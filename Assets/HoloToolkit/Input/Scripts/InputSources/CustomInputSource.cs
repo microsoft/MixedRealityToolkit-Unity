@@ -103,12 +103,20 @@ namespace HoloToolkit.Unity.InputModule
 
             if (SupportsPosition)
             {
+#if UNITY_2017_1_OR_NEWER
+                supportedInputInfo |= SupportedInputInfo.PointerPosition;
+#else
                 supportedInputInfo |= SupportedInputInfo.Position;
+#endif // UNITY_2017_1_OR_NEWER
             }
 
             if (SupportsRotation)
             {
+#if UNITY_2017_1_OR_NEWER
+                supportedInputInfo |= SupportedInputInfo.PointerRotation;
+#else
                 supportedInputInfo |= SupportedInputInfo.Rotation;
+#endif // UNITY_2017_1_OR_NEWER
             }
 
             if (SupportsRay)
