@@ -9,6 +9,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Build
 {
+    /// <summary>
+    /// Build and Deploy Specific Editor Preferences for the Build and Deploy Window.
+    /// </summary>
     public static class BuildDeployPreferences
     {
         // Constants
@@ -22,12 +25,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Build
         private const string EditorPref_UseSSL = "_BuildDeployWindow_UseSSL";
         private const string EditorPref_ProcessAll = "_BuildDeployWindow_ProcessAll";
 
+        /// <summary>
+        /// The Build Directory that the MRTK Build window will build to.
+        /// </summary>
         public static string BuildDirectory
         {
             get { return EditorPrefsUtility.GetEditorPref(EditorPref_BuildDir, "UWP"); }
             set { EditorPrefsUtility.SetEditorPref(EditorPref_BuildDir, value); }
         }
 
+        /// <summary>
+        /// The absolute path to <see cref="BuildDirectory"/>
+        /// </summary>
         public static string AbsoluteBuildDirectory
         {
             get
@@ -42,36 +51,54 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Build
             }
         }
 
+        /// <summary>
+        /// The current Build Configuration. (Debug, Release, or Master)
+        /// </summary>
         public static string BuildConfig
         {
             get { return EditorPrefsUtility.GetEditorPref(EditorPref_BuildConfig, "Debug"); }
             set { EditorPrefsUtility.SetEditorPref(EditorPref_BuildConfig, value); }
         }
 
+        /// <summary>
+        /// The current Build Platform. (x86 or x64)
+        /// </summary>
         public static string BuildPlatform
         {
             get { return EditorPrefsUtility.GetEditorPref(EditorPref_BuildPlatform, "x86"); }
             set { EditorPrefsUtility.SetEditorPref(EditorPref_BuildPlatform, value); }
         }
 
+        /// <summary>
+        /// Current setting to force rebuilding the appx.
+        /// </summary>
         public static bool ForceRebuild
         {
             get { return EditorPrefsUtility.GetEditorPref(EditorPref_ForceRebuild, false); }
             set { EditorPrefsUtility.SetEditorPref(EditorPref_ForceRebuild, value); }
         }
 
+        /// <summary>
+        /// Current setting to increment build visioning.
+        /// </summary>
         public static bool IncrementBuildVersion
         {
             get { return EditorPrefsUtility.GetEditorPref(EditorPref_IncrementBuildVersion, true); }
             set { EditorPrefsUtility.SetEditorPref(EditorPref_IncrementBuildVersion, value); }
         }
 
+        /// <summary>
+        /// Current setting to fully uninstall and reinstall the appx.
+        /// </summary>
         public static bool FullReinstall
         {
             get { return EditorPrefsUtility.GetEditorPref(EditorPref_FullReinstall, true); }
             set { EditorPrefsUtility.SetEditorPref(EditorPref_FullReinstall, value); }
         }
 
+        /// <summary>
+        /// The current device portal connections.
+        /// </summary>
         public static string DevicePortalConnections
         {
             get
@@ -85,12 +112,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Build
             set { EditorPrefsUtility.SetEditorPref(EditorPref_ConnectInfos, value); }
         }
 
+        /// <summary>
+        /// Current setting to use Single Socket Layer connections to the device portal.
+        /// </summary>
         public static bool UseSSL
         {
             get { return EditorPrefsUtility.GetEditorPref(EditorPref_UseSSL, true); }
             set { EditorPrefsUtility.SetEditorPref(EditorPref_UseSSL, value); }
         }
 
+        /// <summary>
+        /// Current setting to target all the devices registered to the build window.
+        /// </summary>
         public static bool TargetAllConnections
         {
             get { return EditorPrefsUtility.GetEditorPref(EditorPref_ProcessAll, false); }
