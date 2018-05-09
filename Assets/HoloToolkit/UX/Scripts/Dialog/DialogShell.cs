@@ -115,11 +115,12 @@ namespace HoloToolkit.UX.Dialog
             //set titles and types
             if (buttonTypes.Count > 0)
             {
+                // If we have two buttons then do step 1, else 0
                 int step = buttonTypes.Count == 2 ? 1 : 0;
                 for (int i = 0; i < buttonTypes.Count; ++i)
                 {
                     twoButtonSet[i] = buttonsOnDialog[i + step].gameObject;
-                    buttonsOnDialog[i+step].SetTitle(buttonTypes[i].ToString());
+                    buttonsOnDialog[i + step].SetTitle(buttonTypes[i].ToString());
                     buttonsOnDialog[i + step].ButtonTypeEnum = buttonTypes[i];
                 }
             }

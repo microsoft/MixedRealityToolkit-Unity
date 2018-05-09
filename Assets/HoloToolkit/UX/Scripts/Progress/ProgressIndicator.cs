@@ -184,10 +184,7 @@ namespace HoloToolkit.UX.Progress
         /// <param name="message"></param>
         public void SetMessage(string message)
         {
-            if (!gameObject.activeSelf)
-            {
-                return;
-            }
+            if (!gameObject.activeSelf) { return; }
 
             messageText.text = message;
         }
@@ -216,10 +213,7 @@ namespace HoloToolkit.UX.Progress
         /// </summary>
         public void Close ()
         {
-            if (!gameObject.activeSelf)
-            {
-                return;
-            }
+            if (!gameObject.activeSelf) { return; }
 
             closing = true;
             progressText.gameObject.SetActive(false);
