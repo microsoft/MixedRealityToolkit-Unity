@@ -128,10 +128,13 @@ namespace HoloToolkit.UX.Dialog
 
         private void SetButtonsActiveStates(List<DialogButton> buttons, int count)
         {
+
             for (int i = 0; i < buttons.Count; ++i)
             {
+                var flag1 = (count == 1) && (i == 0);
+                var flag2 = (count == 2) && (i > 0) ? true : false;
                 buttons[i].ParentDialog = this;
-                buttons[i].gameObject.SetActive(count == 1 && i == 0 ? true : (count == 2 && i > 0 ? true : false));
+                buttons[i].gameObject.SetActive(flag1 ? true : flag2);
             }
         }
 
