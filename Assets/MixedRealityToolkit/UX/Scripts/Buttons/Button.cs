@@ -271,7 +271,7 @@ namespace MixedRealityToolkit.UX.Buttons
                 if (sourceInfo == InteractionSourceInfo.Hand)
                 {
                     _handCount--;
-                    _bHandVisible = _handCount <= 0;
+                    _bHandVisible = _handCount > 0;
                 }
             }
         }
