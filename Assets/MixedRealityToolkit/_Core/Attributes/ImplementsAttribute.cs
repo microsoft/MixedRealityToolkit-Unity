@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Attributes
 {
