@@ -42,6 +42,12 @@ namespace MixedRealityToolkit.InputModule.Utilities
         protected virtual void OnEnable()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            if (!MotionControllerVisualizer.ConfirmInitialized())
+            {
+                // The motion controller visualizer singleton could not be found.
+                return;
+            }
+
             // Look if the controller has loaded.
             if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out ControllerInfo))
             {
