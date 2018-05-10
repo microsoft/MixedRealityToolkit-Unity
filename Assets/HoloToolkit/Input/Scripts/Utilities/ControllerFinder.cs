@@ -44,7 +44,7 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             if (!MotionControllerVisualizer.ConfirmInitialized())
             {
-                // The motion controller visualizer singleton is likely not present in the scene.
+                // The motion controller visualizer singleton could not be found.
                 return;
             }
 
