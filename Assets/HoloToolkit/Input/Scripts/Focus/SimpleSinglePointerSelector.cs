@@ -72,7 +72,11 @@ namespace HoloToolkit.Unity.InputModule
 
         void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
         {
-            // Nothing to do on source detected.
+            // If a pointing controller just became available, set it as primary.
+            if (SupportsPointingRay(eventData))
+            {
+                ConnectBestAvailablePointer();
+            }
         }
 
         void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
