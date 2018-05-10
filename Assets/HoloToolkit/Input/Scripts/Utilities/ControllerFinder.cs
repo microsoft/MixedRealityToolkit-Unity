@@ -42,6 +42,12 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void OnEnable()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            if (!MotionControllerVisualizer.ConfirmInitialized())
+            {
+                // The motion controller visualizer singleton is likely not present in the scene.
+                return;
+            }
+
             // Look if the controller has loaded.
             if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out ControllerInfo))
             {
