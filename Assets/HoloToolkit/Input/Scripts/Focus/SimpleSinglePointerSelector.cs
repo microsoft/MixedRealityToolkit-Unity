@@ -3,6 +3,10 @@
 
 using UnityEngine;
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+using UnityEngine.XR.WSA.Input;
+#endif
+
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
@@ -292,9 +296,22 @@ namespace HoloToolkit.Unity.InputModule
             inputSourcePointer.ExtentOverride = null;
             inputSourcePointer.PrioritizedLayerMasksOverride = null;
 
-            if (inputSourcePointer.PointerRay == null)
+            if (inputSourcePointer.PointerRay != null)
+            {
+                Destroy(inputSourcePointer.PointerRay.gameObject);
+            }
+
+            if (inputSource is InteractionInputSource)
             {
                 inputSourcePointer.PointerRay = Instantiate(linePointerPrefab).GetComponent<PointerLine>();
+                inputSourcePointer.PointerRay.ExtentOverride = Cursor.DefaultCursorDistance;
+                Handedness handedness;
+                if (((InteractionInputSource)inputSource).TryGetHandedness(sourceId, out handedness))
+                {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                    inputSourcePointer.PointerRay.Handedness = (InteractionSourceHandedness)handedness;
+#endif
+                }
             }
         }
 
