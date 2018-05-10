@@ -3,6 +3,7 @@
 
 using HoloToolkit.Unity.UX;
 using UnityEngine;
+
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
 #endif
@@ -12,7 +13,7 @@ namespace HoloToolkit.Unity.InputModule
     [RequireComponent(typeof(DistorterGravity))]
     [RequireComponent(typeof(LineBase))]
     [RequireComponent(typeof(LineRendererBase))]
-    public class PointerLine : AttachToController, IInputHandler
+    public class PointerLine : BasePointer, IInputHandler
     {
         [Header("Colors")]
         [SerializeField]
@@ -40,18 +41,31 @@ namespace HoloToolkit.Unity.InputModule
 
         protected DistorterGravity DistorterGravity;
 
+        /// <summary>
+        /// True if select is pressed right now
+        /// </summary>
+        protected bool SelectPressed = false;
+
+        /// <summary>
+        /// True if select has been pressed once since startup
+        /// </summary>
+        protected bool ButtonPressedOnce = false;
+
+        /// <summary>
+        /// Line pointer stays inactive until select is pressed for first time
+        /// </summary>
+        public bool InteractionEnabled
+        {
+            get
+            {
+                return ControllerInfo != null;
+            }
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            //if (ControllerInfo != null)
-            //{
-
-            //}
-        }
-
-        protected void Awake()
-        {
             LineBase = GetComponent<LineBase>();
             DistorterGravity = GetComponent<DistorterGravity>();
             LineBase.AddDistorter(DistorterGravity);
@@ -59,81 +73,44 @@ namespace HoloToolkit.Unity.InputModule
             {
                 LineRenderers = LineBase.GetComponentsInChildren<LineRendererBase>();
             }
+
+            LineBase.enabled = false;
+
+            SelectPressed = false;
         }
 
-        /// <summary>
-        /// Line pointer stays inactive until select is pressed for first time
-        /// </summary>
-        public bool InteractionEnabled { get; set; }
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            SelectPressed = false;
+        }
 
         public void UpdateRenderedLine(RayStep[] lines, PointerResult result)
         {
             if (LineBase == null) { return; }
 
-            // Set our first and last points
-            //LineBase.FirstPoint = lines[0].Origin;
-            //LineBase.LastPoint = lines[0].Terminus;
+            Gradient lineColor = LineColorNoTarget;
 
-            LineBase.LastPoint = result.End.Point;
-
-            //float stepSize = 1f / lines.Length;
-            //Vector3 lastPoint = LineBase.GetUnclampedPoint(0f);
-
-            //for (int i = 0; i < lines.Length; i++)
-            //{
-            //    Vector3 currentPoint = LineBase.GetUnclampedPoint(stepSize * (i + 1));
-            //    lines[i] = new RayStep(lastPoint, currentPoint);
-            //    lastPoint = currentPoint;
-            //}
-
-            // Use the results from the last update to set our NavigationResult
-            float clearWorldLength = 0f;
-            DistorterGravity.enabled = false;
-
-            Gradient lineColor;
-            if (result.End.Object != null)
-            {
-                lineColor = LineColorSelected;
-            }
-            else
-            {
-                lineColor = LineColorNoTarget;
-            }
-
-            if (true)
+            if (InteractionEnabled)
             {
                 LineBase.enabled = true;
 
-                //if (selectPressed)
-                //{
-                //    lineColor = LineColorSelected;
-                //}
+                // If we hit something
+                if (result.End.Object != null)
+                {
+                    lineColor = LineColorValid;
+                    LineBase.LastPoint = result.End.Point;
+                }
+                else
+                {
+                    LineBase.LastPoint = RayStep.GetPointByDistance(lines, ExtentOverride.Value);
+                }
 
-                //// If we hit something
-                //if (Result.CurrentPointerTarget != null)
-                //{
-                //    // Use the step index to determine the length of the hit
-                //    for (int i = 0; i <= Result.RayStepIndex; i++)
-                //    {
-                //        if (i == Result.RayStepIndex)
-                //        {
-                //            // Only add the distance between the start point and the hit
-                //            clearWorldLength += Vector3.Distance(Result.StartPoint, Result.StartPoint);
-                //        }
-                //        else if (i < Result.RayStepIndex)
-                //        {
-                //            // Add the full length of the step to our total distance
-                //            clearWorldLength += Rays[i].Length;
-                //        }
-                //    }
-
-                //    // Clamp the end of the parabola to the result hit's point
-                //    LineBase.LineEndClamp = LineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, LineCastResolution);
-                //}
-                //else
-                //{
-                //    LineBase.LineEndClamp = 1f;
-                //}
+                if (SelectPressed)
+                {
+                    lineColor = LineColorSelected;
+                }
             }
             else
             {
@@ -148,37 +125,31 @@ namespace HoloToolkit.Unity.InputModule
 
         protected override void OnAttachToController()
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // Subscribe to input now that we're parented under the controller
-            InteractionManager.InteractionSourceUpdated += InteractionSourceUpdated;
-#endif
+            InputManager.Instance.AddGlobalListener(gameObject);
         }
 
         protected override void OnDetachFromController()
         {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             // Unsubscribe from input now that we've detached from the controller
-            InteractionManager.InteractionSourceUpdated -= InteractionSourceUpdated;
-#endif
-        }
-
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-        private void InteractionSourceUpdated(InteractionSourceUpdatedEventArgs obj)
-        {
-            // Check if the event came from the correct controller
-            if (obj.state.source.handedness == Handedness)
-            {
-                //Select
-            }
+            InputManager.Instance.RemoveGlobalListener(gameObject);
         }
 
         void IInputHandler.OnInputDown(InputEventData eventData)
         {
+            if (eventData.PressType == InteractionSourcePressInfo.Select)
+            {
+                SelectPressed = true;
+            }
+            ButtonPressedOnce = true;
         }
 
         void IInputHandler.OnInputUp(InputEventData eventData)
         {
+            if (eventData.PressType == InteractionSourcePressInfo.Select)
+            {
+                SelectPressed = false;
+            }
         }
-#endif
     }
 }
