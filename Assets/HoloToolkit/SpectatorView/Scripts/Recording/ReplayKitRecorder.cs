@@ -19,63 +19,64 @@ namespace HoloToolkit.Unity.SpectatorView
         /// <summary>
         /// Controls container gameObject
         /// </summary>
-        [Tooltip("Controls container gameObject")] 
+        [Tooltip("Controls container gameObject")]
         [SerializeField]
         private GameObject controls;
 
+#pragma warning disable 0414
         /// <summary>
         /// Seconds to countdown before recording
         /// </summary>
-        [Tooltip("Seconds to countdown before recording")] 
+        [Tooltip("Seconds to countdown before recording")]
         [SerializeField]
         private int countDownNumber = 3;
+#pragma warning restore 0414
 
-        /// <summary>
-        /// If an error ocurred, this variable will hold the last error message
-        /// </summary>
-        private string lastError = "";
-
+#if UNITY_IOS
         /// <summary>
         /// Is the component preparing for recording (Counting down)
         /// </summary>
         private bool preparingForRecording;
+#endif
 
         /// <summary>
         /// Record button gameObject
         /// </summary>
-        [Tooltip("Record button gameObject")] 
+        [Tooltip("Record button gameObject")]
         public GameObject RecordButton;
 
         /// <summary>
         /// Recording countdown button gameObject
         /// </summary>
-        [Tooltip("Recording countdown button gameObject")] 
+        [Tooltip("Recording countdown button gameObject")]
         [SerializeField]
         private GameObject recordCountdownButton;
 
         /// <summary>
         /// Record countdown textfield
         /// </summary>
-        [Tooltip("Record countdown textfield")] 
+        [Tooltip("Record countdown textfield")]
         [SerializeField]
         private Text recordCountdownText;
 
+#if UNITY_IOS
         /// <summary>
         /// Used to check whether the component is recording or not
         /// </summary>
         private bool recording = false;
+#endif
 
         /// <summary>
         /// Replay (preview) button gameObject
         /// </summary>
-        [Tooltip("Replay (preview) button gameObject")] 
+        [Tooltip("Replay (preview) button gameObject")]
         [SerializeField]
         private GameObject replayButton;
 
         /// <summary>
         /// Stop button gameObject
         /// </summary>
-        [Tooltip("Stop button gameObject")] 
+        [Tooltip("Stop button gameObject")]
         [SerializeField]
         private GameObject stopButton;
 
@@ -84,8 +85,8 @@ namespace HoloToolkit.Unity.SpectatorView
         /// </summary>
         public GameObject Controls
         {
-            get {return Controls;}
-            set {Controls = value;}
+            get { return Controls; }
+            set { Controls = value; }
         }
 
         /// <summary>
@@ -93,8 +94,8 @@ namespace HoloToolkit.Unity.SpectatorView
         /// </summary>
         public GameObject RecordCountdownButton
         {
-            get {return recordCountdownButton;}
-            set {recordCountdownButton = value;}
+            get { return recordCountdownButton; }
+            set { recordCountdownButton = value; }
         }
 
         /// <summary>
@@ -102,8 +103,8 @@ namespace HoloToolkit.Unity.SpectatorView
         /// </summary>
         public Text RecordCountdownText
         {
-            get {return recordCountdownText;}
-            set {recordCountdownText = value;}
+            get { return recordCountdownText; }
+            set { recordCountdownText = value; }
         }
 
         /// <summary>
@@ -111,8 +112,8 @@ namespace HoloToolkit.Unity.SpectatorView
         /// </summary>
         public GameObject ReplayButton
         {
-            get {return replayButton;}
-            set {replayButton = value;}
+            get { return replayButton; }
+            set { replayButton = value; }
         }
 
         /// <summary>
@@ -120,8 +121,8 @@ namespace HoloToolkit.Unity.SpectatorView
         /// </summary>
         public GameObject StopButton
         {
-            get {return stopButton;}
-            set {stopButton = value;}
+            get { return stopButton; }
+            set { stopButton = value; }
         }
 
         private void Start()
@@ -134,7 +135,7 @@ namespace HoloToolkit.Unity.SpectatorView
 #if UNITY_IOS
             recording = ReplayKit.isRecording;
 
-            if(recording)
+            if (recording)
             {
                 StopButton.SetActive(true);
                 RecordButton.SetActive(false);
@@ -145,7 +146,7 @@ namespace HoloToolkit.Unity.SpectatorView
             }
 
             // Check if theres any available recorded video
-            if(ReplayKit.recordingAvailable)
+            if (ReplayKit.recordingAvailable)
             {
                 ReplayButton.SetActive(true);
             }
@@ -154,14 +155,14 @@ namespace HoloToolkit.Unity.SpectatorView
                 ReplayButton.SetActive(false);
             }
 
-            if(preparingForRecording)
+            if (preparingForRecording)
             {
                 RecordCountdownButton.SetActive(true);
             }
             else
             {
                 RecordCountdownButton.SetActive(false);
-                if(!recording)
+                if (!recording)
                 {
                     RecordButton.SetActive(true);
                 }
@@ -175,7 +176,7 @@ namespace HoloToolkit.Unity.SpectatorView
         public void PrepareForRecording()
         {
 #if UNITY_IOS
-            if(!ReplayKit.APIAvailable)
+            if (!ReplayKit.APIAvailable)
             {
                 return;
             }
@@ -195,6 +196,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// </summary>
         public void Countdown()
         {
+#if UNITY_IOS
             RecordCountdownText.text = countDownNumber.ToString();
             if (countDownNumber != 0)
             {
@@ -208,6 +210,9 @@ namespace HoloToolkit.Unity.SpectatorView
                 preparingForRecording = false;
                 StartRecording();
             }
+#else
+            Debug.LogWarning("Not implemented on the current platform");
+#endif
         }
 
         /// <summary>
@@ -216,12 +221,12 @@ namespace HoloToolkit.Unity.SpectatorView
         public void StartRecording()
         {
 #if UNITY_IOS
-            if(!ReplayKit.APIAvailable)
+            if (!ReplayKit.APIAvailable)
             {
                 return;
             }
 
-            if(!recording)
+            if (!recording)
             {
                 ReplayKit.StartRecording(true, true);
                 Controls.SetActive(false);
@@ -237,7 +242,7 @@ namespace HoloToolkit.Unity.SpectatorView
         public void StopRecording()
         {
 #if UNITY_IOS
-            if(recording)
+            if (recording)
             {
                 ReplayKit.StopRecording();
                 RecordButton.SetActive(true);

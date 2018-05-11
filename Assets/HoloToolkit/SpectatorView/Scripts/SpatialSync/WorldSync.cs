@@ -79,12 +79,14 @@ namespace HoloToolkit.Unity.SpectatorView
         /// </summary>
         public OnWorldSyncCompleteEvent OnWorldSyncCompleteClient;
 
+#pragma warning disable 0414
         /// <summary>
         /// String used to sync transform information
         /// stored in the format: xPos:yPos:zPos:yRot
         /// </summary>
         [SyncVar(hook = "AdjustOrientation")]
         private string syncedTransformString;
+#pragma warning restore 0414
 
         /// <summary>
         /// Position of the marker in World-Space
