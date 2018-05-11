@@ -370,7 +370,8 @@ namespace HoloToolkit.Unity.UX
         }
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.SourceId == inputDownEventData.SourceId)
+            if ((inputDownEventData != null) &&
+                (eventData.SourceId == inputDownEventData.SourceId))
             {
                 inputDownEventData = null;
                 ResetRigHandles();
