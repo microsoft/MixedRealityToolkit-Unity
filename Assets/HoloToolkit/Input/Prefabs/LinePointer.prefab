@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   element: 6
-  handedness: 2
+  handedness: 0
   SetChildrenInactiveWhenDetached: 1
   PositionOffset: {x: 0, y: 0, z: 0}
   RotationOffset: {x: 0, y: 0, z: 0}
@@ -241,7 +241,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  LineMaterial: {fileID: 0}
+  LineMaterial: {fileID: 2100000, guid: d9f5efc2f1dfc6846a9ebeac2f029eff, type: 2}
   RoundedEdges: 1
   RoundedCaps: 1
   lineRenderer: {fileID: 0}
