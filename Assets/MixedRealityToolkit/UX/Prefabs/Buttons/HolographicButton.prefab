@@ -36,14 +36,12 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4249060311757736}
+  - component: {fileID: 65091470401894616}
   - component: {fileID: 114549673379926378}
   - component: {fileID: 114759408391228376}
   - component: {fileID: 114731001419964972}
   - component: {fileID: 114540301864412650}
   - component: {fileID: 114284851947377390}
-  - component: {fileID: 65091470401894616}
-  - component: {fileID: 95444211700001698}
-  - component: {fileID: 114586770699789526}
   m_Layer: 5
   m_Name: HolographicButton
   m_TagString: Untagged
@@ -340,23 +338,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.12, y: 0.12, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!95 &95444211700001698
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1210820392543280}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: dade752fc71c3d940ba5cc7eaf201f24, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!102 &102845526646414632
 TextMesh:
   serializedVersion: 3
@@ -434,61 +415,6 @@ MonoBehaviour:
   RequireGaze: 1
   MainCollider: {fileID: 65091470401894616}
   MainRenderer: {fileID: 23637783586042108}
---- !u!114 &114586770699789526
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1210820392543280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 728fec8e9feecf64f933543126cbecae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TargetAnimator: {fileID: 95444211700001698}
-  AnimActions:
-  - ButtonState: 0
-    ParamName: State
-    ParamType: 3
-    BoolValue: 0
-    IntValue: 0
-    FloatValue: 0
-    InvalidParam: 0
-  - ButtonState: 1
-    ParamName: State
-    ParamType: 3
-    BoolValue: 0
-    IntValue: 1
-    FloatValue: 0
-    InvalidParam: 0
-  - ButtonState: 2
-    ParamName: State
-    ParamType: 3
-    BoolValue: 0
-    IntValue: 2
-    FloatValue: 0
-    InvalidParam: 0
-  - ButtonState: 3
-    ParamName: State
-    ParamType: 3
-    BoolValue: 0
-    IntValue: 3
-    FloatValue: 0
-    InvalidParam: 0
-  - ButtonState: 4
-    ParamName: State
-    ParamType: 3
-    BoolValue: 0
-    IntValue: 4
-    FloatValue: 0
-    InvalidParam: 0
-  - ButtonState: 5
-    ParamName: State
-    ParamType: 3
-    BoolValue: 0
-    IntValue: 5
-    FloatValue: 0
-    InvalidParam: 0
 --- !u!114 &114731001419964972
 MonoBehaviour:
   m_ObjectHideFlags: 1
