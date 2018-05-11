@@ -43,6 +43,7 @@ namespace HoloToolkit.Examples.UX
         private int numButtons = 1;
 
         private TextMesh resultTextMesh;
+        private Button button;
 
         /// <summary>
         /// This function is called to set the settings for the dialog and then open it.
@@ -55,11 +56,14 @@ namespace HoloToolkit.Examples.UX
         {
             isDialogLaunched = true;
 
-            //Open Dialog by sending in prefab...
+            //Open Dialog by sending in prefab
             Dialog dialog = Dialog.Open(dialogPrefab.gameObject, buttons, title, message);
 
-            //listen for OnClosed Event
-            dialog.OnClosed += OnClosed;
+            if(dialog != null)
+            {
+                //listen for OnClosed Event
+                dialog.OnClosed += OnClosed;
+            }
 
             // Wait for dialog to close
             while (dialog.State < DialogState.InputReceived)
@@ -76,7 +80,11 @@ namespace HoloToolkit.Examples.UX
         private void OnEnable()
         {
             resultTextMesh = ResultText.GetComponent<TextMesh>();
-            GetComponent<Button>().OnButtonClicked += OnButtonClicked;
+            button = GetComponent<Button>();
+            if(button != null)
+            {
+                button.OnButtonClicked += OnButtonClicked;
+            }
         }
 
         private void OnButtonClicked(GameObject obj)
