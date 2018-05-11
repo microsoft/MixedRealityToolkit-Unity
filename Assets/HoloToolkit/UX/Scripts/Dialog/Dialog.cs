@@ -31,6 +31,10 @@ namespace HoloToolkit.UX.Dialog
             {
                 return state;
             }
+            set
+            {
+                state = value;
+            }
         }
 
         /// <summary>
@@ -51,7 +55,7 @@ namespace HoloToolkit.UX.Dialog
 
         protected void Launch(DialogResult newResult)
         {
-            if (state != DialogState.Uninitialized)
+            if (State != DialogState.Uninitialized)
             {
                 return;
             }
@@ -72,19 +76,19 @@ namespace HoloToolkit.UX.Dialog
             FinalizeLayout();
 
             // Open dialog
-            state = DialogState.Opening;
+            State = DialogState.Opening;
             yield return StartCoroutine(OpenDialog());
-            state = DialogState.WaitingForInput;
+            State = DialogState.WaitingForInput;
             // Wait for input
-            while (state == DialogState.WaitingForInput)
+            while (State == DialogState.WaitingForInput)
             {
                 UpdateDialog();
                 yield return null;
             }
             // Close dialog
-            state = DialogState.Closing;
+            State = DialogState.Closing;
             yield return StartCoroutine(CloseDialog());
-            state = DialogState.Closed;
+            State = DialogState.Closed;
             // Callback
             if (OnClosed != null)
             {
