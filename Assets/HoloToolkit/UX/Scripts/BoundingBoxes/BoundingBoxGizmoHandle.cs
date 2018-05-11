@@ -368,6 +368,7 @@ namespace HoloToolkit.Unity.UX
         public void OnSourceDetected(SourceStateEventData eventData)
         {
         }
+
         public void OnSourceLost(SourceStateEventData eventData)
         {
             if ((inputDownEventData != null) &&
@@ -375,8 +376,9 @@ namespace HoloToolkit.Unity.UX
             {
                 inputDownEventData = null;
                 ResetRigHandles();
+
+                eventData.Use();
             }
-            eventData.Use();
         }
     }
 }
