@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
