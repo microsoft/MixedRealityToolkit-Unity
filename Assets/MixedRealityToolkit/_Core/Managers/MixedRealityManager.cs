@@ -105,11 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             // TODO Microsoft.MixedReality.Toolkit - Active SDK Discovery
             #endregion ActiveSDK Discovery
 
-            #region SDK Initialization
-            // TODO Microsoft.MixedReality.Toolkit - SDK Initialization
-            #endregion SDK Initialization
-
-            #region Managers Initialization
+            #region Managers Registration
 
             //If the Mixed Reality Manager is not configured, stop.
             if (!ActiveProfile)
@@ -142,13 +138,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 AddManager(manager.Key, manager.Value);
             }
 
+            #endregion Managers Initialization
+
+            #region SDK Initialization
+            // TODO Microsoft.MixedReality.Toolkit - SDK Initialization
+            IMixedRealityDevice activeDevice = new Devices.WindowsMixedReality.WMRDevice();
+            activeDevice.Initialize();
+            #endregion SDK Initialization
+
+            #region Managers Initialization
+
             //Initialize all managers
             foreach (var manager in ActiveProfile.ActiveManagers)
             {
                 manager.Value.Initialize();
             }
 
-            #endregion Managers Initialization
+            #endregion
         }
 
         #region MonoBehaviour Implementation

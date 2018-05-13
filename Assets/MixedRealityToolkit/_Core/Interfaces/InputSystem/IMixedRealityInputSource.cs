@@ -12,14 +12,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
     /// </summary>
     public interface IMixedRealityInputSource : IEqualityComparer
     {
+        /// <summary>
+        /// The ID assigned to the Controller
+        /// </summary>
         uint SourceId { get; }
 
+        /// <summary>
+        /// The Name assigned to the Controller
+        /// </summary>
         string SourceName { get; }
 
+        /// <summary>
+        /// The list of Pointers attached to the Controller
+        /// </summary>
         IMixedRealityPointer[] Pointers { get; }
 
         /// <summary>
-        /// Returns the input info that the input source can provide.
+        /// List the available capabilities of the controller for a simpler lookup.
         /// </summary>
         InputType[] Capabilities { get; }
 

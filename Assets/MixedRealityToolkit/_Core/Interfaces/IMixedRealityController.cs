@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
@@ -8,41 +9,41 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// <summary>
     /// The Controller definition defines the Controller as defined by the SDK / Unity.
     /// </summary>
-    public struct Controller
+    public interface IMixedRealityController<T> : IMixedRealityInputSource
     {
-        /// <summary>
-        /// The ID assigned to the Controller
-        /// </summary>
-        public string Id { get; set; }
-
         /// <summary>
         /// The designated hand that the controller is managing, as defined by the SDK / Unity.
         /// </summary>
-        public Handedness Handedness { get; set; }
+        Handedness Handedness { get; }
 
         /// <summary>
         /// Outputs the current position of the controller, as defined by the SDK / Unity.
         /// </summary>
-        public Vector3 Position { get; set; }
+        T Controller { get; }
 
         /// <summary>
-        /// Outputs the current rotation of the controller, as defined by the SDK / Unity.
+        /// Outputs the current Pointer position of the controller, as defined by the SDK / Unity.
         /// </summary>
-        public Quaternion Rotation { get; set; }
+        T Pointer { get; }
+
+        /// <summary>
+        /// Outputs the current Grip position of the controller, as defined by the SDK / Unity.
+        /// </summary>
+        T Grip { get;}
 
         /// <summary>
         /// Outputs the current state of the controller, whether it is tracked or not. As defined by the SDK / Unity.
         /// </summary>
-        public ControllerState ControllerState { get; set; }
+        ControllerState ControllerState { get; }
 
         /// <summary>
         /// Details the list of available buttons / interactions available from the controller.
         /// </summary>
-        public InteractionDefinition[] Interactions { get; set; }
+        InteractionDefinition[] Interactions { get; }
 
         /// <summary>
-        /// List the available capabilities of the controller for a simpler lookup.
+        /// The model to instantiate in the scene for this controller
         /// </summary>
-        public InputType[] Capabilities { get; set; }
+        GameObject ControllerModel { get; set; }
     }
 }
