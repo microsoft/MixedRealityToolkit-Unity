@@ -140,12 +140,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             #endregion Managers Initialization
 
-            #region SDK Initialization
-            // TODO Microsoft.MixedReality.Toolkit - SDK Initialization
-            IMixedRealityDevice activeDevice = new Devices.WindowsMixedReality.WMRDevice();
-            activeDevice.Initialize();
-            #endregion SDK Initialization
-
             #region Managers Initialization
 
             //Initialize all managers
@@ -155,6 +149,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
 
             #endregion
+
+            #region SDK Initialization
+            // TODO Microsoft.MixedReality.Toolkit - SDK Initialization
+            IMixedRealityDevice activeDevice = new Devices.WindowsMixedReality.WMRDevice();
+            activeDevice.Initialize();
+            #endregion SDK Initialization
         }
 
         #region MonoBehaviour Implementation

@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
     public class WMRDevice : IMixedRealityDevice
     {
-        private readonly Dictionary<uint, WindowsMixedRealityController> activeControllers;
+        private readonly Dictionary<uint, WindowsMixedRealityController> activeControllers = new Dictionary<uint, WindowsMixedRealityController>();
         Vector3 controllerPosition, pointerPosition, gripPosition = Vector3.zero;
         Quaternion controllerRotation, pointerRotation, gripRotation = Quaternion.identity;
         private IMixedRealityInputSystem inputSystem;
@@ -35,7 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         private void InitializeSources()
         {
-
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
             InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
             InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
