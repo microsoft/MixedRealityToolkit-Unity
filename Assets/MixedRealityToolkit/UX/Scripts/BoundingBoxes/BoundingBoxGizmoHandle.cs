@@ -386,14 +386,17 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         public void OnSourceDetected(SourceStateEventData eventData)
         {
         }
+
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.SourceId == inputDownEventData.SourceId)
+            if ((inputDownEventData != null) &&
+                (eventData.SourceId == inputDownEventData.SourceId))
             {
                 inputDownEventData = null;
                 ResetRigHandles();
+
+                eventData.Use();
             }
-            eventData.Use();
         }
     }
 }
