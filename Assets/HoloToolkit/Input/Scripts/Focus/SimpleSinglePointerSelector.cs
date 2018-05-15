@@ -22,10 +22,12 @@ namespace HoloToolkit.Unity.InputModule
         public Cursor Cursor;
 
         [Tooltip("If true, search for a cursor if one isn't explicitly set.")]
-        public bool SearchForCursorIfUnset = true;
+        [SerializeField]
+        private bool SearchForCursorIfUnset = true;
 
         [Tooltip("If true, always select the best pointer available (OS behaviour does not autoselect).")]
-        public bool AutoselectBestAvailable = false;
+        [SerializeField]
+        private bool AutoselectBestAvailable = false;
 
         #endregion
 
