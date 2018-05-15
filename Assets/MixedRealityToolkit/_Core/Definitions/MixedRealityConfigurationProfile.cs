@@ -82,6 +82,32 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
+        [Tooltip("Default Left Controller Model")]
+        private GameObject leftControllerModel;
+
+        /// <summary>
+        /// Enable and configure the controller rendering for the Mixed Reality Toolkit
+        /// </summary>
+        public GameObject LeftControllerModel
+        {
+            get { return leftControllerModel; }
+            private set { leftControllerModel = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Default Right Controller Model")]
+        private GameObject rightControllerModel;
+
+        /// <summary>
+        /// Enable and configure the controller rendering for the Mixed Reality Toolkit
+        /// </summary>
+        public GameObject RightControllerModel
+        {
+            get { return rightControllerModel; }
+            private set { rightControllerModel = value; }
+        }
+
+        [SerializeField]
         [Header("Boundary Settings")]
         [Tooltip("Enable the Boundary on Startup")]
         private bool enableBoundarySystem = true;

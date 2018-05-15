@@ -78,19 +78,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
         #region Active SDK components
 
-        /// <summary>
-        /// The Active Controllers property lists all the controllers detected by the Mixed Reality manager on startup
-        /// </summary>
-        //[SerializeField]
-        //[Tooltip("The collection of currently active / detected controllers")]
-        //private Controller[] activeControllers = null;
-
         ///// <summary>
         ///// The Active Headset property maintains the Headsets/SDK detected by the Mixed Reality manager on startup
         ///// </summary>
-        //[SerializeField]
-        //[Tooltip("The currently active / detected Headset or SDK")]
-        //private Headset activeHeadset = default(Headset);
+        [SerializeField]
+        [Tooltip("The currently active / detected Headset or SDK")]
+        private IMixedRealityDevice activeDevice = default(IMixedRealityDevice);
+
+        public IMixedRealityDevice ActiveDevice { get { return activeDevice; } }
 
         #endregion Active SDK components
 
@@ -138,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 AddManager(manager.Key, manager.Value);
             }
 
-            #endregion Managers Initialization
+            #endregion Managers Registration
 
             #region Managers Initialization
 
@@ -148,11 +143,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 manager.Value.Initialize();
             }
 
-            #endregion
+            #endregion Managers Initialization
 
             #region SDK Initialization
             // TODO Microsoft.MixedReality.Toolkit - SDK Initialization
-            IMixedRealityDevice activeDevice = new Devices.WindowsMixedReality.WMRDevice();
+            activeDevice = new Devices.WindowsMixedReality.WMRDevice();
             activeDevice.Initialize();
             #endregion SDK Initialization
         }

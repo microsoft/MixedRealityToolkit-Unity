@@ -2,37 +2,28 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputTypes;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System.Collections;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
-    public struct WindowsMixedRealityController : IMixedRealityController<SixDoF>
+    public struct WindowsMixedRealityController : IMixedRealityInputSource
     {
         public uint SourceId { get; set; }
 
         public string SourceName { get; }
 
+        public ControllerState ControllerState { get; set; }
+
+        public Handedness Handedness { get; set; }
+        
         public IMixedRealityPointer[] Pointers { get; set; }
 
         public InputType[] Capabilities { get; set; }
-
-        public Handedness Handedness { get; set; }
-
-        public SixDoF Controller { get; set; }
-
-        public SixDoF Pointer { get; set; }
-
-        public SixDoF Grip { get; set; }
-
-        public ControllerState ControllerState { get; set; }
-
+        
         public InteractionDefinition[] Interactions { get; set; }
-
-        public GameObject ControllerModel { get; set; }
-
+                
         //TODO - Needs re-implementing, as there may be more than left == right
         #region IEquality Implementation
 

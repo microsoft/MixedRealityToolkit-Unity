@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputTypes;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
@@ -15,11 +15,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
     public class WMRDevice : IMixedRealityDevice
     {
-        private readonly Dictionary<uint, WindowsMixedRealityController> activeControllers = new Dictionary<uint, WindowsMixedRealityController>();
+        private readonly Dictionary<uint, IMixedRealityInputSource> activeControllers = new Dictionary<uint, IMixedRealityInputSource>();
         Vector3 controllerPosition, pointerPosition, gripPosition = Vector3.zero;
         Quaternion controllerRotation, pointerRotation, gripRotation = Quaternion.identity;
         private IMixedRealityInputSystem inputSystem;
 
+
+        public IMixedRealityInputSource[] GetActiveControllers()
+        {
+            return activeControllers.ExportDictionaryValuesAsArray();
+        }
 
         public WMRDevice()
         {
@@ -52,8 +57,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         #region New Handlers
 
+        // TODO (understatement)
+        // 1 - Add InteractionDefinitions for Position, Pointer, Grip and Buttons
+        // 2 - Check logic for retrieving an Interaction
+        // 3,  - Update the Update logic to refresh data
 
-        private WindowsMixedRealityController GetOrAddWindowsMixedRealityController(InteractionSourceState interactionSourceState)
+        private IMixedRealityInputSource GetOrAddWindowsMixedRealityController(InteractionSourceState interactionSourceState)
         {
             //If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(interactionSourceState.source.id))
@@ -101,9 +110,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 SourceId = interactionSourceState.source.id,
                 Handedness = interactionSourceState.source.handedness == InteractionSourceHandedness.Left ? Handedness.Left : Handedness.Right,
                 ControllerState = controllerTracked ? ControllerState.Tracked : ControllerState.NotTracked,
-                Controller = new SixDoF(new Tuple<Vector3, Quaternion>(controllerPosition, controllerRotation)),
-                Pointer = new SixDoF(new Tuple<Vector3, Quaternion>(pointerPosition, pointerRotation)),
-                Grip = new SixDoF(new Tuple<Vector3, Quaternion>(gripPosition, gripRotation)),
                 Capabilities = controllerCapabilities.ToArray()
             };
 
@@ -116,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             // Get Controller start position
             bool controllerTracked = interactionSourceState.sourcePose.TryGetPosition(out controllerPosition);
-
+            Debug.Log($"Controller Position on Read [{controllerPosition}]");
             // Get Controller start rotation
             interactionSourceState.sourcePose.TryGetRotation(out controllerRotation);
 
@@ -225,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         /// <param name="interactionSourceState">Interaction source to use to update the source information.</param>
         /// <param name="sourceData">GenericInputPointingSource structure to update.</param>
-        private void UpdateInteractionSource(InteractionSourceState interactionSourceState, WindowsMixedRealityController sourceData)
+        private void UpdateInteractionSource(InteractionSourceState interactionSourceState, IMixedRealityInputSource sourceData)
         {
             Debug.Assert(interactionSourceState.source.id == sourceData.SourceId, "An UpdateSourceState call happened with mismatched source ID.");
             //TODO - Do we need Kind?
@@ -235,8 +241,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             //Update Controller
             sourceData.Controller.Update(controllerPosition, controllerRotation);
+            sourceData.ControllerPosition = controllerPosition; sourceData.ControllerRotation = controllerRotation;
+            Debug.Log($"Controller Position after Read [{controllerPosition}]");
 
             //Update Pointer
+            //TODO - Review, as we no longer have a MixedRealityCameraParent, this will cause issue.
             if (CameraCache.Main.transform.parent != null)
             {
                 pointerPosition = CameraCache.Main.transform.parent.TransformPoint(pointerPosition);
@@ -246,12 +255,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
 
             //Update Grip
+            //TODO - Review, as we no longer have a MixedRealityCameraParent, this will cause issue.
             if (CameraCache.Main.transform.parent != null)
             {
                 gripPosition = CameraCache.Main.transform.parent.TransformPoint(gripPosition);
                 gripRotation.eulerAngles = CameraCache.Main.transform.parent.TransformDirection(gripRotation.eulerAngles);
             }
             sourceData.Grip.Update(gripPosition, gripRotation);
+
+            // Update Touchpad
+            if (interactionSourceState.touchpadTouched)
+            {
+            }
         }
 
         #endregion
@@ -462,14 +477,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             //Destroy Stuff
         }
 
-        private void RemoveInteractionInputSource(WindowsMixedRealityController interactionSource)
+        private void RemoveInteractionInputSource(IMixedRealityInputSource interactionSource)
         {
             if (interactionSource.SourceId == 0) { return; }
 
             inputSystem.RaiseSourceLost(interactionSource);
             activeControllers.Remove(interactionSource.SourceId);
         }
-
         #endregion
     }
 }

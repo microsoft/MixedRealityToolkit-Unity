@@ -113,5 +113,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             }
         }
 
+        /// <summary>
+        /// Exports the values of a uint indexed Dictionary as an Array
+        /// </summary>
+        /// <typeparam name="T">Type of data stored in the values of the Dictionary</typeparam>
+        /// <param name="input">Dictionary to be exported</param>
+        /// <returns>array in the type of data stored in the Dictionary</returns>
+        public static T[] ExportDictionaryValuesAsArray<T>(this Dictionary<uint,T> input)
+        {
+            T[] output = new T[input.Count];
+            input.Values.CopyTo(output, 0);
+            return output;
+        }
     }
 }

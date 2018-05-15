@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using System.Collections;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 {
@@ -23,6 +23,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         string SourceName { get; }
 
         /// <summary>
+        /// Outputs the current state of the controller, whether it is tracked or not. As defined by the SDK / Unity.
+        /// </summary>
+        ControllerState ControllerState { get; }
+
+        /// <summary>
+        /// The designated hand that the controller is managing, as defined by the SDK / Unity.
+        /// </summary>
+        Handedness Handedness { get; }
+
+        /// <summary>
         /// The list of Pointers attached to the Controller
         /// </summary>
         IMixedRealityPointer[] Pointers { get; }
@@ -31,6 +41,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// List the available capabilities of the controller for a simpler lookup.
         /// </summary>
         InputType[] Capabilities { get; }
+
+        /// <summary>
+        /// Details the list of available buttons / interactions available from the controller.
+        /// </summary>
+        InteractionDefinition[] Interactions { get; }
 
         /// <summary>
         /// Returns whether the input source supports the specified input types.
