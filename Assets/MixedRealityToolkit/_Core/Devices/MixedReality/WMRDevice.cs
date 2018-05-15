@@ -40,6 +40,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         private void InitializeSources()
         {
+            //Tried but it fails to build and causes errors in Unity :S (recognized in the Player project)
+            //var spatialManager = Windows.UI.Input.Spatial.SpatialInteractionManager.GetForCurrentView();
+            //spatialManager.SourceDetected += spatialManager_SourceDetected;
+            //spatialManager.SourcePressed += SpatialManager_SourcePressed;
+
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
             InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
             InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
@@ -55,12 +60,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
         }
 
+        //TODO - kept for reference - clean later.
+        //private void SpatialManager_SourcePressed(Windows.UI.Input.Spatial.SpatialInteractionManager sender, Windows.UI.Input.Spatial.SpatialInteractionSourceEventArgs args)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //private void spatialManager_SourceDetected(Windows.UI.Input.Spatial.SpatialInteractionManager sender, Windows.UI.Input.Spatial.SpatialInteractionSourceEventArgs args)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
         #region New Handlers
 
         // TODO (understatement)
         // 1 - Add InteractionDefinitions for Position, Pointer, Grip and Buttons
         // 2 - Check logic for retrieving an Interaction
-        // 3,  - Update the Update logic to refresh data
+        // 3 - Update the Update logic to refresh data
 
         private IMixedRealityInputSource GetOrAddWindowsMixedRealityController(InteractionSourceState interactionSourceState)
         {
@@ -109,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             {
                 SourceId = interactionSourceState.source.id,
                 Handedness = interactionSourceState.source.handedness == InteractionSourceHandedness.Left ? Handedness.Left : Handedness.Right,
-                ControllerState = controllerTracked ? ControllerState.Tracked : ControllerState.NotTracked,
+                InputSourceState = controllerTracked ? InputSourceState.Tracked : InputSourceState.NotTracked,
                 Capabilities = controllerCapabilities.ToArray()
             };
 

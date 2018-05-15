@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         public string SourceName { get; }
 
-        public ControllerState ControllerState { get; set; }
+        public InputSourceState InputSourceState { get; set; }
 
         public Handedness Handedness { get; set; }
         

@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// The Controller State defines whether a controller or headset is currently being tracker or not.
     /// This enables developers to be able to handle non-tracked situations and react accordingly
     /// </summary>
-    public enum ControllerState
+    public enum InputSourceState
     {
         /// <summary>
         /// No  controller state provided by the SDK.

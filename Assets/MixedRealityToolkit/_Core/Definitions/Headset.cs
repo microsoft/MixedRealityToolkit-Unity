@@ -33,6 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// <summary>
         /// Outputs the current state of the headset, whether it is tracked or not. As defined by the SDK / Unity.
         /// </summary>
-        public ControllerState ControllerState { get; set; }
+        public InputSourceState ControllerState { get; set; }
     }
 }
