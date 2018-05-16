@@ -6,6 +6,9 @@ This example shows how to make objects smoothly align with the physical surface.
 ## Demo Video
 https://gfycat.com/PitifulRareKodiakbear
 
+## Scene
+[SpatialProcessingSurfaceMagnetism.unity](/Assets/HoloToolkit-Examples/SpatialMapping/Scenes/SpatialProcessingSurfaceMagnetism.unity)
+
 ## How to use 
 You need to assign same Unity layer to the Spatial mapping’s plane and Solver Surface Magnetism’s Magnetic Surface.
 
