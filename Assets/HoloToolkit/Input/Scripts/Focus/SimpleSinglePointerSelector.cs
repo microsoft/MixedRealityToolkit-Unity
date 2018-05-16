@@ -21,8 +21,15 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("The cursor, if any, which should follow the selected pointer.")]
         public Cursor Cursor;
 
-        [Tooltip("True to search for a cursor if one isn't explicitly set.")]
-        public bool SearchForCursorIfUnset = true;
+        [Tooltip("If true, search for a cursor if one isn't explicitly set.")]
+        [SerializeField]
+        private bool searchForCursorIfUnset = true;
+        public bool SearchForCursorIfUnset { get { return searchForCursorIfUnset; } set { searchForCursorIfUnset = value; } }
+
+        [Tooltip("If true, always select the best pointer available (OS behaviour does not autoselect).")]
+        [SerializeField]
+        private bool autoselectBestAvailable = false;
+        public bool AutoselectBestAvailable { get { return autoselectBestAvailable; } set { autoselectBestAvailable = value; } }
 
         #endregion
 
@@ -72,7 +79,11 @@ namespace HoloToolkit.Unity.InputModule
 
         void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
         {
-            // Nothing to do on source detected.
+            // If a pointing controller just became available, set it as primary.
+            if (autoselectBestAvailable && SupportsPointingRay(eventData))
+            {
+                ConnectBestAvailablePointer();
+            }
         }
 
         void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
@@ -117,7 +128,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void FindCursorIfNeeded()
         {
-            if ((Cursor == null) && SearchForCursorIfUnset)
+            if ((Cursor == null) && searchForCursorIfUnset)
             {
                 Debug.LogWarningFormat(
                     this,
