@@ -1,6 +1,10 @@
 # Spatial Processing + Solver Surface Magnetism example
-This example shows how to make objects smoothly align with the physical surface. For more information about Solver system, please read 
+This example shows how to make objects smoothly align with the physical surface. For more information about Spatial Processing and Solver system, please read these README files.
+- [Spatial Processing](/Assets/HoloToolkit/SpatialMapping/README.md)
+- [Solver System](/Assets/HoloToolkit-Examples/Utilities/Readme/README_SolverSystem.md)
 
+## Demo Video
+https://gfycat.com/PitifulRareKodiakbear
 
 ## How to use 
 You need to assign same Unity layer to the Spatial mapping’s plane and Solver Surface Magnetism’s Magnetic Surface.
