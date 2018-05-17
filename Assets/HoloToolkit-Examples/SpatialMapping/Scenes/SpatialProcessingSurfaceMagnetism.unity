@@ -230,7 +230,7 @@ MonoBehaviour:
   Lifetime: 0
   MagneticSurface:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 2147483648
   MaxDistance: 10
   CloseDistance: 0.5
   SurfaceNormalOffset: 0.05
@@ -522,7 +522,7 @@ Prefab:
     - target: {fileID: 114000011154029958, guid: 2ed75ffdf9031c94e8bce4b3d17b9928,
         type: 2}
       propertyPath: PhysicsLayer
-      value: 8
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 2}
