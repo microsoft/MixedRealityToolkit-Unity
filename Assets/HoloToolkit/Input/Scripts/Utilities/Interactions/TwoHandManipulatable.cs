@@ -7,7 +7,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-
 namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
 {
     /// <summary>

@@ -3,21 +3,23 @@
 
 using UnityEngine;
 using UnityEditor;
-using HoloToolkit.Unity.Collections;
 
-[CustomEditor(typeof(ObjectCollection))]
-public class CollectionEditor : Editor
+namespace HoloToolkit.Unity.Collections.EditorScript
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(ObjectCollection))]
+    public class CollectionEditor : Editor
     {
-        // Draw the default
-        base.OnInspectorGUI();
-
-        // Place the button at the bottom
-        ObjectCollection myScript = (ObjectCollection)target;
-        if(GUILayout.Button("Update Collection"))
+        public override void OnInspectorGUI()
         {
-            myScript.UpdateCollection();
+            // Draw the default
+            base.OnInspectorGUI();
+
+            // Place the button at the bottom
+            var myScript = (ObjectCollection)target;
+            if (GUILayout.Button("Update Collection"))
+            {
+                myScript.UpdateCollection();
+            }
         }
     }
 }
