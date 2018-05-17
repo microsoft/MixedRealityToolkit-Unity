@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Attributes

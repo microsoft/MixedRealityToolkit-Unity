@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
@@ -55,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public IMixedRealityFocusHandler FocusTarget { get; set; }
 
-        public PointerResult Result { get; set; }
+        public IPointerResult Result { get; set; }
 
         public IBaseRayStabilizer RayStabilizer { get; set; }
 

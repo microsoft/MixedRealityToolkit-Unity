@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public IMixedRealityFocusHandler FocusTarget { get; set; }
 
-        public PointerResult Result { get; set; }
+        public IPointerResult Result { get; set; }
 
         public IBaseRayStabilizer RayStabilizer { get; set; }
 
