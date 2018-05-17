@@ -13,16 +13,16 @@ https://gfycat.com/PitifulRareKodiakbear
 You need to assign same Unity layer to the Spatial mapping’s plane and Solver Surface Magnetism’s Magnetic Surface.
 
 1. Add a new layer for the planes created by Spatial Processing. Mixed Reality Toolkit's **Apply Mixed Reality Projcet Settings** automatically addes a new layer **31:Spatial Mapping**.
-<img src="/External/ReadMeImages/MRTK_SurfaceMagnetism1.png" width="550">
-<img src="/External/ReadMeImages/MRTK_SurfaceMagnetism2.png" width="300">
-<img src="/External/ReadMeImages/MRTK_SurfaceMagnetism3.png" width="550">
-<img src="/External/ReadMeImages/MRTK_SurfaceMagnetism4.png" width="300">
+     <img src="/External/ReadMeImages/MRTK_SurfaceMagnetism1.png" width="550">
+     <img src="/External/ReadMeImages/MRTK_SurfaceMagnetism2.png" width="300">
+     <img src="/External/ReadMeImages/MRTK_SurfaceMagnetism3.png" width="550">
+     <img src="/External/ReadMeImages/MRTK_SurfaceMagnetism4.png" width="300">
 
 2. In SpatialMapping prefab, make sure to set the Physics Layer to 31.
-<img src="/External/ReadMeImages/MRTK_SurfaceMagnetism5.png" width="550">
+     <img src="/External/ReadMeImages/MRTK_SurfaceMagnetism5.png" width="550">
 
 3. Assign SolverSurfaceMagnetism script to an object. In Magnetic Surface option, select the new layer **SpatialMapping** that you created. 
-<img src="/External/ReadMeImages/MRTK_SurfaceMagnetism6.png" width="550">
+     <img src="/External/ReadMeImages/MRTK_SurfaceMagnetism6.png" width="550">
 
 4. After initial room scanning, you will be able to see MRTK logo plane is smoothly snapping to the surfaces.
 
