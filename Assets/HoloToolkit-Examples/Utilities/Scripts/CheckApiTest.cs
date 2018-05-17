@@ -4,26 +4,28 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CheckApiTest : MonoBehaviour
+namespace HoloToolkit.Examples
 {
-    [SerializeField]
-    private Text text = null;
-
-    public void CheckV5Api()
+    public class CheckApiTest : MonoBehaviour
     {
-        text.text = "UniversalApiContract\nVersion 5 available? " + HoloToolkit.WindowsApiChecker.UniversalApiContractV5_IsAvailable;
-        Debug.Log(text.text);
-    }
+        [SerializeField] private Text text = null;
 
-    public void CheckV4Api()
-    {
-        text.text = "UniversalApiContract\nVersion 4 available? " + HoloToolkit.WindowsApiChecker.UniversalApiContractV4_IsAvailable;
-        Debug.Log(text.text);
-    }
+        public void CheckV5Api()
+        {
+            text.text = "UniversalApiContract\nVersion 5 available? " + HoloToolkit.WindowsApiChecker.UniversalApiContractV5_IsAvailable;
+            Debug.Log(text.text);
+        }
 
-    public void CheckV3Api()
-    {
-        text.text = "UniversalApiContract\nVersion 3 available? " + HoloToolkit.WindowsApiChecker.UniversalApiContractV3_IsAvailable;
-        Debug.Log(text.text);
+        public void CheckV4Api()
+        {
+            text.text = "UniversalApiContract\nVersion 4 available? " + HoloToolkit.WindowsApiChecker.UniversalApiContractV4_IsAvailable;
+            Debug.Log(text.text);
+        }
+
+        public void CheckV3Api()
+        {
+            text.text = "UniversalApiContract\nVersion 3 available? " + HoloToolkit.WindowsApiChecker.UniversalApiContractV3_IsAvailable;
+            Debug.Log(text.text);
+        }
     }
 }
