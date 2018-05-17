@@ -892,10 +892,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             }
         }
 
-        public void OnSourcePositionChanged(SourcePositionEventData eventData) { }
-
-        public void OnSourceRotationChanged(SourceRotationEventData eventData) { }
-
         #endregion ISourceState Implementation
     }
 }

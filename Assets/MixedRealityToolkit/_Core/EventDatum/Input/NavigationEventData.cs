@@ -27,10 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         /// <param name="inputSource"></param>
         /// <param name="normalizedOffset"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Vector3 normalizedOffset, object[] tags = null)
+        public void Initialize(IMixedRealityInputSource inputSource, Vector3 normalizedOffset)
         {
-            BaseInitialize(inputSource, tags);
+            BaseInitialize(inputSource);
             NormalizedOffset = normalizedOffset;
         }
 
@@ -40,10 +39,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="handedness"></param>
         /// <param name="normalizedOffset"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, Vector3 normalizedOffset, object[] tags = null)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, Vector3 normalizedOffset)
         {
-            Initialize(inputSource, handedness, tags);
+            Initialize(inputSource, handedness);
             NormalizedOffset = normalizedOffset;
         }
     }

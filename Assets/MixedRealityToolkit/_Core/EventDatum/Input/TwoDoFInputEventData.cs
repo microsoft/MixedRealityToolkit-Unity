@@ -9,18 +9,18 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
     /// <summary>
-    /// Describes Dual Axis Positional Event data, usually generated from a Joystick, or Touch input source.
+    /// Describes Two Degrees of Freedom event data, usually generated from a Joystick, or Touch input source.
     /// </summary>
-    public class DualAxisInputEventData : InputEventData
+    public class TwoDoFInputEventData : InputEventData
     {
         /// <summary>
         /// Two values, typically from -1.0 to 1.0 in the X-axis and Y-axis, representing where the input control is positioned.
         /// Typically this is Touch or Joystick data.
         /// </summary>
-        public Vector2 DualAxisPosition { get; private set; }
+        public Vector2 Position { get; private set; } = Vector2.zero;
 
         /// <inheritdoc />
-        public DualAxisInputEventData(EventSystem eventSystem) : base(eventSystem) { }
+        public TwoDoFInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>
         /// Populates the event with data.
@@ -28,11 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="inputType"></param>
         /// <param name="position"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, Vector2 position, object[] tags = null)
+        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, Vector2 position)
         {
-            Initialize(inputSource, inputType, tags);
-            DualAxisPosition = position;
+            Initialize(inputSource, inputType);
+            Position = position;
         }
 
         /// <summary>
@@ -42,11 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputType"></param>
         /// <param name="position"></param>
         /// <param name="handedness"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, Vector2 position, Handedness handedness, object[] tags = null)
+        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, Vector2 position, Handedness handedness)
         {
-            Initialize(inputSource, handedness, inputType, tags);
-            DualAxisPosition = position;
+            Initialize(inputSource, handedness, inputType);
+            Position = position;
         }
     }
 }

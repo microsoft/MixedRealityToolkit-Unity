@@ -30,10 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="dictationResult"></param>
         /// <param name="dictationAudioClip"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
+        public void Initialize(IMixedRealityInputSource inputSource, string dictationResult, AudioClip dictationAudioClip = null)
         {
-            BaseInitialize(inputSource, tags);
+            BaseInitialize(inputSource);
             DictationResult = dictationResult;
             DictationAudioClip = dictationAudioClip;
         }

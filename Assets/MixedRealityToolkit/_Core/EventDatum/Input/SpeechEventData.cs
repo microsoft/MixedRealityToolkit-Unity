@@ -55,10 +55,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="phraseStartTime"></param>
         /// <param name="semanticMeanings"></param>
         /// <param name="recognizedText"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText, object[] tags = null)
+        public void Initialize(IMixedRealityInputSource inputSource, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText)
         {
-            BaseInitialize(inputSource, tags);
+            BaseInitialize(inputSource);
             Confidence = confidence;
             PhraseDuration = phraseDuration;
             PhraseStartTime = phraseStartTime;

@@ -106,8 +106,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 ThumbstickPositionUpdated = false;
                 TouchpadPositionUpdated = false;
                 TouchpadTouchedUpdated = false;
-                PositionUpdated = false;
-                RotationUpdated = false;
+                PointerPositionUpdated = false;
+                PointerRotationUpdated = false;
+                GripPositionUpdated = false;
+                GripRotationUpdated = false;
                 SelectPressedAmountUpdated = false;
             }
 
@@ -125,8 +127,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             public bool ThumbstickPositionUpdated;
             public bool TouchpadPositionUpdated;
             public bool TouchpadTouchedUpdated;
-            public bool PositionUpdated;
-            public bool RotationUpdated;
+            public bool PointerPositionUpdated;
+            public bool PointerRotationUpdated;
+            public bool GripPositionUpdated;
+            public bool GripRotationUpdated;
             public bool SelectPressedAmountUpdated;
 
             public override bool TryGetPointerPosition(IMixedRealityPointer pointer, out Vector3 position)
@@ -815,9 +819,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 newGripPosition = CameraCache.Main.transform.parent.TransformPoint(newGripPosition);
             }
 
-            if (sourceData.PointerPosition.IsAvailable || sourceData.GripPosition.IsAvailable)
+            if (sourceData.PointerPosition.IsAvailable)
             {
-                sourceData.PositionUpdated = sourceData.PointerPosition.CurrentReading != newPointerPosition || sourceData.GripPosition.CurrentReading != newGripPosition;
+                sourceData.PointerPositionUpdated = sourceData.PointerPosition.CurrentReading != newPointerPosition;
+            }
+
+            if (sourceData.GripPosition.IsAvailable)
+            {
+                sourceData.GripPositionUpdated = sourceData.GripPosition.CurrentReading != newGripPosition;
             }
 
             sourceData.PointerPosition.CurrentReading = newPointerPosition;
@@ -839,9 +848,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 newGripRotation.eulerAngles = CameraCache.Main.transform.parent.TransformDirection(newGripRotation.eulerAngles);
             }
 
-            if (sourceData.PointerRotation.IsAvailable || sourceData.GripRotation.IsAvailable)
+            if (sourceData.PointerRotation.IsAvailable)
             {
-                sourceData.RotationUpdated = sourceData.PointerRotation.CurrentReading != newPointerRotation || sourceData.GripRotation.CurrentReading != newGripRotation;
+                sourceData.PointerRotationUpdated = sourceData.PointerRotation.CurrentReading != newPointerRotation;
+            }
+
+            else if (sourceData.GripRotation.IsAvailable)
+            {
+                sourceData.GripRotationUpdated = sourceData.GripRotation.CurrentReading != newGripRotation;
             }
 
             sourceData.PointerRotation.CurrentReading = newPointerRotation;
@@ -955,24 +969,34 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
             UpdateInteractionSource(args.state, inputSource);
 
-            if (inputSource.PositionUpdated)
+            if (inputSource.PointerPositionUpdated)
             {
-                inputSystem.RaiseSourcePositionChanged(inputSource, (Handedness)args.state.source.handedness, inputSource.PointerPosition.CurrentReading, inputSource.GripPosition.CurrentReading);
+                inputSystem.Raise3DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.PointerPosition, inputSource.PointerPosition.CurrentReading);
             }
 
-            if (inputSource.RotationUpdated)
+            if (inputSource.GripPositionUpdated)
             {
-                inputSystem.RaiseSourceRotationChanged(inputSource, (Handedness)args.state.source.handedness, inputSource.PointerRotation.CurrentReading, inputSource.GripRotation.CurrentReading);
+                inputSystem.Raise3DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.GripPosition, inputSource.GripPosition.CurrentReading);
+            }
+
+            if (inputSource.PointerRotationUpdated)
+            {
+                inputSystem.Raise3DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.PointerRotation, inputSource.PointerRotation.CurrentReading);
+            }
+
+            if (inputSource.GripRotationUpdated)
+            {
+                inputSystem.Raise3DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.GripRotation, inputSource.GripRotation.CurrentReading);
             }
 
             if (inputSource.ThumbstickPositionUpdated)
             {
-                inputSystem.RaiseDualAxisInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.ThumbStick, inputSource.Thumbstick.CurrentReading.Position);
+                inputSystem.Raise2DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.ThumbStick, inputSource.Thumbstick.CurrentReading.Position);
             }
 
             if (inputSource.TouchpadPositionUpdated)
             {
-                inputSystem.RaiseDualAxisInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.Touchpad, inputSource.Touchpad.CurrentReading.AxisButton.Position);
+                inputSystem.Raise2DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.Touchpad, inputSource.Touchpad.CurrentReading.AxisButton.Position);
             }
 
             if (inputSource.TouchpadTouchedUpdated)

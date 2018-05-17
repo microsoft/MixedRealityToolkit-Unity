@@ -47,14 +47,16 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private int disabledRefCount;
 
         private SourceStateEventData sourceStateEventData;
-        private SourcePositionEventData sourcePositionEventData;
-        private SourceRotationEventData sourceRotationEventData;
 
         private FocusEventData focusEventData;
+
         private InputEventData inputEventData;
+        private InputClickEventData inputClickEventData;
         private InputPressedEventData inputPressedEventData;
-        private ClickEventData clickEventData;
-        private DualAxisInputEventData dualAxisInputEventData;
+
+        private TwoDoFInputEventData twoDoFInputEventData;
+        private ThreeDoFInputEventData threeDoFInputEventData;
+        private SixDoFInputEventData sixDoFInputEventData;
 
         private NavigationEventData navigationEventData;
         private ManipulationEventData manipulationEventData;
@@ -79,15 +81,16 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             GazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
 
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
-            sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
-            sourceRotationEventData = new SourceRotationEventData(EventSystem.current);
 
-            clickEventData = new ClickEventData(EventSystem.current);
             focusEventData = new FocusEventData(EventSystem.current);
 
             inputEventData = new InputEventData(EventSystem.current);
+            inputClickEventData = new InputClickEventData(EventSystem.current);
             inputPressedEventData = new InputPressedEventData(EventSystem.current);
-            dualAxisInputEventData = new DualAxisInputEventData(EventSystem.current);
+
+            twoDoFInputEventData = new TwoDoFInputEventData(EventSystem.current);
+            threeDoFInputEventData = new ThreeDoFInputEventData(EventSystem.current);
+            sixDoFInputEventData = new SixDoFInputEventData(EventSystem.current);
 
             navigationEventData = new NavigationEventData(EventSystem.current);
             manipulationEventData = new ManipulationEventData(EventSystem.current);
@@ -349,10 +352,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseSourceDetected(IMixedRealityInputSource source, object[] tags = null)
+        public void RaiseSourceDetected(IMixedRealityInputSource source)
         {
             // Create input event
-            sourceStateEventData.Initialize(source, tags);
+            sourceStateEventData.Initialize(source);
 
             AddSource(source);
         }
@@ -374,10 +377,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnSourceDetected(casted);
             };
 
-        public void RaiseSourceLost(IMixedRealityInputSource source, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseSourceLost(IMixedRealityInputSource source)
         {
             // Create input event
-            sourceStateEventData.Initialize(source, tags);
+            sourceStateEventData.Initialize(source);
 
             RemoveSource(source);
         }
@@ -399,66 +403,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                     handler.OnSourceLost(casted);
                 };
 
-        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, Vector3 pointerPosition, Vector3 gripPosition, object[] tags = null)
-        {
-            // Create input event
-            sourcePositionEventData.Initialize(source, pointerPosition, gripPosition, tags);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
-        }
-
-        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, Handedness sourceHandedness, Vector3 pointerPosition, Vector3 gripPosition, object[] tags = null)
-        {
-            // Create input event
-            sourcePositionEventData.Initialize(source, sourceHandedness, pointerPosition, gripPosition, tags);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
-        }
-
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySourceStateHandler> OnSourcePositionChangedEventHandler =
-                delegate (IMixedRealitySourceStateHandler handler, BaseEventData eventData)
-                {
-                    var casted = ExecuteEvents.ValidateEventData<SourcePositionEventData>(eventData);
-                    handler.OnSourcePositionChanged(casted);
-                };
-
-        public void RaiseSourceRotationChanged(IMixedRealityInputSource source, Quaternion pointerRotation, Quaternion gripRotation, object[] tags = null)
-        {
-            // Create input event
-            sourceRotationEventData.Initialize(source, pointerRotation, gripRotation, tags);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourceRotationEventData, OnSourceRotationChangedEventHandler);
-        }
-
-        public void RaiseSourceRotationChanged(IMixedRealityInputSource source, Handedness sourceHandedness, Quaternion pointerRotation, Quaternion gripRotation, object[] tags = null)
-        {
-            // Create input event
-            sourceRotationEventData.Initialize(source, sourceHandedness, pointerRotation, gripRotation, tags);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourceRotationEventData, OnSourceRotationChangedEventHandler);
-        }
-
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySourceStateHandler> OnSourceRotationChangedEventHandler =
-                delegate (IMixedRealitySourceStateHandler handler, BaseEventData eventData)
-                {
-                    var casted = ExecuteEvents.ValidateEventData<SourceRotationEventData>(eventData);
-                    handler.OnSourceRotationChanged(casted);
-                };
-
         #endregion Input Source State Events
 
         #region Focus Events
 
-        /// <summary>
-        /// Raise the Pre Focus Changed Event.
-        /// </summary>
-        /// <param name="pointer"></param>
-        /// <param name="oldFocusedObject"></param>
-        /// <param name="newFocusedObject"></param>
+        /// <inheritdoc />
         public void RaisePreFocusChangedEvent(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
@@ -488,12 +437,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                     handler.OnBeforeFocusChange(casted);
                 };
 
-        /// <summary>
-        /// Raise focus enter and exit events for when an input (that supports pointing) points to a game object.
-        /// </summary>
-        /// <param name="pointer"></param>
-        /// <param name="oldFocusedObject"></param>
-        /// <param name="newFocusedObject"></param>
+        /// <inheritdoc />
         public void OnFocusChangedEvent(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
@@ -523,11 +467,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnFocusChanged(casted);
             };
 
-        /// <summary>
-        /// Raise the event OnBeforeFocusChange to the game object when focus enters it.
-        /// </summary>
-        /// <param name="pointer">The pointer that focused the GameObject.</param>
-        /// <param name="focusedObject">The GameObject that is focused.</param>
+        /// <inheritdoc />
         public void RaiseFocusEnter(IMixedRealityPointer pointer, GameObject focusedObject)
         {
             focusEventData.Initialize(pointer);
@@ -548,11 +488,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                     handler.OnFocusEnter(casted);
                 };
 
-        /// <summary>
-        /// Raise the event OnFocusExit to the game object when focus exists it.
-        /// </summary>
-        /// <param name="pointer">The pointer that unfocused the GameObject.</param>
-        /// <param name="unfocusedObject">The GameObject that is unfocused.</param>
+        /// <inheritdoc />
         public void RaiseFocusExit(IMixedRealityPointer pointer, GameObject unfocusedObject)
         {
             focusEventData.Initialize(pointer);
@@ -582,11 +518,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnPointerDownEventHandler =
             delegate (IMixedRealityPointerHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<ClickEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputClickEventData>(eventData);
                 handler.OnPointerDown(casted);
             };
 
-        private void ExecutePointerDown(GraphicInputEventData graphicInputEventData)
+        private static void ExecutePointerDown(GraphicInputEventData graphicInputEventData)
         {
             if (graphicInputEventData != null && graphicInputEventData.selectedObject != null)
             {
@@ -597,31 +533,34 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private GraphicInputEventData HandlePointerDown(IMixedRealityPointer pointingSource)
         {
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(clickEventData, OnPointerDownEventHandler);
+            HandleEvent(inputClickEventData, OnPointerDownEventHandler);
 
             return FocusProvider.GetSpecificPointerGraphicEventData(pointingSource);
         }
 
-        public void RaisePointerDown(IMixedRealityPointer pointer, object[] tags = null)
+        /// <inheritdoc />
+        public void RaisePointerDown(IMixedRealityPointer pointer)
         {
             // Create input event
-            clickEventData.Initialize(pointer.InputSourceParent, tags);
+            inputClickEventData.Initialize(pointer.InputSourceParent);
 
             ExecutePointerDown(HandlePointerDown(pointer));
         }
 
-        public void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, object[] tags = null)
+        /// <inheritdoc />
+        public void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness)
         {
             // Create input event
-            clickEventData.Initialize(pointer.InputSourceParent, handedness, tags);
+            inputClickEventData.Initialize(pointer.InputSourceParent, handedness);
 
             ExecutePointerDown(HandlePointerDown(pointer));
         }
 
-        public void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, InputType inputType, object[] tags = null)
+        /// <inheritdoc />
+        public void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, InputType inputType)
         {
             // Create input event
-            clickEventData.Initialize(pointer.InputSourceParent, handedness, inputType, tags);
+            inputClickEventData.Initialize(pointer.InputSourceParent, handedness, inputType);
 
             if (inputType == InputType.Select)
             {
@@ -636,38 +575,41 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnInputClickedEventHandler =
                 delegate (IMixedRealityPointerHandler handler, BaseEventData eventData)
                 {
-                    var casted = ExecuteEvents.ValidateEventData<ClickEventData>(eventData);
+                    var casted = ExecuteEvents.ValidateEventData<InputClickEventData>(eventData);
                     handler.OnPointerClicked(casted);
                 };
 
         private void HandleClick()
         {
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(clickEventData, OnInputClickedEventHandler);
+            HandleEvent(inputClickEventData, OnInputClickedEventHandler);
 
             // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the pointerClickHandler.
         }
 
-        public void RaiseInputClicked(IMixedRealityPointer pointer, int count, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseInputClicked(IMixedRealityPointer pointer, int count)
         {
             // Create input event
-            clickEventData.Initialize(pointer.InputSourceParent, count, tags);
+            inputClickEventData.Initialize(pointer.InputSourceParent, count);
 
             HandleClick();
         }
 
-        public void RaiseInputClicked(IMixedRealityPointer pointer, Handedness handedness, int count, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseInputClicked(IMixedRealityPointer pointer, Handedness handedness, int count)
         {
             // Create input event
-            clickEventData.Initialize(pointer.InputSourceParent, count, handedness, tags);
+            inputClickEventData.Initialize(pointer.InputSourceParent, count, handedness);
 
             HandleClick();
         }
 
-        public void RaiseInputClicked(IMixedRealityPointer pointer, Handedness handedness, InputType inputType, int count, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseInputClicked(IMixedRealityPointer pointer, Handedness handedness, InputType inputType, int count)
         {
             // Create input event
-            clickEventData.Initialize(pointer.InputSourceParent, count, inputType, handedness, tags);
+            inputClickEventData.Initialize(pointer.InputSourceParent, count, inputType, handedness);
 
             HandleClick();
         }
@@ -679,11 +621,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnPointerUpEventHandler =
             delegate (IMixedRealityPointerHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<ClickEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputClickEventData>(eventData);
                 handler.OnPointerUp(casted);
             };
 
-        private void ExecutePointerUp(GraphicInputEventData graphicInputEventData)
+        private static void ExecutePointerUp(GraphicInputEventData graphicInputEventData)
         {
             if (graphicInputEventData != null)
             {
@@ -700,31 +642,34 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private GraphicInputEventData HandlePointerUp(IMixedRealityPointer pointingSource)
         {
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(clickEventData, OnPointerUpEventHandler);
+            HandleEvent(inputClickEventData, OnPointerUpEventHandler);
 
             return FocusProvider.GetSpecificPointerGraphicEventData(pointingSource);
         }
 
-        public void RaisePointerUp(IMixedRealityPointer pointer, object[] tags = null)
+        /// <inheritdoc />
+        public void RaisePointerUp(IMixedRealityPointer pointer)
         {
             // Create input event
-            clickEventData.Initialize(pointer.InputSourceParent, tags);
+            inputClickEventData.Initialize(pointer.InputSourceParent);
 
             ExecutePointerUp(HandlePointerUp(pointer));
         }
 
-        public void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, object[] tags = null)
+        /// <inheritdoc />
+        public void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness)
         {
             // Create input event
-            clickEventData.Initialize(pointer.InputSourceParent, handedness, tags);
+            inputClickEventData.Initialize(pointer.InputSourceParent, handedness);
 
             ExecutePointerUp(HandlePointerUp(pointer));
         }
 
-        public void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, InputType inputType, object[] tags = null)
+        /// <inheritdoc />
+        public void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, InputType inputType)
         {
             // Create input event
-            clickEventData.Initialize(pointer.InputSourceParent, handedness, inputType, tags);
+            inputClickEventData.Initialize(pointer.InputSourceParent, handedness, inputType);
 
             if (inputType == InputType.Select)
             {
@@ -747,46 +692,51 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnInputDown(casted);
             };
 
-        public void RaiseOnInputDown(IMixedRealityInputSource source, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseOnInputDown(IMixedRealityInputSource source)
         {
             // Create input event
-            inputEventData.Initialize(source, tags);
+            inputEventData.Initialize(source);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputDownEventHandler);
         }
 
-        public void RaiseOnInputDown(IMixedRealityInputSource source, KeyCode keyCode, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseOnInputDown(IMixedRealityInputSource source, KeyCode keyCode)
         {
             // Create input event
-            inputEventData.Initialize(source, keyCode, tags);
+            inputEventData.Initialize(source, keyCode);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputDownEventHandler);
         }
 
-        public void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness)
         {
             // Create input event
-            inputEventData.Initialize(source, handedness, tags);
+            inputEventData.Initialize(source, handedness);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputDownEventHandler);
         }
 
-        public void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode)
         {
             // Create input event
-            inputEventData.Initialize(source, handedness, keyCode, tags);
+            inputEventData.Initialize(source, handedness, keyCode);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputDownEventHandler);
         }
 
-        public void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, InputType inputType, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, InputType inputType)
         {
             // Create input event
-            inputEventData.Initialize(source, handedness, inputType, tags);
+            inputEventData.Initialize(source, handedness, inputType);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputDownEventHandler);
@@ -803,79 +753,81 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnInputPressed(casted);
             };
 
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseOnInputPressed(IMixedRealityInputSource source)
         {
             // Create input event
-            inputPressedEventData.Initialize(source, tags);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
-        }
-
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, KeyCode keyCode, object[] tags = null)
-        {
-            // Create input event
-            inputPressedEventData.Initialize(source, keyCode, 1D, tags);
+            inputPressedEventData.Initialize(source);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, double pressAmount, object[] tags = null)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, KeyCode keyCode)
         {
             // Create input event
-            inputPressedEventData.Initialize(source, pressAmount, tags);
+            inputPressedEventData.Initialize(source, keyCode, 1D);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, KeyCode keyCode, double pressAmount, object[] tags = null)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, double pressAmount)
         {
             // Create input event
-            inputPressedEventData.Initialize(source, keyCode, pressAmount, tags);
+            inputPressedEventData.Initialize(source, pressAmount);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, InputType inputType, double pressAmount, object[] tags = null)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, KeyCode keyCode, double pressAmount)
         {
             // Create input event
-            inputPressedEventData.Initialize(source, inputType, pressAmount, tags);
+            inputPressedEventData.Initialize(source, keyCode, pressAmount);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, double pressAmount, object[] tags = null)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, InputType inputType, double pressAmount)
         {
             // Create input event
-            inputPressedEventData.Initialize(source, handedness, pressAmount, tags);
+            inputPressedEventData.Initialize(source, inputType, pressAmount);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode, double pressAmount, object[] tags = null)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, double pressAmount)
         {
             // Create input event
-            inputPressedEventData.Initialize(source, handedness, keyCode, pressAmount, tags);
+            inputPressedEventData.Initialize(source, handedness, pressAmount);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, InputType inputType, float pressAmount, object[] tags = null)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode, double pressAmount)
         {
             // Create input event
-            inputPressedEventData.Initialize(source, handedness, inputType, pressAmount, tags);
+            inputPressedEventData.Initialize(source, handedness, keyCode, pressAmount);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
+        }
+
+        /// <inheritdoc />
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, InputType inputType, float pressAmount)
+        {
+            // Create input event
+            inputPressedEventData.Initialize(source, handedness, inputType, pressAmount);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
@@ -892,46 +844,51 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnInputUp(casted);
             };
 
-        public void RaiseOnInputUp(IMixedRealityInputSource source, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseOnInputUp(IMixedRealityInputSource source)
         {
             // Create input event
-            inputEventData.Initialize(source, tags);
+            inputEventData.Initialize(source);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputUpEventHandler);
         }
 
-        public void RaiseOnInputUp(IMixedRealityInputSource source, KeyCode keyCode, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseOnInputUp(IMixedRealityInputSource source, KeyCode keyCode)
         {
             // Create input event
-            inputEventData.Initialize(source, keyCode, tags);
+            inputEventData.Initialize(source, keyCode);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputUpEventHandler);
         }
 
-        public void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness)
         {
             // Create input event
-            inputEventData.Initialize(source, handedness, tags);
+            inputEventData.Initialize(source, handedness);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputUpEventHandler);
         }
 
-        public void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode)
         {
             // Create input event
-            inputEventData.Initialize(source, handedness, keyCode, tags);
+            inputEventData.Initialize(source, handedness, keyCode);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputUpEventHandler);
         }
 
-        public void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, InputType inputType, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, InputType inputType)
         {
             // Create input event
-            inputEventData.Initialize(source, handedness, inputType, tags);
+            inputEventData.Initialize(source, handedness, inputType);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputUpEventHandler);
@@ -939,34 +896,118 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         #endregion Input Up
 
-        #region Input DualAxis Changed
+        #region Input 2DoF Changed
 
-        private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler> OnDualAxisInputChanged =
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler> OnTwoDoFInputChanged =
             delegate (IMixedRealityInputHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<DualAxisInputEventData>(eventData);
-                handler.OnDualAxisInputChanged(casted);
+                var casted = ExecuteEvents.ValidateEventData<TwoDoFInputEventData>(eventData);
+                handler.On2DoFInputChanged(casted);
             };
 
-        public void RaiseDualAxisInputChanged(IMixedRealityInputSource source, InputType inputType, Vector2 inputPosition, object[] tags = null)
+        /// <inheritdoc />
+        public void Raise2DoFInputChanged(IMixedRealityInputSource source, InputType inputType, Vector2 inputPosition)
         {
             // Create input event
-            dualAxisInputEventData.Initialize(source, inputType, inputPosition, tags);
+            twoDoFInputEventData.Initialize(source, inputType, inputPosition);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(dualAxisInputEventData, OnDualAxisInputChanged);
+            HandleEvent(twoDoFInputEventData, OnTwoDoFInputChanged);
         }
 
-        public void RaiseDualAxisInputChanged(IMixedRealityInputSource source, Handedness handedness, InputType inputType, Vector2 inputPosition, object[] tags = null)
+        /// <inheritdoc />
+        public void Raise2DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, InputType inputType, Vector2 inputPosition)
         {
             // Create input event
-            dualAxisInputEventData.Initialize(source, inputType, inputPosition, handedness, tags);
+            twoDoFInputEventData.Initialize(source, inputType, inputPosition, handedness);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(dualAxisInputEventData, OnDualAxisInputChanged);
+            HandleEvent(twoDoFInputEventData, OnTwoDoFInputChanged);
         }
 
-        #endregion Input DualAxis Changed
+        #endregion Input 2Dof Changed
+
+        #region Input 3DoF Changed
+
+        private static readonly ExecuteEvents.EventFunction<IMixedReality3DoFInputHandler> OnThreeDoFInputChanged =
+            delegate (IMixedReality3DoFInputHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<ThreeDoFInputEventData>(eventData);
+                handler.On3DoFInputChanged(casted);
+            };
+
+        /// <inheritdoc />
+        public void Raise3DoFInputChanged(IMixedRealityInputSource source, InputType inputType, Vector3 position)
+        {
+            // Create input event
+            threeDoFInputEventData.Initialize(source, inputType, position);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(threeDoFInputEventData, OnThreeDoFInputChanged);
+        }
+
+        /// <inheritdoc />
+        public void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, InputType inputType, Vector3 position)
+        {
+            // Create input event
+            threeDoFInputEventData.Initialize(source, handedness, inputType, position);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(threeDoFInputEventData, OnThreeDoFInputChanged);
+        }
+
+        /// <inheritdoc />
+        public void Raise3DoFInputChanged(IMixedRealityInputSource source, InputType inputType, Quaternion rotation)
+        {
+            // Create input event
+            threeDoFInputEventData.Initialize(source, inputType, rotation);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(threeDoFInputEventData, OnThreeDoFInputChanged);
+        }
+
+        /// <inheritdoc />
+        public void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, InputType inputType, Quaternion rotation)
+        {
+            // Create input event
+            threeDoFInputEventData.Initialize(source, handedness, inputType, rotation);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(threeDoFInputEventData, OnThreeDoFInputChanged);
+        }
+
+        #endregion Input 3DoF Changed
+
+        #region Input 6DoF Changed
+
+        private static readonly ExecuteEvents.EventFunction<IMixedReality6DoFInputHandler> OnSixDoFInputChanged =
+            delegate (IMixedReality6DoFInputHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<SixDoFInputEventData>(eventData);
+                handler.On6DoFInputChanged(casted);
+            };
+
+        /// <inheritdoc />
+        public void Raise6DofInputChanged(IMixedRealityInputSource source, InputType inputType, Tuple<Vector3, Quaternion> inputData)
+        {
+            // Create input event
+            sixDoFInputEventData.Initialize(source, inputType, inputData);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(threeDoFInputEventData, OnSixDoFInputChanged);
+        }
+
+        /// <inheritdoc />
+        public void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, InputType inputType, Tuple<Vector3, Quaternion> inputData)
+        {
+            // Create input event
+            sixDoFInputEventData.Initialize(source, handedness, inputType, inputData);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(threeDoFInputEventData, OnSixDoFInputChanged);
+        }
+
+        #endregion Input 6DoF Changed
 
         #endregion Generic Input Events
 
@@ -979,19 +1020,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnHoldStarted(casted);
             };
 
-        public void RaiseHoldStarted(IMixedRealityInputSource source, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseHoldStarted(IMixedRealityInputSource source)
         {
             // Create input event
-            inputEventData.Initialize(source, tags);
+            inputEventData.Initialize(source);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnHoldStartedEventHandler);
         }
 
-        public void RaiseHoldStarted(IMixedRealityInputSource source, Handedness handedness, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseHoldStarted(IMixedRealityInputSource source, Handedness handedness)
         {
             // Create input event
-            inputEventData.Initialize(source, handedness, tags);
+            inputEventData.Initialize(source, handedness);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnHoldStartedEventHandler);
@@ -1004,19 +1047,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnHoldCompleted(casted);
             };
 
-        public void RaiseHoldCompleted(IMixedRealityInputSource source, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseHoldCompleted(IMixedRealityInputSource source)
         {
             // Create input event
-            inputEventData.Initialize(source, tags);
+            inputEventData.Initialize(source);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnHoldCompletedEventHandler);
         }
 
-        public void RaiseHoldCompleted(IMixedRealityInputSource source, Handedness handedness, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseHoldCompleted(IMixedRealityInputSource source, Handedness handedness)
         {
             // Create input event
-            inputEventData.Initialize(source, handedness, tags);
+            inputEventData.Initialize(source, handedness);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnHoldCompletedEventHandler);
@@ -1029,19 +1074,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnHoldCanceled(casted);
             };
 
-        public void RaiseHoldCanceled(IMixedRealityInputSource source, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseHoldCanceled(IMixedRealityInputSource source)
         {
             // Create input event
-            inputEventData.Initialize(source, tags);
+            inputEventData.Initialize(source);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnHoldCanceledEventHandler);
         }
 
-        public void RaiseHoldCanceled(IMixedRealityInputSource source, Handedness handedness, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseHoldCanceled(IMixedRealityInputSource source, Handedness handedness)
         {
             // Create input event
-            inputEventData.Initialize(source, handedness, tags);
+            inputEventData.Initialize(source, handedness);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnHoldCanceledEventHandler);
@@ -1058,19 +1105,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnNavigationStarted(casted);
             };
 
-        public void RaiseNavigationStarted(IMixedRealityInputSource source, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseNavigationStarted(IMixedRealityInputSource source)
         {
             // Create input event
-            navigationEventData.Initialize(source, Vector3.zero, tags);
+            navigationEventData.Initialize(source, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationStartedEventHandler);
         }
 
-        public void RaiseNavigationStarted(IMixedRealityInputSource source, Handedness handedness, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseNavigationStarted(IMixedRealityInputSource source, Handedness handedness)
         {
             // Create input event
-            navigationEventData.Initialize(source, handedness, Vector3.zero, tags);
+            navigationEventData.Initialize(source, handedness, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationStartedEventHandler);
@@ -1083,19 +1132,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnNavigationUpdated(casted);
             };
 
-        public void RaiseNavigationUpdated(IMixedRealityInputSource source, Vector3 normalizedOffset, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseNavigationUpdated(IMixedRealityInputSource source, Vector3 normalizedOffset)
         {
             // Create input event
-            navigationEventData.Initialize(source, normalizedOffset, tags);
+            navigationEventData.Initialize(source, normalizedOffset);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationUpdatedEventHandler);
         }
 
-        public void RaiseNavigationUpdated(IMixedRealityInputSource source, Handedness handedness, Vector3 normalizedOffset, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseNavigationUpdated(IMixedRealityInputSource source, Handedness handedness, Vector3 normalizedOffset)
         {
             // Create input event
-            navigationEventData.Initialize(source, handedness, normalizedOffset, tags);
+            navigationEventData.Initialize(source, handedness, normalizedOffset);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationUpdatedEventHandler);
@@ -1108,19 +1159,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnNavigationCompleted(casted);
             };
 
-        public void RaiseNavigationCompleted(IMixedRealityInputSource source, Vector3 normalizedOffset, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseNavigationCompleted(IMixedRealityInputSource source, Vector3 normalizedOffset)
         {
             // Create input event
-            navigationEventData.Initialize(source, normalizedOffset, tags);
+            navigationEventData.Initialize(source, normalizedOffset);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationCompletedEventHandler);
         }
 
-        public void RaiseNavigationCompleted(IMixedRealityInputSource source, Handedness handedness, Vector3 normalizedOffset, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseNavigationCompleted(IMixedRealityInputSource source, Handedness handedness, Vector3 normalizedOffset)
         {
             // Create input event
-            navigationEventData.Initialize(source, handedness, normalizedOffset, tags);
+            navigationEventData.Initialize(source, handedness, normalizedOffset);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationCompletedEventHandler);
@@ -1133,19 +1186,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnNavigationCanceled(casted);
             };
 
-        public void RaiseNavigationCanceled(IMixedRealityInputSource source, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseNavigationCanceled(IMixedRealityInputSource source)
         {
             // Create input event
-            navigationEventData.Initialize(source, Vector3.zero, tags);
+            navigationEventData.Initialize(source, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationCanceledEventHandler);
         }
 
-        public void RaiseNavigationCanceled(IMixedRealityInputSource source, Handedness handedness, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseNavigationCanceled(IMixedRealityInputSource source, Handedness handedness)
         {
             // Create input event
-            navigationEventData.Initialize(source, handedness, Vector3.zero, tags);
+            navigationEventData.Initialize(source, handedness, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(navigationEventData, OnNavigationCanceledEventHandler);
@@ -1162,19 +1217,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnManipulationStarted(casted);
             };
 
-        public void RaiseManipulationStarted(IMixedRealityInputSource source, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseManipulationStarted(IMixedRealityInputSource source)
         {
             // Create input event
-            manipulationEventData.Initialize(source, Vector3.zero, tags);
+            manipulationEventData.Initialize(source, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationStartedEventHandler);
         }
 
-        public void RaiseManipulationStarted(IMixedRealityInputSource source, Handedness handedness, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseManipulationStarted(IMixedRealityInputSource source, Handedness handedness)
         {
             // Create input event
-            manipulationEventData.Initialize(source, handedness, Vector3.zero, tags);
+            manipulationEventData.Initialize(source, handedness, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationStartedEventHandler);
@@ -1187,19 +1244,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnManipulationUpdated(casted);
             };
 
-        public void RaiseManipulationUpdated(IMixedRealityInputSource source, Vector3 cumulativeDelta, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseManipulationUpdated(IMixedRealityInputSource source, Vector3 cumulativeDelta)
         {
             // Create input event
-            manipulationEventData.Initialize(source, cumulativeDelta, tags);
+            manipulationEventData.Initialize(source, cumulativeDelta);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationUpdatedEventHandler);
         }
 
-        public void RaiseManipulationUpdated(IMixedRealityInputSource source, Handedness handedness, Vector3 cumulativeDelta, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseManipulationUpdated(IMixedRealityInputSource source, Handedness handedness, Vector3 cumulativeDelta)
         {
             // Create input event
-            manipulationEventData.Initialize(source, handedness, cumulativeDelta, tags);
+            manipulationEventData.Initialize(source, handedness, cumulativeDelta);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationUpdatedEventHandler);
@@ -1212,19 +1271,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnManipulationCompleted(casted);
             };
 
-        public void RaiseManipulationCompleted(IMixedRealityInputSource source, Vector3 cumulativeDelta, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseManipulationCompleted(IMixedRealityInputSource source, Vector3 cumulativeDelta)
         {
             // Create input event
-            manipulationEventData.Initialize(source, cumulativeDelta, tags);
+            manipulationEventData.Initialize(source, cumulativeDelta);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationCompletedEventHandler);
         }
 
-        public void RaiseManipulationCompleted(IMixedRealityInputSource source, Handedness handedness, Vector3 cumulativeDelta, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseManipulationCompleted(IMixedRealityInputSource source, Handedness handedness, Vector3 cumulativeDelta)
         {
             // Create input event
-            manipulationEventData.Initialize(source, handedness, cumulativeDelta, tags);
+            manipulationEventData.Initialize(source, handedness, cumulativeDelta);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationCompletedEventHandler);
@@ -1237,19 +1298,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnManipulationCanceled(casted);
             };
 
-        public void RaiseManipulationCanceled(IMixedRealityInputSource source, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseManipulationCanceled(IMixedRealityInputSource source)
         {
             // Create input event
-            manipulationEventData.Initialize(source, Vector3.zero, tags);
+            manipulationEventData.Initialize(source, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationCanceledEventHandler);
         }
 
-        public void RaiseManipulationCanceled(IMixedRealityInputSource source, Handedness handedness, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseManipulationCanceled(IMixedRealityInputSource source, Handedness handedness)
         {
             // Create input event
-            manipulationEventData.Initialize(source, handedness, Vector3.zero, tags);
+            manipulationEventData.Initialize(source, handedness, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(manipulationEventData, OnManipulationCanceledEventHandler);
@@ -1266,10 +1329,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         //            handler.OnTeleportIntent(casted);
         //        };
 
-        //public void RaiseTeleportIntent(TeleportPointer pointer, object[] tags = null)
+        //public void RaiseTeleportIntent(TeleportPointer pointer)
         //{
         //    // Create input event
-        //    teleportEventData.Initialize(pointer.InputSourceParent, tags);
+        //    teleportEventData.Initialize(pointer.InputSourceParent);
 
         //    // Pass handler through HandleEvent to perform modal/fallback logic
         //    HandleEvent(teleportEventData, OnTeleportIntentHandler);
@@ -1282,10 +1345,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         //            handler.OnTeleportStarted(casted);
         //        };
 
-        //public void RaiseTeleportStarted(TeleportPointer pointer, object[] tags = null)
+        //public void RaiseTeleportStarted(TeleportPointer pointer)
         //{
         //    // Create input event
-        //    teleportEventData.Initialize(pointer.InputSourceParent, tags);
+        //    teleportEventData.Initialize(pointer.InputSourceParent);
 
         //    // Pass handler through HandleEvent to perform modal/fallback logic
         //    HandleEvent(teleportEventData, OnTeleportStartedHandler);
@@ -1298,10 +1361,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         //            handler.OnTeleportCompleted(casted);
         //        };
 
-        //public void RaiseTeleportCompleted(TeleportPointer pointer, object[] tags = null)
+        //public void RaiseTeleportCompleted(TeleportPointer pointer)
         //{
         //    // Create input event
-        //    teleportEventData.Initialize(pointer.InputSourceParent, tags);
+        //    teleportEventData.Initialize(pointer.InputSourceParent);
 
         //    // Pass handler through HandleEvent to perform modal/fallback logic
         //    HandleEvent(teleportEventData, OnTeleportCompletedHandler);
@@ -1314,10 +1377,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         //            handler.OnTeleportCanceled(casted);
         //        };
 
-        //public void RaiseTeleportCanceled(TeleportPointer pointer, object[] tags = null)
+        //public void RaiseTeleportCanceled(TeleportPointer pointer)
         //{
         //    // Create input event
-        //    teleportEventData.Initialize(pointer.InputSourceParent, tags);
+        //    teleportEventData.Initialize(pointer.InputSourceParent);
 
         //    // Pass handler through HandleEvent to perform modal/fallback logic
         //    HandleEvent(teleportEventData, OnTeleportCanceledHandler);
@@ -1336,10 +1399,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnSpeechKeywordRecognized(casted);
             };
 
-        public void RaiseSpeechKeywordPhraseRecognized(IMixedRealityInputSource source, UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string text, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseSpeechKeywordPhraseRecognized(IMixedRealityInputSource source, UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string text)
         {
             // Create input event
-            speechEventData.Initialize(source, confidence, phraseDuration, phraseStartTime, semanticMeanings, text, tags);
+            speechEventData.Initialize(source, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
@@ -1356,10 +1420,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnDictationHypothesis(casted);
             };
 
-        public void RaiseDictationHypothesis(IMixedRealityInputSource source, string dictationHypothesis, AudioClip dictationAudioClip = null, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseDictationHypothesis(IMixedRealityInputSource source, string dictationHypothesis, AudioClip dictationAudioClip = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, dictationHypothesis, dictationAudioClip, tags);
+            dictationEventData.Initialize(source, dictationHypothesis, dictationAudioClip);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationHypothesisEventHandler);
@@ -1372,10 +1437,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnDictationResult(casted);
             };
 
-        public void RaiseDictationResult(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseDictationResult(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, dictationResult, dictationAudioClip, tags);
+            dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationResultEventHandler);
@@ -1388,10 +1454,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnDictationComplete(casted);
             };
 
-        public void RaiseDictationComplete(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseDictationComplete(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip)
         {
             // Create input event
-            dictationEventData.Initialize(source, dictationResult, dictationAudioClip, tags);
+            dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationCompleteEventHandler);
@@ -1404,10 +1471,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 handler.OnDictationError(casted);
             };
 
-        public void RaiseDictationError(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null, object[] tags = null)
+        /// <inheritdoc />
+        public void RaiseDictationError(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, dictationResult, dictationAudioClip, tags);
+            dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationErrorEventHandler);

@@ -388,7 +388,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
 
         void IMixedRealityInputHandler.OnInputPressed(InputPressedEventData eventData) { }
 
-        void IMixedRealityInputHandler.OnDualAxisInputChanged(DualAxisInputEventData eventData) { }
+        void IMixedRealityInputHandler.On2DoFInputChanged(TwoDoFInputEventData eventData) { }
 
         void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
 
@@ -399,9 +399,5 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
                 StopDragging();
             }
         }
-
-        void IMixedRealitySourceStateHandler.OnSourcePositionChanged(SourcePositionEventData eventData) { }
-
-        void IMixedRealitySourceStateHandler.OnSourceRotationChanged(SourceRotationEventData eventData) { }
     }
 }
