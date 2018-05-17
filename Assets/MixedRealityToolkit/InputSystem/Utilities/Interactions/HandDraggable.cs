@@ -367,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
                 }
             }
 #else
-            if (!eventData.InputSource.SupportsInputCapability(new[] { InputType.Position }))
+            if (!eventData.InputSource.SupportsInputCapability(new[] { InputType.PointerPosition }))
             {
                 // The input source must provide positional data for this script to be usable
                 return;
