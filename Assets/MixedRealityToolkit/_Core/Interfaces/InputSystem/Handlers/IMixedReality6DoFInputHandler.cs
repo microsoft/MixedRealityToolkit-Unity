@@ -2,16 +2,18 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
-using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers
 {
     /// <summary>
-    /// Interface to implement to react to source state changes, such as when an input source is detected or lost.
+    /// Interface to implement for 6 Degree of Freedom input.
     /// </summary>
-    public interface IMixedRealitySourceStateHandler : IEventSystemHandler
+    public interface IMixedReality6DoFInputHandler : IMixedReality3DoFInputHandler
     {
-        void OnSourceDetected(SourceStateEventData eventData);
-        void OnSourceLost(SourceStateEventData eventData);
+        /// <summary>
+        /// Six Degree of Freedom input update.
+        /// </summary>
+        /// <param name="eventData"></param>
+        void On6DoFInputChanged(SixDoFInputEventData eventData);
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers
 {
     /// <summary>
-    /// Interface to implement to react to simple generic input.
+    /// Interface to implement for simple generic input.
     /// </summary>
     public interface IMixedRealityInputHandler : IEventSystemHandler
     {
@@ -34,6 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
         /// Input Position updates from Thumbsticks, Touchpads, or any other simple input with a position.
         /// </summary>
         /// <param name="eventData">InputDualAxisPositionEventData</param>
-        void OnDualAxisInputChanged(DualAxisInputEventData eventData);
+        void On2DoFInputChanged(TwoDoFInputEventData eventData);
     }
 }

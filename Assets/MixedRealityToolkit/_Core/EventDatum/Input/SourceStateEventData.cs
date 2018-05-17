@@ -18,10 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// Populates the event with data.
         /// </summary>
         /// <param name="inputSource"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, object[] tags)
+        public void Initialize(IMixedRealityInputSource inputSource)
         {
-            BaseInitialize(inputSource, tags);
+            BaseInitialize(inputSource);
         }
     }
 }

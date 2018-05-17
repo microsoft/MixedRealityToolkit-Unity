@@ -26,10 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         /// <param name="inputSource"></param>
         /// <param name="pressedAmount"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, double pressedAmount, object[] tags = null)
+        public void Initialize(IMixedRealityInputSource inputSource, double pressedAmount)
         {
-            Initialize(inputSource, tags);
+            Initialize(inputSource);
             PressedAmount = pressedAmount;
         }
 
@@ -39,10 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="handedness"></param>
         /// <param name="pressedAmount"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, double pressedAmount, object[] tags = null)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, double pressedAmount)
         {
-            Initialize(inputSource, handedness, tags);
+            Initialize(inputSource, handedness);
             PressedAmount = pressedAmount;
         }
 
@@ -52,10 +50,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="keyCode"></param>
         /// <param name="pressedAmount"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, KeyCode keyCode, double pressedAmount, object[] tags = null)
+        public void Initialize(IMixedRealityInputSource inputSource, KeyCode keyCode, double pressedAmount)
         {
-            Initialize(inputSource, keyCode, tags);
+            Initialize(inputSource, keyCode);
             PressedAmount = pressedAmount;
         }
 
@@ -65,10 +62,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="inputType"></param>
         /// <param name="pressedAmount"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, double pressedAmount, object[] tags = null)
+        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, double pressedAmount)
         {
-            Initialize(inputSource, inputType, tags);
+            Initialize(inputSource, inputType);
             PressedAmount = pressedAmount;
         }
 
@@ -79,10 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="handedness"></param>
         /// <param name="keyCode"></param>
         /// <param name="pressedAmount"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, KeyCode keyCode, double pressedAmount, object[] tags = null)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, KeyCode keyCode, double pressedAmount)
         {
-            Initialize(inputSource, handedness, keyCode, tags);
+            Initialize(inputSource, handedness, keyCode);
             PressedAmount = pressedAmount;
         }
 
@@ -93,10 +88,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
         /// <param name="pressedAmount"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputType inputType, double pressedAmount, object[] tags = null)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputType inputType, double pressedAmount)
         {
-            Initialize(inputSource, handedness, inputType, tags);
+            Initialize(inputSource, handedness, inputType);
             PressedAmount = pressedAmount;
         }
     }
