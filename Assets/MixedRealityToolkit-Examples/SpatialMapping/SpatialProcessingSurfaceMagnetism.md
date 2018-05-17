@@ -18,7 +18,7 @@ You need to assign same Unity layer to the Spatial mapping’s plane and Solver 
 
 3. Assign **SolverSurfaceMagnetism** script to an object. In **Magnetic Surface** option, select the **SpatialMapping** layer. <br/><img src="/External/ReadMeImages/MRTK_SurfaceMagnetism6.png" width="550">
 
-4. After initial room scanning, you will be able to see MRTK logo plane is smoothly snapping to the surfaces.
+4. After initial room scanning, you will be able to see MRTK logo plane smoothly snaps to the surfaces.
 
  
 
