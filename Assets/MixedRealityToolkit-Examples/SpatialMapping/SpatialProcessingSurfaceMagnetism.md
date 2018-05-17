@@ -12,7 +12,7 @@ https://gfycat.com/PitifulRareKodiakbear
 ## How to use 
 You need to assign same Unity layer to the Spatial mapping’s plane and Solver Surface Magnetism’s Magnetic Surface.
 
-1. Add a new layer for the planes created by Spatial Processing. Mixed Reality Toolkit's Apply Mixed Reality Projcet Settings automatically addes a new layer 31:Spatial Mapping.
+1. Add a new layer for the planes created by Spatial Processing. Mixed Reality Toolkit's **Apply Mixed Reality Projcet Settings** automatically addes a new layer **31:Spatial Mapping**.
 <img src="/External/ReadMeImages/MRTK_SurfaceMagnetism1.png" width="550">
 <img src="/External/ReadMeImages/MRTK_SurfaceMagnetism2.png" width="300">
 <img src="/External/ReadMeImages/MRTK_SurfaceMagnetism3.png" width="550">
