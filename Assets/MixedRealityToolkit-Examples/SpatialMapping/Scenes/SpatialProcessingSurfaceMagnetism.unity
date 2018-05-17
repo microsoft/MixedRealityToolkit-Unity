@@ -230,7 +230,7 @@ MonoBehaviour:
   Lifetime: 0
   MagneticSurface:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   MaxDistance: 10
   CloseDistance: 0.5
   SurfaceNormalOffset: 0.05
@@ -638,7 +638,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroyParentRootOnLoad: 1
   ActivePlanes: []
-  SurfacePlanePrefab: {fileID: 1000010593991404, guid: 184d6e9ce2d89844489583805253eb83,
+  SurfacePlanePrefab: {fileID: 1000010593991404, guid: ee96d04db160e31498402ab1c9b0cf85,
     type: 2}
   MinArea: 0.025
   drawPlanesMask: 15
@@ -656,7 +656,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroyParentRootOnLoad: 1
   scanTime: 15
-  defaultMaterial: {fileID: 2100000, guid: d698790d3facd3d4289a13fa1243030a, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 445b487a02db95e4e88d2b94c7aa1102, type: 2}
   secondaryMaterial: {fileID: 2100000, guid: df172103f5fba4a4d8636aeca60cb0d7, type: 2}
   minimumFloors: 1
 --- !u!4 &1325178179
