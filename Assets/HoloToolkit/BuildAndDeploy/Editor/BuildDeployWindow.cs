@@ -24,7 +24,7 @@ namespace HoloToolkit.Unity
 
         private const string SdkVersion =
 #if UNITY_2017_2_OR_NEWER
-                "10.0.16299.0";
+                "10.0.17134.0";
 #else
                 "10.0.15063.0";
 #endif
@@ -123,7 +123,13 @@ namespace HoloToolkit.Unity
         {
             get
             {
-                return Directory.Exists(BuildDeployPrefs.AbsoluteBuildDirectory) && !string.IsNullOrEmpty(familyPackageName);
+                bool canInstall = true;
+                if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+                {
+                    canInstall = DevicePortalConnectionEnabled;
+                }
+
+                return canInstall && Directory.Exists(BuildDeployPrefs.AbsoluteBuildDirectory);
             }
         }
 
@@ -226,9 +232,7 @@ namespace HoloToolkit.Unity
                 // Build directory (and save setting, if it's changed)
                 string curBuildDirectory = BuildDeployPrefs.BuildDirectory;
                 EditorGUILayout.LabelField(buildDirectoryLabel, GUILayout.Width(96));
-                string newBuildDirectory = EditorGUILayout.TextField(
-                        curBuildDirectory,
-                        GUILayout.Width(64), GUILayout.ExpandWidth(true));
+                string newBuildDirectory = EditorGUILayout.TextField(curBuildDirectory, GUILayout.Width(64), GUILayout.ExpandWidth(true));
 
                 if (newBuildDirectory != curBuildDirectory)
                 {
@@ -261,16 +265,19 @@ namespace HoloToolkit.Unity
 
             EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup((int)EditorUserBuildSettings.wsaSubtarget, deviceNames);
 
-            GUI.enabled = ShouldBuildSLNBeEnabled;
             bool canInstall = CanInstall;
 
-            // Build & Run button...
-            if (GUILayout.Button(CanInstall
-                ? buildAllThenInstallLabel
-                : buildAllLabel,
-                GUILayout.Width(halfWidth - 20)))
+            if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens && !IsHoloLensConnectedUsb)
             {
-                EditorApplication.delayCall += () => { BuildAll(canInstall); };
+                canInstall = IsHoloLensConnectedUsb;
+            }
+
+            GUI.enabled = ShouldBuildSLNBeEnabled;
+
+            // Build & Run button...
+            if (GUILayout.Button(CanInstall ? buildAllThenInstallLabel : buildAllLabel, GUILayout.Width(halfWidth - 20)))
+            {
+                EditorApplication.delayCall += () => BuildAll(canInstall);
             }
 
             GUI.enabled = true;
@@ -280,26 +287,11 @@ namespace HoloToolkit.Unity
                 EditorApplication.ExecuteMenuItem("Edit/Project Settings/Player");
             }
 
-            // If Xbox Controller support is enabled and we're targeting the HoloLens device,
-            // Enable the HID capability.
-            if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
-            {
-                PlayerSettings.WSA.SetCapability(
-                    PlayerSettings.WSACapability.HumanInterfaceDevice,
-                    EditorPrefsUtility.GetEditorPref("Enable Xbox Controller Support", false));
-
-                BuildDeployPrefs.BuildPlatform = BuildPlatformEnum.x86.ToString();
-            }
-            else
-            {
-                PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.HumanInterfaceDevice, false);
-            }
-
             EditorGUILayout.EndHorizontal();
             GUILayout.EndVertical();
             GUILayout.Space(10);
 
-            #endregion
+            #endregion Quick Options
 
             currentTab = (BuildDeployTab)GUILayout.Toolbar(SessionState.GetInt("_MRTK_BuildWindow_Tab", (int)currentTab), tabNames);
             SessionState.SetInt("_MRTK_BuildWindow_Tab", (int)currentTab);
@@ -453,6 +445,15 @@ namespace HoloToolkit.Unity
             }
 
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
+
+            if (curScriptingBackend == ScriptingImplementation.WinRTDotNET)
+            {
+                EditorGUILayout.HelpBox(".NET Scripting backend is depreciated, please use IL2CPP.", MessageType.Warning);
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+            }
+
             var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup(
                 "Scripting Backend",
                 (int)curScriptingBackend,
@@ -473,6 +474,7 @@ namespace HoloToolkit.Unity
                         "Okay", "Cancel"))
                 {
                     Directory.Delete(BuildDeployPrefs.AbsoluteBuildDirectory, true);
+                    canUpdate = true;
                 }
 
                 if (canUpdate)
