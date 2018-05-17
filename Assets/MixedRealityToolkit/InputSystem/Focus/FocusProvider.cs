@@ -8,8 +8,10 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using IPointerResult = Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.IPointerResult;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 {
@@ -89,7 +91,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// </summary>
         public GameObject OverrideFocusedObject { get; set; }
 
-        private class PointerData : PointerResult, IEquatable<PointerData>
+        [Serializable]
+        private class PointerData : IPointerResult, IEquatable<PointerData>
         {
             public readonly IMixedRealityPointer Pointer;
             private FocusDetails focusDetails;
@@ -117,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 
             public void UpdateHit(RaycastHit hit, RayStep sourceRay, int rayStepIndex)
             {
-                PreviousPointerTarget = End.Object;
+                PreviousPointerTarget = Details.Object;
                 RayStepIndex = rayStepIndex;
                 StartPoint = sourceRay.Origin;
 
@@ -125,8 +128,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 focusDetails.Point = hit.point;
                 focusDetails.Normal = hit.normal;
                 focusDetails.Object = hit.transform.gameObject;
-                End = focusDetails;
-                CurrentPointerTarget = End.Object;
+                Details = focusDetails;
+                CurrentPointerTarget = Details.Object;
             }
 
             public void UpdateHit(RaycastResult result, RaycastHit hit, RayStep sourceRay, int rayStepIndex)
@@ -140,12 +143,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 focusDetails.Point = hit.point;
                 focusDetails.Normal = hit.normal;
                 focusDetails.Object = result.gameObject;
-                End = focusDetails;
+                Details = focusDetails;
             }
 
             public void UpdateHit()
             {
-                PreviousPointerTarget = End.Object;
+                PreviousPointerTarget = Details.Object;
 
                 RayStep firstStep = Pointer.Rays[0];
                 RayStep finalStep = Pointer.Rays[Pointer.Rays.Length - 1];
@@ -156,8 +159,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 focusDetails.Point = finalStep.Terminus;
                 focusDetails.Normal = -finalStep.Direction;
                 focusDetails.Object = null;
-                End = focusDetails;
-                CurrentPointerTarget = End.Object;
+                Details = focusDetails;
+                CurrentPointerTarget = Details.Object;
             }
 
             public void ResetFocusedObjects(bool clearPreviousObject = true)
@@ -167,10 +170,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                     PreviousPointerTarget = null;
                 }
 
-                focusDetails.Point = End.Point;
-                focusDetails.Normal = End.Normal;
+                focusDetails.Point = Details.Point;
+                focusDetails.Normal = Details.Normal;
                 focusDetails.Object = null;
-                End = focusDetails;
+                Details = focusDetails;
                 CurrentPointerTarget = null;
             }
 
@@ -193,6 +196,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             {
                 return Pointer != null ? Pointer.GetHashCode() : 0;
             }
+
+            public Vector3 StartPoint { get; private set; }
+            public FocusDetails Details { get; private set; }
+            public GameObject CurrentPointerTarget { get; private set; }
+            public GameObject PreviousPointerTarget { get; private set; }
+            public int RayStepIndex { get; private set; }
         }
 
         #region MonoBehaviour Implementation
@@ -283,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             {
                 if (pointerData.Pointer.InputSourceParent.SourceId == eventData.SourceId)
                 {
-                    focusDetails = pointerData.End;
+                    focusDetails = pointerData.Details;
                     return true;
                 }
             }
@@ -348,7 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             {
                 if (pointerData.Pointer.PointerId == pointer.PointerId)
                 {
-                    focusDetails = pointerData.End;
+                    focusDetails = pointerData.Details;
                     return true;
                 }
             }
@@ -517,7 +526,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                         rayColor = Color.green;
                     }
 
-                    Debug.DrawRay(pointer.StartPoint, (pointer.End.Point - pointer.StartPoint), rayColor);
+                    Debug.DrawRay(pointer.StartPoint, (pointer.Details.Point - pointer.StartPoint), rayColor);
                 }
             }
         }
@@ -557,7 +566,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                     }
 
                     // Set the pointer's result last
-                    pointer.Pointer.Result = pointer;
+                    pointer.Pointer.Result = pointer as IPointerResult;
                 }
             }
 
@@ -670,7 +679,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <param name="prioritizedLayerMasks"></param>
         private void RaycastGraphics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-            Debug.Assert(pointer.End.Point != Vector3.zero, "No pointer source end point found to raycast against!");
+            Debug.Assert(pointer.Details.Point != Vector3.zero, "No pointer source end point found to raycast against!");
             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusProvider before you can process uGUI raycasting.");
 
             RaycastResult raycastResult = default(RaycastResult);
@@ -737,7 +746,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                     {
                         // Get the index in the prioritized layer masks
                         int uiLayerIndex = uiRaycastResult.gameObject.layer.FindLayerListIndex(prioritizedLayerMasks);
-                        int threeDLayerIndex = pointer.End.LastRaycastHit.collider.gameObject.layer.FindLayerListIndex(prioritizedLayerMasks);
+                        int threeDLayerIndex = pointer.Details.LastRaycastHit.collider.gameObject.layer.FindLayerListIndex(prioritizedLayerMasks);
 
                         if (threeDLayerIndex > uiLayerIndex)
                         {
@@ -745,7 +754,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                         }
                         else if (threeDLayerIndex == uiLayerIndex)
                         {
-                            if (pointer.End.LastRaycastHit.distance > uiRaycastResult.distance)
+                            if (pointer.Details.LastRaycastHit.distance > uiRaycastResult.distance)
                             {
                                 overridePhysicsRaycast = true;
                             }
@@ -753,7 +762,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                     }
                     else
                     {
-                        if (pointer.End.LastRaycastHit.distance > uiRaycastResult.distance)
+                        if (pointer.Details.LastRaycastHit.distance > uiRaycastResult.distance)
                         {
                             overridePhysicsRaycast = true;
                         }

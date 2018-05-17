@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.Cursors;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
@@ -164,14 +165,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
             public override void OnPostRaycast()
             {
-                HitInfo = Result.End.LastRaycastHit;
-                GazeTarget = Result.End.Object;
+                HitInfo = Result.Details.LastRaycastHit;
+                GazeTarget = Result.Details.Object;
 
-                if (Result.End.Object != null)
+                if (Result.Details.Object != null)
                 {
-                    lastHitDistance = (Result.End.Point - Rays[0].Origin).magnitude;
+                    lastHitDistance = (Result.Details.Point - Rays[0].Origin).magnitude;
                     HitPosition = Rays[0].Origin + (lastHitDistance * Rays[0].Direction);
-                    HitNormal = Result.End.Normal;
+                    HitNormal = Result.Details.Normal;
                 }
             }
 
