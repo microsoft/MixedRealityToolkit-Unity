@@ -4,7 +4,7 @@
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
-namespace HoloToolkit.Unity
+namespace HoloToolkit.Unity.Examples
 {
     public class LoFiFilterSelection : MonoBehaviour, IInputClickHandler
     {
