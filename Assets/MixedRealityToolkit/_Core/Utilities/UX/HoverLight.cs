@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
@@ -15,13 +16,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
         [SerializeField]
         [Range(0.0f, 1.0f)]
         private float radius = 0.15f;
-
         [SerializeField]
         private Color color = new Color(0.3f, 0.3f, 0.3f, 1.0f);
 
-        private int hoverPositionId;
-        private int hoverRadiusId;
-        private int hoverColorId;
+        // Two hover lights are supported at this time.
+        private const int hoverLightCount = 2;
+        private static List<HoverLight> activeHoverLights = new List<HoverLight>(hoverLightCount);
+        private static int[] hoverLightIDs = new int[hoverLightCount];
+        private static int[] hoverLightColorIDs = new int[hoverLightCount];
+        private static int lastHoverLightUpdate = -1;
 
         public float Radius
         {
@@ -51,28 +54,31 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
 
         private void OnEnable()
         {
-            Initialize();
+            AddHoverLight(this);
         }
 
         private void OnDisable()
         {
-            UpdateHoverLight();
+            RemoveHoverLight(this);
+            UpdateHoverLights(true);
         }
 
+#if UNITY_EDITOR
         private void Update()
         {
-            if (Application.isPlaying || !Application.isEditor)
+            if (Application.isPlaying)
             {
                 return;
             }
 
             Initialize();
-            UpdateHoverLight();
+            UpdateHoverLights();
         }
+#endif
 
         private void LateUpdate()
         {
-            UpdateHoverLight();
+            UpdateHoverLights();
         }
 
         private void OnDrawGizmosSelected()
@@ -92,21 +98,87 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
             Gizmos.DrawIcon(transform.position + Vector3.back * Radius, string.Empty, false);
         }
 
-        private void Initialize()
+        private static void AddHoverLight(HoverLight light)
         {
-            hoverPositionId = Shader.PropertyToID("_HoverPosition");
-            hoverRadiusId = Shader.PropertyToID("_HoverRadius");
-            hoverColorId = Shader.PropertyToID("_HoverColor");
+            if (activeHoverLights.Count >= hoverLightCount)
+            {
+                Debug.LogWarningFormat("Max hover light count ({0}) exceeded.", hoverLightCount);
+            }
+
+            activeHoverLights.Add(light);
         }
 
-        private void UpdateHoverLight()
+        private static void RemoveHoverLight(HoverLight light)
         {
-            Shader.SetGlobalVector(hoverPositionId, transform.position);
-            Shader.SetGlobalFloat(hoverRadiusId, Radius);
-            Shader.SetGlobalVector(hoverColorId, new Vector4(Color.r,
-                                                             Color.g,
-                                                             Color.b,
-                                                             isActiveAndEnabled ? 1.0f : 0.0f));
+            activeHoverLights.Remove(light);
+        }
+
+        private static void Initialize()
+        {
+            for (int i = 0; i < hoverLightCount; ++i)
+            {
+                hoverLightIDs[i] = Shader.PropertyToID("_HoverLight" + i);
+                hoverLightColorIDs[i] = Shader.PropertyToID("_HoverLightColor" + i);
+            }
+        }
+
+        private static void UpdateHoverLights(bool forceUpdate = false)
+        {
+            if (lastHoverLightUpdate == -1)
+            {
+                Initialize();
+            }
+
+            if (!forceUpdate && (Time.frameCount == lastHoverLightUpdate))
+            {
+                return;
+            }
+
+            if (activeHoverLights.Count > 1)
+            {
+                Shader.EnableKeyword("_MULTI_HOVER_LIGHT");
+            }
+            else
+            {
+                Shader.DisableKeyword("_MULTI_HOVER_LIGHT");
+            }
+
+            for (int i = 0; i < hoverLightCount; ++i)
+            {
+                HoverLight light = (i >= activeHoverLights.Count) ? null : activeHoverLights[i];
+
+                if (light)
+                {
+                    Shader.SetGlobalVector(hoverLightIDs[i], new Vector4(light.transform.position.x,
+                                                 light.transform.position.y,
+                                                 light.transform.position.z,
+                                                 light.Radius));
+                    Shader.SetGlobalVector(hoverLightColorIDs[i], new Vector4(light.Color.r,
+                                                                          light.Color.g,
+                                                                          light.Color.b,
+                                                                          1.0f));
+                }
+                else
+                {
+                    Shader.SetGlobalVector(hoverLightColorIDs[i], Vector4.zero);
+                }
+            }
+
+            lastHoverLightUpdate = Time.frameCount;
         }
     }
+
+#if UNITY_EDITOR
+    [UnityEditor.CustomEditor(typeof(HoverLight))]
+    public class HoverLightEditor : UnityEditor.Editor
+    {
+        private bool HasFrameBounds() { return true; }
+
+        private Bounds OnGetFrameBounds()
+        {
+            HoverLight light = target as HoverLight;
+            return new Bounds(light.transform.position, Vector3.one * light.Radius);
+        }
+    }
+#endif
 }
