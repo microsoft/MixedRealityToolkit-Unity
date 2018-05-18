@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITY_IOS || UNITY_EDITOR
+using System;
 
 namespace UnityEngine.XR.iOS
 {
@@ -37,4 +38,4 @@ namespace UnityEngine.XR.iOS
         public bool isValid;
     }
 }
-
+#endif

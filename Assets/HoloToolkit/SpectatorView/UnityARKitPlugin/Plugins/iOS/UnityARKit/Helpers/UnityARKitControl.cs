@@ -5,11 +5,10 @@ using UnityEngine;
 namespace UnityEngine.XR.iOS
 {
     public class UnityARKitControl : MonoBehaviour {
-
+#if UNITY_IOS || UNITY_EDITOR
         UnityARSessionRunOption [] runOptions = new UnityARSessionRunOption[4];
         UnityARAlignment [] alignmentOptions = new UnityARAlignment[3];
         UnityARPlaneDetection [] planeOptions = new UnityARPlaneDetection[4];
-
         int currentOptionIndex = 0;
         int currentAlignmentIndex = 0;
         int currentPlaneIndex = 0;
@@ -68,5 +67,6 @@ namespace UnityEngine.XR.iOS
                 currentPlaneIndex = (currentPlaneIndex + 1) % 2;
             }
         }
+#endif
     }
 }

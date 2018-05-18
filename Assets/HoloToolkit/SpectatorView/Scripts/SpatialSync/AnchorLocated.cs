@@ -43,18 +43,23 @@ namespace HoloToolkit.Unity.SpectatorView
 
         private void Start()
         {
+#if UNITY_IOS || UNITY_EDITOR
             if (MarkerGenerator == null)
             {
                 MarkerGenerator = FindObjectOfType<SpectatorViewMarkerGenerator3D>();
             }
             UnityARSessionNativeInterface.ARFrameUpdatedEvent += FrameUpdated;
+#endif
         }
 
         private void OnDestroy()
         {
+#if UNITY_IOS || UNITY_EDITOR
             UnityARSessionNativeInterface.ARFrameUpdatedEvent -= FrameUpdated;
+#endif
         }
 
+#if UNITY_IOS || UNITY_EDITOR
         /// <summary>
         /// Called by the API. It checks whether an anchor has been located and signals
         /// the marker generator so that it can create and show an AR marker
@@ -72,5 +77,6 @@ namespace HoloToolkit.Unity.SpectatorView
                 }
             }
         }
+#endif 
     }
 }

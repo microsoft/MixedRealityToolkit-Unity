@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 using UnityEngine.Networking;
-
-#if NETFX_CORE
-using System;
-#endif
 
 namespace HoloToolkit.Unity.SpectatorView
 {
@@ -38,7 +35,7 @@ namespace HoloToolkit.Unity.SpectatorView
 
         private void Awake()
         {
-#if NETFX_CORE
+#if WINDOWS_UWP
             try
             {
                 OpenCVUtils.CheckOpenCVWrapperHasLoaded();
@@ -79,6 +76,7 @@ namespace HoloToolkit.Unity.SpectatorView
             }
             else
             {
+                Debug.Log("On phone Start HoloLens Camera");
                 StartAsServer();
             }
         }
@@ -95,6 +93,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// <param name="data">Broadcast message read</param>
         public override void OnReceivedBroadcast( string fromAddress, string data )
         {
+            Debug.Log("Receiving boadcart");
             base.OnReceivedBroadcast(fromAddress, data);
             MarkerDetectionHololens.StartCapture();
         }

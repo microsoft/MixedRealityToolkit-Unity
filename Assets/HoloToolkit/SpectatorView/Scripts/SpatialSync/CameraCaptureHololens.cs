@@ -3,14 +3,10 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-
-#if NETFX_CORE
 using System.Linq;
-#if UNITY_2017_2_OR_NEWER
+
+#if WINDOWS_UWP
 using UnityEngine.XR.WSA.WebCam;
-#else
-using UnityEngine.VR.WSA.WebCam;
-#endif
 #endif
 
 namespace HoloToolkit.Unity.SpectatorView
@@ -24,7 +20,7 @@ namespace HoloToolkit.Unity.SpectatorView
         public delegate void FrameCapturesDelegate(List<byte> frameData, int width, int height);
         public FrameCapturesDelegate OnFrameCapture;
 
-#if NETFX_CORE
+#if WINDOWS_UWP
         /// <summary>
         /// Manages the camera capture
         /// </summary>
@@ -65,7 +61,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// </summary>
         public void StartCapture()
         {
-#if NETFX_CORE
+#if WINDOWS_UWP
             if(!capturing)
             {
                 PhotoCapture.CreateAsync(false, OnPhotoCaptureCreated);
@@ -81,7 +77,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// </summary>
         public void StopCapture()
         {
-#if NETFX_CORE
+#if WINDOWS_UWP
             if(capturing)
             {
                 photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
@@ -92,7 +88,7 @@ namespace HoloToolkit.Unity.SpectatorView
 #endif
         }
 
-#if NETFX_CORE
+#if WINDOWS_UWP
 
         /// <summary>
         /// Called when a capture object has been created, it configures the camera for the capture process

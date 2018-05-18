@@ -13,7 +13,8 @@ namespace UnityEngine.XR.iOS
         {
             planePrefab = go;
         }
-        
+
+#if UNITY_IOS || UNITY_EDITOR
         public static GameObject CreatePlaneInScene(ARPlaneAnchor arPlaneAnchor)
         {
             GameObject plane;
@@ -49,7 +50,7 @@ namespace UnityEngine.XR.iOS
             return plane;
         }
 
-
+#endif
 
     }
 }

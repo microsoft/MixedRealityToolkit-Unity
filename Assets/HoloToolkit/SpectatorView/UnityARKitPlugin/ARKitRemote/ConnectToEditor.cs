@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_IOS || UNITY_EDITOR
+using UnityEngine;
 using UnityEngine.Networking.PlayerConnection;
 using System.Text;
 using ARKit.Utils;
@@ -139,3 +140,4 @@ namespace UnityEngine.XR.iOS
     }
 
 }
+#endif
