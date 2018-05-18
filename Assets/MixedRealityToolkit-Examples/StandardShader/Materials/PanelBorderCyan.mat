@@ -9,7 +9,7 @@ Material:
   m_Name: PanelBorderCyan
   m_Shader: {fileID: 4800000, guid: d45c0efca53019e43891b0f610f8146e, type: 3}
   m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT _BORDER_LIGHT_USES_HOVER_COLOR _HOVER_COLOR_OVERRIDE
-    _HOVER_LIGHT _INNER_GLOW
+    _HOVER_LIGHT _INNER_GLOW _ROUND_CORNERS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -88,6 +88,7 @@ Material:
     - _DstBlend: 10
     - _EdgeSmoothingValue: 0.002
     - _EnableEmission: 0
+    - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 1
     - _EnableLightMap: 0
     - _EnableNormalMap: 0
@@ -100,6 +101,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _HoverLight: 1
+    - _HoverLightOpaque: 0
     - _InnerGlow: 1
     - _Metallic: 0
     - _Mode: 2
@@ -112,9 +114,9 @@ Material:
     - _RenderQueueOverride: -1
     - _RimLight: 0
     - _RimPower: 3
-    - _RoundCornerMargin: 0
-    - _RoundCornerRadius: 0.25
-    - _RoundCorners: 0
+    - _RoundCornerMargin: 0.01
+    - _RoundCornerRadius: 0.01
+    - _RoundCorners: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 0
@@ -132,6 +134,7 @@ Material:
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
     - _HoverColor: {r: 1, g: 0, b: 0, a: 1}
+    - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColorOverride: {r: 0, g: 0.4044118, b: 0.3709433, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.5019608}
     - _RimColor: {r: 0.33088237, g: 0.33088237, b: 0.33088237, a: 1}
