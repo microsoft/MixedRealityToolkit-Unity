@@ -57,10 +57,7 @@ namespace MixedRealityToolkit.UX.Keyboard
         /// <param name="newText"></param>
         private void Keyboard_OnTextUpdated(string newText)
         {
-            if (!string.IsNullOrEmpty(newText))
-            {
-                text = newText;
-            }
+            text = newText;
         }
 
         /// <summary>
