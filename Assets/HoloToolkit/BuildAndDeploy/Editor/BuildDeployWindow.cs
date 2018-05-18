@@ -447,7 +447,11 @@ namespace HoloToolkit.Unity
 
             if (curScriptingBackend == ScriptingImplementation.WinRTDotNET)
             {
-                EditorGUILayout.HelpBox(".NET Scripting backend is depreciated, please use IL2CPP.", MessageType.Warning);
+#if UNITY_2018_2_OR_NEWER
+                EditorGUILayout.HelpBox(".NET Scripting backend is deprecated, please use IL2CPP.", MessageType.Warning);
+#else
+                EditorGUILayout.HelpBox(".NET Scripting backend will be deprecated in 2018.2, please consider using IL2CPP.", MessageType.Log);
+#endif
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();
