@@ -5,6 +5,7 @@ using System.Collections;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
+using System.Collections.Generic;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 using System.Text;
@@ -65,7 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         public override string SourceName => "Dictation";
 
-        public override InputType[] Capabilities => new[] { InputType.Voice };
+        public override Dictionary<InputType, InteractionDefinition> Interactions => new Dictionary<InputType, InteractionDefinition>() { { InputType.Voice, new InteractionDefinition() { InputType = InputType.Voice, Id = InputSystem.GenerateNewSourceId().ToString() } } };
+
 
         #endregion IMixedRealityInputSource Implementation
 

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.InputSystem.InputMapping;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using UnityEngine;
@@ -51,7 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// </summary>
         public KeywordAndKeyCode[] Keywords => keywords;
 
-        public override InputType[] Capabilities => new[] { InputType.Voice };
+        public override Dictionary<InputType, InteractionDefinition> Interactions => new Dictionary<InputType, InteractionDefinition>() { { InputType.Voice, new InteractionDefinition() { InputType = InputType.Voice, Id = InputSystem.GenerateNewSourceId().ToString() } } };
+
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 

@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     {
         private const float K_CONTACT_EPSILON = 2.0f / 60.0f;
 
-        public override InputType[] Capabilities => new[] { InputType.Pointer, InputType.PointerPosition };
+        public override Dictionary<InputType, InteractionDefinition> Interactions => new Dictionary<InputType, InteractionDefinition>() { { InputType.Pointer, new InteractionDefinition() { InputType = InputType.Pointer, AxisType = AxisType.DualAxis, Changed = false, Id = InputSystem.GenerateNewSourceId().ToString() } } };
 
         public override IMixedRealityPointer[] Pointers
         {

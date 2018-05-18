@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
@@ -39,18 +40,19 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         public virtual IMixedRealityPointer[] Pointers => null;
 
-        public virtual InputType[] Capabilities => new[] { InputType.None };
+        public InputSourceState InputSourceState { get; }
+
+        public Handedness Handedness { get; } = Handedness.None;
+
+        public virtual Dictionary<InputType, InteractionDefinition> Interactions => new Dictionary<InputType, InteractionDefinition>() { { InputType.None, new InteractionDefinition() { InputType = InputType.None } } };
 
         public bool SupportsInputCapability(InputType[] capabilities)
         {
-            for (int i = 0; i < Capabilities.Length; i++)
+            for (int j = 0; j < capabilities.Length; j++)
             {
-                for (int j = 0; j < capabilities.Length; j++)
+                if (Interactions.ContainsKey(capabilities[j]))
                 {
-                    if (Capabilities[i] == capabilities[j])
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 

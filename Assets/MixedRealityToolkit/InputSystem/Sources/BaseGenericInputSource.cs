@@ -19,12 +19,34 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         private static IMixedRealityInputSystem inputSystem = null;
         public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
+        public BaseGenericInputSource(string name, InteractionDefinition[] interactions, IMixedRealityPointer[] pointers = null)
+        {
+            SourceId = InputSystem.GenerateNewSourceId();
+            SourceName = name;
+            Pointers = pointers ?? new[] { GazeProvider.GazePointer };
+            Interactions = new Dictionary<InputType, InteractionDefinition>();
+            foreach (var interaction in interactions)
+            {
+                Interactions.Add(interaction.InputType, interaction);
+            }
+        }
+
         public BaseGenericInputSource(string name, InputType[] capabilities, IMixedRealityPointer[] pointers = null)
         {
             SourceId = InputSystem.GenerateNewSourceId();
             SourceName = name;
-            Capabilities = capabilities;
             Pointers = pointers ?? new[] { GazeProvider.GazePointer };
+            Interactions = new Dictionary<InputType, InteractionDefinition>();
+            foreach (var capability in capabilities)
+            {
+                InteractionDefinition interaction = new InteractionDefinition()
+                {
+                    InputType = capability,
+                    Changed = false,
+                    Id = InputSystem.GenerateNewSourceId().ToString()
+                };
+                Interactions.Add(interaction.InputType, interaction);
+            }
         }
 
         public uint SourceId { get; }
@@ -33,18 +55,19 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         public IMixedRealityPointer[] Pointers { get; private set; }
 
-        public InputType[] Capabilities { get; }
+        public InputSourceState InputSourceState { get; }
+
+        public Handedness Handedness { get; } = Handedness.None;
+
+        public Dictionary<InputType, InteractionDefinition> Interactions { get; }
 
         public bool SupportsInputCapability(InputType[] capabilities)
         {
-            for (int i = 0; i < Capabilities.Length; i++)
+            for (int j = 0; j < capabilities.Length; j++)
             {
-                for (int j = 0; j < capabilities.Length; j++)
+                if (Interactions.ContainsKey(capabilities[j]))
                 {
-                    if (Capabilities[i] == capabilities[j])
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 

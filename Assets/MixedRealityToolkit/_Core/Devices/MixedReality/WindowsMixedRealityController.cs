@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
@@ -19,10 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         public Handedness Handedness { get; set; }
         
         public IMixedRealityPointer[] Pointers { get; set; }
-
-        public InputType[] Capabilities { get; set; }
         
-        public InteractionDefinition[] Interactions { get; set; }
+        public Dictionary<InputType, InteractionDefinition> Interactions { get; set; }
                 
         //TODO - Needs re-implementing, as there may be more than left == right
         #region IEquality Implementation
@@ -72,17 +71,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         //TODO - Needs re-implementing as it returns true if ONE capability is supported, but not multiples
         public bool SupportsInputCapability(InputType[] capabilities)
         {
-            for (int i = 0; i < Capabilities.Length; i++)
+            foreach (var interaction in Interactions)
             {
-                for (int j = 0; j < capabilities.Length; j++)
+                for (int i = 0; i < capabilities.Length; i++)
                 {
-                    if (Capabilities[i] == capabilities[j])
+                    if (interaction.Key == capabilities[i])
                     {
                         return true;
                     }
                 }
             }
-
             return false;
         }
     }

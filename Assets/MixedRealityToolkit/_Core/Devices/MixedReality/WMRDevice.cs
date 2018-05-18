@@ -88,46 +88,98 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             bool controllerTracked = ReadMixedRealityControllerValues(ref interactionSourceState);
 
-            // Define Controller capabilities
-            var controllerCapabilities = new List<InputType>();
-
-            // Add the Controller trigger
-            controllerCapabilities.Add(InputType.Trigger);
-
-            // If the controller has a Grip / Grasp button, add it to the controller capabilities
-            if (interactionSourceState.source.supportsGrasp)
-            {
-                controllerCapabilities.Add(InputType.Grip);
-            }
-
-            // If the controller has a menu button, add it to the controller capabilities
-            if (interactionSourceState.source.supportsMenu)
-            {
-                controllerCapabilities.Add(InputType.Menu);
-            }
-
-            // If the controller has a Thumbstick, add it to the controller capabilities
-            if (interactionSourceState.source.supportsThumbstick)
-            {
-                controllerCapabilities.Add(InputType.ThumbStick);
-                controllerCapabilities.Add(InputType.ThumbStickPress);
-            }
-
-            // If the controller has a Touchpad, add it to the controller capabilities
-            if (interactionSourceState.source.supportsTouchpad)
-            {
-                controllerCapabilities.Add(InputType.Touchpad);
-                controllerCapabilities.Add(InputType.TouchpadTouch);
-                controllerCapabilities.Add(InputType.TouchpadPress);
-            }
-
             var DetectedController = new WindowsMixedRealityController()
             {
                 SourceId = interactionSourceState.source.id,
                 Handedness = interactionSourceState.source.handedness == InteractionSourceHandedness.Left ? Handedness.Left : Handedness.Right,
                 InputSourceState = controllerTracked ? InputSourceState.Tracked : InputSourceState.NotTracked,
-                Capabilities = controllerCapabilities.ToArray()
             };
+
+            //Add the Controller Pointer
+            DetectedController.Interactions.Add(InputType.Pointer,new InteractionDefinition()
+            {
+                AxisType = AxisType.SixDoF,
+                Changed = false,
+                InputType = InputType.Pointer
+            });
+
+            // Add the Controller trigger
+            DetectedController.Interactions.Add(InputType.Trigger, new InteractionDefinition()
+            {
+                AxisType = AxisType.SingleAxis,
+                Changed = false,
+                InputType = InputType.Trigger
+            });
+
+            // If the controller has a Grip / Grasp button, add it to the controller capabilities
+            if (interactionSourceState.source.supportsGrasp)
+            {
+                DetectedController.Interactions.Add(InputType.Grip,new InteractionDefinition()
+                {
+                    AxisType = AxisType.SixDoF,
+                    Changed = false,
+                    InputType = InputType.Grip
+                });
+
+                DetectedController.Interactions.Add(InputType.GripPress, new InteractionDefinition()
+                {
+                    AxisType = AxisType.SingleAxis,
+                    Changed = false,
+                    InputType = InputType.GripPress
+                });
+
+            }
+
+            // If the controller has a menu button, add it to the controller capabilities
+            if (interactionSourceState.source.supportsMenu)
+            {
+                DetectedController.Interactions.Add(InputType.Menu, new InteractionDefinition()
+                {
+                    AxisType = AxisType.Digital,
+                    Changed = false,
+                    InputType = InputType.Menu
+                });
+            }
+
+            // If the controller has a Thumbstick, add it to the controller capabilities
+            if (interactionSourceState.source.supportsThumbstick)
+            {
+                DetectedController.Interactions.Add(InputType.ThumbStick, new InteractionDefinition()
+                {
+                    AxisType = AxisType.DualAxis,
+                    Changed = false,
+                    InputType = InputType.ThumbStick
+                });
+                DetectedController.Interactions.Add(InputType.ThumbStickPress, new InteractionDefinition()
+                {
+                    AxisType = AxisType.Digital,
+                    Changed = false,
+                    InputType = InputType.ThumbStickPress
+                });
+            }
+
+            // If the controller has a Touchpad, add it to the controller capabilities
+            if (interactionSourceState.source.supportsTouchpad)
+            {
+                DetectedController.Interactions.Add(InputType.Touchpad, new InteractionDefinition()
+                {
+                    AxisType = AxisType.DualAxis,
+                    Changed = false,
+                    InputType = InputType.Touchpad
+                });
+                DetectedController.Interactions.Add(InputType.TouchpadTouch, new InteractionDefinition()
+                {
+                    AxisType = AxisType.Digital,
+                    Changed = false,
+                    InputType = InputType.TouchpadTouch
+                });
+                DetectedController.Interactions.Add(InputType.TouchpadPress, new InteractionDefinition()
+                {
+                    AxisType = AxisType.Digital,
+                    Changed = false,
+                    InputType = InputType.TouchpadPress
+                });
+            }
 
             activeControllers.Add(interactionSourceState.source.id, DetectedController);
 
@@ -256,9 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             bool controllerTracked = ReadMixedRealityControllerValues(ref interactionSourceState);
 
             //Update Controller
-            sourceData.Controller.Update(controllerPosition, controllerRotation);
-            sourceData.ControllerPosition = controllerPosition; sourceData.ControllerRotation = controllerRotation;
-            Debug.Log($"Controller Position after Read [{controllerPosition}]");
+            //TODO - Controller currently not accepted by InputSystem
 
             //Update Pointer
             //TODO - Review, as we no longer have a MixedRealityCameraParent, this will cause issue.
@@ -267,7 +317,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 pointerPosition = CameraCache.Main.transform.parent.TransformPoint(pointerPosition);
                 pointerRotation.eulerAngles = CameraCache.Main.transform.parent.TransformDirection(pointerRotation.eulerAngles);
             }
-            sourceData.Pointer.Update(pointerPosition, pointerRotation);
+            sourceData.Interactions[InputType.Pointer].SetValue(new Tuple<Vector3, Quaternion>(pointerPosition, pointerRotation));
+
 
 
             //Update Grip
@@ -277,12 +328,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 gripPosition = CameraCache.Main.transform.parent.TransformPoint(gripPosition);
                 gripRotation.eulerAngles = CameraCache.Main.transform.parent.TransformDirection(gripRotation.eulerAngles);
             }
-            sourceData.Grip.Update(gripPosition, gripRotation);
+            sourceData.Interactions[InputType.Grip].SetValue(new Tuple<Vector3, Quaternion>(gripPosition, gripRotation));
 
             // Update Touchpad
             if (interactionSourceState.touchpadTouched)
             {
+                sourceData.Interactions[InputType.TouchpadTouch].SetValue(interactionSourceState.touchpadTouched);
+                sourceData.Interactions[InputType.TouchpadPress].SetValue(interactionSourceState.touchpadPressed);
+                sourceData.Interactions[InputType.Touchpad].SetValue(interactionSourceState.touchpadPosition);
             }
+
+            //Update Thumbstick
+            sourceData.Interactions[InputType.ThumbStickPress].SetValue(interactionSourceState.thumbstickPressed);
+            sourceData.Interactions[InputType.ThumbStick].SetValue(interactionSourceState.thumbstickPosition);
+
+
+            //Update Trigger
+            sourceData.Interactions[InputType.TriggerPress].SetValue(interactionSourceState.selectPressed);
+            sourceData.Interactions[InputType.Trigger].SetValue(interactionSourceState.selectPressedAmount);
         }
 
         #endregion
@@ -324,11 +387,42 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             UpdateInteractionSource(args.state, inputSource);
 
-            //TODO - Needs serious thought!
-            if (inputSource.Controller.Changed)
+            //TODO - Review
+            if (inputSource.Interactions[InputType.Pointer].Changed)
             {
-                inputSystem.RaiseSourcePositionChanged(inputSource, inputSource.Handedness, inputSource.Pointer.Value.Item1, inputSource.Grip.Value.Item1);
-                inputSystem.RaiseSourceRotationChanged(inputSource, inputSource.Handedness, inputSource.Pointer.Value.Item2, inputSource.Grip.Value.Item2);
+                inputSystem.Raise6DofInputChanged(inputSource, inputSource.Handedness, InputType.Pointer, inputSource.Interactions[InputType.Pointer].GetValue<Tuple<Vector3, Quaternion>>());
+            }
+
+            if (inputSource.Interactions[InputType.Grip].Changed)
+            {
+                inputSystem.Raise6DofInputChanged(inputSource, inputSource.Handedness, InputType.Grip, inputSource.Interactions[InputType.Grip].GetValue<Tuple<Vector3, Quaternion>>());
+            }
+
+            if (inputSource.Interactions[InputType.TouchpadTouch].Changed)
+            {
+                if (inputSource.Interactions[InputType.TouchpadTouch].GetValue<bool>())
+                {
+                    inputSystem.RaiseOnInputDown(inputSource, (Handedness)args.state.source.handedness, InputType.Touchpad);
+                }
+                else
+                {
+                    inputSystem.RaiseOnInputUp(inputSource, (Handedness)args.state.source.handedness, InputType.Touchpad);
+                }
+            }
+
+            if (inputSource.Interactions[InputType.Touchpad].Changed)
+            {
+                inputSystem.Raise2DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.Touchpad, inputSource.Interactions[InputType.Touchpad].GetValue<Vector2>());
+            }
+
+            if (inputSource.Interactions[InputType.ThumbStick].Changed)
+            {
+                inputSystem.Raise2DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.ThumbStick, inputSource.Interactions[InputType.ThumbStick].GetValue<Vector2>());
+            }
+
+            if (inputSource.Interactions[InputType.Trigger].Changed)
+            {
+                inputSystem.RaiseOnInputPressed(inputSource, (Handedness)args.state.source.handedness, InputType.Select, inputSource.Interactions[InputType.Trigger].GetValue<float>());
             }
         }
 
