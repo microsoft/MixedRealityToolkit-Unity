@@ -85,7 +85,6 @@ namespace HoloToolkit.Unity
                 WSAUwpSdk = EditorUserBuildSettings.wsaUWPSDK,
 
                 // Configure a post build action that will compile the generated solution
-                // Configure a post build action that will compile the generated solution
 #if UNITY_2018_1_OR_NEWER
                 PostBuildAction = (innerBuildInfo, buildReport) =>
                 {
