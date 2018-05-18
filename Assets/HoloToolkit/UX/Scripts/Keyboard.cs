@@ -378,8 +378,7 @@ namespace HoloToolkit.UI.Keyboard
 
             OnPlacement(this, EventArgs.Empty);
 
-            // todo: if the app is built for xaml, our prefab and the system keyboard will be displayed.
-            //       this feels like a side effect that Unity may need to fix.
+            // todo: if the app is built for xaml, our prefab and the system keyboard may be displayed.
             InputField.ActivateInputField();
 
             SetMicrophoneDefault();
