@@ -52,7 +52,8 @@ namespace MixedRealityToolkit.Utilities
         {
             var viewId = ApplicationView.GetForCurrentView().Id;
             var view = CoreApplication.GetCurrentView();
-            if (CallbackDictionary.TryRemove(viewId, out var cb))
+            Action<object> cb;
+            if (CallbackDictionary.TryRemove(viewId, out cb))
             {
                 try
                 {
@@ -77,6 +78,7 @@ namespace MixedRealityToolkit.Utilities
         /// <typeparam name="TReturnValue"></typeparam>
         /// <param name="xamlPageName"></param>
         /// <param name="callback"></param>
+        /// <param name="pageNavigateParameter"></param>
         /// <returns></returns>
         public IEnumerator OnLaunchXamlView<TReturnValue>(string xamlPageName, Action<TReturnValue> callback, object pageNavigateParameter = null)
         {
@@ -85,42 +87,45 @@ namespace MixedRealityToolkit.Utilities
             object returnValue = null;
             CoreApplicationView newView = CoreApplication.CreateNewView();
             int newViewId = 0;
-            var dispt = newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            var task = newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 //This happens when User switch view back to Main App manually 
-                void CoreWindow_VisibilityChanged(CoreWindow sender, VisibilityChangedEventArgs args)
-                {
-                    if (args.Visible == false)
-                    {
-                        CallbackReturnValue(null);
-                    }
-                }
                 newView.CoreWindow.VisibilityChanged += CoreWindow_VisibilityChanged;
-                Frame frame = new Frame();
-                var pageType = Type.GetType(Windows.UI.Xaml.Application.Current.GetType().AssemblyQualifiedName.Replace(".App,", $".{xamlPageName},"));
-                var appv = ApplicationView.GetForCurrentView();
-                newViewId = appv.Id;
-                var cb = new Action<object>(rval =>
+                var frame = new Frame();
+                string assemblyQualifiedName = Windows.UI.Xaml.Application.Current.GetType().AssemblyQualifiedName;
+
+                if (assemblyQualifiedName != null)
                 {
-                    returnValue = rval;
-                    isCompleted = true;
-                });
-                frame.Navigate(pageType,pageNavigateParameter);
-                CallbackDictionary[newViewId] = cb;
+                    var pageType = Type.GetType(assemblyQualifiedName.Replace(".App,", $".{xamlPageName},"));
+                    var currentView = ApplicationView.GetForCurrentView();
+                    newViewId = currentView.Id;
+
+                    var cb = new Action<object>(value =>
+                    {
+                        returnValue = value;
+                        isCompleted = true;
+                    });
+
+                    frame.Navigate(pageType, pageNavigateParameter);
+                    CallbackDictionary[newViewId] = cb;
+                }
+
                 Window.Current.Content = frame;
                 Window.Current.Activate();
 
             }).AsTask();
-            yield return new WaitUntil(() => dispt.IsCompleted || dispt.IsCanceled || dispt.IsFaulted);
+
+            yield return new WaitUntil(() => task.IsCompleted || task.IsCanceled || task.IsFaulted);
+
             Task viewShownTask = null;
-            UnityEngine.WSA.Application.InvokeOnUIThread(
-                () =>
-                {
-                    viewShownTask = ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId).AsTask();
-                },
-                    true);
+            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+            {
+                viewShownTask = ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId).AsTask();
+            }, true);
+
             yield return new WaitUntil(() => viewShownTask.IsCompleted || viewShownTask.IsCanceled || viewShownTask.IsFaulted);
             yield return new WaitUntil(() => isCompleted);
+
             try
             {
                 if (returnValue is TReturnValue)
@@ -139,7 +144,17 @@ namespace MixedRealityToolkit.Utilities
 #else
             isCompleted = true;
             yield return new WaitUntil(() => isCompleted);
-#endif
+#endif //!UNITY_EDITOR && UNITY_WSA
         }
+
+#if !UNITY_EDITOR && UNITY_WSA
+        private void CoreWindow_VisibilityChanged(CoreWindow sender, VisibilityChangedEventArgs args)
+        {
+            if (args.Visible == false)
+            {
+                CallbackReturnValue(null);
+            }
+        }
+#endif //!UNITY_EDITOR && UNITY_WSA
     }
 }
