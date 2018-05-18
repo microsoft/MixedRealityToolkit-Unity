@@ -68,6 +68,7 @@ namespace MixedRealityToolkit.Build
                     if (buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
                     {
                         EditorUtility.DisplayDialog($"{PlayerSettings.productName} WindowsStoreApp Build {buildReport.summary.result}!", "See console for details", "OK");
+                        buildSuccess = false;
                     }
 #else
                 PostBuildAction = async (innerBuildInfo, buildError) =>
@@ -75,6 +76,7 @@ namespace MixedRealityToolkit.Build
                     if (!string.IsNullOrEmpty(buildError))
                     {
                         EditorUtility.DisplayDialog($"{PlayerSettings.productName} WindowsStoreApp Build Failed!", buildError, "OK");
+                        buildSuccess = false;
                     }
 #endif
                     else
@@ -162,7 +164,7 @@ namespace MixedRealityToolkit.Build
             string nugetPath = Path.Combine(unity, @"Data\PlaybackEngines\MetroSupport\Tools\NuGet.exe");
 
             // Before building, need to run a nuget restore to generate a json.lock file. Failing to do this breaks the build in VS RTM
-            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.Mono2x &&
+            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET &&
                 (!await RestoreNugetPackagesAsync(nugetPath, storePath) ||
                  !await RestoreNugetPackagesAsync(nugetPath, $"{storePath}\\{productName}") ||
                  EditorUserBuildSettings.wsaGenerateReferenceProjects && !await RestoreNugetPackagesAsync(nugetPath, assemblyCSharp) ||

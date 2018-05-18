@@ -483,12 +483,12 @@ namespace MixedRealityToolkit.Build
             {
                 bool canUpdate = !Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
 
-                if (!canUpdate &&
-                    EditorUtility.DisplayDialog("Attention!",
+                if (!canUpdate && EditorUtility.DisplayDialog("Attention!",
                         $"Build path contains project built with {newScriptingBackend.ToString()} scripting backend, while current project is using {curScriptingBackend.ToString()} scripting backend.\n\nSwitching to a new scripting backend requires us to delete all the data currently in your build folder and rebuild the Unity Player!",
                         "Okay", "Cancel"))
                 {
                     Directory.Delete(BuildDeployPreferences.AbsoluteBuildDirectory, true);
+                    canUpdate = true;
                 }
 
                 if (canUpdate)
