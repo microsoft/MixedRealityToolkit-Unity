@@ -1,5 +1,4 @@
 ﻿// Copyright (c) Microsoft Corporation.
-// Copyright (c) Rafael Rivera.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
