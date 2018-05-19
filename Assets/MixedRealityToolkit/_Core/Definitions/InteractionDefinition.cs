@@ -12,6 +12,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// </summary>
     public struct InteractionDefinition
     {
+        private struct InputData<T>
+        {
+            public T Value { get; set; }
+        }
+
         public InteractionDefinition(uint id, AxisType axisType, InputType inputType) : this()
         {
             Id = id;
@@ -79,72 +84,111 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         #endregion Definition Data items
 
-        public T GetValue<T>()
+        #region Get Operators
+
+        public object GetRaw()
         {
-            switch (AxisType)
+            return RawData;
+        }
+
+        public bool GetBool()
+        {
+            return BoolData;
+        }
+
+        public float GetFloat()
+        {
+            return FloatData;
+        }
+
+        public Vector2 GetVector2()
+        {
+            return Vector2Data;
+        }
+
+        public Vector3 GetPosition()
+        {
+            return PositionData;
+        }
+
+        public Quaternion GetRotation()
+        {
+            return RotationData;
+        }
+
+        public Tuple<Vector3, Quaternion> GetTransform()
+        {
+            return TransformData;
+        }
+
+        #endregion Get Operators
+
+        #region Set Operators
+
+        public void SetValue(object newValue)
+        {
+            if (AxisType == AxisType.Raw)
             {
-                case AxisType.None:
-                case AxisType.Raw:
-                    return (T)Convert.ChangeType(RawData, typeof(T));
-                case AxisType.Digital:
-                    return (T)Convert.ChangeType(BoolData, typeof(T));
-                case AxisType.SingleAxis:
-                    return (T)Convert.ChangeType(FloatData, typeof(T));
-                case AxisType.DualAxis:
-                    return (T)Convert.ChangeType(Vector2Data, typeof(T));
-                case AxisType.ThreeDoFPosition:
-                    return (T)Convert.ChangeType(PositionData, typeof(T));
-                case AxisType.ThreeDoFRotation:
-                    return (T)Convert.ChangeType(RotationData, typeof(T));
-                case AxisType.SixDoF:
-                    return (T)Convert.ChangeType(TransformData, typeof(T));
-                default:
-                    throw new ArgumentOutOfRangeException();
+                Changed = newValue == RawData;
+                RawData = newValue;
             }
         }
 
-        public void SetValue<T>(T newValue)
+        public void SetValue(bool newValue)
         {
-            switch (AxisType)
+            if (AxisType == AxisType.Digital)
             {
-                case AxisType.None:
-                case AxisType.Raw:
-                    Changed = Equals(newValue, RawData);
-                    RawData = newValue;
-                    break;
-                case AxisType.Digital:
-                    var newBool = (bool)Convert.ChangeType(newValue, typeof(T));
-                    Changed = newBool != BoolData;
-                    BoolData = newBool;
-                    break;
-                case AxisType.SingleAxis:
-                    var newFloat = (float)Convert.ChangeType(newValue, typeof(T));
-                    Changed = !newFloat.Equals(FloatData);
-                    FloatData = newFloat;
-                    break;
-                case AxisType.DualAxis:
-                    var newVec2 = (Vector2)Convert.ChangeType(newValue, typeof(T));
-                    Changed = newVec2 != Vector2Data;
-                    Vector2Data = newVec2;
-                    break;
-                case AxisType.ThreeDoFPosition:
-                    var newVec3 = (Vector3)Convert.ChangeType(newValue, typeof(T));
-                    Changed = newVec3 != PositionData;
-                    PositionData = newVec3;
-                    break;
-                case AxisType.ThreeDoFRotation:
-                    var newQuat = (Quaternion)Convert.ChangeType(newValue, typeof(T));
-                    Changed = newQuat != RotationData;
-                    RotationData = newQuat;
-                    break;
-                case AxisType.SixDoF:
-                    var newTransform = (Tuple<Vector3, Quaternion>)Convert.ChangeType(newValue, typeof(T));
-                    Changed = newTransform.Item1 != TransformData.Item1 || newTransform.Item2 != TransformData.Item2;
-                    TransformData = newTransform;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(AxisType));
+                Changed = newValue == BoolData;
+                BoolData = newValue;
             }
         }
+
+        public void SetValue(float newValue)
+        {
+            if (AxisType == AxisType.SingleAxis)
+            {
+                Changed = newValue.Equals(FloatData);
+                FloatData = newValue;
+            }
+        }
+
+        public void SetValue(Vector2 newValue)
+        {
+            if (AxisType == AxisType.DualAxis)
+            {
+                Changed = newValue == Vector2Data;
+                Vector2Data = newValue;
+            }
+        }
+
+        public void SetValue(Vector3 newValue)
+        {
+            if (AxisType == AxisType.ThreeDoFPosition)
+            {
+                Changed = newValue == PositionData;
+                PositionData = newValue;
+            }
+        }
+
+        public void SetValue(Quaternion newValue)
+        {
+            if (AxisType == AxisType.ThreeDoFRotation)
+            {
+                Changed = newValue == RotationData;
+                RotationData = newValue;
+            }
+        }
+
+        public void SetValue(Tuple<Vector3, Quaternion> newValue)
+        {
+            if (AxisType == AxisType.SixDoF)
+            {
+                Changed = newValue.Item1 == PositionData && newValue.Item2 == RotationData;
+                PositionData = newValue.Item1;
+                RotationData = newValue.Item2;
+            }
+        }
+
+        #endregion Set Operators
     }
 }
