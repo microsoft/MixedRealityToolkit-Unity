@@ -4,8 +4,7 @@
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
-    /// The InputType defines the types of input exposed by a controller.
-    /// Denoting the available buttons / interactions that a controller supports.
+    /// The InputType defines the types of input exposed by a controller or Input Source.
     /// </summary>
     public enum InputType
     {
