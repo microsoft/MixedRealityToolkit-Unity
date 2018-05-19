@@ -12,11 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// </summary>
     public struct InteractionDefinition
     {
-        private struct InputData<T>
-        {
-            public T Value { get; set; }
-        }
-
         public InteractionDefinition(uint id, AxisType axisType, InputType inputType) : this()
         {
             Id = id;
