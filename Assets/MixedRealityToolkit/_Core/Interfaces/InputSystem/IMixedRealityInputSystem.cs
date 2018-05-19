@@ -267,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// </summary>
         /// <param name="source"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, double pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, float pressAmount);
 
         /// <summary>
         /// Raise Input Pressed.
@@ -275,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="handedness"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, double pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, float pressAmount);
 
         /// <summary>
         /// Raise Input Pressed.
@@ -283,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="keyCode"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, KeyCode keyCode, double pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, KeyCode keyCode, float pressAmount);
 
         /// <summary>
         /// Raise Input Pressed.
@@ -291,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="inputType"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, InputType inputType, double pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, InputType inputType, float pressAmount);
 
         /// <summary>
         /// Raise Input Pressed.
@@ -300,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="keyCode"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode, double pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode, float pressAmount);
 
         /// <summary>
         /// Raise Input Pressed.
@@ -309,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, InputType inputType, double pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, InputType inputType, float pressAmount);
 
         /// <summary>
         /// Raise the input up event.
