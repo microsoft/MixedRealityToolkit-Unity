@@ -186,7 +186,7 @@ namespace MixedRealityToolkit.Build
 
             OnPreProcessBuild(buildInfo);
 
-            EditorUtility.DisplayProgressBar("Build Pipeline", "Herding all the cats...", 0.25f);
+            EditorUtility.DisplayProgressBar("Build Pipeline", "Gathering Build data...", 0.25f);
 
 #if UNITY_2018_1_OR_NEWER
             BuildReport buildReport = default(BuildReport);
