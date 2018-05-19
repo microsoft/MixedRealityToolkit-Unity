@@ -309,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, InputType inputType, float pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, InputType inputType, double pressAmount);
 
         /// <summary>
         /// Raise the input up event.
