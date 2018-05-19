@@ -33,44 +33,44 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         #endregion Interaction Properties
 
-        #region Definition Datums
+        #region Definition Data items
 
         /// <summary>
         /// The data storage for a Raw / None Axis type.
         /// </summary>
-        private object rawDatum { get; set; }
+        private object rawData { get; set; }
 
         /// <summary>
         /// The data storage for a Digital Axis type.
         /// </summary>
-        private bool boolDatum { get; set; }
+        private bool boolData { get; set; }
 
         /// <summary>
         /// The data storage for a Single Axis type.
         /// </summary>
-        private float floatDatum { get; set; }
+        private float floatData { get; set; }
 
         /// <summary>
         /// The data storage for a Dual Axis type.
         /// </summary>
-        private Vector2 vector2Datum { get; set; }
+        private Vector2 vector2Data { get; set; }
 
         /// <summary>
         /// The position data storage for a 3DoF or 6DoF Axis type.
         /// </summary>
-        private Vector3 positionDatum { get; set; }
+        private Vector3 positionData { get; set; }
 
         /// <summary>
         /// The rotation data storage for a 3DoF or 6DoF Axis type.
         /// </summary>
-        private Quaternion rotationDatum { get; set; }
+        private Quaternion rotationData { get; set; }
 
         /// <summary>
         /// Has the value changed since the last reading
         /// </summary>
         public bool Changed { get; set; }
 
-        #endregion Definition Datums
+        #endregion Definition Data items
 
         #region Get Operators
 
@@ -79,21 +79,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
             switch (AxisType)
             {
                 case AxisType.Digital:
-                    return (T)Convert.ChangeType(boolDatum,typeof(T));
+                    return (T)Convert.ChangeType(boolData,typeof(T));
                 case AxisType.SingleAxis:
-                    return (T)Convert.ChangeType(floatDatum, typeof(T));
+                    return (T)Convert.ChangeType(floatData, typeof(T));
                 case AxisType.DualAxis:
-                    return (T)Convert.ChangeType(vector2Datum, typeof(T));
+                    return (T)Convert.ChangeType(vector2Data, typeof(T));
                 case AxisType.ThreeDoFPosition:
-                    return (T)Convert.ChangeType(positionDatum, typeof(T));
+                    return (T)Convert.ChangeType(positionData, typeof(T));
                 case AxisType.ThreeDoFRotation:
-                    return (T)Convert.ChangeType(rotationDatum, typeof(T));
+                    return (T)Convert.ChangeType(rotationData, typeof(T));
                 case AxisType.SixDoF:
-                    return (T)Convert.ChangeType(new Tuple<Vector3, Quaternion>(positionDatum, rotationDatum), typeof(T));
+                    return (T)Convert.ChangeType(new Tuple<Vector3, Quaternion>(positionData, rotationData), typeof(T));
                 case AxisType.Raw:
                 case AxisType.None:
                 default:
-                    return (T)Convert.ChangeType(rawDatum,typeof(T));
+                    return (T)Convert.ChangeType(rawData,typeof(T));
             }
         }
         #endregion Get Operators
@@ -104,8 +104,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.Digital)
             {
-                Changed = newValue == rawDatum;
-                rawDatum = newValue;
+                Changed = newValue == rawData;
+                rawData = newValue;
             }
         }
 
@@ -113,8 +113,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.Digital)
             {
-                Changed = newValue == boolDatum;
-                boolDatum = newValue;
+                Changed = newValue == boolData;
+                boolData = newValue;
             }
         }
 
@@ -122,8 +122,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.SingleAxis)
             {
-                Changed = newValue == floatDatum;
-                floatDatum = newValue;
+                Changed = newValue == floatData;
+                floatData = newValue;
             }
         }
 
@@ -131,8 +131,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.DualAxis)
             {
-                Changed = newValue == vector2Datum;
-                vector2Datum = newValue;
+                Changed = newValue == vector2Data;
+                vector2Data = newValue;
             }
         }
 
@@ -140,8 +140,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.ThreeDoF)
             {
-                Changed = newValue == positionDatum;
-                positionDatum = newValue;
+                Changed = newValue == positionData;
+                positionData = newValue;
             }
         }
 
@@ -149,8 +149,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.ThreeDoF)
             {
-                Changed = newValue == rotationDatum;
-                rotationDatum = newValue;
+                Changed = newValue == rotationData;
+                rotationData = newValue;
             }
         }
 
@@ -158,9 +158,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.SixDoF)
             {
-                Changed = newValue.Item1 == positionDatum && newValue.Item2 == rotationDatum;
-                positionDatum = newValue.Item1;
-                rotationDatum = newValue.Item2;
+                Changed = newValue.Item1 == positionData && newValue.Item2 == rotationData;
+                positionData = newValue.Item1;
+                rotationData = newValue.Item2;
             }
         }
 
