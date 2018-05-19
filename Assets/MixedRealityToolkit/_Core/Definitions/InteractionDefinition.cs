@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         #region Interaction Properties
 
         /// <summary>
-        /// The ID assigned to the Input
+        /// The Id assigned to the Interaction.
         /// </summary>
         public uint Id { get; }
 
