@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
@@ -12,21 +13,41 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
     /// </summary>
     public interface IMixedRealityInputSource : IEqualityComparer
     {
+        /// <summary>
+        /// The Unique Source Id of this Input Source.
+        /// </summary>
         uint SourceId { get; }
 
+        /// <summary>
+        /// The Name of this Input Source.
+        /// </summary>
         string SourceName { get; }
 
+        /// <summary>
+        /// Array of pointers associated with this input source.
+        /// </summary>
         IMixedRealityPointer[] Pointers { get; }
 
         /// <summary>
-        /// Returns the input info that the input source can provide.
+        /// Details the list of available buttons / interactions available from the Input Source.
+        /// </summary>
+        InteractionDefinition[] Interactions { get; }
+
+        /// <summary>
+        /// Returns the <see cref="Capabilities"/> that this Input Source can provide.
         /// </summary>
         InputType[] Capabilities { get; }
 
         /// <summary>
-        /// Returns whether the input source supports the specified input types.
+        /// Returns whether the Input Source supports the specified input types.
         /// </summary>
         /// <param name="inputInfo">Input types that we want to get information about.</param>
-        bool SupportsInputCapability(InputType[] inputInfo);
+        bool SupportsCapabilities(InputType[] inputInfo);
+
+        /// <summary>
+        /// Returns whether the Input Source supports the specified input types.
+        /// </summary>
+        /// <param name="inputInfo">Input types that we want to get information about.</param>
+        bool SupportsCapability(InputType inputInfo);
     }
 }
