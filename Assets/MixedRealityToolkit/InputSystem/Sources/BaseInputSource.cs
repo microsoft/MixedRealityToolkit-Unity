@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
+using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 {
@@ -46,7 +47,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         public virtual Dictionary<InputType, InteractionDefinition> Interactions => new Dictionary<InputType, InteractionDefinition>() { { InputType.None, new InteractionDefinition() { InputType = InputType.None } } };
 
-        public bool SupportsInputCapability(InputType[] capabilities)
+        public virtual void SetupInputSource(InteractionSourceState interactionSourceState) { }
+
+        public virtual void UpdateInputSource(InteractionSourceState interactionSourceState) { }
+
+        public bool SupportsInputCapabilities(InputType[] capabilities)
         {
             for (int j = 0; j < capabilities.Length; j++)
             {
@@ -58,6 +63,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
             return false;
         }
+
+        public bool SupportsInputCapability(InputType capability)
+        {
+            return Interactions.ContainsKey(capability);
+        }
+
+        public virtual void RegisterPointers(IMixedRealityPointer[] pointers) { }
 
         #region IEquality Implementation
 

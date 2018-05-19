@@ -360,14 +360,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities.Interactions
             InteractionInputSources.TryGetSourceKind(eventData.SourceId, out sourceKind);
             if (sourceKind != InteractionSourceKind.Hand)
             {
-                if (!eventData.InputSource.SupportsInputCapability(new[] { InputType.GripPosition }))
+                if (!eventData.InputSource.SupportsInputCapability(InputType.GripPosition))
                 {
                     // The input source must provide grip positional data for this script to be usable
                     return;
                 }
             }
 #else
-            if (!eventData.InputSource.SupportsInputCapability(new[] { InputType.PointerPosition }))
+            if (!eventData.InputSource.SupportsInputCapability(InputType.PointerPosition))
             {
                 // The input source must provide positional data for this script to be usable
                 return;

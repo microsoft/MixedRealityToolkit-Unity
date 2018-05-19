@@ -43,10 +43,36 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// </summary>
         Dictionary<InputType,InteractionDefinition> Interactions { get; }
 
+        // TODO - Need to generalize the Input Type?
+        /// <summary>
+        /// Setup function to define controller
+        /// </summary>
+        /// <param name="interactionSourceState">SDK data to inform construction</param>
+        void SetupInputSource(UnityEngine.XR.WSA.Input.InteractionSourceState interactionSourceState);
+
+        // TODO - Need to generalize the Input Type?
+        /// <summary>
+        /// Update function to update controller
+        /// </summary>
+        /// <param name="interactionSourceState">SDK data to inform update</param>
+        void UpdateInputSource(UnityEngine.XR.WSA.Input.InteractionSourceState interactionSourceState);
+
         /// <summary>
         /// Returns whether the Input Source supports the specified input types.
         /// </summary>
         /// <param name="inputInfo">Input types that we want to get information about.</param>
-        bool SupportsInputCapability(InputType[] inputInfo);
+        bool SupportsInputCapabilities(InputType[] inputInfo);
+
+        /// <summary>
+        /// Returns whether the Input Source supports the specified input types.
+        /// </summary>
+        /// <param name="inputInfo">Input types that we want to get information about.</param>
+        bool SupportsInputCapability(InputType inputInfo);
+
+        /// <summary>
+        /// Register pointers against the controller
+        /// </summary>
+        /// <param name="pointers">Array of pointers to attach</param>
+        void RegisterPointers(IMixedRealityPointer[] pointers);
     }
 }
