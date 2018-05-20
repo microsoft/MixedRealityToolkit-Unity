@@ -14,12 +14,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     public struct InteractionDefinition
     {
 
+        public InteractionDefinition(uint id, AxisType axisType, InputType inputType) : this()
+        {
+            Id = id;
+            AxisType = axisType;
+            InputType = inputType;
+        }
+
+
         #region Interaction Properties
 
         /// <summary>
-        /// The ID assigned to the Input
+        /// The Id assigned to the Interaction.
         /// </summary>
-        public string Id { get; set; }
+        public uint Id { get; }
 
         /// <summary>
         /// The axis type of the button, e.g. Analogue, Digital, etc.
@@ -56,14 +64,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         private Vector2 vector2Data { get; set; }
 
         /// <summary>
-        /// The position data storage for a 3DoF or 6DoF Axis type.
+        /// The position data storage for a 3DoF Axis type.
         /// </summary>
         private Vector3 positionData { get; set; }
 
         /// <summary>
-        /// The rotation data storage for a 3DoF or 6DoF Axis type.
+        /// The rotation data storage for a 3DoF Axis type.
         /// </summary>
         private Quaternion rotationData { get; set; }
+
+        /// <summary>
+        /// The transform data for a 6DoF (Position and Rotation) Axis type.
+        /// </summary>
+        private Tuple<Vector3, Quaternion> transformData { get; set; }
 
         /// <summary>
         /// Has the value changed since the last reading
@@ -89,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
                 case AxisType.ThreeDoFRotation:
                     return (T)Convert.ChangeType(rotationData, typeof(T));
                 case AxisType.SixDoF:
-                    return (T)Convert.ChangeType(new Tuple<Vector3, Quaternion>(positionData, rotationData), typeof(T));
+                    return (T)Convert.ChangeType(transformData, typeof(T));
                 case AxisType.Raw:
                 case AxisType.None:
                 default:
@@ -138,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         public void SetValue(Vector3 newValue)
         {
-            if (AxisType == AxisType.ThreeDoF)
+            if (AxisType == AxisType.ThreeDoFPosition)
             {
                 Changed = newValue == positionData;
                 positionData = newValue;
@@ -147,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         public void SetValue(Quaternion newValue)
         {
-            if (AxisType == AxisType.ThreeDoF)
+            if (AxisType == AxisType.ThreeDoFRotation)
             {
                 Changed = newValue == rotationData;
                 rotationData = newValue;
@@ -158,9 +171,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.SixDoF)
             {
-                Changed = newValue.Item1 == positionData && newValue.Item2 == rotationData;
-                positionData = newValue.Item1;
-                rotationData = newValue.Item2;
+                Changed = newValue == transformData;
+                transformData = newValue;
             }
         }
 

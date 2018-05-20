@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 {
@@ -39,23 +39,30 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             set { name = value; }
         }
 
-        public virtual IMixedRealityPointer[] Pointers => null;
+        public virtual InputSourceState InputSourceState { get; }
 
-        public InputSourceState InputSourceState { get; }
+        public virtual Handedness Handedness { get; }
 
-        public Handedness Handedness { get; } = Handedness.None;
+        public virtual IMixedRealityPointer[] Pointers { get; private set; }
 
-        public virtual Dictionary<InputType, InteractionDefinition> Interactions => new Dictionary<InputType, InteractionDefinition>() { { InputType.None, new InteractionDefinition() { InputType = InputType.None } } };
+        public virtual Dictionary<InputType, InteractionDefinition> Interactions { get; }
 
-        public virtual void SetupInputSource(InteractionSourceState interactionSourceState) { }
+        public virtual InputType[] Capabilities { get; }
 
-        public virtual void UpdateInputSource(InteractionSourceState interactionSourceState) { }
+        public void SetupInputSource<T>(T state) { }
 
-        public bool SupportsInputCapabilities(InputType[] capabilities)
+        public void UpdateInputSource<T>(T state) { }
+
+        public bool SupportsCapabilities(InputType[] inputInfo)
         {
-            for (int j = 0; j < capabilities.Length; j++)
+            return Capabilities == inputInfo;
+        }
+
+        public bool SupportsCapability(InputType inputInfo)
+        {
+            for (int i = 0; i < Capabilities.Length; i++)
             {
-                if (Interactions.ContainsKey(capabilities[j]))
+                if (Capabilities[i] == inputInfo)
                 {
                     return true;
                 }
@@ -64,12 +71,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             return false;
         }
 
-        public bool SupportsInputCapability(InputType capability)
+        public void RegisterPointers(IMixedRealityPointer[] pointers)
         {
-            return Interactions.ContainsKey(capability);
-        }
+            if (pointers == null) { throw new ArgumentNullException(nameof(pointers)); }
 
-        public virtual void RegisterPointers(IMixedRealityPointer[] pointers) { }
+            Pointers = pointers;
+        }
 
         #region IEquality Implementation
 
@@ -96,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         bool IEqualityComparer.Equals(object x, object y)
         {
-            var left  = (IMixedRealityInputSource)x;
+            var left = (IMixedRealityInputSource)x;
             var right = (IMixedRealityInputSource)y;
             if (left != null && right != null)
             {

@@ -11,8 +11,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     {
         None = 0,
         Voice,
+        /// <summary>
+        /// 6 Dof Pointer with position and rotation.
+        /// </summary>
         Pointer,
+        /// <summary>
+        /// 3 Dof Pointer with only position.
+        /// </summary>
         PointerPosition,
+        /// <summary>
+        /// 3 Dof Pointer with only rotation.
+        /// </summary>
         PointerRotation,
         ButtonPress,
         ButtonTouch,
@@ -21,12 +30,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         TriggerTouch,
         TriggerNearTouch,
         TriggerPress,
+        /// <summary>
+        /// 6 DoF Grip with position and rotation.
+        /// </summary>
         Grip,
+        /// <summary>
+        /// 3 DoF Grip with only position.
+        /// </summary>
+        GripPosition,
+        /// <summary>
+        /// 3 Dof Grip with only rotation.
+        /// </summary>
+        GripRotation,
+        GripPress,
         GripTouch,
         GripNearTouch,
-        GripPress,
-        GripPosition,
-        GripRotation,
         ThumbStick,
         ThumbStickPress,
         ThumbStickTouch,

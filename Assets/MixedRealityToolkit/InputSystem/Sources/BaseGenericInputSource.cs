@@ -5,10 +5,10 @@ using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 {
@@ -17,61 +17,48 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// </summary>
     public class BaseGenericInputSource : IMixedRealityInputSource
     {
-        private static IMixedRealityInputSystem inputSystem = null;
+        /// <summary>
+        /// The Current Input System for this Input Source.
+        /// </summary>
         public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
-
-        public BaseGenericInputSource(string name, InteractionDefinition[] interactions, IMixedRealityPointer[] pointers = null)
-        {
-            SourceId = InputSystem.GenerateNewSourceId();
-            SourceName = name;
-            Pointers = pointers ?? new[] { GazeProvider.GazePointer };
-            Interactions = new Dictionary<InputType, InteractionDefinition>();
-            foreach (var interaction in interactions)
-            {
-                Interactions.Add(interaction.InputType, interaction);
-            }
-        }
+        private static IMixedRealityInputSystem inputSystem = null;
 
         public BaseGenericInputSource(string name, InputType[] capabilities, IMixedRealityPointer[] pointers = null)
         {
             SourceId = InputSystem.GenerateNewSourceId();
             SourceName = name;
+            Capabilities = capabilities;
             Pointers = pointers ?? new[] { GazeProvider.GazePointer };
-            Interactions = new Dictionary<InputType, InteractionDefinition>();
-            foreach (var capability in capabilities)
-            {
-                InteractionDefinition interaction = new InteractionDefinition()
-                {
-                    InputType = capability,
-                    Changed = false,
-                    Id = InputSystem.GenerateNewSourceId().ToString()
-                };
-                Interactions.Add(interaction.InputType, interaction);
-            }
         }
 
         public uint SourceId { get; }
 
         public string SourceName { get; }
 
-        public IMixedRealityPointer[] Pointers { get; private set; }
-
         public InputSourceState InputSourceState { get; }
 
-        public Handedness Handedness { get; } = Handedness.None;
+        public Handedness Handedness { get; }
+
+        public IMixedRealityPointer[] Pointers { get; private set; }
 
         public Dictionary<InputType, InteractionDefinition> Interactions { get; }
 
+        public InputType[] Capabilities { get; }
 
-        public virtual void SetupInputSource(InteractionSourceState interactionSourceState) { }
+        public void SetupInputSource<T>(T state) { }
 
-        public virtual void UpdateInputSource(InteractionSourceState interactionSourceState) { }
+        public void UpdateInputSource<T>(T state) { }
 
-        public bool SupportsInputCapabilities(InputType[] capabilities)
+        public bool SupportsCapabilities(InputType[] inputInfo)
         {
-            for (int j = 0; j < capabilities.Length; j++)
+            return Capabilities == inputInfo;
+        }
+
+        public bool SupportsCapability(InputType inputInfo)
+        {
+            for (int i = 0; i < Capabilities.Length; i++)
             {
-                if (Interactions.ContainsKey(capabilities[j]))
+                if (Capabilities[i] == inputInfo)
                 {
                     return true;
                 }
@@ -80,14 +67,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             return false;
         }
 
-        public bool SupportsInputCapability(InputType capability)
+        public void RegisterPointers(IMixedRealityPointer[] pointers)
         {
-            return Interactions.ContainsKey(capability);
-        }
-
-        public virtual void RegisterPointers(IMixedRealityPointer[] pointers)
-        {
-            if (pointers == null) { throw new System.ArgumentNullException(nameof(pointers)); }
+            if (pointers == null) { throw new ArgumentNullException(nameof(pointers)); }
 
             Pointers = pointers;
         }
@@ -132,11 +114,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         public virtual bool TryGetPointerPosition(IMixedRealityPointer pointer, out Vector3 position)
         {
-            foreach (var sourcePointer in Pointers)
+            for (var i = 0; i < Pointers.Length; i++)
             {
-                if (sourcePointer.PointerId == pointer.PointerId)
+                if (Pointers[i].PointerId == pointer.PointerId)
                 {
-                    return sourcePointer.TryGetPointerPosition(out position);
+                    return Pointers[i].TryGetPointerPosition(out position);
                 }
             }
 
@@ -146,11 +128,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         public virtual bool TryGetPointingRay(IMixedRealityPointer pointer, out Ray pointingRay)
         {
-            foreach (var sourcePointer in Pointers)
+            for (var i = 0; i < Pointers.Length; i++)
             {
-                if (sourcePointer.PointerId == pointer.PointerId)
+                if (Pointers[i].PointerId == pointer.PointerId)
                 {
-                    return sourcePointer.TryGetPointingRay(out pointingRay);
+                    return Pointers[i].TryGetPointingRay(out pointingRay);
                 }
             }
 
@@ -160,11 +142,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         public virtual bool TryGetPointerRotation(IMixedRealityPointer pointer, out Quaternion rotation)
         {
-            foreach (var sourcePointer in Pointers)
+            for (var i = 0; i < Pointers.Length; i++)
             {
-                if (sourcePointer.PointerId == pointer.PointerId)
+                if (Pointers[i].PointerId == pointer.PointerId)
                 {
-                    return sourcePointer.TryGetPointerRotation(out rotation);
+                    return Pointers[i].TryGetPointerRotation(out rotation);
                 }
             }
 

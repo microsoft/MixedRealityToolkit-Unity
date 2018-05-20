@@ -26,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             Handedness = handedness;
             Pointers = new IMixedRealityPointer[0];
             Interactions = new Dictionary<InputType, InteractionDefinition>();
+            Capabilities = null;
 
             controllerTracked = false;
             controllerPosition = pointerPosition = gripPosition = Vector3.zero;
@@ -44,9 +45,49 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         
         public Dictionary<InputType, InteractionDefinition> Interactions { get;}
 
+        public InputType[] Capabilities { get; }
+
+        public void SetupInputSource<T>(T state)
+        {
+            InteractionSourceState interactionSourceState = CheckIfValidInteractionSourceState(state);
+            SetupFromInteractionSource(interactionSourceState);
+        }
+
+        public void UpdateInputSource<T>(T state)
+        {
+            InteractionSourceState interactionSourceState = CheckIfValidInteractionSourceState(state);
+            UpdateFromInteractionSource(interactionSourceState);
+        }
+
+        public bool SupportsCapabilities(InputType[] inputInfo)
+        {
+            return Capabilities == inputInfo;
+        }
+
+        public bool SupportsCapability(InputType inputInfo)
+        {
+            for (int i = 0; i < Capabilities.Length; i++)
+            {
+                if (Capabilities[i] == inputInfo)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        public void RegisterPointers(IMixedRealityPointer[] pointers)
+        {
+            if (pointers == null) { throw new System.ArgumentNullException(nameof(pointers)); }
+
+            Pointers = pointers;
+        }
+
         #region Setup and Update functions
 
-        public void SetupInputSource(InteractionSourceState interactionSourceState)
+        public void SetupFromInteractionSource(InteractionSourceState interactionSourceState)
         {
             //Update the Tracked state of the controller
             UpdateControllerData(interactionSourceState);
@@ -139,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
         }
 
-        public void UpdateInputSource(InteractionSourceState interactionSourceState)
+        public void UpdateFromInteractionSource(InteractionSourceState interactionSourceState)
         {
             Debug.Assert(interactionSourceState.source.id == SourceId, "An UpdateSourceState call happened with mismatched source ID.");
             // TODO - Do we need Kind?
@@ -280,32 +321,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         #endregion IEquality Implementation
 
         //TODO - Needs re-implementing as it returns true if ONE capability is supported, but not multiples
-        public bool SupportsInputCapabilities(InputType[] capabilities)
+
+        #region Utilities
+        private static InteractionSourceState CheckIfValidInteractionSourceState<T>(T state)
         {
-            foreach (var interaction in Interactions)
-            {
-                for (int i = 0; i < capabilities.Length; i++)
-                {
-                    if (interaction.Key == capabilities[i])
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
+            InteractionSourceState interactionSourceState = (InteractionSourceState)Convert.ChangeType(state, typeof(InteractionSourceState));
+            if (interactionSourceState.source.id == 0) { throw new ArgumentOutOfRangeException(nameof(state), "Incorrect state type provided to controller,did you send an InteractionSourceState?"); }
+
+            return interactionSourceState;
         }
-
-        public bool SupportsInputCapability(InputType capability)
-        {
-            return Interactions.ContainsKey(capability);
-        }
-
-
-        public void RegisterPointers(IMixedRealityPointer[] pointers)
-        {
-            if (pointers == null) { throw new System.ArgumentNullException(nameof(pointers)); }
-
-            Pointers = pointers;
-        }
+        #endregion Utilities
     }
 }

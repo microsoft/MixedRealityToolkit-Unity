@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// </summary>
         public KeywordAndKeyCode[] Keywords => keywords;
 
-        public override Dictionary<InputType, InteractionDefinition> Interactions => new Dictionary<InputType, InteractionDefinition>() { { InputType.Voice, new InteractionDefinition() { InputType = InputType.Voice, Id = InputSystem.GenerateNewSourceId().ToString() } } };
+        public override InputType[] Capabilities => new[] { InputType.Voice };
 
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN

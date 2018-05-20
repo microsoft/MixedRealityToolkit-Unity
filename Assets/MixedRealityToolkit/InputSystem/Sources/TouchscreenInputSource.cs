@@ -3,10 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     {
         private const float K_CONTACT_EPSILON = 2.0f / 60.0f;
 
-        public override Dictionary<InputType, InteractionDefinition> Interactions => new Dictionary<InputType, InteractionDefinition>() { { InputType.Pointer, new InteractionDefinition() { InputType = InputType.Pointer, AxisType = AxisType.DualAxis, Changed = false, Id = InputSystem.GenerateNewSourceId().ToString() } } };
+        public override InputType[] Capabilities => new[] { InputType.Pointer, InputType.PointerPosition };
 
         public override IMixedRealityPointer[] Pointers
         {

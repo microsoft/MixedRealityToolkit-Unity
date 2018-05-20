@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         public override string SourceName => "Dictation";
 
-        public override Dictionary<InputType, InteractionDefinition> Interactions => new Dictionary<InputType, InteractionDefinition>() { { InputType.Voice, new InteractionDefinition() { InputType = InputType.Voice, Id = InputSystem.GenerateNewSourceId().ToString() } } };
+        public override InputType[] Capabilities => new[] { InputType.Voice };
 
 
         #endregion IMixedRealityInputSource Implementation

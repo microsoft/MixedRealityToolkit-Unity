@@ -43,31 +43,36 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// </summary>
         Dictionary<InputType,InteractionDefinition> Interactions { get; }
 
+        /// <summary>
+        /// Returns the <see cref="Capabilities"/> that this Input Source can provide.
+        /// </summary>
+        InputType[] Capabilities { get; }
+
         // TODO - Need to generalize the Input Type?
         /// <summary>
         /// Setup function to define controller
         /// </summary>
-        /// <param name="interactionSourceState">SDK data to inform construction</param>
-        void SetupInputSource(UnityEngine.XR.WSA.Input.InteractionSourceState interactionSourceState);
+        /// <param name="state">SDK data to inform construction</param>
+        void SetupInputSource<T>(T state);
 
         // TODO - Need to generalize the Input Type?
         /// <summary>
         /// Update function to update controller
         /// </summary>
-        /// <param name="interactionSourceState">SDK data to inform update</param>
-        void UpdateInputSource(UnityEngine.XR.WSA.Input.InteractionSourceState interactionSourceState);
+        /// <param name="state">SDK data to inform update</param>
+        void UpdateInputSource<T>(T state);
 
         /// <summary>
         /// Returns whether the Input Source supports the specified input types.
         /// </summary>
         /// <param name="inputInfo">Input types that we want to get information about.</param>
-        bool SupportsInputCapabilities(InputType[] inputInfo);
+        bool SupportsCapabilities(InputType[] inputInfo);
 
         /// <summary>
         /// Returns whether the Input Source supports the specified input types.
         /// </summary>
         /// <param name="inputInfo">Input types that we want to get information about.</param>
-        bool SupportsInputCapability(InputType inputInfo);
+        bool SupportsCapability(InputType inputInfo);
 
         /// <summary>
         /// Register pointers against the controller
