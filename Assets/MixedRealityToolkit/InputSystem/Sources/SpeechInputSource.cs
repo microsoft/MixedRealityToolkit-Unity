@@ -31,9 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// </summary>
         private enum RecognizerStartBehavior { AutoStart, ManualStart }
 
-        /// <summary>
-        /// Keywords are persistent across all scenes.  This Speech Input Source instance will not be destroyed when loading a new scene.
-        /// </summary>
         [SerializeField]
         [Tooltip("Keywords are persistent across all scenes.  This Speech Input Source instance will not be destroyed when loading a new scene.")]
         private bool persistentKeywords = false;
@@ -55,11 +52,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-        /// <summary>
-        /// The serialized data of this field will be lost when switching between platforms and re-serializing this class.
-        /// </summary>
         [SerializeField]
         [Tooltip("The confidence level for the keyword recognizer.")]
+        // NOTE: The serialized data of this field will be lost when switching between platforms and re-serializing this class.
         private ConfidenceLevel recognitionConfidenceLevel = ConfidenceLevel.Medium;
 
         private KeywordRecognizer keywordRecognizer;

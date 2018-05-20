@@ -30,9 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         DualAxis,
         /// <summary>
-        /// Dual Axis analogue input.
+        /// Position only Axis analogue input.
         /// </summary>
-        ThreeDoF,
+        ThreeDoFPosition,
+        /// <summary>
+        /// Rotation only Axis analogue input.
+        /// </summary>
+        ThreeDoFRotation,
         /// <summary>
         /// Position AND Rotation analogue input.
         /// </summary>

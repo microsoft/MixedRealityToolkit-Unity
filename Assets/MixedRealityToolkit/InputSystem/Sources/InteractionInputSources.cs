@@ -754,8 +754,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 var pointerObject = Instantiate(pointerOption.PointerPrefab);
                 var pointer = pointerObject.GetComponent<BaseControllerPointer>();
                 pointer.Handedness = (Handedness)interactionSource.handedness;
-                pointer.PointerName =
-                    $"{interactionSource.handedness}_{interactionSource.kind}_{pointer.GetType().Name}";
+                pointer.PointerName = $"{interactionSource.handedness}_{interactionSource.kind}_{pointer.GetType().Name}";
                 pointerList.Add(pointer);
             }
 
