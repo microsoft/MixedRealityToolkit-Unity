@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
@@ -108,6 +107,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
+        [Tooltip("Available Controller Mappings")]
+        private MixedRealityControllerMapping[] controllerMappings;
+
+        [SerializeField]
         [Header("Boundary Settings")]
         [Tooltip("Enable the Boundary on Startup")]
         private bool enableBoundarySystem = true;
@@ -158,5 +161,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         #endregion  ISerializationCallbackReceiver Implementation
+
+        #region Mixed Reality Controller Mapping helpers
+
+        // TODO - needs validation to ensure duplicates are not added?
+
+        public MixedRealityControllerMapping GetControllerMapping(SystemType controllerType, Handedness hand)
+        {
+            if (controllerMappings != null)
+            {
+
+                for (int i = 0; i < controllerMappings.Length; i++)
+                {
+                    if (controllerMappings[i].ControllerType == controllerType && controllerMappings[i].ControllingHand == hand)
+                    {
+                        return controllerMappings[i];
+                    }
+                }
+            }
+            return default(MixedRealityControllerMapping);
+        }
+        #endregion Mixed Reality Controller Mapping helpers
     }
 }

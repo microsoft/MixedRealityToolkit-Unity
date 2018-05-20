@@ -3,7 +3,6 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
@@ -14,11 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     public struct InteractionDefinition
     {
 
-        public InteractionDefinition(uint id, AxisType axisType, InputType inputType) : this()
+        public InteractionDefinition(uint id, AxisType axisType, InputAction inputAction) : this()
         {
             Id = id;
             AxisType = axisType;
-            InputType = inputType;
+            InputAction = inputAction;
         }
 
 
@@ -37,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// <summary>
         /// The primary action of the button as defined by the controller SDK.
         /// </summary>
-        public InputType InputType { get; set; }
+        public InputAction InputAction { get; set; }
 
         #endregion Interaction Properties
 

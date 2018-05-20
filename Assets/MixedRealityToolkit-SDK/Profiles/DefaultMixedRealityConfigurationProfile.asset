@@ -20,4 +20,7 @@ MonoBehaviour:
     type: 2}
   rightControllerModel: {fileID: 1774971220009634, guid: 89aca206fbe292649bca7605a95fa801,
     type: 2}
+  controllerMappings:
+  - {fileID: 11400000, guid: 364c557ca974c1d4580a3a6edd65ab7f, type: 2}
+  - {fileID: 11400000, guid: 11805073c7fc3364683ff4d88dcc25f8, type: 2}
   enableBoundarySystem: 1

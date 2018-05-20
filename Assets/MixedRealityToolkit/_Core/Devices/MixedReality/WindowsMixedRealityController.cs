@@ -12,11 +12,15 @@ using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
-    public struct WindowsMixedRealityController : IMixedRealityInputSource
+    public struct WindowsMixedRealityController : IMixedRealityInputSource, IMixedRealityController
     {
+        #region Private properties
+
         private bool controllerTracked;
         private Vector3 controllerPosition, pointerPosition, gripPosition;
         private Quaternion controllerRotation, pointerRotation, gripRotation;
+
+        #endregion Private properties
 
         public WindowsMixedRealityController(uint sourceId, Handedness handedness)
         {
@@ -33,6 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             controllerRotation = pointerRotation = gripRotation = Quaternion.identity;
         }
 
+        #region IMixedRealityInputSource Interface Members
+
         public uint SourceId { get; }
 
         public string SourceName { get; }
@@ -45,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         
         public Dictionary<InputType, InteractionDefinition> Interactions { get;}
 
-        public InputType[] Capabilities { get; }
+        public InputType[] Capabilities { get; private set; }
 
         public void SetupInputSource<T>(T state)
         {
@@ -85,6 +91,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             Pointers = pointers;
         }
 
+        #endregion IMixedRealityInputSource Interface Members
+        
         #region Setup and Update functions
 
         public void SetupFromInteractionSource(InteractionSourceState interactionSourceState)
@@ -92,13 +100,44 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             //Update the Tracked state of the controller
             UpdateControllerData(interactionSourceState);
 
+            MixedRealityControllerMapping controllerMapping = Managers.MixedRealityManager.Instance.ActiveProfile.GetControllerMapping(typeof(WindowsMixedRealityController), Handedness);
+            if (controllerMapping.Interactions.Length > 0)
+            {
+                SetupFromMapping(controllerMapping.Interactions);
+            }
+            else
+            {
 
+                SetupWMRControllerDefaults(interactionSourceState);
+            }
+        }
+
+        private void SetupFromMapping(InteractionDefinitionMapping[] mappings)
+        {
+            Capabilities = new InputType[mappings.Length];
+            for (int i = 0; i < mappings.Length; i++)
+            {
+                // Add interaction for Mapping
+                Interactions.Add(mappings[i].InputType, new InteractionDefinition()
+                {
+                    AxisType = mappings[i].AxisType,
+                    Changed = false,
+                    InputAction = mappings[i].InputAction
+                });
+
+                // Add capability for Input Type
+                Capabilities[i] = mappings[i].InputType;
+            }
+        }
+
+        private void SetupWMRControllerDefaults(InteractionSourceState interactionSourceState)
+        {
             //Add the Controller Pointer
             Interactions.Add(InputType.Pointer, new InteractionDefinition()
             {
                 AxisType = AxisType.SixDoF,
                 Changed = false,
-                InputType = InputType.Pointer
+                InputAction = InputAction.Pointer
             });
 
             // Add the Controller trigger
@@ -106,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             {
                 AxisType = AxisType.SingleAxis,
                 Changed = false,
-                InputType = InputType.Trigger
+                InputAction = Handedness == Handedness.Left ? InputAction.LeftTrigger : InputAction.RightTrigger
             });
 
             // If the controller has a Grip / Grasp button, add it to the controller capabilities
@@ -116,14 +155,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 {
                     AxisType = AxisType.SixDoF,
                     Changed = false,
-                    InputType = InputType.Grip
+                    InputAction = InputAction.Grip
                 });
 
                 Interactions.Add(InputType.GripPress, new InteractionDefinition()
                 {
                     AxisType = AxisType.SingleAxis,
                     Changed = false,
-                    InputType = InputType.GripPress
+                    InputAction = InputAction.ActionOne
                 });
 
             }
@@ -135,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 {
                     AxisType = AxisType.Digital,
                     Changed = false,
-                    InputType = InputType.Menu
+                    InputAction = InputAction.ActionTwo
                 });
             }
 
@@ -146,13 +185,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 {
                     AxisType = AxisType.DualAxis,
                     Changed = false,
-                    InputType = InputType.ThumbStick
+                    InputAction = Handedness == Handedness.Left ? InputAction.LeftThumbstick : InputAction.RightThumbstick
                 });
                 Interactions.Add(InputType.ThumbStickPress, new InteractionDefinition()
                 {
                     AxisType = AxisType.Digital,
                     Changed = false,
-                    InputType = InputType.ThumbStickPress
+                    InputAction = InputAction.LeftThumbstickPressed
                 });
             }
 
@@ -163,19 +202,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 {
                     AxisType = AxisType.DualAxis,
                     Changed = false,
-                    InputType = InputType.Touchpad
+                    InputAction = Handedness == Handedness.Left ? InputAction.LeftTouch : InputAction.RightTouch
                 });
                 Interactions.Add(InputType.TouchpadTouch, new InteractionDefinition()
                 {
                     AxisType = AxisType.Digital,
                     Changed = false,
-                    InputType = InputType.TouchpadTouch
+                    InputAction = InputAction.LeftTouchTouched
                 });
                 Interactions.Add(InputType.TouchpadPress, new InteractionDefinition()
                 {
                     AxisType = AxisType.Digital,
                     Changed = false,
-                    InputType = InputType.TouchpadPress
+                    InputAction = Handedness == Handedness.Left ? InputAction.LeftTouchPressed : InputAction.RightTouchPressed
                 });
             }
         }
@@ -188,22 +227,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             // Update Controller
             // TODO - Controller currently not accepted by InputSystem, only InteractionState captured
+            // TODO - May need to be more granular with checks if we are allowing user to configure :S  
+            // TODO - Need to think of a better way to validate options, multiple Contains aren't good, maybe an extension?
             UpdateControllerData(interactionSourceState);
 
             // Update Pointer
-            UpdatePointerData(interactionSourceState);
+            if (Interactions.ContainsKey(InputType.Pointer)) UpdatePointerData(interactionSourceState);
 
             // Update Grip
-            UpdateGripData(interactionSourceState);
+            if (Interactions.ContainsKey(InputType.Grip)) UpdateGripData(interactionSourceState);
 
             // Update Touchpad
-            UpdateTouchPadData(interactionSourceState);
+            if (Interactions.ContainsKey(InputType.Touchpad) || Interactions.ContainsKey(InputType.TouchpadTouch)) UpdateTouchPadData(interactionSourceState);
 
             // Update Thumbstick
-            UpdateThumbStickData(interactionSourceState);
+            if (Interactions.ContainsKey(InputType.Thumb)) UpdateThumbStickData(interactionSourceState);
 
             // Update Trigger
-            UpdateTriggerData(interactionSourceState);
+            if (Interactions.ContainsKey(InputType.Trigger)) UpdateTriggerData(interactionSourceState);
         }
 
         #region Update data functions
@@ -253,21 +294,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             if (interactionSourceState.touchpadTouched)
             {
-                Interactions[InputType.TouchpadTouch].SetValue(interactionSourceState.touchpadTouched);
-                Interactions[InputType.TouchpadPress].SetValue(interactionSourceState.touchpadPressed);
-                Interactions[InputType.Touchpad].SetValue(interactionSourceState.touchpadPosition);
+                if (Interactions.ContainsKey(InputType.TouchpadTouch)) Interactions[InputType.TouchpadTouch].SetValue(interactionSourceState.touchpadTouched);
+                if (Interactions.ContainsKey(InputType.TouchpadPress)) Interactions[InputType.TouchpadPress].SetValue(interactionSourceState.touchpadPressed);
+                if (Interactions.ContainsKey(InputType.Touchpad)) Interactions[InputType.Touchpad].SetValue(interactionSourceState.touchpadPosition);
             }
         }
 
         private void UpdateThumbStickData(InteractionSourceState interactionSourceState)
         {
-            Interactions[InputType.ThumbStickPress].SetValue(interactionSourceState.thumbstickPressed);
+            if (Interactions.ContainsKey(InputType.ThumbStickPress)) Interactions[InputType.ThumbStickPress].SetValue(interactionSourceState.thumbstickPressed);
             Interactions[InputType.ThumbStick].SetValue(interactionSourceState.thumbstickPosition);
         }
 
         private void UpdateTriggerData(InteractionSourceState interactionSourceState)
         {
-            Interactions[InputType.TriggerPress].SetValue(interactionSourceState.selectPressed);
+            if (Interactions.ContainsKey(InputType.TriggerPress)) Interactions[InputType.TriggerPress].SetValue(interactionSourceState.selectPressed);
             Interactions[InputType.Trigger].SetValue(interactionSourceState.selectPressedAmount);
         }
 
