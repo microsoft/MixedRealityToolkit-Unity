@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.SixDoF)
             {
-                Changed = newValue.Item1 != positionData || newValue.Item2 != rotationData;
+                Changed = newValue.Item1 != transformData.Item1 || newValue.Item2 != transformData.Item2;
                 positionData = newValue.Item1;
                 rotationData = newValue.Item2;
                 transformData = newValue;
