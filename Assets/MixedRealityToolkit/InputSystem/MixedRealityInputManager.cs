@@ -563,7 +563,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             // Create input event
             inputClickEventData.Initialize(pointer.InputSourceParent, handedness, inputAction);
 
-            if (inputAction.Description == "Select") // TODO - Unsure how the new InputActions are Referred to?
+            if (inputAction.Id == 0) // TODO - Unsure how the new InputActions are Referred to?
             {
                 ExecutePointerDown(HandlePointerDown(pointer));
             }
@@ -672,7 +672,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             // Create input event
             inputClickEventData.Initialize(pointer.InputSourceParent, handedness, inputAction);
 
-            if (inputAction.Description == "Select") // TODO - Unsure how the new InputActions are Referred to?
+            if (inputAction.Id == 0) // TODO - Unsure how the new InputActions are Referred to?
             {
                 ExecutePointerUp(HandlePointerUp(pointer));
             }
