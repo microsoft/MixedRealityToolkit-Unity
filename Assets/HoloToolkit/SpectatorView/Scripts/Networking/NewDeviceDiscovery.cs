@@ -76,7 +76,6 @@ namespace HoloToolkit.Unity.SpectatorView
             }
             else
             {
-                Debug.Log("On phone Start HoloLens Camera");
                 StartAsServer();
             }
         }
@@ -93,7 +92,6 @@ namespace HoloToolkit.Unity.SpectatorView
         /// <param name="data">Broadcast message read</param>
         public override void OnReceivedBroadcast( string fromAddress, string data )
         {
-            Debug.Log("Receiving boadcart");
             base.OnReceivedBroadcast(fromAddress, data);
             MarkerDetectionHololens.StartCapture();
         }

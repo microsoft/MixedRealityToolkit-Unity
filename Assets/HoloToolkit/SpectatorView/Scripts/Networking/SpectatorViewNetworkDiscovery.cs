@@ -234,7 +234,7 @@ namespace HoloToolkit.Unity.SpectatorView
             int parsedMarkerId;
             if (!int.TryParse(parsedData[0], out parsedMarkerId))
             {
-                Debug.LogError("Error parsing broadcast data! " + parsedData[0]);
+                Debug.LogError("Error parsing broadcast data! ");
                 return;
             }
 
