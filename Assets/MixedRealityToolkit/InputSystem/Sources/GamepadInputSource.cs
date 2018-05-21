@@ -2,11 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 {
-    public class GamepadInputSource : BaseInputSource
+    public class GamepadInputSource : BaseGenericInputSource
     {
-        public override InteractionDefinition[] Interactions => new[] { new InteractionDefinition(1, AxisType.None, InputType.Voice) };
+        public GamepadInputSource(string name, InteractionDefinition[] interactions, IMixedRealityPointer[] pointers = null) : base(name, interactions, pointers) { }
     }
 }
