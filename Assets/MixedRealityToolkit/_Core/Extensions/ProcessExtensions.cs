@@ -2,11 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_EDITOR || !UNITY_WSA
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Debug = UnityEngine.Debug;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions

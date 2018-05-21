@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.Cursors;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 {
     /// <summary>
-    /// The gaze manager manages everything related to a gaze ray that can interact with other objects.
+    /// This class provides Gaze as an Input Source so users can interact with objects using their head.
     /// </summary>
     [DisallowMultipleComponent]
     public class GazeProvider : BaseInputSource, IMixedRealityGazeProvider

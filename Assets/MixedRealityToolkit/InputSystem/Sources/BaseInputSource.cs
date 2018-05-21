@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections;
@@ -39,20 +39,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         public virtual IMixedRealityPointer[] Pointers => null;
 
-        public virtual InputType[] Capabilities { get; }
-
-        public virtual InteractionDefinition[] Interactions { get; }
-
-        public bool SupportsCapabilities(InputType[] inputTypes)
-        {
-            return Capabilities == inputTypes;
-        }
+        public virtual InteractionDefinition[] Interactions { get; } = null;
 
         public bool SupportsCapability(InputType inputInfo)
         {
-            for (int i = 0; i < Capabilities.Length; i++)
+            for (int i = 0; i < Interactions.Length; i++)
             {
-                if (Capabilities[i] == inputInfo)
+                if (Interactions[i].InputType == inputInfo)
                 {
                     return true;
                 }

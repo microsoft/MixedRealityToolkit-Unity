@@ -2,9 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,12 +19,36 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// Note that a hold-started is raised as soon as a contact exceeds the Epsilon value;
     /// if the contact subsequently qualifies as a tap then a hold-canceled is also raised.
     /// </summary>
-    [DisallowMultipleComponent]
-    public class TouchscreenInputSource : BaseInputSource
+    public class TouchscreenInputSource : BaseGenericInputSource
     {
+        private class TouchPointer : GenericPointer
+        {
+            public readonly Touch TouchData;
+            public readonly Ray ScreenPointRay;
+            public float Lifetime;
+
+            public TouchPointer(string name, Touch touch, Ray ray, IMixedRealityInputSource inputSource) : base(name, inputSource)
+            {
+                TouchData = touch;
+                ScreenPointRay = ray;
+                Lifetime = 0.0f;
+            }
+        }
+
         private const float K_CONTACT_EPSILON = 2.0f / 60.0f;
 
-        public override InputType[] Capabilities => new[] { InputType.Pointer, InputType.PointerPosition };
+        public TouchscreenInputSource()
+            : base("Touch Input", new[]
+        {
+            new InteractionDefinition(1, AxisType.DualAxis, InputType.Touchpad),
+            new InteractionDefinition(2, AxisType.DualAxis, InputType.PointerPosition),
+            new InteractionDefinition(3, AxisType.Digital, InputType.TouchpadTouch),
+            new InteractionDefinition(4, AxisType.Digital, InputType.TouchpadPress),
+            new InteractionDefinition(5, AxisType.Digital, InputType.PointerClick),
+        })
+        {
+            Run();
+        }
 
         public override IMixedRealityPointer[] Pointers
         {
@@ -45,58 +70,38 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         private readonly HashSet<TouchPointer> activeTouches = new HashSet<TouchPointer>();
 
-        private class TouchPointer : GenericPointer
+        private readonly WaitForFixedUpdate nextUpdate = new WaitForFixedUpdate();
+
+        private async void Run()
         {
-            public readonly Touch TouchData;
-            public readonly Ray ScreenPointRay;
-            public float Lifetime;
-
-            public TouchPointer(string name, Touch touch, Ray ray, IMixedRealityInputSource inputSource) : base(name, inputSource)
+            while (true)
             {
-                TouchData = touch;
-                ScreenPointRay = ray;
-                Lifetime = 0.0f;
-            }
-        }
-
-        #region Monobehaviour Implementation
-
-        private void Awake()
-        {
-            // Disable the input source if not supported by the device
-            if (!Input.touchSupported)
-            {
-                enabled = false;
-            }
-        }
-
-        private void Update()
-        {
-            for (var i = 0; i < Input.touches.Length; i++)
-            {
-                Touch touch = Input.touches[i];
-                // Construct a ray from the current touch coordinates
-                Ray ray = CameraCache.Main.ScreenPointToRay(touch.position);
-
-                switch (touch.phase)
+                for (var i = 0; i < Input.touches.Length; i++)
                 {
-                    case TouchPhase.Began:
-                    case TouchPhase.Moved:
-                    case TouchPhase.Stationary:
-                        AddOrUpdateTouch(touch, ray);
-                        break;
+                    Touch touch = Input.touches[i];
+                    // Construct a ray from the current touch coordinates
+                    Ray ray = CameraCache.Main.ScreenPointToRay(touch.position);
 
-                    case TouchPhase.Ended:
-                    case TouchPhase.Canceled:
-                        RemoveTouch(touch);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    switch (touch.phase)
+                    {
+                        case TouchPhase.Began:
+                        case TouchPhase.Moved:
+                        case TouchPhase.Stationary:
+                            AddOrUpdateTouch(touch, ray);
+                            break;
+
+                        case TouchPhase.Ended:
+                        case TouchPhase.Canceled:
+                            RemoveTouch(touch);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
                 }
+
+                await nextUpdate;
             }
         }
-
-        #endregion Monobehaviour Implementation
 
         #region Input Touch Events
 

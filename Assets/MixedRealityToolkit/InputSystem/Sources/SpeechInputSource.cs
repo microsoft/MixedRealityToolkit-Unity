@@ -2,8 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using Microsoft.MixedReality.Toolkit.InputSystem.InputMapping;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using UnityEngine;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
@@ -48,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// </summary>
         public KeywordAndKeyCode[] Keywords => keywords;
 
-        public override InputType[] Capabilities => new[] { InputType.Voice };
+        public override InteractionDefinition[] Interactions => new[] { new InteractionDefinition(1, AxisType.None, InputType.Voice) };
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
