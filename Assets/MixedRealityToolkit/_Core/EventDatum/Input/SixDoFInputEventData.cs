@@ -32,9 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="inputType"></param>
         /// <param name="inputData"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, Tuple<Vector3, Quaternion> inputData)
+        public void Initialize(IMixedRealityInputSource inputSource, InputAction inputAction, Tuple<Vector3, Quaternion> inputData)
         {
-            Initialize(inputSource, inputType);
+            Initialize(inputSource, inputAction);
             Position = inputData.Item1;
             Rotation = inputData.Item2;
             InputData = inputData;
@@ -47,9 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
         /// <param name="inputData"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputType inputType, Tuple<Vector3, Quaternion> inputData)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputAction inputAction, Tuple<Vector3, Quaternion> inputData)
         {
-            Initialize(inputSource, handedness, inputType);
+            Initialize(inputSource, handedness, inputAction);
             Position = inputData.Item1;
             Rotation = inputData.Item2;
             InputData = inputData;

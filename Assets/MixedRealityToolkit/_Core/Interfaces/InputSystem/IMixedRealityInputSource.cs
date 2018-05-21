@@ -37,6 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// </summary>
         /// <param name="inputInfo">Input types that we want to get information about.</param>
         /// <returns>Returns true if the Input Source supports the provided input type.</returns>
-        bool SupportsCapability(InputType inputInfo);
+        bool SupportsCapability(Definitions.Devices.DeviceInputType inputInfo); // TODO - Would the input system really be checking for a physical capability?
     }
 }

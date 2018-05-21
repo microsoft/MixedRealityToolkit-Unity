@@ -40,11 +40,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         public TouchscreenInputSource()
             : base("Touch Input", new[]
         {
-            new InteractionDefinition(1, AxisType.DualAxis, InputType.Touchpad),
-            new InteractionDefinition(2, AxisType.DualAxis, InputType.PointerPosition),
-            new InteractionDefinition(3, AxisType.Digital, InputType.TouchpadTouch),
-            new InteractionDefinition(4, AxisType.Digital, InputType.TouchpadPress),
-            new InteractionDefinition(5, AxisType.Digital, InputType.PointerClick),
+            new InteractionDefinition(1, AxisType.DualAxis, Internal.Definitions.Devices.DeviceInputType.Touchpad),
+            new InteractionDefinition(2, AxisType.DualAxis, Internal.Definitions.Devices.DeviceInputType.PointerPosition),
+            new InteractionDefinition(3, AxisType.Digital, Internal.Definitions.Devices.DeviceInputType.TouchpadTouch),
+            new InteractionDefinition(4, AxisType.Digital, Internal.Definitions.Devices.DeviceInputType.TouchpadPress),
+            new InteractionDefinition(5, AxisType.Digital, Internal.Definitions.Devices.DeviceInputType.PointerClick),
         })
         {
             Run();

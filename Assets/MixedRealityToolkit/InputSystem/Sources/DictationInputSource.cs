@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <summary>
         /// Constructor.
         /// </summary>
-        public DictationInputSource() : base("Dictation", new[] { new InteractionDefinition(1, AxisType.None, InputType.Voice) })
+        public DictationInputSource() : base("Dictation", new[] { new InteractionDefinition(1, AxisType.None, Internal.Definitions.Devices.DeviceInputType.Voice) }) // TODO - Review
         {
             source = this;
             dictationResult = string.Empty;

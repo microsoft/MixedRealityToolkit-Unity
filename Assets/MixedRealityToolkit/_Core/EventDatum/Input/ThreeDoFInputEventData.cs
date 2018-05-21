@@ -33,9 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="inputType"></param>
         /// <param name="position"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, Vector3 position)
+        public void Initialize(IMixedRealityInputSource inputSource, InputAction inputAction, Vector3 position)
         {
-            Initialize(inputSource, inputType);
+            Initialize(inputSource, inputAction);
             Position = position;
         }
 
@@ -46,9 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
         /// <param name="position"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputType inputType, Vector3 position)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputAction inputAction, Vector3 position)
         {
-            Initialize(inputSource, handedness, inputType);
+            Initialize(inputSource, handedness, inputAction);
             Position = position;
         }
 
@@ -58,9 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="inputType"></param>
         /// <param name="rotation"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, Quaternion rotation)
+        public void Initialize(IMixedRealityInputSource inputSource, InputAction inputAction, Quaternion rotation)
         {
-            Initialize(inputSource, inputType);
+            Initialize(inputSource, inputAction);
             Rotation = rotation;
         }
 
@@ -71,9 +71,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
         /// <param name="rotation"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputType inputType, Quaternion rotation)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputAction inputAction, Quaternion rotation)
         {
-            Initialize(inputSource, handedness, inputType);
+            Initialize(inputSource, handedness, inputAction);
             Rotation = rotation;
         }
     }

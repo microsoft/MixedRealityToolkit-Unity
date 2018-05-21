@@ -12,11 +12,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     /// </summary>
     public struct InteractionDefinition
     {
-        public InteractionDefinition(uint id, AxisType axisType, InputType inputType) : this()
+        public InteractionDefinition(uint id, AxisType axisType, Devices.DeviceInputType inputType) : this()
         {
             Id = id;
             AxisType = axisType;
-            InputType = inputType;
+            InputType = inputType;  // TODO - SHould this in the constructor now?  As it's input, should the InputAction be here.
         }
 
         #region Interaction Properties
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         /// <summary>
         /// The primary action of the input as defined by the controller SDK.
         /// </summary>
-        public InputType InputType { get; }
+        public Devices.DeviceInputType InputType { get; }
 
         /// <summary>
         /// Action to be raised to the Input Source when the input data has changed.

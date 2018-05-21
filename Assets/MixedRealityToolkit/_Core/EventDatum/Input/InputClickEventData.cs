@@ -51,9 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="count"></param>
         /// <param name="inputType"></param>
         /// <param name="handedness"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, int count, InputType inputType, Handedness handedness)
+        public void Initialize(IMixedRealityInputSource inputSource, int count, InputAction inputAction, Handedness handedness)
         {
-            Initialize(inputSource, handedness, inputType);
+            Initialize(inputSource, handedness, inputAction);
             Count = count;
         }
     }

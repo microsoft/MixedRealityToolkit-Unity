@@ -29,9 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="inputType"></param>
         /// <param name="position"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, Vector2 position)
+        public void Initialize(IMixedRealityInputSource inputSource, InputAction inputAction, Vector2 position)
         {
-            Initialize(inputSource, inputType);
+            Initialize(inputSource, inputAction);
             Position = position;
         }
 
@@ -42,9 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputType"></param>
         /// <param name="position"></param>
         /// <param name="handedness"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, Vector2 position, Handedness handedness)
+        public void Initialize(IMixedRealityInputSource inputSource, InputAction inputAction, Vector2 position, Handedness handedness)
         {
-            Initialize(inputSource, handedness, inputType);
+            Initialize(inputSource, handedness, inputAction);
             Position = position;
         }
     }

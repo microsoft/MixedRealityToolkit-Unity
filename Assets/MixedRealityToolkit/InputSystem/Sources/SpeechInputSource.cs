@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// </summary>
         public KeywordAndKeyCode[] Keywords => keywords;
 
-        public override InteractionDefinition[] Interactions => new[] { new InteractionDefinition(1, AxisType.None, InputType.Voice) };
+        public override InteractionDefinition[] Interactions => new[] { new InteractionDefinition(1, AxisType.None, Internal.Definitions.Devices.DeviceInputType.Voice) };
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 

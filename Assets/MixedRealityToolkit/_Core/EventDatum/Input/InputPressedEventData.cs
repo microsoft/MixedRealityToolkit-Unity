@@ -63,9 +63,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="inputType"></param>
         /// <param name="pressedAmount"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, double pressedAmount)
+        public void Initialize(IMixedRealityInputSource inputSource, InputAction inputAction, double pressedAmount)
         {
-            Initialize(inputSource, inputType);
+            Initialize(inputSource, inputAction);
             PressedAmount = pressedAmount;
         }
 
@@ -89,9 +89,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
         /// <param name="pressedAmount"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputType inputType, double pressedAmount)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputAction inputAction, double pressedAmount)
         {
-            Initialize(inputSource, handedness, inputType);
+            Initialize(inputSource, handedness, inputAction);
             PressedAmount = pressedAmount;
         }
     }

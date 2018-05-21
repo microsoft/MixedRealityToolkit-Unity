@@ -167,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="pointer"></param>
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
-        void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, InputType inputType);
+        void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, InputAction inputAction);
 
         /// <summary>
         /// Raise the pointer clicked event.
@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
         /// <param name="count"></param>
-        void RaiseInputClicked(IMixedRealityPointer pointer, Handedness handedness, InputType inputType, int count);
+        void RaiseInputClicked(IMixedRealityPointer pointer, Handedness handedness, InputAction inputAction, int count);
 
         /// <summary>
         /// Raise the pointer up event.
@@ -212,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="pointer"></param>
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
-        void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, InputType inputType);
+        void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, InputAction inputAction);
 
         /// <summary>
         /// Raise the input down event.
@@ -248,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
-        void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, InputType inputType);
+        void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, InputAction inputAction);
 
         /// <summary>
         /// Raise Input Pressed.
@@ -292,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="inputType"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, InputType inputType, float pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, InputAction inputAction, float pressAmount);
 
         /// <summary>
         /// Raise Input Pressed.
@@ -310,7 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, InputType inputType, float pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, InputAction inputAction, float pressAmount);
 
         /// <summary>
         /// Raise the input up event.
@@ -346,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
-        void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, InputType inputType);
+        void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, InputAction inputAction);
 
         /// <summary>
         /// Raise the 2 degrees of freedom input event.
@@ -354,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="inputType"></param>
         /// <param name="position"></param>
-        void Raise2DoFInputChanged(IMixedRealityInputSource source, InputType inputType, Vector2 position);
+        void Raise2DoFInputChanged(IMixedRealityInputSource source, InputAction inputAction, Vector2 position);
 
         /// <summary>
         /// Raise the 2 degrees of freedom input event.
@@ -363,7 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
         /// <param name="position"></param>
-        void Raise2DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, InputType inputType, Vector2 position);
+        void Raise2DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, InputAction inputAction, Vector2 position);
 
         /// <summary>
         /// Raise the 3 degrees of freedom input event.
@@ -371,7 +371,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="inputType"></param>
         /// <param name="position"></param>
-        void Raise3DoFInputChanged(IMixedRealityInputSource source, InputType inputType, Vector3 position);
+        void Raise3DoFInputChanged(IMixedRealityInputSource source, InputAction inputAction, Vector3 position);
 
         /// <summary>
         /// Raise the 3 degrees of freedom input event.
@@ -380,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
         /// <param name="position"></param>
-        void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, InputType inputType, Vector3 position);
+        void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, InputAction inputAction, Vector3 position);
 
         /// <summary>
         /// Raise the 3 degrees of freedom input event.
@@ -388,7 +388,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="inputType"></param>
         /// <param name="rotation"></param>
-        void Raise3DoFInputChanged(IMixedRealityInputSource source, InputType inputType, Quaternion rotation);
+        void Raise3DoFInputChanged(IMixedRealityInputSource source, InputAction inputAction, Quaternion rotation);
 
         /// <summary>
         /// Raise the 3 degrees of freedom input event.
@@ -397,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
         /// <param name="rotation"></param>
-        void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, InputType inputType, Quaternion rotation);
+        void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, InputAction inputAction, Quaternion rotation);
 
         /// <summary>
         /// Raise the 6 degrees of freedom input event.
@@ -405,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="inputType"></param>
         /// <param name="inputData"></param>
-        void Raise6DofInputChanged(IMixedRealityInputSource source, InputType inputType, Tuple<Vector3, Quaternion> inputData);
+        void Raise6DofInputChanged(IMixedRealityInputSource source, InputAction inputAction, Tuple<Vector3, Quaternion> inputData);
 
         /// <summary>
         /// Raise the 6 degrees of freedom input event.
@@ -414,7 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
         /// <param name="inputData"></param>
-        void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, InputType inputType, Tuple<Vector3, Quaternion> inputData);
+        void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, InputAction inputAction, Tuple<Vector3, Quaternion> inputData);
 
         /// <summary>
         /// Raise the hold started input event.

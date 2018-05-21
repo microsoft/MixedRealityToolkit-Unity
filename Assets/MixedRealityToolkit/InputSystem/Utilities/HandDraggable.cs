@@ -361,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
             InteractionInputSources.TryGetSourceKind(eventData.SourceId, out sourceKind);
             if (sourceKind != InteractionSourceKind.Hand)
             {
-                if (!eventData.InputSource.SupportsCapability(InputType.GripPosition))
+                if (!eventData.InputSource.SupportsCapability(Internal.Definitions.Devices.DeviceInputType.GripPosition))
                 {
                     // The input source must provide grip positional data for this script to be usable
                     return;

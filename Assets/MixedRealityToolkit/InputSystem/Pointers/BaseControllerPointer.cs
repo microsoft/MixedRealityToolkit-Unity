@@ -49,10 +49,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         private KeyCode activeHoldKeyCode = KeyCode.None;
 
         [SerializeField]
-        private InputType activeHoldPressType = InputType.Select;
+        private InputAction activeHoldPressType = new InputAction(0,"Select"); // TODO - Unsure how the new InputActions are Referred to?
 
         [SerializeField]
-        private InputType interactionEnabledPressType = InputType.Select;
+        private InputAction interactionEnabledPressType = new InputAction(0, "Select"); // TODO - Unsure how the new InputActions are Referred to?
 
         [SerializeField]
         private bool interactionRequiresHold = false;
@@ -317,14 +317,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             {
                 bool interactionPressed = false;
 #if UNITY_WSA
-                interactionPressed = eventData.InputType == activeHoldPressType;
+                interactionPressed = eventData.InputAction.Id == activeHoldPressType.Id; 
 #endif
                 if (interactionRequiresHold && (eventData.KeyCode == activeHoldKeyCode || interactionPressed))
                 {
                     InteractionEnabled = false;
                 }
 #if UNITY_WSA
-                interactionPressed = eventData.InputType == interactionEnabledPressType;
+                interactionPressed = eventData.InputAction.Id == interactionEnabledPressType.Id; // TODO - Unsure how the new InputActions are Referred to?
 #endif
                 if (eventData.KeyCode == interactionEnabledKeyCode || interactionPressed)
                 {
@@ -339,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             {
                 bool interactionPressed = false;
 #if UNITY_WSA
-                interactionPressed = eventData.InputType == activeHoldPressType;
+                interactionPressed = eventData.InputAction.Id == activeHoldPressType.Id; // TODO - Unsure how the new InputActions are Referred to?
 #endif
                 if (interactionRequiresHold && (eventData.KeyCode == activeHoldKeyCode || interactionPressed))
                 {
@@ -347,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
                 }
 
 #if UNITY_WSA
-                interactionPressed = eventData.InputType == interactionEnabledPressType;
+                interactionPressed = eventData.InputAction.Id == interactionEnabledPressType.Id; // TODO - Unsure how the new InputActions are Referred to?
 #endif
                 if (eventData.KeyCode == interactionEnabledKeyCode || interactionPressed)
                 {
