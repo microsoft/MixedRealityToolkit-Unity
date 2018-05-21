@@ -712,12 +712,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eb034688bcf84b4bb52b3a3310868c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  ManipulationMode: 1
-  ConstraintOnRotation: 3
-  OneHandMovement: 1
+  manipulationMode: 4
+  constraintOnRotation: 3
+  oneHandMovement: 1
 --- !u!65 &687798438
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1425,12 +1425,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eb034688bcf84b4bb52b3a3310868c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  ManipulationMode: 1
-  ConstraintOnRotation: 2
-  OneHandMovement: 1
+  manipulationMode: 4
+  constraintOnRotation: 2
+  oneHandMovement: 1
 --- !u!65 &1141423121
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1652,12 +1652,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eb034688bcf84b4bb52b3a3310868c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  ManipulationMode: 2
-  ConstraintOnRotation: 0
-  OneHandMovement: 1
+  manipulationMode: 3
+  constraintOnRotation: 0
+  oneHandMovement: 1
 --- !u!65 &1337778049
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2448,12 +2448,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eb034688bcf84b4bb52b3a3310868c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  ManipulationMode: 4
-  ConstraintOnRotation: 0
-  OneHandMovement: 1
+  manipulationMode: 7
+  constraintOnRotation: 0
+  oneHandMovement: 1
 --- !u!1 &1838090887
 GameObject:
   m_ObjectHideFlags: 0
@@ -2551,12 +2551,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eb034688bcf84b4bb52b3a3310868c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
+  hostTransform: {fileID: 0}
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  ManipulationMode: 0
-  ConstraintOnRotation: 0
-  OneHandMovement: 1
+  manipulationMode: 2
+  constraintOnRotation: 0
+  oneHandMovement: 1
 --- !u!65 &1886941386
 BoxCollider:
   m_ObjectHideFlags: 0

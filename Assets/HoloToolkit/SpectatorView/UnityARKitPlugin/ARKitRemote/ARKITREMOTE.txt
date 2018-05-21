@@ -1,0 +1,27 @@
+Unity ARKit Remote
+
+This is a two part solution for game developers who want to iterate on ARKit apps (made with Unity ARKit Plugin) from within the Unity Editor. It consists of an iOS app (UnityARKitRemote) that provides the ARKit data from a compatible device that it is installed on, working in conjunction with a GameObject called ARKitRemoteConnection in your Unity scene for your ARKit project. This GameObject simulates ARKit working in the editor by passing data via UnityARSessionNativeInterface to the other GameObjects in the editor. The UnityARKitRemote app on the device will forward the following information to Unity scene in editor:
+
+-The video feed coming from the device camera (separated into Y and UV textures) as provided by ARKit.
+-The camera translation and rotation based on device movement
+-The ARPlaneAnchor addition, removal and update events along with data about the plane affected
+-Point cloud data
+
+Requirements:
+It has all the same requirements as the Unity ARKit Plugin, with an additional recommendation of using Unity 2017.1 or later, as the PlayerConnection works way better and has better UI support in that version.
+
+Future work on this:
+-HitTest API
+-AR Session Configuration
+
+Steps to using remote:
+
+1. First download the latest Unity ARKit Plugin code that includes the Unity ARKit Remote from either bitbucket or Unity Asset Store.
+2. Build the scene called UnityARKitRemote out to your compatible iOS device. You should use “Development Build” in your Build Settings. This is the only build time to iOS you will need to endure - the rest of the iterations on your project can happen in the editor. When you build out to iOS, you should change the product name and bundle identifier in the PlayerSettings to signify that it is the Unity ARKit Remote.
+3. Open the scene which contains your app that uses the Unity ARKit Plugin. From the ARKitRemote folder, add the ARKitRemoteConnection prefab into the root of your scene. If you want to test it out, it has already been added to EditorTestScene in the same folder.
+4. Run the UnityARKitRemote app from step 2 on your device. It should display a black screen with “Waiting for editor connection..”
+5. Press play in the editor: your game window should have a green screen with “Please connect to player in the console menu” near the bottom.
+6. In this step we need to connect the editor to the Unity ARKit Remote app on the device. This is where Unity 2017.1 comes in handy: it has a menu item in the Console window to “Connected player” with a dropdown of all the available players to connect to. Select the one that corresponds to your device. In Unity 5.6 variants, you have to create a Profiler window via Window/Profiler menu. And then at the top of the Profiler window, there is a dropdown “Active Profiler” from which you select your device.
+7. If you were successful in step 6, you should have a button on the top part of your Game window labelled “Start Remote ARKit Session” in editor that when pressed will start the ARKit session on the device and start transmitting data to the editor. The editor should be displaying the same video as the device, as well as navigating through your scene, and it will momentarily start showing the point cloud data as well as the planes found.
+
+

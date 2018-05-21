@@ -11,6 +11,7 @@ Material:
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
   stringTagMap: {}
   disabledShaderPasses: []
@@ -26,8 +27,8 @@ Material:
     - _Falloff_Dst_Max: 8
     - _Falloff_Dst_Min: 2
     - _Falloff_Scale: 0.4
-    - _WireThickness: 150
+    - _WireThickness: 332
     m_Colors:
-    - _BaseColor: {r: 0.012867644, g: 0.102941155, b: 0.050421562, a: 0}
+    - _BaseColor: {r: 0, g: 0.37931037, b: 1, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _WireColor: {r: 0.4070135, g: 0.7352941, b: 0.31898788, a: 1}
+    - _WireColor: {r: 0, g: 0.7931037, b: 1, a: 1}

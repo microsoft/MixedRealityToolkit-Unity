@@ -6,10 +6,11 @@ If you have any questions, please reach out on the [HoloLens forums](https://for
 # Process
 
 1. [Make a proposal](https://github.com/Microsoft/HoloToolkit-Unity/issues) (either new, or for one of the elements in our backlog)
-2. Implement the proposal and its tests.
-3. Rebase commits to tell a compelling story.
-4. Start a pull request & address comments.
-5. Merge.
+2. Identify the appropriate development branch
+3. Implement the proposal and its tests.
+4. Ensure that your implementation meets the [coding guidelines](CodingGuidelines.md).
+5. Start a pull request & address comments.
+6. Merge.
 
 # Proposal
 
@@ -20,6 +21,21 @@ Instead, start by [opening an issue](https://github.com/Microsoft/HoloToolkit-Un
 This will let us have a brief discussion about the problem and, hopefully, identify some potential pitfalls before too much time is spent.
 
 Note:  If you wish to work on something that already exists on our backlog, you can use that work item as your proposal.  
+
+# Identifing the development branch
+
+The master branch does not accept direct pull requests. Each change must be submitted through an appropriate developement branch. Each upcoming MRTK release has its own development branch (ex: may18_dev).
+
+To identify the appropriate development branch:
+
+1. Navigate to the MRTK [Projects](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects) page
+2. Find the next Mixed Reality Toolkit project (generally, by closest date)
+3. If the **Status** is not **Accepting changes**, select the next release
+4. Note the **Development branch** for Pull Request submission.
+
+Any pull request made directly to master will be retargetted to a development branches by a project maintainer.
+
+NOTE: A project maintainer may retarget your PR to a different development branch based on the release priorities.
 
 # Implementation
 
@@ -32,26 +48,9 @@ Note:  If you wish to work on something that already exists on our backlog, you 
 7. Ensure you update the [README](https://github.com/Microsoft/HoloToolkit-Unity/blob/master/README.md) with additional documentation as needed.
 8. Also update the [HoloToolkit-Unity wiki](https://github.com/Microsoft/HoloToolkit-Unity/wiki) if you think it will be useful for other developers.
 
-# Rebase commits
-
-The commits in your pull request should tell a story about how the code got from point A to point B. 
-Good stories are edited, so you'll want to rebase your commits so that they tell a good story.
-
-Each commit should build and pass all of the tests. 
-If you want to add new tests for functionality that's not yet written, ensure the tests are added disabled.
-
-Don't forget to run git diff --check to catch those annoying whitespace changes.
- 
-Please follow the established [Git convention for commit messages](https://www.git-scm.com/book/en/v2/Distributed-Git-Contributing-to-a-Project#Commit-Guidelines). 
-The first line is a summary in the imperative, about 50 characters or less, and should not end with a period. 
-An optional, longer description must be preceded by an empty line and should be wrapped at around 72 characters. 
-This helps with various outputs from Git or other tools.
-
-You can update message of local commits you haven't pushed yet using git commit --amend or git rebase --interactivewith reword command.
-
 # Pull request
 
-Start a GitHub pull request to merge your topic branch into the [main repository's Dev_Working_Branch](https://github.com/Microsoft/HoloToolkit-Unity/tree/Dev_Working_Branch). 
+Start a GitHub pull request to merge your topic branch into the release's development branch (as identified above). 
 (If you are a Microsoft employee and are not a member of the [Microsoft organization on GitHub](https://github.com/Microsoft) yet, please link your Microsoft and GitHub accounts on corpnet by visiting [Open Source at Microsoft](https://opensource.microsoft.com/) before you start your pull request. There's some process stuff you'll need to do ahead of time.)
 If you haven't contributed to a Microsoft project before, you may be asked to sign a [contribution license agreement](https://cla.microsoft.com/). 
 A comment in the PR will let you know if you do.
@@ -61,4 +60,4 @@ Address any review comments, force push to your topic branch, and post a comment
 
 # Merge
 
-If the pull request review goes well, a project maintainer will merge your changes. Thank you for helping improve HoloToolkit!
+If the pull request review goes well, a project maintainer will merge your changes. Thank you for helping improve the Mixed Reality Toolkit!

@@ -70,14 +70,13 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4400682673061142}
+  - component: {fileID: 65959870370459156}
   - component: {fileID: 114985427041226018}
   - component: {fileID: 114941441034285770}
   - component: {fileID: 114539127433989172}
   - component: {fileID: 114724965930856538}
   - component: {fileID: 114888990318196948}
-  - component: {fileID: 65959870370459156}
-  - component: {fileID: 95836897654538082}
-  - component: {fileID: 114372868302156270}
+  - component: {fileID: 114473421636268844}
   m_Layer: 5
   m_Name: ButtonHolographic
   m_TagString: Untagged
@@ -340,23 +339,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.12, y: 0.12, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!95 &95836897654538082
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1619954670119144}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: dade752fc71c3d940ba5cc7eaf201f24, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!102 &102082490485545312
 TextMesh:
   serializedVersion: 3
@@ -371,14 +353,14 @@ TextMesh:
   m_Anchor: 7
   m_Alignment: 1
   m_TabSize: 4
-  m_FontSize: 72
+  m_FontSize: 48
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 86574c70442309b45be5a1c37a37a40b, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
---- !u!114 &114372868302156270
+--- !u!114 &114473421636268844
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -386,53 +368,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1619954670119144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 728fec8e9feecf64f933543126cbecae, type: 3}
+  m_Script: {fileID: 11500000, guid: d56c23c4a6e0ec6478791a5c1a0f81a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetAnimator: {fileID: 95836897654538082}
-  AnimActions:
-  - ButtonState: 0
-    ParamName: State
-    ParamType: 3
-    BoolValue: 0
-    IntValue: 0
-    FloatValue: 0
-    InvalidParam: 0
-  - ButtonState: 1
-    ParamName: State
-    ParamType: 3
-    BoolValue: 0
-    IntValue: 1
-    FloatValue: 0
-    InvalidParam: 0
-  - ButtonState: 2
-    ParamName: State
-    ParamType: 3
-    BoolValue: 0
-    IntValue: 2
-    FloatValue: 0
-    InvalidParam: 0
-  - ButtonState: 3
-    ParamName: State
-    ParamType: 3
-    BoolValue: 0
-    IntValue: 3
-    FloatValue: 0
-    InvalidParam: 0
-  - ButtonState: 4
-    ParamName: State
-    ParamType: 3
-    BoolValue: 0
-    IntValue: 4
-    FloatValue: 0
-    InvalidParam: 0
-  - ButtonState: 5
-    ParamName: State
-    ParamType: 3
-    BoolValue: 0
-    IntValue: 5
-    FloatValue: 0
-    InvalidParam: 0
+  KeywordSource: 2
+  Keyword: 
 --- !u!114 &114539127433989172
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -511,8 +451,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e77a98cf320fe9340a55eecfe4567ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonState: 4
-  ButtonPressFilter: 1
-  RequireGaze: 1
+  buttonState: 4
+  buttonPressFilter: 1
+  requireGaze: 1
   MainCollider: {fileID: 65959870370459156}
   MainRenderer: {fileID: 23714127561629088}
