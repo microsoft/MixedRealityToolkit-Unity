@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         [Header("Animated Cursor State Data")]
         [Tooltip("Cursor state data to use for its various states")]
         [SerializeField]
-        public AnimCursorDatum[] CursorStateData;
+        public AnimatedCursorData[] CursorStateData;
 
         [Tooltip("Animator parameter to set when input is enabled.")]
         public AnimatorParameter InputEnabledParameter;

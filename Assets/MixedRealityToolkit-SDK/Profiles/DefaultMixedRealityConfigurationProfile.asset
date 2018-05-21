@@ -13,13 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableInputSystem: 1
   inputSystem:
-    reference: 
+    reference: Microsoft.MixedReality.Toolkit.InputSystem.MixedRealityInputManager,
+      Microsoft.MixedReality.Toolkit.InputSystem
   enableControllers: 1
-  leftControllerModel: {fileID: 1774971220009634, guid: 89aca206fbe292649bca7605a95fa801,
-    type: 2}
-  rightControllerModel: {fileID: 1774971220009634, guid: 89aca206fbe292649bca7605a95fa801,
-    type: 2}
-  controllerMappingsProfile:
-  - {fileID: 11400000, guid: bbbc9918bf16a5942ae999851b42bb8c, type: 2}
-  - {fileID: 11400000, guid: ac7de1beb96622147ad330ea3ceaee0c, type: 2}
   enableBoundarySystem: 1

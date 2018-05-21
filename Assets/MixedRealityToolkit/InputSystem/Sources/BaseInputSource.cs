@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
@@ -39,39 +37,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             set { name = value; }
         }
 
-        public virtual IMixedRealityPointer[] Pointers { get; private set; }
+        public virtual IMixedRealityPointer[] Pointers => null;
 
-        public virtual Dictionary<InputType, InteractionDefinition> Interactions { get; } = new Dictionary<InputType, InteractionDefinition>();
-
-        public virtual InputType[] Capabilities { get; } = { InputType.None };
-
-        public void SetupInputSource<T>(T state) { }
-
-        public void UpdateInputSource<T>(T state) { }
-
-        public bool SupportsCapabilities(InputType[] inputInfo)
-        {
-            return Capabilities == inputInfo;
-        }
+        public virtual InteractionDefinition[] Interactions { get; } = null;
 
         public bool SupportsCapability(InputType inputInfo)
         {
-            for (int i = 0; i < Capabilities.Length; i++)
+            for (int i = 0; i < Interactions.Length; i++)
             {
-                if (Capabilities[i] == inputInfo)
+                if (Interactions[i].InputType == inputInfo)
                 {
                     return true;
                 }
             }
 
             return false;
-        }
-
-        public void RegisterPointers(IMixedRealityPointer[] pointers)
-        {
-            if (pointers == null) { throw new ArgumentNullException(nameof(pointers)); }
-
-            Pointers = pointers;
         }
 
         #region IEquality Implementation

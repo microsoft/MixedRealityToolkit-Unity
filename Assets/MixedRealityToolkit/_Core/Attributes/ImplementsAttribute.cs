@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Attributes
 {
