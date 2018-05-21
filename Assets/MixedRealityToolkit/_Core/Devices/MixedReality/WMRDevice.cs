@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <summary>
         /// Dictionary to capture all active controllers detected
         /// </summary>
-        private readonly Dictionary<uint, IMixedRealityInputSource> activeControllers = new Dictionary<uint, IMixedRealityInputSource>();
+        private readonly Dictionary<uint, IMixedRealityController> activeControllers = new Dictionary<uint, IMixedRealityController>();
 
         /// <summary>
         /// Input System reference
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// Public accessor for the currently attached controllers for a Windows Mixed Reality Device
         /// </summary>
         /// <returns></returns>
-        public IMixedRealityInputSource[] GetActiveControllers()
+        public IMixedRealityController[] GetActiveControllers()
         {
             return activeControllers.ExportDictionaryValuesAsArray();
         }
@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK</param>
         /// <returns>New or Existing Controller Input Source</returns>
-        private IMixedRealityInputSource GetOrAddWindowsMixedRealityController(InteractionSourceState interactionSourceState)
+        private IMixedRealityController GetOrAddWindowsMixedRealityController(InteractionSourceState interactionSourceState)
         {
             //If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(interactionSourceState.source.id))
@@ -118,16 +118,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             //TODO - Controller Type Detection?
             //Define new Controller
-            var DetectedController = new WindowsMixedRealityController(
+            var detectedController = new WindowsMixedRealityController(
                 interactionSourceState.source.id,
                 interactionSourceState.source.handedness == InteractionSourceHandedness.Left ? Handedness.Left : Handedness.Right
                 );
 
-            DetectedController.SetupInputSource(interactionSourceState);
+            detectedController.SetupInputSource(interactionSourceState);
 
-            activeControllers.Add(interactionSourceState.source.id, DetectedController);
+            activeControllers.Add(interactionSourceState.source.id, detectedController);
 
-            return DetectedController;
+            return detectedController;
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// React to Input "Press" events and update source data
         /// </summary>
         /// <param name="interactionSourcePressType">Type of press event received</param>
-        /// <param name="sourceData">Souce controller to update</param>
+        /// <param name="sourceData">Source controller to update</param>
         /// <returns></returns>
         private InputType PressInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityInputSource sourceData)
         {
@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            if(sourceData.Interactions.ContainsKey(pressedInput)) sourceData.Interactions[pressedInput].SetValue(true);
+            if (sourceData.Interactions.ContainsKey(pressedInput)) sourceData.Interactions[pressedInput].SetValue(true);
             return pressedInput;
         }
 
@@ -198,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// React to Input "Release" events and update source data
         /// </summary>
         /// <param name="interactionSourcePressType">Type of release event received</param>
-        /// <param name="sourceData">Souce controller to update</param>
+        /// <param name="sourceData">Source controller to update</param>
         /// <returns></returns>
         private InputType ReleaseInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityInputSource sourceData)
         {

@@ -13,11 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     public sealed class SystemType : ISerializationCallbackReceiver
     {
         [SerializeField]
-        private string classReference = string.Empty;
+        private string reference = string.Empty;
 
         private Type type;
 
-        public static string GetClassRef(Type type)
+        public static string GetReference(Type type)
         {
             return type != null ? $"{type.FullName}, {type.Assembly.GetName().Name}" : string.Empty;
         }
@@ -49,13 +49,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            if (!string.IsNullOrEmpty(classReference))
+            if (!string.IsNullOrEmpty(reference))
             {
-                type = Type.GetType(classReference);
+                type = Type.GetType(reference);
 
                 if (type == null)
                 {
-                    Debug.LogWarning($"'{classReference}' was referenced but class type was not found.");
+                    Debug.LogWarning($"'{reference}' was referenced but class or struct type was not found.");
                 }
             }
             else
@@ -79,19 +79,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
             get { return type; }
             set
             {
-                if (value != null && !value.IsClass)
+                bool isStruct = value.IsValueType && !value.IsEnum;
+                if (value != null && !value.IsClass || value != null && !isStruct)
                 {
-                    throw new ArgumentException($"'{value.FullName}' is not a class type.", nameof(value));
+                    throw new ArgumentException($"'{value.FullName}' is not a class or struct type.", nameof(value));
                 }
 
                 type = value;
-                classReference = GetClassRef(value);
+                reference = GetReference(value);
             }
         }
 
         public static implicit operator string(SystemType type)
         {
-            return type.classReference;
+            return type.reference;
         }
 
         public static implicit operator Type(SystemType type)

@@ -14,9 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Attributes
     public abstract class SystemTypeAttribute : PropertyAttribute
     {
         /// <summary>
-        /// Gets or sets grouping of selectable classes. Defaults to <see cref="ClassGrouping.ByNamespaceFlat"/> unless explicitly specified.
+        /// Gets or sets grouping of selectable classes. Defaults to <see cref="TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.
         /// </summary>
-        public ClassGrouping Grouping { get; protected set; }
+        public TypeGrouping Grouping { get; protected set; }
 
         /// <summary>
         /// Gets or sets whether abstract classes can be selected from drop-down.
@@ -28,10 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Attributes
         /// 
         /// </summary>
         /// <param name="type">Initializes a new instance of the <see cref="SystemTypeAttribute"/> class.</param>
-        /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="ClassGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
-        public SystemTypeAttribute(Type type, ClassGrouping grouping = ClassGrouping.ByNamespaceFlat)
+        /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
+        public SystemTypeAttribute(Type type, TypeGrouping grouping = TypeGrouping.ByNamespaceFlat)
         {
-            Debug.Assert(type.IsClass || type.IsInterface, $"Invalid Type {type} in attribute.");
+            Debug.Assert(type.IsClass || type.IsInterface || type.IsValueType && !type.IsEnum, $"Invalid Type {type} in attribute.");
             Grouping = grouping;
         }
 

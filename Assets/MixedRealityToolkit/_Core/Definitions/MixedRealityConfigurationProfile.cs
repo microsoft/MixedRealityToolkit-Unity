@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("Input System Class to instantiate at runtime.")]
-        [Implements(typeof(IMixedRealityInputSystem), ClassGrouping.None)]
+        [Implements(typeof(IMixedRealityInputSystem), TypeGrouping.None)]
         private SystemType inputSystem;
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("Available Controller Mappings")]
-        private MixedRealityControllerMapping[] controllerMappings;
+        private MixedRealityControllerMappingProfile[] controllerMappingsProfile;
 
         [SerializeField]
         [Header("Boundary Settings")]
@@ -166,20 +166,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         // TODO - needs validation to ensure duplicates are not added?
 
-        public MixedRealityControllerMapping GetControllerMapping(SystemType controllerType, Handedness hand)
+        public MixedRealityControllerMappingProfile GetControllerMapping(SystemType controllerType, Handedness hand)
         {
-            if (controllerMappings != null)
+            if (controllerMappingsProfile != null)
             {
 
-                for (int i = 0; i < controllerMappings.Length; i++)
+                for (int i = 0; i < controllerMappingsProfile.Length; i++)
                 {
-                    if (controllerMappings[i].ControllerType == controllerType && controllerMappings[i].ControllingHand == hand)
+                    if (controllerMappingsProfile[i].ControllerType == controllerType && controllerMappingsProfile[i].ControllingHand == hand)
                     {
-                        return controllerMappings[i];
+                        return controllerMappingsProfile[i];
                     }
                 }
             }
-            return default(MixedRealityControllerMapping);
+            return default(MixedRealityControllerMappingProfile);
         }
         #endregion Mixed Reality Controller Mapping helpers
     }

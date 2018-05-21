@@ -6,7 +6,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// <summary>
     /// Indicates how selectable classes should be collated in drop-down menu.
     /// </summary>
-    public enum ClassGrouping
+    public enum TypeGrouping
     {
         /// <summary>
         /// No grouping, just show type names in a list; for instance, "Some.Nested.Namespace.SpecialClass".

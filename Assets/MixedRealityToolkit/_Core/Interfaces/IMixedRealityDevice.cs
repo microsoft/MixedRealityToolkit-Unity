@@ -15,6 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         void Destroy();
 
-        IMixedRealityInputSource[] GetActiveControllers();
+        IMixedRealityController[] GetActiveControllers();
     }
 }

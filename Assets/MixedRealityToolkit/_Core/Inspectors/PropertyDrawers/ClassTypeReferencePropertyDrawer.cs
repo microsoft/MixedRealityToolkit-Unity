@@ -3,7 +3,6 @@
 
 using Assembly = System.Reflection.Assembly;
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
@@ -83,7 +82,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
         {
             foreach (var type in assembly.GetTypes())
             {
-                if (!type.IsVisible || !type.IsClass)
+                bool isValid = type.IsClass || type.IsValueType && !type.IsEnum;
+
+                if (!type.IsVisible || !isValid)
                 {
                     continue;
                 }
@@ -201,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
                 selectionControlId = controlId;
                 selectedClassRef = classRef;
 
-                DisplayDropDown(position, GetFilteredTypes(filter), ResolveType(classRef), filter?.Grouping ?? ClassGrouping.ByNamespaceFlat);
+                DisplayDropDown(position, GetFilteredTypes(filter), ResolveType(classRef), filter?.Grouping ?? TypeGrouping.ByNamespaceFlat);
             }
 
             return classRef;
@@ -222,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
             }
         }
 
-        private static void DisplayDropDown(Rect position, List<Type> types, Type selectedType, ClassGrouping grouping)
+        private static void DisplayDropDown(Rect position, List<Type> types, Type selectedType, TypeGrouping grouping)
         {
             var menu = new GenericMenu();
             menu.AddItem(new GUIContent("(None)"), selectedType == null, OnSelectedTypeName, null);
@@ -241,17 +242,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
             menu.DropDown(position);
         }
 
-        private static string FormatGroupedTypeName(Type type, ClassGrouping grouping)
+        private static string FormatGroupedTypeName(Type type, TypeGrouping grouping)
         {
             string name = type.FullName;
 
             switch (grouping)
             {
-                case ClassGrouping.None:
+                case TypeGrouping.None:
                     return name;
-                case ClassGrouping.ByNamespace:
+                case TypeGrouping.ByNamespace:
                     return string.IsNullOrEmpty(name) ? string.Empty : name.Replace('.', '/');
-                case ClassGrouping.ByNamespaceFlat:
+                case TypeGrouping.ByNamespaceFlat:
                     int lastPeriodIndex = string.IsNullOrEmpty(name) ? -1 : name.LastIndexOf('.');
                     if (lastPeriodIndex != -1)
                     {
@@ -261,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
                     }
 
                     return name;
-                case ClassGrouping.ByAddComponentMenu:
+                case TypeGrouping.ByAddComponentMenu:
                     var addComponentMenuAttributes = type.GetCustomAttributes(typeof(AddComponentMenu), false);
                     if (addComponentMenuAttributes.Length == 1)
                     {
@@ -277,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
 
         private static void OnSelectedTypeName(object userData)
         {
-            selectedClassRef = SystemType.GetClassRef(userData as Type);
+            selectedClassRef = SystemType.GetReference(userData as Type);
             var typeReferenceUpdatedEvent = EditorGUIUtility.CommandEvent("TypeReferenceUpdated");
             EditorWindow.focusedWindow.SendEvent(typeReferenceUpdatedEvent);
         }
@@ -291,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            DrawTypeSelectionControl(position, property.FindPropertyRelative("classReference"), label, attribute as SystemTypeAttribute);
+            DrawTypeSelectionControl(position, property.FindPropertyRelative("reference"), label, attribute as SystemTypeAttribute);
         }
     }
 }

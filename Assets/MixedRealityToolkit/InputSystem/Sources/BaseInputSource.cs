@@ -39,15 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             set { name = value; }
         }
 
-        public virtual InputSourceState InputSourceState { get; }
-
-        public virtual Handedness Handedness { get; }
-
         public virtual IMixedRealityPointer[] Pointers { get; private set; }
 
-        public virtual Dictionary<InputType, InteractionDefinition> Interactions { get; }
+        public virtual Dictionary<InputType, InteractionDefinition> Interactions { get; } = new Dictionary<InputType, InteractionDefinition>();
 
-        public virtual InputType[] Capabilities { get; }
+        public virtual InputType[] Capabilities { get; } = { InputType.None };
 
         public void SetupInputSource<T>(T state) { }
 

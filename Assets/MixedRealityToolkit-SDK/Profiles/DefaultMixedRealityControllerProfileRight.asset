@@ -9,8 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b746a3d17963cf45bf224deae50fffd, type: 3}
-  m_Name: DefaultMixedRealityControllerMappingRight
+  m_Name: DefaultMixedRealityControllerProfileRight
   m_EditorClassIdentifier: 
-  controlingHand: 0
+  controllingHand: 0
   controllerType:
-    classReference: 
+    reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
+      Microsoft.MixedReality.Toolkit

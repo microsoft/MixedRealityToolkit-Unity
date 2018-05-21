@@ -22,8 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Attributes
         /// Initializes a new instance of the <see cref="ImplementsAttribute"/> class.
         /// </summary>
         /// <param name="interfaceType">Type of interface that selectable classes must implement.</param>
-        /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="ClassGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
-        public ImplementsAttribute(Type interfaceType, ClassGrouping grouping) : base(interfaceType, grouping)
+        /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
+        public ImplementsAttribute(Type interfaceType, TypeGrouping grouping) : base(interfaceType, grouping)
         {
             InterfaceType = interfaceType;
         }

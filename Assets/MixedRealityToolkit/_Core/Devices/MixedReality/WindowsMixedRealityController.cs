@@ -12,20 +12,24 @@ using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
-    public struct WindowsMixedRealityController : IMixedRealityInputSource, IMixedRealityController
+    public struct WindowsMixedRealityController : IMixedRealityController
     {
         #region Private properties
 
         private bool controllerTracked;
-        private Vector3 controllerPosition, pointerPosition, gripPosition;
-        private Quaternion controllerRotation, pointerRotation, gripRotation;
+        private Vector3 controllerPosition;
+        private Vector3 pointerPosition;
+        private Vector3 gripPosition;
+        private Quaternion controllerRotation;
+        private Quaternion pointerRotation;
+        private Quaternion gripRotation;
 
         #endregion Private properties
 
         public WindowsMixedRealityController(uint sourceId, Handedness handedness)
         {
             SourceId = sourceId;
-            SourceName = sourceId.ToString() + handedness;
+            SourceName = $"{sourceId}_{handedness}";
             InputSourceState = InputSourceState.None;
             Handedness = handedness;
             Pointers = new IMixedRealityPointer[0];
@@ -45,11 +49,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         public InputSourceState InputSourceState { get; private set; }
 
-        public Handedness Handedness { get;  }
-        
+        public Handedness Handedness { get; }
+
         public IMixedRealityPointer[] Pointers { get; private set; }
-        
-        public Dictionary<InputType, InteractionDefinition> Interactions { get;}
+
+        public Dictionary<InputType, InteractionDefinition> Interactions { get; }
 
         public InputType[] Capabilities { get; private set; }
 
@@ -92,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         }
 
         #endregion IMixedRealityInputSource Interface Members
-        
+
         #region Setup and Update functions
 
         public void SetupFromInteractionSource(InteractionSourceState interactionSourceState)
@@ -100,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             //Update the Tracked state of the controller
             UpdateControllerData(interactionSourceState);
 
-            MixedRealityControllerMapping controllerMapping = Managers.MixedRealityManager.Instance.ActiveProfile.GetControllerMapping(typeof(WindowsMixedRealityController), Handedness);
+            MixedRealityControllerMappingProfile controllerMapping = Managers.MixedRealityManager.Instance.ActiveProfile.GetControllerMapping(typeof(WindowsMixedRealityController), Handedness);
             if (controllerMapping.Interactions.Length > 0)
             {
                 SetupFromMapping(controllerMapping.Interactions);
@@ -115,15 +119,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         private void SetupFromMapping(InteractionDefinitionMapping[] mappings)
         {
             Capabilities = new InputType[mappings.Length];
-            for (int i = 0; i < mappings.Length; i++)
+            for (uint i = 0; i < mappings.Length; i++)
             {
                 // Add interaction for Mapping
-                Interactions.Add(mappings[i].InputType, new InteractionDefinition()
-                {
-                    AxisType = mappings[i].AxisType,
-                    Changed = false,
-                    InputAction = mappings[i].InputAction
-                });
+                Interactions.Add(mappings[i].InputType, new InteractionDefinition(i, mappings[i].AxisType, mappings[i].InputAction));
 
                 // Add capability for Input Type
                 Capabilities[i] = mappings[i].InputType;
@@ -133,89 +132,38 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         private void SetupWMRControllerDefaults(InteractionSourceState interactionSourceState)
         {
             //Add the Controller Pointer
-            Interactions.Add(InputType.Pointer, new InteractionDefinition()
-            {
-                AxisType = AxisType.SixDoF,
-                Changed = false,
-                InputAction = InputAction.Pointer
-            });
+            Interactions.Add(InputType.Pointer, new InteractionDefinition(1, AxisType.SixDoF, InputAction.Pointer));
 
             // Add the Controller trigger
-            Interactions.Add(InputType.Trigger, new InteractionDefinition()
-            {
-                AxisType = AxisType.SingleAxis,
-                Changed = false,
-                InputAction = Handedness == Handedness.Left ? InputAction.LeftTrigger : InputAction.RightTrigger
-            });
+            Interactions.Add(InputType.Trigger, new InteractionDefinition(2, AxisType.SingleAxis, Handedness == Handedness.Left ? InputAction.LeftTrigger : InputAction.RightTrigger));
 
             // If the controller has a Grip / Grasp button, add it to the controller capabilities
             if (interactionSourceState.source.supportsGrasp)
             {
-                Interactions.Add(InputType.Grip, new InteractionDefinition()
-                {
-                    AxisType = AxisType.SixDoF,
-                    Changed = false,
-                    InputAction = InputAction.Grip
-                });
+                Interactions.Add(InputType.Grip, new InteractionDefinition(3, AxisType.SixDoF, InputAction.Grip));
 
-                Interactions.Add(InputType.GripPress, new InteractionDefinition()
-                {
-                    AxisType = AxisType.SingleAxis,
-                    Changed = false,
-                    InputAction = InputAction.ActionOne
-                });
-
+                Interactions.Add(InputType.GripPress, new InteractionDefinition(4, AxisType.SingleAxis, InputAction.ActionOne));
             }
 
             // If the controller has a menu button, add it to the controller capabilities
             if (interactionSourceState.source.supportsMenu)
             {
-                Interactions.Add(InputType.Menu, new InteractionDefinition()
-                {
-                    AxisType = AxisType.Digital,
-                    Changed = false,
-                    InputAction = InputAction.ActionTwo
-                });
+                Interactions.Add(InputType.Menu, new InteractionDefinition(5, AxisType.Digital, InputAction.ActionTwo));
             }
 
             // If the controller has a Thumbstick, add it to the controller capabilities
             if (interactionSourceState.source.supportsThumbstick)
             {
-                Interactions.Add(InputType.ThumbStick, new InteractionDefinition()
-                {
-                    AxisType = AxisType.DualAxis,
-                    Changed = false,
-                    InputAction = Handedness == Handedness.Left ? InputAction.LeftThumbstick : InputAction.RightThumbstick
-                });
-                Interactions.Add(InputType.ThumbStickPress, new InteractionDefinition()
-                {
-                    AxisType = AxisType.Digital,
-                    Changed = false,
-                    InputAction = InputAction.LeftThumbstickPressed
-                });
+                Interactions.Add(InputType.ThumbStick, new InteractionDefinition(6, AxisType.DualAxis, Handedness == Handedness.Left ? InputAction.LeftThumbstick : InputAction.RightThumbstick));
+                Interactions.Add(InputType.ThumbStickPress, new InteractionDefinition(7, AxisType.Digital, InputAction.LeftThumbstickPressed));
             }
 
             // If the controller has a Touchpad, add it to the controller capabilities
             if (interactionSourceState.source.supportsTouchpad)
             {
-                Interactions.Add(InputType.Touchpad, new InteractionDefinition()
-                {
-                    AxisType = AxisType.DualAxis,
-                    Changed = false,
-                    InputAction = Handedness == Handedness.Left ? InputAction.LeftTouch : InputAction.RightTouch
-                });
-                Interactions.Add(InputType.TouchpadTouch, new InteractionDefinition()
-                {
-                    AxisType = AxisType.Digital,
-                    Changed = false,
-                    InputAction = InputAction.LeftTouchTouched
-                });
-                Interactions.Add(InputType.TouchpadPress, new InteractionDefinition()
-                {
-                    AxisType = AxisType.Digital,
-                    Changed = false,
-                    InputAction = Handedness == Handedness.Left ? InputAction.LeftTouchPressed : InputAction.RightTouchPressed
-                });
+                Interactions.Add(InputType.Touchpad, new InteractionDefinition(8, AxisType.DualAxis, Handedness == Handedness.Left ? InputAction.LeftTouch : InputAction.RightTouch));
+                Interactions.Add(InputType.TouchpadTouch, new InteractionDefinition(9, AxisType.Digital, InputAction.LeftTouchTouched));
+                Interactions.Add(InputType.TouchpadPress, new InteractionDefinition(10, AxisType.Digital, Handedness == Handedness.Left ? InputAction.LeftTouchPressed : InputAction.RightTouchPressed));
             }
         }
 

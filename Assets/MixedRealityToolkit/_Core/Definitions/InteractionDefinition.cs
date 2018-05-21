@@ -12,14 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// </summary>
     public struct InteractionDefinition
     {
-
         public InteractionDefinition(uint id, AxisType axisType, InputAction inputAction) : this()
         {
             Id = id;
             AxisType = axisType;
             InputAction = inputAction;
         }
-
 
         #region Interaction Properties
 
@@ -31,56 +29,56 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// <summary>
         /// The axis type of the button, e.g. Analogue, Digital, etc.
         /// </summary>
-        public AxisType AxisType { get; set; }
+        public AxisType AxisType { get; }
 
         /// <summary>
         /// The primary action of the button as defined by the controller SDK.
         /// </summary>
-        public InputAction InputAction { get; set; }
+        public InputAction InputAction { get; }
 
         #endregion Interaction Properties
 
         #region Definition Data items
 
         /// <summary>
+        /// Has the value changed since the last reading
+        /// </summary>
+        public bool Changed { get; private set; }
+
+        /// <summary>
         /// The data storage for a Raw / None Axis type.
         /// </summary>
-        private object rawData { get; set; }
+        private object rawData;
 
         /// <summary>
         /// The data storage for a Digital Axis type.
         /// </summary>
-        private bool boolData { get; set; }
+        private bool boolData;
 
         /// <summary>
         /// The data storage for a Single Axis type.
         /// </summary>
-        private float floatData { get; set; }
+        private float floatData;
 
         /// <summary>
         /// The data storage for a Dual Axis type.
         /// </summary>
-        private Vector2 vector2Data { get; set; }
+        private Vector2 vector2Data;
 
         /// <summary>
         /// The position data storage for a 3DoF Axis type.
         /// </summary>
-        private Vector3 positionData { get; set; }
+        private Vector3 positionData;
 
         /// <summary>
         /// The rotation data storage for a 3DoF Axis type.
         /// </summary>
-        private Quaternion rotationData { get; set; }
+        private Quaternion rotationData;
 
         /// <summary>
         /// The transform data for a 6DoF (Position and Rotation) Axis type.
         /// </summary>
-        private Tuple<Vector3, Quaternion> transformData { get; set; }
-
-        /// <summary>
-        /// Has the value changed since the last reading
-        /// </summary>
-        public bool Changed { get; set; }
+        private Tuple<Vector3, Quaternion> transformData;
 
         #endregion Definition Data items
 
@@ -91,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
             switch (AxisType)
             {
                 case AxisType.Digital:
-                    return (T)Convert.ChangeType(boolData,typeof(T));
+                    return (T)Convert.ChangeType(boolData, typeof(T));
                 case AxisType.SingleAxis:
                     return (T)Convert.ChangeType(floatData, typeof(T));
                 case AxisType.DualAxis:
@@ -105,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
                 case AxisType.Raw:
                 case AxisType.None:
                 default:
-                    return (T)Convert.ChangeType(rawData,typeof(T));
+                    return (T)Convert.ChangeType(rawData, typeof(T));
             }
         }
         #endregion Get Operators
@@ -116,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.Digital)
             {
-                Changed = newValue == rawData;
+                Changed = newValue != rawData;
                 rawData = newValue;
             }
         }
@@ -125,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.Digital)
             {
-                Changed = newValue == boolData;
+                Changed = newValue != boolData;
                 boolData = newValue;
             }
         }
@@ -134,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.SingleAxis)
             {
-                Changed = newValue == floatData;
+                Changed = !newValue.Equals(floatData);
                 floatData = newValue;
             }
         }
@@ -143,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.DualAxis)
             {
-                Changed = newValue == vector2Data;
+                Changed = newValue != vector2Data;
                 vector2Data = newValue;
             }
         }
@@ -152,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.ThreeDoFPosition)
             {
-                Changed = newValue == positionData;
+                Changed = newValue != positionData;
                 positionData = newValue;
             }
         }
@@ -161,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.ThreeDoFRotation)
             {
-                Changed = newValue == rotationData;
+                Changed = newValue != rotationData;
                 rotationData = newValue;
             }
         }
@@ -170,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.SixDoF)
             {
-                Changed = newValue == transformData;
+                Changed = newValue.Item1 != transformData.Item1 || newValue.Item2 != transformData.Item2;
                 transformData = newValue;
             }
         }

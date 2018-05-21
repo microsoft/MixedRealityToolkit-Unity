@@ -24,16 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         string SourceName { get; }
 
         /// <summary>
-        /// Outputs the current state of the Input Source, whether it is tracked or not. As defined by the SDK / Unity.
-        /// </summary>
-        InputSourceState InputSourceState { get; }
-
-        /// <summary>
-        /// The designated hand that the Input Source is managing, as defined by the SDK / Unity.
-        /// </summary>
-        Handedness Handedness { get; }
-
-        /// <summary>
         /// The list of Pointers attached to the Input Source
         /// </summary>
         IMixedRealityPointer[] Pointers { get; }
