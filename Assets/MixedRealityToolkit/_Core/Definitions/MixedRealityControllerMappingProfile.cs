@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
@@ -45,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         public InteractionDefinitionMapping[] Interactions => interactions ?? new InteractionDefinitionMapping[0];
 
-        public InteractionDefinitionMapping GetInteractionMapping(InputType inputType)
+        public InteractionDefinitionMapping GetInteractionMapping(DeviceInputType inputType)
         {
             return default(InteractionDefinitionMapping);
         }

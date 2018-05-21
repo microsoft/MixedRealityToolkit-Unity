@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
@@ -30,10 +31,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             SourceId = sourceId;
             SourceName = $"{sourceId}_{handedness}";
-            InputSourceState = InputSourceState.None;
+            ControllerState = ControllerState.None;
             Handedness = handedness;
             Pointers = new IMixedRealityPointer[0];
-            Interactions = new Dictionary<InputType, InteractionDefinition>();
+            Interactions = new Dictionary<DeviceInputType, InteractionDefinition>();
             Capabilities = null;
 
             controllerTracked = false;
@@ -47,15 +48,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         public string SourceName { get; }
 
-        public InputSourceState InputSourceState { get; private set; }
+        public ControllerState ControllerState { get; private set; }
 
         public Handedness Handedness { get; }
 
         public IMixedRealityPointer[] Pointers { get; private set; }
 
-        public Dictionary<InputType, InteractionDefinition> Interactions { get; }
+        public Dictionary<DeviceInputType, InteractionDefinition> Interactions { get; }
 
-        public InputType[] Capabilities { get; private set; }
+        public DeviceInputType[] Capabilities { get; private set; }
 
         public void SetupInputSource<T>(T state)
         {
@@ -69,12 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             UpdateFromInteractionSource(interactionSourceState);
         }
 
-        public bool SupportsCapabilities(InputType[] inputInfo)
+        public bool SupportsCapabilities(DeviceInputType[] inputInfo)
         {
             return Capabilities == inputInfo;
         }
 
-        public bool SupportsCapability(InputType inputInfo)
+        public bool SupportsCapability(DeviceInputType inputInfo)
         {
             for (int i = 0; i < Capabilities.Length; i++)
             {

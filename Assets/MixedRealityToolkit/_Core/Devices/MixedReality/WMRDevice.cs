@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -163,29 +163,29 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourcePressType">Type of press event received</param>
         /// <param name="sourceData">Source controller to update</param>
         /// <returns></returns>
-        private InputType PressInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityInputSource sourceData)
+        private DeviceInputType PressInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityInputSource sourceData)
         {
-            InputType pressedInput;
+            DeviceInputType pressedInput;
 
             switch (interactionSourcePressType)
             {
                 case InteractionSourcePressType.None:
-                    pressedInput = InputType.None;
+                    pressedInput = DeviceInputType.None;
                     break;
                 case InteractionSourcePressType.Select:
-                    pressedInput = InputType.Select;
+                    pressedInput = DeviceInputType.Select;
                     break;
                 case InteractionSourcePressType.Menu:
-                    pressedInput = InputType.Menu;
+                    pressedInput = DeviceInputType.Menu;
                     break;
                 case InteractionSourcePressType.Grasp:
-                    pressedInput = InputType.GripPress;
+                    pressedInput = DeviceInputType.GripPress;
                     break;
                 case InteractionSourcePressType.Touchpad:
-                    pressedInput = InputType.TouchpadPress;
+                    pressedInput = DeviceInputType.TouchpadPress;
                     break;
                 case InteractionSourcePressType.Thumbstick:
-                    pressedInput = InputType.ThumbStickPress;
+                    pressedInput = DeviceInputType.ThumbStickPress;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -200,29 +200,29 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourcePressType">Type of release event received</param>
         /// <param name="sourceData">Source controller to update</param>
         /// <returns></returns>
-        private InputType ReleaseInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityInputSource sourceData)
+        private DeviceInputType ReleaseInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityInputSource sourceData)
         {
-            InputType releasedInput;
+            DeviceInputType releasedInput;
 
             switch (interactionSourcePressType)
             {
                 case InteractionSourcePressType.None:
-                    releasedInput = InputType.None;
+                    releasedInput = DeviceInputType.None;
                     break;
                 case InteractionSourcePressType.Select:
-                    releasedInput = InputType.Select;
+                    releasedInput = DeviceInputType.Select;
                     break;
                 case InteractionSourcePressType.Menu:
-                    releasedInput = InputType.Menu;
+                    releasedInput = DeviceInputType.Menu;
                     break;
                 case InteractionSourcePressType.Grasp:
-                    releasedInput = InputType.GripPress;
+                    releasedInput = DeviceInputType.GripPress;
                     break;
                 case InteractionSourcePressType.Touchpad:
-                    releasedInput = InputType.TouchpadPress;
+                    releasedInput = DeviceInputType.TouchpadPress;
                     break;
                 case InteractionSourcePressType.Thumbstick:
-                    releasedInput = InputType.ThumbStickPress;
+                    releasedInput = DeviceInputType.ThumbStickPress;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

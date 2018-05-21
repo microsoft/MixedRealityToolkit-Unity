@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
     /// <summary>
     /// The Controller definition defines the Controller as defined by the SDK / Unity.
@@ -39,10 +39,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         /// Details the list of available buttons / interactions available from the controller.
         /// </summary>
         public InteractionDefinition[] Interactions { get; set; }
-
-        /// <summary>
-        /// List the available capabilities of the controller for a simpler lookup.
-        /// </summary>
-        public InputType[] Capabilities { get; set; }
     }
 }
