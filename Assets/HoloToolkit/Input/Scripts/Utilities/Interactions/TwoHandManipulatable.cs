@@ -109,7 +109,7 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
 
                     if (value)
                     {
-                        boundingBoxInstance.Target = gameObject;
+                        boundingBoxInstance.Target = HostTransform.gameObject;
                         boundingBoxInstance.gameObject.SetActive(true);
                     }
                     else
