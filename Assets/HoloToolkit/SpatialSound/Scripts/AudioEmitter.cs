@@ -164,8 +164,8 @@ namespace HoloToolkit.Unity
             // Preallocate the array that will be used to collect RaycastHit structures.
             hits = new RaycastHit[MaxObjects];
         }
-	
-	    private void Update() 
+    
+        private void Update() 
         {
             DateTime now = DateTime.Now;
 

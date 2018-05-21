@@ -8,10 +8,11 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: FloorMaterial
   m_Shader: {fileID: 4800000, guid: d45c0efca53019e43891b0f610f8146e, type: 3}
-  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _BORDER_LIGHT_USES_HOVER_COLOR _DISABLE_ALBEDO_MAP
-    _SPECULAR_HIGHLIGHTS _USEAMBIENT_ON _USEDIFFUSE_ON _USEMAINCOLOR_ON
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _BORDER_LIGHT _BORDER_LIGHT_USES_HOVER_COLOR
+    _DISABLE_ALBEDO_MAP _INNER_GLOW _SPECULAR_HIGHLIGHTS _USEAMBIENT_ON _USEDIFFUSE_ON
+    _USEMAINCOLOR_ON
   m_LightmapFlags: 1
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
   stringTagMap:
@@ -80,11 +81,11 @@ Material:
     - _AlbedoAlphaMode: 0
     - _AlphaTest: 0
     - _BlendOp: 0
-    - _BorderLight: 0
+    - _BorderLight: 1
     - _BorderLightOpaque: 0
     - _BorderLightUsesHoverColor: 1
-    - _BorderMinValue: 0.1
-    - _BorderWidth: 0.1
+    - _BorderMinValue: 0.132
+    - _BorderWidth: 0.028
     - _BumpScale: 1
     - _CalibrationSpaceReflections: 0
     - _ClippingPlane: 0
@@ -98,7 +99,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DirectionalLight: 0
     - _DstBlend: 0
-    - _EdgeSmoothingValue: 0.002
+    - _EdgeSmoothingValue: 0.0001
     - _EnableEmission: 0
     - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 0
@@ -115,7 +116,7 @@ Material:
     - _GlossyReflections: 1
     - _HoverLight: 0
     - _HoverLightOpaque: 0
-    - _InnerGlow: 0
+    - _InnerGlow: 1
     - _LineScale: 0.015
     - _LinesPerMeter: 3
     - _MainTex_OFFSET: 0
@@ -163,7 +164,7 @@ Material:
     m_Colors:
     - _ClipPlane: {r: 0, g: 1, b: 0, a: 0}
     - _ClippingPlaneBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 0.4776116, g: 0.5930785, b: 0.6691177, a: 1}
+    - _Color: {r: 0.60294116, g: 0.60294116, b: 0.60294116, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
@@ -171,7 +172,7 @@ Material:
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
     - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
-    - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}
+    - _InnerGlowColor: {r: 0, g: 0.5448277, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _SpecularColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

@@ -111,7 +111,11 @@ namespace HoloToolkit.Unity.SpatialMapping.Tests
                     UnityEditor.Handles.DrawLine(corners[1], corners[2]);
                     UnityEditor.Handles.DrawLine(corners[1], corners[3]);
                     UnityEditor.Handles.DrawLine(corners[2], corners[3]);
+#if UNITY_2017_3_OR_NEWER
+                    UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.FromToRotation(Vector3.forward, normal), 0.4f, EventType.Ignore);
+#else
                     UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.FromToRotation(Vector3.forward, normal), 0.4f, EventType.ignore);
+#endif
 
                     // If this plane is currently in the center of the camera's field of view, highlight it by drawing a
                     // solid rectangle, and display the important details about this plane.

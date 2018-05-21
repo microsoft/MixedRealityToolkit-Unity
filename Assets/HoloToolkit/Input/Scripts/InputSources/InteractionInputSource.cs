@@ -460,8 +460,10 @@ namespace HoloToolkit.Unity.InputModule
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
-                retVal |= GetSupportFlag(sourceData.PointerPosition, SupportedInputInfo.Position);
-                retVal |= GetSupportFlag(sourceData.PointerRotation, SupportedInputInfo.Rotation);
+                retVal |= GetSupportFlag(sourceData.PointerPosition, SupportedInputInfo.PointerPosition);
+                retVal |= GetSupportFlag(sourceData.PointerRotation, SupportedInputInfo.PointerRotation);
+                retVal |= GetSupportFlag(sourceData.GripPosition, SupportedInputInfo.GripPosition);
+                retVal |= GetSupportFlag(sourceData.GripRotation, SupportedInputInfo.GripRotation);
                 retVal |= GetSupportFlag(sourceData.PointingRay, SupportedInputInfo.Pointing);
                 retVal |= GetSupportFlag(sourceData.Thumbstick, SupportedInputInfo.Thumbstick);
                 retVal |= GetSupportFlag(sourceData.Touchpad, SupportedInputInfo.Touchpad);

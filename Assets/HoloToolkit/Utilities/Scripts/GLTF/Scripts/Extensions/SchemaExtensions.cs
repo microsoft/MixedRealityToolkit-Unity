@@ -53,55 +53,55 @@ namespace UnityGLTF.Extensions
         }
 
 #if false
-		public static SamplerId GetSamplerId(this GLTFRoot root, UnityEngine.Texture textureObj)
-		{
-			for (var i = 0; i < root.Samplers.Count; i++)
-			{
-				bool filterIsNearest = root.Samplers[i].MinFilter == MinFilterMode.Nearest
-					|| root.Samplers[i].MinFilter == MinFilterMode.NearestMipmapNearest
-					|| root.Samplers[i].MinFilter == MinFilterMode.LinearMipmapNearest;
+        public static SamplerId GetSamplerId(this GLTFRoot root, UnityEngine.Texture textureObj)
+        {
+            for (var i = 0; i < root.Samplers.Count; i++)
+            {
+                bool filterIsNearest = root.Samplers[i].MinFilter == MinFilterMode.Nearest
+                    || root.Samplers[i].MinFilter == MinFilterMode.NearestMipmapNearest
+                    || root.Samplers[i].MinFilter == MinFilterMode.LinearMipmapNearest;
 
-				bool filterIsLinear = root.Samplers[i].MinFilter == MinFilterMode.Linear
-					|| root.Samplers[i].MinFilter == MinFilterMode.NearestMipmapLinear;
+                bool filterIsLinear = root.Samplers[i].MinFilter == MinFilterMode.Linear
+                    || root.Samplers[i].MinFilter == MinFilterMode.NearestMipmapLinear;
 
-				bool filterMatched = textureObj.filterMode == FilterMode.Point && filterIsNearest
-					|| textureObj.filterMode == FilterMode.Bilinear && filterIsLinear
-					|| textureObj.filterMode == FilterMode.Trilinear && root.Samplers[i].MinFilter == MinFilterMode.LinearMipmapLinear;
+                bool filterMatched = textureObj.filterMode == FilterMode.Point && filterIsNearest
+                    || textureObj.filterMode == FilterMode.Bilinear && filterIsLinear
+                    || textureObj.filterMode == FilterMode.Trilinear && root.Samplers[i].MinFilter == MinFilterMode.LinearMipmapLinear;
 
-				bool wrapMatched =
+                bool wrapMatched =
 textureObj.wrapMode == TextureWrapMode.Clamp && root.Samplers[i].WrapS == GLTFSerialization.WrapMode.ClampToEdge
-					|| textureObj.wrapMode == TextureWrapMode.Repeat && root.Samplers[i].WrapS != GLTFSerialization.WrapMode.ClampToEdge;
+                    || textureObj.wrapMode == TextureWrapMode.Repeat && root.Samplers[i].WrapS != GLTFSerialization.WrapMode.ClampToEdge;
 
-				if(filterMatched && wrapMatched)
-				{
-					return new SamplerId
-					{
-						Id = i,
-						Root = root
-					};
-				}
-			}
+                if(filterMatched && wrapMatched)
+                {
+                    return new SamplerId
+                    {
+                        Id = i,
+                        Root = root
+                    };
+                }
+            }
 
-			return null;
-		}
+            return null;
+        }
 
-		//todo blgross unity
-		public static ImageId GetImageId(this GLTFRoot root, UnityEngine.Texture textureObj)
-		{
-			for (var i = 0; i < Images.Count; i++)
-			{
-				if (Images[i].Contents == textureObj)
-				{
-					return new ImageId
-					{
-						Id = i,
-						Root = this
-					};
-				}
-			}
+        //todo blgross unity
+        public static ImageId GetImageId(this GLTFRoot root, UnityEngine.Texture textureObj)
+        {
+            for (var i = 0; i < Images.Count; i++)
+            {
+                if (Images[i].Contents == textureObj)
+                {
+                    return new ImageId
+                    {
+                        Id = i,
+                        Root = this
+                    };
+                }
+            }
 
-			return null;
-		}
+            return null;
+        }
 #endif
 
         public static Vector3 GetColumn(this GLTF.Math.Matrix4x4 mat, uint columnNum)

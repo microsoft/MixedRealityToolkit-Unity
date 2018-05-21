@@ -238,7 +238,7 @@ namespace HoloToolkit.UI.Keyboard
             m_ObjectBounds = new Vector3(canvasBounds.size.x * rect.localScale.x, canvasBounds.size.y * rect.localScale.y, canvasBounds.size.z * rect.localScale.z);
 
             // Actually find microphone key in the keyboard
-            var dictationButton = Utils.GetChildRecursive(gameObject.transform, "Dictation");
+            var dictationButton = HoloToolkit.Unity.Utils.GetChildRecursive(gameObject.transform, "Dictation");
             if (dictationButton != null)
             {
                 var dictationIcon = dictationButton.Find("keyboard_closeIcon");
@@ -378,8 +378,8 @@ namespace HoloToolkit.UI.Keyboard
 
             OnPlacement(this, EventArgs.Empty);
 
-            //This bring up the default keyboard in MR so the user is presented with TWO keyboards
-            //InputField.ActivateInputField();
+            // todo: if the app is built for xaml, our prefab and the system keyboard may be displayed.
+            InputField.ActivateInputField();
 
             SetMicrophoneDefault();
         }

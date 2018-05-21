@@ -12,13 +12,19 @@ namespace HoloToolkit.Unity.InputModule
     public enum SupportedInputInfo
     {
         None = 0,
+        [Obsolete("use PointerPosition")]
         Position = (1 << 0),
+        PointerPosition = (1 << 0),
+        [Obsolete("use PointerRotation")]
         Rotation = (1 << 1),
+        PointerRotation = (1 << 1),
         Pointing = (1 << 2),
         Thumbstick = (1 << 3),
         Touchpad = (1 << 4),
         Select = (1 << 5),
         Menu = (1 << 6),
         Grasp = (1 << 7),
+        GripPosition = (1 << 8),
+        GripRotation = (1 << 9)
     }
 }

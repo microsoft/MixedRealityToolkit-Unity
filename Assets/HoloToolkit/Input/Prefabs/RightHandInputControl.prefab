@@ -201,6 +201,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -216,6 +217,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -318,6 +320,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SupportsPosition: 1
   SupportsRotation: 0
+  SupportsGripPosition: 1
+  SupportsGripRotation: 0
   SupportsRay: 0
   SupportsMenuButton: 0
   SupportsGrasp: 0
@@ -325,6 +329,8 @@ MonoBehaviour:
   SourceKind: 1
   ControllerPosition: {x: 0, y: 0, z: 0}
   ControllerRotation: {x: 0, y: 0, z: 0, w: 0}
+  ControllerGripPosition: {x: 0, y: 0, z: 0}
+  ControllerGripRotation: {x: 0, y: 0, z: 0, w: 0}
   currentButtonStates:
     IsSelectButtonDown: 0
     SelectButtonStateChanged: 0
@@ -336,6 +342,7 @@ MonoBehaviour:
     ManipulationInProgress: 0
     HoldInProgress: 0
     CumulativeDelta: {x: 0, y: 0, z: 0}
+    CumulativeGripDelta: {x: 0, y: 0, z: 0}
   manipulationStartMovementThreshold: 0.03
 --- !u!114 &114983783085117614
 MonoBehaviour:
