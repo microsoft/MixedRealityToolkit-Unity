@@ -1,0 +1,14 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.SDK.Inspectors",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.InputSystem",
+        "Microsoft.MixedReality.Toolkit.SDK"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

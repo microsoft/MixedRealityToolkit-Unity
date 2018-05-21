@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
@@ -774,7 +775,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, double pressAmount)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, float pressAmount)
         {
             // Create input event
             inputPressedEventData.Initialize(source, pressAmount);
@@ -784,7 +785,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, KeyCode keyCode, double pressAmount)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, KeyCode keyCode, float pressAmount)
         {
             // Create input event
             inputPressedEventData.Initialize(source, keyCode, pressAmount);
@@ -794,7 +795,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, InputType inputType, double pressAmount)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, InputType inputType, float pressAmount)
         {
             // Create input event
             inputPressedEventData.Initialize(source, inputType, pressAmount);
@@ -804,7 +805,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, double pressAmount)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, float pressAmount)
         {
             // Create input event
             inputPressedEventData.Initialize(source, handedness, pressAmount);
@@ -814,7 +815,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode, double pressAmount)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode, float pressAmount)
         {
             // Create input event
             inputPressedEventData.Initialize(source, handedness, keyCode, pressAmount);

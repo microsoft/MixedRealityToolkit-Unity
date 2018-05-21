@@ -1,18 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Attributes;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
-    /// Configuration profile settings for the Mixed Reality Toolkit
+    /// Configuration profile settings for the Mixed Reality Toolkit.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Configuration Profile")]
     public class MixedRealityConfigurationProfile : ScriptableObject, ISerializationCallbackReceiver
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("Input System Class to instantiate at runtime.")]
-        [Implements(typeof(IMixedRealityInputSystem), ClassGrouping.None)]
+        [Implements(typeof(IMixedRealityInputSystem), TypeGrouping.None)]
         private SystemType inputSystem;
 
         /// <summary>

@@ -1,19 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
-#else
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             public readonly BaseControllerPointer[] PointerSceneObjects;
 
             public InteractionInputSource(InteractionSource source, string name, BaseControllerPointer[] pointerSceneObjects, IMixedRealityPointer[] pointers)
-                : base(name, new[] { InputType.None }, pointers)
+                : base(name, null, pointers)
             {
                 Source = source;
                 PointerSceneObjects = pointerSceneObjects;
@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 }
             }
 #else
-            public InteractionInputSource(string name) : base(name, new[] { InputType.None }) { }
+            public InteractionInputSource() : base(string.Empty, new[] { InputType.None }, null) { }
 #endif
 
             private static InputType GetSupportFlag<TReading>(SourceCapability<TReading> capability, InputType flagIfSupported)
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             public bool GripRotationUpdated;
             public bool SelectPressedAmountUpdated;
 
-            public override bool TryGetPointerPosition(IMixedRealityPointer pointer, out Vector3 position)
+            public bool TryGetPointerPosition(IMixedRealityPointer pointer, out Vector3 position)
             {
                 position = Vector3.zero;
                 if (PointerPosition.IsSupported && PointerPosition.IsAvailable)
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 return false;
             }
 
-            public override bool TryGetPointerRotation(IMixedRealityPointer pointer, out Quaternion rotation)
+            public bool TryGetPointerRotation(IMixedRealityPointer pointer, out Quaternion rotation)
             {
                 rotation = Quaternion.identity;
                 if (PointerRotation.IsSupported && PointerRotation.IsAvailable)
@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 return false;
             }
 
-            public override bool TryGetPointingRay(IMixedRealityPointer pointer, out Ray pointingRay)
+            public bool TryGetPointingRay(IMixedRealityPointer pointer, out Ray pointingRay)
             {
                 pointingRay = default(Ray);
                 if (PointingRay.IsSupported && PointingRay.IsAvailable)
@@ -754,8 +754,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 var pointerObject = Instantiate(pointerOption.PointerPrefab);
                 var pointer = pointerObject.GetComponent<BaseControllerPointer>();
                 pointer.Handedness = (Handedness)interactionSource.handedness;
-                pointer.PointerName =
-                    $"{interactionSource.handedness}_{interactionSource.kind}_{pointer.GetType().Name}";
+                pointer.PointerName = $"{interactionSource.handedness}_{interactionSource.kind}_{pointer.GetType().Name}";
                 pointerList.Add(pointer);
             }
 
@@ -945,7 +944,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                     inputType = InputType.Menu;
                     break;
                 case InteractionSourcePressType.Grasp:
-                    inputType = InputType.Grip;
+                    inputType = InputType.GripPress;
                     break;
                 case InteractionSourcePressType.Touchpad:
                     inputType = InputType.Touchpad;
@@ -956,6 +955,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
             inputSystem.RaiseOnInputDown(inputSource, (Handedness)args.state.source.handedness, inputType);
         }
 
@@ -1035,7 +1035,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                     inputType = InputType.Menu;
                     break;
                 case InteractionSourcePressType.Grasp:
-                    inputType = InputType.Grip;
+                    inputType = InputType.GripPress;
                     break;
                 case InteractionSourcePressType.Touchpad:
                     inputType = InputType.Touchpad;

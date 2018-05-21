@@ -2,8 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 

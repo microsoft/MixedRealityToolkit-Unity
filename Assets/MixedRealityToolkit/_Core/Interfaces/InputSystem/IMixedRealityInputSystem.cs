@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events;
 using System;
 using System.Collections.Generic;
@@ -267,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// </summary>
         /// <param name="source"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, double pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, float pressAmount);
 
         /// <summary>
         /// Raise Input Pressed.
@@ -275,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="handedness"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, double pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, float pressAmount);
 
         /// <summary>
         /// Raise Input Pressed.
@@ -283,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="keyCode"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, KeyCode keyCode, double pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, KeyCode keyCode, float pressAmount);
 
         /// <summary>
         /// Raise Input Pressed.
@@ -291,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="inputType"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, InputType inputType, double pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, InputType inputType, float pressAmount);
 
         /// <summary>
         /// Raise Input Pressed.
@@ -300,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="keyCode"></param>
         /// <param name="pressAmount"></param>
-        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode, double pressAmount);
+        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, KeyCode keyCode, float pressAmount);
 
         /// <summary>
         /// Raise Input Pressed.
@@ -566,6 +567,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         void RaiseManipulationCanceled(IMixedRealityInputSource source, Handedness handedness);
 
+        #region Windows Speech
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         /// <summary>
@@ -612,5 +614,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         void RaiseDictationError(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null);
 
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+        #endregion Windows Speech
     }
 }

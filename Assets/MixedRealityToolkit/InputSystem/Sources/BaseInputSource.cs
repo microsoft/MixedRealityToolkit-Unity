@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using System.Collections;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
@@ -39,18 +39,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         public virtual IMixedRealityPointer[] Pointers => null;
 
-        public virtual InputType[] Capabilities => new[] { InputType.None };
+        public virtual InteractionDefinition[] Interactions { get; } = null;
 
-        public bool SupportsInputCapability(InputType[] capabilities)
+        public bool SupportsCapability(InputType inputInfo)
         {
-            for (int i = 0; i < Capabilities.Length; i++)
+            for (int i = 0; i < Interactions.Length; i++)
             {
-                for (int j = 0; j < capabilities.Length; j++)
+                if (Interactions[i].InputType == inputInfo)
                 {
-                    if (Capabilities[i] == capabilities[j])
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 
@@ -82,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         bool IEqualityComparer.Equals(object x, object y)
         {
-            var left  = (IMixedRealityInputSource)x;
+            var left = (IMixedRealityInputSource)x;
             var right = (IMixedRealityInputSource)y;
             if (left != null && right != null)
             {
