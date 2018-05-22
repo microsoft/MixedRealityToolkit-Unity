@@ -4,12 +4,8 @@
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
-public abstract class BasePointer : AttachToController
+public abstract class BaseControllerPointer : AttachToController
 {
-    [Header("Interaction")]
-    [SerializeField]
-    private bool interactionEnabled = true;
-
     [SerializeField]
     [Range(0f, 360f)]
     protected float CurrentPointerOrientation;
@@ -25,7 +21,7 @@ public abstract class BasePointer : AttachToController
     public float? ExtentOverride
     {
         get { return extentOverride; }
-        set { extentOverride = value ?? FocusManager.GlobalPointingExtent; }
+        set { extentOverride = value ?? FocusManager.Instance.GlobalPointingExtent; }
     }
 
     /// <summary>

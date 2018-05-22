@@ -4,16 +4,12 @@
 using HoloToolkit.Unity.UX;
 using UnityEngine;
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-using UnityEngine.XR.WSA.Input;
-#endif
-
 namespace HoloToolkit.Unity.InputModule
 {
     [RequireComponent(typeof(DistorterGravity))]
     [RequireComponent(typeof(LineBase))]
     [RequireComponent(typeof(LineRendererBase))]
-    public class PointerLine : BasePointer, IInputHandler
+    public class PointerLine : BaseControllerPointer
     {
         [Header("Colors")]
         [SerializeField]
@@ -42,17 +38,7 @@ namespace HoloToolkit.Unity.InputModule
         protected DistorterGravity DistorterGravity;
 
         /// <summary>
-        /// True if select is pressed right now
-        /// </summary>
-        protected bool SelectPressed = false;
-
-        /// <summary>
-        /// True if select has been pressed once since startup
-        /// </summary>
-        protected bool ButtonPressedOnce = false;
-
-        /// <summary>
-        /// Line pointer stays inactive until select is pressed for first time
+        /// Line pointer stays inactive until it's attached to a controller.
         /// </summary>
         public bool InteractionEnabled
         {
@@ -75,18 +61,9 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             LineBase.enabled = false;
-
-            SelectPressed = false;
         }
 
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            SelectPressed = false;
-        }
-
-        public void UpdateRenderedLine(RayStep[] lines, PointerResult result)
+        public void UpdateRenderedLine(RayStep[] lines, PointerResult result, bool selectPressed)
         {
             if (LineBase == null) { return; }
 
@@ -107,7 +84,7 @@ namespace HoloToolkit.Unity.InputModule
                     LineBase.LastPoint = RayStep.GetPointByDistance(lines, ExtentOverride.Value);
                 }
 
-                if (SelectPressed)
+                if (selectPressed)
                 {
                     lineColor = LineColorSelected;
                 }
@@ -120,35 +97,6 @@ namespace HoloToolkit.Unity.InputModule
             for (int i = 0; i < LineRenderers.Length; i++)
             {
                 LineRenderers[i].LineColor = lineColor;
-            }
-        }
-
-        protected override void OnAttachToController()
-        {
-            // Subscribe to input now that we're parented under the controller
-            InputManager.Instance.AddGlobalListener(gameObject);
-        }
-
-        protected override void OnDetachFromController()
-        {
-            // Unsubscribe from input now that we've detached from the controller
-            InputManager.Instance.RemoveGlobalListener(gameObject);
-        }
-
-        void IInputHandler.OnInputDown(InputEventData eventData)
-        {
-            if (eventData.PressType == InteractionSourcePressInfo.Select)
-            {
-                SelectPressed = true;
-            }
-            ButtonPressedOnce = true;
-        }
-
-        void IInputHandler.OnInputUp(InputEventData eventData)
-        {
-            if (eventData.PressType == InteractionSourcePressInfo.Select)
-            {
-                SelectPressed = false;
             }
         }
     }

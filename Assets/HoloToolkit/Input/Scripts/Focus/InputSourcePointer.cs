@@ -4,7 +4,10 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
+#endif
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -53,6 +56,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.forward) };
 
+        private bool selectPressed;
+
         [Obsolete("Will be removed in a later version. Use OnPreRaycast / OnPostRaycast instead.")]
         public void UpdatePointer()
         {
@@ -68,31 +73,48 @@ namespace HoloToolkit.Unity.InputModule
             {
                 Debug.Assert(InputSource.SupportsInputInfo(InputSourceId, SupportedInputInfo.Pointing), string.Format("{0} with id {1} does not support pointing!", InputSource, InputSourceId));
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
                 // For visualization with controllers, we don't want to use the event-based data the InputManager has.
                 // Instead, we query the source states manually here.
-                var thing = InteractionManager.GetCurrentReading();
-                foreach (var sourceState in InteractionManager.GetCurrentReading())
+                InteractionSourceState[] currentReading = InteractionManager.GetCurrentReading();
+                for (int i = 0; i < currentReading.Length; i++)
                 {
+                    InteractionSourceState sourceState = currentReading[i];
+
                     if (sourceState.source.id != InputSourceId)
                     {
                         continue;
                     }
 
+                    selectPressed = sourceState.selectPressed;
+
                     Vector3 position;
                     Vector3 forward;
-                    if (sourceState.sourcePose.TryGetPosition(out position))
-                    {
-                        if (sourceState.sourcePose.TryGetForward(out forward, InteractionSourceNode.Pointer))
-                        {
-                            if (CameraCache.Main.transform.parent != null)
-                            {
-                                forward = CameraCache.Main.transform.parent.TransformDirection(forward);
-                            }
 
-                            rays[0].CopyRay(new Ray(position, forward), FocusManager.Instance.GetPointingExtent(this));
-                        }
+                    if (!sourceState.sourcePose.TryGetPosition(out position))
+                    {
+                        return;
                     }
+
+                    if (!sourceState.sourcePose.TryGetForward(out forward, InteractionSourceNode.Pointer))
+                    {
+                        return;
+                    }
+
+                    if (CameraCache.Main.transform.parent != null)
+                    {
+                        forward = CameraCache.Main.transform.parent.TransformDirection(forward);
+                    }
+
+                    rays[0].CopyRay(new Ray(position, forward), FocusManager.Instance.GetPointingExtent(this));
                 }
+#else
+                Ray pointingRay;
+                if (InputSource.TryGetPointingRay(InputSourceId, out pointingRay))
+                {
+                    rays[0].CopyRay(pointingRay, FocusManager.Instance.GetPointingExtent(this));
+                }
+#endif
             }
 
             if (RayStabilizer != null)
@@ -106,7 +128,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (PointerRay != null)
             {
-                PointerRay.UpdateRenderedLine(rays, Result);
+                PointerRay.UpdateRenderedLine(rays, Result, selectPressed);
             }
         }
 
