@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     public enum InputType
     {
         None = 0,
+        Gaze,
         Voice,
         /// <summary>
         /// 6 Dof Pointer with position and rotation.

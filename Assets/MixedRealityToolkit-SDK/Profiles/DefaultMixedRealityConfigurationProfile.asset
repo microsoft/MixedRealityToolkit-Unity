@@ -15,5 +15,7 @@ MonoBehaviour:
   inputSystem:
     reference: Microsoft.MixedReality.Toolkit.InputSystem.MixedRealityInputManager,
       Microsoft.MixedReality.Toolkit.InputSystem
+  inputActions: {fileID: 0}
+  enableSpeechCommands: 1
   enableControllers: 1
   enableBoundarySystem: 1

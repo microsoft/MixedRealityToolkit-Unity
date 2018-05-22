@@ -2,9 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,6 +16,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
     [CustomEditor(typeof(SpeechInputHandler))]
     public class SpeechInputHandlerEditor : Editor
     {
+        /// <summary>
+        /// The Current Input System for this Input Source.
+        /// </summary>
+        private static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+        private static IMixedRealityInputSystem inputSystem = null;
+
         private static readonly GUIContent RemoveButtonContent = new GUIContent("-", "Remove keyword");
         private static readonly GUIContent AddButtonContent = new GUIContent("+", "Add keyword");
         private static readonly GUILayoutOption MiniButtonWidth = GUILayout.Width(20.0f);
@@ -25,9 +34,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
 
         private void OnEnable()
         {
-            keywordsProperty = serializedObject.FindProperty("Keywords");
-            isGlobalListenerProperty = serializedObject.FindProperty("IsGlobalListener");
-            persistentKeywordsProperty = serializedObject.FindProperty("PersistentKeywords");
+            keywordsProperty = serializedObject.FindProperty("keywords");
+            isGlobalListenerProperty = serializedObject.FindProperty("isGlobalListener");
+            persistentKeywordsProperty = serializedObject.FindProperty("persistentKeywords");
         }
 
         public override void OnInspectorGUI()
@@ -125,11 +134,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
 
         private static IEnumerable<string> RegisteredKeywords()
         {
-            foreach (SpeechInputSource source in FindObjectsOfType<SpeechInputSource>())
+            if (InputSystem.DetectedInputSources.Count == 0) { yield break; }
+
+            foreach (IMixedRealityInputSource mixedRealityInputSource in InputSystem.DetectedInputSources)
             {
-                for (var i = 0; i < source.Keywords.Length; i++)
+                if (mixedRealityInputSource.SupportsCapability(InputType.Voice) && mixedRealityInputSource.SourceName.Equals("SpeechInput"))
                 {
-                    yield return source.Keywords[i].Keyword;
+                    var source = mixedRealityInputSource as SpeechInputSource;
+                    for (var i = 0; i < source?.Keywords.Length; i++)
+                    {
+                        yield return source.Keywords[i].Keyword;
+                    }
                 }
             }
         }

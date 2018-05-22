@@ -2,11 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
@@ -66,6 +67,34 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get { return inputSystem; }
             private set { inputSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
+        private MixedRealityInputActionsProfile inputActions;
+
+        /// <summary>
+        /// Input System Action Mapping profile for wiring up Controller input to Actions.
+        /// </summary>
+        public MixedRealityInputActionsProfile InputActions
+        {
+            get { return inputActions; }
+            private set { inputActions = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable the Motion Controllers on Startup")]
+        private bool enableSpeechCommands = true;
+
+        // TODO: add property for Speech Mapping Profile.
+
+        /// <summary>
+        /// Enable and configure the speech commands for your application.
+        /// </summary>
+        public bool EnableSpeechCommands
+        {
+            get { return enableSpeechCommands; }
+            private set { enableSpeechCommands = value; }
         }
 
         [SerializeField]
