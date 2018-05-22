@@ -4,6 +4,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.XR.WSA.Input;
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -67,10 +68,30 @@ namespace HoloToolkit.Unity.InputModule
             {
                 Debug.Assert(InputSource.SupportsInputInfo(InputSourceId, SupportedInputInfo.Pointing), string.Format("{0} with id {1} does not support pointing!", InputSource, InputSourceId));
 
-                Ray pointingRay;
-                if (InputSource.TryGetPointingRay(InputSourceId, out pointingRay))
+                // For visualization with controllers, we don't want to use the event-based data the InputManager has.
+                // Instead, we query the source states manually here.
+                var thing = InteractionManager.GetCurrentReading();
+                foreach (var sourceState in InteractionManager.GetCurrentReading())
                 {
-                    rays[0].CopyRay(pointingRay, FocusManager.Instance.GetPointingExtent(this));
+                    if (sourceState.source.id != InputSourceId)
+                    {
+                        continue;
+                    }
+
+                    Vector3 position;
+                    Vector3 forward;
+                    if (sourceState.sourcePose.TryGetPosition(out position))
+                    {
+                        if (sourceState.sourcePose.TryGetForward(out forward, InteractionSourceNode.Pointer))
+                        {
+                            if (CameraCache.Main.transform.parent != null)
+                            {
+                                forward = CameraCache.Main.transform.parent.TransformDirection(forward);
+                            }
+
+                            rays[0].CopyRay(new Ray(position, forward), FocusManager.Instance.GetPointingExtent(this));
+                        }
+                    }
                 }
             }
 

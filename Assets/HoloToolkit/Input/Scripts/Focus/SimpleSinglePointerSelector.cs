@@ -192,6 +192,11 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             Debug.Assert(currentPointer != null, "No Pointer Set!");
+
+            if (IsGazePointerActive)
+            {
+                DetachInputSourcePointer();
+            }
         }
 
         private void ConnectBestAvailablePointer()
@@ -301,7 +306,7 @@ namespace HoloToolkit.Unity.InputModule
                 Destroy(inputSourcePointer.PointerRay.gameObject);
             }
 
-            if (inputSource is InteractionInputSource)
+            if (inputSource is InteractionInputSource && linePointerPrefab != null)
             {
                 inputSourcePointer.PointerRay = Instantiate(linePointerPrefab).GetComponent<PointerLine>();
                 inputSourcePointer.PointerRay.ExtentOverride = Cursor.DefaultCursorDistance;
@@ -312,6 +317,14 @@ namespace HoloToolkit.Unity.InputModule
                     inputSourcePointer.PointerRay.Handedness = (InteractionSourceHandedness)handedness;
 #endif
                 }
+            }
+        }
+
+        private void DetachInputSourcePointer()
+        {
+            if (inputSourcePointer.PointerRay != null)
+            {
+                Destroy(inputSourcePointer.PointerRay.gameObject);
             }
         }
 
