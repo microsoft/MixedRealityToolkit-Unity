@@ -261,12 +261,13 @@ Shader "MixedRealityToolkit/Standard"
 #endif
 
 #if defined(_HOVER_LIGHT)
-            float4 _HoverLight0;
-            fixed4 _HoverLightColor0;
 #if defined(_MULTI_HOVER_LIGHT)
-            float4 _HoverLight1;
-            fixed4 _HoverLightColor1;
+#define HOVER_LIGHT_COUNT 3
+#else
+#define HOVER_LIGHT_COUNT 1
 #endif
+#define HOVER_LIGHT_DATA_SIZE 2
+            float4 _HoverLightData[HOVER_LIGHT_COUNT * HOVER_LIGHT_DATA_SIZE];
 #if defined(_HOVER_COLOR_OVERRIDE)
             fixed3 _HoverColorOverride;
 #endif
@@ -514,21 +515,18 @@ Shader "MixedRealityToolkit/Standard"
 
                 // Hover light.
 #if defined(_HOVER_LIGHT)
-                fixed pointToHover0 = HoverLight(_HoverLight0, i.worldPosition.xyz, _HoverLightColor0.a);
-#if defined(_MULTI_HOVER_LIGHT)
-                fixed pointToHover1 = HoverLight(_HoverLight1, i.worldPosition.xyz, _HoverLightColor1.a);
-#endif
+                fixed pointToHover = 0.0;
+                fixed3 hoverColor = fixed3(0.0, 0.0, 0.0);
+                [unroll]
+                for (int lightIndex = 0; lightIndex < HOVER_LIGHT_COUNT; ++lightIndex)
+                {
+                    int dataIndex = lightIndex * HOVER_LIGHT_DATA_SIZE;
+                    fixed hoverValue = HoverLight(_HoverLightData[dataIndex], i.worldPosition.xyz, _HoverLightData[dataIndex + 1].a);
+                    pointToHover += hoverValue;
+                    hoverColor += lerp(fixed3(0.0, 0.0, 0.0), _HoverLightData[dataIndex + 1].rgb, hoverValue);
+                }
 #if defined(_HOVER_COLOR_OVERRIDE)
-                fixed3 hoverColor = _HoverColorOverride.rgb;
-#else
-                fixed3 hoverColor = lerp(fixed3(0.0, 0.0, 0.0), _HoverLightColor0.rgb, pointToHover0);
-#if defined(_MULTI_HOVER_LIGHT)
-                hoverColor += lerp(fixed3(0.0, 0.0, 0.0), _HoverLightColor1.rgb, pointToHover1);
-#endif
-#endif
-                fixed pointToHover = pointToHover0;
-#if defined(_MULTI_HOVER_LIGHT)
-                pointToHover += pointToHover1;
+                hoverColor = _HoverColorOverride.rgb;
 #endif
 #if defined(_HOVER_LIGHT_OPAQUE)
 #if defined(_HOVER_COLOR_OPAQUE_OVERRIDE)

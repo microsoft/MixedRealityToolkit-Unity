@@ -19,11 +19,12 @@ namespace HoloToolkit.Unity
         [SerializeField]
         private Color color = new Color(0.3f, 0.3f, 0.3f, 1.0f);
 
-        // Two hover lights are supported at this time.
-        private const int hoverLightCount = 2;
+        // Three hover lights are supported at this time.
+        private const int hoverLightCount = 3;
+        private const int hoverLightDataSize = 2;
         private static List<HoverLight> activeHoverLights = new List<HoverLight>(hoverLightCount);
-        private static int[] hoverLightIDs = new int[hoverLightCount];
-        private static int[] hoverLightColorIDs = new int[hoverLightCount];
+        private static Vector4[] hoverLightData = new Vector4[hoverLightCount * hoverLightDataSize];
+        private static int _HoverLightDataID;
         private static int lastHoverLightUpdate = -1;
 
         public float Radius
@@ -115,11 +116,7 @@ namespace HoloToolkit.Unity
 
         private static void Initialize()
         {
-            for (int i = 0; i < hoverLightCount; ++i)
-            {
-                hoverLightIDs[i] = Shader.PropertyToID("_HoverLight" + i);
-                hoverLightColorIDs[i] = Shader.PropertyToID("_HoverLightColor" + i);
-            }
+            _HoverLightDataID = Shader.PropertyToID("_HoverLightData");
         }
 
         private static void UpdateHoverLights(bool forceUpdate = false)
@@ -146,23 +143,27 @@ namespace HoloToolkit.Unity
             for (int i = 0; i < hoverLightCount; ++i)
             {
                 HoverLight light = (i >= activeHoverLights.Count) ? null : activeHoverLights[i];
+                int dataIndex = i * hoverLightDataSize;
 
                 if (light)
                 {
-                    Shader.SetGlobalVector(hoverLightIDs[i], new Vector4(light.transform.position.x,
-                                                 light.transform.position.y,
-                                                 light.transform.position.z,
-                                                 light.Radius));
-                    Shader.SetGlobalVector(hoverLightColorIDs[i], new Vector4(light.Color.r,
-                                                                          light.Color.g,
-                                                                          light.Color.b,
-                                                                          1.0f));
+                    hoverLightData[dataIndex] = new Vector4(light.transform.position.x,
+                                                            light.transform.position.y,
+                                                            light.transform.position.z,
+                                                            light.Radius);
+                    hoverLightData[dataIndex + 1] = new Vector4(light.Color.r,
+                                                                light.Color.g,
+                                                                light.Color.b,
+                                                                1.0f);
                 }
                 else
                 {
-                    Shader.SetGlobalVector(hoverLightColorIDs[i], Vector4.zero);
+                    hoverLightData[dataIndex] = Vector4.zero;
+                    hoverLightData[dataIndex + 1] = Vector4.zero;
                 }
             }
+
+            Shader.SetGlobalVectorArray(_HoverLightDataID, hoverLightData);
 
             lastHoverLightUpdate = Time.frameCount;
         }
