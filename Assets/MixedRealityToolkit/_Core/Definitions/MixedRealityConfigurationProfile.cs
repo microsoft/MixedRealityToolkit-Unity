@@ -70,15 +70,32 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Configured MRTK Input Actions")]
-        private MixedRealityInputActionsProfile inputActionsProfile;
+        [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
+        private MixedRealityInputActionsProfile inputActions;
 
-        public MixedRealityInputActionsProfile InputActionsProfile
+        /// <summary>
+        /// Input System Action Mapping profile for wiring up Controller input to Actions.
+        /// </summary>
+        public MixedRealityInputActionsProfile InputActions
         {
-            get { return inputActionsProfile; }
-            set { inputActionsProfile = value; }
+            get { return inputActions; }
+            private set { inputActions = value; }
         }
 
+        [SerializeField]
+        [Tooltip("Enable the Motion Controllers on Startup")]
+        private bool enableSpeechCommands = true;
+
+        // TODO: add property for Speech Mapping Profile.
+
+        /// <summary>
+        /// Enable and configure the speech commands for your application.
+        /// </summary>
+        public bool EnableSpeechCommands
+        {
+            get { return enableSpeechCommands; }
+            private set { enableSpeechCommands = value; }
+        }
 
         [SerializeField]
         [Tooltip("Enable the Motion Controllers on Startup")]
