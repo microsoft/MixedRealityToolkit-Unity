@@ -859,7 +859,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 RegisterPointer(sourcePointer);
 
                 // Special Registration for Gaze
-                if (eventData.InputSource.SourceId == InputSystem.GazeProvider.SourceId)
+                if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
                 {
                     Debug.Assert(gazeManagerPointingData == null, "Gaze Manager Pointer Data was already registered!");
 
