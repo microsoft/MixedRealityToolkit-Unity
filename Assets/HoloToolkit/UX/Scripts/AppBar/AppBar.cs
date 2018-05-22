@@ -36,6 +36,11 @@ namespace HoloToolkit.Unity.UX
         public float HoverOffsetZ = 0f;
 
         /// <summary>
+        /// Uses an alternate follow style that works better for very oblong objects
+        /// </summary>
+        public bool UseTightFollow = false;
+
+        /// <summary>
         /// Class used for building toolbar buttons
         /// (not yet in use)
         /// </summary>
@@ -173,6 +178,7 @@ namespace HoloToolkit.Unity.UX
 
         [SerializeField]
         private BoundingBox boundingBox;
+
 
         private ButtonTemplate[] defaultButtons;
         private Vector3[] forwards = new Vector3[4];
@@ -334,6 +340,7 @@ namespace HoloToolkit.Unity.UX
             Vector3 finalPosition = Vector3.zero;
             Vector3 finalForward = Vector3.zero;
             Vector3 headPosition = Camera.main.transform.position;
+            int closestForwardIndex = -1;
 
             for (int i = 0; i < forwards.Length; i++)
             {
@@ -344,19 +351,59 @@ namespace HoloToolkit.Unity.UX
                 float distance = Vector3.Distance(nextPosition, headPosition);
                 if (distance < closestSoFar)
                 {
+                    closestForwardIndex = i;
                     closestSoFar = distance;
                     finalPosition = nextPosition;
                     finalForward = forwards[i];
                 }
             }
 
+            if (UseTightFollow == true)
+            {
+                //take into account asymmetric bounding boxes
+                List<Vector3> boundsPoints = new List<Vector3>();
+                LayerMask ignoreLayers = new LayerMask();
+                
+                BoundingBox.GetRenderBoundsPoints(boundingBox.Target, boundsPoints, ignoreLayers);
+                Vector3 closestCorner = finalForward;
+                float closestMag = float.MaxValue;
+                float lowestY = float.MaxValue;
+                for (int i = 4; i < boundsPoints.Count; ++i)
+                {
+                    float distance = Vector3.Distance(boundsPoints[i], headPosition);
+                    if (distance < closestMag)
+                    {
+                        closestCorner = boundsPoints[i];
+                        closestMag = distance;
+                    }
+                    lowestY = Mathf.Min(boundsPoints[i].y, lowestY);
+                }
+                float cornerToCentroidMag = (closestCorner - boundingBox.TargetBoundsCenter).magnitude;
+
+                if (false)
+                {
+                    cornerToCentroidMag = boundingBox.TargetBoundsLocalScale.z;
+
+                    Ray ray = new Ray(headPosition, boundingBox.TargetBoundsCenter);
+                    RaycastHit hit;
+                    Collider collider = boundingBox.Target.GetComponent<Collider>();
+                    if (collider != null && collider.Raycast(ray, out hit, 100.0F))
+                    {
+                        cornerToCentroidMag = (hit.point - boundingBox.TargetBoundsCenter).magnitude;
+                    }
+                }
+
+                finalPosition = boundingBox.TargetBoundsCenter + ((headPosition - boundingBox.TargetBoundsCenter).normalized * cornerToCentroidMag);
+                finalPosition.y = lowestY;
+                finalForward = Vector3.zero;
+            }
+            /////
+
             // Apply hover offset
             finalPosition += (finalForward * -HoverOffsetZ);
 
             // Follow our bounding box
-            transform.position = smooth ?
-                Vector3.Lerp(transform.position, finalPosition, 0.5f) :
-                finalPosition;
+            transform.position = smooth ? Vector3.Lerp(transform.position, finalPosition, 0.5f) : finalPosition;
 
             // Rotate on the y axis
             Vector3 eulerAngles = Quaternion.LookRotation((boundingBox.transform.position - finalPosition).normalized, Vector3.up).eulerAngles;

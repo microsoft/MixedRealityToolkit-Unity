@@ -32,6 +32,12 @@ namespace HoloToolkit.Unity.UX
         private float scaleRate = 1.0f;
 
         [SerializeField]
+        private float appBarHoverOffsetZ = 0.0f;
+
+        [SerializeField]
+        private bool appBarTightFollow = false;
+
+        [SerializeField]
         [Tooltip("This is the maximum scale that one grab can accomplish.")]
         private float maxScale = 2.0f;
 
@@ -177,6 +183,8 @@ namespace HoloToolkit.Unity.UX
 
             appBarInstance = Instantiate(appBarPrefab) as AppBar;
             appBarInstance.BoundingBox = boxInstance;
+            appBarInstance.HoverOffsetZ = appBarHoverOffsetZ;
+            appBarInstance.UseTightFollow = appBarTightFollow;
 
             boxInstance.IsVisible = false;
         }

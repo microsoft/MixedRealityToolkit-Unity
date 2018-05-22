@@ -572,6 +572,19 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
+        public static Bounds GetRenderBounds(GameObject target)
+        {
+            Bounds bounds = new Bounds();
+            Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
+            for (int i = 0; i < renderers.Length; ++i)
+            {
+                var rendererObj = renderers[i];
+                bounds.ExpandToContain(rendererObj.bounds);
+            }
+
+            return bounds;
+        }
+
         /// <summary>
         /// GetMeshFilterBoundsPoints - gets boundingbox points using MeshFilter method.
         /// </summary>
