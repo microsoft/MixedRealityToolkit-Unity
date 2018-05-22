@@ -8,9 +8,11 @@ namespace UnityEngine.XR.iOS
 
     public class UnityRemoteVideo : MonoBehaviour
     {
+#if UNITY_IOS || UNITY_EDITOR
         public ConnectToEditor connectToEditor;
 
         private UnityARSessionNativeInterface m_Session;
+#endif
         private bool bTexturesInitialized;
 
         private int currentFrameIndex;
@@ -25,12 +27,15 @@ namespace UnityEngine.XR.iOS
 
         public void Start()
         {
+#if UNITY_IOS || UNITY_EDITOR
             m_Session = UnityARSessionNativeInterface.GetARSessionNativeInterface ();
             UnityARSessionNativeInterface.ARFrameUpdatedEvent += UpdateCamera;
             currentFrameIndex = 0;
             bTexturesInitialized = false;
+#endif
         }
 
+#if UNITY_IOS || UNITY_EDITOR
         void UpdateCamera(UnityARCamera camera)
         {
             if (!bTexturesInitialized) {
@@ -53,6 +58,7 @@ namespace UnityEngine.XR.iOS
             m_pinnedUVArray = GCHandle.Alloc (m_textureUVBytes);
             bTexturesInitialized = true;
         }
+#endif
 
         IntPtr PinByteArray(ref GCHandle handle, byte[] array)
         {
@@ -76,6 +82,7 @@ namespace UnityEngine.XR.iOS
             return ByteArrayForFrame (frame, m_textureUVBytes, m_textureUVBytes2);
         }
 
+#if UNITY_IOS || UNITY_EDITOR
         void OnDestroy()
         {
             m_Session.SetCapturePixelData (false, IntPtr.Zero, IntPtr.Zero);
@@ -84,9 +91,11 @@ namespace UnityEngine.XR.iOS
             m_pinnedUVArray.Free ();
 
         }
+#endif
 
         public void OnPreRender()
         {
+#if UNITY_IOS || UNITY_EDITOR
             ARTextureHandles handles = m_Session.GetARVideoTextureHandles();
             if (handles.textureY == System.IntPtr.Zero || handles.textureCbCr == System.IntPtr.Zero)
             {
@@ -105,6 +114,7 @@ namespace UnityEngine.XR.iOS
 
             connectToEditor.SendToEditor (ConnectionMessageIds.screenCaptureYMsgId, YByteArrayForFrame(1-currentFrameIndex));
             connectToEditor.SendToEditor (ConnectionMessageIds.screenCaptureUVMsgId, UVByteArrayForFrame(1-currentFrameIndex));
+#endif
             
         }
         #endif

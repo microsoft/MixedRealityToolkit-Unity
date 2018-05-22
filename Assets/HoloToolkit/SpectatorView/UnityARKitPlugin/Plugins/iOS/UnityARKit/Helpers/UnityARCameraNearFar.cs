@@ -10,8 +10,10 @@ public class UnityARCameraNearFar : MonoBehaviour {
     private float currentNearZ;
     private float currentFarZ;
 
+#if UNITY_IOS || UNITY_EDITOR
     // Use this for initialization
-    void Start () {
+    void Start () 
+    {
         attachedCamera = GetComponent<Camera> ();
         UpdateCameraClipPlanes ();
     }
@@ -29,4 +31,5 @@ public class UnityARCameraNearFar : MonoBehaviour {
             UpdateCameraClipPlanes ();
         }
     }
+#endif
 }

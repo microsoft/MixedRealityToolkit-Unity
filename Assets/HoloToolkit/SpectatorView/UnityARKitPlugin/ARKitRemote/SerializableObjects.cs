@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITY_IOS || UNITY_EDITOR
+using System;
 using UnityEngine;
 using UnityEngine.XR.iOS;
 using System.Text;
@@ -319,3 +320,4 @@ namespace ARKit.Utils
 
     };
 }
+#endif

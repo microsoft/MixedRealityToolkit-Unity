@@ -19,10 +19,12 @@ namespace UnityEngine.XR.iOS
 
         public void Start()
         {
+#if UNITY_IOS || UNITY_EDITOR
             UnityARSessionNativeInterface.ARFrameUpdatedEvent += UpdateFrame;
             bCommandBufferInitialized = false;
+#endif
         }
-
+#if UNITY_IOS || UNITY_EDITOR
         void UpdateFrame(UnityARCamera cam)
         {
             _displayTransform = new Matrix4x4();
@@ -47,8 +49,9 @@ namespace UnityEngine.XR.iOS
             UnityARSessionNativeInterface.ARFrameUpdatedEvent -= UpdateFrame;
             bCommandBufferInitialized = false;
         }
+#endif
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_IOS
 
         public void OnPreRender()
         {
@@ -87,7 +90,7 @@ namespace UnityEngine.XR.iOS
 
             m_ClearMaterial.SetMatrix("_DisplayTransform", _displayTransform);
         }
-#else
+#elif UNITY_EDITOR
 
         public void SetYTexure(Texture2D YTex)
         {
@@ -102,7 +105,8 @@ namespace UnityEngine.XR.iOS
         public void OnPreRender()
         {
 
-            if (!bCommandBufferInitialized) {
+            if (!bCommandBufferInitialized) 
+            {
                 InitializeCommandBuffer ();
             }
 

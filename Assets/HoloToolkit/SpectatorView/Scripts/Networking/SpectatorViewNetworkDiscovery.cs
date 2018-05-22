@@ -1,14 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
-
-#if NETFX_CORE
-using System;
-#endif
 
 namespace HoloToolkit.Unity.SpectatorView
 {
@@ -111,7 +108,7 @@ namespace HoloToolkit.Unity.SpectatorView
 
         private void Awake()
         {
-#if NETFX_CORE
+#if WINDOWS_UWP
             try
             {
                 OpenCVUtils.CheckOpenCVWrapperHasLoaded();
@@ -213,7 +210,7 @@ namespace HoloToolkit.Unity.SpectatorView
 
         #region Client
 
-#if !NETFX_CORE
+#if !WINDOWS_UWP
         /// <summary>
         /// This method gets called whenever it receives a broadcast. It'll then strip out the message of the
         /// broadcast and decide whether it should connect to the sender of the broadcast or not
@@ -237,7 +234,7 @@ namespace HoloToolkit.Unity.SpectatorView
             int parsedMarkerId;
             if (!int.TryParse(parsedData[0], out parsedMarkerId))
             {
-                Debug.LogError("Error parsing broadcast data!");
+                Debug.LogError("Error parsing broadcast data! ");
                 return;
             }
 

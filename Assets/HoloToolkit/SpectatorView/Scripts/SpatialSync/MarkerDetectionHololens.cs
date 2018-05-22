@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.using UnityEngine;
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-#if NETFX_CORE
-using System;
-#endif
 
 namespace HoloToolkit.Unity.SpectatorView
 {
@@ -119,7 +116,7 @@ namespace HoloToolkit.Unity.SpectatorView
 
         private void Start ()
         {
-#if NETFX_CORE
+#if WINDOWS_UWP
             try
             {
                 OpenCVUtils.CheckOpenCVWrapperHasLoaded();
@@ -160,7 +157,7 @@ namespace HoloToolkit.Unity.SpectatorView
         public void StartCapture()
         {
             currentCaptureTimeout = CaptureTimeout;
-#if NETFX_CORE
+#if WINDOWS_UWP
             if(!capturing)
             {
                 holoLensCapture.StartCapture();
@@ -187,7 +184,7 @@ namespace HoloToolkit.Unity.SpectatorView
             capturing = false;
             currentCaptureTimeout = 0;
 
-#if NETFX_CORE
+#if WINDOWS_UWP
             holoLensCapture.StopCapture();
 #else
             Debug.LogWarning("Capturing is not supported on this platform");
@@ -203,7 +200,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// <param name="imageHeight">Height of the image</param>
         private void ProcessImage(List<byte> imageData, int imageWidth, int imageHeight)
         {
-#if NETFX_CORE
+#if WINDOWS_UWP
             detector.Detect(imageData, imageWidth, imageHeight, markerSize);
             Vector3 pos;
             Quaternion rot;
@@ -230,7 +227,7 @@ namespace HoloToolkit.Unity.SpectatorView
 
         private void OnDestroy()
         {
-#if NETFX_CORE
+#if WINDOWS_UWP
             detector.Terminate();
             holoLensCapture.OnFrameCapture -= ProcessImage;
 #endif

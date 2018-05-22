@@ -7,12 +7,15 @@ using UnityEngine.XR.iOS;
 public class AR3DOFCameraManager : MonoBehaviour {
 
     public Camera m_camera;
+#if UNITY_IOS || UNITY_EDITOR
     private UnityARSessionNativeInterface m_session;
+#endif
     private Material savedClearMaterial;
 
     // Use this for initialization
-    void Start () {
-#if !UNITY_EDITOR
+    void Start () 
+    {
+#if !UNITY_EDITOR && UNITY_IOS
         Application.targetFrameRate = 60;
         m_session = UnityARSessionNativeInterface.GetARSessionNativeInterface();
         ARKitSessionConfiguration config = new ARKitSessionConfiguration();
@@ -21,7 +24,8 @@ public class AR3DOFCameraManager : MonoBehaviour {
         config.enableLightEstimation = true;
         m_session.RunWithConfig(config);
 
-        if (m_camera == null) {
+        if (m_camera == null) 
+        {
             m_camera = Camera.main;
         }
 #endif
@@ -29,9 +33,11 @@ public class AR3DOFCameraManager : MonoBehaviour {
 
     public void SetCamera(Camera newCamera)
     {
-        if (m_camera != null) {
+        if (m_camera != null) 
+        {
             UnityARVideo oldARVideo = m_camera.gameObject.GetComponent<UnityARVideo> ();
-            if (oldARVideo != null) {
+            if (oldARVideo != null) 
+            {
                 savedClearMaterial = oldARVideo.m_ClearMaterial;
                 Destroy (oldARVideo);
             }
@@ -43,9 +49,11 @@ public class AR3DOFCameraManager : MonoBehaviour {
     {
         m_camera = newCamera;
 
-        if (m_camera != null) {
+        if (m_camera != null)
+        {
             UnityARVideo unityARVideo = m_camera.gameObject.GetComponent<UnityARVideo> ();
-            if (unityARVideo != null) {
+            if (unityARVideo != null) 
+            {
                 savedClearMaterial = unityARVideo.m_ClearMaterial;
                 Destroy (unityARVideo);
             }
@@ -56,9 +64,9 @@ public class AR3DOFCameraManager : MonoBehaviour {
 
     // Update is called once per frame
 
-#if !UNITY_EDITOR
-    void Update () {
-
+#if !UNITY_EDITOR && UNITY_IOS
+    void Update () 
+    {
         if (m_camera != null)
         {
             // JUST WORKS!
