@@ -56,7 +56,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private RayStep[] rays = new RayStep[1] { new RayStep(Vector3.zero, Vector3.forward) };
 
-        private bool selectPressed;
+        private bool selectPressed = false;
 
         [Obsolete("Will be removed in a later version. Use OnPreRaycast / OnPostRaycast instead.")]
         public void UpdatePointer()
@@ -103,6 +103,7 @@ namespace HoloToolkit.Unity.InputModule
 
                     if (CameraCache.Main.transform.parent != null)
                     {
+                        position = CameraCache.Main.transform.parent.TransformPoint(position);
                         forward = CameraCache.Main.transform.parent.TransformDirection(forward);
                     }
 

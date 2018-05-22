@@ -44,7 +44,11 @@ namespace HoloToolkit.Unity.InputModule
         {
             get
             {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
                 return ControllerInfo != null;
+#else
+                return false;
+#endif
             }
         }
 

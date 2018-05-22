@@ -131,11 +131,13 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             MotionControllerInfo newController;
             if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out newController))
             {
                 AddControllerTransform(newController);
             }
+#endif
         }
     }
 }
