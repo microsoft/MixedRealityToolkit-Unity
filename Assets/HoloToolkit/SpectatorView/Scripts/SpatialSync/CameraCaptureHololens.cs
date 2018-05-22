@@ -6,7 +6,11 @@ using UnityEngine;
 using System.Linq;
 
 #if WINDOWS_UWP
+#if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.WebCam;
+#else
+using UnityEngine.VR.WSA.WebCam;
+#endif
 #endif
 
 namespace HoloToolkit.Unity.SpectatorView
