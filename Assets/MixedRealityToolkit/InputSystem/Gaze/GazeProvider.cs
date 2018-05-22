@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         [Tooltip("True to draw a debug view of the ray.")]
         private bool debugDrawRay = false;
 
-        private BaseGenericInputSource gazeInputSource;
+        /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
         {
             get
@@ -77,20 +77,28 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
                 return gazeInputSource;
             }
         }
+        private BaseGenericInputSource gazeInputSource;
 
+        /// <inheritdoc />
         public IMixedRealityPointer GazePointer => gazePointer ?? InitializeGazePointer();
         private IMixedRealityPointer gazePointer = null;
 
+        /// <inheritdoc />
         public GameObject GazeTarget { get; private set; }
 
+        /// <inheritdoc />
         public RaycastHit HitInfo { get; private set; }
 
+        /// <inheritdoc />
         public Vector3 HitPosition { get; private set; }
 
+        /// <inheritdoc />
         public Vector3 HitNormal { get; private set; }
 
+        /// <inheritdoc />
         public Vector3 GazeOrigin => GazePointer.Rays[0].Origin;
 
+        /// <inheritdoc />
         public Vector3 GazeDirection => GazePointer.Rays[0].Direction;
 
         private float lastHitDistance = 2.0f;
