@@ -368,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
                 }
             }
 #else
-            if (!eventData.InputSource.SupportsCapability(InputType.PointerPosition))
+            if (!eventData.InputSource.SupportsCapability(Internal.Definitions.Devices.DeviceInputType.PointerPosition))
             {
                 // The input source must provide positional data for this script to be usable
                 return;

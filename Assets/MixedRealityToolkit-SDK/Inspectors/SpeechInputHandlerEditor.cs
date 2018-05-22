@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
 
             foreach (IMixedRealityInputSource mixedRealityInputSource in InputSystem.DetectedInputSources)
             {
-                if (mixedRealityInputSource.SupportsCapability(InputType.Voice) && mixedRealityInputSource.SourceName.Equals("SpeechInput"))
+                if (mixedRealityInputSource.SupportsCapability(Internal.Definitions.Devices.DeviceInputType.Voice) && mixedRealityInputSource.SourceName.Equals("SpeechInput"))
                 {
                     var source = mixedRealityInputSource as SpeechInputSource;
                     for (var i = 0; i < source?.Keywords.Length; i++)
