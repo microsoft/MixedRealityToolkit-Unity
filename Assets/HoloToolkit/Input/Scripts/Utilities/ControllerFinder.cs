@@ -90,6 +90,18 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+        public void ChangeHandedness(InteractionSourceHandedness newHandedness)
+        {
+            if (newHandedness != handedness)
+            {
+                RemoveControllerTransform(ControllerInfo);
+                handedness = newHandedness;
+                CheckModelAlreadyLoaded();
+            }
+        }
+#endif
+
         protected virtual void AddControllerTransform(MotionControllerInfo newController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER

@@ -39,6 +39,8 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         private GameObject linePointerPrefab;
 
+        private PointerLine instantiatedPointerLine;
+
         #endregion
 
         #region Data
@@ -301,30 +303,39 @@ namespace HoloToolkit.Unity.InputModule
             inputSourcePointer.ExtentOverride = null;
             inputSourcePointer.PrioritizedLayerMasksOverride = null;
 
-            if (inputSourcePointer.PointerRay != null)
+            InteractionInputSource interactionInputSource = inputSource as InteractionInputSource;
+
+            if (interactionInputSource == null)
             {
-                Destroy(inputSourcePointer.PointerRay.gameObject);
+                return;
             }
 
-            if (inputSource is InteractionInputSource && linePointerPrefab != null)
+            if (linePointerPrefab == null)
             {
-                inputSourcePointer.PointerRay = Instantiate(linePointerPrefab).GetComponent<PointerLine>();
-                inputSourcePointer.PointerRay.ExtentOverride = Cursor.DefaultCursorDistance;
-                Handedness handedness;
-                if (((InteractionInputSource)inputSource).TryGetHandedness(sourceId, out handedness))
-                {
+                return;
+            }
+
+            if (instantiatedPointerLine == null)
+            {
+                instantiatedPointerLine = Instantiate(linePointerPrefab).GetComponent<PointerLine>();
+            }
+
+            inputSourcePointer.PointerRay = instantiatedPointerLine;
+
+            Handedness handedness;
+            if (interactionInputSource.TryGetHandedness(sourceId, out handedness))
+            {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-                    inputSourcePointer.PointerRay.Handedness = (InteractionSourceHandedness)handedness;
+                instantiatedPointerLine.ChangeHandedness((InteractionSourceHandedness)handedness);
 #endif
-                }
             }
         }
 
         private void DetachInputSourcePointer()
         {
-            if (inputSourcePointer.PointerRay != null)
+            if (instantiatedPointerLine != null)
             {
-                Destroy(inputSourcePointer.PointerRay.gameObject);
+                Destroy(instantiatedPointerLine.gameObject);
             }
         }
 
