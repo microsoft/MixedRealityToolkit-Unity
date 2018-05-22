@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         {
             SourceId = InputSystem.GenerateNewSourceId();
             SourceName = name;
-            Pointers = pointers; //?? new[] { InputSystem.GazeProvider.GazePointer };
+            Pointers = pointers ?? new[] { InputSystem.GazeProvider.GazePointer };
             Interactions = interactions;
         }
 
