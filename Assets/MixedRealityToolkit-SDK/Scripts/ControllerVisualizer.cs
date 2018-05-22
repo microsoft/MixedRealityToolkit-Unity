@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK
                 GameObject controllerVisual;
                 if (!initialised)
                 {
-                    if (controller.Handedness == Internal.Definitions.Handedness.Left)
+                    if (controller.ControllerHandedness == Internal.Definitions.Handedness.Left)
                     {
                         controllerVisual = Internal.Managers.MixedRealityManager.Instance.ActiveProfile.LeftControllerModel;
                         leftController = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK
 
                     initialised = true;
                 }
-                if (controller.Handedness == Internal.Definitions.Handedness.Left)
+                if (controller.ControllerHandedness == Internal.Definitions.Handedness.Left)
                 {
                     //leftController.transform.localPosition = controller.ControllerPosition;
                     //leftController.transform.localRotation = controller.ControllerRotation;

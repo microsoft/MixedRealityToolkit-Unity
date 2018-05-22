@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using System;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// </summary>
     public struct InteractionDefinition
     {
-        public InteractionDefinition(uint id, AxisType axisType, DeviceInputType inputType) : this()
+        public InteractionDefinition(uint id, AxisType axisType, InputType inputType) : this()
         {
             Id = id;
             AxisType = axisType;
@@ -35,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// <summary>
         /// The primary action of the input as defined by the controller SDK.
         /// </summary>
-        public DeviceInputType InputType { get; }
+        public InputType InputType { get; }
 
         /// <summary>
         /// Action to be raised to the Input Source when the input data has changed.

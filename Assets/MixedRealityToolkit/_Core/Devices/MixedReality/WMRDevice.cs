@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
@@ -136,11 +137,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
         private void RemoveWindowsMixedRealityController(InteractionSourceState interactionSourceState)
         {
-            var inputSource = GetOrAddWindowsMixedRealityController(interactionSourceState);
-            if (inputSource.SourceId == 0) { return; }
+            var controller = GetOrAddWindowsMixedRealityController(interactionSourceState);
+            if (controller == null) { return; }
 
-            inputSystem.RaiseSourceLost(inputSource);
-            activeControllers.Remove(inputSource.SourceId);
+            inputSystem.RaiseSourceLost(controller.InputSource);
+            activeControllers.Remove(interactionSourceState.source.id);
         }
 
         /// <summary>
@@ -149,21 +150,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourceState">Source State provided by the SDK to add</param>
         private void InteractionSourceDetected(InteractionSourceState interactionSourceState)
         {
-            var inputSource = GetOrAddWindowsMixedRealityController(interactionSourceState);
-            if (inputSource.SourceId == 0) { return; }
+            var controller = GetOrAddWindowsMixedRealityController(interactionSourceState);
+            if (controller == null) { return; }
 
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
-            inputSource.UpdateInputSource(interactionSourceState);
-            inputSystem.RaiseSourceDetected(inputSource);
+            controller.UpdateInputSource(interactionSourceState);
+            inputSystem.RaiseSourceDetected(controller.InputSource);
         }
 
         /// <summary>
         /// React to Input "Press" events and update source data
         /// </summary>
         /// <param name="interactionSourcePressType">Type of press event received</param>
-        /// <param name="sourceData">Source controller to update</param>
+        /// <param name="controller">Source controller to update</param>
         /// <returns></returns>
-        private DeviceInputType PressInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityInputSource sourceData)
+        private InputType PressInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityController controller)
         {
             DeviceInputType pressedInput;
 
@@ -190,17 +191,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            if (sourceData.Interactions.ContainsKey(pressedInput)) sourceData.Interactions[pressedInput].SetValue(true);
-            return pressedInput;
+            if (controller.Interactions.ContainsKey(pressedInput)) controller.Interactions[pressedInput].SetValue(true);
+            return (InputType)Enum.Parse(typeof(InputType), pressedInput.ToString());
         }
 
         /// <summary>
         /// React to Input "Release" events and update source data
         /// </summary>
         /// <param name="interactionSourcePressType">Type of release event received</param>
-        /// <param name="sourceData">Source controller to update</param>
+        /// <param name="controller">Source controller to update</param>
         /// <returns></returns>
-        private DeviceInputType ReleaseInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityInputSource sourceData)
+        private InputType ReleaseInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityController controller)
         {
             DeviceInputType releasedInput;
 
@@ -227,8 +228,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            if (sourceData.Interactions.ContainsKey(releasedInput)) sourceData.Interactions[releasedInput].SetValue(false);
-            return releasedInput;
+            if (controller.Interactions.ContainsKey(releasedInput)) controller.Interactions[releasedInput].SetValue(false);
+            return (InputType)Enum.Parse(typeof(InputType), releasedInput.ToString());
         }
         #endregion
 
@@ -249,47 +250,47 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="args">SDK source updated event arguments</param>
         private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs args)
         {
-            var inputSource = GetOrAddWindowsMixedRealityController(args.state);
+            var controller = GetOrAddWindowsMixedRealityController(args.state);
 
-            if (inputSource.SourceId == 0) { return; }
+            if (controller == null) { return; }
 
-            inputSource.UpdateInputSource(args.state);
+            controller.UpdateInputSource(args.state);
 
-            if (inputSource.Interactions.ContainsKey(InputType.Pointer) && inputSource.Interactions[InputType.Pointer].Changed)
+            if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.SpatialPointer].Changed)
             {
-                inputSystem.Raise6DofInputChanged(inputSource, inputSource.Handedness, InputType.Pointer, inputSource.Interactions[InputType.Pointer].GetValue<Tuple<Vector3, Quaternion>>());
+                inputSystem.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, InputType.SpatialPointer, controller.Interactions[DeviceInputType.SpatialPointer].GetValue<Tuple<Vector3, Quaternion>>());
             }
 
-            if (inputSource.Interactions.ContainsKey(InputType.Pointer) && inputSource.Interactions[InputType.Grip].Changed)
+            if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.SpatialGrip].Changed)
             {
-                inputSystem.Raise6DofInputChanged(inputSource, inputSource.Handedness, InputType.Grip, inputSource.Interactions[InputType.Grip].GetValue<Tuple<Vector3, Quaternion>>());
+                inputSystem.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, InputType.SpatialGrip, controller.Interactions[DeviceInputType.SpatialGrip].GetValue<Tuple<Vector3, Quaternion>>());
             }
 
-            if (inputSource.Interactions.ContainsKey(InputType.Pointer) && inputSource.Interactions[InputType.TouchpadTouch].Changed)
+            if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.TouchpadTouch].Changed)
             {
-                if (inputSource.Interactions[InputType.TouchpadTouch].GetValue<bool>())
+                if (controller.Interactions[DeviceInputType.TouchpadTouch].GetValue<bool>())
                 {
-                    inputSystem.RaiseOnInputDown(inputSource, inputSource.Handedness, InputType.TouchpadTouch);
+                    inputSystem.RaiseOnInputDown(controller.InputSource, controller.ControllerHandedness, InputType.TouchpadTouch);
                 }
                 else
                 {
-                    inputSystem.RaiseOnInputUp(inputSource, inputSource.Handedness, InputType.TouchpadTouch);
+                    inputSystem.RaiseOnInputUp(controller.InputSource, controller.ControllerHandedness, InputType.TouchpadTouch);
                 }
             }
 
-            if (inputSource.Interactions.ContainsKey(InputType.Pointer) && inputSource.Interactions[InputType.Touchpad].Changed)
+            if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.Touchpad].Changed)
             {
-                inputSystem.Raise2DoFInputChanged(inputSource, inputSource.Handedness, InputType.Touchpad, inputSource.Interactions[InputType.Touchpad].GetValue<Vector2>());
+                inputSystem.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, InputType.Touchpad, controller.Interactions[DeviceInputType.Touchpad].GetValue<Vector2>());
             }
 
-            if (inputSource.Interactions.ContainsKey(InputType.Pointer) && inputSource.Interactions[InputType.ThumbStick].Changed)
+            if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.ThumbStick].Changed)
             {
-                inputSystem.Raise2DoFInputChanged(inputSource, inputSource.Handedness, InputType.ThumbStick, inputSource.Interactions[InputType.ThumbStick].GetValue<Vector2>());
+                inputSystem.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, InputType.ThumbStick, controller.Interactions[DeviceInputType.ThumbStick].GetValue<Vector2>());
             }
 
-            if (inputSource.Interactions.ContainsKey(InputType.Pointer) && inputSource.Interactions[InputType.Trigger].Changed)
+            if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.Trigger].Changed)
             {
-                inputSystem.RaiseOnInputPressed(inputSource, inputSource.Handedness, InputType.Select, inputSource.Interactions[InputType.Trigger].GetValue<float>());
+                inputSystem.RaiseOnInputPressed(controller.InputSource, controller.ControllerHandedness, InputType.Select, controller.Interactions[DeviceInputType.Trigger].GetValue<float>());
             }
         }
 
@@ -299,10 +300,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="args">SDK source pressed event arguments</param>
         private void InteractionManager_InteractionSourcePressed(InteractionSourcePressedEventArgs args)
         {
-            var inputSource = GetOrAddWindowsMixedRealityController(args.state);
-            if (inputSource.SourceId == 0) { return; }
+            var controller = GetOrAddWindowsMixedRealityController(args.state);
+            if (controller == null) { return; }
 
-            inputSystem.RaiseOnInputDown(inputSource, inputSource.Handedness, PressInteractionSource(args.pressType, inputSource));
+            inputSystem.RaiseOnInputDown(controller.InputSource, controller.ControllerHandedness, PressInteractionSource(args.pressType, controller));
         }
 
         /// <summary>
@@ -311,10 +312,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="args">SDK source released event arguments</param>
         private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs args)
         {
-            var inputSource = GetOrAddWindowsMixedRealityController(args.state);
-            if (inputSource.SourceId == 0) { return; }
+            var controller = GetOrAddWindowsMixedRealityController(args.state);
+            if (controller == null) { return; }
 
-            inputSystem.RaiseOnInputUp(inputSource, inputSource.Handedness, ReleaseInteractionSource(args.pressType, inputSource));
+            inputSystem.RaiseOnInputUp(controller.InputSource, controller.ControllerHandedness, ReleaseInteractionSource(args.pressType, controller));
         }
 
         /// <summary>

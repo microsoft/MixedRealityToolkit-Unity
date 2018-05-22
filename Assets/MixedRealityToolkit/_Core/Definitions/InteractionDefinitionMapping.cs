@@ -3,6 +3,7 @@
 
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
@@ -10,6 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     {
         public DeviceInputType InputType { get; set; }
         public AxisType AxisType { get; set; }
-        public InputAction InputAction { get; set; }
+        public InputType InputAction { get; set; }
     }
 }
