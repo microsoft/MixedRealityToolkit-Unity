@@ -135,6 +135,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
         private static IEnumerable<string> RegisteredKeywords()
         {
             if (InputSystem.DetectedInputSources.Count == 0) { yield break; }
+            
+            // TODO: We should be getting this data from the Speech Input Mapping Profile instead.
 
             foreach (IMixedRealityInputSource mixedRealityInputSource in InputSystem.DetectedInputSources)
             {
