@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
@@ -134,20 +133,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
 
         private static IEnumerable<string> RegisteredKeywords()
         {
-            if (InputSystem.DetectedInputSources.Count == 0) { yield break; }
-            
-            // TODO: We should be getting this data from the Speech Input Mapping Profile instead.
-
-            foreach (IMixedRealityInputSource mixedRealityInputSource in InputSystem.DetectedInputSources)
+            if (MixedRealityManager.Instance == null ||
+                MixedRealityManager.Instance.ActiveProfile == null ||
+                MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile == null ||
+                MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
             {
-                if (mixedRealityInputSource.SupportsCapability(InputType.Voice) && mixedRealityInputSource.SourceName.Equals("SpeechInput"))
-                {
-                    var source = mixedRealityInputSource as SpeechInputSource;
-                    for (var i = 0; i < source?.Keywords.Length; i++)
-                    {
-                        yield return source.Keywords[i].Keyword;
-                    }
-                }
+                yield break;
+            }
+
+            for (var i = 0; i < MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands.Length; i++)
+            {
+                yield return MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands[i].Keyword;
             }
         }
     }

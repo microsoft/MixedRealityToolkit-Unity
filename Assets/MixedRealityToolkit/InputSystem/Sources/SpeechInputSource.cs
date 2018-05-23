@@ -36,22 +36,22 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <summary>
         /// Constructor.
         /// </summary>
-        public SpeechInputSource() : base("SpeechInput", new[] { new InteractionDefinition(1, AxisType.None, InputType.Voice) })
+        public SpeechInputSource() : base("SpeechInput", new[] { new InteractionDefinition(1, AxisType.None, Internal.Definitions.Devices.DeviceInputType.Voice) })
         {
-            if (keywords.Length == 0) { return; }
+            if (commands.Length == 0) { return; }
 
-            var newKeywords = new string[keywords.Length];
+            var newKeywords = new string[commands.Length];
 
-            for (int i = 0; i < keywords.Length; i++)
+            for (int i = 0; i < commands.Length; i++)
             {
-                newKeywords[i] = keywords[i].Keyword;
+                newKeywords[i] = commands[i].Keyword;
             }
 
             Setup(newKeywords);
 
             if (recognizerStart == RecognizerStartBehavior.AutoStart)
             {
-                StartKeywordRecognition();
+                StartRecognition();
             }
 
             Run();
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         ~SpeechInputSource()
         {
             if (keywordRecognizer == null) { return; }
-            StopKeywordRecognition();
+            StopRecognition();
             Cleanup();
         }
 
@@ -72,13 +72,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         private RecognizerStartBehavior recognizerStart = RecognizerStartBehavior.AutoStart;
 
         [SerializeField]
-        [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
-        private KeywordAndKeyCode[] keywords = null;
+        [Tooltip("The speech commands to be recognized and optional keyboard shortcuts.")]
+        private SpeechCommands[] commands = null;
 
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
         /// </summary>
-        public KeywordAndKeyCode[] Keywords => keywords;
+        public SpeechCommands[] Commands => commands;
 
         private readonly WaitForUpdate waitForUpdate = new WaitForUpdate();
 
@@ -86,11 +86,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         {
             while (keywordRecognizer != null && keywordRecognizer.IsRunning)
             {
-                for (int i = 0; i < keywords.Length; i++)
+                for (int i = 0; i < commands.Length; i++)
                 {
-                    if (Input.GetKeyDown(keywords[i].KeyCode))
+                    if (Input.GetKeyDown(commands[i].KeyCode))
                     {
-                        RaiseKeywordAction(keywords[i].Keyword);
+                        RaiseKeywordAction(commands[i].Keyword);
                     }
                 }
 
@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// Make sure the keyword recognizer is off, then start it.
         /// Otherwise, leave it alone because it's already in the desired state.
         /// </summary>
-        public void StartKeywordRecognition()
+        public void StartRecognition()
         {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             WindowsStartRecognition();
@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// Make sure the keyword recognizer is on, then stop it.
         /// Otherwise, leave it alone because it's already in the desired state.
         /// </summary>
-        public void StopKeywordRecognition()
+        public void StopRecognition()
         {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             WindowsStopRecognition();
@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         private void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
         {
-            InputSystem.RaiseSpeechKeywordPhraseRecognized(this, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+            InputSystem.RaiseSpeechCommandRecognized(this, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
         }
 
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN

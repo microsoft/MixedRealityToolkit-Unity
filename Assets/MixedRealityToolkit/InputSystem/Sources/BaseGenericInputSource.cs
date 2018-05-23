@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         public InteractionDefinition[] Interactions { get; }
 
         /// <inheritdoc />
-        public bool SupportsCapability(InputType inputInfo)
+        public bool SupportsCapability(Internal.Definitions.Devices.DeviceInputType inputInfo)
         {
             for (int i = 0; i < Interactions.Length; i++)
             {

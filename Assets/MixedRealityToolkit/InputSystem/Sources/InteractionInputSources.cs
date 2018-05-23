@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
@@ -96,9 +97,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             public InteractionInputSource() : base(string.Empty, null) { }
 #endif
 
-            private static InputType GetSupportFlag<TReading>(SourceCapability<TReading> capability, InputType flagIfSupported)
+            private static DeviceInputType GetSupportFlag<TReading>(SourceCapability<TReading> capability, DeviceInputType flagIfSupported)
             {
-                return capability.IsSupported ? flagIfSupported : InputType.None;
+                return capability.IsSupported ? flagIfSupported : DeviceInputType.None;
             }
 
             public void Reset()
@@ -933,32 +934,32 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.state.source);
             if (inputSource == null) { return; }
-            InputType inputType;
-            switch (args.pressType)
-            {
-                case InteractionSourcePressType.None:
-                    inputType = InputType.None;
-                    break;
-                case InteractionSourcePressType.Select:
-                    inputType = InputType.Select;
-                    break;
-                case InteractionSourcePressType.Menu:
-                    inputType = InputType.Menu;
-                    break;
-                case InteractionSourcePressType.Grasp:
-                    inputType = InputType.GripPress;
-                    break;
-                case InteractionSourcePressType.Touchpad:
-                    inputType = InputType.Touchpad;
-                    break;
-                case InteractionSourcePressType.Thumbstick:
-                    inputType = InputType.ThumbStick;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            //InputType inputType;
+            //switch (args.pressType)
+            //{
+            //    case InteractionSourcePressType.None:
+            //        inputType = InputType.None;
+            //        break;
+            //    case InteractionSourcePressType.Select:
+            //        inputType = InputType.Select;
+            //        break;
+            //    case InteractionSourcePressType.Menu:
+            //        inputType = InputType.Menu;
+            //        break;
+            //    case InteractionSourcePressType.Grasp:
+            //        inputType = InputType.GripPress;
+            //        break;
+            //    case InteractionSourcePressType.Touchpad:
+            //        inputType = InputType.Touchpad;
+            //        break;
+            //    case InteractionSourcePressType.Thumbstick:
+            //        inputType = InputType.ThumbStick;
+            //        break;
+            //    default:
+            //        throw new ArgumentOutOfRangeException();
+            //}
 
-            inputSystem.RaiseOnInputDown(inputSource, (Handedness)args.state.source.handedness, inputType);
+            //inputSystem.RaiseOnInputDown(inputSource, (Handedness)args.state.source.handedness, inputType);
         }
 
         private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs args)
@@ -971,52 +972,52 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
             UpdateInteractionSource(args.state, inputSource);
 
-            if (inputSource.PointerPositionUpdated)
-            {
-                inputSystem.Raise3DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.PointerPosition, inputSource.PointerPosition.CurrentReading);
-            }
+            //if (inputSource.PointerPositionUpdated)
+            //{
+            //    inputSystem.Raise3DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.PointerPosition, inputSource.PointerPosition.CurrentReading);
+            //}
 
-            if (inputSource.GripPositionUpdated)
-            {
-                inputSystem.Raise3DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.GripPosition, inputSource.GripPosition.CurrentReading);
-            }
+            //if (inputSource.GripPositionUpdated)
+            //{
+            //    inputSystem.Raise3DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.GripPosition, inputSource.GripPosition.CurrentReading);
+            //}
 
-            if (inputSource.PointerRotationUpdated)
-            {
-                inputSystem.Raise3DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.PointerRotation, inputSource.PointerRotation.CurrentReading);
-            }
+            //if (inputSource.PointerRotationUpdated)
+            //{
+            //    inputSystem.Raise3DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.PointerRotation, inputSource.PointerRotation.CurrentReading);
+            //}
 
-            if (inputSource.GripRotationUpdated)
-            {
-                inputSystem.Raise3DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.GripRotation, inputSource.GripRotation.CurrentReading);
-            }
+            //if (inputSource.GripRotationUpdated)
+            //{
+            //    inputSystem.Raise3DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.GripRotation, inputSource.GripRotation.CurrentReading);
+            //}
 
-            if (inputSource.ThumbstickPositionUpdated)
-            {
-                inputSystem.Raise2DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.ThumbStick, inputSource.Thumbstick.CurrentReading.Position);
-            }
+            //if (inputSource.ThumbstickPositionUpdated)
+            //{
+            //    inputSystem.Raise2DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.ThumbStick, inputSource.Thumbstick.CurrentReading.Position);
+            //}
 
-            if (inputSource.TouchpadPositionUpdated)
-            {
-                inputSystem.Raise2DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.Touchpad, inputSource.Touchpad.CurrentReading.AxisButton.Position);
-            }
+            //if (inputSource.TouchpadPositionUpdated)
+            //{
+            //    inputSystem.Raise2DoFInputChanged(inputSource, (Handedness)args.state.source.handedness, InputType.Touchpad, inputSource.Touchpad.CurrentReading.AxisButton.Position);
+            //}
 
-            if (inputSource.TouchpadTouchedUpdated)
-            {
-                if (inputSource.Touchpad.CurrentReading.Touched)
-                {
-                    inputSystem.RaiseOnInputDown(inputSource, (Handedness)args.state.source.handedness, InputType.Touchpad);
-                }
-                else
-                {
-                    inputSystem.RaiseOnInputUp(inputSource, (Handedness)args.state.source.handedness, InputType.Touchpad);
-                }
-            }
+            //if (inputSource.TouchpadTouchedUpdated)
+            //{
+            //    if (inputSource.Touchpad.CurrentReading.Touched)
+            //    {
+            //        inputSystem.RaiseOnInputDown(inputSource, (Handedness)args.state.source.handedness, InputType.Touchpad);
+            //    }
+            //    else
+            //    {
+            //        inputSystem.RaiseOnInputUp(inputSource, (Handedness)args.state.source.handedness, InputType.Touchpad);
+            //    }
+            //}
 
-            if (inputSource.SelectPressedAmountUpdated)
-            {
-                inputSystem.RaiseOnInputPressed(inputSource, (Handedness)args.state.source.handedness, InputType.Select, (float)inputSource.Select.CurrentReading.PressedAmount);
-            }
+            //if (inputSource.SelectPressedAmountUpdated)
+            //{
+            //    inputSystem.RaiseOnInputPressed(inputSource, (Handedness)args.state.source.handedness, InputType.Select, (float)inputSource.Select.CurrentReading.PressedAmount);
+            //}
         }
 
         private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs args)
@@ -1024,32 +1025,32 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.state.source);
             if (inputSource == null) { return; }
 
-            InputType inputType;
-            switch (args.pressType)
-            {
-                case InteractionSourcePressType.None:
-                    inputType = InputType.None;
-                    break;
-                case InteractionSourcePressType.Select:
-                    inputType = InputType.Select;
-                    break;
-                case InteractionSourcePressType.Menu:
-                    inputType = InputType.Menu;
-                    break;
-                case InteractionSourcePressType.Grasp:
-                    inputType = InputType.GripPress;
-                    break;
-                case InteractionSourcePressType.Touchpad:
-                    inputType = InputType.Touchpad;
-                    break;
-                case InteractionSourcePressType.Thumbstick:
-                    inputType = InputType.ThumbStick;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            //InputType inputType;
+            //switch (args.pressType)
+            //{
+            //    case InteractionSourcePressType.None:
+            //        inputType = InputType.None;
+            //        break;
+            //    case InteractionSourcePressType.Select:
+            //        inputType = InputType.Select;
+            //        break;
+            //    case InteractionSourcePressType.Menu:
+            //        inputType = InputType.Menu;
+            //        break;
+            //    case InteractionSourcePressType.Grasp:
+            //        inputType = InputType.GripPress;
+            //        break;
+            //    case InteractionSourcePressType.Touchpad:
+            //        inputType = InputType.Touchpad;
+            //        break;
+            //    case InteractionSourcePressType.Thumbstick:
+            //        inputType = InputType.ThumbStick;
+            //        break;
+            //    default:
+            //        throw new ArgumentOutOfRangeException();
+            //}
 
-            inputSystem.RaiseOnInputUp(inputSource, (Handedness)args.state.source.handedness, inputType);
+            //inputSystem.RaiseOnInputUp(inputSource, (Handedness)args.state.source.handedness, inputType);
         }
 
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
@@ -1065,7 +1066,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            inputSystem.RaiseInputClicked(inputSource.Pointers[0], (Handedness)args.source.handedness, InputType.Select, args.tapCount);
+            //inputSystem.RaiseInputClicked(inputSource.Pointers[0], (Handedness)args.source.handedness, InputType.Select, args.tapCount);
         }
 
         private void GestureRecognizer_HoldStarted(HoldStartedEventArgs args)

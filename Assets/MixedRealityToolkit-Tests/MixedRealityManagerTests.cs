@@ -342,7 +342,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         public override void Initialize()
         {
-            // TODO Initialize stuff 
             InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
         }
 
