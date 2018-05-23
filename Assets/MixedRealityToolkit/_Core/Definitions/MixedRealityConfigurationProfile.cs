@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// <summary>
     /// Configuration profile settings for the Mixed Reality Toolkit.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Configuration Profile")]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Configuration Profile", fileName = "MixedRealityConfigurationProfile", order = 0)]
     public class MixedRealityConfigurationProfile : ScriptableObject, ISerializationCallbackReceiver
     {
         #region Manager Registry properties
@@ -42,7 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         #region Mixed Reality Manager configurable properties
 
         [SerializeField]
-        [Header("Input Settings")]
         [Tooltip("Enable the Input System on Startup")]
         private bool enableInputSystem = true;
 
@@ -58,15 +57,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         [SerializeField]
         [Tooltip("Input System Class to instantiate at runtime.")]
         [Implements(typeof(IMixedRealityInputSystem), TypeGrouping.None)]
-        private SystemType inputSystem;
+        private SystemType inputSystemType;
 
         /// <summary>
         /// Input System Script File to instantiate at runtime.
         /// </summary>
-        public SystemType InputSystem
+        public SystemType InputSystemType
         {
-            get { return inputSystem; }
-            private set { inputSystem = value; }
+            get { return inputSystemType; }
+            private set { inputSystemType = value; }
         }
 
         [SerializeField]
@@ -83,10 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Enable the Motion Controllers on Startup")]
+        [Tooltip("Enable Speech Commands on startup.")]
         private bool enableSpeechCommands = true;
-
-        // TODO: add property for Speech Mapping Profile.
 
         /// <summary>
         /// Enable and configure the speech commands for your application.
@@ -98,20 +95,28 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Enable the Motion Controllers on Startup")]
-        private bool enableControllers = true;
-
-        /// <summary>
-        /// Enable and configure the controller rendering for the Mixed Reality Toolkit
-        /// </summary>
-        public bool EnableControllers
+        [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
+        private MixedRealitySpeechCommandsProfile speechCommandsProfile;
+        public MixedRealitySpeechCommandsProfile SpeechCommandsProfile
         {
-            get { return enableControllers; }
-            private set { enableControllers = value; }
+            get { return speechCommandsProfile; }
+            private set { speechCommandsProfile = value; }
         }
 
         [SerializeField]
-        [Header("Boundary Settings")]
+        [Tooltip("Enable and configure the controller rendering of the Motion Controllers on Startup.")]
+        private bool renderMotionControllers = true;
+
+        /// <summary>
+        /// Enable and configure the controller rendering of the Motion Controllers on Startup.
+        /// </summary>
+        public bool RenderMotionControllers
+        {
+            get { return renderMotionControllers; }
+            private set { renderMotionControllers = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Enable the Boundary on Startup")]
         private bool enableBoundarySystem = true;
 

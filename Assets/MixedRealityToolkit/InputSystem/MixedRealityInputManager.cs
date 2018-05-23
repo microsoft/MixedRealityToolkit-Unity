@@ -563,7 +563,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             // Create input event
             inputClickEventData.Initialize(pointer.InputSourceParent, handedness, inputAction);
 
-            if (inputAction.Id == 0) // TODO - Unsure how the new InputActions are Referred to?
+            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.PointerAction.Id == inputAction.Id)
             {
                 ExecutePointerDown(HandlePointerDown(pointer));
             }
@@ -612,7 +612,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             // Create input event
             inputClickEventData.Initialize(pointer.InputSourceParent, count, inputAction, handedness);
 
-            HandleClick();
+            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.PointerAction.Id == inputAction.Id)
+            {
+                HandleClick();
+            }
         }
 
         #endregion Pointer Click
@@ -672,7 +675,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             // Create input event
             inputClickEventData.Initialize(pointer.InputSourceParent, handedness, inputAction);
 
-            if (inputAction.Id == 0) // TODO - Unsure how the new InputActions are Referred to?
+            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.PointerAction.Id == inputAction.Id)
             {
                 ExecutePointerUp(HandlePointerUp(pointer));
             }
@@ -1401,7 +1404,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseSpeechKeywordPhraseRecognized(IMixedRealityInputSource source, UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string text)
+        public void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string text)
         {
             // Create input event
             speechEventData.Initialize(source, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);

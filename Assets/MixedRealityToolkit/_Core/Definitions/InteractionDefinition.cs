@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         {
             Id = id;
             AxisType = axisType;
-            InputType = inputType;  // TODO - SHould this in the constructor now?  As it's input, should the InputAction be here.
+            InputType = inputType;
         }
 
         #region Interaction Properties
@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         public Devices.DeviceInputType InputType { get; }
 
         /// <summary>
-        /// Action to be raised to the Input Source when the input data has changed.
+        /// Action to be raised to the Input Manager when the input data has changed.
         /// </summary>
         public InputAction InputAction { get; set; }
 

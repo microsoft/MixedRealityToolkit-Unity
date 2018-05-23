@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private void InitializeInputSource()
         {
-            gazeInputSource = new BaseGenericInputSource("Gaze", new[] { new InteractionDefinition(1, AxisType.None, Internal.Definitions.Devices.DeviceInputType.Gaze) }); // TODO - Needs reviewing for Input Action
+            gazeInputSource = new BaseGenericInputSource("Gaze", new[] { new InteractionDefinition(1, AxisType.None, Internal.Definitions.Devices.DeviceInputType.Gaze) });
         }
 
         private IMixedRealityPointer InitializeGazePointer()
