@@ -55,7 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal
         /// <param name="targetDevice"></param>
         public static void OpenWebPortal(DeviceInfo targetDevice)
         {
-            //TODO: Figure out how to pass username and password to browser?
             System.Diagnostics.Process.Start(FinalizeUrl(targetDevice.IP));
         }
 #endif

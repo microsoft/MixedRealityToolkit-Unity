@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityConfigurationProfile
   m_EditorClassIdentifier: 
   enableInputSystem: 1
-  inputSystem:
+  inputSystemType:
     reference: Microsoft.MixedReality.Toolkit.InputSystem.MixedRealityInputManager,
       Microsoft.MixedReality.Toolkit.InputSystem
-  enableControllers: 1
+  inputActionsProfile: {fileID: 11400000, guid: be78d428948031141b6168f82a821ef3,
+    type: 2}
+  enableSpeechCommands: 1
+  speechCommandsProfile: {fileID: 11400000, guid: 4e56e370eff09834984d8fa79612acc2,
+    type: 2}
+  renderMotionControllers: 1
   enableBoundarySystem: 1

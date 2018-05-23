@@ -49,10 +49,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         private KeyCode activeHoldKeyCode = KeyCode.None;
 
         [SerializeField]
-        private InputType activeHoldPressType = InputType.Select;
+        private InputAction activeHoldAction = null;
+        // TODO Write custom inspector to assign Input Action
 
         [SerializeField]
-        private InputType interactionEnabledPressType = InputType.Select;
+        private InputAction interactionEnabledAction = null;
+        // TODO Write custom inspector to assign Input Action
 
         [SerializeField]
         private bool interactionRequiresHold = false;
@@ -315,17 +317,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
-                bool interactionPressed = false;
-#if UNITY_WSA
-                interactionPressed = eventData.InputType == activeHoldPressType;
-#endif
+                bool interactionPressed = eventData.InputAction.Id == activeHoldAction?.Id;
+
                 if (interactionRequiresHold && (eventData.KeyCode == activeHoldKeyCode || interactionPressed))
                 {
                     InteractionEnabled = false;
                 }
-#if UNITY_WSA
-                interactionPressed = eventData.InputType == interactionEnabledPressType;
-#endif
+
+                interactionPressed = eventData.InputAction.Id == interactionEnabledAction?.Id;
                 if (eventData.KeyCode == interactionEnabledKeyCode || interactionPressed)
                 {
                     OnSelectReleased();
@@ -337,18 +336,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
-                bool interactionPressed = false;
-#if UNITY_WSA
-                interactionPressed = eventData.InputType == activeHoldPressType;
-#endif
+                bool interactionPressed = eventData.InputAction.Id == activeHoldAction?.Id;
                 if (interactionRequiresHold && (eventData.KeyCode == activeHoldKeyCode || interactionPressed))
                 {
                     InteractionEnabled = true;
                 }
 
-#if UNITY_WSA
-                interactionPressed = eventData.InputType == interactionEnabledPressType;
-#endif
+                interactionPressed = eventData.InputAction.Id == interactionEnabledAction?.Id;
                 if (eventData.KeyCode == interactionEnabledKeyCode || interactionPressed)
                 {
                     OnSelectPressed();

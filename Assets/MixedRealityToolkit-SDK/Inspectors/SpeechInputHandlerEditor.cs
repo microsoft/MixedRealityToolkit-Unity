@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
     [CustomEditor(typeof(SpeechInputHandler))]
     public class SpeechInputHandlerEditor : Editor
     {
+        /// <summary>
+        /// The Current Input System for this Input Source.
+        /// </summary>
+        private static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+        private static IMixedRealityInputSystem inputSystem = null;
+
         private static readonly GUIContent RemoveButtonContent = new GUIContent("-", "Remove keyword");
         private static readonly GUIContent AddButtonContent = new GUIContent("+", "Add keyword");
         private static readonly GUILayoutOption MiniButtonWidth = GUILayout.Width(20.0f);
@@ -25,9 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
 
         private void OnEnable()
         {
-            keywordsProperty = serializedObject.FindProperty("Keywords");
-            isGlobalListenerProperty = serializedObject.FindProperty("IsGlobalListener");
-            persistentKeywordsProperty = serializedObject.FindProperty("PersistentKeywords");
+            keywordsProperty = serializedObject.FindProperty("keywords");
+            isGlobalListenerProperty = serializedObject.FindProperty("isGlobalListener");
+            persistentKeywordsProperty = serializedObject.FindProperty("persistentKeywords");
         }
 
         public override void OnInspectorGUI()
@@ -125,12 +133,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
 
         private static IEnumerable<string> RegisteredKeywords()
         {
-            foreach (SpeechInputSource source in FindObjectsOfType<SpeechInputSource>())
+            if (MixedRealityManager.Instance == null ||
+                MixedRealityManager.Instance.ActiveProfile == null ||
+                MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile == null ||
+                MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
             {
-                for (var i = 0; i < source.Keywords.Length; i++)
-                {
-                    yield return source.Keywords[i].Keyword;
-                }
+                yield break;
+            }
+
+            for (var i = 0; i < MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands.Length; i++)
+            {
+                yield return MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands[i].Keyword;
             }
         }
     }

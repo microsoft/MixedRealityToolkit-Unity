@@ -5,11 +5,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
     /// <summary>
     /// The InputType defines the types of input exposed by a controller.
-    /// Denoting the available buttons / interactions that a controller supports.
-    /// </summary>
+    /// Denoting the available buttons / interactions that a controller supports.    /// </summary>
     public enum DeviceInputType
     {
         None = 0,
+        Gaze,
         Voice,
         /// <summary>
         /// 6 Dof Pointer with position and rotation.

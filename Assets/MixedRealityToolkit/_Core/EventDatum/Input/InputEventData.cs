@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <summary>
         /// The InputType of the <see cref="IMixedRealityInputSource"/>.
         /// </summary>
-        public InputType InputType { get; private set; } = InputType.None;
+        public InputAction InputAction { get; private set; } = new InputAction(0,"None");
 
         /// <inheritdoc />
         public InputEventData(EventSystem eventSystem) : base(eventSystem) { }
@@ -57,10 +57,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         /// <param name="inputSource"></param>
         /// <param name="inputType"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType)
+        public void Initialize(IMixedRealityInputSource inputSource, InputAction inputAction)
         {
             BaseInitialize(inputSource);
-            InputType = inputType;
+            InputAction = inputAction;
         }
 
         /// <summary>
@@ -93,11 +93,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputType inputType)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputAction inputAction)
         {
             BaseInitialize(inputSource);
             Handedness = handedness;
-            InputType = inputType;
+            InputAction = inputAction;
         }
     }
 }

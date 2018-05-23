@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// </summary>
     public struct InteractionDefinition
     {
-        public InteractionDefinition(uint id, AxisType axisType, InputType inputType) : this()
+        public InteractionDefinition(uint id, AxisType axisType, Devices.DeviceInputType inputType) : this()
         {
             Id = id;
             AxisType = axisType;
@@ -36,10 +36,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// <summary>
         /// The primary action of the input as defined by the controller SDK.
         /// </summary>
-        public InputType InputType { get; }
+        public Devices.DeviceInputType InputType { get; }
 
         /// <summary>
-        /// Action to be raised to the Input Source when the input data has changed.
+        /// Action to be raised to the Input Manager when the input data has changed.
         /// </summary>
         public InputAction InputAction { get; set; }
 

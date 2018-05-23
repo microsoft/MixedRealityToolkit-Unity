@@ -5,8 +5,9 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Managers
@@ -114,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (ActiveProfile.EnableInputSystem)
             {
                 //Enable Input (example initializer)
-                AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystem) as IMixedRealityInputSystem);
+                AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
             }
 
             //If the Boundary system has been selected for initialization in the Active profile, enable it in the project
@@ -178,14 +179,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 MixedRealityManager[] objects = FindObjectsOfType<MixedRealityManager>();
                 searchForInstance = false;
 
-                if (objects.Length == 1)
+                switch (objects.Length)
                 {
-                    objects[0].InitializeInternal();
-                    return instance;
+                    case 0:
+                        return instance = CameraCache.Main.gameObject.AddComponent<MixedRealityManager>();
+                    case 1:
+                        objects[0].InitializeInternal();
+                        return instance;
+                    default:
+                        Debug.LogError($"Expected exactly 1 MixedRealityManager but found {objects.Length}.");
+                        return null;
                 }
-
-                Debug.LogError($"Expected exactly 1 MixedRealityManager but found {objects.Length}.");
-                return null;
             }
         }
 

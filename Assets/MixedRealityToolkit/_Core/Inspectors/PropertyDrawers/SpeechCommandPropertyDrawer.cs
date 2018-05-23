@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
 {
-    [CustomPropertyDrawer(typeof(KeywordAndKeyCode))]
-    public class KeywordAndKeyCodePropertyDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(SpeechCommands))]
+    public class SpeechCommandPropertyDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent content)
         {
@@ -20,9 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
             var keyCodeRect = new Rect(rect.x + fieldWidth, rect.y, fieldWidth, rect.height);
 
             // the Keyword field without label
-            EditorGUI.PropertyField(keywordRect, property.FindPropertyRelative("Keyword"), GUIContent.none);
+            EditorGUI.PropertyField(keywordRect, property.FindPropertyRelative("keyword"), GUIContent.none);
             // the KeyCode field without label
-            EditorGUI.PropertyField(keyCodeRect, property.FindPropertyRelative("KeyCode"), GUIContent.none);
+            EditorGUI.PropertyField(keyCodeRect, property.FindPropertyRelative("keyCode"), GUIContent.none);
 
             EditorGUI.EndProperty();
         }
