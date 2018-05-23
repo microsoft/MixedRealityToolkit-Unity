@@ -79,21 +79,31 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Start()
         {
+            // If we're on the HoloLens or no device is present,
+            // remove this component.
+#if UNITY_2017_2_OR_NEWER
+            if (!XRDevice.isPresent
+#if UNITY_WSA
+                || !HolographicSettings.IsDisplayOpaque
+#endif
+            )
+#else
+            if (VRDevice.isPresent)
+#endif
+            {
+                Destroy(this);
+                return;
+            }
+
+            // FadeManager isn't checked unless we're in a
+            // setup where it might be supported.
             FadeManager.AssertIsInitialized();
 
             fadeControl = FadeManager.Instance;
 
-            // If our FadeManager is missing, or if we're on the HoloLens
-            // Remove this component.
-#if UNITY_2017_2_OR_NEWER
-            if (!XRDevice.isPresent ||
-#if UNITY_WSA
-                !HolographicSettings.IsDisplayOpaque ||
-#endif
-                fadeControl == null)
-#else
-            if (VRDevice.isPresent || fadeControl == null)
-#endif
+            // If the FadeManager is missing,
+            // remove this component.
+            if (fadeControl == null)
             {
                 Destroy(this);
                 return;
