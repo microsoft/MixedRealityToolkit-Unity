@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
             private set { renderMotionControllers = value; }
         }
 
-                [SerializeField]
+        [SerializeField]
         [Tooltip("Default Left Controller Model")]
         private GameObject leftControllerModel;
 
@@ -196,7 +196,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         #endregion  ISerializationCallbackReceiver Implementation
-
 
         #region Mixed Reality Controller Mapping helpers
 

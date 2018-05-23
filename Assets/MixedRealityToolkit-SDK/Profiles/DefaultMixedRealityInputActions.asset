@@ -18,6 +18,8 @@ MonoBehaviour:
     description: Menu
   - id: 3
     description: Grip
+  - id: 4
+    description: Push
   pointerAction:
     id: 1
     description: 
