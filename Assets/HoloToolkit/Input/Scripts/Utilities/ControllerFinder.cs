@@ -37,6 +37,8 @@ namespace HoloToolkit.Unity.InputModule
         private Transform elementTransform;
 
         protected MotionControllerInfo ControllerInfo;
+
+        private bool started = false;
 #endif
 
         protected virtual void OnEnable()
@@ -48,13 +50,21 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            // Look if the controller has loaded.
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out ControllerInfo))
+            if (started)
             {
-                AddControllerTransform(ControllerInfo);
+                CheckModelAlreadyLoaded();
             }
+
             MotionControllerVisualizer.Instance.OnControllerModelLoaded += AddControllerTransform;
             MotionControllerVisualizer.Instance.OnControllerModelUnloaded += RemoveControllerTransform;
+#endif
+        }
+
+        protected virtual void Start()
+        {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            CheckModelAlreadyLoaded();
+            started = true;
 #endif
         }
 
@@ -83,7 +93,7 @@ namespace HoloToolkit.Unity.InputModule
         protected virtual void AddControllerTransform(MotionControllerInfo newController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            if (newController.Handedness == handedness)
+            if (newController.Handedness == handedness && !newController.Equals(ControllerInfo))
             {
                 if (!newController.TryGetElement(element, out elementTransform))
                 {
@@ -105,6 +115,27 @@ namespace HoloToolkit.Unity.InputModule
             {
                 ControllerInfo = null;
                 ElementTransform = null;
+            }
+#endif
+        }
+
+        /// <summary>
+        /// Look if the controller was already loaded. This could happen if the
+        /// GameObject was instantiated at runtime and the model loaded event has already fired.
+        /// </summary>
+        private void CheckModelAlreadyLoaded()
+        {
+            if (!MotionControllerVisualizer.ConfirmInitialized())
+            {
+                // The motion controller visualizer singleton could not be found.
+                return;
+            }
+
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            MotionControllerInfo newController;
+            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out newController))
+            {
+                AddControllerTransform(newController);
             }
 #endif
         }

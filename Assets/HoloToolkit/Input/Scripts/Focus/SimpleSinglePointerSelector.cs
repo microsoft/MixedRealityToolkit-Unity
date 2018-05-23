@@ -3,6 +3,10 @@
 
 using UnityEngine;
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+using UnityEngine.XR.WSA.Input;
+#endif
+
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
@@ -30,6 +34,10 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         private bool autoselectBestAvailable = false;
         public bool AutoselectBestAvailable { get { return autoselectBestAvailable; } set { autoselectBestAvailable = value; } }
+
+        [Tooltip("The line pointer prefab to use, if any.")]
+        [SerializeField]
+        private GameObject linePointerPrefab;
 
         #endregion
 
@@ -184,6 +192,11 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             Debug.Assert(currentPointer != null, "No Pointer Set!");
+
+            if (IsGazePointerActive)
+            {
+                DetachInputSourcePointer();
+            }
         }
 
         private void ConnectBestAvailablePointer()
@@ -287,6 +300,32 @@ namespace HoloToolkit.Unity.InputModule
             inputSourcePointer.OwnAllInput = false;
             inputSourcePointer.ExtentOverride = null;
             inputSourcePointer.PrioritizedLayerMasksOverride = null;
+
+            if (inputSourcePointer.PointerRay != null)
+            {
+                Destroy(inputSourcePointer.PointerRay.gameObject);
+            }
+
+            if (inputSource is InteractionInputSource && linePointerPrefab != null)
+            {
+                inputSourcePointer.PointerRay = Instantiate(linePointerPrefab).GetComponent<PointerLine>();
+                inputSourcePointer.PointerRay.ExtentOverride = Cursor.DefaultCursorDistance;
+                Handedness handedness;
+                if (((InteractionInputSource)inputSource).TryGetHandedness(sourceId, out handedness))
+                {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                    inputSourcePointer.PointerRay.Handedness = (InteractionSourceHandedness)handedness;
+#endif
+                }
+            }
+        }
+
+        private void DetachInputSourcePointer()
+        {
+            if (inputSourcePointer.PointerRay != null)
+            {
+                Destroy(inputSourcePointer.PointerRay.gameObject);
+            }
         }
 
         private bool IsInputSourcePointerActive
