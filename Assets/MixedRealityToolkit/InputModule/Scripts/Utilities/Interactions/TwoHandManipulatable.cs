@@ -145,7 +145,7 @@ namespace MixedRealityToolkit.InputModule.Utilities.Interations
 
                     if (value)
                     {
-                        boundingBoxInstance.Target = this.gameObject;
+                        boundingBoxInstance.Target = HostTransform.gameObject;
                         boundingBoxInstance.gameObject.SetActive(true);
                     }
                     else
