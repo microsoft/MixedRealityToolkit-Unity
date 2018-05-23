@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using System;
 using UnityEngine;
@@ -14,6 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// </summary>
     public struct InteractionDefinition
     {
+        public InteractionDefinition(uint id, AxisType axisType, Devices.DeviceInputType inputType, InputAction inputAction) : this()
+        {
+            Id = id;
+            AxisType = axisType;
+            InputType = inputType;
+            InputAction = inputAction;
+        }
+
         public InteractionDefinition(uint id, AxisType axisType, Devices.DeviceInputType inputType) : this()
         {
             Id = id;
