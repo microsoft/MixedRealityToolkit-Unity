@@ -23,8 +23,8 @@ The Mixed Reality Toolkit team tests on the recommended and the recommended mini
 - A small amount of testing is performed on other Unity releases
 - HoloToolkit-Examples scenes are used for the majority of testing
 - Compile testing is performed on
+    - .NET Native (Master configuration)
     - .NET Scripting backend
-    - .NET Native (Master configuration in Visual Studio)
     - IL2CPP
 
 Please see each the [release notes](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest) for information regarding new features, fixes, breaking changes and known issues.
