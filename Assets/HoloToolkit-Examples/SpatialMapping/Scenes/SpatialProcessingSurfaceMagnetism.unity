@@ -230,7 +230,7 @@ MonoBehaviour:
   Lifetime: 0
   MagneticSurface:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 2147483648
   MaxDistance: 10
   CloseDistance: 0.5
   SurfaceNormalOffset: 0.05
@@ -519,6 +519,11 @@ Prefab:
       propertyPath: surfaceMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 729453690df4d40488b01b78b3af849d, type: 2}
+    - target: {fileID: 114000011154029958, guid: 2ed75ffdf9031c94e8bce4b3d17b9928,
+        type: 2}
+      propertyPath: PhysicsLayer
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 2}
   m_IsPrefabParent: 0
@@ -564,7 +569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActivePlanes: []
-  SurfacePlanePrefab: {fileID: 1000010593991404, guid: 184d6e9ce2d89844489583805253eb83,
+  SurfacePlanePrefab: {fileID: 1000010593991404, guid: e2f0116ed6ef0d44bb7791f327bea328,
     type: 2}
   MinArea: 0.025
   drawPlanesMask: 15
@@ -581,7 +586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scanTime: 15
-  defaultMaterial: {fileID: 2100000, guid: d698790d3facd3d4289a13fa1243030a, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 729453690df4d40488b01b78b3af849d, type: 2}
   secondaryMaterial: {fileID: 2100000, guid: df172103f5fba4a4d8636aeca60cb0d7, type: 2}
   minimumFloors: 1
 --- !u!4 &1325178179

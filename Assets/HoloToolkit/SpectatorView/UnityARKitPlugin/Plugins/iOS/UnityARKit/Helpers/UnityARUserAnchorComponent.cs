@@ -12,13 +12,16 @@ public class UnityARUserAnchorComponent : MonoBehaviour {
 
     public string AnchorId  { get { return m_AnchorId; } }
 
+#if UNITY_IOS || UNITY_EDITOR
     void Awake()
     {
         UnityARSessionNativeInterface.ARUserAnchorUpdatedEvent += GameObjectAnchorUpdated;
         UnityARSessionNativeInterface.ARUserAnchorRemovedEvent += AnchorRemoved;
         this.m_AnchorId = UnityARSessionNativeInterface.GetARSessionNativeInterface ().AddUserAnchorFromGameObject(this.gameObject).identifierStr; 
     }
-    void Start () {
+    
+    void Start () 
+    {
 
     }
 
@@ -30,6 +33,7 @@ public class UnityARUserAnchorComponent : MonoBehaviour {
         }
     }
 
+
     void OnDestroy() {
         UnityARSessionNativeInterface.ARUserAnchorUpdatedEvent -= GameObjectAnchorUpdated;
         UnityARSessionNativeInterface.ARUserAnchorRemovedEvent -= AnchorRemoved;
@@ -40,5 +44,6 @@ public class UnityARUserAnchorComponent : MonoBehaviour {
     {
         
     }
+#endif
 }
 }

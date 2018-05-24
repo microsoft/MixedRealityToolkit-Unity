@@ -14,6 +14,7 @@ public class UnityPointCloudExample : MonoBehaviour
 
     public void Start()
     {
+#if UNITY_IOS || UNITY_EDITOR 
         UnityARSessionNativeInterface.ARFrameUpdatedEvent += ARFrameUpdated;
         if (PointCloudPrefab != null)
         {
@@ -23,15 +24,19 @@ public class UnityPointCloudExample : MonoBehaviour
                 pointCloudObjects.Add (Instantiate (PointCloudPrefab));
             }
         }
+#endif
     }
 
+#if UNITY_IOS || UNITY_EDITOR
     public void ARFrameUpdated(UnityARCamera camera)
     {
         m_PointCloudData = camera.pointCloudData;
     }
+#endif
 
     public void Update()
     {
+#if UNITY_IOS || UNITY_EDITOR
         if (PointCloudPrefab != null && m_PointCloudData != null)
         {
             for (int count = 0; count < Math.Min (m_PointCloudData.Length, numPointsToShow); count++)
@@ -41,5 +46,6 @@ public class UnityPointCloudExample : MonoBehaviour
                 point.transform.position = new Vector3(vert.x, vert.y, vert.z);
             }
         }
+#endif
     }
 }

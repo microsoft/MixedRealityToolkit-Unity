@@ -3,24 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.iOS;
 
-public class UnityARCameraManager : MonoBehaviour {
-
+public class UnityARCameraManager : MonoBehaviour 
+{
     public Camera m_camera;
+#if UNITY_IOS || UNITY_EDITOR
     private UnityARSessionNativeInterface m_session;
+#endif
     private Material savedClearMaterial;
-
+#if UNITY_IOS || UNITY_EDITOR
     [Header("AR Config Options")]
     public UnityARAlignment startAlignment = UnityARAlignment.UnityARAlignmentGravity;
     public UnityARPlaneDetection planeDetection = UnityARPlaneDetection.Horizontal;
+#endif
     public bool getPointCloud = true;
     public bool enableLightEstimation = true;
 
     // Use this for initialization
-    void Start () {
-
+    void Start () 
+    {
+#if UNITY_IOS || UNITY_EDITOR
         m_session = UnityARSessionNativeInterface.GetARSessionNativeInterface();
+#endif
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && UNITY_IOS
         Application.targetFrameRate = 60;
         ARKitWorldTrackingSessionConfiguration config = new ARKitWorldTrackingSessionConfiguration();
         config.planeDetection = planeDetection;
@@ -29,10 +34,11 @@ public class UnityARCameraManager : MonoBehaviour {
         config.enableLightEstimation = enableLightEstimation;
         m_session.RunWithConfig(config);
 
-        if (m_camera == null) {
+        if (m_camera == null) 
+        {
             m_camera = Camera.main;
         }
-#else
+#elif UNITY_EDITOR
         //put some defaults so that it doesnt complain
         UnityARCamera scamera = new UnityARCamera ();
         scamera.worldTransform = new UnityARMatrix4x4 (new Vector4 (1, 0, 0, 0), new Vector4 (0, 1, 0, 0), new Vector4 (0, 0, 1, 0), new Vector4 (0, 0, 0, 1));
@@ -73,8 +79,9 @@ public class UnityARCameraManager : MonoBehaviour {
 
     // Update is called once per frame
 
-    void Update () {
-        
+#if UNITY_IOS || UNITY_EDITOR
+    void Update () 
+    {
         if (m_camera != null)
         {
             // JUST WORKS!
@@ -84,7 +91,7 @@ public class UnityARCameraManager : MonoBehaviour {
 
             m_camera.projectionMatrix = m_session.GetCameraProjection ();
         }
-
     }
+#endif
 
 }

@@ -14,7 +14,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// <summary>
         /// Utility function to ensure the OpenCVWrapper has been successfully loaded
         /// </summary>
-        [DllImport("SpectatorViewPlugin", EntryPoint = "CheckLibraryHasLoaded")]
+        [DllImport("SpectatorViewPlugin", EntryPoint="CheckLibraryHasLoaded", ExactSpelling=true)]
         public static extern void CheckOpenCVWrapperHasLoaded();
     }
 }

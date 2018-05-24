@@ -6,6 +6,7 @@ namespace UnityEngine.XR.iOS
     public class UnityARGeneratePlane : MonoBehaviour
     {
         public GameObject planePrefab;
+#if UNITY_IOS || UNITY_EDITOR
         private UnityARAnchorManager unityARAnchorManager;
 
         // Use this for initialization
@@ -28,6 +29,7 @@ namespace UnityEngine.XR.iOS
                 GUI.Box(new Rect(100, 200, 800, 60), string.Format ("Extent: x:{0}, y:{1}, z:{2}", ap.extent.x, ap.extent.y, ap.extent.z));
             }
         }
+#endif
     }
 }
 

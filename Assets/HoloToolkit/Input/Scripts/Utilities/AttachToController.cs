@@ -33,15 +33,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             SetChildrenActive(false);
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            // Look if the controller has loaded.
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(Handedness, out ControllerInfo))
-            {
-                AddControllerTransform(ControllerInfo);
-            }
-            MotionControllerVisualizer.Instance.OnControllerModelLoaded += AddControllerTransform;
-            MotionControllerVisualizer.Instance.OnControllerModelUnloaded += RemoveControllerTransform;
-#endif 
+            base.OnEnable();
         }
 
         protected override void AddControllerTransform(MotionControllerInfo newController)
@@ -50,8 +42,6 @@ namespace HoloToolkit.Unity.InputModule
             if (!IsAttached && newController.Handedness == Handedness)
             {
                 base.AddControllerTransform(newController);
-
-                SetChildrenActive(true);
 
                 // Parent ourselves under the element and set our offsets
                 transform.parent = ElementTransform;
@@ -62,6 +52,8 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     transform.localScale = ScaleOffset;
                 }
+
+                SetChildrenActive(true);
 
                 // Announce that we're attached
                 OnAttachToController();
@@ -80,9 +72,9 @@ namespace HoloToolkit.Unity.InputModule
 
                 OnDetachFromController();
 
-                transform.parent = null;
-
                 SetChildrenActive(false);
+
+                transform.parent = null;
 
                 IsAttached = false;
             }

@@ -378,8 +378,8 @@ namespace HoloToolkit.UI.Keyboard
 
             OnPlacement(this, EventArgs.Empty);
 
-            //This bring up the default keyboard in MR so the user is presented with TWO keyboards
-            //InputField.ActivateInputField();
+            // todo: if the app is built for xaml, our prefab and the system keyboard may be displayed.
+            InputField.ActivateInputField();
 
             SetMicrophoneDefault();
         }

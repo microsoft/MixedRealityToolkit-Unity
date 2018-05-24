@@ -26,7 +26,7 @@ Licenses
 
 Requirements
 ------------
-- SpectatorView plugin and required OpenCV binaries, which can be found here: https://github.com/Microsoft/MixedRealityToolkit/SpectatorViewPlugin, listed here:
+- SpectatorView plugin and required OpenCV binaries, which can be found here: https://github.com/Microsoft/MixedRealityToolkit/tree/master/SpectatorViewPlugin, listed here:
     - opencv_aruco341.dll
     - opencv_calib3d341.dll
     - opencv_core341.dll
@@ -52,7 +52,7 @@ Requirements
 
 Building the SpectatorView Native Plugin
 ----------------------------------------
-- See: https://github.com/Microsoft/MixedRealityToolkit/blob/master/SpectatorView/README.md
+- See: https://github.com/Microsoft/MixedRealityToolkit/blob/master/SpectatorViewPlugin/README.md
 
  
 Project Setup

@@ -73,6 +73,8 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         private float pointingExtent = 10f;
 
+        public float GlobalPointingExtent { get { return pointingExtent; } }
+
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the HitObject when raycasting.
         ///

@@ -8,12 +8,12 @@ namespace UnityEngine.XR.iOS
 
         private Light l;
 
+#if UNITY_IOS || UNITY_EDITOR
         public void Start()
         {
             l = GetComponent<Light>();
             UnityARSessionNativeInterface.ARFrameUpdatedEvent += UpdateLightEstimation;
         }
-
         void UpdateLightEstimation(UnityARCamera camera)
         {
             // Convert ARKit intensity to Unity intensity
@@ -27,8 +27,11 @@ namespace UnityEngine.XR.iOS
             l.colorTemperature = camera.lightEstimation.ambientColorTemperature;
         }
 
-        void OnDestroy() {
+        void OnDestroy() 
+        {
+
             UnityARSessionNativeInterface.ARFrameUpdatedEvent -= UpdateLightEstimation;
         }
+#endif 
     }
 }
