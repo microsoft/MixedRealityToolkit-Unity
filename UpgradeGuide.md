@@ -22,9 +22,8 @@ Note: When upgrading the toolkit in your project, delete the following before im
 The Mixed Reality Toolkit team tests on the recommended and the recommended minimum Unity versions.
 - A small amount of testing is performed on other Unity releases
 - HoloToolkit-Examples scenes are used for the majority of testing
-- Compile testing is performed on
-    - .NET Native (Master configuration)
-    - .NET Scripting backend
+- Compile testing is performed in the Master configuration for:
+    - .NET Scripting
     - IL2CPP
 
 Please see each the [release notes](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/latest) for information regarding new features, fixes, breaking changes and known issues.
