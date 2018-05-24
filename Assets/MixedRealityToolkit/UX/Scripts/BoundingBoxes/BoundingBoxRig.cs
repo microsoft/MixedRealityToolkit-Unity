@@ -39,6 +39,9 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         [SerializeField]
         private BoundingBoxGizmoHandle.HandMotionType handMotionToRotate = BoundingBoxGizmoHandle.HandMotionType.handRotatesToRotateObject;
 
+        [SerializeField]
+        private bool rotateAroundPivot = false;
+
         [Header("Preset Components")]
         [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
@@ -298,6 +301,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                     rotateHandles[i].transform.localScale = rotateHandleSize;
                     rotateHandles[i].name = "Middle " + i.ToString();
                     rigRotateGizmoHandles[i] = rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
+                    rigRotateGizmoHandles[i].RotateAroundPivot = rotateAroundPivot;
                     rigRotateGizmoHandles[i].Rig = this;
                     rigRotateGizmoHandles[i].HandMotionForRotation = handMotionToRotate;
                     rigRotateGizmoHandles[i].RotationCoordinateSystem = rotationType;

@@ -55,6 +55,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         private float maxScale = 10.0f;
         private RotationType rotationCoordinateSystem;
         private HandMotionType handMotionForRotation;
+        private Vector3 lastHandWorldPos = Vector3.zero;
 
         public TransformType AffineType
         {
@@ -160,6 +161,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 rig = value;
             }
         }
+        public bool RotateAroundPivot { get; set; }
 
         private void Start()
         {
@@ -203,6 +205,8 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                         ApplyRotation(currentHandPosition);
                     }
                 }
+
+                lastHandWorldPos = currentHandPosition;
             }
         }
 
@@ -283,6 +287,14 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
         }
         private void ApplyRotation(Vector3 currentHandPosition)
         {
+            if (RotateAroundPivot)
+                ApplyRotationPivot(currentHandPosition);
+            else
+                ApplyRotationContinuous(currentHandPosition);
+        }
+
+        private void ApplyRotationContinuous(Vector3 currentHandPosition)
+        {
             Vector3 initialRay = initialHandPosition - transformToAffect.position;
             initialRay.Normalize();
 
@@ -323,6 +335,32 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
                 transformToAffect.Rotate(axis, angle * 2.0f);
             }
         }
+        
+        private void ApplyRotationPivot(Vector3 currentHandPosition)
+        {
+            Vector3 delta = currentHandPosition - lastHandWorldPos;
+
+            if (delta.sqrMagnitude == 0)
+                return;
+
+            delta.Scale(rotationFromPositionScale);
+
+            var pivotToHandleDir = (transform.position - transformToAffect.position).normalized;
+            switch (Axis)
+            {
+                default:
+                case BoundingBoxGizmoHandle.AxisToAffect.X:
+                    transformToAffect.Rotate(Vector3.right, Vector3.Dot(delta, Vector3.Cross(pivotToHandleDir, transformToAffect.right)), Space.Self);
+                    break;
+                case BoundingBoxGizmoHandle.AxisToAffect.Y:
+                    transformToAffect.Rotate(Vector3.up, Vector3.Dot(delta, Vector3.Cross(pivotToHandleDir, transformToAffect.up)), Space.Self);
+                    break;
+                case BoundingBoxGizmoHandle.AxisToAffect.Z:
+                    transformToAffect.Rotate(Vector3.forward, Vector3.Dot(delta, Vector3.Cross(pivotToHandleDir, transformToAffect.forward)), Space.Self);
+                    break;
+            }
+        }
+
         private Vector3 GetBoundedScaleChange(Vector3 scale)
         {
             Vector3 maximumScale = new Vector3(initialScale.x * maxScale, initialScale.y * maxScale, initialScale.z * maxScale);
@@ -360,6 +398,7 @@ namespace MixedRealityToolkit.UX.BoundingBoxes
             inputDownEventData = eventData;
 
             initialHandPosition     = GetHandPosition(eventData.SourceId);
+            lastHandWorldPos        = initialHandPosition;
             initialScale            = transformToAffect.localScale;
             initialPosition         = transformToAffect.position;
             initialOrientation      = transformToAffect.rotation.eulerAngles;
