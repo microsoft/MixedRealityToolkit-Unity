@@ -251,6 +251,8 @@ namespace HoloToolkit.UI.Keyboard
                 }
             }
 
+            InputField.keyboardType = (TouchScreenKeyboardType)(-1);
+
             // Keep keyboard deactivated until needed
             gameObject.SetActive(false);
         }
