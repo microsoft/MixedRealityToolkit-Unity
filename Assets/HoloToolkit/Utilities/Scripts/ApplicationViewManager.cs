@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System;
 using System.Collections;
 using UnityEngine;
+
 #if !UNITY_EDITOR && UNITY_WSA
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
@@ -49,8 +51,7 @@ namespace HoloToolkit.Unity
         {
             var viewId = ApplicationView.GetForCurrentView().Id;
             var view = CoreApplication.GetCurrentView();
-            Action<object> cb;
-            if (CallbackDictionary.TryRemove(viewId, out cb))
+            if (CallbackDictionary.TryRemove(viewId, out var cb))
             {
                 try
                 {
@@ -75,7 +76,6 @@ namespace HoloToolkit.Unity
         /// <typeparam name="TReturnValue"></typeparam>
         /// <param name="xamlPageName"></param>
         /// <param name="callback"></param>
-        /// <param name="pageNavigateParameter"></param>
         /// <returns></returns>
         public IEnumerator OnLaunchXamlView<TReturnValue>(string xamlPageName, Action<TReturnValue> callback, object pageNavigateParameter = null)
         {
@@ -84,45 +84,42 @@ namespace HoloToolkit.Unity
             object returnValue = null;
             CoreApplicationView newView = CoreApplication.CreateNewView();
             int newViewId = 0;
-            var task = newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            var dispt = newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 //This happens when User switch view back to Main App manually 
-                newView.CoreWindow.VisibilityChanged += CoreWindow_VisibilityChanged;
-                var frame = new Frame();
-                string assemblyQualifiedName = Windows.UI.Xaml.Application.Current.GetType().AssemblyQualifiedName;
-
-                if (assemblyQualifiedName != null)
+                void CoreWindow_VisibilityChanged(CoreWindow sender, VisibilityChangedEventArgs args)
                 {
-                    var pageType = Type.GetType(assemblyQualifiedName.Replace(".App,", $".{xamlPageName},"));
-                    var currentView = ApplicationView.GetForCurrentView();
-                    newViewId = currentView.Id;
-
-                    var cb = new Action<object>(value =>
+                    if (args.Visible == false)
                     {
-                        returnValue = value;
-                        isCompleted = true;
-                    });
-
-                    frame.Navigate(pageType, pageNavigateParameter);
-                    CallbackDictionary[newViewId] = cb;
+                        CallbackReturnValue(null);
+                    }
                 }
-
+                newView.CoreWindow.VisibilityChanged += CoreWindow_VisibilityChanged;
+                Frame frame = new Frame();
+                var pageType = Type.GetType(Windows.UI.Xaml.Application.Current.GetType().AssemblyQualifiedName.Replace(".App,", $".{xamlPageName},"));
+                var appv = ApplicationView.GetForCurrentView();
+                newViewId = appv.Id;
+                var cb = new Action<object>(rval =>
+                {
+                    returnValue = rval;
+                    isCompleted = true;
+                });
+                frame.Navigate(pageType,pageNavigateParameter);
+                CallbackDictionary[newViewId] = cb;
                 Window.Current.Content = frame;
                 Window.Current.Activate();
 
             }).AsTask();
-
-            yield return new WaitUntil(() => task.IsCompleted || task.IsCanceled || task.IsFaulted);
-
+            yield return new WaitUntil(() => dispt.IsCompleted || dispt.IsCanceled || dispt.IsFaulted);
             Task viewShownTask = null;
-            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
-            {
-                viewShownTask = ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId).AsTask();
-            }, true);
-
+            UnityEngine.WSA.Application.InvokeOnUIThread(
+                () =>
+                {
+                    viewShownTask = ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId).AsTask();
+                },
+                    true);
             yield return new WaitUntil(() => viewShownTask.IsCompleted || viewShownTask.IsCanceled || viewShownTask.IsFaulted);
             yield return new WaitUntil(() => isCompleted);
-
             try
             {
                 if (returnValue is TReturnValue)
@@ -141,17 +138,7 @@ namespace HoloToolkit.Unity
 #else
             isCompleted = true;
             yield return new WaitUntil(() => isCompleted);
-#endif //!UNITY_EDITOR && UNITY_WSA
+#endif
         }
-
-#if !UNITY_EDITOR && UNITY_WSA
-        private void CoreWindow_VisibilityChanged(CoreWindow sender, VisibilityChangedEventArgs args)
-        {
-            if (args.Visible == false)
-            {
-                CallbackReturnValue(null);
-            }
-        }
-#endif //!UNITY_EDITOR && UNITY_WSA
     }
 }
