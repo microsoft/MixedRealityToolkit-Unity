@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using MixedRealityToolkit.Build.DataStructures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +19,31 @@ namespace MixedRealityToolkit.Build
 
         public Action<BuildInfo> PreBuildAction { get; set; }
 
+#if UNITY_2018_1_OR_NEWER
+        public Action<BuildInfo, UnityEditor.Build.Reporting.BuildReport> PostBuildAction { get; set; }
+#else
         public Action<BuildInfo, string> PostBuildAction { get; set; }
-
+#endif
         public BuildOptions BuildOptions { get; set; }
 
         public BuildTarget BuildTarget { get; set; }
+
+        public string Configuration
+        {
+            get
+            {
+                if (!HasConfigurationSymbol() || HasAnySymbols(UwpPlayerBuildTools.BuildSymbolDebug))
+                {
+                    return UwpPlayerBuildTools.BuildSymbolDebug;
+                }
+
+                return HasAnySymbols(UwpPlayerBuildTools.BuildSymbolRelease) ?
+                        UwpPlayerBuildTools.BuildSymbolRelease :
+                        UwpPlayerBuildTools.BuildSymbolMaster;
+            }
+        }
+
+        public string BuildPlatform { get; set; }
 
         public WSASDK? WSASdk { get; set; }
 
@@ -38,11 +57,14 @@ namespace MixedRealityToolkit.Build
 
         public bool IsCommandLine { get; set; }
 
+        public bool BuildAppx => HasAnySymbols("-buildAppx");
+
         public string BuildSymbols { get; private set; }
 
         public BuildInfo()
         {
             BuildSymbols = string.Empty;
+            BuildPlatform = "x86";
         }
 
         public void AppendSymbols(params string[] symbol)
@@ -76,18 +98,18 @@ namespace MixedRealityToolkit.Build
         public bool HasConfigurationSymbol()
         {
             return HasAnySymbols(
-                BuildSLNUtilities.BuildSymbolDebug,
-                BuildSLNUtilities.BuildSymbolRelease,
-                BuildSLNUtilities.BuildSymbolMaster);
+                UwpPlayerBuildTools.BuildSymbolDebug,
+                UwpPlayerBuildTools.BuildSymbolRelease,
+                UwpPlayerBuildTools.BuildSymbolMaster);
         }
 
         public static IEnumerable<string> RemoveConfigurationSymbols(string symbols)
         {
             return symbols.Split(';').Except(new[]
             {
-                BuildSLNUtilities.BuildSymbolDebug,
-                BuildSLNUtilities.BuildSymbolRelease,
-                BuildSLNUtilities.BuildSymbolMaster
+                UwpPlayerBuildTools.BuildSymbolDebug,
+                UwpPlayerBuildTools.BuildSymbolRelease,
+                UwpPlayerBuildTools.BuildSymbolMaster
             });
         }
 
