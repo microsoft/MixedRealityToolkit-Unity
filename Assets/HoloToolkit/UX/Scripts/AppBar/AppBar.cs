@@ -187,10 +187,10 @@ namespace HoloToolkit.Unity.UX
         private Vector3 targetBarSize = Vector3.one;
         private float lastTimeTapped = 0f;
         private float coolDownTime = 0.5f;
-        private int followingFaceIndex = -1;
         private int numDefaultButtons;
         private int numHiddenButtons;
         private int numManipulationButtons;
+        private BoundingBoxHelper helper;
 
         public void Reset()
         {
@@ -202,6 +202,7 @@ namespace HoloToolkit.Unity.UX
         public void Start()
         {
             State = AppBarStateEnum.Default;
+
             if (interactables.Count == 0)
             {
                 RefreshTemplates();
@@ -215,6 +216,8 @@ namespace HoloToolkit.Unity.UX
                     CreateButton(buttons[i], CustomButtonIconProfile);
                 }
             }
+
+            helper = new BoundingBoxHelper();
         }
 
         protected override void InputClicked(GameObject obj, InputClickedEventData eventData)
@@ -329,52 +332,22 @@ namespace HoloToolkit.Unity.UX
             }
 
             // Show our buttons
-            baseRenderer.SetActive(true);
-
-            // Get positions for each side of the bounding box
-            // Choose the one that's closest to us
-            forwards[0] = boundingBox.transform.forward;
-            forwards[1] = boundingBox.transform.right;
-            forwards[2] = -boundingBox.transform.forward;
-            forwards[3] = -boundingBox.transform.right;
-            Vector3 scale = boundingBox.TargetBoundsLocalScale;
-            float maxXYScale = Mathf.Max(scale.x, scale.y);
-            float closestSoFar = Mathf.Infinity;
+            baseRenderer.SetActive(true); 
+            
+            //calculate best follow position for AppBar
             Vector3 finalPosition = Vector3.zero;
-            Vector3 finalForward = Vector3.zero;
             Vector3 headPosition = Camera.main.transform.position;
-            int closestForwardIndex = -1;
-
-            for (int i = 0; i < forwards.Length; i++)
-            {
-                Vector3 nextPosition = boundingBox.transform.position +
-                (forwards[i] * -maxXYScale) +
-                (Vector3.up * (-scale.y * HoverOffsetYScale));
-
-                float distance = Vector3.Distance(nextPosition, headPosition);
-                if (distance < closestSoFar)
-                {
-                    closestForwardIndex = i;
-                    closestSoFar = distance;
-                    finalPosition = nextPosition;
-                    finalForward = forwards[i];
-                }
-            }
-
-            ////////////////////////////////////////////////
             LayerMask ignoreLayers = new LayerMask();
             List<Vector3> boundsPoints = new List<Vector3>();
-            BoundingBoxHelper helper = new BoundingBoxHelper();
             if (boundingBox != null)
             {
                 helper.UpdateNonAABoundingBoxCornerPositions(boundingBox.Target, boundsPoints, ignoreLayers);
-                followingFaceIndex = helper.GetIndexOfForwardFace(headPosition);
-                finalPosition = helper.GetFaceBottomCentroid(followingFaceIndex);
+                int followingFaceIndex = helper.GetIndexOfForwardFace(headPosition);
                 Vector3 faceNormal = helper.GetFaceNormal(followingFaceIndex);
-                finalPosition += (faceNormal * HoverOffsetZ);
+
+                //finally we have new position
+                finalPosition = helper.GetFaceBottomCentroid(followingFaceIndex) + (faceNormal * HoverOffsetZ);
             }
-            finalForward = Vector3.zero;
-            //////////////////////////////////////////q
 
             // Follow our bounding box
             transform.position = smooth ? Vector3.Lerp(transform.position, finalPosition, 0.5f) : finalPosition;
@@ -470,6 +443,22 @@ namespace HoloToolkit.Unity.UX
 
                 Debug.DrawLine(centroid, centroid + (normal * 0.1f), color);
             }
+        }
+
+        public void DrawFaces(BoundingBoxHelper helper, Color color)
+        {
+            for (int i = 0; i < 8; ++i)
+            {
+                Vector3[] face = helper.GetFaceCorners(i);
+                if (face.Length == 4)
+                {
+                    Debug.DrawLine(face[0], face[1], color);
+                    Debug.DrawLine(face[1], face[2], color);
+                    Debug.DrawLine(face[2], face[3], color);
+                    Debug.DrawLine(face[3], face[0], color);
+                }
+            }
+
         }
 #endif
 

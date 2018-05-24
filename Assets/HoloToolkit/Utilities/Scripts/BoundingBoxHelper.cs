@@ -47,13 +47,9 @@ public class BoundingBoxHelper : MonoBehaviour
             {
                 continue;
             }
-            if (rendererObj.gameObject.GetComponent<Collider>() == null)
-            {
-                continue;
-            }
             Vector3[] corners = null;
             rendererObj.bounds.GetCornerPositionsFromRendererBounds(ref corners);
-            rawBoundingCorners.AddRange(corners);
+            AddAABoundingBoxes(rawBoundingCorners, corners);
         }
 
         GameObject.Destroy(clone);
@@ -64,32 +60,7 @@ public class BoundingBoxHelper : MonoBehaviour
         }
     }
 
-    public static void GetNonAABoundingBoxCornerPositions(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
-    {
-        GameObject clone = GameObject.Instantiate(target);
-        clone.transform.localRotation = Quaternion.identity;
-        clone.transform.position = Vector3.zero;
-        clone.transform.localScale = new Vector3(1, 1, 1);
-        Renderer[] renderers = clone.GetComponentsInChildren<Renderer>();
-
-        for (int i = 0; i < renderers.Length; ++i)
-        {
-            var rendererObj = renderers[i];
-            if (ignoreLayers == (1 << rendererObj.gameObject.layer | ignoreLayers))
-            {
-                continue;
-            }
-            Vector3[] corners = null;
-            rendererObj.bounds.GetCornerPositionsFromRendererBounds(ref corners);
-            boundsPoints.AddRange(corners);
-        }
-
-        for (int i = 0; i < boundsPoints.Count; ++i)
-        {
-            boundsPoints[i] = target.transform.localToWorldMatrix.MultiplyPoint(boundsPoints[i]);
-        }
-        GameObject.Destroy(clone);
-    }
+   
 
     public int[] GetFaceIndices(int index)
     {
@@ -150,7 +121,6 @@ public class BoundingBoxHelper : MonoBehaviour
 
         return Vector3.zero;
     }
-
     public Vector3 GetFaceBottomCentroid(int index)
     {
         Vector3[] edgeCentroids = GetFaceEdgeMidpoints(index);
@@ -162,9 +132,6 @@ public class BoundingBoxHelper : MonoBehaviour
         }
         return leastYPoint;
     }
-
- 
-
     public Vector3[] GetFaceCorners(int index)
     {
         int[] faceIndices = GetFaceIndices(index);
@@ -181,7 +148,6 @@ public class BoundingBoxHelper : MonoBehaviour
 
         return new Vector3[0];
     }
-
     public int GetIndexOfForwardFace(Vector3 lookAtPoint)
     {
         int highestDotIndex = -1;
@@ -198,5 +164,89 @@ public class BoundingBoxHelper : MonoBehaviour
             }
         }
         return highestDotIndex;
+    }
+
+    public static void GetNonAABoundingBoxCornerPositions(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
+    {
+        GameObject clone = GameObject.Instantiate(target);
+        clone.transform.localRotation = Quaternion.identity;
+        clone.transform.position = Vector3.zero;
+        clone.transform.localScale = new Vector3(1, 1, 1);
+        Renderer[] renderers = clone.GetComponentsInChildren<Renderer>();
+
+        for (int i = 0; i < renderers.Length; ++i)
+        {
+            var rendererObj = renderers[i];
+            if (ignoreLayers == (1 << rendererObj.gameObject.layer | ignoreLayers))
+            {
+                continue;
+            }
+            Vector3[] corners = null;
+            rendererObj.bounds.GetCornerPositionsFromRendererBounds(ref corners);
+            boundsPoints.AddRange(corners);
+        }
+
+        for (int i = 0; i < boundsPoints.Count; ++i)
+        {
+            boundsPoints[i] = target.transform.localToWorldMatrix.MultiplyPoint(boundsPoints[i]);
+        }
+        GameObject.Destroy(clone);
+    }
+    public static void AddAABoundingBoxes(List<Vector3> points, Vector3[] pointsToAdd)
+    {
+        if (points.Count < 8)
+        {
+            points.Clear();
+            points.AddRange(pointsToAdd);
+            return;
+        }
+
+        for (int i = 0; i < pointsToAdd.Length; ++i)
+        {
+            if (pointsToAdd[i].x < points[0].x)
+            {
+                points[0].Set(pointsToAdd[i].x, points[0].y, points[0].z);
+                points[1].Set(pointsToAdd[i].x, points[1].y, points[1].z);
+                points[2].Set(pointsToAdd[i].x, points[2].y, points[2].z);
+                points[3].Set(pointsToAdd[i].x, points[3].y, points[3].z);
+            }
+            if (pointsToAdd[i].x > points[4].x)
+            {
+                points[4].Set(pointsToAdd[i].x, points[4].y, points[4].z);
+                points[5].Set(pointsToAdd[i].x, points[5].y, points[5].z);
+                points[6].Set(pointsToAdd[i].x, points[6].y, points[6].z);
+                points[7].Set(pointsToAdd[i].x, points[7].y, points[7].z);
+            }
+
+            if (pointsToAdd[i].y < points[0].y)
+            {
+                points[0].Set(points[0].x, pointsToAdd[i].y, points[0].z);
+                points[1].Set(points[1].x, pointsToAdd[i].y, points[1].z);
+                points[4].Set(points[4].x, pointsToAdd[i].y, points[4].z);
+                points[5].Set(points[5].x, pointsToAdd[i].y, points[5].z);
+            }
+            if (pointsToAdd[i].y > points[2].y)
+            {
+                points[2].Set(points[2].x, pointsToAdd[i].y, points[2].z);
+                points[3].Set(points[3].x, pointsToAdd[i].y, points[3].z);
+                points[6].Set(points[6].x, pointsToAdd[i].y, points[6].z);
+                points[7].Set(points[7].x, pointsToAdd[i].y, points[7].z);
+            }
+
+            if (pointsToAdd[i].z < points[0].z)
+            {
+                points[0].Set(points[0].x, points[0].y, pointsToAdd[i].z);
+                points[2].Set(points[2].x, points[2].y, pointsToAdd[i].z);
+                points[6].Set(points[6].x, points[6].y, pointsToAdd[i].z);
+                points[4].Set(points[4].x, points[4].y, pointsToAdd[i].z);
+            }
+            if (pointsToAdd[i].z > points[1].z)
+            {
+                points[1].Set(points[1].x, points[1].y, pointsToAdd[i].z);
+                points[5].Set(points[5].x, points[5].y, pointsToAdd[i].z);
+                points[7].Set(points[7].x, points[7].y, pointsToAdd[i].z);
+                points[3].Set(points[3].x, points[3].y, pointsToAdd[i].z);
+            }
+        }
     }
 }
