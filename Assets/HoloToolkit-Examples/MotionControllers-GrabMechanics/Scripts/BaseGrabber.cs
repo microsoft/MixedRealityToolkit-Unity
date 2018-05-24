@@ -185,7 +185,7 @@ namespace HoloToolkit.Unity.InputModule.Examples.Grabbables
         {
             contactObjects.Sort(delegate (BaseGrabbable b1, BaseGrabbable b2)
             {
-                return Vector3.Distance(b1.GrabPoint, GrabHandle.position).CompareTo(Vector3.Distance(b1.GrabPoint, GrabHandle.position));
+                return Vector3.Distance(b1.GrabPoint, GrabHandle.position).CompareTo(Vector3.Distance(b2.GrabPoint, GrabHandle.position));
             });
         }
 
