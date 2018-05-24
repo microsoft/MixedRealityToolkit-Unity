@@ -113,6 +113,8 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
+        public BoundingBoxRig BoundingRig;
+
         public GameObject SquareButtonPrefab;
 
         public int NumDefaultButtons
@@ -185,6 +187,7 @@ namespace HoloToolkit.Unity.UX
         private Vector3 targetBarSize = Vector3.one;
         private float lastTimeTapped = 0f;
         private float coolDownTime = 0.5f;
+        private int followingFaceIndex = -1;
         private int numDefaultButtons;
         private int numHiddenButtons;
         private int numManipulationButtons;
@@ -358,7 +361,7 @@ namespace HoloToolkit.Unity.UX
                 }
             }
 
-            if (UseTightFollow == true)
+            if (false)
             {
                 //take into account asymmetric bounding boxes
                 List<Vector3> boundsPoints = new List<Vector3>();
@@ -379,25 +382,25 @@ namespace HoloToolkit.Unity.UX
                     lowestY = Mathf.Min(boundsPoints[i].y, lowestY);
                 }
                 float cornerToCentroidMag = (closestCorner - boundingBox.TargetBoundsCenter).magnitude;
-
-                if (false)
-                {
-                    cornerToCentroidMag = boundingBox.TargetBoundsLocalScale.z;
-
-                    Ray ray = new Ray(headPosition, boundingBox.TargetBoundsCenter);
-                    RaycastHit hit;
-                    Collider collider = boundingBox.Target.GetComponent<Collider>();
-                    if (collider != null && collider.Raycast(ray, out hit, 100.0F))
-                    {
-                        cornerToCentroidMag = (hit.point - boundingBox.TargetBoundsCenter).magnitude;
-                    }
-                }
-
                 finalPosition = boundingBox.TargetBoundsCenter + ((headPosition - boundingBox.TargetBoundsCenter).normalized * cornerToCentroidMag);
                 finalPosition.y = lowestY;
                 finalForward = Vector3.zero;
             }
-            /////
+
+            if (UseTightFollow == true)
+            {
+                LayerMask ignoreLayers = new LayerMask();
+                List<Vector3> boundsPoints = new List<Vector3>();
+                BoundingBoxHelper helper = new BoundingBoxHelper();
+                if (boundingBox != null)
+                {
+                    helper.UpdateNonAABoundingBoxCornerPositions(boundingBox.Target, boundsPoints, ignoreLayers);
+                    followingFaceIndex = helper.GetIndexOfForwardFace(headPosition);
+                    finalPosition = helper.GetFaceCentroid(followingFaceIndex);
+                }
+                finalForward = Vector3.zero;
+            }
+            //////////////////////////////////////////
 
             // Apply hover offset
             finalPosition += (finalForward * -HoverOffsetZ);
@@ -474,6 +477,28 @@ namespace HoloToolkit.Unity.UX
         public void EditorRefreshTemplates()
         {
             RefreshTemplates();
+        }
+
+        public void DrawFace(int index, BoundingBoxHelper helper, Color color)
+        {
+            if (index >= 0)
+            {
+                Vector3[] face = helper.GetFaceCorners(index);
+                Debug.DrawLine(face[0], face[1], color);
+                Debug.DrawLine(face[1], face[2], color);
+                Debug.DrawLine(face[2], face[3], color);
+                Debug.DrawLine(face[3], face[0], color);
+            }
+        }
+        public void DrawFaceNormal(int index, BoundingBoxHelper helper, Color color)
+        {
+            if (index >= 0)
+            {
+                Vector3 normal = helper.GetFaceNormal(index);
+                Vector3 centroid = helper.GetFaceCentroid(index);
+
+                Debug.DrawLine(centroid, centroid + (normal * 0.1f), color);
+            }
         }
 #endif
 

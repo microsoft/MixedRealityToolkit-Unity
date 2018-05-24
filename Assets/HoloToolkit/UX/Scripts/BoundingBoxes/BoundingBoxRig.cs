@@ -29,13 +29,13 @@ namespace HoloToolkit.Unity.UX
 
         [Header("Behavior")]
         [SerializeField]
+        private bool appBarTightFollow = false;
+
+        [SerializeField]
         private float scaleRate = 1.0f;
 
         [SerializeField]
         private float appBarHoverOffsetZ = 0.0f;
-
-        [SerializeField]
-        private bool appBarTightFollow = false;
 
         [SerializeField]
         [Tooltip("This is the maximum scale that one grab can accomplish.")]
@@ -482,9 +482,7 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
-
-
-        private List<Vector3> GetBounds()
+        public List<Vector3> GetBounds()
         {
             if (objectToBound != null)
             {

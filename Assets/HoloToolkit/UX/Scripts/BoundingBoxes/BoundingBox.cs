@@ -614,6 +614,27 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
+        public static void GetNonAxisAlignedBB_Corners(GameObject target, List<Vector3> boundsPoints)
+        {
+            LayerMask mask = new LayerMask();
+
+            GameObject clone = GameObject.Instantiate(target);
+            clone.transform.localRotation = Quaternion.identity;
+            clone.transform.position = Vector3.zero;
+            clone.transform.localScale = new Vector3(1,1,1);
+            BoundingBox.GetMeshFilterBoundsPoints(clone, boundsPoints, mask);
+            Vector3 centroid = target.transform.position;
+            GameObject.Destroy(clone);
+
+#if UNITY_2017_1_OR_NEWER
+            for (int i = 0; i < boundsPoints.Count; ++i)
+            {
+                boundsPoints[i] = target.transform.localToWorldMatrix.MultiplyPoint(boundsPoints[i]);
+                //boundsPoints[i] += centroid;
+            }
+#endif // UNITY_2017_1_OR_NEWER
+        }
+
         private static Vector3[] corners = null;
         private static Vector3[] rectTransformCorners = new Vector3[4];
         #endregion
