@@ -361,49 +361,20 @@ namespace HoloToolkit.Unity.UX
                 }
             }
 
-            if (false)
+            ////////////////////////////////////////////////
+            LayerMask ignoreLayers = new LayerMask();
+            List<Vector3> boundsPoints = new List<Vector3>();
+            BoundingBoxHelper helper = new BoundingBoxHelper();
+            if (boundingBox != null)
             {
-                //take into account asymmetric bounding boxes
-                List<Vector3> boundsPoints = new List<Vector3>();
-                LayerMask ignoreLayers = new LayerMask();
-                
-                BoundingBox.GetRenderBoundsPoints(boundingBox.Target, boundsPoints, ignoreLayers);
-                Vector3 closestCorner = finalForward;
-                float closestMag = float.MaxValue;
-                float lowestY = float.MaxValue;
-                for (int i = 4; i < boundsPoints.Count; ++i)
-                {
-                    float distance = Vector3.Distance(boundsPoints[i], headPosition);
-                    if (distance < closestMag)
-                    {
-                        closestCorner = boundsPoints[i];
-                        closestMag = distance;
-                    }
-                    lowestY = Mathf.Min(boundsPoints[i].y, lowestY);
-                }
-                float cornerToCentroidMag = (closestCorner - boundingBox.TargetBoundsCenter).magnitude;
-                finalPosition = boundingBox.TargetBoundsCenter + ((headPosition - boundingBox.TargetBoundsCenter).normalized * cornerToCentroidMag);
-                finalPosition.y = lowestY;
-                finalForward = Vector3.zero;
+                helper.UpdateNonAABoundingBoxCornerPositions(boundingBox.Target, boundsPoints, ignoreLayers);
+                followingFaceIndex = helper.GetIndexOfForwardFace(headPosition);
+                finalPosition = helper.GetFaceBottomCentroid(followingFaceIndex);
+                Vector3 faceNormal = helper.GetFaceNormal(followingFaceIndex);
+                finalPosition += (faceNormal * HoverOffsetZ);
             }
-
-            if (UseTightFollow == true)
-            {
-                LayerMask ignoreLayers = new LayerMask();
-                List<Vector3> boundsPoints = new List<Vector3>();
-                BoundingBoxHelper helper = new BoundingBoxHelper();
-                if (boundingBox != null)
-                {
-                    helper.UpdateNonAABoundingBoxCornerPositions(boundingBox.Target, boundsPoints, ignoreLayers);
-                    followingFaceIndex = helper.GetIndexOfForwardFace(headPosition);
-                    finalPosition = helper.GetFaceCentroid(followingFaceIndex);
-                }
-                finalForward = Vector3.zero;
-            }
-            //////////////////////////////////////////
-
-            // Apply hover offset
-            finalPosition += (finalForward * -HoverOffsetZ);
+            finalForward = Vector3.zero;
+            //////////////////////////////////////////q
 
             // Follow our bounding box
             transform.position = smooth ? Vector3.Lerp(transform.position, finalPosition, 0.5f) : finalPosition;

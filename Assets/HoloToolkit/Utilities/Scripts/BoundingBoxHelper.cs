@@ -47,6 +47,10 @@ public class BoundingBoxHelper : MonoBehaviour
             {
                 continue;
             }
+            if (rendererObj.gameObject.GetComponent<Collider>() == null)
+            {
+                continue;
+            }
             Vector3[] corners = null;
             rendererObj.bounds.GetCornerPositionsFromRendererBounds(ref corners);
             rawBoundingCorners.AddRange(corners);

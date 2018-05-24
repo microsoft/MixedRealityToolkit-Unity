@@ -480,6 +480,24 @@ Transform:
   m_PrefabParentObject: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60,
     type: 2}
   m_PrefabInternal: {fileID: 116723879}
+--- !u!1 &170656240 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100004, guid: 1e23ec24c22068b4cbf47737c35e277b, type: 3}
+  m_PrefabInternal: {fileID: 1197191672}
+--- !u!64 &170656244
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 170656240}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 1e23ec24c22068b4cbf47737c35e277b, type: 3}
 --- !u!1 &503309311
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,9 +588,9 @@ GameObject:
   - component: {fileID: 568502827}
   - component: {fileID: 568502826}
   - component: {fileID: 568502824}
-  - component: {fileID: 568502823}
   - component: {fileID: 568502828}
   - component: {fileID: 568502825}
+  - component: {fileID: 568502823}
   m_Layer: 0
   m_Name: newFollow
   m_TagString: Untagged
@@ -596,9 +614,8 @@ MonoBehaviour:
   rotateHandleMaterial: {fileID: 2100000, guid: 4a9072a0d8623aa44abf31f02d209a09,
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: b614a09bc429623478e946d8170b15ae, type: 2}
-  appBarTightFollow: 1
   scaleRate: 1
-  appBarHoverOffsetZ: 0.5
+  appBarHoverOffsetZ: 0.05
   maxScale: 2
   rotationType: 0
   handMotionToRotate: 0
@@ -668,8 +685,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 568502822}
   m_LocalRotation: {x: -0, y: -0, z: -0.7079418, w: 0.7062709}
-  m_LocalPosition: {x: -1.447, y: -0.853, z: 0.21600008}
-  m_LocalScale: {x: 0.26688367, y: 0.26688367, z: 0.26688355}
+  m_LocalPosition: {x: -2.222, y: 0.172, z: 0.21600008}
+  m_LocalScale: {x: 0.26688367, y: 1.2547736, z: 0.26688355}
   m_Children: []
   m_Father: {fileID: 1329454425}
   m_RootOrder: 8
@@ -823,9 +840,8 @@ MonoBehaviour:
   rotateHandleMaterial: {fileID: 2100000, guid: 4a9072a0d8623aa44abf31f02d209a09,
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: b614a09bc429623478e946d8170b15ae, type: 2}
-  appBarTightFollow: 0
   scaleRate: 1
-  appBarHoverOffsetZ: 0.5
+  appBarHoverOffsetZ: 0.05
   maxScale: 2
   rotationType: 0
   handMotionToRotate: 0
@@ -1336,6 +1352,24 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bfdc7f60d7205c84f82a4806a5352d60, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1191689814 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100004, guid: 284d5c2c421022e4f9056fb0a21ff91c, type: 3}
+  m_PrefabInternal: {fileID: 1222626213}
+--- !u!64 &1191689818
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1191689814}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 1
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 284d5c2c421022e4f9056fb0a21ff91c, type: 3}
 --- !u!1001 &1197191672
 Prefab:
   m_ObjectHideFlags: 0
@@ -1422,9 +1456,8 @@ MonoBehaviour:
   rotateHandleMaterial: {fileID: 2100000, guid: 4a9072a0d8623aa44abf31f02d209a09,
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: b614a09bc429623478e946d8170b15ae, type: 2}
-  appBarTightFollow: 0
   scaleRate: 4
-  appBarHoverOffsetZ: 0
+  appBarHoverOffsetZ: 0.05
   maxScale: 2
   rotationType: 0
   handMotionToRotate: 1
@@ -1432,20 +1465,6 @@ MonoBehaviour:
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
     type: 2}
---- !u!64 &1197191676
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1197191674}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 1e23ec24c22068b4cbf47737c35e277b, type: 3}
 --- !u!1001 &1222626213
 Prefab:
   m_ObjectHideFlags: 0
@@ -1532,9 +1551,8 @@ MonoBehaviour:
   rotateHandleMaterial: {fileID: 2100000, guid: 4a9072a0d8623aa44abf31f02d209a09,
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: b614a09bc429623478e946d8170b15ae, type: 2}
-  appBarTightFollow: 0
   scaleRate: 4
-  appBarHoverOffsetZ: 0
+  appBarHoverOffsetZ: 0.05
   maxScale: 2
   rotationType: 0
   handMotionToRotate: 1
@@ -1542,20 +1560,6 @@ MonoBehaviour:
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
     type: 2}
---- !u!64 &1222626217
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1222626215}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 284d5c2c421022e4f9056fb0a21ff91c, type: 3}
 --- !u!114 &1222626218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1944,8 +1948,8 @@ CanvasRenderer:
 GameObject:
   m_PrefabParentObject: {fileID: 100004, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
   m_PrefabInternal: {fileID: 1575359649}
---- !u!64 &1423768206
-MeshCollider:
+--- !u!65 &1423768206
+BoxCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -1954,10 +1958,8 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
+  m_Size: {x: 2.5053554, y: 2.1822224, z: 1.9755292}
+  m_Center: {x: 0.26491338, y: 1.1037669, z: -0.00000014901163}
 --- !u!1 &1428215743 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100002, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
@@ -1982,9 +1984,8 @@ MonoBehaviour:
   rotateHandleMaterial: {fileID: 2100000, guid: 4a9072a0d8623aa44abf31f02d209a09,
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: b614a09bc429623478e946d8170b15ae, type: 2}
-  appBarTightFollow: 0
   scaleRate: 4
-  appBarHoverOffsetZ: 0
+  appBarHoverOffsetZ: 0.05
   maxScale: 2
   rotationType: 0
   handMotionToRotate: 1
@@ -2377,9 +2378,8 @@ MonoBehaviour:
   rotateHandleMaterial: {fileID: 2100000, guid: 4a9072a0d8623aa44abf31f02d209a09,
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: b614a09bc429623478e946d8170b15ae, type: 2}
-  appBarTightFollow: 0
   scaleRate: 4
-  appBarHoverOffsetZ: 0
+  appBarHoverOffsetZ: 0.05
   maxScale: 2
   rotationType: 0
   handMotionToRotate: 1
