@@ -65,8 +65,7 @@ namespace MixedRealityToolkit.SpatialMapping.RemoteMapping
         /// </summary>
         private ConcurrentQueue<byte[]> ReceivedMeshes;
 
-        // Use this for initialization.
-        void Start()
+        private void Start()
         {
             // Initiate the queue for storing the mesh data until the game objects are created
             ReceivedMeshes = new ConcurrentQueue<byte[]>();
@@ -75,8 +74,7 @@ namespace MixedRealityToolkit.SpatialMapping.RemoteMapping
             StartServer();
         }
 
-        // Update is called once per frame.
-        void Update()
+        private void Update()
         {
             if (ReceivedMeshes.TryDequeue(out byte[] result))
             {
