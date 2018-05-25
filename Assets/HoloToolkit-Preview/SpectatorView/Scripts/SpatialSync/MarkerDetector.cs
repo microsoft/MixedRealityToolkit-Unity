@@ -6,29 +6,29 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpectatorView
+namespace HoloToolkit.Unity.Preview.SpectatorView
 {
     /// <summary>
     /// Manages the OpenCV wrapper to detect a marker.
     /// </summary>
     public class MarkerDetector
     {
-        [DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_Initialize", ExactSpelling=true)]
+        [DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_Initialize")]
         internal static extern void InitalizeMarkerDetector();
 
-        [DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_Terminate", ExactSpelling=true)]
+        [DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_Terminate")]
         internal static extern void TerminateMarkerDetector();
 
-        [DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_DetectMarkers", ExactSpelling=true)]
+        [DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_DetectMarkers")]
         internal static extern bool DetectMarkers(int _imageWidth, int _imageHeight, IntPtr _imageDate, float _markerSize);
 
-        [DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_GetNumMarkersDetected", ExactSpelling=true)]
+        [DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_GetNumMarkersDetected")]
         internal static extern bool GetNumMarkersDetected(out int _numMarkersDetected);
 
-        [DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_GetDetectedMarkerIds", ExactSpelling=true)]
+        [DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_GetDetectedMarkerIds")]
         internal static extern bool GetDetectedMarkerIds(IntPtr _detectedMarkers);
 
-        [DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_GetDetectedMarkerPose", ExactSpelling=true)]
+        [DllImport("SpectatorViewPlugin", EntryPoint="MarkerDetector_GetDetectedMarkerPose")]
         internal static extern bool GetDetectedMarkerPose(int _markerId, out float _xPos, out float _yPos, out float _zPos, out float _xRot, out float _yRot, out float _zRot);
 
         /// <summary>

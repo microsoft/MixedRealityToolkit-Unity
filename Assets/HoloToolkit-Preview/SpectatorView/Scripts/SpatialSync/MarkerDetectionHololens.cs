@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpectatorView
+namespace HoloToolkit.Unity.Preview.SpectatorView
 {
     /// <summary>
     /// Manages the capture process on the HoloLens

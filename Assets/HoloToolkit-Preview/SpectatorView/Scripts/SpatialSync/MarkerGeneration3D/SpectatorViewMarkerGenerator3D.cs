@@ -4,7 +4,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpectatorView
+namespace HoloToolkit.Unity.Preview.SpectatorView
 {
     /// <summary>
     /// Controls the generation of AR markers from a pool.

@@ -2,9 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.using UnityEngine;
 
 using System.Runtime.InteropServices;
-using UnityEngine;
 
-namespace HoloToolkit.Unity.SpectatorView
+namespace HoloToolkit.Unity.Preview.SpectatorView
 {
     /// <summary>
     /// Utility function to ensure the OpenCVWrapper has been successfully loaded
@@ -14,7 +13,7 @@ namespace HoloToolkit.Unity.SpectatorView
         /// <summary>
         /// Utility function to ensure the OpenCVWrapper has been successfully loaded
         /// </summary>
-        [DllImport("SpectatorViewPlugin", EntryPoint="CheckLibraryHasLoaded", ExactSpelling=true)]
+        [DllImport("SpectatorViewPlugin", EntryPoint="CheckLibraryHasLoaded")]
         public static extern void CheckOpenCVWrapperHasLoaded();
     }
 }

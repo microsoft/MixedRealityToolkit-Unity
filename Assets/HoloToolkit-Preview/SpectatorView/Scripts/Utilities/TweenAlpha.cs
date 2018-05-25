@@ -2,10 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.using UnityEngine;
 
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpectatorView
+namespace HoloToolkit.Unity.Preview.SpectatorView
 {
     /// <summary>
     /// Utility for fading out marker
