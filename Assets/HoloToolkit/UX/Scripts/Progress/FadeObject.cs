@@ -52,7 +52,6 @@ namespace HoloToolkit.Examples.InteractiveElements
         private float fadeCounter = 0;
         private Color cachedColor;
         private bool fadingIn = true;
-        private bool isFading = false;
 
         //cache material to prevent memory leak
         private Material cachedMaterial;
