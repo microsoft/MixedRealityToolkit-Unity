@@ -9,7 +9,7 @@ using UnityEngine.iOS;
 using UnityEngine.Apple.ReplayKit;
 #endif
 
-namespace HoloToolkit.Unity.SpectatorView
+namespace HoloToolkit.Unity.Preview.SpectatorView
 {
     /// <summary>
     /// Records and replays screencaptures recorded from the iPhone

@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace HoloToolkit.Unity.SpectatorView
+namespace HoloToolkit.Unity.Preview.SpectatorView
 {
     /// <summary>
     /// In this instance the HoloLens will be listening to broadcasts from the mobile device to turn on the camera
@@ -40,7 +39,7 @@ namespace HoloToolkit.Unity.SpectatorView
             {
                 OpenCVUtils.CheckOpenCVWrapperHasLoaded();
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Debug.LogError(e);
                 gameObject.SetActive(false);

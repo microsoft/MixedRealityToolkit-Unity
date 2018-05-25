@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace HoloToolkit.Unity.SpectatorView
+namespace HoloToolkit.Unity.Preview.SpectatorView
 {
     [CustomEditor(typeof(MarkerGeneration3D), true)]
     public class MarkerGeneration3DEditor : Editor

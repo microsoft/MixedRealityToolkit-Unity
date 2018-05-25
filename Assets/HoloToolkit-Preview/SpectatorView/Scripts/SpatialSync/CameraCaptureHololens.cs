@@ -13,7 +13,7 @@ using UnityEngine.VR.WSA.WebCam;
 #endif
 #endif
 
-namespace HoloToolkit.Unity.SpectatorView
+namespace HoloToolkit.Unity.Preview.SpectatorView
 {
     /// <summary>
     /// Manages the camera capture on the HoloLens

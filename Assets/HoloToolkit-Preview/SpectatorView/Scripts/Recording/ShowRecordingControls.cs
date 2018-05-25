@@ -4,7 +4,7 @@
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.SpectatorView
+namespace HoloToolkit.Unity.Preview.SpectatorView
 {
     /// <summary>
     /// Controls the display of the recording UI.
