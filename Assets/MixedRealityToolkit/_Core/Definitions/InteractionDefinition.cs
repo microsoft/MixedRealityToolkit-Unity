@@ -20,6 +20,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
             InputType = inputType;
         }
 
+        public InteractionDefinition(uint id, AxisType axisType, Devices.DeviceInputType inputType, InputAction inputAction) : this()
+        {
+            Id = id;
+            AxisType = axisType;
+            InputType = inputType;
+            InputAction = inputAction;
+        }
+
+        public InteractionDefinition(uint id, AxisType axisType, Devices.DeviceInputType inputType, InputAction inputAction, InputAction inputHoldAction) : this()
+        {
+            Id = id;
+            AxisType = axisType;
+            InputType = inputType;
+            InputAction = inputAction;
+            InputHoldAction = inputHoldAction;
+        }
+
         #region Interaction Properties
 
         /// <summary>
@@ -42,6 +59,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public InputAction InputAction { get; set; }
 
+        /// <summary>
+        /// Action to be raised to the Input Manager when the input data has changed.
+        /// </summary>
+        public InputAction InputHoldAction { get; set; }
         /// <summary>
         /// Has the value changed since the last reading.
         /// </summary>
