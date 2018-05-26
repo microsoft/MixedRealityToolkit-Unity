@@ -1,7 +1,8 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Internal.Inspectors",
     "references": [
-        "Microsoft.MixedReality.Toolkit"
+        "Microsoft.MixedReality.Toolkit",
+        "EditorClassExtensions"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

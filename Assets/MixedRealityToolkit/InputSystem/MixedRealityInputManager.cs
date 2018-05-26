@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem
 {
@@ -109,18 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             InitializeInternal();
         }
 
-        /// <inheritdoc />
-        public override void Destroy()
-        {
-            Object.Destroy(CameraCache.Main.gameObject.GetComponent<FocusProvider>());
-            FocusProvider = null;
-
-            Object.Destroy(CameraCache.Main.gameObject.GetComponent<GazeProvider>());
-            GazeProvider = null;
-
-            base.Destroy();
-        }
-
         #endregion IMixedRealityManager Implementation
 
         #region IEventSystemManager Implementation
@@ -138,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             Debug.Assert(!baseInputEventData.used);
             Debug.Assert(eventData != null);
 
-            GameObject focusedObject = FocusProvider.GetFocusedObject(baseInputEventData);
+            GameObject focusedObject = FocusProvider?.GetFocusedObject(baseInputEventData);
 
             // Send the event to global listeners
             for (int i = 0; i < EventListeners.Count; i++)

@@ -3,11 +3,4 @@ guid: f59f20a51598baa4493408e0dc17600f
 timeCreated: 1518041239
 licenseType: Pro
 MonoImporter:
-  externalObjects: {}
-  serializedVersion: 2
-  defaultReferences: []
-  executionOrder: 0
   icon: {fileID: 2800000, guid: 8a1b00ef1a7a8b94891466c1f0911027, type: 3}
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 

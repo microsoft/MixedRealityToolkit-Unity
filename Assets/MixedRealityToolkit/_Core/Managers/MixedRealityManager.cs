@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Managers
@@ -35,7 +34,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         public MixedRealityConfigurationProfile ActiveProfile
         {
             get { return activeProfile; }
-            set { activeProfile = value; if (resetOnProfileChange) gameObject.SetActive(true); ResetConfiguration(); }
+            set
+            {
+                activeProfile = value;
+
+                if (resetOnProfileChange)
+                {
+                    gameObject.SetActive(true);
+                }
+
+                ResetConfiguration();
+            }
         }
 
         /// <summary>
@@ -181,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 switch (objects.Length)
                 {
                     case 0:
-                        return instance = CameraCache.Main.gameObject.AddComponent<MixedRealityManager>();
+                        return instance = new GameObject("MixedRealityManager").AddComponent<MixedRealityManager>();
                     case 1:
                         objects[0].InitializeInternal();
                         return instance;
