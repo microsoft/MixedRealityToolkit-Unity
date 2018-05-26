@@ -21,6 +21,3 @@ MonoBehaviour:
   pointerAction:
     id: 1
     description: 
-  holdAction:
-    id: 2
-    description: 
