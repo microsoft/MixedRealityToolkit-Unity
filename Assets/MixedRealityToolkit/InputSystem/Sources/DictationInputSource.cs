@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
 using System.Threading.Tasks;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using System.Collections.Generic;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 using System.Text;
@@ -29,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <summary>
         /// Constructor.
         /// </summary>
-        public DictationInputSource() : base("Dictation", new System.Collections.Generic.Dictionary<Internal.Definitions.Devices.DeviceInputType, InteractionDefinition>() { { Internal.Definitions.Devices.DeviceInputType.Voice, new InteractionDefinition(1, AxisType.None, Internal.Definitions.Devices.DeviceInputType.Voice) } })
+        public DictationInputSource() : base("Dictation", new Dictionary<Internal.Definitions.Devices.DeviceInputType, InteractionDefinition>() { { Internal.Definitions.Devices.DeviceInputType.Voice, new InteractionDefinition(1, AxisType.None, Internal.Definitions.Devices.DeviceInputType.Voice) } })
         {
             source = this;
             dictationResult = string.Empty;

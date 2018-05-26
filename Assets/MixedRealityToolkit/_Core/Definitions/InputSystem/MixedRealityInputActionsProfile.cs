@@ -12,8 +12,33 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input Actions Profile", fileName = "MixedRealityInputActionsProfile", order = 1)]
     public class MixedRealityInputActionsProfile : ScriptableObject
     {
-        private readonly string[] inputActionsMRTKDefaults = { "Select", "Menu", "Grip", "Pointer", "Walk", "Look", "Interact", "Pickup", "Inventory", "ConversationSelect" };
-        private readonly AxisType[] inputActionsMRTKDefaultsAxis = { AxisType.Digital, AxisType.Digital, AxisType.SixDoF, AxisType.SixDoF, AxisType.DualAxis, AxisType.DualAxis, AxisType.DualAxis, AxisType.Digital, AxisType.DualAxis, AxisType.DualAxis };
+        private readonly string[] inputActionsMRTKDefaults = 
+        {
+            "Select",
+            "Menu",
+            "Grip",
+            "Pointer",
+            "Walk",
+            "Look",
+            "Interact",
+            "Pickup",
+            "Inventory",
+            "ConversationSelect"
+        }; // Examples only, to be refined later.
+
+        private readonly AxisType[] inputActionsMRTKDefaultsAxis = 
+        {
+            AxisType.Digital,
+            AxisType.Digital,
+            AxisType.SixDoF,
+            AxisType.SixDoF,
+            AxisType.DualAxis,
+            AxisType.DualAxis,
+            AxisType.DualAxis,
+            AxisType.Digital,
+            AxisType.DualAxis,
+            AxisType.DualAxis
+        }; // Examples only, to be refined later
 
         [SerializeField]
         [Tooltip("The list of actions users can do in your application.")]

@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         private const float K_CONTACT_EPSILON = 2.0f / 60.0f;
 
         public TouchscreenInputSource()
-            : base("Touch Input", new System.Collections.Generic.Dictionary<Internal.Definitions.Devices.DeviceInputType, InteractionDefinition>()
+            : base("Touch Input", new Dictionary<Internal.Definitions.Devices.DeviceInputType, InteractionDefinition>()
         {
             {Internal.Definitions.Devices.DeviceInputType.Touchpad, new InteractionDefinition(1, AxisType.DualAxis, Internal.Definitions.Devices.DeviceInputType.Touchpad) },
             {Internal.Definitions.Devices.DeviceInputType.PointerPosition, new InteractionDefinition(2, AxisType.DualAxis, Internal.Definitions.Devices.DeviceInputType.PointerPosition) },
