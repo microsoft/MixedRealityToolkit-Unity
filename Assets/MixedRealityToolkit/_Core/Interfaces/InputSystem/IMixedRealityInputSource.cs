@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 {
@@ -30,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <summary>
         /// Details the list of available buttons / interactions available from the Input Source.
         /// </summary>
-        InteractionDefinition[] Interactions { get; }
+        Dictionary<Definitions.Devices.DeviceInputType, InteractionDefinition> Interactions { get; }
 
         /// <summary>
         /// Returns whether the Input Source supports the specified input type.

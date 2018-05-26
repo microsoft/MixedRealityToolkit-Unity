@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             public readonly InteractionSource Source;
             public readonly BaseControllerPointer[] PointerSceneObjects;
 
-            public InteractionInputSource(InteractionSource source, string name, BaseControllerPointer[] pointerSceneObjects, IMixedRealityPointer[] pointers, InteractionDefinition[] interactions)
+            public InteractionInputSource(InteractionSource source, string name, BaseControllerPointer[] pointerSceneObjects, IMixedRealityPointer[] pointers, Dictionary<Internal.Definitions.Devices.DeviceInputType, InteractionDefinition> interactions)
                 : base(name, interactions, pointers)
             {
                 Source = source;

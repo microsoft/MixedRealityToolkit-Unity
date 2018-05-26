@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 {
@@ -27,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <param name="name"></param>
         /// <param name="interactions"></param>
         /// <param name="pointers"></param>
-        public BaseGenericInputSource(string name, InteractionDefinition[] interactions, IMixedRealityPointer[] pointers = null)
+        public BaseGenericInputSource(string name, Dictionary<Internal.Definitions.Devices.DeviceInputType, InteractionDefinition> interactions, IMixedRealityPointer[] pointers = null)
         {
             SourceId = InputSystem.GenerateNewSourceId();
             SourceName = name;
@@ -45,20 +46,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         public virtual IMixedRealityPointer[] Pointers { get; }
 
         /// <inheritdoc />
-        public InteractionDefinition[] Interactions { get; }
+        public Dictionary<Internal.Definitions.Devices.DeviceInputType, InteractionDefinition> Interactions { get; }
 
         /// <inheritdoc />
         public bool SupportsCapability(Internal.Definitions.Devices.DeviceInputType inputInfo)
         {
-            for (int i = 0; i < Interactions.Length; i++)
-            {
-                if (Interactions[i].InputType == inputInfo)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return Interactions.ContainsKey(inputInfo);
         }
 
         #region IEquality Implementation

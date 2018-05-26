@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <summary>
         /// Constructor.
         /// </summary>
-        public SpeechInputSource() : base("SpeechInput", new[] { new InteractionDefinition(1, AxisType.None, Internal.Definitions.Devices.DeviceInputType.Voice) })
+        public SpeechInputSource() : base("SpeechInput", new System.Collections.Generic.Dictionary<Internal.Definitions.Devices.DeviceInputType, InteractionDefinition>() { { Internal.Definitions.Devices.DeviceInputType.Voice, new InteractionDefinition(1, AxisType.None, Internal.Definitions.Devices.DeviceInputType.Voice) } })
         {
             if (commands.Length == 0) { return; }
 
