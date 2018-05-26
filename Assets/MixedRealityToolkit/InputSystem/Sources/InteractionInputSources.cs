@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
@@ -83,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             public readonly InteractionSource Source;
             public readonly BaseControllerPointer[] PointerSceneObjects;
 
-            public InteractionInputSource(InteractionSource source, string name, BaseControllerPointer[] pointerSceneObjects, IMixedRealityPointer[] pointers, InteractionDefinition[] interactions)
+            public InteractionInputSource(InteractionSource source, string name, BaseControllerPointer[] pointerSceneObjects, IMixedRealityPointer[] pointers, Dictionary<Internal.Definitions.Devices.DeviceInputType, InteractionDefinition> interactions)
                 : base(name, interactions, pointers)
             {
                 Source = source;

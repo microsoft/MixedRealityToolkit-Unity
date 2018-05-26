@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async.AwaitYieldInstructions;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
@@ -36,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <summary>
         /// Constructor.
         /// </summary>
-        public SpeechInputSource() : base("SpeechInput", new[] { new InteractionDefinition(1, AxisType.None, Internal.Definitions.Devices.DeviceInputType.Voice) })
+        public SpeechInputSource() : base("SpeechInput", new Dictionary<Internal.Definitions.Devices.DeviceInputType, InteractionDefinition>() { { Internal.Definitions.Devices.DeviceInputType.Voice, new InteractionDefinition(1, AxisType.None, Internal.Definitions.Devices.DeviceInputType.Voice) } })
         {
             if (commands.Length == 0) { return; }
 

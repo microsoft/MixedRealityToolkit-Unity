@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
@@ -38,13 +38,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         private const float K_CONTACT_EPSILON = 2.0f / 60.0f;
 
         public TouchscreenInputSource()
-            : base("Touch Input", new[]
+            : base("Touch Input", new Dictionary<Internal.Definitions.Devices.DeviceInputType, InteractionDefinition>()
         {
-            new InteractionDefinition(1, AxisType.DualAxis, Internal.Definitions.Devices.DeviceInputType.Touchpad),
-            new InteractionDefinition(2, AxisType.DualAxis, Internal.Definitions.Devices.DeviceInputType.PointerPosition),
-            new InteractionDefinition(3, AxisType.Digital, Internal.Definitions.Devices.DeviceInputType.TouchpadTouch),
-            new InteractionDefinition(4, AxisType.Digital, Internal.Definitions.Devices.DeviceInputType.TouchpadPress),
-            new InteractionDefinition(5, AxisType.Digital, Internal.Definitions.Devices.DeviceInputType.PointerClick),
+            {Internal.Definitions.Devices.DeviceInputType.Touchpad, new InteractionDefinition(1, AxisType.DualAxis, Internal.Definitions.Devices.DeviceInputType.Touchpad) },
+            {Internal.Definitions.Devices.DeviceInputType.PointerPosition, new InteractionDefinition(2, AxisType.DualAxis, Internal.Definitions.Devices.DeviceInputType.PointerPosition) },
+            {Internal.Definitions.Devices.DeviceInputType.TouchpadTouch, new InteractionDefinition(3, AxisType.Digital, Internal.Definitions.Devices.DeviceInputType.TouchpadTouch) },
+            {Internal.Definitions.Devices.DeviceInputType.TouchpadPress, new InteractionDefinition(4, AxisType.Digital, Internal.Definitions.Devices.DeviceInputType.TouchpadPress) },
+            {Internal.Definitions.Devices.DeviceInputType.PointerClick, new InteractionDefinition(5, AxisType.Digital, Internal.Definitions.Devices.DeviceInputType.PointerClick) }
         })
         {
             Run();

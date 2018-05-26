@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
     /// Maps the capabilities of controllers, one definition should exist for each interaction profile.<para/>
@@ -17,6 +18,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
             Id = id;
             AxisType = axisType;
             InputType = inputType;
+        }
+
+        public InteractionDefinition(uint id, AxisType axisType, Devices.DeviceInputType inputType, InputAction inputAction) : this()
+        {
+            Id = id;
+            AxisType = axisType;
+            InputType = inputType;
+            InputAction = inputAction;
+        }
+
+        public InteractionDefinition(uint id, AxisType axisType, Devices.DeviceInputType inputType, InputAction inputAction, InputAction inputHoldAction) : this()
+        {
+            Id = id;
+            AxisType = axisType;
+            InputType = inputType;
+            InputAction = inputAction;
+            InputHoldAction = inputHoldAction;
         }
 
         #region Interaction Properties
@@ -41,6 +59,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         /// </summary>
         public InputAction InputAction { get; set; }
 
+        /// <summary>
+        /// Action to be raised to the Input Manager when the input data has changed.
+        /// </summary>
+        public InputAction InputHoldAction { get; set; }
         /// <summary>
         /// Has the value changed since the last reading.
         /// </summary>
