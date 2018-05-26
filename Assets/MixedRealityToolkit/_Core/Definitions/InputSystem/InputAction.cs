@@ -22,18 +22,37 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         {
             this.id = id;
             this.description = description;
+            this.axis = AxisType.None;
+        }
+
+        /// <summary>
+        /// Axis Constructor.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="description"></param>
+        public InputAction(uint id, string description, AxisType axis)
+        {
+            this.id = id;
+            this.description = description;
+            this.axis = axis;
         }
 
         /// <inheritdoc />
         public uint Id => id;
 
         [SerializeField]
-        private uint id;
+        private readonly uint id;
 
         /// <inheritdoc />
         public string Description => description;
 
         [SerializeField]
-        private string description;
+        private readonly string description;
+
+        /// <inheritdoc />
+        public AxisType Axis => axis;
+
+        [SerializeField]
+        private readonly AxisType axis;
     }
 }

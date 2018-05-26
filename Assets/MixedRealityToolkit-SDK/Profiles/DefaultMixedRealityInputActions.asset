@@ -18,8 +18,10 @@ MonoBehaviour:
     description: Menu
   - id: 3
     description: Grip
+  - id: 4
+    description: My custom Action
   pointerAction:
-    id: 1
+    id: 4
     description: 
   holdAction:
     id: 3

@@ -4,10 +4,10 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
@@ -91,45 +91,46 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             for (uint i = 0; i < mappings.Length; i++)
             {
                 // Add interaction for Mapping
-                Interactions.Add(mappings[i].InputType, new InteractionDefinition(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                Interactions.Add(mappings[i].InputType, new InteractionDefinition(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction, mappings[i].InputHoldAction));
             }
         }
 
         private void SetupWMRControllerDefaults(InteractionSourceState interactionSourceState)
         {
+            InputAction[] inputActions = Managers.MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions;
             //Add the Controller Pointer
-            Interactions.Add(DeviceInputType.SpatialPointer, new InteractionDefinition(1, AxisType.SixDoF, DeviceInputType.SpatialPointer,new InputAction(0,"Pointer")));
+            Interactions.Add(DeviceInputType.SpatialPointer, new InteractionDefinition(1, AxisType.SixDoF, DeviceInputType.SpatialPointer, inputActions.GetActionByName("Select"))); // Note will convert these lookups to indexes
 
             // Add the Controller trigger
-            Interactions.Add(DeviceInputType.Trigger, new InteractionDefinition(2, AxisType.SingleAxis, DeviceInputType.Trigger, ControllerHandedness == Handedness.Left ? new InputAction(0, "LeftTrigger") : new InputAction(0, "Right Trigger")));
+            Interactions.Add(DeviceInputType.Trigger, new InteractionDefinition(2, AxisType.SingleAxis, DeviceInputType.Trigger, inputActions.GetActionByName("Select")));
 
             // If the controller has a Grip / Grasp button, add it to the controller capabilities
             if (interactionSourceState.source.supportsGrasp)
             {
-                Interactions.Add(DeviceInputType.SpatialGrip, new InteractionDefinition(3, AxisType.SixDoF, DeviceInputType.SpatialGrip, new InputAction(0, "Grip")));
+                Interactions.Add(DeviceInputType.SpatialGrip, new InteractionDefinition(3, AxisType.SixDoF, DeviceInputType.SpatialGrip, inputActions.GetActionByName("Grip")));
 
-                Interactions.Add(DeviceInputType.GripPress, new InteractionDefinition(4, AxisType.SingleAxis, DeviceInputType.GripPress, new InputAction(0, "GripPress")));
+                Interactions.Add(DeviceInputType.GripPress, new InteractionDefinition(4, AxisType.SingleAxis, DeviceInputType.GripPress, inputActions.GetActionByName("Grab")));
             }
 
             // If the controller has a menu button, add it to the controller capabilities
             if (interactionSourceState.source.supportsMenu)
             {
-                Interactions.Add(DeviceInputType.Menu, new InteractionDefinition(5, AxisType.Digital, DeviceInputType.Menu, new InputAction(0, "Menu")));
+                Interactions.Add(DeviceInputType.Menu, new InteractionDefinition(5, AxisType.Digital, DeviceInputType.Menu, inputActions.GetActionByName("Menu")));
             }
 
             // If the controller has a Thumbstick, add it to the controller capabilities
             if (interactionSourceState.source.supportsThumbstick)
             {
-                Interactions.Add(DeviceInputType.ThumbStick, new InteractionDefinition(6, AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerHandedness == Handedness.Left ? new InputAction(0, "ThumbStickLeft") : new InputAction(0, "ThumbStickRight")));
-                Interactions.Add(DeviceInputType.ThumbStickPress, new InteractionDefinition(7, AxisType.Digital, DeviceInputType.ThumbStickPress, new InputAction(0, "ThumbstickPress")));
+                Interactions.Add(DeviceInputType.ThumbStick, new InteractionDefinition(6, AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerHandedness == Handedness.Left ? inputActions.GetActionByName("Walk") : inputActions.GetActionByName("Look")));
+                Interactions.Add(DeviceInputType.ThumbStickPress, new InteractionDefinition(7, AxisType.Digital, DeviceInputType.ThumbStickPress, inputActions.GetActionByName("Interact")));
             }
 
             // If the controller has a Touchpad, add it to the controller capabilities
             if (interactionSourceState.source.supportsTouchpad)
             {
-                Interactions.Add(DeviceInputType.Touchpad, new InteractionDefinition(8, AxisType.DualAxis, DeviceInputType.Touchpad, ControllerHandedness == Handedness.Left ? new InputAction(0, "TouchpadLeft") : new InputAction(0, "TouchpadRight")));
-                Interactions.Add(DeviceInputType.TouchpadTouch, new InteractionDefinition(9, AxisType.Digital, DeviceInputType.TouchpadTouch, new InputAction(0, "TouchpadTouch")));
-                Interactions.Add(DeviceInputType.TouchpadPress, new InteractionDefinition(10, AxisType.Digital, DeviceInputType.TouchpadPress, ControllerHandedness == Handedness.Left ? new InputAction(0, "TouchpadPressLeft") : new InputAction(0, "TouchpadPressRight")));
+                Interactions.Add(DeviceInputType.Touchpad, new InteractionDefinition(8, AxisType.DualAxis, DeviceInputType.Touchpad, inputActions.GetActionByName("Inventory")));
+                Interactions.Add(DeviceInputType.TouchpadTouch, new InteractionDefinition(9, AxisType.Digital, DeviceInputType.TouchpadTouch, inputActions.GetActionByName("Pickup")));
+                Interactions.Add(DeviceInputType.TouchpadPress, new InteractionDefinition(10, AxisType.Digital, DeviceInputType.TouchpadPress, inputActions.GetActionByName("Pickup")));
             }
         }
 
@@ -229,53 +230,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         #endregion Update data functions
 
         #endregion Setup and Update functions
-
-        //TODO - Needs re-implementing, as there may be more than left == right
-        //#region IEquality Implementation
-
-        //public static bool Equals(IMixedRealityInputSource left, IMixedRealityInputSource right)
-        //{
-        //    return left.Equals(right);
-        //}
-
-        //public new bool Equals(object left, object right)
-        //{
-        //    return left.Equals(right);
-        //}
-
-        //public override bool Equals(object obj)
-        //{
-        //    if (ReferenceEquals(null, obj)) { return false; }
-        //    if (ReferenceEquals(this, obj)) { return true; }
-        //    if (obj.GetType() != GetType()) { return false; }
-
-        //    return Equals((IMixedRealityInputSource)obj);
-        //}
-
-        //private bool Equals(IMixedRealityInputSource other)
-        //{
-        //    return other != null && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
-        //}
-
-        //int IEqualityComparer.GetHashCode(object obj)
-        //{
-        //    return obj.GetHashCode();
-        //}
-
-        //public override int GetHashCode()
-        //{
-        //    unchecked
-        //    {
-        //        int hashCode = 0;
-        //        hashCode = (hashCode * 397) ^ (int)SourceId;
-        //        hashCode = (hashCode * 397) ^ (SourceName != null ? SourceName.GetHashCode() : 0);
-        //        return hashCode;
-        //    }
-        //}
-
-        //#endregion IEquality Implementation
-
-        //TODO - Needs re-implementing as it returns true if ONE capability is supported, but not multiples
 
         #region Utilities
         private static InteractionSourceState CheckIfValidInteractionSourceState<T>(T state)
