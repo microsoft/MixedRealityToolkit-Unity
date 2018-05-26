@@ -22,6 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
         private static int selectionControlId;
         private static string selectedReference;
         private static readonly Dictionary<string, Type> TypeMap = new Dictionary<string, Type>();
+        private static readonly int ControlHint = typeof(TypeSeReferencePropertyDrawer).GetHashCode();
+        private static readonly GUIContent TempContent = new GUIContent();
 
         #region Type Filtering
 
@@ -37,18 +39,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
         /// property is reset to <c>null</c> each time the control is drawn.</para>
         /// <para>Since filtering makes extensive use of <see cref="ICollection{Type}.Contains"/>
         /// it is recommended to use a collection that is optimized for fast
-        /// lookups such as <see cref="HashSet{Type}"/> for better performance.</para>
+        /// look ups such as <see cref="HashSet{Type}"/> for better performance.</para>
         /// </remarks>
         /// <example>
         /// <para>Exclude a specific type from being selected:</para>
         /// <code language="csharp"><![CDATA[
-        /// private SerializedProperty _someClassTypeReferenceProperty;
+        /// private SerializedProperty someTypeReferenceProperty;
         /// 
         /// public override void OnInspectorGUI() {
         ///     serializedObject.Update();
         /// 
         ///     ClassTypeReferencePropertyDrawer.ExcludedTypeCollectionGetter = GetExcludedTypeCollection;
-        ///     EditorGUILayout.PropertyField(_someClassTypeReferenceProperty);
+        ///     EditorGUILayout.PropertyField(someTypeReferenceProperty);
         /// 
         ///     serializedObject.ApplyModifiedProperties();
         /// }
@@ -82,7 +84,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
         {
             foreach (var type in assembly.GetTypes())
             {
-                if (!type.IsVisible || !type.IsClass)
+                bool isValid = type.IsValueType && !type.IsEnum || type.IsClass;
+                if (!type.IsVisible || !isValid)
                 {
                     continue;
                 }
@@ -120,9 +123,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
         #endregion Type Utility
 
         #region Control Drawing / Event Handling
-
-        private static readonly int ControlHint = typeof(TypeSeReferencePropertyDrawer).GetHashCode();
-        private static readonly GUIContent TempContent = new GUIContent();
 
         private static string DrawTypeSelectionControl(Rect position, GUIContent label, string classRef, SystemTypeAttribute filter)
         {
@@ -178,10 +178,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
                     break;
 
                 case EventType.Repaint:
-                    // Remove assembly name from content of popup control.
+                    // Remove assembly name and namespace from content of popup control.
                     var classRefParts = classRef.Split(',');
+                    var className = classRefParts[0].Trim();
+                    className = className.Substring(className.LastIndexOf(".", StringComparison.Ordinal) + 1);
+                    TempContent.text = className;
 
-                    TempContent.text = classRefParts[0].Trim();
                     if (TempContent.text == "")
                     {
                         TempContent.text = "(None)";

@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("Input System Class to instantiate at runtime.")]
-        [Implements(typeof(IMixedRealityInputSystem), TypeGrouping.None)]
+        [Implements(typeof(IMixedRealityInputSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType inputSystemType;
 
         /// <summary>
