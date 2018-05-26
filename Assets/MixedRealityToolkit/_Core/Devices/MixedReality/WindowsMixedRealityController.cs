@@ -75,13 +75,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             MixedRealityControllerMappingProfile controllerMapping = Managers.MixedRealityManager.Instance.ActiveProfile.GetControllerMapping(typeof(WindowsMixedRealityController),ControllerHandedness);
             //MixedRealityControllerMappingProfile controllerMapping = Managers.MixedRealityManager.Instance.ActiveProfile.GetControllerMapping<WindowsMixedRealityController>(ControllerHandedness);
-            if (controllerMapping.Interactions.Length > 0)
+            if (controllerMapping?.Interactions?.Length > 0)
             {
                 SetupFromMapping(controllerMapping.Interactions);
             }
             else
             {
-
                 SetupWMRControllerDefaults(interactionSourceState);
             }
         }
@@ -98,6 +97,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         private void SetupWMRControllerDefaults(InteractionSourceState interactionSourceState)
         {
             InputAction[] inputActions = Managers.MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions;
+            if (inputActions == null)
+            {
+                return;
+            }
             //Add the Controller Pointer
             Interactions.Add(DeviceInputType.SpatialPointer, new InteractionDefinition(1, AxisType.SixDoF, DeviceInputType.SpatialPointer, inputActions.GetActionByName("Select"))); // Note will convert these lookups to indexes
 

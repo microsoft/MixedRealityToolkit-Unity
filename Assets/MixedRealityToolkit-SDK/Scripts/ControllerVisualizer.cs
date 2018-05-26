@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 
@@ -39,15 +40,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK
 
                     initialised = true;
                 }
+                var controller6DoF = controller.Interactions[Internal.Definitions.Devices.DeviceInputType.SpatialPointer].GetValue <Tuple<Vector3, Quaternion>>();
                 if (controller.ControllerHandedness == Internal.Definitions.Handedness.Left)
                 {
-                    //leftController.transform.localPosition = controller.ControllerPosition;
-                    //leftController.transform.localRotation = controller.ControllerRotation;
+                    leftController.transform.localPosition = controller6DoF.Item1;
+                    leftController.transform.localRotation = controller6DoF.Item2;
                 }
                 else
                 {
-                    //rightController.transform.localPosition = controller.ControllerPosition;
-                    //rightController.transform.localRotation = controller.ControllerRotation;
+                    rightController.transform.localPosition = controller6DoF.Item1;
+                    rightController.transform.localRotation = controller6DoF.Item2;
                 }
 
             }

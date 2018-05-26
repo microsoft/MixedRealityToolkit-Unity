@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b746a3d17963cf45bf224deae50fffd, type: 3}
   m_Name: DefaultMixedRealityControllerProfileLeft
   m_EditorClassIdentifier: 
-  controllingHand: 0
+  controllingHand: 1
   controllerType:
     reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
       Microsoft.MixedReality.Toolkit

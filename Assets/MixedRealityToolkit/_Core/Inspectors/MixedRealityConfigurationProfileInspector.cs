@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using System;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions.EditorClassExtensions;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,6 +11,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     [CustomEditor(typeof(MixedRealityConfigurationProfile))]
     public class MixedRealityConfigurationProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
+        private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
+
         private SerializedProperty enableInputSystem;
         private SerializedProperty inputSystemType;
         private SerializedProperty inputActionsProfile;
@@ -43,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             EditorGUILayout.LabelField("Input Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableInputSystem);
+
             if (enableInputSystem.boolValue)
             {
                 EditorGUILayout.PropertyField(inputSystemType);
@@ -70,23 +73,28 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
 
             EditorGUILayout.LabelField("Boundary Settings", EditorStyles.boldLabel);
-
             EditorGUILayout.PropertyField(enableBoundarySystem);
 
             serializedObject.ApplyModifiedProperties();
         }
 
-        private void RenderProfile(SerializedProperty property)
+        private static void RenderProfile(SerializedProperty property)
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(property);
+
             if (property.objectReferenceValue == null)
             {
-                if (GUILayout.Button(new GUIContent("+", "Create New Profile"), EditorStyles.miniButton))
+                if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton))
                 {
-                    throw new NotImplementedException();
+                    var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
+                    Debug.Assert(profileTypeName != null, "No Type Found");
+                    ScriptableObject profile = CreateInstance(profileTypeName);
+                    profile.CreateAsset();
+                    property.objectReferenceValue = profile;
                 }
             }
+
             EditorGUILayout.EndHorizontal();
         }
     }

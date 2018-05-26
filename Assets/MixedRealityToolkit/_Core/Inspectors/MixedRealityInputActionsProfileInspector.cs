@@ -14,7 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Remove Action");
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Add a New Action", "Add New Action");
         private static readonly GUIContent PointerContent = new GUIContent("Pointer Action", "The action to use for pointing events:\nOnPointerUp, OnPointerDown, OnPointerClick, etc.");
-        private static readonly GUIContent HoldContent = new GUIContent("Hold Action", "The action to use for hold events:\nOnPointerUp, OnPointerDown, OnPointerClick, etc.");
 
         private static Vector2 scrollPosition = Vector2.zero;
 
@@ -23,8 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty inputActionList;
         private SerializedProperty pointerAction;
         private SerializedProperty pointerActionId;
-        private SerializedProperty holdAction;
-        private SerializedProperty holdActionId;
 
         private void OnEnable()
         {
@@ -32,8 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             inputActionList = serializedObject.FindProperty("inputActions");
             pointerAction = serializedObject.FindProperty("pointerAction");
             pointerActionId = pointerAction.FindPropertyRelative("id");
-            holdAction = serializedObject.FindProperty("holdAction");
-            holdActionId = holdAction.FindPropertyRelative("id");
         }
 
         public override void OnInspectorGUI()
@@ -53,7 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             int[] actionIds = profile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
 
             pointerActionId.intValue = EditorGUILayout.IntPopup(PointerContent, CheckValue(pointerActionId.intValue, profile.InputActions.Length), actionLabels, actionIds);
-            holdActionId.intValue = EditorGUILayout.IntPopup(HoldContent, CheckValue(holdActionId.intValue, profile.InputActions.Length), actionLabels, actionIds);
 
             serializedObject.ApplyModifiedProperties();
         }

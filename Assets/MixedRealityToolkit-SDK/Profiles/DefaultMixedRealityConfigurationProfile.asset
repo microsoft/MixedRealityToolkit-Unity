@@ -15,10 +15,11 @@ MonoBehaviour:
   inputSystemType:
     reference: Microsoft.MixedReality.Toolkit.InputSystem.MixedRealityInputManager,
       Microsoft.MixedReality.Toolkit.InputSystem
-  inputActionsProfile: {fileID: 11400000, guid: be78d428948031141b6168f82a821ef3,
+  inputActionsProfile: {fileID: 11400000, guid: 3bd960f68a631aa4384de23c6a96ec51,
     type: 2}
   enableSpeechCommands: 1
-  speechCommandsProfile: {fileID: 0}
+  speechCommandsProfile: {fileID: 11400000, guid: d4640ead7040e0544b6cbe9ebf1b5e1c,
+    type: 2}
   renderMotionControllers: 1
   leftControllerModel: {fileID: 1607431784136684, guid: cb3c161aa200f6442b611e27b6af4f8a,
     type: 2}

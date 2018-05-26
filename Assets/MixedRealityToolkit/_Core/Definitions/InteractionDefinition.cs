@@ -102,8 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         private Quaternion rotationData;
 
-        private Tuple<Vector3, Quaternion> transformData;
-
         #endregion Definition Data items
 
         #region Get Operators
@@ -123,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
                 case AxisType.ThreeDoFRotation:
                     return (T)Convert.ChangeType(rotationData, typeof(T));
                 case AxisType.SixDoF:
-                    return (T)Convert.ChangeType(transformData, typeof(T));
+                    return (T)Convert.ChangeType(GetTransform(), typeof(T));
                 case AxisType.Raw:
                 case AxisType.None:
                 default:
@@ -163,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         public Tuple<Vector3, Quaternion> GetTransform()
         {
-            return transformData;
+            return new Tuple<Vector3, Quaternion>(positionData,rotationData);
         }
 
         #endregion Get Operators
@@ -228,10 +226,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.SixDoF)
             {
-                Changed = newValue.Item1 != transformData.Item1 || newValue.Item2 != transformData.Item2;
+                Changed = newValue.Item1 != positionData || newValue.Item2 != rotationData;
                 positionData = newValue.Item1;
                 rotationData = newValue.Item2;
-                transformData = newValue;
             }
         }
 

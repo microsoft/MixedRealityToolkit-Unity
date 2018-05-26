@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("Input System Class to instantiate at runtime.")]
-        [Implements(typeof(IMixedRealityInputSystem), TypeGrouping.None)]
+        [Implements(typeof(IMixedRealityInputSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType inputSystemType;
 
         /// <summary>
@@ -201,11 +201,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         // TODO - needs validation to ensure duplicates are not added?
 
-        public MixedRealityControllerMappingProfile GetControllerMapping(SystemType controllerType, Handedness hand)
+        public MixedRealityControllerMappingProfile GetControllerMapping(Type controllerType, Handedness hand)
         {
+            var systemType = SystemType.GetReference(controllerType);
             for (int i = 0; i < controllerMappingsProfile?.Length; i++)
             {
-                if (controllerMappingsProfile[i].ControllerType == controllerType && controllerMappingsProfile[i].ControllingHand == hand)
+                if (controllerMappingsProfile[i].ControllerType == systemType && controllerMappingsProfile[i].ControllingHand == hand)
                 {
                     return controllerMappingsProfile[i];
                 }
@@ -218,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         //{
         //    for (int i = 0; i < controllerMappingsProfile?.Length; i++)
         //    {
-        //        if (controllerMappingsProfile[i].ControllerType == typeof(T) && controllerMappingsProfile[i].ControllingHand == handedness)
+        //        if (controllerMappingsProfile[i].ControllerType == SystemType.GetReference(typeof(T)) && controllerMappingsProfile[i].ControllingHand == handedness)
         //        {
         //            return controllerMappingsProfile[i];
         //        }
