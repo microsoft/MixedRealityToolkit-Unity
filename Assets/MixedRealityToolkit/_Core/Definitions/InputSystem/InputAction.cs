@@ -24,6 +24,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
             this.description = description;
         }
 
+        /// <summary>
+        /// Axis Constructor.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="description"></param>
+        public InputAction(uint id, string description, AxisType axis)
+        {
+            this.id = id;
+            this.description = description;
+            this.axis = axis;
+        }
+
         /// <inheritdoc />
         public uint Id => id;
 
@@ -35,5 +47,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 
         [SerializeField]
         private string description;
+
+        /// <inheritdoc />
+        public AxisType Axis => axis;
+
+        [SerializeField]
+        private readonly AxisType axis;
     }
 }
