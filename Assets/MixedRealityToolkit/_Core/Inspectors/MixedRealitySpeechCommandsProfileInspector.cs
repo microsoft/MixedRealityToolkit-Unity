@@ -25,6 +25,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private void OnEnable()
         {
+            if (MixedRealityManager.Instance.ActiveProfile == null)
+            {
+                Debug.LogError("No Active Profile set on the Mixed Reality Manager.");
+                Selection.activeObject = MixedRealityManager.Instance;
+                return;
+            }
+
             speechCommands = serializedObject.FindProperty("speechCommands");
             actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(
                 action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
@@ -34,10 +41,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
             RenderMixedRealityToolkitLogo();
             EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);
+
+            if (MixedRealityManager.Instance.ActiveProfile == null)
+            {
+                EditorGUILayout.HelpBox("No Active Profile set on the Mixed Reality Manager.", MessageType.Error);
+                return;
+            }
+
             EditorGUILayout.HelpBox("Speech Commands are any/all spoken keywords your users will be able say to raise an Input Action in your application.", MessageType.Info);
+
+            serializedObject.Update();
             RenderList(speechCommands);
             serializedObject.ApplyModifiedProperties();
         }
