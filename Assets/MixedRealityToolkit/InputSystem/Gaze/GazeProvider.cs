@@ -231,8 +231,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private void OnDisable()
         {
-            InputSystem.RaiseSourceLost(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(false);
+            InputSystem.RaiseSourceLost(GazeInputSource);
         }
 
         private void OnDestroy()

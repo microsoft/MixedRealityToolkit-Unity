@@ -40,18 +40,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
                 if (resetOnProfileChange)
                 {
-                    gameObject.SetActive(true);
+                    ResetConfiguration();
                 }
 
-                ResetConfiguration();
+                InitializeInternal();
             }
         }
 
         /// <summary>
         /// When a configuration Profile is replaced with a new configuration, force all managers to reset and read the new values
         /// </summary>
-        private void ResetConfiguration()
+        public void ResetConfiguration()
         {
+            if (ActiveProfile == null) { return; }
+
             // Reset all active managers in the registry
             foreach (var manager in ActiveProfile.ActiveManagers)
             {
@@ -125,7 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (!ActiveProfile)
             {
                 Debug.LogError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Manager");
-                gameObject.SetActive(false);
                 return;
             }
 
@@ -190,14 +191,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 switch (objects.Length)
                 {
                     case 0:
-                        return instance = new GameObject("MixedRealityManager").AddComponent<MixedRealityManager>();
+                        instance = new GameObject("MixedRealityManager").AddComponent<MixedRealityManager>();
+                        break;
                     case 1:
-                        objects[0].InitializeInternal();
-                        return instance;
+                        instance = objects[0];
+                        break;
                     default:
                         Debug.LogError($"Expected exactly 1 MixedRealityManager but found {objects.Length}.");
                         return null;
                 }
+
+                instance.InitializeInternal();
+                return instance;
             }
         }
 
