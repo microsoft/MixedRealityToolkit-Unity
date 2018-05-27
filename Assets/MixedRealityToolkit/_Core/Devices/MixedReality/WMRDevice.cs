@@ -206,8 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.SpatialPointer].Changed)
             {
                 // TODO - Need to resolve InputAction
-                inputSystem.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.InputSource.Interactions[3].InputAction, controller.InputSource.Interactions[3].GetValue<Tuple<Vector3, Quaternion>>());
-                //inputSystem.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialPointer].InputAction, controller.Interactions[DeviceInputType.SpatialPointer].GetValue<Tuple<Vector3, Quaternion>>()); // TODO - Review, I feel this option is better but means using a dictionary in the InputSource for Interactions.
+                inputSystem.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialPointer].InputAction, controller.Interactions[DeviceInputType.SpatialPointer].GetValue<Tuple<Vector3, Quaternion>>()); 
             }
 
             if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.SpatialGrip].Changed)
