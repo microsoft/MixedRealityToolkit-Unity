@@ -79,8 +79,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             get { return type; }
             set
             {
-                bool isStruct = value.IsValueType && !value.IsEnum;
-                if (value != null && !value.IsClass || value != null && !isStruct)
+                bool isValid = value.IsValueType && !value.IsEnum || value.IsClass;
+                if (value != null && !isValid)
                 {
                     throw new ArgumentException($"'{value.FullName}' is not a class or struct type.", nameof(value));
                 }
