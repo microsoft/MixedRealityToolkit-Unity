@@ -31,7 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testValue = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
             inputDef.SetValue(testValue);
-            var setValue = inputDef.GetTransform();
 
             Assert.AreEqual(inputDef.Changed, true);
 
@@ -62,15 +61,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testValue = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
             inputDef.SetValue<Tuple<Vector3, Quaternion>>(testValue);
-            var setValue = inputDef.GetValue<Tuple<Vector3, Quaternion>>();
 
             Assert.AreEqual(inputDef.Changed, true);
 
             inputDef.SetValue<Tuple<Vector3, Quaternion>>(testValue);
 
             Assert.AreEqual(inputDef.Changed, false);
-
-
         }
     }
 }
