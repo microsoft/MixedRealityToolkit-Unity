@@ -21,4 +21,11 @@ MonoBehaviour:
   speechCommandsProfile: {fileID: 11400000, guid: d4640ead7040e0544b6cbe9ebf1b5e1c,
     type: 2}
   renderMotionControllers: 1
+  leftControllerModel: {fileID: 1607431784136684, guid: 93830afeef1343747a64a7dd17b20b57,
+    type: 2}
+  rightControllerModel: {fileID: 1607431784136684, guid: 93830afeef1343747a64a7dd17b20b57,
+    type: 2}
+  controllerMappingsProfile:
+  - {fileID: 11400000, guid: e66e4dc7ebbbd60448d085f08fdcc558, type: 2}
+  - {fileID: 11400000, guid: c135423b53eb4bb44a97bef026dbc73d, type: 2}
   enableBoundarySystem: 1

@@ -10,24 +10,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// It is up to the developer to determine whether this affects the use of a controller or not.
     /// "Other" defines potential controllers that will offer a "third" hand, e.g. a full body tracking suit.
     /// </summary>
-    [Flags]
+    //[Flags]
     public enum Handedness
     {
         /// <summary>
         /// No hand specified by the SDK for the controller
         /// </summary>
-        None = 0 << 0,
+        None = 0,// << 0,
         /// <summary>
         /// The controller is identified as being provided in a Left hand
         /// </summary>
-        Left = 0 << 1,
+        Left,// = 0 << 1,
         /// <summary>
         /// The controller is identified as being provided in a Right hand
         /// </summary>
-        Right = 0 << 2,
+        Right,// = 0 << 2,
         /// <summary>
         /// Reserved, for systems that provide alternate hand state.
         /// </summary>
-        Other = 0 << 3,
+        Other// = 0 << 3,
     }
 }

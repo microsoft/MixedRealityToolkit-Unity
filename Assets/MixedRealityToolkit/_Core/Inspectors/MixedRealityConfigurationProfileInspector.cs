@@ -19,6 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
         private SerializedProperty renderMotionControllers;
+        private SerializedProperty leftControllerModel;
+        private SerializedProperty rightControllerModel;
+        private SerializedProperty controllerMappingsProfile;
         private SerializedProperty enableBoundarySystem;
 
         private void OnEnable()
@@ -29,6 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
             renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
+            leftControllerModel = serializedObject.FindProperty("leftControllerModel");
+            rightControllerModel = serializedObject.FindProperty("rightControllerModel");
+            controllerMappingsProfile = serializedObject.FindProperty("controllerMappingsProfile");
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
         }
 
@@ -53,7 +59,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
 
             EditorGUILayout.LabelField("Device Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(controllerMappingsProfile);
+            EditorGUILayout.PropertyField(controllerMappingsProfile.FindPropertyRelative("Array.size"));
+            for (int i = 0; i < controllerMappingsProfile.arraySize; i++)
+            {
+                EditorGUILayout.PropertyField(controllerMappingsProfile.GetArrayElementAtIndex(i));
+            }
             EditorGUILayout.PropertyField(renderMotionControllers);
+            if (renderMotionControllers.boolValue)
+            {
+                EditorGUILayout.PropertyField(leftControllerModel);
+                EditorGUILayout.PropertyField(rightControllerModel);
+            }
 
             EditorGUILayout.LabelField("Boundary Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableBoundarySystem);

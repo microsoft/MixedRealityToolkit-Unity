@@ -117,6 +117,36 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
+        [Tooltip("Default Left Controller Model")]
+        private GameObject leftControllerModel;
+
+        /// <summary>
+        /// Enable and configure the controller rendering for the Mixed Reality Toolkit
+        /// </summary>
+        public GameObject LeftControllerModel
+        {
+            get { return leftControllerModel; }
+            private set { leftControllerModel = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Default Right Controller Model")]
+        private GameObject rightControllerModel;
+
+        /// <summary>
+        /// Enable and configure the controller rendering for the Mixed Reality Toolkit
+        /// </summary>
+        public GameObject RightControllerModel
+        {
+            get { return rightControllerModel; }
+            private set { rightControllerModel = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Available Controller Mappings")]
+        private MixedRealityControllerMappingProfile[] controllerMappingsProfile;
+
+        [SerializeField]
         [Tooltip("Enable the Boundary on Startup")]
         private bool enableBoundarySystem = true;
 
@@ -166,5 +196,36 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         #endregion  ISerializationCallbackReceiver Implementation
+		
+		        #region Mixed Reality Controller Mapping helpers
+
+        // TODO - needs validation to ensure duplicates are not added?
+
+        public MixedRealityControllerMappingProfile GetControllerMapping(Type controllerType, Handedness hand)
+        {
+            var systemType = SystemType.GetReference(controllerType);
+            for (int i = 0; i < controllerMappingsProfile?.Length; i++)
+            {
+                if (controllerMappingsProfile[i].ControllerType == systemType && controllerMappingsProfile[i].ControllingHand == hand)
+                {
+                    return controllerMappingsProfile[i];
+                }
+            }
+            return default(MixedRealityControllerMappingProfile);
+        }
+
+        // TODO - Which is better?
+        //public MixedRealityControllerMappingProfile GetControllerMapping<T>(Handedness handedness)
+        //{
+        //    for (int i = 0; i < controllerMappingsProfile?.Length; i++)
+        //    {
+        //        if (controllerMappingsProfile[i].ControllerType == SystemType.GetReference(typeof(T)) && controllerMappingsProfile[i].ControllingHand == handedness)
+        //        {
+        //            return controllerMappingsProfile[i];
+        //        }
+        //    }
+        //    return default(MixedRealityControllerMappingProfile);
+        //}
+        #endregion Mixed Reality Controller Mapping helpers
     }
 }
