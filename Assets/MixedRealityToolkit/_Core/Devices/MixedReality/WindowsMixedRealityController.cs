@@ -26,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         private Quaternion pointerRotation;
         private Quaternion gripRotation;
 
-
         #endregion Private properties
 
         public WindowsMixedRealityController(uint sourceId, Handedness handedness)
@@ -191,7 +190,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 pointerPosition = CameraCache.Main.transform.parent.TransformPoint(pointerPosition);
                 pointerRotation.eulerAngles = CameraCache.Main.transform.parent.TransformDirection(pointerRotation.eulerAngles);
             }
-            Interactions[DeviceInputType.SpatialPointer].SetValue(new Tuple<Vector3, Quaternion>(pointerPosition, pointerRotation));
+            //Interactions[DeviceInputType.SpatialPointer].SetValue(new Tuple<Vector3, Quaternion>(pointerPosition, pointerRotation));
+            Interactions.SetDictionaryValue(DeviceInputType.SpatialPointer, new Tuple<Vector3, Quaternion>(pointerPosition, pointerRotation));
         }
 
         private void UpdateGripData(InteractionSourceState interactionSourceState)
@@ -205,29 +205,32 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 gripPosition = CameraCache.Main.transform.parent.TransformPoint(gripPosition);
                 gripRotation.eulerAngles = CameraCache.Main.transform.parent.TransformDirection(gripRotation.eulerAngles);
             }
-            Interactions[DeviceInputType.SpatialGrip].SetValue(new Tuple<Vector3, Quaternion>(gripPosition, gripRotation));
+            //Interactions[DeviceInputType.SpatialGrip].SetValue(new Tuple<Vector3, Quaternion>(gripPosition, gripRotation));
+            Interactions.SetDictionaryValue(DeviceInputType.SpatialGrip, new Tuple<Vector3, Quaternion>(gripPosition, gripRotation));
         }
 
         private void UpdateTouchPadData(InteractionSourceState interactionSourceState)
         {
             if (interactionSourceState.touchpadTouched)
             {
-                if (Interactions.ContainsKey(DeviceInputType.TouchpadTouch)) Interactions[DeviceInputType.TouchpadTouch].SetValue(interactionSourceState.touchpadTouched);
-                if (Interactions.ContainsKey(DeviceInputType.TouchpadPress)) Interactions[DeviceInputType.TouchpadPress].SetValue(interactionSourceState.touchpadPressed);
-                if (Interactions.ContainsKey(DeviceInputType.Touchpad)) Interactions[DeviceInputType.Touchpad].SetValue(interactionSourceState.touchpadPosition);
+                if (Interactions.ContainsKey(DeviceInputType.TouchpadTouch)) Interactions.SetDictionaryValue(DeviceInputType.TouchpadTouch, interactionSourceState.touchpadTouched);  //Interactions[DeviceInputType.TouchpadTouch].SetValue(interactionSourceState.touchpadTouched);
+                if (Interactions.ContainsKey(DeviceInputType.TouchpadPress)) Interactions.SetDictionaryValue(DeviceInputType.TouchpadPress, interactionSourceState.touchpadPressed);  //Interactions[DeviceInputType.TouchpadPress].SetValue(interactionSourceState.touchpadPressed);
+                if (Interactions.ContainsKey(DeviceInputType.Touchpad)) Interactions.SetDictionaryValue(DeviceInputType.Touchpad, interactionSourceState.touchpadPosition);  //Interactions[DeviceInputType.Touchpad].SetValue(interactionSourceState.touchpadPosition);
             }
         }
 
         private void UpdateThumbStickData(InteractionSourceState interactionSourceState)
         {
-            if (Interactions.ContainsKey(DeviceInputType.ThumbStickPress)) Interactions[DeviceInputType.ThumbStickPress].SetValue(interactionSourceState.thumbstickPressed);
-            Interactions[DeviceInputType.ThumbStick].SetValue(interactionSourceState.thumbstickPosition);
+            if (Interactions.ContainsKey(DeviceInputType.ThumbStickPress)) Interactions.SetDictionaryValue(DeviceInputType.ThumbStickPress, interactionSourceState.thumbstickPressed);  //Interactions[DeviceInputType.ThumbStickPress].SetValue(interactionSourceState.thumbstickPressed);
+            //Interactions[DeviceInputType.ThumbStick].SetValue(interactionSourceState.thumbstickPosition);
+            Interactions.SetDictionaryValue(DeviceInputType.ThumbStick, interactionSourceState.thumbstickPosition);
         }
 
         private void UpdateTriggerData(InteractionSourceState interactionSourceState)
         {
-            if (Interactions.ContainsKey(DeviceInputType.TriggerPress)) Interactions[DeviceInputType.TriggerPress].SetValue(interactionSourceState.selectPressed);
-            Interactions[DeviceInputType.Trigger].SetValue(interactionSourceState.selectPressedAmount);
+            if (Interactions.ContainsKey(DeviceInputType.TriggerPress)) Interactions.SetDictionaryValue(DeviceInputType.TriggerPress, interactionSourceState.selectPressed);  //Interactions[DeviceInputType.TriggerPress].SetValue(interactionSourceState.selectPressed);
+            //Interactions[DeviceInputType.Trigger].SetValue(interactionSourceState.selectPressedAmount);
+            Interactions.SetDictionaryValue(DeviceInputType.Trigger, interactionSourceState.selectPressedAmount);
         }
 
         #endregion Update data functions

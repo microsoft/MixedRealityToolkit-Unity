@@ -37,7 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         #region Device Initialization
 
-
         // TODO To be determined if needed
         /// <summary>
         /// Public Constructor
@@ -94,9 +93,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
         }
 
-
-
-
         #endregion Device Initialization
 
         #region Experimental_WSA native device input
@@ -133,7 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         //}
 #endif
         #endregion Experimental_WSA native device input
-
 
         #region Mixed Reality controller handlers
 
@@ -177,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             var controller = GetOrAddWindowsMixedRealityController(interactionSourceState);
             if (controller == null) { return; }
 
-            inputSystem.RaiseSourceLost(controller.InputSource);
+            if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem) inputSystem?.RaiseSourceLost(controller.InputSource);
             activeControllers.Remove(interactionSourceState.source.id);
         }
 
@@ -192,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
             controller.UpdateInputSource(interactionSourceState);
-            inputSystem.RaiseSourceDetected(controller.InputSource);
+            if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem) inputSystem?.RaiseSourceDetected(controller.InputSource);
         }
 
         private void InteractionSourceUpdated(InteractionSourceState state)
@@ -203,48 +198,44 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             controller.UpdateInputSource(state);
 
-            if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.SpatialPointer].Changed)
+            if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
             {
-                // TODO - Need to resolve InputAction
-                inputSystem.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialPointer].InputAction, controller.Interactions[DeviceInputType.SpatialPointer].GetValue<Tuple<Vector3, Quaternion>>()); 
-            }
-
-            if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.SpatialGrip].Changed)
-            {
-                // TODO - Need to resolve InputAction
-                //inputSystem.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, InputType.SpatialGrip, controller.Interactions[DeviceInputType.SpatialGrip].GetValue<Tuple<Vector3, Quaternion>>());
-            }
-
-            if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.TouchpadTouch].Changed)
-            {
-                if (controller.Interactions[DeviceInputType.TouchpadTouch].GetValue<bool>())
+                if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.SpatialPointer].Changed)
                 {
-                    // TODO - Need to resolve InputAction
-                    //inputSystem.RaiseOnInputDown(controller.InputSource, controller.ControllerHandedness, InputType.TouchpadTouch);
+                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialPointer].InputAction, controller.Interactions[DeviceInputType.SpatialPointer].GetValue<Tuple<Vector3, Quaternion>>());
                 }
-                else
+
+                if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.SpatialGrip].Changed)
                 {
-                    // TODO - Need to resolve InputAction
-                    //inputSystem.RaiseOnInputUp(controller.InputSource, controller.ControllerHandedness, InputType.TouchpadTouch);
+                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialGrip].InputAction, controller.Interactions[DeviceInputType.SpatialGrip].GetValue<Tuple<Vector3, Quaternion>>());
                 }
-            }
 
-            if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.Touchpad].Changed)
-            {
-                // TODO - Need to resolve InputAction
-                //inputSystem.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, InputType.Touchpad, controller.Interactions[DeviceInputType.Touchpad].GetValue<Vector2>());
-            }
+                if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.TouchpadTouch].Changed)
+                {
+                    if (controller.Interactions[DeviceInputType.TouchpadTouch].GetValue<bool>())
+                    {
+                        inputSystem?.RaiseOnInputDown(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.TouchpadTouch].InputAction);
+                    }
+                    else
+                    {
+                        inputSystem?.RaiseOnInputUp(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.TouchpadTouch].InputAction);
+                    }
+                }
 
-            if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.ThumbStick].Changed)
-            {
-                // TODO - Need to resolve InputAction
-                //inputSystem.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, InputType.ThumbStick, controller.Interactions[DeviceInputType.ThumbStick].GetValue<Vector2>());
-            }
+                if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.Touchpad].Changed)
+                {
+                    inputSystem?.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.Touchpad].InputAction, controller.Interactions[DeviceInputType.Touchpad].GetValue<Vector2>());
+                }
 
-            if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.Trigger].Changed)
-            {
-                // TODO - Need to resolve InputAction
-                //inputSystem.RaiseOnInputPressed(controller.InputSource, controller.ControllerHandedness, InputType.Select, controller.Interactions[DeviceInputType.Trigger].GetValue<float>());
+                if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.ThumbStick].Changed)
+                {
+                    inputSystem?.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.ThumbStick].InputAction, controller.Interactions[DeviceInputType.ThumbStick].GetValue<Vector2>());
+                }
+
+                if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.Trigger].Changed)
+                {
+                    inputSystem?.RaiseOnInputPressed(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.Select].InputAction, controller.Interactions[DeviceInputType.Trigger].GetValue<float>());
+                }
             }
         }
 
@@ -253,8 +244,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             var controller = GetOrAddWindowsMixedRealityController(state);
             if (controller == null) { return; }
 
+            var inputAction = PressInteractionSource(pressType, controller);
+
             // TODO - Need to resolve InputAction
-            //inputSystem.RaiseOnInputDown(controller.InputSource, controller.ControllerHandedness, PressInteractionSource(args.pressType, controller));
+            if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem) inputSystem?.RaiseOnInputDown(controller.InputSource, controller.ControllerHandedness, inputAction);
         }
 
         private void InteractionSourceReleased(InteractionSourceState state, InteractionSourcePressType pressType)
@@ -262,8 +255,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             var controller = GetOrAddWindowsMixedRealityController(state);
             if (controller == null) { return; }
 
+            var inputAction = ReleaseInteractionSource(pressType, controller);
+
             // TODO - Need to resolve InputAction
-            //inputSystem.RaiseOnInputUp(controller.InputSource, controller.ControllerHandedness, ReleaseInteractionSource(args.pressType, controller));
+            if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem) inputSystem.RaiseOnInputUp(controller.InputSource, controller.ControllerHandedness, inputAction);
         }
 
 
@@ -274,36 +269,43 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourcePressType">Type of press event received</param>
         /// <param name="controller">Source controller to update</param>
         /// <returns></returns>
-        //private InputAction PressInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityController controller)
-        //{
-        //    DeviceInputType pressedInput;
+        private InputAction PressInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityController controller)
+        {
+            DeviceInputType pressedInput;
 
-        //    switch (interactionSourcePressType)
-        //    {
-        //        case InteractionSourcePressType.None:
-        //            pressedInput = DeviceInputType.None;
-        //            break;
-        //        case InteractionSourcePressType.Select:
-        //            pressedInput = DeviceInputType.Select;
-        //            break;
-        //        case InteractionSourcePressType.Menu:
-        //            pressedInput = DeviceInputType.Menu;
-        //            break;
-        //        case InteractionSourcePressType.Grasp:
-        //            pressedInput = DeviceInputType.GripPress;
-        //            break;
-        //        case InteractionSourcePressType.Touchpad:
-        //            pressedInput = DeviceInputType.TouchpadPress;
-        //            break;
-        //        case InteractionSourcePressType.Thumbstick:
-        //            pressedInput = DeviceInputType.ThumbStickPress;
-        //            break;
-        //        default:
-        //            throw new ArgumentOutOfRangeException();
-        //    }
-        //    if (controller.Interactions.ContainsKey(pressedInput)) controller.Interactions[pressedInput].SetValue(true);
-        //    return (InputType)Enum.Parse(typeof(InputType), pressedInput.ToString());
-        //}
+            switch (interactionSourcePressType)
+            {
+                case InteractionSourcePressType.None:
+                    pressedInput = DeviceInputType.None;
+                    break;
+                case InteractionSourcePressType.Select:
+                    pressedInput = DeviceInputType.Select;
+                    break;
+                case InteractionSourcePressType.Menu:
+                    pressedInput = DeviceInputType.Menu;
+                    break;
+                case InteractionSourcePressType.Grasp:
+                    pressedInput = DeviceInputType.GripPress;
+                    break;
+                case InteractionSourcePressType.Touchpad:
+                    pressedInput = DeviceInputType.TouchpadPress;
+                    break;
+                case InteractionSourcePressType.Thumbstick:
+                    pressedInput = DeviceInputType.ThumbStickPress;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            if (controller.Interactions.ContainsKey(pressedInput)) controller.Interactions.SetDictionaryValue(pressedInput, true); //controller.Interactions[pressedInput].SetValue(true);
+
+
+            var updatedValue = controller.Interactions[pressedInput].GetValue<bool>();
+            var otherValue = controller.Interactions[pressedInput].GetBool();
+
+            bool result = updatedValue == otherValue;
+
+            return controller.Interactions[pressedInput].InputAction;
+        }
 
         // TODO - Need to resolve InputAction
         /// <summary>
@@ -312,36 +314,36 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourcePressType">Type of release event received</param>
         /// <param name="controller">Source controller to update</param>
         /// <returns></returns>
-        //private InputAction ReleaseInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityController controller)
-        //{
-        //    DeviceInputType releasedInput;
+        private InputAction ReleaseInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityController controller)
+        {
+            DeviceInputType releasedInput;
 
-        //    switch (interactionSourcePressType)
-        //    {
-        //        case InteractionSourcePressType.None:
-        //            releasedInput = DeviceInputType.None;
-        //            break;
-        //        case InteractionSourcePressType.Select:
-        //            releasedInput = DeviceInputType.Select;
-        //            break;
-        //        case InteractionSourcePressType.Menu:
-        //            releasedInput = DeviceInputType.Menu;
-        //            break;
-        //        case InteractionSourcePressType.Grasp:
-        //            releasedInput = DeviceInputType.GripPress;
-        //            break;
-        //        case InteractionSourcePressType.Touchpad:
-        //            releasedInput = DeviceInputType.TouchpadPress;
-        //            break;
-        //        case InteractionSourcePressType.Thumbstick:
-        //            releasedInput = DeviceInputType.ThumbStickPress;
-        //            break;
-        //        default:
-        //            throw new ArgumentOutOfRangeException();
-        //    }
-        //    if (controller.Interactions.ContainsKey(releasedInput)) controller.Interactions[releasedInput].SetValue(false);
-        //    return (InputType)Enum.Parse(typeof(InputType), releasedInput.ToString());
-        //}
+            switch (interactionSourcePressType)
+            {
+                case InteractionSourcePressType.None:
+                    releasedInput = DeviceInputType.None;
+                    break;
+                case InteractionSourcePressType.Select:
+                    releasedInput = DeviceInputType.Select;
+                    break;
+                case InteractionSourcePressType.Menu:
+                    releasedInput = DeviceInputType.Menu;
+                    break;
+                case InteractionSourcePressType.Grasp:
+                    releasedInput = DeviceInputType.GripPress;
+                    break;
+                case InteractionSourcePressType.Touchpad:
+                    releasedInput = DeviceInputType.TouchpadPress;
+                    break;
+                case InteractionSourcePressType.Thumbstick:
+                    releasedInput = DeviceInputType.ThumbStickPress;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            if (controller.Interactions.ContainsKey(releasedInput)) controller.Interactions.SetDictionaryValue(releasedInput, false); //controller.Interactions[releasedInput].SetValue(false);
+            return controller.Interactions[releasedInput].InputAction;
+        }
         #endregion
 
         #region Unity InteractionManager Events

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41718b8e5d86c37409b7ce6847fa00a3, type: 3}
   m_Name: DefaultMixedRealityConfigurationProfile
   m_EditorClassIdentifier: 
-  enableInputSystem: 1
+  enableInputSystem: 0
   inputSystemType:
     reference: Microsoft.MixedReality.Toolkit.InputSystem.MixedRealityInputManager,
       Microsoft.MixedReality.Toolkit.InputSystem

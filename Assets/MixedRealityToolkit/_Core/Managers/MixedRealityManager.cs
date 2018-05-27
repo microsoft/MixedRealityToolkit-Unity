@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         [Tooltip("The currently active / detected Headset or SDK")]
         private IMixedRealityDevice activeDevice = default(IMixedRealityDevice);
 
-        public IMixedRealityDevice ActiveDevice { get { return ActiveDevice; } }
+        public IMixedRealityDevice ActiveDevice { get { return activeDevice; } }
 
         #endregion Active SDK components
 
