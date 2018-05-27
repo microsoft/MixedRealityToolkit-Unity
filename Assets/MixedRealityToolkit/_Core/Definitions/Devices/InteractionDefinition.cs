@@ -81,11 +81,32 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         private Quaternion rotationData;
 
-        private Tuple<Vector3, Quaternion> transformData;
-
         #endregion Definition Data items
 
         #region Get Operators
+		
+		public T GetValue<T>()
+        {
+            switch (AxisType)
+            {
+                case AxisType.Digital:
+                    return (T)Convert.ChangeType(boolData, typeof(T));
+                case AxisType.SingleAxis:
+                    return (T)Convert.ChangeType(floatData, typeof(T));
+                case AxisType.DualAxis:
+                    return (T)Convert.ChangeType(vector2Data, typeof(T));
+                case AxisType.ThreeDoFPosition:
+                    return (T)Convert.ChangeType(positionData, typeof(T));
+                case AxisType.ThreeDoFRotation:
+                    return (T)Convert.ChangeType(rotationData, typeof(T));
+                case AxisType.SixDoF:
+                    return (T)Convert.ChangeType(GetTransform(), typeof(T));
+                case AxisType.Raw:
+                case AxisType.None:
+                default:
+                    return (T)Convert.ChangeType(rawData, typeof(T));
+            }
+        }
 
         public object GetRaw()
         {
@@ -119,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         public Tuple<Vector3, Quaternion> GetTransform()
         {
-            return transformData;
+            return new Tuple<Vector3, Quaternion>(positionData,rotationData);
         }
 
         #endregion Get Operators
@@ -184,10 +205,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             if (AxisType == AxisType.SixDoF)
             {
-                Changed = newValue.Item1 != transformData.Item1 || newValue.Item2 != transformData.Item2;
+                Changed = newValue.Item1 != positionData || newValue.Item2 != rotationData;
                 positionData = newValue.Item1;
                 rotationData = newValue.Item2;
-                transformData = newValue;
             }
         }
 
