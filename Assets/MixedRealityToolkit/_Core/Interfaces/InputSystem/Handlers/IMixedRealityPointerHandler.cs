@@ -11,8 +11,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
     /// </summary>
     public interface IMixedRealityPointerHandler : IEventSystemHandler
     {
-        void OnPointerUp(InputClickEventData eventData);
-        void OnPointerDown(InputClickEventData eventData);
-        void OnPointerClicked(InputClickEventData eventData);
+        void OnPointerUp(MixedRealityPointerEventData eventData);
+        void OnPointerDown(MixedRealityPointerEventData eventData);
+        void OnPointerClicked(MixedRealityPointerEventData eventData);
     }
 }

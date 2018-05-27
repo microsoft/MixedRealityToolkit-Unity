@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
 using System.Collections.Generic;
@@ -15,12 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
     [CustomEditor(typeof(SpeechInputHandler))]
     public class SpeechInputHandlerEditor : Editor
     {
-        /// <summary>
-        /// The Current Input System for this Input Source.
-        /// </summary>
-        private static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
-        private static IMixedRealityInputSystem inputSystem = null;
-
         private static readonly GUIContent RemoveButtonContent = new GUIContent("-", "Remove keyword");
         private static readonly GUIContent AddButtonContent = new GUIContent("+", "Add keyword");
         private static readonly GUILayoutOption MiniButtonWidth = GUILayout.Width(20.0f);
@@ -28,20 +20,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
         private string[] registeredKeywords;
 
         private SerializedProperty keywordsProperty;
-        private SerializedProperty isGlobalListenerProperty;
+        private SerializedProperty isGazeRequiredProperty;
         private SerializedProperty persistentKeywordsProperty;
 
         private void OnEnable()
         {
             keywordsProperty = serializedObject.FindProperty("keywords");
-            isGlobalListenerProperty = serializedObject.FindProperty("isGlobalListener");
+            isGazeRequiredProperty = serializedObject.FindProperty("isGazeRequired");
             persistentKeywordsProperty = serializedObject.FindProperty("persistentKeywords");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            EditorGUILayout.PropertyField(isGlobalListenerProperty);
+            EditorGUILayout.PropertyField(isGazeRequiredProperty);
             EditorGUILayout.PropertyField(persistentKeywordsProperty);
 
             registeredKeywords = RegisteredKeywords().Distinct().ToArray();
@@ -63,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
 
                 if (duplicateKeyword != null)
                 {
-                    EditorGUILayout.HelpBox("Keyword '" + duplicateKeyword + "' is assigned more than once!", MessageType.Warning);
+                    EditorGUILayout.HelpBox($"Keyword \'{duplicateKeyword}\' is assigned more than once!", MessageType.Warning);
                 }
             }
         }

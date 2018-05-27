@@ -11,49 +11,57 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
     /// <summary>
     /// Describes an Input Event that involves a tap, click, or touch.
     /// </summary>
-    public class InputClickEventData : InputEventData
+    public class MixedRealityPointerEventData : InputEventData
     {
         /// <summary>
         /// Number of Clicks, Taps, or Presses that triggered the event.
         /// </summary>
         public int Count { get; private set; }
 
+        /// <summary>
+        /// Pointer for the Input Event
+        /// </summary>
+        public IMixedRealityPointer Pointer { get; private set; }
+
         /// <inheritdoc />
-        public InputClickEventData(EventSystem eventSystem) : base(eventSystem) { }
+        public MixedRealityPointerEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
-        /// <param name="inputSource"></param>
+        /// <param name="pointer"></param>
         /// <param name="count"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, int count)
+        public void Initialize(IMixedRealityPointer pointer, int count)
         {
-            BaseInitialize(inputSource);
+            BaseInitialize(pointer.InputSourceParent);
+            Pointer = pointer;
             Count = count;
         }
 
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
-        /// <param name="inputSource"></param>
+        /// <param name="pointer"></param>
         /// <param name="count"></param>
         /// <param name="handedness"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, int count, Handedness handedness)
+        public void Initialize(IMixedRealityPointer pointer, int count, Handedness handedness)
         {
-            Initialize(inputSource, handedness);
+            Initialize(pointer.InputSourceParent, handedness);
+            Pointer = pointer;
             Count = count;
         }
 
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
-        /// <param name="inputSource"></param>
+        /// <param name="pointer"></param>
         /// <param name="count"></param>
-        /// <param name="inputType"></param>
+        /// <param name="inputAction"></param>
         /// <param name="handedness"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, int count, InputAction inputAction, Handedness handedness)
+        public void Initialize(IMixedRealityPointer pointer, int count, InputAction inputAction, Handedness handedness)
         {
-            Initialize(inputSource, handedness, inputAction);
+            Initialize(pointer.InputSourceParent, handedness, inputAction);
+            Pointer = pointer;
             Count = count;
         }
     }

@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// Function for receiving OnPointerDown events from InputManager
         /// </summary>
         /// <param name="eventData"></param>
-        public virtual void OnPointerDown(InputClickEventData eventData)
+        public virtual void OnPointerDown(MixedRealityPointerEventData eventData)
         {
             foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
@@ -211,13 +211,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// Function for receiving OnPointerClicked events from InputManager
         /// </summary>
         /// <param name="eventData"></param>
-        public virtual void OnPointerClicked(InputClickEventData eventData) { }
+        public virtual void OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         /// <summary>
         /// Function for receiving OnPointerUp events from InputManager
         /// </summary>
         /// <param name="eventData"></param>
-        public virtual void OnPointerUp(InputClickEventData eventData)
+        public virtual void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             foreach (var sourcePointer in eventData.InputSource.Pointers)
             {

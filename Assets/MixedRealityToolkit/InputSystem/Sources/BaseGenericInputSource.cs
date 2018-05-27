@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections;
@@ -25,14 +24,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="interactions"></param>
         /// <param name="pointers"></param>
-        public BaseGenericInputSource(string name, InteractionDefinition[] interactions, IMixedRealityPointer[] pointers = null)
+        public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null)
         {
             SourceId = InputSystem.GenerateNewSourceId();
             SourceName = name;
             Pointers = pointers ?? new[] { InputSystem.GazeProvider.GazePointer };
-            Interactions = interactions;
         }
 
         /// <inheritdoc />
@@ -43,23 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         /// <inheritdoc />
         public virtual IMixedRealityPointer[] Pointers { get; }
-
-        /// <inheritdoc />
-        public InteractionDefinition[] Interactions { get; }
-
-        /// <inheritdoc />
-        public bool SupportsCapability(Internal.Definitions.Devices.DeviceInputType inputInfo)
-        {
-            for (int i = 0; i < Interactions.Length; i++)
-            {
-                if (Interactions[i].InputType == inputInfo)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
         #region IEquality Implementation
 
