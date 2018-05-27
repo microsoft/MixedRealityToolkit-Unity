@@ -79,6 +79,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         {
             FocusProvider = CameraCache.Main.gameObject.EnsureComponent<FocusProvider>();
             GazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
+            FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
+            FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
 
             if (EventSystem.current == null)
             {

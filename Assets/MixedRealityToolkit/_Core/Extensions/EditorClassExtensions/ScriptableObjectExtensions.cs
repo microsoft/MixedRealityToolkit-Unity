@@ -40,6 +40,27 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions.EditorClassExtensio
             AssetDatabase.Refresh();
             EditorUtility.FocusProjectWindow();
             Selection.activeObject = scriptableObject;
+            EditorGUIUtility.PingObject(scriptableObject);
+        }
+
+        /// <summary>
+        /// Gets all the scriptable object instances in the project.
+        /// </summary>
+        /// <typeparam name="T">The Type of <see cref="ScriptableObject"/> you're wanting to find instances of.</typeparam>
+        /// <returns>An Array of instances for the type.</returns>
+        public static T[] GetAllInstances<T>() where T : ScriptableObject
+        {
+            // FindAssets uses tags check documentation for more info
+            string[] guids = AssetDatabase.FindAssets($"t:{typeof(T).Name}");
+            T[] instances = new T[guids.Length];
+
+            for (int i = 0; i < guids.Length; i++)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                instances[i] = AssetDatabase.LoadAssetAtPath<T>(path);
+            }
+
+            return instances;
         }
     }
 }
