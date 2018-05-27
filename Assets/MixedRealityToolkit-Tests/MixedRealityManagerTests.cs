@@ -26,8 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             // Create The MR Manager
             CreateMixedRealityManager();
-            GameObject go = GameObject.Find(nameof(MixedRealityManager));
-            Assert.AreEqual(nameof(MixedRealityManager), go.name);
+            GameObject manager = GameObject.Find(nameof(MixedRealityManager));
+            Assert.AreEqual(nameof(MixedRealityManager), manager.name);
         }
 
         [Test]
@@ -215,24 +215,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityManager.Instance.AddManager(typeof(IMixedRealityInputSystem), new MixedRealityInputManager());
 
             //Add test component 1
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1() { Name = "Test2-1" });
+            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), new TestComponentManager1() { Name = "Test14-1" });
 
             //Add test component 2
-            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test2-2" });
+            MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager2), new TestComponentManager2 { Name = "Test14-2" });
 
             //Retrieve Test component 2-2
-            TestComponentManager2 component2_2 = (TestComponentManager2)MixedRealityManager.Instance.GetManager(typeof(ITestComponentManager2), "Test2-2");
+            TestComponentManager2 component2 = (TestComponentManager2)MixedRealityManager.Instance.GetManager(typeof(ITestComponentManager2), "Test14-2");
 
             // Component 2-2 Tests
-            Assert.IsNotNull(component2_2.InputSystem);
-            Assert.AreEqual(component2_2.Name, "Test2-2");
+            Assert.IsNotNull(component2.InputSystem);
+            Assert.AreEqual(component2.Name, "Test14-2");
 
             //Retrieve Test component 2-1
-            TestComponentManager1 component2_1 = (TestComponentManager1)MixedRealityManager.Instance.GetManager(typeof(ITestComponentManager1), "Test2-1");
+            TestComponentManager1 component1 = (TestComponentManager1)MixedRealityManager.Instance.GetManager(typeof(ITestComponentManager1), "Test14-1");
 
             // Component 2-1 Tests
-            Assert.IsNotNull(component2_1.InputSystem);
-            Assert.AreEqual(component2_1.Name, "Test2-1");
+            Assert.IsNotNull(component1.InputSystem);
+            Assert.AreEqual(component1.Name, "Test14-1");
         }
 
         [Test]
@@ -271,7 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.NotNull(MixedRealityManager.Instance.ActiveProfile);
         }
 
-        #endregion
+        #endregion Helper Functions
     }
 
     #region Test Components
@@ -279,7 +279,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public interface ITestComponentManager1 : IMixedRealityManager { }
 
     public interface ITestComponentManager2 : IMixedRealityManager { }
-
 
     internal class TestComponentManager1 : BaseManager, ITestComponentManager1
     {
@@ -356,5 +355,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // TODO Destroy stuff 
         }
     }
-    #endregion
+
+    #endregion Test Components
 }
