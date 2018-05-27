@@ -8,6 +8,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using NUnit.Framework;
 using System.Linq;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -24,6 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test01_CreateMixedRealityManager()
         {
+            CleanupScene();
+
             // Create The MR Manager
             CreateMixedRealityManager();
             GameObject manager = GameObject.Find(nameof(MixedRealityManager));
@@ -34,11 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test02_TestNoMixedRealityConfigurationFound()
         {
             LogAssert.Expect(LogType.Error, "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Manager");
+
             MixedRealityManager.Instance.ActiveProfile = null;
 
             Assert.IsNull(MixedRealityManager.Instance.ActiveProfile);
 
-            Object.DestroyImmediate(MixedRealityManager.Instance.gameObject);
+            CleanupScene();
         }
 
         [Test]
@@ -259,7 +263,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(allComponents.Count, 9);
         }
 
+        [Test]
+        public void Test17_CleanupMixedRealityManager()
+        {
+            CleanupScene();
+        }
+
         #region Helper Functions
+
+        private static void CleanupScene()
+        {
+            EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
+        }
 
         private static void InitializeMixedRealityManager()
         {
