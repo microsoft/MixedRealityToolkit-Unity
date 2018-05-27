@@ -24,18 +24,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
         private KeywordAndResponse[] keywords = new KeywordAndResponse[0];
 
-        /// <summary>
-        /// Determines if this handler is a global listener, not connected to a specific GameObject.
-        /// </summary>
-        [Tooltip("Determines if this handler is a global listener, not connected to a specific GameObject.")]
         [SerializeField]
-        private bool isGlobalListener = false;
+        [Tooltip("Is Gaze required for the keyword to raise the action?")]
+        private bool isGazeRequired = false;
 
-        /// <summary>
-        /// Keywords are persistent across all scenes.  This Speech Input Source instance will not be destroyed when loading a new scene.
-        /// </summary>
-        [Tooltip("Keywords are persistent across all scenes.  This Speech Input Handler instance will not be destroyed when loading a new scene.")]
         [SerializeField]
+        [Tooltip("Keywords are persistent across all scenes.  This Speech Input Handler instance will not be destroyed when loading a new scene.")]
         private bool persistentKeywords = false;
 
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
@@ -51,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void OnEnable()
         {
-            if (isGlobalListener)
+            if (isGazeRequired)
             {
                 inputSystem.Register(gameObject);
             }
@@ -85,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void OnDisable()
         {
-            if (isGlobalListener)
+            if (isGazeRequired)
             {
                 inputSystem.Unregister(gameObject);
             }
@@ -93,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void OnDestroy()
         {
-            if (isGlobalListener)
+            if (isGazeRequired)
             {
                 inputSystem.Unregister(gameObject);
             }

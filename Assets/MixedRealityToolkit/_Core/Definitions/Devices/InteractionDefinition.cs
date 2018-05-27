@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
     /// <summary>
     /// Maps the capabilities of controllers, one definition should exist for each interaction profile.<para/>
@@ -13,28 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// </summary>
     public struct InteractionDefinition
     {
-        public InteractionDefinition(uint id, AxisType axisType, Devices.DeviceInputType inputType) : this()
+        public InteractionDefinition(uint id, AxisType axisType, DeviceInputType inputType) : this()
         {
             Id = id;
             AxisType = axisType;
             InputType = inputType;
-        }
-
-        public InteractionDefinition(uint id, AxisType axisType, Devices.DeviceInputType inputType, InputAction inputAction) : this()
-        {
-            Id = id;
-            AxisType = axisType;
-            InputType = inputType;
-            InputAction = inputAction;
-        }
-
-        public InteractionDefinition(uint id, AxisType axisType, Devices.DeviceInputType inputType, InputAction inputAction, InputAction inputHoldAction) : this()
-        {
-            Id = id;
-            AxisType = axisType;
-            InputType = inputType;
-            InputAction = inputAction;
-            InputHoldAction = inputHoldAction;
         }
 
         #region Interaction Properties
@@ -52,17 +35,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// <summary>
         /// The primary action of the input as defined by the controller SDK.
         /// </summary>
-        public Devices.DeviceInputType InputType { get; }
+        public DeviceInputType InputType { get; }
 
         /// <summary>
         /// Action to be raised to the Input Manager when the input data has changed.
         /// </summary>
         public InputAction InputAction { get; set; }
 
-        /// <summary>
-        /// Action to be raised to the Input Manager when the input data has changed.
-        /// </summary>
-        public InputAction InputHoldAction { get; set; }
         /// <summary>
         /// Has the value changed since the last reading.
         /// </summary>
@@ -102,32 +81,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         private Quaternion rotationData;
 
+        private Tuple<Vector3, Quaternion> transformData;
+
         #endregion Definition Data items
 
         #region Get Operators
-
-        public T GetValue<T>()
-        {
-            switch (AxisType)
-            {
-                case AxisType.Digital:
-                    return (T)Convert.ChangeType(boolData, typeof(T));
-                case AxisType.SingleAxis:
-                    return (T)Convert.ChangeType(floatData, typeof(T));
-                case AxisType.DualAxis:
-                    return (T)Convert.ChangeType(vector2Data, typeof(T));
-                case AxisType.ThreeDoFPosition:
-                    return (T)Convert.ChangeType(positionData, typeof(T));
-                case AxisType.ThreeDoFRotation:
-                    return (T)Convert.ChangeType(rotationData, typeof(T));
-                case AxisType.SixDoF:
-                    return (T)Convert.ChangeType(GetTransform(), typeof(T));
-                case AxisType.Raw:
-                case AxisType.None:
-                default:
-                    return (T)Convert.ChangeType(rawData, typeof(T));
-            }
-        }
 
         public object GetRaw()
         {
@@ -161,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         public Tuple<Vector3, Quaternion> GetTransform()
         {
-            return new Tuple<Vector3, Quaternion>(positionData,rotationData);
+            return transformData;
         }
 
         #endregion Get Operators
@@ -226,9 +184,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             if (AxisType == AxisType.SixDoF)
             {
-                Changed = newValue.Item1 != positionData || newValue.Item2 != rotationData;
+                Changed = newValue.Item1 != transformData.Item1 || newValue.Item2 != transformData.Item2;
                 positionData = newValue.Item1;
                 rotationData = newValue.Item2;
+                transformData = newValue;
             }
         }
 

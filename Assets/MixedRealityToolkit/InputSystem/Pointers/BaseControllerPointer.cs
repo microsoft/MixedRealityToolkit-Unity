@@ -120,12 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             base.OnDisable();
             SelectPressed = false;
-
-            if (BaseCursor != null)
-            {
-                BaseCursor.SetVisibility(false);
-            }
-
+            BaseCursor?.SetVisibility(false);
             InputSystem.FocusProvider.UnregisterPointer(this);
         }
 

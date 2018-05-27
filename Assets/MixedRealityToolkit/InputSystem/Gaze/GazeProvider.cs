@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.Cursors;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
@@ -231,8 +230,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private void OnDisable()
         {
-            InputSystem.RaiseSourceLost(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(false);
+            InputSystem.RaiseSourceLost(GazeInputSource);
         }
 
         private void OnDestroy()
@@ -249,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private void InitializeInputSource()
         {
-            gazeInputSource = new BaseGenericInputSource("Gaze", new[] { new InteractionDefinition(1, AxisType.None, Internal.Definitions.Devices.DeviceInputType.Gaze) });
+            gazeInputSource = new BaseGenericInputSource("Gaze");
         }
 
         private IMixedRealityPointer InitializeGazePointer()

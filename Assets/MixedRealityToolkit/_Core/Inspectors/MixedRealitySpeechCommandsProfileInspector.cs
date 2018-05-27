@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using System.Linq;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,12 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private void OnEnable()
         {
-            if (MixedRealityManager.Instance.ActiveProfile == null)
-            {
-                Debug.LogError("No Active Profile set on the Mixed Reality Manager.");
-                Selection.activeObject = MixedRealityManager.Instance;
-                return;
-            }
+            if (MixedRealityManager.Instance.ActiveProfile == null) { return; }
 
             speechCommands = serializedObject.FindProperty("speechCommands");
             actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(

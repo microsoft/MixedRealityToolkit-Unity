@@ -75,13 +75,24 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// </summary>
         [SerializeField]
         [Tooltip("Camera to use for raycasting uGUI pointer events.")]
-        private Camera uiRaycastCamera;
+        private Camera uiRaycastCamera = null;
 
         /// <summary>
         /// The Camera the Event System uses to raycast against.
         /// <para><remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks></para>
         /// </summary>
-        public Camera UIRaycastCamera { get; private set; }
+        public Camera UIRaycastCamera
+        {
+            get
+            {
+                if (uiRaycastCamera == null)
+                {
+                    CreateUiRaycastCamera();
+                }
+
+                return uiRaycastCamera;
+            }
+        }
 
         /// <summary>
         /// To tap on a hologram even when not focused on,
@@ -213,15 +224,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                                  "To create a UIRaycastCamera in your scene, find this Focus Provider GameObject and add one there.");
                 CreateUiRaycastCamera();
             }
-
-            if (EventSystem.current == null)
-            {
-                Debug.LogWarning("No Event System found in scene! Adding components to the UIRaycastCamera.");
-                uiRaycastCamera.gameObject.EnsureComponent<EventSystem>();
-                uiRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
-            }
-
-            UIRaycastCamera = uiRaycastCamera;
         }
 
         private void Start()
@@ -247,6 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <returns>Currently focused <see cref="GameObject"/> for the events input source.</returns>
         public GameObject GetFocusedObject(BaseInputEventData eventData)
         {
+            Debug.Assert(eventData != null);
             if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
 
             FocusDetails focusDetails;
@@ -378,7 +381,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             return newId;
         }
 
-        public void CreateUiRaycastCamera()
+        /// <summary>
+        /// Utility for creating the UIRaycastCamera.
+        /// </summary>
+        /// <returns>The UIRaycastCamera</returns>
+        private void CreateUiRaycastCamera()
         {
             var cameraObject = new GameObject { name = "UIRaycastCamera" };
             cameraObject.transform.parent = transform;

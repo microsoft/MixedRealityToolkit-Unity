@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
 using System.Threading.Tasks;
@@ -27,10 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         public static bool IsListening { get; private set; } = false;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+
         /// <summary>
         /// Constructor.
         /// </summary>
-        public DictationInputSource() : base("Dictation", new[] { new InteractionDefinition(1, AxisType.None, Internal.Definitions.Devices.DeviceInputType.Voice) })
+        public DictationInputSource() : base("Dictation")
         {
             source = this;
             dictationResult = string.Empty;
@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             isTransitioning = false;
 #else
             throw new NotImplementedException("Unable to start recording!  Dictation is unsupported for this platform.");
-#endif
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             await new WaitUntil(() => PhraseRecognitionSystem.Status == SpeechSystemStatus.Running);
 
             isTransitioning = false;
-#endif
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         }
 
         #region Dictation Recognizer Callbacks

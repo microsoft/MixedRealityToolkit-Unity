@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 {
     [Serializable]
-    public class SpeechCommands
+    public struct SpeechCommands
     {
         public SpeechCommands(string keyword, KeyCode keyCode, InputAction action)
         {
