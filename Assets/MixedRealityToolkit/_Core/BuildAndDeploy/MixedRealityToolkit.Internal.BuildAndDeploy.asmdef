@@ -1,5 +1,5 @@
 {
-    "name": "BuildAndDeploy",
+    "name": "Microsoft.MixedReality.Toolkit.Internal.Build",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Internal.Utilities.EditorSetup"
