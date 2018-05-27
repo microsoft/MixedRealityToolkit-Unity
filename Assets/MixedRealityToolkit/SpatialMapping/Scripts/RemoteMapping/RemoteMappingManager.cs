@@ -21,7 +21,7 @@ namespace MixedRealityToolkit.SpatialMapping.RemoteMapping
         [Tooltip("Keyword for sending meshes from HoloLens to Unity over the network.")]
         public string SendMeshesKeyword = "send meshes";
 
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WSA
         /// <summary>
         /// Receives meshes collected over the network.
         /// </summary>
@@ -54,7 +54,7 @@ namespace MixedRealityToolkit.SpatialMapping.RemoteMapping
             keywordRecognizer.Start();
 #endif
 
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WSA
             remoteMeshTarget = GetComponent<RemoteMeshTarget>();
 
             if (remoteMeshTarget != null && SpatialMappingManager.Instance.Source == null)
@@ -68,7 +68,7 @@ namespace MixedRealityToolkit.SpatialMapping.RemoteMapping
         // Called every frame by the Unity engine.
         private void Update()
         {
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WSA
             // Use the 'network' sourced mesh.  
             if (Input.GetKeyUp(RemoteMappingKey))
             {

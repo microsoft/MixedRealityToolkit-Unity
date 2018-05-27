@@ -55,7 +55,7 @@ namespace MixedRealityToolkit.SpatialMapping.RemoteMapping
         private void Update()
         {
             // Keyboard commands for saving and loading a remotely generated mesh file.
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WSA
             // S - saves the active mesh
             if (Input.GetKeyUp(SaveFileKey))
             {
