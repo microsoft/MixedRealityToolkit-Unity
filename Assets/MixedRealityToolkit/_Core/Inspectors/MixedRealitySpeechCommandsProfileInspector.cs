@@ -25,12 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private void OnEnable()
         {
-            if (MixedRealityManager.Instance.ActiveProfile == null)
-            {
-                Debug.LogError("No Active Profile set on the Mixed Reality Manager.");
-                Selection.activeObject = MixedRealityManager.Instance;
-                return;
-            }
+            if (MixedRealityManager.Instance.ActiveProfile == null) { return; }
 
             speechCommands = serializedObject.FindProperty("speechCommands");
             actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(

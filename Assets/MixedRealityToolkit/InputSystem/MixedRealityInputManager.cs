@@ -79,13 +79,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         {
             FocusProvider = CameraCache.Main.gameObject.EnsureComponent<FocusProvider>();
             GazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
-
-            if (EventSystem.current == null)
-            {
-                Debug.LogWarning("No Event System found in scene! Adding components to the UIRaycastCamera.");
-                FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
-                FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
-            }
+            FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
+            FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
 
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
 
