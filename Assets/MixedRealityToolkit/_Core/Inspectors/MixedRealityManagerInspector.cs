@@ -34,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             if (activeProfile.objectReferenceValue == null && currentPickerWindow == -1 && checkChange)
             {
+                EditorUtility.DisplayDialog("Attention!", "You must choose a profile for the Mixed Reality Manager", "OK");
                 if (allConfigProfiles.Length > 1)
                 {
                     currentPickerWindow = GUIUtility.GetControlID(FocusType.Passive);

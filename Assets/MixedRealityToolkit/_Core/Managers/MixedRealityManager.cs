@@ -526,6 +526,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// <returns>An array of Managers that meet the search criteria</returns>
         public IEnumerable<IMixedRealityManager> GetManagers(Type type)
         {
+            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+
             return GetManagers(type, string.Empty);
         }
 
@@ -743,6 +745,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
         private bool IsCoreManagerType(Type type)
         {
+            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+
             return type == typeof(IMixedRealityInputSystem) ||
                    type == typeof(IMixedRealityBoundarySystem);
         }
@@ -754,6 +758,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// <param name="manager">return parameter of the function</param>
         private void GetComponentByType(Type type, out IMixedRealityManager manager)
         {
+            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+
             manager = null;
 
             for (int i = 0; i < mixedRealityComponentsCount; i++)
@@ -774,6 +780,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// <param name="manager">return parameter of the function</param>
         private void GetComponentByTypeAndName(Type type, string managerName, out IMixedRealityManager manager)
         {
+            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            if (string.IsNullOrEmpty(managerName)) { throw new ArgumentNullException(nameof(managerName)); }
+
             manager = null;
 
             for (int i = 0; i < mixedRealityComponentsCount; i++)
