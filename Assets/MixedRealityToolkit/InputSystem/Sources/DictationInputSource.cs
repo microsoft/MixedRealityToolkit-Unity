@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
 using System.Threading.Tasks;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 using System.Text;
