@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 {
@@ -26,17 +25,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// Array of pointers associated with this input source.
         /// </summary>
         IMixedRealityPointer[] Pointers { get; }
-
-        /// <summary>
-        /// Details the list of available buttons / interactions available from the Input Source.
-        /// </summary>
-        InteractionDefinition[] Interactions { get; }
-
-        /// <summary>
-        /// Returns whether the Input Source supports the specified input type.
-        /// </summary>
-        /// <param name="inputInfo">Input types that we want to get information about.</param>
-        /// <returns>Returns true if the Input Source supports the provided input type.</returns>
-        bool SupportsCapability(Definitions.Devices.DeviceInputType inputInfo);
     }
 }
