@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
     /// <summary>
-    /// Maps the capabilities of controllers, one definition should exist for each interaction profile.<para/>
+    /// Maps the capabilities of controllers, one definition should exist for each physical device input.<para/>
     /// <remarks>Interactions can be any input the controller supports such as buttons, triggers, joysticks, dpads, and more.</remarks>
     /// </summary>
     [Serializable]
