@@ -18,10 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         /// </summary>
         /// <param name="id"></param>
         /// <param name="description"></param>
-        public InputAction(uint id, string description)
+        /// <param name="axisConstraint"></param>
+        public InputAction(uint id, string description, AxisType axisConstraint = AxisType.None)
         {
             this.id = id;
             this.description = description;
+            this.axisConstraint = axisConstraint;
         }
 
         /// <inheritdoc />
@@ -35,5 +37,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 
         [SerializeField]
         private string description;
+
+        /// <inheritdoc />
+        public AxisType AxisConstraint => axisConstraint;
+
+        [SerializeField]
+        private AxisType axisConstraint;
     }
 }
