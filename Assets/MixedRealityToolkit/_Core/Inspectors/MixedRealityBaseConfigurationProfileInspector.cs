@@ -20,6 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
         }
 
+        /// <summary>
+        /// Render the Mixed Reality Toolkit Logo.
+        /// </summary>
         protected void RenderMixedRealityToolkitLogo()
         {
             GUILayout.BeginHorizontal();
@@ -30,6 +33,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             GUILayout.Space(12f);
         }
 
+        /// <summary>
+        /// Check and make sure we have a Mixed Reality Manager and an active profile.
+        /// </summary>
+        /// <returns>True if the Mixed Reality Manager is properly initialized.</returns>
         protected bool CheckMixedRealityManager()
         {
             if (!MixedRealityManager.IsInitialized)
