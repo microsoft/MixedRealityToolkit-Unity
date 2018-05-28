@@ -37,13 +37,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// </summary>
         /// <typeparam name="T">Type of setup parameter (unique to certain SDK's)</typeparam>
         /// <param name="state">The optional input state provided by the SDK/Platform that is required for setup</param>
-        void SetupInputSource<T>(T state);
+        void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state);
 
         /// <summary>
         /// Update the controller with new state information / values
         /// </summary>
         /// <typeparam name="T">Type of setup parameter (unique to certain SDK's)</typeparam>
         /// <param name="state">The optional input state provided by the SDK/Platform that is required for update</param>
-        void UpdateInputSource<T>(T state);
+        void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state);
     }
 }

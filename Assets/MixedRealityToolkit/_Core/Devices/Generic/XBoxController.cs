@@ -9,13 +9,13 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Generic
 {
     // TODO - Implement
-    public struct XboxController : IMixedRealityController
+    public struct XBoxController : IMixedRealityController
     {
         #region Private properties
 
         #endregion Private properties
 
-        public XboxController(uint sourceId, Handedness handedness)
+        public XBoxController(uint sourceId, Handedness handedness)
         {
             ControllerState = ControllerState.None;
 
@@ -36,12 +36,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Generic
 
         public Dictionary<DeviceInputType, InteractionDefinition> Interactions { get; private set; }
 
-        public void SetupInputSource<T>(T state)
+        public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
+            if (inputSystem != null)
+            {
+                InputSource = inputSystem.RequestNewGenericInputSource($"XBox Controller {ControllerHandedness}");
+            }
+
             // TODO
         }
 
-        public void UpdateInputSource<T>(T state)
+        public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
             // TODO
         }

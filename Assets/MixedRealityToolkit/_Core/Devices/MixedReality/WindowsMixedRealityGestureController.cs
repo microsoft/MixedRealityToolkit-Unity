@@ -38,13 +38,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         public Dictionary<DeviceInputType, InteractionDefinition> Interactions { get; private set; }
 
-        public void SetupInputSource<T>(T state)
+        public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
+            if (inputSystem != null)
+            {
+                InputSource = inputSystem.RequestNewGenericInputSource($"XBox Controller {ControllerHandedness}");
+            }
+
             InteractionSourceState interactionSourceState = CheckIfValidInteractionSourceState(state);
             SetupFromInteractionSource(interactionSourceState);
         }
 
-        public void UpdateInputSource<T>(T state)
+        public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
             InteractionSourceState interactionSourceState = CheckIfValidInteractionSourceState(state);
             UpdateFromInteractionSource(interactionSourceState);

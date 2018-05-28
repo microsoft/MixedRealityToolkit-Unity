@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
                 interactionSourceState.source.handedness == InteractionSourceHandedness.Left ? Handedness.Left : Handedness.Right
                 );
 
-            detectedController.SetupInputSource(interactionSourceState);
+            detectedController.SetupInputSource(inputSystem, interactionSourceState);
 
             activeControllers.Add(interactionSourceState.source.id, detectedController);
 
@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
             if (controller == null) { return; }
 
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
-            controller.UpdateInputSource(interactionSourceState);
+            controller.UpdateInputSource(inputSystem, interactionSourceState);
             if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem) inputSystem?.RaiseSourceDetected(controller.InputSource);
         }
 
@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
 
             if (controller == null) { return; }
 
-            controller.UpdateInputSource(state);
+            controller.UpdateInputSource(inputSystem, state);
 
             if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
             {

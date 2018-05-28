@@ -36,12 +36,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
 
         public Dictionary<DeviceInputType, InteractionDefinition> Interactions { get; private set; }
 
-        public void SetupInputSource<T>(T state)
+        public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
+            if (inputSystem != null)
+            {
+                InputSource = inputSystem.RequestNewGenericInputSource($"Simulated Controller {ControllerHandedness}");
+            }
+
             // TODO
         }
 
-        public void UpdateInputSource<T>(T state)
+        public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
             // TODO
         }
