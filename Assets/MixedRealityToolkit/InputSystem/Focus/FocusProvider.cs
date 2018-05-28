@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
@@ -8,10 +9,8 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using IPointerResult = Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.IPointerResult;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 {
@@ -76,13 +75,24 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// </summary>
         [SerializeField]
         [Tooltip("Camera to use for raycasting uGUI pointer events.")]
-        private Camera uiRaycastCamera;
+        private Camera uiRaycastCamera = null;
 
         /// <summary>
         /// The Camera the Event System uses to raycast against.
         /// <para><remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks></para>
         /// </summary>
-        public Camera UIRaycastCamera { get; private set; }
+        public Camera UIRaycastCamera
+        {
+            get
+            {
+                if (uiRaycastCamera == null)
+                {
+                    CreateUiRaycastCamera();
+                }
+
+                return uiRaycastCamera;
+            }
+        }
 
         /// <summary>
         /// To tap on a hologram even when not focused on,
@@ -210,39 +220,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         {
             if (uiRaycastCamera == null)
             {
-                Debug.LogWarning("No UIRaycastCamera assigned! Creating a new UIRaycastCamera.");
-                var cameraObject = new GameObject { name = "UIRaycastCamera" };
-                cameraObject.transform.parent = transform;
-                cameraObject.transform.localPosition = Vector3.zero;
-                cameraObject.transform.localRotation = Quaternion.identity;
-                uiRaycastCamera = cameraObject.AddComponent<Camera>();
-                uiRaycastCamera.enabled = false;
-                uiRaycastCamera.clearFlags = CameraClearFlags.Depth;
-                uiRaycastCamera.cullingMask = CameraCache.Main.cullingMask;
-                uiRaycastCamera.orthographic = true;
-                uiRaycastCamera.orthographicSize = 0.5f;
-                uiRaycastCamera.nearClipPlane = 0.1f;
-                uiRaycastCamera.farClipPlane = 1000f;
-                uiRaycastCamera.rect = new Rect(0, 0, 1, 1);
-                uiRaycastCamera.depth = 0;
-                uiRaycastCamera.renderingPath = RenderingPath.UsePlayerSettings;
-                uiRaycastCamera.targetTexture = null;
-                uiRaycastCamera.useOcclusionCulling = false;
-                uiRaycastCamera.allowHDR = false;
-                uiRaycastCamera.allowMSAA = false;
-                uiRaycastCamera.allowDynamicResolution = false;
-                uiRaycastCamera.targetDisplay = 1;
-                uiRaycastCamera.stereoTargetEye = StereoTargetEyeMask.Both;
+                Debug.LogWarning("No UIRaycastCamera assigned! Creating a new UIRaycastCamera.\n" +
+                                 "To create a UIRaycastCamera in your scene, find this Focus Provider GameObject and add one there.");
+                CreateUiRaycastCamera();
             }
-
-            if (EventSystem.current == null)
-            {
-                Debug.LogWarning("No Event System found in scene! Adding components to the UIRaycastCamera.");
-                uiRaycastCamera.gameObject.AddComponent<EventSystem>();
-                uiRaycastCamera.gameObject.AddComponent<StandaloneInputModule>();
-            }
-
-            UIRaycastCamera = uiRaycastCamera;
         }
 
         private void Start()
@@ -268,6 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <returns>Currently focused <see cref="GameObject"/> for the events input source.</returns>
         public GameObject GetFocusedObject(BaseInputEventData eventData)
         {
+            Debug.Assert(eventData != null);
             if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
 
             FocusDetails focusDetails;
@@ -397,6 +379,36 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             }
 
             return newId;
+        }
+
+        /// <summary>
+        /// Utility for creating the UIRaycastCamera.
+        /// </summary>
+        /// <returns>The UIRaycastCamera</returns>
+        private void CreateUiRaycastCamera()
+        {
+            var cameraObject = new GameObject { name = "UIRaycastCamera" };
+            cameraObject.transform.parent = transform;
+            cameraObject.transform.localPosition = Vector3.zero;
+            cameraObject.transform.localRotation = Quaternion.identity;
+            uiRaycastCamera = cameraObject.AddComponent<Camera>();
+            uiRaycastCamera.enabled = false;
+            uiRaycastCamera.clearFlags = CameraClearFlags.Depth;
+            uiRaycastCamera.cullingMask = CameraCache.Main.cullingMask;
+            uiRaycastCamera.orthographic = true;
+            uiRaycastCamera.orthographicSize = 0.5f;
+            uiRaycastCamera.nearClipPlane = 0.1f;
+            uiRaycastCamera.farClipPlane = 1000f;
+            uiRaycastCamera.rect = new Rect(0, 0, 1, 1);
+            uiRaycastCamera.depth = 0;
+            uiRaycastCamera.renderingPath = RenderingPath.UsePlayerSettings;
+            uiRaycastCamera.targetTexture = null;
+            uiRaycastCamera.useOcclusionCulling = false;
+            uiRaycastCamera.allowHDR = false;
+            uiRaycastCamera.allowMSAA = false;
+            uiRaycastCamera.allowDynamicResolution = false;
+            uiRaycastCamera.targetDisplay = 1;
+            uiRaycastCamera.stereoTargetEye = StereoTargetEyeMask.Both;
         }
 
         /// <summary>
@@ -860,7 +872,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 RegisterPointer(sourcePointer);
 
                 // Special Registration for Gaze
-                if (eventData.InputSource.SourceId == InputSystem.GazeProvider.SourceId)
+                if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
                 {
                     Debug.Assert(gazeManagerPointingData == null, "Gaze Manager Pointer Data was already registered!");
 
@@ -891,10 +903,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 UnregisterPointer(sourcePointer);
             }
         }
-
-        public void OnSourcePositionChanged(SourcePositionEventData eventData) { }
-
-        public void OnSourceRotationChanged(SourceRotationEventData eventData) { }
 
         #endregion ISourceState Implementation
     }

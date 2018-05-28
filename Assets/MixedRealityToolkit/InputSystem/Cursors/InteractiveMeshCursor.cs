@@ -2,6 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
@@ -39,14 +42,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// <summary>
         /// internal state and element management
         /// </summary>
-        private float mTimer = 0;
+        private float timer = 0;
 
-        private bool mHasHover = false;
-        private bool mHasHand = false;
-        private bool mIsDown = false;
-        private Vector3 mBaseScale = new Vector3(1, 1, 1);
-        private Vector3 mTargetScale;
-        private bool mIsVisible = true;
+        private bool isVisible = true;
+        private bool hasHover = false;
+        private bool hasHand = false;
+        private bool isDown = false;
+
+        private readonly Vector3 baseScale = Vector3.one;
+        private Vector3 targetScale;
+
+        /// <summary>
+        /// The Current Input System for this Input Source.
+        /// </summary>
+        private static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+        private static IMixedRealityInputSystem inputSystem = null;
 
         private Vector3 mAwakeScale;
 
@@ -64,16 +74,16 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             base.OnCursorStateChange(state);
 
             // the cursor state has changed, reset the animation timer
-            if (mHasHand != IsHandDetected || mIsDown != IsPointerDown || mHasHover != (TargetedObject != null))
+            if (hasHand != IsHandDetected || isDown != IsPointerDown || hasHover != (TargetedObject != null))
             {
-                mTimer = 0;
+                timer = 0;
             }
 
-            mHasHand = IsHandDetected;
-            mIsDown = IsPointerDown;
-            mHasHover = TargetedObject != null;
+            hasHand = IsHandDetected;
+            isDown = IsPointerDown;
+            hasHover = TargetedObject != null;
 
-            mTargetScale = mBaseScale * DefaultScale;
+            targetScale = baseScale * DefaultScale;
             bool showRing = false;
 
             switch (state)
@@ -87,24 +97,22 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
                     break;
                 case CursorStateEnum.Interact:
                     showRing = true;
-                    mTargetScale = mBaseScale * DownScale;
+                    targetScale = baseScale * DownScale;
                     break;
                 case CursorStateEnum.InteractHover:
                     showRing = true;
-                    mTargetScale = mBaseScale * UpScale;
+                    targetScale = baseScale * UpScale;
                     break;
                 case CursorStateEnum.Select:
-                    mTargetScale = mBaseScale * UpScale;
+                    targetScale = baseScale * UpScale;
                     break;
                 case CursorStateEnum.Release:
                     break;
                 case CursorStateEnum.Contextual:
                     break;
-                default:
-                    break;
             }
 
-            if (!mIsVisible)
+            if (!isVisible)
             {
                 return;
             }
@@ -113,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             Dot.SetActive(!showRing);
 
             // added observation of CursorModifier
-            if (Pointer.CursorModifier != null && mHasHover)
+            if (Pointer.CursorModifier != null && hasHover)
             {
                 ElementVisibility(!Pointer.CursorModifier.GetCursorVisibility());
             }
@@ -127,20 +135,20 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             base.UpdateCursorTransform();
 
             // animate scale of ring and dot
-            if (mTimer < ScaleTime)
+            if (timer < ScaleTime)
             {
-                mTimer += Time.deltaTime;
-                if (mTimer > ScaleTime)
+                timer += Time.deltaTime;
+                if (timer > ScaleTime)
                 {
-                    mTimer = ScaleTime;
+                    timer = ScaleTime;
                 }
 
-                Ring.transform.localScale = Vector3.Lerp(mBaseScale * DefaultScale, mTargetScale, mTimer / ScaleTime);
-                Dot.transform.localScale = Vector3.Lerp(mBaseScale * DefaultScale, mTargetScale, mTimer / ScaleTime);
+                Ring.transform.localScale = Vector3.Lerp(baseScale * DefaultScale, targetScale, timer / ScaleTime);
+                Dot.transform.localScale = Vector3.Lerp(baseScale * DefaultScale, targetScale, timer / ScaleTime);
             }
 
             // handle scale of main cursor go
-            float distance = Vector3.Distance(GazeProvider.GazeOrigin, transform.position);
+            float distance = Vector3.Distance(InputSystem.GazeProvider.GazeOrigin, transform.position);
             float smoothScaling = 1 - DefaultCursorDistance * DistanceScaleFactor;
             transform.localScale = mAwakeScale * (distance * DistanceScaleFactor + smoothScaling);
         }
@@ -153,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         {
             base.SetVisibility(visible);
 
-            mIsVisible = visible;
+            isVisible = visible;
             ElementVisibility(visible);
 
             if (visible)

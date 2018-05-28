@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,17 +17,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <summary>
         /// Handedness of the <see cref="IMixedRealityInputSource"/>.
         /// </summary>
-        public Handedness Handedness { get; private set; }
+        public Handedness Handedness { get; private set; } = Handedness.None;
 
         /// <summary>
         /// The KeyCode of the <see cref="IMixedRealityInputSource"/>.
         /// </summary>
-        public KeyCode KeyCode { get; private set; }
+        public KeyCode KeyCode { get; private set; } = KeyCode.None;
 
         /// <summary>
         /// The InputType of the <see cref="IMixedRealityInputSource"/>.
         /// </summary>
-        public InputType InputType { get; private set; }
+        public InputAction InputAction { get; private set; } = new InputAction(0,"None");
 
         /// <inheritdoc />
         public InputEventData(EventSystem eventSystem) : base(eventSystem) { }
@@ -35,13 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
         /// <param name="inputSource"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, object[] tags)
+        public void Initialize(IMixedRealityInputSource inputSource)
         {
-            BaseInitialize(inputSource, tags);
-            Handedness = Handedness.None;
-            KeyCode = KeyCode.None;
-            InputType = InputType.None;
+            BaseInitialize(inputSource);
         }
 
         /// <summary>
@@ -49,13 +46,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         /// <param name="inputSource"></param>
         /// <param name="keyCode"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, KeyCode keyCode, object[] tags)
+        public void Initialize(IMixedRealityInputSource inputSource, KeyCode keyCode)
         {
-            BaseInitialize(inputSource, tags);
-            Handedness = Handedness.None;
+            BaseInitialize(inputSource);
             KeyCode = keyCode;
-            InputType = InputType.None;
         }
 
         /// <summary>
@@ -63,13 +57,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         /// <param name="inputSource"></param>
         /// <param name="inputType"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, InputType inputType, object[] tags)
+        public void Initialize(IMixedRealityInputSource inputSource, InputAction inputAction)
         {
-            BaseInitialize(inputSource, tags);
-            Handedness = Handedness.None;
-            KeyCode = KeyCode.None;
-            InputType = inputType;
+            BaseInitialize(inputSource);
+            InputAction = inputAction;
         }
 
         /// <summary>
@@ -77,13 +68,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         /// <param name="inputSource"></param>
         /// <param name="handedness"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, object[] tags)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness)
         {
-            BaseInitialize(inputSource, tags);
+            BaseInitialize(inputSource);
             Handedness = handedness;
-            KeyCode = KeyCode.None;
-            InputType = InputType.None;
         }
 
         /// <summary>
@@ -92,13 +80,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="handedness"></param>
         /// <param name="keyCode"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, KeyCode keyCode, object[] tags)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, KeyCode keyCode)
         {
-            BaseInitialize(inputSource, tags);
+            BaseInitialize(inputSource);
             Handedness = handedness;
             KeyCode = keyCode;
-            InputType = InputType.None;
         }
 
         /// <summary>
@@ -107,13 +93,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="handedness"></param>
         /// <param name="inputType"></param>
-        /// <param name="tags"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputType inputType, object[] tags)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputAction inputAction)
         {
-            BaseInitialize(inputSource, tags);
+            BaseInitialize(inputSource);
             Handedness = handedness;
-            KeyCode = KeyCode.None;
-            InputType = inputType;
+            InputAction = inputAction;
         }
     }
 }

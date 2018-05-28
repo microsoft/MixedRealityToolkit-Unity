@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.WebRequestRest;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal.DataStructures;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -56,8 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal
         /// <param name="targetDevice"></param>
         public static void OpenWebPortal(DeviceInfo targetDevice)
         {
-            //TODO: Figure out how to pass username and password to browser?
-            Process.Start(FinalizeUrl(targetDevice.IP));
+            System.Diagnostics.Process.Start(FinalizeUrl(targetDevice.IP));
         }
 #endif
 

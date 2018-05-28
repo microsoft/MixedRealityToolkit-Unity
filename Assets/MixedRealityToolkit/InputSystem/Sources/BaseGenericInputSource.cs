@@ -1,135 +1,45 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 {
     /// <summary>
     /// Base class for input sources that don't inherit from MonoBehaviour.
+    /// <remarks>This base class does not support adding or removing pointers, because many will never
+    /// pass pointers in their constructors and will fall back to either the Gaze or Mouse Pointer.</remarks>
     /// </summary>
     public class BaseGenericInputSource : IMixedRealityInputSource
     {
-        private static IMixedRealityInputSystem inputSystem = null;
+        /// <summary>
+        /// The Current Input System for this Input Source.
+        /// </summary>
         public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+        private static IMixedRealityInputSystem inputSystem = null;
 
-        public BaseGenericInputSource(string name, InputType[] capabilities, IMixedRealityPointer[] pointers = null)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="pointers"></param>
+        public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null)
         {
             SourceId = InputSystem.GenerateNewSourceId();
             SourceName = name;
-            Capabilities = capabilities;
-            Pointers = pointers ?? new[] { GazeProvider.GazePointer };
+            Pointers = pointers ?? new[] { InputSystem.GazeProvider.GazePointer };
         }
 
+        /// <inheritdoc />
         public uint SourceId { get; }
 
+        /// <inheritdoc />
         public string SourceName { get; }
 
-        public IMixedRealityPointer[] Pointers { get; private set; }
-
-        public InputType[] Capabilities { get; }
-
-        public bool SupportsInputCapability(InputType[] capabilities)
-        {
-            for (int i = 0; i < Capabilities.Length; i++)
-            {
-                for (int j = 0; j < capabilities.Length; j++)
-                {
-                    if (Capabilities[i] == capabilities[j])
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        public virtual void AddPointer(IMixedRealityPointer pointer)
-        {
-            for (int i = 0; i < Pointers.Length; i++)
-            {
-                if (Pointers[i].PointerId == pointer.PointerId)
-                {
-                    Debug.LogWarning($"This pointer has already been added to {SourceName}.");
-                    return;
-                }
-            }
-
-            var newPointers = new IMixedRealityPointer[Pointers.Length + 1];
-
-            // Set our new pointer at the end.
-            newPointers[newPointers.Length - 1] = pointer;
-
-            // Reverse loop and set our existing pointers.
-            for (int i = newPointers.Length - 2; i >= 0; i--)
-            {
-                newPointers[i] = Pointers[i];
-            }
-        }
-
-        public virtual void RemovePointer(IMixedRealityPointer pointer)
-        {
-            var oldPointerList = new List<IMixedRealityPointer>(Pointers.Length);
-
-            for (int i = 0; i < Pointers.Length; i++)
-            {
-                if (Pointers[i].PointerId != pointer.PointerId)
-                {
-                    oldPointerList.Add(Pointers[i]);
-                }
-            }
-
-            Pointers = oldPointerList.ToArray();
-        }
-
-        public virtual bool TryGetPointerPosition(IMixedRealityPointer pointer, out Vector3 position)
-        {
-            foreach (var sourcePointer in Pointers)
-            {
-                if (sourcePointer.PointerId == pointer.PointerId)
-                {
-                    return sourcePointer.TryGetPointerPosition(out position);
-                }
-            }
-
-            position = Vector3.zero;
-            return false;
-        }
-
-        public virtual bool TryGetPointingRay(IMixedRealityPointer pointer, out Ray pointingRay)
-        {
-            foreach (var sourcePointer in Pointers)
-            {
-                if (sourcePointer.PointerId == pointer.PointerId)
-                {
-                    return sourcePointer.TryGetPointingRay(out pointingRay);
-                }
-            }
-
-            pointingRay = default(Ray);
-            return false;
-        }
-
-        public virtual bool TryGetPointerRotation(IMixedRealityPointer pointer, out Quaternion rotation)
-        {
-            foreach (var sourcePointer in Pointers)
-            {
-                if (sourcePointer.PointerId == pointer.PointerId)
-                {
-                    return sourcePointer.TryGetPointerRotation(out rotation);
-                }
-            }
-
-            rotation = Quaternion.identity;
-            return false;
-        }
+        /// <inheritdoc />
+        public virtual IMixedRealityPointer[] Pointers { get; }
 
         #region IEquality Implementation
 
@@ -138,11 +48,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             return left.Equals(right);
         }
 
+        /// <inheritdoc />
         bool IEqualityComparer.Equals(object left, object right)
         {
             return left.Equals(right);
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
@@ -157,11 +69,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             return other != null && SourceId == other.SourceId && string.Equals(SourceName, other.SourceName);
         }
 
+        /// <inheritdoc />
         int IEqualityComparer.GetHashCode(object obj)
         {
             return obj.GetHashCode();
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked

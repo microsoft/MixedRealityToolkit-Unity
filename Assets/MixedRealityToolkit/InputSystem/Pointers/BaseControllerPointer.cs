@@ -2,14 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Cursors;
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
-using System.Collections;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System.Collections;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
@@ -49,10 +49,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         private KeyCode activeHoldKeyCode = KeyCode.None;
 
         [SerializeField]
-        private InputType activeHoldPressType = InputType.Select;
+        private InputAction activeHoldAction = null;
+        // TODO Write custom inspector to assign Input Action
 
         [SerializeField]
-        private InputType interactionEnabledPressType = InputType.Select;
+        private InputAction interactionEnabledAction = null;
+        // TODO Write custom inspector to assign Input Action
 
         [SerializeField]
         private bool interactionRequiresHold = false;
@@ -118,12 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             base.OnDisable();
             SelectPressed = false;
-
-            if (BaseCursor != null)
-            {
-                BaseCursor.SetVisibility(false);
-            }
-
+            BaseCursor?.SetVisibility(false);
             InputSystem.FocusProvider.UnregisterPointer(this);
         }
 
@@ -315,17 +312,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
-                bool interactionPressed = false;
-#if UNITY_WSA
-                interactionPressed = eventData.InputType == activeHoldPressType;
-#endif
+                bool interactionPressed = eventData.InputAction.Id == activeHoldAction?.Id;
+
                 if (interactionRequiresHold && (eventData.KeyCode == activeHoldKeyCode || interactionPressed))
                 {
                     InteractionEnabled = false;
                 }
-#if UNITY_WSA
-                interactionPressed = eventData.InputType == interactionEnabledPressType;
-#endif
+
+                interactionPressed = eventData.InputAction.Id == interactionEnabledAction?.Id;
                 if (eventData.KeyCode == interactionEnabledKeyCode || interactionPressed)
                 {
                     OnSelectReleased();
@@ -337,18 +331,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
-                bool interactionPressed = false;
-#if UNITY_WSA
-                interactionPressed = eventData.InputType == activeHoldPressType;
-#endif
+                bool interactionPressed = eventData.InputAction.Id == activeHoldAction?.Id;
                 if (interactionRequiresHold && (eventData.KeyCode == activeHoldKeyCode || interactionPressed))
                 {
                     InteractionEnabled = true;
                 }
 
-#if UNITY_WSA
-                interactionPressed = eventData.InputType == interactionEnabledPressType;
-#endif
+                interactionPressed = eventData.InputAction.Id == interactionEnabledAction?.Id;
                 if (eventData.KeyCode == interactionEnabledKeyCode || interactionPressed)
                 {
                     OnSelectPressed();
@@ -361,7 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         /// <summary>
         /// Updates target point orientation via thumbstick
         /// </summary>
-        public virtual void OnDualAxisInputChanged(DualAxisInputEventData eventData) { }
+        public virtual void On2DoFInputChanged(TwoDoFInputEventData eventData) { }
 
         #endregion  IMixedRealityInputHandler Implementation
     }

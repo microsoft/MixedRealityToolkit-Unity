@@ -1,20 +1,21 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Attributes;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
-    /// Configuration profile settings for the Mixed Reality Toolkit
+    /// Configuration profile settings for the Mixed Reality Toolkit.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Configuration Profile")]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Configuration Profile", fileName = "MixedRealityConfigurationProfile", order = 0)]
     public class MixedRealityConfigurationProfile : ScriptableObject, ISerializationCallbackReceiver
     {
         #region Manager Registry properties
@@ -41,9 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         #region Mixed Reality Manager configurable properties
 
         [SerializeField]
-        [Header("Input Settings")]
         [Tooltip("Enable the Input System on Startup")]
-        private bool enableInputSystem = true;
+        private bool enableInputSystem = false;
 
         /// <summary>
         /// Enable and configure the Input System component for the Mixed Reality Toolkit
@@ -56,35 +56,69 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("Input System Class to instantiate at runtime.")]
-        [Implements(typeof(IMixedRealityInputSystem), ClassGrouping.None)]
-        private SystemType inputSystem;
+        [Implements(typeof(IMixedRealityInputSystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType inputSystemType;
 
         /// <summary>
         /// Input System Script File to instantiate at runtime.
         /// </summary>
-        public SystemType InputSystem
+        public SystemType InputSystemType
         {
-            get { return inputSystem; }
-            private set { inputSystem = value; }
+            get { return inputSystemType; }
+            private set { inputSystemType = value; }
         }
 
         [SerializeField]
-        [Tooltip("Enable the Motion Controllers on Startup")]
-        private bool enableControllers = true;
+        [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
+        private MixedRealityInputActionsProfile inputActionsProfile;
 
         /// <summary>
-        /// Enable and configure the controller rendering for the Mixed Reality Toolkit
+        /// Input System Action Mapping profile for wiring up Controller input to Actions.
         /// </summary>
-        public bool EnableControllers
+        public MixedRealityInputActionsProfile InputActionsProfile
         {
-            get { return enableControllers; }
-            private set { enableControllers = value; }
+            get { return inputActionsProfile; }
+            private set { inputActionsProfile = value; }
         }
 
         [SerializeField]
-        [Header("Boundary Settings")]
+        [Tooltip("Enable Speech Commands on startup.")]
+        private bool enableSpeechCommands = false;
+
+        /// <summary>
+        /// Enable and configure the speech commands for your application.
+        /// </summary>
+        public bool EnableSpeechCommands
+        {
+            get { return enableSpeechCommands; }
+            private set { enableSpeechCommands = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
+        private MixedRealitySpeechCommandsProfile speechCommandsProfile;
+        public MixedRealitySpeechCommandsProfile SpeechCommandsProfile
+        {
+            get { return speechCommandsProfile; }
+            private set { speechCommandsProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable and configure the controller rendering of the Motion Controllers on Startup.")]
+        private bool renderMotionControllers = false;
+
+        /// <summary>
+        /// Enable and configure the controller rendering of the Motion Controllers on Startup.
+        /// </summary>
+        public bool RenderMotionControllers
+        {
+            get { return renderMotionControllers; }
+            private set { renderMotionControllers = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Enable the Boundary on Startup")]
-        private bool enableBoundarySystem = true;
+        private bool enableBoundarySystem = false;
 
         /// <summary>
         /// Enable and configure the Boundary component on the Mixed Reality Camera

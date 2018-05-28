@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
@@ -12,9 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
     /// </summary>
     public class GazeStabilizer : BaseRayStabilizer
     {
-
         /// <summary>
-        /// Number of samples to iterate on.
+        ///Number of samples that you want to iterate on.
         /// </summary>
         public int StoredStabilitySamples => storedStabilitySamples;
         [SerializeField]

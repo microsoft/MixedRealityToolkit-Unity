@@ -13,7 +13,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
     {
         void OnSourceDetected(SourceStateEventData eventData);
         void OnSourceLost(SourceStateEventData eventData);
-        void OnSourcePositionChanged(SourcePositionEventData eventData);
-        void OnSourceRotationChanged(SourceRotationEventData eventData);
     }
 }

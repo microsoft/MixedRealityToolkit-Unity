@@ -2,31 +2,28 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 {
     /// <summary>
     /// Interface for an input source.
-    /// An input source can be any user defined action that generally comes from a physical controller, sensor, or device.
+    /// An input source is the origin of user input and generally comes from a physical controller, sensor, or other hardware device.
     /// </summary>
     public interface IMixedRealityInputSource : IEqualityComparer
     {
+        /// <summary>
+        /// The Unique Source Id of this Input Source.
+        /// </summary>
         uint SourceId { get; }
 
+        /// <summary>
+        /// The Name of this Input Source.
+        /// </summary>
         string SourceName { get; }
 
+        /// <summary>
+        /// Array of pointers associated with this input source.
+        /// </summary>
         IMixedRealityPointer[] Pointers { get; }
-
-        /// <summary>
-        /// Returns the input info that the input source can provide.
-        /// </summary>
-        InputType[] Capabilities { get; }
-
-        /// <summary>
-        /// Returns whether the input source supports the specified input types.
-        /// </summary>
-        /// <param name="inputInfo">Input types that we want to get information about.</param>
-        bool SupportsInputCapability(InputType[] inputInfo);
     }
 }

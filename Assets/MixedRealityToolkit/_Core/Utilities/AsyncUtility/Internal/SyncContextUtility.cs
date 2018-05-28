@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Async.Internal
         private static System.Reflection.MethodInfo executionMethod;
 
         /// <summary>
-        /// Hack to get Unity Editor to execute continuations in edit mode.
+        /// HACK: makes Unity Editor execute continuations in edit mode.
         /// </summary>
         private static void ExecuteContinuations()
         {

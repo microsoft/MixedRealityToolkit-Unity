@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 #if UNITY_WSA
@@ -170,10 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             }
         }
 
-        public virtual void OnSourcePositionChanged(SourcePositionEventData eventData) { }
-
-        public virtual void OnSourceRotationChanged(SourceRotationEventData eventData) { }
-
         #endregion IMixedRealitySourceStateHandler Implementation
 
         #region IMixedRealityFocusChangedHandler Implementation
@@ -200,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// Function for receiving OnPointerDown events from InputManager
         /// </summary>
         /// <param name="eventData"></param>
-        public virtual void OnPointerDown(ClickEventData eventData)
+        public virtual void OnPointerDown(MixedRealityPointerEventData eventData)
         {
             foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
@@ -215,13 +211,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// Function for receiving OnPointerClicked events from InputManager
         /// </summary>
         /// <param name="eventData"></param>
-        public virtual void OnPointerClicked(ClickEventData eventData) { }
+        public virtual void OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         /// <summary>
         /// Function for receiving OnPointerUp events from InputManager
         /// </summary>
         /// <param name="eventData"></param>
-        public virtual void OnPointerUp(ClickEventData eventData)
+        public virtual void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             foreach (var sourcePointer in eventData.InputSource.Pointers)
             {

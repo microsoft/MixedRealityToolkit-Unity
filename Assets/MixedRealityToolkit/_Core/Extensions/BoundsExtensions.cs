@@ -88,8 +88,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <summary>
         /// Gets all the corner points of the bounds in world space
         /// </summary>
-        /// <param name="collider"></param>
+        /// <param name="transform"></param>
         /// <param name="positions"></param>
+        /// <param name="bounds"></param>
         /// <remarks>
         /// Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
         /// corners array.
@@ -114,14 +115,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             }
 
             // Transform all the local points to world space.
-            positions[BoundsExtensions.LBF] = transform.TransformPoint(leftEdge, bottomEdge, frontEdge);
-            positions[BoundsExtensions.LBB] = transform.TransformPoint(leftEdge, bottomEdge, backEdge);
-            positions[BoundsExtensions.LTF] = transform.TransformPoint(leftEdge, topEdge, frontEdge);
-            positions[BoundsExtensions.LTB] = transform.TransformPoint(leftEdge, topEdge, backEdge);
-            positions[BoundsExtensions.RBF] = transform.TransformPoint(rightEdge, bottomEdge, frontEdge);
-            positions[BoundsExtensions.RBB] = transform.TransformPoint(rightEdge, bottomEdge, backEdge);
-            positions[BoundsExtensions.RTF] = transform.TransformPoint(rightEdge, topEdge, frontEdge);
-            positions[BoundsExtensions.RTB] = transform.TransformPoint(rightEdge, topEdge, backEdge);
+            positions[LBF] = transform.TransformPoint(leftEdge, bottomEdge, frontEdge);
+            positions[LBB] = transform.TransformPoint(leftEdge, bottomEdge, backEdge);
+            positions[LTF] = transform.TransformPoint(leftEdge, topEdge, frontEdge);
+            positions[LTB] = transform.TransformPoint(leftEdge, topEdge, backEdge);
+            positions[RBF] = transform.TransformPoint(rightEdge, bottomEdge, frontEdge);
+            positions[RBB] = transform.TransformPoint(rightEdge, bottomEdge, backEdge);
+            positions[RTF] = transform.TransformPoint(rightEdge, topEdge, frontEdge);
+            positions[RTB] = transform.TransformPoint(rightEdge, topEdge, backEdge);
         }
 
         /// <summary>
@@ -146,14 +147,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
                 positions = new Vector3[numPoints];
             }
 
-            positions[BoundsExtensions.LBF] = new Vector3(leftEdge, bottomEdge, frontEdge);
-            positions[BoundsExtensions.LBB] = new Vector3(leftEdge, bottomEdge, backEdge);
-            positions[BoundsExtensions.LTF] = new Vector3(leftEdge, topEdge, frontEdge);
-            positions[BoundsExtensions.LTB] = new Vector3(leftEdge, topEdge, backEdge);
-            positions[BoundsExtensions.RBF] = new Vector3(rightEdge, bottomEdge, frontEdge);
-            positions[BoundsExtensions.RBB] = new Vector3(rightEdge, bottomEdge, backEdge);
-            positions[BoundsExtensions.RTF] = new Vector3(rightEdge, topEdge, frontEdge);
-            positions[BoundsExtensions.RTB] = new Vector3(rightEdge, topEdge, backEdge);
+            positions[LBF] = new Vector3(leftEdge, bottomEdge, frontEdge);
+            positions[LBB] = new Vector3(leftEdge, bottomEdge, backEdge);
+            positions[LTF] = new Vector3(leftEdge, topEdge, frontEdge);
+            positions[LTB] = new Vector3(leftEdge, topEdge, backEdge);
+            positions[RBF] = new Vector3(rightEdge, bottomEdge, frontEdge);
+            positions[RBB] = new Vector3(rightEdge, bottomEdge, backEdge);
+            positions[RTF] = new Vector3(rightEdge, topEdge, frontEdge);
+            positions[RTB] = new Vector3(rightEdge, topEdge, backEdge);
         }
 
         public static void GetFacePositions(this Bounds bounds, Transform transform, ref Vector3[] positions)
@@ -167,12 +168,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
                 positions = new Vector3[numPoints];
             }
 
-            positions[BoundsExtensions.TOP] = transform.TransformPoint(center + Vector3.up * extents.y);
-            positions[BoundsExtensions.BOT] = transform.TransformPoint(center + Vector3.down * extents.y);
-            positions[BoundsExtensions.LFT] = transform.TransformPoint(center + Vector3.left * extents.x);
-            positions[BoundsExtensions.RHT] = transform.TransformPoint(center + Vector3.right * extents.x);
-            positions[BoundsExtensions.FWD] = transform.TransformPoint(center + Vector3.forward * extents.z);
-            positions[BoundsExtensions.BCK] = transform.TransformPoint(center + Vector3.back * extents.z);
+            positions[TOP] = transform.TransformPoint(center + Vector3.up * extents.y);
+            positions[BOT] = transform.TransformPoint(center + Vector3.down * extents.y);
+            positions[LFT] = transform.TransformPoint(center + Vector3.left * extents.x);
+            positions[RHT] = transform.TransformPoint(center + Vector3.right * extents.x);
+            positions[FWD] = transform.TransformPoint(center + Vector3.forward * extents.z);
+            positions[BCK] = transform.TransformPoint(center + Vector3.back * extents.z);
         }
 
         /// <summary>
@@ -193,36 +194,36 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             float backEdge = center.z + extents.z;
 
             // Allocate the array if needed.
-            const int numPoints = BoundsExtensions.LTF_LTB + 1;
+            const int numPoints = LTF_LTB + 1;
             if (positions == null || positions.Length != numPoints)
             {
                 positions = new Vector3[numPoints];
             }
 
             // Transform all the local points to world space.
-            positions[BoundsExtensions.LBF] = transform.TransformPoint(leftEdge, bottomEdge, frontEdge);
-            positions[BoundsExtensions.LBB] = transform.TransformPoint(leftEdge, bottomEdge, backEdge);
-            positions[BoundsExtensions.LTF] = transform.TransformPoint(leftEdge, topEdge, frontEdge);
-            positions[BoundsExtensions.LTB] = transform.TransformPoint(leftEdge, topEdge, backEdge);
-            positions[BoundsExtensions.RBF] = transform.TransformPoint(rightEdge, bottomEdge, frontEdge);
-            positions[BoundsExtensions.RBB] = transform.TransformPoint(rightEdge, bottomEdge, backEdge);
-            positions[BoundsExtensions.RTF] = transform.TransformPoint(rightEdge, topEdge, frontEdge);
-            positions[BoundsExtensions.RTB] = transform.TransformPoint(rightEdge, topEdge, backEdge);
+            positions[LBF] = transform.TransformPoint(leftEdge, bottomEdge, frontEdge);
+            positions[LBB] = transform.TransformPoint(leftEdge, bottomEdge, backEdge);
+            positions[LTF] = transform.TransformPoint(leftEdge, topEdge, frontEdge);
+            positions[LTB] = transform.TransformPoint(leftEdge, topEdge, backEdge);
+            positions[RBF] = transform.TransformPoint(rightEdge, bottomEdge, frontEdge);
+            positions[RBB] = transform.TransformPoint(rightEdge, bottomEdge, backEdge);
+            positions[RTF] = transform.TransformPoint(rightEdge, topEdge, frontEdge);
+            positions[RTB] = transform.TransformPoint(rightEdge, topEdge, backEdge);
 
-            positions[BoundsExtensions.LTF_RTF] = Vector3.Lerp(positions[BoundsExtensions.LTF], positions[BoundsExtensions.RTF], 0.5f);
-            positions[BoundsExtensions.LBF_RBF] = Vector3.Lerp(positions[BoundsExtensions.LBF], positions[BoundsExtensions.RBF], 0.5f);
-            positions[BoundsExtensions.RTB_LTB] = Vector3.Lerp(positions[BoundsExtensions.RTB], positions[BoundsExtensions.LTB], 0.5f);
-            positions[BoundsExtensions.RBB_LBB] = Vector3.Lerp(positions[BoundsExtensions.RBB], positions[BoundsExtensions.LBB], 0.5f);
+            positions[LTF_RTF] = Vector3.Lerp(positions[LTF], positions[RTF], 0.5f);
+            positions[LBF_RBF] = Vector3.Lerp(positions[LBF], positions[RBF], 0.5f);
+            positions[RTB_LTB] = Vector3.Lerp(positions[RTB], positions[LTB], 0.5f);
+            positions[RBB_LBB] = Vector3.Lerp(positions[RBB], positions[LBB], 0.5f);
 
-            positions[BoundsExtensions.LTF_LBF] = Vector3.Lerp(positions[BoundsExtensions.LTF], positions[BoundsExtensions.LBF], 0.5f);
-            positions[BoundsExtensions.RTB_RBB] = Vector3.Lerp(positions[BoundsExtensions.RTB], positions[BoundsExtensions.RBB], 0.5f);
-            positions[BoundsExtensions.LTB_LBB] = Vector3.Lerp(positions[BoundsExtensions.LTB], positions[BoundsExtensions.LBB], 0.5f);
-            positions[BoundsExtensions.RTF_RBF] = Vector3.Lerp(positions[BoundsExtensions.RTF], positions[BoundsExtensions.RBF], 0.5f);
+            positions[LTF_LBF] = Vector3.Lerp(positions[LTF], positions[LBF], 0.5f);
+            positions[RTB_RBB] = Vector3.Lerp(positions[RTB], positions[RBB], 0.5f);
+            positions[LTB_LBB] = Vector3.Lerp(positions[LTB], positions[LBB], 0.5f);
+            positions[RTF_RBF] = Vector3.Lerp(positions[RTF], positions[RBF], 0.5f);
 
-            positions[BoundsExtensions.RBF_RBB] = Vector3.Lerp(positions[BoundsExtensions.RBF], positions[BoundsExtensions.RBB], 0.5f);
-            positions[BoundsExtensions.RTF_RTB] = Vector3.Lerp(positions[BoundsExtensions.RTF], positions[BoundsExtensions.RTB], 0.5f);
-            positions[BoundsExtensions.LBF_LBB] = Vector3.Lerp(positions[BoundsExtensions.LBF], positions[BoundsExtensions.LBB], 0.5f);
-            positions[BoundsExtensions.LTF_LTB] = Vector3.Lerp(positions[BoundsExtensions.LTF], positions[BoundsExtensions.LTB], 0.5f);
+            positions[RBF_RBB] = Vector3.Lerp(positions[RBF], positions[RBB], 0.5f);
+            positions[RTF_RTB] = Vector3.Lerp(positions[RTF], positions[RTB], 0.5f);
+            positions[LBF_LBB] = Vector3.Lerp(positions[LBF], positions[LBB], 0.5f);
+            positions[LTF_LTB] = Vector3.Lerp(positions[LTF], positions[LTB], 0.5f);
         }
 
         /// <summary>
@@ -242,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             float topEdge = 0;
 
             // Allocate the array if needed.
-            const int numPoints = BoundsExtensions.LB_LT + 1;
+            const int numPoints = LB_LT + 1;
             if (positions == null || positions.Length != numPoints)
             {
                 positions = new Vector3[numPoints];
@@ -257,10 +258,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
                     bottomEdge = center.y - extents.y;
                     topEdge = center.y + extents.y;
                     // Transform all the local points to world space.
-                    positions[BoundsExtensions.LT] = transform.TransformPoint(0, topEdge, leftEdge);
-                    positions[BoundsExtensions.LB] = transform.TransformPoint(0, bottomEdge, leftEdge);
-                    positions[BoundsExtensions.RT] = transform.TransformPoint(0, topEdge, rightEdge);
-                    positions[BoundsExtensions.RB] = transform.TransformPoint(0, bottomEdge, rightEdge);
+                    positions[LT] = transform.TransformPoint(0, topEdge, leftEdge);
+                    positions[LB] = transform.TransformPoint(0, bottomEdge, leftEdge);
+                    positions[RT] = transform.TransformPoint(0, topEdge, rightEdge);
+                    positions[RB] = transform.TransformPoint(0, bottomEdge, rightEdge);
                     break;
 
                 case Axis.Y:
@@ -269,10 +270,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
                     bottomEdge = center.x - extents.x;
                     topEdge = center.x + extents.x;
                     // Transform all the local points to world space.
-                    positions[BoundsExtensions.LT] = transform.TransformPoint(topEdge, 0, leftEdge);
-                    positions[BoundsExtensions.LB] = transform.TransformPoint(bottomEdge, 0, leftEdge);
-                    positions[BoundsExtensions.RT] = transform.TransformPoint(topEdge, 0, rightEdge);
-                    positions[BoundsExtensions.RB] = transform.TransformPoint(bottomEdge, 0, rightEdge);
+                    positions[LT] = transform.TransformPoint(topEdge, 0, leftEdge);
+                    positions[LB] = transform.TransformPoint(bottomEdge, 0, leftEdge);
+                    positions[RT] = transform.TransformPoint(topEdge, 0, rightEdge);
+                    positions[RB] = transform.TransformPoint(bottomEdge, 0, rightEdge);
                     break;
 
                 case Axis.Z:
@@ -281,17 +282,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
                     bottomEdge = center.y - extents.y;
                     topEdge = center.y + extents.y;
                     // Transform all the local points to world space.
-                    positions[BoundsExtensions.LT] = transform.TransformPoint(leftEdge, topEdge, 0);
-                    positions[BoundsExtensions.LB] = transform.TransformPoint(leftEdge, bottomEdge, 0);
-                    positions[BoundsExtensions.RT] = transform.TransformPoint(rightEdge, topEdge, 0);
-                    positions[BoundsExtensions.RB] = transform.TransformPoint(rightEdge, bottomEdge, 0);
+                    positions[LT] = transform.TransformPoint(leftEdge, topEdge, 0);
+                    positions[LB] = transform.TransformPoint(leftEdge, bottomEdge, 0);
+                    positions[RT] = transform.TransformPoint(rightEdge, topEdge, 0);
+                    positions[RB] = transform.TransformPoint(rightEdge, bottomEdge, 0);
                     break;
             }
 
-            positions[BoundsExtensions.LT_RT] = Vector3.Lerp(positions[BoundsExtensions.LT], positions[BoundsExtensions.RT], 0.5f);
-            positions[BoundsExtensions.RT_RB] = Vector3.Lerp(positions[BoundsExtensions.RT], positions[BoundsExtensions.RB], 0.5f);
-            positions[BoundsExtensions.RB_LB] = Vector3.Lerp(positions[BoundsExtensions.RB], positions[BoundsExtensions.LB], 0.5f);
-            positions[BoundsExtensions.LB_LT] = Vector3.Lerp(positions[BoundsExtensions.LB], positions[BoundsExtensions.LT], 0.5f);
+            positions[LT_RT] = Vector3.Lerp(positions[LT], positions[RT], 0.5f);
+            positions[RT_RB] = Vector3.Lerp(positions[RT], positions[RB], 0.5f);
+            positions[RB_LB] = Vector3.Lerp(positions[RB], positions[LB], 0.5f);
+            positions[LB_LT] = Vector3.Lerp(positions[LB], positions[LT], 0.5f);
         }
 
         /// <summary>
@@ -446,10 +447,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
                 return (toCenter1.magnitude <= toCenter2.magnitude);
 
             }
-            else
-            {
-                return (distToClosestPoint1.magnitude <= distToClosestPoint2.magnitude);
-            }
+
+            return (distToClosestPoint1.magnitude <= distToClosestPoint2.magnitude);
         }
 
         #endregion
