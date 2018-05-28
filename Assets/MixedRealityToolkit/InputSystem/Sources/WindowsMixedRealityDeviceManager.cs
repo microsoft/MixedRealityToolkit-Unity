@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
@@ -9,7 +11,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
 #if UNITY_WSA
@@ -23,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// and positional information for the various inputs that Windows gestures supports.
     /// This is mostly a wrapper on top of GestureRecognizer and InteractionManager.
     /// </summary>
-    public class InteractionInputSources : MonoBehaviour
+    public class WindowsMixedRealityDeviceManager : BaseManager
     {
         /// <summary>
         /// This enumeration gives the manager two different ways to handle the recognizer. Both will
@@ -751,7 +752,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                     continue;
                 }
 
-                var pointerObject = Instantiate(pointerOption.PointerPrefab);
+                var pointerObject = UnityEngine.Object.Instantiate(pointerOption.PointerPrefab);
                 var pointer = pointerObject.GetComponent<BaseControllerPointer>();
                 pointer.Handedness = (Handedness)interactionSource.handedness;
                 pointer.PointerName = $"{interactionSource.handedness}_{interactionSource.kind}_{pointer.GetType().Name}";
@@ -788,7 +789,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             {
                 if (interactionSource.PointerSceneObjects[j] != null)
                 {
-                    Destroy(interactionSource.PointerSceneObjects[j].gameObject);
+                    UnityEngine.Object.Destroy(interactionSource.PointerSceneObjects[j].gameObject);
                 }
             }
         }
