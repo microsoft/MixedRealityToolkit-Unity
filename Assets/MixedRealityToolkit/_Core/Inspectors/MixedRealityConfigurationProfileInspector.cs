@@ -43,6 +43,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         Debug.LogWarning("No Mixed Reality Manager in your scene.");
                     }
                 }
+                else
+                {
+                    MixedRealityManager.ConfirmInitialized();
+                }
             }
 
             enableInputSystem = serializedObject.FindProperty("enableInputSystem");

@@ -39,15 +39,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             RenderMixedRealityToolkitLogo();
             EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);
 
-            if (!MixedRealityManager.IsInitialized)
+            // Check and make sure we have a Mixed Reality Manager and an active profile.
+            if (!CheckMixedRealityManager())
             {
-                EditorGUILayout.HelpBox("No Mixed Reality Manager found in scene.", MessageType.Error);
-                return;
-            }
-
-            if (!MixedRealityManager.HasActiveProfile)
-            {
-                EditorGUILayout.HelpBox("No Active Profile set on the Mixed Reality Manager.", MessageType.Error);
                 return;
             }
 
