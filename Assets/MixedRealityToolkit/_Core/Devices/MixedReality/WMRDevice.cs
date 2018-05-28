@@ -14,6 +14,7 @@ using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
+    // TODO - name not final
     public class WMRDevice : IMixedRealityDevice
     {
         /// <summary>

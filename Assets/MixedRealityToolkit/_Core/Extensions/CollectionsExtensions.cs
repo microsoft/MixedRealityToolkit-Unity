@@ -126,6 +126,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             return output;
         }
 
+        /// <summary>
+        /// Overload extension to enable saving of an InteractionDefinition inside a Dictionary collection
+        /// *Note can only use generics (in both here and InteractionDefinition)
+        /// </summary>
+        /// <typeparam name="T">Type of input being saves</typeparam>
+        /// <param name="input">The InteractionDefinition dictionary reference (generics, performed on a Dictionary)</param>
+        /// <param name="key">The specific DeviceInputType value to update</param>
+        /// <param name="value">The data value to be updated</param>
         public static void SetDictionaryValue<T>(this Dictionary<Definitions.Devices.DeviceInputType, Definitions.Devices.InteractionDefinition> input, Definitions.Devices.DeviceInputType key, T value)
         {
             var entry = input[key];

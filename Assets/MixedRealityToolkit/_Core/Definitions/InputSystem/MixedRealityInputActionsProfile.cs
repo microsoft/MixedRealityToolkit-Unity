@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
             AxisType.Digital,
             AxisType.DualAxis,
             AxisType.DualAxis
-}; // Examples only, to be refined later
+        }; // Examples only, to be refined later
 
         [SerializeField]
         [Tooltip("The list of actions users can do in your application.")]

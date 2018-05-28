@@ -1,14 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
+    // TODO - this is no longer used as it was replaced by the IMixedRealityController interface, consider removing.
     /// <summary>
     /// The Controller definition defines the Controller as defined by the SDK / Unity.
     /// </summary>
+    [Serializable]
     public struct Controller
     {
         /// <summary>

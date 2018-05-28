@@ -197,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         #endregion  ISerializationCallbackReceiver Implementation
 		
-		        #region Mixed Reality Controller Mapping helpers
+		#region Mixed Reality Controller Mapping helpers
 
         // TODO - needs validation to ensure duplicates are not added?
 

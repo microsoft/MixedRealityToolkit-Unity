@@ -13,8 +13,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     [Serializable]
     public struct AnimatedCursorData
     {
+        /// <summary>
+        /// Name of the Cursor
+        /// </summary>
         public string Name;
+
+        /// <summary>
+        /// The current state of the cursor
+        /// E.G. Hover, interact, etc
+        /// </summary>
         public CursorStateEnum CursorState;
+
+        /// <summary>
+        /// Animator parameter definition to map to for the cursor
+        /// </summary>
         public AnimatorParameter Parameter;
     }
 }
