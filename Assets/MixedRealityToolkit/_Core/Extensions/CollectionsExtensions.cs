@@ -129,32 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         public static void SetDictionaryValue<T>(this Dictionary<Definitions.Devices.DeviceInputType, Definitions.Devices.InteractionDefinition> input, Definitions.Devices.DeviceInputType key, T value)
         {
             var entry = input[key];
-            switch (entry.AxisType)  //Should be able to drop this with the intdef pr generic setter
-            {
-                case Definitions.AxisType.Digital:
-                    entry.SetValue((bool)Convert.ChangeType(value, typeof(bool)));
-                    break;
-                case Definitions.AxisType.SingleAxis:
-                    entry.SetValue((float)Convert.ChangeType(value, typeof(float)));
-                    break;
-                case Definitions.AxisType.DualAxis:
-                    entry.SetValue((Vector2)Convert.ChangeType(value, typeof(Vector2)));
-                    break;
-                case Definitions.AxisType.ThreeDoFPosition:
-                    entry.SetValue((Vector3)Convert.ChangeType(value, typeof(Vector3)));
-                    break;
-                case Definitions.AxisType.ThreeDoFRotation:
-                    entry.SetValue((Quaternion)Convert.ChangeType(value, typeof(Quaternion)));
-                    break;
-                case Definitions.AxisType.SixDoF:
-                    entry.SetValue((Tuple<Vector3, Quaternion>)Convert.ChangeType(value, typeof(Tuple<Vector3,Quaternion>)));
-                    break;
-                case Definitions.AxisType.None:
-                case Definitions.AxisType.Raw:
-                default:
-                    entry.SetValue(value);
-                    break;
-            }
+            entry.SetValue(value);
             input[key] = entry;
         }
     }

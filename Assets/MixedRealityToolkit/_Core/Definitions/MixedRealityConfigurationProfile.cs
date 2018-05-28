@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("Enable the Input System on Startup")]
-        private bool enableInputSystem = true;
+        private bool enableInputSystem = false;
 
         /// <summary>
         /// Enable and configure the Input System component for the Mixed Reality Toolkit
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("Enable Speech Commands on startup.")]
-        private bool enableSpeechCommands = true;
+        private bool enableSpeechCommands = false;
 
         /// <summary>
         /// Enable and configure the speech commands for your application.
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("Enable and configure the controller rendering of the Motion Controllers on Startup.")]
-        private bool renderMotionControllers = true;
+        private bool renderMotionControllers = false;
 
         /// <summary>
         /// Enable and configure the controller rendering of the Motion Controllers on Startup.
@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("Enable the Boundary on Startup")]
-        private bool enableBoundarySystem = true;
+        private bool enableBoundarySystem = false;
 
         /// <summary>
         /// Enable and configure the Boundary component on the Mixed Reality Camera

@@ -296,15 +296,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            if (controller.Interactions.ContainsKey(pressedInput)) controller.Interactions.SetDictionaryValue(pressedInput, true); //controller.Interactions[pressedInput].SetValue(true);
+            if (controller.Interactions.ContainsKey(pressedInput))
+            {
+                controller.Interactions.SetDictionaryValue(pressedInput, true);
+                return controller.Interactions[pressedInput].InputAction;
+            }
 
-
-            var updatedValue = controller.Interactions[pressedInput].GetValue<bool>();
-            var otherValue = controller.Interactions[pressedInput].GetBool();
-
-            bool result = updatedValue == otherValue;
-
-            return controller.Interactions[pressedInput].InputAction;
+            // if no mapping found, no action can take place
+            return null;
         }
 
         // TODO - Need to resolve InputAction
@@ -341,8 +340,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            if (controller.Interactions.ContainsKey(releasedInput)) controller.Interactions.SetDictionaryValue(releasedInput, false); //controller.Interactions[releasedInput].SetValue(false);
-            return controller.Interactions[releasedInput].InputAction;
+            if (controller.Interactions.ContainsKey(releasedInput))
+            {
+                controller.Interactions.SetDictionaryValue(releasedInput, false);
+                return controller.Interactions[releasedInput].InputAction;
+            }
+
+            // if no mapping found, no action can take place
+            return null;
         }
         #endregion
 
