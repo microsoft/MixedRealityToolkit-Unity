@@ -27,15 +27,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             // Create The MR Manager if none exists.
             if (!MixedRealityManager.IsInitialized)
             {
-                if (EditorUtility.DisplayDialog("Attention!",
-                    "There is no active Mixed Reality Manager in your scene. Would you like to create one now?", "Yes",
-                    "Later"))
+                // Search the scene for one, in case we've just hot reloaded the assembly.
+                var managerSearch = FindObjectsOfType<MixedRealityManager>();
+
+                if (managerSearch.Length == 0)
                 {
-                    MixedRealityManager.Instance.ActiveProfile = (MixedRealityConfigurationProfile)target;
-                }
-                else
-                {
-                    Debug.LogWarning("No Mixed Reality Manager in your scene.");
+                    if (EditorUtility.DisplayDialog("Attention!",
+                        "There is no active Mixed Reality Manager in your scene. Would you like to create one now?", "Yes",
+                        "Later"))
+                    {
+                        MixedRealityManager.Instance.ActiveProfile = (MixedRealityConfigurationProfile)target;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No Mixed Reality Manager in your scene.");
+                    }
                 }
             }
 
