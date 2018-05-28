@@ -87,7 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
             if (EventSystem.current == null)
             {
-                Debug.LogWarning("No Event System found in scene! Adding components to the UIRaycastCamera.");
+                Debug.LogWarning("No Event System found in scene! We've added the required components to the UIRaycastCamera.");
+#if UNITY_EDITOR
+                UnityEditor.EditorGUIUtility.PingObject(FocusProvider.UIRaycastCamera);
+#endif
                 FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
                 FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
             }

@@ -40,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             MixedRealityManager.Instance.ActiveProfile = null;
 
+            Assert.IsFalse(MixedRealityManager.HasActiveProfile);
             Assert.IsNull(MixedRealityManager.Instance.ActiveProfile);
 
             CleanupScene();

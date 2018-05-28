@@ -35,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             serializedObject.Update();
             RenderMixedRealityToolkitLogo();
+
             EditorGUILayout.LabelField("Input Actions", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +
                                     "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.", MessageType.Info);
