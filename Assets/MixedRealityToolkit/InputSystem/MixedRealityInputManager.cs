@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
+using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
@@ -349,6 +350,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             }
 
             return newId;
+        }
+
+        public IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null)
+        {
+            return new BaseGenericInputSource(name, pointers);
         }
 
         /// <inheritdoc />
