@@ -102,7 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                         addedComponents = true;
                     }
 
-
                     if (standaloneInputModules.Length == 0)
                     {
                         Debug.LogWarning("No Standalone Input Module was found in scene! We've added the required component to the UIRaycastCamera.");
