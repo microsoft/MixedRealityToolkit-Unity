@@ -13,6 +13,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -349,6 +350,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             }
 
             return newId;
+        }
+
+        public IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null)
+        {
+            return new BaseGenericInputSource(name, pointers);
         }
 
         /// <inheritdoc />
