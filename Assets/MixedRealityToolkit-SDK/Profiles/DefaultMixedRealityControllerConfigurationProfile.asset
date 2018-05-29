@@ -18,6 +18,7 @@ MonoBehaviour:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
+    model: {fileID: 1786849406207676, guid: ef834e955ef3e134db6c5e0020b5dc6b, type: 2}
     interactions:
     - id: 0
       axisType: 2
@@ -64,6 +65,7 @@ MonoBehaviour:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
+    model: {fileID: 1786849406207676, guid: ef834e955ef3e134db6c5e0020b5dc6b, type: 2}
     interactions:
     - id: 0
       axisType: 2

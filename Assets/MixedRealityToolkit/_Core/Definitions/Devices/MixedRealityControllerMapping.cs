@@ -15,12 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     [Serializable]
     public struct MixedRealityControllerMapping
     {
-        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, InteractionMapping[] interactions) : this()
+        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject controllerModel, InteractionMapping[] interactions) : this()
         {
             this.id = id;
             this.description = description;
             this.controller = controller;
             this.handedness = handedness;
+            this.model = controllerModel;
             this.interactions = interactions;
         }
 
@@ -58,6 +59,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         [SerializeField]
         [Tooltip("The designated hand that the device is managing.")]
         private Handedness handedness;
+
+        /// <summary>
+        /// The controller model prefab to be rendered.
+        /// </summary>
+        public GameObject ControllerModel => model;
+
+        [SerializeField]
+        [Tooltip("The designated hand that the device is managing.")]
+        private GameObject model;
 
         /// <summary>
         /// Details the list of available buttons / interactions available from the device.

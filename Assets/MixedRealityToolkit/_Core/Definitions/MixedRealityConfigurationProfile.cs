@@ -141,6 +141,32 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
+        [Tooltip("Default Left Controller Model")]
+        private GameObject defaultLeftHandModel;
+
+        /// <summary>
+        /// The Default controller model when there is no specific controller model for the Left hand or when no hand is specified (Handedness = none)
+        /// </summary>
+        public GameObject DefaultLeftHandModel
+        {
+            get { return defaultLeftHandModel; }
+            private set { defaultLeftHandModel = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Default Right Controller Model")]
+        private GameObject defaultRightHandModel;
+
+        /// <summary>
+        /// The Default controller model when there is no specific controller model for the Right hand
+        /// </summary>
+        public GameObject DefaultRightHandModel
+        {
+            get { return defaultRightHandModel; }
+            private set { defaultRightHandModel = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Enable the Boundary on Startup")]
         private bool enableBoundarySystem = false;
 

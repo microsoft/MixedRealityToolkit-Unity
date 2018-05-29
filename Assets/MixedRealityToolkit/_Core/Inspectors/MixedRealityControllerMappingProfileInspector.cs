@@ -114,12 +114,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                     var controllerType = mixedRealityControllerMapping.FindPropertyRelative("controller");
                     var controllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
+                    var controllerModel = mixedRealityControllerMapping.FindPropertyRelative("model");
                     var controllerInteractionList = mixedRealityControllerMapping.FindPropertyRelative("interactions");
 
                     EditorGUI.indentLevel++;
                     EditorGUIUtility.labelWidth = 96f;
                     EditorGUILayout.PropertyField(controllerType);
                     EditorGUILayout.PropertyField(controllerHandedness);
+                    EditorGUILayout.PropertyField(controllerModel);
                     EditorGUIUtility.labelWidth = previousLabelWidth;
 
                     controllerFoldouts[i] = EditorGUILayout.Foldout(controllerFoldouts[i], new GUIContent("Interaction Mappings"), true);

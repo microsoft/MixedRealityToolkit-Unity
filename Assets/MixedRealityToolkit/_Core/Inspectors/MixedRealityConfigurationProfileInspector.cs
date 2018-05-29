@@ -22,6 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty enableControllerProfiles;
         private SerializedProperty controllersProfile;
         private SerializedProperty renderMotionControllers;
+        private SerializedProperty defaultControllerModelLeft;
+        private SerializedProperty defaultControllerModelRight;
         private SerializedProperty enableBoundarySystem;
 
         private void OnEnable()
@@ -59,6 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             enableControllerProfiles = serializedObject.FindProperty("enableControllerProfiles");
             controllersProfile = serializedObject.FindProperty("controllersProfile");
             renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
+            defaultControllerModelLeft = serializedObject.FindProperty("defaultLeftHandModel");
+            defaultControllerModelRight = serializedObject.FindProperty("defaultRightHandModel");
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
         }
 
@@ -95,6 +99,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             {
                 RenderProfile(controllersProfile);
                 EditorGUILayout.PropertyField(renderMotionControllers);
+                if (renderMotionControllers.boolValue)
+                {
+                    EditorGUILayout.PropertyField(defaultControllerModelLeft);
+                    EditorGUILayout.PropertyField(defaultControllerModelRight);
+                }
             }
 
             //Boundary System configuration
