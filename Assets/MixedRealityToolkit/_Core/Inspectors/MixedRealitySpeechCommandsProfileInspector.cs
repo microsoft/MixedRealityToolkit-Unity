@@ -25,7 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private void OnEnable()
         {
-            if (MixedRealityManager.Instance.ActiveProfile == null) { return; }
+            if (!CheckMixedRealityManager())
+            {
+                return;
+            }
 
             speechCommands = serializedObject.FindProperty("speechCommands");
             actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(
@@ -39,9 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             RenderMixedRealityToolkitLogo();
             EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);
 
-            if (MixedRealityManager.Instance.ActiveProfile == null)
+            if (!CheckMixedRealityManager())
             {
-                EditorGUILayout.HelpBox("No Active Profile set on the Mixed Reality Manager.", MessageType.Error);
                 return;
             }
 
@@ -56,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
+
             if (GUILayout.Button(AddButtonContent, EditorStyles.miniButton))
             {
                 list.arraySize += 1;
@@ -90,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUIUtility.labelWidth = labelWidth;
             GUILayout.EndHorizontal();
 
-            for (int i = 0; i < list?.arraySize; i++)
+            for (int i = 0; i < list.arraySize; i++)
             {
                 EditorGUILayout.BeginHorizontal();
                 SerializedProperty speechCommand = list.GetArrayElementAtIndex(i);

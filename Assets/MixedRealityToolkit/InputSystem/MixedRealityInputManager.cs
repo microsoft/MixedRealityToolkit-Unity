@@ -4,8 +4,8 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem
 {
@@ -87,9 +88,35 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
             if (EventSystem.current == null)
             {
-                Debug.LogWarning("No Event System found in scene! Adding components to the UIRaycastCamera.");
-                FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
-                FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
+                if (Application.isEditor)
+                {
+#if UNITY_EDITOR
+                    bool addedComponents = false;
+                    var eventSystems = Object.FindObjectsOfType<EventSystem>();
+                    var standaloneInputModules = Object.FindObjectsOfType<StandaloneInputModule>();
+
+                    if (eventSystems.Length == 0)
+                    {
+                        Debug.LogWarning("No Event System was found in scene! We've added the required component to the UIRaycastCamera.");
+                        FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
+                        addedComponents = true;
+                    }
+
+                    if (standaloneInputModules.Length == 0)
+                    {
+                        Debug.LogWarning("No Standalone Input Module was found in scene! We've added the required component to the UIRaycastCamera.");
+                        FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
+                        addedComponents = true;
+                    }
+
+                    if (addedComponents) { UnityEditor.EditorGUIUtility.PingObject(FocusProvider.UIRaycastCamera); }
+#endif
+                }
+                else
+                {
+                    FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
+                    FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
+                }
             }
 
             sourceStateEventData = new SourceStateEventData(EventSystem.current);

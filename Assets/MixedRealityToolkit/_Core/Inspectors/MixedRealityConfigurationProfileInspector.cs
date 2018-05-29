@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions.EditorClassExtensions;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,6 +27,31 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private void OnEnable()
         {
+            // Create The MR Manager if none exists.
+            if (!MixedRealityManager.IsInitialized)
+            {
+                // Search the scene for one, in case we've just hot reloaded the assembly.
+                var managerSearch = FindObjectsOfType<MixedRealityManager>();
+
+                if (managerSearch.Length == 0)
+                {
+                    if (EditorUtility.DisplayDialog("Attention!",
+                        "There is no active Mixed Reality Manager in your scene. Would you like to create one now?", "Yes",
+                        "Later"))
+                    {
+                        MixedRealityManager.Instance.ActiveProfile = (MixedRealityConfigurationProfile)target;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No Mixed Reality Manager in your scene.");
+                    }
+                }
+                else
+                {
+                    MixedRealityManager.ConfirmInitialized();
+                }
+            }
+
             enableInputSystem = serializedObject.FindProperty("enableInputSystem");
             inputSystemType = serializedObject.FindProperty("inputSystemType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
