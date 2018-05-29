@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     /// </summary>
     public struct Controller
     {
-        public Controller(uint id, Handedness handedness, Vector3 position, Quaternion rotation, ControllerState controllerState, InteractionDefinition[] interactions) : this()
+        public Controller(uint id, Handedness handedness, Vector3 position, Quaternion rotation, ControllerState controllerState, InteractionMapping[] interactions) : this()
         {
             Id = id;
             Handedness = handedness;
@@ -49,6 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Details the list of available buttons / interactions available from the controller.
         /// </summary>
-        public InteractionDefinition[] Interactions { get; }
+        public InteractionMapping[] Interactions { get; }
     }
 }

@@ -12,9 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     /// <remarks>Interactions can be any input the controller supports such as buttons, triggers, joysticks, dpads, and more.</remarks>
     /// </summary>
     [Serializable]
-    public struct InteractionDefinition
+    public struct InteractionMapping
     {
-        public InteractionDefinition(uint id, AxisType axisType, DeviceInputType inputType, InputAction inputAction) : this()
+        public InteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, InputAction inputAction) : this()
         {
             Id = id;
             AxisType = axisType;
