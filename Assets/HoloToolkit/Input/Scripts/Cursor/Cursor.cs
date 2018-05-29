@@ -25,13 +25,18 @@ namespace HoloToolkit.Unity.InputModule
             get { return pointer; }
             set
             {
+                // This value is used to determine the cursor's default distance.
+                // It is cached here to prevent repeated casting in the update loop.
                 pointerIsInputSourcePointer = value is InputSourcePointer;
                 pointer = value;
             }
         }
-
         private IPointingSource pointer;
 
+        /// <summary>
+        /// Cached value if the pointer is of type InputSourcePointer,
+        /// to prevent repeated casting in the update loop.
+        /// </summary>
         private bool pointerIsInputSourcePointer = false;
 
         /// <summary>
@@ -122,6 +127,10 @@ namespace HoloToolkit.Unity.InputModule
         private Vector3 targetScale;
         private Quaternion targetRotation;
 
+        /// <summary>
+        /// Keeps track of the starting setting for DefaultCursorDistance,
+        /// to revert after a pointer overrides the value.
+        /// </summary>
         private float originalDefaultCursorDistance;
 
         /// <summary>

@@ -305,16 +305,19 @@ namespace HoloToolkit.Unity.InputModule
 
             InteractionInputSource interactionInputSource = inputSource as InteractionInputSource;
 
+            // If the InputSource is not an InteractionInputSource, we don't display any ray visualizations.
             if (interactionInputSource == null)
             {
                 return;
             }
 
+            // If no pointing ray prefab has been provided, we return early as there's nothing to display.
             if (linePointerPrefab == null)
             {
                 return;
             }
 
+            // If the pointer line hasn't already been instantiated, create it and store it here.
             if (instantiatedPointerLine == null)
             {
                 instantiatedPointerLine = Instantiate(linePointerPrefab).GetComponent<PointerLine>();
@@ -326,6 +329,7 @@ namespace HoloToolkit.Unity.InputModule
             if (interactionInputSource.TryGetHandedness(sourceId, out handedness))
             {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                // This updates the handedness of the pointer line, allowing for re-use if it was already in the scene.
                 instantiatedPointerLine.ChangeHandedness((InteractionSourceHandedness)handedness);
 #endif
             }
