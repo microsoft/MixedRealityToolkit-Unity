@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test01_TestObjectChanged()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = (object)1f;
             var testValue2 = (object)false;
 
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test02_TestObjectNoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = new object();
 
             var initialValue = inputDef.GetRaw();
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test03_TestObjectGenericChanged()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = (object)1f;
             var testValue2 = (object)false;
 
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test04_TestObjectGenericNoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = (object)1f;
 
             var initialValue = inputDef.GetValue<object>();
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test05_TestObjectDirectVsGenericSpeed()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = (object)1f;
             var testValue2 = (object)false;
 
@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test06_TestBoolChanged()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = true;
             var testValue2 = false;
 
@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test07_TestBoolNoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = true;
 
             var initialValue = inputDef.GetBool();
@@ -229,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test08_TestBoolGenericChanged()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = true;
             var testValue2 = false;
 
@@ -262,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test09_TestBoolGenericNoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = true;
 
             var initialValue = inputDef.GetValue<bool>();
@@ -286,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test10_TestBoolDirectVsGenericSpeed()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = true;
             var testValue2 = false;
 
@@ -326,7 +326,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test11_TestFloatChanged()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = 1f;
             var testValue2 = 9001f;
 
@@ -357,7 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test12_TestFloatNoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = 1f;
 
             var initialValue = inputDef.GetFloat();
@@ -380,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test13_TestFloatGenericChanged()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = 1f;
             var testValue2 = 9001f;
 
@@ -411,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test14_TestFloatGenericNoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = 1f;
 
             var initialValue = inputDef.GetValue<float>();
@@ -435,7 +435,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test15_TestFloatDirectVsGenericSpeed()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = 1f;
             var testValue2 = 9001f;
 
@@ -475,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test16_TestVector2Changed()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = Vector2.one;
             var testValue2 = Vector2.zero;
 
@@ -506,7 +506,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test17_TestVector2NoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = Vector2.one;
 
             var initialValue = inputDef.GetVector2();
@@ -529,7 +529,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test18_TestVector2GenericChanged()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = Vector2.one;
             var testValue2 = Vector2.zero;
 
@@ -560,7 +560,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test19_TestVector2GenericNoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = Vector2.one;
 
             var initialValue = inputDef.GetValue<Vector2>();
@@ -584,7 +584,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test20_TestVector2DirectVsGenericSpeed()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = Vector2.one;
             var testValue2 = Vector2.zero;
 
@@ -624,7 +624,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test21_TestVector3Changed()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
@@ -655,7 +655,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test22_TestVector3NoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = Vector3.one;
 
             var initialValue = inputDef.GetPosition();
@@ -678,7 +678,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test23_TestVector3GenericChanged()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
@@ -709,7 +709,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test24_TestVector3GenericNoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = Vector3.one;
 
             var initialValue = inputDef.GetValue<Vector3>();
@@ -733,7 +733,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test25_TestVector3DirectVsGenericSpeed()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
@@ -773,7 +773,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test26_TestQuaternionChanged()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
@@ -804,7 +804,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test27_TestQuaternionNoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = Quaternion.Euler(45f, 45f, 45f);
 
             var initialValue = inputDef.GetRotation();
@@ -827,7 +827,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test28_TestQuaternionGenericChanged()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
@@ -858,7 +858,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test29_TestQuaternionGenericNoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = Quaternion.Euler(45f, 45f, 45f);
 
             var initialValue = inputDef.GetValue<Quaternion>();
@@ -882,7 +882,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test30_TestQuaternionDirectVsGenericSpeed()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
@@ -922,7 +922,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test31_TestTupleChanged()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
             var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
@@ -959,7 +959,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test32_TestTupleNoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
 
             var initialValue = inputDef.GetTransform();
@@ -982,7 +982,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test33_TestTupleGenericChanged()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
             var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
@@ -1019,7 +1019,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test34_TestTupleGenericNoChange()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
 
             var initialValue = inputDef.GetTransform();
@@ -1043,7 +1043,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test35_TestTupleSpeed()
         {
-            var inputDef = new InteractionDefinition(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
             var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
