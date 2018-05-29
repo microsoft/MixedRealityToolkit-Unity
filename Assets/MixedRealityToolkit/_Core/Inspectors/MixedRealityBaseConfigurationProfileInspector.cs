@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         [SerializeField]
         private Texture2D logo = null;
 
-        protected void Awake()
+        protected virtual void Awake()
         {
             if (logo == null)
             {

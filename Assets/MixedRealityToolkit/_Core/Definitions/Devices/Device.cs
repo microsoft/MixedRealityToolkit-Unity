@@ -23,24 +23,28 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         }
 
         /// <summary>
-        /// The ID assigned to the  Device Template.
+        /// The ID assigned to the Device.
         /// </summary>
         public uint Id => id;
 
         [SerializeField]
         private uint id;
 
+        /// <summary>
+        /// Description of the Device.
+        /// </summary>
         public string Description => description;
 
         [SerializeField]
         private string description;
 
         /// <summary>
-        /// The XR SDKs that is supported by this device.
+        /// The XR SDKs that is supported by this Device.
         /// </summary>
         public SDKType SDKType => sdkType;
 
         [SerializeField]
+        [Tooltip("The XR SDKs that is supported by this Device.")]
         private SDKType sdkType;
 
         /// <summary>
@@ -49,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         public Handedness Handedness => handedness;
 
         [SerializeField]
+        [Tooltip("The designated hand that the device is managing.")]
         private Handedness handedness;
 
         /// <summary>
@@ -57,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         public InteractionMapping[] Interactions => interactions;
 
         [SerializeField]
+        [Tooltip("Details the list of available buttons / interactions available from the device.")]
         private InteractionMapping[] interactions;
     }
 }

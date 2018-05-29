@@ -12,21 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     {
         [SerializeField]
         [Tooltip("The list of device templates your application can use.")]
-        private Device[] deviceTemplates =
-        {
-            new Device(1,"Windows Spatial Controller - Left", SDKType.WindowsMR, Handedness.Left, new []
-            {
-                new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.PointerPosition, new InputAction(1, "Pointer Position", AxisType.SixDoF)),
-            }),
-            new Device(1,"Windows Spatial Controller - Right", SDKType.WindowsMR, Handedness.Left, new []
-            {
-                new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.PointerPosition, new InputAction(1, "Pointer Position", AxisType.SixDoF)),
-            }),
-            new Device(1,"Windows Spatial Controller - Hand", SDKType.WindowsMR, Handedness.Both, new []
-            {
-                new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.PointerPosition, new InputAction(1, "Pointer Position", AxisType.SixDoF)),
-            }),
-        };
+        private Device[] deviceTemplates = new Device[0];
 
         public Device[] DeviceTemplates => deviceTemplates;
     }
