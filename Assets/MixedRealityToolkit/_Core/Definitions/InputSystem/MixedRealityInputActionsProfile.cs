@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input Actions Profile", fileName = "MixedRealityInputActionsProfile", order = 1)]
     public class MixedRealityInputActionsProfile : ScriptableObject
     {
-        private readonly string[] inputActionsMRTKDefaults =
+        private readonly string[] defaultInputActions =
 {
             "Select",
             "Menu",
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
             "ConversationSelect"
         }; // Examples only, to be refined later.
 
-        private readonly AxisType[] inputActionsMRTKDefaultsAxis =
+        private readonly AxisType[] defaultInputActionsAxis =
         {
             AxisType.Digital,
             AxisType.Digital,
@@ -71,32 +71,32 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         /// <returns>Default MRTK Actions plus any custom actions (if already configured)</returns>
         public InputAction[] LoadMixedRealityToolKitDefaults()
         {
-            List<InputAction> defaultMRTKActions = new List<InputAction>();
+            List<InputAction> defaultActions = new List<InputAction>();
             bool exists = false;
 
-            for (uint i = 0; i < inputActionsMRTKDefaults.Length; i++)
+            for (uint i = 0; i < defaultInputActions.Length; i++)
             {
-                //defaultMRTKActions.Add(new InputAction(i, inputActionsMRTKDefaults[i], inputActionsMRTKDefaultsAxis[i]));
+                defaultActions.Add(new InputAction(i, defaultInputActions[i], defaultInputActionsAxis[i]));
             }
 
             foreach (var currentAction in inputActions)
             {
                 for (int i = 0; i < inputActions?.Length; i++)
                 {
-                    if (defaultMRTKActions.Contains(inputActions[i]))
+                    if (defaultActions.Contains(inputActions[i]))
                     {
                         exists = true;
                     }
                     if (!exists)
                     {
-                        defaultMRTKActions.Add(inputActions[i]);
+                        defaultActions.Add(inputActions[i]);
                     }
                     exists = false;
                 }
             }
 
-            inputActions = defaultMRTKActions.ToArray();
-            defaultMRTKActions = null;
+            inputActions = defaultActions.ToArray();
+            defaultActions = null;
 
             return inputActions;
         }

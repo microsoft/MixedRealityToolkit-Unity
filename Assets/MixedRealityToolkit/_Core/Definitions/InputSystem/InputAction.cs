@@ -16,13 +16,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="description"></param>
+        /// <param name="id">Id for the InputAction</param>
+        /// <param name="description">Human readable description for the action</param>
         public InputAction(uint id, string description)
         {
             this.id = id;
             this.description = description;
             this.axis = AxisType.None;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="id">Id for the InputAction</param>
+        /// <param name="description">Human readable description for the action</param>
+        /// <param name="axisType">(Optional) limited Axis for the Action</param>
+        public InputAction(uint id, string description, AxisType axisType)
+        {
+            this.id = id;
+            this.description = description;
+            this.axis = axisType;
         }
 
         /// <inheritdoc />

@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         {
             #region ActiveSDK Discovery
             // TODO Microsoft.MixedReality.Toolkit - Active SDK Discovery
-            activeDevice = new WMRDevice();
+            activeDevice = new WindowsMixedRealityDevice();
             #endregion ActiveSDK Discovery
 
             #region Managers Registration

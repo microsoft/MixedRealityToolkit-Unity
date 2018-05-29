@@ -11,12 +11,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Speech Commands Profile", fileName = "MixedRealitySpeechCommandsProfile", order = 2)]
     public class MixedRealitySpeechCommandsProfile : ScriptableObject
     {
-        /// <summary>
-        /// Array of configured speech commands to be consumed by the SpeechInputSource
-        /// </summary>
         [SerializeField]
         [Tooltip("The list of Speech Commands users use in your application.")]
         private SpeechCommands[] speechCommands = new SpeechCommands[0];
+
+        /// <summary>
+        /// Array of configured speech commands to be consumed by the SpeechInputSource
+        /// </summary>
         public SpeechCommands[] SpeechCommands => speechCommands;
     }
 }

@@ -9,13 +9,13 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Generic
 {
     // TODO - Implement
-    public struct XBoxController : IMixedRealityController
+    public struct GamepadController : IMixedRealityController
     {
         #region Private properties
 
         #endregion Private properties
 
-        public XBoxController(uint sourceId, Handedness handedness)
+        public GamepadController(uint sourceId, Handedness handedness)
         {
             ControllerState = ControllerState.None;
 

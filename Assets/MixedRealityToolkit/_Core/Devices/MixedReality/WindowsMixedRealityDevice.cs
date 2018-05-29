@@ -15,7 +15,7 @@ using UnityEngine.XR.WSA.Input;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
     // TODO - name not final
-    public class WMRDevice : IMixedRealityDevice
+    public class WindowsMixedRealityDevice : IMixedRealityDevice
     {
         /// <summary>
         /// Dictionary to capture all active controllers detected
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <summary>
         /// Public Constructor
         /// </summary>
-        public WMRDevice()
+        public WindowsMixedRealityDevice()
         {
             // TODO - Discover available controllers?
             // ForEach then initialize each
