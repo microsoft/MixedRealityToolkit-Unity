@@ -101,6 +101,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         private void Initialize()
         {
+            //If the Mixed Reality Manager is not configured, stop.
+            if (ActiveProfile == null)
+            {
+                Debug.LogError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Manager");
+                return;
+            }
+
             #region ActiveSDK Discovery
             // TODO Microsoft.MixedReality.Toolkit - Active SDK Discovery
             #endregion ActiveSDK Discovery
@@ -110,13 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             #endregion SDK Initialization
 
             #region Managers Initialization
-
-            //If the Mixed Reality Manager is not configured, stop.
-            if (ActiveProfile == null)
-            {
-                Debug.LogError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Manager");
-                return;
-            }
 
             //If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.EnableInputSystem)

@@ -749,7 +749,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
             var sourceData = new InteractionInputSource(
                 interactionSource,
-                $"{(interactionSource.handedness == InteractionSourceHandedness.Unknown ? "" : $"{interactionSource.handedness}_")}{interactionSource.kind}",
+                $"{(interactionSource.handedness == InteractionSourceHandedness.Unknown ? string.Empty : $"{interactionSource.handedness}_")}{interactionSource.kind}",
                 pointerSceneObjects,
                 pointers);
 

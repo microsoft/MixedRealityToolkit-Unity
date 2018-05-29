@@ -9,5 +9,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13081479c2ab1264d980fbab8536fa11, type: 3}
-  m_Name: MixedRealityDevicesConfigurationProfile
+  m_Name: DefaultMixedRealityDevicesConfigurationProfile
   m_EditorClassIdentifier: 

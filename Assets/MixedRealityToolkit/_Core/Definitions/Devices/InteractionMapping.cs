@@ -9,8 +9,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
     /// <summary>
-    /// Maps the capabilities of controllers, one definition should exist for each physical device input.<para/>
-    /// <remarks>Interactions can be any input the controller supports such as buttons, triggers, joysticks, dpads, and more.</remarks>
+    /// Maps the capabilities of controllers, linking the Physical inputs of a controller to a Logical construct in a runtime project<para/>
+    /// <remarks>One definition should exist for each physical device input, such as buttons, triggers, joysticks, dpads, and more.</remarks>
     /// </summary>
     [Serializable]
     public struct InteractionMapping

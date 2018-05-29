@@ -11,23 +11,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     public class MixedRealityDevicesConfigurationProfile : ScriptableObject
     {
         [SerializeField]
-        [Tooltip("The list of devices templates your application can use.")]
-        private DeviceTemplate[] deviceTemplates =
+        [Tooltip("The list of device templates your application can use.")]
+        private Device[] deviceTemplates =
         {
-            new DeviceTemplate(1,"Windows Spatial Controller - Left", SDKType.WindowsMR, Handedness.Left, new []
+            new Device(1,"Windows Spatial Controller - Left", SDKType.WindowsMR, Handedness.Left, new []
             {
                 new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.PointerPosition, new InputAction(1, "Pointer Position", AxisType.SixDoF)),
             }),
-            new DeviceTemplate(1,"Windows Spatial Controller - Right", SDKType.WindowsMR, Handedness.Left, new []
+            new Device(1,"Windows Spatial Controller - Right", SDKType.WindowsMR, Handedness.Left, new []
             {
                 new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.PointerPosition, new InputAction(1, "Pointer Position", AxisType.SixDoF)),
             }),
-            new DeviceTemplate(1,"Windows Spatial Controller - Hand", SDKType.WindowsMR, Handedness.Both, new []
+            new Device(1,"Windows Spatial Controller - Hand", SDKType.WindowsMR, Handedness.Both, new []
             {
                 new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.PointerPosition, new InputAction(1, "Pointer Position", AxisType.SixDoF)),
             }),
         };
 
-        public DeviceTemplate[] DeviceTemplates => deviceTemplates;
+        public Device[] DeviceTemplates => deviceTemplates;
     }
 }

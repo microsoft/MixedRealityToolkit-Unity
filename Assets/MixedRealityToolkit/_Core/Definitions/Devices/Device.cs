@@ -8,12 +8,12 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
     /// <summary>
-    /// The Device Template is used to define controller or other input device's physical buttons, and other attributes.
+    /// Used to define a controller or other input device's physical buttons, and other attributes.
     /// </summary>
     [Serializable]
-    public struct DeviceTemplate
+    public struct Device
     {
-        public DeviceTemplate(uint id, string description, SDKType sdkType, Handedness handedness, InteractionMapping[] interactions) : this()
+        public Device(uint id, string description, SDKType sdkType, Handedness handedness, InteractionMapping[] interactions) : this()
         {
             this.id = id;
             this.description = description;

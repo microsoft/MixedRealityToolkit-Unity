@@ -8,6 +8,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
@@ -101,6 +102,28 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get { return speechCommandsProfile; }
             private set { speechCommandsProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable and configure the devices for your application.")]
+        private bool enableDeviceProfile = false;
+
+        /// <summary>
+        /// Enable and configure the devices for your application.
+        /// </summary>
+        public bool EnableDeviceProfile
+        {
+            get { return enableDeviceProfile; }
+            private set { enableDeviceProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Device profile for wiring up physical inputs to Actions.")]
+        private MixedRealityDevicesConfigurationProfile devicesProfile;
+        public MixedRealityDevicesConfigurationProfile DevicesProfile
+        {
+            get { return devicesProfile; }
+            private set { devicesProfile = value; }
         }
 
         [SerializeField]

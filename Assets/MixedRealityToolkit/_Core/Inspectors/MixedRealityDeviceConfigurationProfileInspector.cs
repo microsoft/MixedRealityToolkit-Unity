@@ -13,13 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Remove Device Template");
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Add a New Device Template", "Add New Device Template");
 
-        private SerializedProperty deviceTemplateList;
+        private SerializedProperty deviceTemplates;
 
         private void OnEnable()
         {
-            deviceTemplateList = serializedObject.FindProperty("deviceTemplates");
-            var deviceConfigProfile = (MixedRealityDevicesConfigurationProfile)target;
-            Debug.Assert(deviceConfigProfile.DeviceTemplates != null);
+            deviceTemplates = serializedObject.FindProperty("deviceTemplates");
         }
 
         public override void OnInspectorGUI()
@@ -34,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.HelpBox("Device templates define all the devices your users will be able to use in your application.\n\n" +
                                     "After defining all your Input Actions, you can then wire them up to hardware sensors, controllers, and other input devices.", MessageType.Info);
 
-            RenderList(deviceTemplateList);
+            RenderList(deviceTemplates);
 
             serializedObject.ApplyModifiedProperties();
         }
