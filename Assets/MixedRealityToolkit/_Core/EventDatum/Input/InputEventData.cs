@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <summary>
         /// The InputType of the <see cref="IMixedRealityInputSource"/>.
         /// </summary>
-        public InputAction InputAction { get; private set; } = new InputAction(0,"None");
+        public InputAction InputAction { get; private set; } = new InputAction(0, "None");
 
         /// <inheritdoc />
         public InputEventData(EventSystem eventSystem) : base(eventSystem) { }
