@@ -30,14 +30,14 @@ namespace HoloToolkit.Unity.InputModule
         private bool searchForCursorIfUnset = true;
         public bool SearchForCursorIfUnset { get { return searchForCursorIfUnset; } set { searchForCursorIfUnset = value; } }
 
-        [Tooltip("If true, always select the best pointer available (OS behaviour does not autoselect).")]
+        [Tooltip("If true, always select the best pointer available (OS behavior does not auto-select).")]
         [SerializeField]
         private bool autoselectBestAvailable = false;
         public bool AutoselectBestAvailable { get { return autoselectBestAvailable; } set { autoselectBestAvailable = value; } }
 
         [Tooltip("The line pointer prefab to use, if any.")]
         [SerializeField]
-        private GameObject linePointerPrefab;
+        private GameObject linePointerPrefab = null;
 
         private PointerLine instantiatedPointerLine;
 

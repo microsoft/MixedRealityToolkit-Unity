@@ -20,7 +20,19 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// The pointer that this cursor should follow and process input from.
         /// </summary>
-        public IPointingSource Pointer { get; set; }
+        public IPointingSource Pointer
+        {
+            get { return pointer; }
+            set
+            {
+                pointerIsInputSourcePointer = value is InputSourcePointer;
+                pointer = value;
+            }
+        }
+
+        private IPointingSource pointer;
+
+        private bool pointerIsInputSourcePointer = false;
 
         /// <summary>
         /// Minimum distance for cursor if nothing is hit
@@ -110,6 +122,8 @@ namespace HoloToolkit.Unity.InputModule
         private Vector3 targetScale;
         private Quaternion targetRotation;
 
+        private float originalDefaultCursorDistance;
+
         /// <summary>
         /// Indicates if the cursor should be visible
         /// </summary>
@@ -126,6 +140,8 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Awake()
         {
+            originalDefaultCursorDistance = DefaultCursorDistance;
+
             // Use the setter to update visibility of the cursor at startup based on user preferences
             IsVisible = isVisible;
             SetVisibility(isVisible);
@@ -297,6 +313,21 @@ namespace HoloToolkit.Unity.InputModule
             {
                 TargetedObject = null;
                 TargetedCursorModifier = null;
+
+                if (pointerIsInputSourcePointer)
+                {
+                    // This value get re-queried every update, in case the app has
+                    // changed the pointing extent of the pointer for the current scenario.
+                    float distance = FocusManager.Instance.GetPointingExtent(Pointer);
+                    if (DefaultCursorDistance != distance)
+                    {
+                        DefaultCursorDistance = distance;
+                    }
+                }
+                else if (DefaultCursorDistance != originalDefaultCursorDistance)
+                {
+                    DefaultCursorDistance = originalDefaultCursorDistance;
+                }
 
                 targetPosition = RayStep.GetPointByDistance(Pointer.Rays, DefaultCursorDistance);
                 lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, DefaultCursorDistance);

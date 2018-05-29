@@ -67,7 +67,7 @@ namespace HoloToolkit.Unity.InputModule
             LineBase.enabled = false;
         }
 
-        public void UpdateRenderedLine(RayStep[] lines, PointerResult result, bool selectPressed)
+        public void UpdateRenderedLine(RayStep[] lines, PointerResult result, bool selectPressed, float extent)
         {
             if (LineBase == null) { return; }
 
@@ -85,7 +85,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
                 else
                 {
-                    LineBase.LastPoint = RayStep.GetPointByDistance(lines, ExtentOverride.Value);
+                    LineBase.LastPoint = RayStep.GetPointByDistance(lines, extent);
                 }
 
                 if (selectPressed)
