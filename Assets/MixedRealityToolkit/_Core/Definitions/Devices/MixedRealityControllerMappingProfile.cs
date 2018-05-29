@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Controller Configuration Profile", fileName = "MixedRealityControllerConfigurationProfile", order = 2)]
-    public class MixedRealityDevicesConfigurationProfile : ScriptableObject
+    public class MixedRealityControllerMappingProfile : ScriptableObject
     {
         [SerializeField]
         [Tooltip("The list of controller templates your application can use.")]
-        private MixedRealityControllerMappingProfile[] mixedRealityControllerMappingProfiles = new MixedRealityControllerMappingProfile[0];
+        private MixedRealityControllerMapping[] mixedRealityControllerMappingProfiles = new MixedRealityControllerMapping[0];
 
-        public MixedRealityControllerMappingProfile[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappingProfiles;
+        public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappingProfiles;
     }
 }

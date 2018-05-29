@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 // Search the scene for one, in case we've just hot reloaded the assembly.
                 var managerSearch = FindObjectsOfType<MixedRealityManager>();
 
-                if (managerSearch.Length == 0)
+                if (managerSearch == null || managerSearch.Length == 0)
                 {
                     EditorGUILayout.HelpBox("No Mixed Reality Manager found in scene.", MessageType.Error);
                     return false;

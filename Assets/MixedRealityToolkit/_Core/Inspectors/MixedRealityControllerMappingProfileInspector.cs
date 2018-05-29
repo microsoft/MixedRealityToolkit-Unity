@@ -12,12 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     [CustomEditor(typeof(MixedRealityControllerMappingProfile))]
     public class MixedRealityControllerMappingProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private static readonly GUIContent DeviceAddButtonContent = new GUIContent("+ Add a New Device Template");
-        private static readonly GUIContent DeviceMinusButtonContent = new GUIContent("-", "Remove Device Template");
+        private static readonly GUIContent ControllerAddButtonContent = new GUIContent("+ Add a New Controller Template");
+        private static readonly GUIContent ControllerMinusButtonContent = new GUIContent("-", "Remove Controller Template");
         private static readonly GUIContent InteractionAddButtonContent = new GUIContent("+ Add a New Interaction Mapping");
         private static readonly GUIContent InteractionMinusButtonContent = new GUIContent("-", "Remove Interaction Mapping");
         private static readonly GUIContent AxisTypeContent = new GUIContent("Axis Type", "The axis type of the button, e.g. Analogue, Digital, etc.");
-        private static readonly GUIContent DeviceInputTypeContent = new GUIContent("Input Type", "The primary action of the input as defined by the controller SDK.");
+        private static readonly GUIContent ControllerInputTypeContent = new GUIContent("Input Type", "The primary action of the input as defined by the controller SDK.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "Action to be raised to the Input Manager when the input data has changed.");
 
         private static bool[] controllerFoldouts;
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
 
-            if (GUILayout.Button(DeviceAddButtonContent, EditorStyles.miniButton))
+            if (GUILayout.Button(ControllerAddButtonContent, EditorStyles.miniButton))
             {
                 list.arraySize += 1;
                 var mixedRealityControllerMapping = list.GetArrayElementAtIndex(list.arraySize - 1);
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUILayout.PropertyField(mixedRealityControllerMappingDescription, new GUIContent($"Controller {mixedRealityControllerMappingId.intValue = i + 1}"));
                 EditorGUIUtility.labelWidth = previousLabelWidth;
 
-                if (GUILayout.Button(DeviceMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                if (GUILayout.Button(ControllerMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                 {
                     list.DeleteArrayElementAtIndex(i);
                     EditorGUILayout.EndHorizontal();
@@ -112,21 +112,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 {
                     EditorGUILayout.EndHorizontal();
 
-                    var controllerType = mixedRealityControllerMapping.FindPropertyRelative("controllerType");
-                    var deviceHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
-                    var deviceInteractionList = mixedRealityControllerMapping.FindPropertyRelative("interactions");
+                    var controllerType = mixedRealityControllerMapping.FindPropertyRelative("controller");
+                    var controllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
+                    var controllerInteractionList = mixedRealityControllerMapping.FindPropertyRelative("interactions");
 
                     EditorGUI.indentLevel++;
                     EditorGUIUtility.labelWidth = 96f;
                     EditorGUILayout.PropertyField(controllerType);
-                    EditorGUILayout.PropertyField(deviceHandedness);
+                    EditorGUILayout.PropertyField(controllerHandedness);
                     EditorGUIUtility.labelWidth = previousLabelWidth;
 
                     controllerFoldouts[i] = EditorGUILayout.Foldout(controllerFoldouts[i], new GUIContent("Interaction Mappings"), true);
                     if (controllerFoldouts[i])
                     {
                         GUILayout.BeginHorizontal();
-                        RenderInteractionList(deviceInteractionList);
+                        RenderInteractionList(controllerInteractionList);
                         GUILayout.EndHorizontal();
                     }
 
@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.LabelField("Id", GUILayout.Width(32f));
             EditorGUIUtility.labelWidth = 24f;
             EditorGUIUtility.fieldWidth = 24f;
-            EditorGUILayout.LabelField(DeviceInputTypeContent, GUILayout.ExpandWidth(true));
+            EditorGUILayout.LabelField(ControllerInputTypeContent, GUILayout.ExpandWidth(true));
             EditorGUILayout.LabelField(AxisTypeContent, GUILayout.ExpandWidth(true));
             EditorGUILayout.LabelField(ActionContent, GUILayout.ExpandWidth(true));
             EditorGUILayout.LabelField(string.Empty, GUILayout.Width(24f));
