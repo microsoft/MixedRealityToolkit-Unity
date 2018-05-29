@@ -17,5 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// A short description of the action.
         /// </summary>
         string Description { get; }
+
+        /// <summary>
+        /// (optional) The Axis constraint for the Input Action.
+        /// </summary>
+        Utilities.AxisType AxisConstraint { get; }
     }
 }
