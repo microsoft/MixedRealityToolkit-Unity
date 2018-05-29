@@ -251,6 +251,10 @@ namespace HoloToolkit.UI.Keyboard
                 }
             }
 
+            // Setting the keyboardType to an undefined TouchScreenKeyboardType,
+            // which prevents the MRTK keyboard from triggering the system keyboard itself.
+            InputField.keyboardType = (TouchScreenKeyboardType)(-1);
+
             // Keep keyboard deactivated until needed
             gameObject.SetActive(false);
         }
