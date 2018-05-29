@@ -1,14 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// and positional information for the various inputs that Windows gestures supports.
     /// This is mostly a wrapper on top of GestureRecognizer and InteractionManager.
     /// </summary>
-    public class WindowsMixedRealityDeviceManager : BaseManager
+    public class InteractionInputSources : MonoBehaviour
     {
         /// <summary>
         /// This enumeration gives the manager two different ways to handle the recognizer. Both will
@@ -60,6 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         [SerializeField]
         [Tooltip("Set custom pointers for your controllers.")]
         private ControllerPointerOptions[] pointerOptions = new ControllerPointerOptions[0];
+
+        private bool delayInitialization = true;
 
 #if UNITY_WSA
         protected GestureRecognizer GestureRecognizer;
@@ -198,8 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         #region MonoBehaviour Implementation
 
-        /// <inheritdoc />
-        public override void Initialize()
+        private void Awake()
         {
             inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
 
@@ -250,38 +247,25 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 #endif
         }
 
-        public override void Enable()
+        protected virtual void OnEnable()
         {
-#if UNITY_WSA
-            if (recognizerStart == RecognizerStartBehavior.AutoStart)
+            if (!delayInitialization)
             {
-                StartGestureRecognizer();
+                // The first time we call OnEnable we skip this.
+                InitializeSources();
             }
-
-            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
-
-            for (var i = 0; i < states.Length; i++)
-            {
-                var inputSource = GetOrAddInteractionSource(states[i].source);
-
-                if (inputSource == null) { continue; }
-
-                // NOTE: We update the source state data, in case an app wants to query it on source detected.
-                UpdateInteractionSource(states[i], inputSource);
-                inputSystem.RaiseSourceDetected(inputSource);
-            }
-
-            InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
-            InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
-            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
-            InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
-            InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
-#else
-            recognizerStart = RecognizerStartBehavior.ManualStart;
-#endif
         }
 
-        public override void Disable()
+        protected virtual void Start()
+        {
+            if (delayInitialization)
+            {
+                delayInitialization = false;
+                InitializeSources();
+            }
+        }
+
+        protected virtual void OnDisable()
         {
 #if UNITY_WSA
             StopGestureRecognizer();
@@ -299,7 +283,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             }
 #endif
         }
-        public override void Destroy()
+
+        private void OnDestroy()
         {
 #if UNITY_WSA
             if (GestureRecognizer != null)
@@ -422,7 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <param name="sourceId"></param>
         /// <param name="position"></param>
         /// <returns>True if data is available.</returns>
-        public bool TryGetPointerPosition(uint sourceId, out Vector3 position)
+        public static bool TryGetPointerPosition(uint sourceId, out Vector3 position)
         {
             foreach (var inputSource in InteractionInputSourceList)
             {
@@ -462,7 +447,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <param name="sourceId"></param>
         /// <param name="position"></param>
         /// <returns>True if data is available.</returns>
-        public bool TryGetGripPosition(uint sourceId, out Vector3 position)
+        public static bool TryGetGripPosition(uint sourceId, out Vector3 position)
         {
             foreach (var inputSource in InteractionInputSourceList)
             {
@@ -622,7 +607,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <param name="capability"></param>
         /// <param name="reading"></param>
         /// <returns>True if data is available.</returns>
-        private bool TryGetReading<TReading>(SourceCapability<TReading> capability, out TReading reading)
+        private static bool TryGetReading<TReading>(SourceCapability<TReading> capability, out TReading reading)
         {
             if (capability.IsAvailable)
             {
@@ -692,6 +677,37 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         #endregion GenericInputPointingSource Methods
 
+        private void InitializeSources()
+        {
+#if UNITY_WSA
+            if (recognizerStart == RecognizerStartBehavior.AutoStart)
+            {
+                StartGestureRecognizer();
+            }
+
+            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
+
+            for (var i = 0; i < states.Length; i++)
+            {
+                var inputSource = GetOrAddInteractionSource(states[i].source);
+
+                if (inputSource == null) { continue; }
+
+                // NOTE: We update the source state data, in case an app wants to query it on source detected.
+                UpdateInteractionSource(states[i], inputSource);
+                inputSystem.RaiseSourceDetected(inputSource);
+            }
+
+            InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
+            InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
+            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
+            InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
+            InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
+#else
+            recognizerStart = RecognizerStartBehavior.ManualStart;
+#endif
+        }
+
 #if UNITY_WSA
         /// <summary>
         /// Gets the source data for the specified interaction source if it already exists, otherwise creates it.
@@ -732,7 +748,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                     continue;
                 }
 
-                var pointerObject = UnityEngine.Object.Instantiate(pointerOption.PointerPrefab);
+                var pointerObject = Instantiate(pointerOption.PointerPrefab);
                 var pointer = pointerObject.GetComponent<BaseControllerPointer>();
                 pointer.Handedness = (Handedness)interactionSource.handedness;
                 pointer.PointerName = $"{interactionSource.handedness}_{interactionSource.kind}_{pointer.GetType().Name}";
@@ -749,7 +765,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
             var sourceData = new InteractionInputSource(
                 interactionSource,
-                $"{(interactionSource.handedness == InteractionSourceHandedness.Unknown ? string.Empty : $"{interactionSource.handedness}_")}{interactionSource.kind}",
+                $"{(interactionSource.handedness == InteractionSourceHandedness.Unknown ? "" : $"{interactionSource.handedness}_")}{interactionSource.kind}",
                 pointerSceneObjects,
                 pointers);
 
@@ -769,7 +785,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             {
                 if (interactionSource.PointerSceneObjects[j] != null)
                 {
-                    UnityEngine.Object.Destroy(interactionSource.PointerSceneObjects[j].gameObject);
+                    Destroy(interactionSource.PointerSceneObjects[j].gameObject);
                 }
             }
         }
