@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <param name="input">The InteractionDefinition dictionary reference (generics, performed on a Dictionary)</param>
         /// <param name="key">The specific DeviceInputType value to update</param>
         /// <param name="value">The data value to be updated</param>
-        public static void SetDictionaryValue<T>(this Dictionary<Definitions.Devices.DeviceInputType, Definitions.Devices.InteractionDefinition> input, Definitions.Devices.DeviceInputType key, T value)
+        public static void SetDictionaryValue<T>(this Dictionary<Definitions.Devices.DeviceInputType, Definitions.Devices.InteractionMapping> input, Definitions.Devices.DeviceInputType key, T value)
         {
             var entry = input[key];
             entry.SetValue(value);

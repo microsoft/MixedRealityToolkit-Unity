@@ -16,10 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         Vector3 controllerPosition = Vector3.zero;
         Quaternion controllerRotation = Quaternion.identity;
 
-        InteractionDefinition leftControllerPointerDefinition;
-        InteractionDefinition leftControllerMenuDefinition;
-        InteractionDefinition rightControllerPointerDefinition;
-        InteractionDefinition rightControllerMenuDefinition;
+        InteractionMapping leftControllerPointerDefinition;
+        InteractionMapping leftControllerMenuDefinition;
+        InteractionMapping rightControllerPointerDefinition;
+        InteractionMapping rightControllerMenuDefinition;
 
         public enum renderMode
         {
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             foreach (var controller in controllers)
             {
                 GameObject controllerVisual;
-                if (leftController == null && controller.ControllerHandedness == Internal.Definitions.Handedness.Left)
+                if (leftController == null && controller.ControllerHandedness == Handedness.Left)
                 {
                     controllerVisual = Internal.Managers.MixedRealityManager.Instance.ActiveProfile.LeftControllerModel;
                     leftController = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                         mesh2.material.color = Color.magenta;
                     }
                 }
-                else if (rightController == null && controller.ControllerHandedness == Internal.Definitions.Handedness.Right)
+                else if (rightController == null && controller.ControllerHandedness == Handedness.Right)
                 {
                     controllerVisual = Internal.Managers.MixedRealityManager.Instance.ActiveProfile.RightControllerModel;
                     rightController = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     Debug.Log($"MRTK - Controller Position {controller6DoF.Item1} - Rotation {controller6DoF.Item2}");
                     bool menuPress = false;
 
-                    if (controller.ControllerHandedness == Internal.Definitions.Handedness.Left)
+                    if (controller.ControllerHandedness == Handedness.Left)
                     {
                         if (menuPress)
                         {

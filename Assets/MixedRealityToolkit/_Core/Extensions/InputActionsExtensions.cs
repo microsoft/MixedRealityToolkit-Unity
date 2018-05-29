@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
     /// <summary>
-    /// Extension methods for the Mixed Reality Toolkit InputActions arrray
+    /// Extension methods for the Mixed Reality Toolkit InputActions array
     /// </summary>
     public static class InputActionsExtensions
     {
@@ -35,17 +35,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <param name="input">InputAction Array to query</param>
         /// <param name="axis">Axis type to search for</param>
         /// <returns>An array of InputActions if any have the specific AxisType, else null</returns>
-        //public static InputAction[] GetActionsByAxis(this InputAction[] input, Definitions.AxisType axis)
-        //{
-        //    List<InputAction> axisInputActions = new List<InputAction>();
-        //    for (int i = 0; i < input?.Length; i++)
-        //    {
-        //        if (input[i].Axis == axis)
-        //        {
-        //            axisInputActions.Add(input[i]);
-        //        }
-        //    }
-        //    return axisInputActions.ToArray();
-        //}
+        public static InputAction[] GetActionsByAxis(this InputAction[] input, Utilities.AxisType axis)
+        {
+            List<InputAction> axisInputActions = new List<InputAction>();
+            for (int i = 0; i < input?.Length; i++)
+            {
+                if (input[i].AxisConstraint == axis)
+                {
+                    axisInputActions.Add(input[i]);
+                }
+            }
+            return axisInputActions.ToArray();
+        }
     }
 }

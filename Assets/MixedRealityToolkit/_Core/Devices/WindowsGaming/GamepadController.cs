@@ -1,21 +1,21 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Generic
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 {
     // TODO - Implement
-    public struct JoystickController : IMixedRealityController
+    public struct GamepadController : IMixedRealityController
     {
         #region Private properties
 
         #endregion Private properties
 
-        public JoystickController(uint sourceId, Handedness handedness)
+        public GamepadController(uint sourceId, Handedness handedness)
         {
             ControllerState = ControllerState.None;
 
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Generic
 
             InputSource = null;
 
-            Interactions = new Dictionary<DeviceInputType, InteractionDefinition>();
+            Interactions = new Dictionary<DeviceInputType, InteractionMapping>();
         }
 
         #region IMixedRealityController Interface Members
@@ -34,13 +34,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Generic
 
         public IMixedRealityInputSource InputSource { get; private set; }
 
-        public Dictionary<DeviceInputType, InteractionDefinition> Interactions { get; private set; }
+        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; private set; }
 
         public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
             if (inputSystem != null)
             {
-                InputSource = inputSystem.RequestNewGenericInputSource($"Joystick Controller {ControllerHandedness}");
+                InputSource = inputSystem.RequestNewGenericInputSource($"XBox Controller {ControllerHandedness}");
             }
 
             // TODO
@@ -55,13 +55,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Generic
 
         #region Setup and Update functions
 
-            // TODO
+        // TODO
 
         #endregion Setup and Update functions
 
         #region Utilities
 
-            // TODO - if required
+        // TODO - if required
 
         #endregion Utilities
     }

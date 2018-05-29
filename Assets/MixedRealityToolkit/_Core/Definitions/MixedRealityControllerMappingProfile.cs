@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
@@ -43,13 +44,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("Input System Class to instantiate at runtime.")]
-        private InteractionDefinitionMapping[] interactions;
+        private InteractionMapping[] interactions = null;
 
-        public InteractionDefinitionMapping[] Interactions => interactions ?? new InteractionDefinitionMapping[0];
+        public InteractionMapping[] Interactions => interactions ?? new InteractionMapping[0];
 
-        public InteractionDefinitionMapping GetInteractionMapping(DeviceInputType inputType)
+        public InteractionMapping GetInteractionMapping(DeviceInputType inputType)
         {
-            return default(InteractionDefinitionMapping);
+            return default(InteractionMapping);
         }
     }
 }

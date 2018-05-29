@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

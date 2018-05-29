@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine.XR.WSA.Input;
@@ -25,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             InputSource = null;
 
-            Interactions = new Dictionary<DeviceInputType, InteractionDefinition>();
+            Interactions = new Dictionary<DeviceInputType, InteractionMapping>();
         }
 
         #region IMixedRealityController Interface Members
@@ -36,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         public IMixedRealityInputSource InputSource { get; private set; }
 
-        public Dictionary<DeviceInputType, InteractionDefinition> Interactions { get; private set; }
+        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; private set; }
 
         public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
@@ -76,12 +77,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
         }
 
-        private void SetupFromMapping(InteractionDefinitionMapping[] mappings)
+        private void SetupFromMapping(InteractionMapping[] mappings)
         {
             for (uint i = 0; i < mappings.Length; i++)
             {
                 // Add interaction for Mapping
-                Interactions.Add(mappings[i].InputType, new InteractionDefinition(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                Interactions.Add(mappings[i].InputType, new InteractionMapping(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
             }
         }
 

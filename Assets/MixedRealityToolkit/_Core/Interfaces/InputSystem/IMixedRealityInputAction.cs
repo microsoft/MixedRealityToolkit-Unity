@@ -14,13 +14,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         uint Id { get; }
 
         /// <summary>
-        /// A short description of the action.
+        /// A short description of the Input Action.
         /// </summary>
         string Description { get; }
-        
+
         /// <summary>
-        /// (optional) The Axis used by the action.
+        /// (optional) The Axis constraint for the Input Action.
         /// </summary>
-        Definitions.AxisType Axis { get; }
+        Utilities.AxisType AxisConstraint { get; }
     }
 }

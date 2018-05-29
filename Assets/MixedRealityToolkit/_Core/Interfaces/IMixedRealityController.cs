@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <summary>
         /// Mapping definition for this controller, linking the Physical inputs to logical Input System Actions
         /// </summary>
-        Dictionary<DeviceInputType, InteractionDefinition> Interactions { get; }
+        Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
 
         /// <summary>
         /// Inform the controller to setup and be ready when asked by it's registered device

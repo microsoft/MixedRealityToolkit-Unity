@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
@@ -16,26 +17,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="id">Id for the InputAction</param>
-        /// <param name="description">Human readable description for the action</param>
-        public InputAction(uint id, string description)
+        /// <param name="id"></param>
+        /// <param name="description"></param>
+        /// <param name="axisConstraint"></param>
+        public InputAction(uint id, string description, AxisType axisConstraint = AxisType.None)
         {
             this.id = id;
             this.description = description;
-            this.axis = AxisType.None;
-        }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="id">Id for the InputAction</param>
-        /// <param name="description">Human readable description for the action</param>
-        /// <param name="axisType">(Optional) limited Axis for the Action</param>
-        public InputAction(uint id, string description, AxisType axisType)
-        {
-            this.id = id;
-            this.description = description;
-            this.axis = axisType;
+            this.axisConstraint = axisConstraint;
         }
 
         /// <inheritdoc />
@@ -51,9 +40,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         private string description;
 
         /// <inheritdoc />
-        public AxisType Axis => axis;
+        public AxisType AxisConstraint => axisConstraint;
 
         [SerializeField]
-        private readonly AxisType axis;
+        private AxisType axisConstraint;
     }
 }

@@ -2,24 +2,25 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
     /// <summary>
-    /// Maps the capabilities of controllers, one definition should exist for each interaction profile.<para/>
-    /// <remarks>Interactions can be any input the controller supports such as buttons, triggers, joysticks, dpads, and more.</remarks>
+    /// Maps the capabilities of controllers, linking the Physical inputs of a controller to a Logical construct in a runtime project<para/>
+    /// <remarks>One definition should exist for each physical device input, such as buttons, triggers, joysticks, dpads, and more.</remarks>
     /// </summary>
     [Serializable]
-    public struct InteractionDefinition
+    public struct InteractionMapping
     {
-        public InteractionDefinition(uint id, AxisType axisType, DeviceInputType inputType, InputAction inputAction) : this()
+        public InteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, InputAction inputAction) : this()
         {
-            Id = id;
-            AxisType = axisType;
-            InputType = inputType;
-            InputAction = inputAction;
+            this.id = id;
+            this.axisType = axisType;
+            this.inputType = inputType;
+            this.inputAction = inputAction;
             positionData = Vector3.zero;
             rotationData = Quaternion.identity;
         }
@@ -29,22 +30,37 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// The Id assigned to the Interaction.
         /// </summary>
-        public uint Id { get; }
+        public uint Id => id;
+
+        [SerializeField]
+        private uint id;
 
         /// <summary>
         /// The axis type of the button, e.g. Analogue, Digital, etc.
         /// </summary>
-        public AxisType AxisType { get; }
+        public AxisType AxisType => axisType;
+
+        [SerializeField]
+        [Tooltip("The axis type of the button, e.g. Analogue, Digital, etc.")]
+        private AxisType axisType;
 
         /// <summary>
         /// The primary action of the input as defined by the controller SDK.
         /// </summary>
-        public DeviceInputType InputType { get; }
+        public DeviceInputType InputType => inputType;
+
+        [SerializeField]
+        [Tooltip("The primary action of the input as defined by the controller SDK.")]
+        private DeviceInputType inputType;
 
         /// <summary>
         /// Action to be raised to the Input Manager when the input data has changed.
         /// </summary>
-        public InputAction InputAction { get; }
+        public InputAction InputAction => inputAction;
+
+        [SerializeField]
+        [Tooltip("Action to be raised to the Input Manager when the input data has changed.")]
+        private InputAction inputAction;
 
         /// <summary>
         /// Has the value changed since the last reading.
