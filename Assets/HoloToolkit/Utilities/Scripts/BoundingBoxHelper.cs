@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The BoundingBoxHelper class contains functions for getting geometric info from the non-axis-aligned 
+/// bounding box of a GameObject. These functions can be used to align another object to the center of
+/// a certain face or the center of an edge of a face... etc.
+/// The BoundingBoxHelper static function can be used for a one time calculation.
+/// The dynamic functions can be used to obtain boundingcube info on an object's Update loop. Operations
+/// are minimized in the dynamic use scenario.
+/// </summary>
 public class BoundingBoxHelper : MonoBehaviour
 {
     private List<Vector3> rawBoundingCorners = new List<Vector3>();
@@ -9,6 +17,13 @@ public class BoundingBoxHelper : MonoBehaviour
     private GameObject targetObject;
     private bool rawBoundingCornersObtained = false;
 
+    /// <summary>
+    /// Objects that align to an target's bounding box can call this function in the object's UpdateLoop
+    /// to get current bound points;
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="boundsPoints"></param>
+    /// <param name="ignoreLayers"></param>
     public void UpdateNonAABoundingBoxCornerPositions(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
     {
         if (target != targetObject || rawBoundingCornersObtained == false)
@@ -29,6 +44,11 @@ public class BoundingBoxHelper : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This function gets the untransformed bounding box corner points of a GameObject.
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="ignoreLayers"></param>
     public void GetRawBBCorners(GameObject target, LayerMask ignoreLayers)
     {
         targetObject = target;
@@ -60,8 +80,11 @@ public class BoundingBoxHelper : MonoBehaviour
         }
     }
 
-   
-
+    /// <summary>
+    /// this function gets the indices of the bounding cube corners that make up a face.
+    /// </summary>
+    /// <param name="index">the face index of the bounding cube 0-5</param>
+    /// <returns>an array of four integer indices</returns>
     public int[] GetFaceIndices(int index)
     {
         switch (index)
@@ -83,6 +106,11 @@ public class BoundingBoxHelper : MonoBehaviour
         return new int[0];
     }
 
+    /// <summary>
+    /// This function returns the midpoints of each of the edges of the face of the bounding box
+    /// </summary>
+    /// <param name="index">the index of the face of the bounding cube- 0-5</param>
+    /// <returns>four Vector3 points</returns>
     public Vector3[] GetFaceEdgeMidpoints(int index)
     {
         Vector3[] corners = GetFaceCorners(index);
@@ -94,6 +122,12 @@ public class BoundingBoxHelper : MonoBehaviour
 
         return midpoints;
     }
+
+    /// <summary>
+    /// Get the normal of the face of the bounding cube specified by index
+    /// </summary>
+    /// <param name="index">the index of the face of the bounding cube 0-5</param>
+    /// <returns>a vector3 representing the face normal</returns>
     public Vector3 GetFaceNormal(int index)
     {
         int[] face = GetFaceIndices(index);
@@ -107,6 +141,13 @@ public class BoundingBoxHelper : MonoBehaviour
 
         return Vector3.zero;
     }
+
+    /// <summary>
+    /// This function returns the centroid of a face of the bounding cube of an object specified
+    /// by the index parameter;
+    /// </summary>
+    /// <param name="index">an index into the list of faces of a boundingcube. 0-5</param>
+    /// <returns></returns>
     public Vector3 GetFaceCentroid(int index)
     {
         int[] faceIndices = GetFaceIndices(index);
@@ -121,6 +162,12 @@ public class BoundingBoxHelper : MonoBehaviour
 
         return Vector3.zero;
     }
+
+    /// <summary>
+    /// Get the center of the bottom edge of a face of the bounding box determined by index
+    /// </summary>
+    /// <param name="index">parameter indicating which face is used. 0-5</param>
+    /// <returns>a vector representing the bottom most edge center of the face</returns>
     public Vector3 GetFaceBottomCentroid(int index)
     {
         Vector3[] edgeCentroids = GetFaceEdgeMidpoints(index);
@@ -132,6 +179,12 @@ public class BoundingBoxHelper : MonoBehaviour
         }
         return leastYPoint;
     }
+
+    /// <summary>
+    /// This function returns the four couners of a face of a bounding cube specified by index.
+    /// </summary>
+    /// <param name="index">the index of the face of the bounding cube. 0-5</param>
+    /// <returns>an array of 4 vectors</returns>
     public Vector3[] GetFaceCorners(int index)
     {
         int[] faceIndices = GetFaceIndices(index);
@@ -148,6 +201,13 @@ public class BoundingBoxHelper : MonoBehaviour
 
         return new Vector3[0];
     }
+
+    /// <summary>
+    /// This function gets the index of the face of the bounding cube that is most facing the lookAtPoint.
+    /// This could be the headPosition or camera position if the face that was facing the view is desired.
+    /// </summary>
+    /// <param name="lookAtPoint">the world coordinate to test which face is desired</param>
+    /// <returns>an integer representing the index of the bounding box faces</returns>
     public int GetIndexOfForwardFace(Vector3 lookAtPoint)
     {
         int highestDotIndex = -1;
@@ -166,6 +226,14 @@ public class BoundingBoxHelper : MonoBehaviour
         return highestDotIndex;
     }
 
+    /// <summary>
+    /// This is the static function to call to get the non-Axis-aligned bounding box corners one time only.
+    /// Use this function if the calling object only needs the info once. To get an updated boundingbox use the
+    /// function above---UpdateNonAABoundingBoxCornerPositions(...);
+    /// </summary>
+    /// <param name="target">The gameObject whose bounding box is desired</param>
+    /// <param name="boundsPoints">the array of 8 points that will be filled</param>
+    /// <param name="ignoreLayers">a LayerMask variable</param>
     public static void GetNonAABoundingBoxCornerPositions(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
     {
         GameObject clone = GameObject.Instantiate(target);
@@ -192,6 +260,13 @@ public class BoundingBoxHelper : MonoBehaviour
         }
         GameObject.Destroy(clone);
     }
+
+    /// <summary>
+    /// This function expands the box defined by the first param 'points' to include the second bounding box 'pointsToAdd'. The
+    /// result is found in the points variable.
+    /// </summary>
+    /// <param name="points">the boudning box points representing box A</param>
+    /// <param name="pointsToAdd">the bounding box points representing box B</param>
     public static void AddAABoundingBoxes(List<Vector3> points, Vector3[] pointsToAdd)
     {
         if (points.Count < 8)

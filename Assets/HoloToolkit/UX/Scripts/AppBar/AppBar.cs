@@ -181,7 +181,6 @@ namespace HoloToolkit.Unity.UX
         [SerializeField]
         private BoundingBox boundingBox;
 
-
         private ButtonTemplate[] defaultButtons;
         private Vector3[] forwards = new Vector3[4];
         private Vector3 targetBarSize = Vector3.one;
@@ -421,44 +420,6 @@ namespace HoloToolkit.Unity.UX
         public void EditorRefreshTemplates()
         {
             RefreshTemplates();
-        }
-
-        public void DrawFace(int index, BoundingBoxHelper helper, Color color)
-        {
-            if (index >= 0)
-            {
-                Vector3[] face = helper.GetFaceCorners(index);
-                Debug.DrawLine(face[0], face[1], color);
-                Debug.DrawLine(face[1], face[2], color);
-                Debug.DrawLine(face[2], face[3], color);
-                Debug.DrawLine(face[3], face[0], color);
-            }
-        }
-        public void DrawFaceNormal(int index, BoundingBoxHelper helper, Color color)
-        {
-            if (index >= 0)
-            {
-                Vector3 normal = helper.GetFaceNormal(index);
-                Vector3 centroid = helper.GetFaceCentroid(index);
-
-                Debug.DrawLine(centroid, centroid + (normal * 0.1f), color);
-            }
-        }
-
-        public void DrawFaces(BoundingBoxHelper helper, Color color)
-        {
-            for (int i = 0; i < 8; ++i)
-            {
-                Vector3[] face = helper.GetFaceCorners(i);
-                if (face.Length == 4)
-                {
-                    Debug.DrawLine(face[0], face[1], color);
-                    Debug.DrawLine(face[1], face[2], color);
-                    Debug.DrawLine(face[2], face[3], color);
-                    Debug.DrawLine(face[3], face[0], color);
-                }
-            }
-
         }
 #endif
 
