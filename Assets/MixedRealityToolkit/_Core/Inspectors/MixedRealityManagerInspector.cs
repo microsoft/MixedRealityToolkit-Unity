@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             if (activeProfile.objectReferenceValue == null && currentPickerWindow == -1 && checkChange)
             {
-                EditorUtility.DisplayDialog("Attention!", "You must choose a profile for the Mixed Reality Manager", "OK");
+                EditorUtility.DisplayDialog("Attention!", "You must choose a profile for the Mixed Reality Manager.", "OK");
                 if (allConfigProfiles.Length > 1)
                 {
                     currentPickerWindow = GUIUtility.GetControlID(FocusType.Passive);
@@ -48,7 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 }
                 else
                 {
-                    Debug.LogError("No config exists!");
+                    Debug.LogError("No Mixed Reality Configuration Profiles exist!");
+                    // TODO, create one and set it?
                 }
 
                 checkChange = false;

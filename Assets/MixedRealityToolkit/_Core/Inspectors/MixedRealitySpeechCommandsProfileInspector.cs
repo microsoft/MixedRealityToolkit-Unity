@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private void OnEnable()
         {
-            if (MixedRealityManager.Instance.ActiveProfile == null) { return; }
+            if (!MixedRealityManager.IsInitialized || !MixedRealityManager.HasActiveProfile) { return; }
 
             speechCommands = serializedObject.FindProperty("speechCommands");
             actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(
@@ -39,9 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             RenderMixedRealityToolkitLogo();
             EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);
 
-            if (MixedRealityManager.Instance.ActiveProfile == null)
+            if (!CheckMixedRealityManager())
             {
-                EditorGUILayout.HelpBox("No Active Profile set on the Mixed Reality Manager.", MessageType.Error);
                 return;
             }
 

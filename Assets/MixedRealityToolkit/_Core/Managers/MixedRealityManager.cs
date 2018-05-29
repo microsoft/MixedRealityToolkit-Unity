@@ -21,6 +21,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         #region Mixed Reality Manager Profile configuration
 
         /// <summary>
+        /// Is there a valid Active Profile on this manager?
+        /// </summary>
+        public static bool HasActiveProfile
+        {
+            get
+            {
+                if (!IsInitialized)
+                {
+                    return false;
+                }
+
+                return Instance.activeProfile != null;
+            }
+        }
+
+        /// <summary>
         /// The active profile of the Mixed Reality Manager which controls which components are active and their initial configuration.
         /// *Note configuration is used on project initialization or replacement, changes to properties while it is running has no effect.
         /// </summary>
