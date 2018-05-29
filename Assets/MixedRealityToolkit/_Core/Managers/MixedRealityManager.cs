@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
         private int mixedRealityComponentsCount = 0;
 
-        #endregion
+        #endregion Mixed Reality Manager Profile configuration
 
         /// <summary>
         /// Function called when the instance is assigned.
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             // TODO Microsoft.MixedReality.Toolkit - SDK Initialization
             #endregion SDK Initialization
 
-            #region Managers Initialization
+            #region  Managers Registration
 
             //If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.EnableInputSystem)
@@ -131,6 +131,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 //Enable Boundary (example initializer)
                 AddManager(typeof(IMixedRealityBoundarySystem), new MixedRealityBoundaryManager());
             }
+
+            #endregion Managers Registration
+
+            #region SDK Initialization
+            // TODO Microsoft.MixedReality.Toolkit - SDK Initialization
+            #endregion SDK Initialization
+
+            #region Managers Initialization
 
             //TODO should this be optional?
             //Sort the managers based on Priority
