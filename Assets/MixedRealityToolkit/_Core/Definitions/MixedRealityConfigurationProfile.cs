@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
@@ -102,6 +103,29 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
             get { return speechCommandsProfile; }
             private set { speechCommandsProfile = value; }
         }
+
+        [SerializeField]
+        [Tooltip("Enable and configure the devices for your application.")]
+        private bool enableControllerProfiles = false;
+
+        /// <summary>
+        /// Enable and configure the devices for your application.
+        /// </summary>
+        public bool EnableControllerProfiles
+        {
+            get { return enableControllerProfiles; }
+            private set { enableControllerProfiles = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Device profile for wiring up physical inputs to Actions.")]
+        private MixedRealityControllerMappingProfile controllersProfile;
+        public MixedRealityControllerMappingProfile ControllersProfile
+        {
+            get { return controllersProfile; }
+            private set { controllersProfile = value; }
+        }
+
 
         [SerializeField]
         [Tooltip("Enable and configure the controller rendering of the Motion Controllers on Startup.")]

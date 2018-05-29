@@ -19,6 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty inputActionsProfile;
         private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
+        private SerializedProperty enableControllerProfiles;
+        private SerializedProperty controllersProfile;
         private SerializedProperty renderMotionControllers;
         private SerializedProperty enableBoundarySystem;
 
@@ -54,6 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
+            enableControllerProfiles = serializedObject.FindProperty("enableControllerProfiles");
+            controllersProfile = serializedObject.FindProperty("controllersProfile");
             renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
         }
@@ -63,6 +67,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             serializedObject.Update();
             RenderMixedRealityToolkitLogo();
 
+            var previousLabelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 160f;
+
+            //Input System configuration
             EditorGUILayout.LabelField("Input Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableInputSystem);
 
@@ -78,12 +86,23 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 }
             }
 
-            EditorGUILayout.LabelField("Device Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(renderMotionControllers);
+            //Controller mapping configuration
+            GUILayout.Space(12f);
+            EditorGUILayout.LabelField("Controller Mapping Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(enableControllerProfiles);
 
+            if (enableControllerProfiles.boolValue)
+            {
+                RenderProfile(controllersProfile);
+                EditorGUILayout.PropertyField(renderMotionControllers);
+            }
+
+            //Boundary System configuration
+            GUILayout.Space(12f);
             EditorGUILayout.LabelField("Boundary Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableBoundarySystem);
 
+            EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
         }
 
