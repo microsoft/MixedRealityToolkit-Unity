@@ -1,21 +1,24 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.Examples
+using System;
+
+namespace Microsoft.MixedReality.Toolkit.Examples.Graph
 {
     /// <summary>
     /// Class that represents a partial Graph profile.
     /// </summary>
-    public class GraphProfile
+    [Serializable]
+    public struct GraphProfile
     {
         /// <summary>
-        /// Gets or sets the display name.
+        /// The display name.
         /// </summary>
-        public string DisplayName { get; set; }
+        public string displayName;
 
         /// <summary>
-        /// Gets or sets the job title.
+        /// The job title.
         /// </summary>
-        public string JobTitle { get; set; }
+        public string jobTitle;
     }
 }

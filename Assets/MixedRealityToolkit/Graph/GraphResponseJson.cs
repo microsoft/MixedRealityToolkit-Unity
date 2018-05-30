@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Text;
-using UnityEngine;
-using UnityEngine.Networking;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.WebRequestRest;
 
 namespace Microsoft.MixedReality.Toolkit.Graph
 {
@@ -18,19 +16,16 @@ namespace Microsoft.MixedReality.Toolkit.Graph
         public string Json { get; private set; }
 
         /// <summary>
-        /// Called to cache the result of the operation.
+        /// Called to cache the result of the REST operation.
         /// </summary>
-        /// <param name="request">The web request after the operation is complete.</param>
-        public override void SetResponse(UnityWebRequest request)
+        /// <param name="webResponse">The response return for the REST call.</param>
+        public override void SetResponse(Response webResponse)
         {
-            base.SetResponse(request);
+            base.SetResponse(webResponse);
 
-            if (Succeeded)
+            if (webResponse.Successful)
             {
-                Debug.Assert(ContentType.ToLower().Contains("application/json"), "Content type must contain this string.");
-                Debug.Assert(ContentType.ToLower().Contains("charset=utf-8"), "Content type must contain this string.");
-
-                Json = Encoding.UTF8.GetString(RawData);
+                Json = webResponse.ResponseBody;
             }
         }
     }

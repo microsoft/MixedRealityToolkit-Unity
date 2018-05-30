@@ -35,4 +35,4 @@ However users can override with their own implementation, by extending GraphConn
 
 7. All set. 
 
-	Look up **GraphConnectorTest.cs** or **GraphConnectorTestAsync.cs** for examples on how to use the GrahConnector.
+	Look up **GraphConnectorTestAsync.cs** for examples on how to use the GrahConnector.

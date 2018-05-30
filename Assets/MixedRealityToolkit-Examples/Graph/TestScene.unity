@@ -156,6 +156,16 @@ Prefab:
       propertyPath: m_Name
       value: GraphConnector
       objectReference: {fileID: 0}
+    - target: {fileID: 114694500356676144, guid: 25d2d8be2c4d38a499a0ad14297f568c,
+        type: 2}
+      propertyPath: graphAppId
+      value: 00000000-0000-0000-0000-000000000000
+      objectReference: {fileID: 0}
+    - target: {fileID: 114694500356676144, guid: 25d2d8be2c4d38a499a0ad14297f568c,
+        type: 2}
+      propertyPath: testAuthToken
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 25d2d8be2c4d38a499a0ad14297f568c, type: 2}
   m_IsPrefabParent: 0
@@ -170,20 +180,9 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 15439876}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30929016508fb2e44a4f78198008c8b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &15439878
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 15439876}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da901c91492f623448950fb44edc0dcd, type: 3}
+  m_Script: {fileID: 11500000, guid: 30929016508fb2e44a4f78198008c8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &974524859
