@@ -8,9 +8,9 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 {
-    public struct JoystickController : IMixedRealityController
+    public struct ArcadeStickController : IMixedRealityController
     {
-        public JoystickController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
+        public ArcadeStickController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;

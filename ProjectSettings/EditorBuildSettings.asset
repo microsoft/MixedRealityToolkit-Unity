@@ -4,4 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/MixedRealityToolkit-Tests/Scenes/BasicControllerView/01-Basic.unity
+    guid: e620d05aeedb2ff4e8f4d37f77378298
+  m_configObjects: {}

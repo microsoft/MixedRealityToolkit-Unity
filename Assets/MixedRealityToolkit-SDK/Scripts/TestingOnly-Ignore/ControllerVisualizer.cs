@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 GameObject controllerVisual;
                 if (leftController == null && controller.ControllerHandedness == Handedness.Left)
                 {
-                    controllerVisual = Internal.Managers.MixedRealityManager.Instance.ActiveProfile.LeftControllerModel;
+                    controllerVisual = Internal.Managers.MixedRealityManager.Instance.ActiveProfile.ControllersProfile.OverrideLeftHandModel;
                     leftController = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
                     leftController.GetComponent<MeshRenderer>().material.color = Color.red;
                     leftControllerPointerDefinition = controller.Interactions[DeviceInputType.SpatialPointer];
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 }
                 else if (rightController == null && controller.ControllerHandedness == Handedness.Right)
                 {
-                    controllerVisual = Internal.Managers.MixedRealityManager.Instance.ActiveProfile.RightControllerModel;
+                    controllerVisual = Internal.Managers.MixedRealityManager.Instance.ActiveProfile.ControllersProfile.OverrideRightHandModel;
                     rightController = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
                     rightController.GetComponent<MeshRenderer>().material.color = Color.green;
                     rightControllerPointerDefinition = controller.Interactions[DeviceInputType.SpatialPointer];

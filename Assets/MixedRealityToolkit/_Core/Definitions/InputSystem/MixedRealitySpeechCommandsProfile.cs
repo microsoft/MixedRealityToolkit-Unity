@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         private SpeechCommands[] speechCommands = new SpeechCommands[0];
 
         /// <summary>
-        /// Array of configured speech commands to be consumed by the SpeechInputSource
+        /// The list of Speech Commands users use in your application.
         /// </summary>
         public SpeechCommands[] SpeechCommands => speechCommands;
     }

@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
         private int mixedRealityComponentsCount = 0;
 
-        #endregion Mixed Reality Manager Profile configuration
+        #endregion Mixed Reality runtime component registry
 
         #region Active SDK components
 
@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             activeDevice = new WindowsMixedRealityDevice();
             #endregion ActiveSDK Discovery
 
-            #region Managers Registration
+            #region  Managers Registration
 
             //If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.EnableInputSystem)
@@ -147,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             #region SDK Initialization
             // TODO Microsoft.MixedReality.Toolkit - SDK Initialization
-            activeDevice.Initialize();
+            activeDevice?.Initialize();
             #endregion SDK Initialization
 
             #region Managers Initialization
@@ -777,7 +777,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         #endregion Multiple Managers Management
 
         #region Manager Utilities
-
+        
         /// <summary>
         /// Generic function used to interrogate the Mixed Reality Manager active manager registry for the existence of a manager
         /// </summary>

@@ -117,9 +117,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
 
             //TODO - Controller Type Detection?
             //Define new Controller
-            var detectedController = new OpenXRController(
-                interactionSourceState.source.id,
-                interactionSourceState.source.handedness == InteractionSourceHandedness.Left ? Handedness.Left : Handedness.Right
+            var detectedController = new GenericOpenXRController(
+                ControllerState.Tracked,
+                interactionSourceState.source.handedness == InteractionSourceHandedness.Left ? Handedness.Left : Handedness.Right,
+                null,
+                null
                 );
 
             detectedController.SetupInputSource(inputSystem, interactionSourceState);

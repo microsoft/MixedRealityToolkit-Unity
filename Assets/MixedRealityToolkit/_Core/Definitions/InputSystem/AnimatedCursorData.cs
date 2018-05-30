@@ -3,6 +3,7 @@
 
 using System;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 {
@@ -13,20 +14,31 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     [Serializable]
     public struct AnimatedCursorData
     {
-        /// <summary>
-        /// Name of the Cursor
-        /// </summary>
-        public string Name;
+        [SerializeField]
+        [Tooltip("The name of this specific cursor state.")]
+        private string name;
 
         /// <summary>
-        /// The current state of the cursor
-        /// E.G. Hover, interact, etc
+        /// The name of this specific cursor state.
         /// </summary>
-        public CursorStateEnum CursorState;
+        public string Name => name;
+
+        [SerializeField]
+        [Tooltip("The Cursor State for this specific animation.")]
+        private CursorStateEnum cursorState;
 
         /// <summary>
-        /// Animator parameter definition to map to for the cursor
+        /// The Cursor State for this specific animation.
         /// </summary>
-        public AnimatorParameter Parameter;
+        public CursorStateEnum CursorState => cursorState;
+
+        [SerializeField]
+        [Tooltip("Animator parameter definition for this cursor state.")]
+        private AnimatorParameter parameter;
+
+        /// <summary>
+        /// Animator parameter definition for this cursor state.
+        /// </summary>
+        public AnimatorParameter Parameter => parameter;
     }
 }

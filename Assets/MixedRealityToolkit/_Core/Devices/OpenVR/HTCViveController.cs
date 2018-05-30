@@ -6,11 +6,11 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    public struct JoystickController : IMixedRealityController
+    public struct HTCViveController : IMixedRealityController
     {
-        public JoystickController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
+        public HTCViveController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
@@ -18,19 +18,25 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
             Interactions = interactions;
         }
 
+        /// <inheritdoc />
         public ControllerState ControllerState { get; }
 
+        /// <inheritdoc />
         public Handedness ControllerHandedness { get; }
 
+        /// <inheritdoc />
         public IMixedRealityInputSource InputSource { get; }
 
+        /// <inheritdoc />
         public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
 
+        /// <inheritdoc />
         public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
             // TODO
         }
 
+        /// <inheritdoc />
         public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
             //TODO

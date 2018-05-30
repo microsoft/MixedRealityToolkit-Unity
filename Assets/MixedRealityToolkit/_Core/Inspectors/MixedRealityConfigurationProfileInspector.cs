@@ -19,10 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty inputActionsProfile;
         private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
-        private SerializedProperty renderMotionControllers;
-        private SerializedProperty leftControllerModel;
-        private SerializedProperty rightControllerModel;
-        private SerializedProperty controllerMappingsProfile;
+        private SerializedProperty enableControllerProfiles;
+        private SerializedProperty controllersProfile;
         private SerializedProperty enableBoundarySystem;
 
         private void OnEnable()
@@ -57,10 +55,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
-            renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
-            leftControllerModel = serializedObject.FindProperty("leftControllerModel");
-            rightControllerModel = serializedObject.FindProperty("rightControllerModel");
-            controllerMappingsProfile = serializedObject.FindProperty("controllerMappingsProfile");
+            enableControllerProfiles = serializedObject.FindProperty("enableControllerProfiles");
+            controllersProfile = serializedObject.FindProperty("controllersProfile");
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
         }
 
@@ -69,6 +65,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             serializedObject.Update();
             RenderMixedRealityToolkitLogo();
 
+            var previousLabelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 160f;
+
+            //Input System configuration
             EditorGUILayout.LabelField("Input Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableInputSystem);
 
@@ -84,23 +84,22 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 }
             }
 
-            EditorGUILayout.LabelField("Device Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(controllerMappingsProfile);
-            EditorGUILayout.PropertyField(controllerMappingsProfile.FindPropertyRelative("Array.size"));
-            for (int i = 0; i < controllerMappingsProfile.arraySize; i++)
+            //Controller mapping configuration
+            GUILayout.Space(12f);
+            EditorGUILayout.LabelField("Controller Mapping Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(enableControllerProfiles);
+
+            if (enableControllerProfiles.boolValue)
             {
-                EditorGUILayout.PropertyField(controllerMappingsProfile.GetArrayElementAtIndex(i));
-            }
-            EditorGUILayout.PropertyField(renderMotionControllers);
-            if (renderMotionControllers.boolValue)
-            {
-                EditorGUILayout.PropertyField(leftControllerModel);
-                EditorGUILayout.PropertyField(rightControllerModel);
+                RenderProfile(controllersProfile);
             }
 
+            //Boundary System configuration
+            GUILayout.Space(12f);
             EditorGUILayout.LabelField("Boundary Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableBoundarySystem);
 
+            EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
         }
 

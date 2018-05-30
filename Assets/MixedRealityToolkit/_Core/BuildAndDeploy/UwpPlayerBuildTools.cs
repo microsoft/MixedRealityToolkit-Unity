@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Build
 
             OnPreProcessBuild(buildInfo);
 
-            EditorUtility.DisplayProgressBar("Build Pipeline", "Herding all the cats...", 0.25f);
+            EditorUtility.DisplayProgressBar("Build Pipeline", "Gathering Build Data...", 0.25f);
 
             BuildReport buildReport = default(BuildReport);
             try

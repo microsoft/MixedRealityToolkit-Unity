@@ -121,8 +121,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
             //TODO - Controller Type Detection?
             //Define new Controller
             var detectedController = new GamepadController(
-                interactionSourceState.source.id,
-                Handedness.None
+                ControllerState.None,
+                Handedness.None,
+                null,
+                null
                 );
 
             detectedController.SetupInputSource(inputSystem, interactionSourceState);

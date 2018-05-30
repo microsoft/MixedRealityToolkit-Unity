@@ -118,8 +118,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
             //TODO - Controller Type Detection?
             //Define new Controller
             var detectedController = new SimulatedController(
-                interactionSourceState.source.id,
-                interactionSourceState.source.handedness == InteractionSourceHandedness.Left ? Handedness.Left : Handedness.Right
+                ControllerState.None,
+                interactionSourceState.source.handedness == InteractionSourceHandedness.Left ? Handedness.Left : Handedness.Right,
+                null,
+                null
                 );
 
             detectedController.SetupInputSource(inputSystem, interactionSourceState);

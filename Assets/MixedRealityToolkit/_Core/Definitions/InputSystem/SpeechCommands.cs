@@ -7,17 +7,17 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 {
     /// <summary>
-    /// Speech command definition, defining each keyword, key code and it's corresponding logical Action the command will perform.
+    /// Data structure for mapping Voice and Keyboard input to <see cref="InputAction"/>s that can be raised by the Input System.
     /// </summary>
     [Serializable]
     public struct SpeechCommands
     {
         /// <summary>
-        /// Speech commands constructor
+        /// Constructor.
         /// </summary>
-        /// <param name="keyword">Word to be recognized</param>
-        /// <param name="keyCode">Corresponding keyboard input</param>
-        /// <param name="action">Logical action to be performed by the Input System</param>
+        /// <param name="keyword">The Keyword.</param>
+        /// <param name="keyCode">The KeyCode.</param>
+        /// <param name="action">The Action to perform when Keyword or KeyCode is recognized.</param>
         public SpeechCommands(string keyword, KeyCode keyCode, InputAction action)
         {
             this.keyword = keyword;
@@ -25,28 +25,31 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
             this.action = action;
         }
 
-        /// <summary>
-        /// The input string keyword that will be listened for by the SpeechInputSource
-        /// </summary>
         [SerializeField]
-        [Tooltip("The Keyword to recognize.")]
+        [Tooltip("The Keyword to listen for.")]
         private string keyword;
+
+        /// <summary>
+        /// The Keyword to listen for.
+        /// </summary>
         public string Keyword => keyword;
 
-        /// <summary>
-        /// The corresponding keyboard key to map to
-        /// </summary>
         [SerializeField]
-        [Tooltip("The KeyCode to recognize.")]
+        [Tooltip("The corresponding KeyCode that also raises the same action as the Keyword.")]
         private KeyCode keyCode;
-        public KeyCode KeyCode => keyCode;
 
         /// <summary>
-        /// The logical input system action that will be performed when the keyword is recognized
+        /// The corresponding KeyCode that also raises the same action as the Keyword.
         /// </summary>
+        public KeyCode KeyCode => keyCode;
+
         [SerializeField]
-        [Tooltip("The Action associated to the Speech Command.")]
+        [Tooltip("The Action that is raised by either the Keyword or KeyCode.")]
         private InputAction action;
+
+        /// <summary>
+        /// The <see cref="InputAction"/> that is raised by either the Keyword or KeyCode.
+        /// </summary>
         public InputAction Action => action;
     }
 }

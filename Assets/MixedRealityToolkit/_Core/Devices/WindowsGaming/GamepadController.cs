@@ -1,69 +1,39 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 {
-    // TODO - Implement
     public struct GamepadController : IMixedRealityController
     {
-        #region Private properties
-
-        #endregion Private properties
-
-        public GamepadController(uint sourceId, Handedness handedness)
+        public GamepadController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
         {
-            ControllerState = ControllerState.None;
-
-            ControllerHandedness = handedness;
-
-            InputSource = null;
-
-            Interactions = new Dictionary<DeviceInputType, InteractionMapping>();
+            ControllerState = controllerState;
+            ControllerHandedness = controllerHandedness;
+            InputSource = inputSource;
+            Interactions = interactions;
         }
 
-        #region IMixedRealityController Interface Members
-
-        public ControllerState ControllerState { get; private set; }
+        public ControllerState ControllerState { get; }
 
         public Handedness ControllerHandedness { get; }
 
-        public IMixedRealityInputSource InputSource { get; private set; }
+        public IMixedRealityInputSource InputSource { get; }
 
-        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; private set; }
+        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
 
         public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
-            if (inputSystem != null)
-            {
-                InputSource = inputSystem.RequestNewGenericInputSource($"XBox Controller {ControllerHandedness}");
-            }
-
             // TODO
         }
 
         public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
-            // TODO
+            //TODO
         }
-
-        #endregion IMixedRealityInputSource Interface Members
-
-        #region Setup and Update functions
-
-        // TODO
-
-        #endregion Setup and Update functions
-
-        #region Utilities
-
-        // TODO - if required
-
-        #endregion Utilities
     }
 }

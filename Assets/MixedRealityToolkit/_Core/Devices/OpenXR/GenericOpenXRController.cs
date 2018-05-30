@@ -6,11 +6,11 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
 {
-    public struct JoystickController : IMixedRealityController
+    public struct GenericOpenXRController : IMixedRealityController
     {
-        public JoystickController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
+        public GenericOpenXRController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;

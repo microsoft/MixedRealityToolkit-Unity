@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
@@ -98,6 +99,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
         private MixedRealitySpeechCommandsProfile speechCommandsProfile;
+
+        /// <summary>
+        /// Speech commands profile for configured speech commands, for use by the speech recognition system
+        /// </summary>
         public MixedRealitySpeechCommandsProfile SpeechCommandsProfile
         {
             get { return speechCommandsProfile; }
@@ -105,47 +110,30 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Enable and configure the controller rendering of the Motion Controllers on Startup.")]
-        private bool renderMotionControllers = false;
+        [Tooltip("Enable and configure the devices for your application.")]
+        private bool enableControllerProfiles = false;
 
         /// <summary>
-        /// Enable and configure the controller rendering of the Motion Controllers on Startup.
+        /// Enable and configure the devices for your application.
         /// </summary>
-        public bool RenderMotionControllers
+        public bool EnableControllerProfiles
         {
-            get { return renderMotionControllers; }
-            private set { renderMotionControllers = value; }
+            get { return enableControllerProfiles; }
+            private set { enableControllerProfiles = value; }
         }
 
         [SerializeField]
-        [Tooltip("Default Left Controller Model")]
-        private GameObject leftControllerModel;
+        [Tooltip("Device profile for wiring up physical inputs to Actions.")]
+        private MixedRealityControllerMappingProfile controllersProfile;
 
         /// <summary>
-        /// Enable and configure the controller rendering for the Mixed Reality Toolkit
+        /// Active profile for controller mapping configuration
         /// </summary>
-        public GameObject LeftControllerModel
+        public MixedRealityControllerMappingProfile ControllersProfile
         {
-            get { return leftControllerModel; }
-            private set { leftControllerModel = value; }
+            get { return controllersProfile; }
+            private set { controllersProfile = value; }
         }
-
-        [SerializeField]
-        [Tooltip("Default Right Controller Model")]
-        private GameObject rightControllerModel;
-
-        /// <summary>
-        /// Enable and configure the controller rendering for the Mixed Reality Toolkit
-        /// </summary>
-        public GameObject RightControllerModel
-        {
-            get { return rightControllerModel; }
-            private set { rightControllerModel = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Available Controller Mappings")]
-        private MixedRealityControllerMappingProfile[] controllerMappingsProfile;
 
         [SerializeField]
         [Tooltip("Enable the Boundary on Startup")]
@@ -202,17 +190,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         // TODO - needs validation to ensure duplicates are not added?
 
-        public MixedRealityControllerMappingProfile GetControllerMapping(Type controllerType, Handedness hand)
+        public MixedRealityControllerMapping GetControllerMapping(Type controllerType, Handedness hand)
         {
             var systemType = SystemType.GetReference(controllerType);
-            for (int i = 0; i < controllerMappingsProfile?.Length; i++)
+            for (int i = 0; i < ControllersProfile?.MixedRealityControllerMappingProfiles.Length; i++)
             {
-                if (controllerMappingsProfile[i].ControllerType == systemType && controllerMappingsProfile[i].ControllingHand == hand)
+                if (ControllersProfile.MixedRealityControllerMappingProfiles[i].Controller == systemType && ControllersProfile.MixedRealityControllerMappingProfiles[i].Handedness == hand)
                 {
-                    return controllerMappingsProfile[i];
+                    return ControllersProfile.MixedRealityControllerMappingProfiles[i];
                 }
             }
-            return default(MixedRealityControllerMappingProfile);
+            return default(MixedRealityControllerMapping);
         }
 
         // TODO - Which is better?
