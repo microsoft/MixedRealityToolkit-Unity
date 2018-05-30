@@ -3,9 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
 {
     /// <summary>
     /// Mixed Reality Toolkit controller definition, used to manage a specific controller type
