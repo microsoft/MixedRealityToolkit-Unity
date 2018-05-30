@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private void OnEnable()
         {
-            if (!CheckMixedRealityManager())
+            if (!CheckMixedRealityManager(false))
             {
                 return;
             }
