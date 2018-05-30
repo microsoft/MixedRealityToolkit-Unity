@@ -35,7 +35,7 @@ SpriteAtlas:
     - {fileID: 21300000, guid: ec8b4073237c9724ba8422f71fda3694, type: 3}
     - {fileID: 21300000, guid: 11e4524f21fc6434abbbba83d70d0040, type: 3}
     - {fileID: 21300000, guid: 73830216a21a45e499598b2624ef723e, type: 3}
-    bindAsDefault: 0
+    bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 73830216a21a45e499598b2624ef723e, type: 3}

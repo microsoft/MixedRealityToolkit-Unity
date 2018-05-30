@@ -4,12 +4,12 @@
 using UnityEngine;
 
 #if UNITY_WSA
+using System.Collections.Generic;
 #if UNITY_2017_2_OR_NEWER
 using UnityEngine.XR.WSA.Input;
 #else
 using UnityEngine.VR.WSA.Input;
 #endif
-using System.Collections.Generic;
 #endif
 
 namespace HoloToolkit.Unity.InputModule
@@ -451,6 +451,21 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
+        public bool TryGetHandedness(uint sourceId, out Handedness handedness)
+        {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            SourceData sourceData;
+            if (sourceIdToData.TryGetValue(sourceId, out sourceData))
+            {
+                handedness = (Handedness)sourceData.Handedness;
+                return true;
+            }
+#endif
+
+            handedness = default(Handedness);
+            return false;
+        }
+
         #region BaseInputSource implementations
 
         public override SupportedInputInfo GetSupportedInputInfo(uint sourceId)
@@ -460,8 +475,10 @@ namespace HoloToolkit.Unity.InputModule
             SourceData sourceData;
             if (sourceIdToData.TryGetValue(sourceId, out sourceData))
             {
-                retVal |= GetSupportFlag(sourceData.PointerPosition, SupportedInputInfo.Position);
-                retVal |= GetSupportFlag(sourceData.PointerRotation, SupportedInputInfo.Rotation);
+                retVal |= GetSupportFlag(sourceData.PointerPosition, SupportedInputInfo.PointerPosition);
+                retVal |= GetSupportFlag(sourceData.PointerRotation, SupportedInputInfo.PointerRotation);
+                retVal |= GetSupportFlag(sourceData.GripPosition, SupportedInputInfo.GripPosition);
+                retVal |= GetSupportFlag(sourceData.GripRotation, SupportedInputInfo.GripRotation);
                 retVal |= GetSupportFlag(sourceData.PointingRay, SupportedInputInfo.Pointing);
                 retVal |= GetSupportFlag(sourceData.Thumbstick, SupportedInputInfo.Thumbstick);
                 retVal |= GetSupportFlag(sourceData.Touchpad, SupportedInputInfo.Touchpad);
@@ -665,7 +682,6 @@ namespace HoloToolkit.Unity.InputModule
         #endregion
 
 #if UNITY_WSA
-
         /// <summary>
         /// Gets the source data for the specified interaction source if it already exists, otherwise creates it.
         /// </summary>

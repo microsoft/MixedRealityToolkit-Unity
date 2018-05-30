@@ -63,6 +63,16 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
+        /// Awake and OnEnable safe way to check if a Singleton is initialized.
+        /// </summary>
+        /// <returns>The value of the Singleton's IsInitialized property</returns>
+        public static bool ConfirmInitialized()
+        {
+            T access = Instance;
+            return IsInitialized;
+        }
+        
+        /// <summary>
         /// Base Awake method that sets the Singleton's unique instance.
         /// Called by Unity when initializing a MonoBehaviour.
         /// Scripts that extend Singleton should be sure to call base.Awake() to ensure the

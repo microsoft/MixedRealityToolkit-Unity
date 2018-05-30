@@ -78,6 +78,10 @@ namespace HoloToolkit.Unity.InputModule
             InitialPosition = localPosition;
             ControllerSourceState.SourcePose.Position = localPosition;
             ControllerSourceState.SourcePose.Rotation = ControllerVisualizer.transform.rotation;
+            // we reuse localPosition here as we have no real way to source a grip position
+            // in the Editor, other than an arbitrary offset
+            ControllerSourceState.SourcePose.GripPosition = localPosition;
+            ControllerSourceState.SourcePose.GripRotation = ControllerVisualizer.transform.rotation;
 
             visualRenderer = ControllerVisualizer.GetComponent<Renderer>();
             visualPropertyBlock = new MaterialPropertyBlock();
@@ -170,6 +174,7 @@ namespace HoloToolkit.Unity.InputModule
 
             localPosition += translate;
             ControllerSourceState.SourcePose.Position = CameraCache.Main.transform.position + CameraCache.Main.transform.TransformVector(localPosition);
+            ControllerSourceState.SourcePose.GripPosition = CameraCache.Main.transform.position + CameraCache.Main.transform.TransformVector(localPosition);
 
             ControllerVisualizer.transform.position = ControllerSourceState.SourcePose.Position;
             ControllerVisualizer.transform.forward = CameraCache.Main.transform.forward;

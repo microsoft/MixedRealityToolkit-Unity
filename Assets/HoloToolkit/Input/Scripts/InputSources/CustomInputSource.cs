@@ -46,23 +46,33 @@ namespace HoloToolkit.Unity.InputModule
             public bool ManipulationInProgress;
             public bool HoldInProgress;
             public Vector3 CumulativeDelta;
+            public Vector3 CumulativeGripDelta;
         }
 
+        [Tooltip("This property now represents Pointer position (contrast with Grip position)")]
         public bool SupportsPosition;
+        [Tooltip("This property now represents Pointer rotation (contrast with Grip rotation)")]
         public bool SupportsRotation;
+        public bool SupportsGripPosition;
+        public bool SupportsGripRotation;
         public bool SupportsRay;
         public bool SupportsMenuButton;
         public bool SupportsGrasp;
         public bool RaiseEventsBasedOnVisibility;
         public InteractionSourceInfo SourceKind;
 
+        [Tooltip("This property now represents controller's Pointer position (contrast with controller Grip position)")]
+        public Vector3 ControllerPosition;
+        [Tooltip("This property now represents controller's Pointer rotation (contrast with controller Grip rotation)")]
+        public Quaternion ControllerRotation;
+
         //Navigation Gesture Emulation vars
         Vector3 NavigatorValues = Vector3.zero; //holds the navigation gesture values [-1,1]
         Vector2 railUsedCurrently = Vector2.one;
         bool    isNavigatorUsingRails = false;
 
-        public Vector3 ControllerPosition;
-        public Quaternion ControllerRotation;
+        public Vector3 ControllerGripPosition;
+        public Quaternion ControllerGripRotation;
 
         public Ray? PointingRay;
 
@@ -93,17 +103,27 @@ namespace HoloToolkit.Unity.InputModule
 
             if (SupportsPosition)
             {
-                supportedInputInfo |= SupportedInputInfo.Position;
+                supportedInputInfo |= SupportedInputInfo.PointerPosition;
             }
 
             if (SupportsRotation)
             {
-                supportedInputInfo |= SupportedInputInfo.Rotation;
+                supportedInputInfo |= SupportedInputInfo.PointerRotation;
             }
 
             if (SupportsRay)
             {
                 supportedInputInfo |= SupportedInputInfo.Pointing;
+            }
+
+            if (SupportsGripPosition)
+            {
+                supportedInputInfo |= SupportedInputInfo.GripPosition;
+            }
+
+            if (SupportsGripRotation)
+            {
+                supportedInputInfo |= SupportedInputInfo.GripRotation;
             }
 
             if (SupportsMenuButton)
@@ -173,9 +193,9 @@ namespace HoloToolkit.Unity.InputModule
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            if (SupportsPosition)
+            if (SupportsGripPosition)
             {
-                position = ControllerPosition;
+                position = ControllerGripPosition;
                 return true;
             }
 
@@ -187,9 +207,9 @@ namespace HoloToolkit.Unity.InputModule
         {
             Debug.Assert(sourceId == controllerId, "Controller data requested for a mismatched source ID.");
 
-            if (SupportsRotation)
+            if (SupportsGripRotation)
             {
-                rotation = ControllerRotation;
+                rotation = ControllerGripRotation;
                 return true;
             }
 
@@ -385,6 +405,25 @@ namespace HoloToolkit.Unity.InputModule
             if (SupportsRay)
             {
                 PointingRay = source.SourcePose.PointerRay;
+            }
+
+            if (SupportsGripPosition)
+            {
+                Vector3 controllerGripPosition;
+                if (source.SourcePose.TryGetGripPosition(out controllerGripPosition))
+                {
+                    currentButtonStates.CumulativeGripDelta += controllerGripPosition - ControllerGripPosition;
+                    ControllerGripPosition = controllerGripPosition;
+                }
+            }
+
+            if (SupportsGripRotation)
+            {
+                Quaternion controllerGripRotation;
+                if (source.SourcePose.TryGetGripRotation(out controllerGripRotation))
+                {
+                    ControllerGripRotation = controllerGripRotation;
+                }
             }
 
             if (SupportsMenuButton)

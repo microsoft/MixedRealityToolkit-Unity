@@ -3,6 +3,10 @@
 
 using UnityEngine;
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+using UnityEngine.XR.WSA.Input;
+#endif
+
 namespace HoloToolkit.Unity.InputModule
 {
     /// <summary>
@@ -21,8 +25,21 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("The cursor, if any, which should follow the selected pointer.")]
         public Cursor Cursor;
 
-        [Tooltip("True to search for a cursor if one isn't explicitly set.")]
-        public bool SearchForCursorIfUnset = true;
+        [Tooltip("If true, search for a cursor if one isn't explicitly set.")]
+        [SerializeField]
+        private bool searchForCursorIfUnset = true;
+        public bool SearchForCursorIfUnset { get { return searchForCursorIfUnset; } set { searchForCursorIfUnset = value; } }
+
+        [Tooltip("If true, always select the best pointer available (OS behavior does not auto-select).")]
+        [SerializeField]
+        private bool autoselectBestAvailable = false;
+        public bool AutoselectBestAvailable { get { return autoselectBestAvailable; } set { autoselectBestAvailable = value; } }
+
+        [Tooltip("The line pointer prefab to use, if any.")]
+        [SerializeField]
+        private GameObject linePointerPrefab = null;
+
+        private PointerLine instantiatedPointerLine;
 
         #endregion
 
@@ -72,7 +89,11 @@ namespace HoloToolkit.Unity.InputModule
 
         void ISourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
         {
-            // Nothing to do on source detected.
+            // If a pointing controller just became available, set it as primary.
+            if (autoselectBestAvailable && SupportsPointingRay(eventData))
+            {
+                ConnectBestAvailablePointer();
+            }
         }
 
         void ISourceStateHandler.OnSourceLost(SourceStateEventData eventData)
@@ -117,7 +138,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void FindCursorIfNeeded()
         {
-            if ((Cursor == null) && SearchForCursorIfUnset)
+            if ((Cursor == null) && searchForCursorIfUnset)
             {
                 Debug.LogWarningFormat(
                     this,
@@ -173,6 +194,11 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             Debug.Assert(currentPointer != null, "No Pointer Set!");
+
+            if (IsGazePointerActive)
+            {
+                DetachInputSourcePointer();
+            }
         }
 
         private void ConnectBestAvailablePointer()
@@ -276,6 +302,45 @@ namespace HoloToolkit.Unity.InputModule
             inputSourcePointer.OwnAllInput = false;
             inputSourcePointer.ExtentOverride = null;
             inputSourcePointer.PrioritizedLayerMasksOverride = null;
+
+            InteractionInputSource interactionInputSource = inputSource as InteractionInputSource;
+
+            // If the InputSource is not an InteractionInputSource, we don't display any ray visualizations.
+            if (interactionInputSource == null)
+            {
+                return;
+            }
+
+            // If no pointing ray prefab has been provided, we return early as there's nothing to display.
+            if (linePointerPrefab == null)
+            {
+                return;
+            }
+
+            // If the pointer line hasn't already been instantiated, create it and store it here.
+            if (instantiatedPointerLine == null)
+            {
+                instantiatedPointerLine = Instantiate(linePointerPrefab).GetComponent<PointerLine>();
+            }
+
+            inputSourcePointer.PointerRay = instantiatedPointerLine;
+
+            Handedness handedness;
+            if (interactionInputSource.TryGetHandedness(sourceId, out handedness))
+            {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                // This updates the handedness of the pointer line, allowing for re-use if it was already in the scene.
+                instantiatedPointerLine.ChangeHandedness((InteractionSourceHandedness)handedness);
+#endif
+            }
+        }
+
+        private void DetachInputSourcePointer()
+        {
+            if (instantiatedPointerLine != null)
+            {
+                Destroy(instantiatedPointerLine.gameObject);
+            }
         }
 
         private bool IsInputSourcePointerActive

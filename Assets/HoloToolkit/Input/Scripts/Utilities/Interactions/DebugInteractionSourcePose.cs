@@ -19,17 +19,23 @@ namespace HoloToolkit.Unity.InputModule
         public bool TryGetFunctionsReturnTrue;
         public bool IsPositionAvailable;
         public bool IsRotationAvailable;
+        public bool IsGripPositionAvailable;
+        public bool IsGripRotationAvailable;
 
         public Vector3 Position;
         public Vector3 Velocity;
         public Quaternion Rotation;
         public Ray? PointerRay;
+        public Vector3 GripPosition;
+        public Quaternion GripRotation;
 
         public DebugInteractionSourcePose()
         {
             TryGetFunctionsReturnTrue = false;
             IsPositionAvailable = false;
             IsRotationAvailable = false;
+            IsGripPositionAvailable = false;
+            IsGripRotationAvailable = false;
             Position = new Vector3(0, 0, 0);
             Velocity = new Vector3(0, 0, 0);
             Rotation = Quaternion.identity;
@@ -38,7 +44,7 @@ namespace HoloToolkit.Unity.InputModule
         public bool TryGetPosition(out Vector3 position)
         {
             position = Position;
-            if (!TryGetFunctionsReturnTrue)
+            if (!TryGetFunctionsReturnTrue)     // TODO: bug? does not test IsPositionAvailable (see TryGetRotation)
             {
                 return false;
             }
@@ -69,6 +75,26 @@ namespace HoloToolkit.Unity.InputModule
         {
             pointerRay = (Ray)PointerRay;
             if (PointerRay == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool TryGetGripPosition(out Vector3 position)
+        {
+            position = GripPosition;
+            if (!TryGetFunctionsReturnTrue)     // TODO: should test IsGripPositionAvailable? (see TryGetPosition)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool TryGetGripRotation(out Quaternion rotation)
+        {
+            rotation = GripRotation;
+            if (!TryGetFunctionsReturnTrue || !IsGripRotationAvailable)
             {
                 return false;
             }
