@@ -35,7 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         /// <summary>
         /// Check and make sure we have a Mixed Reality Manager and an active profile.
+        /// <remarks>Don't enable Help Box support when calling this method from outside the GUI render loop.</remarks>
         /// </summary>
+        /// <param name="showHelpBox">Should we also render a help box?</param>
         /// <returns>True if the Mixed Reality Manager is properly initialized.</returns>
         protected bool CheckMixedRealityManager(bool showHelpBox = true)
         {
