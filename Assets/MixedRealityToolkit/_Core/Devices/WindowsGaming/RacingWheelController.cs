@@ -8,35 +8,32 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 {
-    public partial struct ArcadeStickController
+    public struct RacingWheelController : IMixedRealityController
     {
-        public struct RacingWheelController : IMixedRealityController
+        public RacingWheelController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
         {
-            public RacingWheelController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
-            {
-                ControllerState = controllerState;
-                ControllerHandedness = controllerHandedness;
-                InputSource = inputSource;
-                Interactions = interactions;
-            }
+            ControllerState = controllerState;
+            ControllerHandedness = controllerHandedness;
+            InputSource = inputSource;
+            Interactions = interactions;
+        }
 
-            public ControllerState ControllerState { get; }
+        public ControllerState ControllerState { get; }
 
-            public Handedness ControllerHandedness { get; }
+        public Handedness ControllerHandedness { get; }
 
-            public IMixedRealityInputSource InputSource { get; }
+        public IMixedRealityInputSource InputSource { get; }
 
-            public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
+        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
 
-            public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
-            {
-                // TODO
-            }
+        public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        {
+            // TODO
+        }
 
-            public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
-            {
-                //TODO
-            }
+        public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        {
+            //TODO
         }
     }
 }
