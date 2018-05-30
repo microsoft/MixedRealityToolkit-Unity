@@ -19,14 +19,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         #endregion Private properties
 
-        public WindowsMixedRealityGestureController(uint sourceId, Handedness handedness)
+        public WindowsMixedRealityGestureController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
         {
-            ControllerState = ControllerState.None;
-            ControllerHandedness = handedness;
-
-            InputSource = null;
-
-            Interactions = new Dictionary<DeviceInputType, InteractionMapping>();
+            ControllerState = controllerState;
+            ControllerHandedness = controllerHandedness;
+            InputSource = inputSource;
+            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
         }
 
         #region IMixedRealityController Interface Members
@@ -39,18 +37,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; private set; }
 
-        public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        public void SetupInputSource<T>(T state)
         {
-            if (inputSystem != null)
-            {
-                InputSource = inputSystem.RequestNewGenericInputSource($"XBox Controller {ControllerHandedness}");
-            }
-
             InteractionSourceState interactionSourceState = CheckIfValidInteractionSourceState(state);
             SetupFromInteractionSource(interactionSourceState);
         }
 
-        public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        public void UpdateInputSource<T>(T state)
         {
             InteractionSourceState interactionSourceState = CheckIfValidInteractionSourceState(state);
             UpdateFromInteractionSource(interactionSourceState);

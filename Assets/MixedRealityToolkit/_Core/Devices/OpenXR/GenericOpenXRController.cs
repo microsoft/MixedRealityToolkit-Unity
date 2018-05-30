@@ -10,12 +10,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
 {
     public struct GenericOpenXRController : IMixedRealityController
     {
-        public GenericOpenXRController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
+        public GenericOpenXRController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions;
+            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
         }
 
         public ControllerState ControllerState { get; }
@@ -26,12 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
 
         public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
 
-        public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        public void SetupInputSource<T>(T state)
         {
             // TODO
         }
 
-        public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        public void UpdateInputSource<T>(T state)
         {
             //TODO
         }

@@ -29,17 +29,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         #endregion Private properties
 
-        public WindowsMixedRealityController(uint sourceId, Handedness handedness)
+        public WindowsMixedRealityController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
         {
-            ControllerState = ControllerState.None;
-            ControllerHandedness = handedness;
-
-            InputSource = null;
+            ControllerState = controllerState;
+            ControllerHandedness = controllerHandedness;
+            InputSource = inputSource;
+            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
 
             controllerTracked = false;
             controllerPosition = pointerPosition = gripPosition = Vector3.zero;
             controllerRotation = pointerRotation = gripRotation = Quaternion.identity;
-            Interactions = new Dictionary<DeviceInputType, InteractionMapping>();
         }
 
         #region IMixedRealityController Interface Members
@@ -52,18 +51,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; private set; }
 
-        public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        public void SetupInputSource<T>(T state)
         {
-            if (inputSystem != null)
-            {
-                InputSource = inputSystem.RequestNewGenericInputSource($"Mixed Reality Controller {ControllerHandedness}");
-            }
-
             InteractionSourceState interactionSourceState = CheckIfValidInteractionSourceState(state);
             SetupFromInteractionSource(interactionSourceState);
         }
 
-        public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        public void UpdateInputSource<T>(T state)
         {
             InteractionSourceState interactionSourceState = CheckIfValidInteractionSourceState(state);
             UpdateFromInteractionSource(interactionSourceState);

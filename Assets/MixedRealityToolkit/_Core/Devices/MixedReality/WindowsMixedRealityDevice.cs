@@ -160,14 +160,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 return activeControllers[interactionSourceState.source.id];
             }
 
+            var controllingHand = interactionSourceState.source.handedness == InteractionSourceHandedness.Left ? Handedness.Left : Handedness.Right;
+
             //TODO - Controller Type Detection?
             //Define new Controller
             var detectedController = new WindowsMixedRealityController(
-                interactionSourceState.source.id,
-                interactionSourceState.source.handedness == InteractionSourceHandedness.Left ? Handedness.Left : Handedness.Right
+                ControllerState.NotTracked,
+                controllingHand,
+                inputSystem.RequestNewGenericInputSource($"Mixed Reality Controller {controllingHand}"),
+                new Dictionary<DeviceInputType, InteractionMapping>()
                 );
 
-            detectedController.SetupInputSource(inputSystem, interactionSourceState);
+            detectedController.SetupInputSource(interactionSourceState);
 
             activeControllers.Add(interactionSourceState.source.id, detectedController);
 

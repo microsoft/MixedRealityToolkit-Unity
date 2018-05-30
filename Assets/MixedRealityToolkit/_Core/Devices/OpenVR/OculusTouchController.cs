@@ -10,12 +10,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
     public struct OculusTouchController : IMixedRealityController
     {
-        public OculusTouchController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
+        public OculusTouchController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions;
+            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
         }
 
         /// <inheritdoc />
@@ -31,13 +31,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
 
         /// <inheritdoc />
-        public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        public void SetupInputSource<T>(T state)
         {
             // TODO
         }
 
         /// <inheritdoc />
-        public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        public void UpdateInputSource<T>(T state)
         {
             //TODO
         }
