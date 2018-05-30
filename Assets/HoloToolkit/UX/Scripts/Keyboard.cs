@@ -326,6 +326,10 @@ namespace HoloToolkit.UI.Keyboard
         /// <param name="eventData">Dictation event data</param>
         public void OnDictationResult(DictationEventData eventData)
         {
+            if (eventData.used)
+            {
+                return;
+            }
             var text = eventData.DictationResult;
             ResetClosingTime();
             if (text != null)
@@ -336,6 +340,7 @@ namespace HoloToolkit.UI.Keyboard
                 m_CaretPosition += text.Length;
 
                 UpdateCaretPosition(m_CaretPosition);
+                eventData.Use();
             }
         }
 
