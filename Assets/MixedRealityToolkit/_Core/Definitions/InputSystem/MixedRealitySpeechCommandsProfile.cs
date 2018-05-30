@@ -14,6 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         [SerializeField]
         [Tooltip("The list of Speech Commands users use in your application.")]
         private SpeechCommands[] speechCommands = new SpeechCommands[0];
+
+        /// <summary>
+        /// The list of Speech Commands users use in your application.
+        /// </summary>
         public SpeechCommands[] SpeechCommands => speechCommands;
     }
 }

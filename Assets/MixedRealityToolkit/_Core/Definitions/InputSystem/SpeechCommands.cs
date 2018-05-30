@@ -6,9 +6,18 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 {
+    /// <summary>
+    /// Data structure for mapping Voice and Keyboard input to <see cref="InputAction"/>s that can be raised by the Input System.
+    /// </summary>
     [Serializable]
     public struct SpeechCommands
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="keyCode"></param>
+        /// <param name="action"></param>
         public SpeechCommands(string keyword, KeyCode keyCode, InputAction action)
         {
             this.keyword = keyword;
@@ -17,18 +26,30 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         }
 
         [SerializeField]
-        [Tooltip("The Keyword to recognize.")]
+        [Tooltip("The Keyword to listen for.")]
         private string keyword;
+
+        /// <summary>
+        /// The Keyword to listen for.
+        /// </summary>
         public string Keyword => keyword;
 
         [SerializeField]
-        [Tooltip("The KeyCode to recognize.")]
+        [Tooltip("The corresponding KeyCode that also raises the same action as the Keyword.")]
         private KeyCode keyCode;
+
+        /// <summary>
+        /// The corresponding KeyCode that also raises the same action as the Keyword.
+        /// </summary>
         public KeyCode KeyCode => keyCode;
 
         [SerializeField]
-        [Tooltip("The Action associated to the Speech Command.")]
+        [Tooltip("The Action that is raised by either the Keyword or KeyCode.")]
         private InputAction action;
+
+        /// <summary>
+        /// The <see cref="InputAction"/> that is raised by either the Keyword or KeyCode.
+        /// </summary>
         public InputAction Action => action;
     }
 }

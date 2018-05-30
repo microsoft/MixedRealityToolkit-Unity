@@ -7,13 +7,28 @@ using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 {
+    /// <summary>
+    /// Keyword/UnityEvent pair that ties voice input to UnityEvents wired up in the inspector.
+    /// </summary>
     [Serializable]
     public struct KeywordAndResponse
     {
-        [Tooltip("The keyword to handle.")]
-        public string Keyword;
+        [SerializeField]
+        [Tooltip("The keyword to listen for.")]
+        private string keyword;
 
-        [Tooltip("The handler to be invoked.")]
-        public UnityEvent Response;
+        /// <summary>
+        /// The keyword to listen for.
+        /// </summary>
+        public string Keyword => keyword;
+
+        [SerializeField]
+        [Tooltip("The handler to be invoked when the keyword is recognized.")]
+        private UnityEvent response;
+
+        /// <summary>
+        /// The handler to be invoked when the keyword is recognized.
+        /// </summary>
+        public UnityEvent Response => response;
     }
 }

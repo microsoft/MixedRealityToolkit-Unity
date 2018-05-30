@@ -4,13 +4,13 @@
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
     /// <summary>
-    /// The SDKType lists the VR SDK's that are supported by the MRTK
-    /// Initially, this lists proposed SDK's, not all may be implemented at this time (please see ReleaseNotes for more details)
+    /// The SDKType lists the XR SDKs that are supported by the Mixed Reality Toolkit.
+    /// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
     /// </summary>
     public enum SDKType
     {
         /// <summary>
-        /// No specified type or Standalone / non-VR type
+        /// No specified type or Standalone / non-XR type
         /// </summary>
         None = 0,
         /// <summary>
@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         Other,
         /// <summary>
-        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and Hololens. 
+        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens.
         /// </summary>
         WindowsMR,
         /// <summary>
@@ -29,6 +29,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// The OpenXR platform. SDK to be determined once released.
         /// </summary>
         OpenXR
-
     }
 }
