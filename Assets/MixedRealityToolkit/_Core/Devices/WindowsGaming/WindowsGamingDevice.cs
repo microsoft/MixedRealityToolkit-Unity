@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
                 null
                 );
 
-            detectedController.SetupInputSource(inputSystem, interactionSourceState);
+            detectedController.SetupInputSource(interactionSourceState);
 
             activeControllers.Add(interactionSourceState.source.id, detectedController);
 
@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
             if (controller == null) { return; }
 
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
-            controller.UpdateInputSource(inputSystem, interactionSourceState);
+            controller.UpdateInputSource(interactionSourceState);
             if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem) inputSystem?.RaiseSourceDetected(controller.InputSource);
         }
 
@@ -167,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 
             if (controller == null) { return; }
 
-            controller.UpdateInputSource(inputSystem, state);
+            controller.UpdateInputSource(state);
 
             if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
             {
