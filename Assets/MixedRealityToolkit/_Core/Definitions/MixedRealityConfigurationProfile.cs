@@ -2,13 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
@@ -98,6 +98,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
         private MixedRealitySpeechCommandsProfile speechCommandsProfile;
+
+        /// <summary>
+        /// Speech commands profile for configured speech commands, for use by the speech recognition system
+        /// </summary>
         public MixedRealitySpeechCommandsProfile SpeechCommandsProfile
         {
             get { return speechCommandsProfile; }
@@ -106,37 +110,28 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]
-        private bool enableDeviceProfile = false;
+        private bool enableControllerProfiles = false;
 
         /// <summary>
         /// Enable and configure the devices for your application.
         /// </summary>
-        public bool EnableDeviceProfile
+        public bool EnableControllerProfiles
         {
-            get { return enableDeviceProfile; }
-            private set { enableDeviceProfile = value; }
+            get { return enableControllerProfiles; }
+            private set { enableControllerProfiles = value; }
         }
 
         [SerializeField]
         [Tooltip("Device profile for wiring up physical inputs to Actions.")]
-        private MixedRealityDevicesConfigurationProfile devicesProfile;
-        public MixedRealityDevicesConfigurationProfile DevicesProfile
-        {
-            get { return devicesProfile; }
-            private set { devicesProfile = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Enable and configure the controller rendering of the Motion Controllers on Startup.")]
-        private bool renderMotionControllers = false;
+        private MixedRealityControllerMappingProfile controllersProfile;
 
         /// <summary>
-        /// Enable and configure the controller rendering of the Motion Controllers on Startup.
+        /// Active profile for controller mapping configuration
         /// </summary>
-        public bool RenderMotionControllers
+        public MixedRealityControllerMappingProfile ControllersProfile
         {
-            get { return renderMotionControllers; }
-            private set { renderMotionControllers = value; }
+            get { return controllersProfile; }
+            private set { controllersProfile = value; }
         }
 
         [SerializeField]
