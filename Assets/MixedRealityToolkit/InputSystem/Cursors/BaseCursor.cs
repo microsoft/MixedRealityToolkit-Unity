@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         {
 #if UNITY_WSA
             InteractionSourceKind sourceKind;
-            if (InteractionInputSources.TryGetSourceKind(eventData.SourceId, out sourceKind) &&
+            if (WindowsMixedRealityDeviceManager.TryGetSourceKind(eventData.SourceId, out sourceKind) &&
                 sourceKind == InteractionSourceKind.Hand)
             {
                 visibleHandsCount++;
@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         {
 #if UNITY_WSA
             InteractionSourceKind sourceKind;
-            if (InteractionInputSources.TryGetSourceKind(eventData.SourceId, out sourceKind) &&
+            if (WindowsMixedRealityDeviceManager.TryGetSourceKind(eventData.SourceId, out sourceKind) &&
                 sourceKind == InteractionSourceKind.Hand)
             {
                 visibleHandsCount--;
