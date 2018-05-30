@@ -98,6 +98,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
         private MixedRealitySpeechCommandsProfile speechCommandsProfile;
+
+        /// <summary>
+        /// Speech commands profile for configured speech commands, for use by the speech recognition system
+        /// </summary>
         public MixedRealitySpeechCommandsProfile SpeechCommandsProfile
         {
             get { return speechCommandsProfile; }
@@ -120,6 +124,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         [SerializeField]
         [Tooltip("Device profile for wiring up physical inputs to Actions.")]
         private MixedRealityControllerMappingProfile controllersProfile;
+
+        /// <summary>
+        /// Active profile for controller mapping configuration
+        /// </summary>
         public MixedRealityControllerMappingProfile ControllersProfile
         {
             get { return controllersProfile; }

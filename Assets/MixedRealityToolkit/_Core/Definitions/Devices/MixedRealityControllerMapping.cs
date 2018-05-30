@@ -91,10 +91,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         [SerializeField]
         [Tooltip("Details the list of available buttons / interactions available from the device.")]
         private InteractionMapping[] interactions;
-
-        public InteractionMapping GetInteractionMapping(DeviceInputType inputType)
-        {
-            return default(InteractionMapping);
-        }
     }
 }
