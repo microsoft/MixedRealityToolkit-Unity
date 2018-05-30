@@ -14,47 +14,46 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
     /// </summary>
     public class AnimatedCursor : BaseCursor
     {
-        /// <summary>
-        /// Serialized set of cursor state data
-        /// </summary>
-        [Header("Animated Cursor State Data")]
-        [Tooltip("Cursor state data to use for its various states")]
         [SerializeField]
-        public AnimatedCursorData[] CursorStateData;
+        [Header("Animated Cursor State Data")]
+        [Tooltip("Cursor state data to use for its various states.")]
+        private AnimatedCursorData[] cursorStateData;
 
+        [SerializeField]
         [Tooltip("Animator parameter to set when input is enabled.")]
-        public AnimatorParameter InputEnabledParameter;
+        private AnimatorParameter inputEnabledParameter;
 
+        [SerializeField]
         [Tooltip("Animator parameter to set when input is disabled.")]
-        public AnimatorParameter InputDisabledParameter;
+        private AnimatorParameter inputDisabledParameter;
 
         /// <summary>
-        /// Link the cursor animator
+        /// Link the cursor animator.
         /// </summary>
         [SerializeField]
         [Tooltip("Animator for the cursor")]
         protected Animator CursorAnimator;
 
         /// <summary>
-        /// Change animation state when enabling input
+        /// Change animation state when enabling input.
         /// </summary>
         public override void OnInputEnabled()
         {
             base.OnInputEnabled();
-            SetAnimatorParameter(InputEnabledParameter);
+            SetAnimatorParameter(inputEnabledParameter);
         }
 
         /// <summary>
-        /// Change animation state when disabling input
+        /// Change animation state when disabling input.
         /// </summary>
         public override void OnInputDisabled()
         {
             base.OnInputDisabled();
-            SetAnimatorParameter(InputDisabledParameter);
+            SetAnimatorParameter(inputDisabledParameter);
         }
 
         /// <summary>
-        /// Override to set the cursor animation trigger
+        /// Override to set the cursor animation trigger.
         /// </summary>
         public override void OnFocusChanged(FocusEventData eventData)
         {
@@ -78,21 +77,19 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         }
 
         /// <summary>
-        /// Override OnCursorState change to set the correct animation
-        /// state for the cursor
+        /// Override OnCursorState change to set the correct animation state for the cursor.
         /// </summary>
         /// <param name="state"></param>
         public override void OnCursorStateChange(CursorStateEnum state)
         {
             base.OnCursorStateChange(state);
-            if (state != CursorStateEnum.Contextual)
+            if (state == CursorStateEnum.Contextual) { return; }
+
+            for (int i = 0; i < cursorStateData.Length; i++)
             {
-                for (int i = 0; i < CursorStateData.Length; i++)
+                if (cursorStateData[i].CursorState == state)
                 {
-                    if (CursorStateData[i].CursorState == state)
-                    {
-                        SetAnimatorParameter(CursorStateData[i].Parameter);
-                    }
+                    SetAnimatorParameter(cursorStateData[i].Parameter);
                 }
             }
         }
@@ -109,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
                 return;
             }
 
-            switch (animationParameter.Type)
+            switch (animationParameter.ParameterType)
             {
                 case AnimatorControllerParameterType.Bool:
                     CursorAnimator.SetBool(animationParameter.NameHash, animationParameter.DefaultBool);

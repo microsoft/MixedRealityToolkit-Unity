@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// Populates the event with data.
         /// </summary>
         /// <param name="inputSource"></param>
-        /// <param name="inputType"></param>
+        /// <param name="inputAction"></param>
         /// <param name="position"></param>
         public void Initialize(IMixedRealityInputSource inputSource, InputAction inputAction, Vector2 position)
         {
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
         /// <param name="inputSource"></param>
-        /// <param name="inputType"></param>
+        /// <param name="inputAction"></param>
         /// <param name="position"></param>
         /// <param name="handedness"></param>
         public void Initialize(IMixedRealityInputSource inputSource, InputAction inputAction, Vector2 position, Handedness handedness)

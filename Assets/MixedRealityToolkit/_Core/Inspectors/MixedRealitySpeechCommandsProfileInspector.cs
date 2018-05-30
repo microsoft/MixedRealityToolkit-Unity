@@ -25,7 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private void OnEnable()
         {
-            if (!MixedRealityManager.IsInitialized || !MixedRealityManager.HasActiveProfile) { return; }
+            if (!CheckMixedRealityManager(false))
+            {
+                return;
+            }
 
             speechCommands = serializedObject.FindProperty("speechCommands");
             actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(
@@ -55,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
+
             if (GUILayout.Button(AddButtonContent, EditorStyles.miniButton))
             {
                 list.arraySize += 1;
@@ -89,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUIUtility.labelWidth = labelWidth;
             GUILayout.EndHorizontal();
 
-            for (int i = 0; i < list?.arraySize; i++)
+            for (int i = 0; i < list.arraySize; i++)
             {
                 EditorGUILayout.BeginHorizontal();
                 SerializedProperty speechCommand = list.GetArrayElementAtIndex(i);

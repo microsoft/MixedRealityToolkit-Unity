@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad7124aacaea29e41bbea321c1722e94, type: 3}
+  m_Name: DefaultMixedRealityControllerConfigurationProfile
+  m_EditorClassIdentifier: 
+  renderMotionControllers: 1
+  useDefaultModels: 0
+  overrideLeftHandModel: {fileID: 1786849406207676, guid: ef834e955ef3e134db6c5e0020b5dc6b,
+    type: 2}
+  overrideRightHandModel: {fileID: 1786849406207676, guid: ef834e955ef3e134db6c5e0020b5dc6b,
+    type: 2}
+  mixedRealityControllerMappingProfiles:
+  - id: 1
+    description: MotionController Left
+    controller:
+      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 1
+    defaultModel: 0
+    overrideModel: {fileID: 1786849406207676, guid: ef834e955ef3e134db6c5e0020b5dc6b,
+      type: 2}
+    interactions:
+    - id: 0
+      axisType: 2
+      inputType: 30
+      inputAction:
+        id: 2
+        description: 
+        axisConstraint: 0
+      boolData: 0
+      floatData: 0
+      vector2Data: {x: 0, y: 0}
+      positionData: {x: 0, y: 0, z: 0}
+      rotationData: {x: 0, y: 0, z: 0, w: 0}
+      changed: 0
+    - id: 0
+      axisType: 2
+      inputType: 28
+      inputAction:
+        id: 1
+        description: 
+        axisConstraint: 0
+      boolData: 0
+      floatData: 0
+      vector2Data: {x: 0, y: 0}
+      positionData: {x: 0, y: 0, z: 0}
+      rotationData: {x: 0, y: 0, z: 0, w: 0}
+      changed: 0
+    - id: 0
+      axisType: 2
+      inputType: 17
+      inputAction:
+        id: 3
+        description: 
+        axisConstraint: 0
+      boolData: 0
+      floatData: 0
+      vector2Data: {x: 0, y: 0}
+      positionData: {x: 0, y: 0, z: 0}
+      rotationData: {x: 0, y: 0, z: 0, w: 0}
+      changed: 0
+  - id: 2
+    description: MotionController Right
+    controller:
+      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 2
+    defaultModel: 1
+    overrideModel: {fileID: 1786849406207676, guid: ef834e955ef3e134db6c5e0020b5dc6b,
+      type: 2}
+    interactions:
+    - id: 0
+      axisType: 2
+      inputType: 30
+      inputAction:
+        id: 2
+        description: 
+        axisConstraint: 0
+      boolData: 0
+      floatData: 0
+      vector2Data: {x: 0, y: 0}
+      positionData: {x: 0, y: 0, z: 0}
+      rotationData: {x: 0, y: 0, z: 0, w: 0}
+      changed: 0
+    - id: 0
+      axisType: 2
+      inputType: 27
+      inputAction:
+        id: 1
+        description: 
+        axisConstraint: 0
+      boolData: 0
+      floatData: 0
+      vector2Data: {x: 0, y: 0}
+      positionData: {x: 0, y: 0, z: 0}
+      rotationData: {x: 0, y: 0, z: 0, w: 0}
+      changed: 0
+    - id: 0
+      axisType: 2
+      inputType: 17
+      inputAction:
+        id: 3
+        description: 
+        axisConstraint: 0
+      boolData: 0
+      floatData: 0
+      vector2Data: {x: 0, y: 0}
+      positionData: {x: 0, y: 0, z: 0}
+      rotationData: {x: 0, y: 0, z: 0, w: 0}
+      changed: 0

@@ -58,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         Select,
         Start,
         Menu,
+        Hand,
         Thumb,
         IndexFinger,
         MiddleFinger,
