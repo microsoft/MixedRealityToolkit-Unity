@@ -6,11 +6,11 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    public struct HoloLensClicker : IMixedRealityController
+    public struct OculusTouchController : IMixedRealityController
     {
-        public HoloLensClicker(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
+        public OculusTouchController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
@@ -18,19 +18,25 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             Interactions = interactions;
         }
 
+        /// <inheritdoc />
         public ControllerState ControllerState { get; }
 
+        /// <inheritdoc />
         public Handedness ControllerHandedness { get; }
 
+        /// <inheritdoc />
         public IMixedRealityInputSource InputSource { get; }
 
+        /// <inheritdoc />
         public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
 
+        /// <inheritdoc />
         public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
             // TODO
         }
 
+        /// <inheritdoc />
         public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
             //TODO

@@ -6,23 +6,37 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.SteamVR
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    public struct OculusTouchController : IMixedRealityController
+    public struct ValveKnucklesController : IMixedRealityController
     {
-        public ControllerState ControllerState { get; }
-
-        public Handedness ControllerHandedness { get; }
-
-        public IMixedRealityInputSource InputSource { get; }
-
-        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
-
-        public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        public ValveKnucklesController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
         {
-           // TODO
+            ControllerState = controllerState;
+            ControllerHandedness = controllerHandedness;
+            InputSource = inputSource;
+            Interactions = interactions;
         }
 
+        /// <inheritdoc />
+        public ControllerState ControllerState { get; }
+
+        /// <inheritdoc />
+        public Handedness ControllerHandedness { get; }
+
+        /// <inheritdoc />
+        public IMixedRealityInputSource InputSource { get; }
+
+        /// <inheritdoc />
+        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
+
+        /// <inheritdoc />
+        public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        {
+            // TODO
+        }
+
+        /// <inheritdoc />
         public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
             //TODO

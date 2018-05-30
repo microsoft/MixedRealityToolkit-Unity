@@ -8,8 +8,16 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
 {
-    public struct OpenXRController : IMixedRealityController
+    public struct GenericOpenXRController : IMixedRealityController
     {
+        public GenericOpenXRController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
+        {
+            ControllerState = controllerState;
+            ControllerHandedness = controllerHandedness;
+            InputSource = inputSource;
+            Interactions = interactions;
+        }
+
         public ControllerState ControllerState { get; }
 
         public Handedness ControllerHandedness { get; }
@@ -20,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
 
         public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
-           // TODO
+            // TODO
         }
 
         public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
