@@ -26,6 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static GUIContent[] actionLabels;
         private static int[] actionIds;
 
+        private SerializedProperty renderMotionControllers;
+        private SerializedProperty useDefaultModels;
+        private SerializedProperty overrideLeftHandModel;
+        private SerializedProperty overrideRightHandModel;
+
         private void OnEnable()
         {
             if (!CheckMixedRealityManager())
@@ -43,6 +48,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
             actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(
                 action => (int)action.Id).Prepend(0).ToArray();
+
+            renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
+            useDefaultModels = serializedObject.FindProperty("useDefaultModels");
+            overrideLeftHandModel = serializedObject.FindProperty("overrideLeftHandModel");
+            overrideRightHandModel = serializedObject.FindProperty("overrideRightHandModel");
         }
 
         public override void OnInspectorGUI()
@@ -59,6 +69,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             EditorGUILayout.HelpBox("Controller templates define all the controllers your users will be able to use in your application.\n\n" +
                                     "After defining all your Input Actions, you can then wire them up to hardware sensors, controllers, and other input devices.", MessageType.Info);
+
+            EditorGUILayout.PropertyField(renderMotionControllers);
+            if (renderMotionControllers.boolValue)
+            {
+                EditorGUILayout.PropertyField(useDefaultModels);
+                if (!useDefaultModels.boolValue)
+                {
+                    EditorGUILayout.PropertyField(overrideLeftHandModel);
+                    EditorGUILayout.PropertyField(overrideRightHandModel);
+                }
+            }
 
             RenderList(mixedRealityControllerMappingProfiles);
 
@@ -114,14 +135,19 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                     var controllerType = mixedRealityControllerMapping.FindPropertyRelative("controller");
                     var controllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
-                    var controllerModel = mixedRealityControllerMapping.FindPropertyRelative("model");
+                    var useDefaultModel = mixedRealityControllerMapping.FindPropertyRelative("defaultModel");
+                    var controllerModel = mixedRealityControllerMapping.FindPropertyRelative("overrideModel");
                     var controllerInteractionList = mixedRealityControllerMapping.FindPropertyRelative("interactions");
 
                     EditorGUI.indentLevel++;
                     EditorGUIUtility.labelWidth = 96f;
                     EditorGUILayout.PropertyField(controllerType);
                     EditorGUILayout.PropertyField(controllerHandedness);
-                    EditorGUILayout.PropertyField(controllerModel);
+                    EditorGUILayout.PropertyField(useDefaultModel);
+                    if (!useDefaultModel.boolValue)
+                    {
+                        EditorGUILayout.PropertyField(controllerModel);
+                    }
                     EditorGUIUtility.labelWidth = previousLabelWidth;
 
                     controllerFoldouts[i] = EditorGUILayout.Foldout(controllerFoldouts[i], new GUIContent("Interaction Mappings"), true);

@@ -126,46 +126,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
             private set { controllersProfile = value; }
         }
 
-
-        [SerializeField]
-        [Tooltip("Enable and configure the controller rendering of the Motion Controllers on Startup.")]
-        private bool renderMotionControllers = false;
-
-        /// <summary>
-        /// Enable and configure the controller rendering of the Motion Controllers on Startup.
-        /// </summary>
-        public bool RenderMotionControllers
-        {
-            get { return renderMotionControllers; }
-            private set { renderMotionControllers = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Default Left Controller Model")]
-        private GameObject defaultLeftHandModel;
-
-        /// <summary>
-        /// The Default controller model when there is no specific controller model for the Left hand or when no hand is specified (Handedness = none)
-        /// </summary>
-        public GameObject DefaultLeftHandModel
-        {
-            get { return defaultLeftHandModel; }
-            private set { defaultLeftHandModel = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Default Right Controller Model")]
-        private GameObject defaultRightHandModel;
-
-        /// <summary>
-        /// The Default controller model when there is no specific controller model for the Right hand
-        /// </summary>
-        public GameObject DefaultRightHandModel
-        {
-            get { return defaultRightHandModel; }
-            private set { defaultRightHandModel = value; }
-        }
-
         [SerializeField]
         [Tooltip("Enable the Boundary on Startup")]
         private bool enableBoundarySystem = false;

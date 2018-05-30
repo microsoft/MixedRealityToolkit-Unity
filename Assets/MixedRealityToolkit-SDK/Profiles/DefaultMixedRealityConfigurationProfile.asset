@@ -22,9 +22,4 @@ MonoBehaviour:
     type: 2}
   enableControllerProfiles: 1
   controllersProfile: {fileID: 11400000, guid: 4319257468937c74ebb69e41792d60c5, type: 2}
-  renderMotionControllers: 1
-  defaultLeftHandModel: {fileID: 1786849406207676, guid: ef834e955ef3e134db6c5e0020b5dc6b,
-    type: 2}
-  defaultRightHandModel: {fileID: 1786849406207676, guid: ef834e955ef3e134db6c5e0020b5dc6b,
-    type: 2}
   enableBoundarySystem: 1

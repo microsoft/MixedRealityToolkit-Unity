@@ -15,14 +15,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     [Serializable]
     public struct MixedRealityControllerMapping
     {
-        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject controllerModel, InteractionMapping[] interactions) : this()
+        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject overrideModel, InteractionMapping[] interactions) : this()
         {
             this.id = id;
             this.description = description;
             this.controller = controller;
             this.handedness = handedness;
-            this.model = controllerModel;
+            this.overrideModel = overrideModel;
             this.interactions = interactions;
+            this.defaultModel = false;
         }
 
         /// <summary>
@@ -60,14 +61,27 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         [Tooltip("The designated hand that the device is managing.")]
         private Handedness handedness;
 
+        [SerializeField]
+        [Tooltip("Use the platform SDK to load the default controller model for this controller.")]
+        private bool defaultModel;
+
+        /// <summary>
+        /// User the controller model loader provided by the SDK, or provide override models.
+        /// </summary>
+        public bool DefaultModel
+        {
+            get { return defaultModel; }
+            private set { defaultModel = value; }
+        }
+
         /// <summary>
         /// The controller model prefab to be rendered.
         /// </summary>
-        public GameObject ControllerModel => model;
+        public GameObject OverrideControllerModel => overrideModel;
 
         [SerializeField]
-        [Tooltip("The designated hand that the device is managing.")]
-        private GameObject model;
+        [Tooltip("An override model to display for this specific controller.")]
+        private GameObject overrideModel;
 
         /// <summary>
         /// Details the list of available buttons / interactions available from the device.
