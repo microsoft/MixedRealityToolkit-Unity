@@ -400,5 +400,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
         }
 
         #endregion
+
+        #region IMixedRealityManager Interface
+
+        public string Name { get; }
+
+        public uint Priority { get; }
+
+        public void Reset()
+        {
+        }
+
+        public void Update()
+        {
+        }
+
+        #endregion IMixedRealityManager Interface
     }
 }

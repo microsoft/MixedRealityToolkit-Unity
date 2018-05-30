@@ -13,15 +13,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 
-#if WINDOWS_UWP
-using Windows.Gaming.Input;
-#endif // WINDOWS_UWP
-
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
-    // TODO - Implement
-    public class WindowsGamingDevice : IMixedRealityDevice
+    class WindowsMixedRealityDeviceManager : IMixedRealityDevice
     {
+        public WindowsMixedRealityDeviceManager(string name, uint priority)
+        {
+            this.Name = name;
+            this.Priority = priority;
+        }
+
+        //Ignore - test only
+        private bool experimental = false;
+
         /// <summary>
         /// Dictionary to capture all active controllers detected
         /// </summary>
@@ -32,31 +36,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
         /// </summary>
         private IMixedRealityInputSystem inputSystem;
 
-        /// <summary>
-        /// Public accessor for the currently attached controllers for a Windows Mixed Reality Device
-        /// </summary>
-        /// <returns></returns>
-        public IMixedRealityController[] GetActiveControllers()
-        {
-            return activeControllers.ExportDictionaryValuesAsArray();
-        }
+        public string Name { get; }
+
+        public uint Priority { get; }
 
         #region Device Initialization
 
-        // TODO To be determined if needed
-        /// <summary>
-        /// Public Constructor
-        /// </summary>
-        public WindowsGamingDevice()
-        {
-            // TODO - Discover available controllers?
-            // ForEach then initialize each
-        }
-
-        /// <summary>
-        /// The initialize function is used to setup the device once created.
-        /// This method is called once all managers have been registered in the Mixed Reality Manager.
-        /// </summary>
         public void Initialize()
         {
             inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
@@ -70,47 +55,140 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
         private void InitializeSources()
         {
             #region Experimental_WSA native device input
-
-#if UNITY_STANDALONE
-
-            //TODO - Investigate .Player project option for OpenXR
-
-#endif
-            #endregion Experimental_WSA native device input
+            if (experimental)
+            {
 #if WINDOWS_UWP
-            Gamepad.GamepadAdded += OnGamepadDetected;
-            Gamepad.GamepadRemoved += OnGamepadLost;
-
-            ArcadeStick.ArcadeStickAdded += OnArcadeStickDetected;
-            ArcadeStick.ArcadeStickRemoved += OnArcadeStickLost;
-
-            FlightStick.FlightStickAdded += OnFlightStickDetected;
-            FlightStick.FlightStickRemoved += OnFlightStickLost;
-
-            RacingWheel.RacingWheelAdded += OnRacingWheelDetected;
-            RacingWheel.RacingWheelRemoved += OnRacingWheelLost;
+                //TODO - kept for reference - clean later.
+                var spatialManager = Windows.UI.Input.Spatial.SpatialInteractionManager.GetForCurrentView();
+                spatialManager.SourceDetected += spatialManager_SourceDetected;
+                spatialManager.SourceUpdated += SpatialManager_SourceUpdated;
+                spatialManager.SourcePressed += SpatialManager_SourcePressed;
+                spatialManager.SourceReleased += SpatialManager_SourceReleased;
+                spatialManager.SourceLost += SpatialManager_SourceLost;
+                spatialManager.InteractionDetected += SpatialManager_InteractionDetected;
 #endif //WINDOWS_UWP
+            }
+
+            #endregion Experimental_WSA native device input
+
+            InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
+            InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
+            InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
+            InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
+            InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
+
+            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
+
+            // NOTE: We update the source state data, in case an app wants to query it on source detected.
+            for (var i = 0; i < states.Length; i++)
+            {
+                InteractionSourceDetected(states[i]);
+            }
         }
 
         #endregion Device Initialization
 
+        #region Unity InteractionManager Events
+
+        /// <summary>
+        /// SDK Interaction Source Detected Event handler
+        /// </summary>
+        /// <param name="args">SDK source detected event arguments</param>
+        private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
+        {
+            InteractionSourceDetected(args.state);
+        }
+
+        /// <summary>
+        /// SDK Interaction Source Updated Event handler
+        /// </summary>
+        /// <param name="args">SDK source updated event arguments</param>
+        private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs args)
+        {
+            InteractionSourceUpdated(args.state);
+        }
+
+
+        /// <summary>
+        /// SDK Interaction Source Pressed Event handler
+        /// </summary>
+        /// <param name="args">SDK source pressed event arguments</param>
+        private void InteractionManager_InteractionSourcePressed(InteractionSourcePressedEventArgs args)
+        {
+            InteractionSourcePressed(args.state, args.pressType);
+        }
+
+
+        /// <summary>
+        /// SDK Interaction Source Released Event handler
+        /// </summary>
+        /// <param name="args">SDK source released event arguments</param>
+        private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs args)
+        {
+            InteractionSourceReleased(args.state, args.pressType);
+        }
+
+        /// <summary>
+        /// SDK Interaction Source Lost Event handler
+        /// </summary>
+        /// <param name="args">SDK source updated event arguments</param>
+        private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
+        {
+            RemoveWindowsMixedRealityController(args.state);
+        }
+
+        #endregion Unity InteractionManager Events
+
         #region Experimental_PLAYER native device input
 
-#if UNITY_STANDALONE
+#if WINDOWS_UWP
 
         //TODO - kept for reference - clean later.
+        private void spatialManager_SourceDetected(Windows.UI.Input.Spatial.SpatialInteractionManager sender, Windows.UI.Input.Spatial.SpatialInteractionSourceEventArgs args)
+        {
+            //InteractionSourceDetected(args.state);
+        }
 
-#endif
+        private void SpatialManager_SourceUpdated(Windows.UI.Input.Spatial.SpatialInteractionManager sender, Windows.UI.Input.Spatial.SpatialInteractionSourceEventArgs args)
+        {
+            //InteractionSourceUpdated(args.state);
+        }
+
+        private void SpatialManager_SourcePressed(Windows.UI.Input.Spatial.SpatialInteractionManager sender, Windows.UI.Input.Spatial.SpatialInteractionSourceEventArgs args)
+        {
+            //InteractionSourcePressed(args.state, args.pressType);
+        }
+        private void SpatialManager_SourceReleased(Windows.UI.Input.Spatial.SpatialInteractionManager sender, Windows.UI.Input.Spatial.SpatialInteractionSourceEventArgs args)
+        {
+            //InteractionSourceReleased(args.state, args.pressType);
+        }
+
+        private void SpatialManager_SourceLost(Windows.UI.Input.Spatial.SpatialInteractionManager sender, Windows.UI.Input.Spatial.SpatialInteractionSourceEventArgs args)
+        {
+            //RemoveWindowsMixedRealityController(args.state);
+        }
+
+        private void SpatialManager_InteractionDetected(Windows.UI.Input.Spatial.SpatialInteractionManager sender, Windows.UI.Input.Spatial.SpatialInteractionDetectedEventArgs args)
+        {
+            //Not Implemented Yet
+        }
+
+#endif // WINDOWS_UWP
+
         #endregion Experimental_PLAYER native device input
 
-        #region Windows Gaming controller handlers
+        #region Mixed Reality controller handlers
+
+        // TODO (understatement)
+        // 1 - Test
+        // 2 - Refactor for multi-controller types (possibly as part of the inputsource interface)
 
         /// <summary>
         /// Retrieve the source controller from the Active Store, or create a new device and register it
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK</param>
         /// <returns>New or Existing Controller Input Source</returns>
-        private IMixedRealityController GetOrAddWindowsGamingController(InteractionSourceState interactionSourceState)
+        private IMixedRealityController GetOrAddWindowsMixedRealityController(InteractionSourceState interactionSourceState)
         {
             //If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(interactionSourceState.source.id))
@@ -118,13 +196,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
                 return activeControllers[interactionSourceState.source.id];
             }
 
+            var controllingHand = interactionSourceState.source.handedness == InteractionSourceHandedness.Left ? Handedness.Left : Handedness.Right;
+
             //TODO - Controller Type Detection?
             //Define new Controller
-            var detectedController = new GamepadController(
-                ControllerState.None,
-                Handedness.None,
-                null,
-                null
+            var detectedController = new WindowsMixedRealityController(
+                ControllerState.NotTracked,
+                controllingHand,
+                inputSystem.RequestNewGenericInputSource($"Mixed Reality Controller {controllingHand}"),
+                new Dictionary<DeviceInputType, InteractionMapping>()
                 );
 
             detectedController.SetupInputSource(interactionSourceState);
@@ -138,9 +218,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
         /// Remove the selected controller from the Active Store
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
-        private void RemoveWindowsGamingController(InteractionSourceState interactionSourceState)
+        private void RemoveWindowsMixedRealityController(InteractionSourceState interactionSourceState)
         {
-            var controller = GetOrAddWindowsGamingController(interactionSourceState);
+            var controller = GetOrAddWindowsMixedRealityController(interactionSourceState);
             if (controller == null) { return; }
 
             if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem) inputSystem?.RaiseSourceLost(controller.InputSource);
@@ -153,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
         /// <param name="interactionSourceState">Source State provided by the SDK to add</param>
         private void InteractionSourceDetected(InteractionSourceState interactionSourceState)
         {
-            var controller = GetOrAddWindowsGamingController(interactionSourceState);
+            var controller = GetOrAddWindowsMixedRealityController(interactionSourceState);
             if (controller == null) { return; }
 
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
@@ -163,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 
         private void InteractionSourceUpdated(InteractionSourceState state)
         {
-            var controller = GetOrAddWindowsGamingController(state);
+            var controller = GetOrAddWindowsMixedRealityController(state);
 
             if (controller == null) { return; }
 
@@ -212,24 +292,25 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 
         private void InteractionSourcePressed(InteractionSourceState state, InteractionSourcePressType pressType)
         {
-            var controller = GetOrAddWindowsGamingController(state);
+            var controller = GetOrAddWindowsMixedRealityController(state);
             if (controller == null) { return; }
 
             var inputAction = PressInteractionSource(pressType, controller);
+
 
             if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem) inputSystem?.RaiseOnInputDown(controller.InputSource, controller.ControllerHandedness, inputAction);
         }
 
         private void InteractionSourceReleased(InteractionSourceState state, InteractionSourcePressType pressType)
         {
-            var controller = GetOrAddWindowsGamingController(state);
+            var controller = GetOrAddWindowsMixedRealityController(state);
             if (controller == null) { return; }
 
             var inputAction = ReleaseInteractionSource(pressType, controller);
 
+
             if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem) inputSystem.RaiseOnInputUp(controller.InputSource, controller.ControllerHandedness, inputAction);
         }
-
 
         /// <summary>
         /// React to Input "Press" events and update source data
@@ -317,96 +398,54 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
             // if no mapping found, no action can take place
             return null;
         }
-        #endregion Windows Gaming
-
-        #region Unity InteractionManager Events
-#if WINDOWS_UWP
-        private void OnGamepadDetected(object sender, Gamepad gamepad)
-        {
-            //InteractionSourceDetected(args.state);
-        }
-
-        private void OnGamepadLost(object sender, Gamepad gamepad)
-        {
-            //RemoveWindowsGamingController(args.state);
-        }
-
-        private void OnArcadeStickDetected(object sender, ArcadeStick arcadeStick)
-        {
-            //InteractionSourceDetected(args.state);
-        }
-
-        private void OnArcadeStickLost(object sender, ArcadeStick arcadeStick)
-        {
-            //RemoveWindowsGamingController(args.state);
-        }
-
-        private void OnFlightStickDetected(object sender, FlightStick flightStick)
-        {
-        }
-
-        private void OnFlightStickLost(object sender, FlightStick flightStick)
-        {
-        }
-
-        private void OnRacingWheelDetected(object sender, RacingWheel racingWheel)
-        {
-        }
-
-        private void OnRacingWheelLost(object sender, RacingWheel racingWheel)
-        {
-        }
-#endif //WINDOWS_UWP
-
-        #endregion Unity InteractionManager Events
+        #endregion
 
         #region Runtime
 
-        //TODO - runtime needs more thought
+        public void Reset()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Destroy()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Disable()
+        {
+            InteractionManager.InteractionSourceDetected -= InteractionManager_InteractionSourceDetected;
+            InteractionManager.InteractionSourcePressed -= InteractionManager_InteractionSourcePressed;
+            InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
+            InteractionManager.InteractionSourceReleased -= InteractionManager_InteractionSourceReleased;
+            InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
+
+            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
+            for (var i = 0; i < states.Length; i++)
+            {
+                RemoveWindowsMixedRealityController(states[i]);
+            }
+        }
 
         public void Enable()
         {
             InitializeSources();
         }
 
-        public void Disable()
+        #endregion Runtime
+
+        /// <summary>
+        /// Public accessor for the currently attached controllers for a Windows Mixed Reality Device
+        /// </summary>
+        /// <returns></returns>
+        public IMixedRealityController[] GetActiveControllers()
         {
-#if WINDOWS_UWP
-            Gamepad.GamepadAdded -= OnGamepadDetected;
-            Gamepad.GamepadRemoved -= OnGamepadLost;
-
-            ArcadeStick.ArcadeStickAdded -= OnArcadeStickDetected;
-            ArcadeStick.ArcadeStickRemoved -= OnArcadeStickLost;
-
-            FlightStick.FlightStickAdded -= OnFlightStickDetected;
-            FlightStick.FlightStickRemoved -= OnFlightStickLost;
-
-            RacingWheel.RacingWheelAdded -= OnRacingWheelDetected;
-            RacingWheel.RacingWheelRemoved -= OnRacingWheelLost;
-#endif //WINDOWS_UWP
+            return activeControllers.ExportDictionaryValuesAsArray();
         }
-
-        public void Destroy()
-        {
-            //Destroy Stuff
-        }
-
-        #endregion
-
-        #region IMixedRealityManager Interface
-
-        public string Name { get; }
-
-        public uint Priority { get; }
-
-        public void Reset()
-        {
-        }
-
-        public void Update()
-        {
-        }
-
-        #endregion IMixedRealityManager Interface
     }
 }

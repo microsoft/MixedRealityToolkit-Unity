@@ -69,10 +69,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         private void InitializeSources()
         {
             #region Experimental_WSA native device input
-
-#if WINDOWS_UWP
             if (experimental)
             {
+#if WINDOWS_UWP
                 //TODO - kept for reference - clean later.
                 var spatialManager = Windows.UI.Input.Spatial.SpatialInteractionManager.GetForCurrentView();
                 spatialManager.SourceDetected += spatialManager_SourceDetected;
@@ -81,8 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 spatialManager.SourceReleased += SpatialManager_SourceReleased;
                 spatialManager.SourceLost += SpatialManager_SourceLost;
                 spatialManager.InteractionDetected += SpatialManager_InteractionDetected;
-            }
 #endif //WINDOWS_UWP
+            }
 
             #endregion Experimental_WSA native device input
 
@@ -447,5 +446,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         }
 
         #endregion
+
+        #region IMixedRealityManager Interface
+
+        public string Name { get; }
+
+        public uint Priority { get; }
+
+        public void Reset()
+        {
+        }
+
+        public void Update()
+        {
+        }
+
+        #endregion IMixedRealityManager Interface
     }
 }

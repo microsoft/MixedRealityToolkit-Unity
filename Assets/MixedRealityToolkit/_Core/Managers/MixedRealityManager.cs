@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             #region ActiveSDK Discovery
             // TODO Microsoft.MixedReality.Toolkit - Active SDK Discovery
-            activeDevice = new WindowsMixedRealityDevice();
+            activeDevice = new WindowsMixedRealityDeviceManager("Mixed Reality Device manager", 10);
             #endregion ActiveSDK Discovery
 
             #region  Managers Registration
@@ -147,7 +147,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             #region SDK Initialization
             // TODO Microsoft.MixedReality.Toolkit - SDK Initialization
-            activeDevice?.Initialize();
+            //activeDevice?.Initialize();
+            AddManager(typeof(IMixedRealityDevice), activeDevice);
+
             #endregion SDK Initialization
 
             #region Managers Initialization

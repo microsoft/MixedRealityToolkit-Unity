@@ -17,10 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         Vector3 controllerPosition = Vector3.zero;
         Quaternion controllerRotation = Quaternion.identity;
 
-        InteractionMapping leftControllerPointerDefinition;
-        InteractionMapping leftControllerMenuDefinition;
-        InteractionMapping rightControllerPointerDefinition;
-        InteractionMapping rightControllerMenuDefinition;
+        //InteractionMapping leftControllerPointerDefinition;
+        //InteractionMapping leftControllerMenuDefinition;
+        //InteractionMapping rightControllerPointerDefinition;
+        //InteractionMapping rightControllerMenuDefinition;
 
         public enum renderMode
         {
@@ -39,8 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     controllerVisual = Internal.Managers.MixedRealityManager.Instance.ActiveProfile.ControllersProfile.OverrideLeftHandModel;
                     leftController = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
                     leftController.GetComponent<MeshRenderer>().material.color = Color.red;
-                    leftControllerPointerDefinition = controller.Interactions[DeviceInputType.SpatialPointer];
-                    leftControllerMenuDefinition = controller.Interactions[DeviceInputType.Menu];
+                    //leftControllerPointerDefinition = controller.Interactions[DeviceInputType.SpatialPointer];
+                    //leftControllerMenuDefinition = controller.Interactions[DeviceInputType.Menu];
 
                     if (curentRenderMode == renderMode.InteractionManager || curentRenderMode == renderMode.Both)
                     {
@@ -54,8 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     controllerVisual = Internal.Managers.MixedRealityManager.Instance.ActiveProfile.ControllersProfile.OverrideRightHandModel;
                     rightController = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
                     rightController.GetComponent<MeshRenderer>().material.color = Color.green;
-                    rightControllerPointerDefinition = controller.Interactions[DeviceInputType.SpatialPointer];
-                    rightControllerMenuDefinition = controller.Interactions[DeviceInputType.Menu];
+                    //rightControllerPointerDefinition = controller.Interactions[DeviceInputType.SpatialPointer];
+                    //rightControllerMenuDefinition = controller.Interactions[DeviceInputType.Menu];
 
                     if (curentRenderMode == renderMode.InteractionManager || curentRenderMode == renderMode.Both)
                     {

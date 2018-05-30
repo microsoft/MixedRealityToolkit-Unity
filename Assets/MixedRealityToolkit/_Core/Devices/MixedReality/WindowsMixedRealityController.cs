@@ -168,15 +168,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         private void UpdateControllerData(InteractionSourceState interactionSourceState)
         {
+            // Get Controller start position and tracked state
             controllerTracked = interactionSourceState.sourcePose.TryGetPosition(out controllerPosition);
             ControllerState = controllerTracked ? ControllerState.Tracked : ControllerState.NotTracked;
-            //No Controller data available yet
-
-            // Get Controller start position
-            interactionSourceState.sourcePose.TryGetPosition(out controllerPosition);
 
             // Get Controller start rotation
             interactionSourceState.sourcePose.TryGetRotation(out controllerRotation);
+            if (controllerPosition == Vector3.zero || controllerRotation == Quaternion.identity)
+            {
+                Debug.LogWarning($"No controller data detected");
+            }
         }
 
         private void UpdatePointerData(InteractionSourceState interactionSourceState)

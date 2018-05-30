@@ -397,5 +397,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
         }
 
         #endregion
+
+        #region IMixedRealityManager Interface
+
+        public string Name { get; }
+
+        public uint Priority { get; }
+
+        public void Reset()
+        {
+        }
+
+        public void Update()
+        {
+        }
+
+        #endregion IMixedRealityManager Interface
     }
 }

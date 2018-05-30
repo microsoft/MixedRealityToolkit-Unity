@@ -7,28 +7,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
     /// <summary>
     /// Mixed Reality Toolkit device definition, used to instantiate and manage a specific device / SDK
     /// </summary>
-    public interface IMixedRealityDevice
+    public interface IMixedRealityDevice : IMixedRealityManager
     {
-        /// <summary>
-        /// Initialize function to setup the device, called after all managers are initialized by the Mixed Reality Manager
-        /// </summary>
-        void Initialize();
-
-        /// <summary>
-        /// Function to enable the device if disabled
-        /// </summary>
-        void Enable();
-
-        /// <summary>
-        /// Function to disable the device if enabled
-        /// </summary>
-        void Disable();
-
-        /// <summary>
-        /// Cleanup function, called by the Mixed Reality Manager when it is being teared down
-        /// </summary>
-        void Destroy();
-
         /// <summary>
         /// Retrieve all controllers currently registered with this device at runtime (if direct access is required)
         /// </summary>
