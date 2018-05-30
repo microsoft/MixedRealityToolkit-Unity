@@ -651,13 +651,13 @@ namespace HoloToolkit.Unity
             GUILayout.FlexibleSpace();
 
             // Open AppX packages location
-            string appxDirectory = curScriptingBackend == ScriptingImplementation.IL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
+            string appxDirectory = curScriptingBackend == ScriptingImplementation.IL2CPP ? "/AppPackages/" + PlayerSettings.productName : "/" + PlayerSettings.productName + "/AppPackages";
             string appxBuildPath = Path.GetFullPath(BuildDeployPrefs.BuildDirectory + appxDirectory);
             GUI.enabled = builds.Count > 0 && !string.IsNullOrEmpty(appxBuildPath);
 
             if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(halfWidth)))
             {
-                EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
+                EditorApplication.delayCall += () => Process.Start("explorer.exe", "/f /open," + appxBuildPath);
             }
 
             GUI.enabled = true;
@@ -1073,7 +1073,7 @@ namespace HoloToolkit.Unity
             builds.Clear();
 
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
-            string appxDirectory = curScriptingBackend == ScriptingImplementation.IL2CPP ? $"AppPackages\\{PlayerSettings.productName}" : $"{PlayerSettings.productName}\\AppPackages";
+            string appxDirectory = curScriptingBackend == ScriptingImplementation.IL2CPP ? "AppPackages\\" + PlayerSettings.productName : PlayerSettings.productName + "\\AppPackages";
 
             try
             {
@@ -1081,7 +1081,7 @@ namespace HoloToolkit.Unity
                 string[] buildList = Directory.GetDirectories(BuildDeployPrefs.AbsoluteBuildDirectory, "*", SearchOption.AllDirectories);
                 foreach (string appBuild in buildList)
                 {
-                    if (appBuild.Contains(appxDirectory) && !appBuild.Contains($"{appxDirectory}\\"))
+                    if (appBuild.Contains(appxDirectory) && !appBuild.Contains(appxDirectory + "\\"))
                     {
                         appPackageDirectories.AddRange(Directory.GetDirectories(appBuild));
                     }
