@@ -15,9 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="keyword"></param>
-        /// <param name="keyCode"></param>
-        /// <param name="action"></param>
+        /// <param name="keyword">The Keyword.</param>
+        /// <param name="keyCode">The KeyCode.</param>
+        /// <param name="action">The Action to perform when Keyword or KeyCode is recognized.</param>
         public SpeechCommands(string keyword, KeyCode keyCode, InputAction action)
         {
             this.keyword = keyword;
