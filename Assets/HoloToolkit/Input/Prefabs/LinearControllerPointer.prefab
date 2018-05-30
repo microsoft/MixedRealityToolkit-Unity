@@ -62,7 +62,6 @@ MonoBehaviour:
   ScaleOffset: {x: 1, y: 1, z: 1}
   SetScaleOnAttach: 0
   CurrentPointerOrientation: 0
-  extentOverride: 2
   RaycastOrigin: {fileID: 0}
   LineColorSelected:
     serializedVersion: 2

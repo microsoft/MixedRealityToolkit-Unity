@@ -11,18 +11,8 @@ public abstract class BaseControllerPointer : AttachToController
     protected float CurrentPointerOrientation;
 
     [SerializeField]
-    [Range(0.5f, 50f)]
-    private float extentOverride = 2f;
-
-    [SerializeField]
     [Tooltip("Source transform for raycast origin - leave null to use default transform")]
     protected Transform RaycastOrigin;
-
-    public float? ExtentOverride
-    {
-        get { return extentOverride; }
-        set { extentOverride = value ?? FocusManager.Instance.GlobalPointingExtent; }
-    }
 
     /// <summary>
     /// The Y orientation of the pointer target - used for touchpad rotation and navigation

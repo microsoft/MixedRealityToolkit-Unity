@@ -30,14 +30,16 @@ namespace HoloToolkit.Unity.InputModule
         private bool searchForCursorIfUnset = true;
         public bool SearchForCursorIfUnset { get { return searchForCursorIfUnset; } set { searchForCursorIfUnset = value; } }
 
-        [Tooltip("If true, always select the best pointer available (OS behaviour does not autoselect).")]
+        [Tooltip("If true, always select the best pointer available (OS behavior does not auto-select).")]
         [SerializeField]
         private bool autoselectBestAvailable = false;
         public bool AutoselectBestAvailable { get { return autoselectBestAvailable; } set { autoselectBestAvailable = value; } }
 
         [Tooltip("The line pointer prefab to use, if any.")]
         [SerializeField]
-        private GameObject linePointerPrefab;
+        private GameObject linePointerPrefab = null;
+
+        private PointerLine instantiatedPointerLine;
 
         #endregion
 
@@ -301,30 +303,43 @@ namespace HoloToolkit.Unity.InputModule
             inputSourcePointer.ExtentOverride = null;
             inputSourcePointer.PrioritizedLayerMasksOverride = null;
 
-            if (inputSourcePointer.PointerRay != null)
+            InteractionInputSource interactionInputSource = inputSource as InteractionInputSource;
+
+            // If the InputSource is not an InteractionInputSource, we don't display any ray visualizations.
+            if (interactionInputSource == null)
             {
-                Destroy(inputSourcePointer.PointerRay.gameObject);
+                return;
             }
 
-            if (inputSource is InteractionInputSource && linePointerPrefab != null)
+            // If no pointing ray prefab has been provided, we return early as there's nothing to display.
+            if (linePointerPrefab == null)
             {
-                inputSourcePointer.PointerRay = Instantiate(linePointerPrefab).GetComponent<PointerLine>();
-                inputSourcePointer.PointerRay.ExtentOverride = Cursor.DefaultCursorDistance;
-                Handedness handedness;
-                if (((InteractionInputSource)inputSource).TryGetHandedness(sourceId, out handedness))
-                {
+                return;
+            }
+
+            // If the pointer line hasn't already been instantiated, create it and store it here.
+            if (instantiatedPointerLine == null)
+            {
+                instantiatedPointerLine = Instantiate(linePointerPrefab).GetComponent<PointerLine>();
+            }
+
+            inputSourcePointer.PointerRay = instantiatedPointerLine;
+
+            Handedness handedness;
+            if (interactionInputSource.TryGetHandedness(sourceId, out handedness))
+            {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-                    inputSourcePointer.PointerRay.Handedness = (InteractionSourceHandedness)handedness;
+                // This updates the handedness of the pointer line, allowing for re-use if it was already in the scene.
+                instantiatedPointerLine.ChangeHandedness((InteractionSourceHandedness)handedness);
 #endif
-                }
             }
         }
 
         private void DetachInputSourcePointer()
         {
-            if (inputSourcePointer.PointerRay != null)
+            if (instantiatedPointerLine != null)
             {
-                Destroy(inputSourcePointer.PointerRay.gameObject);
+                Destroy(instantiatedPointerLine.gameObject);
             }
         }
 

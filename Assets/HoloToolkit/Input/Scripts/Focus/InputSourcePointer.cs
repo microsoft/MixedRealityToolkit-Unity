@@ -129,7 +129,7 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (PointerRay != null)
             {
-                PointerRay.UpdateRenderedLine(rays, Result, selectPressed);
+                PointerRay.UpdateRenderedLine(rays, Result, selectPressed, FocusManager.Instance.GetPointingExtent(this));
             }
         }
 

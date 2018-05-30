@@ -90,6 +90,22 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
+        /// <summary>
+        /// Allows the object to change which controller it tracks, based on handedness.
+        /// </summary>
+        /// <param name="newHandedness">The new handedness to track. Does nothing if the handedness doesn't change.</param>
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+        public void ChangeHandedness(InteractionSourceHandedness newHandedness)
+        {
+            if (newHandedness != handedness)
+            {
+                RemoveControllerTransform(ControllerInfo);
+                handedness = newHandedness;
+                CheckModelAlreadyLoaded();
+            }
+        }
+#endif
+
         protected virtual void AddControllerTransform(MotionControllerInfo newController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
