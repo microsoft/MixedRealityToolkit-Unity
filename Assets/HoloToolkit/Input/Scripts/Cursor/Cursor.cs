@@ -204,6 +204,10 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void RegisterManagers()
         {
+            // This accounts for any input sources that were detected before we register as a global listener below.
+            visibleHandsCount = (uint)InputManager.Instance.DetectedInputSources.Count;
+            IsHandVisible = visibleHandsCount > 0;
+
             // Register the cursor as a global listener, so that it can always get input events it cares about
             InputManager.Instance.AddGlobalListener(gameObject);
 
