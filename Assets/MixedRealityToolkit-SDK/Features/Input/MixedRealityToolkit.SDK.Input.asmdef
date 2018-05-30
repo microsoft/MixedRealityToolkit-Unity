@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.SDK",
+    "name": "Microsoft.MixedReality.Toolkit.SDK.Input",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.InputSystem"
