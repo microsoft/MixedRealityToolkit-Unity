@@ -10,6 +10,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
     public struct WindowsMixedRealityController : IMixedRealityController
     {
+        public WindowsMixedRealityController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
+        {
+            ControllerState = controllerState;
+            ControllerHandedness = controllerHandedness;
+            InputSource = inputSource;
+            Interactions = interactions;
+        }
+
         public ControllerState ControllerState { get; }
 
         public Handedness ControllerHandedness { get; }
@@ -20,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
         {
-           // TODO
+            // TODO
         }
 
         public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
