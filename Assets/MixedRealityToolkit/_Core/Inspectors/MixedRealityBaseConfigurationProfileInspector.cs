@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         /// Check and make sure we have a Mixed Reality Manager and an active profile.
         /// </summary>
         /// <returns>True if the Mixed Reality Manager is properly initialized.</returns>
-        protected bool CheckMixedRealityManager()
+        protected bool CheckMixedRealityManager(bool showHelpBox = true)
         {
             if (!MixedRealityManager.IsInitialized)
             {
@@ -46,7 +46,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                 if (managerSearch.Length == 0)
                 {
-                    EditorGUILayout.HelpBox("No Mixed Reality Manager found in scene.", MessageType.Error);
+                    if (showHelpBox)
+                    {
+                        EditorGUILayout.HelpBox("No Mixed Reality Manager found in scene.", MessageType.Error);
+                    }
                     return false;
                 }
 
@@ -55,7 +58,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             if (!MixedRealityManager.HasActiveProfile)
             {
-                EditorGUILayout.HelpBox("No Active Profile set on the Mixed Reality Manager.", MessageType.Error);
+                if (showHelpBox)
+                {
+                    EditorGUILayout.HelpBox("No Active Profile set on the Mixed Reality Manager.", MessageType.Error);
+                }
                 return false;
             }
 
