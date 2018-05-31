@@ -63,6 +63,13 @@ namespace HoloToolkit.Unity.Collections
         public float Radius = 2f;
 
         /// <summary>
+        /// This is the radial range for creating a radial fan layout.
+        /// </summary>
+        [Range(5f, 360f)]
+        [Tooltip("Radial range for radial layout")]
+        public float RadialRange = 180f;
+
+        /// <summary>
         /// Number of rows per column, column number is automatically determined
         /// </summary>
         [Tooltip("Number of rows per column")]
@@ -79,6 +86,24 @@ namespace HoloToolkit.Unity.Collections
         /// </summary>
         [Tooltip("Height of cell per object")]
         public float CellHeight = 0.5f;
+
+        /// <summary>
+        /// Margin between objects horizontally.
+        /// </summary>
+        [Tooltip("Margin between objects horizontally")]
+        public float HorizontalMargin = 0.2f;
+
+        /// <summary>
+        /// Margin between objects vertically.
+        /// </summary>
+        [Tooltip("Margin between objects vertically")]
+        public float VerticalMargin = 0.2f;
+
+        /// <summary>
+        /// Margin between objects in depth.
+        /// </summary>
+        [Tooltip("Margin between objects in depth")]
+        public float DepthMargin = 0.2f;
 
         /// <summary>
         /// Reference mesh to use for rendering the sphere layout
@@ -99,6 +124,7 @@ namespace HoloToolkit.Unity.Collections
         private float _width;
         private float _height;
         private float _circumference;
+        private float _radialCellAngle;
         private Vector2 _halfCell;
         #endregion
 
@@ -181,6 +207,7 @@ namespace HoloToolkit.Unity.Collections
             _height = Rows * CellHeight;
             _halfCell = new Vector2(CellWidth / 2f, CellHeight / 2f);
             _circumference = 2f * Mathf.PI * Radius;
+            _radialCellAngle = RadialRange / _columns;
 
             LayoutChildren();
 
@@ -201,7 +228,6 @@ namespace HoloToolkit.Unity.Collections
 
             Vector3[] nodeGrid = new Vector3[NodeList.Count];
             Vector3 newPos = Vector3.zero;
-            Vector3 newRot = Vector3.zero;
 
             // Now lets lay out the grid
             startOffsetX = (_columns * 0.5f) * CellWidth;
@@ -249,61 +275,15 @@ namespace HoloToolkit.Unity.Collections
                     {
                         newPos = nodeGrid[i];
                         NodeList[i].transform.localPosition = newPos;
-                        switch (OrientType)
-                        {
-                            case OrientTypeEnum.FaceOrigin:
-                            case OrientTypeEnum.FaceFoward:
-                                NodeList[i].transform.forward = transform.forward;
-                                break;
-
-                            case OrientTypeEnum.FaceOriginReversed:
-                            case OrientTypeEnum.FaceForwardReversed:
-                                newRot = Vector3.zero;
-                                NodeList[i].transform.forward = transform.forward;
-                                NodeList[i].transform.Rotate(0f, 180f, 0f);
-                                break;
-
-                            case OrientTypeEnum.None:
-                                break;
-
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
+                        UpdateNodeFacing(NodeList[i], OrientType, newPos);
                     }
                     break;
                 case SurfaceTypeEnum.Cylinder:
                     for (int i = 0; i < NodeList.Count; i++)
                     {
                         newPos = CylindricalMapping(nodeGrid[i], Radius);
-                        switch (OrientType)
-                        {
-                            case OrientTypeEnum.FaceOrigin:
-                                newRot = new Vector3(newPos.x, 0.0f, newPos.z);
-                                NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
-                                break;
-
-                            case OrientTypeEnum.FaceOriginReversed:
-                                newRot = new Vector3(newPos.x, 0f, newPos.z);
-                                NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
-                                NodeList[i].transform.Rotate(0f, 180f, 0f);
-                                break;
-
-                            case OrientTypeEnum.FaceFoward:
-                                NodeList[i].transform.forward = transform.forward;
-                                break;
-
-                            case OrientTypeEnum.FaceForwardReversed:
-                                NodeList[i].transform.forward = transform.forward;
-                                NodeList[i].transform.Rotate(0f, 180f, 0f);
-                                break;
-
-                            case OrientTypeEnum.None:
-                                break;
-
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
                         NodeList[i].transform.localPosition = newPos;
+                        UpdateNodeFacing(NodeList[i], OrientType, newPos);
                     }
                     break;
                 case SurfaceTypeEnum.Sphere:
@@ -311,38 +291,31 @@ namespace HoloToolkit.Unity.Collections
                     for (int i = 0; i < NodeList.Count; i++)
                     {
                         newPos = SphericalMapping(nodeGrid[i], Radius);
-                        switch (OrientType)
-                        {
-                            case OrientTypeEnum.FaceOrigin:
-                                newRot = newPos;
-                                NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
-                                break;
-
-                            case OrientTypeEnum.FaceOriginReversed:
-                                newRot = newPos;
-                                NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
-                                NodeList[i].transform.Rotate(0f, 180f, 0f);
-                                break;
-
-                            case OrientTypeEnum.FaceFoward:
-                                NodeList[i].transform.forward = transform.forward;
-                                break;
-
-                            case OrientTypeEnum.FaceForwardReversed:
-                                NodeList[i].transform.forward = transform.forward;
-                                NodeList[i].transform.Rotate(0f, 180f, 0f);
-                                break;
-
-                            case OrientTypeEnum.None:
-                                break;
-
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
                         NodeList[i].transform.localPosition = newPos;
+                        UpdateNodeFacing(NodeList[i], OrientType, newPos);
                     }
                     break;
+                case SurfaceTypeEnum.Radial:
+                    int curColumn = 0;
+                    int curRow = 1;
 
+                    for (int i = 0; i < NodeList.Count; i++)
+                    {
+                        newPos = RadialMapping(nodeGrid[i], Radius, curRow, curColumn);
+                        if (curColumn == (_columns - 1))
+                        {
+                            curColumn = 0;
+                            ++curRow;
+                        }
+                        else
+                        {
+                            ++curColumn;
+                        }
+
+                        NodeList[i].transform.localPosition = newPos;
+                        UpdateNodeFacing(NodeList[i], OrientType, newPos);
+                    }
+                    break;
                 case SurfaceTypeEnum.Scatter:
                     // Get randomized planar mapping
                     // Calculate radius of each node while we're here
@@ -364,25 +337,7 @@ namespace HoloToolkit.Unity.Collections
                             NodeList[i].Radius = 1f;
                         }
                         NodeList[i].transform.localPosition = newPos;
-                        switch (OrientType)
-                        {
-                            case OrientTypeEnum.FaceOrigin:
-                            case OrientTypeEnum.FaceFoward:
-                                NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
-                                break;
-
-                            case OrientTypeEnum.FaceOriginReversed:
-                            case OrientTypeEnum.FaceForwardReversed:
-                                NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
-                                NodeList[i].transform.Rotate(0f, 180f, 0f);
-                                break;
-
-                            case OrientTypeEnum.None:
-                                break;
-
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
+                        UpdateNodeFacing(NodeList[i], OrientType, newPos);
                     }
 
                     // Iterate [x] times
@@ -394,6 +349,65 @@ namespace HoloToolkit.Unity.Collections
                     break;
             }
         }
+
+        /// <summary>
+        /// Update the facing of a node given the nodes new position for facing orign with node and orientation type
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="orientType"></param>
+        /// <param name="newPos"></param>
+        private void UpdateNodeFacing(CollectionNode node, OrientTypeEnum orientType, Vector3 newPos = new Vector3())
+        {
+            Vector3 centerAxis;
+            Vector3 pointOnAxisNearestNode;
+            switch (OrientType)
+            {
+                case OrientTypeEnum.FaceOrigin:
+                        node.transform.rotation = Quaternion.LookRotation(node.transform.position - this.transform.position, this.transform.up);
+                    break;
+
+                case OrientTypeEnum.FaceOriginReversed:
+                    node.transform.rotation = Quaternion.LookRotation(this.transform.position - node.transform.position, this.transform.up);
+                    break;
+
+                case OrientTypeEnum.FaceCenterAxis:
+                    centerAxis = Vector3.Project(node.transform.position - this.transform.position, this.transform.up);
+                    pointOnAxisNearestNode = this.transform.position + centerAxis;
+                    node.transform.rotation = Quaternion.LookRotation(node.transform.position - pointOnAxisNearestNode, this.transform.up);
+
+                    break;
+
+                case OrientTypeEnum.FaceCenterAxisReversed:
+                    centerAxis = Vector3.Project(node.transform.position - this.transform.position, this.transform.up);
+                    pointOnAxisNearestNode = this.transform.position + centerAxis;
+                    node.transform.rotation = Quaternion.LookRotation(pointOnAxisNearestNode - node.transform.position, this.transform.up);
+
+                    break;
+
+                case OrientTypeEnum.FaceParentFoward:
+                    node.transform.forward = transform.rotation * Vector3.forward;
+                    break;
+
+                case OrientTypeEnum.FaceParentBack:
+                    node.transform.forward = transform.rotation * Vector3.back;
+                    break;
+
+                case OrientTypeEnum.FaceParentUp:
+                    node.transform.forward = transform.rotation * Vector3.up;
+                    break;
+
+                case OrientTypeEnum.FaceParentDown:
+                    node.transform.forward = transform.rotation * Vector3.down;
+                    break;
+
+                case OrientTypeEnum.None:
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
 
         /// <summary>
         /// Internal function for getting the relative mapping based on a source Vec3 and a radius for spherical mapping.
@@ -429,6 +443,27 @@ namespace HoloToolkit.Unity.Collections
             float xAngle = (source.x / _circumference) * 360f;
 
             Quaternion rot = Quaternion.Euler(0.0f, xAngle, 0.0f);
+            newPos = rot * newPos;
+
+            return newPos;
+        }
+
+        /// <summary>
+        /// Internal function for getting the relative mapping based on a source Vec3 and a radius for cylinder mapping.
+        /// </summary>
+        /// <param name="source">The source <see cref="Vector3"/> to be mapped to cylinder</param>
+        /// <param name="radius">This is a <see cref="float"/> for the radius of the cylinder</param>
+        /// <param name="row">This is a <see cref="int"/> for the radius of the cylinder</param>
+        /// <param name="column">This is a <see cref="int"/> for the radius of the cylinder</param>
+        /// <returns></returns>
+        private Vector3 RadialMapping(Vector3 source, float radius, int row, int column)
+        {
+            Radius = radius >= 0 ? Radius : radius;
+       
+            Vector3 newPos = new Vector3(0f, 0f, (Radius/Rows) * row);
+            float yAngle = _radialCellAngle * (column - (_columns / 2f)) + (_radialCellAngle*.5f);
+
+            Quaternion rot = Quaternion.Euler(0.0f, yAngle, 0.0f);
             newPos = rot * newPos;
 
             return newPos;
