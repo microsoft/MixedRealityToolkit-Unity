@@ -34,33 +34,33 @@ namespace HoloToolkit.UX.Progress
 
         // The default prefab used by the 'Prefab' indicator style
         [SerializeField]
-        private GameObject defaultPrefab;
+        private GameObject defaultPrefab = null;
 
         // The default icon used by the 'StaticIcon' indicator style
         [SerializeField]
-        private GameObject defaultIconPrefab;
+        private GameObject defaultIconPrefab = null;
 
         [SerializeField]
-        private GameObject defaultOrbsPrefab;
+        private GameObject defaultOrbsPrefab = null;
 
         // The progress bar container object
         [SerializeField]
-        private GameObject progressBarContainer;
+        private GameObject progressBarContainer = null;
 
         // The animated progress bar object
         [SerializeField]
-        private Transform progressBar;
+        private Transform progressBar = null;
 
         // The message text used by the 'Visible' message style
         [SerializeField]
-        private TextMesh messageText;
+        private TextMesh messageText = null;
 
         // The progress text used by all non-'None' progress styles
         [SerializeField]
-        private TextMesh progressText;
+        private TextMesh progressText = null;
 
         [SerializeField]
-        private Animator animator;
+        private Animator animator = null;
 
         public float Progress
         {

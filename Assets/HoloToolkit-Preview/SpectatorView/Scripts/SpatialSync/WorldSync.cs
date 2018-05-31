@@ -48,7 +48,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         /// </summary>
         [Tooltip("The offset from the marker position displayed on screen and the phones camera")]
         [SerializeField]
-        private Vector3 offsetBetweenMarkerAndCamera;
+        private Vector3 offsetBetweenMarkerAndCamera = Vector3.zero;
 
         /// <summary>
         /// Event fired after the marker position/rotation has been found

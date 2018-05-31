@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.UX
         [Header("Flattening")]
         [SerializeField]
         [Tooltip("Choose this option if Rig is to be applied to a 2D object.")]
-        private BoundingBox.FlattenModeEnum flattenedAxis;
+        private BoundingBox.FlattenModeEnum flattenedAxis = default(BoundingBox.FlattenModeEnum);
 
         [Header("Customization Settings")]
         [SerializeField]
@@ -48,7 +48,7 @@ namespace HoloToolkit.Unity.UX
 
         [SerializeField]
         [Tooltip("AppBar prefab.")]
-        private AppBar appBarPrefab;
+        private AppBar appBarPrefab = null;
 
         private BoundingBox boxInstance;
 
