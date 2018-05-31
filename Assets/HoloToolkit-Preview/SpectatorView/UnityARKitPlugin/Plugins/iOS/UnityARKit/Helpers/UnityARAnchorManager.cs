@@ -8,7 +8,7 @@ namespace UnityEngine.XR.iOS
     {
 
 
-        private Dictionary<string, ARPlaneAnchorGameObject> planeAnchorMap;
+        private Dictionary<string, ARPlaneAnchorGameObject> planeAnchorMap = null;
 
 
         public UnityARAnchorManager ()

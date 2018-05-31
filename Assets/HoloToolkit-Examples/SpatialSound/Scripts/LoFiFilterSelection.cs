@@ -9,19 +9,19 @@ public class LoFiFilterSelection : MonoBehaviour, IInputClickHandler
 {
     [Tooltip("Material used when the emitter is set to Narrow Band Telephony")]
     [SerializeField]
-    private Material NarrowBandTelephony;
+    private Material NarrowBandTelephony = null;
 
     [Tooltip("Material used when the emitter is set to AM Radio")]
     [SerializeField]
-    private Material AmRadio;
+    private Material AmRadio = null;
 
     [Tooltip("Material used when the emitter is set to Full Range")]
     [SerializeField]
-    private Material FullRange;
+    private Material FullRange = null;
 
     [Tooltip("Material used when the emitter is set to an unknown quality")]
     [SerializeField]
-    private Material UnknownQuality;
+    private Material UnknownQuality = null;
 
     private AudioLoFiEffect loFiEffect;
 

@@ -163,13 +163,13 @@ namespace HoloToolkit.Unity.UX
         private ButtonTemplate[] buttons = new ButtonTemplate[MaxCustomButtons];
 
         [SerializeField]
-        private Transform buttonParent;
+        private Transform buttonParent = null;
 
         [SerializeField]
-        private GameObject baseRenderer;
+        private GameObject baseRenderer = null;
 
         [SerializeField]
-        private GameObject backgroundBar;
+        private GameObject backgroundBar = null;
 
         [SerializeField]
         private BoundingBox boundingBox;

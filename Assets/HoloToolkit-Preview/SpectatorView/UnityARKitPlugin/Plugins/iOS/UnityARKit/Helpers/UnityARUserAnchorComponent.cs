@@ -8,7 +8,7 @@ namespace UnityEngine.XR.iOS
 {
 public class UnityARUserAnchorComponent : MonoBehaviour {
 
-    private string m_AnchorId;
+    private string m_AnchorId = string.Empty;
 
     public string AnchorId  { get { return m_AnchorId; } }
 
