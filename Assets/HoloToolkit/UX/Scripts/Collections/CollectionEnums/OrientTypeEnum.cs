@@ -14,8 +14,8 @@ namespace HoloToolkit.Unity.Collections
         FaceParentFoward,       // Parent Relative Forwards
         FaceParentBack,         // Parent Relative Backwards
 		FaceParentUp,           // Parent Relative Up
-        FaceParentDown         // Parent Relative Down
+        FaceParentDown,         // Parent Relative Down
 		FaceCenterAxis,         // Lay flat on the surface, facing in
-        FaceCenterAxisReversed, // Lay flat on the surface, facing out
+        FaceCenterAxisReversed // Lay flat on the surface, facing out
     }
 }
