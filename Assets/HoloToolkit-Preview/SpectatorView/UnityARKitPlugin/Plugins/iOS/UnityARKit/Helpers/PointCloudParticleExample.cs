@@ -9,7 +9,9 @@ public class PointCloudParticleExample : MonoBehaviour
     public int maxPointsToShow;
     public float particleSize = 1.0f;
     private Vector3[] m_PointCloudData;
+#if UNITY_IOS || UNITY_EDITOR
     private bool frameUpdated = false;
+#endif
     private ParticleSystem currentPS;
     private ParticleSystem.Particle [] particles;
 
