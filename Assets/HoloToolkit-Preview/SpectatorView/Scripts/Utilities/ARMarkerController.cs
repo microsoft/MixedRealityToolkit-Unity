@@ -87,7 +87,9 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         /// </summary>
         public void OnCodeFound()
         {
+#if UNITY_IOS
             Handheld.Vibrate();
+#endif
             TurnOffMarker();
         }
 
