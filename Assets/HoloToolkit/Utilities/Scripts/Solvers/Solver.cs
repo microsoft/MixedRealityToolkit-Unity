@@ -125,7 +125,7 @@ namespace HoloToolkit.Unity
                     case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight:
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
                         solverHandler.Handedness = InteractionSourceHandedness.Right;
-                        while (solverHandler.ElementTransform != null)
+                        while (solverHandler.ElementTransform == null)
                         {
                             yield return null;
                         }
