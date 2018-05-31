@@ -12,6 +12,15 @@ using UnityEngine;
 /// </summary>
 public class BoundingBoxHelper : MonoBehaviour
 {
+    readonly int[] face0 = { 0, 1, 3, 2 };
+    readonly int[] face1 = { 1, 5, 7, 3 };
+    readonly int[] face2 = { 5, 4, 6, 7 };
+    readonly int[] face3 = { 4, 0, 2, 6 };
+    readonly int[] face4 = { 6, 2, 3, 7 };
+    readonly int[] face5 = { 1, 0, 4, 5 };
+    readonly int[] noFaceIndices = { };
+    readonly Vector3[] noFaceVertices = { };
+
     private List<Vector3> rawBoundingCorners = new List<Vector3>();
     private List<Vector3> worldBoundingCorners = new List<Vector3>();
     private GameObject targetObject;
@@ -52,27 +61,10 @@ public class BoundingBoxHelper : MonoBehaviour
     public void GetRawBBCorners(GameObject target, LayerMask ignoreLayers)
     {
         targetObject = target;
-
-        GameObject clone = GameObject.Instantiate(targetObject);
-        clone.transform.localRotation = Quaternion.identity;
-        clone.transform.position = Vector3.zero;
-        clone.transform.localScale = new Vector3(1, 1, 1);
-        Renderer[] renderers = clone.GetComponentsInChildren<Renderer>();
         rawBoundingCorners.Clear();
         rawBoundingCornersObtained = false;
-        for (int i = 0; i < renderers.Length; ++i)
-        {
-            var rendererObj = renderers[i];
-            if (ignoreLayers == (1 << rendererObj.gameObject.layer | ignoreLayers))
-            {
-                continue;
-            }
-            Vector3[] corners = null;
-            rendererObj.bounds.GetCornerPositionsFromRendererBounds(ref corners);
-            AddAABoundingBoxes(rawBoundingCorners, corners);
-        }
 
-        GameObject.Destroy(clone);
+        GetUntransformedCornersFromObject(target, rawBoundingCorners, ignoreLayers);
 
         if (rawBoundingCorners != null && rawBoundingCorners.Count >= 4)
         {
@@ -90,20 +82,20 @@ public class BoundingBoxHelper : MonoBehaviour
         switch (index)
         {
             case 0:
-                return new int[] { 0, 1, 3, 2 };
+                return face0;
             case 1:
-                return new int[] { 1, 5, 7, 3 };
+                return face1;
             case 2:
-                return new int[] { 5, 4, 6, 7 };
+                return face2;
             case 3:
-                return new int[] { 4, 0, 2, 6 };
+                return face3;
             case 4:
-                return new int[] { 6, 2, 3, 7 };
+                return face4;
             case 5:
-                return new int[] { 1, 0, 4, 5};
+                return face5;
         }
-
-        return new int[0];
+        
+        return noFaceIndices;
     }
 
     /// <summary>
@@ -199,7 +191,7 @@ public class BoundingBoxHelper : MonoBehaviour
             return face;
         }
 
-        return new Vector3[0];
+        return noFaceVertices;
     }
 
     /// <summary>
@@ -214,7 +206,7 @@ public class BoundingBoxHelper : MonoBehaviour
         float hightestDotValue = float.MinValue;
         for (int i = 0; i < 6; ++i)
         {
-            Vector3 a = (lookAtPoint - GetFaceCentroid(i) ).normalized;
+            Vector3 a = (lookAtPoint - GetFaceCentroid(i)).normalized;
             Vector3 b = GetFaceNormal(i);
             float dot = Vector3.Dot(a, b);
             if (hightestDotValue < dot)
@@ -236,10 +228,28 @@ public class BoundingBoxHelper : MonoBehaviour
     /// <param name="ignoreLayers">a LayerMask variable</param>
     public static void GetNonAABoundingBoxCornerPositions(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
     {
+        //get untransformed points
+        GetUntransformedCornersFromObject(target, boundsPoints, ignoreLayers);
+
+        //transform the points
+        for (int i = 0; i < boundsPoints.Count; ++i)
+        {
+            boundsPoints[i] = target.transform.localToWorldMatrix.MultiplyPoint(boundsPoints[i]);
+        }
+    }
+
+    /// <summary>
+    /// static function that performs one-time non-persistent calculation of boundingbox of object without transformation.
+    /// </summary>
+    /// <param name="target">The gameObject whose bounding box is desired</param>
+    /// <param name="boundsPoints">the array of 8 points that will be filled</param>
+    /// <param name="ignoreLayers">a LayerMask variable</param>
+    public static void GetUntransformedCornersFromObject(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
+    {
         GameObject clone = GameObject.Instantiate(target);
         clone.transform.localRotation = Quaternion.identity;
         clone.transform.position = Vector3.zero;
-        clone.transform.localScale = new Vector3(1, 1, 1);
+        clone.transform.localScale = Vector3.one;
         Renderer[] renderers = clone.GetComponentsInChildren<Renderer>();
 
         for (int i = 0; i < renderers.Length; ++i)
@@ -251,16 +261,11 @@ public class BoundingBoxHelper : MonoBehaviour
             }
             Vector3[] corners = null;
             rendererObj.bounds.GetCornerPositionsFromRendererBounds(ref corners);
-            boundsPoints.AddRange(corners);
+            AddAABoundingBoxes(boundsPoints, corners);
         }
 
-        for (int i = 0; i < boundsPoints.Count; ++i)
-        {
-            boundsPoints[i] = target.transform.localToWorldMatrix.MultiplyPoint(boundsPoints[i]);
-        }
         GameObject.Destroy(clone);
     }
-
     /// <summary>
     /// This function expands the box defined by the first param 'points' to include the second bounding box 'pointsToAdd'. The
     /// result is found in the points variable.

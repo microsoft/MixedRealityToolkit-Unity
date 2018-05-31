@@ -630,7 +630,6 @@ namespace HoloToolkit.Unity.UX
             for (int i = 0; i < boundsPoints.Count; ++i)
             {
                 boundsPoints[i] = target.transform.localToWorldMatrix.MultiplyPoint(boundsPoints[i]);
-                //boundsPoints[i] += centroid;
             }
 #endif // UNITY_2017_1_OR_NEWER
         }
