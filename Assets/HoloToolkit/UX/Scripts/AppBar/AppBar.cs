@@ -186,9 +186,8 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
-
-
         public AppBarDisplayTypeEnum DisplayType = AppBarDisplayTypeEnum.Manipulation;
+
         public AppBarStateEnum State = AppBarStateEnum.Default;
 
         /// <summary>

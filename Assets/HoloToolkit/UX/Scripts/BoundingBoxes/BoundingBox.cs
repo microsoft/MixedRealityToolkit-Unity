@@ -621,7 +621,7 @@ namespace HoloToolkit.Unity.UX
             GameObject clone = GameObject.Instantiate(target);
             clone.transform.localRotation = Quaternion.identity;
             clone.transform.position = Vector3.zero;
-            clone.transform.localScale = new Vector3(1,1,1);
+            clone.transform.localScale = Vector3.one;
             BoundingBox.GetMeshFilterBoundsPoints(clone, boundsPoints, mask);
             Vector3 centroid = target.transform.position;
             GameObject.Destroy(clone);
