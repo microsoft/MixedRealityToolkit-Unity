@@ -35,10 +35,23 @@ namespace HoloToolkit.Unity.UX
         /// </summary>
         public float HoverOffsetZ = 0f;
 
+        private bool useTightFollow = false;
+
         /// <summary>
         /// Uses an alternate follow style that works better for very oblong objects
         /// </summary>
-        public bool UseTightFollow = false;
+        public bool UseTightFollow
+        {
+            get
+            {
+                return useTightFollow;
+            }
+
+            set
+            {
+                useTightFollow = value;
+            }
+        }
 
         /// <summary>
         /// Class used for building toolbar buttons
@@ -113,7 +126,23 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
-        public BoundingBoxRig BoundingRig;
+        private BoundingBoxRig boundingRig;
+
+        /// <summary>
+        /// a reference to the boundingBoxRig that the appbar turns on and off
+        /// </summary>
+        public BoundingBoxRig BoundingRig
+        {
+            get
+            {
+                return boundingRig;
+            }
+
+            set
+            {
+                boundingRig = value;
+            }
+        }
 
         public GameObject SquareButtonPrefab;
 
@@ -156,6 +185,8 @@ namespace HoloToolkit.Unity.UX
                 return defaultButtons;
             }
         }
+
+
 
         public AppBarDisplayTypeEnum DisplayType = AppBarDisplayTypeEnum.Manipulation;
         public AppBarStateEnum State = AppBarStateEnum.Default;
