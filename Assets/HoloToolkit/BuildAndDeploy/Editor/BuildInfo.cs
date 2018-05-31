@@ -19,7 +19,11 @@ namespace HoloToolkit.Unity
 
         public Action<BuildInfo> PreBuildAction { get; set; }
 
+#if UNITY_2018_1_OR_NEWER
+        public Action<BuildInfo, UnityEditor.Build.Reporting.BuildReport> PostBuildAction { get; set; }
+#else
         public Action<BuildInfo, string> PostBuildAction { get; set; }
+#endif
 
         public BuildOptions BuildOptions { get; set; }
 
