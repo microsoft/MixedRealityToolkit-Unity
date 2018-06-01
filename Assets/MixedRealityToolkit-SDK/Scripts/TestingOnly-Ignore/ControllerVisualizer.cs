@@ -31,66 +31,69 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private void UpdateControllerVisuals()
         {
             var controllers = Internal.Managers.MixedRealityManager.Instance.ActiveDevice.GetActiveControllers();
-            foreach (var controller in controllers)
+            if (controllers != null)
             {
-                GameObject controllerVisual;
-                if (leftController == null && controller.ControllerHandedness == Handedness.Left)
+
+                foreach (var controller in controllers)
                 {
-                    controllerVisual = Internal.Managers.MixedRealityManager.Instance.ActiveProfile.ControllersProfile.OverrideLeftHandModel;
-                    leftController = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
-                    leftController.GetComponent<MeshRenderer>().material.color = Color.red;
-                    //leftControllerPointerDefinition = controller.Interactions[DeviceInputType.SpatialPointer];
-                    //leftControllerMenuDefinition = controller.Interactions[DeviceInputType.Menu];
-
-                    if (curentRenderMode == renderMode.InteractionManager || curentRenderMode == renderMode.Both)
+                    GameObject controllerVisual;
+                    if (leftController == null && controller.ControllerHandedness == Handedness.Left)
                     {
-                        leftController2 = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
-                        var mesh2 = leftController2.GetComponent<MeshRenderer>();
-                        mesh2.material.color = Color.magenta;
-                    }
-                }
-                else if (rightController == null && controller.ControllerHandedness == Handedness.Right)
-                {
-                    controllerVisual = Internal.Managers.MixedRealityManager.Instance.ActiveProfile.ControllersProfile.OverrideRightHandModel;
-                    rightController = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
-                    rightController.GetComponent<MeshRenderer>().material.color = Color.green;
-                    //rightControllerPointerDefinition = controller.Interactions[DeviceInputType.SpatialPointer];
-                    //rightControllerMenuDefinition = controller.Interactions[DeviceInputType.Menu];
+                        controllerVisual = Internal.Managers.MixedRealityManager.Instance.ActiveProfile.ControllersProfile.OverrideLeftHandModel;
+                        leftController = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
+                        leftController.GetComponent<MeshRenderer>().material.color = Color.red;
+                        //leftControllerPointerDefinition = controller.Interactions[DeviceInputType.SpatialPointer];
+                        //leftControllerMenuDefinition = controller.Interactions[DeviceInputType.Menu];
 
-                    if (curentRenderMode == renderMode.InteractionManager || curentRenderMode == renderMode.Both)
-                    {
-                        rightController2 = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
-                        var mesh2 = rightController2.GetComponent<MeshRenderer>();
-                        mesh2.material.color = Color.cyan;
-                    }
-                }
-
-                if (curentRenderMode == renderMode.MRTK || curentRenderMode == renderMode.Both)
-                {
-                    var controller6DoF = controller.Interactions[DeviceInputType.SpatialPointer].GetValue<Tuple<Vector3, Quaternion>>();
-                    Debug.Log($"MRTK - Controller Position {controller6DoF.Item1} - Rotation {controller6DoF.Item2}");
-                    bool menuPress = false;
-
-                    if (controller.ControllerHandedness == Handedness.Left)
-                    {
-                        if (menuPress)
+                        if (curentRenderMode == renderMode.InteractionManager || curentRenderMode == renderMode.Both)
                         {
-                            leftController.GetComponent<MeshRenderer>().material.color = Color.black;
-                        }
-                        leftController.transform.localPosition = controller6DoF.Item1;
-                        leftController.transform.localRotation = controller6DoF.Item2;
-                    }
-                    else
-                    {
-                        rightController.transform.localPosition = controller6DoF.Item1;
-                        rightController.transform.localRotation = controller6DoF.Item2;
-                        if (menuPress)
-                        {
-                            rightController.GetComponent<MeshRenderer>().material.color = Color.blue;
+                            leftController2 = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
+                            var mesh2 = leftController2.GetComponent<MeshRenderer>();
+                            mesh2.material.color = Color.magenta;
                         }
                     }
-                }
+                    else if (rightController == null && controller.ControllerHandedness == Handedness.Right)
+                    {
+                        controllerVisual = Internal.Managers.MixedRealityManager.Instance.ActiveProfile.ControllersProfile.OverrideRightHandModel;
+                        rightController = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
+                        rightController.GetComponent<MeshRenderer>().material.color = Color.green;
+                        //rightControllerPointerDefinition = controller.Interactions[DeviceInputType.SpatialPointer];
+                        //rightControllerMenuDefinition = controller.Interactions[DeviceInputType.Menu];
 
+                        if (curentRenderMode == renderMode.InteractionManager || curentRenderMode == renderMode.Both)
+                        {
+                            rightController2 = Instantiate(controllerVisual, CameraCache.Main.transform.parent);
+                            var mesh2 = rightController2.GetComponent<MeshRenderer>();
+                            mesh2.material.color = Color.cyan;
+                        }
+                    }
+
+                    if (curentRenderMode == renderMode.MRTK || curentRenderMode == renderMode.Both)
+                    {
+                        var controller6DoF = controller.Interactions[DeviceInputType.SpatialPointer].GetValue<Tuple<Vector3, Quaternion>>();
+                        Debug.Log($"MRTK - Controller Position {controller6DoF.Item1} - Rotation {controller6DoF.Item2}");
+                        bool menuPress = false;
+
+                        if (controller.ControllerHandedness == Handedness.Left)
+                        {
+                            if (menuPress)
+                            {
+                                leftController.GetComponent<MeshRenderer>().material.color = Color.black;
+                            }
+                            leftController.transform.localPosition = controller6DoF.Item1;
+                            leftController.transform.localRotation = controller6DoF.Item2;
+                        }
+                        else
+                        {
+                            rightController.transform.localPosition = controller6DoF.Item1;
+                            rightController.transform.localRotation = controller6DoF.Item2;
+                            if (menuPress)
+                            {
+                                rightController.GetComponent<MeshRenderer>().material.color = Color.blue;
+                            }
+                        }
+                    }
+                }
             }
         }
 

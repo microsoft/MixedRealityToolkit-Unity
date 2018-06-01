@@ -72,6 +72,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         #region IMixedRealityManager Implementation
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public MixedRealityInputManager()
+        {
+            // Input system is critical, so should be processed before all other managers
+            Priority = 1;
+        }
+
         /// <inheritdoc />
         public override void Initialize()
         {

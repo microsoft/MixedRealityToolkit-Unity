@@ -34,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <summary>
         /// Input System reference
         /// </summary>
+        /// <remarks>Ensure all uses of this reference are covered by a NULL check (inputsystem?) as it is not guaranteed there will be one at runtime</remarks>
         private IMixedRealityInputSystem inputSystem;
 
         public string Name { get; }
@@ -197,13 +198,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
 
             var controllingHand = interactionSourceState.source.handedness == InteractionSourceHandedness.Left ? Handedness.Left : Handedness.Right;
+            var controllerInputSource = inputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {controllingHand}");
 
             //TODO - Controller Type Detection?
             //Define new Controller
             var detectedController = new WindowsMixedRealityController(
                 ControllerState.NotTracked,
                 controllingHand,
-                inputSystem.RequestNewGenericInputSource($"Mixed Reality Controller {controllingHand}"),
+                controllerInputSource,
                 new Dictionary<DeviceInputType, InteractionMapping>()
                 );
 
@@ -309,7 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             var inputAction = ReleaseInteractionSource(pressType, controller);
 
 
-            if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem) inputSystem.RaiseOnInputUp(controller.InputSource, controller.ControllerHandedness, inputAction);
+            if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem) inputSystem?.RaiseOnInputUp(controller.InputSource, controller.ControllerHandedness, inputAction);
         }
 
         /// <summary>
@@ -404,17 +406,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         public void Reset()
         {
-            throw new NotImplementedException();
+            //TODO if required
         }
 
         public void Update()
         {
-            throw new NotImplementedException();
+            //TODO if required
         }
 
         public void Destroy()
         {
-            throw new NotImplementedException();
+            //TODO if required
         }
 
         public void Disable()
