@@ -13,7 +13,7 @@ namespace HoloToolkit.Unity.Collections
         FaceOriginReversed,     // Rotate towards the origin + 180 degrees
         FaceParentFoward,       // Parent Relative Forwards
         FaceParentBack,         // Parent Relative Backwards
-		FaceParentUp,           // Parent Relative Up
+        FaceParentUp,           // Parent Relative Up
         FaceParentDown,         // Parent Relative Down
 		FaceCenterAxis,         // Lay flat on the surface, facing in
         FaceCenterAxisReversed // Lay flat on the surface, facing out
