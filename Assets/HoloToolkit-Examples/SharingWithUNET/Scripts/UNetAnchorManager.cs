@@ -187,7 +187,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
                 return;
             }
 
-#if UNITY_WSA
+#if UNITY_WSA && (!ENABLE_IL2CPP && NET_STANDARD_2_0)
 #if UNITY_2017_2_OR_NEWER
             if (HolographicSettings.IsDisplayOpaque)
 #else

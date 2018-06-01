@@ -15,7 +15,7 @@ using UnityEngine.XR.WSA;
 namespace HoloToolkit.UX.Dialog
 {
     /// <summary>
-    /// Dialog that approximates the look of a Hololens shell dialog
+    /// Dialog that approximates the look of a HoloLens shell dialog
     /// </summary>
     public class DialogShell : Dialog
     {
@@ -27,9 +27,6 @@ namespace HoloToolkit.UX.Dialog
 
         [SerializeField]
         private TextMesh messageText;
-
-        [SerializeField]
-        private GameObject[] oneButtonSet;
 
         [SerializeField]
         private GameObject[] twoButtonSet;
@@ -103,7 +100,6 @@ namespace HoloToolkit.UX.Dialog
                 }
             }
 
-            oneButtonSet = new GameObject[1];
             twoButtonSet = new GameObject[2];
 
             //Find all buttons on dialog...
@@ -124,7 +120,7 @@ namespace HoloToolkit.UX.Dialog
                     buttonsOnDialog[i + step].ButtonTypeEnum = buttonTypes[i];
                 }
             }
-        }  
+        }
 
         private void SetButtonsActiveStates(List<DialogButton> buttons, int count)
         {
@@ -132,9 +128,9 @@ namespace HoloToolkit.UX.Dialog
             for (int i = 0; i < buttons.Count; ++i)
             {
                 var flag1 = (count == 1) && (i == 0);
-                var flag2 = (count == 2) && (i > 0) ? true : false;
+                var flag2 = (count == 2) && (i > 0);
                 buttons[i].ParentDialog = this;
-                buttons[i].gameObject.SetActive(flag1 ? true : flag2);
+                buttons[i].gameObject.SetActive(flag1 || flag2);
             }
         }
 
@@ -174,7 +170,7 @@ namespace HoloToolkit.UX.Dialog
                 {
                     titleText = child.GetComponent<TextMesh>();
                 }
-                else if( child != null && child.name == "TitleMessage")
+                else if (child != null && child.name == "TitleMessage")
                 {
                     messageText = child.GetComponent<TextMesh>();
                 }
@@ -207,10 +203,10 @@ namespace HoloToolkit.UX.Dialog
             {
                 return text;
             }
-            
+
             for (pos = 0; pos < text.Length; pos = next)
             {
-                int endOfLine = text.IndexOf(System.Environment.NewLine, pos);
+                int endOfLine = text.IndexOf(Environment.NewLine, pos, StringComparison.Ordinal);
 
                 if (endOfLine == -1)
                 {
@@ -218,7 +214,7 @@ namespace HoloToolkit.UX.Dialog
                 }
                 else
                 {
-                    next = endOfLine + System.Environment.NewLine.Length;
+                    next = endOfLine + Environment.NewLine.Length;
                 }
 
                 if (endOfLine > pos)
@@ -231,7 +227,7 @@ namespace HoloToolkit.UX.Dialog
                             len = BreakLine(text, pos, maxCharsPerLine);
 
                         stringBuilder.Append(text, pos, len);
-                        stringBuilder.Append(System.Environment.NewLine);
+                        stringBuilder.Append(Environment.NewLine);
 
                         pos += len;
 
@@ -250,7 +246,7 @@ namespace HoloToolkit.UX.Dialog
 
             return stringBuilder.ToString();
         }
-        
+
         /// <summary>
         /// Method to linebreak text
         /// </summary>

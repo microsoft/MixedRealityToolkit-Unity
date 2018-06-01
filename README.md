@@ -71,6 +71,9 @@ To get up and going as quickly as possible, here are some guides to help you get
 
 Check out the [Examples](/Assets/HoloToolkit-Examples) folder for more details.
 
+Check out the article ["Open-Source Building Blocks for Windows Mixed Reality Experiences"](https://medium.com/@dongyoonpark/open-source-building-blocks-for-windows-mixed-reality-experiences-hololens-mixedrealitytoolkit-28a0a16ebb61)
+[![MRTK Building Blocks](/External/ReadMeImages/MRTK_BuildingBlocks.png)](https://medium.com/@dongyoonpark/open-source-building-blocks-for-windows-mixed-reality-experiences-hololens-mixedrealitytoolkit-28a0a16ebb61)
+
 **External\How To** docs folder is meant to help everyone with migrating forward or any simple doubts they might have about the process.
 Please feel free to grow all these sections. We can't wait to see your additions!
 
