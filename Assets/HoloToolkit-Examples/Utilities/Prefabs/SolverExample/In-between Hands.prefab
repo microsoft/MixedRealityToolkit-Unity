@@ -36,13 +36,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1946721682696148}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -1.445, y: 1.09, z: -0.908}
+  m_LocalRotation: {x: -0, y: -0.70912826, z: -0, w: 0.7050795}
+  m_LocalPosition: {x: -1.493, y: 1.09, z: -1.035}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90.328, z: 0}
 --- !u!23 &23881802533022504
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -98,6 +98,8 @@ MonoBehaviour:
   element: 6
   handedness: 1
   trackedObjectToReference: 2
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 0}
 --- !u!114 &114935902293540568
 MonoBehaviour:
@@ -121,6 +123,5 @@ MonoBehaviour:
   Smoothing: 1
   Lifetime: 0
   PartwayOffset: 0.5
-  secondTransform: {fileID: 0}
-  trackedObjectForSecondTransform: 3
-  trackedHandJointToReference: 4
+  trackedObjectForSecondTransform: 1
+  secondTransformOverride: {fileID: 0}

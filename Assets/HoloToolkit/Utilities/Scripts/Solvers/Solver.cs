@@ -90,6 +90,11 @@ namespace HoloToolkit.Unity
 
         protected virtual void Start()
         {
+            SeekTrackedObject();
+        }
+
+        public virtual void SeekTrackedObject()
+        {
             //TransformTarget overrides ObjectToReferenceEnum
             if (!solverHandler.TransformTarget)
             {
@@ -99,41 +104,63 @@ namespace HoloToolkit.Unity
 
         protected IEnumerator CoStart()
         {
-                switch (solverHandler.TrackedObjectToReference)
-                {
-                    case SolverHandler.TrackedObjectToReferenceEnum.Head:
-                        while (CameraCache.Main == null || CameraCache.Main.transform == null)
-                        {
-                            yield return null;
-                        }
-                        //Base transform target to camera transform
+            // TODO: This really belongs in SolverHandler, everything in here is just passing SolverHandler member variables to SolverHandler functions. 
+            switch (solverHandler.TrackedObjectToReference)
+            {
+                case SolverHandler.TrackedObjectToReferenceEnum.Head:
+                    while (CameraCache.Main == null || CameraCache.Main.transform == null)
+                    {
+                        yield return null;
+                    }
+                    if (solverHandler.RequiresOffset())
+                    {
+                        solverHandler.TransformTarget = solverHandler.MakeOffsetTransform(CameraCache.Main.transform);
+                    }
+                    else
+                    {
                         solverHandler.TransformTarget = CameraCache.Main.transform;
-                        break;
+                    }
 
-                    case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerLeft:
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-                        solverHandler.Handedness = InteractionSourceHandedness.Left;
-                        while (solverHandler.ElementTransform == null)
-                        {
-                            yield return null;
-                        }
-                        //Base transform target to Motion controller transform
-                        solverHandler.TransformTarget = solverHandler.ElementTransform;
-#endif
-                        break;
+                    break;
 
-                    case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight:
+                case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerLeft:
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-                        solverHandler.Handedness = InteractionSourceHandedness.Right;
-                        while (solverHandler.ElementTransform == null)
-                        {
-                            yield return null;
-                        }
-                        //Base transform target to Motion controller transform
+                    solverHandler.Handedness = InteractionSourceHandedness.Left;
+                    while (solverHandler.ElementTransform == null)
+                    {
+                        yield return null;
+                    }
+                    if (solverHandler.RequiresOffset())
+                    {
+                        solverHandler.TransformTarget = solverHandler.MakeOffsetTransform(solverHandler.ElementTransform);
+                    }
+                    else
+                    {
                         solverHandler.TransformTarget = solverHandler.ElementTransform;
+                    }
 #endif
-                        break;
-                }
+                    break;
+
+                case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight:
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                    solverHandler.Handedness = InteractionSourceHandedness.Right;
+
+                    while (solverHandler.ElementTransform == null)
+                    {
+                        yield return null;
+                    }
+                    //Base transform target on Motion controller transform
+                    if (solverHandler.RequiresOffset())
+                    {
+                        solverHandler.TransformTarget = solverHandler.MakeOffsetTransform(solverHandler.ElementTransform);
+                    }
+                    else
+                    {
+                        solverHandler.TransformTarget = solverHandler.ElementTransform;
+                    }
+#endif
+                    break;
+            }
         }
 
         // SolverLink will pass transform through
