@@ -572,6 +572,19 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
+        public static Bounds GetRenderBounds(GameObject target)
+        {
+            Bounds bounds = new Bounds();
+            Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
+            for (int i = 0; i < renderers.Length; ++i)
+            {
+                var rendererObj = renderers[i];
+                bounds.ExpandToContain(rendererObj.bounds);
+            }
+
+            return bounds;
+        }
+
         /// <summary>
         /// GetMeshFilterBoundsPoints - gets boundingbox points using MeshFilter method.
         /// </summary>
@@ -599,6 +612,26 @@ namespace HoloToolkit.Unity.UX
                 rectTransforms[i].GetWorldCorners(rectTransformCorners);
                 boundsPoints.AddRange(rectTransformCorners);
             }
+        }
+
+        public static void GetNonAxisAlignedBB_Corners(GameObject target, List<Vector3> boundsPoints)
+        {
+            LayerMask mask = new LayerMask();
+
+            GameObject clone = GameObject.Instantiate(target);
+            clone.transform.localRotation = Quaternion.identity;
+            clone.transform.position = Vector3.zero;
+            clone.transform.localScale = Vector3.one;
+            BoundingBox.GetMeshFilterBoundsPoints(clone, boundsPoints, mask);
+            Vector3 centroid = target.transform.position;
+            GameObject.Destroy(clone);
+
+#if UNITY_2017_1_OR_NEWER
+            for (int i = 0; i < boundsPoints.Count; ++i)
+            {
+                boundsPoints[i] = target.transform.localToWorldMatrix.MultiplyPoint(boundsPoints[i]);
+            }
+#endif // UNITY_2017_1_OR_NEWER
         }
 
         private static Vector3[] corners = null;

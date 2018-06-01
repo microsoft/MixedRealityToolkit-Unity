@@ -32,6 +32,9 @@ namespace HoloToolkit.Unity.UX
         private float scaleRate = 1.0f;
 
         [SerializeField]
+        private float appBarHoverOffsetZ = 0.05f;
+
+        [SerializeField]
         [Tooltip("This is the maximum scale that one grab can accomplish.")]
         private float maxScale = 2.0f;
 
@@ -179,6 +182,7 @@ namespace HoloToolkit.Unity.UX
 
             appBarInstance = Instantiate(appBarPrefab) as AppBar;
             appBarInstance.BoundingBox = boxInstance;
+            appBarInstance.HoverOffsetZ = appBarHoverOffsetZ;
 
             boxInstance.IsVisible = false;
         }
@@ -476,9 +480,7 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
-
-
-        private List<Vector3> GetBounds()
+        public List<Vector3> GetBounds()
         {
             if (objectToBound != null)
             {
