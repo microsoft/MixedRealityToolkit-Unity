@@ -205,7 +205,7 @@ namespace HoloToolkit.Unity.Collections
             _columns = Mathf.CeilToInt((float)NodeList.Count / Rows);
             _width = _columns * CellWidth;
             _height = Rows * CellHeight;
-            _halfCell = new Vector2(CellWidth / 2f, CellHeight / 2f);
+            _halfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
             _circumference = 2f * Mathf.PI * Radius;
             _radialCellAngle = RadialRange / _columns;
 
@@ -328,7 +328,7 @@ namespace HoloToolkit.Unity.Collections
                         {
                             // Make the radius the largest of the object's dimensions to avoid overlap
                             Bounds bounds = nodeCollider.bounds;
-                            NodeList[i].Radius = Mathf.Max (Mathf.Max(bounds.size.x, bounds.size.y), bounds.size.z) / 2;
+                            NodeList[i].Radius = Mathf.Max (Mathf.Max(bounds.size.x, bounds.size.y), bounds.size.z) * 0.5f;
                         }
                         else
                         {
@@ -461,7 +461,7 @@ namespace HoloToolkit.Unity.Collections
             Radius = radius >= 0 ? Radius : radius;
        
             Vector3 newPos = new Vector3(0f, 0f, (Radius/Rows) * row);
-            float yAngle = _radialCellAngle * (column - (_columns / 2f)) + (_radialCellAngle*.5f);
+            float yAngle = _radialCellAngle * (column - (_columns * 0.5f)) + (_radialCellAngle*.5f);
 
             Quaternion rot = Quaternion.Euler(0.0f, yAngle, 0.0f);
             newPos = rot * newPos;
