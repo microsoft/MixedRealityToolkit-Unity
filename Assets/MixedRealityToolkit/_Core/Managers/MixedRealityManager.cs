@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         [Tooltip("The currently active / detected Headset or SDK")]
         private IMixedRealityDevice activeDevice = default(IMixedRealityDevice);
 
-        public IMixedRealityDevice ActiveDevice { get { return activeDevice; } }
+        public IMixedRealityDevice ActiveDevice => activeDevice;
 
         #endregion Active SDK components
 
@@ -122,11 +122,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 return;
             }
 
-            #region ActiveSDK Discovery
-            // TODO Microsoft.MixedReality.Toolkit - Active SDK Discovery
-            activeDevice = new WindowsMixedRealityDeviceManager("Mixed Reality Device manager", 10);
-            #endregion ActiveSDK Discovery
-
             #region  Managers Registration
 
             //If the Input system has been selected for initialization in the Active profile, enable it in the project
@@ -142,6 +137,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 //Enable Boundary (example initializer)
                 AddManager(typeof(IMixedRealityBoundarySystem), new MixedRealityBoundaryManager());
             }
+
+            #region ActiveSDK Discovery
+
+            // TODO Microsoft.MixedReality.Toolkit - Active SDK Discovery
+
+            activeDevice = new WindowsMixedRealityDeviceManager("Mixed Reality Device manager", 10);
+
+            #endregion ActiveSDK Discovery
 
             #endregion Managers Registration
 
@@ -779,7 +782,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         #endregion Multiple Managers Management
 
         #region Manager Utilities
-        
+
         /// <summary>
         /// Generic function used to interrogate the Mixed Reality Manager active manager registry for the existence of a manager
         /// </summary>
