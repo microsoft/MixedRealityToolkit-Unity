@@ -184,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
                     className = className.Substring(className.LastIndexOf(".", StringComparison.Ordinal) + 1);
                     TempContent.text = className;
 
-                    if (TempContent.text == "")
+                    if (TempContent.text == string.Empty)
                     {
                         TempContent.text = "(None)";
                     }

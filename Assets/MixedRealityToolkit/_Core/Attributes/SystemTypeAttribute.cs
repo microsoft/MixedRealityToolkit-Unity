@@ -31,7 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Attributes
         /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
         public SystemTypeAttribute(Type type, TypeGrouping grouping = TypeGrouping.ByNamespaceFlat)
         {
-            Debug.Assert(type.IsClass || type.IsInterface || type.IsValueType && !type.IsEnum, $"Invalid Type {type} in attribute.");
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+            bool isValid = type.IsClass() || type.IsInterface() || type.IsValueType() && !type.IsEnum();
+#else
+            bool isValid = type.IsClass || type.IsInterface || type.IsValueType && !type.IsEnum;
+#endif
+            Debug.Assert(isValid, $"Invalid Type {type} in attribute.");
             Grouping = grouping;
         }
 
@@ -45,7 +50,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Attributes
         /// </returns>
         public virtual bool IsConstraintSatisfied(Type type)
         {
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+            return AllowAbstract || !type.IsAbstract();
+#else
             return AllowAbstract || !type.IsAbstract;
+#endif
         }
     }
 }

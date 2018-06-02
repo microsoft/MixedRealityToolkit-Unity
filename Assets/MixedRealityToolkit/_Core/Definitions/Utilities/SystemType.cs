@@ -19,7 +19,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
 
         public static string GetReference(Type type)
         {
-            return type != null ? $"{type.FullName}, {type.Assembly.GetName().Name}" : string.Empty;
+            if (type == null)
+            {
+                return string.Empty;
+            }
+
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+            return $"{type.FullName}, {type.GetAssembly().GetName().Name}";
+#else
+            return $"{type.FullName}, {type.Assembly.GetName().Name}";
+#endif
+
         }
 
         /// <summary>
@@ -79,7 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             get { return type; }
             set
             {
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+                bool isValid = value.IsValueType() && !value.IsEnum() || value.IsClass();
+#else
                 bool isValid = value.IsValueType && !value.IsEnum || value.IsClass;
+#endif
                 if (value != null && !isValid)
                 {
                     throw new ArgumentException($"'{value.FullName}' is not a class or struct type.", nameof(value));

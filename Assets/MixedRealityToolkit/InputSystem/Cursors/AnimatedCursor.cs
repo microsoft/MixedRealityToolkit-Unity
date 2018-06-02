@@ -17,22 +17,22 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         [SerializeField]
         [Header("Animated Cursor State Data")]
         [Tooltip("Cursor state data to use for its various states.")]
-        private AnimatedCursorData[] cursorStateData;
+        private AnimatedCursorData[] cursorStateData = null;
 
         [SerializeField]
         [Tooltip("Animator parameter to set when input is enabled.")]
-        private AnimatorParameter inputEnabledParameter;
+        private AnimatorParameter inputEnabledParameter = default(AnimatorParameter);
 
         [SerializeField]
         [Tooltip("Animator parameter to set when input is disabled.")]
-        private AnimatorParameter inputDisabledParameter;
+        private AnimatorParameter inputDisabledParameter = default(AnimatorParameter);
 
         /// <summary>
         /// Link the cursor animator.
         /// </summary>
         [SerializeField]
         [Tooltip("Animator for the cursor")]
-        protected Animator CursorAnimator;
+        protected Animator CursorAnimator = null;
 
         /// <summary>
         /// Change animation state when enabling input.
