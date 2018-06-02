@@ -620,7 +620,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to add a new {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile");
+                throw new ArgumentNullException($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile");
             }
 
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
