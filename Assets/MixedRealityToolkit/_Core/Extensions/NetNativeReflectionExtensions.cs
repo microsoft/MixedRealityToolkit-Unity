@@ -10,6 +10,9 @@ using System.Reflection;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
+    /// <summary>
+    /// .NET Native Backend Reflection Extensions.
+    /// </summary>
     public static class NetNativeReflectionExtensions
     {
         public static Assembly GetAssembly(this Type type)
