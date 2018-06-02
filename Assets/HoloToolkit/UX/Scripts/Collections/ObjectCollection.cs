@@ -65,45 +65,91 @@ namespace HoloToolkit.Unity.Collections
         /// <summary>
         /// This is the radial range for creating a radial fan layout.
         /// </summary>
-        [Range(5f, 360f)]
+        [SerializeField]
         [Tooltip("Radial range for radial layout")]
-        public float RadialRange = 180f;
+        [Range(5f, 360f)]
+        private float radialRange = 180f;
+
+        public float RadialRange
+        {
+            get { return radialRange; }
+            set { radialRange = value; }
+        }
 
         /// <summary>
         /// Number of rows per column, column number is automatically determined
         /// </summary>
+        [SerializeField]
         [Tooltip("Number of rows per column")]
-        public int Rows = 3;
+        private int rows = 3;
+
+        public int Rows
+        {
+            get { return rows; }
+            set { rows = value; }
+        }
 
         /// <summary>
         /// Width of the cell per object in the collection.
         /// </summary>
+        [SerializeField]
         [Tooltip("Width of cell per object")]
-        public float CellWidth = 0.5f;
+        private float cellWidth = 0.5f;
+        public float CellWidth
+        {
+            get { return cellWidth; }
+            set { cellWidth = value; }
+        }
 
         /// <summary>
         /// Height of the cell per object in the collection.
         /// </summary>
+        [SerializeField]
         [Tooltip("Height of cell per object")]
-        public float CellHeight = 0.5f;
+        private float cellHeight = 0.5f;
+
+        public float CellHeight
+        {
+            get { return cellHeight; }
+            set { cellHeight = value; }
+        }
 
         /// <summary>
         /// Margin between objects horizontally.
         /// </summary>
+        [SerializeField]
         [Tooltip("Margin between objects horizontally")]
-        public float HorizontalMargin = 0.2f;
+        private float horizontalMargin = 0.2f;
+        public float HorizontalMargin
+        {
+            get { return horizontalMargin; }
+            set { horizontalMargin = value; }
+        }
 
         /// <summary>
         /// Margin between objects vertically.
         /// </summary>
+        [SerializeField]
         [Tooltip("Margin between objects vertically")]
-        public float VerticalMargin = 0.2f;
+        private float verticalMargin = 0.2f;
+        public float VerticalMargin
+        {
+            get { return verticalMargin; }
+            set { verticalMargin = value; }
+        }
 
         /// <summary>
         /// Margin between objects in depth.
         /// </summary>
+        [SerializeField]
         [Tooltip("Margin between objects in depth")]
-        public float DepthMargin = 0.2f;
+        private float depthMargin = 0.2f;
+        
+        public float DepthMargin
+        {
+            get { return depthMargin; }
+            set { depthMargin = value; }
+        }
 
         /// <summary>
         /// Reference mesh to use for rendering the sphere layout
