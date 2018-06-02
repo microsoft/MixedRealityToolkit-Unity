@@ -19,10 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4568522950744146}
-  - component: {fileID: 33799306713161514}
-  - component: {fileID: 65256454621921454}
   m_Layer: 0
-  m_Name: Open Wedge
+  m_Name: OpenWedge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,7 +49,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1728409514330748}
-  m_LocalRotation: {x: -0.000000029802322, y: -0.35836792, z: 0.000000014901161, w: 0.9335805}
+  m_LocalRotation: {x: -0, y: -0.35836792, z: 0.000000014901161, w: 0.9335805}
   m_LocalPosition: {x: -0.3880957, y: 0, z: 0.431024}
   m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 0.099999994}
   m_Children:
@@ -113,22 +111,3 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1831515512495300}
   m_Mesh: {fileID: 4300000, guid: caffdf4251ca1914086374ce3ab9637e, type: 3}
---- !u!33 &33799306713161514
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1728409514330748}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &65256454621921454
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1728409514330748}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
