@@ -168,11 +168,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 return;
             }
 
-            var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
-
-            Debug.Assert(baseInputEventData != null);
-            Debug.Assert(!baseInputEventData.used);
             Debug.Assert(eventData != null);
+            var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
+            Debug.Assert(baseInputEventData != null);
+            Debug.Assert(baseInputEventData.InputSource != null, $"Failed to find an input source for {baseInputEventData}");
+            Debug.Assert(!baseInputEventData.used);
 
             GameObject focusedObject = FocusProvider?.GetFocusedObject(baseInputEventData);
 
