@@ -52,8 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityManager();
 
             // Create Test Configuration
-            Assert.IsEmpty(MixedRealityManager.Instance.ActiveProfile.ActiveManagers);
-            Assert.IsEmpty(MixedRealityManager.Instance.MixedRealityComponents);
+            Assert.AreEqual(MixedRealityManager.Instance.ActiveProfile.ActiveManagers.Count, 0);
+            Assert.AreEqual(MixedRealityManager.Instance.MixedRealityComponents.Count, 1);
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(MixedRealityManager.Instance.ActiveProfile);
             Assert.IsNotEmpty(MixedRealityManager.Instance.ActiveProfile.ActiveManagers);
             Assert.AreEqual(MixedRealityManager.Instance.ActiveProfile.ActiveManagers.Count, 1);
-            Assert.IsEmpty(MixedRealityManager.Instance.MixedRealityComponents);
+            Assert.AreEqual(MixedRealityManager.Instance.MixedRealityComponents.Count, 1);
         }
 
         [Test]
@@ -283,7 +283,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Test the Manager
             Assert.IsNotNull(MixedRealityManager.Instance);
-            MixedRealityManager.Instance.ActiveProfile = ScriptableObject.CreateInstance<MixedRealityConfigurationProfile>();
+            var configuration = ScriptableObject.CreateInstance<MixedRealityConfigurationProfile>();
+            MixedRealityManager.Instance.ActiveProfile = configuration;
             Assert.NotNull(MixedRealityManager.Instance.ActiveProfile);
         }
 

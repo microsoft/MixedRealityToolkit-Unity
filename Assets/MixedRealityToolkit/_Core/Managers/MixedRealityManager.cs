@@ -21,6 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
     {
         #region Mixed Reality Manager Profile configuration
 
+        private bool isMixedRealityManagerInitializing = false;
+
         /// <summary>
         /// Is there a valid Active Profile on this manager?
         /// </summary>
@@ -115,6 +117,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         private void Initialize()
         {
+            isMixedRealityManagerInitializing = true; 
+
             //If the Mixed Reality Manager is not configured, stop.
             if (ActiveProfile == null)
             {
@@ -169,6 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             InitializeAllManagers();
 
             #endregion Managers Initialization
+            isMixedRealityManagerInitializing = false;
         }
 
         #region MonoBehaviour Implementation
@@ -380,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             else
             {
                 MixedRealityComponents.Add(new Tuple<Type, IMixedRealityManager>(type, manager));
-                manager.Initialize();
+                if(!isMixedRealityManagerInitializing) manager.Initialize();
                 mixedRealityComponentsCount = MixedRealityComponents.Count;
             }
         }

@@ -45,7 +45,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         public void Initialize()
         {
-            inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+            if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
+            {
+                inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+            }
 
             InitializeSources();
         }
