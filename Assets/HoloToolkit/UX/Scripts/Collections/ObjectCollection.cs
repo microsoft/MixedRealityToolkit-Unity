@@ -402,7 +402,7 @@ namespace HoloToolkit.Unity.Collections
         /// <param name="node"></param>
         /// <param name="orientType"></param>
         /// <param name="newPos"></param>
-        private void UpdateNodeFacing(CollectionNode node, OrientTypeEnum orientType, Vector3 newPos = new Vector3())
+        private void UpdateNodeFacing(CollectionNode node, OrientTypeEnum orientType, Vector3 newPos = default(Vector3))
         {
             Vector3 centerAxis;
             Vector3 pointOnAxisNearestNode;
@@ -495,12 +495,12 @@ namespace HoloToolkit.Unity.Collections
         }
 
         /// <summary>
-        /// Internal function for getting the relative mapping based on a source Vec3 and a radius for cylinder mapping.
+        /// Internal function for getting the relative mapping based on a source Vec3 and a radius for radial mapping.
         /// </summary>
         /// <param name="source">The source <see cref="Vector3"/> to be mapped to cylinder</param>
-        /// <param name="radius">This is a <see cref="float"/> for the radius of the cylinder</param>
-        /// <param name="row">This is a <see cref="int"/> for the radius of the cylinder</param>
-        /// <param name="column">This is a <see cref="int"/> for the radius of the cylinder</param>
+        /// <param name="radius">This is a <see cref="float"/> for the radius of the radial</param>
+        /// <param name="row">This is a <see cref="int"/> for the radius of the radial</param>
+        /// <param name="column">This is a <see cref="int"/> for the radius of the radial</param>
         /// <returns></returns>
         private Vector3 RadialMapping(Vector3 source, float radius, int row, int column)
         {
