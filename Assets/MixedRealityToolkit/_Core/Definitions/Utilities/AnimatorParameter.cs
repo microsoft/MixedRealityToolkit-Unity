@@ -12,6 +12,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
     [Serializable]
     public struct AnimatorParameter
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name">Name of the animation parameter to modify.</param>
+        /// <param name="parameterType">Type of the animation parameter to modify.</param>
+        /// <param name="defaultInt">If the animation parameter type is an int, value to set. Ignored otherwise.</param>
+        /// <param name="defaultFloat">If the animation parameter type is a float, value to set. Ignored otherwise.</param>
+        /// <param name="defaultBool">"If the animation parameter type is a bool, value to set. Ignored otherwise.</param>
+        public AnimatorParameter(string name, AnimatorControllerParameterType parameterType, int defaultInt = 0, float defaultFloat = 0f, bool defaultBool = false)
+        {
+            this.parameterType = parameterType;
+            this.defaultInt = defaultInt;
+            this.defaultFloat = defaultFloat;
+            this.defaultBool = defaultBool;
+            this.name = name;
+            nameStringHash = null;
+        }
+
         [SerializeField]
         [Tooltip("Type of the animation parameter to modify.")]
         private AnimatorControllerParameterType parameterType;

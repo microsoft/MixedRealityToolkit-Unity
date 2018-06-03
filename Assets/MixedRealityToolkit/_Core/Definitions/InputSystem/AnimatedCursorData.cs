@@ -14,6 +14,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     [Serializable]
     public struct AnimatedCursorData
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name">Name of the animation state for the cursor.</param>
+        /// <param name="cursorState">The enum state for the cursor's animation.</param>
+        /// <param name="parameter">The linked animation parameter to used for the cursor state.</param>
+        public AnimatedCursorData(string name, CursorStateEnum cursorState, AnimatorParameter parameter)
+        {
+            this.name = name;
+            this.cursorState = cursorState;
+            this.parameter = parameter;
+        }
+
         [SerializeField]
         [Tooltip("The name of this specific cursor state.")]
         private string name;
