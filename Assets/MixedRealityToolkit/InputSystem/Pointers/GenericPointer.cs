@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public string PointerName { get; set; }
 
-        public IMixedRealityInputSource InputSourceParent { get; }
+        public virtual IMixedRealityInputSource InputSourceParent { get; protected set; }
 
         public IMixedRealityCursor BaseCursor { get; set; }
 
