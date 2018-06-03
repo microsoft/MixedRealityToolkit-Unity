@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -14,6 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Remove Action");
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Add a New Action", "Add New Action");
         private static readonly GUIContent PointerContent = new GUIContent("Pointer Action", "The action to use for pointing events:\nOnPointerUp, OnPointerDown, OnPointerClick, etc.");
+        private static readonly GUIContent ActionContent = new GUIContent("Action", "The Name of the Action.");
+        private static readonly GUIContent AxisConstraintContent = new GUIContent("Axis Constraint", "Optional Axis Constraint for this input source.");
 
         private static Vector2 scrollPosition = Vector2.zero;
 
@@ -22,18 +25,26 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty inputActionList;
         private SerializedProperty pointerAction;
         private SerializedProperty pointerActionId;
+        private GUIContent[] actionLabels;
+        private int[] actionIds;
 
         private void OnEnable()
         {
+            if (!CheckMixedRealityManager(false))
+            {
+                return;
+            }
+
             profile = (MixedRealityInputActionsProfile)target;
             inputActionList = serializedObject.FindProperty("inputActions");
             pointerAction = serializedObject.FindProperty("pointerAction");
             pointerActionId = pointerAction.FindPropertyRelative("id");
+            actionLabels = profile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
+            actionIds = profile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
         }
 
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
             RenderMixedRealityToolkitLogo();
 
             EditorGUILayout.LabelField("Input Actions", EditorStyles.boldLabel);
@@ -46,33 +57,15 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.HelpBox("Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +
                                     "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.", MessageType.Info);
 
+            serializedObject.Update();
             RenderList(inputActionList);
 
             EditorGUILayout.LabelField("Input Action Handlers", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("These actions raise specific events via the Mixed Reality Input System.", MessageType.Info);
 
-            GUIContent[] actionLabels = profile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
-            int[] actionIds = profile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
-
-            pointerActionId.intValue = EditorGUILayout.IntPopup(PointerContent, CheckValue(pointerActionId.intValue, profile.InputActions.Length), actionLabels, actionIds);
+            pointerActionId.intValue = EditorGUILayout.IntPopup(PointerContent, pointerActionId.intValue.ResetIfGreaterThan(profile.InputActions.Length), actionLabels, actionIds);
 
             serializedObject.ApplyModifiedProperties();
-        }
-
-        /// <summary>
-        /// Checks if value is above a certain amount, then sets it back to zero if true.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="against"></param>
-        /// <returns></returns>
-        private static int CheckValue(int value, int against)
-        {
-            if (value > against)
-            {
-                value = 0;
-            }
-
-            return value;
         }
 
         private static void RenderList(SerializedProperty list)
@@ -85,18 +78,30 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 var inputAction = list.GetArrayElementAtIndex(list.arraySize - 1);
                 var inputActionId = inputAction.FindPropertyRelative("id");
                 var inputActionDescription = inputAction.FindPropertyRelative("description");
+                var inputActionConstraint = inputAction.FindPropertyRelative("axisConstraint");
+                inputActionConstraint.intValue = 0;
                 inputActionDescription.stringValue = $"New Action {inputActionId.intValue = list.arraySize}";
             }
 
             GUILayout.Space(12f);
 
+            GUILayout.BeginVertical();
+
             var lineHeight = list.arraySize * 20f;
-            if (lineHeight < 64f) { lineHeight = 64f; }
-            if (lineHeight > 128f) { lineHeight = 128f; }
+            if (lineHeight <= 64f) { lineHeight = 64f; }
+            if (lineHeight >= 128f) { lineHeight = 128f; }
+
+            GUILayout.BeginHorizontal();
+            var labelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 36f;
+            EditorGUILayout.LabelField(ActionContent, GUILayout.ExpandWidth(true));
+            EditorGUILayout.LabelField(AxisConstraintContent, list.arraySize > 7 ? GUILayout.Width(112f) : GUILayout.Width(96f));
+            EditorGUILayout.LabelField(string.Empty, GUILayout.Width(24f));
+            EditorGUIUtility.labelWidth = labelWidth;
+            GUILayout.EndHorizontal();
 
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.ExpandHeight(false), GUILayout.Height(lineHeight));
 
-            GUILayout.BeginVertical();
             for (int i = 0; i < list?.arraySize; i++)
             {
                 EditorGUILayout.BeginHorizontal();
@@ -104,8 +109,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUIUtility.labelWidth = 64f;
                 SerializedProperty inputAction = list.GetArrayElementAtIndex(i);
                 SerializedProperty inputActionDescription = inputAction.FindPropertyRelative("description");
-                SerializedProperty inputActionId = inputAction.FindPropertyRelative("id");
-                EditorGUILayout.PropertyField(inputActionDescription, new GUIContent($"Action {inputActionId.intValue = i + 1}"));
+                var inputActionConstraint = inputAction.FindPropertyRelative("axisConstraint");
+                EditorGUILayout.PropertyField(inputActionDescription, GUIContent.none);
+                EditorGUILayout.PropertyField(inputActionConstraint, GUIContent.none, GUILayout.Width(96f));
                 EditorGUIUtility.labelWidth = previousLabelWidth;
 
                 if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
@@ -116,8 +122,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUILayout.EndHorizontal();
             }
 
-            GUILayout.EndVertical();
             EditorGUILayout.EndScrollView();
+            GUILayout.EndVertical();
             GUILayout.EndVertical();
         }
     }

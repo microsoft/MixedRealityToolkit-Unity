@@ -44,10 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 controllerFoldouts = new bool[mixedRealityControllerMappingProfiles.arraySize];
             }
 
-            actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(
-                action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
-            actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(
-                action => (int)action.Id).Prepend(0).ToArray();
+            actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
+            actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
 
             renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
             useDefaultModels = serializedObject.FindProperty("useDefaultModels");
@@ -57,7 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
             RenderMixedRealityToolkitLogo();
 
             EditorGUILayout.LabelField("Controller Templates", EditorStyles.boldLabel);
@@ -69,6 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             EditorGUILayout.HelpBox("Controller templates define all the controllers your users will be able to use in your application.\n\n" +
                                     "After defining all your Input Actions, you can then wire them up to hardware sensors, controllers, and other input devices.", MessageType.Info);
+
+            serializedObject.Update();
 
             EditorGUILayout.PropertyField(renderMotionControllers);
             if (renderMotionControllers.boolValue)

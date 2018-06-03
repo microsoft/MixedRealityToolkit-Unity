@@ -305,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     Destroy(this);
                 }
 
-                Debug.LogWarning($"Trying to instantiate a second instance of the Mixed Reality Manager. Additional Instance was destroyed");
+                Debug.LogWarning("Trying to instantiate a second instance of the Mixed Reality Manager. Additional Instance was destroyed");
             }
             else if (!IsInitialized)
             {
@@ -374,12 +374,25 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
             if (manager == null) { throw new ArgumentNullException(nameof(manager)); }
 
-
             if (IsCoreManagerType(type))
             {
-                if (GetManager(type) == null)
+                IMixedRealityManager preexistingManager;
+                if (IsCoreManagerType(type))
+                {
+                    ActiveProfile.ActiveManagers.TryGetValue(type, out preexistingManager);
+                }
+                else
+                {
+                    GetComponentByType(type, out preexistingManager);
+                }
+
+                if (preexistingManager == null)
                 {
                     ActiveProfile.ActiveManagers.Add(type, manager);
+                }
+                else
+                {
+                    Debug.LogError($"There's already a {nameof(manager)} registered.");
                 }
             }
             else
@@ -388,6 +401,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 if(!isMixedRealityManagerInitializing) manager.Initialize();
                 mixedRealityComponentsCount = MixedRealityComponents.Count;
             }
+        }
+
+        /// <summary>
+        /// Generic function used to retrieve a manager from the Mixed Reality Manager active manager registry
+        /// </summary>
+        /// <typeparam name="T">The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem.
+        /// *Note type should be the Interface of the system to be retrieved and not the class itself</typeparam>
+        /// <returns>The instance of the manager class that is registered with the selected Interface</returns>
+        public T GetManager<T>() where T : IMixedRealityManager
+        {
+            return (T)GetManager(typeof(T));
         }
 
         /// <summary>
@@ -405,7 +429,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
             IMixedRealityManager manager;
-
             if (IsCoreManagerType(type))
             {
                 ActiveProfile.ActiveManagers.TryGetValue(type, out manager);
@@ -417,7 +440,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             if (manager == null)
             {
-                throw new NullReferenceException($"Unable to find {nameof(type)} Manager.");
+                throw new NullReferenceException($"Unable to find {type.Name}.");
             }
 
             return manager;
@@ -433,14 +456,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         {
             if (ActiveProfile == null)
             {
-                throw new ArgumentNullException($"Unable to add a new {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile");
+                throw new ArgumentNullException($"Unable to get {managerName} Manager as the Mixed Reality Manager has no Active Profile");
             }
 
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
             if (string.IsNullOrEmpty(managerName)) { throw new ArgumentNullException(nameof(managerName)); }
 
             IMixedRealityManager manager;
-
             if (IsCoreManagerType(type))
             {
                 ActiveProfile.ActiveManagers.TryGetValue(type, out manager);
@@ -452,7 +474,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             if (manager == null)
             {
-                throw new NullReferenceException($"Unable to find {nameof(type)} Manager.");
+                throw new NullReferenceException($"Unable to find {managerName} Manager.");
             }
 
             return manager;
@@ -593,17 +615,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     manager.Enable();
                 }
             }
-        }
-
-        /// <summary>
-        /// Generic function used to retrieve a manager from the Mixed Reality Manager active manager registry
-        /// </summary>
-        /// <typeparam name="T">The interface type for the system to be retrieved.  E.G. InputSystem, BoundarySystem.
-        /// *Note type should be the Interface of the system to be retrieved and not the class itself</typeparam>
-        /// <returns>The instance of the manager class that is registered with the selected Interface</returns>
-        public T GetManager<T>() where T : IMixedRealityManager
-        {
-            return (T)GetManager(typeof(T));
         }
 
         #endregion Individual Manager Management
@@ -797,7 +808,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// <returns>True, there is a manager registered with the selected interface, False, no manager found for that interface</returns>
         public bool ManagerExists<T>() where T : class
         {
-            return GetManager(typeof(T)) != null;
+            IMixedRealityManager manager;
+            ActiveProfile.ActiveManagers.TryGetValue(typeof(T), out manager);
+            return manager != null;
         }
 
         private bool IsCoreManagerType(Type type)
@@ -854,11 +867,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     manager = MixedRealityComponents[i].Item2;
                     break;
                 }
-            }
-
-            if (manager == null)
-            {
-                throw new NullReferenceException($"Unable to find {nameof(type)} Manager.");
             }
         }
 
