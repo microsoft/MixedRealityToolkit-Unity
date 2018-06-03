@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Linq;
 using UnityEditor;
@@ -103,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUILayout.PropertyField(keyCode, GUIContent.none, GUILayout.Width(64f));
                 var action = speechCommand.FindPropertyRelative("action");
                 var actionId = action.FindPropertyRelative("id");
-                actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, CheckValue(actionId.intValue, actionIds.Length), actionLabels, actionIds, GUILayout.Width(64f));
+                actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue.ResetIfGreaterThan(actionIds.Length), actionLabels, actionIds, GUILayout.Width(64f));
 
                 if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                 {
@@ -115,16 +116,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             GUILayout.EndVertical();
             GUILayout.EndVertical();
-        }
-
-        private static int CheckValue(int value, int against)
-        {
-            if (value > against)
-            {
-                value = 0;
-            }
-
-            return value;
         }
     }
 }
