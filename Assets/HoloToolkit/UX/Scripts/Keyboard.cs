@@ -251,6 +251,10 @@ namespace HoloToolkit.UI.Keyboard
                 }
             }
 
+            // Setting the keyboardType to an undefined TouchScreenKeyboardType,
+            // which prevents the MRTK keyboard from triggering the system keyboard itself.
+            InputField.keyboardType = (TouchScreenKeyboardType)(-1);
+
             // Keep keyboard deactivated until needed
             gameObject.SetActive(false);
         }
@@ -322,6 +326,10 @@ namespace HoloToolkit.UI.Keyboard
         /// <param name="eventData">Dictation event data</param>
         public void OnDictationResult(DictationEventData eventData)
         {
+            if (eventData.used)
+            {
+                return;
+            }
             var text = eventData.DictationResult;
             ResetClosingTime();
             if (text != null)
@@ -332,6 +340,7 @@ namespace HoloToolkit.UI.Keyboard
                 m_CaretPosition += text.Length;
 
                 UpdateCaretPosition(m_CaretPosition);
+                eventData.Use();
             }
         }
 

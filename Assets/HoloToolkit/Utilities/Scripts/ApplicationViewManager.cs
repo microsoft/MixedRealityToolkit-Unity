@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System;
 using System.Collections;
 using UnityEngine;
-#if !UNITY_EDITOR && UNITY_WSA
+
+#if !UNITY_EDITOR && UNITY_WSA && (!ENABLE_IL2CPP && NET_STANDARD_2_0)
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
@@ -25,7 +27,7 @@ namespace HoloToolkit.Unity
     {
         private void Start()
         {
-#if !UNITY_EDITOR && UNITY_WSA
+#if !UNITY_EDITOR && UNITY_WSA && (!ENABLE_IL2CPP && NET_STANDARD_2_0)
             UnityEngine.WSA.Application.InvokeOnUIThread(
                 () =>
                 {
@@ -34,7 +36,7 @@ namespace HoloToolkit.Unity
 #endif
         }
 
-#if !UNITY_EDITOR && UNITY_WSA
+#if !UNITY_EDITOR && UNITY_WSA && (!ENABLE_IL2CPP && NET_STANDARD_2_0)
         static int Full3DViewId { get; set; }
         static System.Collections.Concurrent.ConcurrentDictionary<int, Action<object>> CallbackDictionary
             = new System.Collections.Concurrent.ConcurrentDictionary<int, Action<object>>();
@@ -44,7 +46,7 @@ namespace HoloToolkit.Unity
         /// Call this method with Application View Dispatcher， or in Application View Thread, will return to Full3D View and close Application View
         /// </summary>
         /// <param name="returnValue">The return value of the XAML View Execution</param>
-#if !UNITY_EDITOR && UNITY_WSA
+#if !UNITY_EDITOR && UNITY_WSA && (!ENABLE_IL2CPP && NET_STANDARD_2_0)
         public static async void CallbackReturnValue(object returnValue)
         {
             var viewId = ApplicationView.GetForCurrentView().Id;
@@ -78,7 +80,7 @@ namespace HoloToolkit.Unity
         public IEnumerator OnLaunchXamlView<TReturnValue>(string xamlPageName, Action<TReturnValue> callback, object pageNavigateParameter = null)
         {
             bool isCompleted = false;
-#if !UNITY_EDITOR && UNITY_WSA
+#if !UNITY_EDITOR && UNITY_WSA && (!ENABLE_IL2CPP && NET_STANDARD_2_0)
             object returnValue = null;
             CoreApplicationView newView = CoreApplication.CreateNewView();
             int newViewId = 0;

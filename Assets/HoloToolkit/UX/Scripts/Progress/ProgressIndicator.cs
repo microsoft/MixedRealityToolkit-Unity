@@ -29,42 +29,42 @@ namespace HoloToolkit.UX.Progress
         private IndicatorStyleEnum defaultIndicatorStyle = IndicatorStyleEnum.AnimatedOrbs;
         [SerializeField]
         private ProgressStyleEnum defaultProgressStyle = ProgressStyleEnum.Percentage;
-        [SerializeField]
-        private ProgressMessageStyleEnum defaultMessageStyle = ProgressMessageStyleEnum.Visible;
+        //[SerializeField]
+        //private ProgressMessageStyleEnum defaultMessageStyle = ProgressMessageStyleEnum.Visible;
 
         // The default prefab used by the 'Prefab' indicator style
         [SerializeField]
-        private GameObject defaultPrefab;
+        private GameObject defaultPrefab = null;
 
         // The default icon used by the 'StaticIcon' indicator style
         [SerializeField]
-        private GameObject defaultIconPrefab;
+        private GameObject defaultIconPrefab = null;
 
         [SerializeField]
-        private GameObject defaultOrbsPrefab;
+        private GameObject defaultOrbsPrefab = null;
 
         // The progress bar container object
         [SerializeField]
-        private GameObject progressBarContainer;
+        private GameObject progressBarContainer = null;
 
         // The animated progress bar object
         [SerializeField]
-        private Transform progressBar;
+        private Transform progressBar = null;
 
         // The message text used by the 'Visible' message style
         [SerializeField]
-        private TextMesh messageText;
+        private TextMesh messageText = null;
 
         // The progress text used by all non-'None' progress styles
         [SerializeField]
-        private TextMesh progressText;
+        private TextMesh progressText = null;
 
         [SerializeField]
-        private Animator animator;
+        private Animator animator = null;
 
         public float Progress
         {
-            get 
+            get
             {
                 return smoothProgress;
             }
@@ -88,7 +88,7 @@ namespace HoloToolkit.UX.Progress
         /// <param name="messageStyle"></param>
         /// <param name="message"></param>
         /// <param name="icon"></param>
-        public void Open (IndicatorStyleEnum indicatorStyle, ProgressStyleEnum progressStyle, ProgressMessageStyleEnum messageStyle, string message = "", GameObject prefab = null)
+        public void Open(IndicatorStyleEnum indicatorStyle, ProgressStyleEnum progressStyle, ProgressMessageStyleEnum messageStyle, string message = "", GameObject prefab = null)
         {
             if (gameObject.activeSelf)
             {
@@ -109,7 +109,7 @@ namespace HoloToolkit.UX.Progress
             // Reset our loading progress
             smoothProgress = 0f;
             targetProgress = 0f;
-            
+
             // Re-enable objects based on our style
             switch (indicatorStyle)
             {
@@ -172,7 +172,7 @@ namespace HoloToolkit.UX.Progress
         /// Opens the dialog with default settings for indicator and progress
         /// </summary>
         /// <param name="message"></param>
-        public void Open (string message)
+        public void Open(string message)
         {
             Open(defaultIndicatorStyle, defaultProgressStyle, ProgressMessageStyleEnum.Visible, message, null);
         }
@@ -194,7 +194,7 @@ namespace HoloToolkit.UX.Progress
         /// Has no effect until Open is called.
         /// </summary>
         /// <param name="progress"></param>
-        public void SetProgress (float progress)
+        public void SetProgress(float progress)
         {
             targetProgress = Mathf.Clamp01(progress) * 100;
             // If progress is 100, assume we want to snap to that value
@@ -211,7 +211,7 @@ namespace HoloToolkit.UX.Progress
         /// <summary>
         /// Initiates the process of closing the dialog.
         /// </summary>
-        public void Close ()
+        public void Close()
         {
             if (!gameObject.activeSelf) { return; }
 
@@ -228,7 +228,7 @@ namespace HoloToolkit.UX.Progress
             messageText.gameObject.SetActive(false);
         }
 
-        private void Update ()
+        private void Update()
         {
             smoothProgress = Mathf.Lerp(smoothProgress, targetProgress, Time.deltaTime * SmoothProgressSpeed);
             progressBar.localScale = new Vector3(smoothProgress / 100, 1f, 1f);
