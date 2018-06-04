@@ -29,20 +29,23 @@ namespace HoloToolkit.Unity.InputModule
             get { return handedness; }
             set
             {
-                handedness = value;
-                RefreshControllerTransform();
+                // We need to refresh which controller we're attached to if we switch handedness.
+                if (handedness != value)
+                {
+                    handedness = value;
+                    RefreshControllerTransform();
+                }
             }
         }
 
         [SerializeField]
-        private InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
+        private InteractionSourceHandedness handedness = InteractionSourceHandedness.Unknown;
 
         public Transform ElementTransform { get { return elementTransform; } private set { elementTransform = value; } }
         private Transform elementTransform;
 
         protected MotionControllerInfo ControllerInfo;
 
-        private bool started = false;
 #endif
 
         protected virtual void OnEnable()
@@ -54,22 +57,10 @@ namespace HoloToolkit.Unity.InputModule
                 return;
             }
 
-            if (started)
-            {
-                CheckModelAlreadyLoaded();
-            }
             // Look if the controller has loaded.
             RefreshControllerTransform();
             MotionControllerVisualizer.Instance.OnControllerModelLoaded += AddControllerTransform;
             MotionControllerVisualizer.Instance.OnControllerModelUnloaded += RemoveControllerTransform;
-#endif
-        }
-
-        protected virtual void Start()
-        {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            CheckModelAlreadyLoaded();
-            started = true;
 #endif
         }
 
@@ -104,12 +95,34 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (newHandedness != handedness)
             {
-                RemoveControllerTransform(ControllerInfo);
+                if (ControllerInfo != null)
+                {
+                    RemoveControllerTransform(ControllerInfo);
+                }
                 handedness = newHandedness;
-                CheckModelAlreadyLoaded();
+                TryAndAddControllerTransform();
             }
         }
 #endif
+
+        protected virtual void TryAndAddControllerTransform()
+        {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            /// Look if the controller was already loaded. This could happen if the
+            /// GameObject was instantiated at runtime and the model loaded event has already fired.
+            if (!MotionControllerVisualizer.ConfirmInitialized())
+            {
+                // The motion controller visualizer singleton could not be found.
+                return;
+            }
+            MotionControllerInfo newController;
+            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out newController))
+            {
+                AddControllerTransform(newController);
+            }
+#endif
+
+        }
 
         protected virtual void AddControllerTransform(MotionControllerInfo newController)
         {
@@ -139,33 +152,12 @@ namespace HoloToolkit.Unity.InputModule
             }
 #endif
         }
-        /// <summary>
-        /// Look if the controller was already loaded. This could happen if the
-        /// GameObject was instantiated at runtime and the model loaded event has already fired.
-        /// </summary>
-        private void CheckModelAlreadyLoaded()
-        {
-            if (!MotionControllerVisualizer.ConfirmInitialized())
-            {
-                // The motion controller visualizer singleton could not be found.
-                return;
-            }
-
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            MotionControllerInfo newController;
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out newController))
-            {
-                AddControllerTransform(newController);
-		
         protected virtual void RefreshControllerTransform()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             ControllerInfo = null;
             ElementTransform = null;
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out ControllerInfo))
-            {
-                AddControllerTransform(ControllerInfo);
-            }
+            TryAndAddControllerTransform();
 #endif
         }
     }

@@ -91,5 +91,11 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
         }
+        void Reset()
+        {
+            // We want the default value of Handedness of Controller finders to be Unknown so it doesn't attach to random object.
+            // But we also want the Editor to start with a useful default, so we set a Left handedness on inspector reset.
+            Handedness = UnityEngine.XR.WSA.Input.InteractionSourceHandedness.Left;
+        }
     }
 }
