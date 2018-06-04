@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
 {
     [CustomEditor(typeof(SpeechInputHandler))]
-    public class SpeechInputHandlerEditor : Editor
+    public class SpeechInputHandlerInspector : Editor
     {
         private static readonly GUIContent RemoveButtonContent = new GUIContent("-", "Remove keyword");
         private static readonly GUIContent AddButtonContent = new GUIContent("+", "Add keyword");
@@ -28,15 +28,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
             keywordsProperty = serializedObject.FindProperty("keywords");
             isGazeRequiredProperty = serializedObject.FindProperty("isGazeRequired");
             persistentKeywordsProperty = serializedObject.FindProperty("persistentKeywords");
+            registeredKeywords = RegisteredKeywords().Distinct().ToArray();
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+
+            if (registeredKeywords == null || registeredKeywords.Length == 0)
+            {
+
+                EditorGUILayout.HelpBox("No keywords registered.\n\nKeywords can be registered via Speech Commands Profile on the Mixed Reality Manager's Configuration Profile.", MessageType.Error);
+                return;
+            }
+
             EditorGUILayout.PropertyField(isGazeRequiredProperty);
             EditorGUILayout.PropertyField(persistentKeywordsProperty);
 
-            registeredKeywords = RegisteredKeywords().Distinct().ToArray();
             ShowList(keywordsProperty);
             serializedObject.ApplyModifiedProperties();
 
@@ -93,17 +101,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
 
                 if (!elementRemoved && elementExpanded)
                 {
-                    SerializedProperty keywordProperty = elementProperty.FindPropertyRelative("Keyword");
+                    SerializedProperty keywordProperty = elementProperty.FindPropertyRelative("keyword");
                     string[] keywords = availableKeywords.Concat(new[] { keywordProperty.stringValue }).OrderBy(keyword => keyword).ToArray();
                     int previousSelection = ArrayUtility.IndexOf(keywords, keywordProperty.stringValue);
-                    int currentSelection = EditorGUILayout.Popup("Keyword", previousSelection, keywords);
+                    int currentSelection = EditorGUILayout.Popup("keyword", previousSelection, keywords);
 
                     if (currentSelection != previousSelection)
                     {
                         keywordProperty.stringValue = keywords[currentSelection];
                     }
 
-                    SerializedProperty responseProperty = elementProperty.FindPropertyRelative("Response");
+                    SerializedProperty responseProperty = elementProperty.FindPropertyRelative("response");
                     EditorGUILayout.PropertyField(responseProperty, true);
                 }
             }
