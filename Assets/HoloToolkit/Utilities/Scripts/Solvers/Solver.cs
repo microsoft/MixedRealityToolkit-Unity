@@ -93,6 +93,9 @@ namespace HoloToolkit.Unity
             SeekTrackedObject();
         }
 
+        /// <summary>
+        /// Restarts the coroutine that seeks out the proper attchment point, so this game object will begin tracking the object most recently assigned to it.
+        /// </summary>
         public virtual void SeekTrackedObject()
         {
             //TransformTarget overrides ObjectToReferenceEnum
