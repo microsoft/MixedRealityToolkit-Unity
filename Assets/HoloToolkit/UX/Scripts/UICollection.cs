@@ -65,6 +65,8 @@ namespace HoloToolkit.UI.Keyboard
             // Verify this is attached to a GameObject with a rect transform
             rectTransform = GetComponent<RectTransform>();
 
+            if (!Application.isEditor) { return; }
+
             // Collect children items already added (likely added in the Editor)
             CollectItems();
             UpdateLayout();
@@ -121,7 +123,7 @@ namespace HoloToolkit.UI.Keyboard
         }
 
         private void CollectItems()
-        {
+        { 
             Items.Clear();
 
             foreach (Transform childTransform in transform)
