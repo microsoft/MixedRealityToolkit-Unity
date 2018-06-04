@@ -27,7 +27,11 @@ namespace HoloToolkit.Unity.InputModule
         public InteractionSourceHandedness Handedness
         {
             get { return handedness; }
-            set { handedness = value; }
+            set
+            {
+                handedness = value;
+                RefreshControllerTransform();
+            }
         }
 
         [SerializeField]
@@ -54,7 +58,8 @@ namespace HoloToolkit.Unity.InputModule
             {
                 CheckModelAlreadyLoaded();
             }
-
+            // Look if the controller has loaded.
+            RefreshControllerTransform();
             MotionControllerVisualizer.Instance.OnControllerModelLoaded += AddControllerTransform;
             MotionControllerVisualizer.Instance.OnControllerModelUnloaded += RemoveControllerTransform;
 #endif
@@ -134,7 +139,6 @@ namespace HoloToolkit.Unity.InputModule
             }
 #endif
         }
-
         /// <summary>
         /// Look if the controller was already loaded. This could happen if the
         /// GameObject was instantiated at runtime and the model loaded event has already fired.
@@ -152,6 +156,15 @@ namespace HoloToolkit.Unity.InputModule
             if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out newController))
             {
                 AddControllerTransform(newController);
+		
+        protected virtual void RefreshControllerTransform()
+        {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            ControllerInfo = null;
+            ElementTransform = null;
+            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out ControllerInfo))
+            {
+                AddControllerTransform(ControllerInfo);
             }
 #endif
         }

@@ -12,6 +12,9 @@ namespace HoloToolkit.Unity.UX
     {
         private SerializedProperty trackedObjectReferenceProperty;
         private SerializedProperty transformTargetProperty;
+        private SerializedProperty additionalOffsetProperty;
+        private SerializedProperty additionalRotationProperty;
+        SolverHandler solverHandler;
 
         protected override void OnEnable()
         {
@@ -19,6 +22,10 @@ namespace HoloToolkit.Unity.UX
 
             trackedObjectReferenceProperty = serializedObject.FindProperty("trackedObjectToReference");
             transformTargetProperty = serializedObject.FindProperty("transformTarget");
+            additionalOffsetProperty = serializedObject.FindProperty("additionalOffset");
+            additionalRotationProperty = serializedObject.FindProperty("additionalRotation");
+
+            solverHandler = target as SolverHandler;
         }
 
         public override void OnInspectorGUI()
@@ -26,10 +33,24 @@ namespace HoloToolkit.Unity.UX
             serializedObject.Update();
             EditorGUILayout.Space();
 
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(trackedObjectReferenceProperty);
-            EditorGUILayout.PropertyField(transformTargetProperty);
+            bool trackedObjectChanged = EditorGUI.EndChangeCheck();
+            
+            if (!Application.isPlaying)
+            {
+                EditorGUILayout.PropertyField(additionalOffsetProperty);
+                EditorGUILayout.PropertyField(additionalRotationProperty);
+            }
+
+            EditorGUILayout.PropertyField(transformTargetProperty, new GUIContent("Tracked Transform"));
 
             serializedObject.ApplyModifiedProperties();
+            if (trackedObjectChanged)
+            {
+                solverHandler.TransformTarget = null;
+                solverHandler.AttachToNewTrackedObject();
+            }
         }
     }
 }
