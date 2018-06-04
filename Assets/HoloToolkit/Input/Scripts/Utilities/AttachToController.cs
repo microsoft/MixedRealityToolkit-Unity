@@ -97,6 +97,7 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
         }
+
         private void Reset()
         {
             // We want the default value of Handedness of Controller finders to be Unknown so it doesn't attach to random object.

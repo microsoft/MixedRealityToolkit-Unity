@@ -21,7 +21,7 @@ namespace HoloToolkit.Unity
             relatedSolver = solver;
         }
 
-        protected void Start()
+        private void Start()
         {
             // We need to prevent this SolverHandler from updating all the other solvers, so they don't get updated twice.
             m_Solvers.Clear();
@@ -41,7 +41,10 @@ namespace HoloToolkit.Unity
             }
 
             // We need to reattach to the appropriate controller
-            TryAndAddControllerTransform();
+            if (MotionControllerVisualizer.Instance.TryGetControllerModel(Handedness, out ControllerInfo))
+            {
+                AddControllerTransform(ControllerInfo);
+            }
             // This is the key piece that differs from the parent. We don't want to tell all the sovlers to seek, just the one that matters to us.
             relatedSolver.SeekTrackedObject();
         }
