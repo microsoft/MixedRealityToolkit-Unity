@@ -33,32 +33,7 @@ namespace HoloToolkit.Unity
         public TrackedObjectToReferenceEnum TrackedObjectToReference
         {
             get { return trackedObjectToReference; }
-            set
-            {
-                trackedObjectToReference = value;
-                TransformTarget = null;
-                AttachToNewTrackedObject();
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Add an additional offset of the tracked object to base the solver on. Useful for tracking something like a halo position above your head or off the side of a controller. Cannot be updated once Play begins.")]
-        private Vector3 additionalOffset;
-
-        [SerializeField]
-        [Tooltip("Add an additional rotation on top ofthe tracked object. Useful for tracking what is essentially the up or right/left vectors. Cannot be updated once Play begins.")]
-        private Vector3 additionalRotation;
-        
-        public Vector3 AdditionalOffset
-        {
-            get { return additionalOffset;}
-            set { additionalOffset = value;}
-        }
-
-        public Vector3 AdditionalRotation
-        {
-            get { return additionalRotation;}
-            set { additionalRotation = value;}
+            set { trackedObjectToReference = value; }
         }
 
         [SerializeField]
@@ -83,7 +58,7 @@ namespace HoloToolkit.Unity
 
         private float LastUpdateTime { get; set; }
 
-        protected List<Solver> m_Solvers = new List<Solver>();
+        private List<Solver> m_Solvers = new List<Solver>();
 
         private void Awake()
         {
@@ -111,46 +86,6 @@ namespace HoloToolkit.Unity
                     solver.SolverUpdate();
                 }
             }
-        }
-
-        public virtual void AttachToNewTrackedObject()
-        {
-
-            switch (trackedObjectToReference)
-            {
-                case TrackedObjectToReferenceEnum.MotionControllerLeft:
-                default:
-                    Handedness = UnityEngine.XR.WSA.Input.InteractionSourceHandedness.Left;
-                    break;
-                case TrackedObjectToReferenceEnum.MotionControllerRight:
-                    Handedness = UnityEngine.XR.WSA.Input.InteractionSourceHandedness.Right;
-                    break;
-            }
-
-            // We need to reattach to the appropriate controller
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(Handedness, out ControllerInfo))
-            {
-                AddControllerTransform(ControllerInfo);
-            }
-            foreach (Solver solver in m_Solvers)
-            {
-                solver.SeekTrackedObject();
-            }
-        }
-
-        public bool RequiresOffset()
-        {
-            return AdditionalOffset.sqrMagnitude != 0 || AdditionalRotation.sqrMagnitude != 0;
-        }
-
-        public Transform MakeOffsetTransform(Transform parentTransform)
-        {
-            GameObject transformWithOffset = new GameObject();
-            transformWithOffset.transform.parent = parentTransform;
-            transformWithOffset.transform.localPosition = AdditionalOffset;
-            transformWithOffset.transform.localRotation = Quaternion.Euler(AdditionalRotation);
-            transformWithOffset.name = string.Format("Offset from Tracked Object: {0}, {1}", AdditionalOffset, AdditionalRotation);
-            return transformWithOffset.transform;
         }
 
         [Serializable]
