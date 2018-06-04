@@ -39,7 +39,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         [SerializeField]
-        private InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
+        private InteractionSourceHandedness handedness = InteractionSourceHandedness.Unknown;
 
         public Transform ElementTransform { get { return elementTransform; } private set { elementTransform = value; } }
         private Transform elementTransform;
@@ -95,7 +95,10 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (newHandedness != handedness)
             {
-                RemoveControllerTransform(ControllerInfo);
+                if (ControllerInfo != null)
+                {
+                    RemoveControllerTransform(ControllerInfo);
+                }
                 handedness = newHandedness;
                 TryAndAddControllerTransform();
             }
