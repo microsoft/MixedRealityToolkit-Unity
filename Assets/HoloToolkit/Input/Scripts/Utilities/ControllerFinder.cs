@@ -29,13 +29,16 @@ namespace HoloToolkit.Unity.InputModule
             get { return handedness; }
             set
             {
-                handedness = value;
-                RefreshControllerTransform();
+                // We need to refresh which controller we're attached to if we switch handedness.
+                if (handedness != value)
+                {
+                    handedness = value;
+                    RefreshControllerTransform();
+                }
             }
         }
 
         [SerializeField]
-        // TODO: ercart: switch this to Unknown so the first onEnabled doesn't grab a random hand we don't care about
         private InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
 
         public Transform ElementTransform { get { return elementTransform; } private set { elementTransform = value; } }
