@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +12,7 @@ using UnityEngine;
 /// The dynamic functions can be used to obtain boundingcube info on an object's Update loop. Operations
 /// are minimized in the dynamic use scenario.
 /// </summary>
-public class BoundingBoxHelper : MonoBehaviour
+public class BoundingBoxHelper
 {
     readonly int[] face0 = { 0, 1, 3, 2 };
     readonly int[] face1 = { 1, 5, 7, 3 };
