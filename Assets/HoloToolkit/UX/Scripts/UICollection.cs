@@ -122,6 +122,7 @@ namespace HoloToolkit.UI.Keyboard
 
         private void CollectItems()
         {
+            if (!Application.isEditor) { return; }
             Items.Clear();
 
             foreach (Transform childTransform in transform)
@@ -136,6 +137,7 @@ namespace HoloToolkit.UI.Keyboard
 
         protected virtual void UpdateLayout()
         {
+            if (!Application.isEditor) { return; }
             Rect rect = rectTransform.rect;
 
             Vector2 updatedSize = Vector2.zero;
