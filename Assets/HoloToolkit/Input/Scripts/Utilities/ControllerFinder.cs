@@ -139,6 +139,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 #endif
         }
+
         /// <summary>
         /// Look if the controller was already loaded. This could happen if the
         /// GameObject was instantiated at runtime and the model loaded event has already fired.

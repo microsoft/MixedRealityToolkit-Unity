@@ -179,6 +179,7 @@ namespace HoloToolkit.Unity
             Vector3 elementDelta = elementPoint - refPoint;
             float elementDist = elementDelta.magnitude;
             Vector3 elementDir = elementDist > 0 ? elementDelta / elementDist : Vector3.one;
+            float flip = Vector3.Dot(elementDelta, refDir);
 
             // Generate basis: First get axis perp to refDir pointing toward element
             Vector3 elementDirPerp = (elementDir - refDir);
@@ -197,7 +198,11 @@ namespace HoloToolkit.Unity
             float clampedDistance = IgnoreDistanceClamp ? elementDist : Mathf.Clamp(elementDist, MinDistance, MaxDistance);
 
             // If the angle was clamped, do some special update stuff
-            if (angDegree != angDegreeClamped)
+            if (flip < 0)
+            {
+                desiredPos = refPoint + refDir;
+            }
+            else if (angDegree != angDegreeClamped)
             {
                 float angRad = angDegreeClamped * Mathf.Deg2Rad;
 

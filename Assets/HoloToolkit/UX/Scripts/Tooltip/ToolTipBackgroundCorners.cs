@@ -18,13 +18,13 @@ namespace HoloToolkit.UX.ToolTips
         }
 
         [SerializeField]
-        private Transform cornerTopLeft = null;
+        private Transform cornerTopLeft;
         [SerializeField]
-        private Transform cornerTopRight = null;
+        private Transform cornerTopRight;
         [SerializeField]
-        private Transform cornerBotRight = null;
+        private Transform cornerBotRight;
         [SerializeField]
-        private Transform cornerBotLeft = null;
+        private Transform cornerBotLeft;
         [SerializeField]
         [Range(0.01f, 2f)]
         private float cornerScale = 1f;

@@ -16,7 +16,7 @@ namespace HoloToolkit.UX.Progress
         public GameObject[] orbs;
 
         [SerializeField]
-        private Material orbMaterial = null;
+        private Material orbMaterial;
 
         public float RotationSpeedRawDegrees;
         public float SpacingDegrees;

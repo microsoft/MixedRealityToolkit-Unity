@@ -18,16 +18,16 @@ namespace HoloToolkit.UX.ToolTips
         /// </summary>
         [Header("Transform targets")]
         [SerializeField]
-        private Transform positionTarget = null;
+        private Transform positionTarget;
 
         [SerializeField]
-        private Transform rotationTarget = null;
+        private Transform rotationTarget;
 
         [SerializeField]
-        private Transform distortionTarget = null;
+        private Transform distortionTarget;
 
         [SerializeField]
-        private Transform attachPointOffset = null;
+        private Transform attachPointOffset;
 
         [Header("Blob settings")]
         [SerializeField]

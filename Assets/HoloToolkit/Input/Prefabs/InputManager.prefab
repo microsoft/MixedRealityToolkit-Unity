@@ -288,7 +288,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 0
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
@@ -515,10 +514,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ControllerPointerStabilizer: {fileID: 114345042324023316}
   Cursor: {fileID: 0}
-  searchForCursorIfUnset: 1
-  autoselectBestAvailable: 0
-  linePointerPrefab: {fileID: 1071219928950220, guid: 7dd8661d4bacf2546a0237daef280291,
-    type: 2}
+  SearchForCursorIfUnset: 1
 --- !u!114 &114749671304188880
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -35,24 +35,6 @@ namespace HoloToolkit.Unity.UX
         /// </summary>
         public float HoverOffsetZ = 0f;
 
-        private bool useTightFollow = false;
-
-        /// <summary>
-        /// Uses an alternate follow style that works better for very oblong objects
-        /// </summary>
-        public bool UseTightFollow
-        {
-            get
-            {
-                return useTightFollow;
-            }
-
-            set
-            {
-                useTightFollow = value;
-            }
-        }
-
         /// <summary>
         /// Class used for building toolbar buttons
         /// (not yet in use)
@@ -126,24 +108,6 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
-        private BoundingBoxRig boundingRig;
-
-        /// <summary>
-        /// a reference to the boundingBoxRig that the appbar turns on and off
-        /// </summary>
-        public BoundingBoxRig BoundingRig
-        {
-            get
-            {
-                return boundingRig;
-            }
-
-            set
-            {
-                boundingRig = value;
-            }
-        }
-
         public GameObject SquareButtonPrefab;
 
         public int NumDefaultButtons
@@ -187,7 +151,6 @@ namespace HoloToolkit.Unity.UX
         }
 
         public AppBarDisplayTypeEnum DisplayType = AppBarDisplayTypeEnum.Manipulation;
-
         public AppBarStateEnum State = AppBarStateEnum.Default;
 
         /// <summary>
@@ -200,13 +163,13 @@ namespace HoloToolkit.Unity.UX
         private ButtonTemplate[] buttons = new ButtonTemplate[MaxCustomButtons];
 
         [SerializeField]
-        private Transform buttonParent = null;
+        private Transform buttonParent;
 
         [SerializeField]
-        private GameObject baseRenderer = null;
+        private GameObject baseRenderer;
 
         [SerializeField]
-        private GameObject backgroundBar = null;
+        private GameObject backgroundBar;
 
         [SerializeField]
         private BoundingBox boundingBox;
@@ -219,7 +182,6 @@ namespace HoloToolkit.Unity.UX
         private int numDefaultButtons;
         private int numHiddenButtons;
         private int numManipulationButtons;
-        private BoundingBoxHelper helper;
 
         public void Reset()
         {
@@ -231,7 +193,6 @@ namespace HoloToolkit.Unity.UX
         public void Start()
         {
             State = AppBarStateEnum.Default;
-
             if (interactables.Count == 0)
             {
                 RefreshTemplates();
@@ -245,8 +206,6 @@ namespace HoloToolkit.Unity.UX
                     CreateButton(buttons[i], CustomButtonIconProfile);
                 }
             }
-
-            helper = new BoundingBoxHelper();
         }
 
         protected override void InputClicked(GameObject obj, InputClickedEventData eventData)
@@ -361,25 +320,43 @@ namespace HoloToolkit.Unity.UX
             }
 
             // Show our buttons
-            baseRenderer.SetActive(true); 
-            
-            //calculate best follow position for AppBar
-            Vector3 finalPosition = Vector3.zero;
-            Vector3 headPosition = Camera.main.transform.position;
-            LayerMask ignoreLayers = new LayerMask();
-            List<Vector3> boundsPoints = new List<Vector3>();
-            if (boundingBox != null)
-            {
-                helper.UpdateNonAABoundingBoxCornerPositions(boundingBox.Target, boundsPoints, ignoreLayers);
-                int followingFaceIndex = helper.GetIndexOfForwardFace(headPosition);
-                Vector3 faceNormal = helper.GetFaceNormal(followingFaceIndex);
+            baseRenderer.SetActive(true);
 
-                //finally we have new position
-                finalPosition = helper.GetFaceBottomCentroid(followingFaceIndex) + (faceNormal * HoverOffsetZ);
+            // Get positions for each side of the bounding box
+            // Choose the one that's closest to us
+            forwards[0] = boundingBox.transform.forward;
+            forwards[1] = boundingBox.transform.right;
+            forwards[2] = -boundingBox.transform.forward;
+            forwards[3] = -boundingBox.transform.right;
+            Vector3 scale = boundingBox.TargetBoundsLocalScale;
+            float maxXYScale = Mathf.Max(scale.x, scale.y);
+            float closestSoFar = Mathf.Infinity;
+            Vector3 finalPosition = Vector3.zero;
+            Vector3 finalForward = Vector3.zero;
+            Vector3 headPosition = Camera.main.transform.position;
+
+            for (int i = 0; i < forwards.Length; i++)
+            {
+                Vector3 nextPosition = boundingBox.transform.position +
+                (forwards[i] * -maxXYScale) +
+                (Vector3.up * (-scale.y * HoverOffsetYScale));
+
+                float distance = Vector3.Distance(nextPosition, headPosition);
+                if (distance < closestSoFar)
+                {
+                    closestSoFar = distance;
+                    finalPosition = nextPosition;
+                    finalForward = forwards[i];
+                }
             }
 
+            // Apply hover offset
+            finalPosition += (finalForward * -HoverOffsetZ);
+
             // Follow our bounding box
-            transform.position = smooth ? Vector3.Lerp(transform.position, finalPosition, 0.5f) : finalPosition;
+            transform.position = smooth ?
+                Vector3.Lerp(transform.position, finalPosition, 0.5f) :
+                finalPosition;
 
             // Rotate on the y axis
             Vector3 eulerAngles = Quaternion.LookRotation((boundingBox.transform.position - finalPosition).normalized, Vector3.up).eulerAngles;

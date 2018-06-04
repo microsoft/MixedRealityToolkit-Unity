@@ -65,7 +65,7 @@ namespace HoloToolkit.UX.ToolTips
         private float lifetime = 1.0f;
 
         [SerializeField]
-        private GameObject toolTipPrefab = null;
+        private GameObject toolTipPrefab;
 
         [SerializeField]
         private ConnectorFollowType followType = ConnectorFollowType.AnchorOnly;
@@ -85,17 +85,15 @@ namespace HoloToolkit.UX.ToolTips
         [SerializeField]
         private Vector3 manualPivotLocalPosition = Vector3.up;
 
-#if UNITY_EDITOR
         [SerializeField]
         [Range(0f, 1f)]
         private float pivotDistance = 0.25f;
-#endif
 
         [SerializeField]
         private string ToolTipText = "New Tooltip";
 
         [SerializeField]
-        private Transform Anchor = null;
+        private Transform Anchor;
 
         private float focusEnterTime = 0f;
 

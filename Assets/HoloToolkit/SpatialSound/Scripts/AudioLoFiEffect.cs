@@ -133,7 +133,7 @@ namespace HoloToolkit.Unity
             /// </summary>
             /// <param name="highPassCutoff">High pass filter cutoff frequency.</param>
             /// <param name="lowPassCutoff">Low pass filter cutoff frequency.</param>
-            public AudioLoFiFilterSettings(float highPassCutoff, float lowPassCutoff) : this()
+            public AudioLoFiFilterSettings(float highPassCutoff, float lowPassCutoff)
             {
                 HighPassCutoff = highPassCutoff;
                 LowPassCutoff = lowPassCutoff;
