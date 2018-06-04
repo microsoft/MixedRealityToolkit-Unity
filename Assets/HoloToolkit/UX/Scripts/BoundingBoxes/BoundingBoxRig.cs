@@ -15,7 +15,7 @@ namespace HoloToolkit.Unity.UX
         [Header("Flattening")]
         [SerializeField]
         [Tooltip("Choose this option if Rig is to be applied to a 2D object.")]
-        private BoundingBox.FlattenModeEnum flattenedAxis;
+        private BoundingBox.FlattenModeEnum flattenedAxis = default(BoundingBox.FlattenModeEnum);
 
         [Header("Customization Settings")]
         [SerializeField]
@@ -30,6 +30,9 @@ namespace HoloToolkit.Unity.UX
         [Header("Behavior")]
         [SerializeField]
         private float scaleRate = 1.0f;
+
+        [SerializeField]
+        private float appBarHoverOffsetZ = 0.05f;
 
         [SerializeField]
         [Tooltip("This is the maximum scale that one grab can accomplish.")]
@@ -48,7 +51,7 @@ namespace HoloToolkit.Unity.UX
 
         [SerializeField]
         [Tooltip("AppBar prefab.")]
-        private AppBar appBarPrefab;
+        private AppBar appBarPrefab = null;
 
         private BoundingBox boxInstance;
 
@@ -179,6 +182,7 @@ namespace HoloToolkit.Unity.UX
 
             appBarInstance = Instantiate(appBarPrefab) as AppBar;
             appBarInstance.BoundingBox = boxInstance;
+            appBarInstance.HoverOffsetZ = appBarHoverOffsetZ;
 
             boxInstance.IsVisible = false;
         }
@@ -476,9 +480,7 @@ namespace HoloToolkit.Unity.UX
             }
         }
 
-
-
-        private List<Vector3> GetBounds()
+        public List<Vector3> GetBounds()
         {
             if (objectToBound != null)
             {

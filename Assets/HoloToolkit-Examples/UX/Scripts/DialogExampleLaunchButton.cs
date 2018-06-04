@@ -14,7 +14,7 @@ namespace HoloToolkit.Examples.UX
     public class DialogExampleLaunchButton : MonoBehaviour
     {
         [SerializeField]
-        private Dialog dialogPrefab;
+        private Dialog dialogPrefab = null;
 
         [SerializeField]
         private bool isDialogLaunched;

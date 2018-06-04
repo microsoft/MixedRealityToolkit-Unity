@@ -128,10 +128,7 @@ namespace HoloToolkit.Unity
             }
 
             // We need to reattach to the appropriate controller
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(Handedness, out ControllerInfo))
-            {
-                AddControllerTransform(ControllerInfo);
-            }
+            TryAndAddControllerTransform();
             foreach (Solver solver in m_Solvers)
             {
                 solver.SeekTrackedObject();

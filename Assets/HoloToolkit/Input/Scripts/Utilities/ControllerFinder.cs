@@ -35,12 +35,14 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         [SerializeField]
+        // TODO: ercart: switch this to Unknown so the first onEnabled doesn't grab a random hand we don't care about
         private InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
 
         public Transform ElementTransform { get { return elementTransform; } private set { elementTransform = value; } }
         private Transform elementTransform;
 
         protected MotionControllerInfo ControllerInfo;
+
 #endif
 
         protected virtual void OnEnable()
@@ -81,10 +83,45 @@ namespace HoloToolkit.Unity.InputModule
 #endif
         }
 
+        /// <summary>
+        /// Allows the object to change which controller it tracks, based on handedness.
+        /// </summary>
+        /// <param name="newHandedness">The new handedness to track. Does nothing if the handedness doesn't change.</param>
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+        public void ChangeHandedness(InteractionSourceHandedness newHandedness)
+        {
+            if (newHandedness != handedness)
+            {
+                RemoveControllerTransform(ControllerInfo);
+                handedness = newHandedness;
+                TryAndAddControllerTransform();
+            }
+        }
+#endif
+
+        protected virtual void TryAndAddControllerTransform()
+        {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            /// Look if the controller was already loaded. This could happen if the
+            /// GameObject was instantiated at runtime and the model loaded event has already fired.
+            if (!MotionControllerVisualizer.ConfirmInitialized())
+            {
+                // The motion controller visualizer singleton could not be found.
+                return;
+            }
+            MotionControllerInfo newController;
+            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out newController))
+            {
+                AddControllerTransform(newController);
+            }
+#endif
+
+        }
+
         protected virtual void AddControllerTransform(MotionControllerInfo newController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            if (newController.Handedness == handedness)
+            if (newController.Handedness == handedness && !newController.Equals(ControllerInfo))
             {
                 if (!newController.TryGetElement(element, out elementTransform))
                 {
@@ -109,16 +146,12 @@ namespace HoloToolkit.Unity.InputModule
             }
 #endif
         }
-		
         protected virtual void RefreshControllerTransform()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             ControllerInfo = null;
             ElementTransform = null;
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out ControllerInfo))
-            {
-                AddControllerTransform(ControllerInfo);
-            }
+            TryAndAddControllerTransform();
 #endif
         }
     }
