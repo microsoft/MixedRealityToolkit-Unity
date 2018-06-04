@@ -1,8 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Attributes
@@ -35,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Attributes
             bool isValid = type.IsClass() || type.IsInterface() || type.IsValueType() && !type.IsEnum();
 #else
             bool isValid = type.IsClass || type.IsInterface || type.IsValueType && !type.IsEnum;
-#endif
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
             Debug.Assert(isValid, $"Invalid Type {type} in attribute.");
             Grouping = grouping;
         }
@@ -54,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Attributes
             return AllowAbstract || !type.IsAbstract();
 #else
             return AllowAbstract || !type.IsAbstract;
-#endif
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
         }
     }
 }
