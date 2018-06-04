@@ -2,6 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+#if UNITY_2017_2_OR_NEWER
+using UnityEngine.XR.WSA.Input;
+#else
+using UnityEngine.VR.WSA.Input;
+#endif
+
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -91,11 +97,13 @@ namespace HoloToolkit.Unity.InputModule
                 }
             }
         }
-        void Reset()
+        private void Reset()
         {
             // We want the default value of Handedness of Controller finders to be Unknown so it doesn't attach to random object.
             // But we also want the Editor to start with a useful default, so we set a Left handedness on inspector reset.
-            Handedness = UnityEngine.XR.WSA.Input.InteractionSourceHandedness.Left;
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            Handedness = InteractionSourceHandedness.Left;
+#endif
         }
     }
 }
