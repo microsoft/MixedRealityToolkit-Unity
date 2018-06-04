@@ -13,6 +13,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     [Serializable]
     public struct KeywordAndResponse
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="keyword">The keyword to listen for.</param>
+        /// <param name="response">The handler to be invoked when the keyword is recognized.</param>
+        public KeywordAndResponse(string keyword, UnityEvent response)
+        {
+            this.keyword = keyword;
+            this.response = response;
+        }
+
         [SerializeField]
         [Tooltip("The keyword to listen for.")]
         private string keyword;

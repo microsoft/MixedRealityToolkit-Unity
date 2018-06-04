@@ -482,6 +482,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Build
                         "Okay", "Cancel"))
                 {
                     Directory.Delete(BuildDeployPreferences.AbsoluteBuildDirectory, true);
+                    canUpdate = true;
                 }
 
                 if (canUpdate)
