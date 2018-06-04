@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.50224054, g: 0.5020953, b: 0.501867, a: 1}
+  m_IndirectSpecularColor: {r: 0.50217825, g: 0.5020953, b: 0.5018046, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -420,24 +420,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4000010330146594, guid: bfdc7f60d7205c84f82a4806a5352d60,
     type: 2}
   m_PrefabInternal: {fileID: 116723879}
---- !u!1 &170656240 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100004, guid: 1e23ec24c22068b4cbf47737c35e277b, type: 3}
-  m_PrefabInternal: {fileID: 1197191672}
---- !u!64 &170656244
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 170656240}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 1e23ec24c22068b4cbf47737c35e277b, type: 3}
 --- !u!1 &503309311
 GameObject:
   m_ObjectHideFlags: 0
@@ -968,24 +950,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &1191689814 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100004, guid: 284d5c2c421022e4f9056fb0a21ff91c, type: 3}
-  m_PrefabInternal: {fileID: 1222626213}
---- !u!64 &1191689818
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1191689814}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 284d5c2c421022e4f9056fb0a21ff91c, type: 3}
 --- !u!1001 &1197191672
 Prefab:
   m_ObjectHideFlags: 0
@@ -1073,7 +1037,6 @@ MonoBehaviour:
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: b614a09bc429623478e946d8170b15ae, type: 2}
   scaleRate: 4
-  appBarHoverOffsetZ: 0.05
   maxScale: 2
   rotationType: 0
   handMotionToRotate: 1
@@ -1081,6 +1044,20 @@ MonoBehaviour:
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
     type: 2}
+--- !u!64 &1197191676
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1197191674}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 1e23ec24c22068b4cbf47737c35e277b, type: 3}
 --- !u!1001 &1222626213
 Prefab:
   m_ObjectHideFlags: 0
@@ -1168,7 +1145,6 @@ MonoBehaviour:
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: b614a09bc429623478e946d8170b15ae, type: 2}
   scaleRate: 4
-  appBarHoverOffsetZ: 0.05
   maxScale: 2
   rotationType: 0
   handMotionToRotate: 1
@@ -1176,6 +1152,20 @@ MonoBehaviour:
     type: 2}
   appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
     type: 2}
+--- !u!64 &1222626217
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1222626215}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 284d5c2c421022e4f9056fb0a21ff91c, type: 3}
 --- !u!114 &1222626218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1555,8 +1545,8 @@ CanvasRenderer:
 GameObject:
   m_PrefabParentObject: {fileID: 100004, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
   m_PrefabInternal: {fileID: 1575359649}
---- !u!65 &1423768206
-BoxCollider:
+--- !u!64 &1423768206
+MeshCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -1565,8 +1555,10 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.5053554, y: 2.1822224, z: 1.9755292}
-  m_Center: {x: 0.26491338, y: 1.1037669, z: -0.00000014901163}
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
 --- !u!1 &1428215743 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100002, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
@@ -1592,7 +1584,6 @@ MonoBehaviour:
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: b614a09bc429623478e946d8170b15ae, type: 2}
   scaleRate: 4
-  appBarHoverOffsetZ: 0.05
   maxScale: 2
   rotationType: 0
   handMotionToRotate: 1
@@ -1858,14 +1849,6 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: -0.007
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400004, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
   m_IsPrefabParent: 0
@@ -1994,7 +1977,6 @@ MonoBehaviour:
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: b614a09bc429623478e946d8170b15ae, type: 2}
   scaleRate: 4
-  appBarHoverOffsetZ: 0.05
   maxScale: 2
   rotationType: 0
   handMotionToRotate: 1
@@ -2096,22 +2078,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1722965370}
---- !u!1 &1859408062 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100000, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
-  m_PrefabInternal: {fileID: 1575359649}
---- !u!65 &1859408066
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1859408062}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.7544937, y: 0.08, z: 1.7544943}
-  m_Center: {x: 0, y: -0.0000004379902, z: 0}
 --- !u!1 &1946117762
 GameObject:
   m_ObjectHideFlags: 0

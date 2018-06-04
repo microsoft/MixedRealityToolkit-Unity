@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Unity;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-#if !UNITY_EDITOR && UNITY_WSA && (!ENABLE_IL2CPP && NET_STANDARD_2_0)
+#if !UNITY_EDITOR && UNITY_WSA
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Windows.Networking;
@@ -29,6 +30,10 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// <param name="data">The data that arrived.</param>
         public delegate void OnDataReady(byte[] data);
 
+#if UNITY_WSA
+        public event OnDataReady DataReadyEvent;
+#endif
+
         /// <summary>
         /// The server to connect to when data is needed.
         /// </summary>
@@ -44,7 +49,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// </summary>
         private byte[] mostRecentDataBuffer;
 
-#if !UNITY_EDITOR && UNITY_WSA && (!ENABLE_IL2CPP && NET_STANDARD_2_0)
+#if !UNITY_EDITOR && UNITY_WSA
         /// <summary>
         /// Tracks the network connection to the remote machine we are sending meshes to.
         /// </summary>
@@ -59,8 +64,6 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// If we cannot connect to the server, this is how long we will wait before retrying.
         /// </summary>
         private float timeToDeferFailedConnections = 10.0f;
-
-        public event OnDataReady DataReadyEvent;
 #endif
 
         /// <summary>
@@ -104,7 +107,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         }
 
         // A lot of the work done in this class can only be done in UWP. The editor is not a UWP app.
-#if !UNITY_EDITOR && UNITY_WSA && (!ENABLE_IL2CPP && NET_STANDARD_2_0)
+#if !UNITY_EDITOR && UNITY_WSA
         private void RequestDataRetry()
         {
             if (!RequestAndGetData())
@@ -119,7 +122,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// </summary>
         public void ConfigureAsServer()
         {
-#if !UNITY_EDITOR && UNITY_WSA && (!ENABLE_IL2CPP && NET_STANDARD_2_0)
+#if !UNITY_EDITOR && UNITY_WSA
             Task t = new Task(() =>
             {
                 networkListener = new StreamSocketListener();
@@ -140,7 +143,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
         /// </summary>
         private bool ConnectListener()
         {
-#if !UNITY_EDITOR && UNITY_WSA && (!ENABLE_IL2CPP && NET_STANDARD_2_0)
+#if !UNITY_EDITOR && UNITY_WSA
             if (waitingForConnection)
             {
                 Debug.Log("Not a good time to connect listener");
@@ -162,7 +165,7 @@ namespace HoloToolkit.Unity.SharingWithUNET
 #endif
         }
 
-#if !UNITY_EDITOR && UNITY_WSA && (!ENABLE_IL2CPP && NET_STANDARD_2_0)
+#if !UNITY_EDITOR && UNITY_WSA
         /// <summary>
         /// When a connection is made to us, this call back gets called and
         /// we send our data.

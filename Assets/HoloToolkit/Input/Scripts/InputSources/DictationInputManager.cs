@@ -101,7 +101,6 @@ namespace HoloToolkit.Unity.InputModule
 
         #endregion // Unity Methods
 
-
         /// <summary>
         /// Turns on the dictation recognizer and begins recording audio from the default microphone.
         /// </summary>
@@ -168,14 +167,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         public static IEnumerator StopRecording()
         {
-            yield return Instance.StopRecordingInternal();
-        }
-
-        /// <summary>
-        /// Ends the recording session.
-        /// </summary>
-        private IEnumerator StopRecordingInternal()
-        {
 #if UNITY_WSA || UNITY_STANDALONE_WIN
             if (!IsListening || isTransitioning)
             {
@@ -199,14 +190,6 @@ namespace HoloToolkit.Unity.InputModule
                 dictationRecognizer.Stop();
             }
 
-            StartCoroutine(FinishStopRecording());
-#else
-            return null;
-#endif
-        }
-
-        private IEnumerator FinishStopRecording()
-        {
             while (dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
                 yield return null;
@@ -214,6 +197,9 @@ namespace HoloToolkit.Unity.InputModule
 
             PhraseRecognitionSystem.Restart();
             isTransitioning = false;
+#else
+            return null;
+#endif
         }
 
         #region Dictation Recognizer Callbacks

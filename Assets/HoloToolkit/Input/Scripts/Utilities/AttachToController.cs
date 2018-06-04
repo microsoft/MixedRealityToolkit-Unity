@@ -2,6 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+#if UNITY_2017_2_OR_NEWER
+using UnityEngine.XR.WSA.Input;
+#else
+using UnityEngine.VR.WSA.Input;
+#endif
+
 
 namespace HoloToolkit.Unity.InputModule
 {
@@ -33,7 +39,15 @@ namespace HoloToolkit.Unity.InputModule
         {
             SetChildrenActive(false);
 
-            base.OnEnable();
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            // Look if the controller has loaded.
+            if (MotionControllerVisualizer.Instance.TryGetControllerModel(Handedness, out ControllerInfo))
+            {
+                AddControllerTransform(ControllerInfo);
+            }
+            MotionControllerVisualizer.Instance.OnControllerModelLoaded += AddControllerTransform;
+            MotionControllerVisualizer.Instance.OnControllerModelUnloaded += RemoveControllerTransform;
+#endif 
         }
 
         protected override void AddControllerTransform(MotionControllerInfo newController)
@@ -42,6 +56,8 @@ namespace HoloToolkit.Unity.InputModule
             if (!IsAttached && newController.Handedness == Handedness)
             {
                 base.AddControllerTransform(newController);
+
+                SetChildrenActive(true);
 
                 // Parent ourselves under the element and set our offsets
                 transform.parent = ElementTransform;
@@ -52,8 +68,6 @@ namespace HoloToolkit.Unity.InputModule
                 {
                     transform.localScale = ScaleOffset;
                 }
-
-                SetChildrenActive(true);
 
                 // Announce that we're attached
                 OnAttachToController();
@@ -72,9 +86,9 @@ namespace HoloToolkit.Unity.InputModule
 
                 OnDetachFromController();
 
-                SetChildrenActive(false);
-
                 transform.parent = null;
+
+                SetChildrenActive(false);
 
                 IsAttached = false;
             }
@@ -90,6 +104,15 @@ namespace HoloToolkit.Unity.InputModule
                     child.gameObject.SetActive(isActive);
                 }
             }
+        }
+
+        private void Reset()
+        {
+            // We want the default value of Handedness of Controller finders to be Unknown so it doesn't attach to random object.
+            // But we also want the Editor to start with a useful default, so we set a Left handedness on inspector reset.
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            Handedness = InteractionSourceHandedness.Left;
+#endif
         }
     }
 }

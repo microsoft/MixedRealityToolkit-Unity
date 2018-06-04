@@ -20,24 +20,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <summary>
         /// The pointer that this cursor should follow and process input from.
         /// </summary>
-        public IPointingSource Pointer
-        {
-            get { return pointer; }
-            set
-            {
-                // This value is used to determine the cursor's default distance.
-                // It is cached here to prevent repeated casting in the update loop.
-                pointerIsInputSourcePointer = value is InputSourcePointer;
-                pointer = value;
-            }
-        }
-        private IPointingSource pointer;
-
-        /// <summary>
-        /// Cached value if the pointer is of type InputSourcePointer,
-        /// to prevent repeated casting in the update loop.
-        /// </summary>
-        private bool pointerIsInputSourcePointer = false;
+        public IPointingSource Pointer { get; set; }
 
         /// <summary>
         /// Minimum distance for cursor if nothing is hit
@@ -128,12 +111,6 @@ namespace HoloToolkit.Unity.InputModule
         private Quaternion targetRotation;
 
         /// <summary>
-        /// Keeps track of the starting setting for DefaultCursorDistance,
-        /// to revert after a pointer overrides the value.
-        /// </summary>
-        private float originalDefaultCursorDistance;
-
-        /// <summary>
         /// Indicates if the cursor should be visible
         /// </summary>
         public bool IsVisible
@@ -149,8 +126,6 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Awake()
         {
-            originalDefaultCursorDistance = DefaultCursorDistance;
-
             // Use the setter to update visibility of the cursor at startup based on user preferences
             IsVisible = isVisible;
             SetVisibility(isVisible);
@@ -204,10 +179,6 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         protected virtual void RegisterManagers()
         {
-            // This accounts for any input sources that were detected before we register as a global listener below.
-            visibleHandsCount = (uint)InputManager.Instance.DetectedInputSources.Count;
-            IsHandVisible = visibleHandsCount > 0;
-
             // Register the cursor as a global listener, so that it can always get input events it cares about
             InputManager.Instance.AddGlobalListener(gameObject);
 
@@ -326,21 +297,6 @@ namespace HoloToolkit.Unity.InputModule
             {
                 TargetedObject = null;
                 TargetedCursorModifier = null;
-
-                if (pointerIsInputSourcePointer)
-                {
-                    // This value get re-queried every update, in case the app has
-                    // changed the pointing extent of the pointer for the current scenario.
-                    float distance = FocusManager.Instance.GetPointingExtent(Pointer);
-                    if (DefaultCursorDistance != distance)
-                    {
-                        DefaultCursorDistance = distance;
-                    }
-                }
-                else if (DefaultCursorDistance != originalDefaultCursorDistance)
-                {
-                    DefaultCursorDistance = originalDefaultCursorDistance;
-                }
 
                 targetPosition = RayStep.GetPointByDistance(Pointer.Rays, DefaultCursorDistance);
                 lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, DefaultCursorDistance);

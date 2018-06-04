@@ -155,5 +155,17 @@ namespace HoloToolkit.Unity.InputModule
             }
 #endif
         }
+		
+        protected virtual void RefreshControllerTransform()
+        {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            ControllerInfo = null;
+            ElementTransform = null;
+            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out ControllerInfo))
+            {
+                AddControllerTransform(ControllerInfo);
+            }
+#endif
+        }
     }
 }
