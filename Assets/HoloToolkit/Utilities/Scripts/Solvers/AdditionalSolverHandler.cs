@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+    [RequireComponent(typeof(SolverHandler))]
     public class AdditionalSolverHandler : SolverHandler
     {
         private Solver relatedSolver;        
@@ -23,7 +24,7 @@ namespace HoloToolkit.Unity
 
         protected void Start()
         {
-            // We need to prevent this SolverHandler from updating all the other solvers, so they don't get updated twice.
+            // We need to prevent this SolverHandler from updating all the other solvers, so they don't get updated twice every update.
             m_Solvers.Clear();
         }
 
