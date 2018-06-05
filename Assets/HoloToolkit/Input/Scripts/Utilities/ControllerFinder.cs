@@ -27,14 +27,7 @@ namespace HoloToolkit.Unity.InputModule
         public InteractionSourceHandedness Handedness
         {
             get { return handedness; }
-            set
-            {
-                if (handedness != value)
-                { 
-                    handedness = value;
-                    RefreshControllerTransform();
-                }
-            }
+            set { handedness = value; }
         }
 
         [SerializeField]
