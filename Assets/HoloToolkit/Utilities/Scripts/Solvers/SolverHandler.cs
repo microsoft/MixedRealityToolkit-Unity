@@ -56,17 +56,17 @@ namespace HoloToolkit.Unity
         [SerializeField]
         [Tooltip("Add an additional rotation on top of the tracked object. Useful for tracking what is essentially the up or right/left vectors. Cannot be updated once Play begins.")]
         private Vector3 additionalRotation;
-        
+
         public Vector3 AdditionalOffset
         {
-            get { return additionalOffset;}
-            set { additionalOffset = value;}
+            get { return additionalOffset; }
+            set { additionalOffset = value; }
         }
 
         public Vector3 AdditionalRotation
         {
-            get { return additionalRotation;}
-            set { additionalRotation = value;}
+            get { return additionalRotation; }
+            set { additionalRotation = value; }
         }
 
         [SerializeField]
@@ -104,57 +104,7 @@ namespace HoloToolkit.Unity
             //TransformTarget overrides TrackedObjectToReference
             if (!TransformTarget)
             {
-                switch (TrackedObjectToReference)
-                {
-                    case TrackedObjectToReferenceEnum.Head:
-                        if (RequiresOffset())
-                        {
-                            TransformTarget = MakeOffsetTransform(CameraCache.Main.transform);
-                        }
-                        else
-                        {
-                            //Base transform target to camera transform
-                            TransformTarget = CameraCache.Main.transform;
-                        }
-    #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-                        // No need to search for a controller if we've already attached to the head.
-                        Handedness = InteractionSourceHandedness.Unknown;
-    #endif
-                        break;
-                    case TrackedObjectToReferenceEnum.MotionControllerLeft:
-    #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-                        Handedness = InteractionSourceHandedness.Left;
-    #endif
-                        break;
-                    case TrackedObjectToReferenceEnum.MotionControllerRight:
-    #if UNITY_WSA && UNITY_2017_2_OR_NEWER
-                        Handedness = InteractionSourceHandedness.Right;
-    #endif
-                        break;
-                }
-            }
-        }
-
-        protected override void OnControllerFound()
-        {
-            if (!TransformTarget && TrackedObjectToReference != TrackedObjectToReferenceEnum.Head)
-            {
-                if (RequiresOffset())
-                {
-                    TransformTarget = MakeOffsetTransform(ElementTransform);
-                }
-                else
-                {
-                    TransformTarget = ElementTransform;
-                }
-            }
-        }
-
-        protected override void OnControllerLost()
-        {
-            if (TrackedObjectToReference != TrackedObjectToReferenceEnum.Head)
-            {
-                TransformTarget = null;
+                AttachToNewTrackedObject();
             }
         }
 
@@ -177,34 +127,64 @@ namespace HoloToolkit.Unity
             }
         }
 
-        public virtual void AttachToNewTrackedObject()
+        protected override void OnControllerFound()
         {
-            switch (trackedObjectToReference)
+            if (!TransformTarget && TrackedObjectToReference != TrackedObjectToReferenceEnum.Head)
             {
-                case TrackedObjectToReferenceEnum.MotionControllerLeft:
-                default:
-                    Handedness = UnityEngine.XR.WSA.Input.InteractionSourceHandedness.Left;
-                    break;
-                case TrackedObjectToReferenceEnum.MotionControllerRight:
-                    Handedness = UnityEngine.XR.WSA.Input.InteractionSourceHandedness.Right;
-                    break;
-            }
-
-            // We need to reattach to the appropriate controller
-            TryAndAddControllerTransform();
-            foreach (Solver solver in m_Solvers)
-            {
-                solver.SeekTrackedObject();
+                TrackTransform(ElementTransform);
             }
         }
 
-        // TODO: Make this private once the Solver coroutine moves into SolverHandler.
-        public bool RequiresOffset()
+        protected override void OnControllerLost()
+        {
+            if (TrackedObjectToReference != TrackedObjectToReferenceEnum.Head)
+            {
+                TransformTarget = null;
+            }
+        }
+
+        public virtual void AttachToNewTrackedObject()
+        {
+            switch (TrackedObjectToReference)
+            {
+                case TrackedObjectToReferenceEnum.Head:
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                    // No need to search for a controller if we've already attached to the head.
+                    Handedness = InteractionSourceHandedness.Unknown;
+#endif
+                    TrackTransform(CameraCache.Main.transform);
+                    break;
+                case TrackedObjectToReferenceEnum.MotionControllerLeft:
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                    Handedness = InteractionSourceHandedness.Left;
+#endif
+                    break;
+                case TrackedObjectToReferenceEnum.MotionControllerRight:
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+                    Handedness = InteractionSourceHandedness.Right;
+#endif
+                    break;
+            }
+        }
+
+        private void TrackTransform(Transform newTrackedTransform)
+        {
+            if (RequiresOffset())
+            {
+                TransformTarget = MakeOffsetTransform(newTrackedTransform);
+            }
+            else
+            {
+                TransformTarget = newTrackedTransform;
+            }
+        }
+
+        private bool RequiresOffset()
         {
             return AdditionalOffset.sqrMagnitude != 0 || AdditionalRotation.sqrMagnitude != 0;
         }
 
-        public Transform MakeOffsetTransform(Transform parentTransform)
+        private Transform MakeOffsetTransform(Transform parentTransform)
         {
             GameObject transformWithOffset = new GameObject();
             transformWithOffset.transform.parent = parentTransform;
