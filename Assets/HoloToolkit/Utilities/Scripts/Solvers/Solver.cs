@@ -1,10 +1,8 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
-
 
 namespace HoloToolkit.Unity
 {
@@ -296,7 +294,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        ///    Updates only the working position to goal witih smoothing
+        ///    Updates only the working position to goal with smoothing
         /// </summary>
         public void UpdateWorkingPosToGoal()
         {
@@ -311,7 +309,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        ///    Updates only the working rotation to goal witih smoothing
+        ///    Updates only the working rotation to goal with smoothing
         /// </summary>
         public void UpdateWorkingRotToGoal()
         {
@@ -326,7 +324,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        ///    Updates only the working scale to goal witih smoothing
+        ///    Updates only the working scale to goal with smoothing
         /// </summary>
         public void UpdateWorkingScaleToGoal()
         {

@@ -156,6 +156,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 #endif
         }
+
         protected virtual void RefreshControllerTransform()
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
