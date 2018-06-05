@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 33641851672436378}
   - component: {fileID: 23899599402834066}
   m_Layer: 0
-  m_Name: ChaseHandThenOffsetThenFace Head
+  m_Name: ChaseHandThenOffsetThenFaceHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -185,6 +185,17 @@ Prefab:
       propertyPath: UpdateSolverTargetToClickSource
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: hideThis
+      value: 
+      objectReference: {fileID: 543393448}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: spawnThis
+      value: 
+      objectReference: {fileID: 1179292221703190, guid: 5c14b32410fac234da87f96799ae1548,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 687094229f7a92743bd68e3e190259ae, type: 2}
   m_IsPrefabParent: 0
@@ -759,6 +770,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d5c87b6b3e39bb14290c4bbb8bfdb768, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &538504200 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1108371264373750, guid: d5c87b6b3e39bb14290c4bbb8bfdb768,
+    type: 2}
+  m_PrefabInternal: {fileID: 538504199}
 --- !u!1 &543393448
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,6 +985,17 @@ Prefab:
       propertyPath: UpdateSolverTargetToClickSource
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: hideThis
+      value: 
+      objectReference: {fileID: 831262266}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: spawnThis
+      value: 
+      objectReference: {fileID: 1832389131935346, guid: fc0e559de16d1414e93602b9ba3db41f,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 687094229f7a92743bd68e3e190259ae, type: 2}
   m_IsPrefabParent: 0
@@ -1211,6 +1238,17 @@ Prefab:
       propertyPath: UpdateSolverTargetToClickSource
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: hideThis
+      value: 
+      objectReference: {fileID: 1250903681}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: spawnThis
+      value: 
+      objectReference: {fileID: 1307245229378308, guid: 63883dad6d770cd46a38c4460c42d0f8,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 687094229f7a92743bd68e3e190259ae, type: 2}
   m_IsPrefabParent: 0
@@ -1740,14 +1778,20 @@ Prefab:
       propertyPath: UpdateSolverTargetToClickSource
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: hideThis
+      value: 
+      objectReference: {fileID: 142143629}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: spawnThis
+      value: 
+      objectReference: {fileID: 1644659546057122, guid: 94fe4f3b108f09740a30615bc50b638d,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 687094229f7a92743bd68e3e190259ae, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1343763603 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1108371264373750, guid: d5c87b6b3e39bb14290c4bbb8bfdb768,
-    type: 2}
-  m_PrefabInternal: {fileID: 538504199}
 --- !u!1001 &1461201859
 Prefab:
   m_ObjectHideFlags: 0
@@ -1876,6 +1920,17 @@ Prefab:
       propertyPath: UpdateSolverTargetToClickSource
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: hideThis
+      value: 
+      objectReference: {fileID: 2124696266}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: spawnThis
+      value: 
+      objectReference: {fileID: 1041976978773994, guid: 4d6987080cdce0c40a6452380118c50b,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 687094229f7a92743bd68e3e190259ae, type: 2}
   m_IsPrefabParent: 0
@@ -2040,6 +2095,17 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -90.328
       objectReference: {fileID: 0}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: hideThis
+      value: 
+      objectReference: {fileID: 1211600887}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: spawnThis
+      value: 
+      objectReference: {fileID: 1142712698810798, guid: c484e6b755f90bd4eaa30a97ddeecfc1,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 687094229f7a92743bd68e3e190259ae, type: 2}
   m_IsPrefabParent: 0
@@ -2163,6 +2229,17 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -90.328
       objectReference: {fileID: 0}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: hideThis
+      value: 
+      objectReference: {fileID: 456805605}
+    - target: {fileID: 114459743357777030, guid: 687094229f7a92743bd68e3e190259ae,
+        type: 2}
+      propertyPath: spawnThis
+      value: 
+      objectReference: {fileID: 1946721682696148, guid: ccfcb09aaea58804abfca92a57743291,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 687094229f7a92743bd68e3e190259ae, type: 2}
   m_IsPrefabParent: 0
@@ -2538,8 +2615,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9199cac476923694fbc4d4fc45fe2394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HideThis: {fileID: 1343763603}
-  SpawnThis: {fileID: 1108371264373750, guid: d5c87b6b3e39bb14290c4bbb8bfdb768, type: 2}
+  hideThis: {fileID: 538504200}
+  spawnThis: {fileID: 1108371264373750, guid: d5c87b6b3e39bb14290c4bbb8bfdb768, type: 2}
   UpdateSolverTargetToClickSource: 0
 --- !u!1 &2124696266 stripped
 GameObject:
