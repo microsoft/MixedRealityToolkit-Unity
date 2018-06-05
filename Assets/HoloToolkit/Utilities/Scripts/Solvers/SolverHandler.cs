@@ -134,6 +134,7 @@ namespace HoloToolkit.Unity
             }
         }
 
+        // TODO: Make this private once the Solver coroutine moves into SolverHandler.
         public bool RequiresOffset()
         {
             return AdditionalOffset.sqrMagnitude != 0 || AdditionalRotation.sqrMagnitude != 0;
