@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114474594170136286}
   - component: {fileID: 114785721768203206}
   m_Layer: 0
-  m_Name: Body Locked
+  m_Name: BodyLocked
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,6 +98,8 @@ MonoBehaviour:
   element: 6
   handedness: 1
   trackedObjectToReference: 0
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 0}
 --- !u!114 &114785721768203206
 MonoBehaviour:

@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 33641851672436378}
   - component: {fileID: 23899599402834066}
   m_Layer: 0
-  m_Name: Chase Hand + Offset + Face Head
+  m_Name: ChaseHandThenOffsetThenFace Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -274,6 +274,8 @@ MonoBehaviour:
   element: 6
   handedness: 1
   trackedObjectToReference: 2
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 0}
 --- !u!114 &114578645221470212
 MonoBehaviour:
@@ -289,6 +291,8 @@ MonoBehaviour:
   element: 6
   handedness: 1
   trackedObjectToReference: 0
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 0}
 --- !u!114 &114894140878539200
 MonoBehaviour:

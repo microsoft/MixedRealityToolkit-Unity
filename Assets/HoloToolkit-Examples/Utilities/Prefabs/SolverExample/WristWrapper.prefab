@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4379708329699554}
   m_Layer: 0
-  m_Name: Wrist Wrapper
+  m_Name: WristWrapper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -591,6 +591,8 @@ MonoBehaviour:
   element: 6
   handedness: 1
   trackedObjectToReference: 1
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 0}
 --- !u!114 &114148732877180316
 MonoBehaviour:
@@ -606,6 +608,8 @@ MonoBehaviour:
   element: 6
   handedness: 1
   trackedObjectToReference: 2
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 0}
 --- !u!114 &114688496070629772
 MonoBehaviour:
@@ -695,12 +699,12 @@ MonoBehaviour:
   LayoutType: 0
   IgnoreInactiveTransforms: 1
   Radius: 0.05
-  RadialRange: 360
-  Rows: 1
-  CellWidth: 0.06
-  CellHeight: 0.05
-  HorizontalMargin: 0.05
-  VerticalMargin: 0.05
-  DepthMargin: 0.05
+  radialRange: 180
+  rows: 3
+  cellWidth: 0.5
+  cellHeight: 0.5
+  horizontalMargin: 0.2
+  verticalMargin: 0.2
+  depthMargin: 0.2
   SphereMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   CylinderMesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}

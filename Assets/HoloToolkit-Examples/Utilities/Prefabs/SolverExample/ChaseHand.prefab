@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 33503633605293008}
   - component: {fileID: 23066390738997328}
   m_Layer: 0
-  m_Name: Chase Hand
+  m_Name: ChaseHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,6 +98,8 @@ MonoBehaviour:
   element: 6
   handedness: 1
   trackedObjectToReference: 2
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 0}
 --- !u!114 &114604167685196832
 MonoBehaviour:
