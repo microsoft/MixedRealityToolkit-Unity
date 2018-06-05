@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 33336251020598190}
   - component: {fileID: 23798581092926046}
   m_Layer: 0
-  m_Name: ChaseHandThenOffset
+  m_Name: ChaseHandWithOffset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
