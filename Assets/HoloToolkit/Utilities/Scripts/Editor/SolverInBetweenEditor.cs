@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity.UX
     {
         private SerializedProperty trackedObjectReferenceProperty;
         private SerializedProperty transformTargetProperty;
-        SolverInBetween solverInBetween;
+        private SolverInBetween solverInBetween;
 
         private static readonly string[] fieldsToExclude = new string[] { "m_Script", "secondTransformOverride" };
 
