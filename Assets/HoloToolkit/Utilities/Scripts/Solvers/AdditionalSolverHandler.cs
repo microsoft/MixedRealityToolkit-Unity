@@ -9,7 +9,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     [RequireComponent(typeof(SolverHandler))]
-    public class AdditionalSolverHandler : SolverHandler
+    public class SecondaryTrackedObjectSolverHandler : SolverHandler
     {
         private Solver relatedSolver;        
 

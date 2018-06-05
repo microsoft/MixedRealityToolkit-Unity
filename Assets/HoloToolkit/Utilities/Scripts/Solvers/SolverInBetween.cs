@@ -60,7 +60,7 @@ namespace HoloToolkit.Unity
         [Tooltip("This transform overrides any Tracked Object as the second point in the In Between.")]
         private Transform secondTransformOverride;
 
-        private AdditionalSolverHandler secondSolverHandler;
+        private SecondaryTrackedObjectSolverHandler secondSolverHandler;
 
         private void OnValidate()
         {
@@ -77,7 +77,7 @@ namespace HoloToolkit.Unity
         protected override void Start()
         {
             // We need to get the secondSolverHandler ready before we tell them both to seek a tracked object.
-            secondSolverHandler = gameObject.AddComponent<AdditionalSolverHandler>();
+            secondSolverHandler = gameObject.AddComponent<SecondaryTrackedObjectSolverHandler>();
             secondSolverHandler.SetRelatedSolver(this);
             secondSolverHandler.TrackedObjectToReference = TrackedObjectForSecondTransform;
             secondSolverHandler.TransformTarget = secondTransformOverride;
