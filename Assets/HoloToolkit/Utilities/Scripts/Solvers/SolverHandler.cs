@@ -115,7 +115,6 @@ namespace HoloToolkit.Unity
 
         public virtual void AttachToNewTrackedObject()
         {
-
             switch (trackedObjectToReference)
             {
                 case TrackedObjectToReferenceEnum.MotionControllerLeft:
