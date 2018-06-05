@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
 {
+    // TODO
     public struct GenericOpenXRController : IMixedRealityController
     {
         public GenericOpenXRController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()

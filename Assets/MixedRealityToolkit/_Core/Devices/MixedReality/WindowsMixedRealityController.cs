@@ -43,20 +43,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         #region IMixedRealityController Interface Members
 
+        /// <inheritdoc/>
         public ControllerState ControllerState { get; private set; }
 
+        /// <inheritdoc/>
         public Handedness ControllerHandedness { get; }
 
+        /// <inheritdoc/>
         public IMixedRealityInputSource InputSource { get; private set; }
 
+        /// <inheritdoc/>
         public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; private set; }
 
+        /// <inheritdoc/>
         public void SetupInputSource<T>(T state)
         {
             InteractionSourceState interactionSourceState = CheckIfValidInteractionSourceState(state);
             SetupFromInteractionSource(interactionSourceState);
         }
 
+        /// <inheritdoc/>
         public void UpdateInputSource<T>(T state)
         {
             InteractionSourceState interactionSourceState = CheckIfValidInteractionSourceState(state);
@@ -67,6 +73,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         #region Setup and Update functions
 
+        /// <summary>
+        /// Read the Interaction Source State information and initialize an instance of a Windows Mixed Reality controller
+        /// </summary>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         public void SetupFromInteractionSource(InteractionSourceState interactionSourceState)
         {
             //Update the Tracked state of the controller
@@ -84,6 +94,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
         }
 
+        /// <summary>
+        /// Load the Interaction mappings for this controller from the configured Controller Mapping profile
+        /// </summary>
+        /// <param name="mappings">Configured mappings from a controller mapping profile</param>
         private void SetupFromMapping(InteractionMapping[] mappings)
         {
             for (uint i = 0; i < mappings.Length; i++)
@@ -93,6 +107,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
         }
 
+        /// <summary>
+        /// Create Interaction mappings from a device specific default set of action mappings
+        /// </summary>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         private void SetupWMRControllerDefaults(InteractionSourceState interactionSourceState)
         {
             InputAction[] inputActions = Managers.MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions;
@@ -136,6 +154,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
         }
 
+        /// <summary>
+        /// Update the controller data from the provided platform state
+        /// </summary>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         public void UpdateFromInteractionSource(InteractionSourceState interactionSourceState)
         {
             //Debug.Assert(interactionSourceState.source.id == SourceId, "An UpdateSourceState call happened with mismatched source ID.");
@@ -166,6 +188,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         #region Update data functions
 
+        /// <summary>
+        /// Update the "Controller" input from the device
+        /// </summary>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         private void UpdateControllerData(InteractionSourceState interactionSourceState)
         {
             // Get Controller start position and tracked state
@@ -180,36 +206,46 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
         }
 
+        /// <summary>
+        /// Update the "Spatial Pointer" input from the device
+        /// </summary>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         private void UpdatePointerData(InteractionSourceState interactionSourceState)
         {
             interactionSourceState.sourcePose.TryGetPosition(out pointerPosition, InteractionSourceNode.Pointer);
             interactionSourceState.sourcePose.TryGetRotation(out pointerRotation, InteractionSourceNode.Pointer);
 
-            //TODO - Review, as we no longer have a MixedRealityCameraParent, this will cause issue.
             if (CameraCache.Main.transform.parent != null)
             {
                 pointerPosition = CameraCache.Main.transform.parent.TransformPoint(pointerPosition);
                 pointerRotation.eulerAngles = CameraCache.Main.transform.parent.TransformDirection(pointerRotation.eulerAngles);
             }
-            //Interactions[DeviceInputType.SpatialPointer].SetValue(new Tuple<Vector3, Quaternion>(pointerPosition, pointerRotation));
+
             Interactions.SetDictionaryValue(DeviceInputType.SpatialPointer, new Tuple<Vector3, Quaternion>(pointerPosition, pointerRotation));
         }
 
+        /// <summary>
+        /// Update the "Spatial Grip" input from the device
+        /// </summary>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         private void UpdateGripData(InteractionSourceState interactionSourceState)
         {
             interactionSourceState.sourcePose.TryGetPosition(out gripPosition, InteractionSourceNode.Grip);
             interactionSourceState.sourcePose.TryGetRotation(out gripRotation, InteractionSourceNode.Grip);
 
-            //TODO - Review, as we no longer have a MixedRealityCameraParent, this will cause issue.
             if (CameraCache.Main.transform.parent != null)
             {
                 gripPosition = CameraCache.Main.transform.parent.TransformPoint(gripPosition);
                 gripRotation.eulerAngles = CameraCache.Main.transform.parent.TransformDirection(gripRotation.eulerAngles);
             }
-            //Interactions[DeviceInputType.SpatialGrip].SetValue(new Tuple<Vector3, Quaternion>(gripPosition, gripRotation));
+
             Interactions.SetDictionaryValue(DeviceInputType.SpatialGrip, new Tuple<Vector3, Quaternion>(gripPosition, gripRotation));
         }
 
+        /// <summary>
+        /// Update the Touchpad input from the device
+        /// </summary>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         private void UpdateTouchPadData(InteractionSourceState interactionSourceState)
         {
             if (interactionSourceState.touchpadTouched)
@@ -220,17 +256,25 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
         }
 
+        /// <summary>
+        /// Update the Thumbstick input from the device
+        /// </summary>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         private void UpdateThumbStickData(InteractionSourceState interactionSourceState)
         {
             if (Interactions.ContainsKey(DeviceInputType.ThumbStickPress)) Interactions.SetDictionaryValue(DeviceInputType.ThumbStickPress, interactionSourceState.thumbstickPressed);  //Interactions[DeviceInputType.ThumbStickPress].SetValue(interactionSourceState.thumbstickPressed);
-            //Interactions[DeviceInputType.ThumbStick].SetValue(interactionSourceState.thumbstickPosition);
+
             Interactions.SetDictionaryValue(DeviceInputType.ThumbStick, interactionSourceState.thumbstickPosition);
         }
 
+        /// <summary>
+        /// Update the Trigger input from the device
+        /// </summary>
+        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         private void UpdateTriggerData(InteractionSourceState interactionSourceState)
         {
             if (Interactions.ContainsKey(DeviceInputType.TriggerPress)) Interactions.SetDictionaryValue(DeviceInputType.TriggerPress, interactionSourceState.selectPressed);  //Interactions[DeviceInputType.TriggerPress].SetValue(interactionSourceState.selectPressed);
-            //Interactions[DeviceInputType.Trigger].SetValue(interactionSourceState.selectPressedAmount);
+
             Interactions.SetDictionaryValue(DeviceInputType.Trigger, interactionSourceState.selectPressedAmount);
         }
 

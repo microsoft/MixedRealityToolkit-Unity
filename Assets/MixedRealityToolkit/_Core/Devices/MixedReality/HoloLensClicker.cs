@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
     public struct HoloLensClicker : IMixedRealityController
     {
+        // TODO
         public HoloLensClicker(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
