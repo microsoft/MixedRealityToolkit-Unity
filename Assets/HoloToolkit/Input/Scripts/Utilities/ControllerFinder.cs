@@ -27,7 +27,8 @@ namespace HoloToolkit.Unity.InputModule
         public InteractionSourceHandedness Handedness
         {
             get { return handedness; }
-            set {
+            set
+            {
                 if (handedness != value)
                 { 
                     handedness = value;
