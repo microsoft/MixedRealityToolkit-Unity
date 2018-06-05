@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23881802533022504}
   - component: {fileID: 114935902293540568}
   m_Layer: 0
-  m_Name: In-between Hands
+  m_Name: InBetweenHands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,6 +122,6 @@ MonoBehaviour:
   GoalScale: {x: 0, y: 0, z: 0}
   Smoothing: 1
   Lifetime: 0
-  PartwayOffset: 0.5
+  partwayOffset: 0.5
   trackedObjectForSecondTransform: 1
   secondTransformOverride: {fileID: 0}

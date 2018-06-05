@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114383769280500332}
   - component: {fileID: 114755908734741902}
   m_Layer: 2
-  m_Name: Surface Magnetism + Radial View
+  m_Name: SurfaceMagnetismAndRadialView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,4 +168,6 @@ MonoBehaviour:
   element: 6
   handedness: 1
   trackedObjectToReference: 2
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 0}

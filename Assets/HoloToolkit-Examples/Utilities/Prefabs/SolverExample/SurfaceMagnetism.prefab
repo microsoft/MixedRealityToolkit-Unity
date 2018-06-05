@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114842819766563628}
   - component: {fileID: 114396026402588154}
   m_Layer: 2
-  m_Name: Surface Magnetism
+  m_Name: SurfaceMagnetism
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -222,4 +222,6 @@ MonoBehaviour:
   element: 6
   handedness: 1
   trackedObjectToReference: 2
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 0}

@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23207221420031080}
   - component: {fileID: 114459743357777030}
   m_Layer: 0
-  m_Name: Solver Swapping Volume
+  m_Name: SolverSwappingVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,8 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9199cac476923694fbc4d4fc45fe2394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HideThis: {fileID: 0}
-  SpawnThis: {fileID: 0}
+  hideThis: {fileID: 0}
+  spawnThis: {fileID: 0}
   UpdateSolverTargetToClickSource: 1
 --- !u!135 &135082391517649018
 SphereCollider:
