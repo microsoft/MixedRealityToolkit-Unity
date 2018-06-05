@@ -100,7 +100,9 @@ namespace HoloToolkit.Unity.InputModule
         {
             // We want the default value of Handedness of Controller finders to be Unknown so it doesn't attach to random object.
             // But we also want the Editor to start with a useful default, so we set a Left handedness on inspector reset.
+#if UNITY_2017_2_OR_NEWER
             Handedness = InteractionSourceHandedness.Left;
+#endif
         }
     }
 }
