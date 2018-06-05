@@ -21,11 +21,22 @@ namespace HoloToolkit.Unity
     /// </summary>
     public class SolverInBetween : Solver
     {
-        #region public members
-        
+        [SerializeField]
         [Tooltip("Distance along the center line the object will be located. 0.5 is halfway, 1.0 is at the second transform, 0.0 is at the first transform.")]
-        public float PartwayOffset= 0.5f;
-        #endregion
+        private float partwayOffset = 0.5f;
+
+        public float PartwayOffset
+        {
+            get
+            {
+                return partwayOffset;
+            }
+
+            set
+            {
+                partwayOffset = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("Tracked object to calculate position and orientation for the second object. If you want to manually override and use a scene object, use the TransformTarget field")]
@@ -44,7 +55,7 @@ namespace HoloToolkit.Unity
                 }
             }
         }
-      
+
         [SerializeField]
         [Tooltip("This transform overrides any Tracked Object as the second point in the In Between.")]
         private Transform secondTransformOverride;
