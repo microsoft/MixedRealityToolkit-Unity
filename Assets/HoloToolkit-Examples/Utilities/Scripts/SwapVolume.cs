@@ -4,69 +4,102 @@ using UnityEngine;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.InputModule;
 
-public class SwapVolume : MonoBehaviour, IInputClickHandler
+namespace HoloToolkit.Unity.InputModule.Tests
 {
-
-    public GameObject HideThis;
-    public GameObject SpawnThis;
-    public bool UpdateSolverTargetToClickSource = true;
-
-    private SolverHandler solverHandler;
-    private Vector3 defaultPosition;
-    private Quaternion defaultRotation;
-    private bool isOn = false;
-    private GameObject spawnedObject;
-
-	// Use this for initialization
-	void Start ()
+    public class SwapVolume : MonoBehaviour, IInputClickHandler
     {
-        solverHandler = SpawnThis.GetComponent<SolverHandler>();
-        defaultPosition = HideThis.transform.position;
-        defaultRotation = HideThis.transform.rotation;
-    }
 
-    public void OnInputClicked(InputClickedEventData eventData)
-    {
-        if (isOn)
+        [SerializeField]
+        private GameObject hideThis;
+
+        public GameObject HideThis
         {
-            if (spawnedObject != null)
+            get
             {
-                Destroy(spawnedObject);
+                return hideThis;
             }
-            if (HideThis != null)
+
+            set
             {
-                HideThis.SetActive(true);
+                hideThis = value;
             }
         }
-        else
+        [SerializeField]
+        private GameObject spawnThis;
+        public GameObject SpawnThis
         {
-            spawnedObject = Instantiate(SpawnThis, defaultPosition, defaultRotation);
-
-            if (UpdateSolverTargetToClickSource)
+            get
             {
-                solverHandler = spawnedObject.GetComponent<SolverHandler>();
+                return spawnThis;
+            }
 
-                InteractionSourceInfo sourceKind;
-                if (eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceKind))
+            set
+            {
+                spawnThis = value;
+            }
+        }
+
+        public bool UpdateSolverTargetToClickSource = true;
+
+        private SolverHandler solverHandler;
+        private Vector3 defaultPosition;
+        private Quaternion defaultRotation;
+        private bool isOn = false;
+        private GameObject spawnedObject;
+
+
+
+        // Use this for initialization
+        private void Start()
+        {
+            solverHandler = SpawnThis.GetComponent<SolverHandler>();
+            defaultPosition = HideThis.transform.position;
+            defaultRotation = HideThis.transform.rotation;
+        }
+
+        public void OnInputClicked(InputClickedEventData eventData)
+        {
+            if (isOn)
+            {
+                if (spawnedObject != null)
                 {
-
-                    switch (sourceKind)
-                    {
-                        case InteractionSourceInfo.Controller:
-                            solverHandler.TrackedObjectToReference = SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight;
-                            break;
-                        default:
-                            Debug.LogError("The click event came from a device that isn't tracked. Nothing to attach to! Use a controller to select an example.");
-                            break;
-                    }
+                    Destroy(spawnedObject);
+                }
+                if (HideThis != null)
+                {
+                    HideThis.SetActive(true);
                 }
             }
-            if (HideThis != null)
+            else
             {
-                HideThis.SetActive(false);
+                spawnedObject = Instantiate(SpawnThis, defaultPosition, defaultRotation);
+
+                if (UpdateSolverTargetToClickSource)
+                {
+                    solverHandler = spawnedObject.GetComponent<SolverHandler>();
+
+                    InteractionSourceInfo sourceKind;
+                    if (eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceKind))
+                    {
+
+                        switch (sourceKind)
+                        {
+                            case InteractionSourceInfo.Controller:
+                                solverHandler.TrackedObjectToReference = SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight;
+                                break;
+                            default:
+                                Debug.LogError("The click event came from a device that isn't tracked. Nothing to attach to! Use a controller to select an example.");
+                                break;
+                        }
+                    }
+                }
+                if (HideThis != null)
+                {
+                    HideThis.SetActive(false);
+                }
             }
+            isOn = !isOn;
+            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
-        isOn = !isOn;
-        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
     }
 }
