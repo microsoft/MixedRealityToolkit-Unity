@@ -43,9 +43,12 @@ namespace HoloToolkit.Unity
             get { return trackedObjectToReference; }
             set
             {
-                trackedObjectToReference = value;
-                TransformTarget = null;
-                AttachToNewTrackedObject();
+                if (trackedObjectToReference != value)
+                {
+                    trackedObjectToReference = value;
+                    TransformTarget = null;
+                    AttachToNewTrackedObject();
+                }
             }
         }
 
@@ -93,6 +96,10 @@ namespace HoloToolkit.Unity
 
         protected List<Solver> m_Solvers = new List<Solver>();
 
+        [SerializeField]
+        private bool updateSolvers = true;
+        public bool UpdateSolvers { get { return updateSolvers; } set { updateSolvers = value; } }
+
         private void Awake()
         {
             m_Solvers.AddRange(GetComponents<Solver>());
@@ -116,20 +123,23 @@ namespace HoloToolkit.Unity
 
         private void LateUpdate()
         {
-            for (int i = 0; i < m_Solvers.Count; ++i)
+            if (UpdateSolvers)
             {
-                Solver solver = m_Solvers[i];
-
-                if (solver.enabled)
+                for (int i = 0; i < m_Solvers.Count; ++i)
                 {
-                    solver.SolverUpdate();
+                    Solver solver = m_Solvers[i];
+
+                    if (solver.enabled)
+                    {
+                        solver.SolverUpdate();
+                    }
                 }
             }
         }
 
         protected override void OnControllerFound()
         {
-            if (!TransformTarget && TrackedObjectToReference != TrackedObjectToReferenceEnum.Head)
+            if (!TransformTarget)
             {
                 TrackTransform(ElementTransform);
             }
@@ -137,10 +147,7 @@ namespace HoloToolkit.Unity
 
         protected override void OnControllerLost()
         {
-            if (TrackedObjectToReference != TrackedObjectToReferenceEnum.Head)
-            {
-                TransformTarget = null;
-            }
+            TransformTarget = null;
         }
 
         public virtual void AttachToNewTrackedObject()

@@ -47,29 +47,21 @@ namespace HoloToolkit.Unity
 
         [SerializeField]
         [Tooltip("This transform overrides any Tracked Object as the second point in the In Between.")]
-        private Transform secondTransformOverride;
+        private Transform secondTransformOverride = null;
 
-        private SecondaryTrackedObjectSolverHandler secondSolverHandler;
+        private SolverHandler secondSolverHandler;
 
         private void OnValidate()
         {
-            if (secondSolverHandler != null && trackedObjectForSecondTransform != secondSolverHandler.TrackedObjectToReference)
-            {
-                secondSolverHandler.TrackedObjectToReference = trackedObjectForSecondTransform;
-            }
-            if (secondTransformOverride != null)
-            {
-                secondSolverHandler.TransformTarget = secondTransformOverride;
-            }
+            UpdateSecondSolverHandler();
         }
 
         protected void Start()
         {
             // We need to get the secondSolverHandler ready before we tell them both to seek a tracked object.
-            secondSolverHandler = gameObject.AddComponent<SecondaryTrackedObjectSolverHandler>();
-            secondSolverHandler.SetRelatedSolver(this);
-            secondSolverHandler.TrackedObjectToReference = TrackedObjectForSecondTransform;
-            secondSolverHandler.TransformTarget = secondTransformOverride;
+            secondSolverHandler = gameObject.AddComponent<SolverHandler>();
+            secondSolverHandler.UpdateSolvers = false;
+            UpdateSecondSolverHandler();
         }
 
         public override void SolverUpdate()
@@ -81,20 +73,33 @@ namespace HoloToolkit.Unity
                     AdjustPositionForOffset(solverHandler.TransformTarget, secondSolverHandler.TransformTarget);
                 }
             }
-
         }
 
-
-        private void AdjustPositionForOffset(Transform targTransform, Transform secondTransform)
+        private void AdjustPositionForOffset(Transform targetTransform, Transform secondTransform)
         {
-            if (targTransform != null && secondTransform != null)
+            if (targetTransform != null && secondTransform != null)
             {
 
-                Vector3 centerline = targTransform.position - secondTransform.position;
+                Vector3 centerline = targetTransform.position - secondTransform.position;
 
                 GoalPosition = secondTransform.position + (centerline * partwayOffset);
 
                 UpdateWorkingPosToGoal();
+            }
+        }
+
+        private void UpdateSecondSolverHandler()
+        {
+            if (secondSolverHandler != null)
+            {
+                if (secondTransformOverride != null)
+                {
+                    secondSolverHandler.TransformTarget = secondTransformOverride;
+                }
+                else
+                {
+                    secondSolverHandler.TrackedObjectToReference = trackedObjectForSecondTransform;
+                }
             }
         }
 
@@ -103,8 +108,7 @@ namespace HoloToolkit.Unity
         /// </summary>
         public void AttachSecondTransformToNewTrackedObject()
         {
-            secondSolverHandler.TransformTarget = secondTransformOverride;
-            secondSolverHandler.AttachToNewTrackedObject();
+            UpdateSecondSolverHandler();
         }
     }
 }
