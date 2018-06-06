@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
+    // TODO - currently not used, consider removing maybe?
     /// <summary>
     /// The headset definition defines the headset as defined by the SDK / Unity.
     /// </summary>

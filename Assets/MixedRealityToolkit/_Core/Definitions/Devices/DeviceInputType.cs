@@ -3,6 +3,7 @@
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
+    // TODO - Expand input list for additional controller types and have a filter defined by the controller
     /// <summary>
     /// The InputType defines the types of input exposed by a controller.
     /// Denoting the available buttons / interactions that a controller supports.

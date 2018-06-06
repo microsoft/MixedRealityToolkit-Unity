@@ -88,28 +88,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         #region Definition Data items
 
-        [SerializeField]
         private object rawData;
 
-        [SerializeField]
         private bool boolData;
 
-        [SerializeField]
         private float floatData;
 
-        [SerializeField]
         private Vector2 vector2Data;
 
-        [SerializeField]
         private Vector3 positionData;
 
-        [SerializeField]
         private Quaternion rotationData;
 
-        [SerializeField]
         private Tuple<Vector3, Quaternion> transformData;
 
-        [SerializeField]
         private bool changed;
 
         #endregion Definition Data items

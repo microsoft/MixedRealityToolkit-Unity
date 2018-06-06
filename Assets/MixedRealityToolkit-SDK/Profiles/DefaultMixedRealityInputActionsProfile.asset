@@ -22,6 +22,6 @@ MonoBehaviour:
     description: Grip
     axisConstraint: 7
   pointerAction:
-    id: 1
+    id: 0
     description: 
     axisConstraint: 0

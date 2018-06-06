@@ -3,9 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
 {
     /// <summary>
     /// Mixed Reality Toolkit controller definition, used to manage a specific controller type
@@ -37,13 +38,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// </summary>
         /// <typeparam name="T">Type of setup parameter (unique to certain SDK's)</typeparam>
         /// <param name="state">The optional input state provided by the SDK/Platform that is required for setup</param>
-        void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state);
+        void SetupInputSource<T>(T state);
 
         /// <summary>
         /// Update the controller with new state information / values
         /// </summary>
         /// <typeparam name="T">Type of setup parameter (unique to certain SDK's)</typeparam>
         /// <param name="state">The optional input state provided by the SDK/Platform that is required for update</param>
-        void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state);
+        void UpdateInputSource<T>(T state);
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
@@ -19,6 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
     public class MixedRealityManager : MonoBehaviour
     {
         #region Mixed Reality Manager Profile configuration
+
+        private bool isMixedRealityManagerInitializing = false;
 
         /// <summary>
         /// Is there a valid Active Profile on this manager?
@@ -114,16 +117,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         private void Initialize()
         {
+            isMixedRealityManagerInitializing = true; 
+
             //If the Mixed Reality Manager is not configured, stop.
             if (ActiveProfile == null)
             {
                 Debug.LogError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Manager");
                 return;
             }
-
-            #region ActiveSDK Discovery
-            // TODO Microsoft.MixedReality.Toolkit - Active SDK Discovery
-            #endregion ActiveSDK Discovery
 
             #region  Managers Registration
 
@@ -141,11 +142,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 AddManager(typeof(IMixedRealityBoundarySystem), new MixedRealityBoundaryManager());
             }
 
+            #region ActiveSDK Discovery
+
+            // TODO Microsoft.MixedReality.Toolkit - Active SDK Discovery
+
+            activeDevice = new WindowsMixedRealityDeviceManager("Mixed Reality Device manager", 10);
+
+            #endregion ActiveSDK Discovery
+
             #endregion Managers Registration
 
             #region SDK Initialization
             // TODO Microsoft.MixedReality.Toolkit - SDK Initialization
-            activeDevice?.Initialize();
+            //activeDevice?.Initialize();
+            AddManager(typeof(IMixedRealityDevice), activeDevice);
+
             #endregion SDK Initialization
 
             #region Managers Initialization
@@ -162,6 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             InitializeAllManagers();
 
             #endregion Managers Initialization
+            isMixedRealityManagerInitializing = false;
         }
 
         #region MonoBehaviour Implementation
@@ -386,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             else
             {
                 MixedRealityComponents.Add(new Tuple<Type, IMixedRealityManager>(type, manager));
-                manager.Initialize();
+                if(!isMixedRealityManagerInitializing) manager.Initialize();
                 mixedRealityComponentsCount = MixedRealityComponents.Count;
             }
         }

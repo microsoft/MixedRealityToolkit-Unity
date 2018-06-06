@@ -3,19 +3,21 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
+    // TODO
     public struct GenericOpenVRController : IMixedRealityController
     {
-        public GenericOpenVRController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions) : this()
+        public GenericOpenVRController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions;
+            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
         }
 
         /// <inheritdoc />
@@ -31,13 +33,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
 
         /// <inheritdoc />
-        public void SetupInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        public void SetupInputSource<T>(T state)
         {
             // TODO
         }
 
         /// <inheritdoc />
-        public void UpdateInputSource<T>(IMixedRealityInputSystem inputSystem, T state)
+        public void UpdateInputSource<T>(T state)
         {
             //TODO
         }

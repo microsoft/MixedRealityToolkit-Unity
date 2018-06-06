@@ -67,6 +67,19 @@ MonoBehaviour:
       positionData: {x: 0, y: 0, z: 0}
       rotationData: {x: 0, y: 0, z: 0, w: 0}
       changed: 0
+    - id: 0
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 0
+        description: 
+        axisConstraint: 0
+      boolData: 0
+      floatData: 0
+      vector2Data: {x: 0, y: 0}
+      positionData: {x: 0, y: 0, z: 0}
+      rotationData: {x: 0, y: 0, z: 0, w: 0}
+      changed: 0
   - id: 2
     description: MotionController Right
     controller:
@@ -108,6 +121,19 @@ MonoBehaviour:
       inputType: 17
       inputAction:
         id: 3
+        description: 
+        axisConstraint: 0
+      boolData: 0
+      floatData: 0
+      vector2Data: {x: 0, y: 0}
+      positionData: {x: 0, y: 0, z: 0}
+      rotationData: {x: 0, y: 0, z: 0, w: 0}
+      changed: 0
+    - id: 0
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 0
         description: 
         axisConstraint: 0
       boolData: 0
