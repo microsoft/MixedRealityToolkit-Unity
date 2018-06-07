@@ -34,6 +34,13 @@ public class IconEditor : Editor
 
     private static void SetIcon(Object selectedObject, Texture2D texture)
     {
-        typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.NonPublic | BindingFlags.Static)?.Invoke(null, new object[] { selectedObject, texture });
+        var setIconForObject = typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.NonPublic | BindingFlags.Static);
+        setIconForObject.Invoke(null, new object[] { selectedObject, texture });
+
+        var forceReloadInspectors = typeof(EditorUtility).GetMethod("ForceReloadInspectors", BindingFlags.NonPublic | BindingFlags.Static);
+        forceReloadInspectors.Invoke(null, null);
+
+        var copyMonoScriptIconToImporters = typeof(MonoImporter).GetMethod("CopyMonoScriptIconToImporters", BindingFlags.NonPublic | BindingFlags.Static);
+        copyMonoScriptIconToImporters.Invoke(null, new object[] { selectedObject as MonoScript });
     }
 }
