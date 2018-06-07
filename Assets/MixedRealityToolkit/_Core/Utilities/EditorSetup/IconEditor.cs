@@ -8,6 +8,18 @@ public class IconEditor : Editor
     private Texture2D icon;
 
     private bool overwriteIcons;
+    private MethodInfo getIconForObject;
+    private MethodInfo setIconForObject;
+    private MethodInfo forceReloadInspectors;
+    private MethodInfo copyMonoScriptIconToImporters;
+
+    private void Awake()
+    {
+        getIconForObject = typeof(EditorGUIUtility).GetMethod("GetIconForObject", BindingFlags.NonPublic | BindingFlags.Static);
+        setIconForObject = typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.NonPublic | BindingFlags.Static);
+        forceReloadInspectors = typeof(EditorUtility).GetMethod("ForceReloadInspectors", BindingFlags.NonPublic | BindingFlags.Static);
+        copyMonoScriptIconToImporters = typeof(MonoImporter).GetMethod("CopyMonoScriptIconToImporters", BindingFlags.NonPublic | BindingFlags.Static);
+    }
 
     public override void OnInspectorGUI()
     {
@@ -39,7 +51,6 @@ public class IconEditor : Editor
 
     private void SetIcon(Object selectedObject, Texture2D texture)
     {
-        var getIconForObject = typeof(EditorGUIUtility).GetMethod("GetIconForObject", BindingFlags.NonPublic | BindingFlags.Static);
         var setIcon = (Texture2D)getIconForObject.Invoke(null, new object[] { selectedObject });
 
         if (setIcon != null && !overwriteIcons)
@@ -47,13 +58,8 @@ public class IconEditor : Editor
             return;
         }
 
-        var setIconForObject = typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.NonPublic | BindingFlags.Static);
         setIconForObject.Invoke(null, new object[] { selectedObject, texture });
-
-        var forceReloadInspectors = typeof(EditorUtility).GetMethod("ForceReloadInspectors", BindingFlags.NonPublic | BindingFlags.Static);
         forceReloadInspectors.Invoke(null, null);
-
-        var copyMonoScriptIconToImporters = typeof(MonoImporter).GetMethod("CopyMonoScriptIconToImporters", BindingFlags.NonPublic | BindingFlags.Static);
         copyMonoScriptIconToImporters.Invoke(null, new object[] { selectedObject as MonoScript });
     }
 }
