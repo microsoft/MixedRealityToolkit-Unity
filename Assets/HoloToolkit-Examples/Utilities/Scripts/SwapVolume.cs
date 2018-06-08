@@ -1,17 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
-using HoloToolkit.Unity;
-using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class SwapVolume : MonoBehaviour, IInputClickHandler
     {
-
         [SerializeField]
         private GameObject hideThis;
-
         public GameObject HideThis
         {
             get
@@ -24,6 +21,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 hideThis = value;
             }
         }
+
         [SerializeField]
         private GameObject spawnThis;
         public GameObject SpawnThis
@@ -39,7 +37,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
         }
 
-        public bool UpdateSolverTargetToClickSource = true;
+        [SerializeField]
+        private bool updateSolverTargetToClickSource = true;
 
         private SolverHandler solverHandler;
         private Vector3 defaultPosition;
@@ -47,12 +46,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private bool isOn = false;
         private GameObject spawnedObject;
 
-
-
-        // Use this for initialization
         private void Start()
         {
-            solverHandler = SpawnThis.GetComponent<SolverHandler>();
             defaultPosition = HideThis.transform.position;
             defaultRotation = HideThis.transform.rotation;
         }
@@ -74,30 +69,47 @@ namespace HoloToolkit.Unity.InputModule.Tests
             {
                 spawnedObject = Instantiate(SpawnThis, defaultPosition, defaultRotation);
 
-                if (UpdateSolverTargetToClickSource)
+                if (updateSolverTargetToClickSource)
                 {
                     solverHandler = spawnedObject.GetComponent<SolverHandler>();
 
-                    InteractionSourceInfo sourceKind;
-                    if (eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceKind))
-                    {
+                    InteractionInputSource interactionInputSource = eventData.InputSource as InteractionInputSource;
 
-                        switch (sourceKind)
+                    if (interactionInputSource != null)
+                    {
+                        InteractionSourceInfo sourceKind;
+                        if (interactionInputSource.TryGetSourceKind(eventData.SourceId, out sourceKind))
                         {
-                            case InteractionSourceInfo.Controller:
-                                solverHandler.TrackedObjectToReference = SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight;
-                                break;
-                            default:
-                                Debug.LogError("The click event came from a device that isn't tracked. Nothing to attach to! Use a controller to select an example.");
-                                break;
+                            switch (sourceKind)
+                            {
+                                case InteractionSourceInfo.Controller:
+                                    Handedness handedness;
+                                    if (interactionInputSource.TryGetHandedness(eventData.SourceId, out handedness))
+                                    {
+                                        if (handedness == Handedness.Right)
+                                        {
+                                            solverHandler.TrackedObjectToReference = SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight;
+                                        }
+                                        else
+                                        {
+                                            solverHandler.TrackedObjectToReference = SolverHandler.TrackedObjectToReferenceEnum.MotionControllerLeft;
+                                        }
+                                    }
+                                    break;
+                                default:
+                                    Debug.LogError("The click event came from a device that isn't tracked. Nothing to attach to! Use a controller to select an example.");
+                                    break;
+                            }
                         }
                     }
                 }
+
                 if (HideThis != null)
                 {
                     HideThis.SetActive(false);
                 }
             }
+
             isOn = !isOn;
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
