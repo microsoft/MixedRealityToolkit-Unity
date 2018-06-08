@@ -63,20 +63,6 @@ namespace HoloToolkit.Unity.Collections
         public float Radius = 2f;
 
         /// <summary>
-        /// This is the radial range for creating a radial fan layout.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Radial range for radial layout")]
-        [Range(5f, 360f)]
-        private float radialRange = 180f;
-
-        public float RadialRange
-        {
-            get { return radialRange; }
-            set { radialRange = value; }
-        }
-
-        /// <summary>
         /// Number of rows per column, column number is automatically determined
         /// </summary>
         [SerializeField]
@@ -253,7 +239,6 @@ namespace HoloToolkit.Unity.Collections
             _height = Rows * CellHeight;
             _halfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
             _circumference = 2f * Mathf.PI * Radius;
-            _radialCellAngle = RadialRange / _columns;
 
             LayoutChildren();
 
@@ -263,7 +248,7 @@ namespace HoloToolkit.Unity.Collections
             }
         }
 
-        /// <summary>
+        /// <summary> 
         /// Internal function for laying out all the children when UpdateCollection is called.
         /// </summary>
         private void LayoutChildren() {
@@ -341,27 +326,7 @@ namespace HoloToolkit.Unity.Collections
                         UpdateNodeFacing(NodeList[i], OrientType, newPos);
                     }
                     break;
-                case SurfaceTypeEnum.Radial:
-                    int curColumn = 0;
-                    int curRow = 1;
 
-                    for (int i = 0; i < NodeList.Count; i++)
-                    {
-                        newPos = RadialMapping(nodeGrid[i], Radius, curRow, curColumn);
-                        if (curColumn == (_columns - 1))
-                        {
-                            curColumn = 0;
-                            ++curRow;
-                        }
-                        else
-                        {
-                            ++curColumn;
-                        }
-
-                        NodeList[i].transform.localPosition = newPos;
-                        UpdateNodeFacing(NodeList[i], OrientType, newPos);
-                    }
-                    break;
                 case SurfaceTypeEnum.Scatter:
                     // Get randomized planar mapping
                     // Calculate radius of each node while we're here
@@ -489,27 +454,6 @@ namespace HoloToolkit.Unity.Collections
             float xAngle = (source.x / _circumference) * 360f;
 
             Quaternion rot = Quaternion.Euler(0.0f, xAngle, 0.0f);
-            newPos = rot * newPos;
-
-            return newPos;
-        }
-
-        /// <summary>
-        /// Internal function for getting the relative mapping based on a source Vec3 and a radius for radial mapping.
-        /// </summary>
-        /// <param name="source">The source <see cref="Vector3"/> to be mapped to cylinder</param>
-        /// <param name="radius">This is a <see cref="float"/> for the radius of the radial</param>
-        /// <param name="row">This is a <see cref="int"/> for the radius of the radial</param>
-        /// <param name="column">This is a <see cref="int"/> for the radius of the radial</param>
-        /// <returns></returns>
-        private Vector3 RadialMapping(Vector3 source, float radius, int row, int column)
-        {
-            Radius = radius >= 0 ? Radius : radius;
-       
-            Vector3 newPos = new Vector3(0f, 0f, (Radius/Rows) * row);
-            float yAngle = _radialCellAngle * (column - (_columns * 0.5f)) + (_radialCellAngle*.5f);
-
-            Quaternion rot = Quaternion.Euler(0.0f, yAngle, 0.0f);
             newPos = rot * newPos;
 
             return newPos;

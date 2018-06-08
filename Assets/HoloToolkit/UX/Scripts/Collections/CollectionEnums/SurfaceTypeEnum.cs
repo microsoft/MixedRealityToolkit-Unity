@@ -11,7 +11,6 @@ namespace HoloToolkit.Unity.Collections
         Cylinder,
         Plane,
         Sphere,
-        Scatter,
-        Radial
+        Scatter
     }
 }
