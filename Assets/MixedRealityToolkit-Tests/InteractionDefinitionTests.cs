@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testValue1 = (object)1f;
             var testValue2 = (object)false;
 
-            var initialValue = inputDef.GetRaw();
+            var initialValue = inputDef.GetRawValue();
 
             Assert.IsNull(initialValue);
             Assert.IsFalse(inputDef.Changed);
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetRaw();
+            var setValue1 = inputDef.GetRawValue();
 
             Assert.IsNotNull(setValue1);
             Assert.AreEqual(setValue1, testValue1);
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetRaw();
+            var setValue2 = inputDef.GetRawValue();
 
             Assert.IsNotNull(setValue2);
             Assert.AreEqual(setValue2, testValue2);
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputDef = new InteractionMapping(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = new object();
 
-            var initialValue = inputDef.GetRaw();
+            var initialValue = inputDef.GetRawValue();
 
             Assert.IsNull(initialValue);
             Assert.IsFalse(inputDef.Changed);
@@ -73,98 +73,100 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(inputDef.Changed);
         }
 
-        [Test]
-        public void Test03_TestObjectGenericChanged()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = (object)1f;
-            var testValue2 = (object)false;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test03_TestObjectGenericChanged()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = (object)1f;
+        //    var testValue2 = (object)false;
 
-            var initialValue = inputDef.GetValue<object>();
+        //    var initialValue = inputDef.GetValue<object>();
 
-            Assert.IsNull(initialValue);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsNull(initialValue);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<object>(testValue1);
+        //    inputDef.SetValue<object>(testValue1);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetValue<object>();
+        //    var setValue1 = inputDef.GetValue<object>();
 
-            Assert.IsNotNull(setValue1);
-            Assert.AreEqual(setValue1, testValue1);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsNotNull(setValue1);
+        //    Assert.AreEqual(setValue1, testValue1);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<object>(testValue2);
+        //    inputDef.SetValue<object>(testValue2);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetValue<object>();
+        //    var setValue2 = inputDef.GetValue<object>();
 
-            Assert.IsNotNull(setValue2);
-            Assert.AreEqual(setValue2, testValue2);
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.IsNotNull(setValue2);
+        //    Assert.AreEqual(setValue2, testValue2);
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test04_TestObjectGenericNoChange()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue = (object)1f;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test04_TestObjectGenericNoChange()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue = (object)1f;
 
-            var initialValue = inputDef.GetValue<object>();
+        //    var initialValue = inputDef.GetValue<object>();
 
-            Assert.IsNull(initialValue);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsNull(initialValue);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<object>(testValue);
+        //    inputDef.SetValue<object>(testValue);
 
-            Assert.IsTrue(inputDef.Changed);
-            // Make sure the second time we query it's false
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
+        //    // Make sure the second time we query it's false
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<object>(testValue);
+        //    inputDef.SetValue<object>(testValue);
 
-            Assert.IsFalse(inputDef.Changed);
-            // Make sure if we set the same value it's false
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.IsFalse(inputDef.Changed);
+        //    // Make sure if we set the same value it's false
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test05_TestObjectDirectVsGenericSpeed()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = (object)1f;
-            var testValue2 = (object)false;
+        //[Test]
+        //public void Test05_TestObjectDirectVsGenericSpeed()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = (object)1f;
+        //    var testValue2 = (object)false;
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+        //    var stopwatch = new Stopwatch();
+        //    stopwatch.Start();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue<object>(testValue);
-                inputDef.GetValue<object>();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue<object>(testValue);
+        //        inputDef.GetValue<object>();
+        //    }
 
-            var genericTime = stopwatch.ElapsedMilliseconds;
+        //    var genericTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Restart();
+        //    stopwatch.Restart();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue(testValue);
-                inputDef.GetRaw();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue(testValue);
+        //        inputDef.GetRaw();
+        //    }
 
-            var directTime = stopwatch.ElapsedMilliseconds;
+        //    var directTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Stop();
+        //    stopwatch.Stop();
 
-            UnityEngine.Debug.Log($"Object Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
-            Assert.Greater(genericTime, directTime);
-        }
+        //    UnityEngine.Debug.Log($"Object Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
+        //    Assert.Greater(genericTime, directTime);
+        //}
 
         #endregion objects
 
@@ -177,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testValue1 = true;
             var testValue2 = false;
 
-            var initialValue = inputDef.GetBool();
+            var initialValue = inputDef.GetBooleanValue();
 
             Assert.IsFalse(initialValue);
             Assert.IsFalse(inputDef.Changed);
@@ -186,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetBool();
+            var setValue1 = inputDef.GetBooleanValue();
 
             Assert.IsTrue(setValue1);
             Assert.True(setValue1 == testValue1);
@@ -196,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetBool();
+            var setValue2 = inputDef.GetBooleanValue();
 
             Assert.IsFalse(setValue2);
             Assert.True(setValue2 == testValue2);
@@ -209,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputDef = new InteractionMapping(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = true;
 
-            var initialValue = inputDef.GetBool();
+            var initialValue = inputDef.GetBooleanValue();
 
             Assert.IsFalse(initialValue);
             Assert.IsFalse(inputDef.Changed);
@@ -226,98 +228,101 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(inputDef.Changed);
         }
 
-        [Test]
-        public void Test08_TestBoolGenericChanged()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = true;
-            var testValue2 = false;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test08_TestBoolGenericChanged()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = true;
+        //    var testValue2 = false;
 
-            var initialValue = inputDef.GetValue<bool>();
+        //    var initialValue = inputDef.GetValue<bool>();
 
-            Assert.IsFalse(initialValue);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsFalse(initialValue);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<bool>(testValue1);
+        //    inputDef.SetValue<bool>(testValue1);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetValue<bool>();
+        //    var setValue1 = inputDef.GetValue<bool>();
 
-            Assert.IsTrue(setValue1);
-            Assert.True(setValue1 == testValue1);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsTrue(setValue1);
+        //    Assert.True(setValue1 == testValue1);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<bool>(testValue2);
+        //    inputDef.SetValue<bool>(testValue2);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetValue<bool>();
+        //    var setValue2 = inputDef.GetValue<bool>();
 
-            Assert.IsFalse(setValue2);
-            Assert.True(setValue2 == testValue2);
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.IsFalse(setValue2);
+        //    Assert.True(setValue2 == testValue2);
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test09_TestBoolGenericNoChange()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue = true;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test09_TestBoolGenericNoChange()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue = true;
 
-            var initialValue = inputDef.GetValue<bool>();
+        //    var initialValue = inputDef.GetValue<bool>();
 
-            Assert.IsFalse(initialValue);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsFalse(initialValue);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<bool>(testValue);
+        //    inputDef.SetValue<bool>(testValue);
 
-            Assert.IsTrue(inputDef.Changed);
-            // Make sure the second time we query it's false
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
+        //    // Make sure the second time we query it's false
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<bool>(testValue);
+        //    inputDef.SetValue<bool>(testValue);
 
-            Assert.IsFalse(inputDef.Changed);
-            // Make sure if we set the same value it's false
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.IsFalse(inputDef.Changed);
+        //    // Make sure if we set the same value it's false
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test10_TestBoolDirectVsGenericSpeed()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = true;
-            var testValue2 = false;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test10_TestBoolDirectVsGenericSpeed()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = true;
+        //    var testValue2 = false;
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+        //    var stopwatch = new Stopwatch();
+        //    stopwatch.Start();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue<bool>(testValue);
-                inputDef.GetValue<bool>();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue<bool>(testValue);
+        //        inputDef.GetValue<bool>();
+        //    }
 
-            var genericTime = stopwatch.ElapsedMilliseconds;
+        //    var genericTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Restart();
+        //    stopwatch.Restart();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue(testValue);
-                inputDef.GetBool();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue(testValue);
+        //        inputDef.GetBool();
+        //    }
 
-            var directTime = stopwatch.ElapsedMilliseconds;
+        //    var directTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Stop();
+        //    stopwatch.Stop();
 
-            UnityEngine.Debug.Log($"Bool Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
-            Assert.Greater(genericTime, directTime);
-        }
+        //    UnityEngine.Debug.Log($"Bool Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
+        //    Assert.Greater(genericTime, directTime);
+        //}
 
         #endregion bools
 
@@ -330,7 +335,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testValue1 = 1f;
             var testValue2 = 9001f;
 
-            var initialValue = inputDef.GetFloat();
+            var initialValue = inputDef.GetFloatValue();
 
             Assert.AreEqual(initialValue, 0d, double.Epsilon);
             Assert.IsFalse(inputDef.Changed);
@@ -339,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetFloat();
+            var setValue1 = inputDef.GetFloatValue();
 
             Assert.AreEqual(setValue1, testValue1, double.Epsilon);
             Assert.IsFalse(inputDef.Changed);
@@ -348,7 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetFloat();
+            var setValue2 = inputDef.GetFloatValue();
 
             Assert.AreEqual(setValue2, testValue2, double.Epsilon);
             Assert.IsFalse(inputDef.Changed);
@@ -360,7 +365,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputDef = new InteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = 1f;
 
-            var initialValue = inputDef.GetFloat();
+            var initialValue = inputDef.GetFloatValue();
 
             Assert.AreEqual(initialValue, 0d, double.Epsilon);
             Assert.IsFalse(inputDef.Changed);
@@ -377,96 +382,99 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(inputDef.Changed);
         }
 
-        [Test]
-        public void Test13_TestFloatGenericChanged()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = 1f;
-            var testValue2 = 9001f;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test13_TestFloatGenericChanged()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = 1f;
+        //    var testValue2 = 9001f;
 
-            var initialValue = inputDef.GetValue<float>();
+        //    var initialValue = inputDef.GetValue<float>();
 
-            Assert.AreEqual(initialValue, 0d, double.Epsilon);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.AreEqual(initialValue, 0d, double.Epsilon);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<float>(testValue1);
+        //    inputDef.SetValue<float>(testValue1);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetValue<float>();
+        //    var setValue1 = inputDef.GetValue<float>();
 
-            Assert.AreEqual(setValue1, testValue1, double.Epsilon);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.AreEqual(setValue1, testValue1, double.Epsilon);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<float>(testValue2);
+        //    inputDef.SetValue<float>(testValue2);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetValue<float>();
+        //    var setValue2 = inputDef.GetValue<float>();
 
-            Assert.AreEqual(setValue2, testValue2, double.Epsilon);
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.AreEqual(setValue2, testValue2, double.Epsilon);
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test14_TestFloatGenericNoChange()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue = 1f;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test14_TestFloatGenericNoChange()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue = 1f;
 
-            var initialValue = inputDef.GetValue<float>();
+        //    var initialValue = inputDef.GetValue<float>();
 
-            Assert.AreEqual(initialValue, 0d, double.Epsilon);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.AreEqual(initialValue, 0d, double.Epsilon);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<float>(testValue);
+        //    inputDef.SetValue<float>(testValue);
 
-            Assert.IsTrue(inputDef.Changed);
-            // Make sure the second time we query it's false
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
+        //    // Make sure the second time we query it's false
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<float>(testValue);
+        //    inputDef.SetValue<float>(testValue);
 
-            Assert.IsFalse(inputDef.Changed);
-            // Make sure if we set the same value it's false
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.IsFalse(inputDef.Changed);
+        //    // Make sure if we set the same value it's false
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test15_TestFloatDirectVsGenericSpeed()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = 1f;
-            var testValue2 = 9001f;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test15_TestFloatDirectVsGenericSpeed()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = 1f;
+        //    var testValue2 = 9001f;
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+        //    var stopwatch = new Stopwatch();
+        //    stopwatch.Start();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue<float>(testValue);
-                inputDef.GetValue<float>();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue<float>(testValue);
+        //        inputDef.GetValue<float>();
+        //    }
 
-            var genericTime = stopwatch.ElapsedMilliseconds;
+        //    var genericTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Restart();
+        //    stopwatch.Restart();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue(testValue);
-                inputDef.GetFloat();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue(testValue);
+        //        inputDef.GetFloat();
+        //    }
 
-            var directTime = stopwatch.ElapsedMilliseconds;
+        //    var directTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Stop();
+        //    stopwatch.Stop();
 
-            UnityEngine.Debug.Log($"Float Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
-            Assert.Greater(genericTime, directTime);
-        }
+        //    UnityEngine.Debug.Log($"Float Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
+        //    Assert.Greater(genericTime, directTime);
+        //}
 
         #endregion float
 
@@ -479,7 +487,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testValue1 = Vector2.one;
             var testValue2 = Vector2.zero;
 
-            var initialValue = inputDef.GetVector2();
+            var initialValue = inputDef.GetVector2Value();
 
             Assert.True(initialValue == Vector2.zero);
             Assert.IsFalse(inputDef.Changed);
@@ -488,7 +496,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetVector2();
+            var setValue1 = inputDef.GetVector2Value();
 
             Assert.True(setValue1 == testValue1);
             Assert.IsFalse(inputDef.Changed);
@@ -497,7 +505,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetVector2();
+            var setValue2 = inputDef.GetVector2Value();
 
             Assert.True(setValue2 == testValue2);
             Assert.IsFalse(inputDef.Changed);
@@ -509,7 +517,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputDef = new InteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = Vector2.one;
 
-            var initialValue = inputDef.GetVector2();
+            var initialValue = inputDef.GetVector2Value();
 
             Assert.True(initialValue == Vector2.zero);
             Assert.IsFalse(inputDef.Changed);
@@ -526,96 +534,99 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(inputDef.Changed);
         }
 
-        [Test]
-        public void Test18_TestVector2GenericChanged()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = Vector2.one;
-            var testValue2 = Vector2.zero;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test18_TestVector2GenericChanged()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = Vector2.one;
+        //    var testValue2 = Vector2.zero;
 
-            var initialValue = inputDef.GetValue<Vector2>();
+        //    var initialValue = inputDef.GetValue<Vector2>();
 
-            Assert.True(initialValue == Vector2.zero);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.True(initialValue == Vector2.zero);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Vector2>(testValue1);
+        //    inputDef.SetValue<Vector2>(testValue1);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetValue<Vector2>();
+        //    var setValue1 = inputDef.GetValue<Vector2>();
 
-            Assert.True(setValue1 == testValue1);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.True(setValue1 == testValue1);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Vector2>(testValue2);
+        //    inputDef.SetValue<Vector2>(testValue2);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetValue<Vector2>();
+        //    var setValue2 = inputDef.GetValue<Vector2>();
 
-            Assert.True(setValue2 == testValue2);
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.True(setValue2 == testValue2);
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test19_TestVector2GenericNoChange()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue = Vector2.one;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test19_TestVector2GenericNoChange()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue = Vector2.one;
 
-            var initialValue = inputDef.GetValue<Vector2>();
+        //    var initialValue = inputDef.GetValue<Vector2>();
 
-            Assert.True(initialValue == Vector2.zero);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.True(initialValue == Vector2.zero);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Vector2>(testValue);
+        //    inputDef.SetValue<Vector2>(testValue);
 
-            Assert.IsTrue(inputDef.Changed);
-            // Make sure the second time we query it's false
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
+        //    // Make sure the second time we query it's false
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Vector2>(testValue);
+        //    inputDef.SetValue<Vector2>(testValue);
 
-            Assert.IsFalse(inputDef.Changed);
-            // Make sure if we set the same value it's false
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.IsFalse(inputDef.Changed);
+        //    // Make sure if we set the same value it's false
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test20_TestVector2DirectVsGenericSpeed()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = Vector2.one;
-            var testValue2 = Vector2.zero;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test20_TestVector2DirectVsGenericSpeed()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = Vector2.one;
+        //    var testValue2 = Vector2.zero;
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+        //    var stopwatch = new Stopwatch();
+        //    stopwatch.Start();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue<Vector2>(testValue);
-                inputDef.GetValue<Vector2>();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue<Vector2>(testValue);
+        //        inputDef.GetValue<Vector2>();
+        //    }
 
-            var genericTime = stopwatch.ElapsedMilliseconds;
+        //    var genericTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Restart();
+        //    stopwatch.Restart();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue(testValue);
-                inputDef.GetVector2();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue(testValue);
+        //        inputDef.GetVector2();
+        //    }
 
-            var directTime = stopwatch.ElapsedMilliseconds;
+        //    var directTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Stop();
+        //    stopwatch.Stop();
 
-            UnityEngine.Debug.Log($"Vector2 Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
-            Assert.Greater(genericTime, directTime);
-        }
+        //    UnityEngine.Debug.Log($"Vector2 Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
+        //    Assert.Greater(genericTime, directTime);
+        //}
 
         #endregion Vector2
 
@@ -628,7 +639,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
-            var initialValue = inputDef.GetPosition();
+            var initialValue = inputDef.GetPositionValue();
 
             Assert.True(initialValue == Vector3.zero);
             Assert.IsFalse(inputDef.Changed);
@@ -637,7 +648,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetPosition();
+            var setValue1 = inputDef.GetPositionValue();
 
             Assert.True(setValue1 == testValue1);
             Assert.IsFalse(inputDef.Changed);
@@ -646,7 +657,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetPosition();
+            var setValue2 = inputDef.GetPositionValue();
 
             Assert.True(setValue2 == testValue2);
             Assert.IsFalse(inputDef.Changed);
@@ -658,7 +669,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = Vector3.one;
 
-            var initialValue = inputDef.GetPosition();
+            var initialValue = inputDef.GetPositionValue();
 
             Assert.True(initialValue == Vector3.zero);
             Assert.IsFalse(inputDef.Changed);
@@ -675,96 +686,99 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(inputDef.Changed);
         }
 
-        [Test]
-        public void Test23_TestVector3GenericChanged()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = Vector3.one;
-            var testValue2 = Vector3.zero;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test23_TestVector3GenericChanged()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = Vector3.one;
+        //    var testValue2 = Vector3.zero;
 
-            var initialValue = inputDef.GetValue<Vector3>();
+        //    var initialValue = inputDef.GetValue<Vector3>();
 
-            Assert.True(initialValue == Vector3.zero);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.True(initialValue == Vector3.zero);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Vector3>(testValue1);
+        //    inputDef.SetValue<Vector3>(testValue1);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetValue<Vector3>();
+        //    var setValue1 = inputDef.GetValue<Vector3>();
 
-            Assert.True(setValue1 == testValue1);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.True(setValue1 == testValue1);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Vector3>(testValue2);
+        //    inputDef.SetValue<Vector3>(testValue2);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetValue<Vector3>();
+        //    var setValue2 = inputDef.GetValue<Vector3>();
 
-            Assert.True(setValue2 == testValue2);
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.True(setValue2 == testValue2);
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test24_TestVector3GenericNoChange()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue = Vector3.one;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test24_TestVector3GenericNoChange()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue = Vector3.one;
 
-            var initialValue = inputDef.GetValue<Vector3>();
+        //    var initialValue = inputDef.GetValue<Vector3>();
 
-            Assert.True(initialValue == Vector3.zero);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.True(initialValue == Vector3.zero);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Vector3>(testValue);
+        //    inputDef.SetValue<Vector3>(testValue);
 
-            Assert.IsTrue(inputDef.Changed);
-            // Make sure the second time we query it's false
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
+        //    // Make sure the second time we query it's false
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Vector3>(testValue);
+        //    inputDef.SetValue<Vector3>(testValue);
 
-            Assert.IsFalse(inputDef.Changed);
-            // Make sure if we set the same value it's false
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.IsFalse(inputDef.Changed);
+        //    // Make sure if we set the same value it's false
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test25_TestVector3DirectVsGenericSpeed()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = Vector3.one;
-            var testValue2 = Vector3.zero;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test25_TestVector3DirectVsGenericSpeed()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = Vector3.one;
+        //    var testValue2 = Vector3.zero;
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+        //    var stopwatch = new Stopwatch();
+        //    stopwatch.Start();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue<Vector3>(testValue);
-                inputDef.GetValue<Vector3>();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue<Vector3>(testValue);
+        //        inputDef.GetValue<Vector3>();
+        //    }
 
-            var genericTime = stopwatch.ElapsedMilliseconds;
+        //    var genericTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Restart();
+        //    stopwatch.Restart();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue(testValue);
-                inputDef.GetPosition();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue(testValue);
+        //        inputDef.GetPosition();
+        //    }
 
-            var directTime = stopwatch.ElapsedMilliseconds;
+        //    var directTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Stop();
+        //    stopwatch.Stop();
 
-            UnityEngine.Debug.Log($"Vector3 Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
-            Assert.Greater(genericTime, directTime);
-        }
+        //    UnityEngine.Debug.Log($"Vector3 Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
+        //    Assert.Greater(genericTime, directTime);
+        //}
 
         #endregion Vector3
 
@@ -777,7 +791,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
-            var initialValue = inputDef.GetRotation();
+            var initialValue = inputDef.GetRotationValue();
 
             Assert.True(initialValue == Quaternion.identity);
             Assert.IsFalse(inputDef.Changed);
@@ -786,7 +800,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetRotation();
+            var setValue1 = inputDef.GetRotationValue();
 
             Assert.True(setValue1 == testValue1);
             Assert.IsFalse(inputDef.Changed);
@@ -795,7 +809,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetRotation();
+            var setValue2 = inputDef.GetRotationValue();
 
             Assert.True(setValue2 == testValue2);
             Assert.IsFalse(inputDef.Changed);
@@ -807,7 +821,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = Quaternion.Euler(45f, 45f, 45f);
 
-            var initialValue = inputDef.GetRotation();
+            var initialValue = inputDef.GetRotationValue();
 
             Assert.True(initialValue == Quaternion.identity);
             Assert.IsFalse(inputDef.Changed);
@@ -824,96 +838,99 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(inputDef.Changed);
         }
 
-        [Test]
-        public void Test28_TestQuaternionGenericChanged()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = Quaternion.Euler(45f, 45f, 45f);
-            var testValue2 = Quaternion.identity;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test28_TestQuaternionGenericChanged()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = Quaternion.Euler(45f, 45f, 45f);
+        //    var testValue2 = Quaternion.identity;
 
-            var initialValue = inputDef.GetValue<Quaternion>();
+        //    var initialValue = inputDef.GetValue<Quaternion>();
 
-            Assert.True(initialValue == Quaternion.identity);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.True(initialValue == Quaternion.identity);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Quaternion>(testValue1);
+        //    inputDef.SetValue<Quaternion>(testValue1);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetValue<Quaternion>();
+        //    var setValue1 = inputDef.GetValue<Quaternion>();
 
-            Assert.True(setValue1 == testValue1);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.True(setValue1 == testValue1);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Quaternion>(testValue2);
+        //    inputDef.SetValue<Quaternion>(testValue2);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetValue<Quaternion>();
+        //    var setValue2 = inputDef.GetValue<Quaternion>();
 
-            Assert.True(setValue2 == testValue2);
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.True(setValue2 == testValue2);
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test29_TestQuaternionGenericNoChange()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue = Quaternion.Euler(45f, 45f, 45f);
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test29_TestQuaternionGenericNoChange()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue = Quaternion.Euler(45f, 45f, 45f);
 
-            var initialValue = inputDef.GetValue<Quaternion>();
+        //    var initialValue = inputDef.GetValue<Quaternion>();
 
-            Assert.True(initialValue == Quaternion.identity);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.True(initialValue == Quaternion.identity);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Quaternion>(testValue);
+        //    inputDef.SetValue<Quaternion>(testValue);
 
-            Assert.IsTrue(inputDef.Changed);
-            // Make sure the second time we query it's false
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
+        //    // Make sure the second time we query it's false
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Quaternion>(testValue);
+        //    inputDef.SetValue<Quaternion>(testValue);
 
-            Assert.IsFalse(inputDef.Changed);
-            // Make sure if we set the same value it's false
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.IsFalse(inputDef.Changed);
+        //    // Make sure if we set the same value it's false
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test30_TestQuaternionDirectVsGenericSpeed()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = Quaternion.Euler(45f, 45f, 45f);
-            var testValue2 = Quaternion.identity;
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test30_TestQuaternionDirectVsGenericSpeed()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = Quaternion.Euler(45f, 45f, 45f);
+        //    var testValue2 = Quaternion.identity;
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+        //    var stopwatch = new Stopwatch();
+        //    stopwatch.Start();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue<Quaternion>(testValue);
-                inputDef.GetValue<Quaternion>();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue<Quaternion>(testValue);
+        //        inputDef.GetValue<Quaternion>();
+        //    }
 
-            var genericTime = stopwatch.ElapsedMilliseconds;
+        //    var genericTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Restart();
+        //    stopwatch.Restart();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue(testValue);
-                inputDef.GetRotation();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue(testValue);
+        //        inputDef.GetRotation();
+        //    }
 
-            var directTime = stopwatch.ElapsedMilliseconds;
+        //    var directTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Stop();
+        //    stopwatch.Stop();
 
-            UnityEngine.Debug.Log($"Quaternion Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
-            Assert.Greater(genericTime, directTime);
-        }
+        //    UnityEngine.Debug.Log($"Quaternion Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
+        //    Assert.Greater(genericTime, directTime);
+        //}
 
         #endregion Quaternion
 
@@ -926,7 +943,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
             var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
-            var initialValue = inputDef.GetTransform();
+            var initialValue = inputDef.GetTransformValue();
 
             Assert.IsNull(initialValue);
             Assert.IsFalse(inputDef.Changed);
@@ -935,7 +952,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetTransform();
+            var setValue1 = inputDef.GetTransformValue();
 
             Assert.AreEqual(setValue1, testValue1);
             Assert.AreEqual(setValue1.Item1, testValue1.Item1);
@@ -947,7 +964,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetTransform();
+            var setValue2 = inputDef.GetTransformValue();
 
             Assert.AreEqual(setValue2, testValue2);
             Assert.AreEqual(setValue2.Item1, testValue2.Item1);
@@ -962,7 +979,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
 
-            var initialValue = inputDef.GetTransform();
+            var initialValue = inputDef.GetTransformValue();
 
             Assert.IsNull(initialValue);
             Assert.IsFalse(inputDef.Changed);
@@ -979,102 +996,105 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(inputDef.Changed);
         }
 
-        [Test]
-        public void Test33_TestTupleGenericChanged()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
-            var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test33_TestTupleGenericChanged()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
+        //    var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
-            var initialValue = inputDef.GetTransform();
+        //    var initialValue = inputDef.GetTransform();
 
-            Assert.IsNull(initialValue);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsNull(initialValue);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Tuple<Vector3, Quaternion>>(testValue1);
+        //    inputDef.SetValue<Tuple<Vector3, Quaternion>>(testValue1);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetValue<Tuple<Vector3, Quaternion>>();
+        //    var setValue1 = inputDef.GetValue<Tuple<Vector3, Quaternion>>();
 
-            Assert.AreEqual(setValue1, testValue1);
-            Assert.AreEqual(setValue1.Item1, testValue1.Item1);
-            Assert.AreEqual(setValue1.Item2, testValue1.Item2);
-            Assert.AreEqual(setValue1.Item2, testValue1.Item2);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.AreEqual(setValue1, testValue1);
+        //    Assert.AreEqual(setValue1.Item1, testValue1.Item1);
+        //    Assert.AreEqual(setValue1.Item2, testValue1.Item2);
+        //    Assert.AreEqual(setValue1.Item2, testValue1.Item2);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Tuple<Vector3, Quaternion>>(testValue2);
+        //    inputDef.SetValue<Tuple<Vector3, Quaternion>>(testValue2);
 
-            Assert.IsTrue(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetValue<Tuple<Vector3, Quaternion>>();
+        //    var setValue2 = inputDef.GetValue<Tuple<Vector3, Quaternion>>();
 
-            Assert.AreEqual(setValue2, testValue2);
-            Assert.AreEqual(setValue2.Item1, testValue2.Item1);
-            Assert.AreEqual(setValue2.Item2, testValue2.Item2);
-            Assert.AreEqual(setValue2.Item2, testValue2.Item2);
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.AreEqual(setValue2, testValue2);
+        //    Assert.AreEqual(setValue2.Item1, testValue2.Item1);
+        //    Assert.AreEqual(setValue2.Item2, testValue2.Item2);
+        //    Assert.AreEqual(setValue2.Item2, testValue2.Item2);
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test34_TestTupleGenericNoChange()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test34_TestTupleGenericNoChange()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
 
-            var initialValue = inputDef.GetTransform();
+        //    var initialValue = inputDef.GetTransform();
 
-            Assert.IsNull(initialValue);
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsNull(initialValue);
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Tuple<Vector3, Quaternion>>(testValue);
+        //    inputDef.SetValue<Tuple<Vector3, Quaternion>>(testValue);
 
-            Assert.IsTrue(inputDef.Changed);
-            // Make sure the second time we query it's false
-            Assert.IsFalse(inputDef.Changed);
+        //    Assert.IsTrue(inputDef.Changed);
+        //    // Make sure the second time we query it's false
+        //    Assert.IsFalse(inputDef.Changed);
 
-            inputDef.SetValue<Tuple<Vector3, Quaternion>>(testValue);
+        //    inputDef.SetValue<Tuple<Vector3, Quaternion>>(testValue);
 
-            Assert.IsFalse(inputDef.Changed);
-            // Make sure if we set the same value it's false
-            Assert.IsFalse(inputDef.Changed);
-        }
+        //    Assert.IsFalse(inputDef.Changed);
+        //    // Make sure if we set the same value it's false
+        //    Assert.IsFalse(inputDef.Changed);
+        //}
 
-        [Test]
-        public void Test35_TestTupleSpeed()
-        {
-            var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
-            var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
+        // todo: remove Generic Get|Set tests
+        //[Test]
+        //public void Test35_TestTupleSpeed()
+        //{
+        //    var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
+        //    var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
+        //    var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+        //    var stopwatch = new Stopwatch();
+        //    stopwatch.Start();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue<Tuple<Vector3, Quaternion>>(testValue);
-                inputDef.GetValue<Tuple<Vector3, Quaternion>>();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue<Tuple<Vector3, Quaternion>>(testValue);
+        //        inputDef.GetValue<Tuple<Vector3, Quaternion>>();
+        //    }
 
-            var genericTime = stopwatch.ElapsedMilliseconds;
+        //    var genericTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Restart();
+        //    stopwatch.Restart();
 
-            for (int i = 0; i < SpeedTestIterations; i++)
-            {
-                var testValue = i % 2 == 0 ? testValue1 : testValue2;
-                inputDef.SetValue(testValue);
-                inputDef.GetTransform();
-            }
+        //    for (int i = 0; i < SpeedTestIterations; i++)
+        //    {
+        //        var testValue = i % 2 == 0 ? testValue1 : testValue2;
+        //        inputDef.SetValue(testValue);
+        //        inputDef.GetTransform();
+        //    }
 
-            var directTime = stopwatch.ElapsedMilliseconds;
+        //    var directTime = stopwatch.ElapsedMilliseconds;
 
-            stopwatch.Stop();
+        //    stopwatch.Stop();
 
-            UnityEngine.Debug.Log($"Tuple Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
-            Assert.Greater(genericTime, directTime);
-        }
+        //    UnityEngine.Debug.Log($"Tuple Speed Test Results | Generic Time: {genericTime} | Direct Time: {directTime}");
+        //    Assert.Greater(genericTime, directTime);
+        //}
 
         #endregion Tuples
     }
