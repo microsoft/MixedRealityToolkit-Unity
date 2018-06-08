@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using UnityEngine;
 
@@ -108,61 +109,37 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         #region Get Operators
 
-        public T GetValue<T>()
-        {
-            switch (AxisType)
-            {
-                case AxisType.None:
-                case AxisType.Raw:
-                    return (T)Convert.ChangeType(rawData, typeof(T));
-                case AxisType.Digital:
-                    return (T)Convert.ChangeType(boolData, typeof(T));
-                case AxisType.SingleAxis:
-                    return (T)Convert.ChangeType(floatData, typeof(T));
-                case AxisType.DualAxis:
-                    return (T)Convert.ChangeType(vector2Data, typeof(T));
-                case AxisType.ThreeDoFPosition:
-                    return (T)Convert.ChangeType(positionData, typeof(T));
-                case AxisType.ThreeDoFRotation:
-                    return (T)Convert.ChangeType(rotationData, typeof(T));
-                case AxisType.SixDoF:
-                    return (T)Convert.ChangeType(transformData, typeof(T));
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        public object GetRaw()
+        public object GetRawValue()
         {
             return rawData;
         }
 
-        public bool GetBool()
+        public bool GetBooleanValue()
         {
             return boolData;
         }
 
-        public float GetFloat()
+        public float GetFloatValue()
         {
             return floatData;
         }
 
-        public Vector2 GetVector2()
+        public Vector2 GetVector2Value()
         {
             return vector2Data;
         }
 
-        public Vector3 GetPosition()
+        public Vector3 GetPositionValue()
         {
             return positionData;
         }
 
-        public Quaternion GetRotation()
+        public Quaternion GetRotationValue()
         {
             return rotationData;
         }
 
-        public Tuple<Vector3, Quaternion> GetTransform()
+        public Tuple<Vector3, Quaternion> GetTransformValue()
         {
             return transformData;
         }
@@ -171,140 +148,97 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         #region Set Operators
 
-        public void SetValue<T>(T newValue)
-        {
-            switch (AxisType)
-            {
-                case AxisType.None:
-                case AxisType.Raw:
-                    SetValue((object)newValue);
-                    break;
-                case AxisType.Digital:
-                    SetValue((bool)Convert.ChangeType(newValue, typeof(bool)));
-                    break;
-                case AxisType.SingleAxis:
-                    SetValue((float)Convert.ChangeType(newValue, typeof(float)));
-                    break;
-                case AxisType.DualAxis:
-                    SetValue((Vector2)Convert.ChangeType(newValue, typeof(Vector2)));
-                    break;
-                case AxisType.ThreeDoFPosition:
-                    SetValue((Vector3)Convert.ChangeType(newValue, typeof(Vector3)));
-                    break;
-                case AxisType.ThreeDoFRotation:
-                    SetValue((Quaternion)Convert.ChangeType(newValue, typeof(Quaternion)));
-                    break;
-                case AxisType.SixDoF:
-                    SetValue((Tuple<Vector3, Quaternion>)Convert.ChangeType(newValue, typeof(Tuple<Vector3, Quaternion>)));
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
         public void SetValue(object newValue)
         {
-            if (AxisType == AxisType.Raw)
+            if (AxisType != AxisType.Raw)
             {
-                Changed = rawData != newValue;
-                rawData = newValue;
+                Debug.LogError("SetValue(object) is only valid for AxisType.Raw InteractionMappings");
             }
-            else
-            {
-                throw new InvalidOperationException();
-            }
+
+            Changed = rawData != newValue;
+            rawData = newValue;
         }
 
         public void SetValue(bool newValue)
         {
-            if (AxisType == AxisType.Digital)
+            if (AxisType != AxisType.Digital)
             {
-                Changed = boolData != newValue;
-                boolData = newValue;
+                Debug.LogError("SetValue(bool) is only valid for AxisType.Digital InteractionMappings");
             }
-            else
-            {
-                throw new InvalidOperationException();
-            }
+
+            Changed = boolData != newValue;
+            boolData = newValue;
         }
 
         public void SetValue(float newValue)
         {
-            if (AxisType == AxisType.SingleAxis)
+            if (AxisType != AxisType.SingleAxis)
             {
-                Changed = !floatData.Equals(newValue);
-                floatData = newValue;
+                Debug.LogError("SetValue(float) is only valid for AxisType.SingleAxis InteractionMappings");
             }
-            else
-            {
-                throw new InvalidOperationException();
-            }
+
+            Changed = !floatData.Equals(newValue);
+            floatData = newValue;
         }
 
         public void SetValue(Vector2 newValue)
         {
-            if (AxisType == AxisType.DualAxis)
+            if (AxisType != AxisType.DualAxis)
             {
-                Changed = vector2Data != newValue;
-                vector2Data = newValue;
+                Debug.LogError("SetValue(Vector2) is only valid for AxisType.DualAxis InteractionMappings");
             }
-            else
-            {
-                throw new InvalidOperationException();
-            }
+
+            Changed = vector2Data != newValue;
+            vector2Data = newValue;
         }
 
         public void SetValue(Vector3 newValue)
         {
-            if (AxisType == AxisType.ThreeDoFPosition)
+            if (AxisType != AxisType.ThreeDoFPosition)
             {
-                Changed = positionData != newValue;
-                positionData = newValue;
+                {
+                    Debug.LogError("SetValue(Vector3) is only valid for AxisType.ThreeDoFPosition InteractionMappings");
+                }
             }
-            else
-            {
-                throw new InvalidOperationException();
-            }
+
+            Changed = positionData != newValue;
+            positionData = newValue;
         }
 
         public void SetValue(Quaternion newValue)
         {
-            if (AxisType == AxisType.ThreeDoFRotation)
+            if (AxisType != AxisType.ThreeDoFRotation)
             {
-                Changed = rotationData != newValue;
-                rotationData = newValue;
+                Debug.LogError("SetValue(Quaternion) is only valid for AxisType.ThreeDoFRotation InteractionMappings");
             }
-            else
-            {
-                throw new InvalidOperationException();
-            }
+
+            Changed = rotationData != newValue;
+            rotationData = newValue;
         }
 
         public void SetValue(Tuple<Vector3, Quaternion> newValue)
         {
-            if (AxisType == AxisType.SixDoF)
+            if (AxisType != AxisType.SixDoF)
             {
-                Changed = transformData == null && newValue != null ||
-                          transformData != null && newValue == null ||
-                          transformData != null && newValue != null &&
-                          (transformData.Item1 != newValue.Item1 || transformData.Item2 != newValue.Item2);
+                Debug.LogError("SetValue(Tuple<Vector3, Quaternion>) is only valid for AxisType.SixDoF InteractionMappings");
+            }
 
-                transformData = newValue;
+            Changed = transformData == null && newValue != null ||
+                        transformData != null && newValue == null ||
+                        transformData != null && newValue != null &&
+                        (transformData.Item1 != newValue.Item1 || transformData.Item2 != newValue.Item2);
 
-                if (transformData != null)
-                {
-                    positionData = transformData.Item1;
-                    rotationData = transformData.Item2;
-                }
-                else
-                {
-                    positionData = Vector3.zero;
-                    rotationData = Quaternion.identity;
-                }
+            transformData = newValue;
+
+            if (transformData != null)
+            {
+                positionData = transformData.Item1;
+                rotationData = transformData.Item2;
             }
             else
             {
-                throw new InvalidOperationException();
+                positionData = Vector3.zero;
+                rotationData = Quaternion.identity;
             }
         }
 

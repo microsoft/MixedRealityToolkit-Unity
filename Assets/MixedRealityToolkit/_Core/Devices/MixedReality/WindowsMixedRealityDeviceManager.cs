@@ -220,17 +220,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             {
                 if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions[DeviceInputType.SpatialPointer].Changed)
                 {
-                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialPointer].InputAction, controller.Interactions[DeviceInputType.SpatialPointer].GetValue<Tuple<Vector3, Quaternion>>());
+                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialPointer].InputAction, controller.Interactions[DeviceInputType.SpatialPointer].GetTransformValue());
                 }
 
                 if (controller.Interactions.ContainsKey(DeviceInputType.SpatialGrip) && controller.Interactions[DeviceInputType.SpatialGrip].Changed)
                 {
-                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialGrip].InputAction, controller.Interactions[DeviceInputType.SpatialGrip].GetValue<Tuple<Vector3, Quaternion>>());
+                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialGrip].InputAction, controller.Interactions[DeviceInputType.SpatialGrip].GetTransformValue());
                 }
 
                 if (controller.Interactions.ContainsKey(DeviceInputType.TouchpadTouch) && controller.Interactions[DeviceInputType.TouchpadTouch].Changed)
                 {
-                    if (controller.Interactions[DeviceInputType.TouchpadTouch].GetValue<bool>())
+                    if (controller.Interactions[DeviceInputType.TouchpadTouch].GetBooleanValue())
                     {
                         inputSystem?.RaiseOnInputDown(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.TouchpadTouch].InputAction);
                     }
@@ -242,17 +242,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
                 if (controller.Interactions.ContainsKey(DeviceInputType.Touchpad) && controller.Interactions[DeviceInputType.Touchpad].Changed)
                 {
-                    inputSystem?.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.Touchpad].InputAction, controller.Interactions[DeviceInputType.Touchpad].GetValue<Vector2>());
+                    inputSystem?.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.Touchpad].InputAction, controller.Interactions[DeviceInputType.Touchpad].GetVector2Value());
                 }
 
                 if (controller.Interactions.ContainsKey(DeviceInputType.ThumbStick) && controller.Interactions[DeviceInputType.ThumbStick].Changed)
                 {
-                    inputSystem?.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.ThumbStick].InputAction, controller.Interactions[DeviceInputType.ThumbStick].GetValue<Vector2>());
+                    inputSystem?.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.ThumbStick].InputAction, controller.Interactions[DeviceInputType.ThumbStick].GetVector2Value());
                 }
 
                 if (controller.Interactions.ContainsKey(DeviceInputType.Trigger) && controller.Interactions[DeviceInputType.Trigger].Changed)
                 {
-                    inputSystem?.RaiseOnInputPressed(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.Select].InputAction, controller.Interactions[DeviceInputType.Trigger].GetValue<float>());
+                    inputSystem?.RaiseOnInputPressed(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.Select].InputAction, controller.Interactions[DeviceInputType.Trigger].GetFloatValue());
                 }
             }
         }
