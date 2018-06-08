@@ -14,6 +14,7 @@ namespace HoloToolkit.Unity.UX
         private SerializedProperty transformTargetProperty;
         private SerializedProperty additionalOffsetProperty;
         private SerializedProperty additionalRotationProperty;
+        private SerializedProperty updateSolversProperty;
         private SolverHandler solverHandler;
         private GUIContent trackedTransformGUIContent = new GUIContent("Tracked Transform");
 
@@ -25,6 +26,7 @@ namespace HoloToolkit.Unity.UX
             transformTargetProperty = serializedObject.FindProperty("transformTarget");
             additionalOffsetProperty = serializedObject.FindProperty("additionalOffset");
             additionalRotationProperty = serializedObject.FindProperty("additionalRotation");
+            updateSolversProperty = serializedObject.FindProperty("updateSolvers");
 
             solverHandler = target as SolverHandler;
         }
@@ -37,7 +39,7 @@ namespace HoloToolkit.Unity.UX
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(trackedObjectReferenceProperty);
             bool trackedObjectChanged = EditorGUI.EndChangeCheck();
-            
+
             if (!Application.isPlaying)
             {
                 EditorGUILayout.PropertyField(additionalOffsetProperty);
@@ -45,6 +47,7 @@ namespace HoloToolkit.Unity.UX
             }
 
             EditorGUILayout.PropertyField(transformTargetProperty, trackedTransformGUIContent);
+            EditorGUILayout.PropertyField(updateSolversProperty);
 
             serializedObject.ApplyModifiedProperties();
             if (trackedObjectChanged)
