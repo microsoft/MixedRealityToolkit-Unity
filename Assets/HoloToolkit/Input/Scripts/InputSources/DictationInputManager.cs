@@ -207,6 +207,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private IEnumerator FinishStopRecording()
         {
+#if UNITY_WSA || UNITY_STANDALONE_WIN
             while (dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
                 yield return null;
@@ -214,6 +215,9 @@ namespace HoloToolkit.Unity.InputModule
 
             PhraseRecognitionSystem.Restart();
             isTransitioning = false;
+#else
+            return null;
+#endif
         }
 
         #region Dictation Recognizer Callbacks
