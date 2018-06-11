@@ -2,7 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+#if WINDOWS_UWP && !ENABLE_IL2CPP
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
 using System;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Attributes

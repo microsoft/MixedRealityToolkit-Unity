@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         Tracked,
         /// <summary>
-        /// The controller is currently not tracked and has relative positioning.
+        /// The controller is currently not visually tracked and has relative positioning.
         /// </summary>
         NotTracked,
         /// <summary>
