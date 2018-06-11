@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace HoloToolkit.Unity.Collections
 {
@@ -62,89 +62,92 @@ namespace HoloToolkit.Unity.Collections
         [Tooltip("Radius for the sphere or cylinder")]
         public float Radius = 2f;
 
-        /// <summary>
-        /// This is the radial range for creating a radial fan layout.
-        /// </summary>
         [SerializeField]
         [Tooltip("Radial range for radial layout")]
         [Range(5f, 360f)]
         private float radialRange = 180f;
 
+        /// <summary>
+        /// This is the radial range for creating a radial fan layout.
+        /// </summary>
         public float RadialRange
         {
             get { return radialRange; }
             set { radialRange = value; }
         }
 
-        /// <summary>
-        /// Number of rows per column, column number is automatically determined
-        /// </summary>
         [SerializeField]
         [Tooltip("Number of rows per column")]
         private int rows = 3;
 
+        /// <summary>
+        /// Number of rows per column, column number is automatically determined
+        /// </summary>
         public int Rows
         {
             get { return rows; }
             set { rows = value; }
         }
 
-        /// <summary>
-        /// Width of the cell per object in the collection.
-        /// </summary>
         [SerializeField]
         [Tooltip("Width of cell per object")]
         private float cellWidth = 0.5f;
+
+        /// <summary>
+        /// Width of the cell per object in the collection.
+        /// </summary>
         public float CellWidth
         {
             get { return cellWidth; }
             set { cellWidth = value; }
         }
 
-        /// <summary>
-        /// Height of the cell per object in the collection.
-        /// </summary>
         [SerializeField]
         [Tooltip("Height of cell per object")]
         private float cellHeight = 0.5f;
 
+        /// <summary>
+        /// Height of the cell per object in the collection.
+        /// </summary>
         public float CellHeight
         {
             get { return cellHeight; }
             set { cellHeight = value; }
         }
 
-        /// <summary>
-        /// Margin between objects horizontally.
-        /// </summary>
         [SerializeField]
         [Tooltip("Margin between objects horizontally")]
         private float horizontalMargin = 0.2f;
+
+        /// <summary>
+        /// Margin between objects horizontally.
+        /// </summary>
         public float HorizontalMargin
         {
             get { return horizontalMargin; }
             set { horizontalMargin = value; }
         }
 
-        /// <summary>
-        /// Margin between objects vertically.
-        /// </summary>
         [SerializeField]
         [Tooltip("Margin between objects vertically")]
         private float verticalMargin = 0.2f;
+
+        /// <summary>
+        /// Margin between objects vertically.
+        /// </summary>
         public float VerticalMargin
         {
             get { return verticalMargin; }
             set { verticalMargin = value; }
         }
 
-        /// <summary>
-        /// Margin between objects in depth.
-        /// </summary>
         [SerializeField]
         [Tooltip("Margin between objects in depth")]
         private float depthMargin = 0.2f;
-        
+
+        /// <summary>
+        /// Margin between objects in depth.
+        /// </summary>
         public float DepthMargin
         {
             get { return depthMargin; }
@@ -162,27 +165,18 @@ namespace HoloToolkit.Unity.Collections
         /// </summary>
         [HideInInspector]
         public Mesh CylinderMesh;
-        #endregion
 
+        public float Width { get; private set; }
+
+        public float Height { get; private set; }
+        #endregion
 
         #region private variables
         private int _columns;
-        private float _width;
-        private float _height;
         private float _circumference;
         private float _radialCellAngle;
         private Vector2 _halfCell;
         #endregion
-
-        public float Width
-        {
-            get { return _width; }
-        }
-
-        public float Height
-        {
-            get { return _height; }
-        }
 
         /// <summary>
         /// Update collection is called from the editor button on the inspector.
@@ -249,8 +243,8 @@ namespace HoloToolkit.Unity.Collections
             }
 
             _columns = Mathf.CeilToInt((float)NodeList.Count / Rows);
-            _width = _columns * CellWidth;
-            _height = Rows * CellHeight;
+            Width = _columns * CellWidth;
+            Height = Rows * CellHeight;
             _halfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
             _circumference = 2f * Mathf.PI * Radius;
             _radialCellAngle = RadialRange / _columns;
@@ -409,7 +403,7 @@ namespace HoloToolkit.Unity.Collections
             switch (OrientType)
             {
                 case OrientTypeEnum.FaceOrigin:
-                        node.transform.rotation = Quaternion.LookRotation(node.transform.position - this.transform.position, this.transform.up);
+                    node.transform.rotation = Quaternion.LookRotation(node.transform.position - this.transform.position, this.transform.up);
                     break;
 
                 case OrientTypeEnum.FaceOriginReversed:
@@ -420,14 +414,12 @@ namespace HoloToolkit.Unity.Collections
                     centerAxis = Vector3.Project(node.transform.position - this.transform.position, this.transform.up);
                     pointOnAxisNearestNode = this.transform.position + centerAxis;
                     node.transform.rotation = Quaternion.LookRotation(node.transform.position - pointOnAxisNearestNode, this.transform.up);
-
                     break;
 
                 case OrientTypeEnum.FaceCenterAxisReversed:
                     centerAxis = Vector3.Project(node.transform.position - this.transform.position, this.transform.up);
                     pointOnAxisNearestNode = this.transform.position + centerAxis;
                     node.transform.rotation = Quaternion.LookRotation(pointOnAxisNearestNode - node.transform.position, this.transform.up);
-
                     break;
 
                 case OrientTypeEnum.FaceFoward:
@@ -505,14 +497,17 @@ namespace HoloToolkit.Unity.Collections
         private Vector3 RadialMapping(Vector3 source, float radius, int row, int column)
         {
             Radius = radius >= 0 ? Radius : radius;
-       
-            Vector3 newPos = new Vector3(0f, 0f, (Radius/Rows) * row);
-            float yAngle = _radialCellAngle * (column - (_columns * 0.5f)) + (_radialCellAngle*.5f);
+
+            source.x = 0f;
+            source.y = 0f;
+            source.z = (Radius / Rows) * row;
+
+            float yAngle = _radialCellAngle * (column - (_columns * 0.5f)) + (_radialCellAngle * .5f);
 
             Quaternion rot = Quaternion.Euler(0.0f, yAngle, 0.0f);
-            newPos = rot * newPos;
+            source = rot * source;
 
-            return newPos;
+            return source;
         }
 
         /// <summary>
