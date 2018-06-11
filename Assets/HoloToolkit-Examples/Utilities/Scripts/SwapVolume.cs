@@ -5,51 +5,30 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
+    /// <summary>
+    /// This class is used in the SolverExamples scene, used to swap between active solvers
+    /// and placeholder solvers displayed in the scene.
+    /// </summary>
     public class SwapVolume : MonoBehaviour, IInputClickHandler
     {
         [SerializeField]
-        private GameObject hideThis;
-        public GameObject HideThis
-        {
-            get
-            {
-                return hideThis;
-            }
-
-            set
-            {
-                hideThis = value;
-            }
-        }
+        private GameObject hideThisObject = null;
 
         [SerializeField]
-        private GameObject spawnThis;
-        public GameObject SpawnThis
-        {
-            get
-            {
-                return spawnThis;
-            }
-
-            set
-            {
-                spawnThis = value;
-            }
-        }
+        private GameObject spawnThisPrefab = null;
 
         [SerializeField]
         private bool updateSolverTargetToClickSource = true;
 
         private SolverHandler solverHandler;
-        private Vector3 defaultPosition;
-        private Quaternion defaultRotation;
         private bool isOn = false;
         private GameObject spawnedObject;
 
         private void Start()
         {
-            defaultPosition = HideThis.transform.position;
-            defaultRotation = HideThis.transform.rotation;
+            spawnedObject = Instantiate(spawnThisPrefab, hideThisObject.transform.position, hideThisObject.transform.rotation);
+            spawnedObject.SetActive(false);
+            solverHandler = spawnedObject.GetComponent<SolverHandler>();
         }
 
         public void OnInputClicked(InputClickedEventData eventData)
@@ -58,21 +37,24 @@ namespace HoloToolkit.Unity.InputModule.Tests
             {
                 if (spawnedObject != null)
                 {
-                    Destroy(spawnedObject);
+                    spawnedObject.SetActive(false);
                 }
-                if (HideThis != null)
+                if (hideThisObject != null)
                 {
-                    HideThis.SetActive(true);
+                    hideThisObject.SetActive(true);
                 }
             }
             else
             {
-                spawnedObject = Instantiate(SpawnThis, defaultPosition, defaultRotation);
+                if (spawnedObject == null)
+                {
+                    return;
+                }
+
+                spawnedObject.SetActive(true);
 
                 if (updateSolverTargetToClickSource)
                 {
-                    solverHandler = spawnedObject.GetComponent<SolverHandler>();
-
                     InteractionInputSource interactionInputSource = eventData.InputSource as InteractionInputSource;
 
                     if (interactionInputSource != null)
@@ -104,14 +86,20 @@ namespace HoloToolkit.Unity.InputModule.Tests
                     }
                 }
 
-                if (HideThis != null)
+                if (hideThisObject != null)
                 {
-                    HideThis.SetActive(false);
+                    hideThisObject.SetActive(false);
                 }
             }
 
             isOn = !isOn;
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+        }
+
+        private void OnDestroy()
+        {
+            Destroy(spawnedObject);
+            Destroy(hideThisObject);
         }
     }
 }
