@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    ///  InBetween solver positions an object in-between two tracked transforms.
+    /// InBetween solver positions an object in-between two tracked transforms.
     /// </summary>
     public class SolverInBetween : Solver
     {
@@ -14,24 +14,23 @@ namespace HoloToolkit.Unity
         [Tooltip("Distance along the center line the object will be located. 0.5 is halfway, 1.0 is at the second transform, 0.0 is at the first transform.")]
         private float partwayOffset = 0.5f;
 
+        /// <summary>
+        /// Distance along the center line the object will be located. 0.5 is halfway, 1.0 is at the second transform, 0.0 is at the first transform.
+        /// </summary>
         public float PartwayOffset
         {
-            get
-            {
-                return partwayOffset;
-            }
-
-            set
-            {
-                partwayOffset = value;
-            }
+            get { return partwayOffset; }
+            set { partwayOffset = value; }
         }
 
         [SerializeField]
-        [Tooltip("Tracked object to calculate position and orientation for the second object. If you want to manually override and use a scene object, use the TransformTarget field")]
+        [Tooltip("Tracked object to calculate position and orientation for the second object. If you want to manually override and use a scene object, use the TransformTarget field.")]
         [HideInInspector]
         private SolverHandler.TrackedObjectToReferenceEnum trackedObjectForSecondTransform = SolverHandler.TrackedObjectToReferenceEnum.Head;
 
+        /// <summary>
+        /// Tracked object to calculate position and orientation for the second object. If you want to manually override and use a scene object, use the TransformTarget field.
+        /// </summary>
         public SolverHandler.TrackedObjectToReferenceEnum TrackedObjectForSecondTransform
         {
             get { return trackedObjectForSecondTransform; }
@@ -79,11 +78,8 @@ namespace HoloToolkit.Unity
         {
             if (targetTransform != null && secondTransform != null)
             {
-
                 Vector3 centerline = targetTransform.position - secondTransform.position;
-
                 GoalPosition = secondTransform.position + (centerline * partwayOffset);
-
                 UpdateWorkingPosToGoal();
             }
         }

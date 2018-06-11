@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Unity.InputModule;
 using System;
 using System.Collections.Generic;
-using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
 #if UNITY_WSA
@@ -193,12 +193,12 @@ namespace HoloToolkit.Unity
 
         private Transform MakeOffsetTransform(Transform parentTransform)
         {
-            GameObject transformWithOffset = new GameObject();
-            transformWithOffset.transform.parent = parentTransform;
-            transformWithOffset.transform.localPosition = AdditionalOffset;
-            transformWithOffset.transform.localRotation = Quaternion.Euler(AdditionalRotation);
-            transformWithOffset.name = string.Format("Offset from Tracked Object: {0}, {1}", AdditionalOffset, AdditionalRotation);
-            return transformWithOffset.transform;
+            var gameObjectToCreateTransformOffset = new GameObject();
+            gameObjectToCreateTransformOffset.transform.parent = parentTransform;
+            gameObjectToCreateTransformOffset.transform.localPosition = AdditionalOffset;
+            gameObjectToCreateTransformOffset.transform.localRotation = Quaternion.Euler(AdditionalRotation);
+            gameObjectToCreateTransformOffset.name = string.Format("Offset from Tracked Object: {0}, {1}", AdditionalOffset, AdditionalRotation);
+            return gameObjectToCreateTransformOffset.transform;
         }
 
         [Serializable]
