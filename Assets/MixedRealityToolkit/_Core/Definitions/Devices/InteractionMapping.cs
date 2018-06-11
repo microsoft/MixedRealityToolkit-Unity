@@ -129,17 +129,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             return vector2Data;
         }
 
-        public Vector3 GetPositionValue()
+        public Vector3 GetPosition()
         {
             return positionData;
         }
 
-        public Quaternion GetRotationValue()
+        public Quaternion GetRotation()
         {
             return rotationData;
         }
 
-        public Tuple<Vector3, Quaternion> GetTransformValue()
+        public Tuple<Vector3, Quaternion> GetTransform()
         {
             return transformData;
         }

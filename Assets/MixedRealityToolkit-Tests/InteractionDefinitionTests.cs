@@ -260,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
-            var initialValue = inputDef.GetPositionValue();
+            var initialValue = inputDef.GetPosition();
 
             Assert.True(initialValue == Vector3.zero);
             Assert.IsFalse(inputDef.Changed);
@@ -269,7 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetPositionValue();
+            var setValue1 = inputDef.GetPosition();
 
             Assert.True(setValue1 == testValue1);
             Assert.IsFalse(inputDef.Changed);
@@ -278,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetPositionValue();
+            var setValue2 = inputDef.GetPosition();
 
             Assert.True(setValue2 == testValue2);
             Assert.IsFalse(inputDef.Changed);
@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = Vector3.one;
 
-            var initialValue = inputDef.GetPositionValue();
+            var initialValue = inputDef.GetPosition();
 
             Assert.True(initialValue == Vector3.zero);
             Assert.IsFalse(inputDef.Changed);
@@ -318,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
-            var initialValue = inputDef.GetRotationValue();
+            var initialValue = inputDef.GetRotation();
 
             Assert.True(initialValue == Quaternion.identity);
             Assert.IsFalse(inputDef.Changed);
@@ -327,7 +327,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetRotationValue();
+            var setValue1 = inputDef.GetRotation();
 
             Assert.True(setValue1 == testValue1);
             Assert.IsFalse(inputDef.Changed);
@@ -336,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetRotationValue();
+            var setValue2 = inputDef.GetRotation();
 
             Assert.True(setValue2 == testValue2);
             Assert.IsFalse(inputDef.Changed);
@@ -348,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = Quaternion.Euler(45f, 45f, 45f);
 
-            var initialValue = inputDef.GetRotationValue();
+            var initialValue = inputDef.GetRotation();
 
             Assert.True(initialValue == Quaternion.identity);
             Assert.IsFalse(inputDef.Changed);
@@ -365,6 +365,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(inputDef.Changed);
         }
 
+        #endregion Quaternion
+
+        #region Tuples
+
         [Test]
         public void Test13_TestTupleChanged()
         {
@@ -372,7 +376,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
             var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
-            var initialValue = inputDef.GetTransformValue();
+            var initialValue = inputDef.GetTransform();
 
             Assert.IsNull(initialValue);
             Assert.IsFalse(inputDef.Changed);
@@ -381,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue1 = inputDef.GetTransformValue();
+            var setValue1 = inputDef.GetTransform();
 
             Assert.AreEqual(setValue1, testValue1);
             Assert.AreEqual(setValue1.Item1, testValue1.Item1);
@@ -393,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(inputDef.Changed);
 
-            var setValue2 = inputDef.GetTransformValue();
+            var setValue2 = inputDef.GetTransform();
 
             Assert.AreEqual(setValue2, testValue2);
             Assert.AreEqual(setValue2.Item1, testValue2.Item1);
@@ -408,7 +412,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
 
-            var initialValue = inputDef.GetTransformValue();
+            var initialValue = inputDef.GetTransform();
 
             Assert.IsNull(initialValue);
             Assert.IsFalse(inputDef.Changed);
