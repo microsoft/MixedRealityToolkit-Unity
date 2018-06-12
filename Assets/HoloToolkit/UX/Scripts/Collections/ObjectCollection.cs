@@ -226,6 +226,7 @@ namespace HoloToolkit.Unity.Collections
             Height = Rows * CellHeight;
             _halfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
             _circumference = 2f * Mathf.PI * Radius;
+            _radialCellAngle = RadialRange / _columns;
 
             LayoutChildren();
 
@@ -235,7 +236,7 @@ namespace HoloToolkit.Unity.Collections
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Internal function for laying out all the children when UpdateCollection is called.
         /// </summary>
         private void LayoutChildren() {
@@ -313,7 +314,27 @@ namespace HoloToolkit.Unity.Collections
                         UpdateNodeFacing(NodeList[i], OrientType, newPos);
                     }
                     break;
+                case SurfaceTypeEnum.Radial:
+                    int curColumn = 0;
+                    int curRow = 1;
 
+                    for (int i = 0; i < NodeList.Count; i++)
+                    {
+                        newPos = RadialMapping(nodeGrid[i], Radius, curRow, curColumn);
+                        if (curColumn == (_columns - 1))
+                        {
+                            curColumn = 0;
+                            ++curRow;
+                        }
+                        else
+                        {
+                            ++curColumn;
+                        }
+
+                        NodeList[i].transform.localPosition = newPos;
+                        UpdateNodeFacing(NodeList[i], OrientType, newPos);
+                    }
+                    break;
                 case SurfaceTypeEnum.Scatter:
                     // Get randomized planar mapping
                     // Calculate radius of each node while we're here
