@@ -76,44 +76,23 @@ namespace HoloToolkit.Unity.Collections
             set { radialRange = value; }
         }
 
-        [SerializeField]
-        [Tooltip("Number of rows per column")]
-        private int rows = 3;
-
         /// <summary>
-        /// Number of rows per column, column number is automatically determined
+        /// Number of rows per column (column number is automatically determined).
         /// </summary>
-        public int Rows
-        {
-            get { return rows; }
-            set { rows = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Width of cell per object")]
-        private float cellWidth = 0.5f;
+        [Tooltip("Number of rows per column")]
+        public int Rows = 3;
 
         /// <summary>
         /// Width of the cell per object in the collection.
         /// </summary>
-        public float CellWidth
-        {
-            get { return cellWidth; }
-            set { cellWidth = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Height of cell per object")]
-        private float cellHeight = 0.5f;
+        [Tooltip("Width of cell per object")]
+        public float CellWidth = 0.5f;
 
         /// <summary>
         /// Height of the cell per object in the collection.
         /// </summary>
-        public float CellHeight
-        {
-            get { return cellHeight; }
-            set { cellHeight = value; }
-        }
+        [Tooltip("Height of cell per object")]
+        public float CellHeight = 0.5f;
 
         [SerializeField]
         [Tooltip("Margin between objects horizontally")]
