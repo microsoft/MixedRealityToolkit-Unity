@@ -66,7 +66,7 @@ namespace HoloToolkit.Unity
             set
             {
                 additionalOffset = value;
-                TransformTarget = MakeOffsetTransform(TransformTarget);
+                UpdateOffsetTransform();
             }
         }
 
@@ -76,7 +76,7 @@ namespace HoloToolkit.Unity
             set
             {
                 additionalRotation = value;
-                TransformTarget = MakeOffsetTransform(TransformTarget);
+                UpdateOffsetTransform();
             }
         }
 
@@ -215,6 +215,11 @@ namespace HoloToolkit.Unity
         private bool RequiresOffset()
         {
             return AdditionalOffset.sqrMagnitude != 0 || AdditionalRotation.sqrMagnitude != 0;
+        }
+
+        private void UpdateOffsetTransform()
+        {
+            TransformTarget = MakeOffsetTransform(TransformTarget);
         }
 
         private Transform MakeOffsetTransform(Transform parentTransform)
