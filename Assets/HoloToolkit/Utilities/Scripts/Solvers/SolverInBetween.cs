@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity
     {
         [SerializeField]
         [Tooltip("Distance along the center line the object will be located. 0.5 is halfway, 1.0 is at the second transform, 0.0 is at the first transform.")]
+        [Range(0f, 1f)]
         private float partwayOffset = 0.5f;
 
         /// <summary>
@@ -20,7 +21,7 @@ namespace HoloToolkit.Unity
         public float PartwayOffset
         {
             get { return partwayOffset; }
-            set { partwayOffset = value; }
+            set { partwayOffset = Mathf.Clamp(value, 0.0f, 1.0f); }
         }
 
         [SerializeField]

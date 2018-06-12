@@ -16,12 +16,11 @@ namespace HoloToolkit.Unity.UX
 
         private void OnEnable()
         {
-
             trackedObjectReferenceProperty = serializedObject.FindProperty("trackedObjectForSecondTransform");
             transformTargetProperty = serializedObject.FindProperty("secondTransformOverride");
 
             solverInBetween = target as SolverInBetween;
-        }                    
+        }
 
         public override void OnInspectorGUI()
         {
