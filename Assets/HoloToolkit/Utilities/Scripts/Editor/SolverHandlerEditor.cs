@@ -40,20 +40,26 @@ namespace HoloToolkit.Unity.UX
             EditorGUILayout.PropertyField(trackedObjectReferenceProperty);
             bool trackedObjectChanged = EditorGUI.EndChangeCheck();
 
-            if (!Application.isPlaying)
-            {
-                EditorGUILayout.PropertyField(additionalOffsetProperty);
-                EditorGUILayout.PropertyField(additionalRotationProperty);
-            }
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(additionalOffsetProperty);
+            EditorGUILayout.PropertyField(additionalRotationProperty);
+            bool additionalOffsetChanged = EditorGUI.EndChangeCheck();
 
             EditorGUILayout.PropertyField(transformTargetProperty, trackedTransformGUIContent);
             EditorGUILayout.PropertyField(updateSolversProperty);
 
             serializedObject.ApplyModifiedProperties();
+
             if (trackedObjectChanged)
             {
                 solverHandler.TransformTarget = null;
                 solverHandler.AttachToNewTrackedObject();
+            }
+
+            if (additionalOffsetChanged)
+            {
+                solverHandler.AdditionalOffset = additionalOffsetProperty.vector3Value;
+                solverHandler.AdditionalRotation = additionalRotationProperty.vector3Value;
             }
         }
     }

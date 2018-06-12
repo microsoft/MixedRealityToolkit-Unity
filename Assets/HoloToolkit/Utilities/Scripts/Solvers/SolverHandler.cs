@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Unity.InputModule;
 using System;
 using System.Collections.Generic;
-using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
 #if UNITY_WSA
@@ -63,13 +63,21 @@ namespace HoloToolkit.Unity
         public Vector3 AdditionalOffset
         {
             get { return additionalOffset; }
-            set { additionalOffset = value; }
+            set
+            {
+                additionalOffset = value;
+                UpdateOffsetTransform();
+            }
         }
 
         public Vector3 AdditionalRotation
         {
             get { return additionalRotation; }
-            set { additionalRotation = value; }
+            set
+            {
+                additionalRotation = value;
+                UpdateOffsetTransform();
+            }
         }
 
         [SerializeField]
@@ -99,6 +107,8 @@ namespace HoloToolkit.Unity
         [SerializeField]
         private bool updateSolvers = true;
         public bool UpdateSolvers { get { return updateSolvers; } set { updateSolvers = value; } }
+
+        private GameObject transformWithOffset;
 
         private void Awake()
         {
@@ -137,6 +147,16 @@ namespace HoloToolkit.Unity
             }
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            if (transformWithOffset != null)
+            {
+                Destroy(transformWithOffset);
+            }
+        }
+
         protected override void OnControllerFound()
         {
             if (!TransformTarget)
@@ -148,6 +168,12 @@ namespace HoloToolkit.Unity
         protected override void OnControllerLost()
         {
             TransformTarget = null;
+
+            if (transformWithOffset != null)
+            {
+                Destroy(transformWithOffset);
+                transformWithOffset = null;
+            }
         }
 
         public virtual void AttachToNewTrackedObject()
@@ -191,13 +217,22 @@ namespace HoloToolkit.Unity
             return AdditionalOffset.sqrMagnitude != 0 || AdditionalRotation.sqrMagnitude != 0;
         }
 
+        private void UpdateOffsetTransform()
+        {
+            TransformTarget = MakeOffsetTransform(TransformTarget);
+        }
+
         private Transform MakeOffsetTransform(Transform parentTransform)
         {
-            GameObject transformWithOffset = new GameObject();
-            transformWithOffset.transform.parent = parentTransform;
+            if (transformWithOffset == null)
+            {
+                transformWithOffset = new GameObject();
+                transformWithOffset.transform.parent = parentTransform;
+            }
+
             transformWithOffset.transform.localPosition = AdditionalOffset;
             transformWithOffset.transform.localRotation = Quaternion.Euler(AdditionalRotation);
-            transformWithOffset.name = string.Format("Offset from Tracked Object: {0}, {1}", AdditionalOffset, AdditionalRotation);
+            transformWithOffset.name = string.Format("{0} on {1} with offset {2}, {3}", gameObject.name, TrackedObjectToReference.ToString(), AdditionalOffset, AdditionalRotation);
             return transformWithOffset.transform;
         }
 
