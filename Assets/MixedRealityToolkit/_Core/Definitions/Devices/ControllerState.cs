@@ -14,6 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         None = 0,
         /// <summary>
+        /// Reserved, for systems that provide alternate tracking.
+        /// </summary>
+        Other,
+        /// <summary>
         /// The controller is currently fully tracked and has accurate positioning.
         /// </summary>
         Tracked,
@@ -22,12 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         NotTracked,
         /// <summary>
+        /// The controller is currently only returning position data.
+        /// </summary>
+        PositionOnly,
+        /// <summary>
         /// The controller is currently only returning orientation data.
         /// </summary>
-        OrientationOnly,
-        /// <summary>
-        /// Reserved, for systems that provide alternate tracking.
-        /// </summary>
-        Other
+        OrientationOnly
     }
 }
