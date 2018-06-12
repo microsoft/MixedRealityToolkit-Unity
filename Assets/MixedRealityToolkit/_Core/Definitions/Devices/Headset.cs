@@ -35,5 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// Outputs the current state of the headset, whether it is tracked or not. As defined by the SDK / Unity.
         /// </summary>
         public ControllerState ControllerState { get; set; }
+
+        /// <summary>
+        /// Indicates whether or not the headset display is opaque. As defined by the SDK / Unity.
+        /// </summary>
+        public bool IsOpaque { get; set; }
     }
 }

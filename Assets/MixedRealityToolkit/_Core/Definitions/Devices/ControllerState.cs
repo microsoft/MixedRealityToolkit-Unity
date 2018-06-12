@@ -4,7 +4,7 @@
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
     /// <summary>
-    /// The Controller State defines whether a controller or headset is currently being tracker or not.
+    /// The Controller State defines how a controller or headset is currently being tracked.
     /// This enables developers to be able to handle non-tracked situations and react accordingly
     /// </summary>
     public enum ControllerState
@@ -14,16 +14,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         None = 0,
         /// <summary>
+        /// Reserved, for systems that provide alternate tracking.
+        /// </summary>
+        Other,
+        /// <summary>
         /// The controller is currently fully tracked and has accurate positioning.
         /// </summary>
         Tracked,
         /// <summary>
-        /// The controller is currently not tracked and has relative positioning.
+        /// The controller is currently not tracked.
         /// </summary>
         NotTracked,
         /// <summary>
-        /// Reserved, for systems that provide alternate tracking.
+        /// The controller is currently only returning position data.
         /// </summary>
-        Other
+        PositionOnly,
+        /// <summary>
+        /// The controller is currently only returning orientation data.
+        /// </summary>
+        OrientationOnly
     }
 }
