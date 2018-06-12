@@ -395,11 +395,11 @@ namespace HoloToolkit.Unity.Collections
 
                     break;
 
-                case OrientTypeEnum.FaceParentFoward:
+                case OrientTypeEnum.FaceFoward:
                     node.transform.forward = transform.rotation * Vector3.forward;
                     break;
 
-                case OrientTypeEnum.FaceParentBack:
+                case OrientTypeEnum.FaceForwardReversed:
                     node.transform.forward = transform.rotation * Vector3.back;
                     break;
 
