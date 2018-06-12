@@ -58,7 +58,8 @@ namespace HoloToolkit.Unity.UX
 
             if (additionalOffsetChanged)
             {
-                solverHandler.UpdateOffsetTransform();
+                solverHandler.AdditionalOffset = additionalOffsetProperty.vector3Value;
+                solverHandler.AdditionalRotation = additionalRotationProperty.vector3Value;
             }
         }
     }

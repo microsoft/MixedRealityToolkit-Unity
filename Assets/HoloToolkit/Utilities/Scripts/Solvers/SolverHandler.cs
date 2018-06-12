@@ -217,7 +217,7 @@ namespace HoloToolkit.Unity
             return AdditionalOffset.sqrMagnitude != 0 || AdditionalRotation.sqrMagnitude != 0;
         }
 
-        public void UpdateOffsetTransform()
+        private void UpdateOffsetTransform()
         {
             TransformTarget = MakeOffsetTransform(TransformTarget);
         }
