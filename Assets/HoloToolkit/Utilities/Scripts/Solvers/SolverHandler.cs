@@ -63,13 +63,21 @@ namespace HoloToolkit.Unity
         public Vector3 AdditionalOffset
         {
             get { return additionalOffset; }
-            set { additionalOffset = value; }
+            set
+            {
+                additionalOffset = value;
+                TransformTarget = MakeOffsetTransform(TransformTarget);
+            }
         }
 
         public Vector3 AdditionalRotation
         {
             get { return additionalRotation; }
-            set { additionalRotation = value; }
+            set
+            {
+                additionalRotation = value;
+                TransformTarget = MakeOffsetTransform(TransformTarget);
+            }
         }
 
         [SerializeField]
@@ -99,6 +107,8 @@ namespace HoloToolkit.Unity
         [SerializeField]
         private bool updateSolvers = true;
         public bool UpdateSolvers { get { return updateSolvers; } set { updateSolvers = value; } }
+
+        private GameObject transformWithOffset;
 
         private void Awake()
         {
@@ -137,6 +147,16 @@ namespace HoloToolkit.Unity
             }
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            if (transformWithOffset != null)
+            {
+                Destroy(transformWithOffset);
+            }
+        }
+
         protected override void OnControllerFound()
         {
             if (!TransformTarget)
@@ -148,6 +168,12 @@ namespace HoloToolkit.Unity
         protected override void OnControllerLost()
         {
             TransformTarget = null;
+
+            if (transformWithOffset != null)
+            {
+                Destroy(transformWithOffset);
+                transformWithOffset = null;
+            }
         }
 
         public virtual void AttachToNewTrackedObject()
@@ -193,12 +219,16 @@ namespace HoloToolkit.Unity
 
         private Transform MakeOffsetTransform(Transform parentTransform)
         {
-            var gameObjectToCreateTransformOffset = new GameObject();
-            gameObjectToCreateTransformOffset.transform.parent = parentTransform;
-            gameObjectToCreateTransformOffset.transform.localPosition = AdditionalOffset;
-            gameObjectToCreateTransformOffset.transform.localRotation = Quaternion.Euler(AdditionalRotation);
-            gameObjectToCreateTransformOffset.name = string.Format("Offset from Tracked Object: {0}, {1}", AdditionalOffset, AdditionalRotation);
-            return gameObjectToCreateTransformOffset.transform;
+            if (transformWithOffset == null)
+            {
+                transformWithOffset = new GameObject();
+                transformWithOffset.transform.parent = parentTransform;
+            }
+
+            transformWithOffset.transform.localPosition = AdditionalOffset;
+            transformWithOffset.transform.localRotation = Quaternion.Euler(AdditionalRotation);
+            transformWithOffset.name = string.Format("{0} on {1} with offset {2}, {3}", gameObject.name, TrackedObjectToReference.ToString(), AdditionalOffset, AdditionalRotation);
+            return transformWithOffset.transform;
         }
 
         [Serializable]
