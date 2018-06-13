@@ -47,7 +47,7 @@ The vNext structure adheres to a strict namespace culture of mapping the namespa
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace MixedRealityToolkit.Internal.Definitons
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitons
 {
     /// <summary>
     /// The ButtonAction defines the set of actions exposed by a controller.
@@ -185,7 +185,7 @@ private Foo()
 
 ## Public classes, structs, and enums should all go in their own files.
 
-If the class, struct, or enum can be made private then it's okay to be included in the same file.  This avoid compilations issues with Unity and ensure that proper code abstraction occurs, it also reduces conflicts and breaking changes when code needs to change.
+If the class, struct, or enum can be made private then it's okay to be included in the same file.  This avoids compilations issues with Unity and ensure that proper code abstraction occurs, it also reduces conflicts and breaking changes when code needs to change.
 
 ### Don't:
 
@@ -240,7 +240,7 @@ public class MyClass
 }
  ```
 
-## Initilise Enums.
+## Initilize Enums.
 
 To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initilize the enum by just adding the first (starter) value.
 
@@ -277,9 +277,9 @@ It is critical that if an Enum is likely to be extended in the future, to order 
 ```
 public enum SDKType
 {
-    Windows MR,
-    Open VR,
-    Open XR,
+    WindowsMR,
+    OpenVR,
+    OpenXR,
     None, <- default value not at start
     Other <- anonymous value left to end of enum
 }
@@ -340,9 +340,10 @@ public enum MyEnum
  [flags]
 public enum MyEnum
 {
-    None = 0  << 0,
-    Left = 0  << 1,
-    Right = 0 << 2
+    None = 0 << 0,
+    Left = 1 << 0,
+    Right = 1 << 1,
+    Both = Left | Right
 }
  ```
 
