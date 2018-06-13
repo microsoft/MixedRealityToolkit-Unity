@@ -29,12 +29,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         #endregion Private properties
 
-        public WindowsMixedRealityController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
+        public WindowsMixedRealityController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, IInteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
+            Interactions = interactions ?? new Dictionary<DeviceInputType, IInteractionMapping>();
 
             controllerTracked = false;
             controllerPosition = pointerPosition = gripPosition = Vector3.zero;
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         public IMixedRealityInputSource InputSource { get; private set; }
 
         /// <inheritdoc/>
-        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; private set; }
+        public Dictionary<DeviceInputType, IInteractionMapping> Interactions { get; private set; }
 
         /// <inheritdoc/>
         public void SetupInputSource<T>(T state)
@@ -103,7 +103,32 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             for (uint i = 0; i < mappings.Length; i++)
             {
                 // Add interaction for Mapping
-                Interactions.Add(mappings[i].InputType, new InteractionMapping(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                switch (mappings[i].AxisType)
+                {
+                    case AxisType.Digital:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<bool>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.SingleAxis:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<float>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.DualAxis:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<Vector2>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.ThreeDoFPosition:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<Vector3>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.ThreeDoFRotation:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<Quaternion>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.SixDoF:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<Tuple<Vector3,Quaternion>>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.None:
+                    case AxisType.Raw:
+                    default:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<object>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                }
             }
         }
 
@@ -119,38 +144,38 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 return;
             }
             //Add the Controller Pointer
-            Interactions.Add(DeviceInputType.SpatialPointer, new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.SpatialPointer, inputActions.GetActionByName("Select"))); // Note will convert these lookups to indexes
+            Interactions.Add(DeviceInputType.SpatialPointer, new InteractionMapping<Tuple<Vector3, Quaternion>>(1, AxisType.SixDoF, DeviceInputType.SpatialPointer, inputActions.GetActionByName("Select"))); // Note will convert these lookups to indexes
 
             // Add the Controller trigger
-            Interactions.Add(DeviceInputType.Trigger, new InteractionMapping(2, AxisType.SingleAxis, DeviceInputType.Trigger, inputActions.GetActionByName("Select")));
+            Interactions.Add(DeviceInputType.Trigger, new InteractionMapping<float>(2, AxisType.SingleAxis, DeviceInputType.Trigger, inputActions.GetActionByName("Select")));
 
             // If the controller has a Grip / Grasp button, add it to the controller capabilities
             if (interactionSourceState.source.supportsGrasp)
             {
-                Interactions.Add(DeviceInputType.SpatialGrip, new InteractionMapping(3, AxisType.SixDoF, DeviceInputType.SpatialGrip, inputActions.GetActionByName("Grip")));
+                Interactions.Add(DeviceInputType.SpatialGrip, new InteractionMapping<Tuple<Vector3, Quaternion>>(3, AxisType.SixDoF, DeviceInputType.SpatialGrip, inputActions.GetActionByName("Grip")));
 
-                Interactions.Add(DeviceInputType.GripPress, new InteractionMapping(4, AxisType.SingleAxis, DeviceInputType.GripPress, inputActions.GetActionByName("Grab")));
+                Interactions.Add(DeviceInputType.GripPress, new InteractionMapping<float>(4, AxisType.SingleAxis, DeviceInputType.GripPress, inputActions.GetActionByName("Grab")));
             }
 
             // If the controller has a menu button, add it to the controller capabilities
             if (interactionSourceState.source.supportsMenu)
             {
-                Interactions.Add(DeviceInputType.Menu, new InteractionMapping(5, AxisType.Digital, DeviceInputType.Menu, inputActions.GetActionByName("Menu")));
+                Interactions.Add(DeviceInputType.Menu, new InteractionMapping<bool>(5, AxisType.Digital, DeviceInputType.Menu, inputActions.GetActionByName("Menu")));
             }
 
             // If the controller has a Thumbstick, add it to the controller capabilities
             if (interactionSourceState.source.supportsThumbstick)
             {
-                Interactions.Add(DeviceInputType.ThumbStick, new InteractionMapping(6, AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerHandedness == Handedness.Left ? inputActions.GetActionByName("Walk") : inputActions.GetActionByName("Look")));
-                Interactions.Add(DeviceInputType.ThumbStickPress, new InteractionMapping(7, AxisType.Digital, DeviceInputType.ThumbStickPress, inputActions.GetActionByName("Interact")));
+                Interactions.Add(DeviceInputType.ThumbStick, new InteractionMapping<Vector2>(6, AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerHandedness == Handedness.Left ? inputActions.GetActionByName("Walk") : inputActions.GetActionByName("Look")));
+                Interactions.Add(DeviceInputType.ThumbStickPress, new InteractionMapping<bool>(7, AxisType.Digital, DeviceInputType.ThumbStickPress, inputActions.GetActionByName("Interact")));
             }
 
             // If the controller has a Touchpad, add it to the controller capabilities
             if (interactionSourceState.source.supportsTouchpad)
             {
-                Interactions.Add(DeviceInputType.Touchpad, new InteractionMapping(8, AxisType.DualAxis, DeviceInputType.Touchpad, inputActions.GetActionByName("Inventory")));
-                Interactions.Add(DeviceInputType.TouchpadTouch, new InteractionMapping(9, AxisType.Digital, DeviceInputType.TouchpadTouch, inputActions.GetActionByName("Pickup")));
-                Interactions.Add(DeviceInputType.TouchpadPress, new InteractionMapping(10, AxisType.Digital, DeviceInputType.TouchpadPress, inputActions.GetActionByName("Pickup")));
+                Interactions.Add(DeviceInputType.Touchpad, new InteractionMapping<Vector2>(8, AxisType.DualAxis, DeviceInputType.Touchpad, inputActions.GetActionByName("Inventory")));
+                Interactions.Add(DeviceInputType.TouchpadTouch, new InteractionMapping<bool>(9, AxisType.Digital, DeviceInputType.TouchpadTouch, inputActions.GetActionByName("Pickup")));
+                Interactions.Add(DeviceInputType.TouchpadPress, new InteractionMapping<bool>(10, AxisType.Digital, DeviceInputType.TouchpadPress, inputActions.GetActionByName("Pickup")));
             }
         }
 

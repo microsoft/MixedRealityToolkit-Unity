@@ -8,6 +8,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
@@ -19,12 +20,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         #endregion Private properties
 
-        public WindowsMixedRealityGestureController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
+        public WindowsMixedRealityGestureController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, IInteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
+            Interactions = interactions ?? new Dictionary<DeviceInputType, IInteractionMapping>();
         }
 
         #region IMixedRealityController Interface Members
@@ -39,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         public IMixedRealityInputSource InputSource { get; private set; }
 
         /// <inheritdoc/>
-        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; private set; }
+        public Dictionary<DeviceInputType, IInteractionMapping> Interactions { get; private set; }
 
         /// <inheritdoc/>
         public void SetupInputSource<T>(T state)
@@ -89,9 +90,35 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             for (uint i = 0; i < mappings.Length; i++)
             {
                 // Add interaction for Mapping
-                Interactions.Add(mappings[i].InputType, new InteractionMapping(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                switch (mappings[i].AxisType)
+                {
+                    case AxisType.Digital:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<bool>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.SingleAxis:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<float>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.DualAxis:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<Vector2>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.ThreeDoFPosition:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<Vector3>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.ThreeDoFRotation:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<Quaternion>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.SixDoF:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<Tuple<Vector3, Quaternion>>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.None:
+                    case AxisType.Raw:
+                    default:
+                        Interactions.Add(mappings[i].InputType, new InteractionMapping<object>(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                }
             }
         }
+
 
         /// <summary>
         /// Create Interaction mappings from a device specific default set of action mappings

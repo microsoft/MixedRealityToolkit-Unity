@@ -170,17 +170,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             {
                 if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.SpatialPointer))
                 {
-                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialPointer].InputAction, controller.Interactions[DeviceInputType.SpatialPointer].GetTransform());
+                    var data = controller.Interactions[DeviceInputType.SpatialPointer] as InteractionMapping<Tuple<Vector3, Quaternion>>;
+                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialPointer].InputAction, data.GetData());
                 }
 
-                if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.SpatialGrip))
+                if (controller.Interactions.ContainsKey(DeviceInputType.SpatialGrip) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.SpatialGrip))
                 {
-                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialGrip].InputAction, controller.Interactions[DeviceInputType.SpatialGrip].GetTransform());
+                    var data = controller.Interactions[DeviceInputType.SpatialGrip] as InteractionMapping<Tuple<Vector3, Quaternion>>;
+                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialGrip].InputAction, data.GetData());
                 }
 
-                if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.TouchpadTouch))
+                if (controller.Interactions.ContainsKey(DeviceInputType.TouchpadTouch) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.TouchpadTouch))
                 {
-                    if (controller.Interactions[DeviceInputType.TouchpadTouch].GetBooleanValue())
+                    var data = controller.Interactions[DeviceInputType.TouchpadTouch] as InteractionMapping<bool>;
+                    if (data.GetData())
                     {
                         inputSystem?.RaiseOnInputDown(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.TouchpadTouch].InputAction);
                     }
@@ -190,19 +193,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     }
                 }
 
-                if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.Touchpad))
+                if (controller.Interactions.ContainsKey(DeviceInputType.Touchpad) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.Touchpad))
                 {
-                    inputSystem?.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.Touchpad].InputAction, controller.Interactions[DeviceInputType.Touchpad].GetVector2Value());
+                    var data = controller.Interactions[DeviceInputType.Touchpad] as InteractionMapping<Vector2>;
+                    inputSystem?.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.Touchpad].InputAction, data.GetData());
                 }
 
-                if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.ThumbStick))
+                if (controller.Interactions.ContainsKey(DeviceInputType.ThumbStick) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.ThumbStick))
                 {
-                    inputSystem?.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.ThumbStick].InputAction, controller.Interactions[DeviceInputType.ThumbStick].GetVector2Value());
+                    var data = controller.Interactions[DeviceInputType.ThumbStick] as InteractionMapping<Vector2>;
+                    inputSystem?.Raise2DoFInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.ThumbStick].InputAction, data.GetData());
                 }
 
-                if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.Trigger))
+                if (controller.Interactions.ContainsKey(DeviceInputType.Trigger) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.Trigger))
                 {
-                    inputSystem?.RaiseOnInputPressed(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.Select].InputAction, controller.Interactions[DeviceInputType.Trigger].GetFloatValue());
+                    var data = controller.Interactions[DeviceInputType.Trigger] as InteractionMapping<float>;
+                    inputSystem?.RaiseOnInputPressed(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.Select].InputAction, data.GetData());
                 }
             }
         }

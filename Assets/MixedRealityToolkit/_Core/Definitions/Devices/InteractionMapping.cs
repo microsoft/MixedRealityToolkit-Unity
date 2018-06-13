@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using UnityEngine;
 
@@ -243,5 +242,130 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         }
 
         #endregion Set Operators
+    }
+
+    public class Test
+    {
+        System.Collections.Generic.List<IInteractionMapping> list = new System.Collections.Generic.List<IInteractionMapping>();
+        void helloWorld()
+        {
+            var interaction = new InteractionMapping<float>(0, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var value = interaction.GetData();
+            interaction.SetData(0f);
+            list.Add(interaction);
+            InteractionMapping<float> interaction2 = (InteractionMapping<float>)list[0];
+            var value2 = interaction2.GetData();
+            interaction2.SetData(0.1f);
+        }
+    }
+
+    public interface IInteractionMapping
+    {
+        /// <summary>
+        /// The Id assigned to the Interaction.
+        /// </summary>
+        uint Id { get; }
+
+        /// <summary>
+        /// The axis type of the button, e.g. Analogue, Digital, etc.
+        /// </summary>
+        AxisType AxisType { get; }
+
+        /// <summary>
+        /// The primary action of the input as defined by the controller SDK.
+        /// </summary>
+        DeviceInputType InputType { get; }
+
+        /// <summary>
+        /// Action to be raised to the Input Manager when the input data has changed.
+        /// </summary>
+        InputAction InputAction { get; }
+
+        /// <summary>
+        /// Has the value changed since the last reading.
+        /// </summary>
+        bool Changed { get; }
+    }
+
+    public class InteractionMapping<TReadingType> : IInteractionMapping
+    {
+        public InteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, InputAction inputAction)
+        {
+            this.id = id;
+            this.axisType = axisType;
+            this.inputType = inputType;
+            this.inputAction = inputAction;
+            changed = false;
+        }
+
+        #region Interaction Properties
+
+        [SerializeField]
+        private uint id;
+
+        /// <inheritdoc/>
+        public uint Id { get { return id; } private set { id = value; } }
+
+        [SerializeField]
+        [Tooltip("The axis type of the button, e.g. Analogue, Digital, etc.")]
+        private AxisType axisType;
+
+        /// <inheritdoc/>
+        public AxisType AxisType { get { return axisType; } private set { axisType = value; } }
+
+        [SerializeField]
+        [Tooltip("The primary action of the input as defined by the controller SDK.")]
+        private DeviceInputType inputType;
+
+        /// <inheritdoc/>
+        public DeviceInputType InputType { get { return inputType; } private set { inputType = value; } }
+
+        [SerializeField]
+        [Tooltip("Action to be raised to the Input Manager when the input data has changed.")]
+        private InputAction inputAction;
+
+        /// <inheritdoc/>
+        public InputAction InputAction { get { return inputAction; } private set { inputAction = value; } }
+
+        private TReadingType currentReading;
+
+        private bool changed;
+
+        /// <inheritdoc/>
+        public bool Changed
+        {
+            get
+            {
+                bool returnValue = changed;
+
+                if (changed)
+                {
+                    changed = false;
+                }
+
+                return returnValue;
+            }
+            private set
+            {
+                changed = value;
+            }
+        }
+        #endregion Interaction Properties
+
+        #region Operators
+
+        public TReadingType GetData() => currentReading;
+
+        public void SetData(TReadingType newValue)
+        {
+            Changed = currentReading == null && newValue != null ||
+            currentReading != null && newValue == null ||
+            currentReading != null && newValue != null &&
+            !currentReading.Equals(newValue);
+
+            currentReading = newValue;
+        }
+
+        #endregion Operators
     }
 }

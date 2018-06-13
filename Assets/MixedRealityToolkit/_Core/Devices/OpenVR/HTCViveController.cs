@@ -12,12 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
     // TODO
     public struct HTCViveController : IMixedRealityController
     {
-        public HTCViveController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
+        public HTCViveController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, IInteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
+            Interactions = interactions ?? new Dictionary<DeviceInputType, IInteractionMapping>();
         }
 
         /// <inheritdoc />
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         public IMixedRealityInputSource InputSource { get; }
 
         /// <inheritdoc />
-        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
+        public Dictionary<DeviceInputType, IInteractionMapping> Interactions { get; }
 
         /// <inheritdoc />
         public void SetupInputSource<T>(T state)

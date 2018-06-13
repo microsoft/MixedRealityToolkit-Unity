@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -135,11 +136,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <param name="key">The specific DeviceInputType value to update</param>
         /// <param name="value">The data value to be updated</param>
         public static void SetDictionaryValue<T>(
-            this Dictionary<Definitions.Devices.DeviceInputType, Definitions.Devices.InteractionMapping> input, 
+            this Dictionary<Definitions.Devices.DeviceInputType, Definitions.Devices.IInteractionMapping> input, 
             Definitions.Devices.DeviceInputType key, T value)
         {
-            var entry = input[key];
-            entry.SetValue(value);
+            var entry = input[key] as InteractionMapping<T>;
+            entry.SetData(value);
             input[key] = entry;
         }
 
@@ -152,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <param name="key">The specific DeviceInputType value to update</param>
         /// <param name="value">The data value to be updated</param>
         public static bool GetDictionaryValueChanged(
-            this Dictionary<Definitions.Devices.DeviceInputType, Definitions.Devices.InteractionMapping> input,
+            this Dictionary<Definitions.Devices.DeviceInputType, Definitions.Devices.IInteractionMapping> input,
             Definitions.Devices.DeviceInputType key)
         {
             var entry = input[key];
