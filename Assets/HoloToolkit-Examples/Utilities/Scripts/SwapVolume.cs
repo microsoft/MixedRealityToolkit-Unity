@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
-namespace HoloToolkit.Unity.InputModule.Tests
+namespace HoloToolkit.Unity.Examples.Utilities
 {
     /// <summary>
     /// This class is used in the SolverExamples scene, used to swap between active solvers
@@ -21,8 +22,16 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private bool updateSolverTargetToClickSource = true;
 
         private SolverHandler solverHandler;
-        private bool isOn = false;
         private GameObject spawnedObject;
+
+        private void Awake()
+        {
+            // This example script depends on both GameObjects being properly set.
+            if (hideThisObject == null || spawnThisPrefab == null)
+            {
+                Destroy(gameObject);
+            }
+        }
 
         private void Start()
         {
@@ -33,27 +42,16 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public void OnInputClicked(InputClickedEventData eventData)
         {
-            if (isOn)
+            if (spawnedObject.activeSelf)
             {
-                if (spawnedObject != null)
-                {
-                    spawnedObject.SetActive(false);
-                }
-                if (hideThisObject != null)
-                {
-                    hideThisObject.SetActive(true);
-                }
+                spawnedObject.SetActive(false);
+                hideThisObject.SetActive(true);
             }
             else
             {
-                if (spawnedObject == null)
-                {
-                    return;
-                }
-
                 spawnedObject.SetActive(true);
 
-                if (updateSolverTargetToClickSource)
+                if (updateSolverTargetToClickSource && solverHandler != null)
                 {
                     InteractionInputSource interactionInputSource = eventData.InputSource as InteractionInputSource;
 
@@ -86,13 +84,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
                     }
                 }
 
-                if (hideThisObject != null)
-                {
-                    hideThisObject.SetActive(false);
-                }
+                hideThisObject.SetActive(false);
             }
 
-            isOn = !isOn;
             eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
 
