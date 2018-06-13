@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity.Examples.Utilities
     /// This class is used in the SolverExamples scene, used to swap between active solvers
     /// and placeholder solvers displayed in the scene.
     /// </summary>
-    public class SolverSwapper : MonoBehaviour, IInputClickHandler
+    public class SwapVolume : MonoBehaviour, IInputClickHandler
     {
         [SerializeField]
         private GameObject hideThisObject = null;
@@ -51,7 +51,7 @@ namespace HoloToolkit.Unity.Examples.Utilities
             {
                 spawnedObject.SetActive(true);
 
-                if (updateSolverTargetToClickSource)
+                if (updateSolverTargetToClickSource && solverHandler != null)
                 {
                     InteractionInputSource interactionInputSource = eventData.InputSource as InteractionInputSource;
 
