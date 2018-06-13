@@ -31,13 +31,13 @@ namespace HoloToolkit.Examples.Prototyping
         /// </summary>
         public enum LerpTypes { Linear, EaseIn, EaseOut, EaseInOut, Free }
 
-        [Tooltip("The GameObject with the position the requires animation")]
+        [Tooltip("The GameObject with the position to animate")]
         public GameObject TargetObject;
 
         [Tooltip("The target Vector3 to animate to")]
         public Vector3 TargetValue;
 
-        [Tooltip("easy type to use for the tween")]
+        [Tooltip("Ease type to use for the tween")]
         public LerpTypes LerpType;
 
         [Tooltip("Duration of the animation in seconds")]
@@ -46,7 +46,7 @@ namespace HoloToolkit.Examples.Prototyping
         [Tooltip("Auto start? or status")]
         public bool IsRunning = false;
 
-        [Tooltip("use the local position instead of world position")]
+        [Tooltip("Use the local position instead of world position")]
         public bool ToLocalTransform = false;
 
         [Tooltip("animation is complete!")]
