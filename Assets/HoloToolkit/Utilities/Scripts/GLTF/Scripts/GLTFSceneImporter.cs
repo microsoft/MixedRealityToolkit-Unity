@@ -260,44 +260,43 @@ namespace UnityGLTF
                 }
 
                 GLTFHelpers.BuildMeshAttributes(ref attributeAccessors);
-
-                // Flip vectors and triangles to the Unity coordinate system.
-                if (attributeAccessors.ContainsKey(SemanticProperties.POSITION))
-                {
-                    NumericArray resultArray = attributeAccessors[SemanticProperties.POSITION].AccessorContent;
-                    resultArray.AsVertices = GLTFUnityHelpers.FlipVectorArrayHandedness(resultArray.AsVertices);
-                    attributeAccessors[SemanticProperties.POSITION].AccessorContent = resultArray;
-                }
-                if (attributeAccessors.ContainsKey(SemanticProperties.INDICES))
-                {
-                    NumericArray resultArray = attributeAccessors[SemanticProperties.INDICES].AccessorContent;
-                    resultArray.AsTriangles = GLTFUnityHelpers.FlipFaces(resultArray.AsTriangles);
-                    attributeAccessors[SemanticProperties.INDICES].AccessorContent = resultArray;
-                }
-                if (attributeAccessors.ContainsKey(SemanticProperties.NORMAL))
-                {
-                    NumericArray resultArray = attributeAccessors[SemanticProperties.NORMAL].AccessorContent;
-                    resultArray.AsNormals = GLTFUnityHelpers.FlipVectorArrayHandedness(resultArray.AsNormals);
-                    attributeAccessors[SemanticProperties.NORMAL].AccessorContent = resultArray;
-                }
-                // TexCoord goes from 0 to 3 to match GLTFHelpers.BuildMeshAttributes
-                for (int i = 0; i < 4; i++)
-                {
-                    if (attributeAccessors.ContainsKey(SemanticProperties.TexCoord(i)))
-                    {
-                        NumericArray resultArray = attributeAccessors[SemanticProperties.TexCoord(i)].AccessorContent;
-                        resultArray.AsTexcoords = GLTFUnityHelpers.FlipTexCoordArrayV(resultArray.AsTexcoords);
-                        attributeAccessors[SemanticProperties.TexCoord(i)].AccessorContent = resultArray;
-                    }
-                }
-                if (attributeAccessors.ContainsKey(SemanticProperties.TANGENT))
-                {
-                    NumericArray resultArray = attributeAccessors[SemanticProperties.TANGENT].AccessorContent;
-                    resultArray.AsTangents = GLTFUnityHelpers.FlipVectorArrayHandedness(resultArray.AsTangents);
-                    attributeAccessors[SemanticProperties.TANGENT].AccessorContent = resultArray;
-                }
-
+                TransformAttributes(ref attributeAccessors);
                 _assetCache.MeshCache[meshID][primitiveIndex].MeshAttributes = attributeAccessors;
+            }
+        }
+
+        protected void TransformAttributes(ref Dictionary<string, AttributeAccessor> attributeAccessors)
+        {
+            // Flip vectors and triangles to the Unity coordinate system.
+            if (attributeAccessors.ContainsKey(SemanticProperties.POSITION))
+            {
+                AttributeAccessor attributeAccessor = attributeAccessors[SemanticProperties.POSITION];
+                SchemaExtensions.ConvertVector3CoordinateSpace(ref attributeAccessor, SchemaExtensions.CoordinateSpaceConversionScale);
+            }
+            if (attributeAccessors.ContainsKey(SemanticProperties.INDICES))
+            {
+                AttributeAccessor attributeAccessor = attributeAccessors[SemanticProperties.INDICES];
+                SchemaExtensions.FlipFaces(ref attributeAccessor);
+            }
+            if (attributeAccessors.ContainsKey(SemanticProperties.NORMAL))
+            {
+                AttributeAccessor attributeAccessor = attributeAccessors[SemanticProperties.NORMAL];
+                SchemaExtensions.ConvertVector3CoordinateSpace(ref attributeAccessor, SchemaExtensions.CoordinateSpaceConversionScale);
+            }
+            // TexCoord goes from 0 to 3 to match GLTFHelpers.BuildMeshAttributes
+            for (int i = 0; i < 4; i++)
+            {
+                if (attributeAccessors.ContainsKey(SemanticProperties.TexCoord(i)))
+                {
+                    AttributeAccessor attributeAccessor = attributeAccessors[SemanticProperties.TexCoord(i)];
+                    SchemaExtensions.FlipTexCoordArrayV(ref attributeAccessor);
+                }
+
+            }
+            if (attributeAccessors.ContainsKey(SemanticProperties.TANGENT))
+            {
+                AttributeAccessor attributeAccessor = attributeAccessors[SemanticProperties.TANGENT];
+                SchemaExtensions.ConvertVector4CoordinateSpace(ref attributeAccessor, SchemaExtensions.TangentSpaceConversionScale);
             }
         }
 
@@ -391,38 +390,38 @@ namespace UnityGLTF
                 UnityEngine.Mesh mesh = new UnityEngine.Mesh
                 {
                     vertices = primitive.Attributes.ContainsKey(SemanticProperties.POSITION)
-                        ? meshAttributes[SemanticProperties.POSITION].AccessorContent.AsVertices.ToUnityVector3()
+                        ? meshAttributes[SemanticProperties.POSITION].AccessorContent.AsVertices.ToUnityVector3Raw()
                         : null,
                     normals = primitive.Attributes.ContainsKey(SemanticProperties.NORMAL)
-                        ? meshAttributes[SemanticProperties.NORMAL].AccessorContent.AsNormals.ToUnityVector3()
+                        ? meshAttributes[SemanticProperties.NORMAL].AccessorContent.AsNormals.ToUnityVector3Raw()
                         : null,
 
                     uv = primitive.Attributes.ContainsKey(SemanticProperties.TexCoord(0))
-                        ? meshAttributes[SemanticProperties.TexCoord(0)].AccessorContent.AsTexcoords.ToUnityVector2()
+                        ? meshAttributes[SemanticProperties.TexCoord(0)].AccessorContent.AsTexcoords.ToUnityVector2Raw()
                         : null,
 
                     uv2 = primitive.Attributes.ContainsKey(SemanticProperties.TexCoord(1))
-                        ? meshAttributes[SemanticProperties.TexCoord(1)].AccessorContent.AsTexcoords.ToUnityVector2()
+                        ? meshAttributes[SemanticProperties.TexCoord(1)].AccessorContent.AsTexcoords.ToUnityVector2Raw()
                         : null,
 
                     uv3 = primitive.Attributes.ContainsKey(SemanticProperties.TexCoord(2))
-                        ? meshAttributes[SemanticProperties.TexCoord(2)].AccessorContent.AsTexcoords.ToUnityVector2()
+                        ? meshAttributes[SemanticProperties.TexCoord(2)].AccessorContent.AsTexcoords.ToUnityVector2Raw()
                         : null,
 
                     uv4 = primitive.Attributes.ContainsKey(SemanticProperties.TexCoord(3))
-                        ? meshAttributes[SemanticProperties.TexCoord(3)].AccessorContent.AsTexcoords.ToUnityVector2()
+                        ? meshAttributes[SemanticProperties.TexCoord(3)].AccessorContent.AsTexcoords.ToUnityVector2Raw()
                         : null,
 
                     colors = primitive.Attributes.ContainsKey(SemanticProperties.Color(0))
-                        ? meshAttributes[SemanticProperties.Color(0)].AccessorContent.AsColors.ToUnityColor()
+                        ? meshAttributes[SemanticProperties.Color(0)].AccessorContent.AsColors.ToUnityColorRaw()
                         : null,
 
                     triangles = primitive.Indices != null
-                        ? meshAttributes[SemanticProperties.INDICES].AccessorContent.AsTriangles.ToIntArray()
+                        ? meshAttributes[SemanticProperties.INDICES].AccessorContent.AsTriangles.ToIntArrayRaw()
                         : MeshPrimitive.GenerateTriangles(vertexCount),
 
                     tangents = primitive.Attributes.ContainsKey(SemanticProperties.TANGENT)
-                        ? meshAttributes[SemanticProperties.TANGENT].AccessorContent.AsTangents.ToUnityVector4()
+                        ? meshAttributes[SemanticProperties.TANGENT].AccessorContent.AsTangents.ToUnityVector4Raw()
                         : null
                 };
 
@@ -526,7 +525,7 @@ namespace UnityGLTF
                 {
                     var pbr = def.PbrMetallicRoughness;
 
-                    material.SetColor("_Color", pbr.BaseColorFactor.ToUnityColor());
+                    material.SetColor("_Color", pbr.BaseColorFactor.ToUnityColorRaw());
 
                     if (pbr.BaseColorTexture != null)
                     {
@@ -562,7 +561,7 @@ namespace UnityGLTF
                     }
                     else
                     {
-                        material.SetColor("_Color", specGloss.DiffuseFactor.ToUnityColor());
+                        material.SetColor("_Color", specGloss.DiffuseFactor.ToUnityColorRaw());
                     }
 
                     if (specGloss.SpecularGlossinessTexture != null)
@@ -575,14 +574,14 @@ namespace UnityGLTF
                     }
                     else
                     {
-                        material.SetVector("_SpecColor", specGloss.SpecularFactor.ToUnityVector3());
+                        material.SetVector("_SpecColor", specGloss.SpecularFactor.ToUnityVector3Raw());
                         material.SetFloat("_Glossiness", (float)specGloss.GlossinessFactor);
                     }
                 }
 
                 if (def.CommonConstant != null)
                 {
-                    material.SetColor("_AmbientFactor", def.CommonConstant.AmbientFactor.ToUnityColor());
+                    material.SetColor("_AmbientFactor", def.CommonConstant.AmbientFactor.ToUnityColorRaw());
 
                     if (def.CommonConstant.LightmapTexture != null)
                     {
@@ -595,7 +594,7 @@ namespace UnityGLTF
                         ApplyTextureTransform(def.CommonConstant.LightmapTexture, material, "_LightMap");
                     }
 
-                    material.SetColor("_LightFactor", def.CommonConstant.LightmapFactor.ToUnityColor());
+                    material.SetColor("_LightFactor", def.CommonConstant.LightmapFactor.ToUnityColorRaw());
                 }
 
                 if (def.NormalTexture != null)
@@ -639,7 +638,7 @@ namespace UnityGLTF
                     ApplyTextureTransform(def.EmissiveTexture, material, "_EmissionMap");
                 }
 
-                material.SetColor("_EmissionColor", def.EmissiveFactor.ToUnityColor());
+                material.SetColor("_EmissionColor", def.EmissiveFactor.ToUnityColorRaw());
 
                 materialWrapper = new MaterialCacheData
                 {
@@ -719,11 +718,11 @@ namespace UnityGLTF
             {
                 ExtTextureTransformExtension ext = (ExtTextureTransformExtension)extension;
 
-                Vector2 temp = ext.Offset.ToUnityVector2();
+                Vector2 temp = ext.Offset.ToUnityVector2Raw();
                 temp = new Vector2(temp.x, -temp.y);
                 mat.SetTextureOffset(texName, temp);
 
-                mat.SetTextureScale(texName, ext.Scale.ToUnityVector2());
+                mat.SetTextureScale(texName, ext.Scale.ToUnityVector2Raw());
             }
         }
 
