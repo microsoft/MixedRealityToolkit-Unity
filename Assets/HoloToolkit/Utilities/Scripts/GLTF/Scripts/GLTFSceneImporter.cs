@@ -119,6 +119,10 @@ namespace UnityGLTF
                 byte[] gltfData = www.downloadHandler.data;
                 _gltfStream.Stream = new MemoryStream(gltfData, 0, gltfData.Length, false, true);
             }
+            else if (_loadType == LoadType.Stream)
+            {
+                // Do nothing, since the stream was passed in via the constructor.
+            }
             else
             {
                 throw new Exception("Invalid load type specified: " + _loadType);
