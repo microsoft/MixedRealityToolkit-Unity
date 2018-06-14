@@ -31,6 +31,12 @@ namespace UnityGLTF
             Stream
         }
 
+        protected struct GLBStream
+        {
+            public Stream Stream;
+            public long StartPosition;
+        }
+
         protected GameObject _lastLoadedScene;
         protected readonly Transform _sceneParent;
         protected readonly Dictionary<MaterialType, Shader> _shaderCache = new Dictionary<MaterialType, Shader>();
@@ -38,13 +44,12 @@ namespace UnityGLTF
         protected readonly GLTF.Schema.Material DefaultMaterial = new GLTF.Schema.Material();
         protected string _gltfUrl;
         protected string _gltfDirectoryPath;
-        protected Stream _gltfStream;
+        protected GLBStream _gltfStream;
         protected GLTFRoot _root;
         protected AssetCache _assetCache;
         protected AsyncAction _asyncAction;
         protected bool _addColliders = false;
-        byte[] _gltfData;
-        LoadType _loadType;
+        private LoadType _loadType;
 
         /// <summary>
         /// Creates a GLTFSceneBuilder object which will be able to construct a scene based off a url
@@ -66,7 +71,7 @@ namespace UnityGLTF
         {
             _gltfUrl = rootPath;
             _gltfDirectoryPath = AbsoluteFilePath(rootPath);
-            _gltfStream = stream;
+            _gltfStream = new GLBStream { Stream = stream, StartPosition = stream.Position };
             _sceneParent = parent;
             _asyncAction = new AsyncAction();
             _loadType = LoadType.Stream;
@@ -111,21 +116,15 @@ namespace UnityGLTF
                     throw new WebRequestException(www);
                 }
 
-                _gltfData = www.downloadHandler.data;
-            }
-            else if (_loadType == LoadType.Stream)
-            {
-                // todo optimization: add stream support to parsing layer
-                int streamLength = (int)(_gltfStream.Length - _gltfStream.Position);
-                _gltfData = new byte[streamLength];
-                _gltfStream.Read(_gltfData, 0, streamLength);
+                byte[] gltfData = www.downloadHandler.data;
+                _gltfStream.Stream = new MemoryStream(gltfData, 0, gltfData.Length, false, true);
             }
             else
             {
                 throw new Exception("Invalid load type specified: " + _loadType);
             }
 
-            _root = GLTFParser.ParseJson(_gltfData);
+            _root = GLTFParser.ParseJson(_gltfStream.Stream, _gltfStream.StartPosition);
             yield return ImportScene(sceneIndex, isMultithreaded);
         }
 
@@ -174,9 +173,12 @@ namespace UnityGLTF
                         }
                         else //null buffer uri indicates GLB buffer loading
                         {
-                            byte[] glbBuffer;
-                            GLTFParser.ExtractBinaryChunk(_gltfData, i, out glbBuffer);
-                            _assetCache.BufferCache[i] = glbBuffer;
+                            GLTFParser.SeekToBinaryChunk(_gltfStream.Stream, i, _gltfStream.StartPosition);
+                            _assetCache.BufferCache[i] = new BufferCacheData()
+                            {
+                                ChunkOffset = _gltfStream.Stream.Position,
+                                Stream = _gltfStream.Stream
+                            };
                         }
                     }
                 }
@@ -233,10 +235,12 @@ namespace UnityGLTF
                 Dictionary<string, AttributeAccessor> attributeAccessors = new Dictionary<string, AttributeAccessor>(primitive.Attributes.Count + 1);
                 foreach (var attributePair in primitive.Attributes)
                 {
+                    BufferCacheData bufferCacheData = _assetCache.BufferCache[attributePair.Value.Value.BufferView.Value.Buffer.Id];
                     AttributeAccessor AttributeAccessor = new AttributeAccessor()
                     {
                         AccessorId = attributePair.Value,
-                        Buffer = _assetCache.BufferCache[attributePair.Value.Value.BufferView.Value.Buffer.Id]
+                        Stream = bufferCacheData.Stream,
+                        Offset = bufferCacheData.ChunkOffset
                     };
 
                     attributeAccessors[attributePair.Key] = AttributeAccessor;
@@ -244,10 +248,12 @@ namespace UnityGLTF
 
                 if (primitive.Indices != null)
                 {
+                    BufferCacheData bufferCacheData = _assetCache.BufferCache[primitive.Indices.Value.BufferView.Value.Buffer.Id];
                     AttributeAccessor indexBuilder = new AttributeAccessor()
                     {
                         AccessorId = primitive.Indices,
-                        Buffer = _assetCache.BufferCache[primitive.Indices.Value.BufferView.Value.Buffer.Id]
+                        Stream = bufferCacheData.Stream,
+                        Offset = bufferCacheData.ChunkOffset
                     };
 
                     attributeAccessors[SemanticProperties.INDICES] = indexBuilder;
@@ -412,7 +418,7 @@ namespace UnityGLTF
                         : null,
 
                     triangles = primitive.Indices != null
-                        ? meshAttributes[SemanticProperties.INDICES].AccessorContent.AsTriangles
+                        ? meshAttributes[SemanticProperties.INDICES].AccessorContent.AsTriangles.ToIntArray()
                         : MeshPrimitive.GenerateTriangles(vertexCount),
 
                     tangents = primitive.Attributes.ContainsKey(SemanticProperties.TANGENT)
@@ -705,7 +711,7 @@ namespace UnityGLTF
 
         protected virtual void ApplyTextureTransform(TextureInfo def, UnityEngine.Material mat, string texName)
         {
-            Extension extension;
+            IExtension extension;
             if (_root.ExtensionsUsed != null &&
                 _root.ExtensionsUsed.Contains(ExtTextureTransformExtensionFactory.EXTENSION_NAME) &&
                 def.Extensions != null &&
@@ -785,11 +791,11 @@ namespace UnityGLTF
                 {
                     texture = new Texture2D(0, 0);
                     var bufferView = image.BufferView.Value;
-                    var buffer = bufferView.Buffer.Value;
                     var data = new byte[bufferView.ByteLength];
 
                     var bufferContents = _assetCache.BufferCache[bufferView.Buffer.Id];
-                    System.Buffer.BlockCopy(bufferContents, bufferView.ByteOffset, data, 0, data.Length);
+                    bufferContents.Stream.Position = bufferView.ByteOffset + bufferContents.ChunkOffset;
+                    bufferContents.Stream.Read(data, 0, data.Length);
                     texture.LoadImage(data);
                 }
 
@@ -804,15 +810,16 @@ namespace UnityGLTF
         {
             if (buffer.Uri != null)
             {
-                byte[] bufferData = null;
+                Stream bufferStream = null;
                 var uri = buffer.Uri;
 
                 Regex regex = new Regex(Base64StringInitializer);
                 Match match = regex.Match(uri);
                 if (match.Success)
                 {
-                    var base64Data = uri.Substring(match.Length);
-                    bufferData = Convert.FromBase64String(base64Data);
+                    string base64String = uri.Substring(match.Length);
+                    byte[] base64ByteData = Convert.FromBase64String(base64String);
+                    bufferStream = new MemoryStream(base64ByteData, 0, base64ByteData.Length, false, true);
                 }
                 else if (_loadType == LoadType.Uri)
                 {
@@ -824,22 +831,18 @@ namespace UnityGLTF
                     yield return www.Send();
 #endif
 
-                    bufferData = www.downloadHandler.data;
+                    bufferStream = new MemoryStream(www.downloadHandler.data, 0, www.downloadHandler.data.Length, false, true);
                 }
                 else if (_loadType == LoadType.Stream)
                 {
                     var pathToLoad = Path.Combine(sourceUri, uri);
-                    var file = File.OpenRead(pathToLoad);
-                    bufferData = new byte[buffer.ByteLength];
-                    file.Read(bufferData, 0, buffer.ByteLength);
-#if !WINDOWS_UWP
-                    file.Close();
-#else
-                    file.Dispose();
-#endif
+                    bufferStream = File.OpenRead(pathToLoad);
                 }
 
-                _assetCache.BufferCache[bufferIndex] = bufferData;
+                _assetCache.BufferCache[bufferIndex] = new BufferCacheData()
+                {
+                    Stream = bufferStream
+                };
             }
         }
 

@@ -194,6 +194,19 @@ textureObj.wrapMode == TextureWrapMode.Clamp && root.Samplers[i].WrapS == GLTFSe
             return outColorArr;
         }
 
+        public static int[] ToIntArray(this uint[] uintArr)
+        {
+            int[] intArr = new int[uintArr.Length];
+            for (int i = 0; i < uintArr.Length; ++i)
+            {
+                uint uintVal = uintArr[i];
+                Debug.Assert(uintVal <= int.MaxValue);
+                intArr[i] = (int)uintVal;
+            }
+
+            return intArr;
+        }
+
         public static Quaternion ToUnityQuaternion(this GLTF.Math.Quaternion quaternion)
         {
             return new Quaternion(quaternion.X, quaternion.Y, quaternion.Z, quaternion.W);

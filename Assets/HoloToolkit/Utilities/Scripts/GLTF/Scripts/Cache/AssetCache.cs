@@ -27,7 +27,7 @@ namespace UnityGLTF.Cache
         /// <summary>
         /// Byte buffers that represent the binary contents that get parsed
         /// </summary>
-        public Dictionary<int, byte[]> BufferCache { get; private set; }
+        public Dictionary<int, BufferCacheData> BufferCache { get; private set; }
 
         /// <summary>
         /// Cache of loaded meshes
@@ -49,7 +49,7 @@ namespace UnityGLTF.Cache
             ImageCache = new Texture2D[imageCacheSize];
             TextureCache = new Texture[textureCacheSize];
             MaterialCache = new MaterialCacheData[materialCacheSize];
-            BufferCache = new Dictionary<int, byte[]>(bufferCacheSize);
+            BufferCache = new Dictionary<int, BufferCacheData>(bufferCacheSize);
             MeshCache = new List<MeshCacheData[]>(meshCacheSize);
             for (int i = 0; i < meshCacheSize; ++i)
             {

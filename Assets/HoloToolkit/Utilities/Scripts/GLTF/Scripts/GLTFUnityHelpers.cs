@@ -10,7 +10,7 @@ namespace UnityGLTF
     /// TexCoord's Y axis to match Unity's definition are present.
     /// </summary>
     /// <remarks>
-    /// Methods for both UnityEngine.Vector2 and GLTF.Math.Vector2 are provided.
+    /// Methods for both UnityEngine vectors and GLTF.Math vectors are provided.
     /// </remarks>
     public static class GLTFUnityHelpers
     {
@@ -171,6 +171,25 @@ namespace UnityGLTF
             for (var i = 0; i < array.Length; i++)
             {
                 returnArray[i] = FlipVectorHandedness(array[i]);
+            }
+
+            return returnArray;
+        }
+
+        /// <summary>
+        /// Flips the faces of a model by changing the order of the index array.
+        /// </summary>
+        /// <param name="array">An array of uints, representing the indices to be rotated.</param>
+        /// <returns>The flipped array of indices.</returns>
+        public static uint[] FlipFaces(uint[] array)
+        {
+            var returnArray = new uint[array.Length];
+
+            for (int i = 0; i < array.Length; i += 3)
+            {
+                returnArray[i] = array[i + 2];
+                returnArray[i + 1] = array[i + 1];
+                returnArray[i + 2] = array[i];
             }
 
             return returnArray;
