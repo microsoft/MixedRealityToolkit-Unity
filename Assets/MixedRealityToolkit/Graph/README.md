@@ -36,3 +36,24 @@ However users can override with their own implementation, by extending GraphConn
 7. All set. 
 
 	Look up **GraphConnectorTestAsync.cs** for examples on how to use the GrahConnector.
+
+# Managed bytecode stripping with IL2CPP
+IL2CPP analyzes all assemblies and removes methods that are never directly called. If something is only accessed through reflection, it will be removed unless it is specified in link.xml files. Read more about it [here](https://docs.unity3d.com/Manual/IL2CPP-BytecodeStripping.html) 
+
+# Known issues
+Two Unity bugs prevent Microsoft.Identity.Client.dll from working in UWP:
+
+	1. IL2CPP project failing to P/Invoke into kernel32.dll!GetNativeSystemInfo. 
+
+		Issue Tracker: https://issuetracker.unity3d.com/issues/uwp-il2cpp-project-failing-to-p-slash-invoking-into-etw-logging-functions
+
+		Workaround: build Microsoft.Identity.Client.dll for WinRT, using "[DllImport("__Internal")]" syntax for this P/Invoke.
+
+	2. IL2CPP project failure during runtime serialization, when using NET 4.x API compatibility profile. 
+
+		Issue Tracker: https://issuetracker.unity3d.com/issues/system-dot-configuration-dot-configurationerrorsexception-failed-to-load-configuration-section-for-datacontractserializer
+
+		There is a bug in the Unity runtime code: in "Il2CppOutputProject\IL2CPP\libil2cpp\vm\Runtime.cpp", function "framework_version_for" should return "4.5" instead of "4.0".
+		
+		Workaround 1: changing it locally, but keep in mind that it gets overriden every time you build the project from Unity. 
+		Workaround 2: Using .NET Standard 2.0 profile.

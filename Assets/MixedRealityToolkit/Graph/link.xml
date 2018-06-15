@@ -1,0 +1,13 @@
+<linker>
+	<assembly fullname="System.Runtime.Serialization" preserve="nothing">
+		<type fullname="System.Runtime.Serialization.Configuration.DataContractSerializerSection" preserve="all" />
+		<type fullname="System.Runtime.Serialization.Configuration.SerializationSectionGroup" preserve="all" />
+		<type fullname="System.Runtime.Serialization.Configuration.DeclaredTypeElementCollection" preserve="all" />
+		<type fullname="System.Runtime.Serialization.XmlObjectSerializerWriteContext" preserve="all" />
+		<type fullname="System.Runtime.Serialization.XmlWriterDelegator" preserve="all" />
+	</assembly>
+
+	<assembly fullname="Microsoft.Identity.Client">
+		<type fullname="Microsoft.Identity.Client.Internal.*" preserve="all" />
+	</assembly>
+</linker>
