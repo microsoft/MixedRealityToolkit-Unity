@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// Load the Interaction mappings for this controller from the configured Controller Mapping profile
         /// </summary>
         /// <param name="mappings">Configured mappings from a controller mapping profile</param>
-        private void SetupFromMapping(InteractionMapping[] mappings)
+        private void SetupFromMapping(IInteractionMapping[] mappings)
         {
             for (uint i = 0; i < mappings.Length; i++)
             {
