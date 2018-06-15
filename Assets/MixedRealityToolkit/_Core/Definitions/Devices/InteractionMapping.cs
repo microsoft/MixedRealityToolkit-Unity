@@ -16,6 +16,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     [Serializable]
     public class InteractionMapping<TReadingType> : IInteractionMapping
     {
+        /// <summary>
+        /// The constructor for a new Interaction Mapping definition
+        /// </summary>
+        /// <param name="id">Identity for mapping</param>
+        /// <param name="axisType">The axis that the mapping operates on, also denotes the data type for the mapping</param>
+        /// <param name="inputType">The physical input device / control</param>
+        /// <param name="inputAction">The logical InputAction that this input performs</param>
         public InteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, InputAction inputAction)
         {
             this.id = id;
@@ -81,8 +88,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         #region Operators
 
+        /// <summary>
+        /// Set the value of the Interaction Mapping data
+        /// </summary>
+        /// <returns></returns>
         public TReadingType GetValue() => currentReading;
 
+        /// <summary>
+        /// Get the value of the Interaction Mapping data
+        /// </summary>
+        /// <param name="newValue"></param>
         public void GetValue(TReadingType newValue)
         {
             Changed = currentReading == null && newValue != null ||
