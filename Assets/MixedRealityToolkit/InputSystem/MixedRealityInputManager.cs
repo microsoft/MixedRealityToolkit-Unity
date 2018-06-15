@@ -16,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem
 {
@@ -99,10 +98,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             {
                 if (Application.isEditor)
                 {
-#if UNITY_EDITOR
                     bool addedComponents = false;
-                    var eventSystems = Object.FindObjectsOfType<EventSystem>();
-                    var standaloneInputModules = Object.FindObjectsOfType<StandaloneInputModule>();
+                    var eventSystems = UnityEngine.Object.FindObjectsOfType<EventSystem>();
+                    var standaloneInputModules = UnityEngine.Object.FindObjectsOfType<StandaloneInputModule>();
 
                     if (eventSystems.Length == 0)
                     {
@@ -118,8 +116,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                         addedComponents = true;
                     }
 
-                    if (addedComponents) { UnityEditor.EditorGUIUtility.PingObject(FocusProvider.UIRaycastCamera); }
+                    if (addedComponents)
+                    {
+#if UNITY_EDITOR
+                        UnityEditor.EditorGUIUtility.PingObject(FocusProvider.UIRaycastCamera);
 #endif
+                    }
                 }
                 else
                 {
@@ -144,8 +146,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             manipulationEventData = new ManipulationEventData(EventSystem.current);
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
+
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         }
 

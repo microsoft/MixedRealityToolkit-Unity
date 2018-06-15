@@ -15,44 +15,71 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
     /// </summary>
     public class GenericPointer : IMixedRealityPointer
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="pointerName">The new pointer's name.</param>
+        /// <param name="inputSourceParent">The input source parent of this pointer.</param>
         public GenericPointer(string pointerName, IMixedRealityInputSource inputSourceParent)
         {
             InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
             PointerId = InputSystem.FocusProvider.GenerateNewPointerId();
             PointerName = pointerName;
-            InputSourceParent = inputSourceParent;
+            this.inputSourceParent = inputSourceParent;
         }
 
+        /// <inheritdoc />
         public IMixedRealityInputSystem InputSystem { get; }
 
+        /// <inheritdoc />
         public uint PointerId { get; }
 
+        /// <inheritdoc />
         public string PointerName { get; set; }
 
-        public virtual IMixedRealityInputSource InputSourceParent { get; protected set; }
+        private IMixedRealityInputSource inputSourceParent;
 
+        /// <inheritdoc />
+        public virtual IMixedRealityInputSource InputSourceParent
+        {
+            get { return inputSourceParent; }
+            protected set { inputSourceParent = value; }
+        }
+
+        /// <inheritdoc />
         public IMixedRealityCursor BaseCursor { get; set; }
 
+        /// <inheritdoc />
         public ICursorModifier CursorModifier { get; set; }
 
+        /// <inheritdoc />
         public ITeleportTarget TeleportTarget { get; set; }
 
+        /// <inheritdoc />
         public bool InteractionEnabled { get; set; }
 
+        /// <inheritdoc />
         public bool FocusLocked { get; set; }
 
+        /// <inheritdoc />
         public float? PointerExtent { get; set; }
 
+        /// <inheritdoc />
         public RayStep[] Rays { get; protected set; } = { new RayStep(Vector3.zero, Vector3.forward) };
 
+        /// <inheritdoc />
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
+        /// <inheritdoc />
         public IMixedRealityFocusHandler FocusTarget { get; set; }
 
+        /// <inheritdoc />
         public IPointerResult Result { get; set; }
 
+        /// <inheritdoc />
         public IBaseRayStabilizer RayStabilizer { get; set; }
 
+        /// <inheritdoc />
         public virtual void OnPreRaycast()
         {
             Ray pointingRay;
@@ -68,20 +95,24 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             }
         }
 
+        /// <inheritdoc />
         public virtual void OnPostRaycast() { }
 
+        /// <inheritdoc />
         public virtual bool TryGetPointerPosition(out Vector3 position)
         {
             position = Vector3.zero;
             return false;
         }
 
+        /// <inheritdoc />
         public virtual bool TryGetPointingRay(out Ray pointingRay)
         {
             pointingRay = default(Ray);
             return false;
         }
 
+        /// <inheritdoc />
         public virtual bool TryGetPointerRotation(out Quaternion rotation)
         {
             rotation = Quaternion.identity;
@@ -95,11 +126,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             return left.Equals(right);
         }
 
+        /// <inheritdoc />
         bool IEqualityComparer.Equals(object left, object right)
         {
             return left.Equals(right);
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
@@ -114,18 +147,20 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             return other != null && PointerId == other.PointerId && string.Equals(PointerName, other.PointerName);
         }
 
+        /// <inheritdoc />
         int IEqualityComparer.GetHashCode(object obj)
         {
             return obj.GetHashCode();
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked
             {
-                int hashCode = 0;
-                hashCode = (hashCode * 397) ^ (int)PointerId;
-                hashCode = (hashCode * 397) ^ (PointerName != null ? PointerName.GetHashCode() : 0);
+                int hashCode = 42;
+                hashCode = (hashCode * 397) ^ PointerId.GetHashCode();
+                hashCode = (hashCode * 397) ^ InputSystem.GetHashCode();
                 return hashCode;
             }
         }
