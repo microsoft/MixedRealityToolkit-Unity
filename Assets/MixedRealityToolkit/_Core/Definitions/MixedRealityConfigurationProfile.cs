@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,6 +41,32 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         #endregion Manager Registry properties
 
         #region Mixed Reality Manager configurable properties
+
+        [SerializeField]
+        [Tooltip("Enable the Camera Profile on Startup")]
+        private bool enableCameraProfile = false;
+
+        /// <summary>
+        /// Enable and configure the Camera Profile for the Mixed Reality Toolkit
+        /// </summary>
+        public bool EnableCameraProfile
+        {
+            get { return enableCameraProfile; }
+            private set { enableCameraProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Camera profile.")]
+        private MixedRealityCameraProfile cameraProfile;
+
+        /// <summary>
+        /// Input System Action Mapping profile for wiring up Controller input to Actions.
+        /// </summary>
+        public MixedRealityCameraProfile CameraProfile
+        {
+            get { return cameraProfile; }
+            private set { cameraProfile = value; }
+        }
 
         [SerializeField]
         [Tooltip("Enable the Input System on Startup")]
@@ -185,8 +210,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         #endregion  ISerializationCallbackReceiver Implementation
-		
-		#region Mixed Reality Controller Mapping helpers
+
+        #region Mixed Reality Controller Mapping helpers
 
         // TODO - needs validation to ensure duplicates are not added?
 
