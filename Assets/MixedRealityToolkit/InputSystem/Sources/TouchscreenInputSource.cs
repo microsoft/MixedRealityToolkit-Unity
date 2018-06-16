@@ -7,6 +7,8 @@ using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
@@ -114,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
             var newTouch = new TouchPointer($"Touch {touch.fingerId}", touch, ray, this);
             activeTouches.Add(newTouch);
-            InputSystem.RaisePointerDown(newTouch);
+            InputSystem.RaisePointerDown(newTouch, null); // TODO pass in Input Action
             InputSystem.RaiseHoldStarted(this);
         }
 
@@ -133,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                         else if (knownTouch.Lifetime < MaxTapContactTime)
                         {
                             InputSystem.RaiseHoldCanceled(this);
-                            InputSystem.RaiseInputClicked(knownTouch, knownTouch.TouchData.tapCount);
+                            InputSystem.RaiseInputClicked(knownTouch, null, knownTouch.TouchData.tapCount);//TODO Pass in InputAction
                         }
                         else
                         {
@@ -145,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                         InputSystem.RaiseHoldCanceled(this);
                     }
 
-                    InputSystem.RaisePointerUp(knownTouch);
+                    InputSystem.RaisePointerUp(knownTouch, null); // TODO Pass in Input Action
                     activeTouches.Remove(knownTouch);
 
                     if (activeTouches.Count == 0)

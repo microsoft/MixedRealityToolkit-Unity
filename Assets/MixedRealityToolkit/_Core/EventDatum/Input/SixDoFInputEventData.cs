@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <summary>
         /// The <see cref="Vector3"/> and <see cref="Quaternion"/> input data.
         /// </summary>
-        public Tuple<Vector3, Quaternion> InputData { get; private set; } = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
+        public SixDof InputData { get; private set; } = new SixDof(Vector3.zero, Quaternion.identity);
 
         /// <summary>
         /// Constructor.
@@ -30,13 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
         /// <param name="inputSource"></param>
-        /// <param name="inputType"></param>
+        /// <param name="inputAction"></param>
         /// <param name="inputData"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, InputAction inputAction, Tuple<Vector3, Quaternion> inputData)
+        public void Initialize(IMixedRealityInputSource inputSource, InputAction inputAction, SixDof inputData)
         {
             Initialize(inputSource, inputAction);
-            Position = inputData.Item1;
-            Rotation = inputData.Item2;
+            Position = inputData.Position;
+            Rotation = inputData.Rotation;
             InputData = inputData;
         }
 
@@ -45,13 +44,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         /// <param name="inputSource"></param>
         /// <param name="handedness"></param>
-        /// <param name="inputType"></param>
+        /// <param name="inputAction"></param>
         /// <param name="inputData"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputAction inputAction, Tuple<Vector3, Quaternion> inputData)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputAction inputAction, SixDof inputData)
         {
             Initialize(inputSource, handedness, inputAction);
-            Position = inputData.Item1;
-            Rotation = inputData.Item2;
+            Position = inputData.Position;
+            Rotation = inputData.Rotation;
             InputData = inputData;
         }
     }

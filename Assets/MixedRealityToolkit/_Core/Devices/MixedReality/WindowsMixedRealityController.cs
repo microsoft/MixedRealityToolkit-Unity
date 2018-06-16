@@ -127,12 +127,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 currentPointerRotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentPointerRotation.eulerAngles));
             }
 
-            var interaction = interactionMapping as InteractionMapping<Tuple<Vector3, Quaternion>>;
+            var interaction = interactionMapping as InteractionMapping<SixDof>;
+            currentPointerData.Position = currentControllerPosition;
+            currentPointerData.Rotation = currentControllerRotation;
             Debug.Assert(interaction != null);
-            var value = new Tuple<Vector3, Quaternion>(currentPointerPosition, currentPointerRotation);
-            interaction.GetValue(value);
-            InputSystem?.Raise6DofInputChanged(InputSource, ControllerHandedness, interactionMapping.InputAction, value);
+            interaction.GetValue(currentPointerData);
+            InputSystem?.Raise6DofInputChanged(InputSource, ControllerHandedness, interactionMapping.InputAction, currentPointerData);
         }
+
+        private SixDof currentPointerData = new SixDof(Vector3.zero, Quaternion.identity);
 
         /// <summary>
         /// Update the "Spatial Grip" input from the device
@@ -150,9 +153,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 currentGripRotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentGripRotation.eulerAngles));
             }
 
-            var interaction = interactionMapping as InteractionMapping<Tuple<Vector3, Quaternion>>;
+            var interaction = interactionMapping as InteractionMapping<SixDof>;
+            var value = new SixDof(currentPointerPosition, currentPointerRotation);
             Debug.Assert(interaction != null);
-            var value = new Tuple<Vector3, Quaternion>(currentPointerPosition, currentPointerRotation);
             interaction.GetValue(value);
             InputSystem?.Raise6DofInputChanged(InputSource, ControllerHandedness, interactionMapping.InputAction, value);
         }

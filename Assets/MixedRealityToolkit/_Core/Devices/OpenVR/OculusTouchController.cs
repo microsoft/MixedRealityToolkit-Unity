@@ -9,9 +9,10 @@ using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    // TODO
+    // TODO - Implement
     public class OculusTouchController : BaseController
     {
-        public OculusTouchController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, List<IInteractionMapping> interactions) : base(controllerState, controllerHandedness, inputSource, interactions) { }
+        public OculusTouchController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, List<IInteractionMapping> interactions)
+                : base(controllerState, controllerHandedness, inputSource, interactions) { }
     }
 }
