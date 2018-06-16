@@ -12,12 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
     // TODO
     public struct SimulatedController : IMixedRealityController
     {
-        public SimulatedController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, IInteractionMapping> interactions = null) : this()
+        public SimulatedController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, List<IInteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, IInteractionMapping>();
+            Interactions = interactions ?? new List<IInteractionMapping>();
         }
 
         public ControllerState ControllerState { get; }
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
 
         public IMixedRealityInputSource InputSource { get; }
 
-        public Dictionary<DeviceInputType, IInteractionMapping> Interactions { get; }
+        public List<IInteractionMapping> Interactions { get; }
 
         public void SetupInputSource<T>(T state)
         {

@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
     /// <summary>
     /// Mixed Reality Toolkit device definition, used to instantiate and manage a specific device / SDK
     /// </summary>
-    public interface IMixedRealityDevice : IMixedRealityManager
+    public interface IMixedRealityDeviceManager : IMixedRealityManager
     {
         /// <summary>
         /// Retrieve all controllers currently registered with this device at runtime (if direct access is required)

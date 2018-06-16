@@ -4,10 +4,10 @@
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
 {
     // TODO - Implement
-    public class OpenVRDevice : IMixedRealityDeviceManager
+    public class SimulatedDevice : IMixedRealityDeviceManager
     {
         public string Name { get; }
         public uint Priority { get; }

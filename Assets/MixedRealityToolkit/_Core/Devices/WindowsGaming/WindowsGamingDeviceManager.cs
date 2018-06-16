@@ -4,10 +4,14 @@
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
+#if WINDOWS_UWP
+using Windows.Gaming.Input;
+#endif // WINDOWS_UWP
+
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 {
     // TODO - Implement
-    public class OpenVRDevice : IMixedRealityDeviceManager
+    public class WindowsGamingDevice : IMixedRealityDeviceManager
     {
         public string Name { get; }
         public uint Priority { get; }
