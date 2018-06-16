@@ -128,7 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             if (ActiveProfile.EnableCameraProfile)
             {
-
                 if (MixedRealityCameraProfile.IsOpaque)
                 {
                     ActiveProfile.CameraProfile.ApplySettingsForOpaqueDisplay();
