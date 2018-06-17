@@ -22,19 +22,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         public uint SourceId { get; private set; }
 
         /// <summary>
+        /// The Input Action for this event.
+        /// </summary>
+        public IMixedRealityInputAction InputAction { get; private set; }
+
+        /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="eventSystem">Typically will be <see cref="EventSystem.current"/></param>
-        public BaseInputEventData(EventSystem eventSystem) : base(eventSystem) { }
+        protected BaseInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
         /// <param name="inputSource"></param>
-        protected void BaseInitialize(IMixedRealityInputSource inputSource)
+        /// <param name="inputAction"></param>
+        protected void BaseInitialize(IMixedRealityInputSource inputSource, IMixedRealityInputAction inputAction)
         {
             Reset();
             InputSource = inputSource;
+            InputAction = inputAction;
             SourceId = InputSource.SourceId;
         }
     }
