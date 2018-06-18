@@ -31,8 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         {
             AxisType.Digital,
             AxisType.Digital,
-            AxisType.SixDoF,
-            AxisType.SixDoF,
+            AxisType.SixDof,
+            AxisType.SixDof,
             AxisType.DualAxis,
             AxisType.DualAxis,
             AxisType.DualAxis,
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
             new InputAction(1, "Select"),
             new InputAction(2, "Menu"),
             new InputAction(3, "Grip")
-        };
+        }; // Examples only, to be refined later
 
         /// <summary>
         /// The list of actions users can do in your application.
@@ -58,12 +58,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 
         [SerializeField]
         [Tooltip("The action to raise pointing events against the uGUI Canvas System.")]
-        private InputAction pointerAction = null;
+        private InputAction defaultPointerAction = null;
 
         /// <summary>
         /// The action to use for pointing events.
         /// </summary>
-        public InputAction PointerAction => pointerAction;
+        public InputAction DefaultPointerAction => defaultPointerAction;
 
         /// <summary>
         /// Reset the current InputActions definitions to the Mixed Reality Toolkit defaults

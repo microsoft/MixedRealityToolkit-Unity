@@ -194,7 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         public void SetValue(Vector3 newValue)
         {
-            if (AxisType != AxisType.ThreeDoFPosition)
+            if (AxisType != AxisType.ThreeDofPosition)
             {
                 {
                     Debug.LogError("SetValue(Vector3) is only valid for AxisType.ThreeDoFPosition InteractionMappings");
@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         public void SetValue(Quaternion newValue)
         {
-            if (AxisType != AxisType.ThreeDoFRotation)
+            if (AxisType != AxisType.ThreeDofRotation)
             {
                 Debug.LogError("SetValue(Quaternion) is only valid for AxisType.ThreeDoFRotation InteractionMappings");
             }
@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         public void SetValue(Tuple<Vector3, Quaternion> newValue)
         {
-            if (AxisType != AxisType.SixDoF)
+            if (AxisType != AxisType.SixDof)
             {
                 Debug.LogError("SetValue(Tuple<Vector3, Quaternion>) is only valid for AxisType.SixDoF InteractionMappings");
             }

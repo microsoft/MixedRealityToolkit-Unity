@@ -593,7 +593,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             // Create input event
             pointerEventData.Initialize(pointer.InputSourceParent, handedness, inputAction);
 
-            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.PointerAction.Id == inputAction.Id)
+            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.DefaultPointerAction.Id == inputAction.Id)
             {
                 ExecutePointerDown(HandlePointerDown(pointer));
             }
@@ -633,7 +633,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             // Create input event
             pointerEventData.Initialize(pointer, handedness, inputAction, count);
 
-            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.PointerAction.Id == inputAction.Id)
+            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.DefaultPointerAction.Id == inputAction.Id)
             {
                 HandleClick();
             }
@@ -687,7 +687,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             // Create input event
             pointerEventData.Initialize(pointer.InputSourceParent, handedness, inputAction);
 
-            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.PointerAction.Id == inputAction.Id)
+            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.DefaultPointerAction.Id == inputAction.Id)
             {
                 ExecutePointerUp(HandlePointerUp(pointer));
             }

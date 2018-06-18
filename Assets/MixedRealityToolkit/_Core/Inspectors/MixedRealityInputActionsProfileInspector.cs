@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     {
         private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Remove Action");
         private static readonly GUIContent AddButtonContent = new GUIContent("+ Add a New Action", "Add New Action");
-        private static readonly GUIContent PointerContent = new GUIContent("Pointer Action", "The action to use for pointing events:\nOnPointerUp, OnPointerDown, OnPointerClick, etc.");
+        private static readonly GUIContent PointerContent = new GUIContent("Default Pointer Action", "The default action to use for pointing events:\nOnPointerUp, OnPointerDown, OnPointerClick, etc.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The Name of the Action.");
         private static readonly GUIContent AxisConstraintContent = new GUIContent("Axis Constraint", "Optional Axis Constraint for this input source.");
 
@@ -23,8 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private MixedRealityInputActionsProfile profile;
 
         private SerializedProperty inputActionList;
-        private SerializedProperty pointerAction;
-        private SerializedProperty pointerActionId;
+        private SerializedProperty defaultPointerAction;
+        private SerializedProperty defaultPointerActionId;
         private GUIContent[] actionLabels;
         private int[] actionIds;
 
@@ -37,8 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             profile = (MixedRealityInputActionsProfile)target;
             inputActionList = serializedObject.FindProperty("inputActions");
-            pointerAction = serializedObject.FindProperty("pointerAction");
-            pointerActionId = pointerAction.FindPropertyRelative("id");
+            defaultPointerAction = serializedObject.FindProperty("defaultPointerAction");
+            defaultPointerActionId = defaultPointerAction.FindPropertyRelative("id");
             actionLabels = profile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
             actionIds = profile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
         }
@@ -63,7 +63,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.LabelField("Input Action Handlers", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("These actions raise specific events via the Mixed Reality Input System.", MessageType.Info);
 
-            pointerActionId.intValue = EditorGUILayout.IntPopup(PointerContent, pointerActionId.intValue.ResetIfGreaterThan(profile.InputActions.Length), actionLabels, actionIds);
+            var labelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 128f;
+            defaultPointerActionId.intValue = EditorGUILayout.IntPopup(PointerContent, defaultPointerActionId.intValue.ResetIfGreaterThan(profile.InputActions.Length), actionLabels, actionIds);
+            EditorGUIUtility.labelWidth = labelWidth;
 
             serializedObject.ApplyModifiedProperties();
         }
