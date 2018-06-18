@@ -56,15 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         /// </summary>
         public InputAction[] InputActions => inputActions;
 
-        [SerializeField]
-        [Tooltip("The action to raise pointing events against the uGUI Canvas System.")]
-        private InputAction defaultPointerAction = null;
-
-        /// <summary>
-        /// The action to use for pointing events.
-        /// </summary>
-        public InputAction DefaultPointerAction => defaultPointerAction;
-
         /// <summary>
         /// Reset the current InputActions definitions to the Mixed Reality Toolkit defaults
         /// If existing mappings exist, they will be preserved and pushed to the end of the array
