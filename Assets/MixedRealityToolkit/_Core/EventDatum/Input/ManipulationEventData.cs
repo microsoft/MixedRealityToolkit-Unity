@@ -26,10 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// Populates the event with data.
         /// </summary>
         /// <param name="inputSource"></param>
+        /// <param name="inputAction"></param>
         /// <param name="cumulativeDelta"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Vector3 cumulativeDelta)
+        public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityInputAction inputAction, Vector3 cumulativeDelta)
         {
-            BaseInitialize(inputSource);
+            BaseInitialize(inputSource, inputAction);
             CumulativeDelta = cumulativeDelta;
         }
 
@@ -38,10 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         /// <param name="inputSource"></param>
         /// <param name="handedness"></param>
+        /// <param name="inputAction"></param>
         /// <param name="cumulativeDelta"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, Vector3 cumulativeDelta)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, IMixedRealityInputAction inputAction, Vector3 cumulativeDelta)
         {
-            Initialize(inputSource, handedness);
+            Initialize(inputSource, handedness, inputAction);
             CumulativeDelta = cumulativeDelta;
         }
     }

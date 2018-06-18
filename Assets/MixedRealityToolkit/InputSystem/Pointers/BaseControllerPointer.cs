@@ -43,12 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         protected Transform RaycastOrigin;
 
         [SerializeField]
-        private KeyCode interactionEnabledKeyCode = KeyCode.None;
-
-        [SerializeField]
-        private KeyCode activeHoldKeyCode = KeyCode.None;
-
-        [SerializeField]
         private InputAction activeHoldAction = null;
         // TODO Write custom inspector to assign Input Action
 
@@ -312,15 +306,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
-                bool interactionPressed = eventData.InputAction.Id == activeHoldAction?.Id;
-
-                if (interactionRequiresHold && (eventData.KeyCode == activeHoldKeyCode || interactionPressed))
+                if (interactionRequiresHold && eventData.InputAction.Id == activeHoldAction.Id)
                 {
                     InteractionEnabled = false;
                 }
 
-                interactionPressed = eventData.InputAction.Id == interactionEnabledAction?.Id;
-                if (eventData.KeyCode == interactionEnabledKeyCode || interactionPressed)
+                if (eventData.InputAction.Id == interactionEnabledAction.Id)
                 {
                     OnSelectReleased();
                 }
@@ -331,14 +322,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
-                bool interactionPressed = eventData.InputAction.Id == activeHoldAction?.Id;
-                if (interactionRequiresHold && (eventData.KeyCode == activeHoldKeyCode || interactionPressed))
+                if (interactionRequiresHold && (eventData.InputAction.Id == activeHoldAction.Id))
                 {
                     InteractionEnabled = true;
                 }
 
-                interactionPressed = eventData.InputAction.Id == interactionEnabledAction?.Id;
-                if (eventData.KeyCode == interactionEnabledKeyCode || interactionPressed)
+                if (eventData.InputAction.Id == interactionEnabledAction.Id)
                 {
                     OnSelectPressed();
                 }

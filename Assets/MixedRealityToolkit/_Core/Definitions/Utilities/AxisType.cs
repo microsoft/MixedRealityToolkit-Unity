@@ -32,14 +32,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <summary>
         /// Position only Axis analogue input.
         /// </summary>
-        ThreeDoFPosition,
+        ThreeDofPosition,
         /// <summary>
         /// Rotation only Axis analogue input.
         /// </summary>
-        ThreeDoFRotation,
+        ThreeDofRotation,
         /// <summary>
         /// Position AND Rotation analogue input.
         /// </summary>
-        SixDoF
+        SixDof
     }
 }

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
@@ -30,9 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
         /// <param name="inputSource"></param>
-        /// <param name="inputType"></param>
+        /// <param name="inputAction"></param>
         /// <param name="inputData"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, InputAction inputAction, Tuple<Vector3, Quaternion> inputData)
+        public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityInputAction inputAction, Tuple<Vector3, Quaternion> inputData)
         {
             Initialize(inputSource, inputAction);
             Position = inputData.Item1;
@@ -45,9 +44,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         /// <param name="inputSource"></param>
         /// <param name="handedness"></param>
-        /// <param name="inputType"></param>
+        /// <param name="inputAction"></param>
         /// <param name="inputData"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, InputAction inputAction, Tuple<Vector3, Quaternion> inputData)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, IMixedRealityInputAction inputAction, Tuple<Vector3, Quaternion> inputData)
         {
             Initialize(inputSource, handedness, inputAction);
             Position = inputData.Item1;

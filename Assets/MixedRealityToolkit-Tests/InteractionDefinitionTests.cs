@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test09_TestVector3Changed()
         {
-            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDofPosition, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test10_TestVector3NoChange()
         {
-            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDofPosition, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = Vector3.one;
 
             var initialValue = inputDef.GetPosition();
@@ -315,7 +315,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test11_TestQuaternionChanged()
         {
-            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDofRotation, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
@@ -346,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test12_TestQuaternionNoChange()
         {
-            var inputDef = new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.ThreeDofRotation, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = Quaternion.Euler(45f, 45f, 45f);
 
             var initialValue = inputDef.GetRotation();
@@ -373,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test13_TestTupleChanged()
         {
-            var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.SixDof, DeviceInputType.None, new InputAction(1, "None"));
             var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
             var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
@@ -410,7 +410,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test14_TestTupleNoChange()
         {
-            var inputDef = new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new InteractionMapping(1, AxisType.SixDof, DeviceInputType.None, new InputAction(1, "None"));
             var testValue = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
 
             var initialValue = inputDef.GetTransform();
@@ -570,7 +570,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test19_InteractionDictionaryVector3()
         {
             var Interactions = new System.Collections.Generic.Dictionary<DeviceInputType, InteractionMapping>();
-            Interactions.Add(DeviceInputType.None, new InteractionMapping(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None")));
+            Interactions.Add(DeviceInputType.None, new InteractionMapping(1, AxisType.ThreeDofPosition, DeviceInputType.None, new InputAction(1, "None")));
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
@@ -602,7 +602,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test20_InteractionDictionaryQuaternion()
         {
             var Interactions = new System.Collections.Generic.Dictionary<DeviceInputType, InteractionMapping>();
-            Interactions.Add(DeviceInputType.None, new InteractionMapping(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None")));
+            Interactions.Add(DeviceInputType.None, new InteractionMapping(1, AxisType.ThreeDofRotation, DeviceInputType.None, new InputAction(1, "None")));
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
@@ -634,7 +634,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test21_InteractionDictionaryTuples()
         {
             var Interactions = new System.Collections.Generic.Dictionary<DeviceInputType, InteractionMapping>();
-            Interactions.Add(DeviceInputType.None, new InteractionMapping(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None")));
+            Interactions.Add(DeviceInputType.None, new InteractionMapping(1, AxisType.SixDof, DeviceInputType.None, new InputAction(1, "None")));
             var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
             var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
