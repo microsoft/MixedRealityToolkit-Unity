@@ -117,8 +117,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 return;
             }
 
-            #region  Managers Registration
+            if (ActiveProfile.EnableCameraProfile)
+            {
+                if (MixedRealityCameraProfile.IsOpaque)
+                {
+                    ActiveProfile.CameraProfile.ApplySettingsForOpaqueDisplay();
+                }
+                else
+                {
+                    ActiveProfile.CameraProfile.ApplySettingsForTransparentDisplay();
+                }
+            }
 
+            #region  Managers Registration
+            
             //If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.EnableInputSystem)
             {
