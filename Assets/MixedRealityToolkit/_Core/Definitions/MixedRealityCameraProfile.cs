@@ -4,17 +4,15 @@
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
-    /// This script tells you if your head mounted display (HMD)
+    /// This Scriptable Object tells you if your head mounted display (HMD)
     /// is a transparent device or an occluded device.
     /// Based on those values, you can customize your camera settings.
-    /// It also fires an OnDisplayDetected event.
     /// </summary>
-    [DisallowMultipleComponent]
-    [RequireComponent(typeof(Camera))]
-    public class MixedRealityCameraManager : MonoBehaviour
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Camera Profile", fileName = "MixedRealityCameraProfile", order = 0)]
+    public class MixedRealityCameraProfile : ScriptableObject
     {
         private enum DisplayType
         {
@@ -56,26 +54,18 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         private static DisplayType currentDisplayType;
 
-        public static bool IsOpaque => currentDisplayType == DisplayType.Opaque;
-
-        private void Start()
+        public static bool IsOpaque
         {
-            currentDisplayType = DisplayType.Opaque;
-
+            get
+            {
+                currentDisplayType = DisplayType.Opaque;
 #if UNITY_WSA
-            if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
-            {
-                currentDisplayType = DisplayType.Transparent;
-            }
+                if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
+                {
+                    currentDisplayType = DisplayType.Transparent;
+                }
 #endif
-
-            if (currentDisplayType == DisplayType.Opaque)
-            {
-                ApplySettingsForOpaqueDisplay();
-            }
-            else
-            {
-                ApplySettingsForTransparentDisplay();
+                return currentDisplayType == DisplayType.Opaque;
             }
         }
 
