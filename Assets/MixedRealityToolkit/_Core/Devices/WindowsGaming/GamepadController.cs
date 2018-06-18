@@ -12,12 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
     // TODO
     public struct GamepadController : IMixedRealityController
     {
-        public GamepadController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, IInteractionMapping> interactions = null) : this()
+        public GamepadController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, List<IInteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, IInteractionMapping>();
+            Interactions = interactions ?? new List<IInteractionMapping>();
         }
 
         public ControllerState ControllerState { get; }
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 
         public IMixedRealityInputSource InputSource { get; }
 
-        public Dictionary<DeviceInputType, IInteractionMapping> Interactions { get; }
+        public List<IInteractionMapping> Interactions { get; }
 
         public void SetupInputSource<T>(T state)
         {

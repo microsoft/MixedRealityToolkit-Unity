@@ -84,6 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
                 changed = value;
             }
         }
+
         #endregion Interaction Properties
 
         #region Operators

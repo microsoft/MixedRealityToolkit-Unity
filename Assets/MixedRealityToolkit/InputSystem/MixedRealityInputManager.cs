@@ -16,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem
 {
@@ -101,8 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 {
 #if UNITY_EDITOR
                     bool addedComponents = false;
-                    var eventSystems = Object.FindObjectsOfType<EventSystem>();
-                    var standaloneInputModules = Object.FindObjectsOfType<StandaloneInputModule>();
+                    var eventSystems = UnityEngine.Object.FindObjectsOfType<EventSystem>();
+                    var standaloneInputModules = UnityEngine.Object.FindObjectsOfType<StandaloneInputModule>();
 
                     if (eventSystems.Length == 0)
                     {
@@ -428,6 +427,29 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             RemoveSource(source);
         }
 
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySourceStateHandler> OnSourceLostEventHandler =
+                delegate (IMixedRealitySourceStateHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<SourceStateEventData>(eventData);
+                    handler.OnSourceLost(casted);
+                };
+
+
+        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, Vector3 inputData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RaiseSourceRotationChanged(IMixedRealityInputSource source, Quaternion inputData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RaiseSource6DoFPositionChanged(IMixedRealityInputSource source, Handedness handedness, SixDof inputData)
+        {
+            throw new NotImplementedException();
+        }
+
         private void RemoveSource(IMixedRealityInputSource source)
         {
             Debug.Assert(DetectedInputSources.Contains(source), $"{source.SourceName} was never registered with the Input Manager!");
@@ -437,14 +459,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceLostEventHandler);
         }
-
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySourceStateHandler> OnSourceLostEventHandler =
-                delegate (IMixedRealitySourceStateHandler handler, BaseEventData eventData)
-                {
-                    var casted = ExecuteEvents.ValidateEventData<SourceStateEventData>(eventData);
-                    handler.OnSourceLost(casted);
-                };
-
         #endregion Input Source State Events
 
         #region Focus Events
@@ -472,6 +486,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             }
         }
 
+        public void OnFocusChangedEvent(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        {
+            throw new NotImplementedException();
+        }
+
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusChangedHandler> OnPreFocusChangedHandler =
                 delegate (IMixedRealityFocusChangedHandler handler, BaseEventData eventData)
                 {
@@ -480,7 +499,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 };
 
         /// <inheritdoc />
-        public void OnFocusChangedEvent(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        public void RaiseFocusChangedEvent(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
@@ -542,6 +561,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             {
                 ExecuteEvents.ExecuteHierarchy(unfocusedObject, graphicEventData, ExecuteEvents.pointerExitHandler);
             }
+        }
+
+        public void RaisePointerDown(IMixedRealityPointer pointer, InputAction inputAction)
+        {
+            throw new NotImplementedException();
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusHandler> OnFocusExitEventHandler =
@@ -610,6 +634,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             }
         }
 
+        public void RaiseInputClicked(IMixedRealityPointer pointer, InputAction inputAction, int count)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion Pointer Down
 
         #region Pointer Click
@@ -657,6 +686,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             {
                 HandleClick();
             }
+        }
+
+        public void RaisePointerUp(IMixedRealityPointer pointer, InputAction inputAction)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion Pointer Click
@@ -722,6 +756,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             }
         }
 
+        public void RaiseOnInputDown(IMixedRealityInputSource source, InputAction inputAction)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion Pointer Up
 
         #endregion Pointers
@@ -785,6 +824,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputEventData, OnInputDownEventHandler);
+        }
+
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, InputAction inputAction)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion Input Down
@@ -876,6 +920,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
+        }
+
+        public void RaiseOnInputUp(IMixedRealityInputSource source, InputAction inputAction)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion Input Pressed
@@ -1033,7 +1082,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void Raise6DofInputChanged(IMixedRealityInputSource source, InputAction inputAction, Tuple<Vector3, Quaternion> inputData)
+        public void Raise6DofInputChanged(IMixedRealityInputSource source, InputAction inputAction, SixDof inputData)
         {
             // Create input event
             sixDoFInputEventData.Initialize(source, inputAction, inputData);
@@ -1043,7 +1092,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, InputAction inputAction, Tuple<Vector3, Quaternion> inputData)
+        public void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, InputAction inputAction, SixDof inputData)
         {
             // Create input event
             sixDoFInputEventData.Initialize(source, handedness, inputAction, inputData);

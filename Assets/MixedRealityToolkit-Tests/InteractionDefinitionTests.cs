@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using NUnit.Framework;
-using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -368,18 +367,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         #endregion Quaternion
 
-        #region Tuples
+        #region SixDof
 
         [Test]
-        public void Test13_TestTupleChanged()
+        public void Test13_TestSixDofChanged()
         {
-            var inputDef = new InteractionMapping<Tuple<Vector3, Quaternion>>(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
-            var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
+            var inputDef = new InteractionMapping<SixDof>(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
+            var testValue1 = new SixDof(Vector3.zero, Quaternion.identity);
+            var testValue2 = new SixDof(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
+            var defaultRotation = new Quaternion();
 
             var initialValue = inputDef.GetValue();
 
-            Assert.IsNull(initialValue);
+            Assert.IsTrue(initialValue.Position == Vector3.zero);
+            Assert.IsTrue(initialValue.Rotation.w.Equals(defaultRotation.w) &&
+                          initialValue.Rotation.x.Equals(defaultRotation.x) &&
+                          initialValue.Rotation.y.Equals(defaultRotation.y) &&
+                          initialValue.Rotation.z.Equals(defaultRotation.z));
             Assert.IsFalse(inputDef.Changed);
 
             inputDef.GetValue(testValue1);
@@ -388,10 +392,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var setValue1 = inputDef.GetValue();
 
-            Assert.AreEqual(setValue1, testValue1);
-            Assert.AreEqual(setValue1.Item1, testValue1.Item1);
-            Assert.AreEqual(setValue1.Item2, testValue1.Item2);
-            Assert.AreEqual(setValue1.Item2, testValue1.Item2);
+            Assert.IsTrue(setValue1 == testValue1);
+            Assert.IsTrue(setValue1.Position == testValue1.Position);
+            Assert.IsTrue(setValue1.Rotation == testValue1.Rotation);
             Assert.IsFalse(inputDef.Changed);
 
             inputDef.GetValue(testValue2);
@@ -400,27 +403,32 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var setValue2 = inputDef.GetValue();
 
-            Assert.AreEqual(setValue2, testValue2);
-            Assert.AreEqual(setValue2.Item1, testValue2.Item1);
-            Assert.AreEqual(setValue2.Item2, testValue2.Item2);
-            Assert.AreEqual(setValue2.Item2, testValue2.Item2);
+            Assert.IsTrue(setValue2 == testValue2);
+            Assert.IsTrue(setValue2.Position == testValue2.Position);
+            Assert.IsTrue(setValue2.Rotation == testValue2.Rotation);
             Assert.IsFalse(inputDef.Changed);
         }
 
         [Test]
-        public void Test14_TestTupleNoChange()
+        public void Test14_TestSixDofNoChange()
         {
-            var inputDef = new InteractionMapping<Tuple<Vector3, Quaternion>>(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
+            var inputDef = new InteractionMapping<SixDof>(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None"));
+            var testValue = new SixDof(Vector3.zero, Quaternion.identity);
+            var defaultRotation = new Quaternion();
 
             var initialValue = inputDef.GetValue();
 
-            Assert.IsNull(initialValue);
+            Assert.IsTrue(initialValue.Position == Vector3.zero);
+            Assert.IsTrue(initialValue.Rotation.w.Equals(defaultRotation.w) &&
+                          initialValue.Rotation.x.Equals(defaultRotation.x) &&
+                          initialValue.Rotation.y.Equals(defaultRotation.y) &&
+                          initialValue.Rotation.z.Equals(defaultRotation.z));
             Assert.IsFalse(inputDef.Changed);
 
             inputDef.GetValue(testValue);
 
             Assert.IsTrue(inputDef.Changed);
+
             // Make sure the second time we query it's false
             Assert.IsFalse(inputDef.Changed);
 
@@ -430,256 +438,260 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(inputDef.Changed);
         }
 
-        #endregion Tuples
+        #endregion SixDof
 
         #region Interaction Dictionary Tests
 
         [Test]
         public void Test15_InteractionDictionaryObject()
         {
-            var Interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
-            Interactions.Add(DeviceInputType.None, new InteractionMapping<object>(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None")));
+            var interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
+            interactions.Add(DeviceInputType.None, new InteractionMapping<object>(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None")));
             var testValue1 = (object)1f;
             var testValue2 = (object)false;
 
-            var initialValue = Interactions[DeviceInputType.None] as InteractionMapping<object>;
+            var initialValue = interactions[DeviceInputType.None] as InteractionMapping<object>;
 
             Assert.IsNull(initialValue.GetValue());
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue1 = Interactions[DeviceInputType.None] as InteractionMapping<object>;
+            var setValue1 = interactions[DeviceInputType.None] as InteractionMapping<object>;
 
             Assert.IsNotNull(setValue1);
             Assert.IsNotNull(setValue1.GetValue());
             Assert.AreEqual(setValue1.GetValue(), testValue1);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue2 = Interactions[DeviceInputType.None] as InteractionMapping<object>;
+            var setValue2 = interactions[DeviceInputType.None] as InteractionMapping<object>;
 
             Assert.IsNotNull(setValue2);
             Assert.IsNotNull(setValue2.GetValue());
             Assert.AreEqual(setValue2.GetValue(), testValue2);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
         }
 
         [Test]
         public void Test16_InteractionDictionaryBool()
         {
-            var Interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
-            Interactions.Add(DeviceInputType.None, new InteractionMapping<bool>(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None")));
+            var interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
+            interactions.Add(DeviceInputType.None, new InteractionMapping<bool>(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None")));
             var testValue1 = true;
             var testValue2 = false;
 
-            var initialValue = Interactions[DeviceInputType.None] as InteractionMapping<bool>;
+            var initialValue = interactions[DeviceInputType.None] as InteractionMapping<bool>;
 
             Assert.IsFalse(initialValue.GetValue());
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue1 = Interactions[DeviceInputType.None] as InteractionMapping<bool>;
+            var setValue1 = interactions[DeviceInputType.None] as InteractionMapping<bool>;
 
             Assert.IsNotNull(setValue1);
             Assert.IsTrue(setValue1.GetValue());
-            Assert.AreEqual(setValue1.GetValue(), testValue1);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(setValue1.GetValue() == testValue1);
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue2 = Interactions[DeviceInputType.None] as InteractionMapping<bool>;
+            var setValue2 = interactions[DeviceInputType.None] as InteractionMapping<bool>;
 
             Assert.IsNotNull(setValue2);
             Assert.IsFalse(setValue2.GetValue());
-            Assert.AreEqual(setValue2.GetValue(), testValue2);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(setValue2.GetValue() == testValue2);
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
         }
 
         [Test]
         public void Test17_InteractionDictionaryFloat()
         {
-            var Interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
-            Interactions.Add(DeviceInputType.None, new InteractionMapping<float>(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None")));
+            var interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
+            interactions.Add(DeviceInputType.None, new InteractionMapping<float>(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None")));
             var testValue1 = 1f;
             var testValue2 = 9001f;
 
-            var initialValue = Interactions[DeviceInputType.None] as InteractionMapping<float>;
+            var initialValue = interactions[DeviceInputType.None] as InteractionMapping<float>;
 
             Assert.AreEqual(initialValue.GetValue(), 0d, double.Epsilon);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue1 = Interactions[DeviceInputType.None] as InteractionMapping<float>;
+            var setValue1 = interactions[DeviceInputType.None] as InteractionMapping<float>;
 
             Assert.IsNotNull(setValue1);
             Assert.AreEqual(setValue1.GetValue(), testValue1, double.Epsilon);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue2 = Interactions[DeviceInputType.None] as InteractionMapping<float>;
+            var setValue2 = interactions[DeviceInputType.None] as InteractionMapping<float>;
 
             Assert.IsNotNull(setValue2);
             Assert.AreEqual(setValue2.GetValue(), testValue2, double.Epsilon);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
         }
 
         [Test]
         public void Test18_InteractionDictionaryVector2()
         {
-            var Interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
-            Interactions.Add(DeviceInputType.None, new InteractionMapping<Vector2>(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None")));
+            var interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
+            interactions.Add(DeviceInputType.None, new InteractionMapping<Vector2>(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None")));
             var testValue1 = Vector2.one;
             var testValue2 = Vector2.zero;
 
-            var initialValue = Interactions[DeviceInputType.None] as InteractionMapping<Vector2>;
+            var initialValue = interactions[DeviceInputType.None] as InteractionMapping<Vector2>;
 
             Assert.True(initialValue.GetValue() == Vector2.zero);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue1 = Interactions[DeviceInputType.None] as InteractionMapping<Vector2>;
+            var setValue1 = interactions[DeviceInputType.None] as InteractionMapping<Vector2>;
 
             Assert.IsNotNull(setValue1);
             Assert.True(setValue1.GetValue() == testValue1);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue2 = Interactions[DeviceInputType.None] as InteractionMapping<Vector2>;
+            var setValue2 = interactions[DeviceInputType.None] as InteractionMapping<Vector2>;
 
             Assert.IsNotNull(setValue2);
             Assert.True(setValue2.GetValue() == testValue2);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
         }
 
         [Test]
         public void Test19_InteractionDictionaryVector3()
         {
-            var Interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
-            Interactions.Add(DeviceInputType.None, new InteractionMapping<Vector3>(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None")));
+            var interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
+            interactions.Add(DeviceInputType.None, new InteractionMapping<Vector3>(1, AxisType.ThreeDoFPosition, DeviceInputType.None, new InputAction(1, "None")));
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
-            var initialValue = Interactions[DeviceInputType.None] as InteractionMapping<Vector3>;
+            var initialValue = interactions[DeviceInputType.None] as InteractionMapping<Vector3>;
 
             Assert.True(initialValue.GetValue() == Vector3.zero);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue1 = Interactions[DeviceInputType.None] as InteractionMapping<Vector3>;
+            var setValue1 = interactions[DeviceInputType.None] as InteractionMapping<Vector3>;
 
             Assert.IsNotNull(setValue1);
             Assert.True(setValue1.GetValue() == testValue1);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue2 = Interactions[DeviceInputType.None] as InteractionMapping<Vector3>;
+            var setValue2 = interactions[DeviceInputType.None] as InteractionMapping<Vector3>;
 
             Assert.IsNotNull(setValue2);
             Assert.True(setValue2.GetValue() == testValue2);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
         }
 
         [Test]
         public void Test20_InteractionDictionaryQuaternion()
         {
-            var Interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
-            Interactions.Add(DeviceInputType.None, new InteractionMapping<Quaternion>(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None")));
+            var interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
+            interactions.Add(DeviceInputType.None, new InteractionMapping<Quaternion>(1, AxisType.ThreeDoFRotation, DeviceInputType.None, new InputAction(1, "None")));
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
-            var initialValue = Interactions[DeviceInputType.None] as InteractionMapping<Quaternion>;
+            var initialValue = interactions[DeviceInputType.None] as InteractionMapping<Quaternion>;
 
             Assert.True(initialValue.GetValue().eulerAngles == Quaternion.identity.eulerAngles);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue1 = Interactions[DeviceInputType.None] as InteractionMapping<Quaternion>;
+            var setValue1 = interactions[DeviceInputType.None] as InteractionMapping<Quaternion>;
 
             Assert.IsNotNull(setValue1);
             Assert.True(setValue1.GetValue() == testValue1);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue2 = Interactions[DeviceInputType.None] as InteractionMapping<Quaternion>;
+            var setValue2 = interactions[DeviceInputType.None] as InteractionMapping<Quaternion>;
 
             Assert.IsNotNull(setValue2);
             Assert.True(setValue2.GetValue() == testValue2);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
         }
 
         [Test]
-        public void Test21_InteractionDictionaryTuples()
+        public void Test21_InteractionDictionarySixDof()
         {
-            var Interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
-            Interactions.Add(DeviceInputType.None, new InteractionMapping<Tuple<Vector3, Quaternion>>(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None")));
-            var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
-            var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
+            var interactions = new System.Collections.Generic.Dictionary<DeviceInputType, IInteractionMapping>();
+            interactions.Add(DeviceInputType.None, new InteractionMapping<SixDof>(1, AxisType.SixDoF, DeviceInputType.None, new InputAction(1, "None")));
+            var testValue1 = new SixDof(Vector3.zero, Quaternion.identity);
+            var testValue2 = new SixDof(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
+            var defaultRotation = new Quaternion();
 
-            var initialValue = Interactions[DeviceInputType.None] as InteractionMapping<Tuple<Vector3, Quaternion>>;
+            var initialValue = interactions[DeviceInputType.None] as InteractionMapping<SixDof>;
+            SixDof initialSixDofValue = initialValue.GetValue();
 
-            Assert.IsNull(initialValue.GetValue());
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(initialSixDofValue.Position == Vector3.zero);
+            Assert.IsTrue(initialSixDofValue.Rotation.w.Equals(defaultRotation.w) &&
+                          initialSixDofValue.Rotation.x.Equals(defaultRotation.x) &&
+                          initialSixDofValue.Rotation.y.Equals(defaultRotation.y) &&
+                          initialSixDofValue.Rotation.z.Equals(defaultRotation.z));
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue1 = Interactions[DeviceInputType.None] as InteractionMapping<Tuple<Vector3, Quaternion>>;
+            var setValue1 = interactions[DeviceInputType.None] as InteractionMapping<SixDof>;
 
             Assert.IsNotNull(setValue1);
-            Assert.AreEqual(setValue1.GetValue(), testValue1);
-            Assert.AreEqual(setValue1.GetValue().Item1, testValue1.Item1);
-            Assert.AreEqual(setValue1.GetValue().Item2, testValue1.Item2);
-            Assert.AreEqual(setValue1.GetValue().Item2, testValue1.Item2);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(setValue1.GetValue() == testValue1);
+            Assert.IsTrue(setValue1.GetValue().Position == testValue1.Position);
+            Assert.IsTrue(setValue1.GetValue().Rotation == testValue1.Rotation);
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            Interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
+            interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
 
-            Assert.IsTrue(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue2 = Interactions[DeviceInputType.None] as InteractionMapping<Tuple<Vector3, Quaternion>>;
+            var setValue2 = interactions[DeviceInputType.None] as InteractionMapping<SixDof>;
 
             Assert.IsNotNull(setValue2);
-            Assert.AreEqual(setValue2.GetValue(), testValue2);
-            Assert.AreEqual(setValue2.GetValue().Item1, testValue2.Item1);
-            Assert.AreEqual(setValue2.GetValue().Item2, testValue2.Item2);
-            Assert.AreEqual(setValue2.GetValue().Item2, testValue2.Item2);
-            Assert.IsFalse(Interactions.GetDictionaryValueChanged(DeviceInputType.None));
+            Assert.IsTrue(setValue2.GetValue() == testValue2);
+            Assert.IsTrue(setValue2.GetValue().Position == testValue2.Position);
+            Assert.IsTrue(setValue2.GetValue().Rotation == testValue2.Rotation);
+            Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
         }
 
         #endregion Interaction Dictionary
