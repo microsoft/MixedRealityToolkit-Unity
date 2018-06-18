@@ -12,7 +12,7 @@ namespace HoloToolkit.Unity.UX
         private SerializedProperty transformTargetProperty;
         private SolverInBetween solverInBetween;
 
-        private static readonly string[] fieldsToExclude = new string[] { "m_Script", "secondTransformOverride" };
+        private static readonly string[] fieldsToExclude = new string[] { "m_Script" };
 
         private void OnEnable()
         {

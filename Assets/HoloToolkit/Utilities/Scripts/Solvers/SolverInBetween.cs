@@ -47,6 +47,7 @@ namespace HoloToolkit.Unity
 
         [SerializeField]
         [Tooltip("This transform overrides any Tracked Object as the second point in the In Between.")]
+        [HideInInspector]
         private Transform secondTransformOverride = null;
 
         private SolverHandler secondSolverHandler;
