@@ -14,6 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     {
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
 
+        private SerializedProperty enableCameraProfile;
+        private SerializedProperty cameraProfile;
         private SerializedProperty enableInputSystem;
         private SerializedProperty inputSystemType;
         private SerializedProperty inputActionsProfile;
@@ -50,6 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 }
             }
 
+            enableCameraProfile = serializedObject.FindProperty("enableCameraProfile");
+            cameraProfile = serializedObject.FindProperty("cameraProfile");
             enableInputSystem = serializedObject.FindProperty("enableInputSystem");
             inputSystemType = serializedObject.FindProperty("inputSystemType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
@@ -67,6 +71,15 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             var previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 160f;
+
+            // Camera Profile Configuration
+            EditorGUILayout.LabelField("Camera Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(enableCameraProfile);
+
+            if (enableCameraProfile.boolValue)
+            {
+                RenderProfile(cameraProfile);
+            }
 
             //Input System configuration
             EditorGUILayout.LabelField("Input Settings", EditorStyles.boldLabel);
