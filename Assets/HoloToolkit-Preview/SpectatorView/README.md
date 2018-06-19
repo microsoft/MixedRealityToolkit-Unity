@@ -59,20 +59,20 @@ Project Setup
 -------------
 - Prepare your scene
     - Ensure all visable gameobjects, within your scene, are contained under a world root gameobject.
-    ![World Root](Images/WorldRoot.png)
+    ![World Root](Images/WorldRoot.PNG)
 
 - Add the SpectatorView prefab (Assets/SpectatorView/Prefabs/SpectatorView.prefab) into your scene.
 - Add the SpectatorViewNetworking prefab (Assets/SpectatorView/Prefabs/SpectatorViewNetworking.prefab) into your scene.
 - Select the SpectatorViewNetworking gameobject and on the SpectatorViewNetworingManager component, there's a few things you can link up. If left untouched this component will search for necessary scripts at runtime.
     - Marker Detection Hololens -> SpectatorView/Hololens/MarkerDetection
     - Marker Generation 3D -> SpectatorView/IPhone/SyncMarker/3DMarker
-    ![SpectatorView Network Discovery](Images/SpectatorViewNetworkDiscovery.png)
+    ![SpectatorView Network Discovery](Images/SpectatorViewNetworkDiscovery.PNG)
 
 Building for the Different Platforms
 ------------------------------------
 - When building for iOS ensure to remove the GLTF component of MRTK as this is not yet compatibile with this platform. 
 - At the top level of the SpectatorView prefab there is a component called 'Platform Switcher'.
-![Platform Switcher](Images/PlatformSwitcher.png)
+![Platform Switcher](Images/PlatformSwitcher.PNG)
 - Select the platform you want to build for.
 - If selecting 'Hololens' you should see all gameobjects beneath the iPhone gameobject in the SpectatorView prefab become inactive and all the gameobjects under 'Hololens' become active.
 - This can take a little while as depending on the platform you choose the HoloToolkit is being added or removed from the project.
@@ -87,7 +87,7 @@ Running your Application
 - As soon as iPhone app starts, it will look for surfaces like floors or tables.
 - When surfaces are found you should see a marker similar to this one:
 
-    ![Marker](Images/Marker.png)
+    ![Marker](./Images/Marker.PNG)
 - Show this marker to the Hololens.
 - Once the marker has been detected by the Hololens it should disappear and both devices should be connected and spatially syncronized. 
 
