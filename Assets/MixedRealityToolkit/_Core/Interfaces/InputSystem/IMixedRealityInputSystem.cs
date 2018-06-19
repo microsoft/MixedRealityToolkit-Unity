@@ -123,9 +123,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source">The lost Input Source.</param>
         void RaiseSourceLost(IMixedRealityInputSource source);
 
-        void RaiseSourcePositionChanged(IMixedRealityInputSource source, Handedness handedness, Vector3 inputData);
+        void RaiseSource3DofPositionChanged(IMixedRealityInputSource source, Handedness handedness, Vector3 inputData);
 
-        void RaiseSourceRotationChanged(IMixedRealityInputSource source, Handedness handedness, Quaternion inputData);
+        void RaiseSource3DofRotationChanged(IMixedRealityInputSource source, Handedness handedness, Quaternion inputData);
 
         void RaiseSource6DoFPositionChanged(IMixedRealityInputSource source, Handedness handedness, SixDof inputData);
 

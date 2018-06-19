@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
         }
 
         [SerializeField]
-        private InputAction grabAction = null;
+        private InputAction grabAction;
 
         [SerializeField]
         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]

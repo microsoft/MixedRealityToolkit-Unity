@@ -2,8 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
 {
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// <summary>
         /// Action to be raised to the Input Manager when the input data has changed.
         /// </summary>
-        InputAction InputAction { get; }
+        IMixedRealityInputAction InputAction { get; }
 
         /// <summary>
         /// Has the value changed since the last reading.

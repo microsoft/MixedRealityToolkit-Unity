@@ -444,12 +444,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 };
 
 
-        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, Handedness handedness, Vector3 inputData)
+        public void RaiseSource3DofPositionChanged(IMixedRealityInputSource source, Handedness handedness, Vector3 inputData)
         {
             throw new NotImplementedException();
         }
 
-        public void RaiseSourceRotationChanged(IMixedRealityInputSource source, Handedness handedness, Quaternion inputData)
+        public void RaiseSource3DofRotationChanged(IMixedRealityInputSource source, Handedness handedness, Quaternion inputData)
         {
             throw new NotImplementedException();
         }
