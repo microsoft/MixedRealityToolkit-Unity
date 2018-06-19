@@ -87,7 +87,7 @@ Running your Application
 - As soon as iPhone app starts, it will look for surfaces like floors or tables.
 - When surfaces are found you should see a marker similar to this one:
 
-    ![Marker](./Images/Marker.PNG)
+    ![Marker](Images/Marker.PNG)
 - Show this marker to the Hololens.
 - Once the marker has been detected by the Hololens it should disappear and both devices should be connected and spatially syncronized. 
 
