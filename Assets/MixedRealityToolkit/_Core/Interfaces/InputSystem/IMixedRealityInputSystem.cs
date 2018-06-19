@@ -123,12 +123,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source">The lost Input Source.</param>
         void RaiseSourceLost(IMixedRealityInputSource source);
 
-        void RaiseSourcePositionChanged(IMixedRealityInputSource source, Vector3 inputData);
+        void RaiseSourcePositionChanged(IMixedRealityInputSource source, Handedness handedness, Vector3 inputData);
 
-        void RaiseSourceRotationChanged(IMixedRealityInputSource source, Quaternion inputData);
+        void RaiseSourceRotationChanged(IMixedRealityInputSource source, Handedness handedness, Quaternion inputData);
 
         void RaiseSource6DoFPositionChanged(IMixedRealityInputSource source, Handedness handedness, SixDof inputData);
-
 
         #endregion Input Source Events
 
@@ -136,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 
         /// <summary>
         /// Raise the pre-focus changed event.
-        /// <remarks>This event is useful for doing logic before the focus changed event.</remarks>
+        /// <remarks>This event is useful for doing logic before the focus changed event is raised.</remarks>
         /// </summary>
         /// <param name="pointer">The pointer that the focus change event is raised on.</param>
         /// <param name="oldFocusedObject">The old focused object.</param>
@@ -196,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="pointer"></param>
         /// <param name="inputAction"></param>
         /// <param name="count"></param>
-        void RaiseInputClicked(IMixedRealityPointer pointer, InputAction inputAction, int count);
+        void RaisePointerClicked(IMixedRealityPointer pointer, IMixedRealityInputAction inputAction, int count);
 
         /// <summary>
         /// Raise the pointer clicked event.
@@ -205,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputAction"></param>
         /// <param name="count"></param>
-        void RaiseInputClicked(IMixedRealityPointer pointer, Handedness handedness, InputAction inputAction, int count);
+        void RaisePointerClicked(IMixedRealityPointer pointer, Handedness handedness, IMixedRealityInputAction inputAction, int count);
 
         #endregion Pointer Click
 
@@ -364,7 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="inputAction"></param>
         /// <param name="inputData"></param>
-        void Raise6DofInputChanged(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, Tuple<Vector3, Quaternion> inputData);
+        void Raise6DofInputChanged(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, SixDof inputData);
 
         /// <summary>
         /// Raise the 6 degrees of freedom input event.
@@ -373,7 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputAction"></param>
         /// <param name="inputData"></param>
-        void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, Tuple<Vector3, Quaternion> inputData);
+        void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, SixDof inputData);
 
         #endregion Input 6DoF Changed
 
