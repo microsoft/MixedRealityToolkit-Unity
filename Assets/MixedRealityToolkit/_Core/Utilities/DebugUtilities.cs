@@ -7,8 +7,18 @@ using UnityDebug = UnityEngine.Debug;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 {
+    /// <summary>
+    /// The DebugUtilities class will use the UnityEngine Debug class while in the Editor
+    /// and the Debug class from the .NET Framework when running a compiled version of the
+    /// application.
+    /// </summary>
     public static class DebugUtilities
     {
+        /// <summary>
+        /// Asserts a condition.
+        /// </summary>
+        /// <param name="condition">The condition that is expected to be true.</param>
+        /// <param name="message">The message to display if the condition evaluates to false.</param>
         public static void DebugAssert(bool condition, string message)
         {
             if (UnityApplication.isEditor)
@@ -21,11 +31,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             }
         }
 
+        /// <summary>
+        /// Asserts a condition.
+        /// </summary>
+        /// <param name="condition">The condition that is expected to be true.</param>
         public static void DebugAssert(bool condition)
         {
             DebugAssert(condition, string.Empty);
         }
 
+        /// <summary>
+        /// Logs an error message.
+        /// </summary>
+        /// <param name="condition">The message to log.</param>
         public static void DebugLogError(string message)
         {
             if (UnityApplication.isEditor)
@@ -38,6 +56,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             }
         }
 
+        /// <summary>
+        /// Logs a warning message.
+        /// </summary>
+        /// <param name="condition">The message to log.</param>
         public static void DebugLogWarning(string message)
         {
             if (UnityApplication.isEditor)
@@ -50,6 +72,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             }
         }
 
+        /// <summary>
+        /// Logs a message.
+        /// </summary>
+        /// <param name="condition">The message to log.</param>
         public static void DebugLog(string message)
         {
             if (UnityApplication.isEditor)
