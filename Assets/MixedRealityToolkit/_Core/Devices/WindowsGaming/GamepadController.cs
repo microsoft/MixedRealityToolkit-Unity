@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 {
     // TODO
-    public struct GamepadController : IMixedRealityController
+    internal struct GamepadController : IMixedRealityController
     {
         public GamepadController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
         {

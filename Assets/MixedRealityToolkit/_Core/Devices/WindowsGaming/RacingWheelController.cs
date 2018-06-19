@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 {
     // TODO
-    public struct RacingWheelController : IMixedRealityController
+    internal struct RacingWheelController : IMixedRealityController
     {
         public RacingWheelController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
         {

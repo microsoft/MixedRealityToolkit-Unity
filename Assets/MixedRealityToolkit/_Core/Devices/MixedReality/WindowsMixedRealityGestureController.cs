@@ -13,7 +13,7 @@ using UnityEngine.XR.WSA.Input;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
     // TODO - Only scaffold at present
-    public struct WindowsMixedRealityGestureController : IMixedRealityController
+    internal struct WindowsMixedRealityGestureController : IMixedRealityController
     {
         #region Private properties
 

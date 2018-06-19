@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
 {
     // TODO
-    public struct SimulatedHandController : IMixedRealityController
+    internal struct SimulatedHandController : IMixedRealityController
     {
         public SimulatedHandController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
         {

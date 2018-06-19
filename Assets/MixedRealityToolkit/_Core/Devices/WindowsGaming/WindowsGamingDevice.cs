@@ -20,7 +20,7 @@ using Windows.Gaming.Input;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 {
     // TODO - Implement
-    public class WindowsGamingDevice : IMixedRealityDevice
+    class WindowsGamingDevice : IMixedRealityDevice
     {
         /// <summary>
         /// Dictionary to capture all active controllers detected
