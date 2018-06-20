@@ -1,17 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using SystemDebug = System.Diagnostics.Debug;
-using UnityApplication = UnityEngine.Application;
-using UnityDebug = UnityEngine.Debug;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 {
-    /// <summary>
-    /// The DebugUtilities class will use the UnityEngine Debug class while in the Editor
-    /// and the Debug class from the .NET Framework when running a compiled version of the
-    /// application.
-    /// </summary>
     public static class DebugUtilities
     {
         /// <summary>
@@ -21,14 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <param name="message">The message to display if the condition evaluates to false.</param>
         public static void DebugAssert(bool condition, string message)
         {
-            if (UnityApplication.isEditor)
-            {
-                UnityDebug.Assert(condition, message);
-            }
-            else
-            {
-                SystemDebug.Assert(condition, message);
-            }
+            Debug.Assert(condition, message);
         }
 
         /// <summary>
@@ -46,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <param name="condition">The message to log.</param>
         public static void DebugLogError(string message)
         {
-            UnityDebug.LogError(message);
+            Debug.LogError(message);
         }
 
         /// <summary>
@@ -55,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <param name="condition">The message to log.</param>
         public static void DebugLogWarning(string message)
         {
-            UnityDebug.LogWarning(message);
+            Debug.LogWarning(message);
         }
 
         /// <summary>
@@ -64,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <param name="condition">The message to log.</param>
         public static void DebugLog(string message)
         {
-            UnityDebug.Log(message);
+            Debug.Log(message);
         }
     }
 }
