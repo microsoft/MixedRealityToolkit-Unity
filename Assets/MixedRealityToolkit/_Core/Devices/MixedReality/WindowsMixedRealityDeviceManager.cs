@@ -15,7 +15,7 @@ using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
-    class WindowsMixedRealityDeviceManager : IMixedRealityDevice
+    internal class WindowsMixedRealityDeviceManager : IMixedRealityDevice
     {
         public WindowsMixedRealityDeviceManager(string name, uint priority)
         {

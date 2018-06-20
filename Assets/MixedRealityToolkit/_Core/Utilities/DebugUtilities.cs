@@ -46,14 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <param name="condition">The message to log.</param>
         public static void DebugLogError(string message)
         {
-            if (UnityApplication.isEditor)
-            {
-                UnityDebug.LogError(message);
-            }
-            else
-            {
-                SystemDebug.WriteLine("Error: {0}", message);
-            }
+            UnityDebug.LogError(message);
         }
 
         /// <summary>
@@ -62,14 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <param name="condition">The message to log.</param>
         public static void DebugLogWarning(string message)
         {
-            if (UnityApplication.isEditor)
-            {
-                UnityDebug.LogWarning(message);
-            }
-            else
-            {
-                SystemDebug.WriteLine("Warning: {0}", message);
-            }
+            UnityDebug.LogWarning(message);
         }
 
         /// <summary>
@@ -78,14 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <param name="condition">The message to log.</param>
         public static void DebugLog(string message)
         {
-            if (UnityApplication.isEditor)
-            {
-                UnityDebug.Log(message);
-            }
-            else
-            {
-                SystemDebug.WriteLine(message);
-            }
+            UnityDebug.Log(message);
         }
     }
 }
