@@ -52,7 +52,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool EnableCameraProfile
         {
-            get { return enableCameraProfile; }
+            get
+            {
+                return CameraProfile != null && enableCameraProfile;
+            }
+
             private set { enableCameraProfile = value; }
         }
 
@@ -78,7 +82,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool EnableInputSystem
         {
-            get { return enableInputSystem; }
+            get
+            {
+                return inputSystemType.Type != null &&
+                       inputActionsProfile != null &&
+                       enableInputSystem;
+            }
             private set { enableInputSystem = value; }
         }
 
@@ -118,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool EnableSpeechCommands
         {
-            get { return enableSpeechCommands; }
+            get { return speechCommandsProfile != null && enableSpeechCommands; }
             private set { enableSpeechCommands = value; }
         }
 
@@ -144,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool EnableControllerProfiles
         {
-            get { return enableControllerProfiles; }
+            get { return controllersProfile != null && enableControllerProfiles; }
             private set { enableControllerProfiles = value; }
         }
 
