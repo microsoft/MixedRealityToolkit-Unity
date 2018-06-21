@@ -39,7 +39,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         "There is no active Mixed Reality Manager in your scene. Would you like to create one now?", "Yes",
                         "Later"))
                     {
-                        MixedRealityManager.Instance.ActiveProfile = (MixedRealityConfigurationProfile)target;
+                        var profile = target as MixedRealityConfigurationProfile;
+                        Debug.Assert(profile != null);
+                        profile.ActiveManagers.Clear();
+                        MixedRealityManager.Instance.ActiveProfile = profile;
                     }
                     else
                     {

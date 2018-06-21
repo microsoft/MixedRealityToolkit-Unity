@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         public MixedRealityControllerMapping GetControllerMapping(Type controllerType, Handedness hand)
         {
             var systemType = SystemType.GetReference(controllerType);
-            for (int i = 0; i < ControllersProfile?.MixedRealityControllerMappingProfiles.Length; i++)
+            for (int i = 0; i < ControllersProfile.MixedRealityControllerMappingProfiles.Length; i++)
             {
                 if (ControllersProfile.MixedRealityControllerMappingProfiles[i].Controller == systemType && ControllersProfile.MixedRealityControllerMappingProfiles[i].Handedness == hand)
                 {

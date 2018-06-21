@@ -80,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 DisableAllManagers();
                 DestroyAllManagers();
             }
+
             activeProfile = profile;
             Initialize();
         }
@@ -117,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         private void Initialize()
         {
-            isMixedRealityManagerInitializing = true; 
+            isMixedRealityManagerInitializing = true;
 
             //If the Mixed Reality Manager is not configured, stop.
             if (ActiveProfile == null)
@@ -125,6 +126,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 Debug.LogError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Manager");
                 return;
             }
+
+            Debug.Assert(ActiveProfile.ActiveManagers.Count == 0, "Active Managers were not cleaned up properly.");
+            ActiveProfile.ActiveManagers.Clear();
 
             if (ActiveProfile.EnableCameraProfile)
             {
@@ -139,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
 
             #region  Managers Registration
-            
+
             //If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.EnableInputSystem)
             {
@@ -177,6 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             //Sort the managers based on Priority
             var orderedManagers = ActiveProfile.ActiveManagers.OrderBy(m => m.Value.Priority).ToArray();
             ActiveProfile.ActiveManagers.Clear();
+
             foreach (var manager in orderedManagers)
             {
                 AddManager(manager.Key, manager.Value);
@@ -185,6 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             InitializeAllManagers();
 
             #endregion Managers Initialization
+
             isMixedRealityManagerInitializing = false;
         }
 
@@ -326,7 +332,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
         }
 
-
         /// <summary>
         /// The MonoBehaviour OnEnable event, which is then circulated to all active managers
         /// </summary>
@@ -404,13 +409,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 }
                 else
                 {
-                    Debug.LogError($"There's already a {nameof(manager)} registered.");
+                    Debug.LogError($"There's already a {type.Name} registered.");
                 }
             }
             else
             {
                 MixedRealityComponents.Add(new Tuple<Type, IMixedRealityManager>(type, manager));
-                if(!isMixedRealityManagerInitializing) manager.Initialize();
+                if (!isMixedRealityManagerInitializing) { manager.Initialize(); }
                 mixedRealityComponentsCount = MixedRealityComponents.Count;
             }
         }
@@ -801,11 +806,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 manager.Value.Destroy();
             }
 
+            ActiveProfile.ActiveManagers.Clear();
+
             // Destroy all registered runtime components
             foreach (var manager in MixedRealityComponents)
             {
                 manager.Item2.Destroy();
             }
+
+            MixedRealityComponents.Clear();
         }
 
         #endregion Multiple Managers Management
