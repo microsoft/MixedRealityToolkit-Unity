@@ -34,22 +34,30 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             if (activeProfile.objectReferenceValue == null && currentPickerWindow == -1 && checkChange)
             {
-                EditorUtility.DisplayDialog("Attention!", "You must choose a profile for the Mixed Reality Manager.", "OK");
                 if (allConfigProfiles.Length > 1)
                 {
+                    EditorUtility.DisplayDialog("Attention!", "You must choose a profile for the Mixed Reality Manager.", "OK");
                     currentPickerWindow = GUIUtility.GetControlID(FocusType.Passive);
                     EditorGUIUtility.ShowObjectPicker<MixedRealityConfigurationProfile>(null, false, string.Empty, currentPickerWindow);
                 }
                 else if (allConfigProfiles.Length == 1)
                 {
-                    Debug.Log("No Mixed Reality Configuration Profile was set, so we set the default one for you.");
                     activeProfile.objectReferenceValue = allConfigProfiles[0];
                     changed = true;
+                    Selection.activeObject = allConfigProfiles[0];
+                    EditorGUIUtility.PingObject(allConfigProfiles[0]);
                 }
                 else
                 {
-                    Debug.LogError("No Mixed Reality Configuration Profiles exist!");
-                    // TODO, create one and set it?
+                    if (EditorUtility.DisplayDialog("Attention!", "No profiles were found for the Mixed Reality Manager.\n\n" +
+                                                                  "Would you like to create one now?", "OK", "Later"))
+                    {
+                        ScriptableObject profile = CreateInstance(nameof(MixedRealityConfigurationProfile));
+                        profile.CreateAsset();
+                        activeProfile.objectReferenceValue = profile;
+                        Selection.activeObject = profile;
+                        EditorGUIUtility.PingObject(profile);
+                    }
                 }
 
                 checkChange = false;
@@ -67,6 +75,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         activeProfile.objectReferenceValue = EditorGUIUtility.GetObjectPickerObject();
                         currentPickerWindow = -1;
                         changed = true;
+                        Selection.activeObject = activeProfile.objectReferenceValue;
+                        EditorGUIUtility.PingObject(activeProfile.objectReferenceValue);
                         break;
                 }
             }
@@ -77,6 +87,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             {
                 MixedRealityManager.Instance.ResetConfiguration((MixedRealityConfigurationProfile)activeProfile.objectReferenceValue);
             }
+        }
+
+        [MenuItem("Mixed Reality Toolkit/Configure...")]
+        public static void CreateMixedRealityManagerObject()
+        {
+            Selection.activeObject = MixedRealityManager.Instance;
+            EditorGUIUtility.PingObject(MixedRealityManager.Instance);
         }
     }
 }

@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
                     Debug.Assert(profileTypeName != null, "No Type Found");
                     ScriptableObject profile = CreateInstance(profileTypeName);
-                    profile.CreateAsset();
+                    profile.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject));
                     property.objectReferenceValue = profile;
                 }
             }
