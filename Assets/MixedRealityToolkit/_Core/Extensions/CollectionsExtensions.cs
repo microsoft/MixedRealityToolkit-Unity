@@ -137,6 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         public static void SetDictionaryValue<T>(this Dictionary<DeviceInputType, IInteractionMapping> input, DeviceInputType key, T value)
         {
             var entry = input[key] as InteractionMapping<T>;
+            Debug.Assert(entry != null);
             entry.GetValue(value);
             input[key] = entry;
         }

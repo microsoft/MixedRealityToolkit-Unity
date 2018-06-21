@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         private InputAction action;
 
         /// <summary>
-        /// The <see cref="InputAction"/> that is raised by either the Keyword or KeyCode.
+        /// The <see cref="IMixedRealityInputAction"/> that is raised by either the Keyword or KeyCode.
         /// </summary>
         public InputAction Action => action;
     }

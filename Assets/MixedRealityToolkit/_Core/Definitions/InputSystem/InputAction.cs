@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     /// An Input Action for mapping an action to an Input Sources Button, Joystick, Sensor, etc.
     /// </summary>
     [Serializable]
-    public class InputAction : IMixedRealityInputAction
+    public struct InputAction : IMixedRealityInputAction
     {
         /// <summary>
         /// Constructor.
@@ -26,6 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
             this.description = description;
             this.axisConstraint = axisConstraint;
         }
+
+        public static IMixedRealityInputAction None { get; } = new InputAction(0, "None");
 
         /// <inheritdoc />
         public uint Id => id;

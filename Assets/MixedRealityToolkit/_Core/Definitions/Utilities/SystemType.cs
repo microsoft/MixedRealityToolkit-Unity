@@ -27,7 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                 return string.Empty;
             }
 
-            string[] qualifiedNameComponents = type.AssemblyQualifiedName.Split(new char[] { ',' });
+            Debug.Assert(!string.IsNullOrEmpty(type.AssemblyQualifiedName));
+            string[] qualifiedNameComponents = type.AssemblyQualifiedName.Split(',');
             Debug.Assert(qualifiedNameComponents.Length >= 2);
             return $"{qualifiedNameComponents[0]}, {qualifiedNameComponents[1].Trim()}";
         }
@@ -55,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             Type = type;
         }
 
-#region ISerializationCallbackReceiver Members
+        #region ISerializationCallbackReceiver Members
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
@@ -76,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
 
         void ISerializationCallbackReceiver.OnBeforeSerialize() { }
 
-#endregion ISerializationCallbackReceiver Members
+        #endregion ISerializationCallbackReceiver Members
 
         /// <summary>
         /// Gets or sets type of class reference.
