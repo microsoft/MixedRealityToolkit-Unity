@@ -71,13 +71,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 }
             }
 
+            serializedObject.ApplyModifiedProperties();
+
             if (changed)
             {
-                serializedObject.ApplyModifiedProperties();
                 MixedRealityManager.Instance.ResetConfiguration((MixedRealityConfigurationProfile)activeProfile.objectReferenceValue);
             }
-
-            serializedObject.ApplyModifiedProperties();
         }
     }
 }

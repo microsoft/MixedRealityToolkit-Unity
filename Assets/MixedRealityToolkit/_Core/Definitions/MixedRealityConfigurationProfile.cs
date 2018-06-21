@@ -9,6 +9,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
@@ -199,13 +200,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            // From the serialized fields for the MixedRealityConfigurationProfile, populate the Active managers list
-            // *Note This will only take effect once the Mixed Reality Toolkit has a custom editor for the MixedRealityConfigurationProfile
-
-            ActiveManagers.Clear();
-            for (int i = 0; i < initialManagers?.Length; i++)
+            if (ActiveManagers.Count == 0)
             {
-                Managers.MixedRealityManager.Instance.AddManager(initialManagerTypes[i], initialManagers[i]);
+                for (int i = 0; i < initialManagers?.Length; i++)
+                {
+                    MixedRealityManager.Instance.AddManager(initialManagerTypes[i], initialManagers[i]);
+                }
             }
         }
 
