@@ -218,28 +218,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         public MixedRealityControllerMapping GetControllerMapping(Type controllerType, Handedness hand)
         {
             var systemType = SystemType.GetReference(controllerType);
-            for (int i = 0; i < ControllersProfile.MixedRealityControllerMappingProfiles.Length; i++)
+
+            if (ControllersProfile != null)
             {
-                if (ControllersProfile.MixedRealityControllerMappingProfiles[i].Controller == systemType && ControllersProfile.MixedRealityControllerMappingProfiles[i].Handedness == hand)
+                for (int i = 0; i < ControllersProfile.MixedRealityControllerMappingProfiles.Length; i++)
                 {
-                    return ControllersProfile.MixedRealityControllerMappingProfiles[i];
+                    if (ControllersProfile.MixedRealityControllerMappingProfiles[i].Controller == systemType && ControllersProfile.MixedRealityControllerMappingProfiles[i].Handedness == hand)
+                    {
+                        return ControllersProfile.MixedRealityControllerMappingProfiles[i];
+                    }
                 }
             }
+
             return default(MixedRealityControllerMapping);
         }
 
-        // TODO - Which is better?
-        //public MixedRealityControllerMappingProfile GetControllerMapping<T>(Handedness handedness)
-        //{
-        //    for (int i = 0; i < controllerMappingsProfile?.Length; i++)
-        //    {
-        //        if (controllerMappingsProfile[i].ControllerType == SystemType.GetReference(typeof(T)) && controllerMappingsProfile[i].ControllingHand == handedness)
-        //        {
-        //            return controllerMappingsProfile[i];
-        //        }
-        //    }
-        //    return default(MixedRealityControllerMappingProfile);
-        //}
         #endregion Mixed Reality Controller Mapping helpers
     }
 }
