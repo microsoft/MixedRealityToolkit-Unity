@@ -118,12 +118,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             }
 
-
             if (restart)
             {
                 EditorApplication.OpenProject(Directory.GetParent(Application.dataPath).ToString());
             }
-
         }
 
         /// <summary>
