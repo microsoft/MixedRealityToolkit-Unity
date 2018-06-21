@@ -87,6 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup
                     PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
                     restart = true;
                 }
+                else
+                {
+                    Debug.LogWarning("You must change the Runtime Scripting Version to 4.x in the Player Settings to get this asset to compile correctly.");
+                }
             }
 
             if (PlayerSettings.scriptingRuntimeVersion == ScriptingRuntimeVersion.Latest)
@@ -95,14 +99,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup
                 if (currentApiCompatibility != ApiCompatibilityLevel.NET_4_6 && currentApiCompatibility != ApiCompatibilityLevel.NET_Standard_2_0)
                 {
                     if (EditorUtility.DisplayDialog(
-                            "Change the Scripting API Compatibility to .NET Standard 2.0?",
-                            "The Mixed Reality Toolkit would like to change the Scripting API Compatibility to use .NET Standard 2.0.\n\n" +
+                            "Change the Scripting API Compatibility to .NET 4.x?",
+                            "The Mixed Reality Toolkit would like to change the Scripting API Compatibility to use .NET 4.x\n\n" +
                             "Would you like to make this change?",
-                            "Enable .NET Standard 2.0",
+                            "Enable .NET 4.x",
                             "Later"))
                     {
-                        PlayerSettings.SetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup, ApiCompatibilityLevel.NET_Standard_2_0);
-                        Debug.Log("Updated Scripting API Compatibility to .NET Standard 2.0");
+                        PlayerSettings.SetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup, ApiCompatibilityLevel.NET_4_6);
+                        Debug.Log("Updated Scripting API Compatibility to .NET 4.x");
                         refresh = true;
                     }
                 }
@@ -114,10 +118,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             }
 
+
             if (restart)
             {
                 EditorApplication.OpenProject(Directory.GetParent(Application.dataPath).ToString());
             }
+
         }
 
         /// <summary>
