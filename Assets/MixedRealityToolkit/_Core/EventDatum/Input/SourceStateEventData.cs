@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         public void Initialize(IMixedRealityInputSource inputSource)
         {
             // NOTE: Source State events do not have an associated Input Action.
-            BaseInitialize(inputSource, null);
+            BaseInitialize(inputSource, Definitions.InputSystem.InputAction.None);
         }
     }
 }

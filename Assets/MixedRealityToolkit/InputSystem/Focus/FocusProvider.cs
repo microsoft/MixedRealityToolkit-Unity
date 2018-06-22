@@ -850,7 +850,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                     pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                 }
 
-                InputSystem.OnFocusChangedEvent(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                InputSystem.RaiseFocusChangedEvent(change.Pointer, pendingUnfocusObject, pendingFocusObject);
             }
 
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);

@@ -71,24 +71,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
                 defaultActions.Add(new InputAction(i, defaultInputActions[i], defaultInputActionsAxis[i]));
             }
 
-            foreach (var currentAction in inputActions)
+            for (int i = 0; i < inputActions?.Length; i++)
             {
-                for (int i = 0; i < inputActions?.Length; i++)
+                if (defaultActions.Contains(inputActions[i]))
                 {
-                    if (defaultActions.Contains(inputActions[i]))
-                    {
-                        exists = true;
-                    }
-                    if (!exists)
-                    {
-                        defaultActions.Add(inputActions[i]);
-                    }
-                    exists = false;
+                    exists = true;
                 }
+                if (!exists)
+                {
+                    defaultActions.Add(inputActions[i]);
+                }
+                exists = false;
             }
 
             inputActions = defaultActions.ToArray();
-            defaultActions = null;
 
             return inputActions;
         }

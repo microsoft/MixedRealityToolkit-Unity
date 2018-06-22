@@ -425,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
             RemoveSource(source);
         }
-
+        
         private void RemoveSource(IMixedRealityInputSource source)
         {
             Debug.Assert(DetectedInputSources.Contains(source), $"{source.SourceName} was never registered with the Input Manager!");
@@ -442,6 +442,22 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                     var casted = ExecuteEvents.ValidateEventData<SourceStateEventData>(eventData);
                     handler.OnSourceLost(casted);
                 };
+
+
+        public void RaiseSource3DofPositionChanged(IMixedRealityInputSource source, Handedness handedness, Vector3 inputData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RaiseSource3DofRotationChanged(IMixedRealityInputSource source, Handedness handedness, Quaternion inputData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RaiseSource6DoFPositionChanged(IMixedRealityInputSource source, Handedness handedness, SixDof inputData)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion Input Source State Events
 
@@ -478,7 +494,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 };
 
         /// <inheritdoc />
-        public void OnFocusChangedEvent(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        public void RaiseFocusChangedEvent(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
@@ -885,7 +901,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void Raise6DofInputChanged(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, Tuple<Vector3, Quaternion> inputData)
+        public void Raise6DofInputChanged(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, SixDof inputData)
         {
             // Create input event
             sixDoFInputEventData.Initialize(source, inputAction, inputData);
@@ -895,7 +911,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, Tuple<Vector3, Quaternion> inputData)
+        public void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, SixDof inputData)
         {
             // Create input event
             sixDoFInputEventData.Initialize(source, handedness, inputAction, inputData);
