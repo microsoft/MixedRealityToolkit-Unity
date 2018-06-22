@@ -1,9 +1,9 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.SDK.Input.Inspectors",
+    "name": "Microsoft.MixedReality.Toolkit.SDK.Inspectors",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.InputSystem",
-        "Microsoft.MixedReality.Toolkit.SDK.Input"
+        "Microsoft.MixedReality.Toolkit.SDK"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

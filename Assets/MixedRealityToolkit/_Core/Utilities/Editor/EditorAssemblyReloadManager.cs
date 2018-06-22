@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor
 {
     public static class EditorAssemblyReloadManager
     {

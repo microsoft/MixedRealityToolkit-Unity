@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor
 {
     /// <summary>
     /// Convenience class for setting Editor Preferences.
