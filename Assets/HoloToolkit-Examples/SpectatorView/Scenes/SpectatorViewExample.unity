@@ -210,6 +210,7 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
+  spectatorView: {fileID: 711150963}
 --- !u!4 &181349988
 Transform:
   m_ObjectHideFlags: 0
@@ -415,6 +416,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &711150963 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114481843668471794, guid: 697d5b22e978c7f47b6060eb66fb4f71,
+    type: 2}
+  m_PrefabInternal: {fileID: 582159149}
+  m_Script: {fileID: 11500000, guid: 195a65b8698830e4e870989a6152a56a, type: 3}
 --- !u!1 &812885014
 GameObject:
   m_ObjectHideFlags: 0

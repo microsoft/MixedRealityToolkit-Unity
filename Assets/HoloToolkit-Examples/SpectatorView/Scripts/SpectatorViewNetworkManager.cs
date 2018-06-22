@@ -1,4 +1,5 @@
 ﻿using HoloToolkit.Unity.Preview.SpectatorView;
+using UnityEngine;
 using UnityEngine.Networking;
 
 /// <summary>
@@ -8,15 +9,22 @@ using UnityEngine.Networking;
 public class SpectatorViewNetworkManager : NetworkManager
 {
     /// <summary>
-    /// Is the device a host or a client? (HoloLens or mobile?)
+    /// Component that manages the main flow of spectator view
     /// </summary>
-    private bool isHost;
+    [SerializeField]
+    [Tooltip("Component that manages the main flow, events and the main contact point with UNET multilens")]
+    private SpectatorView spectatorView;
 
     // Use this for initialization
     private void Start()
     {
-        isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
-        if (isHost)
+        if (spectatorView == null)
+        {
+            Debug.LogError("SpectatorView reference null on SpectatorViewNetworkManager");
+            return;
+        }
+
+        if (spectatorView.IsHost)
         {
             StartHost();
         }
