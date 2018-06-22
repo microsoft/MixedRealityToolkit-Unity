@@ -128,8 +128,13 @@ namespace MixedRealityToolkit.Build
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, buildInfo.BuildSymbols);
             }
 
-            string buildError = "Error";
-            try
+#if UNITY_2018_2_OR_NEWER
+			UnityEditor.Build.Reporting.BuildReport buildReport;
+#else
+			string buildError = "Error";
+#endif
+
+			try
             {
                 VerifyWsaUwpSdkIsInstalled(EditorUserBuildSettings.wsaUWPSDK);
 
@@ -142,7 +147,20 @@ namespace MixedRealityToolkit.Build
                 }
 
                 OnPreProcessBuild(buildInfo);
-                buildError = BuildPipeline.BuildPlayer(
+
+#if UNITY_2018_2_OR_NEWER
+				buildReport = BuildPipeline.BuildPlayer(
+					buildInfo.Scenes.ToArray(),
+					buildInfo.OutputDirectory,
+					buildInfo.BuildTarget,
+					buildInfo.BuildOptions);
+
+				if (buildReport.summary.result == UnityEditor.Build.Reporting.BuildResult.Failed)
+				{
+					throw new Exception(buildReport.summary.result.ToString());
+				}
+#else
+				buildError = BuildPipeline.BuildPlayer(
                     buildInfo.Scenes.ToArray(),
                     buildInfo.OutputDirectory,
                     buildInfo.BuildTarget,
@@ -152,12 +170,17 @@ namespace MixedRealityToolkit.Build
                 {
                     throw new Exception(buildError);
                 }
-            }
+#endif
+			}
             finally
             {
-                OnPostProcessBuild(buildInfo, buildError);
+#if UNITY_2018_2_OR_NEWER
+				OnPostProcessBuild(buildInfo, "Error");
+#else
+				OnPostProcessBuild(buildInfo, buildError);
+#endif
 
-                if (buildInfo.BuildTarget == BuildTarget.WSAPlayer && EditorUserBuildSettings.wsaGenerateReferenceProjects)
+				if (buildInfo.BuildTarget == BuildTarget.WSAPlayer && EditorUserBuildSettings.wsaGenerateReferenceProjects)
                 {
                     UwpProjectPostProcess.Execute(buildInfo.OutputDirectory);
                 }

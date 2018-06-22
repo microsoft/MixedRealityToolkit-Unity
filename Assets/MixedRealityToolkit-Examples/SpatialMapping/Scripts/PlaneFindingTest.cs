@@ -112,11 +112,14 @@ namespace MixedRealityToolkit.Examples.SpatialMapping
                     UnityEditor.Handles.DrawLine(corners[1], corners[2]);
                     UnityEditor.Handles.DrawLine(corners[1], corners[3]);
                     UnityEditor.Handles.DrawLine(corners[2], corners[3]);
-                    UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.FromToRotation(Vector3.forward, normal), 0.4f, EventType.ignore);
-
-                    // If this plane is currently in the center of the camera's field of view, highlight it by drawing a
-                    // solid rectangle, and display the important details about this plane.
-                    float planeHitDistance;
+#if UNITY_2018_2_OR_NEWER
+					UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.FromToRotation(Vector3.forward, normal), 0.4f, EventType.Ignore);
+#else
+					UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.FromToRotation(Vector3.forward, normal), 0.4f, EventType.ignore);
+#endif
+					// If this plane is currently in the center of the camera's field of view, highlight it by drawing a
+					// solid rectangle, and display the important details about this plane.
+					float planeHitDistance;
                     if (planes[i].Plane.Raycast(cameraForward, out planeHitDistance))
                     {
                         Vector3 hitPoint = Quaternion.Inverse(rotation) * (cameraForward.GetPoint(planeHitDistance) - center);
@@ -138,5 +141,5 @@ namespace MixedRealityToolkit.Examples.SpatialMapping
             }
         }
 #endif
-    }
+				}
 }

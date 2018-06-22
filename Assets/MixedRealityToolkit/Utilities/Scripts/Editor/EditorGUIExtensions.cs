@@ -116,9 +116,13 @@ namespace MixedRealityToolkit.Utilities.EditorScript
             {
                 if (valueType.GetCustomAttributes(typeof(FlagsAttribute), true).Length > 0)
                 {
-                    objValue = EditorGUI.EnumMaskField(position, label, (Enum)objValue);
-                }
-                else
+#if UNITY_2018_1_OR_NEWER
+					objValue = EditorGUI.EnumFlagsField(position, label, (Enum)objValue);
+#else
+					objValue = EditorGUI.EnumMaskField(position, label, (Enum)objValue);
+#endif
+				}
+				else
                 {
                     objValue = EditorGUI.EnumPopup(position, label, (Enum)objValue);
                 }

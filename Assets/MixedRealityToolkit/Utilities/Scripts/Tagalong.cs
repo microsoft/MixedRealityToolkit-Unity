@@ -292,10 +292,14 @@ namespace MixedRealityToolkit.Utilities
                             {
                                 Light clonedLight = Instantiate(DebugPointLight, closestHit.point, Quaternion.identity) as Light;
                                 clonedLight.color = Color.red;
-                                DestroyObject(clonedLight, 1.0f);
-                            }
+#if UNITY_2018_2_OR_NEWER
+								Object.Destroy(clonedLight, 1.0f);
+#else
+								DestroyObject(clonedLight, 1.0f);
+#endif
+							}
 #if UNITY_EDITOR
-                            DebugDrawLine(DebugDrawLines, cameraPosition, targetCoord, Color.red);
+							DebugDrawLine(DebugDrawLines, cameraPosition, targetCoord, Color.red);
 #endif // UNITY_EDITOR
                         }
                     }
