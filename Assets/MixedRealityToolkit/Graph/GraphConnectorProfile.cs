@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Graph
     /// <summary>
     /// Profile that implements authentication using Microsoft Authentication Library (MSAL).
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Graph/Connector Profile", fileName = "GraphConnectorProfile")]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Graph/Graph Connector Profile", fileName = "GraphConnectorProfile")]
     public class GraphConnectorProfile : ScriptableObject, IGraphAuthentication
     {
         /// <summary>

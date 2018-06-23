@@ -25,11 +25,11 @@ However users can override with their own implementation, by extending GraphConn
 
 5. Setup Unity scene.
 
-	Add **MsalGraphConnector.cs** to any game object of your scene. Alternatively, you can add the GraphConnector.prefab to the scene, as it already includes **MsalGraphConnector.cs**.
+	Create a GraphConnectorProfile for your project via Assets/Create/Mixed Reality Toolkit/Graph/Graph Connector Profile.
 
 6. Setup MS Graph permissions.
 
-	Select the game object that has MsalGraphConnector.cs and update settings accordingly in the inspector.
+	Select the new GraphConnectorProfile and update settings accordingly in the inspector.
 	* **Graph App Id** is the application ID registered in [Microsoft App Registration Portal](https://apps.dev.microsoft.com/).
 	* **Graph Access Scopes** is the array that lists all [access permissions](https://developer.microsoft.com/en-us/graph/docs/concepts/permissions_reference) required in your scenario.
 
