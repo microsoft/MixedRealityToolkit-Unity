@@ -117,13 +117,12 @@ namespace Microsoft.MixedReality.Toolkit.Graph
         {
             string authToken = string.Empty;
 
-            if (Application.isEditor)
-            {
-                authToken = testAuthToken;
+#if UNITY_EDITOR
+            authToken = testAuthToken;
 
-                // Pass through all HTTPS traffic in the Unity Editor. Should not be used in production code.
-                System.Net.ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
-            }
+            // Pass through all HTTPS traffic in the Unity Editor. Should not be used in production code.
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
+#endif
 
             if (string.IsNullOrEmpty(authToken))
             {
