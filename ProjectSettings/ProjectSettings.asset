@@ -608,7 +608,7 @@ PlayerSettings:
     14: 
   platformArchitecture: {}
   scriptingBackend:
-    Metro: 1
+    Metro: 2
     Standalone: 1
     WebPlayer: 0
   il2cppCompilerConfiguration: {}

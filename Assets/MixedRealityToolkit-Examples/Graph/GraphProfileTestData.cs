@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Graph
     /// Class that represents a partial Graph profile.
     /// </summary>
     [Serializable]
-    public struct GraphProfile
+    public struct GraphProfileTestData
     {
         /// <summary>
         /// The display name.

@@ -24,9 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Graph
         /// Get an access token for the graph scopes and app id. An attempt is first made to 
         /// acquire the token silently. If that fails, then we try to acquire the token by prompting the user.
         /// </summary>
-        /// <param name="graphScopes">The Graph scopes required for the auth token being requested.</param>
         /// <returns>The async task.</returns>
-        Task SignInAsync(string[] graphScopes);
+        Task SignInAsync();
 
         /// <summary>
         /// Method to sign out the current user.
