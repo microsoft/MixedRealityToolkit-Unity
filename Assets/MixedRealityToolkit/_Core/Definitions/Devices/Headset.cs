@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
+    // TODO - currently not used, consider removing maybe?
     /// <summary>
     /// The headset definition defines the headset as defined by the SDK / Unity.
     /// </summary>
@@ -35,5 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// Outputs the current state of the headset, whether it is tracked or not. As defined by the SDK / Unity.
         /// </summary>
         public ControllerState ControllerState { get; set; }
+
+        /// <summary>
+        /// Indicates whether or not the headset display is opaque. As defined by the SDK / Unity.
+        /// </summary>
+        public bool IsOpaque { get; set; }
     }
 }

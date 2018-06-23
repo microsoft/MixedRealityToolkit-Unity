@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions.EditorClassExtensions;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,22 +14,56 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     {
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
 
+        private SerializedProperty enableCameraProfile;
+        private SerializedProperty cameraProfile;
         private SerializedProperty enableInputSystem;
         private SerializedProperty inputSystemType;
         private SerializedProperty inputActionsProfile;
         private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
-        private SerializedProperty renderMotionControllers;
+        private SerializedProperty enableControllerProfiles;
+        private SerializedProperty controllersProfile;
         private SerializedProperty enableBoundarySystem;
 
         private void OnEnable()
         {
+            // Create The MR Manager if none exists.
+            if (!MixedRealityManager.IsInitialized)
+            {
+                // Search the scene for one, in case we've just hot reloaded the assembly.
+                var managerSearch = FindObjectsOfType<MixedRealityManager>();
+
+                if (managerSearch.Length == 0)
+                {
+                    if (EditorUtility.DisplayDialog("Attention!",
+                        "There is no active Mixed Reality Manager in your scene. Would you like to create one now?", "Yes",
+                        "Later"))
+                    {
+                        var profile = target as MixedRealityConfigurationProfile;
+                        Debug.Assert(profile != null);
+                        profile.ActiveManagers.Clear();
+                        MixedRealityManager.Instance.ActiveProfile = profile;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No Mixed Reality Manager in your scene.");
+                    }
+                }
+                else
+                {
+                    MixedRealityManager.ConfirmInitialized();
+                }
+            }
+
+            enableCameraProfile = serializedObject.FindProperty("enableCameraProfile");
+            cameraProfile = serializedObject.FindProperty("cameraProfile");
             enableInputSystem = serializedObject.FindProperty("enableInputSystem");
             inputSystemType = serializedObject.FindProperty("inputSystemType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
-            renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
+            enableControllerProfiles = serializedObject.FindProperty("enableControllerProfiles");
+            controllersProfile = serializedObject.FindProperty("controllersProfile");
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
         }
 
@@ -37,6 +72,19 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             serializedObject.Update();
             RenderMixedRealityToolkitLogo();
 
+            var previousLabelWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 160f;
+
+            // Camera Profile Configuration
+            EditorGUILayout.LabelField("Camera Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(enableCameraProfile);
+
+            if (enableCameraProfile.boolValue)
+            {
+                RenderProfile(cameraProfile);
+            }
+
+            //Input System configuration
             EditorGUILayout.LabelField("Input Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableInputSystem);
 
@@ -52,12 +100,22 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 }
             }
 
-            EditorGUILayout.LabelField("Device Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(renderMotionControllers);
+            //Controller mapping configuration
+            GUILayout.Space(12f);
+            EditorGUILayout.LabelField("Controller Mapping Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(enableControllerProfiles);
 
+            if (enableControllerProfiles.boolValue)
+            {
+                RenderProfile(controllersProfile);
+            }
+
+            //Boundary System configuration
+            GUILayout.Space(12f);
             EditorGUILayout.LabelField("Boundary Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableBoundarySystem);
 
+            EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -73,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
                     Debug.Assert(profileTypeName != null, "No Type Found");
                     ScriptableObject profile = CreateInstance(profileTypeName);
-                    profile.CreateAsset();
+                    profile.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject));
                     property.objectReferenceValue = profile;
                 }
             }

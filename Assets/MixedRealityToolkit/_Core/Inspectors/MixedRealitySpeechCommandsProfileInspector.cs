@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Linq;
 using UnityEditor;
@@ -25,7 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private void OnEnable()
         {
-            if (MixedRealityManager.Instance.ActiveProfile == null) { return; }
+            if (!CheckMixedRealityManager(false))
+            {
+                return;
+            }
 
             speechCommands = serializedObject.FindProperty("speechCommands");
             actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(
@@ -39,9 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             RenderMixedRealityToolkitLogo();
             EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);
 
-            if (MixedRealityManager.Instance.ActiveProfile == null)
+            if (!CheckMixedRealityManager())
             {
-                EditorGUILayout.HelpBox("No Active Profile set on the Mixed Reality Manager.", MessageType.Error);
                 return;
             }
 
@@ -56,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
+
             if (GUILayout.Button(AddButtonContent, EditorStyles.miniButton))
             {
                 list.arraySize += 1;
@@ -90,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUIUtility.labelWidth = labelWidth;
             GUILayout.EndHorizontal();
 
-            for (int i = 0; i < list?.arraySize; i++)
+            for (int i = 0; i < list.arraySize; i++)
             {
                 EditorGUILayout.BeginHorizontal();
                 SerializedProperty speechCommand = list.GetArrayElementAtIndex(i);
@@ -100,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUILayout.PropertyField(keyCode, GUIContent.none, GUILayout.Width(64f));
                 var action = speechCommand.FindPropertyRelative("action");
                 var actionId = action.FindPropertyRelative("id");
-                actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, CheckValue(actionId.intValue, actionIds.Length), actionLabels, actionIds, GUILayout.Width(64f));
+                actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue.ResetIfGreaterThan(actionIds.Length), actionLabels, actionIds, GUILayout.Width(64f));
 
                 if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                 {
@@ -112,16 +116,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             GUILayout.EndVertical();
             GUILayout.EndVertical();
-        }
-
-        private static int CheckValue(int value, int against)
-        {
-            if (value > against)
-            {
-                value = 0;
-            }
-
-            return value;
         }
     }
 }

@@ -134,6 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
 #if UNITY_WSA
+            // TODO Figure out a better way to know what type of source is found / lost.
             InteractionSourceKind sourceKind;
             if (InteractionInputSources.TryGetSourceKind(eventData.SourceId, out sourceKind) &&
                 sourceKind == InteractionSourceKind.Hand)
@@ -155,6 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
 #if UNITY_WSA
+            // TODO Figure out a better way to know what type of source is found / lost.
             InteractionSourceKind sourceKind;
             if (InteractionInputSources.TryGetSourceKind(eventData.SourceId, out sourceKind) &&
                 sourceKind == InteractionSourceKind.Hand)

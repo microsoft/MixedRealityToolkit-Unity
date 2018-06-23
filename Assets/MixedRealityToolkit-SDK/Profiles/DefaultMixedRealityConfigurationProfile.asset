@@ -11,6 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41718b8e5d86c37409b7ce6847fa00a3, type: 3}
   m_Name: DefaultMixedRealityConfigurationProfile
   m_EditorClassIdentifier: 
+  enableCameraProfile: 1
+  cameraProfile: {fileID: 11400000, guid: b9a895b32a50a7f45b1e4da728d50741, type: 2}
   enableInputSystem: 1
   inputSystemType:
     reference: Microsoft.MixedReality.Toolkit.InputSystem.MixedRealityInputManager,
@@ -20,5 +22,6 @@ MonoBehaviour:
   enableSpeechCommands: 1
   speechCommandsProfile: {fileID: 11400000, guid: d4640ead7040e0544b6cbe9ebf1b5e1c,
     type: 2}
-  renderMotionControllers: 1
+  enableControllerProfiles: 1
+  controllersProfile: {fileID: 11400000, guid: 4319257468937c74ebb69e41792d60c5, type: 2}
   enableBoundarySystem: 1

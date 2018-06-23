@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
@@ -22,17 +23,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         public AudioClip DictationAudioClip { get; private set; }
 
         /// <inheritdoc />
-        public DictationEventData(UnityEngine.EventSystems.EventSystem eventSystem) : base(eventSystem) { }
+        public DictationEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
         /// <param name="inputSource"></param>
+        /// <param name="inputAction"></param>
         /// <param name="dictationResult"></param>
         /// <param name="dictationAudioClip"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, string dictationResult, AudioClip dictationAudioClip = null)
+        public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip = null)
         {
-            BaseInitialize(inputSource);
+            BaseInitialize(inputSource, inputAction);
             DictationResult = dictationResult;
             DictationAudioClip = dictationAudioClip;
         }

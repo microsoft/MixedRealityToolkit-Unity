@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#if WINDOWS_UWP && !ENABLE_IL2CPP
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -139,6 +140,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             return assembly.DefinedTypes;
         }
 
+        public static Type[] GetInterfaces(this Type type)
+        {
+            return type.GetTypeInfo().ImplementedInterfaces.ToArray();
+        }
+
+        public static bool IsClass(this Type type)
+        {
+            return type.GetTypeInfo().IsClass;
+        }
+
+        public static bool IsInterface(this Type type)
+        {
+            return type.GetTypeInfo().IsInterface;
+        }
+
+        public static bool IsAbstract(this Type type)
+        {
+            return type.GetTypeInfo().IsAbstract;
+        }
+
         public static bool IsSubclassOf(this Type type, Type c)
         {
             return type.GetTypeInfo().IsSubclassOf(c);
@@ -175,3 +196,4 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         }
     }
 }
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
