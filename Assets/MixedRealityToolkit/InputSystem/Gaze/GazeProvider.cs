@@ -71,16 +71,19 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
             {
                 if (gazeInputSource == null)
                 {
-                    InitializeInputSource();
+                    gazeInputSource = new BaseGenericInputSource("Gaze");
+                    gazePointer.SetGazeInputSourceParent(gazeInputSource);
                 }
+
                 return gazeInputSource;
             }
         }
+
         private BaseGenericInputSource gazeInputSource;
 
         /// <inheritdoc />
         public IMixedRealityPointer GazePointer => gazePointer ?? InitializeGazePointer();
-        private IMixedRealityPointer gazePointer = null;
+        private InternalGazePointer gazePointer = null;
 
         /// <inheritdoc />
         public GameObject GazeTarget { get; private set; }
@@ -124,6 +127,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
                 this.gazeTransform = gazeTransform;
                 this.stabilizer = stabilizer;
                 InteractionEnabled = true;
+            }
+
+            public override IMixedRealityInputSource InputSourceParent { get; protected set; }
+
+            public void SetGazeInputSourceParent(IMixedRealityInputSource gazeInputSource)
+            {
+                InputSourceParent = gazeInputSource;
             }
 
             public override void OnPreRaycast()
@@ -246,14 +256,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         #region Utilities
 
-        private void InitializeInputSource()
-        {
-            gazeInputSource = new BaseGenericInputSource("Gaze");
-        }
-
         private IMixedRealityPointer InitializeGazePointer()
         {
-            return gazePointer = new InternalGazePointer(this, "Gaze Pointer", gazeInputSource, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
+            return gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
         }
 
         private void RaiseSourceDetected()

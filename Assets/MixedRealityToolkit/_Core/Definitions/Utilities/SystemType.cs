@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
 using System;
 using UnityEngine;
 
@@ -19,7 +22,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
 
         public static string GetReference(Type type)
         {
-            return type != null ? $"{type.FullName}, {type.Assembly.GetName().Name}" : string.Empty;
+            if (type == null)
+            {
+                return string.Empty;
+            }
+
+            string[] qualifiedNameComponents = type.AssemblyQualifiedName.Split(new char[] { ',' });
+            Debug.Assert(qualifiedNameComponents.Length >= 2);
+            return $"{qualifiedNameComponents[0]}, {qualifiedNameComponents[1].Trim()}";
         }
 
         /// <summary>
@@ -45,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             Type = type;
         }
 
-        #region ISerializationCallbackReceiver Members
+#region ISerializationCallbackReceiver Members
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
@@ -66,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
 
         void ISerializationCallbackReceiver.OnBeforeSerialize() { }
 
-        #endregion ISerializationCallbackReceiver Members
+#endregion ISerializationCallbackReceiver Members
 
         /// <summary>
         /// Gets or sets type of class reference.
@@ -79,7 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             get { return type; }
             set
             {
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+                bool isValid = value.IsValueType() && !value.IsEnum() || value.IsClass();
+#else
                 bool isValid = value.IsValueType && !value.IsEnum || value.IsClass;
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
                 if (value != null && !isValid)
                 {
                     throw new ArgumentException($"'{value.FullName}' is not a class or struct type.", nameof(value));

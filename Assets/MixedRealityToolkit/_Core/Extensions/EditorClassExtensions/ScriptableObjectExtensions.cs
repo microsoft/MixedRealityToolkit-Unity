@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -16,21 +17,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions.EditorClassExtensio
         /// Creates, saves, and then opens a new asset for the target <see cref="ScriptableObject"/>.
         /// </summary>
         /// <param name="scriptableObject"><see cref="ScriptableObject"/> you want to create an asset file for.</param>
+        /// <param name="path">Optional path for the new asset.</param>
         /// <param name="fileName">Optional filename for the new asset.</param>
-        public static void CreateAsset(this ScriptableObject scriptableObject, string fileName = null)
+        public static void CreateAsset(this ScriptableObject scriptableObject, string path = null, string fileName = null)
         {
             var name = string.IsNullOrEmpty(fileName) ? $"{scriptableObject.GetType().Name}" : fileName;
-            var path = AssetDatabase.GetAssetPath(Selection.activeObject);
 
-            if (path == string.Empty)
+            if (string.IsNullOrEmpty(path))
             {
-                path = "Assets/Profiles";
+                path = "Assets/MixedRealityToolkit-SDK/Profiles";
             }
-            else if (Path.GetExtension(path) != string.Empty)
+
+            if (Path.GetExtension(path) != string.Empty)
             {
-                var assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
-                Debug.Assert(assetPath != null);
-                path = path.Replace(Path.GetFileName(assetPath), string.Empty);
+                var subtractedPath = path.Substring(path.LastIndexOf("/", StringComparison.Ordinal));
+                path = path.Replace(subtractedPath, string.Empty);
+            }
+
+            if (!Directory.Exists(Path.GetFullPath(path)))
+            {
+                Directory.CreateDirectory(Path.GetFullPath(path));
             }
 
             string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath($"{path}/{name}.asset");

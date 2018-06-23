@@ -2,8 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// and positional information for the various inputs that Windows gestures supports.
     /// This is mostly a wrapper on top of GestureRecognizer and InteractionManager.
     /// </summary>
+    [Obsolete("Replaced by WindowsMixedRealityDeviceManager")]
     public class InteractionInputSources : MonoBehaviour
     {
         /// <summary>
@@ -1071,77 +1072,77 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            inputSystem.RaiseHoldStarted(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseHoldStarted(inputSource, (Handedness)args.source.handedness, null);
         }
 
         private void GestureRecognizer_HoldCanceled(HoldCanceledEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            inputSystem.RaiseHoldCanceled(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseHoldCanceled(inputSource, (Handedness)args.source.handedness, null);
         }
 
         private void GestureRecognizer_HoldCompleted(HoldCompletedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            inputSystem.RaiseHoldCompleted(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseHoldCompleted(inputSource, (Handedness)args.source.handedness, null);
         }
 
         private void GestureRecognizer_ManipulationStarted(ManipulationStartedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            inputSystem.RaiseManipulationStarted(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseManipulationStarted(inputSource, (Handedness)args.source.handedness, null);
         }
 
         private void GestureRecognizer_ManipulationUpdated(ManipulationUpdatedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            inputSystem.RaiseManipulationUpdated(inputSource, (Handedness)args.source.handedness, args.cumulativeDelta);
+            inputSystem.RaiseManipulationUpdated(inputSource, (Handedness)args.source.handedness, null, args.cumulativeDelta);
         }
 
         private void GestureRecognizer_ManipulationCompleted(ManipulationCompletedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            inputSystem.RaiseManipulationCompleted(inputSource, (Handedness)args.source.handedness, args.cumulativeDelta);
+            inputSystem.RaiseManipulationCompleted(inputSource, (Handedness)args.source.handedness, null, args.cumulativeDelta);
         }
 
         private void GestureRecognizer_ManipulationCanceled(ManipulationCanceledEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            inputSystem.RaiseManipulationCanceled(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseManipulationCanceled(inputSource, (Handedness)args.source.handedness, null);
         }
 
         private void NavigationGestureRecognizer_NavigationStarted(NavigationStartedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            inputSystem.RaiseNavigationStarted(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseNavigationStarted(inputSource, (Handedness)args.source.handedness, null);
         }
 
         private void NavigationGestureRecognizer_NavigationUpdated(NavigationUpdatedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            inputSystem.RaiseNavigationUpdated(inputSource, (Handedness)args.source.handedness, args.normalizedOffset);
+            inputSystem.RaiseNavigationUpdated(inputSource, (Handedness)args.source.handedness, null, args.normalizedOffset);
         }
 
         private void NavigationGestureRecognizer_NavigationCompleted(NavigationCompletedEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            inputSystem.RaiseNavigationCompleted(inputSource, (Handedness)args.source.handedness, args.normalizedOffset);
+            inputSystem.RaiseNavigationCompleted(inputSource, (Handedness)args.source.handedness, null, args.normalizedOffset);
         }
 
         private void NavigationGestureRecognizer_NavigationCanceled(NavigationCanceledEventArgs args)
         {
             InteractionInputSource inputSource = GetOrAddInteractionSource(args.source);
             if (inputSource == null) { return; }
-            inputSystem.RaiseNavigationCanceled(inputSource, (Handedness)args.source.handedness);
+            inputSystem.RaiseNavigationCanceled(inputSource, (Handedness)args.source.handedness, null);
         }
 
         #endregion Raise GestureRecognizer Events

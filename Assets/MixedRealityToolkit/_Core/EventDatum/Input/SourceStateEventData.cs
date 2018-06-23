@@ -7,7 +7,8 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
     /// <summary>
-    /// Describes an source state event that has a source id. 
+    /// Describes an source state event that has a source id.
+    /// <remarks>Source State events do not have an associated Input Action.</remarks>
     /// </summary>
     public class SourceStateEventData : BaseInputEventData
     {
@@ -20,7 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         public void Initialize(IMixedRealityInputSource inputSource)
         {
-            BaseInitialize(inputSource);
+            // NOTE: Source State events do not have an associated Input Action.
+            BaseInitialize(inputSource, null);
         }
     }
 }

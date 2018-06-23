@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
 using UnityEngine;
@@ -173,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Async
 
                 if (exception != null)
                 {
-                    throw exception;
+                    ExceptionDispatchInfo.Capture(exception).Throw();
                 }
 
                 return result;
@@ -220,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Async
 
                 if (exception != null)
                 {
-                    throw exception;
+                    ExceptionDispatchInfo.Capture(exception).Throw();
                 }
             }
 
@@ -253,8 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Async
             private readonly SimpleCoroutineAwaiter<T> awaiter;
             private readonly Stack<IEnumerator> processStack;
 
-            public CoroutineWrapper(
-                    IEnumerator coroutine, SimpleCoroutineAwaiter<T> awaiter)
+            public CoroutineWrapper(IEnumerator coroutine, SimpleCoroutineAwaiter<T> awaiter)
             {
                 processStack = new Stack<IEnumerator>();
                 processStack.Push(coroutine);
@@ -280,17 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Async
                         // that the IEnumerators are associated with, so we can at least try
                         // adding that to the exception output
                         var objectTrace = GenerateObjectTrace(processStack);
-
-                        if (objectTrace.Any())
-                        {
-                            awaiter.Complete(
-                                default(T), new Exception(
-                                    GenerateObjectTraceMessage(objectTrace), e));
-                        }
-                        else
-                        {
-                            awaiter.Complete(default(T), e);
-                        }
+                        awaiter.Complete(default(T), objectTrace.Any() ? new Exception(GenerateObjectTraceMessage(objectTrace), e) : e);
 
                         yield break;
                     }
