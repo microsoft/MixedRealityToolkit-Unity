@@ -41,12 +41,14 @@ namespace Microsoft.MixedReality.Toolkit.Graph
         [Tooltip("List of all access scopes required for each Graph API used. It should be a subset (or match) the scopes registered in https://apps.dev.microsoft.com.")]
         private string[] graphAccessScopes = { "User.Read" };
 
+#if UNITY_EDITOR
         /// <summary>
         /// Token for testing in the Unity editor.
         /// </summary>
         [SerializeField]
         [Tooltip("Auth token to test Graph access in the Unity editor.")]
         private string testAuthToken = null;
+#endif
 
         /// <summary>
         /// The <see cref="PublicClientApplication"/> for authentication with MSAL.
