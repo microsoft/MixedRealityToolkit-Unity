@@ -11,11 +11,9 @@ However users can override with their own implementation, by extending GraphConn
 
 	Follow the [instructions](https://developer.microsoft.com/en-us/graph/docs/concepts/auth_register_app_v2) to register a **Native** application.
 
-2. Enabling .NET Framework 4.x is required.
+2. Declare any app capabilities required for authentication. For UWP capabilities check documentation [here](https://docs.microsoft.com/en-us/windows/uwp/packaging/app-capability-declarations).
 
-3. Declare any app capabilities required for authentication. For UWP capabilities check documentation [here](https://docs.microsoft.com/en-us/windows/uwp/packaging/app-capability-declarations).
-
-4. Identify Graph data needed for your scenario.
+3. Identify Graph data needed for your scenario.
 
 	In the left panel of MS Graph [documentation](https://developer.microsoft.com/en-us/graph/docs/concepts/overview) identify any data and APIs needed for your scenario. For example to get the signed-in user profile the [API](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/user_get) is "/me" and "User.Read" scope is enough as stated in the documentation.
 	
@@ -23,19 +21,19 @@ However users can override with their own implementation, by extending GraphConn
 	
 	Once you have identified all APIs and what Graph scopes (i.e. permissions) required, update the list of scopes declared in [Microsoft App Registration Portal](https://apps.dev.microsoft.com/).
 
-5. Setup Unity scene.
+4. Setup Unity scene.
 
 	Create a GraphConnectorProfile for your project via Assets/Create/Mixed Reality Toolkit/Graph/Graph Connector Profile.
 
-6. Setup MS Graph permissions.
+5. Setup MS Graph permissions.
 
 	Select the new GraphConnectorProfile and update settings accordingly in the inspector.
 	* **Graph App Id** is the application ID registered in [Microsoft App Registration Portal](https://apps.dev.microsoft.com/).
 	* **Graph Access Scopes** is the array that lists all [access permissions](https://developer.microsoft.com/en-us/graph/docs/concepts/permissions_reference) required in your scenario.
 
-7. All set. 
+6. All set. 
 
-	Look up **GraphConnectorTestAsync.cs** for examples on how to use the GrahConnector.
+	Look up **GraphConnectorTestAsync.cs** for examples on how to use the GraphConnectorProfile.
 
 # Managed bytecode stripping with IL2CPP
 IL2CPP analyzes all assemblies and removes methods that are never directly called. If something is only accessed through reflection, it will be removed unless it is specified in link.xml files. Read more about it [here](https://docs.unity3d.com/Manual/IL2CPP-BytecodeStripping.html) 
