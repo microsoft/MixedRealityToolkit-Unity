@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Graph
     public class GraphConnectorTestAsync : MonoBehaviour
     {
         [SerializeField]
-        private GraphConnectorProfile graphConnector;
+        private GraphConnectorProfile graphConnector = null;
 
         /// <summary>
         /// Called by Unity on the frame when the script is enabled just before any of the Update methods is called the first time.

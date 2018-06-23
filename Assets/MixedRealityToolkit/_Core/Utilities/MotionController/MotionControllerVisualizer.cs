@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
@@ -20,7 +19,6 @@ using UnityEngine.XR.WSA.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Windows.Foundation;
 using Windows.Storage.Streams;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 #endif
 #endif
 
