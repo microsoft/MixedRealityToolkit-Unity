@@ -104,9 +104,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         [SerializeField]
         [Tooltip("The currently active / detected Headset or SDK")]
-        private IMixedRealityDevice activeDevice = default(IMixedRealityDevice);
+        private IMixedRealityDeviceManager activeDevice = default(IMixedRealityDeviceManager);
 
-        public IMixedRealityDevice ActiveDevice => activeDevice;
+        public IMixedRealityDeviceManager ActiveDevice => activeDevice;
 
         #endregion Active SDK components
 
@@ -167,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             #region SDK Initialization
             // TODO Microsoft.MixedReality.Toolkit - SDK Initialization
             //activeDevice?.Initialize();
-            AddManager(typeof(IMixedRealityDevice), activeDevice);
+            AddManager(typeof(IMixedRealityDeviceManager), activeDevice);
 
             #endregion SDK Initialization
 

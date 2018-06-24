@@ -10,38 +10,9 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
     // TODO
-    public struct ValveKnucklesController : IMixedRealityController
+    public class ValveKnucklesController : BaseController
     {
-        public ValveKnucklesController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
-        {
-            ControllerState = controllerState;
-            ControllerHandedness = controllerHandedness;
-            InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
-        }
-
-        /// <inheritdoc />
-        public ControllerState ControllerState { get; }
-
-        /// <inheritdoc />
-        public Handedness ControllerHandedness { get; }
-
-        /// <inheritdoc />
-        public IMixedRealityInputSource InputSource { get; }
-
-        /// <inheritdoc />
-        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
-
-        /// <inheritdoc />
-        public void SetupInputSource<T>(T state)
-        {
-            // TODO
-        }
-
-        /// <inheritdoc />
-        public void UpdateInputSource<T>(T state)
-        {
-            //TODO
-        }
+        public ValveKnucklesController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, IMixedRealityInteractionMapping[] interactions = null)
+                : base(controllerState, controllerHandedness, inputSource, interactions) { }
     }
 }
