@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         #endregion Definition Data items
 
-        #region Unique Get Operators
+        #region Get Operators
 
         public object GetRawValue()
         {
@@ -147,9 +147,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             return sixDofData;
         }
 
-        #endregion Unique Get Operators
+        #endregion Get Operators
 
-        #region Unique Set Operators
+        #region Set Operators
 
         public void SetRawValue(object newValue)
         {
@@ -233,6 +233,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             rotationData = sixDofData.Rotation;
         }
 
-        #endregion Unique Set Operators
+        #endregion Set Operators
     }
 }
