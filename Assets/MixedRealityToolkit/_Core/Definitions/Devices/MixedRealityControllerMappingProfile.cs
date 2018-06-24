@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
@@ -62,8 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         [SerializeField]
         [Tooltip("The list of controller templates your application can use.")]
-        private MixedRealityControllerMapping[] mixedRealityControllerMappingProfiles = new MixedRealityControllerMapping[0];
+        private IMixedRealityInteractionMapping[] mixedRealityControllerMappingProfiles = new IMixedRealityInteractionMapping[0];
 
-        public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappingProfiles;
+        public IMixedRealityInteractionMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappingProfiles;
     }
 }
