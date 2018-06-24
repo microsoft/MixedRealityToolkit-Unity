@@ -242,6 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         {
             GazePointer.BaseCursor?.SetVisibility(false);
             InputSystem.RaiseSourceLost(GazeInputSource);
+            InputSystem.FocusProvider.UnregisterPointer(GazePointer);
         }
 
         private void OnDestroy()
@@ -263,6 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private void RaiseSourceDetected()
         {
+            InputSystem.FocusProvider.RegisterPointer(GazePointer);
             GazePointer.BaseCursor?.SetVisibility(true);
             InputSystem.RaiseSourceDetected(GazeInputSource);
         }

@@ -145,7 +145,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             UpdateControllerData(interactionSourceState);
 
-            for (int i = 0; i < Interactions.Length; i++)
+            Debug.Assert(Interactions != null);
+            for (int i = 0; i < Interactions?.Length; i++)
             {
                 switch (Interactions[i].InputType)
                 {
