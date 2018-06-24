@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using System;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     [Serializable]
     public struct MixedRealityControllerMapping
     {
-        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject overrideModel, InteractionMapping[] interactions) : this()
+        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject overrideModel, IInteractionMapping[] interactions) : this()
         {
             this.id = id;
             this.description = description;
@@ -86,10 +86,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Details the list of available buttons / interactions available from the device.
         /// </summary>
-        public InteractionMapping[] Interactions => interactions;
+        public IInteractionMapping[] Interactions => interactions;
 
         [SerializeField]
         [Tooltip("Details the list of available buttons / interactions available from the device.")]
-        private InteractionMapping[] interactions;
+        private IInteractionMapping[] interactions;
     }
 }

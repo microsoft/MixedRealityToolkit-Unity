@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
@@ -14,27 +14,39 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     /// <remarks>One definition should exist for each physical device input, such as buttons, triggers, joysticks, dpads, and more.</remarks>
     /// </summary>
     [Serializable]
-    public struct InteractionMapping
+    public class InteractionMapping<TReadingType> : IInteractionMapping
     {
-        public InteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, InputAction inputAction) : this()
+        /// <summary>
+        /// The constructor for a new Interaction Mapping definition
+        /// </summary>
+        /// <param name="id">Identity for mapping</param>
+        /// <param name="axisType">The axis that the mapping operates on, also denotes the data type for the mapping</param>
+        /// <param name="inputType">The physical input device / control</param>
+        /// <param name="inputAction">The logical InputAction that this input performs</param>
+        public InteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, IMixedRealityInputAction inputAction)
         {
             this.id = id;
             this.axisType = axisType;
             this.inputType = inputType;
             this.inputAction = inputAction;
+            changed = false;
+            rawData = null;
+            boolData = false;
+            floatData = 0f;
             positionData = Vector3.zero;
             rotationData = Quaternion.identity;
+            transformData = null;
+            vector2Data = Vector2.zero;
         }
 
         #region Interaction Properties
 
-        /// <summary>
-        /// The Id assigned to the Interaction.
-        /// </summary>
-        public uint Id => id;
-
         [SerializeField]
         private uint id;
+
+        /// <inheritdoc/>
+        public uint Id { get { return id; } private set { id = value; } }
+
 
         /// <summary>
         /// The axis type of the button, e.g. Analogue, Digital, etc.
@@ -45,23 +57,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         [Tooltip("The axis type of the button, e.g. Analogue, Digital, etc.")]
         private AxisType axisType;
 
-        /// <summary>
-        /// The primary action of the input as defined by the controller SDK.
-        /// </summary>
+        /// <inheritdoc/>
         public DeviceInputType InputType => inputType;
 
         [SerializeField]
         [Tooltip("The primary action of the input as defined by the controller SDK.")]
         private DeviceInputType inputType;
 
-        /// <summary>
-        /// Action to be raised to the Input Manager when the input data has changed.
-        /// </summary>
-        public InputAction InputAction => inputAction;
+        /// <inheritdoc/>
+        public IMixedRealityInputAction InputAction => inputAction;
 
         [SerializeField]
         [Tooltip("Action to be raised to the Input Manager when the input data has changed.")]
-        private InputAction inputAction;
+        private IMixedRealityInputAction inputAction;
 
         /// <summary>
         /// Has the value changed since the last reading.
@@ -224,9 +232,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             }
 
             Changed = transformData == null && newValue != null ||
-                        transformData != null && newValue == null ||
-                        transformData != null && newValue != null &&
-                        (transformData.Item1 != newValue.Item1 || transformData.Item2 != newValue.Item2);
+                      transformData != null && newValue == null ||
+                      transformData != null && newValue != null &&
+                     (transformData.Item1 != newValue.Item1 || transformData.Item2 != newValue.Item2);
 
             transformData = newValue;
 

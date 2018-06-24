@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
@@ -119,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <typeparam name="T">Type of data stored in the values of the Dictionary</typeparam>
         /// <param name="input">Dictionary to be exported</param>
         /// <returns>array in the type of data stored in the Dictionary</returns>
-        public static T[] ExportDictionaryValuesAsArray<T>(this Dictionary<uint,T> input)
+        public static T[] ExportDictionaryValuesAsArray<T>(this Dictionary<uint, T> input)
         {
             T[] output = new T[input.Count];
             input.Values.CopyTo(output, 0);
@@ -134,11 +136,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <param name="input">The InteractionDefinition dictionary reference (generics, performed on a Dictionary)</param>
         /// <param name="key">The specific DeviceInputType value to update</param>
         /// <param name="value">The data value to be updated</param>
-        public static void SetDictionaryValue<T>(
-            this Dictionary<Definitions.Devices.DeviceInputType, Definitions.Devices.InteractionMapping> input, 
-            Definitions.Devices.DeviceInputType key, T value)
+        public static void SetDictionaryValue<T>(this Dictionary<DeviceInputType, IInteractionMapping> input, DeviceInputType key, T value)
         {
-            var entry = input[key];
+            var entry = input[key] as InteractionMapping<T>;
+            Debug.Assert(entry != null);
+            System.Diagnostics.Debug.Assert(entry != null, nameof(entry) + " != null");
             entry.SetValue(value);
             input[key] = entry;
         }
@@ -147,13 +149,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// Overload extension to enable saving of an InteractionDefinition inside a Dictionary collection
         /// *Note can only use generics (in both here and InteractionDefinition)
         /// </summary>
-        /// <typeparam name="T">Type of input being saved</typeparam>
         /// <param name="input">The InteractionDefinition dictionary reference (generics, performed on a Dictionary)</param>
         /// <param name="key">The specific DeviceInputType value to update</param>
-        /// <param name="value">The data value to be updated</param>
-        public static bool GetDictionaryValueChanged(
-            this Dictionary<Definitions.Devices.DeviceInputType, Definitions.Devices.InteractionMapping> input,
-            Definitions.Devices.DeviceInputType key)
+        public static bool GetDictionaryValueChanged(this Dictionary<DeviceInputType, IInteractionMapping> input, DeviceInputType key)
         {
             var entry = input[key];
             var changed = entry.Changed;
