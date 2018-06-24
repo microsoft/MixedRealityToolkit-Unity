@@ -115,6 +115,38 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         #endregion Definition Data items
 
+        #region Generic Operators
+
+        /// <summary>
+        /// Get the value of the Interaction Mapping data
+        /// </summary>
+        /// <returns>The current reading for the mapping</returns>
+        public TReadingType GetValue() => currentReading;
+
+        private TReadingType currentReading;
+
+        /// <summary>
+        /// Get the value of the Interaction Mapping data
+        /// </summary>
+        /// <param name="reading">Output parameter for the reading value, returns the current reading for the mapping</param>
+        public void GetValue(out TReadingType reading)
+        {
+            reading = currentReading;
+        }
+
+        /// <summary>
+        /// Set the value of the Interaction Mapping data
+        /// </summary>
+        /// <param name="newValue"></param>
+        public void SetValue(TReadingType newValue)
+        {
+            Changed = (currentReading != null) ? !currentReading.Equals(newValue) : (newValue != null);
+
+            currentReading = newValue;
+        }
+
+        #endregion Generic Operators
+
         #region Get Operators
 
         public object GetRawValue()
@@ -165,6 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
             Changed = rawData != newValue;
             rawData = newValue;
+            currentReading = (TReadingType)newValue;
         }
 
         public void SetValue(bool newValue)
@@ -176,6 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
             Changed = boolData != newValue;
             boolData = newValue;
+            currentReading = (TReadingType)(object)newValue;
         }
 
         public void SetValue(float newValue)
@@ -187,6 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
             Changed = !floatData.Equals(newValue);
             floatData = newValue;
+            currentReading = (TReadingType)(object)newValue;
         }
 
         public void SetValue(Vector2 newValue)
@@ -198,6 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
             Changed = vector2Data != newValue;
             vector2Data = newValue;
+            currentReading = (TReadingType)(object)newValue;
         }
 
         public void SetValue(Vector3 newValue)
@@ -211,6 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
             Changed = positionData != newValue;
             positionData = newValue;
+            currentReading = (TReadingType)(object)newValue;
         }
 
         public void SetValue(Quaternion newValue)
@@ -222,6 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
             Changed = rotationData != newValue;
             rotationData = newValue;
+            currentReading = (TReadingType)(object)newValue;
         }
 
         public void SetValue(Tuple<Vector3, Quaternion> newValue)
@@ -237,6 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
                      (transformData.Item1 != newValue.Item1 || transformData.Item2 != newValue.Item2);
 
             transformData = newValue;
+            currentReading = (TReadingType)(object)newValue;
 
             if (transformData != null)
             {
