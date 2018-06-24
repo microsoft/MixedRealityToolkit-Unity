@@ -44,11 +44,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         [SerializeField]
         private InputAction activeHoldAction;
-        // TODO Write custom inspector to assign Input Action
 
         [SerializeField]
         private InputAction interactionEnabledAction;
-        // TODO Write custom inspector to assign Input Action
 
         [SerializeField]
         private bool interactionRequiresHold = false;

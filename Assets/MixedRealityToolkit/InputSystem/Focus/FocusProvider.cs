@@ -492,7 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                     InputSystem.RaiseFocusExit(pointer, unfocusedObject);
                 }
 
-                InputSystem.RaisePreFocusChangedEvent(pointer, unfocusedObject, null);
+                InputSystem.RaisePreFocusChanged(pointer, unfocusedObject, null);
             }
 
             pointers.Remove(pointerData);
@@ -836,7 +836,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 GameObject pendingUnfocusObject = change.PreviousPointerTarget;
                 GameObject pendingFocusObject = change.CurrentPointerTarget;
 
-                InputSystem.RaisePreFocusChangedEvent(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
 
                 if (pendingOverallFocusExitSet.Contains(pendingUnfocusObject))
                 {
@@ -850,7 +850,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                     pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                 }
 
-                InputSystem.OnFocusChangedEvent(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
             }
 
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
