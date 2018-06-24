@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// <summary>
         /// Mapping definition for this controller, linking the Physical inputs to logical Input System Actions
         /// </summary>
-        Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
+        Dictionary<DeviceInputType, MixedRealityInteractionMapping> Interactions { get; }
 
         /// <summary>
         /// Inform the controller to setup and be ready when asked by it's registered device

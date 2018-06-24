@@ -12,12 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
     // TODO
     public struct GenericOpenVRController : IMixedRealityController
     {
-        public GenericOpenVRController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
+        public GenericOpenVRController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, MixedRealityInteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
+            Interactions = interactions ?? new Dictionary<DeviceInputType, MixedRealityInteractionMapping>();
         }
 
         /// <inheritdoc />
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         public IMixedRealityInputSource InputSource { get; }
 
         /// <inheritdoc />
-        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
+        public Dictionary<DeviceInputType, MixedRealityInteractionMapping> Interactions { get; }
 
         /// <inheritdoc />
         public void SetupInputSource<T>(T state)

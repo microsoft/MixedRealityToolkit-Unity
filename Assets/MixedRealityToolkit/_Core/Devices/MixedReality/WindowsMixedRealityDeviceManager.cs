@@ -167,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 ControllerState.NotTracked,
                 controllingHand,
                 controllerInputSource,
-                new Dictionary<DeviceInputType, InteractionMapping>()
+                new Dictionary<DeviceInputType, MixedRealityInteractionMapping>()
                 );
 
             detectedController.SetupInputSource(interactionSourceState);
@@ -220,12 +220,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             {
                 if (controller.Interactions.ContainsKey(DeviceInputType.SpatialPointer) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.SpatialPointer))
                 {
-                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialPointer].InputAction, controller.Interactions[DeviceInputType.SpatialPointer].GetTransform());
+                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialPointer].InputAction, controller.Interactions[DeviceInputType.SpatialPointer].GetSixDofValue());
                 }
 
                 if (controller.Interactions.ContainsKey(DeviceInputType.SpatialGrip) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.SpatialGrip))
                 {
-                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialGrip].InputAction, controller.Interactions[DeviceInputType.SpatialGrip].GetTransform());
+                    inputSystem?.Raise6DofInputChanged(controller.InputSource, controller.ControllerHandedness, controller.Interactions[DeviceInputType.SpatialGrip].InputAction, controller.Interactions[DeviceInputType.SpatialGrip].GetSixDofValue());
                 }
 
                 if (controller.Interactions.ContainsKey(DeviceInputType.TouchpadTouch) && controller.Interactions.GetDictionaryValueChanged(DeviceInputType.TouchpadTouch))

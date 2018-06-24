@@ -12,12 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
     // TODO
     public struct ArcadeStickController : IMixedRealityController
     {
-        public ArcadeStickController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
+        public ArcadeStickController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, MixedRealityInteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
+            Interactions = interactions ?? new Dictionary<DeviceInputType, MixedRealityInteractionMapping>();
         }
 
         public ControllerState ControllerState { get; }
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 
         public IMixedRealityInputSource InputSource { get; }
 
-        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
+        public Dictionary<DeviceInputType, MixedRealityInteractionMapping> Interactions { get; }
 
         public void SetupInputSource<T>(T state)
         {

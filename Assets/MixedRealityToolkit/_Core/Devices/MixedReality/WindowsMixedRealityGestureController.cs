@@ -19,12 +19,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         #endregion Private properties
 
-        public WindowsMixedRealityGestureController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
+        public WindowsMixedRealityGestureController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, MixedRealityInteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
+            Interactions = interactions ?? new Dictionary<DeviceInputType, MixedRealityInteractionMapping>();
         }
 
         #region IMixedRealityController Interface Members
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         public IMixedRealityInputSource InputSource { get; private set; }
 
         /// <inheritdoc/>
-        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; private set; }
+        public Dictionary<DeviceInputType, MixedRealityInteractionMapping> Interactions { get; private set; }
 
         /// <inheritdoc/>
         public void SetupInputSource<T>(T state)
@@ -84,12 +84,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// Load the Interaction mappings for this controller from the configured Controller Mapping profile
         /// </summary>
         /// <param name="mappings">Configured mappings from a controller mapping profile</param>
-        private void SetupFromMapping(InteractionMapping[] mappings)
+        private void SetupFromMapping(MixedRealityInteractionMapping[] mappings)
         {
             for (uint i = 0; i < mappings.Length; i++)
             {
                 // Add interaction for Mapping
-                Interactions.Add(mappings[i].InputType, new InteractionMapping(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                Interactions.Add(mappings[i].InputType, new MixedRealityInteractionMapping(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
             }
         }
 
