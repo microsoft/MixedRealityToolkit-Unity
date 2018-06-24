@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableCameraProfile: 1
   cameraProfile: {fileID: 11400000, guid: b9a895b32a50a7f45b1e4da728d50741, type: 2}
-  enableInputSystem: 0
+  enableInputSystem: 1
   inputSystemType:
     reference: Microsoft.MixedReality.Toolkit.InputSystem.MixedRealityInputManager,
       Microsoft.MixedReality.Toolkit.InputSystem
