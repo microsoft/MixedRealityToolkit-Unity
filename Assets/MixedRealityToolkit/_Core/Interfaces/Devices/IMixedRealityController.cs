@@ -3,10 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices
+namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
 {
     /// <summary>
     /// Mixed Reality Toolkit controller definition, used to manage a specific controller type
@@ -31,6 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices
         /// <summary>
         /// Mapping definition for this controller, linking the Physical inputs to logical Input System Actions
         /// </summary>
-        List<IMixedRealityInteractionMapping> Interactions { get; }
+        IMixedRealityInteractionMapping[] Interactions { get; }
+
+        /// <summary>
+        /// Inform the controller to setup and be ready when asked by it's registered device
+        /// </summary>
+        void GetDefaultConfiguration();
     }
 }

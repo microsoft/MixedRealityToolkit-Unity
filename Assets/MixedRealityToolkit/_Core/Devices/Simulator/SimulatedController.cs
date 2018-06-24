@@ -5,14 +5,13 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
 {
     // TODO - Implement
     public class SimulatedController : BaseController
     {
-        public SimulatedController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, List<IMixedRealityInteractionMapping> interactions = null)
+        public SimulatedController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, IMixedRealityInteractionMapping[] interactions = null)
                 : base(controllerState, controllerHandedness, inputSource, interactions) { }
     }
 }

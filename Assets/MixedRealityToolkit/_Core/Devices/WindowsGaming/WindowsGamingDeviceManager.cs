@@ -6,6 +6,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
     // TODO - Implement
     public class WindowsGamingDeviceManager : BaseDeviceManager
     {
-        public WindowsGamingDeviceManager(string name, uint priority) : base(name, priority) {}
+        public WindowsGamingDeviceManager(string name, uint priority) : base(name, priority) { }
     }
 }

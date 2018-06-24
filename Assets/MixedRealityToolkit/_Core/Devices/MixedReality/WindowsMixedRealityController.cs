@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
@@ -16,47 +17,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
     public class WindowsMixedRealityController : BaseController
     {
-        public bool IsControllerTracked { get; private set; }
-
-        private SixDof currentPointerData = new SixDof(Vector3.zero, Quaternion.identity);
-        private SixDof currentGripData = new SixDof(Vector3.zero, Quaternion.identity);
-
-        #region IMixedRealityController Interface Members
-
-        public WindowsMixedRealityController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, List<IMixedRealityInteractionMapping> interactions = null)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="controllerState"></param>
+        /// <param name="controllerHandedness"></param>
+        /// <param name="inputSource"></param>
+        /// <param name="interactions"></param>
+        public WindowsMixedRealityController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, IMixedRealityInteractionMapping[] interactions = null)
                 : base(controllerState, controllerHandedness, inputSource, interactions)
         {
             IsControllerTracked = false;
-        }
-
-        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        public void SetupFromInteractionSource(InteractionSourceState interactionSourceState)
-        {
-            //Update the Tracked state of the controller
-            UpdateControllerData(interactionSourceState);
-
-            MixedRealityControllerMapping controllerMapping = Managers.MixedRealityManager.Instance.ActiveProfile.GetControllerMapping(typeof(WindowsMixedRealityController), ControllerHandedness);
-            if (controllerMapping.Interactions?.Length > 0)
-            {
-                SetupFromMapping(controllerMapping.Interactions);
-            }
-            else
-            {
-                SetupWMRControllerDefaults(interactionSourceState);
-            }
-        }
-
-        /// <summary>
-        /// Load the Interaction mappings for this controller from the configured Controller Mapping profile
-        /// </summary>
-        /// <param name="mappings">Configured mappings from a controller mapping profile</param>
-        private void SetupFromMapping(IMixedRealityInteractionMapping[] mappings)
-        {
-            for (uint i = 0; i < mappings.Length; i++)
-            {
-                // Add interaction for Mapping
-                //Interactions.Add(mappings[i].InputType, new MixedRealityInteractionMapping(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
-            }
         }
 
         /// <summary>
@@ -64,55 +35,114 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         public InteractionSourceState LastSourceStateReading { get; private set; }
 
+        public bool IsControllerTracked { get; private set; }
+
+        private Vector3 currentPointerPosition;
+        private Quaternion currentPointerRotation;
+        private SixDof currentPointerData = new SixDof(Vector3.zero, Quaternion.identity);
+
+        private Vector3 currentGripPosition;
+        private Quaternion currentGripRotation;
+        private SixDof currentGripData = new SixDof(Vector3.zero, Quaternion.identity);
+
+        /// <inheritdoc/>
+        public override void GetDefaultConfiguration()
+        {
+            if (MixedRealityManager.Instance.ActiveProfile.EnableControllerProfiles)
+            {
+                MixedRealityControllerMapping controllerMapping = default(MixedRealityControllerMapping);
+                var controllerMappings = MixedRealityManager.Instance.ActiveProfile.ControllersProfile.MixedRealityControllerMappingProfiles;
+
+                for (int i = 0; i < controllerMappings?.Length; i++)
+                {
+                    if (controllerMappings[i].Controller.Type == GetType() && controllerMappings[i].Handedness == ControllerHandedness)
+                    {
+                        controllerMapping = controllerMappings[i];
+                        break;
+                    }
+                }
+
+                if (controllerMapping.Interactions?.Length > 0)
+                {
+                    SetupFromMapping(controllerMapping.Interactions);
+                    return;
+                }
+            }
+
+            SetupControllerDefaults();
+        }
+
+        #region Setup and Update functions
+
+        /// <summary>
+        /// Load the Interaction mappings for this controller from the configured Controller Mapping profile
+        /// </summary>
+        /// <param name="mappings">Configured mappings from a controller mapping profile</param>
+        private void SetupFromMapping(IMixedRealityInteractionMapping[] mappings)
+        {
+            var interactions = new List<IMixedRealityInteractionMapping>();
+            for (int i = 0; i < mappings.Length; i++)
+            {
+                switch (mappings[i].AxisType)
+                {
+                    case AxisType.Digital:
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.SingleAxis:
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.DualAxis:
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.ThreeDofPosition:
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.ThreeDofRotation:
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.SixDof:
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    case AxisType.None:
+                    case AxisType.Raw:
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            Interactions = interactions.ToArray();
+        }
+
         /// <summary>
         /// Create Interaction mappings from a device specific default set of action mappings
         /// </summary>
-        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        private void SetupWMRControllerDefaults(InteractionSourceState interactionSourceState)
+        private void SetupControllerDefaults()
         {
-            InputAction[] inputActions = Managers.MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions;
+            var interactions = new List<IMixedRealityInteractionMapping>();
+
+            InputAction[] inputActions = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions;
+
             if (inputActions == null)
             {
                 return;
             }
 
-            // TODO Get from Managers.MixedRealityManager.Instance.ActiveProfile.ControllersProfile.MixedRealityControllerMappingProfiles
+            interactions.Add(new MixedRealityInteractionMapping(1, AxisType.Digital, DeviceInputType.Select, new InputAction(1, "Select")));
+            interactions.Add(new MixedRealityInteractionMapping(2, AxisType.SingleAxis, DeviceInputType.Trigger, new InputAction(2, "Trigger Press")));
+            interactions.Add(new MixedRealityInteractionMapping(2, AxisType.Digital, DeviceInputType.GripPress, new InputAction(2, "Grip Press")));
+            interactions.Add(new MixedRealityInteractionMapping(3, AxisType.Digital, DeviceInputType.Menu, new InputAction(3, "Menu Press")));
+            interactions.Add(new MixedRealityInteractionMapping(4, AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerHandedness == Handedness.Left ? new InputAction(4, "Vertical Movement") : new InputAction(4, "Horizontal Movement")));
+            interactions.Add(new MixedRealityInteractionMapping(5, AxisType.Digital, DeviceInputType.ThumbStickPress, new InputAction(5, "Thumbstick Press")));
+            interactions.Add(new MixedRealityInteractionMapping(6, AxisType.DualAxis, DeviceInputType.Touchpad, new InputAction(6, "Touchpad Position")));
+            interactions.Add(new MixedRealityInteractionMapping(7, AxisType.Digital, DeviceInputType.TouchpadTouch, new InputAction(7, "Touchpad Touch")));
+            interactions.Add(new MixedRealityInteractionMapping(8, AxisType.Digital, DeviceInputType.TouchpadPress, new InputAction(8, "Touchpad Press")));
 
-            ////Add the Controller Pointer
-            //Interactions.Add(DeviceInputType.SpatialPointer, new InteractionMapping(1, AxisType.SixDof, DeviceInputType.SpatialPointer, inputActions.GetActionByName("Select")));
-
-            //// Add the Controller trigger
-            //Interactions.Add(DeviceInputType.Trigger, new InteractionMapping(2, AxisType.SingleAxis, DeviceInputType.Trigger, inputActions.GetActionByName("Select")));
-
-            //// If the controller has a Grip / Grasp button, add it to the controller capabilities
-            //if (interactionSourceState.source.supportsGrasp)
-            //{
-            //    Interactions.Add(DeviceInputType.SpatialGrip, new InteractionMapping(3, AxisType.SixDof, DeviceInputType.SpatialGrip, inputActions.GetActionByName("Grip")));
-
-            //    Interactions.Add(DeviceInputType.GripPress, new InteractionMapping(4, AxisType.SingleAxis, DeviceInputType.GripPress, inputActions.GetActionByName("Grab")));
-            //}
-
-            //// If the controller has a menu button, add it to the controller capabilities
-            //if (interactionSourceState.source.supportsMenu)
-            //{
-            //    Interactions.Add(DeviceInputType.Menu, new InteractionMapping(5, AxisType.Digital, DeviceInputType.Menu, inputActions.GetActionByName("Menu")));
-            //}
-
-            //// If the controller has a Thumbstick, add it to the controller capabilities
-            //if (interactionSourceState.source.supportsThumbstick)
-            //{
-            //    Interactions.Add(DeviceInputType.ThumbStick, new InteractionMapping(6, AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerHandedness == Handedness.Left ? inputActions.GetActionByName("Walk") : inputActions.GetActionByName("Look")));
-            //    Interactions.Add(DeviceInputType.ThumbStickPress, new InteractionMapping(7, AxisType.Digital, DeviceInputType.ThumbStickPress, inputActions.GetActionByName("Interact")));
-            //}
-
-            //// If the controller has a Touchpad, add it to the controller capabilities
-            //if (interactionSourceState.source.supportsTouchpad)
-            //{
-            //    Interactions.Add(DeviceInputType.Touchpad, new InteractionMapping(8, AxisType.DualAxis, DeviceInputType.Touchpad, inputActions.GetActionByName("Inventory")));
-            //    Interactions.Add(DeviceInputType.TouchpadTouch, new InteractionMapping(9, AxisType.Digital, DeviceInputType.TouchpadTouch, inputActions.GetActionByName("Pickup")));
-            //    Interactions.Add(DeviceInputType.TouchpadPress, new InteractionMapping(10, AxisType.Digital, DeviceInputType.TouchpadPress, inputActions.GetActionByName("Pickup")));
-            //}
+            Interactions = interactions.ToArray();
         }
+
+        #region Update data functions
 
         /// <summary>
         /// Update the controller data from the provided platform state
@@ -122,10 +152,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             UpdateControllerData(interactionSourceState);
 
-            for (int i = 0; i < Interactions.Count; i++)
+            for (int i = 0; i < Interactions.Length; i++)
             {
                 switch (Interactions[i].InputType)
                 {
+                    case DeviceInputType.None:
+                        break;
                     case DeviceInputType.SpatialPointer:
                     case DeviceInputType.PointerPosition:
                     case DeviceInputType.PointerRotation:
@@ -153,11 +185,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         UpdateTouchPadData(interactionSourceState, Interactions[i]);
                         break;
                     case DeviceInputType.Menu:
-                    case DeviceInputType.ButtonPress:
-                        {
-                            Interactions[i].SetValue(interactionSourceState.menuPressed);
-                            break;
-                        }
+                        UpdateMenuData(interactionSourceState, Interactions[i]);
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -172,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             LastSourceStateReading = interactionSourceState;
 
-            // Get Controller start position and tracked state
+            // Get Controller tracked state
             ControllerState = IsControllerTracked ? ControllerState.Tracked : ControllerState.NotTracked;
         }
 
@@ -183,23 +212,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionMapping"></param>
         private void UpdatePointerData(InteractionSourceState interactionSourceState, IMixedRealityInteractionMapping interactionMapping)
         {
-            Vector3 position;
-            Quaternion rotation;
-
-            interactionSourceState.sourcePose.TryGetPosition(out position, InteractionSourceNode.Pointer);
-            interactionSourceState.sourcePose.TryGetRotation(out rotation, InteractionSourceNode.Pointer);
+            interactionSourceState.sourcePose.TryGetPosition(out currentPointerPosition, InteractionSourceNode.Pointer);
+            interactionSourceState.sourcePose.TryGetRotation(out currentPointerRotation, InteractionSourceNode.Pointer);
 
             if (CameraCache.Main.transform.parent != null)
             {
-                position = CameraCache.Main.transform.parent.TransformPoint(position);
-                rotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(rotation.eulerAngles));
+                currentPointerData.Position = CameraCache.Main.transform.parent.TransformPoint(currentPointerPosition);
+                currentPointerData.Rotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentPointerRotation.eulerAngles));
             }
 
-            currentPointerData.Position = position;
-            currentPointerData.Rotation = rotation;
-            interactionMapping.SetValue(currentPointerData);
+            //Update the interaction data source
+            interactionMapping.SetSixDofValue(currentPointerData);
+
+            //Raise input system Event if it enabled
             InputSystem?.Raise6DofInputChanged(InputSource, ControllerHandedness, interactionMapping.InputAction, currentPointerData);
-            //Interactions.SetDictionaryValue(DeviceInputType.SpatialPointer, currentPointerData);
         }
 
         /// <summary>
@@ -209,23 +235,45 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionMapping"></param>
         private void UpdateGripData(InteractionSourceState interactionSourceState, IMixedRealityInteractionMapping interactionMapping)
         {
-            Vector3 position;
-            Quaternion rotation;
-
-            interactionSourceState.sourcePose.TryGetPosition(out position, InteractionSourceNode.Grip);
-            interactionSourceState.sourcePose.TryGetRotation(out rotation, InteractionSourceNode.Grip);
-
-            if (CameraCache.Main.transform.parent != null)
+            switch (interactionMapping.InputType)
             {
-                position = CameraCache.Main.transform.parent.TransformPoint(position);
-                rotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(rotation.eulerAngles));
+                case DeviceInputType.SpatialGrip:
+                case DeviceInputType.GripPosition:
+                case DeviceInputType.GripRotation:
+                    {
+                        interactionSourceState.sourcePose.TryGetPosition(out currentGripPosition, InteractionSourceNode.Grip);
+                        interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
+
+                        if (CameraCache.Main.transform.parent != null)
+                        {
+                            currentGripData.Position = CameraCache.Main.transform.parent.TransformPoint(currentGripPosition);
+                            currentGripData.Rotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentGripRotation.eulerAngles));
+                        }
+
+                        //Update the interaction data source
+                        interactionMapping.SetSixDofValue(currentGripData);
+
+                        //Raise input system Event if it enabled
+                        InputSystem?.Raise6DofInputChanged(InputSource, ControllerHandedness, interactionMapping.InputAction, currentGripData);
+                    }
+                    break;
+                case DeviceInputType.GripPress:
+                    {
+                        //Update the interaction data source
+                        interactionMapping.SetBoolValue(interactionSourceState.grasped);
+
+                        //Raise input system Event if it enabled
+                        if (interactionSourceState.grasped)
+                        {
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.InputAction);
+                        }
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.InputAction);
+                        }
+                    }
+                    break;
             }
-
-            currentGripData.Position = position;
-            currentGripData.Rotation = rotation;
-
-            InputSystem?.Raise6DofInputChanged(InputSource, ControllerHandedness, interactionMapping.InputAction, currentGripData);
-            //Interactions.SetDictionaryValue(DeviceInputType.SpatialGrip, currentGripData);
         }
 
         /// <summary>
@@ -239,8 +287,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             {
                 case DeviceInputType.TouchpadTouch:
                     {
-                        interactionMapping.SetValue(interactionSourceState.touchpadTouched);
+                        //Update the interaction data source
+                        interactionMapping.SetBoolValue(interactionSourceState.touchpadTouched);
 
+                        //Raise input system Event if it enabled
                         if (interactionSourceState.touchpadTouched)
                         {
                             InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.InputAction);
@@ -253,8 +303,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                     }
                 case DeviceInputType.TouchpadPress:
                     {
-                        interactionMapping.SetValue(interactionSourceState.touchpadPressed);
+                        //Update the interaction data source
+                        interactionMapping.SetBoolValue(interactionSourceState.touchpadPressed);
 
+                        //Raise input system Event if it enabled
                         if (interactionSourceState.touchpadPressed)
                         {
                             InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.InputAction);
@@ -267,7 +319,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                     }
                 case DeviceInputType.Touchpad:
                     {
-                        interactionMapping.SetValue(interactionSourceState.touchpadPosition);
+                        //Update the interaction data source
+                        interactionMapping.SetVector2Value(interactionSourceState.touchpadPosition);
+
+                        //Raise input system Event if it enabled
                         InputSystem?.Raise2DoFInputChanged(InputSource, ControllerHandedness, interactionMapping.InputAction, interactionSourceState.touchpadPosition);
                         break;
                     }
@@ -287,8 +342,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             {
                 case DeviceInputType.ThumbStickPress:
                     {
-                        interactionMapping.SetValue(interactionSourceState.thumbstickPressed);
+                        //Update the interaction data source
+                        interactionMapping.SetBoolValue(interactionSourceState.thumbstickPressed);
 
+                        //Raise input system Event if it enabled
                         if (interactionSourceState.thumbstickPressed)
                         {
                             InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.InputAction);
@@ -301,7 +358,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                     }
                 case DeviceInputType.ThumbStick:
                     {
-                        interactionMapping.SetValue(interactionSourceState.thumbstickPosition);
+                        //Update the interaction data source
+                        interactionMapping.SetVector2Value(interactionSourceState.thumbstickPosition);
+
+                        //Raise input system Event if it enabled
                         InputSystem?.Raise2DoFInputChanged(InputSource, ControllerHandedness, interactionMapping.InputAction, interactionSourceState.thumbstickPosition);
                         break;
                     }
@@ -319,11 +379,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             switch (interactionMapping.InputType)
             {
-                case DeviceInputType.Select:
                 case DeviceInputType.TriggerPress:
+                case DeviceInputType.Select:
                     {
-                        interactionMapping.SetValue(interactionSourceState.selectPressed);
+                        //Update the interaction data source
+                        interactionMapping.SetBoolValue(interactionSourceState.selectPressed);
 
+                        //Raise input system Event if it enabled
                         if (interactionSourceState.selectPressed)
                         {
                             InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.InputAction);
@@ -336,7 +398,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                     }
                 case DeviceInputType.Trigger:
                     {
-                        interactionMapping.SetValue(interactionSourceState.selectPressedAmount);
+                        //Update the interaction data source
+                        interactionMapping.SetFloatValue(interactionSourceState.selectPressedAmount);
+
+                        //Raise input system Event if it enabled
                         InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.InputAction, interactionSourceState.selectPressedAmount);
                         break;
                     }
@@ -345,6 +410,29 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
         }
 
+        /// <summary>
+        /// Update the Menu button state.
+        /// </summary>
+        /// <param name="interactionSourceState"></param>
+        /// <param name="interactionMapping"></param>
+        private void UpdateMenuData(InteractionSourceState interactionSourceState, IMixedRealityInteractionMapping interactionMapping)
+        {
+            //Update the interaction data source
+            interactionMapping.SetBoolValue(interactionSourceState.menuPressed);
+
+            //Raise input system Event if it enabled
+            if (interactionSourceState.menuPressed)
+            {
+                InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.InputAction);
+            }
+            else
+            {
+                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.InputAction);
+            }
+        }
+
         #endregion Update data functions
+
+        #endregion Setup and Update functions
     }
 }

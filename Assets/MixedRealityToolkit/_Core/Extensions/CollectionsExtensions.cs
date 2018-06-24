@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
@@ -126,37 +124,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             T[] output = new T[input.Count];
             input.Values.CopyTo(output, 0);
             return output;
-        }
-
-        /// <summary>
-        /// Overload extension to enable saving of an InteractionDefinition inside a Dictionary collection
-        /// *Note can only use generics (in both here and InteractionDefinition)
-        /// </summary>
-        /// <typeparam name="T">Type of input being saved</typeparam>
-        /// <param name="input">The InteractionDefinition dictionary reference (generics, performed on a Dictionary)</param>
-        /// <param name="key">The specific DeviceInputType value to update</param>
-        /// <param name="value">The data value to be updated</param>
-        public static void SetDictionaryValue<T>(this Dictionary<DeviceInputType, IMixedRealityInteractionMapping> input, DeviceInputType key, T value)
-        {
-            var entry = input[key] as MixedRealityInteractionMapping<T>;
-            Debug.Assert(entry != null);
-            System.Diagnostics.Debug.Assert(entry != null, nameof(entry) + " != null");
-            entry.SetValue(value);
-            input[key] = entry;
-        }
-
-        /// <summary>
-        /// Overload extension to enable saving of an InteractionDefinition inside a Dictionary collection
-        /// *Note can only use generics (in both here and InteractionDefinition)
-        /// </summary>
-        /// <param name="input">The InteractionDefinition dictionary reference (generics, performed on a Dictionary)</param>
-        /// <param name="key">The specific DeviceInputType value to update</param>
-        public static bool GetDictionaryValueChanged(this Dictionary<DeviceInputType, IMixedRealityInteractionMapping> input, DeviceInputType key)
-        {
-            var entry = input[key];
-            var changed = entry.Changed;
-            input[key] = entry;
-            return changed;
         }
     }
 }

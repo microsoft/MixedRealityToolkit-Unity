@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices
@@ -43,16 +42,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices
         bool GetBooleanValue();
         float GetFloatValue();
         Vector2 GetVector2Value();
-        Vector3 GetPosition();
-        Quaternion GetRotation();
-        SixDof GetTransform();
+        Vector3 GetPositionValue();
+        Quaternion GetRotationValue();
+        SixDof GetSixDofValue();
 
-        void SetValue(object newValue);
-        void SetValue(bool newValue);
-        void SetValue(float newValue);
-        void SetValue(Vector2 newValue);
-        void SetValue(Vector3 newValue);
-        void SetValue(Quaternion newValue);
-        void SetValue(SixDof newValue);
+        void SetRawValue(object newValue);
+        void SetBoolValue(bool newValue);
+        void SetFloatValue(float newValue);
+        void SetVector2Value(Vector2 newValue);
+        void SetPositionValue(Vector3 newValue);
+        void SetRotationValue(Quaternion newValue);
+        void SetSixDofValue(SixDof newValue);
+
     }
 }

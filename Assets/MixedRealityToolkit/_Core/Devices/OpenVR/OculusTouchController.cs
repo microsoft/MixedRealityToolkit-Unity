@@ -5,14 +5,13 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
     // TODO - Implement
     public class OculusTouchController : BaseController
     {
-        public OculusTouchController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, List<IMixedRealityInteractionMapping> interactions)
+        public OculusTouchController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, IMixedRealityInteractionMapping[] interactions)
                 : base(controllerState, controllerHandedness, inputSource, interactions) { }
     }
 }

@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     /// <remarks>One definition should exist for each physical device input, such as buttons, triggers, joysticks, dpads, and more.</remarks>
     /// </summary>
     [Serializable]
-    public class MixedRealityInteractionMapping<TReadingType> : IMixedRealityInteractionMapping
+    public struct MixedRealityInteractionMapping : IMixedRealityInteractionMapping
     {
         /// <summary>
         /// The constructor for a new Interaction Mapping definition
@@ -29,13 +29,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             this.axisType = axisType;
             this.inputType = inputType;
             this.inputAction = inputAction;
-            changed = false;
             rawData = null;
             boolData = false;
             floatData = 0f;
+            vector2Data = Vector2.zero;
             positionData = Vector3.zero;
             rotationData = Quaternion.identity;
-            transformData = SixDof.ZeroIdentity;
+            sixDofData = SixDof.ZeroIdentity;
+            changed = false;
         }
 
         #region Interaction Properties
@@ -44,35 +45,32 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         private uint id;
 
         /// <inheritdoc/>
-        public uint Id { get { return id; } private set { id = value; } }
-
-
-        /// <summary>
-        /// The axis type of the button, e.g. Analogue, Digital, etc.
-        /// </summary>
-        public AxisType AxisType => axisType;
+        public uint Id => id;
 
         [SerializeField]
         [Tooltip("The axis type of the button, e.g. Analogue, Digital, etc.")]
         private AxisType axisType;
 
         /// <inheritdoc/>
-        public DeviceInputType InputType => inputType;
+        public AxisType AxisType => axisType;
 
         [SerializeField]
         [Tooltip("The primary action of the input as defined by the controller SDK.")]
         private DeviceInputType inputType;
 
         /// <inheritdoc/>
+        public DeviceInputType InputType => inputType;
+
+        /// <inheritdoc />
         public IMixedRealityInputAction InputAction => inputAction;
 
         [SerializeField]
         [Tooltip("Action to be raised to the Input Manager when the input data has changed.")]
         private IMixedRealityInputAction inputAction;
 
-        /// <summary>
-        /// Has the value changed since the last reading.
-        /// </summary>
+        private bool changed;
+
+        /// <inheritdoc/>
         public bool Changed
         {
             get
@@ -108,45 +106,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         private Quaternion rotationData;
 
-        private SixDof transformData;
-
-        private bool changed;
+        private SixDof sixDofData;
 
         #endregion Definition Data items
 
-        #region Generic Operators
-
-        /// <summary>
-        /// Get the value of the Interaction Mapping data
-        /// </summary>
-        /// <returns>The current reading for the mapping</returns>
-        public TReadingType GetValue() => currentReading;
-
-        private TReadingType currentReading;
-
-        /// <summary>
-        /// Get the value of the Interaction Mapping data
-        /// </summary>
-        /// <param name="reading">Output parameter for the reading value, returns the current reading for the mapping</param>
-        public void GetValue(out TReadingType reading)
-        {
-            reading = currentReading;
-        }
-
-        /// <summary>
-        /// Set the value of the Interaction Mapping data
-        /// </summary>
-        /// <param name="newValue"></param>
-        public void SetValue(TReadingType newValue)
-        {
-            Changed = (currentReading != null) ? !currentReading.Equals(newValue) : (newValue != null);
-
-            currentReading = newValue;
-        }
-
-        #endregion Generic Operators
-
-        #region Get Operators
+        #region Unique Get Operators
 
         public object GetRawValue()
         {
@@ -168,115 +132,107 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             return vector2Data;
         }
 
-        public Vector3 GetPosition()
+        public Vector3 GetPositionValue()
         {
             return positionData;
         }
 
-        public Quaternion GetRotation()
+        public Quaternion GetRotationValue()
         {
             return rotationData;
         }
 
-        public SixDof GetTransform()
+        public SixDof GetSixDofValue()
         {
-            return transformData;
+            return sixDofData;
         }
 
-        #endregion Get Operators
+        #endregion Unique Get Operators
 
-        #region Set Operators
+        #region Unique Set Operators
 
-        public void SetValue(object newValue)
+        public void SetRawValue(object newValue)
         {
             if (AxisType != AxisType.Raw)
             {
-                Debug.LogError("SetValue(object) is only valid for AxisType.Raw InteractionMappings");
+                Debug.LogError("SetRawValue(object) is only valid for AxisType.Raw InteractionMappings");
             }
 
             Changed = rawData != newValue;
             rawData = newValue;
-            currentReading = (TReadingType)newValue;
         }
 
-        public void SetValue(bool newValue)
+        public void SetBoolValue(bool newValue)
         {
             if (AxisType != AxisType.Digital)
             {
-                Debug.LogError("SetValue(bool) is only valid for AxisType.Digital InteractionMappings");
+                Debug.LogError("SetRawValue(bool) is only valid for AxisType.Digital InteractionMappings");
             }
 
             Changed = boolData != newValue;
             boolData = newValue;
-            currentReading = (TReadingType)(object)newValue;
         }
 
-        public void SetValue(float newValue)
+        public void SetFloatValue(float newValue)
         {
             if (AxisType != AxisType.SingleAxis)
             {
-                Debug.LogError("SetValue(float) is only valid for AxisType.SingleAxis InteractionMappings");
+                Debug.LogError("SetRawValue(float) is only valid for AxisType.SingleAxis InteractionMappings");
             }
 
             Changed = !floatData.Equals(newValue);
             floatData = newValue;
-            currentReading = (TReadingType)(object)newValue;
         }
 
-        public void SetValue(Vector2 newValue)
+        public void SetVector2Value(Vector2 newValue)
         {
             if (AxisType != AxisType.DualAxis)
             {
-                Debug.LogError("SetValue(Vector2) is only valid for AxisType.DualAxis InteractionMappings");
+                Debug.LogError("SetRawValue(Vector2) is only valid for AxisType.DualAxis InteractionMappings");
             }
 
             Changed = vector2Data != newValue;
             vector2Data = newValue;
-            currentReading = (TReadingType)(object)newValue;
         }
 
-        public void SetValue(Vector3 newValue)
+        public void SetPositionValue(Vector3 newValue)
         {
             if (AxisType != AxisType.ThreeDofPosition)
             {
                 {
-                    Debug.LogError("SetValue(Vector3) is only valid for AxisType.ThreeDoFPosition InteractionMappings");
+                    Debug.LogError("SetRawValue(Vector3) is only valid for AxisType.ThreeDoFPosition InteractionMappings");
                 }
             }
 
             Changed = positionData != newValue;
             positionData = newValue;
-            currentReading = (TReadingType)(object)newValue;
         }
 
-        public void SetValue(Quaternion newValue)
+        public void SetRotationValue(Quaternion newValue)
         {
             if (AxisType != AxisType.ThreeDofRotation)
             {
-                Debug.LogError("SetValue(Quaternion) is only valid for AxisType.ThreeDoFRotation InteractionMappings");
+                Debug.LogError("SetRawValue(Quaternion) is only valid for AxisType.ThreeDoFRotation InteractionMappings");
             }
 
             Changed = rotationData != newValue;
             rotationData = newValue;
-            currentReading = (TReadingType)(object)newValue;
         }
 
-        public void SetValue(SixDof newValue)
+        public void SetSixDofValue(SixDof newValue)
         {
             if (AxisType != AxisType.SixDof)
             {
-                Debug.LogError("SetValue(SixDof) is only valid for AxisType.SixDoF InteractionMappings");
+                Debug.LogError("SetRawValue(SixDof) is only valid for AxisType.SixDoF InteractionMappings");
             }
 
-            Changed = transformData.Position != newValue.Position ||
-                      transformData.Rotation != newValue.Rotation;
+            Changed = sixDofData != newValue;
 
-            transformData = newValue;
-            positionData = transformData.Position;
-            rotationData = transformData.Rotation;
-            currentReading = (TReadingType)(object)newValue;
+            sixDofData = newValue;
+            positionData = sixDofData.Position;
+            rotationData = sixDofData.Rotation;
         }
 
-        #endregion Set Operators
+        #endregion Unique Set Operators
     }
 }
