@@ -10,6 +10,9 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices
 {
+    /// <summary>
+    /// Base Controller class to inherit from for all controllers.
+    /// </summary>
     public class BaseController : IMixedRealityController
     {
         /// <summary>
