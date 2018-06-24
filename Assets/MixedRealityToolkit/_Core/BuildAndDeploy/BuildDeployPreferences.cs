@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal.DataStructures;
 using System;
 using System.IO;

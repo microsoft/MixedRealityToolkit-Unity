@@ -20,12 +20,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty transparentBackgroundColor;
         private SerializedProperty holoLensQualityLevel;
 
-        private GUIContent nearClipTitle;
-        private GUIContent clearFlagsTitle;
-        private GUIStyle headerStyle;
+        private GUIContent nearClipTitle = new GUIContent("Near Clip");
+        private GUIContent clearFlagsTitle = new GUIContent("Clear Flags");
 
         private void OnEnable()
         {
+            if (!CheckMixedRealityManager())
+            {
+                return;
+            }
+
             opaqueNearClip = serializedObject.FindProperty("nearClipPlaneOpaqueDisplay");
             opaqueClearFlags = serializedObject.FindProperty("cameraClearFlagsOpaqueDisplay");
             opaqueBackgroundColor = serializedObject.FindProperty("backgroundColorOpaqueDisplay");
@@ -39,14 +43,20 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         public override void OnInspectorGUI()
         {
-            nearClipTitle = new GUIContent("Near Clip");
-            clearFlagsTitle = new GUIContent("Clear Flags");
-            headerStyle = new GUIStyle("label") { richText = true };
+            RenderMixedRealityToolkitLogo();
+            EditorGUILayout.LabelField("Camera Profile", EditorStyles.boldLabel);
+
+            if (!CheckMixedRealityManager())
+            {
+                return;
+            }
+
+            EditorGUILayout.HelpBox("The Camera Profile helps tweak camera settings no matter what platform you're building for.", MessageType.Info);
 
             serializedObject.Update();
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("<b>Opaque Display Settings:</b>", headerStyle);
+            EditorGUILayout.LabelField("Opaque Display Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(opaqueNearClip, nearClipTitle);
             EditorGUILayout.PropertyField(opaqueClearFlags, clearFlagsTitle);
 
@@ -58,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             opaqueQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", opaqueQualityLevel.intValue, QualitySettings.names);
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("<b>Transparent Display Settings:</b>", headerStyle);
+            EditorGUILayout.LabelField("Transparent Display Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(transparentNearClip, nearClipTitle);
             EditorGUILayout.PropertyField(transparentClearFlags, clearFlagsTitle);
 
