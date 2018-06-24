@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         #endregion Private properties
 
-        public WindowsMixedRealityGestureController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, MixedRealityInteractionMapping> interactions = null) : this()
+        public WindowsMixedRealityGestureController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, IMixedRealityInteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, MixedRealityInteractionMapping>();
+            Interactions = interactions ?? new Dictionary<DeviceInputType, IMixedRealityInteractionMapping>();
         }
 
         #region IMixedRealityController Interface Members
@@ -39,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         public IMixedRealityInputSource InputSource { get; private set; }
 
         /// <inheritdoc/>
-        public Dictionary<DeviceInputType, MixedRealityInteractionMapping> Interactions { get; private set; }
+        public Dictionary<DeviceInputType, IMixedRealityInteractionMapping> Interactions { get; private set; }
 
         /// <inheritdoc/>
         public void SetupInputSource<T>(T state)
@@ -68,16 +69,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             //Update the Tracked state of the controller
             UpdateControllerData(interactionSourceState);
 
-            MixedRealityControllerMapping controllerMapping = Managers.MixedRealityManager.Instance.ActiveProfile.GetControllerMapping(typeof(WindowsMixedRealityController),ControllerHandedness);
-            //MixedRealityControllerMappingProfile controllerMapping = Managers.MixedRealityManager.Instance.ActiveProfile.GetControllerMapping<WindowsMixedRealityController>(ControllerHandedness);
-            if (controllerMapping.Interactions?.Length > 0)
-            {
-                SetupFromMapping(controllerMapping.Interactions);
-            }
-            else
-            {
-                SetupWMRControllerDefaults(interactionSourceState);
-            }
+            // TODO Addressed in next PR
+            //var controllerMapping = Managers.MixedRealityManager.Instance.ActiveProfile.GetControllerMapping(typeof(WindowsMixedRealityController),ControllerHandedness);
+            ////MixedRealityControllerMappingProfile controllerMapping = Managers.MixedRealityManager.Instance.ActiveProfile.GetControllerMapping<WindowsMixedRealityController>(ControllerHandedness);
+            //if (controllerMapping.Interactions?.Length > 0)
+            //{
+            //    SetupFromMapping(controllerMapping.Interactions);
+            //}
+            //else
+            //{
+            //    SetupWMRControllerDefaults(interactionSourceState);
+            //}
         }
 
         /// <summary>

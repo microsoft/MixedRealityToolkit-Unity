@@ -6,11 +6,11 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
@@ -167,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 ControllerState.NotTracked,
                 controllingHand,
                 controllerInputSource,
-                new Dictionary<DeviceInputType, MixedRealityInteractionMapping>()
+                new Dictionary<DeviceInputType, IMixedRealityInteractionMapping>()
                 );
 
             detectedController.SetupInputSource(interactionSourceState);

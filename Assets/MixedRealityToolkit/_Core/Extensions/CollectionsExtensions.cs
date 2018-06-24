@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
@@ -135,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <param name="key">The specific DeviceInputType value to update</param>
         /// <param name="value">The data value to be updated</param>
         public static void SetDictionaryValue<T>(
-            this Dictionary<Definitions.Devices.DeviceInputType, Definitions.Devices.MixedRealityInteractionMapping> input, Definitions.Devices.DeviceInputType key, T value)
+            this Dictionary<Definitions.Devices.DeviceInputType, IMixedRealityInteractionMapping> input, Definitions.Devices.DeviceInputType key, T value)
         {
             var entry = input[key];
             //entry.SetValue(value); // Will be removed in next PR
@@ -149,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <param name="input">The InteractionDefinition dictionary reference (generics, performed on a Dictionary)</param>
         /// <param name="key">The specific DeviceInputType value to update</param>
         public static bool GetDictionaryValueChanged(
-            this Dictionary<Definitions.Devices.DeviceInputType, Definitions.Devices.MixedRealityInteractionMapping> input, Definitions.Devices.DeviceInputType key)
+            this Dictionary<Definitions.Devices.DeviceInputType, IMixedRealityInteractionMapping> input, Definitions.Devices.DeviceInputType key)
         {
             var entry = input[key];
             var changed = entry.Changed;

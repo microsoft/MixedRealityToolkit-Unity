@@ -220,29 +220,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         #endregion  ISerializationCallbackReceiver Implementation
-
-        #region Mixed Reality Controller Mapping helpers
-
-        // TODO - needs validation to ensure duplicates are not added?
-
-        public MixedRealityControllerMapping GetControllerMapping(Type controllerType, Handedness hand)
-        {
-            var systemType = SystemType.GetReference(controllerType);
-
-            if (ControllersProfile != null)
-            {
-                for (int i = 0; i < ControllersProfile.MixedRealityControllerMappingProfiles.Length; i++)
-                {
-                    if (ControllersProfile.MixedRealityControllerMappingProfiles[i].Controller == systemType && ControllersProfile.MixedRealityControllerMappingProfiles[i].Handedness == hand)
-                    {
-                        return ControllersProfile.MixedRealityControllerMappingProfiles[i];
-                    }
-                }
-            }
-
-            return default(MixedRealityControllerMapping);
-        }
-
-        #endregion Mixed Reality Controller Mapping helpers
     }
 }
