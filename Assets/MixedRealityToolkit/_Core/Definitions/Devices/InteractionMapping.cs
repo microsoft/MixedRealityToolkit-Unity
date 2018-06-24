@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     [Serializable]
     public struct InteractionMapping
     {
-        public InteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, InputAction inputAction) : this()
+        public InteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, IMixedRealityInputAction inputAction) : this()
         {
             this.id = id;
             this.axisType = axisType;
@@ -24,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             this.inputAction = inputAction;
             positionData = Vector3.zero;
             rotationData = Quaternion.identity;
+            transformData = SixDof.ZeroIdentity;
         }
 
         #region Interaction Properties
@@ -57,11 +57,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Action to be raised to the Input Manager when the input data has changed.
         /// </summary>
-        public InputAction InputAction => inputAction;
+        public IMixedRealityInputAction InputAction => inputAction;
 
         [SerializeField]
         [Tooltip("Action to be raised to the Input Manager when the input data has changed.")]
-        private InputAction inputAction;
+        private IMixedRealityInputAction inputAction;
 
         /// <summary>
         /// Has the value changed since the last reading.
@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         private Quaternion rotationData;
 
-        private Tuple<Vector3, Quaternion> transformData;
+        private SixDof transformData;
 
         private bool changed;
 
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             return rotationData;
         }
 
-        public Tuple<Vector3, Quaternion> GetTransform()
+        public SixDof GetTransform()
         {
             return transformData;
         }
@@ -216,30 +216,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             rotationData = newValue;
         }
 
-        public void SetValue(Tuple<Vector3, Quaternion> newValue)
+        public void SetValue(SixDof newValue)
         {
             if (AxisType != AxisType.SixDof)
             {
-                Debug.LogError("SetValue(Tuple<Vector3, Quaternion>) is only valid for AxisType.SixDoF InteractionMappings");
+                Debug.LogError("SetValue(SixDof) is only valid for AxisType.SixDoF InteractionMappings");
             }
 
-            Changed = transformData == null && newValue != null ||
-                        transformData != null && newValue == null ||
-                        transformData != null && newValue != null &&
-                        (transformData.Item1 != newValue.Item1 || transformData.Item2 != newValue.Item2);
+            Changed = transformData.Position != newValue.Position ||
+                      transformData.Rotation != newValue.Rotation;
 
             transformData = newValue;
-
-            if (transformData != null)
-            {
-                positionData = transformData.Item1;
-                rotationData = transformData.Item2;
-            }
-            else
-            {
-                positionData = Vector3.zero;
-                rotationData = Quaternion.identity;
-            }
+            positionData = transformData.Position;
+            rotationData = transformData.Rotation;
         }
 
         #endregion Set Operators

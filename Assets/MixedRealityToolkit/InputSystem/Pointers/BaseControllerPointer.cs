@@ -43,12 +43,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         protected Transform RaycastOrigin;
 
         [SerializeField]
-        private InputAction activeHoldAction = null;
-        // TODO Write custom inspector to assign Input Action
+        private InputAction activeHoldAction;
 
         [SerializeField]
-        private InputAction interactionEnabledAction = null;
-        // TODO Write custom inspector to assign Input Action
+        private InputAction interactionEnabledAction;
 
         [SerializeField]
         private bool interactionRequiresHold = false;

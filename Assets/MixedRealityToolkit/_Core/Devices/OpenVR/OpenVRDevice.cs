@@ -234,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// <param name="interactionSourcePressType">Type of press event received</param>
         /// <param name="controller">Source controller to update</param>
         /// <returns></returns>
-        private InputAction PressInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityController controller)
+        private IMixedRealityInputAction PressInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityController controller)
         {
             DeviceInputType pressedInput;
 
@@ -268,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
 
             // if no mapping found, no action can take place
-            return null;
+            return InputAction.None;
         }
 
 
@@ -278,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// <param name="interactionSourcePressType">Type of release event received</param>
         /// <param name="controller">Source controller to update</param>
         /// <returns></returns>
-        private InputAction ReleaseInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityController controller)
+        private IMixedRealityInputAction ReleaseInteractionSource(InteractionSourcePressType interactionSourcePressType, IMixedRealityController controller)
         {
             DeviceInputType releasedInput;
 
@@ -312,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
 
             // if no mapping found, no action can take place
-            return null;
+            return InputAction.None;
         }
         #endregion
 

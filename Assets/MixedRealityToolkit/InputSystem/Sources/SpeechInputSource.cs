@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async.AwaitYieldInstructions;
 using System;
@@ -204,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         private void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
         {
-            InputAction action = null;
+            IMixedRealityInputAction action = InputAction.None;
             for (int i = 0; i < Commands?.Length; i++)
             {
                 if (Commands[i].Keyword == text)
@@ -213,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 }
             }
 
-            Debug.Assert(action != null, $"No action found for keyword: {text}");
+            Debug.Assert(action.Id != 0, $"No action found for keyword: {text}");
 
             InputSystem.RaiseSpeechCommandRecognized(this, action, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
         }

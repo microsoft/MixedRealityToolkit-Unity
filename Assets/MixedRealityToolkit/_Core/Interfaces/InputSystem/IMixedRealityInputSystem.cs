@@ -123,6 +123,34 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source">The lost Input Source.</param>
         void RaiseSourceLost(IMixedRealityInputSource source);
 
+        /// <summary>
+        /// Raise the event that the Input Source position was changed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="position"></param>
+        void RaiseSourcePositionChanged(IMixedRealityInputSource source, Vector2 position);
+
+        /// <summary>
+        /// Raise the event that the Input Source position was changed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="position"></param>
+        void RaiseSourcePositionChanged(IMixedRealityInputSource source, Vector3 position);
+
+        /// <summary>
+        /// Raise the event that the Input Source position was changed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="rotation"></param>
+        void RaiseSourcePositionChanged(IMixedRealityInputSource source, Quaternion rotation);
+
+        /// <summary>
+        /// Raise the event that the Input Source position was changed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="position"></param>
+        void RaiseSourcePositionChanged(IMixedRealityInputSource source, SixDof position);
+
         #endregion Input Source Events
 
         #region Focus Events
@@ -134,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="pointer">The pointer that the focus change event is raised on.</param>
         /// <param name="oldFocusedObject">The old focused object.</param>
         /// <param name="newFocusedObject">The new focused object.</param>
-        void RaisePreFocusChangedEvent(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
+        void RaisePreFocusChanged(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
 
         /// <summary>
         /// Raise the focus changed event.
@@ -142,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="pointer">The pointer that the focus change event is raised on.</param>
         /// <param name="oldFocusedObject">The old focused object.</param>
         /// <param name="newFocusedObject">The new focused object.</param>
-        void OnFocusChangedEvent(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
+        void RaiseFocusChanged(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject);
 
         /// <summary>
         /// Raise the focus enter event.
@@ -357,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="inputAction"></param>
         /// <param name="inputData"></param>
-        void Raise6DofInputChanged(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, Tuple<Vector3, Quaternion> inputData);
+        void Raise6DofInputChanged(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, SixDof inputData);
 
         /// <summary>
         /// Raise the 6 degrees of freedom input event.
@@ -366,7 +394,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputAction"></param>
         /// <param name="inputData"></param>
-        void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, Tuple<Vector3, Quaternion> inputData);
+        void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, SixDof inputData);
 
         #endregion Input 6DoF Changed
 
