@@ -47,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private int disabledRefCount;
 
         private SourceStateEventData sourceStateEventData;
+        private SourcePositionEventData sourcePositionEventData;
 
         private FocusEventData focusEventData;
 
@@ -127,6 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             }
 
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
+            sourcePositionEventData = new SourcePositionEventData(EventSystem.current);
 
             focusEventData = new FocusEventData(EventSystem.current);
 
@@ -386,10 +388,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             return newId;
         }
 
+        /// <inheritdoc />
         public IMixedRealityInputSource RequestNewGenericInputSource(string name, IMixedRealityPointer[] pointers = null)
         {
             return new BaseGenericInputSource(name, pointers);
         }
+
+        #region Input Source State Events
 
         /// <inheritdoc />
         public void RaiseSourceDetected(IMixedRealityInputSource source)
@@ -445,10 +450,63 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         #endregion Input Source State Events
 
+        #region Input Source Position Events
+
+        /// <inheritdoc />
+        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, Vector2 position)
+        {
+            // Create input event
+            sourcePositionEventData.Initialize(source, position);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
+        }
+
+        /// <inheritdoc />
+        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, Vector3 position)
+        {
+            // Create input event
+            sourcePositionEventData.Initialize(source, position);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
+        }
+
+        /// <inheritdoc />
+        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, Quaternion rotation)
+        {
+            // Create input event
+            sourcePositionEventData.Initialize(source, rotation);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
+        }
+
+        /// <inheritdoc />
+        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, SixDof position)
+        {
+            // Create input event
+            sourcePositionEventData.Initialize(source, position);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
+        }
+
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySourcePositionHandler> OnSourcePositionChangedEventHandler =
+                delegate (IMixedRealitySourcePositionHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<SourcePositionEventData>(eventData);
+                    handler.OnSourcePositionChanged(casted);
+                };
+
+        #endregion Input Source Position Events
+
+        #endregion Input Source Events
+
         #region Focus Events
 
         /// <inheritdoc />
-        public void RaisePreFocusChangedEvent(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        public void RaisePreFocusChanged(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
@@ -478,7 +536,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 };
 
         /// <inheritdoc />
-        public void OnFocusChangedEvent(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
+        public void RaiseFocusChanged(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 

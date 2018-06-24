@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
     /// <summary>
     /// Describes an source state event that has a source id.
-    /// <remarks>Source State events do not have an associated Input Action.</remarks>
+    /// <remarks>Source State events do not have an associated <see cref="IMixedRealityInputAction"/>.</remarks>
     /// </summary>
     public class SourceStateEventData : BaseInputEventData
     {
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         public void Initialize(IMixedRealityInputSource inputSource)
         {
             // NOTE: Source State events do not have an associated Input Action.
-            BaseInitialize(inputSource, null);
+            BaseInitialize(inputSource, Definitions.InputSystem.InputAction.None);
         }
     }
 }

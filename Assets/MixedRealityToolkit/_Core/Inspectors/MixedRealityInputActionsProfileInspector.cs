@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
-            for (int i = 0; i < list?.arraySize; i++)
+            for (int i = 0; i < list.arraySize; i++)
             {
                 EditorGUILayout.BeginHorizontal();
                 var previousLabelWidth = EditorGUIUtility.labelWidth;

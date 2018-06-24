@@ -9,6 +9,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
@@ -51,7 +52,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool EnableCameraProfile
         {
-            get { return enableCameraProfile; }
+            get
+            {
+                return CameraProfile != null && enableCameraProfile;
+            }
+
             private set { enableCameraProfile = value; }
         }
 
@@ -77,7 +82,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool EnableInputSystem
         {
-            get { return enableInputSystem; }
+            get
+            {
+                return inputSystemType != null &&
+                       inputSystemType?.Type != null &&
+                       inputActionsProfile != null &&
+                       enableInputSystem;
+            }
             private set { enableInputSystem = value; }
         }
 
@@ -117,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool EnableSpeechCommands
         {
-            get { return enableSpeechCommands; }
+            get { return speechCommandsProfile != null && enableSpeechCommands; }
             private set { enableSpeechCommands = value; }
         }
 
@@ -143,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool EnableControllerProfiles
         {
-            get { return enableControllerProfiles; }
+            get { return controllersProfile != null && enableControllerProfiles; }
             private set { enableControllerProfiles = value; }
         }
 
@@ -199,13 +210,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            // From the serialized fields for the MixedRealityConfigurationProfile, populate the Active managers list
-            // *Note This will only take effect once the Mixed Reality Toolkit has a custom editor for the MixedRealityConfigurationProfile
-
-            ActiveManagers.Clear();
-            for (int i = 0; i < initialManagers?.Length; i++)
+            if (ActiveManagers.Count == 0)
             {
-                Managers.MixedRealityManager.Instance.AddManager(initialManagerTypes[i], initialManagers[i]);
+                for (int i = 0; i < initialManagers?.Length; i++)
+                {
+                    MixedRealityManager.Instance.AddManager(initialManagerTypes[i], initialManagers[i]);
+                }
             }
         }
 
@@ -218,28 +228,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         public MixedRealityControllerMapping GetControllerMapping(Type controllerType, Handedness hand)
         {
             var systemType = SystemType.GetReference(controllerType);
-            for (int i = 0; i < ControllersProfile?.MixedRealityControllerMappingProfiles.Length; i++)
+
+            if (ControllersProfile != null)
             {
-                if (ControllersProfile.MixedRealityControllerMappingProfiles[i].Controller == systemType && ControllersProfile.MixedRealityControllerMappingProfiles[i].Handedness == hand)
+                for (int i = 0; i < ControllersProfile.MixedRealityControllerMappingProfiles.Length; i++)
                 {
-                    return ControllersProfile.MixedRealityControllerMappingProfiles[i];
+                    if (ControllersProfile.MixedRealityControllerMappingProfiles[i].Controller == systemType && ControllersProfile.MixedRealityControllerMappingProfiles[i].Handedness == hand)
+                    {
+                        return ControllersProfile.MixedRealityControllerMappingProfiles[i];
+                    }
                 }
             }
+
             return default(MixedRealityControllerMapping);
         }
 
-        // TODO - Which is better?
-        //public MixedRealityControllerMappingProfile GetControllerMapping<T>(Handedness handedness)
-        //{
-        //    for (int i = 0; i < controllerMappingsProfile?.Length; i++)
-        //    {
-        //        if (controllerMappingsProfile[i].ControllerType == SystemType.GetReference(typeof(T)) && controllerMappingsProfile[i].ControllingHand == handedness)
-        //        {
-        //            return controllerMappingsProfile[i];
-        //        }
-        //    }
-        //    return default(MixedRealityControllerMappingProfile);
-        //}
         #endregion Mixed Reality Controller Mapping helpers
     }
 }
