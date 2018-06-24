@@ -9,6 +9,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 795582f0165a4069adb1726909b9516a, type: 3}
-  m_Name: MixedRealitySpeechCommandsProfile
+  m_Name: DefaultMixedRealitySpeechCommandsProfile
   m_EditorClassIdentifier: 
-  speechCommands: []
+  speechCommands:
+  - keyword: Select
+    keyCode: 32
+    action:
+      id: 1
+      description: Menu
+      axisConstraint: 2
+  - keyword: Menu
+    keyCode: 9
+    action:
+      id: 2
+      description: Grip
+      axisConstraint: 7
