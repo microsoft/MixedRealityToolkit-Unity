@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         public IMixedRealityInputSource InputSource { get; }
 
         /// <inheritdoc />
-        public IMixedRealityInteractionMapping[] Interactions { get; internal set; }
+        public IMixedRealityInteractionMapping[] Interactions { get; protected set; }
 
         /// <inheritdoc />
         public virtual void LoadConfiguration() { }
