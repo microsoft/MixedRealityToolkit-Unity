@@ -123,26 +123,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         private void SetupControllerDefaults()
         {
-            var interactions = new List<IMixedRealityInteractionMapping>();
-
-            InputAction[] inputActions = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions;
-
-            if (inputActions == null)
-            {
-                return;
-            }
-
-            interactions.Add(new MixedRealityInteractionMapping(1, AxisType.Digital, DeviceInputType.Select, new InputAction(1, "Select")));
-            interactions.Add(new MixedRealityInteractionMapping(2, AxisType.SingleAxis, DeviceInputType.Trigger, new InputAction(2, "Trigger Press")));
-            interactions.Add(new MixedRealityInteractionMapping(2, AxisType.Digital, DeviceInputType.GripPress, new InputAction(2, "Grip Press")));
-            interactions.Add(new MixedRealityInteractionMapping(3, AxisType.Digital, DeviceInputType.Menu, new InputAction(3, "Menu Press")));
-            interactions.Add(new MixedRealityInteractionMapping(4, AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerHandedness == Handedness.Left ? new InputAction(4, "Vertical Movement") : new InputAction(4, "Horizontal Movement")));
-            interactions.Add(new MixedRealityInteractionMapping(5, AxisType.Digital, DeviceInputType.ThumbStickPress, new InputAction(5, "Thumbstick Press")));
-            interactions.Add(new MixedRealityInteractionMapping(6, AxisType.DualAxis, DeviceInputType.Touchpad, new InputAction(6, "Touchpad Position")));
-            interactions.Add(new MixedRealityInteractionMapping(7, AxisType.Digital, DeviceInputType.TouchpadTouch, new InputAction(7, "Touchpad Touch")));
-            interactions.Add(new MixedRealityInteractionMapping(8, AxisType.Digital, DeviceInputType.TouchpadPress, new InputAction(8, "Touchpad Press")));
-
-            Interactions = interactions.ToArray();
+            Interactions = new IMixedRealityInteractionMapping[9];
+            Interactions[0] = new MixedRealityInteractionMapping(0, AxisType.Digital, DeviceInputType.Select, new InputAction(1, "Select"));
+            Interactions[1] = new MixedRealityInteractionMapping(1, AxisType.SingleAxis, DeviceInputType.Trigger, new InputAction(2, "Trigger Press"));
+            Interactions[2] = new MixedRealityInteractionMapping(2, AxisType.Digital, DeviceInputType.GripPress, new InputAction(2, "Grip Press"));
+            Interactions[3] = new MixedRealityInteractionMapping(3, AxisType.Digital, DeviceInputType.Menu, new InputAction(3, "Menu Press"));
+            Interactions[4] = new MixedRealityInteractionMapping(4, AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerHandedness == Handedness.Left ? new InputAction(4, "Vertical Movement") : new InputAction(4, "Horizontal Movement"));
+            Interactions[5] = new MixedRealityInteractionMapping(5, AxisType.Digital, DeviceInputType.ThumbStickPress, new InputAction(5, "Thumbstick Press"));
+            Interactions[6] = new MixedRealityInteractionMapping(6, AxisType.DualAxis, DeviceInputType.Touchpad, new InputAction(6, "Touchpad Position"));
+            Interactions[7] = new MixedRealityInteractionMapping(7, AxisType.Digital, DeviceInputType.TouchpadTouch, new InputAction(7, "Touchpad Touch"));
+            Interactions[8] = new MixedRealityInteractionMapping(8, AxisType.Digital, DeviceInputType.TouchpadPress, new InputAction(8, "Touchpad Press"));
         }
 
         #region Update data functions
