@@ -63,8 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         [SerializeField]
         [Tooltip("The list of controller templates your application can use.")]
-        private IMixedRealityInteractionMapping[] mixedRealityControllerMappingProfiles = new IMixedRealityInteractionMapping[0];
+        private MixedRealityControllerMapping[] mixedRealityControllerMappingProfiles = new MixedRealityControllerMapping[0];
 
-        public IMixedRealityInteractionMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappingProfiles;
+        public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappingProfiles;
     }
 }
