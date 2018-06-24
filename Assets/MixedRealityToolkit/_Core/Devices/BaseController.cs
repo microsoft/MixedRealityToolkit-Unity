@@ -22,12 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         public BaseController(ControllerState controllerState,
                               Handedness controllerHandedness,
                               IMixedRealityInputSource inputSource = null,
-                              List<IInteractionMapping> interactions = null)
+                              List<IMixedRealityInteractionMapping> interactions = null)
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions ?? new List<IInteractionMapping>();
+            Interactions = interactions ?? new List<IMixedRealityInteractionMapping>();
         }
 
         /// <inheritdoc />
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         public IMixedRealityInputSource InputSource { get; }
 
         /// <inheritdoc />
-        public List<IInteractionMapping> Interactions { get; }
+        public List<IMixedRealityInteractionMapping> Interactions { get; }
 
         /// <summary>
         /// Returns the current Input System if enabled, otherwise null.

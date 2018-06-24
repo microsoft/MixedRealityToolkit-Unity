@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         #region IMixedRealityController Interface Members
 
-        public WindowsMixedRealityController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, List<IInteractionMapping> interactions = null)
+        public WindowsMixedRealityController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, List<IMixedRealityInteractionMapping> interactions = null)
                 : base(controllerState, controllerHandedness, inputSource, interactions)
         {
             IsControllerTracked = false;
@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdatePointerData(InteractionSourceState interactionSourceState, IInteractionMapping interactionMapping)
+        private void UpdatePointerData(InteractionSourceState interactionSourceState, IMixedRealityInteractionMapping interactionMapping)
         {
             interactionSourceState.sourcePose.TryGetPosition(out currentPointerPosition, InteractionSourceNode.Pointer);
             interactionSourceState.sourcePose.TryGetRotation(out currentPointerRotation, InteractionSourceNode.Pointer);
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdateGripData(InteractionSourceState interactionSourceState, IInteractionMapping interactionMapping)
+        private void UpdateGripData(InteractionSourceState interactionSourceState, IMixedRealityInteractionMapping interactionMapping)
         {
             interactionSourceState.sourcePose.TryGetPosition(out currentGripPosition, InteractionSourceNode.Grip);
             interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
@@ -163,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdateTouchPadData(InteractionSourceState interactionSourceState, IInteractionMapping interactionMapping)
+        private void UpdateTouchPadData(InteractionSourceState interactionSourceState, IMixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
@@ -211,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdateThumbStickData(InteractionSourceState interactionSourceState, IInteractionMapping interactionMapping)
+        private void UpdateThumbStickData(InteractionSourceState interactionSourceState, IMixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
@@ -245,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdateTriggerData(InteractionSourceState interactionSourceState, IInteractionMapping interactionMapping)
+        private void UpdateTriggerData(InteractionSourceState interactionSourceState, IMixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {

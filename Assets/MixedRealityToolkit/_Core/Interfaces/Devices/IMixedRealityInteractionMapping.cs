@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices
     /// <summary>
     /// Mixed Reality Toolkit Interaction Mapping interface. Provides the abstraction for the different types of mapping available.
     /// </summary>
-    public interface IInteractionMapping
+    public interface IMixedRealityInteractionMapping
     {
         /// <summary>
         /// The Id assigned to the Interaction.

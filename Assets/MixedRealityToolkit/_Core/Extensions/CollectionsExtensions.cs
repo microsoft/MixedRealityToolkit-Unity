@@ -136,9 +136,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <param name="input">The InteractionDefinition dictionary reference (generics, performed on a Dictionary)</param>
         /// <param name="key">The specific DeviceInputType value to update</param>
         /// <param name="value">The data value to be updated</param>
-        public static void SetDictionaryValue<T>(this Dictionary<DeviceInputType, IInteractionMapping> input, DeviceInputType key, T value)
+        public static void SetDictionaryValue<T>(this Dictionary<DeviceInputType, IMixedRealityInteractionMapping> input, DeviceInputType key, T value)
         {
-            var entry = input[key] as InteractionMapping<T>;
+            var entry = input[key] as MixedRealityInteractionMapping<T>;
             Debug.Assert(entry != null);
             System.Diagnostics.Debug.Assert(entry != null, nameof(entry) + " != null");
             entry.SetValue(value);
@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// </summary>
         /// <param name="input">The InteractionDefinition dictionary reference (generics, performed on a Dictionary)</param>
         /// <param name="key">The specific DeviceInputType value to update</param>
-        public static bool GetDictionaryValueChanged(this Dictionary<DeviceInputType, IInteractionMapping> input, DeviceInputType key)
+        public static bool GetDictionaryValueChanged(this Dictionary<DeviceInputType, IMixedRealityInteractionMapping> input, DeviceInputType key)
         {
             var entry = input[key];
             var changed = entry.Changed;

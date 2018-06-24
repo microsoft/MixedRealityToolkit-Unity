@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
     // TODO - Implement
     public class HTCViveController : BaseController
     {
-        public HTCViveController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, List<IInteractionMapping> interactions = null)
+        public HTCViveController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, List<IMixedRealityInteractionMapping> interactions = null)
                 : base(controllerState, controllerHandedness, inputSource, interactions) { }
     }
 }

@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
     // TODO - Implement
     public class SimulatedController : BaseController
     {
-        public SimulatedController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, List<IInteractionMapping> interactions = null)
+        public SimulatedController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, List<IMixedRealityInteractionMapping> interactions = null)
                 : base(controllerState, controllerHandedness, inputSource, interactions) { }
     }
 }

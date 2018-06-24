@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     /// <remarks>One definition should exist for each physical device input, such as buttons, triggers, joysticks, dpads, and more.</remarks>
     /// </summary>
     [Serializable]
-    public class InteractionMapping<TReadingType> : IInteractionMapping
+    public class MixedRealityInteractionMapping<TReadingType> : IMixedRealityInteractionMapping
     {
         /// <summary>
         /// The constructor for a new Interaction Mapping definition
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <param name="axisType">The axis that the mapping operates on, also denotes the data type for the mapping</param>
         /// <param name="inputType">The physical input device / control</param>
         /// <param name="inputAction">The logical InputAction that this input performs</param>
-        public InteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, IMixedRealityInputAction inputAction)
+        public MixedRealityInteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, IMixedRealityInputAction inputAction)
         {
             this.id = id;
             this.axisType = axisType;

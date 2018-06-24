@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
     // TODO - Implement
     public class GenericOpenXRController : BaseController
     {
-        public GenericOpenXRController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, List<IInteractionMapping> interactions = null)
+        public GenericOpenXRController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, List<IMixedRealityInteractionMapping> interactions = null)
                 : base(controllerState, controllerHandedness, inputSource, interactions) { }
     }
 }
