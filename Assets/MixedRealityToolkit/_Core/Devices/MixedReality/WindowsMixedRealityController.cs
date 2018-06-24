@@ -118,40 +118,43 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             {
                 return;
             }
-            //Add the Controller Pointer
-            Interactions.Add(DeviceInputType.SpatialPointer, new InteractionMapping(1, AxisType.SixDof, DeviceInputType.SpatialPointer, inputActions.GetActionByName("Select"))); // Note will convert these lookups to indexes
 
-            // Add the Controller trigger
-            Interactions.Add(DeviceInputType.Trigger, new InteractionMapping(2, AxisType.SingleAxis, DeviceInputType.Trigger, inputActions.GetActionByName("Select")));
+            // TODO Get from Managers.MixedRealityManager.Instance.ActiveProfile.ControllersProfile.MixedRealityControllerMappingProfiles
 
-            // If the controller has a Grip / Grasp button, add it to the controller capabilities
-            if (interactionSourceState.source.supportsGrasp)
-            {
-                Interactions.Add(DeviceInputType.SpatialGrip, new InteractionMapping(3, AxisType.SixDof, DeviceInputType.SpatialGrip, inputActions.GetActionByName("Grip")));
+            ////Add the Controller Pointer
+            //Interactions.Add(DeviceInputType.SpatialPointer, new InteractionMapping(1, AxisType.SixDof, DeviceInputType.SpatialPointer, inputActions.GetActionByName("Select")));
 
-                Interactions.Add(DeviceInputType.GripPress, new InteractionMapping(4, AxisType.SingleAxis, DeviceInputType.GripPress, inputActions.GetActionByName("Grab")));
-            }
+            //// Add the Controller trigger
+            //Interactions.Add(DeviceInputType.Trigger, new InteractionMapping(2, AxisType.SingleAxis, DeviceInputType.Trigger, inputActions.GetActionByName("Select")));
 
-            // If the controller has a menu button, add it to the controller capabilities
-            if (interactionSourceState.source.supportsMenu)
-            {
-                Interactions.Add(DeviceInputType.Menu, new InteractionMapping(5, AxisType.Digital, DeviceInputType.Menu, inputActions.GetActionByName("Menu")));
-            }
+            //// If the controller has a Grip / Grasp button, add it to the controller capabilities
+            //if (interactionSourceState.source.supportsGrasp)
+            //{
+            //    Interactions.Add(DeviceInputType.SpatialGrip, new InteractionMapping(3, AxisType.SixDof, DeviceInputType.SpatialGrip, inputActions.GetActionByName("Grip")));
 
-            // If the controller has a Thumbstick, add it to the controller capabilities
-            if (interactionSourceState.source.supportsThumbstick)
-            {
-                Interactions.Add(DeviceInputType.ThumbStick, new InteractionMapping(6, AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerHandedness == Handedness.Left ? inputActions.GetActionByName("Walk") : inputActions.GetActionByName("Look")));
-                Interactions.Add(DeviceInputType.ThumbStickPress, new InteractionMapping(7, AxisType.Digital, DeviceInputType.ThumbStickPress, inputActions.GetActionByName("Interact")));
-            }
+            //    Interactions.Add(DeviceInputType.GripPress, new InteractionMapping(4, AxisType.SingleAxis, DeviceInputType.GripPress, inputActions.GetActionByName("Grab")));
+            //}
 
-            // If the controller has a Touchpad, add it to the controller capabilities
-            if (interactionSourceState.source.supportsTouchpad)
-            {
-                Interactions.Add(DeviceInputType.Touchpad, new InteractionMapping(8, AxisType.DualAxis, DeviceInputType.Touchpad, inputActions.GetActionByName("Inventory")));
-                Interactions.Add(DeviceInputType.TouchpadTouch, new InteractionMapping(9, AxisType.Digital, DeviceInputType.TouchpadTouch, inputActions.GetActionByName("Pickup")));
-                Interactions.Add(DeviceInputType.TouchpadPress, new InteractionMapping(10, AxisType.Digital, DeviceInputType.TouchpadPress, inputActions.GetActionByName("Pickup")));
-            }
+            //// If the controller has a menu button, add it to the controller capabilities
+            //if (interactionSourceState.source.supportsMenu)
+            //{
+            //    Interactions.Add(DeviceInputType.Menu, new InteractionMapping(5, AxisType.Digital, DeviceInputType.Menu, inputActions.GetActionByName("Menu")));
+            //}
+
+            //// If the controller has a Thumbstick, add it to the controller capabilities
+            //if (interactionSourceState.source.supportsThumbstick)
+            //{
+            //    Interactions.Add(DeviceInputType.ThumbStick, new InteractionMapping(6, AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerHandedness == Handedness.Left ? inputActions.GetActionByName("Walk") : inputActions.GetActionByName("Look")));
+            //    Interactions.Add(DeviceInputType.ThumbStickPress, new InteractionMapping(7, AxisType.Digital, DeviceInputType.ThumbStickPress, inputActions.GetActionByName("Interact")));
+            //}
+
+            //// If the controller has a Touchpad, add it to the controller capabilities
+            //if (interactionSourceState.source.supportsTouchpad)
+            //{
+            //    Interactions.Add(DeviceInputType.Touchpad, new InteractionMapping(8, AxisType.DualAxis, DeviceInputType.Touchpad, inputActions.GetActionByName("Inventory")));
+            //    Interactions.Add(DeviceInputType.TouchpadTouch, new InteractionMapping(9, AxisType.Digital, DeviceInputType.TouchpadTouch, inputActions.GetActionByName("Pickup")));
+            //    Interactions.Add(DeviceInputType.TouchpadPress, new InteractionMapping(10, AxisType.Digital, DeviceInputType.TouchpadPress, inputActions.GetActionByName("Pickup")));
+            //}
         }
 
         /// <summary>
@@ -221,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 pointerRotation.eulerAngles = CameraCache.Main.transform.parent.TransformDirection(pointerRotation.eulerAngles);
             }
 
-            Interactions.SetDictionaryValue(DeviceInputType.SpatialPointer, new Tuple<Vector3, Quaternion>(pointerPosition, pointerRotation));
+            Interactions.SetDictionaryValue(DeviceInputType.SpatialPointer, new SixDof(pointerPosition, pointerRotation));
         }
 
         /// <summary>
@@ -239,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 gripRotation.eulerAngles = CameraCache.Main.transform.parent.TransformDirection(gripRotation.eulerAngles);
             }
 
-            Interactions.SetDictionaryValue(DeviceInputType.SpatialGrip, new Tuple<Vector3, Quaternion>(gripPosition, gripRotation));
+            Interactions.SetDictionaryValue(DeviceInputType.SpatialGrip, new SixDof(gripPosition, gripRotation));
         }
 
         /// <summary>

@@ -16,11 +16,11 @@ MonoBehaviour:
     keyCode: 32
     action:
       id: 1
-      description: 
-      axisConstraint: 0
+      description: Menu
+      axisConstraint: 2
   - keyword: Menu
     keyCode: 9
     action:
       id: 2
-      description: 
-      axisConstraint: 0
+      description: Grip
+      axisConstraint: 7
