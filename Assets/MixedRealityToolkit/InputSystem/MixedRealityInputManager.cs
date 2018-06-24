@@ -33,10 +33,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         public HashSet<IMixedRealityInputSource> DetectedInputSources { get; } = new HashSet<IMixedRealityInputSource>();
 
         /// <inheritdoc />
-        public IMixedRealityFocusProvider FocusProvider { get; private set; }
+        public IMixedRealityFocusProvider FocusProvider => focusProvider;
+        private FocusProvider focusProvider;
 
         /// <inheritdoc />
-        public IMixedRealityGazeProvider GazeProvider { get; private set; }
+        public IMixedRealityGazeProvider GazeProvider => gazeProvider;
+        private GazeProvider gazeProvider;
 
         private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
@@ -84,12 +86,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         {
             base.Initialize();
             InitializeInternal();
+            InputEnabled?.Invoke();
         }
 
         private void InitializeInternal()
         {
-            FocusProvider = CameraCache.Main.gameObject.EnsureComponent<FocusProvider>();
-            GazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
+            focusProvider = CameraCache.Main.gameObject.EnsureComponent<FocusProvider>();
+            gazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
             FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
             FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
 
@@ -150,8 +153,23 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// <inheritdoc />
         public override void Reset()
         {
+            InputDisabled?.Invoke();
             base.Reset();
             InitializeInternal();
+            InputEnabled?.Invoke();
+        }
+
+        public override void Destroy()
+        {
+            InputDisabled?.Invoke();
+
+            focusProvider.enabled = false;
+            gazeProvider.enabled = false;
+
+            UnityEngine.Object.Destroy(focusProvider);
+            UnityEngine.Object.Destroy(gazeProvider);
+
+            base.Destroy();
         }
 
         #endregion IMixedRealityManager Implementation
@@ -268,6 +286,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             if (disabledRefCount == 1)
             {
                 InputDisabled?.Invoke();
+                focusProvider.enabled = false;
+                gazeProvider.enabled = false;
             }
         }
 
@@ -283,6 +303,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             if (disabledRefCount == 0)
             {
                 InputEnabled?.Invoke();
+                focusProvider.enabled = true;
+                gazeProvider.enabled = true;
             }
         }
 
@@ -297,6 +319,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             if (wasInputDisabled)
             {
                 InputEnabled?.Invoke();
+                focusProvider.enabled = true;
+                gazeProvider.enabled = true;
             }
         }
 
