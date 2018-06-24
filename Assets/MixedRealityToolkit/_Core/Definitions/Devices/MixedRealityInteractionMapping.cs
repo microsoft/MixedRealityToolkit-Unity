@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
@@ -35,8 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             floatData = 0f;
             positionData = Vector3.zero;
             rotationData = Quaternion.identity;
-            transformData = null;
-            vector2Data = Vector2.zero;
+            transformData = SixDof.ZeroIdentity;
         }
 
         #region Interaction Properties
@@ -109,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         private Quaternion rotationData;
 
-        private Tuple<Vector3, Quaternion> transformData;
+        private SixDof transformData;
 
         private bool changed;
 
@@ -179,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             return rotationData;
         }
 
-        public Tuple<Vector3, Quaternion> GetTransform()
+        public SixDof GetTransform()
         {
             return transformData;
         }
@@ -262,31 +261,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             currentReading = (TReadingType)(object)newValue;
         }
 
-        public void SetValue(Tuple<Vector3, Quaternion> newValue)
+        public void SetValue(SixDof newValue)
         {
             if (AxisType != AxisType.SixDof)
             {
-                Debug.LogError("SetValue(Tuple<Vector3, Quaternion>) is only valid for AxisType.SixDoF InteractionMappings");
+                Debug.LogError("SetValue(SixDof) is only valid for AxisType.SixDoF InteractionMappings");
             }
 
-            Changed = transformData == null && newValue != null ||
-                      transformData != null && newValue == null ||
-                      transformData != null && newValue != null &&
-                     (transformData.Item1 != newValue.Item1 || transformData.Item2 != newValue.Item2);
+            Changed = transformData.Position != newValue.Position ||
+                      transformData.Rotation != newValue.Rotation;
 
             transformData = newValue;
+            positionData = transformData.Position;
+            rotationData = transformData.Rotation;
             currentReading = (TReadingType)(object)newValue;
-
-            if (transformData != null)
-            {
-                positionData = transformData.Item1;
-                rotationData = transformData.Item2;
-            }
-            else
-            {
-                positionData = Vector3.zero;
-                rotationData = Quaternion.identity;
-            }
         }
 
         #endregion Set Operators

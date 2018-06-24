@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test01_TestObjectChanged()
         {
-            var inputDef = new MixedRealityInteractionMapping<object>(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new MixedRealityInteractionMapping<object>(1, AxisType.Raw, DeviceInputType.None, InputAction.None);
             var testValue1 = (object)1f;
             var testValue2 = (object)false;
 
@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test02_TestObjectNoChange()
         {
-            var inputDef = new MixedRealityInteractionMapping<object>(1, AxisType.Raw, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new MixedRealityInteractionMapping<object>(1, AxisType.Raw, DeviceInputType.None, InputAction.None);
             var testValue = new object();
 
             var initialValue = inputDef.GetRawValue();
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test03_TestBoolChanged()
         {
-            var inputDef = new MixedRealityInteractionMapping<bool>(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new MixedRealityInteractionMapping<bool>(1, AxisType.Digital, DeviceInputType.None, InputAction.None);
             var testValue1 = true;
             var testValue2 = false;
 
@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test04_TestBoolNoChange()
         {
-            var inputDef = new MixedRealityInteractionMapping<bool>(1, AxisType.Digital, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new MixedRealityInteractionMapping<bool>(1, AxisType.Digital, DeviceInputType.None, InputAction.None);
             var testValue = true;
 
             var initialValue = inputDef.GetBooleanValue();
@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test05_TestFloatChanged()
         {
-            var inputDef = new MixedRealityInteractionMapping<float>(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new MixedRealityInteractionMapping<float>(1, AxisType.SingleAxis, DeviceInputType.None, InputAction.None);
             var testValue1 = 1f;
             var testValue2 = 9001f;
 
@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test06_TestFloatNoChange()
         {
-            var inputDef = new MixedRealityInteractionMapping<float>(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new MixedRealityInteractionMapping<float>(1, AxisType.SingleAxis, DeviceInputType.None, InputAction.None);
             var testValue = 1f;
 
             var initialValue = inputDef.GetFloatValue();
@@ -200,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test07_TestVector2Changed()
         {
-            var inputDef = new MixedRealityInteractionMapping<Vector2>(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new MixedRealityInteractionMapping<Vector2>(1, AxisType.DualAxis, DeviceInputType.None, InputAction.None);
             var testValue1 = Vector2.one;
             var testValue2 = Vector2.zero;
 
@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test08_TestVector2NoChange()
         {
-            var inputDef = new MixedRealityInteractionMapping<Vector2>(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new MixedRealityInteractionMapping<Vector2>(1, AxisType.DualAxis, DeviceInputType.None, InputAction.None);
             var testValue = Vector2.one;
 
             var initialValue = inputDef.GetVector2Value();
@@ -258,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test09_TestVector3Changed()
         {
-            var inputDef = new MixedRealityInteractionMapping<Vector3>(1, AxisType.ThreeDofPosition, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new MixedRealityInteractionMapping<Vector3>(1, AxisType.ThreeDofPosition, DeviceInputType.None, InputAction.None);
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
@@ -289,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test10_TestVector3NoChange()
         {
-            var inputDef = new MixedRealityInteractionMapping<Vector3>(1, AxisType.ThreeDofPosition, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new MixedRealityInteractionMapping<Vector3>(1, AxisType.ThreeDofPosition, DeviceInputType.None, InputAction.None);
             var testValue = Vector3.one;
 
             var initialValue = inputDef.GetPosition();
@@ -316,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test11_TestQuaternionChanged()
         {
-            var inputDef = new MixedRealityInteractionMapping<Quaternion>(1, AxisType.ThreeDofRotation, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new MixedRealityInteractionMapping<Quaternion>(1, AxisType.ThreeDofRotation, DeviceInputType.None, InputAction.None);
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
@@ -347,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test12_TestQuaternionNoChange()
         {
-            var inputDef = new MixedRealityInteractionMapping<Quaternion>(1, AxisType.ThreeDofRotation, DeviceInputType.None, new InputAction(1, "None"));
+            var inputDef = new MixedRealityInteractionMapping<Quaternion>(1, AxisType.ThreeDofRotation, DeviceInputType.None, InputAction.None);
             var testValue = Quaternion.Euler(45f, 45f, 45f);
 
             var initialValue = inputDef.GetRotation();
@@ -369,18 +369,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         #endregion Quaternion
 
-        #region Tuples
+        #region SixDofs
 
         [Test]
-        public void Test13_TestTupleChanged()
+        public void Test13_TestSixDofChanged()
         {
-            var inputDef = new MixedRealityInteractionMapping<Tuple<Vector3, Quaternion>>(1, AxisType.SixDof, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
-            var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
+            var inputDef = new MixedRealityInteractionMapping<SixDof>(1, AxisType.SixDof, DeviceInputType.None, InputAction.None);
+            var testValue1 = new SixDof(Vector3.up, Quaternion.identity);
+            var testValue2 = new SixDof(Vector3.down, new Quaternion(45f, 45f, 45f, 45f));
 
             var initialValue = inputDef.GetTransform();
 
-            Assert.IsNull(initialValue);
+            Assert.IsTrue(initialValue == SixDof.ZeroIdentity);
             Assert.IsFalse(inputDef.Changed);
 
             inputDef.SetValue(testValue1);
@@ -389,10 +389,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var setValue1 = inputDef.GetTransform();
 
-            Assert.AreEqual(setValue1, testValue1);
-            Assert.AreEqual(setValue1.Item1, testValue1.Item1);
-            Assert.AreEqual(setValue1.Item2, testValue1.Item2);
-            Assert.AreEqual(setValue1.Item2, testValue1.Item2);
+            Assert.IsTrue(setValue1 == testValue1);
+            Assert.IsTrue(setValue1.Position == testValue1.Position);
+            Assert.IsTrue(setValue1.Rotation == testValue1.Rotation);
             Assert.IsFalse(inputDef.Changed);
 
             inputDef.SetValue(testValue2);
@@ -401,22 +400,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var setValue2 = inputDef.GetTransform();
 
-            Assert.AreEqual(setValue2, testValue2);
-            Assert.AreEqual(setValue2.Item1, testValue2.Item1);
-            Assert.AreEqual(setValue2.Item2, testValue2.Item2);
-            Assert.AreEqual(setValue2.Item2, testValue2.Item2);
+            Assert.IsTrue(setValue2 == testValue2);
+            Assert.IsTrue(setValue2.Position == testValue2.Position);
+            Assert.IsTrue(setValue2.Rotation == testValue2.Rotation);
             Assert.IsFalse(inputDef.Changed);
         }
 
         [Test]
-        public void Test14_TestTupleNoChange()
+        public void Test14_TestSixDofNoChange()
         {
-            var inputDef = new MixedRealityInteractionMapping<Tuple<Vector3, Quaternion>>(1, AxisType.SixDof, DeviceInputType.None, new InputAction(1, "None"));
-            var testValue = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
+            var inputDef = new MixedRealityInteractionMapping<SixDof>(1, AxisType.SixDof, DeviceInputType.None, InputAction.None);
+            var testValue = new SixDof(Vector3.up, Quaternion.identity);
 
             var initialValue = inputDef.GetTransform();
 
-            Assert.IsNull(initialValue);
+            Assert.IsTrue(initialValue == SixDof.ZeroIdentity);
             Assert.IsFalse(inputDef.Changed);
 
             inputDef.SetValue(testValue);
@@ -431,7 +429,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(inputDef.Changed);
         }
 
-        #endregion Tuples
+        #endregion SixDofs
 
         #region Interaction Dictionary Tests
 
@@ -439,7 +437,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test15_InteractionDictionaryObject()
         {
             var interactions = new Dictionary<DeviceInputType, IMixedRealityInteractionMapping>();
-            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<object>(1, AxisType.Raw, DeviceInputType.None, new InputAction(0, "None")));
+            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<object>(1, AxisType.Raw, DeviceInputType.None, InputAction.None));
             var testValue1 = (object)1f;
             var testValue2 = (object)false;
 
@@ -476,7 +474,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test16_InteractionDictionaryBool()
         {
             var interactions = new Dictionary<DeviceInputType, IMixedRealityInteractionMapping>();
-            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<bool>(1, AxisType.Digital, DeviceInputType.None, new InputAction(0, "None")));
+            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<bool>(1, AxisType.Digital, DeviceInputType.None, InputAction.None));
             var testValue1 = true;
             var testValue2 = false;
 
@@ -513,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test17_InteractionDictionaryFloat()
         {
             var interactions = new Dictionary<DeviceInputType, IMixedRealityInteractionMapping>();
-            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<float>(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(0, "None")));
+            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<float>(1, AxisType.SingleAxis, DeviceInputType.None, InputAction.None));
             var testValue1 = 1f;
             var testValue2 = 9001f;
 
@@ -548,7 +546,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test18_InteractionDictionaryVector2()
         {
             var interactions = new Dictionary<DeviceInputType, IMixedRealityInteractionMapping>();
-            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<Vector2>(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(0, "None")));
+            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<Vector2>(1, AxisType.DualAxis, DeviceInputType.None, InputAction.None));
             var testValue1 = Vector2.one;
             var testValue2 = Vector2.zero;
 
@@ -583,7 +581,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test19_InteractionDictionaryVector3()
         {
             var interactions = new Dictionary<DeviceInputType, IMixedRealityInteractionMapping>();
-            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<Vector3>(1, AxisType.ThreeDofPosition, DeviceInputType.None, new InputAction(0, "None")));
+            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<Vector3>(1, AxisType.ThreeDofPosition, DeviceInputType.None, InputAction.None));
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
@@ -618,7 +616,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test20_InteractionDictionaryQuaternion()
         {
             var interactions = new Dictionary<DeviceInputType, IMixedRealityInteractionMapping>();
-            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<Quaternion>(1, AxisType.ThreeDofRotation, DeviceInputType.None, new InputAction(0, "None")));
+            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<Quaternion>(1, AxisType.ThreeDofRotation, DeviceInputType.None, InputAction.None));
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
@@ -653,38 +651,36 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test21_InteractionDictionarySixDof()
         {
             var interactions = new Dictionary<DeviceInputType, IMixedRealityInteractionMapping>();
-            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<Tuple<Vector3, Quaternion>>(1, AxisType.SixDof, DeviceInputType.None, new InputAction(0, "None")));
-            var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
-            var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
+            interactions.Add(DeviceInputType.None, new MixedRealityInteractionMapping<SixDof>(1, AxisType.SixDof, DeviceInputType.None, InputAction.None));
+            var testValue1 = new SixDof(Vector3.up, Quaternion.identity);
+            var testValue2 = new SixDof(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
-            var initialValue = interactions[DeviceInputType.None] as MixedRealityInteractionMapping<Tuple<Vector3, Quaternion>>;
+            var interaction = interactions[DeviceInputType.None] as MixedRealityInteractionMapping<SixDof>;
 
-            Assert.IsNotNull(initialValue);
-            Assert.IsNull(initialValue.GetValue());
+            Assert.IsNotNull(interaction);
+            Assert.IsTrue(interaction.GetValue() == SixDof.ZeroIdentity);
             Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
             interactions.SetDictionaryValue(DeviceInputType.None, testValue1);
 
             Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue1 = interactions[DeviceInputType.None] as MixedRealityInteractionMapping<Tuple<Vector3, Quaternion>>;
+            var setValue1 = interaction.GetValue();
 
-            Assert.IsNotNull(setValue1);
-            Assert.AreEqual(setValue1.GetValue(), testValue1);
-            Assert.IsTrue(setValue1.GetValue().Item1 == testValue1.Item1);
-            Assert.IsTrue(setValue1.GetValue().Item2 == testValue1.Item2);
+            Assert.IsTrue(setValue1 == testValue1);
+            Assert.IsTrue(setValue1.Position == testValue1.Position);
+            Assert.IsTrue(setValue1.Rotation == testValue1.Rotation);
             Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
             interactions.SetDictionaryValue(DeviceInputType.None, testValue2);
 
             Assert.IsTrue(interactions.GetDictionaryValueChanged(DeviceInputType.None));
 
-            var setValue2 = interactions[DeviceInputType.None] as MixedRealityInteractionMapping<Tuple<Vector3, Quaternion>>;
+            var setValue2 = interaction.GetValue();
 
-            Assert.IsNotNull(setValue2);
-            Assert.AreEqual(setValue2.GetValue(), testValue2);
-            Assert.IsTrue(setValue2.GetValue().Item1 == testValue2.Item1);
-            Assert.IsTrue(setValue2.GetValue().Item2 == testValue2.Item2);
+            Assert.IsTrue(setValue2 == testValue2);
+            Assert.IsTrue(setValue2.Position == testValue2.Position);
+            Assert.IsTrue(setValue2.Rotation == testValue2.Rotation);
             Assert.IsFalse(interactions.GetDictionaryValueChanged(DeviceInputType.None));
         }
         #endregion Interaction Dictionary
@@ -695,7 +691,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test15_InteractionArrayObject()
         {
             var interactions = new IMixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping<object>(1, AxisType.Raw, DeviceInputType.None, new InputAction(0, "None"));
+            interactions[0] = new MixedRealityInteractionMapping<object>(1, AxisType.Raw, DeviceInputType.None, InputAction.None);
             var testValue1 = (object)1f;
             var testValue2 = (object)false;
 
@@ -732,7 +728,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test16_InteractionArrayBool()
         {
             var interactions = new IMixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping<bool>(1, AxisType.Digital, DeviceInputType.None, new InputAction(0, "None"));
+            interactions[0] = new MixedRealityInteractionMapping<bool>(1, AxisType.Digital, DeviceInputType.None, InputAction.None);
             var testValue1 = true;
             var testValue2 = false;
 
@@ -769,7 +765,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test17_InteractionArrayFloat()
         {
             var interactions = new IMixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping<float>(1, AxisType.SingleAxis, DeviceInputType.None, new InputAction(0, "None"));
+            interactions[0] = new MixedRealityInteractionMapping<float>(1, AxisType.SingleAxis, DeviceInputType.None, InputAction.None);
             var testValue1 = 1f;
             var testValue2 = 9001f;
 
@@ -804,7 +800,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test18_InteractionArrayVector2()
         {
             var interactions = new IMixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping<Vector2>(1, AxisType.DualAxis, DeviceInputType.None, new InputAction(0, "None"));
+            interactions[0] = new MixedRealityInteractionMapping<Vector2>(1, AxisType.DualAxis, DeviceInputType.None, InputAction.None);
             var testValue1 = Vector2.one;
             var testValue2 = Vector2.zero;
 
@@ -839,7 +835,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test19_InteractionArrayVector3()
         {
             var interactions = new IMixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping<Vector3>(1, AxisType.ThreeDofPosition, DeviceInputType.None, new InputAction(0, "None"));
+            interactions[0] = new MixedRealityInteractionMapping<Vector3>(1, AxisType.ThreeDofPosition, DeviceInputType.None, InputAction.None);
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
@@ -874,74 +870,67 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void Test20_InteractionArrayQuaternion()
         {
             var interactions = new IMixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping<Quaternion>(1, AxisType.ThreeDofRotation, DeviceInputType.None, new InputAction(0, "None"));
+            interactions[0] = new MixedRealityInteractionMapping<Quaternion>(1, AxisType.ThreeDofRotation, DeviceInputType.None, InputAction.None);
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
-            var initialValue = interactions[0] as MixedRealityInteractionMapping<Quaternion>;
+            var interaction = interactions[0] as MixedRealityInteractionMapping<Quaternion>;
 
-            Assert.IsNotNull(initialValue);
-            Assert.True(initialValue.GetValue().eulerAngles == Quaternion.identity.eulerAngles);
-            Assert.IsFalse(initialValue.Changed);
+            Assert.IsNotNull(interaction);
+            Assert.True(interaction.GetValue().eulerAngles == Quaternion.identity.eulerAngles);
+            Assert.IsFalse(interaction.Changed);
 
-            initialValue.SetValue(testValue1);
+            interaction.SetValue(testValue1);
 
-            Assert.IsTrue(initialValue.Changed);
+            Assert.IsTrue(interaction.Changed);
 
-            var setValue1 = interactions[0] as MixedRealityInteractionMapping<Quaternion>;
+            Assert.True(interaction.GetValue() == testValue1);
+            Assert.IsFalse(interaction.Changed);
 
-            Assert.IsNotNull(setValue1);
-            Assert.True(setValue1.GetValue() == testValue1);
-            Assert.IsFalse(setValue1.Changed);
+            interaction.SetValue(testValue2);
 
-            setValue1.SetValue(testValue2);
+            Assert.IsTrue(interaction.Changed);
 
-            Assert.IsTrue(setValue1.Changed);
-
-            var setValue2 = interactions[0] as MixedRealityInteractionMapping<Quaternion>;
-
-            Assert.IsNotNull(setValue2);
-            Assert.True(setValue2.GetValue() == testValue2);
-            Assert.IsFalse(setValue2.Changed);
+            Assert.IsNotNull(interaction);
+            Assert.True(interaction.GetValue() == testValue2);
+            Assert.IsFalse(interaction.Changed);
         }
 
         [Test]
         public void Test21_InteractionArraySixDof()
         {
             var interactions = new IMixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping<Tuple<Vector3, Quaternion>>(1, AxisType.SixDof, DeviceInputType.None, new InputAction(0, "None"));
-            var testValue1 = new Tuple<Vector3, Quaternion>(Vector3.zero, Quaternion.identity);
-            var testValue2 = new Tuple<Vector3, Quaternion>(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
+            interactions[0] = new MixedRealityInteractionMapping<SixDof>(1, AxisType.SixDof, DeviceInputType.None, InputAction.None);
+            var testValue1 = new SixDof(Vector3.up, Quaternion.identity);
+            var testValue2 = new SixDof(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
-            var initialValue = interactions[0] as MixedRealityInteractionMapping<Tuple<Vector3, Quaternion>>;
+            var interaction = interactions[0] as MixedRealityInteractionMapping<SixDof>;
 
-            Assert.IsNotNull(initialValue);
-            Assert.IsNull(initialValue.GetValue());
-            Assert.IsFalse(initialValue.Changed);
+            Assert.IsNotNull(interaction);
+            Assert.IsTrue(interaction.GetValue() == SixDof.ZeroIdentity);
+            Assert.IsFalse(interaction.Changed);
 
-            initialValue.SetValue(testValue1);
+            interaction.SetValue(testValue1);
 
-            Assert.IsTrue(initialValue.Changed);
+            Assert.IsTrue(interaction.Changed);
 
-            var setValue1 = interactions[0] as MixedRealityInteractionMapping<Tuple<Vector3, Quaternion>>;
+            var setValue1 = interaction.GetValue();
 
-            Assert.IsNotNull(setValue1);
-            Assert.AreEqual(setValue1.GetValue(), testValue1);
-            Assert.IsTrue(setValue1.GetValue().Item1 == testValue1.Item1);
-            Assert.IsTrue(setValue1.GetValue().Item2 == testValue1.Item2);
-            Assert.IsFalse(setValue1.Changed);
+            Assert.IsTrue(setValue1 == testValue1);
+            Assert.IsTrue(setValue1.Position == testValue1.Position);
+            Assert.IsTrue(setValue1.Rotation == testValue1.Rotation);
+            Assert.IsFalse(interaction.Changed);
 
-            setValue1.SetValue(testValue2);
+            interaction.SetValue(testValue2);
 
-            Assert.IsTrue(setValue1.Changed);
+            Assert.IsTrue(interaction.Changed);
 
-            var setValue2 = interactions[0] as MixedRealityInteractionMapping<Tuple<Vector3, Quaternion>>;
+            var setValue2 = interaction.GetValue();
 
-            Assert.IsNotNull(setValue2);
-            Assert.AreEqual(setValue2.GetValue(), testValue2);
-            Assert.IsTrue(setValue2.GetValue().Item1 == testValue2.Item1);
-            Assert.IsTrue(setValue2.GetValue().Item2 == testValue2.Item2);
-            Assert.IsFalse(setValue1.Changed);
+            Assert.IsTrue(setValue2 == testValue2);
+            Assert.IsTrue(setValue2.Position == testValue2.Position);
+            Assert.IsTrue(setValue2.Rotation == testValue2.Rotation);
+            Assert.IsFalse(interaction.Changed);
         }
         #endregion Interaction Array Tests
 

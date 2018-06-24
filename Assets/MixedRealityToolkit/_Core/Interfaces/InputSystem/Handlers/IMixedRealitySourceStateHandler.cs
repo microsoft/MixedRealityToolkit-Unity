@@ -11,7 +11,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
     /// </summary>
     public interface IMixedRealitySourceStateHandler : IEventSystemHandler
     {
+        /// <summary>
+        /// Raised when a source is detected.
+        /// </summary>
+        /// <param name="eventData"></param>
         void OnSourceDetected(SourceStateEventData eventData);
+
+        /// <summary>
+        /// Raised when a source is lost.
+        /// </summary>
+        /// <param name="eventData"></param>
         void OnSourceLost(SourceStateEventData eventData);
     }
 }

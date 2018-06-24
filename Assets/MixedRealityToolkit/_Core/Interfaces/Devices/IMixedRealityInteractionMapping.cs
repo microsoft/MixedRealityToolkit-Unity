@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices
         Vector2 GetVector2Value();
         Vector3 GetPosition();
         Quaternion GetRotation();
-        Tuple<Vector3, Quaternion> GetTransform();
+        SixDof GetTransform();
 
         void SetValue(object newValue);
         void SetValue(bool newValue);
@@ -53,6 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices
         void SetValue(Vector2 newValue);
         void SetValue(Vector3 newValue);
         void SetValue(Quaternion newValue);
-        void SetValue(Tuple<Vector3, Quaternion> newValue);
+        void SetValue(SixDof newValue);
     }
 }
