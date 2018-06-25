@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System.Collections.Generic;
 
@@ -12,12 +13,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
     // TODO
     public struct ValveKnucklesController : IMixedRealityController
     {
-        public ValveKnucklesController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
+        public ValveKnucklesController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, IMixedRealityInteractionMapping> interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
+            Interactions = interactions ?? new Dictionary<DeviceInputType, IMixedRealityInteractionMapping>();
         }
 
         /// <inheritdoc />
@@ -30,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         public IMixedRealityInputSource InputSource { get; }
 
         /// <inheritdoc />
-        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
+        public Dictionary<DeviceInputType, IMixedRealityInteractionMapping> Interactions { get; }
 
         /// <inheritdoc />
         public void SetupInputSource<T>(T state)
