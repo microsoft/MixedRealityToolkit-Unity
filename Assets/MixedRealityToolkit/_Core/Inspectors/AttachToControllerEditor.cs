@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             rotationOffsetProperty = serializedObject.FindProperty("RotationOffset");
             scaleOffsetProperty = serializedObject.FindProperty("ScaleOffset");
             setScaleOnAttachProperty = serializedObject.FindProperty("SetScaleOnAttach");
-            setChildrenInactiveWhenDetachedProperty = serializedObject.FindProperty("SetChildrenInactiveWhenDetached");
+            setChildrenInactiveWhenDetachedProperty = serializedObject.FindProperty("setChildrenInactiveWhenDetached");
         }
 
         public override void OnInspectorGUI()

@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         public IMixedRealityInteractionMapping[] Interactions { get; protected set; }
 
         /// <inheritdoc />
-        public virtual void GetDefaultConfiguration() { }
+        public virtual void SetupConfiguration() { }
 
         /// <summary>
         /// Returns the current Input System if enabled, otherwise null.

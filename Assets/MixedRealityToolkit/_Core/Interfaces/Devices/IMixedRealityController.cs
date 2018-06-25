@@ -36,6 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// <summary>
         /// Inform the controller to setup and be ready when asked by it's registered device
         /// </summary>
-        void GetDefaultConfiguration();
+        void SetupConfiguration();
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityControllerConfigurationProfile
   m_EditorClassIdentifier: 
   renderMotionControllers: 1
-  useDefaultModels: 1
+  useDefaultModels: 0
   overrideLeftHandModel: {fileID: 0}
   overrideRightHandModel: {fileID: 0}
   mixedRealityControllerMappingProfiles:
@@ -22,14 +22,45 @@ MonoBehaviour:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
-    defaultModel: 1
-    overrideModel: {fileID: 0}
+    defaultModel: 0
+    overrideModel: {fileID: 1814764591568936, guid: 94a2c579c16b24b46a15d266dc899356,
+      type: 2}
+    interactions:
+    - id: 0
+      axisType: 2
+      inputType: 28
+      inputAction:
+        id: 1
+        description: 
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 30
+      inputAction:
+        id: 2
+        description: 
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 17
+      inputAction:
+        id: 3
+        description: 
+        axisConstraint: 0
   - id: 2
-    description: MotionController Right
+    description: Motion Controller Right
     controller:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
-    handedness: 2
-    defaultModel: 1
-    overrideModel: {fileID: 1786849406207676, guid: ef834e955ef3e134db6c5e0020b5dc6b,
+    handedness: 1
+    defaultModel: 0
+    overrideModel: {fileID: 1814764591568936, guid: 94a2c579c16b24b46a15d266dc899356,
       type: 2}
+    interactions:
+    - id: 0
+      axisType: 2
+      inputType: 28
+      inputAction:
+        id: 1
+        description: Menu
+        axisConstraint: 2
