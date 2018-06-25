@@ -3,46 +3,14 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    // TODO
-    internal struct ValveKnucklesController : IMixedRealityController
+    // TODO - Implement
+    public class ValveKnucklesController : BaseController
     {
-        public ValveKnucklesController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, IMixedRealityInteractionMapping> interactions = null) : this()
-        {
-            ControllerState = controllerState;
-            ControllerHandedness = controllerHandedness;
-            InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, IMixedRealityInteractionMapping>();
-        }
-
-        /// <inheritdoc />
-        public ControllerState ControllerState { get; }
-
-        /// <inheritdoc />
-        public Handedness ControllerHandedness { get; }
-
-        /// <inheritdoc />
-        public IMixedRealityInputSource InputSource { get; }
-
-        /// <inheritdoc />
-        public Dictionary<DeviceInputType, IMixedRealityInteractionMapping> Interactions { get; }
-
-        /// <inheritdoc />
-        public void SetupInputSource<T>(T state)
-        {
-            // TODO
-        }
-
-        /// <inheritdoc />
-        public void UpdateInputSource<T>(T state)
-        {
-            //TODO
-        }
+        public ValveKnucklesController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+                : base(controllerState, controllerHandedness, inputSource, interactions) { }
     }
 }

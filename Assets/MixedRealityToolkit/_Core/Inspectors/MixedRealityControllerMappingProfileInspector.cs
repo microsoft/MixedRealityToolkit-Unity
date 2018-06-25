@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using UnityEditor;
 using UnityEngine;
 
@@ -80,12 +81,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 }
             }
 
-            RenderList(mixedRealityControllerMappingProfiles);
+            RenderControllerProfilesList(mixedRealityControllerMappingProfiles);
 
             serializedObject.ApplyModifiedProperties();
         }
 
-        private static void RenderList(SerializedProperty list)
+        private static void RenderControllerProfilesList(SerializedProperty list)
         {
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
@@ -136,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     var controllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
                     var useDefaultModel = mixedRealityControllerMapping.FindPropertyRelative("defaultModel");
                     var controllerModel = mixedRealityControllerMapping.FindPropertyRelative("overrideModel");
-                    var controllerInteractionList = mixedRealityControllerMapping.FindPropertyRelative("interactions");
+                    var interactionsList = mixedRealityControllerMapping.FindPropertyRelative("interactions");
 
                     EditorGUI.indentLevel++;
                     EditorGUIUtility.labelWidth = 96f;
@@ -153,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     if (controllerFoldouts[i])
                     {
                         GUILayout.BeginHorizontal();
-                        RenderInteractionList(controllerInteractionList);
+                        RenderInteractionList(interactionsList);
                         GUILayout.EndHorizontal();
                     }
 
@@ -184,6 +185,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 inputType.enumValueIndex = 0;
                 var action = interaction.FindPropertyRelative("inputAction");
                 var actionId = action.FindPropertyRelative("id");
+                var actionDescription = action.FindPropertyRelative("description");
+                actionDescription.stringValue = "None";
                 actionId.intValue = 0;
             }
 
@@ -228,7 +231,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUILayout.PropertyField(axisType, GUIContent.none, GUILayout.ExpandWidth(true));
                 var action = interaction.FindPropertyRelative("inputAction");
                 var actionId = action.FindPropertyRelative("id");
+                var actionDescription = action.FindPropertyRelative("description");
+                var actionConstraint = action.FindPropertyRelative("axisConstraint");
+
+                EditorGUI.BeginChangeCheck();
                 actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, CheckValue(actionId.intValue, actionIds.Length), actionLabels, actionIds, GUILayout.ExpandWidth(true));
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    InputAction inputAction = (InputAction)(actionId.intValue == 0 ? InputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue]);
+                    actionDescription.stringValue = inputAction.Description;
+                    actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
+                }
 
                 if (GUILayout.Button(InteractionMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                 {

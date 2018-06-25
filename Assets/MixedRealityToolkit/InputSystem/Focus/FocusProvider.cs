@@ -451,7 +451,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         public bool RegisterPointer(IMixedRealityPointer pointer)
         {
             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
-            Debug.Assert(gazeManagerPointingData == null || pointer.PointerId != gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be registered on source detected.");
 
             if (IsPointerRegistered(pointer)) { return false; }
 
@@ -467,7 +466,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         public bool UnregisterPointer(IMixedRealityPointer pointer)
         {
             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
-            Debug.Assert(pointer.PointerId != gazeManagerPointingData.Pointer.PointerId, "Gaze Manager Pointer should only be unregistered on source lost.");
 
             PointerData pointerData = GetPointerData(pointer);
             if (pointerData == null) { return false; }
@@ -893,11 +891,17 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 
             foreach (var sourcePointer in eventData.InputSource.Pointers)
             {
-                // If the source lost is the gaze input source, then reset it.
-                if (sourcePointer.PointerId == gazeManagerPointingData.Pointer.PointerId)
+                // Special unregistration for Gaze
+                if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
                 {
-                    gazeManagerPointingData.ResetFocusedObjects();
-                    gazeManagerPointingData = null;
+                    Debug.Assert(gazeManagerPointingData != null);
+
+                    // If the source lost is the gaze input source, then reset it.
+                    if (sourcePointer.PointerId == gazeManagerPointingData.Pointer.PointerId)
+                    {
+                        gazeManagerPointingData.ResetFocusedObjects();
+                        gazeManagerPointingData = null;
+                    }
                 }
 
                 UnregisterPointer(sourcePointer);
