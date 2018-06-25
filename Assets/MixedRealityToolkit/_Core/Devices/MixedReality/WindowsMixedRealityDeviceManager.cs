@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
@@ -63,15 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <inheritdoc/>
         public override IMixedRealityController[] GetActiveControllers()
         {
-            var controllers = new IMixedRealityController[activeControllers.Count];
-            int i = 0;
-            foreach (var activeController in activeControllers.Values)
-            {
-                controllers[i] = activeController;
-                i++;
-            }
-
-            return controllers;
+            return activeControllers.Values.ToArray();
         }
 
         #endregion IMixedRealityDeviceManager Interface
@@ -88,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             //If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(interactionSourceState.source.id))
             {
-                WindowsMixedRealityController controller = activeControllers[interactionSourceState.source.id] as WindowsMixedRealityController;
+                var controller = activeControllers[interactionSourceState.source.id] as WindowsMixedRealityController;
                 controller.UpdateController(interactionSourceState);
                 return controller;
             }
