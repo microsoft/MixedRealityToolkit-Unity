@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
@@ -14,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     /// <remarks>One definition should exist for each physical device input, such as buttons, triggers, joysticks, dpads, and more.</remarks>
     /// </summary>
     [Serializable]
-    public struct MixedRealityInteractionMapping : IMixedRealityInteractionMapping
+    public struct MixedRealityInteractionMapping : IMixedRealityInteractionMapping, ISerializationCallbackReceiver
     {
         /// <summary>
         /// The constructor for a new Interaction Mapping definition
@@ -23,12 +24,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <param name="axisType">The axis that the mapping operates on, also denotes the data type for the mapping</param>
         /// <param name="inputType">The physical input device / control</param>
         /// <param name="inputAction">The logical InputAction that this input performs</param>
-        public MixedRealityInteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, IMixedRealityInputAction inputAction)
+        public MixedRealityInteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, InputAction inputAction)
         {
             this.id = id;
             this.axisType = axisType;
             this.inputType = inputType;
             this.inputAction = inputAction;
+            InputAction = inputAction;
             rawData = null;
             boolData = false;
             floatData = 0f;
@@ -62,11 +64,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         public DeviceInputType InputType => inputType;
 
         /// <inheritdoc />
-        public IMixedRealityInputAction InputAction => inputAction;
+        public IMixedRealityInputAction InputAction { get; private set; }
 
         [SerializeField]
         [Tooltip("Action to be raised to the Input Manager when the input data has changed.")]
-        private IMixedRealityInputAction inputAction;
+        private InputAction inputAction;
 
         private bool changed;
 
@@ -234,5 +236,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         }
 
         #endregion Set Operators
+
+        public void OnBeforeSerialize()
+        {
+            inputAction = (InputAction)InputAction;
+        }
+
+        public void OnAfterDeserialize()
+        {
+            InputAction = inputAction;
+        }
     }
 }

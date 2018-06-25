@@ -89,26 +89,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 switch (mappings[i].AxisType)
                 {
                     case AxisType.Digital:
-                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, (InputAction)mappings[i].InputAction));
                         break;
                     case AxisType.SingleAxis:
-                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, (InputAction)mappings[i].InputAction));
                         break;
                     case AxisType.DualAxis:
-                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, (InputAction)mappings[i].InputAction));
                         break;
                     case AxisType.ThreeDofPosition:
-                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, (InputAction)mappings[i].InputAction));
                         break;
                     case AxisType.ThreeDofRotation:
-                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, (InputAction)mappings[i].InputAction));
                         break;
                     case AxisType.SixDof:
-                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, (InputAction)mappings[i].InputAction));
                         break;
                     case AxisType.None:
                     case AxisType.Raw:
-                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                        interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, (InputAction)mappings[i].InputAction));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

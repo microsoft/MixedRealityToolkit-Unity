@@ -80,12 +80,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 }
             }
 
-            RenderList(mixedRealityControllerMappingProfiles);
+            RenderControllerProfilesList(mixedRealityControllerMappingProfiles);
 
             serializedObject.ApplyModifiedProperties();
         }
 
-        private static void RenderList(SerializedProperty list)
+        private static void RenderControllerProfilesList(SerializedProperty list)
         {
             EditorGUILayout.Space();
             GUILayout.BeginVertical();
@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     var controllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
                     var useDefaultModel = mixedRealityControllerMapping.FindPropertyRelative("defaultModel");
                     var controllerModel = mixedRealityControllerMapping.FindPropertyRelative("overrideModel");
-                    var controllerInteractionList = mixedRealityControllerMapping.FindPropertyRelative("interactions");
+                    var interactionsList = mixedRealityControllerMapping.FindPropertyRelative("interactions");
 
                     EditorGUI.indentLevel++;
                     EditorGUIUtility.labelWidth = 96f;
@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     if (controllerFoldouts[i])
                     {
                         GUILayout.BeginHorizontal();
-                        RenderInteractionList(controllerInteractionList);
+                        RenderInteractionList(interactionsList);
                         GUILayout.EndHorizontal();
                     }
 

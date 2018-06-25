@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
@@ -10,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     /// Data structure for mapping Voice and Keyboard input to <see cref="InputAction"/>s that can be raised by the Input System.
     /// </summary>
     [Serializable]
-    public struct SpeechCommands
+    public struct SpeechCommands : ISerializationCallbackReceiver
     {
         /// <summary>
         /// Constructor.
@@ -23,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
             this.keyword = keyword;
             this.keyCode = keyCode;
             this.action = action;
+            Action = action;
         }
 
         [SerializeField]
@@ -50,6 +52,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         /// <summary>
         /// The <see cref="InputAction"/> that is raised by either the Keyword or KeyCode.
         /// </summary>
-        public InputAction Action => action;
+        public IMixedRealityInputAction Action { get; private set; }
+
+        public void OnBeforeSerialize()
+        {
+            action = (InputAction)Action;
+        }
+
+        public void OnAfterDeserialize()
+        {
+            Action = action;
+        }
     }
 }
