@@ -33,12 +33,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         public InteractionSourceState LastSourceStateReading { get; private set; }
 
-        private Vector3 currentPointerPosition;
-        private Quaternion currentPointerRotation;
+        private bool isControllerTracked = false;
+        private Vector3 currentControllerPosition = Vector3.zero;
+        private Quaternion currentControllerRotation = Quaternion.identity;
+
+        private Vector3 currentPointerPosition = Vector3.zero;
+        private Quaternion currentPointerRotation = Quaternion.identity;
         private SixDof currentPointerData = new SixDof(Vector3.zero, Quaternion.identity);
 
-        private Vector3 currentGripPosition;
-        private Quaternion currentGripRotation;
+        private Vector3 currentGripPosition = Vector3.zero;
+        private Quaternion currentGripRotation = Quaternion.identity;
         private SixDof currentGripData = new SixDof(Vector3.zero, Quaternion.identity);
 
         #region Update data functions
@@ -101,8 +105,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             LastSourceStateReading = interactionSourceState;
 
-            // Windows Mixed Reality Devices are always tracked during their lifetime.
-            ControllerState = ControllerState.Tracked;
+            isControllerTracked = interactionSourceState.sourcePose.TryGetPosition(out currentControllerPosition);
+            ControllerState = isControllerTracked ? ControllerState.Tracked : ControllerState.NotTracked;
+
+            interactionSourceState.sourcePose.TryGetRotation(out currentControllerRotation);
         }
 
         /// <summary>
