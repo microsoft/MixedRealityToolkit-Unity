@@ -6,11 +6,9 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 
@@ -30,12 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         #endregion Private properties
 
-        public WindowsMixedRealityController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, IMixedRealityInteractionMapping> interactions = null) : this()
+        public WindowsMixedRealityController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, MixedRealityInteractionMapping[] interactions = null) : this()
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, IMixedRealityInteractionMapping>();
+            Interactions = interactions ?? new MixedRealityInteractionMapping[0];
 
             controllerTracked = false;
             controllerPosition = pointerPosition = gripPosition = Vector3.zero;
@@ -54,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         public IMixedRealityInputSource InputSource { get; private set; }
 
         /// <inheritdoc/>
-        public Dictionary<DeviceInputType, IMixedRealityInteractionMapping> Interactions { get; private set; }
+        public MixedRealityInteractionMapping[] Interactions { get; private set; }
 
         /// <inheritdoc/>
         public void SetupInputSource<T>(T state)
