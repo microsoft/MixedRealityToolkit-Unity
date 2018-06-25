@@ -13,10 +13,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderMotionControllers: 1
   useDefaultModels: 0
-  overrideLeftHandModel: {fileID: 1786849406207676, guid: ef834e955ef3e134db6c5e0020b5dc6b,
-    type: 2}
-  overrideRightHandModel: {fileID: 1786849406207676, guid: ef834e955ef3e134db6c5e0020b5dc6b,
-    type: 2}
+  overrideLeftHandModel: {fileID: 0}
+  overrideRightHandModel: {fileID: 0}
   mixedRealityControllerMappingProfiles:
   - id: 1
     description: MotionController Left
@@ -25,22 +23,9 @@ MonoBehaviour:
         Microsoft.MixedReality.Toolkit
     handedness: 1
     defaultModel: 0
-    overrideModel: {fileID: 1786849406207676, guid: ef834e955ef3e134db6c5e0020b5dc6b,
+    overrideModel: {fileID: 1814764591568936, guid: 94a2c579c16b24b46a15d266dc899356,
       type: 2}
     interactions:
-    - id: 0
-      axisType: 2
-      inputType: 30
-      inputAction:
-        id: 2
-        description: 
-        axisConstraint: 0
-      boolData: 0
-      floatData: 0
-      vector2Data: {x: 0, y: 0}
-      positionData: {x: 0, y: 0, z: 0}
-      rotationData: {x: 0, y: 0, z: 0, w: 0}
-      changed: 0
     - id: 0
       axisType: 2
       inputType: 28
@@ -48,48 +33,6 @@ MonoBehaviour:
         id: 1
         description: 
         axisConstraint: 0
-      boolData: 0
-      floatData: 0
-      vector2Data: {x: 0, y: 0}
-      positionData: {x: 0, y: 0, z: 0}
-      rotationData: {x: 0, y: 0, z: 0, w: 0}
-      changed: 0
-    - id: 0
-      axisType: 2
-      inputType: 17
-      inputAction:
-        id: 3
-        description: 
-        axisConstraint: 0
-      boolData: 0
-      floatData: 0
-      vector2Data: {x: 0, y: 0}
-      positionData: {x: 0, y: 0, z: 0}
-      rotationData: {x: 0, y: 0, z: 0, w: 0}
-      changed: 0
-    - id: 0
-      axisType: 7
-      inputType: 3
-      inputAction:
-        id: 0
-        description: 
-        axisConstraint: 0
-      boolData: 0
-      floatData: 0
-      vector2Data: {x: 0, y: 0}
-      positionData: {x: 0, y: 0, z: 0}
-      rotationData: {x: 0, y: 0, z: 0, w: 0}
-      changed: 0
-  - id: 2
-    description: MotionController Right
-    controller:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
-        Microsoft.MixedReality.Toolkit
-    handedness: 2
-    defaultModel: 1
-    overrideModel: {fileID: 1786849406207676, guid: ef834e955ef3e134db6c5e0020b5dc6b,
-      type: 2}
-    interactions:
     - id: 0
       axisType: 2
       inputType: 30
@@ -97,25 +40,6 @@ MonoBehaviour:
         id: 2
         description: 
         axisConstraint: 0
-      boolData: 0
-      floatData: 0
-      vector2Data: {x: 0, y: 0}
-      positionData: {x: 0, y: 0, z: 0}
-      rotationData: {x: 0, y: 0, z: 0, w: 0}
-      changed: 0
-    - id: 0
-      axisType: 2
-      inputType: 27
-      inputAction:
-        id: 1
-        description: 
-        axisConstraint: 0
-      boolData: 0
-      floatData: 0
-      vector2Data: {x: 0, y: 0}
-      positionData: {x: 0, y: 0, z: 0}
-      rotationData: {x: 0, y: 0, z: 0, w: 0}
-      changed: 0
     - id: 0
       axisType: 2
       inputType: 17
@@ -123,22 +47,20 @@ MonoBehaviour:
         id: 3
         description: 
         axisConstraint: 0
-      boolData: 0
-      floatData: 0
-      vector2Data: {x: 0, y: 0}
-      positionData: {x: 0, y: 0, z: 0}
-      rotationData: {x: 0, y: 0, z: 0, w: 0}
-      changed: 0
+  - id: 2
+    description: Motion Controller Right
+    controller:
+      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 1
+    defaultModel: 0
+    overrideModel: {fileID: 1814764591568936, guid: 94a2c579c16b24b46a15d266dc899356,
+      type: 2}
+    interactions:
     - id: 0
-      axisType: 7
-      inputType: 3
+      axisType: 2
+      inputType: 28
       inputAction:
-        id: 0
-        description: 
-        axisConstraint: 0
-      boolData: 0
-      floatData: 0
-      vector2Data: {x: 0, y: 0}
-      positionData: {x: 0, y: 0, z: 0}
-      rotationData: {x: 0, y: 0, z: 0, w: 0}
-      changed: 0
+        id: 1
+        description: Menu
+        axisConstraint: 2

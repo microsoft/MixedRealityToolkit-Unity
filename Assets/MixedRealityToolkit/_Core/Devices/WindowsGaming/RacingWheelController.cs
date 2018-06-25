@@ -3,39 +3,15 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 {
     // TODO
-    public struct RacingWheelController : IMixedRealityController
+    public class RacingWheelController : BaseController
     {
-        public RacingWheelController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, InteractionMapping> interactions = null) : this()
-        {
-            ControllerState = controllerState;
-            ControllerHandedness = controllerHandedness;
-            InputSource = inputSource;
-            Interactions = interactions ?? new Dictionary<DeviceInputType, InteractionMapping>();
-        }
-
-        public ControllerState ControllerState { get; }
-
-        public Handedness ControllerHandedness { get; }
-
-        public IMixedRealityInputSource InputSource { get; }
-
-        public Dictionary<DeviceInputType, InteractionMapping> Interactions { get; }
-
-        public void SetupInputSource<T>(T state)
-        {
-            // TODO
-        }
-
-        public void UpdateInputSource<T>(T state)
-        {
-            //TODO
-        }
+        public RacingWheelController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, IMixedRealityInteractionMapping[] interactions = null)
+                : base(controllerState, controllerHandedness, inputSource, interactions) { }
     }
 }
