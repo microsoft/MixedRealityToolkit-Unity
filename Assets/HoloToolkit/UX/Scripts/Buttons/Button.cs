@@ -134,7 +134,7 @@ namespace HoloToolkit.Unity.Buttons
         {
             if (enabled && !m_disabled)
             {
-                if(ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
+                if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
                 {
                     DoButtonPressed();
 
@@ -209,7 +209,7 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
-                /// <summary>
+        /// <summary>
         /// Handle On Hold started from IHoldSource
         /// </summary>
         /// <param name="eventData"></param>
@@ -331,7 +331,7 @@ namespace HoloToolkit.Unity.Buttons
         {
             ButtonStateEnum newState;
 
-            if(_bFocused)
+            if (_bFocused)
             {
                 newState = _bHandVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
             }
