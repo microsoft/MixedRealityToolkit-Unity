@@ -14,7 +14,7 @@ using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
-    public struct WindowsMixedRealityController : IMixedRealityController
+    internal struct WindowsMixedRealityController : IMixedRealityController
     {
         #region Private properties
 

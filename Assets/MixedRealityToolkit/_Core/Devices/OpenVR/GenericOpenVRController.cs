@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
     // TODO
-    public struct GenericOpenVRController : IMixedRealityController
+    internal struct GenericOpenVRController : IMixedRealityController
     {
         public GenericOpenVRController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, IMixedRealityInteractionMapping> interactions = null) : this()
         {

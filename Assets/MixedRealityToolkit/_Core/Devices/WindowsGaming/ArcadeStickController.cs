@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 {
     // TODO
-    public struct ArcadeStickController : IMixedRealityController
+    internal struct ArcadeStickController : IMixedRealityController
     {
         public ArcadeStickController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, IMixedRealityInteractionMapping> interactions = null) : this()
         {

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
     // TODO
-    public struct ValveKnucklesController : IMixedRealityController
+    internal struct ValveKnucklesController : IMixedRealityController
     {
         public ValveKnucklesController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, IMixedRealityInteractionMapping> interactions = null) : this()
         {

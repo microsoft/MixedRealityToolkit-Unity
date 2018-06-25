@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
 {
     // TODO
-    public struct JoystickController : IMixedRealityController
+    internal struct JoystickController : IMixedRealityController
     {
         public JoystickController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, Dictionary<DeviceInputType, IMixedRealityInteractionMapping> interactions = null) : this()
         {

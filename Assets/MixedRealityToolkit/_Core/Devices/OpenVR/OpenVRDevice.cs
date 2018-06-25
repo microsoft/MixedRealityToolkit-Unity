@@ -16,7 +16,7 @@ using UnityEngine.XR.WSA.Input;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
     // TODO - Implement
-    public class OpenVRDevice : IMixedRealityDevice
+    internal class OpenVRDevice : IMixedRealityDevice
     {
         /// <summary>
         /// Dictionary to capture all active controllers detected
