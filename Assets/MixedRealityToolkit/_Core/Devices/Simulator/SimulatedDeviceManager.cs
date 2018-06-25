@@ -6,6 +6,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
     // TODO - Implement
     public class SimulatedDeviceManager : BaseDeviceManager
     {
-        public SimulatedDeviceManager(string name, uint priority) : base(name, priority) {}
+        public SimulatedDeviceManager(string name, uint priority) : base(name, priority) { }
     }
 }

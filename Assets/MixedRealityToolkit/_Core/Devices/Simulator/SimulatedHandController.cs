@@ -8,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.Simulator
 {
     // TODO - Implement
-    internal class SimulatedHandController : BaseController
+    public class SimulatedHandController : BaseController
     {
         public SimulatedHandController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(controllerState, controllerHandedness, inputSource, interactions) { }

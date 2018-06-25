@@ -8,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
     // TODO - Implement
-    internal class ValveKnucklesController : BaseController
+    public class ValveKnucklesController : BaseController
     {
         public ValveKnucklesController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(controllerState, controllerHandedness, inputSource, interactions) { }

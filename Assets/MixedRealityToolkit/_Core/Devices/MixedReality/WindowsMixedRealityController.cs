@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
     /// <summary>
     /// A Windows Mixed Reality Controller Instance.
     /// </summary>
-    internal class WindowsMixedRealityController : BaseController
+    public class WindowsMixedRealityController : BaseController
     {
         /// <summary>
         /// Constructor.

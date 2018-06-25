@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
-    internal class WindowsMixedRealityGestureController : BaseController
+    public class WindowsMixedRealityGestureController : BaseController
     {
         public WindowsMixedRealityGestureController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(controllerState, controllerHandedness, inputSource, interactions) { }

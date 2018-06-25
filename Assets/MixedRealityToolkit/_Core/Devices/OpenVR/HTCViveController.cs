@@ -8,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
     // TODO - Implement
-    internal class HTCViveController : BaseController
+    public class HTCViveController : BaseController
     {
         public HTCViveController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(controllerState, controllerHandedness, inputSource, interactions) { }

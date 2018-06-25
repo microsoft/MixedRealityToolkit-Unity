@@ -8,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
 {
     // TODO - Implement
-    internal class GenericOpenXRController : BaseController
+    public class GenericOpenXRController : BaseController
     {
         public GenericOpenXRController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(controllerState, controllerHandedness, inputSource, interactions) { }

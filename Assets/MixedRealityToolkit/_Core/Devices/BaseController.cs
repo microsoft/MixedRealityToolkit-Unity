@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
     /// <summary>
     /// Base Controller class to inherit from for all controllers.
     /// </summary>
-    internal class BaseController : IMixedRealityController
+    public class BaseController : IMixedRealityController
     {
         /// <summary>
         /// Constructor.
