@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test01_TestObjectChanged()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.Raw, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.Raw, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue1 = (object)1f;
             var testValue2 = (object)false;
 
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test02_TestObjectNoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.Raw, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.Raw, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue = new object();
 
             var initialValue = interaction.GetRawValue();
@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test03_TestBoolChanged()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.Digital, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.Digital, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue1 = true;
             var testValue2 = false;
 
@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test04_TestBoolNoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.Digital, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.Digital, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue = true;
 
             var initialValue = interaction.GetBooleanValue();
@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test05_TestFloatChanged()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue1 = 1f;
             var testValue2 = 9001f;
 
@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test06_TestFloatNoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue = 1f;
 
             var initialValue = interaction.GetFloatValue();
@@ -209,7 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test07_TestVector2Changed()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue1 = Vector2.one;
             var testValue2 = Vector2.zero;
 
@@ -240,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test08_TestVector2NoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue = Vector2.one;
 
             var initialValue = interaction.GetVector2Value();
@@ -268,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test09_TestVector3Changed()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.ThreeDofPosition, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.ThreeDofPosition, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
@@ -299,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test10_TestVector3NoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.ThreeDofPosition, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.ThreeDofPosition, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue = Vector3.one;
 
             var initialValue = interaction.GetPositionValue();
@@ -327,7 +327,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test11_TestQuaternionChanged()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.ThreeDofRotation, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.ThreeDofRotation, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
@@ -358,7 +358,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test12_TestQuaternionNoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.ThreeDofRotation, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.ThreeDofRotation, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue = Quaternion.Euler(45f, 45f, 45f);
 
             var initialValue = interaction.GetRotationValue();
@@ -386,7 +386,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test13_TestSixDofChanged()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.SixDof, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.SixDof, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue1 = new SixDof(Vector3.up, Quaternion.identity);
             var testValue2 = new SixDof(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
@@ -417,7 +417,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test14_TestSixDofNoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.SixDof, DeviceInputType.None, (InputAction)InputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, AxisType.SixDof, DeviceInputType.None, (MixedRealityInputAction)MixedRealityInputAction.None);
             var testValue = new SixDof(Vector3.up, Quaternion.identity);
 
             var initialValue = interaction.GetSixDofValue();

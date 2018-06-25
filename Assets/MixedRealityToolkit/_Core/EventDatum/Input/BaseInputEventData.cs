@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine.EventSystems;
 
@@ -24,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <summary>
         /// The Input Action for this event.
         /// </summary>
-        public IMixedRealityInputAction InputAction { get; private set; }
+        public MixedRealityInputAction MixedRealityInputAction { get; private set; }
 
         /// <summary>
         /// Constructor.
@@ -37,11 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         /// <param name="inputSource"></param>
         /// <param name="inputAction"></param>
-        protected void BaseInitialize(IMixedRealityInputSource inputSource, IMixedRealityInputAction inputAction)
+        protected void BaseInitialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction)
         {
             Reset();
             InputSource = inputSource;
-            InputAction = inputAction;
+            MixedRealityInputAction = inputAction;
             SourceId = InputSource.SourceId;
         }
     }

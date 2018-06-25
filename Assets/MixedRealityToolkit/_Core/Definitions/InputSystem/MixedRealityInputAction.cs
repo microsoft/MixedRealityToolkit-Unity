@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     /// An Input Action for mapping an action to an Input Sources Button, Joystick, Sensor, etc.
     /// </summary>
     [Serializable]
-    public struct InputAction : IMixedRealityInputAction
+    public struct MixedRealityInputAction
     {
         /// <summary>
         /// Constructor.
@@ -20,28 +19,34 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         /// <param name="id"></param>
         /// <param name="description"></param>
         /// <param name="axisConstraint"></param>
-        public InputAction(uint id, string description, AxisType axisConstraint = AxisType.None)
+        public MixedRealityInputAction(uint id, string description, AxisType axisConstraint = AxisType.None)
         {
             this.id = id;
             this.description = description;
             this.axisConstraint = axisConstraint;
         }
 
-        public static IMixedRealityInputAction None { get; } = new InputAction(0, "None");
+        public static MixedRealityInputAction None { get; } = new MixedRealityInputAction(0, "None");
 
-        /// <inheritdoc />
+        /// <summary>
+        /// The Unique Id of this Input Action.
+        /// </summary>
         public uint Id => id;
 
         [SerializeField]
         private uint id;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// A short description of the Input Action.
+        /// </summary>
         public string Description => description;
 
         [SerializeField]
         private string description;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// The Axis constraint for the Input Action
+        /// </summary>
         public AxisType AxisConstraint => axisConstraint;
 
         [SerializeField]

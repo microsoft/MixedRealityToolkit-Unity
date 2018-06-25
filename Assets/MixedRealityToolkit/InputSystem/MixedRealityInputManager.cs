@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
@@ -651,7 +652,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaisePointerDown(IMixedRealityPointer pointer, IMixedRealityInputAction inputAction)
+        public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction)
         {
             // Create input event
             pointerEventData.Initialize(pointer.InputSourceParent, inputAction);
@@ -660,7 +661,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, IMixedRealityInputAction inputAction)
+        public void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
             pointerEventData.Initialize(pointer.InputSourceParent, handedness, inputAction);
@@ -696,7 +697,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                 };
 
         /// <inheritdoc />
-        public void RaisePointerClicked(IMixedRealityPointer pointer, IMixedRealityInputAction inputAction, int count)
+        public void RaisePointerClicked(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, int count)
         {
             // Create input event
             pointerEventData.Initialize(pointer, inputAction, count);
@@ -705,7 +706,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaisePointerClicked(IMixedRealityPointer pointer, Handedness handedness, IMixedRealityInputAction inputAction, int count)
+        public void RaisePointerClicked(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction, int count)
         {
             // Create input event
             pointerEventData.Initialize(pointer, handedness, inputAction, count);
@@ -733,7 +734,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaisePointerUp(IMixedRealityPointer pointer, IMixedRealityInputAction inputAction)
+        public void RaisePointerUp(IMixedRealityPointer pointer, MixedRealityInputAction inputAction)
         {
             // Create input event
             pointerEventData.Initialize(pointer.InputSourceParent, inputAction);
@@ -742,7 +743,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, IMixedRealityInputAction inputAction)
+        public void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
             pointerEventData.Initialize(pointer.InputSourceParent, handedness, inputAction);
@@ -788,7 +789,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseOnInputDown(IMixedRealityInputSource source, IMixedRealityInputAction inputAction)
+        public void RaiseOnInputDown(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
             inputEventData.Initialize(source, inputAction);
@@ -798,7 +799,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction)
+        public void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
             inputEventData.Initialize(source, handedness, inputAction);
@@ -819,7 +820,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, IMixedRealityInputAction inputAction)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
             inputPressedEventData.Initialize(source, inputAction);
@@ -829,7 +830,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, float pressAmount)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, MixedRealityInputAction inputAction, float pressAmount)
         {
             // Create input event
             inputPressedEventData.Initialize(source, inputAction, pressAmount);
@@ -839,7 +840,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, float pressAmount)
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, float pressAmount)
         {
             // Create input event
             inputPressedEventData.Initialize(source, handedness, inputAction, pressAmount);
@@ -860,7 +861,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseOnInputUp(IMixedRealityInputSource source, IMixedRealityInputAction inputAction)
+        public void RaiseOnInputUp(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
             inputEventData.Initialize(source, inputAction);
@@ -870,7 +871,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction)
+        public void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
             inputEventData.Initialize(source, handedness, inputAction);
@@ -891,7 +892,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void Raise2DoFInputChanged(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, Vector2 inputPosition)
+        public void Raise2DoFInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector2 inputPosition)
         {
             // Create input event
             twoDoFInputEventData.Initialize(source, inputAction, inputPosition);
@@ -901,7 +902,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void Raise2DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, Vector2 inputPosition)
+        public void Raise2DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector2 inputPosition)
         {
             // Create input event
             twoDoFInputEventData.Initialize(source, handedness, inputAction, inputPosition);
@@ -922,7 +923,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void Raise3DoFInputChanged(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, Vector3 position)
+        public void Raise3DoFInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 position)
         {
             // Create input event
             threeDoFInputEventData.Initialize(source, inputAction, position);
@@ -932,7 +933,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, Vector3 position)
+        public void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 position)
         {
             // Create input event
             threeDoFInputEventData.Initialize(source, handedness, inputAction, position);
@@ -942,7 +943,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void Raise3DoFInputChanged(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, Quaternion rotation)
+        public void Raise3DoFInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Quaternion rotation)
         {
             // Create input event
             threeDoFInputEventData.Initialize(source, inputAction, rotation);
@@ -952,7 +953,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, Quaternion rotation)
+        public void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Quaternion rotation)
         {
             // Create input event
             threeDoFInputEventData.Initialize(source, handedness, inputAction, rotation);
@@ -973,7 +974,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void Raise6DofInputChanged(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, SixDof inputData)
+        public void Raise6DofInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, SixDof inputData)
         {
             // Create input event
             sixDoFInputEventData.Initialize(source, inputAction, inputData);
@@ -983,7 +984,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, SixDof inputData)
+        public void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, SixDof inputData)
         {
             // Create input event
             sixDoFInputEventData.Initialize(source, handedness, inputAction, inputData);
@@ -1008,7 +1009,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseHoldStarted(IMixedRealityInputSource source, IMixedRealityInputAction inputAction)
+        public void RaiseHoldStarted(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
             inputEventData.Initialize(source, inputAction);
@@ -1018,7 +1019,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseHoldStarted(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction)
+        public void RaiseHoldStarted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
             inputEventData.Initialize(source, handedness, inputAction);
@@ -1035,7 +1036,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseHoldCompleted(IMixedRealityInputSource source, IMixedRealityInputAction inputAction)
+        public void RaiseHoldCompleted(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
             inputEventData.Initialize(source, inputAction);
@@ -1045,7 +1046,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseHoldCompleted(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction)
+        public void RaiseHoldCompleted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
             inputEventData.Initialize(source, handedness, inputAction);
@@ -1062,7 +1063,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseHoldCanceled(IMixedRealityInputSource source, IMixedRealityInputAction inputAction)
+        public void RaiseHoldCanceled(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
             inputEventData.Initialize(source, inputAction);
@@ -1072,7 +1073,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseHoldCanceled(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction)
+        public void RaiseHoldCanceled(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
             inputEventData.Initialize(source, handedness, inputAction);
@@ -1093,7 +1094,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseNavigationStarted(IMixedRealityInputSource source, IMixedRealityInputAction inputAction)
+        public void RaiseNavigationStarted(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
             navigationEventData.Initialize(source, inputAction, Vector3.zero);
@@ -1103,7 +1104,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseNavigationStarted(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction)
+        public void RaiseNavigationStarted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
             navigationEventData.Initialize(source, handedness, inputAction, Vector3.zero);
@@ -1120,7 +1121,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseNavigationUpdated(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, Vector3 normalizedOffset)
+        public void RaiseNavigationUpdated(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 normalizedOffset)
         {
             // Create input event
             navigationEventData.Initialize(source, inputAction, normalizedOffset);
@@ -1130,7 +1131,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseNavigationUpdated(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, Vector3 normalizedOffset)
+        public void RaiseNavigationUpdated(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 normalizedOffset)
         {
             // Create input event
             navigationEventData.Initialize(source, handedness, inputAction, normalizedOffset);
@@ -1147,7 +1148,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseNavigationCompleted(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, Vector3 normalizedOffset)
+        public void RaiseNavigationCompleted(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 normalizedOffset)
         {
             // Create input event
             navigationEventData.Initialize(source, inputAction, normalizedOffset);
@@ -1157,7 +1158,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseNavigationCompleted(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, Vector3 normalizedOffset)
+        public void RaiseNavigationCompleted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 normalizedOffset)
         {
             // Create input event
             navigationEventData.Initialize(source, handedness, inputAction, normalizedOffset);
@@ -1174,7 +1175,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseNavigationCanceled(IMixedRealityInputSource source, IMixedRealityInputAction inputAction)
+        public void RaiseNavigationCanceled(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
             navigationEventData.Initialize(source, inputAction, Vector3.zero);
@@ -1184,7 +1185,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseNavigationCanceled(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction)
+        public void RaiseNavigationCanceled(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
             navigationEventData.Initialize(source, handedness, inputAction, Vector3.zero);
@@ -1205,7 +1206,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseManipulationStarted(IMixedRealityInputSource source, IMixedRealityInputAction inputAction)
+        public void RaiseManipulationStarted(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
             manipulationEventData.Initialize(source, inputAction, Vector3.zero);
@@ -1215,7 +1216,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseManipulationStarted(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction)
+        public void RaiseManipulationStarted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
             manipulationEventData.Initialize(source, handedness, inputAction, Vector3.zero);
@@ -1232,7 +1233,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseManipulationUpdated(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, Vector3 cumulativeDelta)
+        public void RaiseManipulationUpdated(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 cumulativeDelta)
         {
             // Create input event
             manipulationEventData.Initialize(source, inputAction, cumulativeDelta);
@@ -1242,7 +1243,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseManipulationUpdated(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, Vector3 cumulativeDelta)
+        public void RaiseManipulationUpdated(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 cumulativeDelta)
         {
             // Create input event
             manipulationEventData.Initialize(source, handedness, inputAction, cumulativeDelta);
@@ -1259,7 +1260,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseManipulationCompleted(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, Vector3 cumulativeDelta)
+        public void RaiseManipulationCompleted(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 cumulativeDelta)
         {
             // Create input event
             manipulationEventData.Initialize(source, inputAction, cumulativeDelta);
@@ -1269,7 +1270,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseManipulationCompleted(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction, Vector3 cumulativeDelta)
+        public void RaiseManipulationCompleted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 cumulativeDelta)
         {
             // Create input event
             manipulationEventData.Initialize(source, handedness, inputAction, cumulativeDelta);
@@ -1286,7 +1287,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseManipulationCanceled(IMixedRealityInputSource source, IMixedRealityInputAction inputAction)
+        public void RaiseManipulationCanceled(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
             manipulationEventData.Initialize(source, inputAction, Vector3.zero);
@@ -1296,7 +1297,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseManipulationCanceled(IMixedRealityInputSource source, Handedness handedness, IMixedRealityInputAction inputAction)
+        public void RaiseManipulationCanceled(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
             manipulationEventData.Initialize(source, handedness, inputAction, Vector3.zero);
@@ -1389,7 +1390,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string text)
+        public void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, MixedRealityInputAction inputAction, UnityEngine.Windows.Speech.ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, UnityEngine.Windows.Speech.SemanticMeaning[] semanticMeanings, string text)
         {
             // Create input event
             speechEventData.Initialize(source, inputAction, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
@@ -1410,7 +1411,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseDictationHypothesis(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, string dictationHypothesis, AudioClip dictationAudioClip = null)
+        public void RaiseDictationHypothesis(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationHypothesis, AudioClip dictationAudioClip = null)
         {
             // Create input event
             dictationEventData.Initialize(source, inputAction, dictationHypothesis, dictationAudioClip);
@@ -1427,7 +1428,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseDictationResult(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip = null)
+        public void RaiseDictationResult(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip = null)
         {
             // Create input event
             dictationEventData.Initialize(source, inputAction, dictationResult, dictationAudioClip);
@@ -1444,7 +1445,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseDictationComplete(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip)
+        public void RaiseDictationComplete(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip)
         {
             // Create input event
             dictationEventData.Initialize(source, inputAction, dictationResult, dictationAudioClip);
@@ -1461,7 +1462,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseDictationError(IMixedRealityInputSource source, IMixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip = null)
+        public void RaiseDictationError(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip = null)
         {
             // Create input event
             dictationEventData.Initialize(source, inputAction, dictationResult, dictationAudioClip);

@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
     /// <summary>
     /// Describes a source change event.
-    /// <remarks>Source State events do not have an associated <see cref="IMixedRealityInputAction"/>.</remarks>
+    /// <remarks>Source State events do not have an associated <see cref="MixedRealityInputAction"/>.</remarks>
     /// </summary>
     public class SourcePositionEventData : SourceStateEventData
     {

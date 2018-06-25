@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEditor;
 using UnityEngine;
 
@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                 if (EditorGUI.EndChangeCheck())
                 {
-                    InputAction inputAction = (InputAction)(actionId.intValue == 0 ? InputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue]);
+                    MixedRealityInputAction inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue];
                     actionDescription.stringValue = inputAction.Description;
                     actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
                 }
