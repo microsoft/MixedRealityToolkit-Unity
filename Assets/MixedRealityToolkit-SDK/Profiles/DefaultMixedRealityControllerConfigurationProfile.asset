@@ -23,30 +23,17 @@ MonoBehaviour:
         Microsoft.MixedReality.Toolkit
     handedness: 1
     defaultModel: 0
-    overrideModel: {fileID: 1814764591568936, guid: 94a2c579c16b24b46a15d266dc899356,
-      type: 2}
+    overrideModel: {fileID: 0}
     interactions:
     - id: 0
       axisType: 2
       inputType: 28
-      inputAction:
-        id: 1
-        description: 
-        axisConstraint: 0
     - id: 0
       axisType: 2
       inputType: 30
-      inputAction:
-        id: 2
-        description: 
-        axisConstraint: 0
     - id: 0
       axisType: 2
       inputType: 17
-      inputAction:
-        id: 3
-        description: 
-        axisConstraint: 0
   - id: 2
     description: Motion Controller Right
     controller:
@@ -54,13 +41,8 @@ MonoBehaviour:
         Microsoft.MixedReality.Toolkit
     handedness: 1
     defaultModel: 0
-    overrideModel: {fileID: 1814764591568936, guid: 94a2c579c16b24b46a15d266dc899356,
-      type: 2}
+    overrideModel: {fileID: 0}
     interactions:
     - id: 0
       axisType: 2
       inputType: 28
-      inputAction:
-        id: 1
-        description: Menu
-        axisConstraint: 2

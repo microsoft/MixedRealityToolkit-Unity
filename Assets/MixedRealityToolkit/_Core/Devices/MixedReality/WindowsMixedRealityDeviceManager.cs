@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
@@ -22,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <summary>
         /// Dictionary to capture all active controllers detected
         /// </summary>
-        private readonly Dictionary<uint, WindowsMixedRealityController> activeControllers = new Dictionary<uint, WindowsMixedRealityController>();
+        private readonly Dictionary<uint, IMixedRealityController> activeControllers = new Dictionary<uint, IMixedRealityController>();
 
         #region IMixedRealityDeviceManager Interface
 
@@ -56,21 +57,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {
-                RemoveWindowsMixedRealityController(states[i]);
+                RemoveController(states[i]);
             }
         }
 
         /// <inheritdoc/>
         public override IMixedRealityController[] GetActiveControllers()
         {
-            var controllers = new IMixedRealityController[activeControllers.Count];
-
-            for (uint i = 0; i < activeControllers.Count; i++)
-            {
-                controllers[i] = activeControllers[i];
-            }
-
-            return controllers;
+            return activeControllers.Values.ToArray();
         }
 
         #endregion IMixedRealityDeviceManager Interface
@@ -87,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             //If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(interactionSourceState.source.id))
             {
-                var controller = activeControllers[interactionSourceState.source.id];
+                var controller = activeControllers[interactionSourceState.source.id] as WindowsMixedRealityController;
                 controller.UpdateController(interactionSourceState);
                 return controller;
             }
@@ -110,8 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             var inputSource = InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {controllingHand}");
             var detectedController = new WindowsMixedRealityController(ControllerState.NotTracked, controllingHand, inputSource);
-
-            detectedController.SetupConfiguration();
+            detectedController.SetupConfiguration(typeof(WindowsMixedRealityController));
             detectedController.UpdateController(interactionSourceState);
             activeControllers.Add(interactionSourceState.source.id, detectedController);
 
@@ -122,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// Remove the selected controller from the Active Store
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
-        private void RemoveWindowsMixedRealityController(InteractionSourceState interactionSourceState)
+        private void RemoveController(InteractionSourceState interactionSourceState)
         {
             InputSystem?.RaiseSourceLost(GetOrAddController(interactionSourceState)?.InputSource);
             activeControllers.Remove(interactionSourceState.source.id);
@@ -174,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="args">SDK source updated event arguments</param>
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
         {
-            RemoveWindowsMixedRealityController(args.state);
+            RemoveController(args.state);
         }
 
         #endregion Unity InteractionManager Events
