@@ -4,7 +4,7 @@
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
 {
     // TODO - Implement
-    public class OpenXRDevice : BaseDeviceManager
+    internal class OpenXRDevice : BaseDeviceManager
     {
         public OpenXRDevice(string name, uint priority) : base(name, priority) { }
     }

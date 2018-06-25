@@ -10,7 +10,7 @@ using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
-    public class WindowsMixedRealityDeviceManager : BaseDeviceManager
+    internal class WindowsMixedRealityDeviceManager : BaseDeviceManager
     {
         /// <summary>
         /// Constructor.
