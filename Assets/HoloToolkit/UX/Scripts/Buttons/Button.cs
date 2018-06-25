@@ -132,7 +132,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <param name="eventData"></param>
         public void OnInputDown(InputEventData eventData)
         {
-            if (enabled && !m_disabled)
+            if (!m_disabled)
             {
                 if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
                 {
@@ -152,7 +152,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <param name="eventData"></param>
         public void OnInputUp(InputEventData eventData)
         {
-            if (enabled && !m_disabled)
+            if (!m_disabled)
             {
                 if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
                 {
@@ -168,7 +168,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <param name="eventData"></param>
         public void OnInputClicked(InputClickedEventData eventData)
         {
-            if (enabled && !m_disabled)
+            if (!m_disabled)
             {
                 if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
                 {
@@ -246,7 +246,7 @@ namespace HoloToolkit.Unity.Buttons
         /// </summary>
         public void OnFocusExit(PointerSpecificEventData eventData)
         {
-            if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
+            if (!m_disabled)
             {
                 if (ButtonState == ButtonStateEnum.Pressed)
                 {
