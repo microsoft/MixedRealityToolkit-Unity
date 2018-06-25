@@ -530,7 +530,7 @@ namespace HoloToolkit.Unity.UX
             {
                 return BoundingBox.FlattenModeEnum.FlattenZ;
             }
-          
+
             return BoundingBox.FlattenModeEnum.DoNotFlatten;
         }
     }

@@ -213,7 +213,7 @@ namespace HoloToolkit.Unity.UX
 
                 Vector3 newScale = changeScale;
                 newScale.Scale(initialScale);
-               
+
                 //scale from object center
                 transformToAffect.localScale = newScale;
 
@@ -261,7 +261,7 @@ namespace HoloToolkit.Unity.UX
             }
             else
             {
-                Vector3 axis = (Axis == BoundingBoxGizmoHandleAxisToAffect.X ? new Vector3(1,0,0) : Axis == BoundingBoxGizmoHandleAxisToAffect.Y ? new Vector3(0,1,0) : new Vector3(0,0,1) );
+                Vector3 axis = (Axis == BoundingBoxGizmoHandleAxisToAffect.X ? new Vector3(1, 0, 0) : Axis == BoundingBoxGizmoHandleAxisToAffect.Y ? new Vector3(0, 1, 0) : new Vector3(0, 0, 1));
                 transformToAffect.localRotation = initialRotation;
                 transformToAffect.Rotate(axis, angle * 5.0f);
             }
@@ -270,9 +270,13 @@ namespace HoloToolkit.Unity.UX
         private void ApplyRotation(Vector3 currentHandPosition)
         {
             if (RotateAroundPivot)
+            {
                 ApplyRotationPivot(currentHandPosition);
+            }
             else
+            {
                 ApplyRotationContinuous(currentHandPosition);
+            }
         }
 
         private void ApplyRotationContinuous(Vector3 currentHandPosition)
@@ -311,7 +315,7 @@ namespace HoloToolkit.Unity.UX
             }
             else
             {
-                Vector3 axis = (Axis == BoundingBoxGizmoHandleAxisToAffect.X ? new Vector3(1, 0, 0) : Axis == BoundingBoxGizmoHandleAxisToAffect.Y ? new Vector3(0, 1, 0) : new Vector3(0, 0,1));
+                Vector3 axis = (Axis == BoundingBoxGizmoHandleAxisToAffect.X ? new Vector3(1, 0, 0) : Axis == BoundingBoxGizmoHandleAxisToAffect.Y ? new Vector3(0, 1, 0) : new Vector3(0, 0, 1));
                 transformToAffect.localRotation = initialRotation;
                 float angle = newEulers.x != 0 ? newEulers.x : newEulers.y != 0 ? newEulers.y : newEulers.z;
                 transformToAffect.Rotate(axis, angle * 2.0f);
@@ -322,8 +326,7 @@ namespace HoloToolkit.Unity.UX
         {
             Vector3 delta = currentHandPosition - lastHandWorldPos;
 
-            if (delta.sqrMagnitude == 0)
-                return;
+            if (delta.sqrMagnitude == 0) { return; }
 
             delta.Scale(rotationFromPositionScale);
 
