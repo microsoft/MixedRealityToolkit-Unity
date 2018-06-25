@@ -12,10 +12,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
     {
         public OculusTouchController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, MixedRealityInteractionMapping[] interactions)
                 : base(controllerState, controllerHandedness, inputSource, interactions) { }
-
-        protected override void SetupDefaultMapping()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

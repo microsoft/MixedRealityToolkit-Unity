@@ -12,10 +12,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
     {
         public ValveKnucklesController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(controllerState, controllerHandedness, inputSource, interactions) { }
-
-        protected override void SetupDefaultMapping()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
