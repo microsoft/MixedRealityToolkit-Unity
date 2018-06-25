@@ -86,8 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
             }
         }
 
-        protected abstract void SetupDefaultMapping();
-
         /// <summary>
         /// Load the Interaction mappings for this controller from the configured Controller Mapping profile
         /// </summary>

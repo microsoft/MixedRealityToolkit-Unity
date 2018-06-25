@@ -42,27 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         private Quaternion currentGripRotation;
         private SixDof currentGripData = new SixDof(Vector3.zero, Quaternion.identity);
 
-        #region Setup and Update functions
-
-        /// <summary>
-        /// Create Interaction mappings from a device specific default set of action mappings
-        /// </summary>
-        protected override void SetupDefaultMapping()
-        {
-            Interactions = new MixedRealityInteractionMapping[9];
-            Interactions[0] = new MixedRealityInteractionMapping(0, AxisType.Digital, DeviceInputType.Select, new InputAction(1, "Select"));
-            Interactions[1] = new MixedRealityInteractionMapping(1, AxisType.SingleAxis, DeviceInputType.Trigger, new InputAction(2, "Trigger Press"));
-            Interactions[2] = new MixedRealityInteractionMapping(2, AxisType.Digital, DeviceInputType.GripPress, new InputAction(2, "Grip Press"));
-            Interactions[3] = new MixedRealityInteractionMapping(3, AxisType.Digital, DeviceInputType.Menu, new InputAction(3, "Menu Press"));
-            Interactions[4] = new MixedRealityInteractionMapping(4, AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerHandedness == Handedness.Left ? new InputAction(4, "Vertical Movement") : new InputAction(4, "Horizontal Movement"));
-            Interactions[5] = new MixedRealityInteractionMapping(5, AxisType.Digital, DeviceInputType.ThumbStickPress, new InputAction(5, "Thumbstick Press"));
-            Interactions[6] = new MixedRealityInteractionMapping(6, AxisType.DualAxis, DeviceInputType.Touchpad, new InputAction(6, "Touchpad Position"));
-            Interactions[7] = new MixedRealityInteractionMapping(7, AxisType.Digital, DeviceInputType.TouchpadTouch, new InputAction(7, "Touchpad Touch"));
-            Interactions[8] = new MixedRealityInteractionMapping(8, AxisType.Digital, DeviceInputType.TouchpadPress, new InputAction(8, "Touchpad Press"));
-
-            AssignControllerMappings(Interactions);
-        }
-
         #region Update data functions
 
         /// <summary>
@@ -354,7 +333,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         }
 
         #endregion Update data functions
-
-        #endregion Setup and Update functions
     }
 }
