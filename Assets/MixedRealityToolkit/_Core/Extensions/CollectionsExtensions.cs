@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
@@ -124,6 +126,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             T[] output = new T[input.Count];
             input.Values.CopyTo(output, 0);
             return output;
+        }
+
+        /// <summary>
+        /// Overload extension to enable getting of an InteractionDefinition of a specific type
+        /// </summary>
+        /// <param name="input">The InteractionDefinition array reference</param>
+        /// <param name="key">The specific DeviceInputType value to query</param>
+        public static MixedRealityInteractionMapping GetInteractionByType(this MixedRealityInteractionMapping[] input, DeviceInputType key)
+        {
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i].InputType == key)
+                {
+                    return input[i];
+                }
+            }
+
+            return default(MixedRealityInteractionMapping);
         }
     }
 }

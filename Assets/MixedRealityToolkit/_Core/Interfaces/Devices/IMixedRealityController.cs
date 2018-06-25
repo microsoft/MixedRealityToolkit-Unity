@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
@@ -31,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// <summary>
         /// Mapping definition for this controller, linking the Physical inputs to logical Input System Actions
         /// </summary>
-        IMixedRealityInteractionMapping[] Interactions { get; }
+        MixedRealityInteractionMapping[] Interactions { get; }
 
         /// <summary>
         /// Inform the controller to setup and be ready when asked by it's registered device

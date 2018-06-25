@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using System;
 using UnityEngine;
 
@@ -14,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     /// Used to define a controller or other input device's physical buttons, and other attributes.
     /// </summary>
     [Serializable]
-    public struct MixedRealityControllerMapping : ISerializationCallbackReceiver
+    public struct MixedRealityControllerMapping
     {
         public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject overrideModel, MixedRealityInteractionMapping[] interactions) : this()
         {
@@ -87,30 +86,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Details the list of available buttons / interactions available from the device.
         /// </summary>
-        public IMixedRealityInteractionMapping[] Interactions { get; private set; }
+        public MixedRealityInteractionMapping[] Interactions => interactions;
 
         [SerializeField]
         [Tooltip("Details the list of available buttons / interactions available from the device.")]
         private MixedRealityInteractionMapping[] interactions;
-
-        public void OnBeforeSerialize()
-        {
-            interactions = new MixedRealityInteractionMapping[Interactions.Length];
-
-            for (int i = 0; i < interactions.Length; i++)
-            {
-                interactions[i] = (MixedRealityInteractionMapping)Interactions[i];
-            }
-        }
-
-        public void OnAfterDeserialize()
-        {
-            Interactions = new IMixedRealityInteractionMapping[interactions.Length];
-
-            for (int i = 0; i < Interactions.Length; i++)
-            {
-                Interactions[i] = interactions[i];
-            }
-        }
     }
 }

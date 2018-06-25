@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 
@@ -25,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         public BaseController(ControllerState controllerState,
                               Handedness controllerHandedness,
                               IMixedRealityInputSource inputSource = null,
-                              IMixedRealityInteractionMapping[] interactions = null)
+                              MixedRealityInteractionMapping[] interactions = null)
         {
             ControllerState = controllerState;
             ControllerHandedness = controllerHandedness;
@@ -43,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         public IMixedRealityInputSource InputSource { get; }
 
         /// <inheritdoc />
-        public IMixedRealityInteractionMapping[] Interactions { get; protected set; }
+        public MixedRealityInteractionMapping[] Interactions { get; protected set; }
 
         /// <inheritdoc />
         public virtual void SetupConfiguration() { }
