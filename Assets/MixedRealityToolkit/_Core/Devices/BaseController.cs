@@ -36,6 +36,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
             Interactions = interactions;
         }
 
+        /// <summary>
+        /// Returns the current Input System if enabled, otherwise null.
+        /// </summary>
+        protected IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null && MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
+                {
+                    inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+                }
+
+                return inputSystem;
+            }
+        }
+
+        private IMixedRealityInputSystem inputSystem;
+
         /// <inheritdoc />
         public ControllerState ControllerState { get; protected set; }
 
@@ -110,23 +128,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
 
             Interactions = interactions.ToArray();
         }
-
-        /// <summary>
-        /// Returns the current Input System if enabled, otherwise null.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null && MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
-                {
-                    inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
-                }
-
-                return inputSystem;
-            }
-        }
-
-        private IMixedRealityInputSystem inputSystem;
     }
 }
