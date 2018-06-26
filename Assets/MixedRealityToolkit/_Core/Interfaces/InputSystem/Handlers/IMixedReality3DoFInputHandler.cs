@@ -14,6 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
         /// 3 Degree of Freedom input update.
         /// </summary>
         /// <param name="eventData"></param>
-        void On3DoFInputChanged(ThreeDoFInputEventData eventData);
+        void On3DoFInputChanged(ThreeDofInputEventData eventData);
     }
 }

@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
     /// <summary>
     /// Describes an Input Event that involves an Input Source's spatial position AND rotation.
     /// </summary>
-    public class SixDoFInputEventData : ThreeDoFInputEventData
+    public class PoseInputEventData : ThreeDofInputEventData
     {
         /// <summary>
         /// The <see cref="Vector3"/> and <see cref="Quaternion"/> input data.
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// Constructor.
         /// </summary>
         /// <param name="eventSystem"></param>
-        public SixDoFInputEventData(EventSystem eventSystem) : base(eventSystem) { }
+        public PoseInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>
         /// Used to initialize/reset the event and populate the data.

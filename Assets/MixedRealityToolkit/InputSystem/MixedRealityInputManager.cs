@@ -61,8 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private InputPressedEventData inputPressedEventData;
 
         private TwoDoFInputEventData twoDoFInputEventData;
-        private ThreeDoFInputEventData threeDoFInputEventData;
-        private SixDoFInputEventData sixDoFInputEventData;
+        private ThreeDofInputEventData threeDoFInputEventData;
+        private PoseInputEventData sixDoFInputEventData;
 
         private NavigationEventData navigationEventData;
         private ManipulationEventData manipulationEventData;
@@ -143,8 +143,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             inputPressedEventData = new InputPressedEventData(EventSystem.current);
 
             twoDoFInputEventData = new TwoDoFInputEventData(EventSystem.current);
-            threeDoFInputEventData = new ThreeDoFInputEventData(EventSystem.current);
-            sixDoFInputEventData = new SixDoFInputEventData(EventSystem.current);
+            threeDoFInputEventData = new ThreeDofInputEventData(EventSystem.current);
+            sixDoFInputEventData = new PoseInputEventData(EventSystem.current);
 
             navigationEventData = new NavigationEventData(EventSystem.current);
             manipulationEventData = new ManipulationEventData(EventSystem.current);
@@ -930,7 +930,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private static readonly ExecuteEvents.EventFunction<IMixedReality3DoFInputHandler> OnThreeDoFInputChanged =
             delegate (IMixedReality3DoFInputHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<ThreeDoFInputEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<ThreeDofInputEventData>(eventData);
                 handler.On3DoFInputChanged(casted);
             };
 
@@ -981,7 +981,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private static readonly ExecuteEvents.EventFunction<IMixedReality6DoFInputHandler> OnSixDoFInputChanged =
             delegate (IMixedReality6DoFInputHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<SixDoFInputEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<PoseInputEventData>(eventData);
                 handler.On6DoFInputChanged(casted);
             };
 

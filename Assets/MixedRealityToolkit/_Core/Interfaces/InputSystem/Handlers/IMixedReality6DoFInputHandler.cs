@@ -14,6 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
         /// Six Degree of Freedom input update.
         /// </summary>
         /// <param name="eventData"></param>
-        void On6DoFInputChanged(SixDoFInputEventData eventData);
+        void On6DoFInputChanged(PoseInputEventData eventData);
     }
 }

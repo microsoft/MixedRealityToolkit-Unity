@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
     /// <summary>
     /// Describes an input event that involves an Input Source's spatial position OR rotation.
     /// </summary>
-    public class ThreeDoFInputEventData : InputEventData
+    public class ThreeDofInputEventData : InputEventData
     {
         /// <summary>
         /// The Position of the Input.
@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         public Quaternion Rotation { get; protected set; } = Quaternion.identity;
 
         /// <inheritdoc />
-        public ThreeDoFInputEventData(EventSystem eventSystem) : base(eventSystem) { }
+        public ThreeDofInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>
         /// Populates the event with data.
