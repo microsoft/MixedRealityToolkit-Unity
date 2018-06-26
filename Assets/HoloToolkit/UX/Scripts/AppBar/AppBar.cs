@@ -487,7 +487,7 @@ namespace HoloToolkit.Unity.UX
                     return new ButtonTemplate(
                         ButtonTypeEnum.Adjust,
                         "Adjust",
-                        "ObjectCollectionScatter", // Replace with your custom icon texture name in HolographicButton prefab
+                        "AppBarAdjust",
                         "Adjust",
                         adjustPosition, // Always next-to-last to appear
                         0);
@@ -496,7 +496,7 @@ namespace HoloToolkit.Unity.UX
                     return new ButtonTemplate(
                         ButtonTypeEnum.Done,
                         "Done",
-                        "ObjectCollectionScatter", // Replace with your custom icon texture name in HolographicButton prefab
+                        "AppBarDone",
                         "Done",
                         0,
                         0);
@@ -505,7 +505,7 @@ namespace HoloToolkit.Unity.UX
                     return new ButtonTemplate(
                         ButtonTypeEnum.Hide,
                         "Hide",
-                        "ObjectCollectionScatter", // Replace with your custom icon texture name in HolographicButton prefab
+                        "AppBarHide",
                         "Hide Menu",
                         0, // Always the first to appear
                         0);
@@ -525,7 +525,7 @@ namespace HoloToolkit.Unity.UX
                     return new ButtonTemplate(
                         ButtonTypeEnum.Remove,
                         "Remove",
-                        "ObjectCollectionScatter", // Replace with your custom icon texture name in HolographicButton prefab
+                        "KeyboardKeyGlyphs_Close",
                         "Remove",
                         removePosition, // Always the last to appear
                         1);
@@ -534,7 +534,7 @@ namespace HoloToolkit.Unity.UX
                     return new ButtonTemplate(
                         ButtonTypeEnum.Show,
                         "Show",
-                        "ObjectCollectionScatter", // Replace with your custom icon texture name in HolographicButton prefab
+                        "AppBarShow",
                         "Show Menu",
                         0,
                         0);
