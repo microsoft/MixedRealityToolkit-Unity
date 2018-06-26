@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
 
             for (int i = 0; i < mappings.Length; i++)
             {
-                interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].InputAction));
+                interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].MixedRealityInputAction));
             }
 
             Interactions = interactions.ToArray();

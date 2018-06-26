@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                 if (EditorGUI.EndChangeCheck())
                 {
-                    InputAction inputAction = actionId.intValue == 0 ? (InputAction)InputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue];
+                    MixedRealityInputAction inputAction = actionId.intValue == 0 ? (MixedRealityInputAction)MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue];
                     actionDescription.stringValue = inputAction.Description;
                     actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
                 }

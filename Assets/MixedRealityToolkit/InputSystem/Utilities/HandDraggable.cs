@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
         }
 
         [SerializeField]
-        private InputAction grabAction;
+        private MixedRealityInputAction grabAction;
 
         [SerializeField]
         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
@@ -304,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
                 return;
             }
 
-            if (eventData.InputAction.Id != grabAction.Id)
+            if (eventData.MixedRealityInputAction.Id != grabAction.Id)
             {
                 // If we're not grabbing.
                 return;

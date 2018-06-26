@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
 {
-    [CustomPropertyDrawer(typeof(InputAction))]
+    [CustomPropertyDrawer(typeof(MixedRealityInputAction))]
     public class InputActionPropertyDrawer : PropertyDrawer
     {
         private static MixedRealityInputActionsProfile profile = null;

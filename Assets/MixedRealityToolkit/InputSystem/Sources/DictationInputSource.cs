@@ -28,22 +28,22 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <summary>
         /// Action that will be associated with a dictation hypothesis input event.
         /// </summary>
-        public static IMixedRealityInputAction HypothesisAction { get; set; }
+        public static MixedRealityInputAction HypothesisAction { get; set; }
 
         /// <summary>
         /// Action that will be associated with a dictation result input event.
         /// </summary>
-        public static IMixedRealityInputAction ResultAction { get; set; }
+        public static MixedRealityInputAction ResultAction { get; set; }
 
         /// <summary>
         /// Action that will be associated with a dictation complete input event.
         /// </summary>
-        public static IMixedRealityInputAction CompleteAction { get; set; }
+        public static MixedRealityInputAction CompleteAction { get; set; }
 
         /// <summary>
         /// Action that will be associated with a dictation error input event.
         /// </summary>
-        public static IMixedRealityInputAction ErrorAction { get; set; }
+        public static MixedRealityInputAction ErrorAction { get; set; }
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
@@ -54,10 +54,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <param name="resultAction">Action that will be associated with a dictation result input event</param>
         /// <param name="completeAction">Action that will be associated with a dictation complete input event</param>
         /// <param name="errorAction">Action that will be associated with a dictation error input event.</param>
-        public DictationInputSource(IMixedRealityInputAction hypothesisAction,
-                                    IMixedRealityInputAction resultAction,
-                                    IMixedRealityInputAction completeAction,
-                                    IMixedRealityInputAction errorAction)
+        public DictationInputSource(MixedRealityInputAction hypothesisAction,
+                                    MixedRealityInputAction resultAction,
+                                    MixedRealityInputAction completeAction,
+                                    MixedRealityInputAction errorAction)
                 : base("Dictation")
         {
             source = this;

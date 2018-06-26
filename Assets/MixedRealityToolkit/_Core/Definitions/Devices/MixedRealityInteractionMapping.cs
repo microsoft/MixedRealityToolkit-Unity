@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using UnityEngine;
 
@@ -21,8 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <param name="id">Identity for mapping</param>
         /// <param name="axisType">The axis that the mapping operates on, also denotes the data type for the mapping</param>
         /// <param name="inputType">The physical input device / control</param>
-        /// <param name="inputAction">The logical InputAction that this input performs</param>
-        public MixedRealityInteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, IMixedRealityInputAction inputAction)
+        /// <param name="inputAction">The logical MixedRealityInputAction that this input performs</param>
+        public MixedRealityInteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction)
         {
             this.id = id;
             this.axisType = axisType;
@@ -69,11 +69,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Action to be raised to the Input Manager when the input data has changed.
         /// </summary>
-        public IMixedRealityInputAction InputAction => inputAction;
+        public MixedRealityInputAction MixedRealityInputAction => inputAction;
 
         [SerializeField]
         [Tooltip("Action to be raised to the Input Manager when the input data has changed.")]
-        private IMixedRealityInputAction inputAction;
+        private MixedRealityInputAction inputAction;
 
         private bool changed;
 

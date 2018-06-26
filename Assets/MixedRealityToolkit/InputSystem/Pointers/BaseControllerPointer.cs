@@ -43,10 +43,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         protected Transform RaycastOrigin;
 
         [SerializeField]
-        private InputAction activeHoldAction;
+        private MixedRealityInputAction activeHoldAction;
 
         [SerializeField]
-        private InputAction interactionEnabledAction;
+        private MixedRealityInputAction interactionEnabledAction;
 
         [SerializeField]
         private bool interactionRequiresHold = false;
@@ -304,12 +304,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
-                if (interactionRequiresHold && eventData.InputAction.Id == activeHoldAction.Id)
+                if (interactionRequiresHold && eventData.MixedRealityInputAction.Id == activeHoldAction.Id)
                 {
                     InteractionEnabled = false;
                 }
 
-                if (eventData.InputAction.Id == interactionEnabledAction.Id)
+                if (eventData.MixedRealityInputAction.Id == interactionEnabledAction.Id)
                 {
                     OnSelectReleased();
                 }
@@ -320,12 +320,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
-                if (interactionRequiresHold && (eventData.InputAction.Id == activeHoldAction.Id))
+                if (interactionRequiresHold && (eventData.MixedRealityInputAction.Id == activeHoldAction.Id))
                 {
                     InteractionEnabled = true;
                 }
 
-                if (eventData.InputAction.Id == interactionEnabledAction.Id)
+                if (eventData.MixedRealityInputAction.Id == interactionEnabledAction.Id)
                 {
                     OnSelectPressed();
                 }
