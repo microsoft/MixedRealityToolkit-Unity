@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -24,11 +25,6 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         private bool autoStart = true;
 
         /// <summary>
-        /// Is the device a host or a client? (Hololens or mobile?)
-        /// </summary>
-        private bool isHost;
-
-        /// <summary>
         /// Is the discovery component stopping?
         /// </summary>
         [SerializeField]
@@ -44,6 +40,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         /// <summary>
         /// Component that generates the AR codes
         /// </summary>
+        [SerializeField]
         [Tooltip("Component that generates the AR codes")]
         private MarkerGeneration3D markerGeneration3D;
 
@@ -58,6 +55,13 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         /// Called when the phone finds a hololens session with its marker code.
         /// </summary>
         public HololensSessionFoundEvent OnHololensSessionFound;
+
+        /// <summary>
+        /// Component that manages the main flow of spectator view
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Component that manages the main flow, events and the main contact point with UNET multilens")]
+        private SpectatorView spectatorView;
 
         /// <summary>
         /// Discovery starts when the component starts
@@ -104,9 +108,24 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
             set { newDeviceDiscovery = value; }
         }
 
+        /// <summary>
+        /// Component that manages the main flow of spectator view
+        /// </summary>
+        public SpectatorView SpectatorView
+        {
+            get { return spectatorView; }
+            set { spectatorView = value; }
+        }
 
         private void Awake()
         {
+            string[] errors;
+            if (!DependenciesValid(out errors))
+            {
+                PrintValidationErrors(errors);
+                gameObject.SetActive(false);
+            }
+
 #if WINDOWS_UWP
             try
             {
@@ -119,12 +138,10 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
                 return;
             }
 #endif
-            isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
-
             // The client doesn't have to wait for the server to be started, but this works best if the component
             // waits for the remaining networking bits to have warmed up,
             // just give it a couple of seconds and then start it
-            if (!isHost)
+            if (!spectatorView.IsHost)
             {
                 Invoke("ManualStart", 3f);
             }
@@ -135,22 +152,6 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         /// </summary>
         public void ManualStart()
         {
-            // Auto find components if necessary
-            if (MarkerGeneration3D == null)
-            {
-                MarkerGeneration3D = FindObjectOfType<MarkerGeneration3D>();
-            }
-
-            if (MarkerDetectionHololens == null)
-            {
-                MarkerDetectionHololens = FindObjectOfType<MarkerDetectionHololens>();
-            }
-
-            if (NewDeviceDiscovery == null)
-            {
-                NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
-            }
-
             // If it isn't supposed to start listening/broadcasting exit the method
             if (!AutoStart)
             {
@@ -158,7 +159,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
             }
 
             Initialize();
-            if (!isHost)
+            if (!spectatorView.IsHost)
             {
                 StartAsClient();
             }
@@ -167,7 +168,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
                 StartAsServer();
                 if (MarkerDetectionHololens != null)
                 {
-                    MarkerDetectionHololens.OnMarkerDetected += OnMarkerDetected;
+                    markerDetectionHololens.OnMarkerDetected += OnMarkerDetected;
                 }
             }
         }
@@ -205,7 +206,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
             }
         }
 
-        #endregion
+        #endregion Host
 
         #region Client
 
@@ -218,7 +219,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         /// <param name="data">Broadcast message read</param>
         public override void OnReceivedBroadcast(string fromAddress, string data)
         {
-            if (isHost)
+            if (spectatorView.IsHost)
             {
                 return;
             }
@@ -233,7 +234,6 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
             int parsedMarkerId;
             if (!int.TryParse(parsedData[0], out parsedMarkerId))
             {
-                Debug.LogError("Error parsing broadcast data! ");
                 return;
             }
 
@@ -269,6 +269,72 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
 
 #endif
 
-        #endregion
+        #endregion Client
+
+        #region Dependencies validation
+        private void OnValidate()
+        {
+            //Check if the object is in the scene. Otherwise it'll also check the prefabs and we don't want that
+            if (!gameObject.activeInHierarchy)
+            {
+                return;
+            }
+            string[] errors = null;
+            if (!DependenciesValid(out errors))
+            {
+                PrintValidationErrors(errors);
+            }
+        }
+
+        /// <summary>
+        /// Checks all the dependencies for the script.
+        /// </summary>
+        /// <param name="errors">Out variable that will hold an element for every error, if any</param>
+        /// <returns>Whether all the dependencies exist and are correctly linked up</returns>
+        private bool DependenciesValid(out string[] errors)
+        {
+            var dependenciesValid = true;
+            var errorsList = new List<string>();
+
+            if (markerDetectionHololens == null)
+            {
+                errorsList.Add("MarkerDetectionHololens reference is null on SpectatorViewNetworkDiscovery.");
+                dependenciesValid = false;
+            }
+
+            if (markerGeneration3D == null)
+            {
+                errorsList.Add("MarkerGeneration3D reference is null on SpectatorViewNetworkDiscovery.");
+                dependenciesValid = false;
+            }
+
+            if (newDeviceDiscovery == null)
+            {
+                errorsList.Add("NewDeviceDiscovery reference is null on SpectatorViewNetworkDiscovery.");
+                dependenciesValid = false;
+            }
+
+            if (spectatorView == null)
+            {
+                errorsList.Add("SpectatorView reference is null on SpectatorViewNetworkDiscovery.");
+                dependenciesValid = false;
+            }
+
+            errors = errorsList.ToArray();
+            return dependenciesValid;
+        }
+
+        /// <summary>
+        /// Prints to the console an error for each
+        /// </summary>
+        /// <param name="errors"></param>
+        private void PrintValidationErrors(string[] errors)
+        {
+            for (var i = 0; i < errors.Length; i++)
+            {
+                Debug.LogError(errors[i]);
+            }
+        }
+        #endregion Dependencies validation
     }
 }
