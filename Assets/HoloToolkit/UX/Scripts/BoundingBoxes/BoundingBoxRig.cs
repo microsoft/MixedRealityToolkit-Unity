@@ -44,6 +44,9 @@ namespace HoloToolkit.Unity.UX
         [SerializeField]
         private BoundingBoxGizmoHandleHandMotionType handMotionToRotate = BoundingBoxGizmoHandleHandMotionType.handRotatesToRotateObject;
 
+        [SerializeField]
+        private bool rotateAroundPivot = false;
+
         [Header("Preset Components")]
         [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
@@ -269,6 +272,7 @@ namespace HoloToolkit.Unity.UX
                     rotateHandles[i].transform.localScale = rotateHandleSize;
                     rotateHandles[i].name = "Middle " + i.ToString();
                     rigRotateGizmoHandles[i] = rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
+                    rigRotateGizmoHandles[i].RotateAroundPivot = rotateAroundPivot;
                     rigRotateGizmoHandles[i].Rig = this;
                     rigRotateGizmoHandles[i].HandMotionForRotation = handMotionToRotate;
                     rigRotateGizmoHandles[i].RotationCoordinateSystem = rotationType;
@@ -526,7 +530,7 @@ namespace HoloToolkit.Unity.UX
             {
                 return BoundingBox.FlattenModeEnum.FlattenZ;
             }
-          
+
             return BoundingBox.FlattenModeEnum.DoNotFlatten;
         }
     }
