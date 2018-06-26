@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
     // TODO - Implement
     public class OculusTouchController : BaseController
     {
-        public OculusTouchController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, MixedRealityInteractionMapping[] interactions)
-                : base(controllerState, controllerHandedness, inputSource, interactions) { }
+        public OculusTouchController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, MixedRealityInteractionMapping[] interactions)
+                : base(trackingState, controllerHandedness, inputSource, interactions) { }
     }
 }

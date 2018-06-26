@@ -19,13 +19,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="controllerState"></param>
+        /// <param name="trackingState"></param>
         /// <param name="controllerHandedness"></param>
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
-        protected BaseController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        protected BaseController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
         {
-            ControllerState = controllerState;
+            TrackingState = trackingState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
             Interactions = interactions;
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         private IMixedRealityInputSystem inputSystem;
 
         /// <inheritdoc />
-        public ControllerState ControllerState { get; protected set; }
+        public TrackingState TrackingState { get; protected set; }
 
         /// <inheritdoc />
         public Handedness ControllerHandedness { get; }

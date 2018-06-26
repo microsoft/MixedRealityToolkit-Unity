@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
@@ -10,10 +11,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
     /// <summary>
     /// Describes a source change event.
-    /// <remarks>Source State events do not have an associated <see cref="MixedRealityInputAction"/>.</remarks>
+    /// <remarks>Source State events do not have an associated <see cref="Definitions.InputSystem.MixedRealityInputAction"/>.</remarks>
     /// </summary>
     public class SourcePositionEventData : SourceStateEventData
     {
+        /// <summary>
+        /// The new tracking state of the input source.
+        /// </summary>
+        public TrackingState TrackingState { get; private set; } = TrackingState.None;
+
         /// <summary>
         /// The new position of the input source.
         /// </summary>
@@ -37,10 +43,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <inheritdoc />
         public SourcePositionEventData(EventSystem eventSystem) : base(eventSystem) { }
 
+        public void Initialize(IMixedRealityInputSource inputSource, TrackingState trackingState)
+        {
+            Initialize(inputSource);
+            TrackingState = trackingState;
+        }
+
         /// <summary>
         /// Populates the event with data.
         /// </summary>
         /// <param name="inputSource"></param>
+        /// <param name="position"></param>
         public void Initialize(IMixedRealityInputSource inputSource, Vector2 position)
         {
             Initialize(inputSource);

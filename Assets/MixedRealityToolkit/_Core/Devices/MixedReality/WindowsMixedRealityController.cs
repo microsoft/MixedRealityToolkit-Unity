@@ -22,12 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="controllerState"></param>
+        /// <param name="trackingState"></param>
         /// <param name="controllerHandedness"></param>
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
-        public WindowsMixedRealityController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(controllerState, controllerHandedness, inputSource, interactions)
+        public WindowsMixedRealityController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+                : base(trackingState, controllerHandedness, inputSource, interactions)
         {
         }
 
@@ -37,8 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// The last updated source state reading for this Windows Mixed Reality Controller.
         /// </summary>
         public InteractionSourceState LastSourceStateReading { get; private set; }
-
-        private bool isControllerTracked = false;
 
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;
@@ -107,9 +105,27 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         private void UpdateControllerData(InteractionSourceState interactionSourceState)
         {
             LastSourceStateReading = interactionSourceState;
+            var lastState = TrackingState;
 
-            isControllerTracked = interactionSourceState.sourcePose.positionAccuracy == InteractionSourcePositionAccuracy.None;
-            ControllerState = isControllerTracked ? ControllerState.Tracked : ControllerState.NotTracked;
+            switch (interactionSourceState.sourcePose.positionAccuracy)
+            {
+                case InteractionSourcePositionAccuracy.None:
+                    TrackingState = TrackingState.NotTracked;
+                    break;
+                case InteractionSourcePositionAccuracy.Approximate:
+                    TrackingState = TrackingState.Approximate;
+                    break;
+                case InteractionSourcePositionAccuracy.High:
+                    TrackingState = TrackingState.Tracked;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            if (lastState != TrackingState)
+            {
+                InputSystem?.RaiseSourceTrackingStateChanged(InputSource, TrackingState);
+            }
         }
 
         /// <summary>

@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.Focus;
 using Microsoft.MixedReality.Toolkit.InputSystem.Gaze;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
@@ -482,6 +483,16 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         #endregion Input Source State Events
 
         #region Input Source Position Events
+
+        /// <inheritdoc />
+        public void RaiseSourceTrackingStateChanged(IMixedRealityInputSource source, TrackingState state)
+        {
+            // Create input event
+            sourcePositionEventData.Initialize(source, state);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
+        }
 
         /// <inheritdoc />
         public void RaiseSourcePositionChanged(IMixedRealityInputSource source, Vector2 position)

@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
@@ -122,6 +123,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// </summary>
         /// <param name="source">The lost Input Source.</param>
         void RaiseSourceLost(IMixedRealityInputSource source);
+
+        /// <summary>
+        /// Raise the event that the Input Source's tracking state has changed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="state"></param>
+        void RaiseSourceTrackingStateChanged(IMixedRealityInputSource source, TrackingState state);
 
         /// <summary>
         /// Raise the event that the Input Source position was changed.
