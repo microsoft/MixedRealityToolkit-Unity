@@ -124,7 +124,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
         private void RemoveController(InteractionSourceState interactionSourceState)
         {
-            InputSystem?.RaiseSourceLost(GetOrAddController(interactionSourceState)?.InputSource);
+            var controller = GetOrAddController(interactionSourceState);
+            InputSystem?.RaiseSourceLost(controller?.InputSource, controller);
             activeControllers.Remove(interactionSourceState.source.id);
         }
 
@@ -138,7 +139,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="args">SDK source detected event arguments</param>
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
         {
-            InputSystem?.RaiseSourceDetected(GetOrAddController(args.state)?.InputSource);
+            var controller = GetOrAddController(args.state);
+            InputSystem?.RaiseSourceDetected(controller?.InputSource, controller);
         }
 
         /// <summary>

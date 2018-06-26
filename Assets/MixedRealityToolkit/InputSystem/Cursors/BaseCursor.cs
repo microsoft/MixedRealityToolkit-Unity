@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
@@ -133,11 +134,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// <param name="eventData"></param>
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
+            var controller = eventData.Controller as WindowsMixedRealityController;
 #if UNITY_WSA
-            // TODO Figure out a better way to know what type of source is found / lost.
-            InteractionSourceKind sourceKind;
-            if (InteractionInputSources.TryGetSourceKind(eventData.SourceId, out sourceKind) &&
-                sourceKind == InteractionSourceKind.Hand)
+            if (controller?.LastSourceStateReading.source.kind == InteractionSourceKind.Hand)
             {
                 visibleHandsCount++;
             }
@@ -155,13 +154,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// <param name="eventData"></param>
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
+            var controller = eventData.Controller as WindowsMixedRealityController;
 #if UNITY_WSA
-            // TODO Figure out a better way to know what type of source is found / lost.
-            InteractionSourceKind sourceKind;
-            if (InteractionInputSources.TryGetSourceKind(eventData.SourceId, out sourceKind) &&
-                sourceKind == InteractionSourceKind.Hand)
+            if (controller?.LastSourceStateReading.source.kind == InteractionSourceKind.Hand)
             {
-                visibleHandsCount--;
+                visibleHandsCount++;
             }
 #endif
 

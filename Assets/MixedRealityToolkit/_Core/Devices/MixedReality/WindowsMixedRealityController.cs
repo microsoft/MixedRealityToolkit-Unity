@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             if (lastState != TrackingState)
             {
-                InputSystem?.RaiseSourceTrackingStateChanged(InputSource, TrackingState);
+                InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
             }
         }
 

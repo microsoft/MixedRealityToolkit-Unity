@@ -116,48 +116,55 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// Raise the event that the Input Source was detected.
         /// </summary>
         /// <param name="source">The detected Input Source.</param>
-        void RaiseSourceDetected(IMixedRealityInputSource source);
+        /// <param name="controller"></param>
+        void RaiseSourceDetected(IMixedRealityInputSource source, IMixedRealityController controller = null);
 
         /// <summary>
         /// Raise the event that the Input Source was lost.
         /// </summary>
         /// <param name="source">The lost Input Source.</param>
-        void RaiseSourceLost(IMixedRealityInputSource source);
+        /// <param name="controller"></param>
+        void RaiseSourceLost(IMixedRealityInputSource source, IMixedRealityController controller = null);
 
         /// <summary>
         /// Raise the event that the Input Source's tracking state has changed.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="controller"></param>
         /// <param name="state"></param>
-        void RaiseSourceTrackingStateChanged(IMixedRealityInputSource source, TrackingState state);
+        void RaiseSourceTrackingStateChanged(IMixedRealityInputSource source, IMixedRealityController controller, TrackingState state);
 
         /// <summary>
         /// Raise the event that the Input Source position was changed.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="controller"></param>
         /// <param name="position"></param>
-        void RaiseSourcePositionChanged(IMixedRealityInputSource source, Vector2 position);
+        void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, Vector2 position);
 
         /// <summary>
         /// Raise the event that the Input Source position was changed.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="controller"></param>
         /// <param name="position"></param>
-        void RaiseSourcePositionChanged(IMixedRealityInputSource source, Vector3 position);
+        void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, Vector3 position);
 
         /// <summary>
         /// Raise the event that the Input Source position was changed.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="controller"></param>
         /// <param name="rotation"></param>
-        void RaiseSourcePositionChanged(IMixedRealityInputSource source, Quaternion rotation);
+        void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, Quaternion rotation);
 
         /// <summary>
         /// Raise the event that the Input Source position was changed.
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="controller"></param>
         /// <param name="position"></param>
-        void RaiseSourcePositionChanged(IMixedRealityInputSource source, SixDof position);
+        void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, SixDof position);
 
         #endregion Input Source Events
 

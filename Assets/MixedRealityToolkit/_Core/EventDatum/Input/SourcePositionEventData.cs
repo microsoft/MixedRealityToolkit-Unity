@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -43,9 +44,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <inheritdoc />
         public SourcePositionEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IMixedRealityInputSource inputSource, TrackingState trackingState)
+        public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityController controller, TrackingState trackingState)
         {
-            Initialize(inputSource);
+            Initialize(inputSource, controller);
             TrackingState = trackingState;
         }
 
@@ -53,10 +54,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// Populates the event with data.
         /// </summary>
         /// <param name="inputSource"></param>
+        /// <param name="controller"></param>
         /// <param name="position"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Vector2 position)
+        public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityController controller, Vector2 position)
         {
-            Initialize(inputSource);
+            Initialize(inputSource, controller);
             TwoDofPosition = position;
         }
 
@@ -64,10 +66,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// Populates the event with data.
         /// </summary>
         /// <param name="inputSource"></param>
+        /// <param name="controller"></param>
         /// <param name="position"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Vector3 position)
+        public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityController controller, Vector3 position)
         {
-            Initialize(inputSource);
+            Initialize(inputSource, controller);
             ThreeDofPosition = position;
         }
 
@@ -75,10 +78,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// Populates the event with data.
         /// </summary>
         /// <param name="inputSource"></param>
+        /// <param name="controller"></param>
         /// <param name="rotation"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Quaternion rotation)
+        public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityController controller, Quaternion rotation)
         {
-            Initialize(inputSource);
+            Initialize(inputSource, controller);
             ThreeDofRotation = rotation;
         }
 
@@ -86,10 +90,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// Populates the event with data.
         /// </summary>
         /// <param name="inputSource"></param>
+        /// <param name="controller"></param>
         /// <param name="position"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, SixDof position)
+        public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityController controller, SixDof position)
         {
-            Initialize(inputSource);
+            Initialize(inputSource, controller);
             SixDofPosition = position;
         }
     }

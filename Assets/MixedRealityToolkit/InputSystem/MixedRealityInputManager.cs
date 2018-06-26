@@ -15,6 +15,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -429,10 +430,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         #region Input Source State Events
 
         /// <inheritdoc />
-        public void RaiseSourceDetected(IMixedRealityInputSource source)
+        public void RaiseSourceDetected(IMixedRealityInputSource source, IMixedRealityController controller = null)
         {
             // Create input event
-            sourceStateEventData.Initialize(source);
+            sourceStateEventData.Initialize(source, controller);
 
             AddSource(source);
         }
@@ -455,10 +456,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void RaiseSourceLost(IMixedRealityInputSource source)
+        public void RaiseSourceLost(IMixedRealityInputSource source, IMixedRealityController controller = null)
         {
             // Create input event
-            sourceStateEventData.Initialize(source);
+            sourceStateEventData.Initialize(source, controller);
 
             RemoveSource(source);
         }
@@ -485,50 +486,51 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         #region Input Source Position Events
 
         /// <inheritdoc />
-        public void RaiseSourceTrackingStateChanged(IMixedRealityInputSource source, TrackingState state)
+        public void RaiseSourceTrackingStateChanged(IMixedRealityInputSource source, IMixedRealityController controller, TrackingState state)
         {
             // Create input event
-            sourcePositionEventData.Initialize(source, state);
+            sourcePositionEventData.Initialize(source, controller, state);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
         }
 
         /// <inheritdoc />
-        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, Vector2 position)
+        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, Vector2 position)
         {
             // Create input event
-            sourcePositionEventData.Initialize(source, position);
+            sourcePositionEventData.Initialize(source, controller, position);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
         }
 
         /// <inheritdoc />
-        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, Vector3 position)
+        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, Vector3 position)
         {
             // Create input event
-            sourcePositionEventData.Initialize(source, position);
+            sourcePositionEventData.Initialize(source, controller, position);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
         }
 
         /// <inheritdoc />
-        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, Quaternion rotation)
+        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, Quaternion rotation)
         {
             // Create input event
-            sourcePositionEventData.Initialize(source, rotation);
+            sourcePositionEventData.Initialize(source, controller, rotation);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
         }
 
         /// <inheritdoc />
-        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, SixDof position)
+        public void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, SixDof position)
+
         {
             // Create input event
-            sourcePositionEventData.Initialize(source, position);
+            sourcePositionEventData.Initialize(source, controller, position);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
