@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
 #if UNITY_WSA
             if (controller?.LastSourceStateReading.source.kind == InteractionSourceKind.Hand)
             {
-                visibleHandsCount++;
+                visibleHandsCount--;
             }
 #endif
 

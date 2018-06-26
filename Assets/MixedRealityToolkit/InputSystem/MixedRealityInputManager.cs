@@ -527,7 +527,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         /// <inheritdoc />
         public void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, SixDof position)
-
         {
             // Create input event
             sourcePositionEventData.Initialize(source, controller, position);
