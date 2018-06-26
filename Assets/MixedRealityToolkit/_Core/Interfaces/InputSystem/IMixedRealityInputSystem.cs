@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="controller"></param>
         /// <param name="rotation"></param>
-        void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, Quaternion rotation);
+        void RaiseSourceRotationChanged(IMixedRealityInputSource source, IMixedRealityController controller, Quaternion rotation);
 
         /// <summary>
         /// Raise the event that the Input Source position was changed.
@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="controller"></param>
         /// <param name="position"></param>
-        void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, SixDof position);
+        void RaiseSourcePoseChanged(IMixedRealityInputSource source, IMixedRealityController controller, SixDof position);
 
         #endregion Input Source Events
 

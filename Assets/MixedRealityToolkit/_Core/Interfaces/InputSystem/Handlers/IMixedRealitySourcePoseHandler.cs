@@ -8,11 +8,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
     /// <summary>
     /// Interface to implement to react to source 
     /// </summary>
-    public interface IMixedRealitySourcePositionHandler : IMixedRealitySourceStateHandler
+    public interface IMixedRealitySourcePoseHandler : IMixedRealitySourceStateHandler
     {
         /// <summary>
         /// Raised when the source position is changed.
         /// </summary>
-        void OnSourcePositionChanged(SourcePositionEventData eventData);
+        void OnSourcePoseChanged(SourcePoseEventData eventData);
     }
 }

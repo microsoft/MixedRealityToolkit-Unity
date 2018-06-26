@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
     /// Describes a source change event.
     /// <remarks>Source State events do not have an associated <see cref="Definitions.InputSystem.MixedRealityInputAction"/>.</remarks>
     /// </summary>
-    public class SourcePositionEventData : SourceStateEventData
+    public class SourcePoseEventData : SourceStateEventData
     {
         /// <summary>
         /// The new tracking state of the input source.
@@ -39,10 +39,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <summary>
         /// The new position and rotation of the input source.
         /// </summary>
-        public SixDof SixDofPosition { get; private set; } = SixDof.ZeroIdentity;
+        public SixDof SixDofPose { get; private set; } = SixDof.ZeroIdentity;
 
         /// <inheritdoc />
-        public SourcePositionEventData(EventSystem eventSystem) : base(eventSystem) { }
+        public SourcePoseEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityController controller, TrackingState trackingState)
         {
@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityController controller, SixDof position)
         {
             Initialize(inputSource, controller);
-            SixDofPosition = position;
+            SixDofPose = position;
         }
     }
 }
