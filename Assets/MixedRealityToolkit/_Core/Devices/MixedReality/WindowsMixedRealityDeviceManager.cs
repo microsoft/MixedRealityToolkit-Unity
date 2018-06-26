@@ -7,7 +7,10 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
@@ -24,6 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// Dictionary to capture all active controllers detected
         /// </summary>
         private readonly Dictionary<uint, IMixedRealityController> activeControllers = new Dictionary<uint, IMixedRealityController>();
+
+#if UNITY_WSA
 
         #region IMixedRealityDeviceManager Interface
 
@@ -171,5 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         }
 
         #endregion Unity InteractionManager Events
+
+#endif // UNITY_WSA
     }
 }

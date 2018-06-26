@@ -18,6 +18,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         Other,
         /// <summary>
+        /// The controller is tracked, but has approximate positioning.
+        /// </summary>
+        Approximate,
+        /// <summary>
         /// The controller is currently fully tracked and has accurate positioning.
         /// </summary>
         Tracked,
