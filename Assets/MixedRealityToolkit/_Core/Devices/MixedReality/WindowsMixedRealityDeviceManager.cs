@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
@@ -87,6 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             if (activeControllers.ContainsKey(interactionSourceState.source.id))
             {
                 var controller = activeControllers[interactionSourceState.source.id] as WindowsMixedRealityController;
+                Debug.Assert(controller != null);
                 controller.UpdateController(interactionSourceState);
                 return controller;
             }
