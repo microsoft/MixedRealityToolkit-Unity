@@ -11,7 +11,7 @@ namespace HoloToolkit.Unity.Buttons
     /// <summary>
     /// Base class for buttons.
     /// </summary>
-    public abstract class Button : MonoBehaviour, IInputHandler, IPointerSpecificFocusable, IHoldHandler, ISourceStateHandler, IInputClickHandler
+    public abstract class Button : MonoBehaviour, IInputHandler, IPointerSpecificFocusable, IHoldHandler, IInputClickHandler
     {
         #region Public Members and Serialized Fields
 
@@ -100,19 +100,14 @@ namespace HoloToolkit.Unity.Buttons
         private bool lastHandVisible = false;
 
         /// <summary>
-        /// State of gaze/focus being on the button
-        /// </summary>
-        private bool handVisible { get { return handCount > 0; } }
-
-        /// <summary>
         /// State of hands being visible
         /// </summary>
-        private bool focused = false;
+        private bool handVisible { get { return InputManager.Instance.DetectedInputSources.Count > 0; } }
 
         /// <summary>
-        /// Count of visible hands
+        /// State of gaze/focus being on the button
         /// </summary>
-        private int handCount = 0;
+        private bool focused = false;
 
         /// <summary>
         /// Check for disabled state or disabled behavior
@@ -296,37 +291,6 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
-        /// <summary>
-        /// On Source detected see if it is a hand and increment hand count and set visibility
-        /// </summary>
-        /// <param name="eventData"></param>
-        public void OnSourceDetected(SourceStateEventData eventData)
-        {
-            InteractionSourceInfo sourceInfo;
-            if (eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceInfo))
-            {
-                if (sourceInfo == InteractionSourceInfo.Hand)
-                {
-                    handCount++;
-                }
-            }
-        }
-
-        /// <summary>
-        ///  On Source lost decrement hand count and set visibility
-        /// </summary>
-        /// <param name="eventData"></param>
-        public void OnSourceLost(SourceStateEventData eventData)
-        {
-            InteractionSourceInfo sourceInfo;
-            if (eventData.InputSource.TryGetSourceKind(eventData.SourceId, out sourceInfo))
-            {
-                if (sourceInfo == InteractionSourceInfo.Hand)
-                {
-                    handCount--;
-                }
-            }
-        }
         #endregion Input Interface Functions
 
         #region Button Functions
