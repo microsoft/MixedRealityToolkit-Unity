@@ -156,9 +156,6 @@ namespace HoloToolkit.Unity.Buttons
                 {
                     DoButtonPressed();
 
-                    // Set state to Pressed
-                    ButtonStateEnum newState = ButtonStateEnum.Pressed;
-                    this.OnStateChange(newState);
                     eventData.Use();
                 }
             }
@@ -175,6 +172,7 @@ namespace HoloToolkit.Unity.Buttons
                 if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
                 {
                     DoButtonReleased();
+
                     eventData.Use();
                 }
             }
@@ -190,7 +188,8 @@ namespace HoloToolkit.Unity.Buttons
             {
                 if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
                 {
-                    DoButtonPressed(true);
+                    DoButtonClicked();
+
                     eventData.Use();
                 }
             }
@@ -205,7 +204,8 @@ namespace HoloToolkit.Unity.Buttons
         {
             if (!isDisabled)
             {
-                DoButtonPressed();
+                DoButtonHeld();
+
                 eventData.Use();
             }
         }
@@ -216,15 +216,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <param name="eventData"></param>
         public void OnHoldCompleted(HoldEventData eventData)
         {
-            if (!isDisabled && ButtonState == ButtonStateEnum.Pressed)
-            {
-                DoButtonHeld();
-
-                // Unset state from pressed.
-                ButtonStateEnum newState = ButtonStateEnum.Targeted;
-                this.OnStateChange(newState);
-                eventData.Use();
-            }
+            // No button event for OnHoldCompleted. State will be handled in OnInputUp.
         }
 
         /// <summary>
@@ -252,6 +244,7 @@ namespace HoloToolkit.Unity.Buttons
                 OnStateChange(newState);
 
                 focused = true;
+
                 eventData.Use();
             }
         }
@@ -276,6 +269,7 @@ namespace HoloToolkit.Unity.Buttons
                 }
 
                 focused = false;
+
                 eventData.Use();
             }
         }
@@ -321,6 +315,13 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
+        protected void DoButtonClicked()
+        {
+            if (OnButtonClicked != null)
+            {
+                OnButtonClicked(gameObject);
+            }
+        }
 
         /// <summary>
         /// Called once after the button is held down.
