@@ -439,5 +439,265 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         #endregion SixDof
+
+        #region Interaction Array Tests
+
+        [Test]
+        public void Test15_InteractionArrayObject()
+        {
+            var interactions = new MixedRealityInteractionMapping[1];
+            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.Raw, DeviceInputType.None, MixedRealityInputAction.None);
+            var testValue1 = (object)1f;
+            var testValue2 = (object)false;
+
+            var initialValue = interactions[0];
+
+            Assert.IsNotNull(initialValue);
+            Assert.IsNull(initialValue.GetRawValue());
+            Assert.IsFalse(initialValue.Changed);
+
+            initialValue.SetRawValue(testValue1);
+
+            Assert.IsTrue(initialValue.Changed);
+
+            var setValue1 = interactions[0];
+
+            Assert.IsNotNull(setValue1);
+            Assert.IsNotNull(setValue1.GetRawValue());
+            Assert.AreEqual(setValue1.GetRawValue(), testValue1);
+            Assert.IsFalse(setValue1.Changed);
+
+            setValue1.SetRawValue(testValue2);
+
+            Assert.IsTrue(setValue1.Changed);
+
+            var setValue2 = interactions[0];
+
+            Assert.IsNotNull(setValue2);
+            Assert.IsNotNull(setValue2.GetRawValue());
+            Assert.AreEqual(setValue2.GetRawValue(), testValue2);
+            Assert.IsFalse(setValue2.Changed);
+        }
+
+        [Test]
+        public void Test16_InteractionArrayBool()
+        {
+            var interactions = new MixedRealityInteractionMapping[1];
+            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.Digital, DeviceInputType.None, MixedRealityInputAction.None);
+            var testValue1 = true;
+            var testValue2 = false;
+
+            var initialValue = interactions[0];
+
+            Assert.IsNotNull(initialValue);
+            Assert.IsFalse(initialValue.GetBooleanValue());
+            Assert.IsFalse(initialValue.Changed);
+
+            initialValue.SetBoolValue(testValue1);
+
+            Assert.IsTrue(initialValue.Changed);
+
+            var setValue1 = interactions[0];
+
+            Assert.IsNotNull(setValue1);
+            Assert.IsTrue(setValue1.GetBooleanValue());
+            Assert.IsTrue(setValue1.GetBooleanValue() == testValue1);
+            Assert.IsFalse(setValue1.Changed);
+
+            setValue1.SetBoolValue(testValue2);
+
+            Assert.IsTrue(setValue1.Changed);
+
+            var setValue2 = interactions[0];
+
+            Assert.IsNotNull(setValue2);
+            Assert.IsFalse(setValue2.GetBooleanValue());
+            Assert.IsTrue(setValue2.GetBooleanValue() == testValue2);
+            Assert.IsFalse(setValue2.Changed);
+        }
+
+        [Test]
+        public void Test17_InteractionArrayFloat()
+        {
+            var interactions = new MixedRealityInteractionMapping[1];
+            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, MixedRealityInputAction.None);
+            var testValue1 = 1f;
+            var testValue2 = 9001f;
+
+            var initialValue = interactions[0];
+
+            Assert.IsNotNull(initialValue);
+            Assert.AreEqual(initialValue.GetFloatValue(), 0d, double.Epsilon);
+            Assert.IsFalse(initialValue.Changed);
+
+            initialValue.SetFloatValue(testValue1);
+
+            Assert.IsTrue(initialValue.Changed);
+
+            var setValue1 = interactions[0];
+
+            Assert.IsNotNull(setValue1);
+            Assert.AreEqual(setValue1.GetFloatValue(), testValue1, double.Epsilon);
+            Assert.IsFalse(setValue1.Changed);
+
+            setValue1.SetFloatValue(testValue2);
+
+            Assert.IsTrue(setValue1.Changed);
+
+            var setValue2 = interactions[0];
+
+            Assert.IsNotNull(setValue2);
+            Assert.AreEqual(setValue2.GetFloatValue(), testValue2, double.Epsilon);
+            Assert.IsFalse(setValue2.Changed);
+        }
+
+        [Test]
+        public void Test18_InteractionArrayVector2()
+        {
+            var interactions = new MixedRealityInteractionMapping[1];
+            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, MixedRealityInputAction.None);
+            var testValue1 = Vector2.one;
+            var testValue2 = Vector2.zero;
+
+            var initialValue = interactions[0];
+
+            Assert.IsNotNull(initialValue);
+            Assert.True(initialValue.GetVector2Value() == Vector2.zero);
+            Assert.IsFalse(initialValue.Changed);
+
+            initialValue.SetVector2Value(testValue1);
+
+            Assert.IsTrue(initialValue.Changed);
+
+            var setValue1 = interactions[0];
+
+            Assert.IsNotNull(setValue1);
+            Assert.True(setValue1.GetVector2Value() == testValue1);
+            Assert.IsFalse(setValue1.Changed);
+
+            setValue1.SetVector2Value(testValue2);
+
+            Assert.IsTrue(setValue1.Changed);
+
+            var setValue2 = interactions[0];
+
+            Assert.IsNotNull(setValue2);
+            Assert.True(setValue2.GetVector2Value() == testValue2);
+            Assert.IsFalse(setValue2.Changed);
+        }
+
+        [Test]
+        public void Test19_InteractionArrayVector3()
+        {
+            var interactions = new MixedRealityInteractionMapping[1];
+            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.ThreeDofPosition, DeviceInputType.None, MixedRealityInputAction.None);
+            var testValue1 = Vector3.one;
+            var testValue2 = Vector3.zero;
+
+            var initialValue = interactions[0];
+
+            Assert.IsNotNull(initialValue);
+            Assert.True(initialValue.GetPositionValue() == Vector3.zero);
+            Assert.IsFalse(initialValue.Changed);
+
+            initialValue.SetPositionValue(testValue1);
+
+            Assert.IsTrue(initialValue.Changed);
+
+            var setValue1 = interactions[0];
+
+            Assert.IsNotNull(setValue1);
+            Assert.True(setValue1.GetPositionValue() == testValue1);
+            Assert.IsFalse(setValue1.Changed);
+
+            setValue1.SetPositionValue(testValue2);
+
+            Assert.IsTrue(setValue1.Changed);
+
+            var setValue2 = interactions[0];
+
+            Assert.IsNotNull(setValue2);
+            Assert.True(setValue2.GetPositionValue() == testValue2);
+            Assert.IsFalse(setValue2.Changed);
+        }
+
+        [Test]
+        public void Test20_InteractionArrayQuaternion()
+        {
+            var interactions = new MixedRealityInteractionMapping[1];
+            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.ThreeDofRotation, DeviceInputType.None, MixedRealityInputAction.None);
+            var testValue1 = Quaternion.Euler(45f, 45f, 45f);
+            var testValue2 = Quaternion.identity;
+
+            var initialValue = interactions[0];
+
+            Assert.IsNotNull(initialValue);
+            Assert.True(initialValue.GetRotationValue().eulerAngles == Quaternion.identity.eulerAngles);
+            Assert.IsFalse(initialValue.Changed);
+
+            initialValue.SetRotationValue(testValue1);
+
+            Assert.IsTrue(initialValue.Changed);
+
+            var setValue1 = interactions[0];
+
+            Assert.IsNotNull(setValue1);
+            Assert.True(setValue1.GetRotationValue() == testValue1);
+            Assert.IsFalse(setValue1.Changed);
+
+            setValue1.SetRotationValue(testValue2);
+
+            Assert.IsTrue(setValue1.Changed);
+
+            var setValue2 = interactions[0];
+
+            Assert.IsNotNull(setValue2);
+            Assert.True(setValue2.GetRotationValue() == testValue2);
+            Assert.IsFalse(setValue2.Changed);
+        }
+
+        [Test]
+        public void Test21_InteractionArraySixDof()
+        {
+            var interactions = new MixedRealityInteractionMapping[1];
+            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.SixDof, DeviceInputType.None, MixedRealityInputAction.None);
+            var testValue1 = new SixDof(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
+            var testValue2 = new SixDof(Vector3.zero, Quaternion.identity);
+
+            var initialValue = interactions[0];
+
+            Assert.IsNotNull(initialValue);
+            SixDof initialSixDofValue = initialValue.GetSixDofValue();
+
+            Assert.IsTrue(initialSixDofValue.Position == Vector3.zero);
+            Assert.IsTrue(initialSixDofValue == SixDof.ZeroIdentity);
+            Assert.IsFalse(initialValue.Changed);
+
+            initialValue.SetSixDofValue(testValue1);
+
+            Assert.IsTrue(initialValue.Changed);
+
+            var setValue1 = interactions[0];
+
+            Assert.IsNotNull(setValue1);
+            Assert.IsTrue(setValue1.GetSixDofValue() == testValue1);
+            Assert.IsTrue(setValue1.GetSixDofValue().Position == testValue1.Position);
+            Assert.IsTrue(setValue1.GetSixDofValue().Rotation == testValue1.Rotation);
+            Assert.IsFalse(setValue1.Changed);
+
+            setValue1.SetSixDofValue(testValue2);
+
+            Assert.IsTrue(setValue1.Changed);
+
+            var setValue2 = interactions[0];
+
+            Assert.IsNotNull(setValue2);
+            Assert.IsTrue(setValue2.GetSixDofValue() == testValue2);
+            Assert.IsTrue(setValue2.GetSixDofValue().Position == testValue2.Position);
+            Assert.IsTrue(setValue2.GetSixDofValue().Rotation == testValue2.Rotation);
+            Assert.IsFalse(setValue1.Changed);
+        }
+        #endregion Interaction Array Tests
+
     }
 }

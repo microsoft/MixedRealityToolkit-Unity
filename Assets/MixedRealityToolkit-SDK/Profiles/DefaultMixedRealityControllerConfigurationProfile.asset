@@ -13,10 +13,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderMotionControllers: 1
   useDefaultModels: 0
-  overrideLeftHandModel: {fileID: 1063639074958576, guid: 31d7c3c6de8b39f46bfeeda56f941e48,
-    type: 2}
-  overrideRightHandModel: {fileID: 1063639074958576, guid: 31d7c3c6de8b39f46bfeeda56f941e48,
-    type: 2}
+  overrideLeftHandModel: {fileID: 0}
+  overrideRightHandModel: {fileID: 0}
   mixedRealityControllerMappingProfiles:
   - id: 1
     description: MotionController Left

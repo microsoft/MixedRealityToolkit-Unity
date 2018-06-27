@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     /// <remarks>One definition should exist for each physical device input, such as buttons, triggers, joysticks, dpads, and more.</remarks>
     /// </summary>
     [Serializable]
-    public struct MixedRealityInteractionMapping
+    public class MixedRealityInteractionMapping
     {
         /// <summary>
         /// The constructor for a new Interaction Mapping definition
