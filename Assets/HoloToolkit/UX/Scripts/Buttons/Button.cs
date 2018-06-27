@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using HoloToolkit.Unity.InputModule;
 using System;
 using System.Collections;
 using UnityEngine;
-using HoloToolkit.Unity.InputModule;
 
 namespace HoloToolkit.Unity.Buttons
 {
@@ -13,39 +13,42 @@ namespace HoloToolkit.Unity.Buttons
     /// </summary>
     public abstract class Button : MonoBehaviour, IInputHandler, IPointerSpecificFocusable, IHoldHandler, ISourceStateHandler, IInputClickHandler
     {
-        #region Public Members
+        #region Public Members and Serialized Fields
 
-        /// <summary>
-        /// Current Button State
-        /// </summary>
         [Header("Basic Settings")]
         [SerializeField]
         [Tooltip("Current State of the Button")]
         private ButtonStateEnum buttonState = ButtonStateEnum.Observation;
+
+        /// <summary>
+        /// Current Button State.
+        /// </summary>
         public ButtonStateEnum ButtonState
         {
             get { return buttonState; }
             set { buttonState = value; }
         }
 
-        /// <summary>
-        /// Filter to apply for the correct button source
-        /// </summary>
         [SerializeField]
         [Tooltip("Filter for press info for click or press event")]
         private InteractionSourcePressInfo buttonPressFilter = InteractionSourcePressInfo.Select;
+
+        /// <summary>
+        /// Filter to apply for the correct button source.
+        /// </summary>
         public InteractionSourcePressInfo ButtonPressFilter
         {
             get { return buttonPressFilter; }
             set { buttonPressFilter = value; }
         }
 
-        /// <summary>
-        /// If true the interactable will deselect when you look off of the object
-        /// </summary>
         [SerializeField]
-        [Tooltip("If RequireGaze then looking away will deselect object")]
+        [Tooltip("If RequireGaze, then looking away will deselect object")]
         private bool requireGaze = true;
+
+        /// <summary>
+        /// If true, the interactable will deselect when you look off of the object.
+        /// </summary>
         public bool RequireGaze
         {
             get { return requireGaze; }
@@ -53,7 +56,7 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         /// <summary>
-        /// Event to receive button state change
+        /// Event to receive button state change.
         /// </summary>
         public event Action<ButtonStateEnum> StateChange;
 
@@ -78,13 +81,14 @@ namespace HoloToolkit.Unity.Buttons
         public event Action<GameObject> OnButtonHeld;
 
         /// <summary>
-        /// Event fired when hold interaction canceled.
+        /// Event fired when button interaction canceled.
         /// </summary>
         public event Action<GameObject> OnButtonCanceled;
 
-        #endregion
+        #endregion Public Members and Serialized Fields
 
         #region Private and Protected Members
+
         /// <summary>
         /// Protected string for the current active gizmo icon
         /// </summary>
@@ -96,7 +100,7 @@ namespace HoloToolkit.Unity.Buttons
         private bool lastHandVisible = false;
 
         /// <summary>
-        /// State of hands being visible
+        /// State of gaze/focus being on the button
         /// </summary>
         private bool handVisible { get { return handCount > 0; } }
 
@@ -115,9 +119,9 @@ namespace HoloToolkit.Unity.Buttons
         /// </summary>
         private bool isDisabled { get { return ButtonState == ButtonStateEnum.Disabled || !enabled; } }
 
-        #endregion
+        #endregion Private and Protected Members
 
-        #region MonoBehaviour Methods
+        #region MonoBehaviour Functions
 
         /// <summary>
         /// Use LateUpdate to check for whether or not the hand is up
@@ -141,7 +145,7 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
-        #endregion
+        #endregion MonoBehaviour Functions
 
         /// <summary>
         /// Public function to force a clicked event on a button
@@ -154,7 +158,7 @@ namespace HoloToolkit.Unity.Buttons
         #region Input Interface Functions
 
         /// <summary>
-        /// Handle input down events from IInputSource.
+        /// Handle on input down events from IInputHandler.
         /// </summary>
         /// <param name="eventData"></param>
         public void OnInputDown(InputEventData eventData)
@@ -174,7 +178,7 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         /// <summary>
-        /// Handle on input up events from IInputSource
+        /// Handle on input up events from IInputHandler.
         /// </summary>
         /// <param name="eventData"></param>
         public void OnInputUp(InputEventData eventData)
@@ -190,7 +194,7 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         /// <summary>
-        /// Handle clicked event
+        /// Handle clicked events from IInputClickHandler.
         /// </summary>
         /// <param name="eventData"></param>
         public void OnInputClicked(InputClickedEventData eventData)
@@ -207,7 +211,7 @@ namespace HoloToolkit.Unity.Buttons
 
 
         /// <summary>
-        /// Handle On Hold started from IHoldSource
+        /// Handle OnHoldStarted events from IHoldHandler.
         /// </summary>
         /// <param name="eventData"></param>
         public void OnHoldStarted(HoldEventData eventData)
@@ -220,7 +224,7 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         /// <summary>
-        /// Handle On Hold started from IHoldSource
+        /// Handle on hold completed events from IHoldHandler.
         /// </summary>
         /// <param name="eventData"></param>
         public void OnHoldCompleted(HoldEventData eventData)
@@ -237,7 +241,7 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         /// <summary>
-        /// Handle On Hold started from IHoldSource
+        /// Handle on hold canceled events from IHoldHandler.
         /// </summary>
         /// <param name="eventData"></param>
         public void OnHoldCanceled(HoldEventData eventData)
@@ -254,7 +258,7 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         /// <summary>
-        /// FocusManager SendMessage("FocusEnter") receiver.
+        /// Handle on focus enter events from IPointerSpecificFocusable.
         /// </summary>
         public void OnFocusEnter(PointerSpecificEventData eventData)
         {
@@ -269,7 +273,7 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         /// <summary>
-        /// FocusManager SendMessage("FocusExit") receiver.
+        /// Handle on focus exit events from IPointerSpecificFocusable.
         /// </summary>
         public void OnFocusExit(PointerSpecificEventData eventData)
         {
@@ -323,11 +327,12 @@ namespace HoloToolkit.Unity.Buttons
                 }
             }
         }
+        #endregion Input Interface Functions
 
-        #endregion
+        #region Button Functions
 
         /// <summary>
-        /// Called when button is pressed down.
+        /// Called when the button is pressed down.
         /// </summary>
         protected void DoButtonPressed(bool bRelease = false)
         {
@@ -351,7 +356,7 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         /// <summary>
-        /// Called when button is released.
+        /// Called when the button is released.
         /// </summary>
         protected void DoButtonReleased()
         {
@@ -386,7 +391,7 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         /// <summary>
-        /// Called while button is pressed down.
+        /// Called once after the button is held down.
         /// </summary>
         protected void DoButtonHeld()
         {
@@ -408,9 +413,9 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         /// <summary>
-        /// Event to fire off when hand visibility changes
+        /// Event to fire off when hand/spatial input source visibility changes.
         /// </summary>
-        /// <param name="visible"></param>
+        /// <param name="visible">Whether the spatial input source is has become visible.</param>
         public virtual void OnHandVisibleChange(bool visible)
         {
             lastHandVisible = visible;
@@ -445,7 +450,7 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         /// <summary>
-        /// Callback virtual function for when the button state changes
+        /// Callback virtual function for when the button state changes.
         /// </summary>
         /// <param name="newState">
         /// A <see cref="ButtonStateEnum"/> for the new button state.
@@ -454,7 +459,7 @@ namespace HoloToolkit.Unity.Buttons
         {
             ButtonState = newState;
 
-            // Send out the action/event for the state change
+            // Send out the action/event for the state change.
             if (StateChange != null)
             {
                 StateChange(newState);
