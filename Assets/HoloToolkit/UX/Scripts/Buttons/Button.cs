@@ -121,7 +121,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <summary>
         /// Use LateUpdate to check for whether or not the hand is up
         /// </summary>
-        public void LateUpdate()
+        private void LateUpdate()
         {
             if (!isDisabled && lastHandVisible != handVisible)
             {
@@ -132,7 +132,7 @@ namespace HoloToolkit.Unity.Buttons
         /// <summary>
         /// Ensures the button returns to a neutral state when disabled
         /// </summary>
-        public virtual void OnDisable()
+        protected virtual void OnDisable()
         {
             if (ButtonState != ButtonStateEnum.Disabled)
             {
@@ -141,14 +141,6 @@ namespace HoloToolkit.Unity.Buttons
         }
 
         #endregion MonoBehaviour Functions
-
-        /// <summary>
-        /// Public function to force a clicked event on a button
-        /// </summary>
-        public void TriggerClicked()
-        {
-            DoButtonPressed(true);
-        }
 
         #region Input Interface Functions
 
@@ -244,10 +236,7 @@ namespace HoloToolkit.Unity.Buttons
             if (!isDisabled && ButtonState == ButtonStateEnum.Pressed)
             {
                 DoButtonCanceled();
-                // Unset state from pressed.
 
-                ButtonStateEnum newState = ButtonStateEnum.Targeted;
-                this.OnStateChange(newState);
                 eventData.Use();
             }
         }
@@ -324,18 +313,7 @@ namespace HoloToolkit.Unity.Buttons
         /// </summary>
         protected void DoButtonReleased()
         {
-            ButtonStateEnum newState;
-
-            if (focused)
-            {
-                newState = handVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
-            }
-            else
-            {
-                newState = handVisible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
-            }
-
-            OnStateChange(newState);
+            ResetButtonState();
 
             if (OnButtonReleased != null)
             {
@@ -343,16 +321,6 @@ namespace HoloToolkit.Unity.Buttons
             }
         }
 
-        /// <summary>
-        /// Delayed function to release button works for click events
-        /// </summary>
-        /// <param name="delay"></param>
-        /// <returns></returns>
-        private IEnumerator DelayedRelease(float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            DoButtonReleased();
-        }
 
         /// <summary>
         /// Called once after the button is held down.
@@ -370,6 +338,8 @@ namespace HoloToolkit.Unity.Buttons
         /// </summary>
         protected void DoButtonCanceled()
         {
+            ResetButtonState();
+
             if (OnButtonCanceled != null)
             {
                 OnButtonCanceled(gameObject);
@@ -429,5 +399,56 @@ namespace HoloToolkit.Unity.Buttons
                 StateChange(newState);
             }
         }
+
+        #endregion Button Functions
+
+        #region Helper Functions
+
+        /// <summary>
+        /// Public function to force a clicked event on a button.
+        /// </summary>
+        public void TriggerClicked()
+        {
+            DoButtonPressed();
+
+            StartCoroutine(DelayedRelease(0.2f));
+        }
+
+        /// <summary>
+        /// Delayed function to release button works for click events
+        /// </summary>
+        /// <param name="delay">The amount of time to wait before triggering a button release.</param>
+        /// <returns></returns>
+        private IEnumerator DelayedRelease(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            DoButtonReleased();
+            DoButtonClicked();
+        }
+
+        private void ResetButtonState()
+        {
+            if (!RequireGaze && ButtonState == ButtonStateEnum.Pressed)
+            {
+                // Pop from the modal stack as long as gaze is not required (if it is, we never pushed)
+                // and the button state is currently pressed (if it isn't, we never pushed).
+                InputManager.Instance.PopModalInputHandler();
+            }
+
+            ButtonStateEnum newState;
+
+            if (focused)
+            {
+                newState = handVisible ? ButtonStateEnum.Targeted : ButtonStateEnum.ObservationTargeted;
+            }
+            else
+            {
+                newState = handVisible ? ButtonStateEnum.Interactive : ButtonStateEnum.Observation;
+            }
+
+            OnStateChange(newState);
+        }
+
+        #endregion Helper Functions
     }
 }
