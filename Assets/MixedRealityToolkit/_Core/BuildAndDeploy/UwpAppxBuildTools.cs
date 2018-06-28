@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor;
 using System;
 using System.Diagnostics;
 using System.IO;

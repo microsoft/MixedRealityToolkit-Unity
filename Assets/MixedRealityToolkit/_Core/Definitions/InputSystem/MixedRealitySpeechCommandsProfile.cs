@@ -8,12 +8,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     /// <summary>
     /// Configuration profile settings for setting up and consuming Speech Commands.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Speech Commands Profile", fileName = "MixedRealitySpeechCommandsProfile", order = 2)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Speech Commands Profile", fileName = "MixedRealitySpeechCommandsProfile", order = 3)]
     public class MixedRealitySpeechCommandsProfile : ScriptableObject
     {
         [SerializeField]
         [Tooltip("The list of Speech Commands users use in your application.")]
         private SpeechCommands[] speechCommands = new SpeechCommands[0];
+
+        /// <summary>
+        /// The list of Speech Commands users use in your application.
+        /// </summary>
         public SpeechCommands[] SpeechCommands => speechCommands;
     }
 }

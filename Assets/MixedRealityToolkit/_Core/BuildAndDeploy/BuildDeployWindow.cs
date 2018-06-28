@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Build.Usb;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.WebRequestRest;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal.DataStructures;
@@ -482,6 +482,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Build
                         "Okay", "Cancel"))
                 {
                     Directory.Delete(BuildDeployPreferences.AbsoluteBuildDirectory, true);
+                    canUpdate = true;
                 }
 
                 if (canUpdate)
@@ -644,7 +645,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Build
             GUILayout.FlexibleSpace();
 
             // Open AppX packages location
-            string appxBuildPath = Path.GetFullPath($"{BuildDeployPreferences.BuildDirectory}/{PlayerSettings.productName}/AppPackages");
+            string appxDirectory = curScriptingBackend == ScriptingImplementation.IL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
+            string appxBuildPath = Path.GetFullPath($"{BuildDeployPreferences.BuildDirectory}{appxDirectory}");
             GUI.enabled = builds.Count > 0 && !string.IsNullOrEmpty(appxBuildPath);
 
             if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(halfWidth)))
@@ -1088,13 +1090,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Build
         {
             builds.Clear();
 
+            var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
+            string appxDirectory = curScriptingBackend == ScriptingImplementation.IL2CPP ? $"AppPackages\\{PlayerSettings.productName}" : $"{PlayerSettings.productName}\\AppPackages";
+
             try
             {
                 AppPackageDirectories.Clear();
                 string[] buildList = Directory.GetDirectories(BuildDeployPreferences.AbsoluteBuildDirectory, "*", SearchOption.AllDirectories);
                 foreach (string appBuild in buildList)
                 {
-                    if (appBuild.Contains("AppPackages") && !appBuild.Contains("AppPackages\\"))
+                    if (appBuild.Contains(appxDirectory) && !appBuild.Contains($"{appxDirectory}\\"))
                     {
                         AppPackageDirectories.AddRange(Directory.GetDirectories(appBuild));
                     }

@@ -2,12 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
@@ -42,6 +44,36 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         #region Mixed Reality Manager configurable properties
 
         [SerializeField]
+        [Tooltip("Enable the Camera Profile on Startup")]
+        private bool enableCameraProfile = false;
+
+        /// <summary>
+        /// Enable and configure the Camera Profile for the Mixed Reality Toolkit
+        /// </summary>
+        public bool EnableCameraProfile
+        {
+            get
+            {
+                return CameraProfile != null && enableCameraProfile;
+            }
+
+            private set { enableCameraProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Camera profile.")]
+        private MixedRealityCameraProfile cameraProfile;
+
+        /// <summary>
+        /// Input System Action Mapping profile for wiring up Controller input to Actions.
+        /// </summary>
+        public MixedRealityCameraProfile CameraProfile
+        {
+            get { return cameraProfile; }
+            private set { cameraProfile = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Enable the Input System on Startup")]
         private bool enableInputSystem = false;
 
@@ -50,7 +82,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool EnableInputSystem
         {
-            get { return enableInputSystem; }
+            get
+            {
+                return inputSystemType.Type != null &&
+                       inputActionsProfile != null &&
+                       enableInputSystem;
+            }
             private set { enableInputSystem = value; }
         }
 
@@ -90,13 +127,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool EnableSpeechCommands
         {
-            get { return enableSpeechCommands; }
+            get { return speechCommandsProfile != null && enableSpeechCommands; }
             private set { enableSpeechCommands = value; }
         }
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
         private MixedRealitySpeechCommandsProfile speechCommandsProfile;
+
+        /// <summary>
+        /// Speech commands profile for configured speech commands, for use by the speech recognition system
+        /// </summary>
         public MixedRealitySpeechCommandsProfile SpeechCommandsProfile
         {
             get { return speechCommandsProfile; }
@@ -104,16 +145,29 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Enable and configure the controller rendering of the Motion Controllers on Startup.")]
-        private bool renderMotionControllers = false;
+        [Tooltip("Enable and configure the devices for your application.")]
+        private bool enableControllerProfiles = false;
 
         /// <summary>
-        /// Enable and configure the controller rendering of the Motion Controllers on Startup.
+        /// Enable and configure the devices for your application.
         /// </summary>
-        public bool RenderMotionControllers
+        public bool EnableControllerProfiles
         {
-            get { return renderMotionControllers; }
-            private set { renderMotionControllers = value; }
+            get { return controllersProfile != null && enableControllerProfiles; }
+            private set { enableControllerProfiles = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Device profile for wiring up physical inputs to Actions.")]
+        private MixedRealityControllerMappingProfile controllersProfile;
+
+        /// <summary>
+        /// Active profile for controller mapping configuration
+        /// </summary>
+        public MixedRealityControllerMappingProfile ControllersProfile
+        {
+            get { return controllersProfile; }
+            private set { controllersProfile = value; }
         }
 
         [SerializeField]
@@ -155,16 +209,39 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            // From the serialized fields for the MixedRealityConfigurationProfile, populate the Active managers list
-            // *Note This will only take effect once the Mixed Reality Toolkit has a custom editor for the MixedRealityConfigurationProfile
-
-            ActiveManagers.Clear();
-            for (int i = 0; i < initialManagers?.Length; i++)
+            if (ActiveManagers.Count == 0)
             {
-                Managers.MixedRealityManager.Instance.AddManager(initialManagerTypes[i], initialManagers[i]);
+                for (int i = 0; i < initialManagers?.Length; i++)
+                {
+                    MixedRealityManager.Instance.AddManager(initialManagerTypes[i], initialManagers[i]);
+                }
             }
         }
 
         #endregion  ISerializationCallbackReceiver Implementation
+
+        #region Mixed Reality Controller Mapping helpers
+
+        // TODO - needs validation to ensure duplicates are not added?
+
+        public MixedRealityControllerMapping GetControllerMapping(Type controllerType, Handedness hand)
+        {
+            var systemType = SystemType.GetReference(controllerType);
+
+            if (ControllersProfile != null)
+            {
+                for (int i = 0; i < ControllersProfile.MixedRealityControllerMappingProfiles.Length; i++)
+                {
+                    if (ControllersProfile.MixedRealityControllerMappingProfiles[i].Controller == systemType && ControllersProfile.MixedRealityControllerMappingProfiles[i].Handedness == hand)
+                    {
+                        return ControllersProfile.MixedRealityControllerMappingProfiles[i];
+                    }
+                }
+            }
+
+            return default(MixedRealityControllerMapping);
+        }
+
+        #endregion Mixed Reality Controller Mapping helpers
     }
 }

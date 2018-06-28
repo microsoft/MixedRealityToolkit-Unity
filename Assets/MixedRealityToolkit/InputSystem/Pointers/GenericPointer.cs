@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public string PointerName { get; set; }
 
-        public IMixedRealityInputSource InputSourceParent { get; }
+        public virtual IMixedRealityInputSource InputSourceParent { get; protected set; }
 
         public IMixedRealityCursor BaseCursor { get; set; }
 
@@ -43,13 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         public float? PointerExtent { get; set; }
 
-        public RayStep[] Rays
-        {
-            get { return rays; }
-            protected set { rays = value; }
-        }
-
-        private RayStep[] rays = { new RayStep(Vector3.zero, Vector3.forward) };
+        public RayStep[] Rays { get; protected set; } = { new RayStep(Vector3.zero, Vector3.forward) };
 
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
@@ -64,13 +58,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             Ray pointingRay;
             if (TryGetPointingRay(out pointingRay))
             {
-                rays[0].CopyRay(pointingRay, (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent));
+                Rays[0].CopyRay(pointingRay, (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent));
             }
 
             if (RayStabilizer != null)
             {
-                RayStabilizer.UpdateStability(rays[0].Origin, rays[0].Direction);
-                rays[0].CopyRay(RayStabilizer.StableRay, (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent));
+                RayStabilizer.UpdateStability(Rays[0].Origin, Rays[0].Direction);
+                Rays[0].CopyRay(RayStabilizer.StableRay, (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent));
             }
         }
 

@@ -204,7 +204,18 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         private void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
         {
-            InputSystem.RaiseSpeechCommandRecognized(this, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+            InputAction action = null;
+            for (int i = 0; i < Commands?.Length; i++)
+            {
+                if (Commands[i].Keyword == text)
+                {
+                    action = Commands[i].Action;
+                }
+            }
+
+            Debug.Assert(action != null, $"No action found for keyword: {text}");
+
+            InputSystem.RaiseSpeechCommandRecognized(this, action, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
         }
 
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
