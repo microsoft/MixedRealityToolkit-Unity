@@ -85,8 +85,8 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         /// </summary>
         public GameObject Controls
         {
-            get { return Controls; }
-            set { Controls = value; }
+            get { return controls; }
+            set { controls = value; }
         }
 
         /// <summary>
