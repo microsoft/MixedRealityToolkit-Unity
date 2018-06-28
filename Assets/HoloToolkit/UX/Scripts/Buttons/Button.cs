@@ -141,6 +141,7 @@ namespace HoloToolkit.Unity.Buttons
                     // Set state to Pressed
                     ButtonStateEnum newState = ButtonStateEnum.Pressed;
                     this.OnStateChange(newState);
+                    eventData.Use();
                 }
             }
         }
@@ -156,6 +157,7 @@ namespace HoloToolkit.Unity.Buttons
                 if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
                 {
                     DoButtonReleased();
+                    eventData.Use();
                 }
             }
         }
@@ -171,6 +173,7 @@ namespace HoloToolkit.Unity.Buttons
                 if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
                 {
                     DoButtonPressed(true);
+                    eventData.Use();
                 }
             }
         }
@@ -185,6 +188,7 @@ namespace HoloToolkit.Unity.Buttons
             if (!m_disabled)
             {
                 DoButtonPressed();
+                eventData.Use();
             }
         }
 
@@ -201,6 +205,7 @@ namespace HoloToolkit.Unity.Buttons
                 // Unset state from pressed.
                 ButtonStateEnum newState = ButtonStateEnum.Targeted;
                 this.OnStateChange(newState);
+                eventData.Use();
             }
         }
 
@@ -217,6 +222,7 @@ namespace HoloToolkit.Unity.Buttons
 
                 ButtonStateEnum newState = ButtonStateEnum.Targeted;
                 this.OnStateChange(newState);
+                eventData.Use();
             }
         }
 
@@ -231,6 +237,7 @@ namespace HoloToolkit.Unity.Buttons
                 this.OnStateChange(newState);
 
                 _bFocused = true;
+                 eventData.Use();
             }
         }
 
@@ -239,7 +246,7 @@ namespace HoloToolkit.Unity.Buttons
         /// </summary>
         public void OnFocusExit(PointerSpecificEventData eventData)
         {
-             if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
+            if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
             {
                 if (ButtonState == ButtonStateEnum.Pressed)
                 {
@@ -254,7 +261,8 @@ namespace HoloToolkit.Unity.Buttons
                 }
 
                 _bFocused = false;
-            }
+                eventData.Use();
+             }
         }
 
         /// <summary>
