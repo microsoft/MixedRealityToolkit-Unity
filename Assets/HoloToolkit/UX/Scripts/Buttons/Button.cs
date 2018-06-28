@@ -246,8 +246,8 @@ namespace HoloToolkit.Unity.Buttons
         /// </summary>
         public void OnFocusExit(PointerSpecificEventData eventData)
         {
-             if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
-             {
+            if (!m_disabled) // && FocusManager.Instance.IsFocused(this))
+            {
                 if (ButtonState == ButtonStateEnum.Pressed)
                 {
                     DoButtonCanceled();
