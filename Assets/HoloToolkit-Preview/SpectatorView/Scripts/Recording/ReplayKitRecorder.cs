@@ -12,12 +12,12 @@ using UnityEngine.Apple.ReplayKit;
 namespace HoloToolkit.Unity.Preview.SpectatorView
 {
     /// <summary>
-    /// Records and replays screencaptures recorded from the iPhone
+    /// Records and replays screen captures recorded from the iOS device.
     /// </summary>
     public class ReplayKitRecorder : MonoBehaviour
     {
         /// <summary>
-        /// Controls container gameObject
+        /// Controls container gameObject.
         /// </summary>
         [Tooltip("Controls container gameObject")]
         [SerializeField]
@@ -25,7 +25,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
 
 #pragma warning disable 0414
         /// <summary>
-        /// Seconds to countdown before recording
+        /// Seconds to countdown before recording.
         /// </summary>
         [Tooltip("Seconds to countdown before recording")]
         [SerializeField]
@@ -34,54 +34,54 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
 
 #if UNITY_IOS
         /// <summary>
-        /// Is the component preparing for recording (Counting down)
+        /// Is the component preparing for recording (counting down).
         /// </summary>
         private bool preparingForRecording;
 #endif
 
         /// <summary>
-        /// Record button gameObject
+        /// Record button gameObject.
         /// </summary>
         [Tooltip("Record button gameObject")]
         public GameObject RecordButton;
 
         /// <summary>
-        /// Recording countdown button gameObject
+        /// Recording countdown button gameObject.
         /// </summary>
         [Tooltip("Recording countdown button gameObject")]
         [SerializeField]
         private GameObject recordCountdownButton;
 
         /// <summary>
-        /// Record countdown textfield
+        /// Record countdown text field.
         /// </summary>
-        [Tooltip("Record countdown textfield")]
+        [Tooltip("Record countdown text field")]
         [SerializeField]
         private Text recordCountdownText;
 
 #if UNITY_IOS
         /// <summary>
-        /// Used to check whether the component is recording or not
+        /// Used to check whether the component is recording or not.
         /// </summary>
         private bool recording = false;
 #endif
 
         /// <summary>
-        /// Replay (preview) button gameObject
+        /// Replay (preview) button gameObject.
         /// </summary>
         [Tooltip("Replay (preview) button gameObject")]
         [SerializeField]
         private GameObject replayButton;
 
         /// <summary>
-        /// Stop button gameObject
+        /// Stop button gameObject.
         /// </summary>
         [Tooltip("Stop button gameObject")]
         [SerializeField]
         private GameObject stopButton;
 
         /// <summary>
-        /// Controls container gameObject
+        /// Controls container gameObject.
         /// </summary>
         public GameObject Controls
         {
@@ -90,7 +90,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         }
 
         /// <summary>
-        /// Recording countdown button gameObject
+        /// Recording countdown button gameObject.
         /// </summary>
         public GameObject RecordCountdownButton
         {
@@ -99,7 +99,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         }
 
         /// <summary>
-        /// Record countdown textfield
+        /// Record countdown text field.
         /// </summary>
         public Text RecordCountdownText
         {
@@ -108,7 +108,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         }
 
         /// <summary>
-        /// Replay (preview) button gameObject
+        /// Replay (preview) button gameObject.
         /// </summary>
         public GameObject ReplayButton
         {
@@ -117,7 +117,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         }
 
         /// <summary>
-        /// Stop button gameObject
+        /// Stop button gameObject.
         /// </summary>
         public GameObject StopButton
         {
@@ -171,7 +171,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         }
 
         /// <summary>
-        /// Sets up the components and variables to start recording
+        /// Sets up the components and variables to start recording.
         /// </summary>
         public void PrepareForRecording()
         {
@@ -187,12 +187,12 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
             Countdown();
             RecordCountdownButton.GetComponent<Animation>().Play();
 #else
-            Debug.LogWarning("Not impletmenting on the current platform");
+            Debug.LogWarning("ReplayKitRecorder PrepareForRecording() is not implemented on the current platform.");
 #endif
         }
 
         /// <summary>
-        /// Displays a countdown before recording. At the end of it, it starts recording
+        /// Displays a countdown before recording. At the end of it, it starts recording.
         /// </summary>
         public void Countdown()
         {
@@ -211,12 +211,12 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
                 StartRecording();
             }
 #else
-            Debug.LogWarning("Not implemented on the current platform");
+            Debug.LogWarning("ReplayKitRecorder Countdown() is not implemented on the current platform.");
 #endif
         }
 
         /// <summary>
-        /// Starts the recording process
+        /// Starts the recording process.
         /// </summary>
         public void StartRecording()
         {
@@ -232,12 +232,12 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
                 Controls.SetActive(false);
             }
 #else
-            Debug.LogWarning("Not implemented on the current platform");
+            Debug.LogWarning("ReplayKitRecorder StartRecording() is not implemented on the current platform.");
 #endif
         }
 
         /// <summary>
-        /// Stops the recording process
+        /// Stops the recording process.
         /// </summary>
         public void StopRecording()
         {
@@ -248,19 +248,19 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
                 RecordButton.SetActive(true);
             }
 #else
-            Debug.LogWarning("Not implemented on the current platform");
+            Debug.LogWarning("ReplayKitRecorder StopRecording() is not implemented on the current platform.");
 #endif
         }
 
         /// <summary>
-        /// Plays the last recorded video
+        /// Plays the last recorded video.
         /// </summary>
         public void PlayPreview()
         {
 #if UNITY_IOS
             ReplayKit.Preview();
 #else
-            Debug.LogWarning("Not implemented on the current platform");
+            Debug.LogWarning("ReplayKitRecorder PlayPreview() is not implemented on the current platform.");
 #endif
         }
     }
