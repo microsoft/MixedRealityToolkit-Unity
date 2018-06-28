@@ -10,13 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     public enum TrackingState
     {
         /// <summary>
-        /// No  controller state provided by the SDK.
+        /// The controller is currently not tracked.
         /// </summary>
-        None = 0,
-        /// <summary>
-        /// Reserved, for systems that provide alternate tracking.
-        /// </summary>
-        Other,
+        NotTracked = 0,
         /// <summary>
         /// The controller is tracked, but has approximate positioning.
         /// </summary>
@@ -26,16 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         Tracked,
         /// <summary>
-        /// The controller is currently not tracked.
+        /// Reserved, for systems that provide alternate tracking.
         /// </summary>
-        NotTracked,
-        /// <summary>
-        /// The controller is currently only returning position data.
-        /// </summary>
-        PositionOnly,
-        /// <summary>
-        /// The controller is currently only returning orientation data.
-        /// </summary>
-        OrientationOnly
+        Other,
     }
 }

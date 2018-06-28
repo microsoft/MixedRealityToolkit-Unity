@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <summary>
         /// The new tracking state of the input source.
         /// </summary>
-        public TrackingState TrackingState { get; private set; } = TrackingState.None;
+        public TrackingState TrackingState { get; private set; } = TrackingState.NotTracked;
 
         /// <summary>
         /// The new position of the input source.
