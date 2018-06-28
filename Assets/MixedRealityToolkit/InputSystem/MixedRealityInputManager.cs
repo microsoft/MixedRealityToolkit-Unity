@@ -526,7 +526,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void RaiseSourcePoseChanged(IMixedRealityInputSource source, IMixedRealityController controller, SixDof position)
+        public void RaiseSourcePoseChanged(IMixedRealityInputSource source, IMixedRealityController controller, MixedRealityPose position)
         {
             // Create input event
             sourcePoseEventData.Initialize(source, controller, position);
@@ -986,7 +986,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void Raise6DofInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, SixDof inputData)
+        public void Raise6DofInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, MixedRealityPose inputData)
         {
             // Create input event
             sixDoFInputEventData.Initialize(source, inputAction, inputData);
@@ -996,7 +996,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         }
 
         /// <inheritdoc />
-        public void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, SixDof inputData)
+        public void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, MixedRealityPose inputData)
         {
             // Create input event
             sixDoFInputEventData.Initialize(source, handedness, inputAction, inputData);

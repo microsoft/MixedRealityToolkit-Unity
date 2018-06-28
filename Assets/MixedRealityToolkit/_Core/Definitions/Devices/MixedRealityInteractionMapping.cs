@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             vector2Data = Vector2.zero;
             positionData = Vector3.zero;
             rotationData = Quaternion.identity;
-            sixDofData = SixDof.ZeroIdentity;
+            sixDofData = MixedRealityPose.ZeroIdentity;
             changed = false;
         }
 
@@ -115,11 +115,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         private Quaternion rotationData;
 
-        private SixDof sixDofData;
+        private MixedRealityPose sixDofData;
 
         #endregion Definition Data items
 
         #region Get Operators
+
         /// <summary>
         /// Get the Raw (object) data value.
         /// </summary>
@@ -131,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Get the Boolean data value.
         /// </summary>
-        public bool GetBooleanValue()
+        public bool GetBoolValue()
         {
             return boolData;
         }
@@ -171,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Get the SixDof data value.
         /// </summary>
-        public SixDof GetSixDofValue()
+        public MixedRealityPose GetSixDofValue()
         {
             return sixDofData;
         }
@@ -189,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             if (AxisType != AxisType.Raw)
             {
-                Debug.LogError("SetRawValue(object) is only valid for AxisType.Raw InteractionMappings");
+                Debug.LogError("SetRawValue is only valid for AxisType.Raw InteractionMappings");
             }
 
             Changed = rawData != newValue;
@@ -205,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             if (AxisType != AxisType.Digital)
             {
-                Debug.LogError("SetRawValue(bool) is only valid for AxisType.Digital InteractionMappings");
+                Debug.LogError("SetBoolValue is only valid for AxisType.Digital InteractionMappings");
             }
 
             Changed = boolData != newValue;
@@ -221,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             if (AxisType != AxisType.SingleAxis)
             {
-                Debug.LogError("SetRawValue(float) is only valid for AxisType.SingleAxis InteractionMappings");
+                Debug.LogError("SetFloatValue is only valid for AxisType.SingleAxis InteractionMappings");
             }
 
             Changed = !floatData.Equals(newValue);
@@ -237,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             if (AxisType != AxisType.DualAxis)
             {
-                Debug.LogError("SetRawValue(Vector2) is only valid for AxisType.DualAxis InteractionMappings");
+                Debug.LogError("SetVector2Value is only valid for AxisType.DualAxis InteractionMappings");
             }
 
             Changed = vector2Data != newValue;
@@ -254,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             if (AxisType != AxisType.ThreeDofPosition)
             {
                 {
-                    Debug.LogError("SetRawValue(Vector3) is only valid for AxisType.ThreeDoFPosition InteractionMappings");
+                    Debug.LogError("SetPositionValue is only valid for AxisType.ThreeDoFPosition InteractionMappings");
                 }
             }
 
@@ -271,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             if (AxisType != AxisType.ThreeDofRotation)
             {
-                Debug.LogError("SetRawValue(Quaternion) is only valid for AxisType.ThreeDoFRotation InteractionMappings");
+                Debug.LogError("SetRotationValue is only valid for AxisType.ThreeDoFRotation InteractionMappings");
             }
 
             Changed = rotationData != newValue;
@@ -283,11 +284,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         /// <remarks>Only supported for a SixDof mapping axis type</remarks>
         /// <param name="newValue">SixDof value to set</param>
-        public void SetSixDofValue(SixDof newValue)
+        public void SetPoseValue(MixedRealityPose newValue)
         {
             if (AxisType != AxisType.SixDof)
             {
-                Debug.LogError("SetRawValue(SixDof) is only valid for AxisType.SixDoF InteractionMappings");
+                Debug.LogError("SetPoseValue is only valid for AxisType.SixDoF InteractionMappings");
             }
 
             Changed = sixDofData != newValue;

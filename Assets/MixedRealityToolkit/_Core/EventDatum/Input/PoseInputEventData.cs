@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <summary>
         /// The <see cref="Vector3"/> and <see cref="Quaternion"/> input data.
         /// </summary>
-        public SixDof InputData { get; private set; } = new SixDof(Vector3.zero, Quaternion.identity);
+        public MixedRealityPose InputData { get; private set; } = new MixedRealityPose(Vector3.zero, Quaternion.identity);
 
         /// <summary>
         /// Constructor.
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="inputSource"></param>
         /// <param name="inputAction"></param>
         /// <param name="inputData"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, SixDof inputData)
+        public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, MixedRealityPose inputData)
         {
             Initialize(inputSource, inputAction);
             Position = inputData.Position;
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="handedness"></param>
         /// <param name="inputAction"></param>
         /// <param name="inputData"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, MixedRealityInputAction inputAction, SixDof inputData)
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, MixedRealityInputAction inputAction, MixedRealityPose inputData)
         {
             Initialize(inputSource, handedness, inputAction);
             Position = inputData.Position;

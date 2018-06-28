@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testValue1 = true;
             var testValue2 = false;
 
-            var initialValue = interaction.GetBooleanValue();
+            var initialValue = interaction.GetBoolValue();
 
             Assert.IsFalse(initialValue);
             Assert.IsFalse(interaction.Changed);
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue1 = interaction.GetBooleanValue();
+            var setValue1 = interaction.GetBoolValue();
 
             Assert.IsTrue(setValue1);
             Assert.True(setValue1 == testValue1);
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue2 = interaction.GetBooleanValue();
+            var setValue2 = interaction.GetBoolValue();
 
             Assert.IsFalse(setValue2);
             Assert.True(setValue2 == testValue2);
@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var interaction = new MixedRealityInteractionMapping(1, AxisType.Digital, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = true;
 
-            var initialValue = interaction.GetBooleanValue();
+            var initialValue = interaction.GetBoolValue();
 
             Assert.IsFalse(initialValue);
             Assert.IsFalse(interaction.Changed);
@@ -381,21 +381,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         #endregion Quaternion
 
-        #region SixDof
+        #region MixedRealityPose
 
         [Test]
-        public void Test13_TestSixDofChanged()
+        public void Test13_TestMixedRealityPoseChanged()
         {
             var interaction = new MixedRealityInteractionMapping(1, AxisType.SixDof, DeviceInputType.None, MixedRealityInputAction.None);
-            var testValue1 = new SixDof(Vector3.up, Quaternion.identity);
-            var testValue2 = new SixDof(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
+            var testValue1 = new MixedRealityPose(Vector3.up, Quaternion.identity);
+            var testValue2 = new MixedRealityPose(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
             var initialValue = interaction.GetSixDofValue();
 
-            Assert.IsTrue(initialValue == SixDof.ZeroIdentity);
+            Assert.IsTrue(initialValue == MixedRealityPose.ZeroIdentity);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetSixDofValue(testValue1);
+            interaction.SetPoseValue(testValue1);
 
             Assert.IsTrue(interaction.Changed);
 
@@ -404,7 +404,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(setValue1 == testValue1);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetSixDofValue(testValue2);
+            interaction.SetPoseValue(testValue2);
 
             Assert.IsTrue(interaction.Changed);
 
@@ -415,30 +415,30 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [Test]
-        public void Test14_TestSixDofNoChange()
+        public void Test14_TesMixedRealityPoseNoChange()
         {
             var interaction = new MixedRealityInteractionMapping(1, AxisType.SixDof, DeviceInputType.None, MixedRealityInputAction.None);
-            var testValue = new SixDof(Vector3.up, Quaternion.identity);
+            var testValue = new MixedRealityPose(Vector3.up, Quaternion.identity);
 
             var initialValue = interaction.GetSixDofValue();
 
-            Assert.IsTrue(initialValue == SixDof.ZeroIdentity);
+            Assert.IsTrue(initialValue == MixedRealityPose.ZeroIdentity);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetSixDofValue(testValue);
+            interaction.SetPoseValue(testValue);
 
             Assert.IsTrue(interaction.Changed);
 
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetSixDofValue(testValue);
+            interaction.SetPoseValue(testValue);
 
             // Make sure if we set the same value it's false
             Assert.IsFalse(interaction.Changed);
         }
 
-        #endregion SixDof
+        #endregion MixedRealityPose
 
         #region Interaction Array Tests
 
@@ -490,7 +490,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var initialValue = interactions[0];
 
             Assert.IsNotNull(initialValue);
-            Assert.IsFalse(initialValue.GetBooleanValue());
+            Assert.IsFalse(initialValue.GetBoolValue());
             Assert.IsFalse(initialValue.Changed);
 
             initialValue.SetBoolValue(testValue1);
@@ -500,8 +500,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var setValue1 = interactions[0];
 
             Assert.IsNotNull(setValue1);
-            Assert.IsTrue(setValue1.GetBooleanValue());
-            Assert.IsTrue(setValue1.GetBooleanValue() == testValue1);
+            Assert.IsTrue(setValue1.GetBoolValue());
+            Assert.IsTrue(setValue1.GetBoolValue() == testValue1);
             Assert.IsFalse(setValue1.Changed);
 
             setValue1.SetBoolValue(testValue2);
@@ -511,8 +511,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var setValue2 = interactions[0];
 
             Assert.IsNotNull(setValue2);
-            Assert.IsFalse(setValue2.GetBooleanValue());
-            Assert.IsTrue(setValue2.GetBooleanValue() == testValue2);
+            Assert.IsFalse(setValue2.GetBoolValue());
+            Assert.IsTrue(setValue2.GetBoolValue() == testValue2);
             Assert.IsFalse(setValue2.Changed);
         }
 
@@ -657,23 +657,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [Test]
-        public void Test21_InteractionArraySixDof()
+        public void Test21_InteractionArrayMixedRealityPose()
         {
             var interactions = new MixedRealityInteractionMapping[1];
             interactions[0] = new MixedRealityInteractionMapping(1, AxisType.SixDof, DeviceInputType.None, MixedRealityInputAction.None);
-            var testValue1 = new SixDof(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
-            var testValue2 = new SixDof(Vector3.zero, Quaternion.identity);
+            var testValue1 = new MixedRealityPose(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
+            var testValue2 = new MixedRealityPose(Vector3.zero, Quaternion.identity);
 
             var initialValue = interactions[0];
 
             Assert.IsNotNull(initialValue);
-            SixDof initialSixDofValue = initialValue.GetSixDofValue();
+            MixedRealityPose initialSixDofValue = initialValue.GetSixDofValue();
 
             Assert.IsTrue(initialSixDofValue.Position == Vector3.zero);
-            Assert.IsTrue(initialSixDofValue == SixDof.ZeroIdentity);
+            Assert.IsTrue(initialSixDofValue == MixedRealityPose.ZeroIdentity);
             Assert.IsFalse(initialValue.Changed);
 
-            initialValue.SetSixDofValue(testValue1);
+            initialValue.SetPoseValue(testValue1);
 
             Assert.IsTrue(initialValue.Changed);
 
@@ -685,7 +685,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(setValue1.GetSixDofValue().Rotation == testValue1.Rotation);
             Assert.IsFalse(setValue1.Changed);
 
-            setValue1.SetSixDofValue(testValue2);
+            setValue1.SetPoseValue(testValue2);
 
             Assert.IsTrue(setValue1.Changed);
 
