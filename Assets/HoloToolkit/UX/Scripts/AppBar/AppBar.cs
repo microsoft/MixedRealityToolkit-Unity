@@ -212,7 +212,6 @@ namespace HoloToolkit.Unity.UX
         private BoundingBox boundingBox;
 
         private ButtonTemplate[] defaultButtons;
-        private Vector3[] forwards = new Vector3[4];
         private Vector3 targetBarSize = Vector3.one;
         private float lastTimeTapped = 0f;
         private float coolDownTime = 0.5f;
