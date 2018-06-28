@@ -10,7 +10,6 @@ using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
@@ -18,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.
     /// </summary>
-    public abstract class BaseCursor : MonoBehaviour, IMixedRealityCursor
+    public class BaseCursor : MonoBehaviour, IMixedRealityCursor
     {
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
