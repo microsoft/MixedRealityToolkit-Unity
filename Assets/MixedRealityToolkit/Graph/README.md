@@ -2,8 +2,9 @@
 Graph APIs are meant to ease the work required to access the data from [MS Graph](https://developer.microsoft.com/en-us/graph) in the Unity world.
 
 # Authentication
-Accessing MS Graph requires user authentication. To that end, the toolkit comes with a implementation using [Microsoft Authentication Library](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet) tested against UWP with .NET scripting backend. 
-However users can override with their own implementation, by extending GraphConnector, similarly to **MsalGraphAuthentication.cs**.
+To call Microsoft Graph, your app must acquire an [access token](https://developer.microsoft.com/en-us/graph/docs/concepts/auth_overview) from Azure Active Directory (Azure AD), Microsoft's cloud identity service. 
+
+To that end, the toolkit comes with a implementation using [Microsoft Authentication Library](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet). However users can override with their own implementation, by extending GraphConnector, similarly to **MsalGraphAuthentication.cs**.
 
 # Using Graph
 1. Register application
@@ -37,11 +38,16 @@ However users can override with their own implementation, by extending GraphConn
 
 	Look up **GraphConnectorTestAsync.cs** for examples on how to use the GrahConnector.
 
+# Testing using the Unity editor
+There are two options to test MS Graph in the editor:
+1. Use a network monitor app like Fiddler to inspect your Bearer auth token, while you execute a query using [Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer). Copy & paste the auth token into the GraphConnector inspector, as your Test Auth Token.
+2. Provide custom implementation of IGraphAuthentication instead of using MsalGraphAuthentication. It requires implementing [OAuth 2.0](https://oauth.net/2/) using Bearer Tokens authentication.
+
 # Managed bytecode stripping with IL2CPP
 IL2CPP analyzes all assemblies and removes methods that are never directly called. If something is only accessed through reflection, it will be removed unless it is specified in link.xml files. Read more about it [here](https://docs.unity3d.com/Manual/IL2CPP-BytecodeStripping.html) 
 
 # Known issues
-Two Unity bugs prevent Microsoft.Identity.Client.dll from working in UWP:
+Unity runtime bugs preventing Microsoft.Identity.Client.dll from working in UWP with IL2CPP:
 
 	1. IL2CPP project failing to P/Invoke into kernel32.dll!GetNativeSystemInfo. 
 
@@ -57,3 +63,15 @@ Two Unity bugs prevent Microsoft.Identity.Client.dll from working in UWP:
 		
 		Workaround 1: changing it locally, but keep in mind that it gets overriden every time you build the project from Unity. 
 		Workaround 2: Using .NET Standard 2.0 profile.
+
+	3. IL2CPP conversion bug causes ApplicationDataCompositeValue to fail with "Error trying to serialize the value to be written to the application data store".
+
+	    https://forum.unity.com/threads/uwp-assemblies-not-working-when-using-il2cpp-but-work-on-net-scripting-backend.533401/
+
+		Error trying to serialize the value to be written to the application data store
+		at Windows.Storage.ApplicationDataCompositeValue.Insert (System.String key, System.Object value) [0x00000] in <00000000000000000000000000000000>:0 
+		at System.Runtime.InteropServices.WindowsRuntime.IMapToIDictionaryAdapter`2[TKey,TValue].System.Collections.IEnumerable.GetEnumerator () [0x00000] in <00000000000000000000000000000000>:0 
+		at Windows.Storage.ApplicationDataCompositeValue.get_Item (System.String key) [0x00000] in <00000000000000000000000000000000>:0 
+		at Microsoft.Identity.Client.TokenCacheAccessor.SetCacheValue (Windows.Storage.ApplicationDataCompositeValue composite, System.String stringValue) [0x00000] in <00000000000000000000000000000000>:0 
+		at Microsoft.Identity.Client.TokenCacheAccessor.SaveAccessToken (System.String cacheKey, System.String item) [0x00000] in <00000000000000000000000000000000>:0 
+		at Microsoft.Identity.Client.Internal.Telemetry.TelemetryTokenCacheAccessor.SaveAccessToken (System.String cacheKey, System.String item, Microsoft.Identity.Client.Internal.RequestContext requestContext) [0x00000] in <00000000000000000000000000000000>:0 

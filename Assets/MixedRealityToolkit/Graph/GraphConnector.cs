@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Graph.Internal;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.WebRequestRest;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -27,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Graph
         /// </summary>
         [SerializeField]
         [Tooltip("The App Id registered in https://apps.dev.microsoft.com to access the Graph.")]
-        private string graphAppId = "83f5c300-1163-48b5-9790-f7a86d02349c";
+        private string graphAppId = null;
 
         /// <summary>
         /// The list of permissions required to access the Graph.
@@ -73,16 +75,13 @@ namespace Microsoft.MixedReality.Toolkit.Graph
         /// <param name="endpoint">The Graph endpoint to call.</param>
         /// <param name="api">The Graph API to call.</param>
         /// <returns>The async task.</returns>
-        public async Task<T> MakeRequestGetAsync<T>(string endpoint, string api) where T : GraphResponse, new()
+        public async Task<Response> MakeRequestGetAsync(string endpoint, string api)
         {
             string authToken = string.Empty;
 
             if (Application.isEditor)
             {
                 authToken = testAuthToken;
-
-                // Passthrough all HTTPS traffic in the Unity Editor. Should not be used in production code.
-                System.Net.ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
             }
 
             if (graphAuthentication != null && string.IsNullOrEmpty(authToken))
@@ -95,9 +94,13 @@ namespace Microsoft.MixedReality.Toolkit.Graph
                 authToken = graphAuthentication.AuthToken;
             }
 
-            GraphRequest<T> graphRequest = new GraphRequest<T>(authToken, endpoint, api);
+            var headers = new Dictionary<string, string>
+            {
+                { "Authorization", $"Bearer {authToken}" },
+                { "User-Agent", "MRTK" }
+            };
 
-            return await graphRequest.GetAsync();
+            return await Rest.GetAsync($"{endpoint}{api}", headers);
         }
 
         /// <summary>

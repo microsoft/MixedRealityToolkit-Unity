@@ -1,5 +1,10 @@
+<!-- Avoids stripping byte code for reflected classes during IL2CPP conversion. -->
+<!-- Read more: https://docs.unity3d.com/Manual/IL2CPP-BytecodeStripping.html -->
 <linker>
-	<assembly fullname="System.Runtime.Serialization" preserve="nothing">
+  
+  <!-- The namespaces/classes below are used during runtime serialization by Microsoft.Identity.Client.dll -->
+  
+  <assembly fullname="System.Runtime.Serialization" preserve="nothing">
 		<type fullname="System.Runtime.Serialization.Configuration.DataContractSerializerSection" preserve="all" />
 		<type fullname="System.Runtime.Serialization.Configuration.SerializationSectionGroup" preserve="all" />
 		<type fullname="System.Runtime.Serialization.Configuration.DeclaredTypeElementCollection" preserve="all" />

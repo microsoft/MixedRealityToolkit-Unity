@@ -2,7 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Graph;
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Graph
 {
@@ -11,6 +13,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Graph
     /// </summary>
     public class GraphConnectorTestAsync : MonoBehaviour
     {
+        [SerializeField]
+        private Text displayName = null;
+
+        [SerializeField]
+        private Text jobTitle = null;
+
+        [SerializeField]
+        private Image profileImage = null;
+
         /// <summary>
         /// Called by Unity on the frame when the script is enabled just before any of the Update methods is called the first time.
         /// </summary>
@@ -18,37 +29,39 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Graph
         {
             var graphConnector = GetComponent<GraphConnector>();
 
-            // Gets "me" profile picture as an image.
-            var graphResponseImage = await graphConnector.MakeRequestGetAsync<GraphResponseImage>(GraphConnector.GraphEndpoint, "/me/photo/$value");
-            if (graphResponseImage.Successful)
-            {
-                Debug.LogFormat("Getting profile picture as image succeeded - {0}", graphResponseImage.Image.ToString());
-            }
-            else
-            {
-                Debug.LogErrorFormat("Getting profile picture as image failed - {0}", graphResponseImage.WebResponse.ResponseCode);
-            }
-
-            // Gets "me" user data as a json string.
-            var graphResponseJson = await graphConnector.MakeRequestGetAsync<GraphResponseJson>(GraphConnector.GraphEndpoint, "/me");
-            if (graphResponseJson.Successful)
-            {
-                Debug.LogFormat("Getting user data as json string succeeded - {0}", graphResponseJson.Json);
-            }
-            else
-            {
-                Debug.LogErrorFormat("Getting user data as json string failed - {0}", graphResponseJson.WebResponse.ResponseCode);
-            }
-
             // Gets "me" user data as a object.
-            var graphResponseObject = await graphConnector.MakeRequestGetAsync<GraphResponseObject<GraphProfile>>(GraphConnector.GraphEndpoint, "/me");
+            var graphResponseObject = await graphConnector.MakeRequestGetAsync(GraphConnector.GraphEndpoint, "/me");
             if (graphResponseObject.Successful)
             {
-                Debug.LogFormat("Getting user data as object succeeded - {0},{1}", graphResponseObject.Object.displayName, graphResponseObject.Object.jobTitle);
+                GraphProfile graphProfile = JsonUtility.FromJson<GraphProfile>(graphResponseObject.ResponseBody);
+
+                displayName.text = graphProfile.displayName;
+
+                jobTitle.text = graphProfile.jobTitle;
             }
             else
             {
-                Debug.LogErrorFormat("Getting user data as object failed - {0}", graphResponseObject.WebResponse.ResponseCode);
+                Debug.LogErrorFormat("Getting user data as object failed - {0}", graphResponseObject.ResponseCode);
+            }
+
+            // Gets "me" profile picture as an image.
+            var graphResponseImage = await graphConnector.MakeRequestGetAsync(GraphConnector.GraphEndpoint, "/me/photo/$value");
+            if (graphResponseImage.Successful)
+            {
+                Texture2D texture = new Texture2D(2, 2); // Creates empty texture
+
+                if (texture.LoadImage(graphResponseImage.ResponseData))
+                {
+                    profileImage.sprite = Sprite.Create(
+                        texture,
+                        new Rect(0.0f, 0.0f, texture.width, texture.height),
+                        Vector2.zero,
+                        profileImage.pixelsPerUnit);
+                }
+            }
+            else
+            {
+                Debug.LogErrorFormat("Getting profile picture as image failed - {0}", graphResponseImage.ResponseCode);
             }
         }
     }
