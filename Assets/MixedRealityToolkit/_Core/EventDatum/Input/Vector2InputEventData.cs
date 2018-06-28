@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
     /// <summary>
     /// Describes Two Degrees of Freedom event data, usually generated from a Joystick, or Touch input source.
     /// </summary>
-    public class TwoDoFInputEventData : InputEventData
+    public class Vector2InputEventData : InputEventData
     {
         /// <summary>
         /// Two values, typically from -1.0 to 1.0 in the X-axis and Y-axis, representing where the input control is positioned.
@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         public Vector2 Position { get; private set; } = Vector2.zero;
 
         /// <inheritdoc />
-        public TwoDoFInputEventData(EventSystem eventSystem) : base(eventSystem) { }
+        public Vector2InputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>
         /// Populates the event with data.

@@ -334,14 +334,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 
         #endregion Input Up
 
-        #region Input 2DoF Changed
+        #region Input Position Changed
+
         /// <summary>
         /// Raise the 2 degrees of freedom input event.
         /// </summary>
         /// <param name="source"></param>
         /// <param name="inputAction"></param>
         /// <param name="position"></param>
-        void Raise2DoFInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector2 position);
+        void RaisePositionInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector2 position);
 
         /// <summary>
         /// Raise the 2 degrees of freedom input event.
@@ -350,11 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputAction"></param>
         /// <param name="position"></param>
-        void Raise2DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector2 position);
-
-        #endregion Input 2DoF Changed
-
-        #region Input 3DoF Changed
+        void RaisePositionInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector2 position);
 
         /// <summary>
         /// Raise the 3 degrees of freedom input event.
@@ -362,7 +359,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="inputAction"></param>
         /// <param name="position"></param>
-        void Raise3DoFInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 position);
+        void RaisePositionInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 position);
 
         /// <summary>
         /// Raise the 3 degrees of freedom input event.
@@ -371,7 +368,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputAction"></param>
         /// <param name="position"></param>
-        void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 position);
+        void RaisePositionInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 position);
+
+        #endregion Input Position Changed
+
+        #region Input Rotation Changed
 
         /// <summary>
         /// Raise the 3 degrees of freedom input event.
@@ -379,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="inputAction"></param>
         /// <param name="rotation"></param>
-        void Raise3DoFInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Quaternion rotation);
+        void RaiseRotationInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Quaternion rotation);
 
         /// <summary>
         /// Raise the 3 degrees of freedom input event.
@@ -388,11 +389,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputAction"></param>
         /// <param name="rotation"></param>
-        void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Quaternion rotation);
+        void RaiseRotationInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Quaternion rotation);
 
-        #endregion Input 3DoF Changed
+        #endregion Input Rotation Changed
 
-        #region Input 6DoF Changed
+        #region Input Pose Changed
 
         /// <summary>
         /// Raise the 6 degrees of freedom input event.
@@ -400,7 +401,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="inputAction"></param>
         /// <param name="inputData"></param>
-        void Raise6DofInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, MixedRealityPose inputData);
+        void RaisePoseInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, MixedRealityPose inputData);
 
         /// <summary>
         /// Raise the 6 degrees of freedom input event.
@@ -409,9 +410,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="handedness"></param>
         /// <param name="inputAction"></param>
         /// <param name="inputData"></param>
-        void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, MixedRealityPose inputData);
+        void RaisePoseInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, MixedRealityPose inputData);
 
-        #endregion Input 6DoF Changed
+        #endregion Input Pose Changed
 
         #endregion Generic Input Events
 

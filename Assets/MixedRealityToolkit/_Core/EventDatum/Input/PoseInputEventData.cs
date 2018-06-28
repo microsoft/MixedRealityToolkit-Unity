@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
     /// <summary>
     /// Describes an Input Event that involves an Input Source's spatial position AND rotation.
     /// </summary>
-    public class PoseInputEventData : ThreeDofInputEventData
+    public class PoseInputEventData : InputEventData
     {
         /// <summary>
         /// The <see cref="Vector3"/> and <see cref="Quaternion"/> input data.
@@ -34,8 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, MixedRealityPose inputData)
         {
             Initialize(inputSource, inputAction);
-            Position = inputData.Position;
-            Rotation = inputData.Rotation;
             InputData = inputData;
         }
 
@@ -49,8 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, MixedRealityInputAction inputAction, MixedRealityPose inputData)
         {
             Initialize(inputSource, handedness, inputAction);
-            Position = inputData.Position;
-            Rotation = inputData.Rotation;
             InputData = inputData;
         }
     }

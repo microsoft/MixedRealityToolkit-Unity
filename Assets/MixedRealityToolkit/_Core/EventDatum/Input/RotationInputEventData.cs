@@ -10,47 +10,16 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
 {
     /// <summary>
-    /// Describes an input event that involves an Input Source's spatial position OR rotation.
+    /// Describes an input event that involves an Input Source's spatial rotation.
     /// </summary>
-    public class ThreeDofInputEventData : InputEventData
+    public class RotationInputEventData : InputEventData
     {
-        /// <summary>
-        /// The Position of the Input.
-        /// </summary>
-        public Vector3 Position { get; protected set; } = Vector3.zero;
-
         /// <summary>
         /// The Rotation of the Input.
         /// </summary>
         public Quaternion Rotation { get; protected set; } = Quaternion.identity;
 
-        /// <inheritdoc />
-        public ThreeDofInputEventData(EventSystem eventSystem) : base(eventSystem) { }
-
-        /// <summary>
-        /// Populates the event with data.
-        /// </summary>
-        /// <param name="inputSource"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="position"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, Vector3 position)
-        {
-            Initialize(inputSource, inputAction);
-            Position = position;
-        }
-
-        /// <summary>
-        /// Populates the event with data.
-        /// </summary>
-        /// <param name="inputSource"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="position"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, MixedRealityInputAction inputAction, Vector3 position)
-        {
-            Initialize(inputSource, handedness, inputAction);
-            Position = position;
-        }
+        public RotationInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>
         /// Populates the event with data.

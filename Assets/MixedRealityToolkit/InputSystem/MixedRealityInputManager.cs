@@ -60,9 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private MixedRealityPointerEventData pointerEventData;
         private InputPressedEventData inputPressedEventData;
 
-        private TwoDoFInputEventData twoDoFInputEventData;
-        private ThreeDofInputEventData threeDoFInputEventData;
-        private PoseInputEventData sixDoFInputEventData;
+        private Vector2InputEventData vector2InputEventData;
+        private PositionInputEventData positionInputEventData;
+        private RotationInputEventData rotationInputEventData;
+        private PoseInputEventData poseInputEventData;
 
         private NavigationEventData navigationEventData;
         private ManipulationEventData manipulationEventData;
@@ -141,10 +142,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             inputEventData = new InputEventData(EventSystem.current);
             pointerEventData = new MixedRealityPointerEventData(EventSystem.current);
             inputPressedEventData = new InputPressedEventData(EventSystem.current);
+            vector2InputEventData = new Vector2InputEventData(EventSystem.current);
 
-            twoDoFInputEventData = new TwoDoFInputEventData(EventSystem.current);
-            threeDoFInputEventData = new ThreeDofInputEventData(EventSystem.current);
-            sixDoFInputEventData = new PoseInputEventData(EventSystem.current);
+            positionInputEventData = new PositionInputEventData(EventSystem.current);
+            rotationInputEventData = new RotationInputEventData(EventSystem.current);
+            poseInputEventData = new PoseInputEventData(EventSystem.current);
 
             navigationEventData = new NavigationEventData(EventSystem.current);
             manipulationEventData = new ManipulationEventData(EventSystem.current);
@@ -894,89 +896,97 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         #endregion Input Up
 
-        #region Input 2DoF Changed
+        #region Input Position Changed
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler> OnTwoDoFInputChanged =
             delegate (IMixedRealityInputHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<TwoDoFInputEventData>(eventData);
-                handler.On2DoFInputChanged(casted);
+                var casted = ExecuteEvents.ValidateEventData<Vector2InputEventData>(eventData);
+                handler.OnVector2InputChanged(casted);
             };
 
         /// <inheritdoc />
-        public void Raise2DoFInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector2 inputPosition)
+        public void RaisePositionInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector2 inputPosition)
         {
             // Create input event
-            twoDoFInputEventData.Initialize(source, inputAction, inputPosition);
+            vector2InputEventData.Initialize(source, inputAction, inputPosition);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(twoDoFInputEventData, OnTwoDoFInputChanged);
+            HandleEvent(vector2InputEventData, OnTwoDoFInputChanged);
         }
 
         /// <inheritdoc />
-        public void Raise2DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector2 inputPosition)
+        public void RaisePositionInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector2 inputPosition)
         {
             // Create input event
-            twoDoFInputEventData.Initialize(source, handedness, inputAction, inputPosition);
+            vector2InputEventData.Initialize(source, handedness, inputAction, inputPosition);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(twoDoFInputEventData, OnTwoDoFInputChanged);
+            HandleEvent(vector2InputEventData, OnTwoDoFInputChanged);
         }
 
-        #endregion Input 2Dof Changed
 
-        #region Input 3DoF Changed
-
-        private static readonly ExecuteEvents.EventFunction<IMixedReality3DoFInputHandler> OnThreeDoFInputChanged =
+        private static readonly ExecuteEvents.EventFunction<IMixedReality3DoFInputHandler> OnPositionInputChanged =
             delegate (IMixedReality3DoFInputHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<ThreeDofInputEventData>(eventData);
-                handler.On3DoFInputChanged(casted);
+                var casted = ExecuteEvents.ValidateEventData<PositionInputEventData>(eventData);
+                handler.OnPositionChanged(casted);
             };
 
         /// <inheritdoc />
-        public void Raise3DoFInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 position)
+        public void RaisePositionInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 position)
         {
             // Create input event
-            threeDoFInputEventData.Initialize(source, inputAction, position);
+            positionInputEventData.Initialize(source, inputAction, position);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(threeDoFInputEventData, OnThreeDoFInputChanged);
+            HandleEvent(positionInputEventData, OnPositionInputChanged);
         }
 
         /// <inheritdoc />
-        public void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 position)
+        public void RaisePositionInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 position)
         {
             // Create input event
-            threeDoFInputEventData.Initialize(source, handedness, inputAction, position);
+            positionInputEventData.Initialize(source, handedness, inputAction, position);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(threeDoFInputEventData, OnThreeDoFInputChanged);
+            HandleEvent(positionInputEventData, OnPositionInputChanged);
+        }
+
+        #endregion Input Position Changed
+
+        #region Input Rotation Changed
+
+        private static readonly ExecuteEvents.EventFunction<IMixedReality3DoFInputHandler> OnRotationInputChanged =
+                delegate (IMixedReality3DoFInputHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<RotationInputEventData>(eventData);
+                    handler.OnRotationChanged(casted);
+                };
+
+        /// <inheritdoc />
+        public void RaiseRotationInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Quaternion rotation)
+        {
+            // Create input event
+            rotationInputEventData.Initialize(source, inputAction, rotation);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(positionInputEventData, OnRotationInputChanged);
         }
 
         /// <inheritdoc />
-        public void Raise3DoFInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Quaternion rotation)
+        public void RaiseRotationInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Quaternion rotation)
         {
             // Create input event
-            threeDoFInputEventData.Initialize(source, inputAction, rotation);
+            rotationInputEventData.Initialize(source, handedness, inputAction, rotation);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(threeDoFInputEventData, OnThreeDoFInputChanged);
+            HandleEvent(positionInputEventData, OnRotationInputChanged);
         }
 
-        /// <inheritdoc />
-        public void Raise3DoFInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Quaternion rotation)
-        {
-            // Create input event
-            threeDoFInputEventData.Initialize(source, handedness, inputAction, rotation);
+        #endregion Input Rotation Changed
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(threeDoFInputEventData, OnThreeDoFInputChanged);
-        }
-
-        #endregion Input 3DoF Changed
-
-        #region Input 6DoF Changed
+        #region Input Pose Changed
 
         private static readonly ExecuteEvents.EventFunction<IMixedReality6DoFInputHandler> OnSixDoFInputChanged =
             delegate (IMixedReality6DoFInputHandler handler, BaseEventData eventData)
@@ -986,26 +996,26 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             };
 
         /// <inheritdoc />
-        public void Raise6DofInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, MixedRealityPose inputData)
+        public void RaisePoseInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, MixedRealityPose inputData)
         {
             // Create input event
-            sixDoFInputEventData.Initialize(source, inputAction, inputData);
+            poseInputEventData.Initialize(source, inputAction, inputData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(threeDoFInputEventData, OnSixDoFInputChanged);
+            HandleEvent(positionInputEventData, OnSixDoFInputChanged);
         }
 
         /// <inheritdoc />
-        public void Raise6DofInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, MixedRealityPose inputData)
+        public void RaisePoseInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, MixedRealityPose inputData)
         {
             // Create input event
-            sixDoFInputEventData.Initialize(source, handedness, inputAction, inputData);
+            poseInputEventData.Initialize(source, handedness, inputAction, inputData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(threeDoFInputEventData, OnSixDoFInputChanged);
+            HandleEvent(positionInputEventData, OnSixDoFInputChanged);
         }
 
-        #endregion Input 6DoF Changed
+        #endregion Input Pose Changed
 
         #endregion Generic Input Events
 
