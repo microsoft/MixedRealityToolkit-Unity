@@ -38,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         public InteractionSourceState LastSourceStateReading { get; private set; }
 
+        private Vector3 currentControllerPosition = Vector3.zero;
+        private Quaternion currentControllerRotation = Quaternion.identity;
+
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;
         private MixedRealityPose currentPointerData = new MixedRealityPose(Vector3.zero, Quaternion.identity);
@@ -96,6 +99,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         throw new ArgumentOutOfRangeException();
                 }
             }
+
+            LastSourceStateReading = interactionSourceState;
         }
 
         /// <summary>
@@ -104,23 +109,25 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         private void UpdateControllerData(InteractionSourceState interactionSourceState)
         {
-            LastSourceStateReading = interactionSourceState;
             var lastState = TrackingState;
 
-            switch (interactionSourceState.sourcePose.positionAccuracy)
+            IsPositionAvailable = interactionSourceState.sourcePose.TryGetPosition(out currentControllerPosition);
+            if (IsPositionAvailable)
             {
-                case InteractionSourcePositionAccuracy.None:
-                    TrackingState = TrackingState.NotTracked;
-                    break;
-                case InteractionSourcePositionAccuracy.Approximate:
-                    TrackingState = TrackingState.Approximate;
-                    break;
-                case InteractionSourcePositionAccuracy.High:
-                    TrackingState = TrackingState.Tracked;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                PositionAccuracy = (interactionSourceState.sourcePose.positionAccuracy == InteractionSourcePositionAccuracy.High) ?
+                    TrackingAccuracy.High : TrackingAccuracy.Approximate;
             }
+            else
+            {
+                PositionAccuracy = TrackingAccuracy.None;
+            }
+
+            IsRotationAvailable = interactionSourceState.sourcePose.TryGetRotation(out currentControllerRotation);
+            // Windows Mixed Reality does not have a concept of rotation accuracy, therefore we return high accuracy
+            RotationAccuracy = IsRotationAvailable ? TrackingAccuracy.High : TrackingAccuracy.None;
+
+            // Windows Mixed Reality controllers are tracked if we are receiving position or rotation data
+            TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
 
             if (lastState != TrackingState)
             {

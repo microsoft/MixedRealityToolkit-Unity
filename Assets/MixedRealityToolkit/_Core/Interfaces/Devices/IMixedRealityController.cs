@@ -28,6 +28,34 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         IMixedRealityInputSource InputSource { get; }
 
         /// <summary>
+        /// Indicates that this controller is currently providing position data.
+        /// </summary>
+        /// <remarks>
+        /// This value may change during usage for some controllers. As a best practice,
+        /// be sure to check this value before using position data.
+        /// </remarks>
+        bool IsPositionAvailable { get; }
+
+        /// <summary>
+        /// Indicates the accuracy of the position data being reported.
+        /// </summary>
+        TrackingAccuracy PositionAccuracy { get; }
+
+        /// <summary>
+        /// Indicates that this controller is currently providing rotation data.
+        /// </summary>
+        /// <remarks>
+        /// This value may change during usage for some controllers. As a best practice,
+        /// be sure to check this value before using rotation data.
+        /// </remarks>
+        bool IsRotationAvailable { get; }
+
+        /// <summary>
+        /// Indicates the accuracy of the rotation data being reported.
+        /// </summary>
+        TrackingAccuracy RotationAccuracy { get; }
+
+        /// <summary>
         /// Mapping definition for this controller, linking the Physical inputs to logical Input System Actions
         /// </summary>
         MixedRealityInteractionMapping[] Interactions { get; }
