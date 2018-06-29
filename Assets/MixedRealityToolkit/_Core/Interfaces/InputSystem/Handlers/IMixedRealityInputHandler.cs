@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers
@@ -34,6 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
         /// Input Position updates from Thumbsticks, Touchpads, or any other simple input with a position.
         /// </summary>
         /// <param name="eventData">InputDualAxisPositionEventData</param>
-        void OnVector2InputChanged(Vector2InputEventData eventData);
+        void OnPositionInputChanged(InputEventData<Vector2> eventData);
     }
 }

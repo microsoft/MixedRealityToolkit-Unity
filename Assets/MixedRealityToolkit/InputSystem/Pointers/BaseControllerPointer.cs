@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
     /// <summary>
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
-    public abstract class BaseControllerPointer : AttachToController, IMixedRealityInputHandler, IMixedRealityPointer
+    public abstract class BaseControllerPointer : AttachToController, IMixedRealityInputHandler, IMixedRealityPointer, IMixedRealitySpatialInputHandler
     {
         private IMixedRealityInputSystem inputSystem = null;
         public IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
@@ -337,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         /// <summary>
         /// Updates target point orientation via thumbstick
         /// </summary>
-        public virtual void OnVector2InputChanged(Vector2InputEventData eventData) { }
+        public virtual void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
 
         #endregion  IMixedRealityInputHandler Implementation
     }

@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
@@ -42,6 +41,45 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         {
             BaseInitialize(inputSource, inputAction);
             Handedness = handedness;
+        }
+    }
+
+    /// <summary>
+    /// Describes and input event with a specific type.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class InputEventData<T> : InputEventData
+    {
+        /// <summary>
+        /// The input data of the event.
+        /// </summary>
+        public T InputData { get; private set; }
+
+        public InputEventData(EventSystem eventSystem) : base(eventSystem) { }
+
+        /// <summary>
+        /// Used to initialize/reset the event and populate the data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="inputAction"></param>
+        /// <param name="data"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, T data)
+        {
+            Initialize(inputSource, inputAction);
+            InputData = data;
+        }
+
+        /// <summary>
+        /// Used to initialize/reset the event and populate the data.
+        /// </summary>
+        /// <param name="inputSource"></param>
+        /// <param name="handedness"></param>
+        /// <param name="inputAction"></param>
+        /// <param name="data"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, Handedness handedness, MixedRealityInputAction inputAction, T data)
+        {
+            Initialize(inputSource, handedness, inputAction);
+            InputData = data;
         }
     }
 }

@@ -60,10 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private MixedRealityPointerEventData pointerEventData;
         private InputPressedEventData inputPressedEventData;
 
-        private Vector2InputEventData vector2InputEventData;
-        private PositionInputEventData positionInputEventData;
-        private RotationInputEventData rotationInputEventData;
-        private PoseInputEventData poseInputEventData;
+        private InputEventData<Vector2> vector2InputEventData;
+        private InputEventData<Vector3> positionInputEventData;
+        private InputEventData<Quaternion> rotationInputEventData;
+        private InputEventData<MixedRealityPose> poseInputEventData;
 
         private NavigationEventData navigationEventData;
         private ManipulationEventData manipulationEventData;
@@ -142,11 +142,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             inputEventData = new InputEventData(EventSystem.current);
             pointerEventData = new MixedRealityPointerEventData(EventSystem.current);
             inputPressedEventData = new InputPressedEventData(EventSystem.current);
-            vector2InputEventData = new Vector2InputEventData(EventSystem.current);
+            vector2InputEventData = new InputEventData<Vector2>(EventSystem.current);
 
-            positionInputEventData = new PositionInputEventData(EventSystem.current);
-            rotationInputEventData = new RotationInputEventData(EventSystem.current);
-            poseInputEventData = new PoseInputEventData(EventSystem.current);
+            positionInputEventData = new InputEventData<Vector3>(EventSystem.current);
+            rotationInputEventData = new InputEventData<Quaternion>(EventSystem.current);
+            poseInputEventData = new InputEventData<MixedRealityPose>(EventSystem.current);
 
             navigationEventData = new NavigationEventData(EventSystem.current);
             manipulationEventData = new ManipulationEventData(EventSystem.current);
@@ -901,8 +901,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler> OnTwoDoFInputChanged =
             delegate (IMixedRealityInputHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<Vector2InputEventData>(eventData);
-                handler.OnVector2InputChanged(casted);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<Vector2>>(eventData);
+                handler.OnPositionInputChanged(casted);
             };
 
         /// <inheritdoc />
@@ -925,11 +925,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             HandleEvent(vector2InputEventData, OnTwoDoFInputChanged);
         }
 
-
-        private static readonly ExecuteEvents.EventFunction<IMixedReality3DoFInputHandler> OnPositionInputChanged =
-            delegate (IMixedReality3DoFInputHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialInputHandler> OnPositionInputChanged =
+            delegate (IMixedRealitySpatialInputHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<PositionInputEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<Vector3>>(eventData);
                 handler.OnPositionChanged(casted);
             };
 
@@ -957,10 +956,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         #region Input Rotation Changed
 
-        private static readonly ExecuteEvents.EventFunction<IMixedReality3DoFInputHandler> OnRotationInputChanged =
-                delegate (IMixedReality3DoFInputHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialInputHandler> OnRotationInputChanged =
+                delegate (IMixedRealitySpatialInputHandler handler, BaseEventData eventData)
                 {
-                    var casted = ExecuteEvents.ValidateEventData<RotationInputEventData>(eventData);
+                    var casted = ExecuteEvents.ValidateEventData<InputEventData<Quaternion>>(eventData);
                     handler.OnRotationChanged(casted);
                 };
 
@@ -988,11 +987,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         #region Input Pose Changed
 
-        private static readonly ExecuteEvents.EventFunction<IMixedReality6DoFInputHandler> OnSixDoFInputChanged =
-            delegate (IMixedReality6DoFInputHandler handler, BaseEventData eventData)
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialInputHandler> OnPoseInputChanged =
+            delegate (IMixedRealitySpatialInputHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<PoseInputEventData>(eventData);
-                handler.On6DoFInputChanged(casted);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<MixedRealityPose>>(eventData);
+                handler.OnPoseInputChanged(casted);
             };
 
         /// <inheritdoc />
@@ -1002,7 +1001,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             poseInputEventData.Initialize(source, inputAction, inputData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(positionInputEventData, OnSixDoFInputChanged);
+            HandleEvent(positionInputEventData, OnPoseInputChanged);
         }
 
         /// <inheritdoc />
@@ -1012,7 +1011,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             poseInputEventData.Initialize(source, handedness, inputAction, inputData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(positionInputEventData, OnSixDoFInputChanged);
+            HandleEvent(positionInputEventData, OnPoseInputChanged);
         }
 
         #endregion Input Pose Changed
