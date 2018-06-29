@@ -4,32 +4,32 @@
 namespace HoloToolkit.Unity.Buttons
 {
     /// <summary>
-    /// State enum for buttons
+    /// State enum for buttons.
     /// </summary>
     public enum ButtonStateEnum
     {
         /// <summary>
-        /// Looking at and Pressed
+        /// Looking at button and pressed.
         /// </summary>
         Pressed,
         /// <summary>
-        /// Looking at and finger up
+        /// Looking at button and spatial input source present.
         /// </summary>
         Targeted,
         /// <summary>
-        /// Not looking at it and finger is up
+        /// Not looking at button and spatial input source present.
         /// </summary>
         Interactive,
         /// <summary>
-        /// Looking at button finger down
+        /// Looking at button and no spatial input source present.
         /// </summary> 
         ObservationTargeted,
         /// <summary>
-        /// Not looking at it and finger down
+        /// Not looking at button and no spatial input source present.
         /// </summary>
         Observation,
         /// <summary>
-        /// Button in a disabled state
+        /// Button in a disabled state.
         /// </summary>
         Disabled,
     }
