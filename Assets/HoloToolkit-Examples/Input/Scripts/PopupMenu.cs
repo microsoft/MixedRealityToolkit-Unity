@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity.InputModule.Tests
 {
-    public class PopupMenu : MonoBehaviour, IInputHandler
+    public class PopupMenu : MonoBehaviour
     {
         [SerializeField]
         private TestButton cancelButton = null;
@@ -21,19 +21,21 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private bool closeOnNonTargetedTap = false;
 
         /// <summary>
-        /// Called when 'place' is selected
+        /// Called when 'place' is selected.
         /// </summary>
         private Action activatedCallback;
 
         /// <summary>
-        /// Called when 'back' or 'hide' is selected
+        /// Called when 'back' or 'hide' is selected.
         /// </summary>
         private Action cancelledCallback;
 
         /// <summary>
-        /// Called when the user clicks outside of the menu
+        /// Called when the user clicks outside of the menu.
         /// </summary>
         private Action deactivatedCallback;
+
+        private int dehydrateButtonId;
 
         public PopupState CurrentPopupState = PopupState.Closed;
 
@@ -42,6 +44,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private void Awake()
         {
             gameObject.SetActive(false);
+
+            if (dehydrateButtonId == 0)
+            {
+                dehydrateButtonId = Animator.StringToHash("Dehydrate");
+            }
         }
 
         private void OnEnable()
@@ -71,15 +78,15 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
             if (isModal)
             {
-                InputManager.Instance.PushModalInputHandler(gameObject);
+                InputManager.Instance.PushModalInputHandler(cancelButton.gameObject);
             }
 
             if (closeOnNonTargetedTap)
             {
-                InputManager.Instance.PushFallbackInputHandler(gameObject);
+                InputManager.Instance.PushFallbackInputHandler(cancelButton.gameObject);
             }
 
-            // the visual was activated via an interaction outside of the menu, let anyone who cares know
+            // The visual was activated via an interaction outside of the menu. Let anyone who cares know.
             if (activatedCallback != null)
             {
                 activatedCallback();
@@ -87,7 +94,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         }
 
         /// <summary>
-        /// Dismiss the details pane
+        /// Dismiss the details pane.
         /// </summary>
         public void Dismiss()
         {
@@ -118,9 +125,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
 
             // Deactivates the game object
-            if (rootAnimator.isInitialized)
+            if (rootAnimator != null && rootAnimator.isInitialized)
             {
-                rootAnimator.SetTrigger("Dehydrate");
+                rootAnimator.SetTrigger(dehydrateButtonId);
             }
             else
             {
@@ -130,32 +137,15 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private void OnCancelPressed(TestButton source)
         {
-            if (cancelledCallback != null)
+            if (cancelButton.Focused || closeOnNonTargetedTap)
             {
-                cancelledCallback();
-            }
+                if (cancelledCallback != null)
+                {
+                    cancelledCallback();
+                }
 
-            Dismiss();
-        }
-
-        void IInputHandler.OnInputDown(InputEventData eventData)
-        {
-            if (closeOnNonTargetedTap)
-            {
                 Dismiss();
             }
-
-            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
-        }
-
-        void IInputHandler.OnInputUp(InputEventData eventData)
-        {
-            if (closeOnNonTargetedTap)
-            {
-                Dismiss();
-            }
-
-            eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
         }
     }
 }
