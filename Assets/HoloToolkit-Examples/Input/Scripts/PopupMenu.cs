@@ -35,6 +35,8 @@ namespace HoloToolkit.Unity.InputModule.Tests
         /// </summary>
         private Action deactivatedCallback;
 
+        private int dehydrateButtonId;
+
         public PopupState CurrentPopupState = PopupState.Closed;
 
         public enum PopupState { Open, Closed }
@@ -42,6 +44,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private void Awake()
         {
             gameObject.SetActive(false);
+
+            if (dehydrateButtonId == 0)
+            {
+                dehydrateButtonId = Animator.StringToHash("Dehydrate");
+            }
         }
 
         private void OnEnable()
@@ -118,9 +125,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             }
 
             // Deactivates the game object
-            if (rootAnimator.isInitialized)
+            if (rootAnimator != null && rootAnimator.isInitialized)
             {
-                rootAnimator.SetTrigger("Dehydrate");
+                rootAnimator.SetTrigger(dehydrateButtonId);
             }
             else
             {

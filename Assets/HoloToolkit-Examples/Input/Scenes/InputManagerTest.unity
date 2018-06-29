@@ -5915,7 +5915,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1906609830}
-  m_Text: 'All other input is disabled
+  m_Text: 'All other clicks are disabled
 
     until this popup is closed!'
   m_OffsetZ: 0
