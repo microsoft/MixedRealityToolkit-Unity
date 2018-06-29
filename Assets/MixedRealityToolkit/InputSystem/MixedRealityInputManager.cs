@@ -152,8 +152,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             manipulationEventData = new ManipulationEventData(EventSystem.current);
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
+
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         }
 
