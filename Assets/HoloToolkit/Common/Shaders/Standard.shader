@@ -392,8 +392,8 @@ Shader "MixedRealityToolkit/Standard"
                 o.scale.z = minScale;
                 float scaleRatio = min(o.scale.x, o.scale.y) / max(o.scale.x, o.scale.y);
                 
-		o.uv.z = IF(o.scale.x > o.scale.y, 1.0 - (borderWidth * scaleRatio), 1.0 - borderWidth);
-		o.uv.w = IF(o.scale.x > o.scale.y, 1.0 - borderWidth, 1.0 - (borderWidth * scaleRatio));
+                o.uv.z = IF(o.scale.x > o.scale.y, 1.0 - (borderWidth * scaleRatio), 1.0 - borderWidth);
+                o.uv.w = IF(o.scale.x > o.scale.y, 1.0 - borderWidth, 1.0 - (borderWidth * scaleRatio));
 #else
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 #endif
