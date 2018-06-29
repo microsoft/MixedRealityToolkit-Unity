@@ -16,7 +16,7 @@ public class SpectatorViewNetworkManager : NetworkManager
     /// </summary>
     [SerializeField]
     [Tooltip("Component that manages the main flow, events and the main contact point with UNET multilens")]
-    private SpectatorView spectatorView;
+    private SpectatorView spectatorView = null;
 
     // Use this for initialization
     private void Start()
