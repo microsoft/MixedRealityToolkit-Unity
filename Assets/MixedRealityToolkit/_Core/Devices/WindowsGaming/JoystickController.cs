@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
     // TODO
     public class JoystickController : BaseController
     {
-        public JoystickController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(controllerState, controllerHandedness, inputSource, interactions) { }
+        public JoystickController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+                : base(trackingState, controllerHandedness, inputSource, interactions) { }
     }
 }

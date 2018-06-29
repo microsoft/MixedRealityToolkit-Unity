@@ -6,14 +6,13 @@ using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers
 {
     /// <summary>
-    /// Interface to implement for 6 Degree of Freedom input.
+    /// Interface to implement to react to source 
     /// </summary>
-    public interface IMixedReality6DoFInputHandler : IMixedReality3DoFInputHandler
+    public interface IMixedRealitySourcePoseHandler : IMixedRealitySourceStateHandler
     {
         /// <summary>
-        /// Six Degree of Freedom input update.
+        /// Raised when the source position is changed.
         /// </summary>
-        /// <param name="eventData"></param>
-        void On6DoFInputChanged(SixDoFInputEventData eventData);
+        void OnSourcePoseChanged(SourcePoseEventData eventData);
     }
 }

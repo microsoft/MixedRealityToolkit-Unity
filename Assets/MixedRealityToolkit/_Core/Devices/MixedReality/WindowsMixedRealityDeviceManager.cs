@@ -7,7 +7,11 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
@@ -24,6 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// Dictionary to capture all active controllers detected
         /// </summary>
         private readonly Dictionary<uint, IMixedRealityController> activeControllers = new Dictionary<uint, IMixedRealityController>();
+
+#if UNITY_WSA
 
         #region IMixedRealityDeviceManager Interface
 
@@ -82,6 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             if (activeControllers.ContainsKey(interactionSourceState.source.id))
             {
                 var controller = activeControllers[interactionSourceState.source.id] as WindowsMixedRealityController;
+                Debug.Assert(controller != null);
                 controller.UpdateController(interactionSourceState);
                 return controller;
             }
@@ -103,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
 
             var inputSource = InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {controllingHand}");
-            var detectedController = new WindowsMixedRealityController(ControllerState.NotTracked, controllingHand, inputSource);
+            var detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
             detectedController.SetupConfiguration(typeof(WindowsMixedRealityController));
             detectedController.UpdateController(interactionSourceState);
             activeControllers.Add(interactionSourceState.source.id, detectedController);
@@ -117,7 +124,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
         private void RemoveController(InteractionSourceState interactionSourceState)
         {
-            InputSystem?.RaiseSourceLost(GetOrAddController(interactionSourceState)?.InputSource);
+            var controller = GetOrAddController(interactionSourceState);
+            InputSystem?.RaiseSourceLost(controller?.InputSource, controller);
             activeControllers.Remove(interactionSourceState.source.id);
         }
 
@@ -131,7 +139,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="args">SDK source detected event arguments</param>
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
         {
-            InputSystem?.RaiseSourceDetected(GetOrAddController(args.state)?.InputSource);
+            var controller = GetOrAddController(args.state);
+            InputSystem?.RaiseSourceDetected(controller?.InputSource, controller);
         }
 
         /// <summary>
@@ -171,5 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         }
 
         #endregion Unity InteractionManager Events
+
+#endif // UNITY_WSA
     }
 }

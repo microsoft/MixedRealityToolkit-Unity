@@ -28,21 +28,51 @@ MonoBehaviour:
     - id: 0
       axisType: 2
       inputType: 28
+      inputAction:
+        id: 0
+        description: 
+        axisConstraint: 0
     - id: 0
       axisType: 2
       inputType: 30
+      inputAction:
+        id: 0
+        description: 
+        axisConstraint: 0
     - id: 0
       axisType: 2
       inputType: 17
+      inputAction:
+        id: 0
+        description: 
+        axisConstraint: 0
+    - id: 0
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
   - id: 2
     description: Motion Controller Right
     controller:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
-    handedness: 1
+    handedness: 2
     defaultModel: 0
     overrideModel: {fileID: 0}
     interactions:
     - id: 0
       axisType: 2
       inputType: 28
+      inputAction:
+        id: 0
+        description: 
+        axisConstraint: 0
+    - id: 0
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0

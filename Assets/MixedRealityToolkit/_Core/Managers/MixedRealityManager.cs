@@ -845,7 +845,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
-                if (MixedRealityComponents[i].Item1.Name == type.Name)
+                if (MixedRealityComponents[i].Item1.Name == type.Name || MixedRealityComponents[i].Item2.GetType().Name == type.Name)
                 {
                     manager = MixedRealityComponents[i].Item2;
                     break;

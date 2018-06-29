@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
     // TODO - Implement
     public class ValveKnucklesController : BaseController
     {
-        public ValveKnucklesController(ControllerState controllerState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(controllerState, controllerHandedness, inputSource, interactions) { }
+        public ValveKnucklesController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+                : base(trackingState, controllerHandedness, inputSource, interactions) { }
     }
 }

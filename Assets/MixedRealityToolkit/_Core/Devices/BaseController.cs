@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices
@@ -21,16 +19,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="controllerState"></param>
+        /// <param name="trackingState"></param>
         /// <param name="controllerHandedness"></param>
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
-        public BaseController(ControllerState controllerState,
-                              Handedness controllerHandedness,
-                              IMixedRealityInputSource inputSource = null,
-                              MixedRealityInteractionMapping[] interactions = null)
+        protected BaseController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
         {
-            ControllerState = controllerState;
+            TrackingState = trackingState;
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
             Interactions = interactions;
@@ -55,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         private IMixedRealityInputSystem inputSystem;
 
         /// <inheritdoc />
-        public ControllerState ControllerState { get; protected set; }
+        public TrackingState TrackingState { get; protected set; }
 
         /// <inheritdoc />
         public Handedness ControllerHandedness { get; }
@@ -64,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         public IMixedRealityInputSource InputSource { get; }
 
         /// <inheritdoc />
-        public MixedRealityInteractionMapping[] Interactions { get; protected set; }
+        public MixedRealityInteractionMapping[] Interactions { get; private set; }
 
         public void SetupConfiguration(Type controllerType)
         {
@@ -90,16 +85,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         /// Load the Interaction mappings for this controller from the configured Controller Mapping profile
         /// </summary>
         /// <param name="mappings">Configured mappings from a controller mapping profile</param>
-        protected void AssignControllerMappings(MixedRealityInteractionMapping[] mappings)
+        public void AssignControllerMappings(MixedRealityInteractionMapping[] mappings)
         {
-            var interactions = new List<MixedRealityInteractionMapping>();
+            var interactions = new MixedRealityInteractionMapping[mappings.Length];
 
-            for (int i = 0; i < mappings.Length; i++)
+            for (uint i = 0; i < mappings.Length; i++)
             {
-                interactions.Add(new MixedRealityInteractionMapping((uint)i, mappings[i].AxisType, mappings[i].InputType, mappings[i].MixedRealityInputAction));
+                interactions[i] = new MixedRealityInteractionMapping(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].MixedRealityInputAction);
             }
 
-            Interactions = interactions.ToArray();
+            Interactions = interactions;
         }
     }
 }

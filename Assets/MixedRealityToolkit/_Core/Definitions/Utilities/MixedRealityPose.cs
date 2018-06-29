@@ -8,14 +8,14 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
 {
     [Serializable]
-    public struct SixDof : IEqualityComparer
+    public struct MixedRealityPose : IEqualityComparer
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="position"></param>
         /// <param name="rotation"></param>
-        public SixDof(Vector3 position, Quaternion rotation)
+        public MixedRealityPose(Vector3 position, Quaternion rotation)
         {
             this.position = position;
             this.rotation = rotation;
@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// Constructor.
         /// </summary>
         /// <param name="position"></param>
-        public SixDof(Vector3 position)
+        public MixedRealityPose(Vector3 position)
         {
             this.position = position;
             rotation = Quaternion.identity;
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// Constructor.
         /// </summary>
         /// <param name="rotation"></param>
-        public SixDof(Quaternion rotation)
+        public MixedRealityPose(Quaternion rotation)
         {
             position = Vector3.zero;
             this.rotation = rotation;
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <returns>
         /// <see cref="Vector3.zero"/> and <see cref="Quaternion.identity"/>.
         /// </returns>
-        public static SixDof ZeroIdentity { get; } = new SixDof(Vector3.zero, Quaternion.identity);
+        public static MixedRealityPose ZeroIdentity { get; } = new MixedRealityPose(Vector3.zero, Quaternion.identity);
 
         [SerializeField]
         private Vector3 position;
@@ -59,17 +59,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
 
         public Quaternion Rotation { get { return rotation; } set { rotation = value; } }
 
-        public static SixDof operator +(SixDof left, SixDof right)
+        public static MixedRealityPose operator +(MixedRealityPose left, MixedRealityPose right)
         {
-            return new SixDof(left.Position + right.Position, left.Rotation * right.Rotation);
+            return new MixedRealityPose(left.Position + right.Position, left.Rotation * right.Rotation);
         }
 
-        public static bool operator ==(SixDof left, SixDof right)
+        public static bool operator ==(MixedRealityPose left, MixedRealityPose right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(SixDof left, SixDof right)
+        public static bool operator !=(MixedRealityPose left, MixedRealityPose right)
         {
             return !left.Equals(right);
         }
@@ -79,11 +79,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         bool IEqualityComparer.Equals(object left, object right)
         {
             if (ReferenceEquals(null, left) || ReferenceEquals(null, right)) { return false; }
-            if (!(left is SixDof) || !(right is SixDof)) { return false; }
-            return ((SixDof)left).Equals((SixDof)right);
+            if (!(left is MixedRealityPose) || !(right is MixedRealityPose)) { return false; }
+            return ((MixedRealityPose)left).Equals((MixedRealityPose)right);
         }
 
-        public bool Equals(SixDof other)
+        public bool Equals(MixedRealityPose other)
         {
             return Position == other.Position &&
                    Rotation == other.Rotation;
@@ -92,12 +92,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
-            return obj is SixDof && Equals((SixDof)obj);
+            return obj is MixedRealityPose && Equals((MixedRealityPose)obj);
         }
 
         int IEqualityComparer.GetHashCode(object obj)
         {
-            return obj is SixDof ? ((SixDof)obj).GetHashCode() : 0;
+            return obj is MixedRealityPose ? ((MixedRealityPose)obj).GetHashCode() : 0;
         }
 
         public override int GetHashCode()
