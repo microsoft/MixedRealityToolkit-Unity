@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
     /// <summary>
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
-    public abstract class BaseControllerPointer : AttachToController, IMixedRealityInputHandler, IMixedRealityPointer, IMixedRealitySpatialInputHandler
+    public abstract class BaseControllerPointer : AttachToController, IMixedRealityInputHandler, IMixedRealityPointer
     {
         private IMixedRealityInputSystem inputSystem = null;
         public IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
