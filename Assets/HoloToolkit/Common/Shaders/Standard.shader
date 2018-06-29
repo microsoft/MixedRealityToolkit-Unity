@@ -118,6 +118,8 @@ Shader "MixedRealityToolkit/Standard"
             #pragma shader_feature _BORDER_LIGHT_OPAQUE
             #pragma shader_feature _INNER_GLOW
             #pragma shader_feature _ENVIRONMENT_COLORING
+            
+            #define IF(a, b, c) lerp(b, c, step((fixed) (a), 0));
 
             #include "UnityCG.cginc"
             #include "UnityStandardConfig.cginc"
@@ -389,17 +391,9 @@ Shader "MixedRealityToolkit/Standard"
 
                 o.scale.z = minScale;
                 float scaleRatio = min(o.scale.x, o.scale.y) / max(o.scale.x, o.scale.y);
-
-                if (o.scale.x > o.scale.y)
-                {
-                    o.uv.z = 1.0 - (borderWidth * scaleRatio);
-                    o.uv.w = 1.0 - borderWidth;
-                }
-                else
-                {
-                    o.uv.z = 1.0 - borderWidth;
-                    o.uv.w = 1.0 - (borderWidth * scaleRatio);
-                }
+                
+				o.uv.z = IF(o.scale.x > o.scale.y, 1.0 - (borderWidth * scaleRatio), 1.0 - borderWidth);
+				o.uv.w = IF(o.scale.x > o.scale.y, 1.0 - borderWidth, 1.0 - (borderWidth * scaleRatio));
 #else
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 #endif
