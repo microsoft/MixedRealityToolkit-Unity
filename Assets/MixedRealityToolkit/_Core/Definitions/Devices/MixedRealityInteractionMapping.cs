@@ -41,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         #region Interaction Properties
 
         [SerializeField]
+        [Tooltip("The Id assigned to the Interaction.")]
         private uint id;
 
         /// <summary>
@@ -66,14 +67,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         public DeviceInputType InputType => inputType;
 
+        [SerializeField]
+        [Tooltip("Action to be raised to the Input Manager when the input data has changed.")]
+        private MixedRealityInputAction inputAction;
+
         /// <summary>
         /// Action to be raised to the Input Manager when the input data has changed.
         /// </summary>
         public MixedRealityInputAction MixedRealityInputAction => inputAction;
-
-        [SerializeField]
-        [Tooltip("Action to be raised to the Input Manager when the input data has changed.")]
-        private MixedRealityInputAction inputAction;
 
         private bool changed;
 

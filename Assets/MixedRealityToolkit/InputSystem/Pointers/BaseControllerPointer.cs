@@ -300,6 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         #region IMixedRealityInputHandler Implementation
 
+        /// <inheritdoc />
         public virtual void OnInputUp(InputEventData eventData)
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
@@ -316,6 +317,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             }
         }
 
+        /// <inheritdoc />
         public virtual void OnInputDown(InputEventData eventData)
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
@@ -332,11 +334,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             }
         }
 
-        public virtual void OnInputPressed(InputPressedEventData eventData) { }
+        /// <inheritdoc />
+        public virtual void OnInputPressed(InputEventData<float> eventData) { }
 
-        /// <summary>
-        /// Updates target point orientation via thumbstick
-        /// </summary>
+        /// <inheritdoc />
         public virtual void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
 
         #endregion  IMixedRealityInputHandler Implementation

@@ -25,14 +25,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
         void OnInputDown(InputEventData eventData);
 
         /// <summary>
-        /// Input Pressed updates from Interactions, Keys, or any other simple input.
-        /// <remarks>Includes the Pressed Amount if available.</remarks>
+        /// Input Pressed updates from Interactions, Keys, buttons, triggers, or any other simple input.
+        /// <remarks>
+        /// The <see cref="InputEventData{T}.InputData"/> is the pressed amount, if available.</remarks>
         /// </summary>
         /// <param name="eventData"></param>
-        void OnInputPressed(InputPressedEventData eventData);
+        void OnInputPressed(InputEventData<float> eventData);
 
         /// <summary>
-        /// Input Position updates from Thumbsticks, Touchpads, or any other simple input with a position.
+        /// Input Position updates from Thumbsticks, Touchpads, or any other dual axis input with a position.
+        /// <remarks>
+        /// The <see cref="InputEventData{T}.InputData"/> is the current input position.</remarks>
         /// </summary>
         /// <param name="eventData">InputDualAxisPositionEventData</param>
         void OnPositionInputChanged(InputEventData<Vector2> eventData);

@@ -58,15 +58,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
         private InputEventData inputEventData;
         private MixedRealityPointerEventData pointerEventData;
-        private InputPressedEventData inputPressedEventData;
 
+        private InputEventData<float> floatInputEventData;
         private InputEventData<Vector2> vector2InputEventData;
         private InputEventData<Vector3> positionInputEventData;
         private InputEventData<Quaternion> rotationInputEventData;
         private InputEventData<MixedRealityPose> poseInputEventData;
-
-        private NavigationEventData navigationEventData;
-        private ManipulationEventData manipulationEventData;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
@@ -141,15 +138,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
 
             inputEventData = new InputEventData(EventSystem.current);
             pointerEventData = new MixedRealityPointerEventData(EventSystem.current);
-            inputPressedEventData = new InputPressedEventData(EventSystem.current);
-            vector2InputEventData = new InputEventData<Vector2>(EventSystem.current);
 
+            floatInputEventData = new InputEventData<float>(EventSystem.current);
+            vector2InputEventData = new InputEventData<Vector2>(EventSystem.current);
             positionInputEventData = new InputEventData<Vector3>(EventSystem.current);
             rotationInputEventData = new InputEventData<Quaternion>(EventSystem.current);
             poseInputEventData = new InputEventData<MixedRealityPose>(EventSystem.current);
-
-            navigationEventData = new NavigationEventData(EventSystem.current);
-            manipulationEventData = new ManipulationEventData(EventSystem.current);
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
@@ -831,7 +825,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler> OnInputPressedEventHandler =
             delegate (IMixedRealityInputHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<InputPressedEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<float>>(eventData);
                 handler.OnInputPressed(casted);
             };
 
@@ -839,30 +833,30 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         public void RaiseOnInputPressed(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
-            inputPressedEventData.Initialize(source, inputAction);
+            floatInputEventData.Initialize(source, inputAction);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
+            HandleEvent(floatInputEventData, OnInputPressedEventHandler);
         }
 
         /// <inheritdoc />
         public void RaiseOnInputPressed(IMixedRealityInputSource source, MixedRealityInputAction inputAction, float pressAmount)
         {
             // Create input event
-            inputPressedEventData.Initialize(source, inputAction, pressAmount);
+            floatInputEventData.Initialize(source, inputAction, pressAmount);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
+            HandleEvent(floatInputEventData, OnInputPressedEventHandler);
         }
 
         /// <inheritdoc />
         public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, float pressAmount)
         {
             // Create input event
-            inputPressedEventData.Initialize(source, handedness, inputAction, pressAmount);
+            floatInputEventData.Initialize(source, handedness, inputAction, pressAmount);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(inputPressedEventData, OnInputPressedEventHandler);
+            HandleEvent(floatInputEventData, OnInputPressedEventHandler);
         }
 
         #endregion Input Pressed
@@ -1112,7 +1106,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealityNavigationHandler> OnNavigationStartedEventHandler =
             delegate (IMixedRealityNavigationHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<NavigationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<Vector3>>(eventData);
                 handler.OnNavigationStarted(casted);
             };
 
@@ -1120,26 +1114,26 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         public void RaiseNavigationStarted(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
-            navigationEventData.Initialize(source, inputAction, Vector3.zero);
+            positionInputEventData.Initialize(source, inputAction, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(navigationEventData, OnNavigationStartedEventHandler);
+            HandleEvent(positionInputEventData, OnNavigationStartedEventHandler);
         }
 
         /// <inheritdoc />
         public void RaiseNavigationStarted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
-            navigationEventData.Initialize(source, handedness, inputAction, Vector3.zero);
+            positionInputEventData.Initialize(source, handedness, inputAction, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(navigationEventData, OnNavigationStartedEventHandler);
+            HandleEvent(positionInputEventData, OnNavigationStartedEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityNavigationHandler> OnNavigationUpdatedEventHandler =
             delegate (IMixedRealityNavigationHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<NavigationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<Vector3>>(eventData);
                 handler.OnNavigationUpdated(casted);
             };
 
@@ -1147,26 +1141,26 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         public void RaiseNavigationUpdated(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 normalizedOffset)
         {
             // Create input event
-            navigationEventData.Initialize(source, inputAction, normalizedOffset);
+            positionInputEventData.Initialize(source, inputAction, normalizedOffset);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(navigationEventData, OnNavigationUpdatedEventHandler);
+            HandleEvent(positionInputEventData, OnNavigationUpdatedEventHandler);
         }
 
         /// <inheritdoc />
         public void RaiseNavigationUpdated(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 normalizedOffset)
         {
             // Create input event
-            navigationEventData.Initialize(source, handedness, inputAction, normalizedOffset);
+            positionInputEventData.Initialize(source, handedness, inputAction, normalizedOffset);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(navigationEventData, OnNavigationUpdatedEventHandler);
+            HandleEvent(positionInputEventData, OnNavigationUpdatedEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityNavigationHandler> OnNavigationCompletedEventHandler =
             delegate (IMixedRealityNavigationHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<NavigationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<Vector3>>(eventData);
                 handler.OnNavigationCompleted(casted);
             };
 
@@ -1174,26 +1168,26 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         public void RaiseNavigationCompleted(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 normalizedOffset)
         {
             // Create input event
-            navigationEventData.Initialize(source, inputAction, normalizedOffset);
+            positionInputEventData.Initialize(source, inputAction, normalizedOffset);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(navigationEventData, OnNavigationCompletedEventHandler);
+            HandleEvent(positionInputEventData, OnNavigationCompletedEventHandler);
         }
 
         /// <inheritdoc />
         public void RaiseNavigationCompleted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 normalizedOffset)
         {
             // Create input event
-            navigationEventData.Initialize(source, handedness, inputAction, normalizedOffset);
+            positionInputEventData.Initialize(source, handedness, inputAction, normalizedOffset);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(navigationEventData, OnNavigationCompletedEventHandler);
+            HandleEvent(positionInputEventData, OnNavigationCompletedEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityNavigationHandler> OnNavigationCanceledEventHandler =
             delegate (IMixedRealityNavigationHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<NavigationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<Vector3>>(eventData);
                 handler.OnNavigationCanceled(casted);
             };
 
@@ -1201,20 +1195,20 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         public void RaiseNavigationCanceled(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
-            navigationEventData.Initialize(source, inputAction, Vector3.zero);
+            positionInputEventData.Initialize(source, inputAction, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(navigationEventData, OnNavigationCanceledEventHandler);
+            HandleEvent(positionInputEventData, OnNavigationCanceledEventHandler);
         }
 
         /// <inheritdoc />
         public void RaiseNavigationCanceled(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
-            navigationEventData.Initialize(source, handedness, inputAction, Vector3.zero);
+            positionInputEventData.Initialize(source, handedness, inputAction, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(navigationEventData, OnNavigationCanceledEventHandler);
+            HandleEvent(positionInputEventData, OnNavigationCanceledEventHandler);
         }
 
         #endregion Navigation Events
@@ -1224,7 +1218,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         private static readonly ExecuteEvents.EventFunction<IMixedRealityManipulationHandler> OnManipulationStartedEventHandler =
             delegate (IMixedRealityManipulationHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<ManipulationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<Vector3>>(eventData);
                 handler.OnManipulationStarted(casted);
             };
 
@@ -1232,26 +1226,26 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         public void RaiseManipulationStarted(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
-            manipulationEventData.Initialize(source, inputAction, Vector3.zero);
+            positionInputEventData.Initialize(source, inputAction, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(manipulationEventData, OnManipulationStartedEventHandler);
+            HandleEvent(positionInputEventData, OnManipulationStartedEventHandler);
         }
 
         /// <inheritdoc />
         public void RaiseManipulationStarted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
-            manipulationEventData.Initialize(source, handedness, inputAction, Vector3.zero);
+            positionInputEventData.Initialize(source, handedness, inputAction, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(manipulationEventData, OnManipulationStartedEventHandler);
+            HandleEvent(positionInputEventData, OnManipulationStartedEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityManipulationHandler> OnManipulationUpdatedEventHandler =
             delegate (IMixedRealityManipulationHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<ManipulationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<Vector3>>(eventData);
                 handler.OnManipulationUpdated(casted);
             };
 
@@ -1259,26 +1253,26 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         public void RaiseManipulationUpdated(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 cumulativeDelta)
         {
             // Create input event
-            manipulationEventData.Initialize(source, inputAction, cumulativeDelta);
+            positionInputEventData.Initialize(source, inputAction, cumulativeDelta);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(manipulationEventData, OnManipulationUpdatedEventHandler);
+            HandleEvent(positionInputEventData, OnManipulationUpdatedEventHandler);
         }
 
         /// <inheritdoc />
         public void RaiseManipulationUpdated(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 cumulativeDelta)
         {
             // Create input event
-            manipulationEventData.Initialize(source, handedness, inputAction, cumulativeDelta);
+            positionInputEventData.Initialize(source, handedness, inputAction, cumulativeDelta);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(manipulationEventData, OnManipulationUpdatedEventHandler);
+            HandleEvent(positionInputEventData, OnManipulationUpdatedEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityManipulationHandler> OnManipulationCompletedEventHandler =
             delegate (IMixedRealityManipulationHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<ManipulationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<Vector3>>(eventData);
                 handler.OnManipulationCompleted(casted);
             };
 
@@ -1286,26 +1280,26 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         public void RaiseManipulationCompleted(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 cumulativeDelta)
         {
             // Create input event
-            manipulationEventData.Initialize(source, inputAction, cumulativeDelta);
+            positionInputEventData.Initialize(source, inputAction, cumulativeDelta);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(manipulationEventData, OnManipulationCompletedEventHandler);
+            HandleEvent(positionInputEventData, OnManipulationCompletedEventHandler);
         }
 
         /// <inheritdoc />
         public void RaiseManipulationCompleted(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 cumulativeDelta)
         {
             // Create input event
-            manipulationEventData.Initialize(source, handedness, inputAction, cumulativeDelta);
+            positionInputEventData.Initialize(source, handedness, inputAction, cumulativeDelta);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(manipulationEventData, OnManipulationCompletedEventHandler);
+            HandleEvent(positionInputEventData, OnManipulationCompletedEventHandler);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityManipulationHandler> OnManipulationCanceledEventHandler =
             delegate (IMixedRealityManipulationHandler handler, BaseEventData eventData)
             {
-                var casted = ExecuteEvents.ValidateEventData<ManipulationEventData>(eventData);
+                var casted = ExecuteEvents.ValidateEventData<InputEventData<Vector3>>(eventData);
                 handler.OnManipulationCanceled(casted);
             };
 
@@ -1313,20 +1307,20 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         public void RaiseManipulationCanceled(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
             // Create input event
-            manipulationEventData.Initialize(source, inputAction, Vector3.zero);
+            positionInputEventData.Initialize(source, inputAction, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(manipulationEventData, OnManipulationCanceledEventHandler);
+            HandleEvent(positionInputEventData, OnManipulationCanceledEventHandler);
         }
 
         /// <inheritdoc />
         public void RaiseManipulationCanceled(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
-            manipulationEventData.Initialize(source, handedness, inputAction, Vector3.zero);
+            positionInputEventData.Initialize(source, handedness, inputAction, Vector3.zero);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(manipulationEventData, OnManipulationCanceledEventHandler);
+            HandleEvent(positionInputEventData, OnManipulationCanceledEventHandler);
         }
 
         #endregion Manipulation Events

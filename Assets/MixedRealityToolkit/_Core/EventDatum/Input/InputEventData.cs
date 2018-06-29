@@ -55,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         public T InputData { get; private set; }
 
+        /// <inheritdoc />
         public InputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>

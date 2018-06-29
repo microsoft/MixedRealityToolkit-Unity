@@ -8,24 +8,30 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers
 {
     /// <summary>
-    /// Interface to implement input for 3 Degrees of Freedom.
+    /// Interface to implement for spatial input position and rotation.
     /// </summary>
     public interface IMixedRealitySpatialInputHandler : IMixedRealityInputHandler
     {
         /// <summary>
         /// Raised when the input source's position has changed.
+        /// <remarks>
+        /// The <see cref="InputEventData{T}.InputData"/> is the current input position.</remarks>
         /// </summary>
         /// <param name="eventData"></param>
         void OnPositionChanged(InputEventData<Vector3> eventData);
 
         /// <summary>
         /// Raised when the input source's rotation has changed.
+        /// <remarks>
+        /// The <see cref="InputEventData{T}.InputData"/> is the current input rotation.</remarks>
         /// </summary>
         /// <param name="eventData"></param>
         void OnRotationChanged(InputEventData<Quaternion> eventData);
 
         /// <summary>
-        /// Six Degree of Freedom input update.
+        /// Raised when the input source's position and rotation has changed.
+        /// <remarks>
+        /// The <see cref="InputEventData{T}.InputData"/> is the current input position.</remarks>
         /// </summary>
         /// <param name="eventData"></param>
         void OnPoseInputChanged(InputEventData<MixedRealityPose> eventData);
