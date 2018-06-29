@@ -7,7 +7,7 @@ using UnityEngine;
 namespace HoloToolkit.Examples.InteractiveElements
 {
     /// <summary>
-    /// updates slider UI based on gesture input
+    /// Updates slider UI based on gesture input
     /// </summary>
     public class SliderGestureControl : GestureInteractiveControl
     {
@@ -72,9 +72,9 @@ namespace HoloToolkit.Examples.InteractiveElements
         private Vector3 mSliderFillScale;
         private float mSliderWidth;
 
-        private float AutoSliderTime = 0.25f;
-        private float AutoSliderTimerCounter = 0.5f;
-        private float AutoSliderValue = 0;
+        private float autoSliderTime = 0.25f;
+        private float autoSliderTimerCounter = 0.5f;
+        private float autoSliderValue = 0;
 
         private Vector3 mSliderVector;
         private Quaternion mCachedRotation;
@@ -188,16 +188,16 @@ namespace HoloToolkit.Examples.InteractiveElements
             switch (gestureValue)
             {
                 case 0:
-                    AutoSliderValue = 0;
+                    autoSliderValue = 0;
                     break;
                 case 1:
-                    AutoSliderValue = 0.5f;
+                    autoSliderValue = 0.5f;
                     break;
                 case 2:
-                    AutoSliderValue = 1;
+                    autoSliderValue = 1;
                     break;
             }
-            AutoSliderTimerCounter = 0;
+            autoSliderTimerCounter = 0;
         }
 
         /// <summary>
@@ -298,22 +298,22 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             base.Update();
 
-            if (AutoSliderTimerCounter < AutoSliderTime)
+            if (autoSliderTimerCounter < autoSliderTime)
             {
                 if (GestureStarted)
                 {
-                    AutoSliderTimerCounter = AutoSliderTime;
+                    autoSliderTimerCounter = autoSliderTime;
                     return;
                 }
 
-                AutoSliderTimerCounter += Time.deltaTime;
-                if (AutoSliderTimerCounter >= AutoSliderTime)
+                autoSliderTimerCounter += Time.deltaTime;
+                if (autoSliderTimerCounter >= autoSliderTime)
                 {
-                    AutoSliderTimerCounter = AutoSliderTime;
-                    mCachedValue = AutoSliderValue;
+                    autoSliderTimerCounter = autoSliderTime;
+                    mCachedValue = autoSliderValue;
                 }
 
-                mDeltaValue = (AutoSliderValue - mCachedValue) * AutoSliderTimerCounter / AutoSliderTime + mCachedValue;
+                mDeltaValue = (autoSliderValue - mCachedValue) * autoSliderTimerCounter / autoSliderTime + mCachedValue;
 
                 if (!Centered)
                 {
@@ -325,7 +325,6 @@ namespace HoloToolkit.Examples.InteractiveElements
                 }
 
                 UpdateVisuals();
-
             }
         }
     }
