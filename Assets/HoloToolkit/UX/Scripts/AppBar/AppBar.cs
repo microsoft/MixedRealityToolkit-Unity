@@ -35,6 +35,8 @@ namespace HoloToolkit.Unity.UX
         /// </summary>
         public float HoverOffsetZ = 0f;
 
+        [SerializeField]
+        [Tooltip("Uses an alternate follow style that works better for very oblong objects.")]
         private bool useTightFollow = false;
 
         /// <summary>
@@ -42,15 +44,8 @@ namespace HoloToolkit.Unity.UX
         /// </summary>
         public bool UseTightFollow
         {
-            get
-            {
-                return useTightFollow;
-            }
-
-            set
-            {
-                useTightFollow = value;
-            }
+            get { return useTightFollow; }
+            set { useTightFollow = value; }
         }
 
         /// <summary>
@@ -74,10 +69,7 @@ namespace HoloToolkit.Unity.UX
 
             public bool IsEmpty
             {
-                get
-                {
-                    return string.IsNullOrEmpty(Name);
-                }
+                get { return string.IsNullOrEmpty(Name); }
             }
 
             public int DefaultPosition;
@@ -116,14 +108,8 @@ namespace HoloToolkit.Unity.UX
 
         public BoundingBox BoundingBox
         {
-            get
-            {
-                return boundingBox;
-            }
-            set
-            {
-                boundingBox = value;
-            }
+            get { return boundingBox; }
+            set { boundingBox = value; }
         }
 
         private BoundingBoxRig boundingRig;
@@ -133,34 +119,15 @@ namespace HoloToolkit.Unity.UX
         /// </summary>
         public BoundingBoxRig BoundingRig
         {
-            get
-            {
-                return boundingRig;
-            }
-
-            set
-            {
-                boundingRig = value;
-            }
+            get { return boundingRig; }
+            set { boundingRig = value; }
         }
 
         public GameObject SquareButtonPrefab;
 
-        public int NumDefaultButtons
-        {
-            get
-            {
-                return numDefaultButtons;
-            }
-        }
+        public int NumDefaultButtons { get; private set; }
 
-        public int NumManipulationButtons
-        {
-            get
-            {
-                return numManipulationButtons;
-            }
-        }
+        public int NumManipulationButtons { get; private set; }
 
         public bool UseRemove = true;
         public bool UseAdjust = true;
@@ -168,23 +135,11 @@ namespace HoloToolkit.Unity.UX
 
         public ButtonTemplate[] Buttons
         {
-            get
-            {
-                return buttons;
-            }
-            set
-            {
-                buttons = value;
-            }
+            get { return buttons; }
+            set { buttons = value; }
         }
 
-        public ButtonTemplate[] DefaultButtons
-        {
-            get
-            {
-                return defaultButtons;
-            }
-        }
+        public ButtonTemplate[] DefaultButtons { get; private set; }
 
         public AppBarDisplayTypeEnum DisplayType = AppBarDisplayTypeEnum.Manipulation;
 
@@ -211,13 +166,10 @@ namespace HoloToolkit.Unity.UX
         [SerializeField]
         private BoundingBox boundingBox;
 
-        private ButtonTemplate[] defaultButtons;
         private Vector3 targetBarSize = Vector3.one;
         private float lastTimeTapped = 0f;
         private float coolDownTime = 0.5f;
-        private int numDefaultButtons;
         private int numHiddenButtons;
-        private int numManipulationButtons;
         private BoundingBoxHelper helper;
 
         public void Reset()
@@ -234,9 +186,9 @@ namespace HoloToolkit.Unity.UX
             if (interactables.Count == 0)
             {
                 RefreshTemplates();
-                for (int i = 0; i < defaultButtons.Length; i++)
+                for (int i = 0; i < DefaultButtons.Length; i++)
                 {
-                    CreateButton(defaultButtons[i], null);
+                    CreateButton(DefaultButtons[i], null);
                 }
 
                 for (int i = 0; i < buttons.Length; i++)
@@ -256,6 +208,7 @@ namespace HoloToolkit.Unity.UX
             }
 
             lastTimeTapped = Time.time;
+
             base.InputClicked(obj, eventData);
 
             switch (obj.name)
@@ -307,24 +260,24 @@ namespace HoloToolkit.Unity.UX
             switch (template.Type)
             {
                 case ButtonTypeEnum.Custom:
-                    numDefaultButtons++;
+                    NumDefaultButtons++;
                     break;
 
                 case ButtonTypeEnum.Adjust:
-                    numDefaultButtons++;
+                    NumDefaultButtons++;
                     break;
 
                 case ButtonTypeEnum.Done:
-                    numManipulationButtons++;
+                    NumManipulationButtons++;
                     break;
 
                 case ButtonTypeEnum.Remove:
-                    numManipulationButtons++;
-                    numDefaultButtons++;
+                    NumManipulationButtons++;
+                    NumDefaultButtons++;
                     break;
 
                 case ButtonTypeEnum.Hide:
-                    numDefaultButtons++;
+                    NumDefaultButtons++;
                     break;
 
                 case ButtonTypeEnum.Show:
@@ -360,8 +313,8 @@ namespace HoloToolkit.Unity.UX
             }
 
             // Show our buttons
-            baseRenderer.SetActive(true); 
-            
+            baseRenderer.SetActive(true);
+
             //calculate best follow position for AppBar
             Vector3 finalPosition = Vector3.zero;
             Vector3 headPosition = Camera.main.transform.position;
@@ -394,7 +347,7 @@ namespace HoloToolkit.Unity.UX
             switch (State)
             {
                 case AppBarStateEnum.Default:
-                    targetBarSize = new Vector3(numDefaultButtons * buttonWidth, buttonWidth, 1f);
+                    targetBarSize = new Vector3(NumDefaultButtons * buttonWidth, buttonWidth, 1f);
                     break;
 
                 case AppBarStateEnum.Hidden:
@@ -402,7 +355,7 @@ namespace HoloToolkit.Unity.UX
                     break;
 
                 case AppBarStateEnum.Manipulation:
-                    targetBarSize = new Vector3(numManipulationButtons * buttonWidth, buttonWidth, 1f);
+                    targetBarSize = new Vector3(NumManipulationButtons * buttonWidth, buttonWidth, 1f);
                     break;
 
                 default:
@@ -442,7 +395,7 @@ namespace HoloToolkit.Unity.UX
                 defaultButtonsList.Add(GetDefaultButtonTemplateFromType(ButtonTypeEnum.Hide, numCustomButtons, UseHide, UseAdjust));
                 defaultButtonsList.Add(GetDefaultButtonTemplateFromType(ButtonTypeEnum.Show, numCustomButtons, UseHide, UseAdjust));
             }
-            defaultButtons = defaultButtonsList.ToArray();
+            DefaultButtons = defaultButtonsList.ToArray();
         }
 
 #if UNITY_EDITOR
