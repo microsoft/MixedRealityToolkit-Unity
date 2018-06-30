@@ -17,7 +17,6 @@ using UnityEngine.XR.WSA.Input;
 //using UnityGLTF;
 
 #if !UNITY_EDITOR
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Windows.Foundation;
 using Windows.Storage.Streams;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;

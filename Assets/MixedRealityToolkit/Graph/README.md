@@ -26,17 +26,22 @@ To that end, the toolkit comes with a implementation using [Microsoft Authentica
 
 5. Setup Unity scene.
 
-	Add **MsalGraphConnector.cs** to any game object of your scene. Alternatively, you can add the GraphConnector.prefab to the scene, as it already includes **MsalGraphConnector.cs**.
+	a) Add Mixed Reality Manager as a game object of the scene;
 
-6. Setup MS Graph permissions.
+	b) Create Mixed Reality Graph Access Profile, through the Assets menu;
 
-	Select the game object that has MsalGraphConnector.cs and update settings accordingly in the inspector.
+	c) Assign the Graph Access profile, to the Active "Mixed Reality Configuration Profile" in Mixed Reality Manager;
+
+6. Setup MS Graph Settings.
+
+	Settings are defined through "Mixed Reality Graph Access Profile" and assign that profile to the Active "Mixed Reality Configuration Profile.
 	* **Graph App Id** is the application ID registered in [Microsoft App Registration Portal](https://apps.dev.microsoft.com/).
 	* **Graph Access Scopes** is the array that lists all [access permissions](https://developer.microsoft.com/en-us/graph/docs/concepts/permissions_reference) required in your scenario.
+	* **Auth Test Token** is used as the authentication token if set. This allows to test MS Graph in the Unity editor."
 
 7. All set. 
 
-	Look up **GraphConnectorTestAsync.cs** for examples on how to use the GrahConnector.
+	Look up **GraphExampleScene.unity** for example on how to use the GrahConnector.
 
 # Testing using the Unity editor
 There are two options to test MS Graph in the editor:
@@ -51,7 +56,7 @@ Unity runtime bugs preventing Microsoft.Identity.Client.dll from working in UWP 
 
 	1. IL2CPP project failing to P/Invoke into kernel32.dll!GetNativeSystemInfo. 
 
-		Issue Tracker: https://issuetracker.unity3d.com/issues/uwp-il2cpp-project-failing-to-p-slash-invoking-into-etw-logging-functions
+		Unity Forum: https://forum.unity.com/threads/uwp-assemblies-not-working-when-using-il2cpp-but-work-on-net-scripting-backend.533401/
 
 		Workaround: build Microsoft.Identity.Client.dll for WinRT, using "[DllImport("__Internal")]" syntax for this P/Invoke.
 
@@ -66,7 +71,7 @@ Unity runtime bugs preventing Microsoft.Identity.Client.dll from working in UWP 
 
 	3. IL2CPP conversion bug causes ApplicationDataCompositeValue to fail with "Error trying to serialize the value to be written to the application data store".
 
-	    https://forum.unity.com/threads/uwp-assemblies-not-working-when-using-il2cpp-but-work-on-net-scripting-backend.533401/
+	    Unity Forum: https://forum.unity.com/threads/uwp-assemblies-not-working-when-using-il2cpp-but-work-on-net-scripting-backend.533401/
 
 		Error trying to serialize the value to be written to the application data store
 		at Windows.Storage.ApplicationDataCompositeValue.Insert (System.String key, System.Object value) [0x00000] in <00000000000000000000000000000000>:0 

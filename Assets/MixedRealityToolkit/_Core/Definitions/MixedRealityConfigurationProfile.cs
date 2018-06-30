@@ -7,9 +7,9 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
@@ -181,6 +181,33 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get { return enableBoundarySystem; }
             private set { enableBoundarySystem = value; }
+        }
+
+
+        [SerializeField]
+        [Tooltip("Enable the MS Graph profile on Startup")]
+        private bool enableGraphAccessProfile = false;
+
+        /// <summary>
+        /// Enable and configure the MS Graph profile
+        /// </summary>
+        public bool EnableGraphAccessProfile
+        {
+            get { return enableGraphAccessProfile; }
+            private set { enableGraphAccessProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Device profile for wiring up physical inputs to Actions.")]
+        private MixedRealityGraphAccessProfile graphAccessProfile;
+
+        /// <summary>
+        /// Active profile to access MS Graph
+        /// </summary>
+        public MixedRealityGraphAccessProfile GraphAccessProfile
+        {
+            get { return graphAccessProfile; }
+            private set { graphAccessProfile = value; }
         }
 
         #endregion Mixed Reality Manager configurable properties

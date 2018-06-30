@@ -9,9 +9,9 @@ using UnityEngine.UI;
 namespace Microsoft.MixedReality.Toolkit.Examples.Graph
 {
     /// <summary>
-    /// Class to test GraphConnector using async model.
+    /// Controller class for GraphScene.
     /// </summary>
-    public class GraphConnectorTestAsync : MonoBehaviour
+    public class GraphSceneController : MonoBehaviour
     {
         [SerializeField]
         private Text displayName = null;
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Graph
         /// </summary>
         private async void Start()
         {
-            var graphConnector = GetComponent<GraphConnector>();
+            var graphConnector = new MsalGraphConnector();
 
             // Gets "me" user data as a object.
             var graphResponseObject = await graphConnector.MakeRequestGetAsync(GraphConnector.GraphEndpoint, "/me");

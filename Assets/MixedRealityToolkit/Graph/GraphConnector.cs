@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Graph.Internal;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.WebRequestRest;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -10,9 +10,9 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Graph
 {
     /// <summary>
-    /// Unity script that enables access to the Graph.
+    /// Class that enables access to MS Graph.
     /// </summary>
-    public class GraphConnector : MonoBehaviour
+    public abstract class GraphConnector
     {
         /// <summary>
         /// Official v1 Graph endpoint.
@@ -25,30 +25,17 @@ namespace Microsoft.MixedReality.Toolkit.Graph
         public static readonly string GraphBetaEndpoint = "https://graph.microsoft.com/beta/";
 
         /// <summary>
-        /// The application id registered to access the Graph.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("The App Id registered in https://apps.dev.microsoft.com to access the Graph.")]
-        private string graphAppId = null;
-
-        /// <summary>
-        /// The list of permissions required to access the Graph.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("List of all access scopes required for each Graph API used. It should be a subset (or match) the scopes registered in https://apps.dev.microsoft.com.")]
-        private string[] graphAccessScopes = { "User.Read" };
-
-        /// <summary>
-        /// Token for testing in the Unity editor.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Auth token to test Graph access in the Unity editor.")]
-        private string testAuthToken = null;
-
-        /// <summary>
         /// The interface used to authenticate the user.
         /// </summary>
         private IGraphAuthentication graphAuthentication;
+
+        /// <summary>
+        /// GraphConnector constructor.
+        /// </summary>
+        protected GraphConnector()
+        {
+            graphAuthentication = CreateAuthenticationProvider(MixedRealityManager.Instance.ActiveProfile.GraphAccessProfile.GraphAppId);
+        }
 
         /// <summary>
         /// Get an access token for the graph scopes and app id. An attempt is first made to 
@@ -57,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Graph
         /// <returns>The async task.</returns>
         public Task SignInAsync()
         {
-            return graphAuthentication.SignInAsync(graphAccessScopes);
+            return graphAuthentication.SignInAsync(MixedRealityManager.Instance.ActiveProfile.GraphAccessProfile.GraphAccessScopes);
         }
 
         /// <summary>
@@ -81,14 +68,14 @@ namespace Microsoft.MixedReality.Toolkit.Graph
 
             if (Application.isEditor)
             {
-                authToken = testAuthToken;
+                authToken = MixedRealityManager.Instance.ActiveProfile.GraphAccessProfile.TestAuthToken;
             }
 
             if (graphAuthentication != null && string.IsNullOrEmpty(authToken))
             {
                 if (!graphAuthentication.IsAuthenticated)
                 {
-                    await graphAuthentication.SignInAsync(graphAccessScopes);
+                    await graphAuthentication.SignInAsync(MixedRealityManager.Instance.ActiveProfile.GraphAccessProfile.GraphAccessScopes);
                 }
 
                 authToken = graphAuthentication.AuthToken;
@@ -108,17 +95,6 @@ namespace Microsoft.MixedReality.Toolkit.Graph
         /// </summary>
         /// <param name="graphAppId">The app id to access the Graph.</param>
         /// <returns>The authentication provider to use.</returns>
-        protected virtual IGraphAuthentication CreateAuthenticationProvider(string graphAppId)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Called by Unity when initializing a MonoBehaviour.
-        /// </summary>
-        private void Awake()
-        {
-            graphAuthentication = CreateAuthenticationProvider(graphAppId);
-        }
+        protected abstract IGraphAuthentication CreateAuthenticationProvider(string graphAppId);
     }
 }
