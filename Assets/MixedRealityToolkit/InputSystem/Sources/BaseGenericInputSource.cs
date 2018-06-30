@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <summary>
         /// The Current Input System for this Input Source.
         /// </summary>
-        public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+        public static IMixedRealityInputSystem InputSystem => inputSystem ?? (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem ? inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>() : null);
         private static IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
@@ -27,9 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <param name="pointers"></param>
         public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null)
         {
-            SourceId = InputSystem.GenerateNewSourceId();
+            SourceId = InputSystem?.GenerateNewSourceId() ?? 0;
             SourceName = name;
-            Pointers = pointers ?? new[] { InputSystem.GazeProvider.GazePointer };
+            Pointers = pointers ?? new[] { InputSystem?.GazeProvider.GazePointer };
         }
 
         /// <inheritdoc />

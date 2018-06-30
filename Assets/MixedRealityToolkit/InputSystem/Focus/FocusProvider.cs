@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
     public class FocusProvider : MonoBehaviour, IMixedRealityFocusProvider
     {
         private IMixedRealityInputSystem inputSystem = null;
-        public IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+        public IMixedRealityInputSystem InputSystem => inputSystem ?? (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem ? inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>() : null);
 
         /// <summary>
         /// Maximum distance at which the pointer can collide with an object.
@@ -229,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         private void Start()
         {
             // Register the FocusProvider as a global listener to get input events.
-            InputSystem.Register(gameObject);
+            InputSystem?.Register(gameObject);
         }
 
         private void Update()
