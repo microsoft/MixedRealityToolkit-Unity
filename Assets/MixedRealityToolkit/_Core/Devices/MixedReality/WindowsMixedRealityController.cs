@@ -138,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             interactionSourceState.sourcePose.TryGetPosition(out currentPointerPosition, InteractionSourceNode.Pointer);
             interactionSourceState.sourcePose.TryGetRotation(out currentPointerRotation, InteractionSourceNode.Pointer);
 
-            if (CameraCache.Main.transform.parent != null)
+            if (CameraCache.Main?.transform.parent != null)
             {
                 currentPointerData.Position = CameraCache.Main.transform.parent.TransformPoint(currentPointerPosition);
                 currentPointerData.Rotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentPointerRotation.eulerAngles));

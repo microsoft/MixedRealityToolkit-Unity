@@ -240,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private void OnDisable()
         {
-            GazePointer.BaseCursor?.SetVisibility(false);
+            GazePointer?.BaseCursor?.SetVisibility(false);
             InputSystem?.RaiseSourceLost(GazeInputSource);
             InputSystem?.FocusProvider.UnregisterPointer(GazePointer);
         }
