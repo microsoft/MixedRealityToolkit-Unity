@@ -15,7 +15,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 {
     /// <summary>
-    /// Focus manager handles the focused objects per input source.
+    /// The focus provider handles the focused objects per input source.
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     /// </summary>
     public class FocusProvider : MonoBehaviour, IMixedRealityFocusProvider
@@ -33,14 +33,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
-        ///
-        /// Example Usage:
-        ///
+        /// <example>
         /// Allow the cursor to hit SR, but first prioritize any DefaultRaycastLayers (potentially behind SR)
-        ///
+        /// <code language="csharp"><![CDATA[
         /// int sr = LayerMask.GetMask("SR");
         /// int nonSR = Physics.DefaultRaycastLayers &amp; ~sr;
         /// GazeProvider.Instance.RaycastLayerMasks = new LayerMask[] { nonSR, sr };
+        /// ]]></code>
+        /// </example>
         /// </summary>
         [SerializeField]
         [Tooltip("The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.")]

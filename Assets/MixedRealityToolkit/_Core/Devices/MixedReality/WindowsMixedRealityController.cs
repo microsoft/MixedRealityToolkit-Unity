@@ -40,11 +40,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;
-        private SixDof currentPointerData = new SixDof(Vector3.zero, Quaternion.identity);
+        private MixedRealityPose currentPointerData = new MixedRealityPose(Vector3.zero, Quaternion.identity);
 
         private Vector3 currentGripPosition = Vector3.zero;
         private Quaternion currentGripRotation = Quaternion.identity;
-        private SixDof currentGripData = new SixDof(Vector3.zero, Quaternion.identity);
+        private MixedRealityPose currentGripData = new MixedRealityPose(Vector3.zero, Quaternion.identity);
 
         #region Update data functions
 
@@ -145,13 +145,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
 
             //Update the interaction data source
-            interactionMapping.SetSixDofValue(currentPointerData);
+            interactionMapping.SetPoseValue(currentPointerData);
 
             // If our value changed raise it.
             if (interactionMapping.Changed)
             {
                 //Raise input system Event if it enabled
-                InputSystem?.Raise6DofInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentPointerData);
+                InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentPointerData);
             }
         }
 
@@ -178,13 +178,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         }
 
                         //Update the interaction data source
-                        interactionMapping.SetSixDofValue(currentGripData);
+                        interactionMapping.SetPoseValue(currentGripData);
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
                             //Raise input system Event if it enabled
-                            InputSystem?.Raise6DofInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentGripData);
+                            InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentGripData);
                         }
                     }
                     break;
@@ -269,7 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         if (interactionMapping.Changed)
                         {
                             //Raise input system Event if it enabled
-                            InputSystem?.Raise2DoFInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
+                            InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
                         }
                         break;
                     }
@@ -316,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         if (interactionMapping.Changed)
                         {
                             //Raise input system Event if it enabled
-                            InputSystem?.Raise2DoFInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.thumbstickPosition);
+                            InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.thumbstickPosition);
                         }
                         break;
                     }

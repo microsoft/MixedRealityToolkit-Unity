@@ -17,12 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
     /// </summary>
     [CustomPropertyDrawer(typeof(SystemType))]
     [CustomPropertyDrawer(typeof(SystemTypeAttribute), true)]
-    public class TypeSeReferencePropertyDrawer : PropertyDrawer
+    public class SystemTypeReferencePropertyDrawer : PropertyDrawer
     {
         private static int selectionControlId;
         private static string selectedReference;
         private static readonly Dictionary<string, Type> TypeMap = new Dictionary<string, Type>();
-        private static readonly int ControlHint = typeof(TypeSeReferencePropertyDrawer).GetHashCode();
+        private static readonly int ControlHint = typeof(SystemTypeReferencePropertyDrawer).GetHashCode();
         private static readonly GUIContent TempContent = new GUIContent();
 
         #region Type Filtering
