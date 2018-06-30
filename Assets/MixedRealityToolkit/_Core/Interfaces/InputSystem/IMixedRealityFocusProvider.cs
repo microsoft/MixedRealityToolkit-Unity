@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
     {
         float GlobalPointingExtent { get; }
         Camera UIRaycastCamera { get; }
-        GameObject OverrideFocusedObject { get; }
+        GameObject OverrideFocusedObject { get; set; }
         GameObject GetFocusedObject(BaseInputEventData eventData);
         bool TryGetFocusDetails(BaseInputEventData eventData, out FocusDetails focusDetails);
         bool TryGetPointingSource(BaseInputEventData eventData, out IMixedRealityPointer pointer);

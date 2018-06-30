@@ -171,13 +171,29 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             if (focusProvider != null)
             {
                 focusProvider.enabled = false;
-                UnityEngine.Object.Destroy(focusProvider);
+
+                if (Application.isEditor)
+                {
+                    UnityEngine.Object.DestroyImmediate(focusProvider);
+                }
+                else
+                {
+                    UnityEngine.Object.Destroy(focusProvider);
+                }
             }
 
             if (gazeProvider != null)
             {
                 gazeProvider.enabled = false;
-                UnityEngine.Object.Destroy(gazeProvider);
+
+                if (Application.isEditor)
+                {
+                    UnityEngine.Object.DestroyImmediate(gazeProvider);
+                }
+                else
+                {
+                    UnityEngine.Object.Destroy(gazeProvider);
+                }
             }
 
             base.Destroy();

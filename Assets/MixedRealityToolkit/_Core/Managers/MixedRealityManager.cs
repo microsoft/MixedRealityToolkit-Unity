@@ -83,6 +83,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
 
             activeProfile = profile;
+
+            if (profile != null)
+            {
+                DisableAllManagers();
+                DestroyAllManagers();
+            }
+
             Initialize();
         }
 
