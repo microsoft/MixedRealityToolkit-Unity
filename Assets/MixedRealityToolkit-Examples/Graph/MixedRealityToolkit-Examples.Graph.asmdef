@@ -1,0 +1,11 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Examples.Graph",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Graph"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
