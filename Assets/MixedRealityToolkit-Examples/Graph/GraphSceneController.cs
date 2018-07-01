@@ -14,6 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Graph
     public class GraphSceneController : MonoBehaviour
     {
         [SerializeField]
+        private GraphConnectorProfile graphConnector = null;
+
+        [SerializeField]
         private Text displayName = null;
 
         [SerializeField]
@@ -27,13 +30,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Graph
         /// </summary>
         private async void Start()
         {
-            var graphConnector = new MsalGraphConnector();
+            if (graphConnector == null)
+            {
+                Debug.LogError("No Graph Profile found!");
+                return;
+            }
 
             // Gets "me" user data as a object.
-            var graphResponseObject = await graphConnector.MakeRequestGetAsync(GraphConnector.GraphEndpoint, "/me");
+            var graphResponseObject = await graphConnector.GetAsync(GraphConnectorProfile.GraphEndpoint, "/me");
             if (graphResponseObject.Successful)
             {
-                GraphProfile graphProfile = JsonUtility.FromJson<GraphProfile>(graphResponseObject.ResponseBody);
+                GraphProfileTestData graphProfile = JsonUtility.FromJson<GraphProfileTestData>(graphResponseObject.ResponseBody);
 
                 displayName.text = graphProfile.displayName;
 
@@ -45,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Graph
             }
 
             // Gets "me" profile picture as an image.
-            var graphResponseImage = await graphConnector.MakeRequestGetAsync(GraphConnector.GraphEndpoint, "/me/photo/$value");
+            var graphResponseImage = await graphConnector.GetAsync(GraphConnectorProfile.GraphEndpoint, "/me/photo/$value");
             if (graphResponseImage.Successful)
             {
                 Texture2D texture = new Texture2D(2, 2); // Creates empty texture

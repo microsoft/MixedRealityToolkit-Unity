@@ -4,7 +4,7 @@ Graph APIs are meant to ease the work required to access the data from [MS Graph
 # Authentication
 To call Microsoft Graph, your app must acquire an [access token](https://developer.microsoft.com/en-us/graph/docs/concepts/auth_overview) from Azure Active Directory (Azure AD), Microsoft's cloud identity service. 
 
-To that end, the toolkit comes with a implementation using [Microsoft Authentication Library](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet). However users can override with their own implementation, by extending GraphConnector, similarly to **MsalGraphAuthentication.cs**.
+To that end, the toolkit comes with a implementation using [Microsoft Authentication Library](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet). However users can override with their own implementation, by extending GraphConnectorProfile.
 
 # Using Graph
 1. Register application
@@ -12,11 +12,9 @@ To that end, the toolkit comes with a implementation using [Microsoft Authentica
 
 	Follow the [instructions](https://developer.microsoft.com/en-us/graph/docs/concepts/auth_register_app_v2) to register a **Native** application.
 
-2. Enabling .NET Framework 4.x is required.
+2. Declare any app capabilities required for authentication. For UWP capabilities check documentation [here](https://docs.microsoft.com/en-us/windows/uwp/packaging/app-capability-declarations).
 
-3. Declare any app capabilities required for authentication. For UWP capabilities check documentation [here](https://docs.microsoft.com/en-us/windows/uwp/packaging/app-capability-declarations).
-
-4. Identify Graph data needed for your scenario.
+3. Identify Graph data needed for your scenario.
 
 	In the left panel of MS Graph [documentation](https://developer.microsoft.com/en-us/graph/docs/concepts/overview) identify any data and APIs needed for your scenario. For example to get the signed-in user profile the [API](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/user_get) is "/me" and "User.Read" scope is enough as stated in the documentation.
 	
@@ -24,29 +22,27 @@ To that end, the toolkit comes with a implementation using [Microsoft Authentica
 	
 	Once you have identified all APIs and what Graph scopes (i.e. permissions) required, update the list of scopes declared in [Microsoft App Registration Portal](https://apps.dev.microsoft.com/).
 
-5. Setup Unity scene.
+4. Setup Unity scene.
 
-	a) Add Mixed Reality Manager as a game object of the scene;
+	Create a GraphConnectorProfile for your project via Assets/Create/Mixed Reality Toolkit/Graph/Graph Connector Profile. 
 
-	b) Create Mixed Reality Graph Access Profile, through the Assets menu;
+5. Setup MS Graph profile.
 
-	c) Assign the Graph Access profile, to the Active "Mixed Reality Configuration Profile" in Mixed Reality Manager;
-
-6. Setup MS Graph Settings.
-
-	Settings are defined through "Mixed Reality Graph Access Profile" and assign that profile to the Active "Mixed Reality Configuration Profile.
+	Select the new GraphConnectorProfile and update settings accordingly in the inspector.
 	* **Graph App Id** is the application ID registered in [Microsoft App Registration Portal](https://apps.dev.microsoft.com/).
 	* **Graph Access Scopes** is the array that lists all [access permissions](https://developer.microsoft.com/en-us/graph/docs/concepts/permissions_reference) required in your scenario.
 	* **Auth Test Token** is used as the authentication token if set. This allows to test MS Graph in the Unity editor."
 
-7. All set. 
+6. All set. 
 
-	Look up **GraphExampleScene.unity** for example on how to use the GrahConnector.
+	Look up **GraphExampleScene.unity** for an example on how to use the GraphConnectorProfile.
 
 # Testing using the Unity editor
-There are two options to test MS Graph in the editor:
-1. Use a network monitor app like Fiddler to inspect your Bearer auth token, while you execute a query using [Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer). Copy & paste the auth token into the GraphConnector inspector, as your Test Auth Token.
-2. Provide custom implementation of IGraphAuthentication instead of using MsalGraphAuthentication. It requires implementing [OAuth 2.0](https://oauth.net/2/) using Bearer Tokens authentication.
+Use a network monitor app like Fiddler to inspect your Bearer auth token, while you execute a query using [Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer). Copy & paste the auth token into the GraphConnectorProfile inspector, as your Test Auth Token.
+
+**Note:** If HTTPS traffic is blocked inside the Unity editor, a workaround is to allow all HTTPS traffic to pass through with the following code. **Should not be used in production code.**
+	System.Net.ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true; 
+
 
 # Managed bytecode stripping with IL2CPP
 IL2CPP analyzes all assemblies and removes methods that are never directly called. If something is only accessed through reflection, it will be removed unless it is specified in link.xml files. Read more about it [here](https://docs.unity3d.com/Manual/IL2CPP-BytecodeStripping.html) 

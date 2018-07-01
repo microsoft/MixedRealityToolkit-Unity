@@ -24,8 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty enableControllerProfiles;
         private SerializedProperty controllersProfile;
         private SerializedProperty enableBoundarySystem;
-        private SerializedProperty enableGraphAccessProfile;
-        private SerializedProperty graphAccessProfile;
 
         private void OnEnable()
         {
@@ -67,8 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             enableControllerProfiles = serializedObject.FindProperty("enableControllerProfiles");
             controllersProfile = serializedObject.FindProperty("controllersProfile");
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
-            enableGraphAccessProfile = serializedObject.FindProperty("enableGraphAccessProfile");
-            graphAccessProfile = serializedObject.FindProperty("graphAccessProfile");
         }
 
         public override void OnInspectorGUI()
@@ -118,16 +114,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Boundary Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableBoundarySystem);
-
-            //MS Graph configuration
-            GUILayout.Space(12f);
-            EditorGUILayout.LabelField("MS Graph Access Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(enableGraphAccessProfile);
-
-            if (enableGraphAccessProfile.boolValue)
-            {
-                RenderProfile(graphAccessProfile);
-            }
 
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
