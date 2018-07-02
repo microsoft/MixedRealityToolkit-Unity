@@ -17,10 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         NotApplicable = 0,
         /// <summary>
-        /// Reserved, for systems that provide alternate tracking.
-        /// </summary>
-        Other,
-        /// <summary>
         /// The device is not tracked.
         /// </summary>
         NotTracked,

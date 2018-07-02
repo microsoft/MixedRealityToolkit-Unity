@@ -32,11 +32,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         public Vector3 Position { get; set; }
 
         /// <summary>
-        /// Indicates the accuracy of the position data being reported.
-        /// </summary>
-        public TrackingAccuracy PositionAccuracy { get; set; }
-
-        /// <summary>
         /// Indicates whether or not the headset is currently providing rotation data.
         /// </summary>
         public bool IsRotationAvailable { get; set; }
@@ -45,11 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// Outputs the current rotation of the headset, as defined by the SDK / Unity.
         /// </summary>
         public Quaternion Rotation { get; set; }
-
-        /// <summary>
-        /// Indicates the accuracy of the rotation data being reported.
-        /// </summary>
-        public TrackingAccuracy RotationAccuracy { get; set; }
 
         /// <summary>
         /// Outputs the current state of the headset, whether it is tracked or not. As defined by the SDK / Unity.

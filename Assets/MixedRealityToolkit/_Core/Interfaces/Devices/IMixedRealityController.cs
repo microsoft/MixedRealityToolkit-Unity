@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// <summary>
         /// Indicates the accuracy of the position data being reported.
         /// </summary>
-        TrackingAccuracy PositionAccuracy { get; }
+        bool IsPositionApproximate { get; }
 
         /// <summary>
         /// Indicates that this controller is currently providing rotation data.
@@ -49,11 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// be sure to check this value before using rotation data.
         /// </remarks>
         bool IsRotationAvailable { get; }
-
-        /// <summary>
-        /// Indicates the accuracy of the rotation data being reported.
-        /// </summary>
-        TrackingAccuracy RotationAccuracy { get; }
 
         /// <summary>
         /// Mapping definition for this controller, linking the Physical inputs to logical Input System Actions

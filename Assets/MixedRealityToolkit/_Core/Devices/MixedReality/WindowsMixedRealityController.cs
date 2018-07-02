@@ -114,20 +114,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             IsPositionAvailable = interactionSourceState.sourcePose.TryGetPosition(out currentControllerPosition);
             if (IsPositionAvailable)
             {
-                PositionAccuracy = (interactionSourceState.sourcePose.positionAccuracy == InteractionSourcePositionAccuracy.High) ?
-                    TrackingAccuracy.High : TrackingAccuracy.Approximate;
+                TrackingState = TrackingState.Tracked;
+                IsPositionApproximate = (interactionSourceState.sourcePose.positionAccuracy == InteractionSourcePositionAccuracy.Approximate);
             }
             else
             {
-                PositionAccuracy = TrackingAccuracy.None;
+                TrackingState = TrackingState.NotTracked;
+                IsPositionApproximate = true;
             }
 
             IsRotationAvailable = interactionSourceState.sourcePose.TryGetRotation(out currentControllerRotation);
-            // Windows Mixed Reality does not have a concept of rotation accuracy, therefore we return high accuracy
-            RotationAccuracy = IsRotationAvailable ? TrackingAccuracy.High : TrackingAccuracy.None;
-
-            // Windows Mixed Reality controllers are tracked if we are receiving position or rotation data
-            TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
 
             if (lastState != TrackingState)
             {

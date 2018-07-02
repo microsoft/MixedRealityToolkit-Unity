@@ -31,9 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
             Interactions = interactions;
 
             IsPositionAvailable = false;
-            PositionAccuracy = TrackingAccuracy.None;
+            IsPositionApproximate = false;
             IsRotationAvailable = false;
-            RotationAccuracy = TrackingAccuracy.None;
         }
 
         /// <summary>
@@ -67,13 +66,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         public bool IsPositionAvailable { get; protected set; }
 
         /// <inheritdoc />
-        public TrackingAccuracy PositionAccuracy { get; protected set; }
+        public bool IsPositionApproximate { get; protected set; }
 
         /// <inheritdoc />
         public bool IsRotationAvailable { get; protected set; }
-
-        /// <inheritdoc />
-        public TrackingAccuracy RotationAccuracy { get; protected set; }
 
         /// <inheritdoc />
         public MixedRealityInteractionMapping[] Interactions { get; private set; }
