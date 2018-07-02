@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 }
                 else
                 {
-                    IsPositionApproximate = true;
+                    IsPositionApproximate = false;
                 }
 
                 IsRotationAvailable = interactionSourceState.sourcePose.TryGetRotation(out currentControllerRotation);
