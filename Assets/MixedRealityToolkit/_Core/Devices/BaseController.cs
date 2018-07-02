@@ -29,6 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
             ControllerHandedness = controllerHandedness;
             InputSource = inputSource;
             Interactions = interactions;
+
+            IsPositionAvailable = false;
+            IsPositionApproximate = false;
+            IsRotationAvailable = false;
         }
 
         /// <summary>
@@ -57,6 +61,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
 
         /// <inheritdoc />
         public IMixedRealityInputSource InputSource { get; }
+
+        /// <inheritdoc />
+        public bool IsPositionAvailable { get; protected set; }
+
+        /// <inheritdoc />
+        public bool IsPositionApproximate { get; protected set; }
+
+        /// <inheritdoc />
+        public bool IsRotationAvailable { get; protected set; }
 
         /// <inheritdoc />
         public MixedRealityInteractionMapping[] Interactions { get; private set; }

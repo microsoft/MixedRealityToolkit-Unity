@@ -38,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         public InteractionSourceState LastSourceStateReading { get; private set; }
 
+        private Vector3 currentControllerPosition = Vector3.zero;
+        private Quaternion currentControllerRotation = Quaternion.identity;
+
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;
         private MixedRealityPose currentPointerData = new MixedRealityPose(Vector3.zero, Quaternion.identity);
@@ -96,6 +99,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         throw new ArgumentOutOfRangeException();
                 }
             }
+
+            LastSourceStateReading = interactionSourceState;
         }
 
         /// <summary>
@@ -104,23 +109,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         private void UpdateControllerData(InteractionSourceState interactionSourceState)
         {
-            LastSourceStateReading = interactionSourceState;
             var lastState = TrackingState;
 
-            switch (interactionSourceState.sourcePose.positionAccuracy)
+            IsPositionAvailable = interactionSourceState.sourcePose.TryGetPosition(out currentControllerPosition);
+            if (IsPositionAvailable)
             {
-                case InteractionSourcePositionAccuracy.None:
-                    TrackingState = TrackingState.NotTracked;
-                    break;
-                case InteractionSourcePositionAccuracy.Approximate:
-                    TrackingState = TrackingState.Approximate;
-                    break;
-                case InteractionSourcePositionAccuracy.High:
-                    TrackingState = TrackingState.Tracked;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                TrackingState = TrackingState.Tracked;
+                IsPositionApproximate = (interactionSourceState.sourcePose.positionAccuracy == InteractionSourcePositionAccuracy.Approximate);
             }
+            else
+            {
+                TrackingState = TrackingState.NotTracked;
+                IsPositionApproximate = true;
+            }
+
+            IsRotationAvailable = interactionSourceState.sourcePose.TryGetRotation(out currentControllerRotation);
 
             if (lastState != TrackingState)
             {
