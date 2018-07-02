@@ -25,6 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty controllersProfile;
         private SerializedProperty enableBoundarySystem;
 
+        private MixedRealityConfigurationProfile configurationProfile;
+
         private void OnEnable()
         {
             // Create The MR Manager if none exists.
@@ -55,6 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 }
             }
 
+            configurationProfile = target as MixedRealityConfigurationProfile;
             enableCameraProfile = serializedObject.FindProperty("enableCameraProfile");
             cameraProfile = serializedObject.FindProperty("cameraProfile");
             enableInputSystem = serializedObject.FindProperty("enableInputSystem");
@@ -74,6 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             var previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 160f;
+            EditorGUI.BeginChangeCheck();
 
             // Camera Profile Configuration
             EditorGUILayout.LabelField("Camera Settings", EditorStyles.boldLabel);
@@ -117,6 +121,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                MixedRealityManager.Instance.ResetConfiguration(configurationProfile);
+            }
         }
 
         private static void RenderProfile(SerializedProperty property)
