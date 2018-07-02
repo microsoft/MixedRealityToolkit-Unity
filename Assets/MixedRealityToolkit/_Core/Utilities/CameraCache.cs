@@ -16,17 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <summary>
         /// Returns a cached reference to the main camera and uses Camera.main if it hasn't been cached yet.
         /// </summary>
-        public static Camera Main
-        {
-            get
-            {
-                if (cachedCamera == null)
-                {
-                    return Refresh(Camera.main);
-                }
-                return cachedCamera;
-            }
-        }
+        public static Camera Main => cachedCamera == null ? Refresh(Camera.main) : cachedCamera;
 
         /// <summary>
         /// Set the cached camera to a new reference and return it
