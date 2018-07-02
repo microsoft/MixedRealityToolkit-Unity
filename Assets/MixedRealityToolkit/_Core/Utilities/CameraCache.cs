@@ -34,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <param name="newMain">New main camera to cache</param>
         public static Camera Refresh(Camera newMain)
         {
+            Debug.Assert(newMain != null, "No camera with MainCamera tag found in scene.  Did you forget to tag your camera?");
             return cachedCamera = newMain;
         }
     }
