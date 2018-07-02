@@ -111,19 +111,33 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             var lastState = TrackingState;
 
-            IsPositionAvailable = interactionSourceState.sourcePose.TryGetPosition(out currentControllerPosition);
-            if (IsPositionAvailable)
+            InteractionSourceKind sourceKind = interactionSourceState.source.kind;
+            if ((sourceKind == InteractionSourceKind.Hand) ||
+                ((sourceKind == InteractionSourceKind.Controller) && interactionSourceState.source.supportsPointing))
             {
-                TrackingState = TrackingState.Tracked;
-                IsPositionApproximate = (interactionSourceState.sourcePose.positionAccuracy == InteractionSourcePositionAccuracy.Approximate);
+                // The source is either a hand or a controller that supports pointing.
+                // We can now check for position and rotation.
+                IsPositionAvailable = interactionSourceState.sourcePose.TryGetPosition(out currentControllerPosition);
+                if (IsPositionAvailable)
+                {
+                    IsPositionApproximate = (interactionSourceState.sourcePose.positionAccuracy == InteractionSourcePositionAccuracy.Approximate);
+                }
+                else
+                {
+                    IsPositionApproximate = true;
+                }
+
+                IsRotationAvailable = interactionSourceState.sourcePose.TryGetRotation(out currentControllerRotation);
+
+                // Devices are considered tracked if we receive position OR rotation data from the sensors.
+                TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
             }
             else
             {
-                TrackingState = TrackingState.NotTracked;
-                IsPositionApproximate = true;
+                // The input source does not support tracking.
+                TrackingState = TrackingState.NotApplicable;
             }
 
-            IsRotationAvailable = interactionSourceState.sourcePose.TryGetRotation(out currentControllerRotation);
 
             if (lastState != TrackingState)
             {
