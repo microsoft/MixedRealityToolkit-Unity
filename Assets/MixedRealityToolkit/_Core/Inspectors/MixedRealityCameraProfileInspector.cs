@@ -20,12 +20,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty transparentBackgroundColor;
         private SerializedProperty holoLensQualityLevel;
 
-        private GUIContent nearClipTitle = new GUIContent("Near Clip");
-        private GUIContent clearFlagsTitle = new GUIContent("Clear Flags");
+        private readonly GUIContent nearClipTitle = new GUIContent("Near Clip");
+        private readonly GUIContent clearFlagsTitle = new GUIContent("Clear Flags");
 
         private void OnEnable()
         {
-            if (!CheckMixedRealityManager())
+            if (!CheckMixedRealityManager(false))
             {
                 return;
             }
