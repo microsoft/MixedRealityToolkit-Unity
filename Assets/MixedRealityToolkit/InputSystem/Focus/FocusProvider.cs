@@ -228,6 +228,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 
         private void Start()
         {
+            Debug.Assert(MixedRealityManager.IsInitialized, "No Mixed Reality Manager found in the scene.  Be sure to run the Mixed Reality Configuration.");
+            Debug.Assert(InputSystem != null, "No Input System found, Did you set it up in your configuration profile?");
+
             // Register the FocusProvider as a global listener to get input events.
             InputSystem.Register(gameObject);
         }
