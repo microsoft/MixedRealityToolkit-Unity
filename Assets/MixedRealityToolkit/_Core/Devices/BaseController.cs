@@ -77,7 +77,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                     }
                 }
 
-                Debug.LogWarning($"No Controller mapping found for {controllerType}");
+                //If no controller mappings found, warn the user.  Does not stop the project from running.
+                if (Interactions == null || Interactions.Length < 1) { Debug.LogWarning($"No Controller mapping found for {controllerType}"); }
             }
         }
 
