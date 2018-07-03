@@ -33,17 +33,21 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             private set
             {
-                if (mSliderValue != value)
+                if (sliderValue != value)
                 {
-                    mSliderValue = value;
-                    OnUpdateEvent.Invoke(mSliderValue);
+                    sliderValue = value;
+                    OnUpdateEvent.Invoke(sliderValue);
                 }
             }
             get
             {
-                return mSliderValue;
+                return sliderValue;
             }
         }
+
+        [SerializeField]
+        [Tooltip("Set the starting value for the slider here.")]
+        private float sliderValue = 0;
 
         [Tooltip("Min numeric value to display in the slider label")]
         public float MinSliderValue = 0;
@@ -56,8 +60,6 @@ namespace HoloToolkit.Examples.InteractiveElements
 
         [Tooltip("Format the slider value and control decimal places if needed")]
         public string LabelFormat = "#.##";
-
-        private float mSliderValue;
 
         // calculation variables
         private float mValueSpan;
@@ -83,6 +85,20 @@ namespace HoloToolkit.Examples.InteractiveElements
         {
             base.Awake();
 
+            if (MinSliderValue >= MaxSliderValue)
+            {
+                Debug.LogError("Your SliderGestureControl has a min value that's greater than or equal to its max value.");
+                Destroy(this);
+                return;
+            }
+
+            if (Centered && MinSliderValue != -MaxSliderValue)
+            {
+                Debug.LogError("A centered SliderGestureControl requires that the min and max values have the same absolute value, one positive and one negative.");
+                Destroy(this);
+                return;
+            }
+
             if (Knob != null)
             {
                 mStartCenter.z = Knob.transform.localPosition.z;
@@ -101,7 +117,7 @@ namespace HoloToolkit.Examples.InteractiveElements
             mStartSliderPosition = mStartCenter + Vector3.left * mSliderMagnitude / 2;
 
             mValueSpan = MaxSliderValue - MinSliderValue;
-            mSliderValue = Mathf.Clamp(SliderValue, MinSliderValue, MaxSliderValue);
+            sliderValue = Mathf.Clamp(SliderValue, MinSliderValue, MaxSliderValue);
 
             if (!Centered)
             {
@@ -223,11 +239,10 @@ namespace HoloToolkit.Examples.InteractiveElements
                 return;
             }
 
-            mSliderValue = Mathf.Clamp(value, MinSliderValue, MaxSliderValue);
+            SliderValue = Mathf.Clamp(value, MinSliderValue, MaxSliderValue);
             mDeltaValue = SliderValue / MaxSliderValue;
             UpdateVisuals();
             mCachedValue = mDeltaValue;
-
         }
 
         // update visuals
