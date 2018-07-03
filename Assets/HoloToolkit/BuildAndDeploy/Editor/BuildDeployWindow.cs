@@ -182,7 +182,7 @@ namespace HoloToolkit.Unity
 
         #region Methods
 
-        [MenuItem("Mixed Reality Toolkit/Build Window", false, 0)]
+        [MenuItem("Mixed Reality Toolkit/Build Window", false, 8)]
         public static void OpenWindow()
         {
             // Dock it next to the Scene View.
