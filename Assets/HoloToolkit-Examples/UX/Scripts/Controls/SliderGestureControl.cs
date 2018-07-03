@@ -88,14 +88,14 @@ namespace HoloToolkit.Examples.InteractiveElements
             if (MinSliderValue >= MaxSliderValue)
             {
                 Debug.LogError("Your SliderGestureControl has a min value that's greater than or equal to its max value.");
-                Destroy(this);
+                gameObject.SetActive(false);
                 return;
             }
 
             if (Centered && MinSliderValue != -MaxSliderValue)
             {
                 Debug.LogError("A centered SliderGestureControl requires that the min and max values have the same absolute value, one positive and one negative.");
-                Destroy(this);
+                gameObject.SetActive(false);
                 return;
             }
 
