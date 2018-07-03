@@ -121,7 +121,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
             if (!Centered)
             {
-                mDeltaValue = SliderValue / mValueSpan;
+                mDeltaValue = (SliderValue - MinSliderValue) / mValueSpan;
             }
             else
             {
@@ -172,7 +172,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
             if (!Centered)
             {
-                SliderValue = mDeltaValue * mValueSpan;
+                SliderValue = mDeltaValue * mValueSpan + MinSliderValue;
             }
             else
             {
@@ -288,20 +288,14 @@ namespace HoloToolkit.Examples.InteractiveElements
             // set the label
             if (Label != null)
             {
-                float displayValue = SliderValue;
-                if (Centered)
-                {
-                    displayValue = SliderValue * 2 - SliderValue;
-                }
-
                 if (LabelFormat.IndexOf('.') > -1)
                 {
-                    Label.text = displayValue.ToString(LabelFormat);
+                    Label.text = SliderValue.ToString(LabelFormat);
 
                 }
                 else
                 {
-                    Label.text = Mathf.Round(displayValue).ToString(LabelFormat);
+                    Label.text = Mathf.Round(SliderValue).ToString(LabelFormat);
                 }
             }
         }
@@ -332,7 +326,7 @@ namespace HoloToolkit.Examples.InteractiveElements
 
                 if (!Centered)
                 {
-                    SliderValue = mDeltaValue * mValueSpan;
+                    SliderValue = mDeltaValue * mValueSpan + MinSliderValue;
                 }
                 else
                 {
