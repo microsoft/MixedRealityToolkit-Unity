@@ -3,6 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Experimental.XR;
+using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 {
@@ -11,6 +15,31 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
     /// </summary>
     public class MixedRealityBoundaryManager : BaseManager, IMixedRealityBoundarySystem
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        private TrackingSpaceType trackingSpaceType = TrackingSpaceType.RoomScale;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private float boundaryHeight = 10.0f;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private bool forcePlatformBoundaryRendering = false;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private bool useInscribedRectangle = false;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Bounds BoundaryVolume { get; private set; }
+
         /// <summary>
         /// MixedRealityBoundaryManager constructor
         /// </summary>
@@ -25,7 +54,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         public override void Initialize()
         {
-            // TODO Initialize stuff 
+            base.Initialize();
+            InitializeInternal();
+        }
+
+        private void InitializeInternal()
+        {
+            // todo: what should we do for NON opaque devices?
+            XRDevice.SetTrackingSpaceType(trackingSpaceType);
+
+            CalculateBoundaryBounds();
+            SetPlatformBoundaryVisibility();
         }
 
         /// <summary>
@@ -33,23 +72,65 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         public override void Reset()
         {
-            // TODO React to profile change
+            base.Reset();
+            InitializeInternal();
         }
 
         /// <summary>
-        /// Optional Update function to perform per-frame updates of the manager
+        /// 
         /// </summary>
-        public override void Update()
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public bool WithinBoundary(Vector3 position)
         {
-            // TODO Update stuff 
+            return BoundaryVolume.Contains(position);
+        }
+
+        public bool NearBoundaryEdge(Vector3 position)
+        {
+            // todo
+            return false;
         }
 
         /// <summary>
-        /// Optional Destroy function to perform cleanup of the manager before the Mixed Reality Manager is destroyed
+        /// 
         /// </summary>
-        public override void Destroy()
+        private void CalculateBoundaryBounds()
         {
-            // TODO Destroy stuff 
+            if (XRDevice.GetTrackingSpaceType() != TrackingSpaceType.RoomScale)
+            {
+                Debug.Log("Boundaries are supported for Room Scale experiences only.");
+            }
+
+            BoundaryVolume = new Bounds();
+
+            // Get the boundary geometry.
+            List<Vector3> boundaryGeometry = new List<Vector3>(0);
+            if (Boundary.TryGetGeometry(boundaryGeometry))
+            {
+                for (int i = 0; i < boundaryGeometry.Count; i++)
+                {
+                    BoundaryVolume.Encapsulate(boundaryGeometry[i]);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Failed to acquire the geometry of the space boundary.");
+            }
+
+            // Set the "ceiling" of the space using the configured height.
+            BoundaryVolume.Encapsulate(new Vector3(0f, boundaryHeight, 0f));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void SetPlatformBoundaryVisibility()
+        {
+            if (UnityEngine.Experimental.XR.Boundary.configured)
+            {
+                UnityEngine.Experimental.XR.Boundary.visible = forcePlatformBoundaryRendering;
+            }
         }
     }
 }
