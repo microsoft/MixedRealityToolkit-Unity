@@ -102,7 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             {
                 if (Application.isEditor)
                 {
-#if UNITY_EDITOR
                     bool addedComponents = false;
                     var eventSystems = UnityEngine.Object.FindObjectsOfType<EventSystem>();
                     var standaloneInputModules = UnityEngine.Object.FindObjectsOfType<StandaloneInputModule>();
@@ -121,6 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
                         addedComponents = true;
                     }
 
+#if UNITY_EDITOR
                     if (addedComponents) { UnityEditor.EditorGUIUtility.PingObject(FocusProvider.UIRaycastCamera); }
 #endif
                 }
@@ -166,21 +166,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         {
             InputDisabled?.Invoke();
 
-            if (FocusProvider.UIRaycastCamera != null)
-            {
-                if (Application.isEditor)
-                {
-                    UnityEngine.Object.DestroyImmediate(FocusProvider.UIRaycastCamera.gameObject);
-                }
-                else
-                {
-                    UnityEngine.Object.Destroy(FocusProvider.UIRaycastCamera.gameObject);
-                }
-            }
-
             if (focusProvider != null)
             {
                 focusProvider.enabled = false;
+
+                if (FocusProvider.UIRaycastCamera != null)
+                {
+                    if (Application.isEditor)
+                    {
+                        UnityEngine.Object.DestroyImmediate(FocusProvider.UIRaycastCamera.gameObject);
+                    }
+                    else
+                    {
+                        UnityEngine.Object.Destroy(FocusProvider.UIRaycastCamera.gameObject);
+                    }
+                }
 
                 if (Application.isEditor)
                 {
