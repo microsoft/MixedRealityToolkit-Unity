@@ -390,6 +390,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <returns>The UIRaycastCamera</returns>
         private void CreateUiRaycastCamera()
         {
+            if (!enabled) { return; }
+
             var cameraObject = new GameObject { name = "UIRaycastCamera" };
             cameraObject.transform.parent = transform;
             cameraObject.transform.localPosition = Vector3.zero;

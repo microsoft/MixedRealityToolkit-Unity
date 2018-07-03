@@ -166,21 +166,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         {
             InputDisabled?.Invoke();
 
-            if (FocusProvider.UIRaycastCamera != null)
-            {
-                if (Application.isEditor)
-                {
-                    UnityEngine.Object.DestroyImmediate(FocusProvider.UIRaycastCamera.gameObject);
-                }
-                else
-                {
-                    UnityEngine.Object.Destroy(FocusProvider.UIRaycastCamera.gameObject);
-                }
-            }
-
             if (focusProvider != null)
             {
                 focusProvider.enabled = false;
+
+                if (FocusProvider.UIRaycastCamera != null)
+                {
+                    if (Application.isEditor)
+                    {
+                        UnityEngine.Object.DestroyImmediate(FocusProvider.UIRaycastCamera.gameObject);
+                    }
+                    else
+                    {
+                        UnityEngine.Object.Destroy(FocusProvider.UIRaycastCamera.gameObject);
+                    }
+                }
 
                 if (Application.isEditor)
                 {
