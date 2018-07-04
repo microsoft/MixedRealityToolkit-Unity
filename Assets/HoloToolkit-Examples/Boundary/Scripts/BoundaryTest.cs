@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
 
             int colorPropertyId = Shader.PropertyToID("_Color");
 
-            if (BoundaryManager.Instance.ContainsObject(gameObject.transform.position))
+            if (BoundaryManager.Instance.ContainsObject(gameObject.transform.position, UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
             {
                 Debug.LogFormat("Object {0} is within established boundary. Position: {1}", name, gameObject.transform.position);
 

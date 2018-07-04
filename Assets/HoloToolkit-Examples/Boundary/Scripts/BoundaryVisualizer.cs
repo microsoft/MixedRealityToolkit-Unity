@@ -84,6 +84,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
             }
 
             Vector3 corner = center - (new Vector3(dimension, 0.0f, dimension) / 2.0f);
+            corner.y = 0.0f;
             for (int xIndex = 0; xIndex < indicatorCount; ++xIndex)
             {
                 for (int yIndex = 0; yIndex < indicatorCount; ++yIndex)

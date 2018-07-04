@@ -30,6 +30,8 @@ namespace HoloToolkit.Unity.Boundary
 
         private InscribedRectangle inscribedRectangle;
 
+        private Bounds boundaryBounds;
+
         [SerializeField]
         // Defaulting coordinate system to RoomScale in immersive headsets.
         // This puts the origin (0, 0, 0) on the floor if a floor has been established during setup via MixedRealityPortal.
@@ -152,11 +154,23 @@ namespace HoloToolkit.Unity.Boundary
 
         /// <summary>
         /// Pass in the game object's position to check if it's within 
+        /// the boundary space's largest inscribed rectangle.
+        /// </summary>
+        /// <param name="gameObjectPosition">The position of the GameObject to check.</param>
+        /// <returns>True if the point is in the boundary space's largest inscribed rectangle.</returns>
+        public bool ContainsObject(Vector3 gameObjectPosition)
+        {
+            return ContainsObject(gameObjectPosition, UnityEngine.Experimental.XR.Boundary.Type.PlayArea);
+        }
+
+        /// <summary>
+        /// Pass in the game object's position to check if it's within 
         /// the specified boundary space.
         /// </summary>
-        /// <param name="gameObjectPosition"></param>
-        /// <returns>True if the point is in the cuboid bounds</returns>
-        public bool ContainsObject(Vector3 gameObjectPosition)
+        /// <param name="gameObjectPosition">The position of the GameObject to check.</param>
+        /// <param name="boundaryType">The type of the boundary. Use PlayArea for the inscribed rectangle or TrackedArea for the bounds containing the whole space.</param>
+        /// <returns>True if the point is in the boundary type's bounds.</returns>
+        public bool ContainsObject(Vector3 gameObjectPosition, UnityEngine.Experimental.XR.Boundary.Type boundaryType)
         {
             if (gameObjectPosition.y < boundaryFloor || gameObjectPosition.y > boundaryHeight)
             {
@@ -168,7 +182,17 @@ namespace HoloToolkit.Unity.Boundary
                 return false;
             }
 
-            return inscribedRectangle.IsPointInRectangleBounds(new Vector2(gameObjectPosition.x, gameObjectPosition.z));
+            if (boundaryType == UnityEngine.Experimental.XR.Boundary.Type.PlayArea)
+            {
+                return inscribedRectangle.IsPointInRectangleBounds(new Vector2(gameObjectPosition.x, gameObjectPosition.z));
+            }
+            else if (boundaryType == UnityEngine.Experimental.XR.Boundary.Type.TrackedArea)
+            {
+                // Check if the supplied game object's position is within the bounds volume.
+                return boundaryBounds.Contains(gameObjectPosition);
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -176,7 +200,7 @@ namespace HoloToolkit.Unity.Boundary
         /// largest rectangle we could find within the geometry of
         /// the space bounds.
         /// </summary>
-        /// <returns>Array of 3D points, all with the same y value</returns>
+        /// <returns>Array of 3D points, all with the same y value.</returns>
         public Vector3[] TryGetBoundaryRectanglePoints()
         {
             if (inscribedRectangle == null || !inscribedRectangle.IsRectangleValid)
@@ -195,7 +219,7 @@ namespace HoloToolkit.Unity.Boundary
         }
 
         /// <summary>
-        /// Returns parameters describing the boundary rectangle
+        /// Returns parameters describing the boundary rectangle.
         /// </summary>
         internal bool TryGetBoundaryRectangleParams(out Vector3 center, out float angle, out float width, out float height)
         {
@@ -219,10 +243,12 @@ namespace HoloToolkit.Unity.Boundary
         {
             if (!UnityEngine.Experimental.XR.Boundary.configured)
             {
+#if !UNITY_WSA
                 Debug.Log("Boundary not configured.");
                 // TODO: BUG: Unity: Should return true if a floor and boundary has been established by user.
-                // But this always returns false with in 2017.2.0p2-MRTP5.
-                //return;
+                // But this always returns false in WindowsMR.
+                return;
+#endif
             }
 
             if (XRDevice.GetTrackingSpaceType() != TrackingSpaceType.RoomScale)
@@ -230,6 +256,8 @@ namespace HoloToolkit.Unity.Boundary
                 Debug.Log("No boundary for non-room scale experiences.");
                 return;
             }
+
+            boundaryBounds = new Bounds();
 
             // Get all the bounds setup by the user.
             var boundaryGeometry = new List<Vector3>(0);
@@ -241,9 +269,14 @@ namespace HoloToolkit.Unity.Boundary
                     foreach (Vector3 boundaryGeo in boundaryGeometry)
                     {
                         boundaryFloor = Math.Min(boundaryFloor, boundaryGeo.y);
+
+                        boundaryBounds.Encapsulate(boundaryGeo);
                     }
 
                     inscribedRectangle = new InscribedRectangle(boundaryGeometry);
+
+                    // Ensuring that we set height of the bounds volume to a certain height.
+                    boundaryBounds.Encapsulate(new Vector3(0, boundaryHeight, 0));
                 }
             }
             else
