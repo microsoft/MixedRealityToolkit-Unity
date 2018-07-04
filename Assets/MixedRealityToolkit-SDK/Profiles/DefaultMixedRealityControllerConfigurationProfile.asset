@@ -99,6 +99,20 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 30
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
   - id: 4
     description: OpenVR Controller Right
     controller:
@@ -118,6 +132,20 @@ MonoBehaviour:
     - id: 0
       axisType: 7
       inputType: 3
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 30
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 3
+      inputType: 10
       inputAction:
         id: 0
         description: None

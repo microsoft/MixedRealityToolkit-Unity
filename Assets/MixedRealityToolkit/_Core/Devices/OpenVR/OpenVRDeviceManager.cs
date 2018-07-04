@@ -45,12 +45,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             GenericOpenVRController controller;
             //This is so gosh-darn awful
             InputTracking.GetNodeStates(nodeStates);
+            var joysticks = UnityEngine.Input.GetJoystickNames();
             for (int i = 0; i < nodeStates.Count; i++)
             {
                 if (IsNodeTypeSupported(nodeStates[i]) && activeControllers.ContainsKey(nodeStates[i].nodeType))
                 {
                     controller = activeControllers[nodeStates[i].nodeType] as GenericOpenVRController;
                     controller.UpdateController(nodeStates[i]);
+                    Debug.Log($"Updating node for [{nodeStates[i].nodeType}], name [{InputTracking.GetNodeName(nodeStates[i].uniqueID)}]");
                 }
             }
         }
@@ -62,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             if (IsNodeTypeSupported(obj))
             {
                 GetOrAddController(obj);
-                Debug.Log($"Added node for [{obj.nodeType}]");
+                Debug.Log($"Added node for [{obj.nodeType}], name [{InputTracking.GetNodeName(obj.uniqueID)}]");
             }
         }
 
