@@ -18,6 +18,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
     [DisallowMultipleComponent]
     public class GazeProvider : MonoBehaviour, IMixedRealityGazeProvider
     {
+        private const float VelocityThreshold = 0.1f;
+
+        private const float MovementThreshold = 0.01f;
+
         [SerializeField]
         [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
         private GameObject cursorPrefab = null;
@@ -59,6 +63,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         [SerializeField]
         [Tooltip("Transform that should be used to represent the gaze position and rotation. Defaults to CameraCache.Main")]
         private Transform gazeTransform = null;
+
+        [SerializeField]
+        [Tooltip("Minimum velocity threshold")]
+        private float idleHeadVelocityThresh = 0.5f;
+
+        [SerializeField]
+        [Tooltip("Maximum velocity threshold")]
+        private float movementHeadVelocityThresh = 2f;
 
         [SerializeField]
         [Tooltip("True to draw a debug view of the ray.")]
@@ -103,9 +115,17 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         /// <inheritdoc />
         public Vector3 GazeDirection => GazePointer.Rays[0].Direction;
 
+        /// <inheritdoc />
+        public Vector3 HeadVelocity { get; private set; }
+
+        /// <inheritdoc />
+        public Vector3 HeadMovementDirection { get; private set; }
+
         private float lastHitDistance = 2.0f;
 
         private bool delayInitialization = true;
+
+        private Vector3 lastHeadPosition = Vector3.zero;
 
         private IMixedRealityInputSystem inputSystem = null;
         private IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
@@ -238,6 +258,44 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
             if (debugDrawRay)
             {
                 Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
+            }
+        }
+
+        private void LateUpdate()
+        {
+            // Update head velocity.
+            Vector3 headPosition = GazeOrigin;
+            Vector3 headDelta = headPosition - lastHeadPosition;
+
+            if (headDelta.sqrMagnitude < MovementThreshold * MovementThreshold)
+            {
+                headDelta = Vector3.zero;
+            }
+
+            if (Time.fixedDeltaTime > 0)
+            {
+                float velAdjustRate = 3f * Time.fixedDeltaTime;
+                HeadVelocity = HeadVelocity * (1f - velAdjustRate) + headDelta * velAdjustRate / Time.fixedDeltaTime;
+
+                if (HeadVelocity.sqrMagnitude < VelocityThreshold * VelocityThreshold)
+                {
+                    HeadVelocity = Vector3.zero;
+                }
+            }
+
+            // Update Head Movement Direction
+            float multiplier = Mathf.Clamp01(Mathf.InverseLerp(idleHeadVelocityThresh, movementHeadVelocityThresh, HeadVelocity.magnitude));
+
+            Vector3 newHeadMoveDirection = Vector3.Lerp(headPosition, HeadVelocity, multiplier).normalized;
+            lastHeadPosition = headPosition;
+            float dirAdjustRate = Mathf.Clamp01(5f * Time.fixedDeltaTime);
+
+            HeadMovementDirection = Vector3.Slerp(HeadMovementDirection, newHeadMoveDirection, dirAdjustRate);
+
+            if (debugDrawRay)
+            {
+                Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadMovementDirection * 10f, Color.Lerp(Color.red, Color.green, multiplier));
+                Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadVelocity, Color.yellow);
             }
         }
 

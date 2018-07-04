@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections;
 using UnityEngine;
@@ -19,8 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
     /// </summary>
     public abstract class BaseControllerPointer : AttachToController, IMixedRealityInputHandler, IMixedRealityPointer
     {
-        private IMixedRealityInputSystem inputSystem = null;
-        public IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+        IMixedRealityInputSystem IMixedRealityPointer.InputSystem => InputSystem;
 
         [Header("Cursor")]
         [SerializeField]
@@ -116,29 +114,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             InputSystem.FocusProvider.UnregisterPointer(this);
         }
 
-        protected override void OnDestroy()
+        protected virtual void OnDestroy()
         {
             if (BaseCursor != null)
             {
                 Destroy(BaseCursor.GetGameObjectReference());
             }
-
-            base.OnDestroy();
         }
 
         #endregion  Monobehaviour Implementation
-
-        protected override void OnAttachToController()
-        {
-            // Subscribe to interaction events
-            inputSystem.Register(gameObject);
-        }
-
-        protected override void OnDetachFromController()
-        {
-            // Unsubscribe from interaction events
-            inputSystem.Unregister(gameObject);
-        }
 
         public void SetCursor(GameObject newCursor = null)
         {
@@ -173,6 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         private uint pointerId;
 
+        /// <inheritdoc />
         public uint PointerId
         {
             get
@@ -186,57 +171,77 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             }
         }
 
+        /// <inheritdoc />
         public string PointerName
         {
             get { return gameObject.name; }
             set { gameObject.name = value; }
         }
 
+        /// <inheritdoc />
         public IMixedRealityInputSource InputSourceParent { get; set; }
 
+        /// <inheritdoc />
         public IMixedRealityCursor BaseCursor { get; set; }
 
+        /// <inheritdoc />
         public ICursorModifier CursorModifier { get; set; }
 
+        /// <inheritdoc />
         public ITeleportTarget TeleportTarget { get; set; }
 
+        /// <inheritdoc />
         public virtual bool InteractionEnabled
         {
             get { return interactionEnabled; }
             set { interactionEnabled = value; }
         }
 
+        /// <inheritdoc />
         public bool FocusLocked { get; set; }
 
+        /// <inheritdoc />
         public float? PointerExtent
         {
             get { return pointerExtent; }
             set { pointerExtent = value ?? InputSystem.FocusProvider.GlobalPointingExtent; }
         }
 
+        /// <inheritdoc />
         public RayStep[] Rays { get; protected set; }
 
+        /// <inheritdoc />
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
+        /// <inheritdoc />
         public IMixedRealityFocusHandler FocusTarget { get; set; }
 
+        /// <inheritdoc />
         public IPointerResult Result { get; set; }
 
+        /// <inheritdoc />
         public IBaseRayStabilizer RayStabilizer { get; set; }
 
+        /// <inheritdoc />
+        public RaycastModeType RaycastMode { get; set; } = RaycastModeType.Simple;
+
+        /// <inheritdoc />
+        public float SphereCastRadius { get; set; } = 0.1f;
+
+        /// <inheritdoc />
         public virtual void OnPreRaycast() { }
 
+        /// <inheritdoc />
         public virtual void OnPostRaycast() { }
 
-        /// <summary>
-        /// The world origin of the targeting ray
-        /// </summary>
+        /// <inheritdoc />
         public virtual bool TryGetPointerPosition(out Vector3 position)
         {
             position = RaycastOrigin != null ? RaycastOrigin.position : transform.position;
             return true;
         }
 
+        /// <inheritdoc />
         public bool TryGetPointingRay(out Ray pointingRay)
         {
             Vector3 pointerPosition;
@@ -245,6 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             return true;
         }
 
+        /// <inheritdoc />
         public bool TryGetPointerRotation(out Quaternion rotation)
         {
             Vector3 pointerRotation = RaycastOrigin != null ? RaycastOrigin.eulerAngles : transform.eulerAngles;
@@ -259,11 +265,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             return left.Equals(right);
         }
 
+        /// <inheritdoc />
         bool IEqualityComparer.Equals(object left, object right)
         {
             return left.Equals(right);
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
@@ -278,11 +286,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             return other != null && PointerId == other.PointerId && string.Equals(PointerName, other.PointerName);
         }
 
+        /// <inheritdoc />
         int IEqualityComparer.GetHashCode(object obj)
         {
             return obj.GetHashCode();
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked

@@ -9,6 +9,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -530,6 +531,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 
                 if (debugDrawPointingRays)
                 {
+                    MixedRealityRaycaster.DebugEnabled = debugDrawPointingRays;
+
                     Color rayColor;
 
                     if ((debugDrawPointingRayColors != null) && (debugDrawPointingRayColors.Length > 0))
@@ -581,7 +584,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                     }
 
                     // Set the pointer's result last
-                    pointer.Pointer.Result = pointer as IPointerResult;
+                    pointer.Pointer.Result = pointer;
                 }
             }
 
@@ -591,12 +594,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             pointer.Pointer.OnPostRaycast();
         }
 
+        #region Physics Raycasting
+
         /// <summary>
         /// Perform a Unity physics Raycast to determine which scene objects with a collider is currently being gazed at, if any.
         /// </summary>
         /// <param name="pointer"></param>
         /// <param name="prioritizedLayerMasks"></param>
-        private void RaycastPhysics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
+        private static void RaycastPhysics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
             bool isHit = false;
             int rayStepIndex = 0;
@@ -609,15 +614,34 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             // Check raycast for each step in the pointing source
             for (int i = 0; i < pointer.Pointer.Rays.Length; i++)
             {
-                if (RaycastPhysicsStep(pointer.Pointer.Rays[i], prioritizedLayerMasks, out physicsHit))
+                switch (pointer.Pointer.RaycastMode)
                 {
-                    // Set the pointer source's origin ray to this step
-                    isHit = true;
-                    rayStep = pointer.Pointer.Rays[i];
-                    rayStepIndex = i;
-                    // No need to continue once we've hit something
-                    break;
+                    case RaycastModeType.Simple:
+                        if (MixedRealityRaycaster.RaycastSimplePhysicsStep(pointer.Pointer.Rays[i], prioritizedLayerMasks, out physicsHit))
+                        {
+                            // Set the pointer source's origin ray to this step
+                            isHit = true;
+                            rayStep = pointer.Pointer.Rays[i];
+                            rayStepIndex = i;
+                        }
+                        break;
+                    case RaycastModeType.Box:
+                        Debug.LogWarning("Box Raycasting Mode not supported for pointers.");
+                        break;
+                    case RaycastModeType.Sphere:
+                        if (MixedRealityRaycaster.RaycastSpherePhysicsStep(pointer.Pointer.Rays[i], pointer.Pointer.SphereCastRadius, prioritizedLayerMasks, out physicsHit))
+                        {
+                            // Set the pointer source's origin ray to this step
+                            isHit = true;
+                            rayStep = pointer.Pointer.Rays[i];
+                            rayStepIndex = i;
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
+
+                if (isHit) { break; }
             }
 
             if (isHit)
@@ -630,62 +654,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             }
         }
 
-        /// <summary>
-        /// Raycasts each physics <see cref="RayStep"/>
-        /// </summary>
-        /// <param name="step"></param>
-        /// <param name="prioritizedLayerMasks"></param>
-        /// <param name="physicsHit"></param>
-        /// <returns></returns>
-        private bool RaycastPhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
-        {
-            return prioritizedLayerMasks.Length == 1
-                // If there is only one priority, don't prioritize
-                ? Physics.Raycast(step.Origin, step.Direction, out physicsHit, step.Length, prioritizedLayerMasks[0])
-                // Raycast across all layers and prioritize
-                : TryGetPrioritizedHit(Physics.RaycastAll(step.Origin, step.Direction, step.Length, Physics.AllLayers), prioritizedLayerMasks, out physicsHit);
-        }
+        #endregion Physics Raycasting
 
-        /// <summary>
-        /// Tries to ge the prioritized raycast hit based on the prioritized layer masks.
-        /// <para><remarks>Sorts all hit objects first by layerMask, then by distance.</remarks></para>
-        /// </summary>
-        /// <param name="hits"></param>
-        /// <param name="priorityLayers"></param>
-        /// <param name="raycastHit"></param>
-        /// <returns>The minimum distance hit within the first layer that has hits</returns>
-        private static bool TryGetPrioritizedHit(RaycastHit[] hits, LayerMask[] priorityLayers, out RaycastHit raycastHit)
-        {
-            raycastHit = default(RaycastHit);
-
-            if (hits.Length == 0)
-            {
-                return false;
-            }
-
-            for (int layerMaskIdx = 0; layerMaskIdx < priorityLayers.Length; layerMaskIdx++)
-            {
-                RaycastHit? minHit = null;
-
-                for (int hitIdx = 0; hitIdx < hits.Length; hitIdx++)
-                {
-                    RaycastHit hit = hits[hitIdx];
-                    if (hit.transform.gameObject.layer.IsInLayerMask(priorityLayers[layerMaskIdx]) &&
-                        (minHit == null || hit.distance < minHit.Value.distance))
-                    {
-                        minHit = hit;
-                    }
-                }
-
-                if (minHit != null)
-                {
-                    raycastHit = minHit.Value;
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        #region uGUI Graphics Raycasting
 
         /// <summary>
         /// Perform a Unity Graphics Raycast to determine which uGUI element is currently being gazed at, if any.
@@ -736,6 +707,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             }
         }
 
+        /// <summary>
+        /// Raycasts each graphic <see cref="RayStep"/>
+        /// </summary>
+        /// <param name="pointer"></param>
+        /// <param name="step"></param>
+        /// <param name="prioritizedLayerMasks"></param>
+        /// <param name="overridePhysicsRaycast"></param>
+        /// <param name="uiRaycastResult"></param>
+        /// <returns></returns>
         private bool RaycastGraphicsStep(PointerData pointer, RayStep step, LayerMask[] prioritizedLayerMasks, out bool overridePhysicsRaycast, out RaycastResult uiRaycastResult)
         {
             // Move the uiRaycast camera to the current pointer's position.
@@ -789,6 +769,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             // If we haven't hit something, keep going
             return false;
         }
+
+        #endregion uGUI Graphics Raycasting
 
         /// <summary>
         /// Raises the Focus Events to the Input Manger if needed.

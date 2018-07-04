@@ -2,8 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using UnityEngine;
 
 #if UNITY_EDITOR_WIN
@@ -19,7 +19,6 @@ using UnityEngine.XR.WSA.Input;
 #if !UNITY_EDITOR
 using Windows.Foundation;
 using Windows.Storage.Streams;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 #endif
 #endif
 
@@ -64,15 +63,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
 #if UNITY_WSA
         // This will be used to keep track of our controllers, indexed by their unique source ID.
-        private Dictionary<string, MotionControllerInfo> controllerDictionary = new Dictionary<string, MotionControllerInfo>(0);
+        private Dictionary<string, WindowsMixedRealityControllerInfo> controllerDictionary = new Dictionary<string, WindowsMixedRealityControllerInfo>(0);
         private List<string> loadingControllers = new List<string>();
 
-        private MotionControllerInfo leftControllerModel;
-        private MotionControllerInfo rightControllerModel;
+        private WindowsMixedRealityControllerInfo leftControllerModel;
+        private WindowsMixedRealityControllerInfo rightControllerModel;
 
 #endif
-        public static event Action<MotionControllerInfo> OnControllerModelLoaded;
-        public static event Action<MotionControllerInfo> OnControllerModelUnloaded;
+        public static event Action<WindowsMixedRealityControllerInfo> OnControllerModelLoaded;
+        public static event Action<WindowsMixedRealityControllerInfo> OnControllerModelUnloaded;
 
 #if UNITY_EDITOR_WIN
         [DllImport("EditorMotionController")]
@@ -98,11 +97,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             {
                 if (AlternateLeftController == null && AlternateRightController == null)
                 {
-                    Debug.Log("If using glTF, please specify a material on " + name + ". Otherwise, please specify controller alternates.");
+                    Debug.Log($"If using glTF, please specify a material on {name}. Otherwise, please specify controller alternates.");
                 }
                 else if (AlternateLeftController == null || AlternateRightController == null)
                 {
-                    Debug.Log("Only one alternate is specified, and no material is specified for the glTF model. Please set the material or the " + ((AlternateLeftController == null) ? "left" : "right") + " controller alternate on " + name + ".");
+                    Debug.Log($"Only one alternate is specified, and no material is specified for the glTF model. Please set the material or the {((AlternateLeftController == null) ? "left" : "right")} controller alternate on {name}.");
                 }
             }
 
@@ -141,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
             foreach (var sourceState in InteractionManager.GetCurrentReading())
             {
-                MotionControllerInfo currentController;
+                WindowsMixedRealityControllerInfo currentController;
                 if (sourceState.source.kind == InteractionSourceKind.Controller && controllerDictionary.TryGetValue(GenerateKey(sourceState.source), out currentController))
                 {
                     if (animateControllerModel)
@@ -170,31 +169,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
                     }
 
                     Vector3 newPosition;
-                    if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip) && ValidPosition(newPosition))
+                    if (sourceState.sourcePose.TryGetPosition(out newPosition, InteractionSourceNode.Grip) && newPosition.IsValidPosition())
                     {
                         currentController.ControllerParent.transform.localPosition = newPosition;
                     }
 
                     Quaternion newRotation;
-                    if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip) && ValidRotation(newRotation))
+                    if (sourceState.sourcePose.TryGetRotation(out newRotation, InteractionSourceNode.Grip) && newRotation.IsValidRotation())
                     {
                         currentController.ControllerParent.transform.localRotation = newRotation;
                     }
                 }
             }
 #endif
-        }
-
-        private bool ValidRotation(Quaternion newRotation)
-        {
-            return !float.IsNaN(newRotation.x) && !float.IsNaN(newRotation.y) && !float.IsNaN(newRotation.z) && !float.IsNaN(newRotation.w) &&
-                   !float.IsInfinity(newRotation.x) && !float.IsInfinity(newRotation.y) && !float.IsInfinity(newRotation.z) && !float.IsInfinity(newRotation.w);
-        }
-
-        private bool ValidPosition(Vector3 newPosition)
-        {
-            return !float.IsNaN(newPosition.x) && !float.IsNaN(newPosition.y) && !float.IsNaN(newPosition.z) &&
-                   !float.IsInfinity(newPosition.x) && !float.IsInfinity(newPosition.y) && !float.IsInfinity(newPosition.z);
         }
 
 #if UNITY_WSA
@@ -209,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
             if (source.kind == InteractionSourceKind.Controller)
             {
-                MotionControllerInfo controllerInfo;
+                WindowsMixedRealityControllerInfo controllerInfo;
 
                 if (!controllerDictionary.ContainsKey(key) && !loadingControllers.Contains(key))
                 {
@@ -244,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             InteractionSource source = obj.state.source;
             if (source.kind == InteractionSourceKind.Controller)
             {
-                MotionControllerInfo controllerInfo;
+                WindowsMixedRealityControllerInfo controllerInfo;
                 if (controllerDictionary != null && controllerDictionary.TryGetValue(GenerateKey(source), out controllerInfo))
                 {
                     OnControllerModelUnloaded?.Invoke(controllerInfo);
@@ -418,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             parentGameObject.transform.parent = transform;
             controllerModelGameObject.transform.parent = parentGameObject.transform;
 
-            var newControllerInfo = new MotionControllerInfo(parentGameObject, (Handedness)handedness);
+            var newControllerInfo = new WindowsMixedRealityControllerInfo(parentGameObject, (Handedness)handedness);
 
             newControllerInfo.LoadInfo(controllerModelGameObject.GetComponentsInChildren<Transform>(), this);
 
@@ -438,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             controllerDictionary.Add(dictionaryKey, newControllerInfo);
         }
 
-        public bool TryGetControllerModel(InteractionSourceHandedness handedness, out MotionControllerInfo controller)
+        public bool TryGetControllerModel(InteractionSourceHandedness handedness, out WindowsMixedRealityControllerInfo controller)
         {
             if (handedness == InteractionSourceHandedness.Left && leftControllerModel != null)
             {
