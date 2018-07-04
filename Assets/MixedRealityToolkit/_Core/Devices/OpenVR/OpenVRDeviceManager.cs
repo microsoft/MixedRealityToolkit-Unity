@@ -21,6 +21,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// </summary>
         private readonly Dictionary<XRNode, IMixedRealityController> activeControllers = new Dictionary<XRNode, IMixedRealityController>();
 
+        /// <summary>
+        /// Tracking states returned from the InputTracking state tracking manager
+        /// </summary>
         private List<XRNodeState> nodeStates = new List<XRNodeState>();
 
         /// <inheritdoc/>

@@ -346,6 +346,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         }
 
         #endregion Update data functions
-
     }
 }

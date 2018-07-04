@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
                 case RuntimePlatform.WindowsPlayer:
                 case RuntimePlatform.WindowsEditor:
-                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("OpenVR Device manager", 10));
+                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("OpenVR Device Manager", 10));
                     break;
                 case RuntimePlatform.OSXPlayer:
                 case RuntimePlatform.OSXEditor:
@@ -184,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 case RuntimePlatform.WSAPlayerX86:
                 case RuntimePlatform.WSAPlayerX64:
                 case RuntimePlatform.WSAPlayerARM:
-                    AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device manager", 10));
+                    AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
                     break;
                 case RuntimePlatform.TizenPlayer:
                     break;
