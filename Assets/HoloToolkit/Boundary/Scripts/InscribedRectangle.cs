@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity.Boundary
     public class InscribedRectangle
     {
         /// <summary>
-        /// Helper class to hold an edge
+        /// Helper struct to hold an edge.
         /// </summary>
         private struct Edge
         {
@@ -21,18 +21,18 @@ namespace HoloToolkit.Unity.Boundary
 
             public Edge(float ax, float ay, float bx, float by)
             {
-                this.Ax = ax;
-                this.Ay = ay;
-                this.Bx = bx;
-                this.By = by;
+                Ax = ax;
+                Ay = ay;
+                Bx = bx;
+                By = by;
             }
 
             public Edge(Vector2 pointA, Vector2 pointB)
             {
-                this.Ax = pointA.x;
-                this.Bx = pointB.x;
-                this.Ay = pointA.y;
-                this.By = pointB.y;
+                Ax = pointA.x;
+                Bx = pointB.x;
+                Ay = pointA.y;
+                By = pointB.y;
             }
         }
 
@@ -60,12 +60,15 @@ namespace HoloToolkit.Unity.Boundary
         private float width;
         private float height;
 
+        /// <summary>
+        /// Constructor that takes in a list of points and generates a seed.
+        /// </summary>
         public InscribedRectangle(IList<Vector3> points) : this(points, (int)DateTime.UtcNow.Ticks)
         {
         }
 
         /// <summary>
-        /// Constructor that sets a fixed random seed to get repeatable results.
+        /// Constructor that takes in a list of points and sets a fixed random seed to get repeatable results.
         /// </summary>
         public InscribedRectangle(IList<Vector3> points, int randomSeed)
         {
@@ -78,48 +81,48 @@ namespace HoloToolkit.Unity.Boundary
                 edges[pointIndex] = new Edge(pointA.x, pointA.z, pointB.x, pointB.z);
             }
 
-            FindInscribedRectangle(edges, randomSeed, out this.center, out this.angle, out this.width, out this.height);
+            FindInscribedRectangle(edges, randomSeed, out center, out angle, out width, out height);
         }
 
         /// <summary>
-        /// Use this to determine if there is a valid inscribed rectangle
+        /// Use this to determine if there is a valid inscribed rectangle.
         /// </summary>
         public bool IsRectangleValid
         {
-            get { return IsValidPoint(this.center); }
+            get { return IsValidPoint(center); }
         }
 
         /// <summary>
-        /// Retrieves the parameters describing the largest inscribed rectangle
+        /// Retrieves the parameters describing the largest inscribed rectangle.
         /// within the bounds
         /// </summary>
         public void GetRectangleParams(out Vector2 centerOut, out float angleOut, out float widthOut, out float heightOut)
         {
-            if (!this.IsRectangleValid)
+            if (!IsRectangleValid)
             {
                 throw new InvalidOperationException();
             }
 
-            centerOut = this.center;
-            angleOut = this.angle;
-            widthOut = this.width;
-            heightOut = this.height;
+            centerOut = center;
+            angleOut = angle;
+            widthOut = width;
+            heightOut = height;
         }
 
         /// <summary>
-        /// Returns the four points that make up the inscribed rectangle
+        /// Returns the four points that make up the inscribed rectangle.
         /// </summary>
         public Vector2[] GetRectanglePoints()
         {
-            if (!this.IsRectangleValid)
+            if (!IsRectangleValid)
             {
                 throw new InvalidOperationException();
             }
 
             var points = new Vector2[4];
 
-            float x = this.width / 2.0f;
-            float y = this.height / 2.0f;
+            float x = width / 2.0f;
+            float y = height / 2.0f;
             points = new Vector2[]
             {
                 new Vector2(x, y),
@@ -130,26 +133,26 @@ namespace HoloToolkit.Unity.Boundary
 
             for (int i = 0; i < points.Length; ++i)
             {
-                points[i] = RotatePoint(Vector2.zero, DegreesToRadians(this.angle), points[i]);
-                points[i] += this.center;
+                points[i] = RotatePoint(Vector2.zero, DegreesToRadians(angle), points[i]);
+                points[i] += center;
             }
 
             return points;
         }
 
         /// <summary>
-        /// Returns true if the given point is within the inscribed rectangle
+        /// Returns true if the given point is within the inscribed rectangle.
         /// </summary>
         public bool IsPointInRectangleBounds(Vector2 point)
         {
-            if (!this.IsRectangleValid)
+            if (!IsRectangleValid)
             {
                 throw new InvalidOperationException();
             }
 
-            point -= this.center;
-            point = RotatePoint(Vector2.zero, DegreesToRadians(-this.angle), point);
-            return (Math.Abs(point.x) <= (this.width / 2.0f)) && (Math.Abs(point.y) <= this.height / 2.0f);
+            point -= center;
+            point = RotatePoint(Vector2.zero, DegreesToRadians(-angle), point);
+            return (Math.Abs(point.x) <= (width / 2.0f)) && (Math.Abs(point.y) <= height / 2.0f);
         }
 
         /// <summary>
@@ -161,7 +164,7 @@ namespace HoloToolkit.Unity.Boundary
         }
 
         /// <summary>
-        /// Rotate a point about another point by the specified angle in radians
+        /// Rotate a point about another point by the specified angle in radians.
         /// </summary>
         private static Vector2 RotatePoint(Vector2 origin, float angleRad, Vector2 point)
         {
@@ -188,7 +191,7 @@ namespace HoloToolkit.Unity.Boundary
         }
 
         /// <summary>
-        /// Returns true if the given point is within the boundary
+        /// Returns true if the given point is within the boundary.
         /// </summary>
         private static bool IsInside(Edge[] edges, Vector2 point)
         {
@@ -208,7 +211,7 @@ namespace HoloToolkit.Unity.Boundary
         }
 
         /// <summary>
-        /// Gets the point where two edges intersect. Value is InvalidPoint if they do not
+        /// Gets the point where two edges intersect. Value is InvalidPoint if they do not.
         /// </summary>
         private static Vector2 GetIntersection(Edge edge1, Edge edge2)
         {
@@ -233,7 +236,7 @@ namespace HoloToolkit.Unity.Boundary
         /// <summary>
         /// Given a point inside of the boundary, finds the points on the
         /// boundary directly above, below, left and right of the point,
-        /// with respect to the given angle
+        /// with respect to the given angle.
         /// </summary>
         private static bool FindSurroundingCollisionPoints(
             Edge[] edges,
@@ -290,7 +293,7 @@ namespace HoloToolkit.Unity.Boundary
                             bottomCollisionPoint = verticalIntersection;
                         }
                     }
-                }  // If vertial intersection found
+                }  // If vertical intersection found
 
                 Vector2 horizontalIntersection = GetIntersection(edge, horizontalLine);
                 if (IsValidPoint(horizontalIntersection))
@@ -328,11 +331,11 @@ namespace HoloToolkit.Unity.Boundary
         }
 
         /// <summary>
-        /// Tries to fit rectangles using pre-defined aspect ratios in the space
+        /// Tries to fit rectangles using predefined aspect ratios in the space
         /// centered on the given point, and rotated by the given angle.
         /// It will return the maximum rectangle it could fit (its aspect ratio
         /// and dimensions), within a margin of error. Returns false if it could
-        /// not fit any rectangles that meet the criteria
+        /// not fit any rectangles that meet the criteria.
         /// </summary>
         private static bool TryFitMaximumRectangleAtAngle(
             Edge[] edges,
@@ -343,8 +346,8 @@ namespace HoloToolkit.Unity.Boundary
             height = 0;
             aspectRatio = 0;
 
-            float[] aspectRatios = {1,   1.5f, 2,   2.5f, 3,    3.5f, 4,    4.5f, 5,    5.5f, 6,    6.5f, 7,    7.5f, 8,
-                            8.5f, 9,   9.5f, 10,  10.5f, 11,  11.5f, 12,  12.5f, 13,  13.5f, 14,  14.5f, 15};
+            float[] aspectRatios = {1, 1.5f, 2, 2.5f, 3, 3.5f, 4, 4.5f, 5, 5.5f, 6, 6.5f, 7, 7.5f,
+                8, 8.5f, 9, 9.5f, 10, 10.5f, 11, 11.5f, 12, 12.5f, 13, 13.5f, 14, 14.5f, 15};
 
             // Start by calculating max width and height by ray-casting a cross from the point at the given angle
             // and taking the shortest leg of each ray. Width is the longest.
@@ -367,8 +370,7 @@ namespace HoloToolkit.Unity.Boundary
             float maxWidth = Math.Max(verticalMinDistanceToEdge, horizontalMinDistanceToEdge) * 2.0f;
             float maxHeight = Math.Min(verticalMinDistanceToEdge, horizontalMinDistanceToEdge) * 2.0f;
 
-
-            // For each aspect ratio we do a binary search to find the maximum rect that fits, though once we start increasing our area by minimumHeightGain we call it good enough
+            // For each aspect ratio we do a binary search to find the maximum rectangle that fits, though once we start increasing our area by minimumHeightGain we call it good enough
             foreach (var candidateAspectRatio in aspectRatios)
             {
                 // The height is limited by the width. If a height would make our width exceed maxWidth, it can't be used
@@ -416,7 +418,7 @@ namespace HoloToolkit.Unity.Boundary
 
         /// <summary>
         /// Returns true if a rectangle centered at the given point, at the
-        /// given angle and dimensions, will fit in the polygon
+        /// given angle and dimensions, will fit in the polygon.
         /// </summary>
         private static bool WillRectangleFit(Edge[] edges, Vector2 center, float angleRad, float width, float height)
         {
@@ -459,8 +461,8 @@ namespace HoloToolkit.Unity.Boundary
         /// drawn through those points. The midpoints of those lines are
         /// used as the center of various rectangles, using a binary search to
         /// vary the size, until the largest fit-able rectangle is found.
-        /// This is then repeated for pre-defined angles (0-180 in steps of 15)
-        /// and aspect ratios (1 to 15 in steps of 0.5)
+        /// This is then repeated for predefined angles (0-180 in steps of 15)
+        /// and aspect ratios (1 to 15 in steps of 0.5).
         /// </summary>
         private static void FindInscribedRectangle(Edge[] edges, int randomSeed, out Vector2 center, out float angle, out float width, out float height)
         {
@@ -536,7 +538,7 @@ namespace HoloToolkit.Unity.Boundary
                     if (IsValidPoint(topCollisionPoint) && IsValidPoint(bottomCollisionPoint))
                     {
                         var verticalMidpoint = new Vector2((topCollisionPoint.x + bottomCollisionPoint.x) / 2,
-                                    (topCollisionPoint.y + bottomCollisionPoint.y) / 2);
+                            (topCollisionPoint.y + bottomCollisionPoint.y) / 2);
                         float aspectRatio;
                         float w;
                         float h;
@@ -552,12 +554,11 @@ namespace HoloToolkit.Unity.Boundary
                     if (IsValidPoint(leftCollisionPoint) && IsValidPoint(rightCollisionPoint))
                     {
                         var horizontalMidpoint = new Vector2((leftCollisionPoint.x + rightCollisionPoint.x) / 2,
-                                        (leftCollisionPoint.y + rightCollisionPoint.y) / 2);
+                            (leftCollisionPoint.y + rightCollisionPoint.y) / 2);
                         float aspectRatio;
                         float w;
                         float h;
-                        if (TryFitMaximumRectangleAtAngle(edges, horizontalMidpoint, DegreesToRadians(candidateAngle), width * height,
-                            out aspectRatio, out w, out h))
+                        if (TryFitMaximumRectangleAtAngle(edges, horizontalMidpoint, DegreesToRadians(candidateAngle), width * height, out aspectRatio, out w, out h))
                         {
                             center = horizontalMidpoint;
                             angle = candidateAngle;

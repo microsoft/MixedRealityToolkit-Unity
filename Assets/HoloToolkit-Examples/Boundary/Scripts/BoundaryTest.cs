@@ -16,6 +16,8 @@ namespace HoloToolkit.Unity.Boundary.Tests
 
             defaultMaterials = GetComponent<Renderer>().materials;
 
+            int colorPropertyId = Shader.PropertyToID("_Color");
+
             if (BoundaryManager.Instance.ContainsObject(gameObject.transform.position))
             {
                 Debug.LogFormat("Object {0} is within established boundary. Position: {1}", name, gameObject.transform.position);
@@ -23,7 +25,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
                 for (int i = 0; i < defaultMaterials.Length; i++)
                 {
                     // Color the cube green if object is within specified boundary.
-                    defaultMaterials[i].SetColor("_Color", Color.green);
+                    defaultMaterials[i].SetColor(colorPropertyId, Color.green);
                 }
             }
             else
@@ -33,7 +35,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
                 for (int i = 0; i < defaultMaterials.Length; i++)
                 {
                     // Color the cube red if object is outside specified boundary.
-                    defaultMaterials[i].SetColor("_Color", Color.red);
+                    defaultMaterials[i].SetColor(colorPropertyId, Color.red);
                 }
             }
         }

@@ -6,23 +6,26 @@ using UnityEngine;
 namespace HoloToolkit.Unity.Boundary.Tests
 {
     /// <summary>
-    /// Demo class to show different ways of using the boundary API
+    /// Demo class to show different ways of using the boundary API.
     /// </summary>
     public class BoundaryVisualizer : MonoBehaviour
     {
-        [Tooltip("Material used to draw the inscribed rectangle bounds")]
         [SerializeField]
-        private Material BoundsMaterial;
+        [Tooltip("Material used to draw the inscribed rectangle bounds.")]
+        private Material boundsMaterial = null;
+
+        [SerializeField]
+        [Tooltip("Material used to draw items in the tracked area bounds.")]
+        private Material trackedAreaBoundsMaterial = null;
 
         private void Start()
         {
             AddQuad();
-            AddRectangleBounds();
             AddIndicators();
         }
 
         /// <summary>
-        /// Displays the boundary as a quad primative
+        /// Displays the boundary as a quad primitive.
         /// </summary>
         private void AddQuad()
         {
@@ -33,14 +36,14 @@ namespace HoloToolkit.Unity.Boundary.Tests
             BoundaryManager.Instance.TryGetBoundaryRectangleParams(out center, out angle, out width, out height);
 
             var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            quad.transform.SetParent(this.transform);
+            quad.transform.SetParent(transform);
             quad.transform.Translate(center + new Vector3(0.0f, 0.001f, 0.0f)); // Add fudge factor to avoid z-fighting
             quad.transform.Rotate(new Vector3(90, -angle, 0));
             quad.transform.localScale = new Vector3(width, height, 1.0f);
         }
 
         /// <summary>
-        /// Displays the boundary as a rectangle using a LineRenderer
+        /// Displays the boundary as a rectangle using a LineRenderer.
         /// </summary>
         private void AddRectangleBounds()
         {
@@ -50,10 +53,11 @@ namespace HoloToolkit.Unity.Boundary.Tests
                 return;
             }
 
-            LineRenderer lr = this.gameObject.AddComponent<LineRenderer>();
+            LineRenderer lr = gameObject.AddComponent<LineRenderer>();
+            lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             lr.useWorldSpace = false;
             lr.loop = true;
-            lr.sharedMaterial = this.BoundsMaterial;
+            lr.sharedMaterial = boundsMaterial;
             lr.startWidth = 0.05f;
             lr.endWidth = 0.05f;
             lr.positionCount = points.Length;
@@ -68,7 +72,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
         {
             const int indicatorCount = 15;
             const float indicatorDistance = 0.2f;
-            const float dimension = (float)indicatorCount * indicatorDistance;
+            const float dimension = indicatorCount * indicatorDistance;
 
             Vector3 center;
             float angle;
@@ -84,15 +88,21 @@ namespace HoloToolkit.Unity.Boundary.Tests
             {
                 for (int yIndex = 0; yIndex < indicatorCount; ++yIndex)
                 {
-                    var offset = new Vector3((float)xIndex * indicatorDistance, 0.0f, (float)yIndex * indicatorDistance);
+                    var offset = new Vector3(xIndex * indicatorDistance, 0.0f, yIndex * indicatorDistance);
                     var position = corner + offset;
                     var marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    marker.transform.SetParent(this.transform);
+                    marker.transform.SetParent(transform);
                     marker.transform.position = position;
                     marker.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                    if (BoundaryManager.Instance.ContainsObject(position))
+
+                    if (BoundaryManager.Instance.ContainsObject(position, UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
                     {
-                        marker.GetComponent<MeshRenderer>().sharedMaterial = this.BoundsMaterial;
+                        marker.GetComponent<MeshRenderer>().sharedMaterial = trackedAreaBoundsMaterial;
+                    }
+
+                    if (BoundaryManager.Instance.ContainsObject(position, UnityEngine.Experimental.XR.Boundary.Type.PlayArea))
+                    {
+                        marker.GetComponent<MeshRenderer>().sharedMaterial = boundsMaterial;
                     }
                 }
             }
