@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
@@ -166,9 +167,30 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             #endregion Managers Registration
 
             #region SDK Initialization
-
-            // TODO Microsoft.MixedReality.Toolkit - SDK Initialization
-            AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device manager", 10));
+            switch (Application.platform)
+            {
+                case RuntimePlatform.WindowsPlayer:
+                case RuntimePlatform.WindowsEditor:
+                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("OpenVR Device manager", 10));
+                    break;
+                case RuntimePlatform.OSXPlayer:
+                case RuntimePlatform.OSXEditor:
+                case RuntimePlatform.IPhonePlayer:
+                    break;
+                case RuntimePlatform.Android:
+                    break;
+                case RuntimePlatform.WebGLPlayer:
+                    break;
+                case RuntimePlatform.WSAPlayerX86:
+                case RuntimePlatform.WSAPlayerX64:
+                case RuntimePlatform.WSAPlayerARM:
+                    AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device manager", 10));
+                    break;
+                case RuntimePlatform.TizenPlayer:
+                    break;
+                default:
+                    break;
+            }
 
             #endregion SDK Initialization
 
