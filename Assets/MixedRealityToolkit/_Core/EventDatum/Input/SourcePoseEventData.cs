@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <summary>
         /// The new position and rotation of the input source.
         /// </summary>
-        public MixedRealityPose MixedRealityPosePose { get; private set; } = MixedRealityPose.ZeroIdentity;
+        public MixedRealityPose MixedRealityPose { get; private set; } = MixedRealityPose.ZeroIdentity;
 
         /// <inheritdoc />
         public SourcePoseEventData(EventSystem eventSystem) : base(eventSystem) { }
@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityController controller, MixedRealityPose position)
         {
             Initialize(inputSource, controller);
-            MixedRealityPosePose = position;
+            MixedRealityPose = position;
         }
     }
 }
