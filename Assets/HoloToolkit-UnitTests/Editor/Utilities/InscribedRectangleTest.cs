@@ -36,7 +36,7 @@ namespace HoloToolkit.Unity.Tests
                     new Vector3(-1, 0, -1),
                     new Vector3(1, 0, 1),
                 },
-                ExpectedCenter = new Vector2(0.2895508f,-0.2895508f),
+                ExpectedCenter = new Vector2(0.2895508f, -0.2895508f),
                 ExpectedAngle = 45,
                 ExpectedWidth = 1.203304f,
                 ExpectedHeight = 0.8022028f,
@@ -58,7 +58,7 @@ namespace HoloToolkit.Unity.Tests
                     new Vector3(0.07208231f, -1.207793f, 1.033721f),
                     new Vector3(-0.3179387f, -1.207906f, 0.7551652f)
                 },
-                ExpectedCenter = new Vector2(0.2181969f,-0.4680347f),
+                ExpectedCenter = new Vector2(0.2181969f, -0.4680347f),
                 ExpectedAngle = 75,
                 ExpectedWidth = 1.486504f,
                 ExpectedHeight = 0.9910026f
@@ -80,10 +80,10 @@ namespace HoloToolkit.Unity.Tests
                     new Vector3(0.5864475f, -0.9265049f, 1.729308f),
                     new Vector3(0.4944292f, -0.9261689f, 1.15375f),
                 },
-                ExpectedCenter = new Vector2(-0.5751144f,2.364177f),
+                ExpectedCenter = new Vector2(-0.5928315f, 2.338437f),
                 ExpectedAngle = 135,
-                ExpectedWidth = 2.319089f,
-                ExpectedHeight = 0.7730296f
+                ExpectedWidth = 2.40228f,
+                ExpectedHeight = 0.6863657f
             },
         };
 
@@ -94,7 +94,7 @@ namespace HoloToolkit.Unity.Tests
         public static void DumpPolygon(Vector3[] polygon)
         {
             var sb = new StringBuilder();
-            foreach(var v in polygon)
+            foreach (var v in polygon)
             {
                 sb.AppendFormat("new Vector3({0}f, {1}f, {2}f),\r\n", v.x, v.y, v.z);
             }
@@ -102,7 +102,7 @@ namespace HoloToolkit.Unity.Tests
         }
 
         /// <summary>
-        /// Helper to check if two floating point numbers are close enough
+        /// Helper to check if two floating point numbers are close enough.
         /// </summary>
         private bool FloatsEqual(float expected, float actual)
         {
@@ -110,12 +110,12 @@ namespace HoloToolkit.Unity.Tests
         }
 
         /// <summary>
-        /// Run the tests.  Outputs to the unity log the results
+        /// Run the tests. Outputs the results to the Unity log.
         /// </summary>
         [Test]
         public void RunTestCases()
         {
-            foreach (var testCase in this.cases)
+            foreach (var testCase in cases)
             {
                 RunCase(testCase);
             }
@@ -137,7 +137,7 @@ namespace HoloToolkit.Unity.Tests
                 FloatsEqual(testCase.ExpectedWidth, actualWidth) &&
                 FloatsEqual(testCase.ExpectedHeight, actualHeight);
 
-            if(!passed)
+            if (!passed)
             {
                 var message = string.Format("Test Case \"{0}\" failed\r\nExpected: ({1},{2})  {3}  {4}  {5}\r\nActual: ({6},{7})  {8}  {9}  {10}",
                     testCase.Name,

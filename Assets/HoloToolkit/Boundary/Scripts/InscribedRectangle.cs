@@ -214,7 +214,7 @@ namespace HoloToolkit.Unity.Boundary
                     {
                         // If this collision point is closer than the previous one
                         if (!EdgeHelpers.IsValidPoint(topCollisionPoint) ||
-                            Vector2.Distance(point, verticalIntersection) < Vector2.Distance(point, topCollisionPoint))
+                            Vector2.SqrMagnitude(point - verticalIntersection) < Vector2.SqrMagnitude(point - topCollisionPoint))
                         {
                             topCollisionPoint = verticalIntersection;
                         }
@@ -222,7 +222,7 @@ namespace HoloToolkit.Unity.Boundary
                     else
                     {
                         if (!EdgeHelpers.IsValidPoint(bottomCollisionPoint) ||
-                            Vector2.Distance(point, verticalIntersection) < Vector2.Distance(point, bottomCollisionPoint))
+                            Vector2.SqrMagnitude(point - verticalIntersection) < Vector2.SqrMagnitude(point - bottomCollisionPoint))
                         {
                             bottomCollisionPoint = verticalIntersection;
                         }
@@ -238,7 +238,7 @@ namespace HoloToolkit.Unity.Boundary
                     {
                         // Is it closer than the previous intersection?
                         if (!EdgeHelpers.IsValidPoint(leftCollisionPoint) ||
-                            Vector2.Distance(point, horizontalIntersection) < Vector2.Distance(point, leftCollisionPoint))
+                            Vector2.SqrMagnitude(point - horizontalIntersection) < Vector2.SqrMagnitude(point - leftCollisionPoint))
                         {
                             leftCollisionPoint = horizontalIntersection;
                         }
@@ -247,7 +247,7 @@ namespace HoloToolkit.Unity.Boundary
                     {
                         // Is it closer than the previous intersection?
                         if (!EdgeHelpers.IsValidPoint(rightCollisionPoint) ||
-                            Vector2.Distance(point, horizontalIntersection) < Vector2.Distance(point, rightCollisionPoint))
+                            Vector2.SqrMagnitude(point - horizontalIntersection) < Vector2.SqrMagnitude(point - rightCollisionPoint))
                         {
                             rightCollisionPoint = horizontalIntersection;
                         }
