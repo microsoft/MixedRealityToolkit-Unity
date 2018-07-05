@@ -43,8 +43,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 
         IBaseRayStabilizer RayStabilizer { get; set; }
 
+        /// <summary>
+        /// The physics raycast mode to use.
+        /// </summary>
+        RaycastModeType RaycastMode { get; set; }
+
+        /// <summary>
+        /// The radius to use when <see cref="RaycastMode"/> is set to Sphere.
+        /// </summary>
+        float SphereCastRadius { get; set; }
+
+        /// <summary>
+        /// Called before all rays have casted.
+        /// </summary>
         void OnPreRaycast();
 
+        /// <summary>
+        /// Called after all rays have casted.
+        /// </summary>
         void OnPostRaycast();
 
         /// <summary>

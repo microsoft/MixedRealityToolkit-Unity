@@ -58,12 +58,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             float x = 0f;
             float y = 0f;
             int count = 0;
+
             foreach (var pos in vectors)
             {
                 x += pos.x;
                 y += pos.y;
                 count++;
             }
+
             return new Vector2(x / count, y / count);
         }
 
@@ -73,6 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             float y = 0f;
             float z = 0f;
             int count = 0;
+
             foreach (var pos in vectors)
             {
                 x += pos.x;
@@ -80,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
                 z += pos.z;
                 count++;
             }
+
             return new Vector3(x / count, y / count, z / count);
         }
 
@@ -93,17 +97,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 
             float x = 0f;
             float y = 0f;
+
             foreach (var pos in vectors)
             {
                 x += pos.x;
                 y += pos.y;
             }
+
             return new Vector2(x / count, y / count);
         }
 
         public static Vector3 Average(this ICollection<Vector3> vectors)
         {
             int count = vectors.Count;
+
             if (count == 0)
             {
                 return Vector3.zero;
@@ -112,57 +119,47 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             float x = 0f;
             float y = 0f;
             float z = 0f;
+
             foreach (var pos in vectors)
             {
                 x += pos.x;
                 y += pos.y;
                 z += pos.z;
             }
+
             return new Vector3(x / count, y / count, z / count);
         }
 
         public static Vector2 Median(this IEnumerable<Vector2> vectors)
         {
-            int count = vectors.Count();
-            if (count == 0)
-            {
-                return Vector2.zero;
-            }
-
-            return vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
+            var enumerable = vectors as Vector2[] ?? vectors.ToArray();
+            int count = enumerable.Length;
+            return count == 0 ? Vector2.zero : enumerable.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
         }
 
         public static Vector3 Median(this IEnumerable<Vector3> vectors)
         {
-            int count = vectors.Count();
-            if (count == 0)
-            {
-                return Vector3.zero;
-            }
-
-            return vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
+            var enumerable = vectors as Vector3[] ?? vectors.ToArray();
+            int count = enumerable.Length;
+            return count == 0 ? Vector3.zero : enumerable.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
         }
 
         public static Vector2 Median(this ICollection<Vector2> vectors)
         {
             int count = vectors.Count;
-            if (count == 0)
-            {
-                return Vector2.zero;
-            }
-
-            return vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
+            return count == 0 ? Vector2.zero : vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
         }
 
         public static Vector3 Median(this ICollection<Vector3> vectors)
         {
             int count = vectors.Count;
-            if (count == 0)
-            {
-                return Vector3.zero;
-            }
+            return count == 0 ? Vector3.zero : vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
+        }
 
-            return vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
+        public static bool IsValidPosition(this Vector3 position)
+        {
+            return !float.IsNaN(position.x) && !float.IsNaN(position.y) && !float.IsNaN(position.z) &&
+                   !float.IsInfinity(position.x) && !float.IsInfinity(position.y) && !float.IsInfinity(position.z);
         }
     }
 }

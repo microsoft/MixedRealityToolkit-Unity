@@ -15,6 +15,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
     /// </summary>
     public class GenericPointer : IMixedRealityPointer
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="pointerName"></param>
+        /// <param name="inputSourceParent"></param>
         public GenericPointer(string pointerName, IMixedRealityInputSource inputSourceParent)
         {
             InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
@@ -23,36 +28,58 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             InputSourceParent = inputSourceParent;
         }
 
+        /// <inheritdoc />
         public IMixedRealityInputSystem InputSystem { get; }
 
+        /// <inheritdoc />
         public uint PointerId { get; }
 
+        /// <inheritdoc />
         public string PointerName { get; set; }
 
+        /// <inheritdoc />
         public virtual IMixedRealityInputSource InputSourceParent { get; protected set; }
 
+        /// <inheritdoc />
         public IMixedRealityCursor BaseCursor { get; set; }
 
+        /// <inheritdoc />
         public ICursorModifier CursorModifier { get; set; }
 
+        /// <inheritdoc />
         public ITeleportTarget TeleportTarget { get; set; }
 
+        /// <inheritdoc />
         public bool InteractionEnabled { get; set; }
 
+        /// <inheritdoc />
         public bool FocusLocked { get; set; }
 
+        /// <inheritdoc />
         public float? PointerExtent { get; set; }
 
+        /// <inheritdoc />
         public RayStep[] Rays { get; protected set; } = { new RayStep(Vector3.zero, Vector3.forward) };
 
+        /// <inheritdoc />
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
+        /// <inheritdoc />
         public IMixedRealityFocusHandler FocusTarget { get; set; }
 
+        /// <inheritdoc />
         public IPointerResult Result { get; set; }
 
+        /// <inheritdoc />
         public IBaseRayStabilizer RayStabilizer { get; set; }
 
+        /// <inheritdoc />
+        public RaycastModeType RaycastMode { get; set; } = RaycastModeType.Simple;
+
+        /// <inheritdoc />
+        public float SphereCastRadius { get; set; }
+
+        /// <inheritdoc />
         public virtual void OnPreRaycast()
         {
             Ray pointingRay;
@@ -68,20 +95,24 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             }
         }
 
+        /// <inheritdoc />
         public virtual void OnPostRaycast() { }
 
+        /// <inheritdoc />
         public virtual bool TryGetPointerPosition(out Vector3 position)
         {
             position = Vector3.zero;
             return false;
         }
 
+        /// <inheritdoc />
         public virtual bool TryGetPointingRay(out Ray pointingRay)
         {
             pointingRay = default(Ray);
             return false;
         }
 
+        /// <inheritdoc />
         public virtual bool TryGetPointerRotation(out Quaternion rotation)
         {
             rotation = Quaternion.identity;
