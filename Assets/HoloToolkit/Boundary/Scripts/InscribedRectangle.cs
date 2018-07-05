@@ -9,33 +9,6 @@ namespace HoloToolkit.Unity.Boundary
 {
     public class InscribedRectangle
     {
-        /// <summary>
-        /// Helper struct to hold an edge.
-        /// </summary>
-        private struct Edge
-        {
-            public float Ax;
-            public float Ay;
-            public float Bx;
-            public float By;
-
-            public Edge(float ax, float ay, float bx, float by)
-            {
-                Ax = ax;
-                Ay = ay;
-                Bx = bx;
-                By = by;
-            }
-
-            public Edge(Vector2 pointA, Vector2 pointB)
-            {
-                Ax = pointA.x;
-                Bx = pointB.x;
-                Ay = pointA.y;
-                By = pointB.y;
-            }
-        }
-
         // Sentinel value
         private static Vector2 InvalidPoint = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
 
