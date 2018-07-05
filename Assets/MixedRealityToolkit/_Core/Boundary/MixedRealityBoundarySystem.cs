@@ -15,28 +15,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
     /// </summary>
     public class MixedRealityBoundaryManager : BaseManager, IMixedRealityBoundarySystem
     {
-        /// <summary>
-        /// The size of the physical space available for Mixed Reality.
-        /// </summary>
-        internal TrackingSpaceType trackingSpaceType = TrackingSpaceType.RoomScale;
+        public TrackingSpaceType TrackingSpaceType { get; set; } = TrackingSpaceType.RoomScale;
 
-        /// <summary>
-        /// The height of the playspace, in meters.
-        /// </summary>
-        /// <remarks>
-        /// This is used to create a three dimensional boundary volume.
-        /// </remarks>
-        internal float boundaryHeight = 8.0f;
+        public float BoundaryHeight { get; set; } = 10.0f;
 
-        /// <summary>
-        /// Enable / disable the platform's playspace boundary rendering.
-        /// </summary>
-        /// <remarks>
-        /// Not all platforms support specifying whether or not to render the playspace boundary.
-        /// For platforms without boundary rendering control, the default behavior will be unchanged 
-        /// regardless of the value provided.
-        /// </remarks>
-        internal bool enablePlatformBoundaryRendering = true;
+        public bool EnablePlatformBoundaryRendering { get; set; } = true;
 
         /// <summary>
         /// A three dimensional volume as described by the playspace boundary and
@@ -71,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         private void InitializeInternal()
         {
-            XRDevice.SetTrackingSpaceType(trackingSpaceType);
+            XRDevice.SetTrackingSpaceType(TrackingSpaceType);
 
             CalculateBoundaryBounds();
             SetPlatformBoundaryVisibility();
@@ -117,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 // todo: CreateInscribedBounds()
 
                 // Set the "ceiling" of the space using the configured height.
-                BoundaryVolume.Encapsulate(new Vector3(0f, boundaryHeight, 0f));
+                BoundaryVolume.Encapsulate(new Vector3(0f, BoundaryHeight, 0f));
             }
         }
 
@@ -135,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
 #if !UNITY_WSA
                 // This value cannot be configured on Windows Mixed Reality. Automatic boundary rendering is performed.
-                Boundary.visible = enablePlatformBoundaryRendering;
+                Boundary.visible = EnablePlatformBoundaryRendering;
 #endif
             }
         }

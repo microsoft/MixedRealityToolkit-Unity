@@ -153,8 +153,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             //If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.EnableBoundarySystem)
             {
-                //Enable Boundary (example initializer)
-                AddManager(typeof(IMixedRealityBoundarySystem), new MixedRealityBoundaryManager());
+                IMixedRealityBoundarySystem boundaryManager = new MixedRealityBoundaryManager();
+                ActiveProfile.BoundaryProfile.ApplyBoundarySettings(boundaryManager);
+
+                AddManager(typeof(IMixedRealityBoundarySystem), boundaryManager);
             }
 
             #region ActiveSDK Discovery
