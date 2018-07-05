@@ -116,10 +116,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         {
             if (Boundary.configured)
             {
-#if !UNITY_WSA
                 // This value cannot be configured on Windows Mixed Reality. Automatic boundary rendering is performed.
                 Boundary.visible = EnablePlatformBoundaryRendering;
-#endif
             }
         }
     }

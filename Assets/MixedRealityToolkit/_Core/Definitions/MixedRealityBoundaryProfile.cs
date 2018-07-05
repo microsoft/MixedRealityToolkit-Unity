@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("The approximate height of the playspace, in meters. This is used to create a three dimensional volume for the playspace.")]
-        private float boundaryHeight = 10.0f;
+        private float boundaryHeight = 3.0f;
 
         [SerializeField]
         [Tooltip("Instruct the platform whether or not to render the playspace boundary. Not all platforms will support configuring this option.")]

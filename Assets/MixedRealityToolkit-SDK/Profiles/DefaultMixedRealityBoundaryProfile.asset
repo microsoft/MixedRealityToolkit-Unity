@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Name: MixedRealityBoundaryProfile
   m_EditorClassIdentifier: 
   trackingSpaceType: 1
-  boundaryHeight: 10
+  boundaryHeight: 3
   enablePlatformBoundaryRendering: 1
