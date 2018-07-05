@@ -14,7 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty trackingSpaceType;
         private SerializedProperty boundaryHeight;
         private SerializedProperty enablePlatformBoundaryRendering;
-        private SerializedProperty createInscribedRectangle;
 
         private void OnEnable()
         {
@@ -26,7 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             trackingSpaceType = serializedObject.FindProperty("trackingSpaceType");
             boundaryHeight = serializedObject.FindProperty("boundaryHeight");
             enablePlatformBoundaryRendering = serializedObject.FindProperty("enablePlatformBoundaryRendering");
-            createInscribedRectangle = serializedObject.FindProperty("createInscribedRectangle");
         }
 
         public override void OnInspectorGUI()
@@ -39,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 return;
             }
 
-            EditorGUILayout.HelpBox("The Boundary Profile helps configure playspace settings.", MessageType.Info);
+            EditorGUILayout.HelpBox("The Boundary Profile enables configuring playspace settings.", MessageType.Info);
 
             serializedObject.Update();
 
@@ -47,8 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             if ((TrackingSpaceType)trackingSpaceType.intValue == TrackingSpaceType.RoomScale)
             {
                 EditorGUILayout.PropertyField(boundaryHeight, new GUIContent("Boundary Height (in m):"));
-                EditorGUILayout.PropertyField(enablePlatformBoundaryRendering, new GUIContent("Render via Platform:"));
-                EditorGUILayout.PropertyField(createInscribedRectangle, new GUIContent("Inscribed rectangle:"));
+                EditorGUILayout.PropertyField(enablePlatformBoundaryRendering, new GUIContent("Platform Rendering:"));
             }
 
             serializedObject.ApplyModifiedProperties();

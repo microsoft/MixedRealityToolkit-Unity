@@ -39,14 +39,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         internal bool enablePlatformBoundaryRendering = true;
 
         /// <summary>
-        /// 
-        /// </summary>
-        internal bool createInscribedRectangle = false;
-
-        /// <summary>
-        /// 
+        /// A three dimensional volume as described by the playspace boundary and
+        /// the configured height.
         /// </summary>
         public Bounds BoundaryVolume { get; private set; } = new Bounds();
+
+        /// <summary>
+        /// A three dimensional volume as described by the inscribed rectangle and
+        /// the configured height.
+        /// </summary>
+        public Bounds InscribedVolume { get; private set; } = new Bounds();
 
         /// <summary>
         /// MixedRealityBoundaryManager constructor
@@ -82,17 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
-        public bool WithinBoundary(Vector3 position)
-        {
-            return BoundaryVolume.Contains(position);
-        }
-
-        /// <summary>
-        /// 
+        /// Retrieves the boundary geometry and creates the boundary and inscribed playspace volumes.
         /// </summary>
         private void CalculateBoundaryBounds()
         {

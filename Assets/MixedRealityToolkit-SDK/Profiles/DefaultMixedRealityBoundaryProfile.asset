@@ -14,4 +14,3 @@ MonoBehaviour:
   trackingSpaceType: 1
   boundaryHeight: 10
   enablePlatformBoundaryRendering: 1
-  createInscribedRectangle: 0
