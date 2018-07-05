@@ -65,12 +65,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         private Transform gazeTransform = null;
 
         [SerializeField]
-        [Tooltip("Minimum velocity threshold")]
-        private float idleHeadVelocityThresh = 0.5f;
+        [Range(0.1f, 5f)]
+        [Tooltip("Minimum head velocity threshold")]
+        private float minHeadVelocityThresh = 0.5f;
 
         [SerializeField]
-        [Tooltip("Maximum velocity threshold")]
-        private float movementHeadVelocityThresh = 2f;
+        [Tooltip("Maximum head velocity threshold")]
+        private float maxHeadVelocityThresh = 2f;
 
         [SerializeField]
         [Tooltip("True to draw a debug view of the ray.")]
@@ -274,8 +275,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
             if (Time.fixedDeltaTime > 0)
             {
-                float velAdjustRate = 3f * Time.fixedDeltaTime;
-                HeadVelocity = HeadVelocity * (1f - velAdjustRate) + headDelta * velAdjustRate / Time.fixedDeltaTime;
+                float velocityAdjustmentRate = 3f * Time.fixedDeltaTime;
+                HeadVelocity = HeadVelocity * (1f - velocityAdjustmentRate) + headDelta * velocityAdjustmentRate / Time.fixedDeltaTime;
 
                 if (HeadVelocity.sqrMagnitude < VelocityThreshold * VelocityThreshold)
                 {
@@ -284,13 +285,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
             }
 
             // Update Head Movement Direction
-            float multiplier = Mathf.Clamp01(Mathf.InverseLerp(idleHeadVelocityThresh, movementHeadVelocityThresh, HeadVelocity.magnitude));
+            float multiplier = Mathf.Clamp01(Mathf.InverseLerp(minHeadVelocityThresh, maxHeadVelocityThresh, HeadVelocity.magnitude));
 
             Vector3 newHeadMoveDirection = Vector3.Lerp(headPosition, HeadVelocity, multiplier).normalized;
             lastHeadPosition = headPosition;
-            float dirAdjustRate = Mathf.Clamp01(5f * Time.fixedDeltaTime);
+            float directionAdjustmentRate = Mathf.Clamp01(5f * Time.fixedDeltaTime);
 
-            HeadMovementDirection = Vector3.Slerp(HeadMovementDirection, newHeadMoveDirection, dirAdjustRate);
+            HeadMovementDirection = Vector3.Slerp(HeadMovementDirection, newHeadMoveDirection, directionAdjustmentRate);
 
             if (debugDrawRay)
             {
