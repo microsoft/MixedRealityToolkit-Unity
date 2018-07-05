@@ -66,6 +66,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             InitializeInternal();
         }
 
+        /// <summary>
+        /// Performs initialization tasks for the BoundaryManager.
+        /// </summary>
         private void InitializeInternal()
         {
             XRDevice.SetTrackingSpaceType(trackingSpaceType);
@@ -111,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     BoundaryVolume.Encapsulate(boundaryGeometry[i]);
                 }
 
-                // todo: if (createInscribedRectangle)
+                // todo: CreateInscribedBounds()
 
                 // Set the "ceiling" of the space using the configured height.
                 BoundaryVolume.Encapsulate(new Vector3(0f, boundaryHeight, 0f));
@@ -119,8 +122,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         }
 
         /// <summary>
-        /// 
+        /// Sets the property indicating if the boundary should be rendered by the platform.
         /// </summary>
+        /// <remarks>
+        /// Not all platforms support specifying whether or not to render the playspace boundary.
+        /// For platforms without boundary rendering control, the default behavior will be unchanged 
+        /// regardless of the value provided.
+        /// </remarks>
         private void SetPlatformBoundaryVisibility()
         {
             if (Boundary.configured)
