@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity.Boundary
 
         private InscribedRectangle inscribedRectangle;
 
-        private Bounds boundaryBounds;
+        private Edge[] boundaryGeometryEdges = new Edge[0];
 
         [SerializeField]
         // Defaulting coordinate system to RoomScale in immersive headsets.
@@ -153,14 +153,14 @@ namespace HoloToolkit.Unity.Boundary
         }
 
         /// <summary>
-        /// Pass in the game object's position to check if it's within 
-        /// the boundary space's largest inscribed rectangle.
+        /// Pass in the game object's position to check if
+        /// it's within the tracked area boundary space.
         /// </summary>
         /// <param name="gameObjectPosition">The position of the GameObject to check.</param>
-        /// <returns>True if the point is in the boundary space's largest inscribed rectangle.</returns>
+        /// <returns>True if the point is in the tracked area boundary space.</returns>
         public bool ContainsObject(Vector3 gameObjectPosition)
         {
-            return ContainsObject(gameObjectPosition, UnityEngine.Experimental.XR.Boundary.Type.PlayArea);
+            return ContainsObject(gameObjectPosition, UnityEngine.Experimental.XR.Boundary.Type.TrackedArea);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace HoloToolkit.Unity.Boundary
             else if (boundaryType == UnityEngine.Experimental.XR.Boundary.Type.TrackedArea)
             {
                 // Check if the supplied game object's position is within the bounds volume.
-                return boundaryBounds.Contains(gameObjectPosition);
+                return EdgeHelpers.IsInside(boundaryGeometryEdges, new Vector2(gameObjectPosition.x, gameObjectPosition.z));
             }
 
             return false;
@@ -241,15 +241,15 @@ namespace HoloToolkit.Unity.Boundary
         /// </summary>
         public void CalculateBoundaryVolume()
         {
+#if !UNITY_WSA
             if (!UnityEngine.Experimental.XR.Boundary.configured)
             {
-#if !UNITY_WSA
                 Debug.Log("Boundary not configured.");
                 // TODO: BUG: Unity: Should return true if a floor and boundary has been established by user.
                 // But this always returns false in WindowsMR.
                 return;
+        }
 #endif
-            }
 
             if (XRDevice.GetTrackingSpaceType() != TrackingSpaceType.RoomScale)
             {
@@ -257,26 +257,24 @@ namespace HoloToolkit.Unity.Boundary
                 return;
             }
 
-            boundaryBounds = new Bounds();
-
             // Get all the bounds setup by the user.
-            var boundaryGeometry = new List<Vector3>(0);
-            if (UnityEngine.Experimental.XR.Boundary.TryGetGeometry(boundaryGeometry, UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
+            var boundaryGeometryPoints = new List<Vector3>(0);
+            if (UnityEngine.Experimental.XR.Boundary.TryGetGeometry(boundaryGeometryPoints, UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
             {
-                if (boundaryGeometry.Count > 0)
+                if (boundaryGeometryPoints.Count > 0)
                 {
-                    // Calculate the floor as the minimum y value from the geometry.
-                    foreach (Vector3 boundaryGeo in boundaryGeometry)
-                    {
-                        boundaryFloor = Math.Min(boundaryFloor, boundaryGeo.y);
+                    boundaryGeometryEdges = new Edge[boundaryGeometryPoints.Count];
 
-                        boundaryBounds.Encapsulate(boundaryGeo);
+                    for (int pointIndex = 0; pointIndex < boundaryGeometryPoints.Count; pointIndex++)
+                    {
+                        var pointA = boundaryGeometryPoints[pointIndex];
+                        var pointB = boundaryGeometryPoints[(pointIndex + 1) % boundaryGeometryPoints.Count];
+                        boundaryGeometryEdges[pointIndex] = new Edge(pointA.x, pointA.z, pointB.x, pointB.z);
+
+                        boundaryFloor = Math.Min(boundaryFloor, pointA.y);
                     }
 
-                    inscribedRectangle = new InscribedRectangle(boundaryGeometry);
-
-                    // Ensuring that we set height of the bounds volume to a certain height.
-                    boundaryBounds.Encapsulate(new Vector3(0, boundaryHeight, 0));
+                    inscribedRectangle = new InscribedRectangle(boundaryGeometryEdges);
                 }
             }
             else

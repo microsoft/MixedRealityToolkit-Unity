@@ -9,9 +9,6 @@ namespace HoloToolkit.Unity.Boundary
 {
     public class InscribedRectangle
     {
-        // Sentinel value
-        private static Vector2 InvalidPoint = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
-
         // Total number of starting points randomly generated within the boundary
         private const int randomPointCount = 30;
 
@@ -25,10 +22,10 @@ namespace HoloToolkit.Unity.Boundary
         // change before we decide that it's good enough, in meters
         private const float minimumHeightGain = 0.01f;
 
-        private static float DegreesToRadians(double deg) { return (float)(Math.PI / 180 * deg); }
+        private float DegreesToRadians(double deg) { return (float)(Math.PI / 180 * deg); }
 
         // Parameters for the inscribed rectangle
-        private Vector2 center = InvalidPoint;
+        private Vector2 center = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
         private float angle;
         private float width;
         private float height;
@@ -45,7 +42,7 @@ namespace HoloToolkit.Unity.Boundary
         /// </summary>
         public InscribedRectangle(IList<Vector3> points, int randomSeed)
         {
-            var edges = new Edge[points.Count + 1];
+            var edges = new Edge[points.Count];
 
             for (int pointIndex = 0; pointIndex < points.Count; ++pointIndex)
             {
@@ -58,11 +55,26 @@ namespace HoloToolkit.Unity.Boundary
         }
 
         /// <summary>
+        /// Constructor that takes in an array of Edges and generates a seed.
+        /// </summary>
+        public InscribedRectangle(Edge[] edges) : this(edges, (int)DateTime.UtcNow.Ticks)
+        {
+        }
+
+        /// <summary>
+        /// Constructor that takes in an array of Edges and sets a fixed random seed to get repeatable results.
+        /// </summary>
+        public InscribedRectangle(Edge[] edges, int randomSeed)
+        {
+            FindInscribedRectangle(edges, randomSeed, out center, out angle, out width, out height);
+        }
+
+        /// <summary>
         /// Use this to determine if there is a valid inscribed rectangle.
         /// </summary>
         public bool IsRectangleValid
         {
-            get { return IsValidPoint(center); }
+            get { return EdgeHelpers.IsValidPoint(center); }
         }
 
         /// <summary>
@@ -129,17 +141,9 @@ namespace HoloToolkit.Unity.Boundary
         }
 
         /// <summary>
-        /// Helper to know when a point is invalid.
-        /// </summary>
-        private static bool IsValidPoint(Vector2 point)
-        {
-            return !float.IsNegativeInfinity(point.x) && !float.IsNegativeInfinity(point.y);
-        }
-
-        /// <summary>
         /// Rotate a point about another point by the specified angle in radians.
         /// </summary>
-        private static Vector2 RotatePoint(Vector2 origin, float angleRad, Vector2 point)
+        private Vector2 RotatePoint(Vector2 origin, float angleRad, Vector2 point)
         {
             Vector2 retval = point;
             if (0.0f == angleRad)
@@ -164,65 +168,22 @@ namespace HoloToolkit.Unity.Boundary
         }
 
         /// <summary>
-        /// Returns true if the given point is within the boundary.
-        /// </summary>
-        private static bool IsInside(Edge[] edges, Vector2 point)
-        {
-            // Check if a ray to the right (X+) intersects with an odd number of edges (inside) or an even number of edges (outside)
-            Vector2 farPoint = point;
-            farPoint.x = largeValue;
-            var rightEdge = new Edge(point, farPoint);
-            int intersections = 0;
-            foreach (var edge in edges)
-            {
-                if (IsValidPoint(GetIntersection(edge, rightEdge)))
-                {
-                    ++intersections;
-                }
-            }
-            return (intersections & 1) == 1;
-        }
-
-        /// <summary>
-        /// Gets the point where two edges intersect. Value is InvalidPoint if they do not.
-        /// </summary>
-        private static Vector2 GetIntersection(Edge edge1, Edge edge2)
-        {
-            float s1_x = edge1.Bx - edge1.Ax;
-            float s1_y = edge1.By - edge1.Ay;
-            float s2_x = edge2.Bx - edge2.Ax;
-            float s2_y = edge2.By - edge2.Ay;
-
-            float s, t;
-            s = (-s1_y * (edge1.Ax - edge2.Ax) + s1_x * (edge1.Ay - edge2.Ay)) / (-s2_x * s1_y + s1_x * s2_y);
-            t = (s2_x * (edge1.Ay - edge2.Ay) - s2_y * (edge1.Ax - edge2.Ax)) / (-s2_x * s1_y + s1_x * s2_y);
-
-            if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
-            {
-                // Collision detected
-                return new Vector2(edge1.Ax + (t * s1_x), edge1.Ay + (t * s1_y));
-            }
-
-            return InvalidPoint;
-        }
-
-        /// <summary>
         /// Given a point inside of the boundary, finds the points on the
         /// boundary directly above, below, left and right of the point,
         /// with respect to the given angle.
         /// </summary>
-        private static bool FindSurroundingCollisionPoints(
+        private bool FindSurroundingCollisionPoints(
             Edge[] edges,
             Vector2 point, float angleRad, out Vector2 topCollisionPoint,
             out Vector2 bottomCollisionPoint, out Vector2 leftCollisionPoint,
             out Vector2 rightCollisionPoint)
         {
-            topCollisionPoint = InvalidPoint;
-            bottomCollisionPoint = InvalidPoint;
-            leftCollisionPoint = InvalidPoint;
-            rightCollisionPoint = InvalidPoint;
+            topCollisionPoint = EdgeHelpers.InvalidPoint;
+            bottomCollisionPoint = EdgeHelpers.InvalidPoint;
+            leftCollisionPoint = EdgeHelpers.InvalidPoint;
+            rightCollisionPoint = EdgeHelpers.InvalidPoint;
 
-            bool isInside = IsInside(edges, point);
+            bool isInside = EdgeHelpers.IsInside(edges, point);
             if (!isInside)
             {
                 return false;
@@ -244,15 +205,15 @@ namespace HoloToolkit.Unity.Boundary
             // Loop the edges and find the nearest intersection point
             foreach (var edge in edges)
             {
-                Vector2 verticalIntersection = GetIntersection(edge, verticalLine);
-                if (IsValidPoint(verticalIntersection))
+                Vector2 verticalIntersection = EdgeHelpers.GetIntersection(edge, verticalLine);
+                if (EdgeHelpers.IsValidPoint(verticalIntersection))
                 {
                     // Is this intersection above or below the point?
                     bool isAbove = RotatePoint(point, -angleRad, verticalIntersection).y > point.y;
                     if (isAbove)
                     {
                         // If this collision point is closer than the previous one
-                        if (!IsValidPoint(topCollisionPoint) ||
+                        if (!EdgeHelpers.IsValidPoint(topCollisionPoint) ||
                             Vector2.Distance(point, verticalIntersection) < Vector2.Distance(point, topCollisionPoint))
                         {
                             topCollisionPoint = verticalIntersection;
@@ -260,7 +221,7 @@ namespace HoloToolkit.Unity.Boundary
                     }
                     else
                     {
-                        if (!IsValidPoint(bottomCollisionPoint) ||
+                        if (!EdgeHelpers.IsValidPoint(bottomCollisionPoint) ||
                             Vector2.Distance(point, verticalIntersection) < Vector2.Distance(point, bottomCollisionPoint))
                         {
                             bottomCollisionPoint = verticalIntersection;
@@ -268,15 +229,15 @@ namespace HoloToolkit.Unity.Boundary
                     }
                 }  // If vertical intersection found
 
-                Vector2 horizontalIntersection = GetIntersection(edge, horizontalLine);
-                if (IsValidPoint(horizontalIntersection))
+                Vector2 horizontalIntersection = EdgeHelpers.GetIntersection(edge, horizontalLine);
+                if (EdgeHelpers.IsValidPoint(horizontalIntersection))
                 {
                     // Is this intersection left or right of the point?
                     bool isLeft = RotatePoint(point, -angleRad, horizontalIntersection).x < point.x;
                     if (isLeft)
                     {
                         // Is it closer than the previous intersection?
-                        if (!IsValidPoint(leftCollisionPoint) ||
+                        if (!EdgeHelpers.IsValidPoint(leftCollisionPoint) ||
                             Vector2.Distance(point, horizontalIntersection) < Vector2.Distance(point, leftCollisionPoint))
                         {
                             leftCollisionPoint = horizontalIntersection;
@@ -285,7 +246,7 @@ namespace HoloToolkit.Unity.Boundary
                     else
                     {
                         // Is it closer than the previous intersection?
-                        if (!IsValidPoint(rightCollisionPoint) ||
+                        if (!EdgeHelpers.IsValidPoint(rightCollisionPoint) ||
                             Vector2.Distance(point, horizontalIntersection) < Vector2.Distance(point, rightCollisionPoint))
                         {
                             rightCollisionPoint = horizontalIntersection;
@@ -295,8 +256,8 @@ namespace HoloToolkit.Unity.Boundary
             }
 
             // Assert that any point inside should have intersection points on all sides with the polygon
-            if (!IsValidPoint(topCollisionPoint) || !IsValidPoint(bottomCollisionPoint) ||
-                !IsValidPoint(leftCollisionPoint) || !IsValidPoint(rightCollisionPoint))
+            if (!EdgeHelpers.IsValidPoint(topCollisionPoint) || !EdgeHelpers.IsValidPoint(bottomCollisionPoint) ||
+                !EdgeHelpers.IsValidPoint(leftCollisionPoint) || !EdgeHelpers.IsValidPoint(rightCollisionPoint))
             {
                 return false;
             }
@@ -310,7 +271,7 @@ namespace HoloToolkit.Unity.Boundary
         /// and dimensions), within a margin of error. Returns false if it could
         /// not fit any rectangles that meet the criteria.
         /// </summary>
-        private static bool TryFitMaximumRectangleAtAngle(
+        private bool TryFitMaximumRectangleAtAngle(
             Edge[] edges,
             Vector2 center, float angleRad, float minArea,
             out float aspectRatio, out float width, out float height)
@@ -393,7 +354,7 @@ namespace HoloToolkit.Unity.Boundary
         /// Returns true if a rectangle centered at the given point, at the
         /// given angle and dimensions, will fit in the polygon.
         /// </summary>
-        private static bool WillRectangleFit(Edge[] edges, Vector2 center, float angleRad, float width, float height)
+        private bool WillRectangleFit(Edge[] edges, Vector2 center, float angleRad, float width, float height)
         {
             float halfWidth = width / 2;
             float halfHeight = height / 2;
@@ -416,8 +377,8 @@ namespace HoloToolkit.Unity.Boundary
             // If any edges of the polygon intersect with any of our edges, it won't fit
             foreach (var edge in edges)
             {
-                if (IsValidPoint(GetIntersection(edge, top)) || IsValidPoint(GetIntersection(edge, right)) ||
-                    IsValidPoint(GetIntersection(edge, bottom)) || IsValidPoint(GetIntersection(edge, left)))
+                if (EdgeHelpers.IsValidPoint(EdgeHelpers.GetIntersection(edge, top)) || EdgeHelpers.IsValidPoint(EdgeHelpers.GetIntersection(edge, right)) ||
+                    EdgeHelpers.IsValidPoint(EdgeHelpers.GetIntersection(edge, bottom)) || EdgeHelpers.IsValidPoint(EdgeHelpers.GetIntersection(edge, left)))
                 {
                     return false;
                 }
@@ -437,9 +398,9 @@ namespace HoloToolkit.Unity.Boundary
         /// This is then repeated for predefined angles (0-180 in steps of 15)
         /// and aspect ratios (1 to 15 in steps of 0.5).
         /// </summary>
-        private static void FindInscribedRectangle(Edge[] edges, int randomSeed, out Vector2 center, out float angle, out float width, out float height)
+        private void FindInscribedRectangle(Edge[] edges, int randomSeed, out Vector2 center, out float angle, out float width, out float height)
         {
-            center = InvalidPoint;
+            center = EdgeHelpers.InvalidPoint;
             angle = width = height = 0;
 
             // Find min x, min y, max x, max y and generate random
@@ -484,7 +445,7 @@ namespace HoloToolkit.Unity.Boundary
                         candidatePoint.x = ((float)random.NextDouble() * (maxX - minX)) + minX;
                         candidatePoint.y = ((float)random.NextDouble() * (maxY - minY)) + minY;
                     }
-                    while (!IsInside(edges, candidatePoint));
+                    while (!EdgeHelpers.IsInside(edges, candidatePoint));
 
                     startingPoints[pointIndex] = candidatePoint;
                 }
@@ -508,7 +469,7 @@ namespace HoloToolkit.Unity.Boundary
                         out topCollisionPoint, out bottomCollisionPoint, out leftCollisionPoint, out rightCollisionPoint);
 
                     // Now calculate the midpoint between top and bottom (the "vertical midpoint") and left and right (the "horizontal midpoint")
-                    if (IsValidPoint(topCollisionPoint) && IsValidPoint(bottomCollisionPoint))
+                    if (EdgeHelpers.IsValidPoint(topCollisionPoint) && EdgeHelpers.IsValidPoint(bottomCollisionPoint))
                     {
                         var verticalMidpoint = new Vector2((topCollisionPoint.x + bottomCollisionPoint.x) / 2,
                             (topCollisionPoint.y + bottomCollisionPoint.y) / 2);
@@ -524,7 +485,7 @@ namespace HoloToolkit.Unity.Boundary
                         }
                     }
 
-                    if (IsValidPoint(leftCollisionPoint) && IsValidPoint(rightCollisionPoint))
+                    if (EdgeHelpers.IsValidPoint(leftCollisionPoint) && EdgeHelpers.IsValidPoint(rightCollisionPoint))
                     {
                         var horizontalMidpoint = new Vector2((leftCollisionPoint.x + rightCollisionPoint.x) / 2,
                             (leftCollisionPoint.y + rightCollisionPoint.y) / 2);
