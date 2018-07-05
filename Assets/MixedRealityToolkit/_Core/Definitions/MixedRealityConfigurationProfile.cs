@@ -184,6 +184,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
             private set { enableBoundarySystem = value; }
         }
 
+        [SerializeField]
+        [Tooltip("Profile for specifying playspace boundary settings.")]
+        private MixedRealityBoundaryProfile boundaryProfile;
+
+        /// <summary>
+        /// Active profile for playspace boundary settings
+        /// </summary>
+        public MixedRealityBoundaryProfile BoundaryProfile
+        {
+            get { return boundaryProfile; }
+            private set { boundaryProfile = value; }
+        }
+
         #endregion Mixed Reality Manager configurable properties
 
         #region ISerializationCallbackReceiver Implementation

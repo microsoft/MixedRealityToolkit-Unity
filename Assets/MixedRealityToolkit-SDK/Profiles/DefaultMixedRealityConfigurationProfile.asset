@@ -25,3 +25,4 @@ MonoBehaviour:
   enableControllerProfiles: 1
   controllersProfile: {fileID: 11400000, guid: 4319257468937c74ebb69e41792d60c5, type: 2}
   enableBoundarySystem: 1
+  boundaryProfile: {fileID: 0}

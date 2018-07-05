@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty enableControllerProfiles;
         private SerializedProperty controllersProfile;
         private SerializedProperty enableBoundarySystem;
+        private SerializedProperty boundaryProfile;
 
         private MixedRealityConfigurationProfile configurationProfile;
 
@@ -68,6 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             enableControllerProfiles = serializedObject.FindProperty("enableControllerProfiles");
             controllersProfile = serializedObject.FindProperty("controllersProfile");
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
+            boundaryProfile = serializedObject.FindProperty("boundaryProfile");
         }
 
         public override void OnInspectorGUI()
@@ -118,6 +120,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Boundary Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableBoundarySystem);
+
+            if (enableBoundarySystem.boolValue)
+            {
+                RenderProfile(boundaryProfile);
+            }
 
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
