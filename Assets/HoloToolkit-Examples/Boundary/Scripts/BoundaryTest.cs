@@ -7,6 +7,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
 {
     public class BoundaryTest : MonoBehaviour
     {
+#if UNITY_2017_2_OR_NEWER
         private Material[] defaultMaterials = null;
 
         private void Start()
@@ -48,4 +49,5 @@ namespace HoloToolkit.Unity.Boundary.Tests
             }
         }
     }
+#endif
 }

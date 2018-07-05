@@ -10,6 +10,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
     /// </summary>
     public class BoundaryVisualizer : MonoBehaviour
     {
+#if UNITY_2017_2_OR_NEWER
         [SerializeField]
         [Tooltip("Material used to draw the inscribed rectangle bounds.")]
         private Material boundsMaterial = null;
@@ -109,4 +110,5 @@ namespace HoloToolkit.Unity.Boundary.Tests
             }
         }
     }
+#endif
 }
