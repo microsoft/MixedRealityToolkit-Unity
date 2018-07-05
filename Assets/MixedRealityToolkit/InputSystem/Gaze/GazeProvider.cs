@@ -221,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private void OnValidate()
         {
-            Debug.Assert(minHeadVelocityThreshold < maxHeadVelocityThreshold, "Maximum head velocity threshold should be less than the minimum velocity threshold.");
+            Debug.Assert(minHeadVelocityThreshold < maxHeadVelocityThreshold, "Minimum head velocity threshold should be less than the maximum velocity threshold.");
         }
 
         protected virtual void OnEnable()
