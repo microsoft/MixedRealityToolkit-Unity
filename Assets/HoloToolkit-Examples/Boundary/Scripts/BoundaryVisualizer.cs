@@ -37,7 +37,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
 
             var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
             quad.transform.SetParent(transform);
-            quad.transform.Translate(center + new Vector3(0.0f, 0.001f, 0.0f)); // Add fudge factor to avoid z-fighting
+            quad.transform.Translate(center + new Vector3(0.0f, 0.005f, 0.0f)); // Add fudge factor to avoid z-fighting
             quad.transform.Rotate(new Vector3(90, -angle, 0));
             quad.transform.localScale = new Vector3(width, height, 1.0f);
         }
@@ -84,7 +84,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
             }
 
             Vector3 corner = center - (new Vector3(dimension, 0.0f, dimension) / 2.0f);
-            corner.y = 0.0f;
+            corner.y += 0.05f;
             for (int xIndex = 0; xIndex < indicatorCount; ++xIndex)
             {
                 for (int yIndex = 0; yIndex < indicatorCount; ++yIndex)

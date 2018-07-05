@@ -125,7 +125,7 @@ namespace HoloToolkit.Unity.Boundary
 
         private void SetBoundaryRendering()
         {
-            // TODO: BUG: Unity: configured bool always returns false in 2017.2.0p2-MRTP5.
+            // This always returns false in WindowsMR.
             if (UnityEngine.Experimental.XR.Boundary.configured)
             {
                 UnityEngine.Experimental.XR.Boundary.visible = renderBoundary;
@@ -172,18 +172,20 @@ namespace HoloToolkit.Unity.Boundary
         /// <returns>True if the point is in the boundary type's bounds.</returns>
         public bool ContainsObject(Vector3 gameObjectPosition, UnityEngine.Experimental.XR.Boundary.Type boundaryType)
         {
-            if (gameObjectPosition.y < boundaryFloor || gameObjectPosition.y > boundaryHeight)
-            {
-                return false;
-            }
+            gameObjectPosition = CameraCache.Main.transform.parent.InverseTransformPoint(gameObjectPosition);
 
-            if (inscribedRectangle == null || !inscribedRectangle.IsRectangleValid)
+            if (gameObjectPosition.y < boundaryFloor || gameObjectPosition.y > boundaryHeight)
             {
                 return false;
             }
 
             if (boundaryType == UnityEngine.Experimental.XR.Boundary.Type.PlayArea)
             {
+                if (inscribedRectangle == null || !inscribedRectangle.IsRectangleValid)
+                {
+                    return false;
+                }
+
                 return inscribedRectangle.IsPointInRectangleBounds(new Vector2(gameObjectPosition.x, gameObjectPosition.z));
             }
             else if (boundaryType == UnityEngine.Experimental.XR.Boundary.Type.TrackedArea)
@@ -232,7 +234,7 @@ namespace HoloToolkit.Unity.Boundary
 
             Vector2 center2D;
             inscribedRectangle.GetRectangleParams(out center2D, out angle, out width, out height);
-            center = new Vector3(center2D.x, boundaryFloor, center2D.y);
+            center = CameraCache.Main.transform.parent.TransformPoint(new Vector3(center2D.x, boundaryFloor, center2D.y));
             return true;
         }
 
@@ -242,13 +244,12 @@ namespace HoloToolkit.Unity.Boundary
         public void CalculateBoundaryVolume()
         {
 #if !UNITY_WSA
+            // This always returns false in WindowsMR.
             if (!UnityEngine.Experimental.XR.Boundary.configured)
             {
                 Debug.Log("Boundary not configured.");
-                // TODO: BUG: Unity: Should return true if a floor and boundary has been established by user.
-                // But this always returns false in WindowsMR.
                 return;
-        }
+            }
 #endif
 
             if (XRDevice.GetTrackingSpaceType() != TrackingSpaceType.RoomScale)

@@ -1864,6 +1864,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundsMaterial: {fileID: 2100000, guid: 97b73006130d05b4c90034845c44e88d, type: 2}
+  trackedAreaBoundsMaterial: {fileID: 2100000, guid: 693646fbd4009244e9cc6a4cd5b72585,
+    type: 2}
 --- !u!4 &1728360663
 Transform:
   m_ObjectHideFlags: 0
