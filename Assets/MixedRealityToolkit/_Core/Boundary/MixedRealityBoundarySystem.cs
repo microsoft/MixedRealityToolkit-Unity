@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             if (XRDevice.GetTrackingSpaceType() != TrackingSpaceType.RoomScale)
             {
-                Debug.Log("Boundaries are supported for Room Scale experiences only.");
+                // Boundaries are supported for Room Scale experiences only.
                 return;
             }
 
