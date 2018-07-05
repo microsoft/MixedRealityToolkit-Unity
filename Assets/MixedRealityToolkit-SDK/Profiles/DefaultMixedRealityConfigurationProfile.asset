@@ -25,5 +25,3 @@ MonoBehaviour:
   enableControllerProfiles: 1
   controllersProfile: {fileID: 11400000, guid: 4319257468937c74ebb69e41792d60c5, type: 2}
   enableBoundarySystem: 1
-  enableGraphAccessProfile: 1
-  graphAccessProfile: {fileID: 11400000, guid: 5138a6d725518844c8782fcf2b0090b8, type: 2}
