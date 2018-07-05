@@ -65,13 +65,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         private Transform gazeTransform = null;
 
         [SerializeField]
-        [Range(0.1f, 5f)]
+        [Range(0.01f, 1f)]
         [Tooltip("Minimum head velocity threshold")]
-        private float minHeadVelocityThresh = 0.5f;
+        private float minHeadVelocityThreshold = 0.5f;
 
         [SerializeField]
+        [Range(0.1f, 5f)]
         [Tooltip("Maximum head velocity threshold")]
-        private float maxHeadVelocityThresh = 2f;
+        private float maxHeadVelocityThreshold = 2f;
 
         [SerializeField]
         [Tooltip("True to draw a debug view of the ray.")]
@@ -218,6 +219,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         #region Monobehaiour Implementation
 
+        private void OnValidate()
+        {
+            Debug.Assert(minHeadVelocityThreshold < maxHeadVelocityThreshold, "Maximum head velocity threshold should be less than the minimum velocity threshold.");
+        }
+
         protected virtual void OnEnable()
         {
             if (!delayInitialization)
@@ -285,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
             }
 
             // Update Head Movement Direction
-            float multiplier = Mathf.Clamp01(Mathf.InverseLerp(minHeadVelocityThresh, maxHeadVelocityThresh, HeadVelocity.magnitude));
+            float multiplier = Mathf.Clamp01(Mathf.InverseLerp(minHeadVelocityThreshold, maxHeadVelocityThreshold, HeadVelocity.magnitude));
 
             Vector3 newHeadMoveDirection = Vector3.Lerp(headPosition, HeadVelocity, multiplier).normalized;
             lastHeadPosition = headPosition;
