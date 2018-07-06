@@ -33,33 +33,17 @@ namespace HoloToolkit.Unity.Boundary
         /// <summary>
         /// Constructor that takes in a list of points and generates a seed.
         /// </summary>
-        public InscribedRectangle(IList<Vector3> points) : this(points, (int)DateTime.UtcNow.Ticks)
-        {
-        }
+        public InscribedRectangle(IList<Vector3> points) : this(points, (int)DateTime.UtcNow.Ticks) { }
 
         /// <summary>
         /// Constructor that takes in a list of points and sets a fixed random seed to get repeatable results.
         /// </summary>
-        public InscribedRectangle(IList<Vector3> points, int randomSeed)
-        {
-            var edges = new Edge[points.Count];
-
-            for (int pointIndex = 0; pointIndex < points.Count; ++pointIndex)
-            {
-                var pointA = points[pointIndex];
-                var pointB = points[(pointIndex + 1) % points.Count];
-                edges[pointIndex] = new Edge(pointA.x, pointA.z, pointB.x, pointB.z);
-            }
-
-            FindInscribedRectangle(edges, randomSeed, out center, out angle, out width, out height);
-        }
+        public InscribedRectangle(IList<Vector3> points, int randomSeed) : this(EdgeHelpers.ConvertVector3ListToEdgeArray(points), randomSeed) { }
 
         /// <summary>
         /// Constructor that takes in an array of Edges and generates a seed.
         /// </summary>
-        public InscribedRectangle(Edge[] edges) : this(edges, (int)DateTime.UtcNow.Ticks)
-        {
-        }
+        public InscribedRectangle(Edge[] edges) : this(edges, (int)DateTime.UtcNow.Ticks) { }
 
         /// <summary>
         /// Constructor that takes in an array of Edges and sets a fixed random seed to get repeatable results.
