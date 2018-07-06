@@ -24,13 +24,42 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         private IMixedRealityInputSystem inputSystem = null;
         public IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
-        /// <summary>
-        /// Maximum distance at which the pointer can collide with an object.
-        /// </summary>
+        private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
+        private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
+        private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
+        private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
+
+        #region IFocusProvider Properties
+
         [SerializeField]
+        [Tooltip("Maximum distance at which all pointers can collide with a GameObject, unless it has an override extent.")]
         private float pointingExtent = 10f;
 
+        /// <inheritdoc />
         float IMixedRealityFocusProvider.GlobalPointingExtent => pointingExtent;
+
+        [SerializeField]
+        [Tooltip("Camera to use for raycasting uGUI pointer events.")]
+        private Camera uiRaycastCamera = null;
+
+        /// <inheritdoc />
+        public Camera UIRaycastCamera
+        {
+            get
+            {
+                if (uiRaycastCamera == null)
+                {
+                    CreateUiRaycastCamera();
+                }
+
+                return uiRaycastCamera;
+            }
+        }
+
+        /// <inheritdoc />
+        public GameObject OverrideFocusedObject { get; set; }
+
+        #endregion IFocusProvider Properties
 
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the GazeTarget when raycasting.
@@ -60,55 +89,35 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// </summary>
         private PointerData gazeManagerPointingData;
 
-        private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
-        private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
-        private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
-        private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
-
         /// <summary>
         /// Cached vector 3 reference to the new raycast position.
         /// <remarks>Only used to update UI raycast results.</remarks>
         /// </summary>
         private Vector3 newUiRaycastPosition = Vector3.zero;
 
-        /// <summary>
-        /// Camera to use for raycasting uGUI pointer events.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Camera to use for raycasting uGUI pointer events.")]
-        private Camera uiRaycastCamera = null;
-
-        /// <summary>
-        /// The Camera the Event System uses to raycast against.
-        /// <para><remarks>Every uGUI canvas in your scene should use this camera as its event camera.</remarks></para>
-        /// </summary>
-        public Camera UIRaycastCamera
-        {
-            get
-            {
-                if (uiRaycastCamera == null)
-                {
-                    CreateUiRaycastCamera();
-                }
-
-                return uiRaycastCamera;
-            }
-        }
-
-        /// <summary>
-        /// To tap on a hologram even when not focused on,
-        /// set OverrideFocusedObject to desired game object.
-        /// If it's null, then focused object will be used.
-        /// </summary>
-        public GameObject OverrideFocusedObject { get; set; }
-
         [Serializable]
         private class PointerData : IPointerResult, IEquatable<PointerData>
         {
             public readonly IMixedRealityPointer Pointer;
-            private FocusDetails focusDetails;
 
-            private GraphicInputEventData graphicData;
+            /// <inheritdoc />
+            public Vector3 StartPoint { get; private set; }
+
+            /// <inheritdoc />
+            public FocusDetails Details { get; private set; }
+
+            /// <inheritdoc />
+            public GameObject CurrentPointerTarget { get; private set; }
+
+            /// <inheritdoc />
+            public GameObject PreviousPointerTarget { get; private set; }
+
+            /// <inheritdoc />
+            public int RayStepIndex { get; private set; }
+
+            /// <summary>
+            /// The graphic input event data used for raycasting uGUI elements.
+            /// </summary>
             public GraphicInputEventData GraphicEventData
             {
                 get
@@ -123,6 +132,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                     return graphicData;
                 }
             }
+            private GraphicInputEventData graphicData;
+
+            private FocusDetails focusDetails;
 
             public PointerData(IMixedRealityPointer pointer)
             {
@@ -188,6 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 CurrentPointerTarget = null;
             }
 
+            /// <inheritdoc />
             public bool Equals(PointerData other)
             {
                 if (ReferenceEquals(null, other)) return false;
@@ -195,6 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 return Pointer.PointerId == other.Pointer.PointerId;
             }
 
+            /// <inheritdoc />
             public override bool Equals(object obj)
             {
                 if (ReferenceEquals(null, obj)) return false;
@@ -203,16 +217,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 return Equals((PointerData)obj);
             }
 
+            /// <inheritdoc />
             public override int GetHashCode()
             {
                 return Pointer != null ? Pointer.GetHashCode() : 0;
             }
-
-            public Vector3 StartPoint { get; private set; }
-            public FocusDetails Details { get; private set; }
-            public GameObject CurrentPointerTarget { get; private set; }
-            public GameObject PreviousPointerTarget { get; private set; }
-            public int RayStepIndex { get; private set; }
         }
 
         #region MonoBehaviour Implementation
@@ -246,11 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 
         #region Focus Details by EventData
 
-        /// <summary>
-        /// Gets the currently focused object based on specified the event data.
-        /// </summary>
-        /// <param name="eventData"></param>
-        /// <returns>Currently focused <see cref="GameObject"/> for the events input source.</returns>
+        /// <inheritdoc />
         public GameObject GetFocusedObject(BaseInputEventData eventData)
         {
             Debug.Assert(eventData != null);
@@ -266,12 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             return graphicInputEventData.selectedObject;
         }
 
-        /// <summary>
-        /// Try to get the focus details based on the specified event data.
-        /// </summary>
-        /// <param name="eventData"></param>
-        /// <param name="focusDetails"></param>
-        /// <returns>True, if event data pointer input source is registered.</returns>
+        /// <inheritdoc />
         public bool TryGetFocusDetails(BaseInputEventData eventData, out FocusDetails focusDetails)
         {
             foreach (var pointerData in pointers)
@@ -287,12 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             return false;
         }
 
-        /// <summary>
-        /// Try to get the registered pointer source that raised the event.
-        /// </summary>
-        /// <param name="eventData"></param>
-        /// <param name="pointer"></param>
-        /// <returns>True, if event datas pointer input source is registered.</returns>
+        /// <inheritdoc />
         public bool TryGetPointingSource(BaseInputEventData eventData, out IMixedRealityPointer pointer)
         {
             foreach (var pointerData in pointers)
@@ -312,12 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 
         #region Focus Details by IMixedRealityPointer
 
-        /// <summary>
-        /// Gets the currently focused object for the pointing source.
-        /// <para><remarks>If the pointing source is not registered, then the Gaze's Focused <see cref="GameObject"/> is returned.</remarks></para>
-        /// </summary>
-        /// <param name="pointingSource"></param>
-        /// <returns>Currently Focused Object.</returns>
+        /// <inheritdoc />
         public GameObject GetFocusedObject(IMixedRealityPointer pointingSource)
         {
             if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
@@ -332,11 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             return focusDetails.Object;
         }
 
-        /// <summary>
-        /// Gets the currently focused object for the pointing source.
-        /// </summary>
-        /// <param name="pointer"></param>
-        /// <param name="focusDetails"></param>
+        /// <inheritdoc />
         public bool TryGetFocusDetails(IMixedRealityPointer pointer, out FocusDetails focusDetails)
         {
             foreach (var pointerData in pointers)
@@ -352,11 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             return false;
         }
 
-        /// <summary>
-        /// Get the Graphic Event Data for the specified pointing source.
-        /// </summary>
-        /// <param name="pointer"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public GraphicInputEventData GetSpecificPointerGraphicEventData(IMixedRealityPointer pointer)
         {
             return GetPointerData(pointer)?.GraphicEventData;
@@ -366,10 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 
         #region Utilities
 
-        /// <summary>
-        /// Generate a new unique pointer id.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public uint GenerateNewPointerId()
         {
             var newId = (uint)UnityEngine.Random.Range(1, int.MaxValue);
@@ -438,22 +417,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             }
         }
 
-        /// <summary>
-        /// Checks if the pointer is registered with the Focus Manager.
-        /// </summary>
-        /// <param name="pointer"></param>
-        /// <returns>True, if registered, otherwise false.</returns>
+        /// <inheritdoc />
         public bool IsPointerRegistered(IMixedRealityPointer pointer)
         {
             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
             return GetPointerData(pointer) != null;
         }
 
-        /// <summary>
-        /// Registers the pointer with the Focus Manager.
-        /// </summary>
-        /// <param name="pointer"></param>
-        /// <returns>True, if the pointer was registered, false if the pointer was previously registered.</returns>
+        /// <inheritdoc />
         public bool RegisterPointer(IMixedRealityPointer pointer)
         {
             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
@@ -464,11 +435,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             return true;
         }
 
-        /// <summary>
-        /// Unregisters the pointer with the Focus Manager.
-        /// </summary>
-        /// <param name="pointer"></param>
-        /// <returns>True, if the pointer was unregistered, false if the pointer was not registered.</returns>
+        /// <inheritdoc />
         public bool UnregisterPointer(IMixedRealityPointer pointer)
         {
             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
