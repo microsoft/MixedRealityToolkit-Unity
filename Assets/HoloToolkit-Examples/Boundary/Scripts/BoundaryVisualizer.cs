@@ -97,14 +97,16 @@ namespace HoloToolkit.Unity.Boundary.Tests
                     marker.transform.position = position;
                     marker.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
+                    var markerRenderer = marker.GetComponent<MeshRenderer>();
+
                     if (BoundaryManager.Instance.ContainsObject(position, UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
                     {
-                        marker.GetComponent<MeshRenderer>().sharedMaterial = trackedAreaBoundsMaterial;
+                        markerRenderer.sharedMaterial = trackedAreaBoundsMaterial;
                     }
 
                     if (BoundaryManager.Instance.ContainsObject(position, UnityEngine.Experimental.XR.Boundary.Type.PlayArea))
                     {
-                        marker.GetComponent<MeshRenderer>().sharedMaterial = boundsMaterial;
+                        markerRenderer.sharedMaterial = boundsMaterial;
                     }
                 }
             }
