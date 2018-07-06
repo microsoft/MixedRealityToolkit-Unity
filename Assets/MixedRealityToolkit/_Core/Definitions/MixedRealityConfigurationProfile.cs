@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// <summary>
         /// Configure the scale of the experience.
         /// </summary>
-        public ExperienceScale BoundaryScale
+        public ExperienceScale BoundaryExperienceScale
         {
             get { return boundaryExperienceScale; }
             set { boundaryExperienceScale = value; }

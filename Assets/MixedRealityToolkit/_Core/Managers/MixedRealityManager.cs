@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (ActiveProfile.EnableBoundarySystem)
             {
                 IMixedRealityBoundarySystem boundaryManager = new MixedRealityBoundaryManager();
-                boundaryManager.Scale = ActiveProfile.BoundaryScale;
+                boundaryManager.Scale = ActiveProfile.BoundaryExperienceScale;
                 boundaryManager.BoundaryHeight = ActiveProfile.BoundaryHeight;
 
 
