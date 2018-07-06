@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         public ExperienceScale Scale { get; set; } = ExperienceScale.Room;
 
         /// <inheritdoc/>
-        public float BoundaryHeight { get; set; } = 10.0f;
+        public float BoundaryHeight { get; set; } = 3.0f;
 
         /// <inheritdoc/>
         public bool EnablePlatformBoundaryRendering { get; set; } = true;
