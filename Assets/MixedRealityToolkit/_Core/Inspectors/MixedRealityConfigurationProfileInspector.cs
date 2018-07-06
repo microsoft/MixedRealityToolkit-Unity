@@ -80,8 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             boundaryExperienceScale = serializedObject.FindProperty("boundaryExperienceScale");
             boundaryHeight = serializedObject.FindProperty("boundaryHeight");
             enablePlatformBoundaryRendering = serializedObject.FindProperty("enablePlatformBoundaryRendering");
-
-            testThis = serializedObject.FindProperty("testThis");
         }
 
         public override void OnInspectorGUI()
