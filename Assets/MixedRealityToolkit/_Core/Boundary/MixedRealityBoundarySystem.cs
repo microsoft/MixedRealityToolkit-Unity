@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         }
 
         /// <summary>
-        /// Updates the TrackingSpaceType on the XR device.
+        /// Updates the <see cref="TrackingSpaceType"/> on the XR device.
         /// </summary>
         private void SetTrackingSpace()
         {
