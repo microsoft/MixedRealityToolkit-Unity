@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
 {
@@ -13,9 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
     public interface IMixedRealityBoundarySystem : IMixedRealityManager
     {
         /// <summary>
-        /// The size of the physical space available for Mixed Reality.
+        /// The scale (ex: World Scale) for which the experience was designed.
         /// </summary>
-        TrackingSpaceType TrackingSpaceType { get; set; }
+        ExperienceScale Scale { get; set; }
 
         /// <summary>
         /// The height of the playspace, in meters.
@@ -36,14 +36,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         bool EnablePlatformBoundaryRendering { get; set; }
 
         /// <summary>
-        /// A three dimensional volume as described by the playspace boundary and
-        /// the configured height.
+        /// A three dimensional volume as described by the smallest rectangle
+        /// containing the complete playspace and the configured height.
         /// </summary>
-        Bounds BoundaryVolume { get; }
+        Bounds OutscribedVolume { get; }
 
         /// <summary>
-        /// A three dimensional volume as described by the inscribed rectangle and
-        /// the configured height.
+        /// A three dimensional volume as described by the largest rectangle that
+        /// is contained withing the playspace and the configured height.
         /// </summary>
         Bounds InscribedVolume { get; }
     }

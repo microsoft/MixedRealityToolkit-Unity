@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,22 +16,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
     /// </summary>
     public class MixedRealityBoundaryManager : BaseManager, IMixedRealityBoundarySystem
     {
-        public TrackingSpaceType TrackingSpaceType { get; set; } = TrackingSpaceType.RoomScale;
+        /// <inheritdoc/>
+        public ExperienceScale Scale { get; set; } = ExperienceScale.Room;
 
+        /// <inheritdoc/>
         public float BoundaryHeight { get; set; } = 10.0f;
 
+        /// <inheritdoc/>
         public bool EnablePlatformBoundaryRendering { get; set; } = true;
 
-        /// <summary>
-        /// A three dimensional volume as described by the playspace boundary and
-        /// the configured height.
-        /// </summary>
-        public Bounds BoundaryVolume { get; private set; } = new Bounds();
+        /// <inheritdoc/>
+        public Bounds OutscribedVolume { get; private set; } = new Bounds();
 
-        /// <summary>
-        /// A three dimensional volume as described by the inscribed rectangle and
-        /// the configured height.
-        /// </summary>
+        /// <inheritdoc/>
         public Bounds InscribedVolume { get; private set; } = new Bounds();
 
         /// <summary>
@@ -39,10 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         public MixedRealityBoundaryManager()
         { }
 
-        /// <summary>
-        /// The initialize function is used to setup the manager once created.
-        /// This method is called once all managers have been registered in the Mixed Reality Manager.
-        /// </summary>
+        /// <inheritdoc/>
         public override void Initialize()
         {
             base.Initialize();
@@ -54,15 +49,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         private void InitializeInternal()
         {
-            XRDevice.SetTrackingSpaceType(TrackingSpaceType);
-
+            SetTrackingSpace();
             CalculateBoundaryBounds();
             SetPlatformBoundaryVisibility();
         }
 
-        /// <summary>
-        /// Optional ProfileUpdate function to allow reconfiguration when the active configuration profile of the Mixed Reality Manager is replaced
-        /// </summary>
+        /// <inheritdoc/>
         public override void Reset()
         {
             base.Reset();
@@ -86,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 return;
             }
 
-            BoundaryVolume = new Bounds();
+            OutscribedVolume = new Bounds();
 
             // Get the boundary geometry.
             List<Vector3> boundaryGeometry = new List<Vector3>(0);
@@ -94,14 +86,25 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
                 for (int i = 0; i < boundaryGeometry.Count; i++)
                 {
-                    BoundaryVolume.Encapsulate(boundaryGeometry[i]);
+                    OutscribedVolume.Encapsulate(boundaryGeometry[i]);
                 }
 
                 // todo: CreateInscribedBounds()
 
                 // Set the "ceiling" of the space using the configured height.
-                BoundaryVolume.Encapsulate(new Vector3(0f, BoundaryHeight, 0f));
+                OutscribedVolume.Encapsulate(new Vector3(0f, BoundaryHeight, 0f));
             }
+        }
+
+        /// <summary>
+        /// Updates the TrackingSpaceType on the XR device.
+        /// </summary>
+        private void SetTrackingSpace()
+        {
+            // In current versions of Unity, there are two types of tracking spaces. For boundaries, everything other 
+            // than ExpereinceScale.Room currently maps to TrackingSpaceType.Stationary.
+            TrackingSpaceType trackingSpace = (Scale == ExperienceScale.Room) ? TrackingSpaceType.RoomScale : TrackingSpaceType.Stationary;
+            XRDevice.SetTrackingSpaceType(trackingSpace);
         }
 
         /// <summary>

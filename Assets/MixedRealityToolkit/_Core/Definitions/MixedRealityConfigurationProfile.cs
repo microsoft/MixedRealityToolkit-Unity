@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         private bool enableBoundarySystem = false;
 
         /// <summary>
-        /// Enable and configure the Boundary component on the Mixed Reality Camera
+        /// Enable and configure the boundary system.
         /// </summary>
         public bool EnableBoundarySystem
         {
@@ -185,16 +185,48 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Profile for specifying playspace boundary settings.")]
-        private MixedRealityBoundaryProfile boundaryProfile;
+        [Tooltip("The scale of the Mixed Reality experience.")]
+        private ExperienceScale boundaryExperienceScale = ExperienceScale.Room;
 
         /// <summary>
-        /// Active profile for playspace boundary settings
+        /// Configure the scale of the experience.
         /// </summary>
-        public MixedRealityBoundaryProfile BoundaryProfile
+        public ExperienceScale BoundaryScale
         {
-            get { return boundaryProfile; }
-            private set { boundaryProfile = value; }
+            get { return boundaryExperienceScale; }
+            set { boundaryExperienceScale = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("The approximate height of the playspace, in meters.")]
+        private float boundaryHeight = 3.0f;
+
+        /// <summary>
+        /// The approximate height of the playspace, in meters.
+        /// </summary>
+        /// <remarks>
+        /// The BoundaryHeight property is used to create a three dimensional volume for the playspace.
+        /// </remarks>
+        public float BoundaryHeight
+        {
+            get { return boundaryHeight; }
+            set { boundaryHeight = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Instruct the platform whether or not to render the playspace boundary. Note: not all platforms support configuring this option.")]
+        private bool enablePlatformBoundaryRendering = true;
+
+        /// <summary>
+        /// Instruct the platform whether or not to render the playspace boundary.
+        /// </summary>
+        /// <remarks>
+        /// Not all platforms support the EnablePlatformBoundaryRendering property.
+        /// </remarks>
+        public bool EnablePlatformBoundaryRendering
+        {
+            get { return enablePlatformBoundaryRendering; }
+            set { enablePlatformBoundaryRendering = value; }
         }
 
         #endregion Mixed Reality Manager configurable properties

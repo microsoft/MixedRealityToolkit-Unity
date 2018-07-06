@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions.EditorClassExtensions;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEditor;
@@ -14,8 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     {
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
 
+        // Camera properties
         private SerializedProperty enableCameraProfile;
         private SerializedProperty cameraProfile;
+        // Input system properties
         private SerializedProperty enableInputSystem;
         private SerializedProperty inputSystemType;
         private SerializedProperty inputActionsProfile;
@@ -23,8 +26,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty speechCommandsProfile;
         private SerializedProperty enableControllerProfiles;
         private SerializedProperty controllersProfile;
+        // Boundary system properties
         private SerializedProperty enableBoundarySystem;
-        private SerializedProperty boundaryProfile;
+        private SerializedProperty boundaryExperienceScale;
+        private SerializedProperty boundaryHeight;
+        private SerializedProperty enablePlatformBoundaryRendering;
+
+        private SerializedProperty testThis;
 
         private MixedRealityConfigurationProfile configurationProfile;
 
@@ -69,7 +77,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             enableControllerProfiles = serializedObject.FindProperty("enableControllerProfiles");
             controllersProfile = serializedObject.FindProperty("controllersProfile");
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
-            boundaryProfile = serializedObject.FindProperty("boundaryProfile");
+            boundaryExperienceScale = serializedObject.FindProperty("boundaryExperienceScale");
+            boundaryHeight = serializedObject.FindProperty("boundaryHeight");
+            enablePlatformBoundaryRendering = serializedObject.FindProperty("enablePlatformBoundaryRendering");
+
+            testThis = serializedObject.FindProperty("testThis");
         }
 
         public override void OnInspectorGUI()
@@ -123,7 +135,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             if (enableBoundarySystem.boolValue)
             {
-                RenderProfile(boundaryProfile);
+                EditorGUILayout.PropertyField(boundaryExperienceScale, new GUIContent("Experience Scale:"));
+                if ((ExperienceScale)boundaryExperienceScale.intValue == ExperienceScale.Room)
+                {
+                    EditorGUILayout.PropertyField(boundaryHeight, new GUIContent("Boundary Height (in m):"));
+                    EditorGUILayout.PropertyField(enablePlatformBoundaryRendering, new GUIContent("Platform Rendering:"));
+                }
             }
 
             EditorGUIUtility.labelWidth = previousLabelWidth;
