@@ -66,12 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         private void CalculateBoundaryBounds()
         {
-            if (!Boundary.configured)
-            {
-                // The user has not configured a playspace boundary on this device.
-                return;
-            }
-
             if (XRDevice.GetTrackingSpaceType() != TrackingSpaceType.RoomScale)
             {
                 // Boundaries are supported for Room Scale experiences only.
