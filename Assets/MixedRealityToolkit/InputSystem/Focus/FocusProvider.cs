@@ -102,12 +102,16 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 
             /// <inheritdoc />
             public Vector3 StartPoint { get; private set; }
+
             /// <inheritdoc />
             public FocusDetails Details { get; private set; }
+
             /// <inheritdoc />
             public GameObject CurrentPointerTarget { get; private set; }
+
             /// <inheritdoc />
             public GameObject PreviousPointerTarget { get; private set; }
+
             /// <inheritdoc />
             public int RayStepIndex { get; private set; }
 
