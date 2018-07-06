@@ -6,7 +6,7 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule.Examples.Grabbables;
 using UnityEngine.XR.WSA.Input;
 
-public static class ExtensionMethods
+public static class RigidbodyExtensions
 {
     public static ControllerReleaseData GetThrowReleasedVelocityAndAngularVelocity(this Rigidbody _rigidbody, Vector3 centerOfMassOfRigidbody, InteractionSourcePose poseInfo)
     {
