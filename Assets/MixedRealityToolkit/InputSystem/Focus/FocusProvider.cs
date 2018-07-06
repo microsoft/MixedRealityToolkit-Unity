@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 StartPoint = sourceRay.Origin;
 
                 focusDetails.LastRaycastHit = hit;
-                focusDetails.Origin = hit.point;
+                focusDetails.Point = hit.point;
                 focusDetails.Normal = hit.normal;
                 focusDetails.Object = hit.transform.gameObject;
                 Details = focusDetails;
@@ -163,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                 RayStepIndex = rayStepIndex;
                 StartPoint = sourceRay.Origin;
 
-                focusDetails.Origin = hit.point;
+                focusDetails.Point = hit.point;
                 focusDetails.Normal = hit.normal;
                 focusDetails.Object = result.gameObject;
                 Details = focusDetails;
@@ -179,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
 
                 StartPoint = firstStep.Origin;
 
-                focusDetails.Origin = finalStep.Terminus;
+                focusDetails.Point = finalStep.Terminus;
                 focusDetails.Normal = -finalStep.Direction;
                 focusDetails.Object = null;
                 Details = focusDetails;
@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                     PreviousPointerTarget = null;
                 }
 
-                focusDetails.Origin = Details.Origin;
+                focusDetails.Point = Details.Point;
                 focusDetails.Normal = Details.Normal;
                 focusDetails.Object = null;
                 Details = focusDetails;
@@ -511,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
                         rayColor = Color.green;
                     }
 
-                    Debug.DrawRay(pointer.StartPoint, (pointer.Details.Origin - pointer.StartPoint), rayColor);
+                    Debug.DrawRay(pointer.StartPoint, (pointer.Details.Point - pointer.StartPoint), rayColor);
                 }
             }
         }
@@ -632,7 +632,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <param name="prioritizedLayerMasks"></param>
         private void RaycastGraphics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-            Debug.Assert(pointer.Details.Origin != Vector3.zero, "Invalid pointer source start point found to raycast from!");
+            Debug.Assert(pointer.Details.Point != Vector3.zero, "Invalid pointer source start point found to raycast from!");
             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusProvider before you can process uGUI raycasting.");
 
             RaycastResult raycastResult = default(RaycastResult);

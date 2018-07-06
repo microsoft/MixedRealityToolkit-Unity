@@ -317,7 +317,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
 
             FocusDetails focusDetails;
             Vector3 initialDraggingPosition = inputSystem.FocusProvider.TryGetFocusDetails(eventData, out focusDetails)
-                ? focusDetails.Origin
+                ? focusDetails.Point
                 : hostTransform.position;
 
             StartDragging(initialDraggingPosition);

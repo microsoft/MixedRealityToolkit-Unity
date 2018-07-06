@@ -179,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
                 if (Result.Details.Object != null)
                 {
-                    gazeProvider.lastHitDistance = (Result.Details.Origin - Rays[0].Origin).magnitude;
+                    gazeProvider.lastHitDistance = (Result.Details.Point - Rays[0].Origin).magnitude;
                     gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
                     gazeProvider.HitNormal = Result.Details.Normal;
                 }

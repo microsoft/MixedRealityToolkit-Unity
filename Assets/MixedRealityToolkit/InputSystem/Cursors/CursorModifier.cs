@@ -163,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             if (inputSystem.FocusProvider.TryGetFocusDetails(cursor.Pointer, out focusDetails))
             {
                 // Else, consider the modifiers on the cursor modifier, but don't snap
-                return focusDetails.Origin + HostTransform.TransformVector(CursorOffset);
+                return focusDetails.Point + HostTransform.TransformVector(CursorOffset);
             }
 
             return Vector3.zero;
