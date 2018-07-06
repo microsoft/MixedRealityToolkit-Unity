@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
     public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler
     {
         /// <summary>
-        /// Maximum distance at which all pointers can collide with an object, unless it has an override extent.
+        /// Maximum distance at which all pointers can collide with a <see cref="GameObject"/>, unless it has an override extent.
         /// </summary>
         float GlobalPointingExtent { get; }
 

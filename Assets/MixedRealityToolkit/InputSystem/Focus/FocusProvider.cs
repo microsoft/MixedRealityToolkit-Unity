@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         #region IFocusProvider Properties
 
         [SerializeField]
-        [Tooltip("Maximum distance at which all pointers can collide with an object, unless it has an override extent.")]
+        [Tooltip("Maximum distance at which all pointers can collide with a GameObject, unless it has an override extent.")]
         private float pointingExtent = 10f;
 
         /// <inheritdoc />
