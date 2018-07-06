@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HoloToolkit.Unity.Boundary
@@ -15,6 +16,23 @@ namespace HoloToolkit.Unity.Boundary
 
         // Sentinel value
         public static readonly Vector2 InvalidPoint = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
+
+        /// <summary>
+        /// Helper to convert a list of Vector3 points into an array of Edges.
+        /// </summary>
+        public static Edge[] ConvertVector3ListToEdgeArray(IList<Vector3> points)
+        {
+            var edges = new Edge[points.Count];
+
+            for (int pointIndex = 0; pointIndex < points.Count; pointIndex++)
+            {
+                var pointA = points[pointIndex];
+                var pointB = points[(pointIndex + 1) % points.Count];
+                edges[pointIndex] = new Edge(pointA.x, pointA.z, pointB.x, pointB.z);
+            }
+
+            return edges;
+        }
 
         /// <summary>
         /// Helper to know when a point is invalid.

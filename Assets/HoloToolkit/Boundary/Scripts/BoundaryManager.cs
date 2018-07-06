@@ -264,16 +264,12 @@ namespace HoloToolkit.Unity.Boundary
             {
                 if (boundaryGeometryPoints.Count > 0)
                 {
-                    boundaryGeometryEdges = new Edge[boundaryGeometryPoints.Count];
-
                     for (int pointIndex = 0; pointIndex < boundaryGeometryPoints.Count; pointIndex++)
                     {
-                        var pointA = boundaryGeometryPoints[pointIndex];
-                        var pointB = boundaryGeometryPoints[(pointIndex + 1) % boundaryGeometryPoints.Count];
-                        boundaryGeometryEdges[pointIndex] = new Edge(pointA.x, pointA.z, pointB.x, pointB.z);
-
-                        boundaryFloor = Math.Min(boundaryFloor, pointA.y);
+                        boundaryFloor = Math.Min(boundaryFloor, boundaryGeometryPoints[pointIndex].y);
                     }
+
+                    boundaryGeometryEdges = EdgeHelpers.ConvertVector3ListToEdgeArray(boundaryGeometryPoints);
 
                     inscribedRectangle = new InscribedRectangle(boundaryGeometryEdges);
                 }
