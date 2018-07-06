@@ -353,9 +353,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
                     // If no modifier is on the target, just use the hit result to set cursor position
                     // Get the look forward by using distance between pointer origin and target position
                     // (This may not be strictly accurate for extremely wobbly pointers, but it should produce usable results)
-                    float distanceToTarget = Vector3.Distance(Pointer.Rays[0].Origin, focusDetails.Point);
+                    float distanceToTarget = Vector3.Distance(Pointer.Rays[0].Origin, focusDetails.Origin);
                     lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, distanceToTarget);
-                    targetPosition = focusDetails.Point + (lookForward * surfaceCursorDistance);
+                    targetPosition = focusDetails.Origin + (lookForward * surfaceCursorDistance);
                     Vector3 lookRotation = Vector3.Slerp(focusDetails.Normal, lookForward, lookRotationBlend);
                     targetRotation = Quaternion.LookRotation(lookRotation == Vector3.zero ? lookForward : lookRotation, Vector3.up);
                 }

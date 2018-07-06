@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
@@ -10,12 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
     /// GazeStabilizer iterates over samples of Raycast data and
     /// helps stabilize the user's gaze for precision targeting.
     /// </summary>
+    [Serializable]
     public class GazeStabilizer : BaseRayStabilizer
     {
         /// <summary>
         ///Number of samples that you want to iterate on.
         /// </summary>
         public int StoredStabilitySamples => storedStabilitySamples;
+
         [SerializeField]
         [Range(40, 120)]
         [Tooltip("Number of samples that you want to iterate on.")]
@@ -64,12 +67,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         /// <summary>
         /// We must have at least this many samples with a standard deviation below the above constants to stabilize
         /// </summary>
-        private const int MinimumSamplesRequiredToStabalize = 30;
+        private const int MinimumSamplesRequiredToStabilize = 30;
 
         /// <summary>
         /// When not stabilizing this is the 'lerp' applied to the position and direction of the gaze to smooth it over time.
         /// </summary>
-        private const float UnstabalizedLerpFactor = 0.3f;
+        private const float UnstabilizedLerpFactor = 0.3f;
 
         /// <summary>
         /// When stabilizing we will use the standard deviation of the position and direction to create the lerp value.
@@ -94,9 +97,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
             positionRollingStats.AddSample(gazePosition);
             directionRollingStats.AddSample(gazeDirection);
 
-            float lerpPower = UnstabalizedLerpFactor;
+            float lerpPower = UnstabilizedLerpFactor;
 
-            if (positionRollingStats.ActualSampleCount > MinimumSamplesRequiredToStabalize &&      // we have enough samples and...
+            if (positionRollingStats.ActualSampleCount > MinimumSamplesRequiredToStabilize &&      // we have enough samples and...
                (positionRollingStats.CurrentStandardDeviation > PositionStandardDeviationReset ||  // the standard deviation of positions is high or...
                 directionRollingStats.CurrentStandardDeviation > DirectionStandardDeviationReset)) // the standard deviation of directions is high
             {
@@ -105,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
                 positionRollingStats.Reset();
                 directionRollingStats.Reset();
             }
-            else if (positionRollingStats.ActualSampleCount > MinimumSamplesRequiredToStabalize)
+            else if (positionRollingStats.ActualSampleCount > MinimumSamplesRequiredToStabilize)
             {
                 // We've detected that the user's gaze is fairly fixed, so start stabilizing.  The more fixed the gaze the less the cursor will move.
                 lerpPower = StabalizedLerpBoost * (positionRollingStats.CurrentStandardDeviation + directionRollingStats.CurrentStandardDeviation);

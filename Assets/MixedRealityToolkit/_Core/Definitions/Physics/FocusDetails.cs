@@ -13,9 +13,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics
     [Serializable]
     public struct FocusDetails
     {
-        public Vector3 Point;
+        /// <summary>
+        /// The origin of the raycast.
+        /// </summary>
+        public Vector3 Origin;
+
+        /// <summary>
+        /// The normal of the raycast.
+        /// </summary>
         public Vector3 Normal;
+
+        /// <summary>
+        /// The object hit by the last raycast.
+        /// </summary>
         public GameObject Object;
+
+        /// <summary>
+        /// The last raycast hit info.
+        /// </summary>
         public RaycastHit LastRaycastHit;
     }
 }
