@@ -51,5 +51,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// Normal of the gaze.
         /// </summary>
         Vector3 GazeDirection { get; }
+
+        /// <summary>
+        /// The current head velocity.
+        /// </summary>
+        Vector3 HeadVelocity { get; }
+
+        /// <summary>
+        /// The current head movement direction.
+        /// </summary>
+        Vector3 HeadMovementDirection { get; }
     }
 }

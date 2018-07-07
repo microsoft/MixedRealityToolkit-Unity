@@ -7,10 +7,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 {
     /// <summary>
-    /// This script keeps track of the GameObjects for each button on the controller.
+    /// This script keeps track of the GameObjects representations for each button on the Windows Mixed Reality Controllers.
     /// It also keeps track of the animation Transforms in order to properly animate according to user input.
     /// </summary>
-    public class MotionControllerInfo
+    public class WindowsMixedRealityControllerInfo
     {
         public readonly GameObject ControllerParent;
         public readonly Handedness Handedness;
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         private Vector2 lastTouchpadPosition;
         private double lastSelectPressedAmount;
 
-        public MotionControllerInfo(GameObject controllerParent, Handedness handedness)
+        public WindowsMixedRealityControllerInfo(GameObject controllerParent, Handedness handedness)
         {
             ControllerParent = controllerParent;
             Handedness = handedness;
