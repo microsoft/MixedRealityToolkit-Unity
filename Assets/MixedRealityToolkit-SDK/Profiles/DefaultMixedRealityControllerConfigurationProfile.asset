@@ -113,6 +113,62 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 17
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 3
+      inputType: 17
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 4
+      inputType: 24
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 27
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 4
+      inputType: 20
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 21
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
   - id: 4
     description: OpenVR Controller Right
     controller:
@@ -146,6 +202,62 @@ MonoBehaviour:
     - id: 0
       axisType: 3
       inputType: 10
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 17
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 3
+      inputType: 17
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 4
+      inputType: 24
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 27
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 4
+      inputType: 20
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 21
       inputAction:
         id: 0
         description: None
