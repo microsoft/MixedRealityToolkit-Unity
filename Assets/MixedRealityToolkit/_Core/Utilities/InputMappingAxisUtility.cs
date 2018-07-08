@@ -14,30 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
     /// </summary>
     public static class InputMappingAxisUtility
     {
-        #region Mixed Reality Xbox and Motion Controller constants
-
-        public const string CONTROLLER_LEFT_STICK_HORIZONTAL = "CONTROLLER_LEFT_STICK_HORIZONTAL";
-        public const string CONTROLLER_LEFT_STICK_VERTICAL = "CONTROLLER_LEFT_STICK_VERTICAL";
-        public const string CONTROLLER_RIGHT_STICK_HORIZONTAL = "CONTROLLER_RIGHT_STICK_HORIZONTAL";
-        public const string CONTROLLER_RIGHT_STICK_VERTICAL = "CONTROLLER_RIGHT_STICK_VERTICAL";
-        public const string XBOX_DPAD_HORIZONTAL = "XBOX_DPAD_HORIZONTAL";
-        public const string XBOX_DPAD_VERTICAL = "XBOX_DPAD_VERTICAL";
-        public const string CONTROLLER_LEFT_TRIGGER = "CONTROLLER_LEFT_TRIGGER";
-        public const string CONTROLLER_RIGHT_TRIGGER = "CONTROLLER_RIGHT_TRIGGER";
-        public const string XBOX_SHARED_TRIGGER = "XBOX_SHARED_TRIGGER";
-        public const string XBOX_A = "XBOX_A";
-        public const string XBOX_B = "XBOX_B";
-        public const string XBOX_X = "XBOX_X";
-        public const string XBOX_Y = "XBOX_Y";
-        public const string CONTROLLER_LEFT_MENU = "CONTROLLER_LEFT_MENU";
-        public const string CONTROLLER_RIGHT_MENU = "CONTROLLER_RIGHT_MENU";
-        public const string CONTROLLER_LEFT_BUMPER_OR_GRIP = "XBOX_LEFT_BUMPER";
-        public const string CONTROLLER_RIGHT_BUMPER_OR_GRIP = "XBOX_RIGHT_BUMPER";
-        public const string CONTROLLER_LEFT_STICK_CLICK = "CONTROLLER_LEFT_STICK_CLICK";
-        public const string CONTROLLER_RIGHT_STICK_CLICK = "CONTROLLER_RIGHT_STICK_CLICK";
-
-        #endregion Mixed Reality Xbox and Motion Controller constants
-
         #region Nested Types
 
         /// <summary>
@@ -74,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         #endregion Nested Types
 
-        #region Mixed Reality Default Mappings configuration
+        #region Configuration elements
 
         /// <summary>
         /// This is used to keep a local list of axis names, so we don't have to keep iterating through each SerializedProperty.
@@ -86,62 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// </summary>
         private static SerializedObject inputManagerAsset;
 
-        /// <summary>
-        /// Define new axes here adding a new InputManagerAxis to the array.
-        /// </summary>
-        private static readonly InputManagerAxis[] MRTKDefaultInputAxis =
-        {
-            new InputManagerAxis() { Name = CONTROLLER_LEFT_STICK_HORIZONTAL,  Dead = 0.19f, Sensitivity = 1, Invert = false, Type = MappingAxisType.JoystickAxis, Axis = 1 },
-            new InputManagerAxis() { Name = CONTROLLER_LEFT_STICK_VERTICAL,    Dead = 0.19f, Sensitivity = 1, Invert = true,  Type = MappingAxisType.JoystickAxis, Axis = 2 },
-            new InputManagerAxis() { Name = XBOX_SHARED_TRIGGER,               Dead = 0.19f, Sensitivity = 1, Invert = false, Type = MappingAxisType.JoystickAxis, Axis = 3 },
-            new InputManagerAxis() { Name = CONTROLLER_RIGHT_STICK_HORIZONTAL, Dead = 0.19f, Sensitivity = 1, Invert = false, Type = MappingAxisType.JoystickAxis, Axis = 4 },
-            new InputManagerAxis() { Name = CONTROLLER_RIGHT_STICK_VERTICAL,   Dead = 0.19f, Sensitivity = 1, Invert = true,  Type = MappingAxisType.JoystickAxis, Axis = 5 },
-            new InputManagerAxis() { Name = XBOX_DPAD_HORIZONTAL,              Dead = 0.19f, Sensitivity = 1, Invert = false, Type = MappingAxisType.JoystickAxis, Axis = 6 },
-            new InputManagerAxis() { Name = XBOX_DPAD_VERTICAL,                Dead = 0.19f, Sensitivity = 1, Invert = false, Type = MappingAxisType.JoystickAxis, Axis = 7 },
-            new InputManagerAxis() { Name = CONTROLLER_LEFT_TRIGGER,           Dead = 0.19f, Sensitivity = 1, Invert = false, Type = MappingAxisType.JoystickAxis, Axis = 9 },
-            new InputManagerAxis() { Name = CONTROLLER_RIGHT_TRIGGER,          Dead = 0.19f, Sensitivity = 1, Invert = false, Type = MappingAxisType.JoystickAxis, Axis = 10 },
-
-            new InputManagerAxis() { Name = XBOX_A,                          PositiveButton = "joystick button 0", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = MappingAxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = XBOX_B,                          PositiveButton = "joystick button 1", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = MappingAxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = XBOX_X,                          PositiveButton = "joystick button 2", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = MappingAxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = XBOX_Y,                          PositiveButton = "joystick button 3", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = MappingAxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = CONTROLLER_LEFT_BUMPER_OR_GRIP,  PositiveButton = "joystick button 4", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = MappingAxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = CONTROLLER_RIGHT_BUMPER_OR_GRIP, PositiveButton = "joystick button 5", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = MappingAxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = CONTROLLER_LEFT_MENU,            PositiveButton = "joystick button 6", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = MappingAxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = CONTROLLER_RIGHT_MENU,           PositiveButton = "joystick button 7", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = MappingAxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = CONTROLLER_LEFT_STICK_CLICK,     PositiveButton = "joystick button 8", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = MappingAxisType.KeyOrMouseButton, Axis = 1 },
-            new InputManagerAxis() { Name = CONTROLLER_RIGHT_STICK_CLICK,    PositiveButton = "joystick button 9", Gravity = 1000, Dead = 0.001f, Sensitivity = 1000, Type = MappingAxisType.KeyOrMouseButton, Axis = 1 },
-        };
-
-        public static readonly IEnumerable<string> MRTKDefaultInputMappingNames = new []
-        {
-            CONTROLLER_LEFT_STICK_HORIZONTAL,
-            CONTROLLER_LEFT_STICK_VERTICAL,
-            XBOX_SHARED_TRIGGER,
-            CONTROLLER_RIGHT_STICK_HORIZONTAL,
-            CONTROLLER_RIGHT_STICK_VERTICAL,
-            XBOX_DPAD_HORIZONTAL,
-            XBOX_DPAD_VERTICAL,
-            CONTROLLER_LEFT_TRIGGER,
-            CONTROLLER_RIGHT_TRIGGER,
-            XBOX_A,
-            XBOX_B,
-            XBOX_X,
-            XBOX_Y,
-            CONTROLLER_LEFT_BUMPER_OR_GRIP,
-            CONTROLLER_RIGHT_BUMPER_OR_GRIP,
-            CONTROLLER_LEFT_MENU,
-            CONTROLLER_RIGHT_MENU,
-            CONTROLLER_LEFT_STICK_CLICK,
-            CONTROLLER_RIGHT_STICK_CLICK
-        };
-
-        /// <summary>
-        /// As axes in newInputAxes are removed or renamed, move them here for proper clean-up in user projects.
-        /// </summary>
-        private static readonly InputManagerAxis[] ObsoleteMRTKInputAxes = { };
-
-        #endregion Mixed Reality Default Mappings configuration
+        #endregion Configuration elements
 
         #region Mappings Functions
 
@@ -154,21 +75,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <param name="useToolkitAxes">Apply the Mixed Reality Toolkit defaults</param>
         /// <param name="removeMappings">If true, removes the selected mappings, either the defaults or the axisMappings array</param>
         /// <param name="axisMappings">Optional array of Axis Mappings, to configure your own custom set</param>
-        public static void ApplyMappings(InputManagerAxis[] axisMappings = null)
+        public static void ApplyMappings(InputManagerAxis[] axisMappings)
         {
             AssureInputManagerReference();
 
-            if (axisMappings == null)
-            {
-                foreach (InputManagerAxis axis in MRTKDefaultInputAxis)
-                {
-                    if (!DoesAxisNameExist(axis.Name))
-                    {
-                        AddAxis(axis);
-                    }
-                }
-            }
-            else
+            if (axisMappings != null)
             {
                 foreach (InputManagerAxis axis in axisMappings)
                 {
@@ -191,29 +102,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <param name="useToolkitAxes">Apply the Mixed Reality Toolkit defaults</param>
         /// <param name="removeMappings">If true, removes the selected mappings, either the defaults or the axisMappings array</param>
         /// <param name="axisMappings">Optional array of Axis Mappings, to configure your own custom set</param>
-        public static void RemoveMappings(InputManagerAxis[] axisMappings = null)
+        public static void RemoveMappings(InputManagerAxis[] axisMappings)
         {
             AssureInputManagerReference();
 
-            if (axisMappings == null)
-            {
-                foreach (InputManagerAxis axis in MRTKDefaultInputAxis)
-                {
-                    if (DoesAxisNameExist(axis.Name))
-                    {
-                        RemoveAxis(axis.Name);
-                    }
-                }
-
-                foreach (InputManagerAxis axis in ObsoleteMRTKInputAxes)
-                {
-                    if (DoesAxisNameExist(axis.Name))
-                    {
-                        RemoveAxis(axis.Name);
-                    }
-                }
-            }
-            else
+            if (axisMappings != null)
             {
                 foreach (InputManagerAxis axis in axisMappings)
                 {
