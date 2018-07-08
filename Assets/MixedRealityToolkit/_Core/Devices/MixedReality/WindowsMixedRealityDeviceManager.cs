@@ -82,14 +82,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK</param>
         /// <returns>New or Existing Controller Input Source</returns>
-        private WindowsMixedRealityController GetOrAddController(InteractionSourceState interactionSourceState)
+        private WindowsMixedRealityController GetOrAddController(InteractionSourceState interactionSourceState, bool updateControllerData = true)
         {
             //If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(interactionSourceState.source.id))
             {
                 var controller = activeControllers[interactionSourceState.source.id] as WindowsMixedRealityController;
                 Debug.Assert(controller != null);
-                controller.UpdateController(interactionSourceState);
+
+                if (updateControllerData)
+                {
+                    controller.UpdateController(interactionSourceState);
+                }
+
                 return controller;
             }
 
@@ -124,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
         private void RemoveController(InteractionSourceState interactionSourceState)
         {
-            var controller = GetOrAddController(interactionSourceState);
+            var controller = GetOrAddController(interactionSourceState, false);
             InputSystem?.RaiseSourceLost(controller?.InputSource, controller);
             activeControllers.Remove(interactionSourceState.source.id);
         }
