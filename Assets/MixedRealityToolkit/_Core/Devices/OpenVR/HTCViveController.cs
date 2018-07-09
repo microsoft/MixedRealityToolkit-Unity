@@ -8,7 +8,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    // TODO - Implement
     public class HTCViveController : GenericOpenVRController
     {
         public HTCViveController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
@@ -18,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
         private InputMappingAxisUtility.InputManagerAxis[] HTCViveControllerAxisMappings;
 
+        /// <inheritdoc />
         public override InputMappingAxisUtility.InputManagerAxis[] ControllerAxisMappings => HTCViveControllerAxisMappings;
 
         /// <summary>
@@ -41,8 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             "VIVE_GRIP_RIGHT_CONTROLLER"                  // 11 - GRIP_RIGHT_CONTROLLER
         };
 
+        /// <inheritdoc />
         public override string[] VRInputMappings => HTCViveInputMappings;
 
+        /// <inheritdoc />
         public override void Initialise()
         {
             HTCViveControllerAxisMappings = new InputMappingAxisUtility.InputManagerAxis[]

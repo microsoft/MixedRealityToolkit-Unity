@@ -11,7 +11,6 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    // TODO - Implement
     public class ValveKnucklesController : GenericOpenVRController
     {
         public ValveKnucklesController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
@@ -21,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
         private InputMappingAxisUtility.InputManagerAxis[] ValveKnucklesControllerAxisMappings;
 
+        /// <inheritdoc />
         public override InputMappingAxisUtility.InputManagerAxis[] ControllerAxisMappings => ValveKnucklesControllerAxisMappings;
 
         /// <summary>
@@ -52,8 +52,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             "VKNUCKLES_PINKYFINGER_RIGHT_CONTROLLER",          // 19 - PINKYFINGER_RIGHT_CONTROLLER
         };
 
+        /// <inheritdoc />
         public override string[] VRInputMappings => ValveKnucklesInputMappings;
 
+        /// <inheritdoc />
         public override void Initialise()
         {
             ValveKnucklesControllerAxisMappings = new InputMappingAxisUtility.InputManagerAxis[]
@@ -79,9 +81,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
         #endregion Base override configuration
 
-        /// <summary>
-        /// Update the controller data from the provided platform state
-        /// </summary>
+        #region Update data functions
+
+        /// <inheritdoc />
         public override void UpdateController(XRNodeState xrNodeState)
         {
             Debug.Assert(Interactions != null, "No interaction configuration for controller");
@@ -136,11 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             LastStateReading = xrNodeState;
         }
 
-        /// <summary>
-        /// Update the Trigger input from the device
-        /// </summary>
-        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        /// <param name="interactionMapping"></param>
+        /// <inheritdoc />
         protected void UpdateFingerData(MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
@@ -156,8 +154,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"Trigger pressed for [{ControllerHandedness}] hand, set to [{IndexFingerAxis}] value");
-
                             //Raise input system Event if it enabled
                             InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, IndexFingerAxis);
                         }
@@ -174,8 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"Trigger pressed for [{ControllerHandedness}] hand, set to [{MiddleFingerAxis}] value");
-
                             //Raise input system Event if it enabled
                             InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, MiddleFingerAxis);
                         }
@@ -192,8 +186,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"Trigger pressed for [{ControllerHandedness}] hand, set to [{RingFingerAxis}] value");
-
                             //Raise input system Event if it enabled
                             InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, RingFingerAxis);
                         }
@@ -210,8 +202,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"Trigger pressed for [{ControllerHandedness}] hand, set to [{PinkyFingerAxis}] value");
-
                             //Raise input system Event if it enabled
                             InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, PinkyFingerAxis);
                         }
@@ -222,11 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
         }
 
-        /// <summary>
-        /// Update the Menu button state.
-        /// </summary>
-        /// <param name="interactionSourceState"></param>
-        /// <param name="interactionMapping"></param>
+        /// <inheritdoc />
         protected override void UpdateButtonData(MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
@@ -241,8 +227,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"Menu pressed for [{ControllerHandedness}] hand, set to [{menuButton}]");
-
                             //Raise input system Event if it enabled
                             if (menuButton)
                             {
@@ -265,8 +249,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"Menu pressed for [{ControllerHandedness}] hand, set to [{secondaryButton}]");
-
                             //Raise input system Event if it enabled
                             if (secondaryButton)
                             {
@@ -283,5 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     throw new IndexOutOfRangeException();
             }
         }
+
+        #endregion Update data functions
     }
 }

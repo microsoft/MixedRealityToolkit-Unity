@@ -8,7 +8,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    // TODO - Implement
     public class OculusTouchController : GenericOpenVRController
     {
         public OculusTouchController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource, MixedRealityInteractionMapping[] interactions)
@@ -18,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
         private InputMappingAxisUtility.InputManagerAxis[] OcculusTouchControllerAxisMappings;
 
+        /// <inheritdoc />
         public override InputMappingAxisUtility.InputManagerAxis[] ControllerAxisMappings => OcculusTouchControllerAxisMappings;
 
         /// <summary>
@@ -41,8 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             "OTOUCH_GRIP_RIGHT_CONTROLLER"                  // 11 - GRIP_RIGHT_CONTROLLER
         };
 
+        /// <inheritdoc />
         public override string[] VRInputMappings => OcculusTouchInputMappings;
 
+        /// <inheritdoc />
         public override void Initialise()
         {
             OcculusTouchControllerAxisMappings = new InputMappingAxisUtility.InputManagerAxis[]

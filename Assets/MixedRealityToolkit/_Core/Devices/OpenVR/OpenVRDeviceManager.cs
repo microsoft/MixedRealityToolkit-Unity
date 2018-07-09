@@ -11,7 +11,6 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    // TODO - Implement
     public class OpenVRDeviceManager : BaseDeviceManager
     {
         public OpenVRDeviceManager(string name, uint priority) : base(name, priority) { }
@@ -151,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             //TODO - Need logic to determine controller type (if possible)
             var detectedController = new GenericOpenVRController(TrackingState.NotTracked, controllingHand, inputSource);
             detectedController.SetupConfiguration(typeof(GenericOpenVRController));
-
+            detectedController.UpdateController(xrNodeState);
             activeControllers.Add(xrNodeState.nodeType, detectedController);
 
             return detectedController;

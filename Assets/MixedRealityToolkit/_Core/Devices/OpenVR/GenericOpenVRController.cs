@@ -11,12 +11,12 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    // TODO - Implement
     public class GenericOpenVRController : BaseController
     {
         public GenericOpenVRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
+            //Prepare the Axis Mapping data for the OpenVR Controller
             Initialise();
 
             //Verify the OpenVR Controller mappings are loaded
@@ -47,6 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
         private InputMappingAxisUtility.InputManagerAxis[] OpenVRControllerAxisMappings;
 
+        /// <summary>
+        /// Mapping method to expose the Unity Input Manager mapping configuration
+        /// </summary>
         public virtual InputMappingAxisUtility.InputManagerAxis[] ControllerAxisMappings => OpenVRControllerAxisMappings;
 
         /// <summary>
@@ -68,8 +71,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             "OPENVR_GRIP_RIGHT_CONTROLLER"                  // 11 - GRIP_RIGHT_CONTROLLER
         };
 
+        /// <summary>
+        /// Mapping method to expose this controllers Unity Input Manager mapping array
+        /// </summary>
         public virtual string[] VRInputMappings => OpenVRInputMappings;
 
+        /// <summary>
+        /// Initialize the Axis mappings for the Unity Input Manager mappings
+        /// </summary>
         public virtual void Initialise()
         {
             OpenVRControllerAxisMappings = new InputMappingAxisUtility.InputManagerAxis[]
@@ -211,8 +220,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"Grip pressed for [{ControllerHandedness}] hand, set to [{gripButton}]");
-
                             //Raise input system Event if it enabled
                             if (gripButton > 0)
                             {
@@ -233,8 +240,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"Grip pressed for [{ControllerHandedness}] hand, set to [{gripButton}]");
-
                             //Raise input system Event if it enabled
                             InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, gripButton);
                         }
@@ -263,8 +268,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"TouchpadTouch pressed for [{ControllerHandedness}] hand, set to [{touchpadTouchButton}]");
-
                             //Raise input system Event if it enabled
                             if (touchpadTouchButton)
                             {
@@ -288,8 +291,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"TouchpadPress pressed for [{ControllerHandedness}] hand, set to [{touchpadPressButton}]");
-
                             //Raise input system Event if it enabled
                             if (touchpadPressButton)
                             {
@@ -314,8 +315,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         //If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"Touchpad pressed for [{ControllerHandedness}] hand, set to [{touchpadPosition}]");
-
                             //Raise input system Event if it enabled
                             InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, touchpadPosition);
                         }
@@ -346,8 +345,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"ThumbStickPress pressed for [{ControllerHandedness}] hand, set to [{thumbstickButton}]");
-
                             //Raise input system Event if it enabled
                             if (thumbstickButton)
                             {
@@ -372,8 +369,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"Thumbstick pressed for [{ControllerHandedness}] hand, set to [{thumbstickposition}]");
-
                             //Raise input system Event if it enabled
                             InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, thumbstickposition);
                         }
@@ -405,8 +400,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"Trigger pressed for [{ControllerHandedness}] hand, set to [{triggerButton}]");
-
                             //Raise input system Event if it enabled
                             if (triggerButton)
                             {
@@ -430,8 +423,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
-                            Debug.LogWarning($"Trigger pressed for [{ControllerHandedness}] hand, set to [{triggerAxis}] value");
-
                             //Raise input system Event if it enabled
                             InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, triggerAxis);
                         }
@@ -443,7 +434,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         }
 
         /// <summary>
-        /// Update the Menu button state.
+        /// Update the buttons state.
         /// </summary>
         /// <param name="interactionSourceState"></param>
         /// <param name="interactionMapping"></param>
@@ -451,14 +442,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         {
             //Get the current Menu button state
             var menuButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton2) : Input.GetKey(KeyCode.JoystickButton0);
+
             //Update the interaction data source
             interactionMapping.SetBoolValue(menuButton);
 
             // If our value changed raise it.
             if (interactionMapping.Changed)
             {
-                Debug.LogWarning($"Menu pressed for [{ControllerHandedness}] hand, set to [{menuButton}]");
-
                 //Raise input system Event if it enabled
                 if (menuButton)
                 {
