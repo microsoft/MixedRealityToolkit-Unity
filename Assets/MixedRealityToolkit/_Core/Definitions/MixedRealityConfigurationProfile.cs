@@ -84,8 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get
             {
-                return inputSystemType != null &&
-                       inputSystemType?.Type != null &&
+                return inputSystemType?.Type != null &&
                        inputActionsProfile != null &&
                        enableInputSystem;
             }
@@ -182,8 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get
             {
-                return boundarySystemType != null &&
-                       boundarySystemType?.Type != null &&
+                return boundarySystemType?.Type != null &&
                        enableBoundarySystem;
             }
             private set { enableInputSystem = value; }
