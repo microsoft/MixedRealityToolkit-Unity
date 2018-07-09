@@ -9,9 +9,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 {
     /// <summary>
     /// Utility class for Unity's Input Manager Mappings.
-    /// Input from all types should be defined here for use 
-    /// though out the entire toolkit.
     /// </summary>
+    /// <remarks>
+    /// Note, with any luck this will be temporary.  If it is to remain beyond Alpha, then this needs some refactoring to make a proper component.
+    /// </remarks>
     public static class InputMappingAxisUtility
     {
         #region Nested Types
@@ -31,13 +32,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// </summary>
         public class InputManagerAxis
         {
-            public string Name = "";
-            public string DescriptiveName = "";
-            public string DescriptiveNegativeName = "";
-            public string NegativeButton = "";
-            public string PositiveButton = "";
-            public string AltNegativeButton = "";
-            public string AltPositiveButton = "";
+            public string Name = string.Empty;
+            public string DescriptiveName = string.Empty;
+            public string DescriptiveNegativeName = string.Empty;
+            public string NegativeButton = string.Empty;
+            public string PositiveButton = string.Empty;
+            public string AltNegativeButton = string.Empty;
+            public string AltPositiveButton = string.Empty;
             public float Gravity = 0.0f;
             public float Dead = 0.0f;
             public float Sensitivity = 0.0f;

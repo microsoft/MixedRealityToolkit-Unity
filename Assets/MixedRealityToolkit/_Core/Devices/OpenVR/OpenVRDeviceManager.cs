@@ -48,9 +48,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             {
                 if (IsNodeTypeSupported(nodeStates[i]) && activeControllers.ContainsKey(nodeStates[i].nodeType))
                 {
+                    //TODO - Need logic to determine controller type (if possible)
                     controller = activeControllers[nodeStates[i].nodeType] as GenericOpenVRController;
-                    controller.UpdateController(nodeStates[i]);
-                    //Debug.Log($"Updating node for [{nodeStates[i].nodeType}], name [{InputTracking.GetNodeName(nodeStates[i].uniqueID)}]");
+                    if(controller.Enabled) controller.UpdateController(nodeStates[i]);
                 }
             }
         }
@@ -120,12 +120,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK</param>
         /// <returns>New or Existing Controller Input Source</returns>
-        private GenericOpenVRController GetOrAddController(XRNodeState xrNodeState)
+        private IMixedRealityController GetOrAddController(XRNodeState xrNodeState)
         {
             //If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(xrNodeState.nodeType))
             {
-                var controller = activeControllers[xrNodeState.nodeType] as GenericOpenVRController;
+                //TODO - Need logic to determine controller type (if possible)
+                var controller = activeControllers[xrNodeState.nodeType];
                 Debug.Assert(controller != null);
                 return controller;
             }
@@ -146,8 +147,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
 
             var inputSource = InputSystem?.RequestNewGenericInputSource($"Generic OpenVR Controller {controllingHand}");
+            
+            //TODO - Need logic to determine controller type (if possible)
             var detectedController = new GenericOpenVRController(TrackingState.NotTracked, controllingHand, inputSource);
             detectedController.SetupConfiguration(typeof(GenericOpenVRController));
+
             activeControllers.Add(xrNodeState.nodeType, detectedController);
 
             return detectedController;

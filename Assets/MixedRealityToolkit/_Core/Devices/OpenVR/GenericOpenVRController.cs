@@ -17,8 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         public GenericOpenVRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
+            Initialise();
+
             //Verify the OpenVR Controller mappings are loaded
-            InputMappingAxisUtility.ApplyMappings(OpenVRControllerAxisMappings);
+            InputMappingAxisUtility.ApplyMappings(ControllerAxisMappings);
         }
 
         /// <summary>
@@ -41,27 +43,64 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         //private Quaternion currentGripRotation = Quaternion.identity;
         //private MixedRealityPose currentGripData = MixedRealityPose.ZeroIdentity;
 
-        private InputMappingAxisUtility.InputManagerAxis[] OpenVRControllerAxisMappings =
+        #region Base override configuration
+
+        private InputMappingAxisUtility.InputManagerAxis[] OpenVRControllerAxisMappings;
+
+        public virtual InputMappingAxisUtility.InputManagerAxis[] ControllerAxisMappings => OpenVRControllerAxisMappings;
+
+        /// <summary>
+        /// Collection of input mapping constants, grouped in a single class for easier referencing.
+        /// </summary>
+        private string[] OpenVRInputMappings =
         {
-            new InputMappingAxisUtility.InputManagerAxis() { Name = OpenVRInputMappings.OPENVR_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 1 },
-            new InputMappingAxisUtility.InputManagerAxis() { Name = OpenVRInputMappings.OPENVR_TOUCHPAD_LEFT_CONTROLLER_VERTICAL,    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 2 },
-            new InputMappingAxisUtility.InputManagerAxis() { Name = OpenVRInputMappings.OPENVR_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 4 },
-            new InputMappingAxisUtility.InputManagerAxis() { Name = OpenVRInputMappings.OPENVR_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL,    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 5 },
-            new InputMappingAxisUtility.InputManagerAxis() { Name = OpenVRInputMappings.OPENVR_TRIGGER_LEFT_CONTROLLER,    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 9 },
-            new InputMappingAxisUtility.InputManagerAxis() { Name = OpenVRInputMappings.OPENVR_TRIGGER_RIGHT_CONTROLLER,    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 10 },
-            new InputMappingAxisUtility.InputManagerAxis() { Name = OpenVRInputMappings.OPENVR_GRIP_LEFT_CONTROLLER,    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 11 },
-            new InputMappingAxisUtility.InputManagerAxis() { Name = OpenVRInputMappings.OPENVR_GRIP_RIGHT_CONTROLLER,    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 12 }
+            "OPENVR_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL",   // 0 - TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL
+            "OPENVR_TOUCHPAD_LEFT_CONTROLLER_VERTICAL",     // 1 - TOUCHPAD_LEFT_CONTROLLER_VERTICAL
+            "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL",  // 2 - TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL
+            "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL",    // 3 - TOUCHPAD_RIGHT_CONTROLLER_VERTICAL
+            "OPENVR_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL",   // 4 - THUMBSTICK_LEFT_CONTROLLER_HORIZONTAL
+            "OPENVR_TOUCHPAD_LEFT_CONTROLLER_VERTICAL",     // 5 - THUMBSTICK_LEFT_CONTROLLER_VERTICAL
+            "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL",  // 6 - THUMBSTICK_RIGHT_CONTROLLER_HORIZONTAL
+            "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL",    // 7 - THUMBSTICK_RIGHT_CONTROLLER_VERTICAL
+            "OPENVR_TRIGGER_LEFT_CONTROLLER",               // 8 - TRIGGER_LEFT_CONTROLLER
+            "OPENVR_TRIGGER_RIGHT_CONTROLLER",              // 9 - TRIGGER_RIGHT_CONTROLLER
+            "OPENVR_GRIP_LEFT_CONTROLLER",                  // 10 - GRIP_LEFT_CONTROLLER
+            "OPENVR_GRIP_RIGHT_CONTROLLER"                  // 11 - GRIP_RIGHT_CONTROLLER
         };
 
+        public virtual string[] VRInputMappings => OpenVRInputMappings;
+
+        public virtual void Initialise()
+        {
+            OpenVRControllerAxisMappings = new InputMappingAxisUtility.InputManagerAxis[]
+            {
+                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[0], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 1 },
+                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[1], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 2 },
+                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[2], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 4 },
+                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[3], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 5 },
+                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[4], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 1 },
+                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[5], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 2 },
+                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[6], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 4 },
+                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[7], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 5 },
+                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[8], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 9 },
+                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[9], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 10 },
+                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[10], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 11 },
+                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[11], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 12 }
+            };
+        }
+
+        #endregion Base override configuration
 
         #region Update data functions
 
         /// <summary>
         /// Update the controller data from the provided platform state
         /// </summary>
-        public void UpdateController(XRNodeState xrNodeState)
+        public virtual void UpdateController(XRNodeState xrNodeState)
         {
-            Debug.Assert(Interactions != null);
+            Debug.Assert(Interactions != null, "No interaction configuration for controller");
+            if (Interactions == null) Enabled = false;
+
             for (int i = 0; i < Interactions?.Length; i++)
             {
                 switch (Interactions[i].InputType)
@@ -95,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         UpdateTouchPadData(Interactions[i]);
                         break;
                     case DeviceInputType.Menu:
-                        UpdateMenuData(Interactions[i]);
+                        UpdateButtonData(Interactions[i]);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -108,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// Update the "Controller" input from the device
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
-        private void UpdateControllerData(XRNodeState State, MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateControllerData(XRNodeState State, MixedRealityInteractionMapping interactionMapping)
         {
             var lastState = TrackingState;
 
@@ -158,10 +197,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdateGripData(MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateGripData(MixedRealityInteractionMapping interactionMapping)
         {
             //Get the current Grip button state
-            var gripButton = ControllerHandedness == Handedness.Left ? Input.GetAxis(OpenVRInputMappings.OPENVR_GRIP_LEFT_CONTROLLER) : Input.GetAxis(OpenVRInputMappings.OPENVR_GRIP_RIGHT_CONTROLLER);
+            var gripButton = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[10]) : Input.GetAxis(VRInputMappings[11]);
             switch (interactionMapping.AxisType)
             {
                 case AxisType.Digital:
@@ -196,16 +235,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         {
                             Debug.LogWarning($"Grip pressed for [{ControllerHandedness}] hand, set to [{gripButton}]");
 
-                            if (gripButton > 0)
-                            {
-                                //Raise input system Event if it enabled
-                                InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, gripButton);
-                            }
-                            else
-                            {
-                                //TODO - Needs InputReleased
-                                InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, gripButton);
-                            }
+                            //Raise input system Event if it enabled
+                            InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, gripButton);
                         }
                         break;
                     }
@@ -217,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdateTouchPadData(MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateTouchPadData(MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
@@ -273,8 +304,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     }
                 case DeviceInputType.Touchpad:
                     {
-                        var touchpadX = ControllerHandedness == Handedness.Left ? Input.GetAxis(OpenVRInputMappings.OPENVR_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL): Input.GetAxis(OpenVRInputMappings.OPENVR_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL);
-                        var touchpadY = ControllerHandedness == Handedness.Left ? Input.GetAxis(OpenVRInputMappings.OPENVR_TOUCHPAD_LEFT_CONTROLLER_VERTICAL): Input.GetAxis(OpenVRInputMappings.OPENVR_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL);
+                        var touchpadX = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[0]) : Input.GetAxis(VRInputMappings[2]);
+                        var touchpadY = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[1]) : Input.GetAxis(VRInputMappings[3]);
                         var touchpadPosition = new Vector2(touchpadX, touchpadY);
 
                         //Update the interaction data source
@@ -300,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdateThumbStickData(MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateThumbStickData(MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
@@ -331,8 +362,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     }
                 case DeviceInputType.ThumbStick:
                     {
-                        var thumbstickX = ControllerHandedness == Handedness.Left ? Input.GetAxis(OpenVRInputMappings.OPENVR_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL) : Input.GetAxis(OpenVRInputMappings.OPENVR_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL);
-                        var thumbstickY = ControllerHandedness == Handedness.Left ? Input.GetAxis(OpenVRInputMappings.OPENVR_TOUCHPAD_LEFT_CONTROLLER_VERTICAL) : Input.GetAxis(OpenVRInputMappings.OPENVR_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL);
+                        var thumbstickX = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[4]) : Input.GetAxis(VRInputMappings[6]);
+                        var thumbstickY = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[5]) : Input.GetAxis(VRInputMappings[7]);
                         var thumbstickposition = new Vector2(thumbstickX, thumbstickY);
 
                         //Update the interaction data source
@@ -358,7 +389,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         /// <param name="interactionMapping"></param>
-        private void UpdateTriggerData(MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateTriggerData(MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
@@ -391,7 +422,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                 case DeviceInputType.Trigger:
                     {
                         //Get the current Trigger axis state - ** Does not WORK
-                        var triggerAxis = ControllerHandedness == Handedness.Left ? Input.GetAxis(OpenVRInputMappings.OPENVR_TRIGGER_LEFT_CONTROLLER) : Input.GetAxis(OpenVRInputMappings.OPENVR_TRIGGER_RIGHT_CONTROLLER);
+                        var triggerAxis = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[8]) : Input.GetAxis(VRInputMappings[9]);
 
                         //Update the interaction data source
                         interactionMapping.SetFloatValue(triggerAxis);
@@ -401,16 +432,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         {
                             Debug.LogWarning($"Trigger pressed for [{ControllerHandedness}] hand, set to [{triggerAxis}] value");
 
-                            if (triggerAxis > 0)
-                            {
-                                //Raise input system Event if it enabled
-                                InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, triggerAxis);
-                            }
-                            else
-                            {
-                                //TODO Needs "Released Event"
-                                InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, triggerAxis);
-                            }
+                            //Raise input system Event if it enabled
+                            InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, triggerAxis);
                         }
                         break;
                     }
@@ -424,7 +447,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// </summary>
         /// <param name="interactionSourceState"></param>
         /// <param name="interactionMapping"></param>
-        private void UpdateMenuData(MixedRealityInteractionMapping interactionMapping)
+        protected virtual void UpdateButtonData(MixedRealityInteractionMapping interactionMapping)
         {
             //Get the current Menu button state
             var menuButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton2) : Input.GetKey(KeyCode.JoystickButton0);
@@ -449,19 +472,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         }
 
         #endregion Update data functions
-
-        #region Nested Types
-        private class OpenVRInputMappings
-        {
-            public const string OPENVR_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL = "OPENVR_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL";
-            public const string OPENVR_TOUCHPAD_LEFT_CONTROLLER_VERTICAL = "OPENVR_TOUCHPAD_LEFT_CONTROLLER_VERTICAL";
-            public const string OPENVR_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL = "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL";
-            public const string OPENVR_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL = "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL";
-            public const string OPENVR_TRIGGER_LEFT_CONTROLLER = "OPENVR_TRIGGER_LEFT_CONTROLLER";
-            public const string OPENVR_TRIGGER_RIGHT_CONTROLLER = "OPENVR_TRIGGER_RIGHT_CONTROLLER";
-            public const string OPENVR_GRIP_LEFT_CONTROLLER = "OPENVR_GRIP_LEFT_CONTROLLER";
-            public const string OPENVR_GRIP_RIGHT_CONTROLLER = "OPENVR_GRIP_RIGHT_CONTROLLER";
-        }
-        #endregion
     }
 }
