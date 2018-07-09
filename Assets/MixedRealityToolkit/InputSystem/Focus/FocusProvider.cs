@@ -632,7 +632,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <param name="prioritizedLayerMasks"></param>
         private void RaycastGraphics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-            Debug.Assert(pointer.Details.Point != Vector3.zero, "No pointer source end point found to raycast against!");
+            Debug.Assert(pointer.Details.Point != Vector3.zero, "Invalid pointer source start point found to raycast from!");
             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusProvider before you can process uGUI raycasting.");
 
             RaycastResult raycastResult = default(RaycastResult);
@@ -685,6 +685,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
         /// <returns></returns>
         private bool RaycastGraphicsStep(PointerData pointer, RayStep step, LayerMask[] prioritizedLayerMasks, out bool overridePhysicsRaycast, out RaycastResult uiRaycastResult)
         {
+            Debug.Assert(step.Direction != Vector3.zero, "RayStep Direction is Invalid.");
+
             // Move the uiRaycast camera to the current pointer's position.
             UIRaycastCamera.transform.position = step.Origin;
             UIRaycastCamera.transform.forward = step.Direction;

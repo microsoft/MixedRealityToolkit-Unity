@@ -1,16 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
-
-#if UNITY_WSA
-using UnityEngine.XR.WSA.Input;
-#endif
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
 {
@@ -133,13 +130,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// <param name="eventData"></param>
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
-            var controller = eventData.Controller as WindowsMixedRealityController;
-#if UNITY_WSA
-            if (controller?.LastSourceStateReading.source.kind == InteractionSourceKind.Hand)
+            var controller = eventData.Controller;
+            if (eventData.Controller.Interactions.SupportsInputType(DeviceInputType.Hand))
             {
                 visibleHandsCount++;
             }
-#endif
 
             if (visibleHandsCount > 0)
             {
@@ -153,13 +148,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
         /// <param name="eventData"></param>
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-            var controller = eventData.Controller as WindowsMixedRealityController;
-#if UNITY_WSA
-            if (controller?.LastSourceStateReading.source.kind == InteractionSourceKind.Hand)
+            if (eventData.Controller.Interactions.SupportsInputType(DeviceInputType.Hand))
             {
                 visibleHandsCount--;
             }
-#endif
 
             if (visibleHandsCount == 0)
             {
@@ -228,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
 
         #endregion IMixedRealityPointerHandler Implementation
 
-        #region MonoBehaviour Impementation
+        #region MonoBehaviour Implementation
 
         private void Awake()
         {
@@ -268,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Cursors
             UnregisterManagers();
         }
 
-        #endregion MonoBehaviour Impementation
+        #endregion MonoBehaviour Implementation
 
         /// <summary>
         /// Register to events from the managers the cursor needs.
