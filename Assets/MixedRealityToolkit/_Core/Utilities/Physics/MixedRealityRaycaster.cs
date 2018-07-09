@@ -20,6 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics
         /// <returns></returns>
         public static bool RaycastSimplePhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
         {
+            Debug.Assert(step.Length > 0, "Length must be longer than zero!");
+            Debug.Assert(step.Direction != Vector3.zero, "Invalid step direction!");
+
             return prioritizedLayerMasks.Length == 1
                 // If there is only one priority, don't prioritize
                 ? UnityEngine.Physics.Raycast(step.Origin, step.Direction, out physicsHit, step.Length, prioritizedLayerMasks[0])
