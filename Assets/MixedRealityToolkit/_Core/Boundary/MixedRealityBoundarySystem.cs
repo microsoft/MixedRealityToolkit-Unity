@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
@@ -99,9 +100,29 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         private void SetTrackingSpace()
         {
-            // In current versions of Unity, there are two types of tracking spaces. For boundaries, everything other 
-            // than ExpereinceScale.Room currently maps to TrackingSpaceType.Stationary.
-            TrackingSpaceType trackingSpace = (Scale == ExperienceScale.Room) ? TrackingSpaceType.RoomScale : TrackingSpaceType.Stationary;
+            TrackingSpaceType trackingSpace;
+
+            // In current versions of Unity, there are two types of tracking spaces. For boundaries, if the scale
+            // is not Room or Standing, it currently maps to TrackingSpaceType.Stationary.
+            switch (Scale)
+            {
+                case ExperienceScale.Standing:
+                case ExperienceScale.Room:
+                    trackingSpace = TrackingSpaceType.RoomScale;
+                    break;
+
+                case ExperienceScale.OrientationOnly:
+                case ExperienceScale.Seated:
+                case ExperienceScale.World:
+                    trackingSpace = TrackingSpaceType.Stationary;
+                    break;
+
+                default:
+                    trackingSpace = TrackingSpaceType.Stationary;
+                    Debug.LogWarning("Unknown / unsupported ExperienceScale. Defaulting to Stationary tracking space.");
+                    break;
+            }
+
             XRDevice.SetTrackingSpaceType(trackingSpace);
         }
 
