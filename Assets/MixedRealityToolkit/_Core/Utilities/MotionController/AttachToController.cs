@@ -1,27 +1,26 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Attributes;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
-
-#if UNITY_WSA
-using UnityEngine.XR.WSA.Input;
-#endif
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 {
     /// <summary>
-    /// Waits for a controller to be instantiated, then attaches itself to a specified element
+    /// Waits for a controller to be initialized, then attaches itself to a specified element
     /// </summary>
-    public class AttachToController : ControllerFinder
+    public class AttachToController : MonoBehaviour, IMixedRealitySourcePoseHandler
     {
-        [SerializeField]
-        private bool setChildrenInactiveWhenDetached = true;
-
-        public bool SetChildrenInactiveWhenDetached
-        {
-            get { return setChildrenInactiveWhenDetached; }
-            set { setChildrenInactiveWhenDetached = value; }
-        }
+        private IMixedRealityInputSystem inputSystem = null;
+        public IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
         [SerializeField]
         protected Vector3 PositionOffset = Vector3.zero;
@@ -35,82 +34,86 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         [SerializeField]
         protected bool SetScaleOnAttach = false;
 
-        public bool IsAttached { get; private set; }
+        [SerializeField]
+        protected Handedness Handedness = Handedness.Left;
 
-        protected virtual void OnAttachToController() { }
+        [SerializeField]
+        [Tooltip("Input System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealityController), TypeGrouping.ByNamespaceFlat)]
+        private SystemType controllerType;
 
-        protected virtual void OnDetachFromController() { }
+        [SerializeField]
+        [Tooltip("Disable child objects when detached from controller.")]
+        private bool setChildrenInactiveWhenDetached = true;
 
-        protected override void OnEnable()
+        public bool SetChildrenInactiveWhenDetached
         {
-            SetChildrenActive(false);
-
-#if UNITY_WSA
-            // Look if the controller has loaded.
-            if (TryGetControllerModel((InteractionSourceHandedness)Handedness, out ControllerInfo))
-            {
-                AddControllerTransform(ControllerInfo);
-            }
-
-            OnControllerModelLoaded += AddControllerTransform;
-            OnControllerModelUnloaded += RemoveControllerTransform;
-#endif 
+            get { return setChildrenInactiveWhenDetached; }
+            set { setChildrenInactiveWhenDetached = value; }
         }
 
-        protected override void AddControllerTransform(MotionControllerInfo newController)
+        public bool IsTracked { get; private set; } = false;
+
+        protected TrackingState LastTrackingState { get; private set; } = TrackingState.NotTracked;
+
+        protected uint ControllerInputSourceId { get; private set; } = 0;
+
+        #region IMixedRealitySourcePoseHandler Implementation
+
+        public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
-#if UNITY_WSA
-            if (!IsAttached && newController.Handedness == Handedness)
+            if (eventData.Controller.GetType() == controllerType.Type && eventData.Controller.ControllerHandedness == Handedness)
             {
-                base.AddControllerTransform(newController);
+                ControllerInputSourceId = eventData.Controller.InputSource.SourceId;
 
-                SetChildrenActive(true);
-
-                // Parent ourselves under the element and set our offsets
-                transform.parent = ElementTransform;
-                transform.localPosition = PositionOffset;
-                transform.localEulerAngles = RotationOffset;
-
-                if (SetScaleOnAttach)
+                if (SetChildrenInactiveWhenDetached)
                 {
-                    transform.localScale = ScaleOffset;
+                    gameObject.SetChildrenActive(true);
                 }
-
-                // Announce that we're attached
-                OnAttachToController();
-
-                IsAttached = true;
             }
-#endif
         }
 
-        protected override void RemoveControllerTransform(MotionControllerInfo oldController)
+        public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-#if UNITY_WSA
-            if (IsAttached && oldController.Handedness == Handedness)
+            if (eventData.Controller.GetType() == controllerType.Type && eventData.Controller.ControllerHandedness == Handedness)
             {
-                base.RemoveControllerTransform(oldController);
+                ControllerInputSourceId = 0;
 
-                OnDetachFromController();
-
-                transform.parent = null;
-
-                SetChildrenActive(false);
-
-                IsAttached = false;
+                if (SetChildrenInactiveWhenDetached)
+                {
+                    gameObject.SetChildrenActive(false);
+                }
             }
-#endif
         }
 
-        private void SetChildrenActive(bool isActive)
+        public virtual void OnSourcePoseChanged(SourcePoseEventData eventData)
         {
+            if (eventData.Controller.InputSource.SourceId != ControllerInputSourceId) { return; }
+
+            if (eventData.TrackingState != LastTrackingState)
+            {
+                IsTracked = eventData.TrackingState == TrackingState.Tracked;
+                LastTrackingState = eventData.TrackingState;
+            }
+        }
+
+        #endregion IMixedRealitySourcePoseHandler Implementation
+
+        protected virtual void OnEnable()
+        {
+            // Subscribe to interaction events
+            InputSystem.Register(gameObject);
+
             if (SetChildrenInactiveWhenDetached)
             {
-                foreach (Transform child in transform)
-                {
-                    child.gameObject.SetActive(isActive);
-                }
+                gameObject.SetChildrenActive(false);
             }
+        }
+
+        protected virtual void OnDisable()
+        {
+            // Unsubscribe from interaction events
+            InputSystem.Unregister(gameObject);
         }
     }
 }

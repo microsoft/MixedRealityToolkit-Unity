@@ -7,19 +7,19 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 {
     /// <summary>
-    /// ControllerFinder is a base class providing simple event handling for getting/releasing MotionController Transforms
+    /// ControllerFinder is a base class providing simple event handling for getting/releasing controller transforms.
     /// </summary>
     public abstract class ControllerFinder : MotionControllerVisualizer
     {
-        public MotionControllerInfo.ControllerElementEnum Element
+        public WindowsMixedRealityControllerInfo.ControllerElementEnum Element
         {
             get { return element; }
             set { element = value; }
         }
 
-        [Header("Controller Finder")]
         [SerializeField]
-        private MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
+        [Header("Controller Finder")]
+        private WindowsMixedRealityControllerInfo.ControllerElementEnum element = WindowsMixedRealityControllerInfo.ControllerElementEnum.PointingPose;
 
         public Handedness Handedness
         {
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         public Transform ElementTransform { get; private set; }
 
-        protected MotionControllerInfo ControllerInfo;
+        protected WindowsMixedRealityControllerInfo ControllerInfo;
 
         #region Monobehaviour Implementation
 
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         #endregion Monobehaviour Implementation
 
-        protected virtual void AddControllerTransform(MotionControllerInfo newController)
+        protected virtual void AddControllerTransform(WindowsMixedRealityControllerInfo newController)
         {
 #if UNITY_WSA
             if (newController.Handedness == handedness)
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 #endif
         }
 
-        protected virtual void RemoveControllerTransform(MotionControllerInfo oldController)
+        protected virtual void RemoveControllerTransform(WindowsMixedRealityControllerInfo oldController)
         {
 #if UNITY_WSA
             if (oldController.Handedness == handedness)

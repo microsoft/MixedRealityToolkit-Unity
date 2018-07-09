@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty controllersProfile;
         // Boundary system properties
         private SerializedProperty enableBoundarySystem;
+        private SerializedProperty boundarySystemType;
         private SerializedProperty boundaryExperienceScale;
         private SerializedProperty boundaryHeight;
         private SerializedProperty enablePlatformBoundaryRendering;
@@ -77,6 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             enableControllerProfiles = serializedObject.FindProperty("enableControllerProfiles");
             controllersProfile = serializedObject.FindProperty("controllersProfile");
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
+            boundarySystemType = serializedObject.FindProperty("boundarySystemType");
             boundaryExperienceScale = serializedObject.FindProperty("boundaryExperienceScale");
             boundaryHeight = serializedObject.FindProperty("boundaryHeight");
             enablePlatformBoundaryRendering = serializedObject.FindProperty("enablePlatformBoundaryRendering");
@@ -133,6 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             if (enableBoundarySystem.boolValue)
             {
+                EditorGUILayout.PropertyField(boundarySystemType);
                 EditorGUILayout.PropertyField(boundaryExperienceScale, new GUIContent("Experience Scale:"));
                 if ((ExperienceScale)boundaryExperienceScale.intValue == ExperienceScale.Room)
                 {

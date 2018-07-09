@@ -12,6 +12,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
     /// </summary>
     public static class GameObjectExtensions
     {
+        public static void SetChildrenActive(this GameObject root, bool isActive)
+        {
+            for (int i = 0; i < root.transform.childCount; i++)
+            {
+                root.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+
         /// <summary>
         /// Set the layer to the given object and the full hierarchy below it.
         /// </summary>
@@ -69,21 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         }
 
         /// <summary>
-        /// Gets the GameObject's root Parent object.
-        /// </summary>
-        /// <param name="child">The GameObject we're trying to find the root parent for.</param>
-        /// <returns>The Root parent GameObject.</returns>
-        public static GameObject GetParentRoot(this GameObject child)
-        {
-            if (child.transform.parent == null)
-            {
-                return child;
-            }
-
-            return GetParentRoot(child.transform.parent.gameObject);
-        }
-
-        /// <summary>
         /// Determines whether or not a game object's layer is included in the specified layer mask.
         /// </summary>
         /// <param name="gameObject">The game object whose layer to test.</param>
@@ -103,9 +96,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         public static void ApplyToHierarchy(this GameObject root, Action<GameObject> action)
         {
             action(root);
-            foreach (var item in root.GetComponentsInChildren<Transform>())
+            Transform[] items = root.GetComponentsInChildren<Transform>();
+
+            for (var i = 0; i < items.Length; i++)
             {
-                action(item.gameObject);
+                action(items[i].gameObject);
             }
         }
 

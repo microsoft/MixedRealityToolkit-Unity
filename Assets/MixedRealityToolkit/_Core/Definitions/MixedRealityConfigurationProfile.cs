@@ -180,8 +180,27 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool EnableBoundarySystem
         {
-            get { return enableBoundarySystem; }
-            private set { enableBoundarySystem = value; }
+            get
+            {
+                return boundarySystemType != null &&
+                       boundarySystemType?.Type != null &&
+                       enableBoundarySystem;
+            }
+            private set { enableInputSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Boundary System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealityBoundarySystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType boundarySystemType;
+
+        /// <summary>
+        /// Boundary System Script File to instantiate at runtime.
+        /// </summary>
+        public SystemType BoundarySystemSystemType
+        {
+            get { return boundarySystemType; }
+            private set { boundarySystemType = value; }
         }
 
         [SerializeField]
