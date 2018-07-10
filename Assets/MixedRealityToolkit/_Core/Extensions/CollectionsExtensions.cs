@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <param name="key">The specific DeviceInputType value to query</param>
         public static MixedRealityInteractionMapping GetInteractionByType(this MixedRealityInteractionMapping[] input, DeviceInputType key)
         {
-            for (int i = 0; i < input.Length; i++)
+            for (int i = 0; i < input?.Length; i++)
             {
                 if (input[i].InputType == key)
                 {

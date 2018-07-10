@@ -76,3 +76,189 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+  - id: 3
+    description: OpenVR Controller Left
+    controller:
+      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.GenericOpenVRController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 1
+    defaultModel: 0
+    overrideModel: {fileID: 0}
+    interactions:
+    - id: 0
+      axisType: 2
+      inputType: 28
+      inputAction:
+        id: 0
+        description: 
+        axisConstraint: 0
+    - id: 0
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 30
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 17
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 3
+      inputType: 17
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 4
+      inputType: 24
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 27
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 4
+      inputType: 20
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 21
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+  - id: 4
+    description: OpenVR Controller Right
+    controller:
+      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.GenericOpenVRController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 2
+    defaultModel: 0
+    overrideModel: {fileID: 0}
+    interactions:
+    - id: 0
+      axisType: 2
+      inputType: 28
+      inputAction:
+        id: 0
+        description: 
+        axisConstraint: 0
+    - id: 0
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 30
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 17
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 3
+      inputType: 17
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 4
+      inputType: 24
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 27
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 4
+      inputType: 20
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 0
+      axisType: 2
+      inputType: 21
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0

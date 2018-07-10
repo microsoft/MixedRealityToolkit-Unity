@@ -65,5 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         MiddleFinger,
         RingFinger,
         PinkyFinger,
+        SecondaryButton,
     }
 }
