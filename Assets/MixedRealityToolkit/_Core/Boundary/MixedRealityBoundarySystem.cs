@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         public MixedRealityBoundaryManager()
         {
-            Scale = MixedRealityManager.Instance.ActiveProfile.BoundaryExperienceScale;
+            Scale = MixedRealityManager.Instance.ActiveProfile.TargetExperienceScale;
             BoundaryHeight = MixedRealityManager.Instance.ActiveProfile.BoundaryHeight;
             EnablePlatformBoundaryRendering = MixedRealityManager.Instance.ActiveProfile.EnablePlatformBoundaryRendering;
         }

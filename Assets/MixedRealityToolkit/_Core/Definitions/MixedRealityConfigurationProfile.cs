@@ -44,6 +44,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         #region Mixed Reality Manager configurable properties
 
         [SerializeField]
+        [Tooltip("The scale of the Mixed Reality experience.")]
+        private ExperienceScale targetExperienceScale = ExperienceScale.Room;
+
+        /// <summary>
+        /// The desired the scale of the experience.
+        /// </summary>
+        public ExperienceScale TargetExperienceScale
+        {
+            get { return targetExperienceScale; }
+            set { targetExperienceScale = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Enable the Camera Profile on Startup")]
         private bool enableCameraProfile = false;
 
@@ -84,8 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get
             {
-                return inputSystemType?.Type != null &&
-                       inputActionsProfile != null &&
+                return inputActionsProfile != null &&
                        enableInputSystem;
             }
             private set { enableInputSystem = value; }
@@ -199,19 +211,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get { return boundarySystemType; }
             private set { boundarySystemType = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("The scale of the Mixed Reality experience.")]
-        private ExperienceScale boundaryExperienceScale = ExperienceScale.Room;
-
-        /// <summary>
-        /// Configure the scale of the experience.
-        /// </summary>
-        public ExperienceScale BoundaryExperienceScale
-        {
-            get { return boundaryExperienceScale; }
-            set { boundaryExperienceScale = value; }
         }
 
         [SerializeField]

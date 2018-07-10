@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
     public interface IMixedRealityBoundarySystem : IMixedRealityManager
     {
         /// <summary>
-        /// The scale (ex: World Scale) for which the experience was designed.
+        /// The scale (ex: World Scale) of the experience.
         /// </summary>
         ExperienceScale Scale { get; set; }
 
