@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions.EditorClassExtensions;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEditor;
@@ -14,8 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     {
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
 
+        // Experience properties
+        private SerializedProperty targetExperienceScale;
+        // Camera properties
         private SerializedProperty enableCameraProfile;
         private SerializedProperty cameraProfile;
+        // Input system properties
         private SerializedProperty enableInputSystem;
         private SerializedProperty inputSystemType;
         private SerializedProperty inputActionsProfile;
@@ -23,7 +28,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty speechCommandsProfile;
         private SerializedProperty enableControllerProfiles;
         private SerializedProperty controllersProfile;
+        // Boundary system properties
         private SerializedProperty enableBoundarySystem;
+        private SerializedProperty boundarySystemType;
+        private SerializedProperty boundaryHeight;
+        private SerializedProperty enablePlatformBoundaryRendering;
+
+        private SerializedProperty testThis;
 
         private MixedRealityConfigurationProfile configurationProfile;
 
@@ -58,8 +69,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
 
             configurationProfile = target as MixedRealityConfigurationProfile;
+            // Experience configuration
+            targetExperienceScale = serializedObject.FindProperty("targetExperienceScale");
+            // Camera configuration
             enableCameraProfile = serializedObject.FindProperty("enableCameraProfile");
             cameraProfile = serializedObject.FindProperty("cameraProfile");
+            // Input system configuration
             enableInputSystem = serializedObject.FindProperty("enableInputSystem");
             inputSystemType = serializedObject.FindProperty("inputSystemType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
@@ -67,7 +82,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
             enableControllerProfiles = serializedObject.FindProperty("enableControllerProfiles");
             controllersProfile = serializedObject.FindProperty("controllersProfile");
+            // Boundary system configuration
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
+            boundarySystemType = serializedObject.FindProperty("boundarySystemType");
+            boundaryHeight = serializedObject.FindProperty("boundaryHeight");
+            enablePlatformBoundaryRendering = serializedObject.FindProperty("enablePlatformBoundaryRendering");
         }
 
         public override void OnInspectorGUI()
@@ -79,7 +98,42 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUIUtility.labelWidth = 160f;
             EditorGUI.BeginChangeCheck();
 
-            // Camera Profile Configuration
+            // Experience configuration
+            EditorGUILayout.LabelField("Experience Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(targetExperienceScale, new GUIContent("Target Scale:"));
+            ExperienceScale scale = (ExperienceScale)targetExperienceScale.intValue;
+            string scaleDesciription = string.Empty;
+            switch (scale)
+            {
+                case ExperienceScale.OrientationOnly:
+                    scaleDesciription = "The user is stationary. Position data does not change.";
+                    break;
+
+                case ExperienceScale.Seated:
+                    scaleDesciription = "The user is stationary and seated. The origin of the world is at a neutral head-level position.";
+                    break;
+
+                case ExperienceScale.Standing:
+                    scaleDesciription = "The user is stationary and standing. The origin of the world is on the floor, facing forward.";
+                    break;
+
+                case ExperienceScale.Room:
+                    scaleDesciription = "The user is free to move about the room. The origin of the world is on the floor, facing forward. Boundaries are available.";
+                    break;
+
+                case ExperienceScale.World:
+                    scaleDesciription = "The user is free to move about the world. Relies upon knowledge of the environment (Spatial Anchors and Spatial Mapping).";
+                    break;
+            }
+            if (scaleDesciription != string.Empty)
+            {
+                GUILayout.Space(6f);
+                EditorGUILayout.LabelField("Description:", EditorStyles.label);
+                EditorGUILayout.LabelField(scaleDesciription, EditorStyles.wordWrappedLabel);
+            }
+
+            // Camera Profile configuration
+            GUILayout.Space(12f);
             EditorGUILayout.LabelField("Camera Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableCameraProfile);
 
@@ -88,7 +142,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 RenderProfile(cameraProfile);
             }
 
-            //Input System configuration
+            // Input System configuration
+            GUILayout.Space(12f);
             EditorGUILayout.LabelField("Input Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableInputSystem);
 
@@ -104,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 }
             }
 
-            //Controller mapping configuration
+            // Controller mapping configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Controller Mapping Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableControllerProfiles);
@@ -114,10 +169,27 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 RenderProfile(controllersProfile);
             }
 
-            //Boundary System configuration
+            // Boundary System configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Boundary Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableBoundarySystem);
+
+            if (enableBoundarySystem.boolValue)
+            {
+                EditorGUILayout.PropertyField(boundarySystemType);
+                // Boundary settings depend on the experience scale
+
+                if (scale == ExperienceScale.Room)
+                {
+                    EditorGUILayout.PropertyField(boundaryHeight, new GUIContent("Boundary Height (in m):"));
+                    EditorGUILayout.PropertyField(enablePlatformBoundaryRendering, new GUIContent("Platform Rendering:"));
+                }
+                else
+                {
+                    GUILayout.Space(6f);
+                    EditorGUILayout.LabelField("Boundaries are only supported in Room scale experiences.", EditorStyles.label);
+                }
+            }
 
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
