@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
         [SerializeField]
         [Range(0.0f, 1.0f)]
         private float radius = 0.15f;
+
         [SerializeField]
         private Color color = new Color(0.3f, 0.3f, 0.3f, 1.0f);
 
