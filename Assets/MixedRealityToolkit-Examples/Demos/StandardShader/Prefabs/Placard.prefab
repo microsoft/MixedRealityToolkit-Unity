@@ -116,6 +116,7 @@ MeshRenderer:
   m_MotionVectors: 2
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 19ca841be26cfb14a957c4a9408173bf, type: 2}
   m_StaticBatchInfo:
@@ -150,6 +151,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: b04a209f2bc50bb4ca31f7470ada2198, type: 2}
   m_StaticBatchInfo:
@@ -197,9 +199,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1937578906433374}
-  m_Text: 'Fluent
-
-    Unlit'
+  m_Text: Text
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
