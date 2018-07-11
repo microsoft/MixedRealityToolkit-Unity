@@ -111,6 +111,6 @@ namespace HoloToolkit.Unity.Boundary.Tests
                 }
             }
         }
-    }
 #endif
+    }
 }

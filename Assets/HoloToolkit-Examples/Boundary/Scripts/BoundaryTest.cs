@@ -48,6 +48,6 @@ namespace HoloToolkit.Unity.Boundary.Tests
                 Destroy(defaultMaterials[i]);
             }
         }
-    }
 #endif
+    }
 }

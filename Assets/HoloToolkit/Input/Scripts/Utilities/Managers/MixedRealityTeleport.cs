@@ -303,7 +303,11 @@ namespace HoloToolkit.Unity.InputModule
             var newPosition = worldPosition - (CameraCache.Main.transform.position - transform.position);
 
             // If we're Stationary, we'll need to raycast to estimate our height. In RoomScale, that will be accounted for by the offset between the camera and its parent.
+#if UNITY_2017_2_OR_NEWER
             if (XRDevice.GetTrackingSpaceType() == TrackingSpaceType.Stationary && !StayOnTheFloor)
+#else
+            if (VRDevice.GetTrackingSpaceType() == TrackingSpaceType.Stationary && !StayOnTheFloor)
+#endif
             {
                 RaycastHit hitInfo;
                 newPosition.y += (Physics.Raycast(CameraCache.Main.transform.position, Vector3.down, out hitInfo, 5.0f) ? hitInfo.distance : 1.7f);
