@@ -1,17 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 #if UNITY_WSA
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using System;
 using UnityEngine.XR.WSA.Input;
-#endif
+using UnityEngine;
+#endif // UNITY_WSA
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
@@ -29,9 +29,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         private readonly Dictionary<uint, IMixedRealityController> activeControllers = new Dictionary<uint, IMixedRealityController>();
 
+        /// <inheritdoc/>
+        public override IMixedRealityController[] GetActiveControllers()
+        {
+            return activeControllers.Values.ToArray();
+        }
+
 #if UNITY_WSA
 
-        #region IMixedRealityDeviceManager Interface
+#region IMixedRealityDeviceManager Interface
 
         /// <inheritdoc/>
         public override void Enable()
@@ -42,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
             InteractionManager.InteractionSourceLost += InteractionManager_InteractionSourceLost;
 
-            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
+            UnityEngine.XR.WSA.Input.InteractionSourceState[] states = InteractionManager.GetCurrentReading();
 
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
             for (var i = 0; i < states.Length; i++)
@@ -60,29 +66,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             InteractionManager.InteractionSourceReleased -= InteractionManager_InteractionSourceReleased;
             InteractionManager.InteractionSourceLost -= InteractionManager_InteractionSourceLost;
 
-            InteractionSourceState[] states = InteractionManager.GetCurrentReading();
+            UnityEngine.XR.WSA.Input.InteractionSourceState[] states = InteractionManager.GetCurrentReading();
             for (var i = 0; i < states.Length; i++)
             {
                 RemoveController(states[i]);
             }
         }
 
-        /// <inheritdoc/>
-        public override IMixedRealityController[] GetActiveControllers()
-        {
-            return activeControllers.Values.ToArray();
-        }
+#endregion IMixedRealityDeviceManager Interface
 
-        #endregion IMixedRealityDeviceManager Interface
-
-        #region Controller Utilities
+#region Controller Utilities
 
         /// <summary>
         /// Retrieve the source controller from the Active Store, or create a new device and register it
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK</param>
         /// <returns>New or Existing Controller Input Source</returns>
-        private WindowsMixedRealityController GetOrAddController(InteractionSourceState interactionSourceState, bool updateControllerData = true)
+        private WindowsMixedRealityController GetOrAddController(UnityEngine.XR.WSA.Input.InteractionSourceState interactionSourceState, bool updateControllerData = true)
         {
             //If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(interactionSourceState.source.id))
@@ -127,16 +127,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// Remove the selected controller from the Active Store
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
-        private void RemoveController(InteractionSourceState interactionSourceState)
+        private void RemoveController(UnityEngine.XR.WSA.Input.InteractionSourceState interactionSourceState)
         {
             var controller = GetOrAddController(interactionSourceState, false);
             InputSystem?.RaiseSourceLost(controller?.InputSource, controller);
             activeControllers.Remove(interactionSourceState.source.id);
         }
 
-        #endregion Controller Utilities
+#endregion Controller Utilities
 
-        #region Unity InteractionManager Events
+#region Unity InteractionManager Events
 
         /// <summary>
         /// SDK Interaction Source Detected Event handler
@@ -184,8 +184,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             RemoveController(args.state);
         }
 
-        #endregion Unity InteractionManager Events
+#endregion Unity InteractionManager Events
 
 #endif // UNITY_WSA
+
     }
 }
