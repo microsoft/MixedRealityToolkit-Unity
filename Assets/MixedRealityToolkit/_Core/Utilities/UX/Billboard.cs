@@ -13,32 +13,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
         /// <summary>
         /// The axis about which the object will rotate.
         /// </summary>
+        public PivotAxis PivotAxis => pivotAxis;
+
         [Tooltip("Specifies the axis about which the object will rotate.")]
         [SerializeField]
         private PivotAxis pivotAxis = PivotAxis.XY;
-        public PivotAxis PivotAxis
-        {
-            get { return pivotAxis; }
-            set { pivotAxis = value; }
-        }
 
         /// <summary>
         /// The target we will orient to. If no target is specified, the main camera will be used.
         /// </summary>
+        public Transform TargetTransform => targetTransform;
+
         [Tooltip("Specifies the target we will orient to. If no target is specified, the main camera will be used.")]
         [SerializeField]
         private Transform targetTransform;
-        public Transform TargetTransform
-        {
-            get { return targetTransform; }
-            set { targetTransform = value; }
-        }
 
         private void OnEnable()
         {
-            if (TargetTransform == null)
+            if (targetTransform == null)
             {
-                TargetTransform = CameraCache.Main.transform;
+                targetTransform = CameraCache.Main.transform;
             }
 
             Update();
@@ -49,17 +43,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
         /// </summary>
         private void Update()
         {
-            if (TargetTransform == null)
+            if (targetTransform == null)
             {
                 return;
             }
 
             // Get a Vector that points from the target to the main camera.
-            Vector3 directionToTarget = TargetTransform.position - transform.position;
+            Vector3 directionToTarget = targetTransform.position - transform.position;
             Vector3 targetUpVector = CameraCache.Main.transform.up;
 
             // Adjust for the pivot axis.
-            switch (PivotAxis)
+            switch (pivotAxis)
             {
                 case PivotAxis.X:
                     directionToTarget.x = 0.0f;

@@ -22,10 +22,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
         private int lastHoverLightUpdate = -1;
 
         /// <summary>
-        /// Specifies the Radius of the hoverlight effect
+        /// Specifies the Radius of the Hoverlight effect
         /// </summary>
         public float Radius => radius;
 
+        [Tooltip("Specifies the radius of the Hoverlight effect")]
         [SerializeField]
         [Range(0.0f, 1.0f)]
         private float radius = 0.15f;
@@ -35,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
         /// </summary>
         public Color Color => color;
 
+        [Tooltip("Specifies the highlight color")]
         [SerializeField]
         private Color color = new Color(0.3f, 0.3f, 0.3f, 1.0f);
 
