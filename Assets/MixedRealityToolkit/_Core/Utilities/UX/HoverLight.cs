@@ -13,13 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
     [ExecuteInEditMode]
     public class HoverLight : MonoBehaviour
     {
-        [SerializeField]
-        [Range(0.0f, 1.0f)]
-        private float radius = 0.15f;
-
-        [SerializeField]
-        private Color color = new Color(0.3f, 0.3f, 0.3f, 1.0f);
-
         // Three hover lights are supported at this time.
         private const int hoverLightCount = 3;
         private const int hoverLightDataSize = 2;
@@ -28,31 +21,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
         private int _HoverLightDataID;
         private int lastHoverLightUpdate = -1;
 
-        public float Radius
-        {
-            get
-            {
-                return radius;
-            }
+        /// <summary>
+        /// Specifies the Radius of the hoverlight effect
+        /// </summary>
+        public float Radius => radius;
 
-            set
-            {
-                radius = value;
-            }
-        }
+        [SerializeField]
+        [Range(0.0f, 1.0f)]
+        private float radius = 0.15f;
 
-        public Color Color
-        {
-            get
-            {
-                return color;
-            }
+        /// <summary>
+        /// Specifies the highlight color
+        /// </summary>
+        public Color Color => color;
 
-            set
-            {
-                color = value;
-            }
-        }
+        [SerializeField]
+        private Color color = new Color(0.3f, 0.3f, 0.3f, 1.0f);
 
         private void OnEnable()
         {
