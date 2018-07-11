@@ -33,7 +33,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
             IsPositionAvailable = false;
             IsPositionApproximate = false;
             IsRotationAvailable = false;
+
+            Enabled = true;
         }
+
+        public bool Enabled { get; set; }
 
         /// <summary>
         /// Returns the current Input System if enabled, otherwise null.
@@ -91,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                 }
 
                 //If no controller mappings found, warn the user.  Does not stop the project from running.
-                if (Interactions == null || Interactions.Length < 1) { Debug.LogWarning($"No Controller mapping found for {controllerType}"); }
+                if (Interactions == null || Interactions.Length < 1) { Debug.LogWarning($"No Controller mapping found for {controllerType}"); Enabled = false; }
             }
         }
 

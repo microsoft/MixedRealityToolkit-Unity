@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.Cursors;
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
@@ -26,11 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         [Tooltip("Optional Cursor Prefab to use if you don't wish to reference a cursor in the scene.")]
         private GameObject cursorPrefab = null;
 
-        /// <summary>
-        /// Maximum distance at which the gaze can collide with an object.
-        /// </summary>
         [SerializeField]
-        [Tooltip("Maximum distance at which the gaze can collide with an object.")]
+        [Tooltip("Maximum distance at which the gaze can hit a GameObject.")]
         private float maxGazeCollisionDistance = 10.0f;
 
         /// <summary>
@@ -54,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
         /// </summary>
         [SerializeField]
         [Tooltip("Stabilizer, if any, used to smooth out the gaze ray data.")]
-        private BaseRayStabilizer stabilizer = null;
+        private GazeStabilizer stabilizer = null;
 
         /// <summary>
         /// Transform that should be used as the source of the gaze position and rotation.
@@ -160,25 +156,18 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
             public override void OnPreRaycast()
             {
-                if (gazeTransform == null)
-                {
-                    Rays[0] = default(RayStep);
-                }
-                else
-                {
-                    Vector3 newGazeOrigin = gazeTransform.position;
-                    Vector3 newGazeNormal = gazeTransform.forward;
+                Vector3 newGazeOrigin = gazeTransform.position;
+                Vector3 newGazeNormal = gazeTransform.forward;
 
-                    // Update gaze info from stabilizer
-                    if (stabilizer != null)
-                    {
-                        stabilizer.UpdateStability(newGazeOrigin, gazeTransform.rotation);
-                        newGazeOrigin = stabilizer.StablePosition;
-                        newGazeNormal = stabilizer.StableRay.direction;
-                    }
-
-                    Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent)));
+                // Update gaze info from stabilizer
+                if (stabilizer != null)
+                {
+                    stabilizer.UpdateStability(newGazeOrigin, gazeTransform.rotation);
+                    newGazeOrigin = stabilizer.StablePosition;
+                    newGazeNormal = stabilizer.StableRay.direction;
                 }
+
+                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent)));
 
                 gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
             }
@@ -221,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private void OnValidate()
         {
-            Debug.Assert(minHeadVelocityThreshold < maxHeadVelocityThreshold, "Maximum head velocity threshold should be less than the minimum velocity threshold.");
+            Debug.Assert(minHeadVelocityThreshold < maxHeadVelocityThreshold, "Minimum head velocity threshold should be less than the maximum velocity threshold.");
         }
 
         protected virtual void OnEnable()
@@ -246,8 +235,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
                 GazePointer.BaseCursor.Pointer = GazePointer;
             }
 
-            FindGazeTransform();
-
             if (delayInitialization)
             {
                 delayInitialization = false;
@@ -257,12 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private void Update()
         {
-            if (!FindGazeTransform())
-            {
-                return;
-            }
-
-            if (debugDrawRay)
+            if (debugDrawRay && gazeTransform != null)
             {
                 Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
             }
@@ -299,7 +281,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
             HeadMovementDirection = Vector3.Slerp(HeadMovementDirection, newHeadMoveDirection, directionAdjustmentRate);
 
-            if (debugDrawRay)
+            if (debugDrawRay && gazeTransform != null)
             {
                 Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadMovementDirection * 10f, Color.Lerp(Color.red, Color.green, multiplier));
                 Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadVelocity, Color.yellow);
@@ -327,6 +309,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
 
         private IMixedRealityPointer InitializeGazePointer()
         {
+            if (gazeTransform == null)
+            {
+                gazeTransform = CameraCache.Main.transform;
+            }
+
+            Debug.Assert(gazeTransform != null, "No gaze transform to raycast from!");
             return gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
         }
 
@@ -335,20 +323,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Gaze
             InputSystem.FocusProvider.RegisterPointer(GazePointer);
             GazePointer.BaseCursor?.SetVisibility(true);
             InputSystem.RaiseSourceDetected(GazeInputSource);
-        }
-
-        private bool FindGazeTransform()
-        {
-            if (gazeTransform != null) { return true; }
-
-            if (CameraCache.Main != null)
-            {
-                gazeTransform = CameraCache.Main.transform;
-                return true;
-            }
-
-            Debug.LogError("Gaze Manager was not given a GazeTransform and no main camera exists to default to!");
-            return false;
         }
 
         #endregion Utilities

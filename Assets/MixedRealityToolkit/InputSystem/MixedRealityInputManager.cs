@@ -289,6 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
         /// <summary>
         /// Register a <see cref="GameObject"/> to listen to events that will receive all input events, regardless
         /// of which other <see cref="GameObject"/>s might have handled the event beforehand.
+        /// <remarks>Useful for listening to events when the <see cref="GameObject"/> is currently not being raycasted against by the <see cref="FocusProvider"/>.</remarks>
         /// </summary>
         /// <param name="listener">Listener to add.</param>
         public override void Register(GameObject listener)

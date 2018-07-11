@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41718b8e5d86c37409b7ce6847fa00a3, type: 3}
   m_Name: DefaultMixedRealityConfigurationProfile
   m_EditorClassIdentifier: 
+  targetExperienceScale: 3
   enableCameraProfile: 1
   cameraProfile: {fileID: 11400000, guid: b9a895b32a50a7f45b1e4da728d50741, type: 2}
   enableInputSystem: 1
@@ -25,3 +26,8 @@ MonoBehaviour:
   enableControllerProfiles: 1
   controllersProfile: {fileID: 11400000, guid: 4319257468937c74ebb69e41792d60c5, type: 2}
   enableBoundarySystem: 1
+  boundarySystemType:
+    reference: Microsoft.MixedReality.Toolkit.Internal.Managers.MixedRealityBoundaryManager,
+      Microsoft.MixedReality.Toolkit
+  boundaryHeight: 3
+  enablePlatformBoundaryRendering: 1

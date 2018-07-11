@@ -44,6 +44,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         #region Mixed Reality Manager configurable properties
 
         [SerializeField]
+        [Tooltip("The scale of the Mixed Reality experience.")]
+        private ExperienceScale targetExperienceScale = ExperienceScale.Room;
+
+        /// <summary>
+        /// The desired the scale of the experience.
+        /// </summary>
+        public ExperienceScale TargetExperienceScale
+        {
+            get { return targetExperienceScale; }
+            set { targetExperienceScale = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Enable the Camera Profile on Startup")]
         private bool enableCameraProfile = false;
 
@@ -84,9 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get
             {
-                return inputSystemType != null &&
-                       inputSystemType?.Type != null &&
-                       inputActionsProfile != null &&
+                return inputActionsProfile != null &&
                        enableInputSystem;
             }
             private set { enableInputSystem = value; }
@@ -176,12 +187,62 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         private bool enableBoundarySystem = false;
 
         /// <summary>
-        /// Enable and configure the Boundary component on the Mixed Reality Camera
+        /// Enable and configure the boundary system.
         /// </summary>
         public bool EnableBoundarySystem
         {
-            get { return enableBoundarySystem; }
-            private set { enableBoundarySystem = value; }
+            get
+            {
+                return boundarySystemType?.Type != null &&
+                       enableBoundarySystem;
+            }
+            private set { enableInputSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Boundary System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealityBoundarySystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType boundarySystemType;
+
+        /// <summary>
+        /// Boundary System Script File to instantiate at runtime.
+        /// </summary>
+        public SystemType BoundarySystemSystemType
+        {
+            get { return boundarySystemType; }
+            private set { boundarySystemType = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("The approximate height of the playspace, in meters.")]
+        private float boundaryHeight = 3.0f;
+
+        /// <summary>
+        /// The approximate height of the playspace, in meters.
+        /// </summary>
+        /// <remarks>
+        /// The BoundaryHeight property is used to create a three dimensional volume for the playspace.
+        /// </remarks>
+        public float BoundaryHeight
+        {
+            get { return boundaryHeight; }
+            set { boundaryHeight = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Instruct the platform whether or not to render the playspace boundary. Note: not all platforms support configuring this option.")]
+        private bool enablePlatformBoundaryRendering = true;
+
+        /// <summary>
+        /// Instruct the platform whether or not to render the playspace boundary.
+        /// </summary>
+        /// <remarks>
+        /// Not all platforms support the EnablePlatformBoundaryRendering property.
+        /// </remarks>
+        public bool EnablePlatformBoundaryRendering
+        {
+            get { return enablePlatformBoundaryRendering; }
+            set { enablePlatformBoundaryRendering = value; }
         }
 
         #endregion Mixed Reality Manager configurable properties
