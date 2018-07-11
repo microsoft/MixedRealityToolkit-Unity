@@ -16,10 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
         // Three hover lights are supported at this time.
         private const int hoverLightCount = 3;
         private const int hoverLightDataSize = 2;
-        private List<HoverLight> activeHoverLights = new List<HoverLight>(hoverLightCount);
-        private Vector4[] hoverLightData = new Vector4[hoverLightCount * hoverLightDataSize];
-        private int _HoverLightDataID;
-        private int lastHoverLightUpdate = -1;
+        private static List<HoverLight> activeHoverLights = new List<HoverLight>(hoverLightCount);
+        private static Vector4[] hoverLightData = new Vector4[hoverLightCount * hoverLightDataSize];
+        private static int _HoverLightDataID;
+        private static int lastHoverLightUpdate = -1;
 
         /// <summary>
         /// Specifies the Radius of the Hoverlight effect
