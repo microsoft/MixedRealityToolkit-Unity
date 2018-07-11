@@ -23,10 +23,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
         // Three hover lights are supported at this time.
         private const int hoverLightCount = 3;
         private const int hoverLightDataSize = 2;
-        private static List<HoverLight> activeHoverLights = new List<HoverLight>(hoverLightCount);
-        private static Vector4[] hoverLightData = new Vector4[hoverLightCount * hoverLightDataSize];
-        private static int _HoverLightDataID;
-        private static int lastHoverLightUpdate = -1;
+        private List<HoverLight> activeHoverLights = new List<HoverLight>(hoverLightCount);
+        private Vector4[] hoverLightData = new Vector4[hoverLightCount * hoverLightDataSize];
+        private int _HoverLightDataID;
+        private int lastHoverLightUpdate = -1;
 
         public float Radius
         {
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
             Initialize();
             UpdateHoverLights();
         }
-#endif
+#endif // UNITY_EDITOR
 
         private void LateUpdate()
         {
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
             Gizmos.DrawIcon(transform.position + Vector3.back * Radius, string.Empty, false);
         }
 
-        private static void AddHoverLight(HoverLight light)
+        private void AddHoverLight(HoverLight light)
         {
             if (activeHoverLights.Count >= hoverLightCount)
             {
@@ -110,17 +110,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
             activeHoverLights.Add(light);
         }
 
-        private static void RemoveHoverLight(HoverLight light)
+        private void RemoveHoverLight(HoverLight light)
         {
             activeHoverLights.Remove(light);
         }
 
-        private static void Initialize()
+        private void Initialize()
         {
             _HoverLightDataID = Shader.PropertyToID("_HoverLightData");
         }
 
-        private static void UpdateHoverLights(bool forceUpdate = false)
+        private void UpdateHoverLights(bool forceUpdate = false)
         {
             if (lastHoverLightUpdate == -1)
             {
@@ -169,18 +169,4 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
             lastHoverLightUpdate = Time.frameCount;
         }
     }
-
-#if UNITY_EDITOR
-    [UnityEditor.CustomEditor(typeof(HoverLight))]
-    public class HoverLightEditor : UnityEditor.Editor
-    {
-        private bool HasFrameBounds() { return true; }
-
-        private Bounds OnGetFrameBounds()
-        {
-            HoverLight light = target as HoverLight;
-            return new Bounds(light.transform.position, Vector3.one * light.Radius);
-        }
-    }
-#endif
 }
