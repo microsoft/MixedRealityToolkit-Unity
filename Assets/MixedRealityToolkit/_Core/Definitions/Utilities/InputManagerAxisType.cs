@@ -11,5 +11,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         KeyOrMouseButton = 0,
         MouseMovement,
         JoystickAxis
-    };
+    }
 }

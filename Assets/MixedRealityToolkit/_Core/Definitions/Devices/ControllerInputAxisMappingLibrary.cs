@@ -6,9 +6,14 @@ using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
+    /// <summary>
+    /// Helper utility to manage all the required Axis configuration for platforms, where required
+    /// </summary>
     public static class ControllerInputAxisMappingLibrary
     {
         #region Controller axis mapping configuration
+
+        //Axis and Input mapping configuration for each controller type.  Centralized here... Because Unity..
 
         #region OpenVR
 
@@ -162,6 +167,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         #region Controller axis library
 
+        /// <summary>
+        /// Collection of the above Controller mapping configuration, used to load the Unity Input Manager axis mappings.
+        /// </summary>
         private static Dictionary<string, InputManagerAxis[]> InputManagerAxis = new Dictionary<string, InputManagerAxis[]>()
         {
             { typeof(Internal.Devices.OpenVR.GenericOpenVRController).FullName, OpenVRControllerAxisMappings },
@@ -170,6 +178,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             { typeof(Internal.Devices.OpenVR.ValveKnucklesController).FullName, ValveKnucklesControllerAxisMappings },
         };
 
+        /// <summary>
+        /// Collection of the above Controller axis mapping strings, used by controllers to query the correct axis name
+        /// </summary>
         private static Dictionary<string, string[]> InputManagerMappings = new Dictionary<string, string[]>()
         {
             { typeof(Internal.Devices.OpenVR.GenericOpenVRController).FullName, OpenVRInputMappings },
@@ -180,11 +191,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         #endregion Controller axis library
 
+        /// <summary>
+        /// Get the InputManagerAxis data needed to configure the Input Mappings for a controller
+        /// </summary>
+        /// <param name="type">The type of controller to retrieve configuration for</param>
+        /// <returns></returns>
         public static InputManagerAxis[] GetInputManagerAxes(string type)
         {
             return InputManagerAxis.ContainsKey(type) ? InputManagerAxis[type] :  default(InputManagerAxis[]);
         }
 
+        /// <summary>
+        /// Get the Input Manager string Mappings for a specific controller type
+        /// </summary>
+        /// <param name="type">The type of controller to retrieve configuration for</param>
+        /// <returns></returns>
         public static string[] GetInputManagerMappings(string type)
         {
             return InputManagerMappings.ContainsKey(type) ? InputManagerMappings[type] : default(string[]);
