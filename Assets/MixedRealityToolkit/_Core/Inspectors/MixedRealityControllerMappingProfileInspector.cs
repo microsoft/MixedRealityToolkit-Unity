@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 //Inspect the SerializedProperty - Because Unity does not support a "Value" property.
                 SystemType targetController = GetSystemTypeFromSerializedProperty(i);
 
-                if (targetController.Type != null && !configuredControllerTypes.Contains(targetController.Type.ToString()))
+                if (targetController?.Type != null && !configuredControllerTypes.Contains(targetController.Type.ToString()))
                 {
                     configuredControllerTypes.Add(targetController.Type.ToString());
                 }
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 SystemType targetController = GetSystemTypeFromSerializedProperty(i);
 
                 //Add the 
-                if (targetController.Type != null && !updatedControllerTypes.Contains(targetController.Type.ToString()))
+                if (targetController?.Type != null && !updatedControllerTypes.Contains(targetController.Type.ToString()))
                 {
                     updatedControllerTypes.Add(targetController.Type.ToString());
                     if (!configuredControllerTypes.Contains(targetController.Type.ToString()))
@@ -332,38 +332,52 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         #region Serialized Property Inspector
 
-        private static object GetValue_Imp(object source, string name)
+        private static object GetValue_Implementation(object source, string name)
         {
             if (source == null)
+            {
                 return null;
+            }
+
             var type = source.GetType();
 
             while (type != null)
             {
-                var f = type.GetField(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-                if (f != null)
-                    return f.GetValue(source);
+                var field = type.GetField(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                if (field != null)
+                {
+                    return field.GetValue(source);
+                }
 
-                var p = type.GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
-                if (p != null)
-                    return p.GetValue(source, null);
+                var property = type.GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+                if (property != null)
+                {
+                    return property.GetValue(source, null);
+                }
 
                 type = type.BaseType;
             }
             return null;
         }
 
-        private static object GetValue_Imp(object source, string name, int index)
+        private static object GetValue_Implementation(object source, string name, int index)
         {
-            var enumerable = GetValue_Imp(source, name) as System.Collections.IEnumerable;
-            if (enumerable == null) return null;
-            var enm = enumerable.GetEnumerator();
+            var enumerable = GetValue_Implementation(source, name) as System.Collections.IEnumerable;
+            if (enumerable == null)
+            {
+                return null;
+            }
+
+            var enumerator = enumerable.GetEnumerator();
 
             for (int i = 0; i <= index; i++)
             {
-                if (!enm.MoveNext()) return null;
+                if (!enumerator.MoveNext())
+                {
+                    return null;
+                }
             }
-            return enm.Current;
+            return enumerator.Current;
         }
 
         private SystemType GetSystemTypeFromSerializedProperty(int i)
@@ -371,8 +385,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             var item = mixedRealityControllerMappingProfiles.GetArrayElementAtIndex(i);
             var controllerType = item.FindPropertyRelative("controller");
             var targetObject = controllerType.serializedObject.targetObject;
-            var targetObjectClassType = GetValue_Imp(targetObject, "mixedRealityControllerMappingProfiles", i);
-            var targetController = GetValue_Imp(targetObjectClassType, "controller") as SystemType;
+            var targetObjectClassType = GetValue_Implementation(targetObject, "mixedRealityControllerMappingProfiles", i);
+            var targetController = GetValue_Implementation(targetObjectClassType, "controller") as SystemType;
             return targetController;
         }
 
