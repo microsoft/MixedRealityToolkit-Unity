@@ -167,30 +167,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             #endregion Managers Registration
 
             #region SDK Initialization
-            switch (Application.platform)
-            {
-                case RuntimePlatform.WindowsPlayer:
-                case RuntimePlatform.WindowsEditor:
-                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("OpenVR Device Manager", 10));
-                    break;
-                case RuntimePlatform.OSXPlayer:
-                case RuntimePlatform.OSXEditor:
-                case RuntimePlatform.IPhonePlayer:
-                    break;
-                case RuntimePlatform.Android:
-                    break;
-                case RuntimePlatform.WebGLPlayer:
-                    break;
-                case RuntimePlatform.WSAPlayerX86:
-                case RuntimePlatform.WSAPlayerX64:
-                case RuntimePlatform.WSAPlayerARM:
-                    AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
-                    break;
-                case RuntimePlatform.TizenPlayer:
-                    break;
-                default:
-                    break;
-            }
+
+#if UNITY_EDITOR
+            AddManagersForTheCurrentPlatformEditor();
+#else
+            AddManagersForTheCurrentPlatform();
+#endif
 
             #endregion SDK Initialization
 
@@ -913,5 +895,58 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         #endregion Manager Utilities
 
         #endregion Manager Container Management
+
+        #region Platform Selectors
+
+        private void AddManagersForTheCurrentPlatform()
+        {
+            switch (Application.platform)
+            {
+                case RuntimePlatform.WindowsPlayer:
+                case RuntimePlatform.WindowsEditor:
+                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("OpenVR Device Manager", 10));
+                    break;
+                case RuntimePlatform.OSXPlayer:
+                case RuntimePlatform.OSXEditor:
+                case RuntimePlatform.IPhonePlayer:
+                    break;
+                case RuntimePlatform.Android:
+                    break;
+                case RuntimePlatform.WebGLPlayer:
+                    break;
+                case RuntimePlatform.WSAPlayerX86:
+                case RuntimePlatform.WSAPlayerX64:
+                case RuntimePlatform.WSAPlayerARM:
+                    AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void AddManagersForTheCurrentPlatformEditor()
+        {
+            switch (UnityEditor.EditorUserBuildSettings.activeBuildTarget)
+            {
+                case UnityEditor.BuildTarget.StandaloneWindows:
+                case UnityEditor.BuildTarget.StandaloneWindows64:
+                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("OpenVR Device Manager", 10));
+                    break;
+                case UnityEditor.BuildTarget.StandaloneOSX:
+                case UnityEditor.BuildTarget.iOS:
+                    break;
+                case UnityEditor.BuildTarget.Android:
+                    break;
+                case UnityEditor.BuildTarget.WebGL:
+                    break;
+                case UnityEditor.BuildTarget.WSAPlayer:
+                    AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        #endregion Platform Selectors
     }
 }

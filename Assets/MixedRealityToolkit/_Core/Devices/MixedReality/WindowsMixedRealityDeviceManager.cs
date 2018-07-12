@@ -1,17 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 #if UNITY_WSA
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using System;
 using UnityEngine.XR.WSA.Input;
-#endif
+using UnityEngine;
+#endif // UNITY_WSA
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 {
@@ -28,6 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// Dictionary to capture all active controllers detected
         /// </summary>
         private readonly Dictionary<uint, IMixedRealityController> activeControllers = new Dictionary<uint, IMixedRealityController>();
+
+        /// <inheritdoc/>
+        public override IMixedRealityController[] GetActiveControllers()
+        {
+            return activeControllers.Values.ToArray();
+        }
 
 #if UNITY_WSA
 
@@ -65,12 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             {
                 RemoveController(states[i]);
             }
-        }
-
-        /// <inheritdoc/>
-        public override IMixedRealityController[] GetActiveControllers()
-        {
-            return activeControllers.Values.ToArray();
         }
 
         #endregion IMixedRealityDeviceManager Interface
@@ -187,5 +187,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         #endregion Unity InteractionManager Events
 
 #endif // UNITY_WSA
+
     }
 }
