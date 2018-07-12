@@ -14,14 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
     public class GenericOpenVRController : BaseController
     {
         public GenericOpenVRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
-        {
-            //Prepare the Axis Mapping data for the OpenVR Controller
-            Initialise();
-
-            //Verify the OpenVR Controller mappings are loaded
-            InputMappingAxisUtility.ApplyMappings(ControllerAxisMappings);
-        }
+                : base(trackingState, controllerHandedness, inputSource, interactions) { }
 
         /// <summary>
         /// The current source state reading for this OpenVR Controller.
@@ -45,58 +38,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
         #region Base override configuration
 
-        private InputMappingAxisUtility.InputManagerAxis[] OpenVRControllerAxisMappings;
-
         /// <summary>
         /// Mapping method to expose the Unity Input Manager mapping configuration
         /// </summary>
-        public virtual InputMappingAxisUtility.InputManagerAxis[] ControllerAxisMappings => OpenVRControllerAxisMappings;
-
-        /// <summary>
-        /// Collection of input mapping constants, grouped in a single class for easier referencing.
-        /// </summary>
-        private string[] OpenVRInputMappings =
-        {
-            "OPENVR_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL",   // 0 - TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL
-            "OPENVR_TOUCHPAD_LEFT_CONTROLLER_VERTICAL",     // 1 - TOUCHPAD_LEFT_CONTROLLER_VERTICAL
-            "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL",  // 2 - TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL
-            "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL",    // 3 - TOUCHPAD_RIGHT_CONTROLLER_VERTICAL
-            "OPENVR_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL",   // 4 - THUMBSTICK_LEFT_CONTROLLER_HORIZONTAL
-            "OPENVR_TOUCHPAD_LEFT_CONTROLLER_VERTICAL",     // 5 - THUMBSTICK_LEFT_CONTROLLER_VERTICAL
-            "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL",  // 6 - THUMBSTICK_RIGHT_CONTROLLER_HORIZONTAL
-            "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL",    // 7 - THUMBSTICK_RIGHT_CONTROLLER_VERTICAL
-            "OPENVR_TRIGGER_LEFT_CONTROLLER",               // 8 - TRIGGER_LEFT_CONTROLLER
-            "OPENVR_TRIGGER_RIGHT_CONTROLLER",              // 9 - TRIGGER_RIGHT_CONTROLLER
-            "OPENVR_GRIP_LEFT_CONTROLLER",                  // 10 - GRIP_LEFT_CONTROLLER
-            "OPENVR_GRIP_RIGHT_CONTROLLER"                  // 11 - GRIP_RIGHT_CONTROLLER
-        };
+        public override InputManagerAxis[] ControllerAxisMappings => ControllerInputAxisMappingLibrary.GetInputManagerAxes(GetType().FullName);
 
         /// <summary>
         /// Mapping method to expose this controllers Unity Input Manager mapping array
         /// </summary>
-        public virtual string[] VRInputMappings => OpenVRInputMappings;
-
-        /// <summary>
-        /// Initialize the Axis mappings for the Unity Input Manager mappings
-        /// </summary>
-        public virtual void Initialise()
-        {
-            OpenVRControllerAxisMappings = new InputMappingAxisUtility.InputManagerAxis[]
-            {
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[0], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 1 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[1], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 2 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[2], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 4 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[3], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 5 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[4], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 1 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[5], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 2 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[6], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 4 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[7], Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 5 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[8], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 9 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[9], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 10 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[10], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 11 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[11], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 12 }
-            };
-        }
+        public virtual string[] VRInputMappings => ControllerInputAxisMappingLibrary.GetInputManagerMappings(GetType().FullName);
 
         #endregion Base override configuration
 

@@ -61,7 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             if (IsNodeTypeSupported(obj))
             {
                 GetOrAddController(obj);
-                Debug.Log($"Added node for [{obj.nodeType}], name [{InputTracking.GetNodeName(obj.uniqueID)}]");
             }
         }
 
@@ -71,7 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             {
                 var controller = GetOrAddController(obj);
                 InputSystem?.RaiseSourceDetected(controller?.InputSource, controller);
-                Debug.Log($"Tracking Acquired for [{obj.nodeType}]");
             }
         }
 
@@ -81,14 +79,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             {
                 var controller = GetOrAddController(obj);
                 InputSystem?.RaiseSourceLost(controller?.InputSource, controller);
-                Debug.Log($"Tracking Lost for [{obj.nodeType}]");
             }
         }
 
         private void InputTracking_nodeRemoved(XRNodeState obj)
         {
             activeControllers.Remove(obj.nodeType);
-            Debug.Log($"Removed node for [{obj.nodeType}]");
         }
 
         #endregion Unity InteractionManager Events
