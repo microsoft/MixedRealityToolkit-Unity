@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
     /// <summary>
     /// This class handles the solver components that are attached to this <see cref="GameObject"/>
     /// </summary>
+    [DisallowMultipleComponent]
     public class SolverHandler : MonoBehaviour
     {
         [SerializeField]
