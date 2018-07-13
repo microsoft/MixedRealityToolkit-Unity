@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <param name="count"></param>
         public void Initialize(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, int count)
         {
-            BaseInitialize(pointer.InputSourceParent, inputAction);
+            Initialize(pointer.InputSourceParent, inputAction);
             Pointer = pointer;
             Count = count;
         }
