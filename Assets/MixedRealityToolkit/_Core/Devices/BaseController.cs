@@ -78,6 +78,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         /// <inheritdoc />
         public MixedRealityInteractionMapping[] Interactions { get; private set; }
 
+        /// <inheritdoc />
+        public virtual InputManagerAxis[] ControllerAxisMappings { get; }
+
         public void SetupConfiguration(Type controllerType)
         {
             if (MixedRealityManager.Instance.ActiveProfile.EnableControllerProfiles)

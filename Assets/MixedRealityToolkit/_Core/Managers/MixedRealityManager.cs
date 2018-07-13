@@ -924,6 +924,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
         }
 
+#if UNITY_EDITOR
+
         private void AddManagersForTheCurrentPlatformEditor()
         {
             switch (UnityEditor.EditorUserBuildSettings.activeBuildTarget)
@@ -946,6 +948,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     break;
             }
         }
+
+#endif
 
         #endregion Platform Selectors
     }

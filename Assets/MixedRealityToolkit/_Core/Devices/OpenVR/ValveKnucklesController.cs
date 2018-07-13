@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using UnityEngine;
 using UnityEngine.XR;
@@ -18,66 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
         #region Base override configuration
 
-        private InputMappingAxisUtility.InputManagerAxis[] ValveKnucklesControllerAxisMappings;
+        /// <inheritdoc />
+        public override InputManagerAxis[] ControllerAxisMappings => ControllerInputAxisMappingLibrary.GetInputManagerAxes(GetType().FullName);
 
         /// <inheritdoc />
-        public override InputMappingAxisUtility.InputManagerAxis[] ControllerAxisMappings => ValveKnucklesControllerAxisMappings;
-
-        /// <summary>
-        /// Collection of input mapping constants, grouped in a single class for easier referencing.
-        /// </summary>
-        /// <remarks>
-        /// Uses a fixed index array for controller input in the base / Generic class, as indicated in the array comments</remarks>
-        private string[] ValveKnucklesInputMappings =
-        {
-            "VKNUCKLES_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL",   // 0 - TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL
-            "VKNUCKLES_TOUCHPAD_LEFT_CONTROLLER_VERTICAL",     // 1 - TOUCHPAD_LEFT_CONTROLLER_VERTICAL
-            "VKNUCKLES_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL",  // 2 - TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL
-            "VKNUCKLES_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL",    // 3 - TOUCHPAD_RIGHT_CONTROLLER_VERTICAL
-            "VKNUCKLES_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL",   // 4 - THUMBSTICK_LEFT_CONTROLLER_HORIZONTAL
-            "VKNUCKLES_TOUCHPAD_LEFT_CONTROLLER_VERTICAL",     // 5 - THUMBSTICK_LEFT_CONTROLLER_VERTICAL
-            "VKNUCKLES_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL",  // 6 - THUMBSTICK_RIGHT_CONTROLLER_HORIZONTAL
-            "VKNUCKLES_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL",    // 7 - THUMBSTICK_RIGHT_CONTROLLER_VERTICAL
-            "VKNUCKLES_TRIGGER_LEFT_CONTROLLER",               // 8 - TRIGGER_LEFT_CONTROLLER
-            "VKNUCKLES_TRIGGER_RIGHT_CONTROLLER",              // 9 - TRIGGER_RIGHT_CONTROLLER
-            "VKNUCKLES_GRIP_LEFT_CONTROLLER",                  // 10 - GRIP_LEFT_CONTROLLER
-            "VKNUCKLES_GRIP_RIGHT_CONTROLLER",                 // 11 - GRIP_RIGHT_CONTROLLER
-            "VKNUCKLES_INDEXFINGER_LEFT_CONTROLLER",           // 12 - INDEXFINGER_LEFT_CONTROLLER
-            "VKNUCKLES_INDEXFINGER_RIGHT_CONTROLLER",          // 13 - INDEXFINGER_RIGHT_CONTROLLER
-            "VKNUCKLES_MIDDLEFINGER_LEFT_CONTROLLER",          // 14 - MIDDLEFINGER_LEFT_CONTROLLER
-            "VKNUCKLES_MIDDLEFINGER_RIGHT_CONTROLLER",         // 15 - MIDDLEFINGER_RIGHT_CONTROLLER
-            "VKNUCKLES_RINGFINGER_LEFT_CONTROLLER",            // 16 - RINGFINGER_LEFT_CONTROLLER
-            "VKNUCKLES_RINGFINGER_RIGHT_CONTROLLER",           // 17 - RINGFINGER_RIGHT_CONTROLLER
-            "VKNUCKLES_PINKYFINGER_LEFT_CONTROLLER",           // 18 - PINKYFINGER_LEFT_CONTROLLER
-            "VKNUCKLES_PINKYFINGER_RIGHT_CONTROLLER",          // 19 - PINKYFINGER_RIGHT_CONTROLLER
-        };
-
-        /// <inheritdoc />
-        public override string[] VRInputMappings => ValveKnucklesInputMappings;
-
-        /// <inheritdoc />
-        public override void Initialise()
-        {
-            ValveKnucklesControllerAxisMappings = new InputMappingAxisUtility.InputManagerAxis[]
-            {
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[0], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 1 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[1], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 2 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[2], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 4 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[3], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 5 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[8], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 9 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[9], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 10 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[10], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 11 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[11], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 12 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[12], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 20 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[13], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 21 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[14], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 22 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[15], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 23 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[16], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 24 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[17], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 25 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[18], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 26 },
-                new InputMappingAxisUtility.InputManagerAxis() { Name = VRInputMappings[19], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputMappingAxisUtility.MappingAxisType.JoystickAxis, Axis = 27 }
-            };
-        }
+        public override string[] VRInputMappings => ControllerInputAxisMappingLibrary.GetInputManagerMappings(GetType().FullName);
 
         #endregion Base override configuration
 
