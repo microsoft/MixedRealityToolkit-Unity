@@ -1026,7 +1026,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             poseInputEventData.Initialize(source, inputAction, inputData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(positionInputEventData, OnPoseInputChanged);
+            HandleEvent(poseInputEventData, OnPoseInputChanged);
         }
 
         /// <inheritdoc />
@@ -1036,7 +1036,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem
             poseInputEventData.Initialize(source, handedness, inputAction, inputData);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(positionInputEventData, OnPoseInputChanged);
+            HandleEvent(poseInputEventData, OnPoseInputChanged);
         }
 
         #endregion Input Pose Changed
