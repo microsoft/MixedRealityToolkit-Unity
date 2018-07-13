@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
+using UnityEngine.Experimental.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
 {
@@ -36,15 +37,45 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         bool EnablePlatformBoundaryRendering { get; set; }
 
         /// <summary>
-        /// A three dimensional volume as described by the smallest rectangle
-        /// containing the complete playspace and the configured height.
+        /// Two dimensional representation of the geometry of the boundary, as provided
+        /// by the platform.
         /// </summary>
-        Bounds OutscribedVolume { get; }
+        /// <remarks>
+        /// BoundaryGeometry should be treated as the outline of the player's space, placed
+        /// on the floor.
+        /// </remarks>
+        Edge[] Geometry { get; }
 
         /// <summary>
-        /// A three dimensional volume as described by the largest rectangle that
-        /// is contained withing the playspace and the configured height.
+        /// The largest rectangle that is contained withing the playspace geometry.
         /// </summary>
-        Bounds InscribedVolume { get; }
+        InscribedRectangle InscribedRectangleBounds { get; }
+
+        /// <summary>
+        /// Indicates the height of the floor, in relation to the coordinate system origin.
+        /// </summary>
+        /// <remarks>
+        /// If a floor has been located, FloorHeight.HasValue will be true, otherwise it will be false.
+        /// </remarks>
+        float? FloorHeight { get; }
+
+        /// <summary>
+        /// Determines if a location is within the tracked area of the boundary space.
+        /// </summary>
+        /// <param name="location">The location to be checked.</param>
+        /// <returns>True if the location is within the tracked area of the boundary space.</returns>
+        bool Contains(Vector3 location);
+
+        /// <summary>
+        /// Determines if a location is within the specified area of the boundary space.
+        /// </summary>
+        /// <param name="location">The location to be checked.</param>
+        /// <returns>True if the location is within the specified area of the boundary space.</returns>
+        /// <remarks>
+        /// Use:
+        /// * Boundary.Type.PlayArea for the inscribed volume
+        /// * Boundary.Type.TrackedArea for the area defined by the boundary edges.
+        /// </remarks>
+        bool Contains(Vector3 location, Boundary.Type boundaryType);
     }
 }

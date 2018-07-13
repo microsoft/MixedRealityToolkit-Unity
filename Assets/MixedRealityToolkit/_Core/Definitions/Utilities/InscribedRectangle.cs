@@ -1,0 +1,600 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System;
+using UnityEngine;
+
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
+{
+    /// <summary>
+    /// The InscribedRectangle class defines the largest rectangle within an
+    /// arbitrary shape.
+    /// </summary>
+    public class InscribedRectangle
+    {
+        /// <summary>
+        /// Total number of starting points randomly generated within the boundary.
+        /// </summary>
+        private static readonly int randomPointCount = 30;
+
+        /// <summary>
+        /// The total amount of height, in meters,  we want to gain with each binary search
+        /// change before we decide that it's good enough.
+        /// </summary>
+        private const float minimumHeightGain = 0.01f;
+
+        /// <summary>
+        /// The center point of the inscribed rectangle.
+        /// </summary>
+        public Vector2 Center { get; private set; } = EdgeUtils.InvalidPoint;
+
+        /// <summary>
+        /// The width of the inscribed rectangle.
+        /// </summary>
+        public float Width { get; private set; } = 0f;
+
+        /// <summary>
+        /// The height of the inscribed rectangle.
+        /// </summary>
+        public float Height { get; private set; } = 0f;
+
+        /// <summary>
+        /// The rotation angle, in degrees, of the inscribed rectangle.
+        /// </summary>
+        public float Angle { get; private set; }
+
+        /// <summary>
+        /// Is the described rectangle valid?
+        /// </summary>
+        public bool IsValid
+        {
+            get
+            {
+                // A rectangle is considered valid if it's center point is valid.
+                if (EdgeUtils.IsValidPoint(Center))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="geometryEdges"></param>
+        /// <param name="randomSeed"></param>
+        public InscribedRectangle(Edge[] geometryEdges, int randomSeed)
+        {
+            FindInscribedRectangle(geometryEdges, randomSeed);
+        }
+
+        /// <summary>
+        /// Determine of the provided point lies within the defined rectangle.
+        /// </summary>
+        /// <param name="point">The point to check</param>
+        /// <returns>
+        /// True if the point is within the rectangle's bounds, false otherwise.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">The rectangle is not valid.</exception>
+        public bool IsWithinBounds(Vector2 point)
+        {
+            if (!IsValid)
+            {
+                throw new InvalidOperationException("A point cannot be within an invalid rectangle.");
+            }
+
+
+            point -= Center;
+            point = RotatePoint(point, Vector2.zero, MathUtils.DegreesToRadians(-Angle));
+
+            return (Mathf.Abs(point.x) <= (Width / 2.0f)) && (Mathf.Abs(point.y) <= Height / 2.0f);
+        }
+
+        /// <summary>
+        /// Get the corner points of the rectangle.
+        /// </summary>
+        /// <returns>
+        /// Vector2 array containing the four corner points of the defined rectangle.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">The rectangle is not valid.</exception>
+        public Vector2[] GetCornerPoints()
+        {
+            if (!IsValid)
+            {
+                throw new InvalidOperationException("Cannot get the points of an invalid rectangle.");
+            }
+
+            float x = Width / 2.0f;
+            float y = Height / 2.0f;
+            float angleRadians = MathUtils.DegreesToRadians(Angle);
+
+            return new Vector2[]
+            {
+                RotatePoint(new Vector2(x, y), Center, angleRadians),
+                RotatePoint(new Vector2(x, -y), Center, angleRadians),
+                RotatePoint(new Vector2(-x, -y), Center, angleRadians),
+                RotatePoint(new Vector2(-x, y), Center, angleRadians)
+            };
+        }
+
+        /// <summary>
+        /// Finds a large inscribed rectangle. Tries to be maximal but this is
+        /// best effort. The algorithm used was inspired by the blog post
+        /// https://d3plus.org/blog/behind-the-scenes/2014/07/08/largest-rect/
+        /// Random points within the polygon are chosen, and then 2 lines are
+        /// drawn through those points. The midpoints of those lines are
+        /// used as the center of various rectangles, using a binary search to
+        /// vary the size, until the largest fit-able rectangle is found.
+        /// This is then repeated for predefined angles (0-180 in steps of 15)
+        /// and aspect ratios (1 to 15 in steps of 0.5).
+        /// </summary>
+        /// <param name="geometryEdges">The boundary geometry.</param>
+        /// <param name="randomSeed">Random number generator seed.</param>
+        /// <remarks>
+        /// For the most reproducable results, use the same randomSeed value 
+        /// each time this method is called.
+        /// </remarks>
+        private void FindInscribedRectangle(Edge[] geometryEdges, int randomSeed)
+        {
+            // Clear previous rectangle
+            Center = EdgeUtils.InvalidPoint;
+            Width = 0;
+            Height = 0;
+            Angle = 0;
+
+            float minX = EdgeUtils.maxWidth;
+            float minY = EdgeUtils.maxWidth;
+            float maxX = -EdgeUtils.maxWidth;
+            float maxY = -EdgeUtils.maxWidth;
+
+            // Find min x, min y, max x, max y 
+            for (int i = 0; i < geometryEdges.Length; i++)
+            {
+                Edge edge = geometryEdges[i];
+
+                if ((edge.PointA.x < minX) || (edge.PointB.x < minX))
+                {
+                    minX = Mathf.Min(edge.PointA.x, edge.PointB.x);
+                }
+
+                if ((edge.PointA.y < minY) || (edge.PointB.y < minY))
+                {
+                    minY = Mathf.Min(edge.PointA.y, edge.PointB.y);
+                }
+
+                if ((edge.PointA.x > maxX) || (edge.PointB.x > maxX))
+                {
+                    maxX = Mathf.Max(edge.PointA.x, edge.PointB.x);
+                }
+
+                if ((edge.PointA.y > maxY) || (edge.PointB.y > maxY))
+                {
+                    maxY = Mathf.Min(edge.PointA.y, edge.PointB.y);
+                }
+
+            }
+
+            // Generate random points until we have randomPointCount starting points
+            Vector2[] startingPoints = new Vector2[randomPointCount];
+            {
+                System.Random random = new System.Random(randomSeed);
+                for (int i = 0; i < startingPoints.Length; i++)
+                {
+                    Vector2 candidatePoint;
+
+                    do
+                    {
+                        candidatePoint.x = ((float)random.NextDouble() * (maxX - minX)) + minX;
+                        candidatePoint.y = ((float)random.NextDouble() * (maxY - minY)) + minY;
+                    }
+                    while (!EdgeUtils.IsInsideBoundary(geometryEdges, candidatePoint));
+
+                    startingPoints[i] = candidatePoint;
+                }
+
+            }
+
+            // Angles to use for fitting the rectangle within the boundary.
+            float[] angles = { 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165 };
+
+            for (int angleIndex = 0; angleIndex < angles.Length; angleIndex++)
+            {
+                for (int pointIndex = 0; pointIndex < startingPoints.Length; pointIndex++)
+                {
+                    Vector2 topCollisionPoint;
+                    Vector2 bottomCollisionPoint;
+                    Vector2 leftCollisionPoint;
+                    Vector2 rightCollisionPoint;
+
+                    float angleRadians = MathUtils.DegreesToRadians(angles[angleIndex]);
+
+                    // Find the collision point of a cross through the given point at the given angle.
+                    // Note, we are ignoring the return value as we are checking each point's validity
+                    // individually.
+                    FindSurroundingCollisionPoints(
+                        geometryEdges, 
+                        startingPoints[pointIndex], 
+                        angleRadians,
+                        out topCollisionPoint, 
+                        out bottomCollisionPoint, 
+                        out leftCollisionPoint, 
+                        out rightCollisionPoint);
+
+                    float newWidth = 0;
+                    float newHeight = 0;
+
+                    if (EdgeUtils.IsValidPoint(topCollisionPoint) && EdgeUtils.IsValidPoint(bottomCollisionPoint))
+                    {
+                        float aX = topCollisionPoint.x;
+                        float aY = topCollisionPoint.y;
+                        float bX = bottomCollisionPoint.x;
+                        float bY = bottomCollisionPoint.y;
+
+                        // Calculate the midpoint between the top and bottom collision points.
+                        Vector2 verticalMidpoint = new Vector2((aX + bX) / 2, (aY + bY) / 2);
+                        if (TryFixMaximumRectangle(
+                            geometryEdges,
+                            verticalMidpoint,
+                            angleRadians,
+                            Width * Height,
+                            out newWidth,
+                            out newHeight))
+                        {
+                            Center = verticalMidpoint;
+                            Angle = angles[angleIndex];
+                            Width = newWidth;
+                            Height = newHeight;
+                        }
+                    }
+
+                    if (EdgeUtils.IsValidPoint(leftCollisionPoint) && EdgeUtils.IsValidPoint(rightCollisionPoint))
+                    {
+                        float aX = leftCollisionPoint.x;
+                        float aY = leftCollisionPoint.y;
+                        float bX = rightCollisionPoint.x;
+                        float bY = rightCollisionPoint.y;
+
+                        // Calculate the midpoint between the left and right collision points.
+                        Vector2 horizontalMidpoint = new Vector2((aX + bX) / 2, (aY + bY) / 2);
+                        if (TryFixMaximumRectangle(
+                            geometryEdges,
+                            horizontalMidpoint,
+                            angleRadians,
+                            Width * Height,
+                            out newWidth,
+                            out newHeight))
+                        {
+                            Center = horizontalMidpoint;
+                            Angle = angles[angleIndex];
+                            Width = newWidth;
+                            Height = newHeight;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Find points at which there are collisions with the geometry around a given point.
+        /// </summary>
+        /// <param name="geometryEdges">The boundary geometry.</param>
+        /// <param name="point">The point around which collisions will be identified.</param>
+        /// <param name="angleRadians">The angle, in radians, at which the collision points will be oriented.</param>
+        /// <param name="topCollisionPoint">Receives the coordinates of the upper collision point.</param>
+        /// <param name="bottomCollisionPoint">Receives the coordinates of the lower collision point.</param>
+        /// <param name="leftCollisionPoint">Receives the coordinates of the left collision point.</param>
+        /// <param name="rightCollisionPoint">Receives the coordinates of the right collision point.</param>
+        /// <returns>
+        /// True if all of the required collision points are located, false otherwise. 
+        /// If a point is unable to be found, the appropriate out parameter will be set to <see cref="EdgeUtils.InvalidPoint"/>.
+        /// </returns>
+        private bool FindSurroundingCollisionPoints(
+            Edge[] geometryEdges,
+            Vector2 point,
+            float angleRadians,
+            out Vector2 topCollisionPoint,
+            out Vector2 bottomCollisionPoint,
+            out Vector2 leftCollisionPoint,
+            out Vector2 rightCollisionPoint)
+        {
+            // Initialize out parameters.
+            topCollisionPoint = EdgeUtils.InvalidPoint;
+            bottomCollisionPoint = EdgeUtils.InvalidPoint;
+            leftCollisionPoint = EdgeUtils.InvalidPoint;
+            rightCollisionPoint = EdgeUtils.InvalidPoint;
+
+            // Check to see if the point is inside the geometry.
+            if (!EdgeUtils.IsInsideBoundary(geometryEdges, point))
+            {
+                return false;
+            }
+
+            // Define values that are outside of the maximum boundary size.
+            float largeValue = EdgeUtils.maxWidth;
+            float smallValue = -largeValue;
+
+            // Find the top and bottom collision points by creating a large line segment that goes through the point to MAX and MIN values on Y
+            Vector2 topEndpoint = new Vector2(point.x, largeValue);
+            Vector2 bottomEndpoint = new Vector2(point.x, smallValue);
+            topEndpoint = RotatePoint(topEndpoint, point, angleRadians);
+            bottomEndpoint = RotatePoint(bottomEndpoint, point, angleRadians);
+            Edge verticalLine = new Edge(topEndpoint, bottomEndpoint);
+
+            // Find the left and right collision points by creating a large line segment that goes through the point to MAX and Min values on X
+            Vector2 rightEndpoint = new Vector2(largeValue, point.y);
+            Vector2 leftEndpoint = new Vector2(smallValue, point.y);
+            rightEndpoint = RotatePoint(rightEndpoint, point, angleRadians);
+            leftEndpoint = RotatePoint(leftEndpoint, point, angleRadians);
+            Edge horizontalLine = new Edge(rightEndpoint, leftEndpoint);
+
+            for (int i = 0; i < geometryEdges.Length; i++)
+            {
+                // Look for a vertical collision
+                Vector2 verticalIntersectionPoint = EdgeUtils.GetIntersectionPoint(geometryEdges[i], verticalLine);
+                if (EdgeUtils.IsValidPoint(verticalIntersectionPoint))
+                {
+                    // Is the intersection above or below the point?
+                    if (RotatePoint(verticalIntersectionPoint, point, -angleRadians).y > point.y)
+                    {
+                        // Update the top collision point
+                        if (!EdgeUtils.IsValidPoint(topCollisionPoint) ||
+                            (Vector2.SqrMagnitude(point - verticalIntersectionPoint) < Vector2.SqrMagnitude(point - topCollisionPoint)))
+                        {
+                            topCollisionPoint = verticalIntersectionPoint;
+                        }
+                    }
+                    else
+                    {
+                        // Update the bottom collision point
+                        if (!EdgeUtils.IsValidPoint(bottomCollisionPoint) ||
+                            (Vector2.SqrMagnitude(point - verticalIntersectionPoint) < Vector2.SqrMagnitude(point - bottomCollisionPoint)))
+                        {
+                            bottomCollisionPoint = verticalIntersectionPoint;
+                        }
+                    }
+                }
+
+                // Look for a horizontal collision
+                Vector2 horizontalIntersection = EdgeUtils.GetIntersectionPoint(geometryEdges[i], horizontalLine);
+                if (EdgeUtils.IsValidPoint(horizontalIntersection))
+                {
+                    // Is this intersection to the left or the right of the point?
+                    if (RotatePoint(horizontalIntersection, point, -angleRadians).x < point.x)
+                    {
+                        // Update the left collision point
+                        if (!EdgeUtils.IsValidPoint(leftCollisionPoint) ||
+                            (Vector2.SqrMagnitude(point - horizontalIntersection) < Vector2.SqrMagnitude(point - leftCollisionPoint)))
+                        {
+                            leftCollisionPoint = horizontalIntersection;
+                        }
+                    }
+                    else
+                    {
+                        // Update the right collision point
+                        if (!EdgeUtils.IsValidPoint(rightCollisionPoint) ||
+                            (Vector2.SqrMagnitude(point - horizontalIntersection) < Vector2.SqrMagnitude(point - rightCollisionPoint)))
+                        {
+                            rightCollisionPoint = horizontalIntersection;
+                        }
+                    }
+                }
+            }
+
+            // Each corner of the rectangle must intersect with the geometry.
+            if (!EdgeUtils.IsValidPoint(topCollisionPoint) || 
+                !EdgeUtils.IsValidPoint(bottomCollisionPoint) ||
+                !EdgeUtils.IsValidPoint(leftCollisionPoint) || 
+                !EdgeUtils.IsValidPoint(rightCollisionPoint))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Rotate a two dimensiopnal point about another point by the specified angle.
+        /// </summary>
+        /// <param name="point">The point to be rotated.</param>
+        /// <param name="origin">The point about which the rotation is to occur.</param>
+        /// <param name="angleRadians">The angle for the rotation, in radians</param>
+        /// <returns>
+        /// The coordinates of the rotated point.
+        /// </returns>
+        private Vector2 RotatePoint(Vector2 point, Vector2 origin, float angleRadians)
+        {
+            if (0.0f == angleRadians)
+            {
+                return point;
+            }
+
+            Vector2 rotated = point;
+
+            // Translate to origin of rotation
+            rotated.x -= origin.x;
+            rotated.y -= origin.y;
+
+            // Rotate the point
+            float sin = Mathf.Sin(angleRadians);
+            float cos = Mathf.Cos(angleRadians);
+            float x = rotated.x * cos - rotated.y * sin;
+            float y = rotated.x * sin + rotated.y * cos;
+
+            // Translate back and return
+            rotated.x = x + origin.x;
+            rotated.y = y + origin.y;
+
+            return rotated;
+        }
+
+        /// <summary>
+        /// Check to see if a rectangle centered at the specified point and oriented at 
+        /// the specified angle will fit within the geometry.
+        /// </summary>
+        /// <param name="geometryEdges">The boundary geometry.</param>
+        /// <param name="centerPoint">The center point of the rectangle.</param>
+        /// <param name="angleRadians">The orientation, in radians, of the rectangle.</param>
+        /// <param name="width">The width of the rectangle.</param>
+        /// <param name="height">The height of the rectangle.</param>
+        /// <returns></returns>
+        private bool CheckRectangleFit(
+            Edge[] geometryEdges,
+            Vector2 centerPoint,
+            float angleRadians,
+            float width,
+            float height)
+        {
+            float halfWidth = width / 2.0f;
+            float halfHeight = height / 2.0f;
+
+            // Calculate the rectangle corners.
+            Vector2 topLeft = new Vector2(centerPoint.x - halfWidth, centerPoint.y + halfHeight);
+            Vector2 topRight = new Vector2(centerPoint.x + halfWidth, centerPoint.y + halfHeight);
+            Vector2 bottomLeft = new Vector2(centerPoint.x - halfWidth, centerPoint.y - halfHeight);
+            Vector2 bottomRight = new Vector2(centerPoint.x + halfWidth, centerPoint.y - halfHeight);
+
+            // Rotate the rectangle.
+            topLeft = RotatePoint(topLeft, centerPoint, angleRadians);
+            topRight = RotatePoint(topRight, centerPoint, angleRadians);
+            bottomLeft = RotatePoint(bottomLeft, centerPoint, angleRadians);
+            bottomRight = RotatePoint(bottomRight, centerPoint, angleRadians);
+
+            // Get the rectangle edges.
+            Edge topEdge = new Edge(topLeft, topRight);
+            Edge rightEdge = new Edge(topRight, bottomRight);
+            Edge bottomEdge = new Edge(bottomLeft, bottomRight);
+            Edge leftEdge = new Edge(topLeft, bottomLeft);
+
+            // Check for collisions with the boundary geometry. If any of our edges collide, 
+            // the rectangle will not fit within the playspace.
+            for (int i = 0; i < geometryEdges.Length; i++)
+            {
+                if (EdgeUtils.IsValidPoint(EdgeUtils.GetIntersectionPoint(geometryEdges[i], topEdge)) ||
+                    EdgeUtils.IsValidPoint(EdgeUtils.GetIntersectionPoint(geometryEdges[i], rightEdge)) ||
+                    EdgeUtils.IsValidPoint(EdgeUtils.GetIntersectionPoint(geometryEdges[i], bottomEdge)) ||
+                    EdgeUtils.IsValidPoint(EdgeUtils.GetIntersectionPoint(geometryEdges[i], leftEdge)))
+                {
+                    return false;
+                }
+            }
+
+            // No collsions found with the rectangle. Success!
+            return true;
+        }
+
+        /// <summary>
+        /// Attempt to fit the largest rectangle possible within the geometry.
+        /// </summary>
+        /// <param name="geometryEdges">The boundary geometry.</param>
+        /// <param name="centerPoint">The center point for the rectangle.</param>
+        /// <param name="angleRadians">The rotation, in radians, of the rectangle.</param>
+        /// <param name="minArea">The smallest allowed area.</param>
+        /// <param name="width">Returns the width of the rectangle.</param>
+        /// <param name="height">Returns the height of the rectangle.</param>
+        /// <returns>
+        /// True if a rectangle with an area greater than or equal to minArea was able to be fit
+        /// within the geometry at centerPoint.
+        /// </returns>
+        private bool TryFixMaximumRectangle(
+            Edge[] geometryEdges,
+            Vector2 centerPoint,
+            float angleRadians,
+            float minArea,
+            out float width,
+            out float height)
+        {
+            width = 0.0f;
+            height = 0.0f;
+
+            float[] aspectRatios = {
+                1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f,
+                5.0f, 5.5f, 6, 6.5f, 7, 7.5f, 8.0f, 8.5f, 9.0f,
+                9.5f, 10.0f, 10.5f, 11.0f, 11.5f, 12.0f, 12.5f,
+                13.0f, 13.5f, 14.0f, 14.5f, 15.0f};
+
+
+            Vector2 topCollisionPoint;
+            Vector2 bottomCollisionPoint;
+            Vector2 leftCollisionPoint;
+            Vector2 rightCollisionPoint;
+
+            // Find the collision points with the geometry
+            if (!FindSurroundingCollisionPoints(geometryEdges, centerPoint, angleRadians,
+                out topCollisionPoint, out bottomCollisionPoint, out leftCollisionPoint, out rightCollisionPoint))
+            {
+                return false;
+            }
+
+            // Start by calculating max width and height by ray-casting a cross from the point at the given angle
+            // and taking the shortest leg of each ray. Width is the longest.
+            float verticalMinDistanceToEdge = Mathf.Min(
+                Vector2.Distance(centerPoint, topCollisionPoint),
+                Vector2.Distance(centerPoint, bottomCollisionPoint));
+
+            float horizontalMinDistanceToEdge = Mathf.Min(
+                Vector2.Distance(centerPoint, leftCollisionPoint),
+                Vector2.Distance(centerPoint, rightCollisionPoint));
+
+            // Width is the largest of the possible dimensions
+            float maxWidth = Math.Max(verticalMinDistanceToEdge, horizontalMinDistanceToEdge) * 2.0f;
+            float maxHeight = Math.Min(verticalMinDistanceToEdge, horizontalMinDistanceToEdge) * 2.0f;
+
+            float aspectRatio = 0.0f;
+
+            // For each aspect ratio we do a binary search to find the maximum rectangle that fits, 
+            // though once we start increasing our area by minimumHeightGain we call it good enough.
+            for (int i = 0; i < aspectRatios.Length; i++)
+            {
+                // The height is limited by the width. If a height would make our width exceed maxWidth, it can't be used
+                float searchHeightUpperBound = Mathf.Max(maxHeight, maxWidth / aspectRatios[i]);
+
+                // Set to the min height that will out perform our previous area at the given aspect ratio. This is 0 the first time.
+                // Derived from biggestAreaSoFar=height*(height*aspctRatio)
+                float searchHeightLowerBound = Mathf.Sqrt(Mathf.Max((width * height), minArea) / aspectRatios[i]);
+
+                // If the lowest value needed to outperform the previous best is greater than our max, 
+                // this aspect ratio can't outperform what we've already calculated.
+                if ((searchHeightLowerBound > searchHeightUpperBound) || 
+                    (searchHeightLowerBound * aspectRatios[i] > maxWidth))
+                {
+                    continue;
+                }
+
+                float currentTestingHeight = Mathf.Max(searchHeightLowerBound, maxHeight / 2.0f);
+
+
+                // Perform the binary search until continuing to search will not give us a significant win.
+                do
+                {
+                    if (CheckRectangleFit(geometryEdges, 
+                        centerPoint, 
+                        angleRadians, 
+                        aspectRatios[i] * currentTestingHeight, 
+                        currentTestingHeight))
+                    {
+                        // Binary search up-ward
+                        // If the rectangle will fit, increase the lower bounds of our binary search
+                        searchHeightLowerBound = currentTestingHeight;
+
+                        width = currentTestingHeight * aspectRatios[i];
+                        height = currentTestingHeight;
+                        aspectRatio = aspectRatios[i];
+                        currentTestingHeight = (searchHeightUpperBound + currentTestingHeight) / 2.0f;
+                    }
+                    else
+                    {
+                        // If the rectangle won't fit, update our upper bound and lower our binary search
+                        searchHeightUpperBound = currentTestingHeight;
+                        currentTestingHeight = (currentTestingHeight + searchHeightLowerBound) / 2.0f;
+                    }
+                }
+                while ((searchHeightUpperBound - searchHeightLowerBound) > minimumHeightGain);
+            }
+
+            return (aspectRatio > 0.0f);
+        }
+    }
+}

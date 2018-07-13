@@ -419,5 +419,25 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             Vector3 nearestPoint = sumOfProductInverse * sumOfProductTimesDirection;
             return nearestPoint;
         }
+
+        /// <summary>
+        /// Convert degrees to radians.
+        /// </summary>
+        /// <param name="degrees">Angle, in degrees.</param>
+        /// <returns>Angle, in radians.</returns>
+        public static float DegreesToRadians(double degrees)
+        {
+            return (float)(degrees * Mathf.Deg2Rad);
+        }
+
+        /// <summary>
+        /// Convert radians to degrees.
+        /// </summary>
+        /// <param name="radians">Angle, in radians.</param>
+        /// <returns>Angle, in degrees.</returns>
+        public static double RadiansToDegrees(float radians)
+        {
+            return (double)(radians * Mathf.Rad2Deg);
+        }
     }
 }

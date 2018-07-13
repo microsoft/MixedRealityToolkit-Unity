@@ -27,10 +27,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         public bool EnablePlatformBoundaryRendering { get; set; } = true;
 
         /// <inheritdoc/>
-        public Bounds OutscribedVolume { get; private set; } = new Bounds();
+        public Edge[] Geometry { get; private set; } = new Edge[0];
 
         /// <inheritdoc/>
-        public Bounds InscribedVolume { get; private set; } = new Bounds();
+        public float? FloorHeight { get; private set; } = null;
+
+        /// <inheritdoc/>
+        public InscribedRectangle InscribedRectangleBounds { get; private set; } = null;
 
         /// <summary>
         /// MixedRealityBoundaryManager constructor
@@ -66,33 +69,84 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             InitializeInternal();
         }
 
+        // TODO
+        public bool Contains(Vector3 location)
+        {
+            return Contains(location, Boundary.Type.TrackedArea);
+        }
+
+        // TODO
+        public bool Contains(Vector3 location, Boundary.Type boundaryType)
+        {
+            return false;
+        }
+
         /// <summary>
         /// Retrieves the boundary geometry and creates the boundary and inscribed playspace volumes.
         /// </summary>
         private void CalculateBoundaryBounds()
         {
+            // Reset the bounds
+            Geometry = new Edge[0];
+            FloorHeight = null;
+            InscribedRectangleBounds = null;
+
+            // Boundaries are supported for Room Scale experiences only.
             if (XRDevice.GetTrackingSpaceType() != TrackingSpaceType.RoomScale)
             {
-                // Boundaries are supported for Room Scale experiences only.
                 return;
             }
 
-            OutscribedVolume = new Bounds();
+#if !UNITY_WSA
+            // This always returns false in Windows Mixed Reality.
+            if (!Boundary.configured)
+            {
+                Debug.Log("No boundary configured.");
+                return;
+            }
+#endif // !UNITY_WSA
 
             // Get the boundary geometry.
             List<Vector3> boundaryGeometry = new List<Vector3>(0);
-            if (Boundary.TryGetGeometry(boundaryGeometry))
+            List<Edge> boundaryEdges = new List<Edge>(0);
+
+            if (Boundary.TryGetGeometry(boundaryGeometry, Boundary.Type.TrackedArea))
             {
+                // FloorHeight starts out as null. Use a very high value for the floor to ensure
+                // that we do not accidentally set it too low.
+                float floorHeight = 1000f;
+
                 for (int i = 0; i < boundaryGeometry.Count; i++)
                 {
-                    OutscribedVolume.Encapsulate(boundaryGeometry[i]);
+                    Vector3 pointA = boundaryGeometry[i];
+                    Vector3 pointB = boundaryGeometry[(i + 1) % boundaryGeometry.Count];
+                    boundaryEdges.Add(new Edge(pointA, pointB));
+
+                    floorHeight = Mathf.Min(floorHeight, boundaryGeometry[i].y); 
                 }
 
-                // todo: CreateInscribedBounds()
-
-                // Set the "ceiling" of the space using the configured height.
-                OutscribedVolume.Encapsulate(new Vector3(0f, BoundaryHeight, 0f));
+                FloorHeight = floorHeight;
+                Geometry = boundaryEdges.ToArray();
+                CreateInscribedBounds();
             }
+            else
+            {
+                // TODO: How do we determine if we have a floor without boundaries
+                Debug.LogWarning("Failed to calculate boundary bounds.");
+            }
+        }
+
+        /// <summary>
+        /// Creates the two dimensional volume described by the largest rectangle that
+        /// is contained withing the playspace geoometry and the configured height.
+        /// </summary>
+        private void CreateInscribedBounds()
+        {
+            // We use the same seed so that from run to run, the inscribed bounds are
+            // consistent.
+            int seed = Math.Abs("Mixed Reality Toolkit".GetHashCode());
+
+            InscribedRectangleBounds = new InscribedRectangle(Geometry, seed);
         }
 
         /// <summary>
@@ -123,7 +177,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     break;
             }
 
-            XRDevice.SetTrackingSpaceType(trackingSpace);
+            bool trackingSpaceSet = XRDevice.SetTrackingSpaceType(trackingSpace);
+            if (!trackingSpaceSet)
+            {
+                // TODO: Implement ExperienceScale fallback logic
+            }
         }
 
         /// <summary>
@@ -136,11 +194,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </remarks>
         private void SetPlatformBoundaryVisibility()
         {
-            if (Boundary.configured)
+#if !UNITY_WSA
+            // This always returns false in Windows Mixed Reality.
+            if (!Boundary.configured)
             {
-                // This value cannot be configured on Windows Mixed Reality. Automatic boundary rendering is performed.
-                Boundary.visible = EnablePlatformBoundaryRendering;
+                Debug.Log("No boundary configured.");
+                return;
             }
+
+            // This value cannot be configured on Windows Mixed Reality. Automatic boundary rendering is performed.
+            Boundary.visible = EnablePlatformBoundaryRendering;
+#endif // !UNITY_WSA
         }
     }
 }
