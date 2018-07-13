@@ -53,81 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         /// </summary>
         protected Vector3 GoalScale;
 
-        private void OnValidate()
-        {
-            if (SolverHandler == null)
-            {
-                SolverHandler = GetComponent<SolverHandler>();
-            }
-        }
-
-        protected virtual void Awake()
-        {
-            GoalScale = maintainScale ? transform.localScale : Vector3.one;
-        }
-
-        /// <summary>
-        /// Typically when a solver becomes enabled, it should update its internal state to the system, in case it was disabled far away
-        /// </summary>
-        protected virtual void OnEnable()
-        {
-            SnapGoalTo(GoalPosition, GoalRotation);
-
-            currentLifetime = 0;
-        }
-
-        // SolverLink will pass transform through
-        // Should be implemented in derived classes, but SolverBase can be used to flush shared transform to real transform
-        public abstract void SolverUpdate();
-
-        /// <summary>
-        ///  Tracks lifetime of the solver, disabling it when expired, and finally runs the orientation update logic
-        /// </summary>
-        public void SolverUpdateEntry()
-        {
-            currentLifetime += SolverHandler.DeltaTime;
-
-            if (lifetime > 0 && currentLifetime >= lifetime)
-            {
-                enabled = false;
-                return;
-            }
-
-            SolverUpdate();
-        }
-
-        /// <summary>
-        /// Snaps the solver to the desired pose.
-        /// <remarks>
-        /// SnapTo may be used to bypass smoothing to a certain position if the object is teleported or spawned.
-        /// </remarks>
-        /// </summary>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
-        public virtual void SnapTo(Vector3 position, Quaternion rotation)
-        {
-            SnapGoalTo(position, rotation);
-
-            WorkingPosition = position;
-            WorkingRot = rotation;
-        }
-
-        /// <summary>
-        ///   SnapGoalTo only sets the goal orientation.  Not really useful.
-        /// </summary>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
-        public virtual void SnapGoalTo(Vector3 position, Quaternion rotation)
-        {
-            GoalPosition = position;
-            GoalRotation = rotation;
-        }
-
-        public virtual void AddOffset(Vector3 offset)
-        {
-            GoalPosition += offset;
-        }
-
         /// <summary>
         /// WorkingPosition automatically uses the shared position if the solver is set to use the 'linked transform'.
         /// UpdateLinkedTransform may be set to false, and a solver will automatically update the object directly,
@@ -194,6 +119,83 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
                     transform.localScale = value;
                 }
             }
+        }
+
+        #region Monobehaviour Implementation
+
+        private void OnValidate()
+        {
+            if (SolverHandler == null)
+            {
+                SolverHandler = GetComponent<SolverHandler>();
+            }
+        }
+
+        protected virtual void Awake()
+        {
+            GoalScale = maintainScale ? transform.localScale : Vector3.one;
+        }
+
+        protected virtual void OnEnable()
+        {
+            SnapGoalTo(GoalPosition, GoalRotation);
+
+            currentLifetime = 0;
+        }
+        
+        #endregion Monobehaviour Implementation
+
+        /// <summary>
+        /// Update the solver.
+        /// </summary>
+        public abstract void SolverUpdate();
+
+        /// <summary>
+        ///  Tracks lifetime of the solver, disabling it when expired, and finally runs the orientation update logic
+        /// </summary>
+        public void SolverUpdateEntry()
+        {
+            currentLifetime += SolverHandler.DeltaTime;
+
+            if (lifetime > 0 && currentLifetime >= lifetime)
+            {
+                enabled = false;
+                return;
+            }
+
+            SolverUpdate();
+        }
+
+        /// <summary>
+        /// Snaps the solver to the desired pose.
+        /// <remarks>
+        /// SnapTo may be used to bypass smoothing to a certain position if the object is teleported or spawned.
+        /// </remarks>
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        public virtual void SnapTo(Vector3 position, Quaternion rotation)
+        {
+            SnapGoalTo(position, rotation);
+
+            WorkingPosition = position;
+            WorkingRot = rotation;
+        }
+
+        /// <summary>
+        ///   SnapGoalTo only sets the goal orientation.  Not really useful.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        public virtual void SnapGoalTo(Vector3 position, Quaternion rotation)
+        {
+            GoalPosition = position;
+            GoalRotation = rotation;
+        }
+
+        public virtual void AddOffset(Vector3 offset)
+        {
+            GoalPosition += offset;
         }
 
         /// <summary>
@@ -292,5 +294,4 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             WorkingScale = smoothing ? SmoothTo(WorkingScale, GoalScale, SolverHandler.DeltaTime, scaleLerpTime) : GoalScale;
         }
     }
-
 }

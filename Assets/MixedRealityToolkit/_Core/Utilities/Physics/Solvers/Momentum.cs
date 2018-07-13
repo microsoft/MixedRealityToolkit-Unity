@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
     /// <summary>
     /// Applies acceleration/velocity/friction to simulate momentum for an object being moved by other solvers/components
     /// </summary>
-    public class SolverMomentum : Solver
+    public class Momentum : Solver
     {
         [SerializeField]
         [Tooltip("Friction to slow down the current velocity")]
@@ -32,16 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
 
         private Vector3 velocity;
 
-        public override void SolverUpdate()
-        {
-            CalculateMomentum();
-        }
-
-        public override void SnapTo(Vector3 position, Quaternion rotation)
-        {
-            base.SnapTo(position, rotation);
-            velocity = Vector3.zero;
-        }
+        private Vector3 ReferencePosition => SolverHandler.TransformTarget == null ? Vector3.zero : SolverHandler.TransformTarget.position;
 
         protected override void OnEnable()
         {
@@ -50,13 +41,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             velocity = Vector3.zero;
         }
 
-        private void CalculateMomentum()
+        /// <inheritdoc />
+        public override void SolverUpdate()
         {
             // Start with snapZ
             if (snapZ)
             {
                 // Snap the current depth to the goal depth
-                var referencePosition = GetReferencePosition();
+                var referencePosition = ReferencePosition;
                 float goalDepth = (SolverHandler.GoalPosition - referencePosition).magnitude;
                 Vector3 currentDelta = transform.position - referencePosition;
                 float currentDeltaMagnitude = currentDelta.magnitude;
@@ -97,9 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             transform.position += velocity * SolverHandler.DeltaTime;
         }
 
-        private Vector3 GetReferencePosition()
+        /// <inheritdoc />
+        public override void SnapTo(Vector3 position, Quaternion rotation)
         {
-            return SolverHandler.TransformTarget == null ? Vector3.zero : SolverHandler.TransformTarget.position;
+            base.SnapTo(position, rotation);
+            velocity = Vector3.zero;
         }
     }
 }

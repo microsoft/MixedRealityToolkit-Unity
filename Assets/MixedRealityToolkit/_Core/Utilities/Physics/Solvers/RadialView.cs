@@ -1,7 +1,5 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using UnityEngine;
 
@@ -10,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
     /// <summary>
     /// RadialViewPoser solver locks a tag-along type object within a view cone
     /// </summary>
-    public class SolverRadialView : Solver
+    public class RadialView : Solver
     {
         private enum ReferenceDirectionEnum
         {
@@ -69,45 +67,45 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         private bool orientToReferenceDirection = false;
 
         /// <summary>
-        /// The direction of the cone.  Position to the view direction, or the movement direction
+        /// Position to the view direction, or the movement direction, or the direction of the view cone.
         /// </summary>
-        /// <returns>Vector3, the forward direction to use for positioning</returns>
-        private Vector3 GetReferenceDirection()
+        private Vector3 ReferenceDirection
         {
-            Vector3 direction = Vector3.one;
-
-            if (referenceDirection == ReferenceDirectionEnum.HeadMoveDirection)
+            get
             {
-                direction = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.forward : Vector3.forward;
-            }
+                Vector3 direction = Vector3.one;
 
-            return direction;
+                if (referenceDirection == ReferenceDirectionEnum.HeadMoveDirection)
+                {
+                    direction = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.forward : Vector3.forward;
+                }
+
+                return direction;
+            }
         }
 
         /// <summary>
-        ///   Cone may roll with head, or not.
+        /// The up direction to use for orientation.
+        /// <remarks>Cone may roll with head, or not.</remarks>
         /// </summary>
-        /// <returns>Vector3, the up direction to use for orientation</returns>
-        private Vector3 GetReferenceUp()
+        private Vector3 UpReference
         {
-            Vector3 upReference = Vector3.up;
-
-            if (referenceDirection == ReferenceDirectionEnum.ObjectOriented)
+            get
             {
-                upReference = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.up : Vector3.up;
+                Vector3 upReference = Vector3.up;
+
+                if (referenceDirection == ReferenceDirectionEnum.ObjectOriented)
+                {
+                    upReference = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.up : Vector3.up;
+                }
+
+                return upReference;
             }
-
-            return upReference;
         }
 
-        private Vector3 GetReferencePoint()
-        {
-            return SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.position : Vector3.zero;
-        }
+        private Vector3 ReferencePoint => SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.position : Vector3.zero;
 
-        /// <summary>
-        /// Solver update function used to orient to the user
-        /// </summary>
+        /// <inheritdoc />
         public override void SolverUpdate()
         {
             Vector3 goalPosition = WorkingPosition;
@@ -129,16 +127,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             }
 
             // Element orientation
-            Vector3 refDirUp = GetReferenceUp();
+            Vector3 refDirUp = UpReference;
             Quaternion desiredRot;
 
             if (orientToReferenceDirection)
             {
-                desiredRot = Quaternion.LookRotation(GetReferenceDirection(), refDirUp);
+                desiredRot = Quaternion.LookRotation(ReferenceDirection, refDirUp);
             }
             else
             {
-                Vector3 refPoint = GetReferencePoint();
+                Vector3 refPoint = ReferencePoint;
                 desiredRot = Quaternion.LookRotation(goalPosition - refPoint, refDirUp);
             }
 
@@ -163,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         {
             // TODO: There should be a different solver for distance constraint.
             // Determine reference locations and directions
-            Vector3 refPoint = GetReferencePoint();
+            Vector3 refPoint = ReferencePoint;
             Vector3 elementPoint = transform.position;
             Vector3 elementDelta = elementPoint - refPoint;
             float elementDist = elementDelta.magnitude;
@@ -181,9 +179,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         private void GetDesiredOrientation(ref Vector3 desiredPos)
         {
             // Determine reference locations and directions
-            Vector3 direction = GetReferenceDirection();
-            Vector3 upDirection = GetReferenceUp();
-            Vector3 referencePoint = GetReferencePoint();
+            Vector3 direction = ReferenceDirection;
+            Vector3 upDirection = UpReference;
+            Vector3 referencePoint = ReferencePoint;
             Vector3 elementPoint = transform.position;
             Vector3 elementDelta = elementPoint - referencePoint;
             float elementDist = elementDelta.magnitude;

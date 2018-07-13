@@ -6,10 +6,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
 {
     /// <summary>
-    /// SolverBodyLock provides a solver that follows the TrackedObject/TargetTransform. Adjusting "LerpTime"
+    /// This component provides a solver that follows the TrackedObject/TargetTransform. Adjusting "LerpTime"
     /// properties changes how quickly the object moves to the TrackedObject/TargetTransform's position.
     /// </summary>
-    public class SolverBodyLock : Solver
+    public class BodyLock : Solver
     {
         private enum OrientationType
         {

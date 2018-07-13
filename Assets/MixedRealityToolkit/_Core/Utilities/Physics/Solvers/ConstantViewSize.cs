@@ -1,7 +1,6 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
+
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
@@ -9,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
     /// <summary>
     ///   ConstantViewSize solver scales to maintain a constant size relative to the view (currently tied to the Camera)
     /// </summary>
-    public class SolverConstantViewSize : Solver
+    public class ConstantViewSize : Solver
     {
         private const float ScalePower = 1f;
 
@@ -100,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             return maxSize;
         }
 
-
+        /// <inheritdoc />
         public override void SolverUpdate()
         {
             AdjustSizeForView(SolverHandler.TransformTarget);
