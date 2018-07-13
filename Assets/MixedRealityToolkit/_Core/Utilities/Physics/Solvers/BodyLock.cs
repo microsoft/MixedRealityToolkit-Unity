@@ -41,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         private int tetherAngleSteps = 6;
         private Transform OrientationReference => orientation == OrientationType.CameraFacing ? CameraCache.Main.transform : SolverHandler.TransformTarget;
 
+        /// <inheritdoc />
         public override void SolverUpdate()
         {
             Quaternion goalRotation = Quaternion.identity;

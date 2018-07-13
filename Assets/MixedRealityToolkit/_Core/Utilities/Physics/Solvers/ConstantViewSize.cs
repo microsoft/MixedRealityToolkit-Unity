@@ -49,12 +49,48 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         /// </summary>
         public float CurrentDistancePercent { get; private set; } = 1f;
 
+        /// <summary>
+        /// Returns the scale to be applied based on the FOV.  This scale will be multiplied by distance as part of
+        /// the final scale calculation, so this is the ratio of vertical fov to distance.
+        /// </summary>
+        public float FovScale
+        {
+            get
+            {
+                float cameraFovRadians = (CameraCache.Main.aspect * CameraCache.Main.fieldOfView) * Mathf.Deg2Rad;
+                float sinFov = Mathf.Sin(cameraFovRadians * 0.5f);
+                return 2f * targetViewPercentV * sinFov / objectSize;
+            }
+        }
+
         private float fovScalar = 1f;
         private float objectSize = 1f;
 
         protected virtual void Start()
         {
-            float baseSize = CalculateObjectSize();
+            float baseSize;
+
+            if (manualObjectSize > 0)
+            {
+                baseSize = manualObjectSize;
+            }
+            else
+            {
+                Vector3 cachedScale = transform.root.localScale;
+                transform.root.localScale = Vector3.one;
+
+                var combinedBounds = new Bounds(transform.position, Vector3.zero);
+                var renderers = GetComponentsInChildren<Renderer>();
+
+                for (var i = 0; i < renderers.Length; i++)
+                {
+                    combinedBounds.Encapsulate(renderers[i].bounds);
+                }
+
+                baseSize = combinedBounds.extents.magnitude;
+
+                transform.root.localScale = cachedScale;
+            }
 
             if (baseSize > 0)
             {
@@ -67,65 +103,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             }
         }
 
-        /// <summary>
-        /// Attempts to calculate the size of the bounds which contains all child renderers.
-        /// This may be tricky to use, as this happens during initialization, while the app may
-        /// be undergoing scaling by other solvers/components.  Thus, the size calculation might
-        /// be inaccurate.  It's probably a better idea to use ManualObjectSize just to be sure.
-        /// </summary>
-        /// <returns> Object diameter </returns>
-        private float CalculateObjectSize()
-        {
-            if (manualObjectSize > 0)
-            {
-                return manualObjectSize;
-            }
-
-            Vector3 cachedScale = transform.root.localScale;
-            transform.root.localScale = Vector3.one;
-
-            var combinedBounds = new Bounds(transform.position, Vector3.zero);
-            var renderers = GetComponentsInChildren<Renderer>();
-
-            for (var i = 0; i < renderers.Length; i++)
-            {
-                combinedBounds.Encapsulate(renderers[i].bounds);
-            }
-
-            float maxSize = combinedBounds.extents.magnitude;
-
-            transform.root.localScale = cachedScale;
-
-            return maxSize;
-        }
-
         /// <inheritdoc />
         public override void SolverUpdate()
         {
-            AdjustSizeForView(SolverHandler.TransformTarget);
-        }
-
-        /// <summary>
-        /// Returns the scale to be applied based on the FOV.  This scale will be multiplied by distance as part of
-        /// the final scale calculation, so this is the ratio of vertical fov to distance.
-        /// </summary>
-        /// <returns> Scale of vFOV </returns>
-        public float GetFovScalar()
-        {
-            float cameraFovRadians = (CameraCache.Main.aspect * CameraCache.Main.fieldOfView) * Mathf.Deg2Rad;
-            float sinFov = Mathf.Sin(cameraFovRadians * 0.5f);
-            return 2f * targetViewPercentV * sinFov / objectSize;
-        }
-
-        private void AdjustSizeForView(Transform targetTransform)
-        {
-            if (targetTransform != null)
+            if (SolverHandler.TransformTarget != null)
             {
                 // Get current fov each time instead of trying to cache it.  Can never count on init order these days
-                fovScalar = GetFovScalar();
+                fovScalar = FovScale;
 
                 // Calculate scale based on distance from view.  Do not interpolate so we can appear at a constant size if possible.  Borrowed from greybox.
-                Vector3 targetPosition = targetTransform.position;
+                Vector3 targetPosition = SolverHandler.TransformTarget.position;
                 float distance = Mathf.Clamp(Vector3.Distance(transform.position, targetPosition), minDistance, maxDistance);
                 float scale = Mathf.Clamp(fovScalar * Mathf.Pow(distance, ScalePower), minScale, maxScale);
                 GoalScale = Vector3.one * scale;
@@ -138,5 +125,4 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             }
         }
     }
-
 }
