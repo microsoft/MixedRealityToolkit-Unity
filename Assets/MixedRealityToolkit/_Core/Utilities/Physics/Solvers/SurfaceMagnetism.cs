@@ -212,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         {
             // Pass-through by default
             GoalPosition = WorkingPosition;
-            GoalRotation = WorkingRot;
+            GoalRotation = WorkingRotation;
 
             // Determine raycast params
             var rayStep = new RayStep(RaycastOrigin, RaycastEndPoint);
@@ -237,8 +237,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             }
 
             // Do frame to frame updates of transform, smoothly toward the goal, if desired
-            UpdateWorkingPosToGoal();
-            UpdateWorkingRotToGoal();
+            UpdateWorkingPositionToGoal();
+            UpdateWorkingRotationToGoal();
         }
 
         private void SimpleRaycastStepUpdate(RayStep rayStep)

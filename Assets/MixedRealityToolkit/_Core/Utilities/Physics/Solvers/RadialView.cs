@@ -149,8 +149,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             GoalPosition = goalPosition;
             GoalRotation = desiredRot;
 
-            UpdateWorkingPosToGoal();
-            UpdateWorkingRotToGoal();
+            UpdateWorkingPositionToGoal();
+            UpdateWorkingRotationToGoal();
         }
 
         /// <summary>

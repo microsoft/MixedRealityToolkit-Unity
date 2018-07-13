@@ -36,6 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
 
         private float currentLifetime;
 
+        /// <summary>
+        /// The handler reference for this solver that's attached to this <see cref="GameObject"/>
+        /// </summary>
         protected SolverHandler SolverHandler;
 
         /// <summary>
@@ -80,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         /// <summary>
         /// Rotation version of WorkingPosition
         /// </summary>
-        public Quaternion WorkingRot
+        public Quaternion WorkingRotation
         {
             get
             {
@@ -142,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
 
             currentLifetime = 0;
         }
-        
+
         #endregion Monobehaviour Implementation
 
         /// <summary>
@@ -179,11 +182,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             SnapGoalTo(position, rotation);
 
             WorkingPosition = position;
-            WorkingRot = rotation;
+            WorkingRotation = rotation;
         }
 
         /// <summary>
-        ///   SnapGoalTo only sets the goal orientation.  Not really useful.
+        /// SnapGoalTo only sets the goal orientation.  Not really useful.
         /// </summary>
         /// <param name="position"></param>
         /// <param name="rotation"></param>
@@ -193,13 +196,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             GoalRotation = rotation;
         }
 
+        /// <summary>
+        /// Add an offset position to the target goal position.
+        /// </summary>
+        /// <param name="offset"></param>
         public virtual void AddOffset(Vector3 offset)
         {
             GoalPosition += offset;
         }
 
         /// <summary>
-        ///  Lerps Vector3 source to goal, handles lerpTime of 0
+        /// Lerps Vector3 source to goal, handles lerpTime of 0
         /// </summary>
         /// <param name="source"></param>
         /// <param name="goal"></param>
@@ -259,13 +266,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             if (smoothing)
             {
                 WorkingPosition = SmoothTo(WorkingPosition, GoalPosition, SolverHandler.DeltaTime, moveLerpTime);
-                WorkingRot = SmoothTo(WorkingRot, GoalRotation, SolverHandler.DeltaTime, rotateLerpTime);
+                WorkingRotation = SmoothTo(WorkingRotation, GoalRotation, SolverHandler.DeltaTime, rotateLerpTime);
                 WorkingScale = SmoothTo(WorkingScale, GoalScale, SolverHandler.DeltaTime, scaleLerpTime);
             }
             else
             {
                 WorkingPosition = GoalPosition;
-                WorkingRot = GoalRotation;
+                WorkingRotation = GoalRotation;
                 WorkingScale = GoalScale;
             }
         }
@@ -273,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         /// <summary>
         /// Updates only the working position to goal with smoothing
         /// </summary>
-        public void UpdateWorkingPosToGoal()
+        public void UpdateWorkingPositionToGoal()
         {
             WorkingPosition = smoothing ? SmoothTo(WorkingPosition, GoalPosition, SolverHandler.DeltaTime, moveLerpTime) : GoalPosition;
         }
@@ -281,9 +288,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         /// <summary>
         /// Updates only the working rotation to goal with smoothing
         /// </summary>
-        public void UpdateWorkingRotToGoal()
+        public void UpdateWorkingRotationToGoal()
         {
-            WorkingRot = smoothing ? SmoothTo(WorkingRot, GoalRotation, SolverHandler.DeltaTime, rotateLerpTime) : GoalRotation;
+            WorkingRotation = smoothing ? SmoothTo(WorkingRotation, GoalRotation, SolverHandler.DeltaTime, rotateLerpTime) : GoalRotation;
         }
 
         /// <summary>
