@@ -16,17 +16,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
         // Three hover lights are supported at this time.
         private const int hoverLightCount = 3;
         private const int hoverLightDataSize = 2;
+        private const string multiHoverLightKeyword = "_MULTI_HOVER_LIGHT";
         private static List<HoverLight> activeHoverLights = new List<HoverLight>(hoverLightCount);
         private static Vector4[] hoverLightData = new Vector4[hoverLightCount * hoverLightDataSize];
         private static int _HoverLightDataID;
         private static int lastHoverLightUpdate = -1;
 
         /// <summary>
-        /// Specifies the Radius of the Hoverlight effect
+        /// Specifies the Radius of the HoverLight effect
         /// </summary>
         public float Radius => radius;
 
-        [Tooltip("Specifies the radius of the Hoverlight effect")]
+        [Tooltip("Specifies the radius of the HoverLight effect")]
         [SerializeField]
         [Range(0.0f, 1.0f)]
         private float radius = 0.15f;
@@ -120,11 +121,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
 
             if (activeHoverLights.Count > 1)
             {
-                Shader.EnableKeyword("_MULTI_HOVER_LIGHT");
+                Shader.EnableKeyword(multiHoverLightKeyword);
             }
             else
             {
-                Shader.DisableKeyword("_MULTI_HOVER_LIGHT");
+                Shader.DisableKeyword(multiHoverLightKeyword);
             }
 
             for (int i = 0; i < hoverLightCount; ++i)
