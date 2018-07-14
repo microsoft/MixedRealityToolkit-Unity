@@ -34,8 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
             {
                 targetTransform = CameraCache.Main.transform;
             }
-
-            Update();
         }
 
         /// <summary>
@@ -50,19 +48,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
 
             // Get a Vector that points from the target to the main camera.
             Vector3 directionToTarget = targetTransform.position - transform.position;
-            Vector3 targetUpVector = CameraCache.Main.transform.up;
+
+            bool useCameraAsUpVector = true;
 
             // Adjust for the pivot axis.
             switch (pivotAxis)
             {
                 case PivotAxis.X:
                     directionToTarget.x = 0.0f;
-                    targetUpVector = transform.up;
+                    useCameraAsUpVector = false;
                     break;
 
                 case PivotAxis.Y:
                     directionToTarget.y = 0.0f;
-                    targetUpVector = transform.up;
+                    useCameraAsUpVector = false;
                     break;
 
                 case PivotAxis.Z:
@@ -71,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
                     break;
 
                 case PivotAxis.XY:
-                    targetUpVector = transform.up;
+                    useCameraAsUpVector = false;
                     break;
 
                 case PivotAxis.XZ:
@@ -95,7 +94,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
             }
 
             // Calculate and apply the rotation required to reorient the object
-            transform.rotation = Quaternion.LookRotation(-directionToTarget, targetUpVector);
+            if (useCameraAsUpVector)
+            {
+                transform.rotation = Quaternion.LookRotation(-directionToTarget, CameraCache.Main.transform.up);
+            }
+            else
+            {
+                transform.rotation = Quaternion.LookRotation(-directionToTarget);
+            }
         }
     }
 }
