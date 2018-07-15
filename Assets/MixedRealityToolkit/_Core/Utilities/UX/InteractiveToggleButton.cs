@@ -1,0 +1,66 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
+using UnityEngine.Events;
+
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.UX
+{
+    /// <summary>
+    /// InteractiveToggleButton expands InteractiveToggle to expose a gaze, down and up state events in the inspector.
+    /// 
+    /// Beyond the basic button functionality, Interactive also maintains the notion of selection and enabled, which allow for more robust UI features.
+    /// InteractiveEffects are behaviors that listen for updates from Interactive, which allows for visual feedback to be customized and placed on
+    /// individual elements of the Interactive GameObject
+    /// </summary>
+    public class InteractiveToggleButton : InteractiveToggle
+    {
+
+        public UnityEvent OnGazeEnterEvents;
+        public UnityEvent OnGazeLeaveEvents;
+        public UnityEvent OnDownEvents;
+        public UnityEvent OnUpEvents;
+
+        /// <summary>
+        /// The gameObject received gaze
+        /// </summary>
+        public override void OnFocusEnter(FocusEventData eventData)
+        {
+            base.OnFocusEnter(eventData);
+
+            OnGazeEnterEvents.Invoke();
+        }
+
+        /// <summary>
+        /// The gameObject no longer has gaze
+        /// </summary>
+        public override void OnFocusExit(FocusEventData eventData)
+        {
+            base.OnFocusExit(eventData);
+            OnGazeLeaveEvents.Invoke();
+        }
+
+        /// <summary>
+        /// The user is initiating a tap or hold
+        /// </summary>
+        public override void OnInputDown(InputEventData eventData)
+        {
+            base.OnInputDown(eventData);
+
+            OnDownEvents.Invoke();
+        }
+
+        /// <summary>
+        /// All tab, hold, and gesture events are completed
+        /// </summary>
+        public override void OnInputUp(InputEventData eventData)
+        {
+            bool ignoreRelease = mCheckRollOff;
+            base.OnInputUp(eventData);
+            if (!ignoreRelease)
+            {
+                OnUpEvents.Invoke();
+            }
+        }
+    }
+}
