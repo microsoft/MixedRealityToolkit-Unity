@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             public static GUIContent fadeCompleteDistance = new GUIContent("Fade Complete", "Distance From Camera When Fade is Fully In");
             public static GUIContent hoverLight = new GUIContent("Hover Light", "Enable utilization of a Hover Light");
             public static GUIContent enableHoverColorOverride = new GUIContent("Override Color", "Override Global Hover Color");
-            public static GUIContent hoverLightOpaque = new GUIContent("Hover Light Opaque", "Enable Hover Light on Transparent pixels");
+            public static GUIContent hoverLightOpaque = new GUIContent("Hover Light Opaque", "Enable Hover Light on Transparent Pixels");
             public static GUIContent enableHoverColorOpaqueOverride = new GUIContent("Override Color", "Override Opaque Hover Color");
             public static GUIContent hoverColorOpaqueOverride = new GUIContent("Color", "Override Hover Color for Transparent Pixels");
             public static GUIContent hoverColorOverride = new GUIContent("Color", "Override Hover Color");
@@ -120,12 +120,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             public static GUIContent environmentColoring = new GUIContent("Environment Coloring", "Change Color Based on View");
             public static GUIContent environmentColorThreshold = new GUIContent("Threshold", "Threshold When Environment Coloring Should Appear Based on Surface Normal");
             public static GUIContent environmentColorIntensity = new GUIContent("Intensity", "Intensity (or Brightness) of the Environment Coloring");
-            public static GUIContent environmentColorX = new GUIContent("X-Axis Color", "Color Along the Worldspace X-Axis");
-            public static GUIContent environmentColorY = new GUIContent("Y-Axis Color", "Color Along the Worldspace Y-Axis");
-            public static GUIContent environmentColorZ = new GUIContent("Z-Axis Color", "Color Along the Worldspace Z-Axis");
+            public static GUIContent environmentColorX = new GUIContent("X-Axis Color", "Color Along the World Space X-Axis");
+            public static GUIContent environmentColorY = new GUIContent("Y-Axis Color", "Color Along the World Space Y-Axis");
+            public static GUIContent environmentColorZ = new GUIContent("Z-Axis Color", "Color Along the World Space Z-Axis");
         }
 
-        protected bool initilized;
+        protected bool initialized;
 
         protected MaterialProperty renderingMode;
         protected MaterialProperty customRenderingMode;
@@ -343,10 +343,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         protected void Initialize(Material material)
         {
-            if (!initilized)
+            if (!initialized)
             {
                 MaterialChanged(material);
-                initilized = true;
+                initialized = true;
             }
         }
 
@@ -756,7 +756,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         {
                             case CustomRenderingMode.Opaque:
                                 {
-
                                     material.DisableKeyword(Styles.alphaTestOnName);
                                     material.DisableKeyword(Styles.alphaBlendOnName);
                                 }
