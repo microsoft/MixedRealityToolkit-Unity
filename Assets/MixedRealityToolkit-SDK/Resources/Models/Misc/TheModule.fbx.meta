@@ -1,0 +1,207 @@
+fileFormatVersion: 2
+guid: df72fe07efb87a446912031c6ff40744
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: BackBody
+    100002: Backpack
+    100004: BottomLeftBody
+    100006: BottomRightBody
+    100008: Camera
+    100010: Directional Light
+    100012: Face
+    100014: FrontAntenna
+    100016: Gas
+    100018: GasTank
+    100020: GasTankGlass
+    100022: GoldBase
+    100024: LeftTwirler
+    100026: Legs1
+    100028: Legs2
+    100030: Legs3
+    100032: Legs4
+    100034: Light
+    100036: Nose
+    100038: //RootNode
+    100040: ThrustCylinder
+    100042: TopGoldDial
+    100044: TopLeftBody
+    400000: BackBody
+    400002: Backpack
+    400004: BottomLeftBody
+    400006: BottomRightBody
+    400008: Camera
+    400010: Directional Light
+    400012: Face
+    400014: FrontAntenna
+    400016: Gas
+    400018: GasTank
+    400020: GasTankGlass
+    400022: GoldBase
+    400024: LeftTwirler
+    400026: Legs1
+    400028: Legs2
+    400030: Legs3
+    400032: Legs4
+    400034: Light
+    400036: Nose
+    400038: //RootNode
+    400040: ThrustCylinder
+    400042: TopGoldDial
+    400044: TopLeftBody
+    2000000: Camera
+    2100000: White
+    2100002: WhiteLight
+    2100004: GreenGas
+    2100006: ClearWindow
+    2100008: Black
+    2100010: BlackWindow
+    2100012: Default
+    2100014: RedLight
+    2100016: Gold
+    2300000: BackBody
+    2300002: Backpack
+    2300004: BottomLeftBody
+    2300006: BottomRightBody
+    2300008: Face
+    2300010: FrontAntenna
+    2300012: Gas
+    2300014: GasTank
+    2300016: GasTankGlass
+    2300018: GoldBase
+    2300020: LeftTwirler
+    2300022: Legs1
+    2300024: Legs2
+    2300026: Legs3
+    2300028: Legs4
+    2300030: Light
+    2300032: Nose
+    2300034: ThrustCylinder
+    2300036: TopGoldDial
+    2300038: TopLeftBody
+    3300000: BackBody
+    3300002: Backpack
+    3300004: BottomLeftBody
+    3300006: BottomRightBody
+    3300008: Face
+    3300010: FrontAntenna
+    3300012: Gas
+    3300014: GasTank
+    3300016: GasTankGlass
+    3300018: GoldBase
+    3300020: LeftTwirler
+    3300022: Legs1
+    3300024: Legs2
+    3300026: Legs3
+    3300028: Legs4
+    3300030: Light
+    3300032: Nose
+    3300034: ThrustCylinder
+    3300036: TopGoldDial
+    3300038: TopLeftBody
+    4300000: Light
+    4300002: Backpack
+    4300004: LeftTwirler
+    4300006: GasTank
+    4300008: Gas
+    4300010: GasTankGlass
+    4300012: BottomRightBody
+    4300014: TopLeftBody
+    4300016: Nose
+    4300018: Face
+    4300020: BackBody
+    4300022: FrontAntenna
+    4300024: BottomLeftBody
+    4300026: GoldBase
+    4300028: ThrustCylinder
+    4300030: TopGoldDial
+    4300032: Legs1
+    4300034: Legs2
+    4300036: Legs3
+    4300038: Legs4
+    7400000: Take 001
+    9500000: //RootNode
+    10800000: Directional Light
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

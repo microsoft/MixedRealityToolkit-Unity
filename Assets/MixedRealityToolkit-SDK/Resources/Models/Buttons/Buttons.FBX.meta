@@ -1,0 +1,178 @@
+fileFormatVersion: 2
+guid: 6ec5b0c8a253e524bba03621ca42cb1a
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Button
+    100002: ButtonOutline
+    100004: //RootNode
+    100006: CheckBoxButton
+    100008: CheckBoxCheck
+    100010: CheckBoxOutline
+    100012: RadialDot
+    100014: RadialOutline
+    100016: RaialButon
+    100018: SliderBar
+    100020: SliderFill
+    100022: SliderKnob
+    100024: ToggleButton
+    100026: ToggleDot
+    100028: ToggleOutline
+    400000: Button
+    400002: ButtonOutline
+    400004: //RootNode
+    400006: CheckBoxButton
+    400008: CheckBoxCheck
+    400010: CheckBoxOutline
+    400012: RadialDot
+    400014: RadialOutline
+    400016: RaialButon
+    400018: SliderBar
+    400020: SliderFill
+    400022: SliderKnob
+    400024: ToggleButton
+    400026: ToggleDot
+    400028: ToggleOutline
+    2100000: ButtonOutlineOuter
+    2100002: ButtonOutlineInner
+    2100004: Button
+    2100006: CheckBoxOutlineOuter
+    2100008: CheckBoxOutlineInner
+    2100010: CheckBoxButton
+    2100012: CheckBoxCheck
+    2100014: RadialOutlineOuter
+    2100016: RadialOutlineInner
+    2100018: RadialButton
+    2100020: RadialDot
+    2100022: ToggleButton
+    2100024: ToggleDot
+    2100026: ToggleOutlineOuter
+    2100028: ToggleOutlineInner
+    2100030: SliderBar
+    2100032: SliderKnob
+    2100034: SliderFill
+    2300000: Button
+    2300002: ButtonOutline
+    2300004: CheckBoxButton
+    2300006: CheckBoxCheck
+    2300008: CheckBoxOutline
+    2300010: RadialDot
+    2300012: RadialOutline
+    2300014: RaialButon
+    2300016: SliderBar
+    2300018: SliderFill
+    2300020: SliderKnob
+    2300022: ToggleButton
+    2300024: ToggleDot
+    2300026: ToggleOutline
+    3300000: Button
+    3300002: ButtonOutline
+    3300004: CheckBoxButton
+    3300006: CheckBoxCheck
+    3300008: CheckBoxOutline
+    3300010: RadialDot
+    3300012: RadialOutline
+    3300014: RaialButon
+    3300016: SliderBar
+    3300018: SliderFill
+    3300020: SliderKnob
+    3300022: ToggleButton
+    3300024: ToggleDot
+    3300026: ToggleOutline
+    4300000: ButtonOutline
+    4300002: Button
+    4300004: CheckBoxOutline
+    4300006: CheckBoxButton
+    4300008: CheckBoxCheck
+    4300010: RadialOutline
+    4300012: RaialButon
+    4300014: RadialDot
+    4300016: ToggleButton
+    4300018: ToggleDot
+    4300020: ToggleOutline
+    4300022: SliderBar
+    4300024: SliderKnob
+    4300026: SliderFill
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
