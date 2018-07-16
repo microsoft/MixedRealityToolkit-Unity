@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
                 // the element
                 SerializedProperty elementProperty = list.GetArrayElementAtIndex(index);
                 EditorGUILayout.BeginHorizontal();
-                bool elementExpanded = EditorGUILayout.PropertyField(elementProperty/*, new GUIContent($"Keyword {index + 1}")*/);
+                bool elementExpanded = EditorGUILayout.PropertyField(elementProperty);
                 GUILayout.FlexibleSpace();
                 // the remove element button
                 bool elementRemoved = GUILayout.Button(RemoveButtonContent, EditorStyles.miniButton, MiniButtonWidth);
