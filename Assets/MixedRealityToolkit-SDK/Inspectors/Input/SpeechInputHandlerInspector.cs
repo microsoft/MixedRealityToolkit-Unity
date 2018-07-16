@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
                 // the element
                 SerializedProperty elementProperty = list.GetArrayElementAtIndex(index);
                 EditorGUILayout.BeginHorizontal();
-                bool elementExpanded = EditorGUILayout.PropertyField(elementProperty);
+                bool elementExpanded = EditorGUILayout.PropertyField(elementProperty/*, new GUIContent($"Keyword {index + 1}")*/);
                 GUILayout.FlexibleSpace();
                 // the remove element button
                 bool elementRemoved = GUILayout.Button(RemoveButtonContent, EditorStyles.miniButton, MiniButtonWidth);
@@ -123,11 +123,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
             // the add element button
             if (GUILayout.Button(AddButtonContent, EditorStyles.miniButton, MiniButtonWidth))
             {
-                list.InsertArrayElementAtIndex(list.arraySize);
+                var index = list.arraySize;
+                list.InsertArrayElementAtIndex(index);
+                var elementProperty = list.GetArrayElementAtIndex(index);
+                SerializedProperty keywordProperty = elementProperty.FindPropertyRelative("keyword");
+                keywordProperty.stringValue = string.Empty;
             }
 
             EditorGUILayout.EndHorizontal();
-
             EditorGUI.indentLevel--;
         }
 

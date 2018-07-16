@@ -315,12 +315,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
-                if (interactionRequiresHold && eventData.MixedRealityInputAction.Id == activeHoldAction.Id)
+                if (interactionRequiresHold && eventData.MixedRealityInputAction == activeHoldAction)
                 {
                     InteractionEnabled = false;
                 }
 
-                if (eventData.MixedRealityInputAction.Id == interactionEnabledAction.Id)
+                if (eventData.MixedRealityInputAction == interactionEnabledAction)
                 {
                     OnSelectReleased();
                 }
@@ -332,12 +332,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
-                if (interactionRequiresHold && (eventData.MixedRealityInputAction.Id == activeHoldAction.Id))
+                if (interactionRequiresHold && (eventData.MixedRealityInputAction == activeHoldAction))
                 {
                     InteractionEnabled = true;
                 }
 
-                if (eventData.MixedRealityInputAction.Id == interactionEnabledAction.Id)
+                if (eventData.MixedRealityInputAction == interactionEnabledAction)
                 {
                     OnSelectPressed();
                 }

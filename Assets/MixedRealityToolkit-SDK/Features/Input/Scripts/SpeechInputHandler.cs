@@ -12,6 +12,9 @@ using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
 {
+    /// <summary>
+    /// This component handles the speech input events raised form the <see cref="IMixedRealityInputSystem"/>.
+    /// </summary>
     [DisallowMultipleComponent]
     public class SpeechInputHandler : MonoBehaviour, IMixedRealitySpeechHandler
     {
@@ -25,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private KeywordAndResponse[] keywords = new KeywordAndResponse[0];
 
         [SerializeField]
-        [Tooltip("Is Gaze required for the keyword to raise the action?")]
+        [Tooltip("Is Gaze required for the keyword to raise any of the keyword actions registered to this component?")]
         private bool isGazeRequired = false;
 
         [SerializeField]
@@ -34,20 +37,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
 
-        private IMixedRealityInputSystem inputSystem;
+        private IMixedRealityInputSystem inputSystem = null;
+        private IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
         #region Monobehaviour Implementation
-
-        private void Awake()
-        {
-            inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
-        }
 
         private void OnEnable()
         {
             if (isGazeRequired)
             {
-                inputSystem.Register(gameObject);
+                InputSystem.Register(gameObject);
             }
         }
 
@@ -81,15 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             if (isGazeRequired)
             {
-                inputSystem.Unregister(gameObject);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            if (isGazeRequired)
-            {
-                inputSystem.Unregister(gameObject);
+                InputSystem.Unregister(gameObject);
             }
         }
 
