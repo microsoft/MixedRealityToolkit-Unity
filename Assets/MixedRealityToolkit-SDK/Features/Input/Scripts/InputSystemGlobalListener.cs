@@ -13,14 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     public class InputSystemGlobalListener : MonoBehaviour
     {
         private IMixedRealityInputSystem inputSystem = null;
-        private IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+        protected IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             InputSystem.Register(gameObject);
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             InputSystem.Unregister(gameObject);
         }

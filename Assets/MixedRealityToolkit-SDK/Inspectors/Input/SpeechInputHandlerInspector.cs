@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
 {
     [CustomEditor(typeof(SpeechInputHandler))]
-    public class SpeechInputHandlerInspector : Editor
+    public class SpeechInputHandlerInspector : BaseInputHandlerInspector
     {
         private static readonly GUIContent RemoveButtonContent = new GUIContent("-", "Remove keyword");
         private static readonly GUIContent AddButtonContent = new GUIContent("+", "Add keyword");
@@ -20,19 +20,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
         private string[] registeredKeywords;
 
         private SerializedProperty keywordsProperty;
-        private SerializedProperty isGazeRequiredProperty;
         private SerializedProperty persistentKeywordsProperty;
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             keywordsProperty = serializedObject.FindProperty("keywords");
-            isGazeRequiredProperty = serializedObject.FindProperty("isGazeRequired");
             persistentKeywordsProperty = serializedObject.FindProperty("persistentKeywords");
             registeredKeywords = RegisteredKeywords().Distinct().ToArray();
         }
 
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
             serializedObject.Update();
 
             if (registeredKeywords == null || registeredKeywords.Length == 0)
@@ -42,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
                 return;
             }
 
-            EditorGUILayout.PropertyField(isGazeRequiredProperty);
             EditorGUILayout.PropertyField(persistentKeywordsProperty);
 
             ShowList(keywordsProperty);

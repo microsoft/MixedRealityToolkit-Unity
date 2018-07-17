@@ -3,9 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
@@ -14,15 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     /// This component handles pointer clicks from all types of input sources.<para/>
     /// i.e. a primary mouse button click, motion controller selection press, or hand tap.
     /// </summary>
-    public class PointerClickHandler : MonoBehaviour, IMixedRealityPointerHandler
+    public class PointerClickHandler : BaseInputHandler, IMixedRealityPointerHandler
     {
-        private IMixedRealityInputSystem inputSystem = null;
-        private IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
-
-        [SerializeField]
-        [Tooltip("Is Gaze required for the action to raise the event?")]
-        private bool isGazeRequired = false;
-
         [SerializeField]
         [Tooltip("The input actions to be recognized on pointer up.")]
         private InputActionEventPair onPointerUpActionEvents;
@@ -34,26 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         [SerializeField]
         [Tooltip("The input actions to be recognized on pointer clicked.")]
         private InputActionEventPair onPointerClickedActionEvents;
-
-        #region Monobehaviour Implementation
-
-        private void OnEnable()
-        {
-            if (isGazeRequired)
-            {
-                InputSystem.Register(gameObject);
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (isGazeRequired)
-            {
-                InputSystem.Unregister(gameObject);
-            }
-        }
-
-        #endregion Monobehaviour Implementation
 
         #region IMixedRealityPointerHandler Implementation
 

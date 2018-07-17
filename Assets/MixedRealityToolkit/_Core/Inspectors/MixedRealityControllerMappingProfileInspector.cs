@@ -297,11 +297,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 var actionConstraint = action.FindPropertyRelative("axisConstraint");
 
                 EditorGUI.BeginChangeCheck();
-                actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, CheckValue(actionId.intValue, actionIds.Length), actionLabels, actionIds, GUILayout.ExpandWidth(true));
+                actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, CheckValue(actionId.intValue, actionIds.Length - 1), actionLabels, actionIds, GUILayout.ExpandWidth(true));
 
                 if (EditorGUI.EndChangeCheck())
                 {
-                    MixedRealityInputAction inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue];
+                    MixedRealityInputAction inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
                     actionDescription.stringValue = inputAction.Description;
                     actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
                 }
