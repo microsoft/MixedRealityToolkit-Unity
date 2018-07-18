@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.Cursors;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections;
 using UnityEngine;
@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             {
                 var cursorObj = Instantiate(CursorPrefab, transform);
                 cursorObj.name = $"{name}_Cursor";
-                BaseCursor = cursorObj.GetComponent<BaseCursor>();
+                BaseCursor = cursorObj.GetComponent<IMixedRealityCursor>();
                 Debug.Assert(BaseCursor != null, "Failed to load cursor");
                 BaseCursor.Pointer = this;
                 Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");

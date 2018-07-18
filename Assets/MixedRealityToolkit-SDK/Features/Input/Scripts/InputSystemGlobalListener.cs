@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
@@ -12,17 +13,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     /// </summary>
     public class InputSystemGlobalListener : MonoBehaviour
     {
-        private IMixedRealityInputSystem inputSystem = null;
-        protected IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+        private static IMixedRealityInputSystem inputSystem = null;
+        protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
-        protected virtual void OnEnable()
+        private readonly WaitUntil waitForInputSystem = new WaitUntil(() => MixedRealityManager.IsInitialized);
+
+        protected virtual async void OnEnable()
         {
+            await waitForInputSystem;
             InputSystem.Register(gameObject);
         }
 
         protected virtual void OnDisable()
         {
-            InputSystem.Unregister(gameObject);
+            if (MixedRealityManager.IsInitialized)
+            {
+                InputSystem.Unregister(gameObject);
+            }
         }
     }
 }

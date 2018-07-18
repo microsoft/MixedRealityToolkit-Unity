@@ -1,0 +1,82 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
+{
+    /// <summary>
+    /// Base Component for handling Focus on GameObjects.
+    /// </summary>
+    public class BaseFocusHandler : MonoBehaviour, IMixedRealityFocusHandler
+    {
+        private IMixedRealityInputSystem inputSystem = null;
+        protected IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+
+        [SerializeField]
+        [Tooltip("Does this GameObject start with Focus Enabled?")]
+        private bool focusEnabled = true;
+
+        /// <inheritdoc />
+        public virtual bool FocusEnabled
+        {
+            get { return focusEnabled; }
+            set { focusEnabled = value; }
+        }
+
+        private bool hasFocus;
+
+        /// <inheritdoc />
+        public bool HasFocus => FocusEnabled && hasFocus;
+
+        /// <inheritdoc />
+        public List<IMixedRealityPointer> Focusers { get; } = new List<IMixedRealityPointer>(0);
+
+        /// <inheritdoc />
+        public virtual void OnFocusEnter(FocusEventData eventData) { }
+
+        /// <inheritdoc />
+        public virtual void OnFocusExit(FocusEventData eventData) { }
+
+        /// <inheritdoc />
+        public virtual void OnBeforeFocusChange(FocusEventData eventData)
+        {
+            // If we're the new target object
+            // Add the pointer to the list of focusers
+            // and update our hasFocus flag if focusing is enabled.
+            if (eventData.NewFocusedObject == this)
+            {
+                eventData.Pointer.FocusTarget = this;
+                Focusers.Add(eventData.Pointer);
+
+                if (focusEnabled)
+                {
+                    hasFocus = true;
+                }
+            }
+            // If we're the old focused target object
+            // update our flag and remove the pointer from our list.
+            else if (eventData.OldFocusedObject == this)
+            {
+                hasFocus = false;
+
+                Focusers.Remove(eventData.Pointer);
+
+                // If there is no new focused target
+                // clear the FocusTarget field from the Pointer.
+                if (eventData.NewFocusedObject == null)
+                {
+                    eventData.Pointer.FocusTarget = null;
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public virtual void OnFocusChanged(FocusEventData eventData) { }
+    }
+}

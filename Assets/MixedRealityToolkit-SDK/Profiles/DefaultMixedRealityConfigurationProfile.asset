@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -16,8 +16,8 @@ MonoBehaviour:
   cameraProfile: {fileID: 11400000, guid: b9a895b32a50a7f45b1e4da728d50741, type: 2}
   enableInputSystem: 1
   inputSystemType:
-    reference: Microsoft.MixedReality.Toolkit.InputSystem.MixedRealityInputManager,
-      Microsoft.MixedReality.Toolkit.InputSystem
+    reference: Microsoft.MixedReality.Toolkit.SDK.Input.MixedRealityInputManager,
+      Microsoft.MixedReality.Toolkit.SDK
   inputActionsProfile: {fileID: 11400000, guid: 3bd960f68a631aa4384de23c6a96ec51,
     type: 2}
   enableSpeechCommands: 1

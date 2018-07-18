@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using Microsoft.MixedReality.Toolkit.SDK.Input;
+using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
