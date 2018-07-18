@@ -72,7 +72,7 @@ Material:
     - _BorderLightOpaque: 0
     - _BorderLightUsesHoverColor: 1
     - _BorderMinValue: 0.1
-    - _BorderWidth: 0.05
+    - _BorderWidth: 0.1
     - _BorderWidthHorizontal: 0.048
     - _BorderWidthVertical: 0.1
     - _BumpScale: 1
@@ -88,6 +88,7 @@ Material:
     - _DstBlend: 10
     - _EdgeSmoothingValue: 0.002
     - _EnableEmission: 0
+    - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 1
     - _EnableLightMap: 0
     - _EnableNormalMap: 0
@@ -100,6 +101,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _HoverLight: 1
+    - _HoverLightOpaque: 0
     - _InnerGlow: 1
     - _Metallic: 0
     - _Mode: 2
@@ -133,6 +135,7 @@ Material:
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
     - _HoverColor: {r: 1, g: 0, b: 0, a: 1}
+    - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColorOverride: {r: 0, g: 0.25517225, b: 1, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.5019608}
     - _RimColor: {r: 0.33088237, g: 0.33088237, b: 0.33088237, a: 1}

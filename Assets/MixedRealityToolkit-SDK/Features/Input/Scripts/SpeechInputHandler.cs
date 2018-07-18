@@ -3,17 +3,18 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
 {
+    /// <summary>
+    /// This component handles the speech input events raised form the <see cref="Internal.Interfaces.InputSystem.IMixedRealityInputSystem"/>.
+    /// </summary>
     [DisallowMultipleComponent]
-    public class SpeechInputHandler : MonoBehaviour, IMixedRealitySpeechHandler
+    public class SpeechInputHandler : BaseInputHandler, IMixedRealitySpeechHandler
     {
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
@@ -25,36 +26,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private KeywordAndResponse[] keywords = new KeywordAndResponse[0];
 
         [SerializeField]
-        [Tooltip("Is Gaze required for the keyword to raise the action?")]
-        private bool isGazeRequired = false;
-
-        [SerializeField]
         [Tooltip("Keywords are persistent across all scenes.  This Speech Input Handler instance will not be destroyed when loading a new scene.")]
         private bool persistentKeywords = false;
 
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
 
-        private IMixedRealityInputSystem inputSystem;
-
         #region Monobehaviour Implementation
-
-        private void Awake()
-        {
-            inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
-        }
-
-        private void OnEnable()
-        {
-            if (isGazeRequired)
-            {
-                inputSystem.Register(gameObject);
-            }
-        }
 
         private void Start()
         {
             if (persistentKeywords)
             {
+                Debug.Assert(gameObject.transform.parent == null, "Persistent keyword GameObject must be at the root level of the scene hierarchy.");
                 DontDestroyOnLoad(gameObject);
             }
 
@@ -74,22 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 {
                     responses.Add(keyword, keywordAndResponse.Response);
                 }
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (isGazeRequired)
-            {
-                inputSystem.Unregister(gameObject);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            if (isGazeRequired)
-            {
-                inputSystem.Unregister(gameObject);
             }
         }
 

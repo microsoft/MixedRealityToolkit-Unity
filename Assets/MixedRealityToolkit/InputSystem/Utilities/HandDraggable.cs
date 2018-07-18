@@ -304,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Utilities
                 return;
             }
 
-            if (eventData.MixedRealityInputAction.Id != grabAction.Id)
+            if (eventData.MixedRealityInputAction != grabAction)
             {
                 // If we're not grabbing.
                 return;

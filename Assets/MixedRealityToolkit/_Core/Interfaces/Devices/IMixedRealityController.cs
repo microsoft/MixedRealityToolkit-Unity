@@ -13,6 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
     public interface IMixedRealityController
     {
         /// <summary>
+        /// Is the controller enabled?
+        /// </summary>
+        bool Enabled { get; set; }
+
+        /// <summary>
         /// Outputs the current state of the Input Source, whether it is tracked or not. As defined by the SDK / Unity.
         /// </summary>
         TrackingState TrackingState { get; }
@@ -54,5 +59,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// Mapping definition for this controller, linking the Physical inputs to logical Input System Actions
         /// </summary>
         MixedRealityInteractionMapping[] Interactions { get; }
+
+        /// <summary>
+        /// For those platforms that require Unity Input mappings
+        /// </summary>
+        InputManagerAxis[] ControllerAxisMappings { get; }
     }
 }

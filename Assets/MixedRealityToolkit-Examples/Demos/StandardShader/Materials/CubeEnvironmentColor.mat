@@ -90,8 +90,8 @@ Material:
     - _EnableHoverColorOverride: 0
     - _EnableLightMap: 0
     - _EnableNormalMap: 0
-    - _EnvironmentColorIntensity: 0.46
-    - _EnvironmentColorThreshold: 1.46
+    - _EnvironmentColorIntensity: 0.5
+    - _EnvironmentColorThreshold: 3
     - _EnvironmentColoring: 1
     - _FadeBeginDistance: 0.85
     - _FadeCompleteDistance: 0.5
