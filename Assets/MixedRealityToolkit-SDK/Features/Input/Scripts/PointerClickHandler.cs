@@ -16,48 +16,48 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     {
         [SerializeField]
         [Tooltip("The input actions to be recognized on pointer up.")]
-        private InputActionEventPair onPointerUpActionEvents;
+        private InputActionEventPair onPointerUpActionEvent;
 
         [SerializeField]
         [Tooltip("The input actions to be recognized on pointer down.")]
-        private InputActionEventPair onPointerDownActionEvents;
+        private InputActionEventPair onPointerDownActionEvent;
 
         [SerializeField]
         [Tooltip("The input actions to be recognized on pointer clicked.")]
-        private InputActionEventPair onPointerClickedActionEvents;
+        private InputActionEventPair onPointerClickedActionEvent;
 
         #region IMixedRealityPointerHandler Implementation
 
         /// <inheritdoc />
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            if (onPointerUpActionEvents.InputAction == MixedRealityInputAction.None) { return; }
+            if (onPointerUpActionEvent.InputAction == MixedRealityInputAction.None) { return; }
 
-            if (onPointerUpActionEvents.InputAction == eventData.MixedRealityInputAction)
+            if (onPointerUpActionEvent.InputAction == eventData.MixedRealityInputAction)
             {
-                onPointerUpActionEvents.UnityEvent.Invoke();
+                onPointerUpActionEvent.UnityEvent.Invoke();
             }
         }
 
         /// <inheritdoc />
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            if (onPointerDownActionEvents.InputAction == MixedRealityInputAction.None) { return; }
+            if (onPointerDownActionEvent.InputAction == MixedRealityInputAction.None) { return; }
 
-            if (onPointerDownActionEvents.InputAction == eventData.MixedRealityInputAction)
+            if (onPointerDownActionEvent.InputAction == eventData.MixedRealityInputAction)
             {
-                onPointerDownActionEvents.UnityEvent.Invoke();
+                onPointerDownActionEvent.UnityEvent.Invoke();
             }
         }
 
         /// <inheritdoc />
         public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
-            if (onPointerClickedActionEvents.InputAction == MixedRealityInputAction.None) { return; }
+            if (onPointerClickedActionEvent.InputAction == MixedRealityInputAction.None) { return; }
 
-            if (onPointerClickedActionEvents.InputAction == eventData.MixedRealityInputAction)
+            if (onPointerClickedActionEvent.InputAction == eventData.MixedRealityInputAction)
             {
-                onPointerClickedActionEvents.UnityEvent.Invoke();
+                onPointerClickedActionEvent.UnityEvent.Invoke();
             }
         }
 
