@@ -103,7 +103,7 @@ Material:
     - _HoverLight: 1
     - _HoverLightOpaque: 0
     - _InnerGlow: 0
-    - _Metallic: 0
+    - _Metallic: 0.5
     - _Mode: 0
     - _MyCullVariable: 1
     - _NearPlaneFade: 0
