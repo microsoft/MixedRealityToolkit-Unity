@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return $"{Id}.{AxisConstraint}".GetHashCode();
         }
 
         #endregion IEqualityComparer Implementation
