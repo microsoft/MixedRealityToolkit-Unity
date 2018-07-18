@@ -18,9 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
         {
             base.OnEnable();
 
-            pointerUpProperty = serializedObject.FindProperty("onPointerUpActionEvents");
-            pointerDownProperty = serializedObject.FindProperty("onPointerDownActionEvents");
-            pointerClickedProperty = serializedObject.FindProperty("onPointerClickedActionEvents");
+            pointerUpProperty = serializedObject.FindProperty("onPointerUpActionEvent");
+            pointerDownProperty = serializedObject.FindProperty("onPointerDownActionEvent");
+            pointerClickedProperty = serializedObject.FindProperty("onPointerClickedActionEvent");
 
             MixedRealityManager.ConfirmInitialized();
         }
