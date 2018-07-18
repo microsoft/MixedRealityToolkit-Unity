@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Focus
             }
             private GraphicInputEventData graphicData;
 
-            private FocusDetails focusDetails;
+            private FocusDetails focusDetails = new FocusDetails();
 
             public PointerData(IMixedRealityPointer pointer)
             {
