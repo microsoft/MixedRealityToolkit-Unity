@@ -53,7 +53,7 @@ namespace HoloToolkit.Unity
         {
             if (TargetTransform == null)
             {
-                TargetTransform = CameraCache.Main.transform;
+                TargetTransform = CameraCache.Main?.transform;
             }
         }
 
@@ -64,6 +64,7 @@ namespace HoloToolkit.Unity
         {
             if (TargetTransform == null)
             {
+                TargetTransform = CameraCache.Main?.transform;
                 return;
             }
 
