@@ -33,6 +33,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             Edge[] geometryEdges, 
             Vector2 point)
         {
+            if (geometryEdges.Length == 0)
+            {
+                return false;
+            }
+
             // Check if a ray to the right (X+) intersects with an 
             // odd number of edges (inside) or an even number of edges (outside)
             var rightEdge = new Edge(point, new Vector2(maxWidth, point.y));

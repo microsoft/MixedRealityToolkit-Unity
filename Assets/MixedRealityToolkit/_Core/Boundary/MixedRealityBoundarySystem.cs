@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
-using System;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
@@ -27,13 +27,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         public bool EnablePlatformBoundaryRendering { get; set; } = true;
 
         /// <inheritdoc/>
-        public Edge[] Geometry { get; private set; } = new Edge[0];
+        public Edge[] GeometryBounds { get; private set; } = new Edge[0];
 
         /// <inheritdoc/>
         public float? FloorHeight { get; private set; } = null;
 
         /// <inheritdoc/>
-        public InscribedRectangle InscribedRectangleBounds { get; private set; } = null;
+        public InscribedRectangle InscribedRectangularBounds { get; private set; } = null;
 
         /// <summary>
         /// MixedRealityBoundaryManager constructor
@@ -69,15 +69,49 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             InitializeInternal();
         }
 
-        // TODO
+        /// <inheritdoc/>
         public bool Contains(Vector3 location)
         {
             return Contains(location, Boundary.Type.TrackedArea);
         }
 
-        // TODO
+        /// <inheritdoc/>
         public bool Contains(Vector3 location, Boundary.Type boundaryType)
         {
+            if (!EdgeUtils.IsValidPoint(location))
+            {
+                // Invalid location.
+                return false;
+            }
+
+            if (!FloorHeight.HasValue)
+            {
+                // No floor.
+                return false;
+            }
+
+            if ((FloorHeight.Value > location.y) ||
+                (BoundaryHeight < location.y))
+            {
+                // Location below the floor or above the boundary height.
+                return false;
+            }
+
+            if (boundaryType == Boundary.Type.PlayArea)
+            {
+                // Check the inscribed rectangle.
+                if (InscribedRectangularBounds != null)
+                {
+                    return InscribedRectangularBounds.IsInsideBoundary(location);
+                }
+            }
+            else if(boundaryType == Boundary.Type.TrackedArea)
+            {
+                // Check the geometry
+                return EdgeUtils.IsInsideBoundary(GeometryBounds, location);
+            }
+
+            // Not in either boundary type.
             return false;
         }
 
@@ -87,9 +121,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         private void CalculateBoundaryBounds()
         {
             // Reset the bounds
-            Geometry = new Edge[0];
+            GeometryBounds = new Edge[0];
             FloorHeight = null;
-            InscribedRectangleBounds = null;
+            InscribedRectangularBounds = null;
 
             // Boundaries are supported for Room Scale experiences only.
             if (XRDevice.GetTrackingSpaceType() != TrackingSpaceType.RoomScale)
@@ -126,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 }
 
                 FloorHeight = floorHeight;
-                Geometry = boundaryEdges.ToArray();
+                GeometryBounds = boundaryEdges.ToArray();
                 CreateInscribedBounds();
             }
             else
@@ -142,11 +176,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </summary>
         private void CreateInscribedBounds()
         {
-            // We use the same seed so that from run to run, the inscribed bounds are
+            // We always use the same seed so that from run to run, the inscribed bounds are
             // consistent.
-            int seed = Math.Abs("Mixed Reality Toolkit".GetHashCode());
-
-            InscribedRectangleBounds = new InscribedRectangle(Geometry, seed);
+            InscribedRectangularBounds = new InscribedRectangle(GeometryBounds, Mathf.Abs("Mixed Reality Toolkit".GetHashCode()));
         }
 
         /// <summary>

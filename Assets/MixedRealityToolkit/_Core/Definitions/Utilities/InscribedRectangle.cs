@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// True if the point is within the rectangle's bounds, false otherwise.
         /// </returns>
         /// <exception cref="InvalidOperationException">The rectangle is not valid.</exception>
-        public bool IsWithinBounds(Vector2 point)
+        public bool IsInsideBoundary(Vector2 point)
         {
             if (!IsValid)
             {

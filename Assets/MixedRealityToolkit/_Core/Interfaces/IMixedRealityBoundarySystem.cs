@@ -44,12 +44,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// BoundaryGeometry should be treated as the outline of the player's space, placed
         /// on the floor.
         /// </remarks>
-        Edge[] Geometry { get; }
+        Edge[] GeometryBounds { get; }
 
         /// <summary>
         /// The largest rectangle that is contained withing the playspace geometry.
         /// </summary>
-        InscribedRectangle InscribedRectangleBounds { get; }
+        InscribedRectangle InscribedRectangularBounds { get; }
 
         /// <summary>
         /// Indicates the height of the floor, in relation to the coordinate system origin.
