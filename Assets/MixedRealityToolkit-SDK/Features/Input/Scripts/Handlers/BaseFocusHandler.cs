@@ -13,13 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
     /// <summary>
     /// Base Component for handling Focus on <see cref="GameObject"/>s.
     /// </summary>
+    [RequireComponent(typeof(Collider))]
     public abstract class BaseFocusHandler : MonoBehaviour, IMixedRealityFocusHandler
     {
         private static IMixedRealityInputSystem inputSystem = null;
         protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
         [SerializeField]
-        [Tooltip("Is Focus capabilities enabled for this GameObject?")]
+        [Tooltip("Is Focus capabilities enabled for this component?")]
         private bool focusEnabled = true;
 
         /// <inheritdoc />

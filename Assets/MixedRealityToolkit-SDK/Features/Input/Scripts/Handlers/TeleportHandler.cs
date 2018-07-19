@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 {
     /// <summary>
-    /// 
+    /// SDK component handling teleportation when a user focuses this <see cref="GameObject"/> and triggers the teleport action.
     /// </summary>
     public class TeleportHandler : BaseFocusHandler, ITeleportTarget
     {
