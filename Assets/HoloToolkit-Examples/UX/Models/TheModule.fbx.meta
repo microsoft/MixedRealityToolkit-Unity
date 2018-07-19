@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 2c11bf713819a084d8cb4c35db20d042
-timeCreated: 1497914841
-licenseType: Pro
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -258,6 +256,8 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -266,7 +266,7 @@ ModelImporter:
   tangentSpace:
     normalSmoothAngle: 45
     normalImportMode: 0
-    tangentImportMode: 0
+    tangentImportMode: 3
     normalCalculationMode: 0
   importAnimation: 0
   copyAvatar: 0
