@@ -237,9 +237,9 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
                     {
                         newState = ManipulationMode.None;
                     }
-                    else if (handsPressedCount == 1 && enableOneHandMovement)
+                    else if (handsPressedCount == 1)
                     {
-                        newState = ManipulationMode.Move;
+                        newState = enableOneHandMovement ? ManipulationMode.Move : ManipulationMode.None;
                     }
                     else if (handsPressedCount > 1)
                     {
@@ -252,14 +252,13 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
                 case ManipulationMode.MoveAndRotate:
                 case ManipulationMode.RotateAndScale:
                 case ManipulationMode.MoveScaleAndRotate:
-                    // TODO: if < 2, make this go to start state ('drop it')
                     if (handsPressedCount == 0)
                     {
                         newState = ManipulationMode.None;
                     }
                     else if (handsPressedCount == 1)
                     {
-                        newState = ManipulationMode.Move;
+                        newState = enableOneHandMovement ? ManipulationMode.Move : ManipulationMode.None;
                     }
                     break;
             }
