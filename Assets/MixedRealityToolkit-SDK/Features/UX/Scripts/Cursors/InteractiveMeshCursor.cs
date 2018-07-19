@@ -2,8 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
@@ -15,28 +13,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
     public class InteractiveMeshCursor : BaseCursor
     {
         [Tooltip("The ring or outer element")]
-        public GameObject Ring;
+        private GameObject ring;
 
         [Tooltip("Inner cursor element")]
-        public GameObject Dot;
-
-        [Tooltip("Point light")]
-        public GameObject Light;
+        private GameObject dot;
 
         [Tooltip("The scale factor to soften the distance scaling, we want the cursor to scale in the distance, but not disappear.")]
-        public float DistanceScaleFactor = 0.3f;
+        private float distanceScaleFactor = 0.3f;
 
         [Tooltip("The scale both elements will be at their default state")]
-        public float DefaultScale = 0.75f;
+        private float defaultScale = 0.75f;
 
         [Tooltip("The scale both elements will when pressed")]
-        public float DownScale = 0.5f;
+        private float downScale = 0.5f;
 
         [Tooltip("The scale both elements will a hand is visible")]
-        public float UpScale = 1;
+        private float upScale = 1;
 
         [Tooltip("Time to scale between states")]
-        public float ScaleTime = 0.5f;
+        private float scaleTime = 0.5f;
 
         /// <summary>
         /// internal state and element management
@@ -48,20 +43,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         private bool hasHand = false;
         private bool isDown = false;
 
-        private readonly Vector3 baseScale = Vector3.one;
         private Vector3 targetScale;
-
-        /// <summary>
-        /// The Current Input System for this Input Source.
-        /// </summary>
-        private static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
-        private static IMixedRealityInputSystem inputSystem = null;
-
-        private Vector3 mAwakeScale;
+        private Vector3 initialScale;
 
         private void Awake()
         {
-            mAwakeScale = transform.localScale;
+            initialScale = transform.localScale;
         }
 
         /// <summary>
@@ -82,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             isDown = IsPointerDown;
             hasHover = TargetedObject != null;
 
-            targetScale = baseScale * DefaultScale;
+            targetScale = Vector3.one * defaultScale;
             bool showRing = false;
 
             switch (state)
@@ -96,14 +83,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                     break;
                 case CursorStateEnum.Interact:
                     showRing = true;
-                    targetScale = baseScale * DownScale;
+                    targetScale = Vector3.one * downScale;
                     break;
                 case CursorStateEnum.InteractHover:
                     showRing = true;
-                    targetScale = baseScale * UpScale;
+                    targetScale = Vector3.one * upScale;
                     break;
                 case CursorStateEnum.Select:
-                    targetScale = baseScale * UpScale;
+                    targetScale = Vector3.one * upScale;
                     break;
                 case CursorStateEnum.Release:
                     break;
@@ -116,8 +103,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                 return;
             }
 
-            Ring.SetActive(showRing);
-            Dot.SetActive(!showRing);
+            ring.SetActive(showRing);
+            dot.SetActive(!showRing);
 
             // added observation of CursorModifier
             if (Pointer.CursorModifier != null && hasHover)
@@ -134,22 +121,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             base.UpdateCursorTransform();
 
             // animate scale of ring and dot
-            if (timer < ScaleTime)
+            if (timer < scaleTime)
             {
                 timer += Time.deltaTime;
-                if (timer > ScaleTime)
+                if (timer > scaleTime)
                 {
-                    timer = ScaleTime;
+                    timer = scaleTime;
                 }
 
-                Ring.transform.localScale = Vector3.Lerp(baseScale * DefaultScale, targetScale, timer / ScaleTime);
-                Dot.transform.localScale = Vector3.Lerp(baseScale * DefaultScale, targetScale, timer / ScaleTime);
+                ring.transform.localScale = Vector3.Lerp(Vector3.one * defaultScale, targetScale, timer / scaleTime);
+                dot.transform.localScale = Vector3.Lerp(Vector3.one * defaultScale, targetScale, timer / scaleTime);
             }
 
             // handle scale of main cursor go
             float distance = Vector3.Distance(InputSystem.GazeProvider.GazeOrigin, transform.position);
-            float smoothScaling = 1 - DefaultCursorDistance * DistanceScaleFactor;
-            transform.localScale = mAwakeScale * (distance * DistanceScaleFactor + smoothScaling);
+            float smoothScaling = 1 - DefaultCursorDistance * distanceScaleFactor;
+            transform.localScale = initialScale * (distance * distanceScaleFactor + smoothScaling);
         }
 
         /// <summary>
@@ -175,19 +162,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// <param name="visible"></param>
         private void ElementVisibility(bool visible)
         {
-            if (Ring != null)
+            if (ring != null)
             {
-                Ring.SetActive(visible);
+                ring.SetActive(visible);
             }
 
-            if (Dot != null)
+            if (dot != null)
             {
-                Dot.SetActive(visible);
-            }
-
-            if (Light != null)
-            {
-                Light.SetActive(visible);
+                dot.SetActive(visible);
             }
         }
     }

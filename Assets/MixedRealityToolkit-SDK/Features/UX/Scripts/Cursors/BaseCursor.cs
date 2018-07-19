@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
@@ -16,6 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
     /// </summary>
     public class BaseCursor : MonoBehaviour, IMixedRealityCursor
     {
+        private static IMixedRealityInputSystem inputSystem = null;
+        protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
         /// <summary>
@@ -82,11 +86,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         private Vector3 targetScale;
         private Quaternion targetRotation;
 
+        /// <summary>
+        /// Indicates if the cursor should be visible
+        /// </summary>
+        public bool IsVisible
+        {
+            set
+            {
+                isVisible = value;
+                SetVisibility(isVisible);
+            }
+        }
+
         #region IMixedRealityCursor Implementation
 
-        /// <summary>
-        /// The pointer that this cursor should follow and process input from.
-        /// </summary>
+        /// <inheritdoc />
         public virtual IMixedRealityPointer Pointer
         {
             get { return pointer; }
@@ -100,34 +114,35 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
 
         private IMixedRealityPointer pointer;
 
-        private IMixedRealityInputSystem inputSystem;
-
+        /// <inheritdoc />
         public virtual Vector3 Position => transform.position;
 
+        /// <inheritdoc />
         public virtual Quaternion Rotation => transform.rotation;
 
+        /// <inheritdoc />
         public virtual Vector3 LocalScale => transform.localScale;
 
-        /// <summary>
-        /// Indicates if the cursor should be visible
-        /// </summary>
-        public bool IsVisible
+        /// <inheritdoc />
+        public virtual void SetVisibility(bool visible)
         {
-            set
+            if (primaryCursorVisual != null)
             {
-                isVisible = value;
-                SetVisibility(isVisible);
+                primaryCursorVisual.gameObject.SetActive(visible);
             }
+        }
+
+        /// <inheritdoc />
+        public GameObject GetGameObjectReference()
+        {
+            return gameObject;
         }
 
         #endregion IMixedRealityCursor Implementation
 
         #region IMixedRealitySourceStateHandler Implementation
 
-        /// <summary>
-        /// Input source detected callback for the cursor
-        /// </summary>
-        /// <param name="eventData"></param>
+        /// <inheritdoc />
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
             var controller = eventData.Controller;
@@ -142,10 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             }
         }
 
-        /// <summary>
-        /// Input source lost callback for the cursor
-        /// </summary>
-        /// <param name="eventData"></param>
+        /// <inheritdoc />
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
             if (eventData.Controller.Interactions.SupportsInputType(DeviceInputType.Hand))
@@ -164,10 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
 
         #region IMixedRealityFocusChangedHandler Implementation
 
-        /// <summary>
-        /// Updates the currently targeted object and cursor modifier upon getting
-        /// an event indicating that the focused object has changed.
-        /// </summary>
+        /// <inheritdoc />
         public virtual void OnBeforeFocusChange(FocusEventData eventData)
         {
             if (Pointer.PointerId == eventData.Pointer.PointerId)
@@ -176,16 +185,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             }
         }
 
+        /// <inheritdoc />
         public virtual void OnFocusChanged(FocusEventData eventData) { }
 
         #endregion IMixedRealityFocusChangedHandler Implementation
 
         #region IMixedRealityPointerHandler Implementation
 
-        /// <summary>
-        /// Function for receiving OnPointerDown events from InputManager
-        /// </summary>
-        /// <param name="eventData"></param>
+        /// <inheritdoc />
         public virtual void OnPointerDown(MixedRealityPointerEventData eventData)
         {
             foreach (var sourcePointer in eventData.InputSource.Pointers)
@@ -197,16 +204,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             }
         }
 
-        /// <summary>
-        /// Function for receiving OnPointerClicked events from InputManager
-        /// </summary>
-        /// <param name="eventData"></param>
+        /// <inheritdoc />
         public virtual void OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
-        /// <summary>
-        /// Function for receiving OnPointerUp events from InputManager
-        /// </summary>
-        /// <param name="eventData"></param>
+        /// <inheritdoc />
         public virtual void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             foreach (var sourcePointer in eventData.InputSource.Pointers)
@@ -227,7 +228,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             // Use the setter to update visibility of the cursor at startup based on user preferences
             IsVisible = isVisible;
             SetVisibility(isVisible);
-            inputSystem = Internal.Managers.MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
         }
 
         private void Update()
@@ -268,10 +268,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         protected virtual void RegisterManagers()
         {
             // Register the cursor as a listener, so that it can always get input events it cares about
-            inputSystem.Register(gameObject);
+            InputSystem.Register(gameObject);
 
             // Setup the cursor to be able to respond to input being globally enabled / disabled
-            if (inputSystem.IsInputEnabled)
+            if (InputSystem.IsInputEnabled)
             {
                 OnInputEnabled();
             }
@@ -280,8 +280,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                 OnInputDisabled();
             }
 
-            inputSystem.InputEnabled += OnInputEnabled;
-            inputSystem.InputDisabled += OnInputDisabled;
+            InputSystem.InputEnabled += OnInputEnabled;
+            InputSystem.InputDisabled += OnInputDisabled;
         }
 
         /// <summary>
@@ -289,9 +289,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// </summary>
         protected virtual void UnregisterManagers()
         {
-            inputSystem.InputEnabled -= OnInputEnabled;
-            inputSystem.InputDisabled -= OnInputDisabled;
-            inputSystem.Unregister(gameObject);
+            InputSystem.InputEnabled -= OnInputEnabled;
+            InputSystem.InputDisabled -= OnInputDisabled;
+            InputSystem.Unregister(gameObject);
         }
 
         /// <summary>
@@ -361,26 +361,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             transform.position = Vector3.Lerp(transform.position, targetPosition, deltaTime / positionLerpTime);
             transform.localScale = Vector3.Lerp(transform.localScale, targetScale, deltaTime / scaleLerpTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, deltaTime / rotationLerpTime);
-        }
-
-        /// <summary>
-        /// Updates the visual representation of the cursor.
-        /// </summary>
-        public virtual void SetVisibility(bool visible)
-        {
-            if (primaryCursorVisual != null)
-            {
-                primaryCursorVisual.gameObject.SetActive(visible);
-            }
-        }
-
-        /// <summary>
-        /// Returns the <see cref="BaseCursor"/>'s <see cref="GameObject"/> reference.
-        /// </summary>
-        /// <returns></returns>
-        public GameObject GetGameObjectReference()
-        {
-            return gameObject;
         }
 
         /// <summary>

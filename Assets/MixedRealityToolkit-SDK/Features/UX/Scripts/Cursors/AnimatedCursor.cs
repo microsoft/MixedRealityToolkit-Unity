@@ -27,12 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         [Tooltip("Animator parameter to set when input is disabled.")]
         private AnimatorParameter inputDisabledParameter = default(AnimatorParameter);
 
-        /// <summary>
-        /// Link the cursor animator.
-        /// </summary>
         [SerializeField]
         [Tooltip("Animator for the cursor")]
-        protected Animator CursorAnimator = null;
+        private Animator cursorAnimator = null;
 
         /// <summary>
         /// Change animation state when enabling input.
@@ -64,9 +61,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                 if ((Pointer.CursorModifier.CursorParameters != null) && (Pointer.CursorModifier.CursorParameters.Length > 0))
                 {
                     OnCursorStateChange(CursorStateEnum.Contextual);
-                    foreach (var param in Pointer.CursorModifier.CursorParameters)
+
+                    for (var i = 0; i < Pointer.CursorModifier.CursorParameters.Length; i++)
                     {
-                        SetAnimatorParameter(param);
+                        SetAnimatorParameter(Pointer.CursorModifier.CursorParameters[i]);
                     }
                 }
             }
@@ -98,10 +96,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// Based on the type of animator state info pass it through to the animator
         /// </summary>
         /// <param name="animationParameter"></param>
-        protected void SetAnimatorParameter(AnimatorParameter animationParameter)
+        private void SetAnimatorParameter(AnimatorParameter animationParameter)
         {
             // Return if we do not have an animator
-            if (CursorAnimator == null)
+            if (cursorAnimator == null)
             {
                 return;
             }
@@ -109,16 +107,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             switch (animationParameter.ParameterType)
             {
                 case AnimatorControllerParameterType.Bool:
-                    CursorAnimator.SetBool(animationParameter.NameHash, animationParameter.DefaultBool);
+                    cursorAnimator.SetBool(animationParameter.NameHash, animationParameter.DefaultBool);
                     break;
                 case AnimatorControllerParameterType.Float:
-                    CursorAnimator.SetFloat(animationParameter.NameHash, animationParameter.DefaultFloat);
+                    cursorAnimator.SetFloat(animationParameter.NameHash, animationParameter.DefaultFloat);
                     break;
                 case AnimatorControllerParameterType.Int:
-                    CursorAnimator.SetInteger(animationParameter.NameHash, animationParameter.DefaultInt);
+                    cursorAnimator.SetInteger(animationParameter.NameHash, animationParameter.DefaultInt);
                     break;
                 case AnimatorControllerParameterType.Trigger:
-                    CursorAnimator.SetTrigger(animationParameter.NameHash);
+                    cursorAnimator.SetTrigger(animationParameter.NameHash);
                     break;
             }
         }

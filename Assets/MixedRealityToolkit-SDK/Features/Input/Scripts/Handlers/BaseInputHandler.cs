@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 {
-    public class BaseInputHandler : InputSystemGlobalListener
+    /// <summary>
+    /// Base class for the Mixed Reality Toolkit's SDK input handlers.
+    /// </summary>
+    public abstract class BaseInputHandler : InputSystemGlobalListener
     {
         [SerializeField]
         [Tooltip("Is Focus required to receive input events on this GameObject?")]

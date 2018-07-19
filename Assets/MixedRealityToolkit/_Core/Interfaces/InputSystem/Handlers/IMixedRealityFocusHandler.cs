@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
         bool HasFocus { get; }
 
         /// <summary>
-        /// Is Focus enabled for this <see cref="UnityEngine.GameObject"/>?
+        /// Is Focus capabilities enabled for this <see cref="UnityEngine.GameObject"/>?
         /// </summary>
         bool FocusEnabled { get; set; }
 

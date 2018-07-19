@@ -11,15 +11,15 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 {
     /// <summary>
-    /// Base Component for handling Focus on GameObjects.
+    /// Base Component for handling Focus on <see cref="GameObject"/>s.
     /// </summary>
-    public class BaseFocusHandler : MonoBehaviour, IMixedRealityFocusHandler
+    public abstract class BaseFocusHandler : MonoBehaviour, IMixedRealityFocusHandler
     {
-        private IMixedRealityInputSystem inputSystem = null;
-        protected IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+        private static IMixedRealityInputSystem inputSystem = null;
+        protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
         [SerializeField]
-        [Tooltip("Does this GameObject start with Focus Enabled?")]
+        [Tooltip("Is Focus capabilities enabled for this GameObject?")]
         private bool focusEnabled = true;
 
         /// <inheritdoc />
