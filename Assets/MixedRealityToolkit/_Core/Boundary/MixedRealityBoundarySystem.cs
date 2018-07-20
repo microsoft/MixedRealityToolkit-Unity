@@ -69,7 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             InitializeInternal();
         }
 
-        /// <inheritdoc/>
         public bool Contains(Vector3 location)
         {
             return Contains(location, Boundary.Type.TrackedArea);
@@ -97,18 +96,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 return false;
             }
 
+            // Boundary coordinates are always "on the floor"
+            Vector2 point = new Vector2(location.x, location.z);
+
             if (boundaryType == Boundary.Type.PlayArea)
             {
                 // Check the inscribed rectangle.
                 if (InscribedRectangularBounds != null)
                 {
-                    return InscribedRectangularBounds.IsInsideBoundary(location);
+                    return InscribedRectangularBounds.IsInsideBoundary(point);
                 }
             }
             else if(boundaryType == Boundary.Type.TrackedArea)
             {
                 // Check the geometry
-                return EdgeUtils.IsInsideBoundary(GeometryBounds, location);
+                return EdgeUtils.IsInsideBoundary(GeometryBounds, point);
             }
 
             // Not in either boundary type.

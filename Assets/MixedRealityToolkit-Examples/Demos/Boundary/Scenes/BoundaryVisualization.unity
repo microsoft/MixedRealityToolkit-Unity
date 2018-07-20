@@ -297,9 +297,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'HoloLens
-
-    Immersive headset'
+  m_Text: Immersive headset
 --- !u!222 &337857534
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -346,9 +344,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647fd3dd3cb11e749850897a69f040db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounds: {fileID: 0}
-  outOfBounds: {fileID: 0}
-  inscribedRectangle: {fileID: 0}
+  boundsMaterial: {fileID: 2100000, guid: 30d693ff62c571241b431ef4e206b09a, type: 2}
+  outOfBoundsMaterial: {fileID: 2100000, guid: 360c90aa3bc85c9438a05d511deb80ae, type: 2}
+  inscribedRectangleMaterial: {fileID: 2100000, guid: 693646fbd4009244e9cc6a4cd5b72585,
+    type: 2}
 --- !u!1 &380504073
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,7 +591,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ClipPlane.cs
+  m_Text: Purple Rectangle and Spheres
 --- !u!222 &711576060
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -767,7 +766,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Standard.shader
+  m_Text: White Spheres
 --- !u!222 &863370471
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -796,7 +795,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 874163845}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.67, z: -2}
+  m_LocalPosition: {x: 0, y: 1.67, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 291475169}
@@ -825,7 +824,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1229001241}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 874163846}
@@ -930,7 +929,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: HoverLight.cs
+  m_Text: Blue Spheres
 --- !u!222 &1392119483
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1193,7 +1192,7 @@ Transform:
   m_GameObject: {fileID: 1553644261}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 1229001242}
   m_RootOrder: 1
@@ -1399,7 +1398,25 @@ MonoBehaviour:
     playspace inscribed within those bounds.
 
 
-'
+
+
+
+
+    The area outside of the boundary geometry.
+
+
+
+
+
+
+    The area within the boundary geometry (aka TrackedArea).
+
+
+
+
+
+
+    The area within the inscribed rectangle (aka PlayArea).'
 --- !u!222 &1906982568
 CanvasRenderer:
   m_ObjectHideFlags: 0

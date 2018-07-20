@@ -95,10 +95,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                         material = inscribedRectangleMaterial;
                     }
                     // Then check geometry
-                    //else if (boundaryManager.Contains(position, Boundary.Type.TrackedArea))
-                    //{
-                    //    material = boundsMaterial;
-                    //}
+                    else if (boundaryManager.Contains(position, Boundary.Type.TrackedArea))
+                    {
+                        material = boundsMaterial;
+                    }
                     // Otherwise, the position is out of bounds
                     else
                     {

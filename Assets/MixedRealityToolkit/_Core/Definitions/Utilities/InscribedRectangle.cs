@@ -90,7 +90,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             point -= Center;
             point = RotatePoint(point, Vector2.zero, MathUtils.DegreesToRadians(-Angle));
 
-            return (Mathf.Abs(point.x) <= (Width / 2.0f)) && (Mathf.Abs(point.y) <= Height / 2.0f);
+            bool inWidth = Mathf.Abs(point.x) <= (Width / 2.0f);
+            bool inHeight = Mathf.Abs(point.y) <= (Height / 2.0f);
+
+            return (inWidth && inHeight);
         }
 
         /// <summary>
