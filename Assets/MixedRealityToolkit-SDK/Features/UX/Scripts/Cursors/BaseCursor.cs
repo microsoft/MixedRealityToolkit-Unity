@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.SDK.Input;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
@@ -15,11 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.
     /// </summary>
-    public class BaseCursor : MonoBehaviour, IMixedRealityCursor
+    public class BaseCursor : InputSystemGlobalListener, IMixedRealityCursor
     {
-        private static IMixedRealityInputSystem inputSystem = null;
-        protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
-
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
         /// <summary>
@@ -236,19 +233,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             UpdateCursorTransform();
         }
 
-        /// <summary>
-        /// Override for enable functions
-        /// </summary>
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
+            // We don't call base.OnEnable because we handle registering the global listener a bit differently.
             OnCursorStateChange(CursorStateEnum.None);
         }
 
-        /// <summary>
-        /// Override for disable functions
-        /// </summary>
-        protected virtual void OnDisable()
+        protected override void OnDisable()
         {
+            // We don't call base.OnDisable because we handle unregistering the global listener a bit differently.
             TargetedObject = null;
             visibleHandsCount = 0;
             IsHandDetected = false;

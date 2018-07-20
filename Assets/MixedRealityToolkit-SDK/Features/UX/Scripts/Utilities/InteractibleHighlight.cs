@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 {
     /// <summary>
     /// Adds or removes materials to target renderer for highlighting Focused <see cref="GameObject"/>s.

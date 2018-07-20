@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 {
     /// <summary>
     /// The Billboard class implements the behaviors needed to keep a GameObject oriented towards the user.

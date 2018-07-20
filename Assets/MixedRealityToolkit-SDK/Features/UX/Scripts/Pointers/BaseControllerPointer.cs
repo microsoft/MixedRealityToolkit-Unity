@@ -7,11 +7,11 @@ using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.SDK.UX.MotionController;
 using System.Collections;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 {
     /// <summary>
     /// Base Pointer class for pointers that exist in the scene as GameObjects.

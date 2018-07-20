@@ -22,7 +22,7 @@ using Windows.Storage.Streams;
 #endif
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
 {
     /// <summary>
     /// This script spawns a specific GameObject when a controller is detected

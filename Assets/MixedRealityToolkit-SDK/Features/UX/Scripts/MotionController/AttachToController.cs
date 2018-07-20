@@ -7,21 +7,17 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.SDK.Input;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
 {
     /// <summary>
     /// Waits for a controller to be initialized, then attaches itself to a specified element
     /// </summary>
-    public class AttachToController : MonoBehaviour, IMixedRealitySourcePoseHandler
+    public class AttachToController : InputSystemGlobalListener, IMixedRealitySourcePoseHandler
     {
-        private IMixedRealityInputSystem inputSystem = null;
-        public IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
-
         [SerializeField]
         protected Vector3 PositionOffset = Vector3.zero;
 
@@ -99,10 +95,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         #endregion IMixedRealitySourcePoseHandler Implementation
 
-        protected virtual void OnEnable()
+        #region Monobehaviour Implementation
+
+        protected override void OnEnable()
         {
             // Subscribe to interaction events
-            InputSystem.Register(gameObject);
+            base.OnEnable();
 
             if (SetChildrenInactiveWhenDetached)
             {
@@ -110,10 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             }
         }
 
-        protected virtual void OnDisable()
-        {
-            // Unsubscribe from interaction events
-            InputSystem.Unregister(gameObject);
-        }
+        #endregion Monobehaviour Implementation
     }
 }

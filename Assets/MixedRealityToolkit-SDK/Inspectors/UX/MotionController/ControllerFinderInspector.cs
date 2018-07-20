@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.SDK.UX.MotionController;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors
+namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.MotionController
 {
     [CustomEditor(typeof(ControllerFinder))]
-    public abstract class ControllerFinderEditor : Editor
+    public abstract class ControllerFinderInspector : Editor
     {
         private static GUIStyle controllerOptionsGuiStyle;
 

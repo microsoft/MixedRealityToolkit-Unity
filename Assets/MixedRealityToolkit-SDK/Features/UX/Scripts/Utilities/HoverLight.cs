@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 {
     /// <summary>
     /// Utility component to animate and visualize a light that can be used with 

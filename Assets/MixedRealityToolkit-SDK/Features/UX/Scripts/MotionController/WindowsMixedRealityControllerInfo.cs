@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
 {
     /// <summary>
     /// This script keeps track of the GameObjects representations for each button on the Windows Mixed Reality Controllers.

@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
 {
     /// <summary>
     /// ControllerFinder is a base class providing simple event handling for getting/releasing controller transforms.
