@@ -344,7 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647fd3dd3cb11e749850897a69f040db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundsMaterial: {fileID: 2100000, guid: 30d693ff62c571241b431ef4e206b09a, type: 2}
+  boundsMaterial: {fileID: 2100000, guid: 97b73006130d05b4c90034845c44e88d, type: 2}
   outOfBoundsMaterial: {fileID: 2100000, guid: 360c90aa3bc85c9438a05d511deb80ae, type: 2}
   inscribedRectangleMaterial: {fileID: 2100000, guid: 693646fbd4009244e9cc6a4cd5b72585,
     type: 2}
@@ -929,7 +929,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Blue Spheres
+  m_Text: Cyan Spheres
 --- !u!222 &1392119483
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1226,7 +1226,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e106645f46550d54bacf6c82811c99e6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

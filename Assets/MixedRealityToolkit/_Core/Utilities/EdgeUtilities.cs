@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 {
-    public static class EdgeUtils
+    public static class EdgeUtilities
     {
         /// <summary>
         /// A value that should be larger than the maximum boundary width.
@@ -60,10 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <param name="point">The point to check.</param>
         /// <returns>True if the point is valid, false otherwise./returns>
         /// <remarks>
-        /// A point is considered invalid if any one of it's coordinate values are:
-        /// * Not a number
-        /// * Positive infinity
-        /// * Negative infinity
+        /// A point is considered invalid if any one of it's coordinate values are infinite or not a number.
         /// </remarks>
         public static bool IsValidPoint(Vector2 point)
         {

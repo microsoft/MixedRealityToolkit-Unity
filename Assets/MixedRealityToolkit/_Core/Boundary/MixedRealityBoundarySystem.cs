@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// <inheritdoc/>
         public bool Contains(Vector3 location, Boundary.Type boundaryType)
         {
-            if (!EdgeUtils.IsValidPoint(location))
+            if (!EdgeUtilities.IsValidPoint(location))
             {
                 // Invalid location.
                 return false;
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             else if(boundaryType == Boundary.Type.TrackedArea)
             {
                 // Check the geometry
-                return EdgeUtils.IsInsideBoundary(GeometryBounds, point);
+                return EdgeUtilities.IsInsideBoundary(GeometryBounds, point);
             }
 
             // Not in either boundary type.
@@ -148,9 +148,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             if (Boundary.TryGetGeometry(boundaryGeometry, Boundary.Type.TrackedArea))
             {
-                // FloorHeight starts out as null. Use a very high value for the floor to ensure
+                // FloorHeight starts out as null. Use a suitably high value for the floor to ensure
                 // that we do not accidentally set it too low.
-                float floorHeight = 1000f;
+                float floorHeight = 10000f;
 
                 for (int i = 0; i < boundaryGeometry.Count; i++)
                 {

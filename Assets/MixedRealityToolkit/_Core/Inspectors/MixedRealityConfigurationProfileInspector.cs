@@ -127,9 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
             if (scaleDescription != string.Empty)
             {
-                GUILayout.Space(6f);
-                EditorGUILayout.LabelField("Description:", EditorStyles.label);
-                EditorGUILayout.LabelField(scaleDescription, EditorStyles.wordWrappedLabel);
+                EditorGUILayout.HelpBox(scaleDescription, MessageType.Info);
             }
 
             // Camera Profile configuration

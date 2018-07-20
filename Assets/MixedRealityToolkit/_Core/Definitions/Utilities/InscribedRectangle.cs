@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <summary>
         /// The center point of the inscribed rectangle.
         /// </summary>
-        public Vector2 Center { get; private set; } = EdgeUtils.InvalidPoint;
+        public Vector2 Center { get; private set; } = EdgeUtilities.InvalidPoint;
 
         /// <summary>
         /// The width of the inscribed rectangle.
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             get
             {
                 // A rectangle is considered valid if it's center point is valid.
-                if (EdgeUtils.IsValidPoint(Center))
+                if (EdgeUtilities.IsValidPoint(Center))
                 {
                     return true;
                 }
@@ -85,7 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             {
                 throw new InvalidOperationException("A point cannot be within an invalid rectangle.");
             }
-
 
             point -= Center;
             point = RotatePoint(point, Vector2.zero, MathUtils.DegreesToRadians(-Angle));
@@ -143,15 +142,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         private void FindInscribedRectangle(Edge[] geometryEdges, int randomSeed)
         {
             // Clear previous rectangle
-            Center = EdgeUtils.InvalidPoint;
+            Center = EdgeUtilities.InvalidPoint;
             Width = 0;
             Height = 0;
             Angle = 0;
 
-            float minX = EdgeUtils.maxWidth;
-            float minY = EdgeUtils.maxWidth;
-            float maxX = -EdgeUtils.maxWidth;
-            float maxY = -EdgeUtils.maxWidth;
+            float minX = EdgeUtilities.maxWidth;
+            float minY = EdgeUtilities.maxWidth;
+            float maxX = -EdgeUtilities.maxWidth;
+            float maxY = -EdgeUtilities.maxWidth;
 
             // Find min x, min y, max x, max y 
             for (int i = 0; i < geometryEdges.Length; i++)
@@ -193,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                         candidatePoint.x = ((float)random.NextDouble() * (maxX - minX)) + minX;
                         candidatePoint.y = ((float)random.NextDouble() * (maxY - minY)) + minY;
                     }
-                    while (!EdgeUtils.IsInsideBoundary(geometryEdges, candidatePoint));
+                    while (!EdgeUtilities.IsInsideBoundary(geometryEdges, candidatePoint));
 
                     startingPoints[i] = candidatePoint;
                 }
@@ -229,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                     float newWidth = 0;
                     float newHeight = 0;
 
-                    if (EdgeUtils.IsValidPoint(topCollisionPoint) && EdgeUtils.IsValidPoint(bottomCollisionPoint))
+                    if (EdgeUtilities.IsValidPoint(topCollisionPoint) && EdgeUtilities.IsValidPoint(bottomCollisionPoint))
                     {
                         float aX = topCollisionPoint.x;
                         float aY = topCollisionPoint.y;
@@ -253,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                         }
                     }
 
-                    if (EdgeUtils.IsValidPoint(leftCollisionPoint) && EdgeUtils.IsValidPoint(rightCollisionPoint))
+                    if (EdgeUtilities.IsValidPoint(leftCollisionPoint) && EdgeUtilities.IsValidPoint(rightCollisionPoint))
                     {
                         float aX = leftCollisionPoint.x;
                         float aY = leftCollisionPoint.y;
@@ -292,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <param name="rightCollisionPoint">Receives the coordinates of the right collision point.</param>
         /// <returns>
         /// True if all of the required collision points are located, false otherwise. 
-        /// If a point is unable to be found, the appropriate out parameter will be set to <see cref="EdgeUtils.InvalidPoint"/>.
+        /// If a point is unable to be found, the appropriate out parameter will be set to <see cref="EdgeUtilities.InvalidPoint"/>.
         /// </returns>
         private bool FindSurroundingCollisionPoints(
             Edge[] geometryEdges,
@@ -304,19 +303,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             out Vector2 rightCollisionPoint)
         {
             // Initialize out parameters.
-            topCollisionPoint = EdgeUtils.InvalidPoint;
-            bottomCollisionPoint = EdgeUtils.InvalidPoint;
-            leftCollisionPoint = EdgeUtils.InvalidPoint;
-            rightCollisionPoint = EdgeUtils.InvalidPoint;
+            topCollisionPoint = EdgeUtilities.InvalidPoint;
+            bottomCollisionPoint = EdgeUtilities.InvalidPoint;
+            leftCollisionPoint = EdgeUtilities.InvalidPoint;
+            rightCollisionPoint = EdgeUtilities.InvalidPoint;
 
             // Check to see if the point is inside the geometry.
-            if (!EdgeUtils.IsInsideBoundary(geometryEdges, point))
+            if (!EdgeUtilities.IsInsideBoundary(geometryEdges, point))
             {
                 return false;
             }
 
             // Define values that are outside of the maximum boundary size.
-            float largeValue = EdgeUtils.maxWidth;
+            float largeValue = EdgeUtilities.maxWidth;
             float smallValue = -largeValue;
 
             // Find the top and bottom collision points by creating a large line segment that goes through the point to MAX and MIN values on Y
@@ -336,14 +335,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             for (int i = 0; i < geometryEdges.Length; i++)
             {
                 // Look for a vertical collision
-                Vector2 verticalIntersectionPoint = EdgeUtils.GetIntersectionPoint(geometryEdges[i], verticalLine);
-                if (EdgeUtils.IsValidPoint(verticalIntersectionPoint))
+                Vector2 verticalIntersectionPoint = EdgeUtilities.GetIntersectionPoint(geometryEdges[i], verticalLine);
+                if (EdgeUtilities.IsValidPoint(verticalIntersectionPoint))
                 {
                     // Is the intersection above or below the point?
                     if (RotatePoint(verticalIntersectionPoint, point, -angleRadians).y > point.y)
                     {
                         // Update the top collision point
-                        if (!EdgeUtils.IsValidPoint(topCollisionPoint) ||
+                        if (!EdgeUtilities.IsValidPoint(topCollisionPoint) ||
                             (Vector2.SqrMagnitude(point - verticalIntersectionPoint) < Vector2.SqrMagnitude(point - topCollisionPoint)))
                         {
                             topCollisionPoint = verticalIntersectionPoint;
@@ -352,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                     else
                     {
                         // Update the bottom collision point
-                        if (!EdgeUtils.IsValidPoint(bottomCollisionPoint) ||
+                        if (!EdgeUtilities.IsValidPoint(bottomCollisionPoint) ||
                             (Vector2.SqrMagnitude(point - verticalIntersectionPoint) < Vector2.SqrMagnitude(point - bottomCollisionPoint)))
                         {
                             bottomCollisionPoint = verticalIntersectionPoint;
@@ -361,14 +360,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                 }
 
                 // Look for a horizontal collision
-                Vector2 horizontalIntersection = EdgeUtils.GetIntersectionPoint(geometryEdges[i], horizontalLine);
-                if (EdgeUtils.IsValidPoint(horizontalIntersection))
+                Vector2 horizontalIntersection = EdgeUtilities.GetIntersectionPoint(geometryEdges[i], horizontalLine);
+                if (EdgeUtilities.IsValidPoint(horizontalIntersection))
                 {
                     // Is this intersection to the left or the right of the point?
                     if (RotatePoint(horizontalIntersection, point, -angleRadians).x < point.x)
                     {
                         // Update the left collision point
-                        if (!EdgeUtils.IsValidPoint(leftCollisionPoint) ||
+                        if (!EdgeUtilities.IsValidPoint(leftCollisionPoint) ||
                             (Vector2.SqrMagnitude(point - horizontalIntersection) < Vector2.SqrMagnitude(point - leftCollisionPoint)))
                         {
                             leftCollisionPoint = horizontalIntersection;
@@ -377,7 +376,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                     else
                     {
                         // Update the right collision point
-                        if (!EdgeUtils.IsValidPoint(rightCollisionPoint) ||
+                        if (!EdgeUtilities.IsValidPoint(rightCollisionPoint) ||
                             (Vector2.SqrMagnitude(point - horizontalIntersection) < Vector2.SqrMagnitude(point - rightCollisionPoint)))
                         {
                             rightCollisionPoint = horizontalIntersection;
@@ -387,10 +386,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             }
 
             // Each corner of the rectangle must intersect with the geometry.
-            if (!EdgeUtils.IsValidPoint(topCollisionPoint) || 
-                !EdgeUtils.IsValidPoint(bottomCollisionPoint) ||
-                !EdgeUtils.IsValidPoint(leftCollisionPoint) || 
-                !EdgeUtils.IsValidPoint(rightCollisionPoint))
+            if (!EdgeUtilities.IsValidPoint(topCollisionPoint) || 
+                !EdgeUtilities.IsValidPoint(bottomCollisionPoint) ||
+                !EdgeUtilities.IsValidPoint(leftCollisionPoint) || 
+                !EdgeUtilities.IsValidPoint(rightCollisionPoint))
             {
                 return false;
             }
@@ -475,10 +474,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             // the rectangle will not fit within the playspace.
             for (int i = 0; i < geometryEdges.Length; i++)
             {
-                if (EdgeUtils.IsValidPoint(EdgeUtils.GetIntersectionPoint(geometryEdges[i], topEdge)) ||
-                    EdgeUtils.IsValidPoint(EdgeUtils.GetIntersectionPoint(geometryEdges[i], rightEdge)) ||
-                    EdgeUtils.IsValidPoint(EdgeUtils.GetIntersectionPoint(geometryEdges[i], bottomEdge)) ||
-                    EdgeUtils.IsValidPoint(EdgeUtils.GetIntersectionPoint(geometryEdges[i], leftEdge)))
+                if (EdgeUtilities.IsValidPoint(EdgeUtilities.GetIntersectionPoint(geometryEdges[i], topEdge)) ||
+                    EdgeUtilities.IsValidPoint(EdgeUtilities.GetIntersectionPoint(geometryEdges[i], rightEdge)) ||
+                    EdgeUtilities.IsValidPoint(EdgeUtilities.GetIntersectionPoint(geometryEdges[i], bottomEdge)) ||
+                    EdgeUtilities.IsValidPoint(EdgeUtilities.GetIntersectionPoint(geometryEdges[i], leftEdge)))
                 {
                     return false;
                 }
