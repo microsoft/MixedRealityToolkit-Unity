@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
 using System;
@@ -19,11 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     /// The focus provider handles the focused objects per input source.
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     /// </summary>
-    public class FocusProvider : MonoBehaviour, IMixedRealityFocusProvider
+    public class FocusProvider : InputSystemGlobalListener, IMixedRealityFocusProvider
     {
-        private IMixedRealityInputSystem inputSystem = null;
-        public IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
-
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly HashSet<GameObject> pendingOverallFocusExitSet = new HashSet<GameObject>();
@@ -234,15 +230,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                                  "To create a UIRaycastCamera in your scene, find this Focus Provider GameObject and add one there.");
                 CreateUiRaycastCamera();
             }
-        }
-
-        private void Start()
-        {
-            Debug.Assert(MixedRealityManager.IsInitialized, "No Mixed Reality Manager found in the scene.  Be sure to run the Mixed Reality Configuration.");
-            Debug.Assert(InputSystem != null, "No Input System found, Did you set it up in your configuration profile?");
-
-            // Register the FocusProvider as a global listener to get input events.
-            InputSystem.Register(gameObject);
         }
 
         private void Update()

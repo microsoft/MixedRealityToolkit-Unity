@@ -17,6 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         protected virtual void OnEnable()
         {
+            Debug.Assert(MixedRealityManager.IsInitialized, "No Mixed Reality Manager found in the scene.  Be sure to run the Mixed Reality Configuration.");
+            Debug.Assert(InputSystem != null, "No Input System found, Did you set it up in your configuration profile?");
             InputSystem.Register(gameObject);
         }
 

@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
             PointerId = InputSystem.FocusProvider.GenerateNewPointerId();
             PointerName = pointerName;
-            InputSourceParent = inputSourceParent;
+            this.inputSourceParent = inputSourceParent;
         }
 
         /// <inheritdoc />
@@ -39,7 +39,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         public string PointerName { get; set; }
 
         /// <inheritdoc />
-        public virtual IMixedRealityInputSource InputSourceParent { get; protected set; }
+        public virtual IMixedRealityInputSource InputSourceParent
+        {
+            get { return inputSourceParent; }
+            protected set { inputSourceParent = value; }
+        }
+
+        private IMixedRealityInputSource inputSourceParent;
 
         /// <inheritdoc />
         public IMixedRealityCursor BaseCursor { get; set; }

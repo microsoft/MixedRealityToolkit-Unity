@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
 using UnityEngine;
@@ -15,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     /// This class provides Gaze as an Input Source so users can interact with objects using their head.
     /// </summary>
     [DisallowMultipleComponent]
-    public class GazeProvider : MonoBehaviour, IMixedRealityGazeProvider
+    public class GazeProvider : InputSystemGlobalListener, IMixedRealityGazeProvider
     {
         private const float VelocityThreshold = 0.1f;
 
@@ -125,9 +124,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private Vector3 lastHeadPosition = Vector3.zero;
 
-        private IMixedRealityInputSystem inputSystem = null;
-        private IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
-
         #region IMixedRealityPointer Implementation
 
         private class InternalGazePointer : GenericPointer
@@ -213,8 +209,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             Debug.Assert(minHeadVelocityThreshold < maxHeadVelocityThreshold, "Minimum head velocity threshold should be less than the maximum velocity threshold.");
         }
 
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (!delayInitialization)
             {
                 // The first time we call OnEnable we skip this.
@@ -224,9 +222,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void Start()
         {
-            Debug.Assert(MixedRealityManager.IsInitialized, "No Mixed Reality Manager found in the scene.  Be sure to run the Mixed Reality Configuration.");
-            Debug.Assert(InputSystem != null, "No Input System found, Did you set it up in your configuration profile?");
-
             if (cursorPrefab != null)
             {
                 var cursorObj = Instantiate(cursorPrefab, transform);
@@ -288,8 +283,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             GazePointer.BaseCursor?.SetVisibility(false);
             InputSystem.RaiseSourceLost(GazeInputSource);
             InputSystem.FocusProvider.UnregisterPointer(GazePointer);
