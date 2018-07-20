@@ -1,17 +1,8 @@
-//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
-using UnityEngine;
-using System.Collections;
+
 using HoloToolkit.Unity.InputModule;
-#if UNITY_WSA
-#if UNITY_2017_2_OR_NEWER
-using UnityEngine.XR.WSA.Input;
-#else
-using UnityEngine.VR.WSA.Input;
-#endif
-#endif
+using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
@@ -86,54 +77,6 @@ namespace HoloToolkit.Unity
             }
 
             lifetime = 0;
-        }
-
-        protected virtual void Start()
-        {
-            //TransformTarget overrides ObjectToReferenceEnum
-            if (!solverHandler.TransformTarget)
-            {
-                StartCoroutine(CoStart());
-            }
-        }
-
-        protected IEnumerator CoStart()
-        {
-                switch (solverHandler.TrackedObjectToReference)
-                {
-                    case SolverHandler.TrackedObjectToReferenceEnum.Head:
-                        while (CameraCache.Main == null || CameraCache.Main.transform == null)
-                        {
-                            yield return null;
-                        }
-                        //Base transform target to camera transform
-                        solverHandler.TransformTarget = CameraCache.Main.transform;
-                        break;
-
-                    case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerLeft:
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-                        solverHandler.Handedness = InteractionSourceHandedness.Left;
-                        while (solverHandler.ElementTransform == null)
-                        {
-                            yield return null;
-                        }
-                        //Base transform target to Motion controller transform
-                        solverHandler.TransformTarget = solverHandler.ElementTransform;
-#endif
-                        break;
-
-                    case SolverHandler.TrackedObjectToReferenceEnum.MotionControllerRight:
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-                        solverHandler.Handedness = InteractionSourceHandedness.Right;
-                        while (solverHandler.ElementTransform != null)
-                        {
-                            yield return null;
-                        }
-                        //Base transform target to Motion controller transform
-                        solverHandler.TransformTarget = solverHandler.ElementTransform;
-#endif
-                        break;
-                }
         }
 
         // SolverLink will pass transform through
@@ -351,7 +294,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        ///    Updates only the working position to goal witih smoothing
+        ///    Updates only the working position to goal with smoothing
         /// </summary>
         public void UpdateWorkingPosToGoal()
         {
@@ -366,7 +309,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        ///    Updates only the working rotation to goal witih smoothing
+        ///    Updates only the working rotation to goal with smoothing
         /// </summary>
         public void UpdateWorkingRotToGoal()
         {
@@ -381,7 +324,7 @@ namespace HoloToolkit.Unity
         }
 
         /// <summary>
-        ///    Updates only the working scale to goal witih smoothing
+        ///    Updates only the working scale to goal with smoothing
         /// </summary>
         public void UpdateWorkingScaleToGoal()
         {

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa22bce62b991ca4b9aadff296ae1e8b, type: 3}
   m_Name: IcosaButtonMeshProfile
   m_EditorClassIdentifier: 
-  ColorPropertyName: 
+  ColorPropertyName: _Color
   ValuePropertyName: 
   SmoothStateChanges: 1
   StickyPressedEvents: 0
@@ -20,31 +20,31 @@ MonoBehaviour:
   ButtonStates:
   - Name: Pressed
     ActiveState: 0
-    StateColor: {r: 0.5294118, g: 0.08174743, b: 0.38626328, a: 1}
+    StateColor: {r: 1, g: 0.47505075, b: 0, a: 1}
     StateValue: 0
     Offset: {x: 0, y: 0, z: 0}
     Scale: {x: 0.08, y: 0.08, z: 0.08}
   - Name: Targeted
     ActiveState: 1
-    StateColor: {r: 0.6223123, g: 0.18039213, b: 0.85490197, a: 1}
+    StateColor: {r: 1, g: 0.8862745, b: 0.52156866, a: 1}
     StateValue: 0
     Offset: {x: 0, y: 0, z: 0}
     Scale: {x: 0.12, y: 0.12, z: 0.12}
   - Name: Interactive
     ActiveState: 2
-    StateColor: {r: 0.85490197, g: 0.18039216, b: 0.6392157, a: 1}
+    StateColor: {r: 1, g: 0.7647059, b: 0, a: 1}
     StateValue: 0
     Offset: {x: 0, y: 0, z: 0}
     Scale: {x: 0.12, y: 0.12, z: 0.12}
   - Name: ObservationTargeted
     ActiveState: 3
-    StateColor: {r: 0.85294116, g: 0.18187718, b: 0.6400517, a: 1}
+    StateColor: {r: 1, g: 0.88754326, b: 0.52205884, a: 1}
     StateValue: 0
     Offset: {x: 0, y: 0, z: 0}
     Scale: {x: 0.12, y: 0.12, z: 0.12}
   - Name: Observation
     ActiveState: 4
-    StateColor: {r: 0.75, g: 0.38602942, b: 0.63361406, a: 1}
+    StateColor: {r: 1, g: 0.7647059, b: 0, a: 1}
     StateValue: 0
     Offset: {x: 0, y: 0, z: 0}
     Scale: {x: 0.1, y: 0.1, z: 0.1}

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-
 using System;
 using UnityEngine;
 
@@ -54,7 +53,7 @@ namespace HoloToolkit.Unity.InputModule
         public bool EnableRotation = true;
         public bool EnableStrafe = true;
 
-        [Tooltip("Makes sure you don't get put 'on top' of holograms, just on the floor")]
+        [Tooltip("Makes sure you don't get put 'on top' of holograms, just on the floor. If true, your height won't change as a result of a teleport.")]
         public bool StayOnTheFloor = false;
 
         public float RotationSize = 45.0f;
@@ -251,12 +250,9 @@ namespace HoloToolkit.Unity.InputModule
 
                 if (isTeleportValid)
                 {
-                    RaycastHit hitInfo;
-                    Vector3 hitPos = teleportMarker.transform.position + Vector3.up * (Physics.Raycast(CameraCache.Main.transform.position, Vector3.down, out hitInfo, 5.0f) ? hitInfo.distance : 2.6f);
-
                     fadeControl.DoFade(0.25f, 0.5f, () =>
                     {
-                        SetWorldPosition(hitPos);
+                        SetWorldPosition(teleportMarker.transform.position);
                     }, null);
                 }
 
@@ -300,17 +296,27 @@ namespace HoloToolkit.Unity.InputModule
         /// <param name="worldPosition"></param>
         public void SetWorldPosition(Vector3 worldPosition)
         {
-            var originalY = transform.position.y;
-
             // There are two things moving the camera: the camera parent (that this script is attached to)
             // and the user's head (which the MR device is attached to. :)). When setting the world position,
             // we need to set it relative to the user's head in the scene so they are looking/standing where 
             // we expect.
             var newPosition = worldPosition - (CameraCache.Main.transform.position - transform.position);
-            if (StayOnTheFloor)
+
+            // If we're Stationary, we'll need to raycast to estimate our height. In RoomScale, that will be accounted for by the offset between the camera and its parent.
+#if UNITY_2017_2_OR_NEWER
+            if (XRDevice.GetTrackingSpaceType() == TrackingSpaceType.Stationary && !StayOnTheFloor)
+#else
+            if (VRDevice.GetTrackingSpaceType() == TrackingSpaceType.Stationary && !StayOnTheFloor)
+#endif
             {
-                newPosition.y = originalY;
+                RaycastHit hitInfo;
+                newPosition.y += (Physics.Raycast(CameraCache.Main.transform.position, Vector3.down, out hitInfo, 5.0f) ? hitInfo.distance : 1.7f);
             }
+            else
+            {
+                newPosition.y = StayOnTheFloor ? transform.position.y : worldPosition.y;
+            }
+
             transform.position = newPosition;
         }
 

@@ -22,10 +22,11 @@ namespace HoloToolkit.Unity.InputModule.Tests
         [SerializeField]
         protected Animator ButtonAnimator;
 
-        private static int focusedButtonId;
-        private static int selectedButtonId;
-        private static int deHydrateButtonId;
-        private static int stayFocusedButtonId;
+        private int focusedButtonId;
+        private int selectedButtonId;
+        private int dehydrateButtonId;
+        private int stayFocusedButtonId;
+        private int colorPropertyId;
 
         public delegate void ActivateDelegate(TestButton source);
         public event ActivateDelegate Activated;
@@ -89,27 +90,34 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 selectedButtonId = Animator.StringToHash("Selected");
             }
 
-            if (deHydrateButtonId == 0)
+            if (dehydrateButtonId == 0)
             {
-                deHydrateButtonId = Animator.StringToHash("Dehydrate");
+                dehydrateButtonId = Animator.StringToHash("Dehydrate");
             }
 
             if (stayFocusedButtonId == 0)
             {
                 stayFocusedButtonId = Animator.StringToHash("StayFocused");
             }
+
+            if (colorPropertyId == 0)
+            {
+                colorPropertyId = Shader.PropertyToID("_Color");
+            }
         }
 
         protected virtual void OnEnable()
         {
+            Focused = false;
+
             // Set the initial alpha
             if (ToolTipRenderer != null)
             {
                 cachedToolTipMaterial = ToolTipRenderer.material;
 
-                Color tipColor = cachedToolTipMaterial.GetColor("_Color");
+                Color tipColor = cachedToolTipMaterial.GetColor(colorPropertyId);
                 tipColor.a = 0.0f;
-                cachedToolTipMaterial.SetColor("_Color", tipColor);
+                cachedToolTipMaterial.SetColor(colorPropertyId, tipColor);
                 toolTipTimer = 0.0f;
             }
 
@@ -137,9 +145,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 // Update the new opacity
                 if (ToolTipRenderer != null)
                 {
-                    Color tipColor = cachedToolTipMaterial.GetColor("_Color");
+                    Color tipColor = cachedToolTipMaterial.GetColor(colorPropertyId);
                     tipColor.a = Mathf.Clamp(toolTipTimer, 0, ToolTipFadeTime) / ToolTipFadeTime;
-                    cachedToolTipMaterial.SetColor("_Color", tipColor);
+                    cachedToolTipMaterial.SetColor(colorPropertyId, tipColor);
                 }
             }
         }
@@ -155,9 +163,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
                 for (int i = 0; i < animatorHashes.Length; i++)
                 {
-                    if (animatorHashes[i].nameHash == deHydrateButtonId)
+                    if (animatorHashes[i].nameHash == dehydrateButtonId)
                     {
-                        ButtonAnimator.SetTrigger(deHydrateButtonId);
+                        ButtonAnimator.SetTrigger(dehydrateButtonId);
                     }
                 }
             }

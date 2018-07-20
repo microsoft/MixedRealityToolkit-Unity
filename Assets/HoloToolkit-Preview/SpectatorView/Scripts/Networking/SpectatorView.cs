@@ -2,12 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace HoloToolkit.Unity.Preview.SpectatorView
 {
-    public class SpectatorViewNetworkManager : NetworkManager
+    public class SpectatorView : MonoBehaviour
     {
         /// <summary>
         /// Custom delegate for when a client connects
@@ -46,6 +47,13 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         [SerializeField]
         [Tooltip("Component that manages the procedure of discovering new devices (mobile)")]
         private NewDeviceDiscovery newDeviceDiscovery;
+
+        /// <summary>
+        /// Component that manages the networking system of the application
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Component that manages the networking system of the application")]
+        private NetworkManager networkManager;
 
         /// <summary>
         /// Custom callback for when a client connects
@@ -96,6 +104,15 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         }
 
         /// <summary>
+        /// Component that manages the networking system of the application
+        /// </summary>
+        public NetworkManager NetworkManager
+        {
+            get { return networkManager; }
+            set { networkManager = value; }
+        }
+
+        /// <summary>
         /// Component that syncs up the world
         /// </summary>
         public WorldSync WorldSync
@@ -104,8 +121,24 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
             set { worldSync = value; }
         }
 
+        /// <summary>
+        /// Is the device a host or a client? (HoloLens or mobile?)
+        /// </summary>
+        public bool IsHost
+        {
+            get {return isHost; }
+            private set {isHost = value; }
+        }
+
         private void Start()
         {
+            string[] errors;
+            if (!DependenciesValid(out errors))
+            {
+                PrintValidationErrors(errors);
+                gameObject.SetActive(false);
+            }
+
 #if WINDOWS_UWP
             try
             {
@@ -119,44 +152,18 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
             }
 #endif
             isHost = FindObjectOfType<PlatformSwitcher>().TargetPlatform == PlatformSwitcher.Platform.Hololens;
-            // Auto find components if necessary
-            if (NewDeviceDiscovery == null)
-            {
-                NewDeviceDiscovery = FindObjectOfType<NewDeviceDiscovery>();
-            }
 
-            if (SpectatorViewNetworkDiscovery == null)
-            {
-                SpectatorViewNetworkDiscovery = FindObjectOfType<SpectatorViewNetworkDiscovery>();
-            }
             // The host needs an aditional component
             if (isHost)
             {
-                if (MarkerDetectionHololens == null)
-                {
-                    MarkerDetectionHololens = FindObjectOfType<MarkerDetectionHololens>();
-                }
-                NetworkServer.Reset(); // Reset the server to make sure that it starts clean
-                StartHost();
+                NetworkServer.RegisterHandler(MsgType.Connect,  OnServerConnect);
+                StartCoroutine(StartHostRoutine());
             }
             else
             {
-                if (MarkerGeneration3D == null)
-                {
-                    MarkerGeneration3D = FindObjectOfType<MarkerGeneration3D>();
-                }
-
                 WorldSync.OnWorldSyncCompleteClient += OnWorldSync;
+                NetworkServer.RegisterHandler(MsgType.Connect,  OnClientConnect);
             }
-        }
-
-        /// <summary>
-        /// For the client, wait until the server has started and then start the discovery components
-        /// </summary>
-        public override void OnStartHost()
-        {
-            base.OnStartHost();
-            StartCoroutine(StartHostRoutine());
         }
 
         /// <summary>
@@ -164,6 +171,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         /// </summary>
         private IEnumerator StartHostRoutine()
         {
+            yield return new WaitUntil(() => NetworkManager.IsClientConnected());
             SpectatorViewNetworkDiscovery.ManualStart();
             yield return null;
             NewDeviceDiscovery.ManualStart();
@@ -174,9 +182,8 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         /// A new client has connected, sync up the world
         /// </summary>
         /// <param name="conn">Newly created connection between the server and client</param>
-        public override void OnServerConnect(NetworkConnection conn)
+        private void OnServerConnect(NetworkMessage conn)
         {
-            base.OnServerConnect(conn);
             WorldSync.StartSyncing();
         }
 
@@ -185,9 +192,8 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         /// A client has been connected to the server
         /// </summary>
         /// <param name="conn">Newly created connection between the server and client</param>
-        public override void OnClientConnect(NetworkConnection conn)
+        private void OnClientConnect(NetworkMessage conn)
         {
-            base.OnClientConnect(conn);
             if (OnClientConnectedCustom != null)
             {
                 OnClientConnectedCustom();
@@ -215,5 +221,82 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
             NewDeviceDiscovery.StopBroadcast();
             yield return null;
         }
+
+        #region Dependencies validation
+        private void OnValidate()
+        {
+            //Check if the object is in the scene. Otherwise it'll also check the prefabs and we don't want that
+            if (!gameObject.activeInHierarchy)
+            {
+                return;
+            }
+            string[] errors = null;
+            if (!DependenciesValid(out errors))
+            {
+                PrintValidationErrors(errors);
+            }
+        }
+
+        /// <summary>
+        /// Checks all the dependencies for the script.
+        /// </summary>
+        /// <param name="errors">Out variable that will hold an element for every error, if any</param>
+        /// <returns>Whether all the dependencies exist and are correctly linked up</returns>
+        private bool DependenciesValid(out string[] errors)
+        {
+            var dependenciesValid = true;
+            var errorsList = new List<string>();
+            if (spectatorViewNetworkDiscovery == null)
+            {
+                errorsList.Add("SpectatorViewNetworkDiscovery reference is null on SpectatorView.");
+                dependenciesValid = false;
+            }
+
+            if (markerDetectionHololens == null)
+            {
+                errorsList.Add("MarkerDetectionHololens reference is null on SpectatorView.");
+                dependenciesValid = false;
+            }
+
+            if (markerGeneration3D == null)
+            {
+                errorsList.Add("MarkerGeneration3D reference is null on SpectatorView.");
+                dependenciesValid = false;
+            }
+
+            if (newDeviceDiscovery == null)
+            {
+                errorsList.Add("NewDeviceDiscovery reference is null on SpectatorView.");
+                dependenciesValid = false;
+            }
+
+            if (networkManager == null)
+            {
+                errorsList.Add("NetworkManager reference is null on SpectatorView.");
+                dependenciesValid = false;
+            }
+
+            if (worldSync == null)
+            {
+                errorsList.Add("WorldSync reference is null on SpectatorView.");
+                dependenciesValid = false;
+            }
+
+            errors = errorsList.ToArray();
+            return dependenciesValid;
+        }
+
+        /// <summary>
+        /// Prints to the console an error for each
+        /// </summary>
+        /// <param name="errors"></param>
+        private void PrintValidationErrors(string[] errors)
+        {
+            for (var i = 0; i < errors.Length; i++)
+            {
+                Debug.LogError(errors[i]);
+            }
+        }
+        #endregion Dependencies validation
     }
 }

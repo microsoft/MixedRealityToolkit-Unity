@@ -14,7 +14,6 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public abstract class ControllerFinder : MonoBehaviour
     {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         public MotionControllerInfo.ControllerElementEnum Element
         {
             get { return element; }
@@ -24,22 +23,28 @@ namespace HoloToolkit.Unity.InputModule
         [SerializeField]
         private MotionControllerInfo.ControllerElementEnum element = MotionControllerInfo.ControllerElementEnum.PointingPose;
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         public InteractionSourceHandedness Handedness
         {
             get { return handedness; }
-            set { handedness = value; }
+            set
+            {
+                // We need to refresh which controller we're attached to if we switch handedness.
+                if (handedness != value)
+                {
+                    handedness = value;
+                    RefreshControllerTransform();
+                }
+            }
         }
 
         [SerializeField]
-        private InteractionSourceHandedness handedness = InteractionSourceHandedness.Left;
+        private InteractionSourceHandedness handedness = InteractionSourceHandedness.Unknown;
+#endif
 
-        public Transform ElementTransform { get { return elementTransform; } private set { elementTransform = value; } }
-        private Transform elementTransform;
+        public Transform ElementTransform { get; private set; }
 
         protected MotionControllerInfo ControllerInfo;
-
-        private bool started = false;
-#endif
 
         protected virtual void OnEnable()
         {
@@ -49,22 +54,14 @@ namespace HoloToolkit.Unity.InputModule
                 // The motion controller visualizer singleton could not be found.
                 return;
             }
+#endif
 
-            if (started)
-            {
-                CheckModelAlreadyLoaded();
-            }
+            // Look if the controller has loaded.
+            RefreshControllerTransform();
 
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
             MotionControllerVisualizer.Instance.OnControllerModelLoaded += AddControllerTransform;
             MotionControllerVisualizer.Instance.OnControllerModelUnloaded += RemoveControllerTransform;
-#endif
-        }
-
-        protected virtual void Start()
-        {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            CheckModelAlreadyLoaded();
-            started = true;
 #endif
         }
 
@@ -99,27 +96,50 @@ namespace HoloToolkit.Unity.InputModule
         {
             if (newHandedness != handedness)
             {
-                RemoveControllerTransform(ControllerInfo);
-                handedness = newHandedness;
-                CheckModelAlreadyLoaded();
+                Handedness = newHandedness;
             }
         }
 #endif
+
+        /// <summary>
+        /// Looks to see if the controller model already exists and registers it if so.
+        /// </summary>
+        protected virtual void TryAndAddControllerTransform()
+        {
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            // Look if the controller was already loaded. This could happen if the
+            // GameObject was instantiated at runtime and the model loaded event has already fired.
+            if (!MotionControllerVisualizer.ConfirmInitialized())
+            {
+                // The motion controller visualizer singleton could not be found.
+                return;
+            }
+
+            MotionControllerInfo newController;
+            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out newController))
+            {
+                AddControllerTransform(newController);
+            }
+#endif
+        }
 
         protected virtual void AddControllerTransform(MotionControllerInfo newController)
         {
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             if (newController.Handedness == handedness && !newController.Equals(ControllerInfo))
             {
+                Transform elementTransform;
                 if (!newController.TryGetElement(element, out elementTransform))
                 {
                     Debug.LogError("Unable to find element of type " + element + " under controller " + newController.ControllerParent.name + "; not attaching.");
                     return;
                 }
+
                 ControllerInfo = newController;
-                // update elementTransform for consumption
-                ControllerInfo.TryGetElement(element, out elementTransform);
+                // Update ElementTransform for consumption
                 ElementTransform = elementTransform;
+
+                OnControllerFound();
             }
 #endif
         }
@@ -129,31 +149,38 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             if (oldController.Handedness == handedness)
             {
+                OnControllerLost();
+
                 ControllerInfo = null;
                 ElementTransform = null;
             }
 #endif
         }
 
-        /// <summary>
-        /// Look if the controller was already loaded. This could happen if the
-        /// GameObject was instantiated at runtime and the model loaded event has already fired.
-        /// </summary>
-        private void CheckModelAlreadyLoaded()
+        protected virtual void RefreshControllerTransform()
         {
-            if (!MotionControllerVisualizer.ConfirmInitialized())
+#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+            if (ControllerInfo != null)
             {
-                // The motion controller visualizer singleton could not be found.
-                return;
+                RemoveControllerTransform(ControllerInfo);
             }
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            MotionControllerInfo newController;
-            if (MotionControllerVisualizer.Instance.TryGetControllerModel(handedness, out newController))
-            {
-                AddControllerTransform(newController);
-            }
+            TryAndAddControllerTransform();
 #endif
         }
+
+        /// <summary>
+        /// Override this method to act when the correct controller is actually found.
+        /// This provides similar functionality to overriding AddControllerTransform,
+        /// without the overhead of needing to check that handedness matches.
+        /// </summary>
+        protected virtual void OnControllerFound() { }
+
+        /// <summary>
+        /// Override this method to act when the correct controller is actually lost.
+        /// This provides similar functionality to overriding AddControllerTransform,
+        /// without the overhead of needing to check that handedness matches.
+        /// </summary>
+        protected virtual void OnControllerLost() { }
     }
 }

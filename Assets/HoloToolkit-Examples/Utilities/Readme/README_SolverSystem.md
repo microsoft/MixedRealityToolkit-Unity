@@ -17,6 +17,7 @@ The following Solvers provide the building blocks for basic behavior:
 - **SolverRadialView**, applies tag-along type behavior to the object within a view cone cast by the referenced object.
 - **SolverSurfaceMagnetism**, casts rays to Surfaces in the world, and align the object to that surface.
 - **SolverMomentumizer**, applies accel/velocity/friction to simulate momentum & springiness for an object being moved by other solvers/components.
+- **SolverInBetween**, keeps an object in between two tracked objects.
  
 When **UpdateLinkedTransform** is *true*, the solver will calculate position & orrientation, but will not apply it. This lets other components use the transform values.
 

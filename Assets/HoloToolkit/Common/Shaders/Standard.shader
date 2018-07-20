@@ -44,7 +44,7 @@ Shader "MixedRealityToolkit/Standard"
         _HoverColorOpaqueOverride("Hover Color Override for Transparent Pixels", Color) = (1.0, 1.0, 1.0, 1.0)
         [Toggle(_ROUND_CORNERS)] _RoundCorners("Round Corners", Float) = 0.0
         _RoundCornerRadius("Round Corner Radius", Range(0.01, 0.5)) = 0.25
-        _RoundCornerMargin("Round Corner Margin", Range(0.0, 0.5)) = 0.0
+        _RoundCornerMargin("Round Corner Margin", Range(0.0, 0.5)) = 0.01
         [Toggle(_BORDER_LIGHT)] _BorderLight("Border Light", Float) = 0.0
         [Toggle(_BORDER_LIGHT_USES_HOVER_COLOR)] _BorderLightUsesHoverColor("Border Light Uses Hover Color", Float) = 1.0
         [Toggle(_BORDER_LIGHT_OPAQUE)] _BorderLightOpaque("Border Light Opaque", Float) = 0.0
@@ -88,12 +88,15 @@ Shader "MixedRealityToolkit/Standard"
 
             CGPROGRAM
 
+#if defined(SHADER_API_D3D11)
             #pragma target 5.0
-            #pragma only_renderers d3d11
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ LIGHTMAP_ON
+#endif
             #pragma vertex vert
             #pragma fragment frag
+
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ _MULTI_HOVER_LIGHT
 
             #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON
             #pragma shader_feature _DISABLE_ALBEDO_MAP
@@ -118,6 +121,8 @@ Shader "MixedRealityToolkit/Standard"
             #pragma shader_feature _BORDER_LIGHT_OPAQUE
             #pragma shader_feature _INNER_GLOW
             #pragma shader_feature _ENVIRONMENT_COLORING
+
+            #define IF(a, b, c) lerp(b, c, step((fixed) (a), 0.0));
 
             #include "UnityCG.cginc"
             #include "UnityStandardConfig.cginc"
@@ -159,6 +164,12 @@ Shader "MixedRealityToolkit/Standard"
             #undef _FRESNEL
 #endif
 
+#if defined(_ROUND_CORNERS) || defined(_BORDER_LIGHT) || defined(_INNER_GLOW)
+            #define _DISTANCE_TO_EDGE
+#else
+            #undef _DISTANCE_TO_EDGE
+#endif
+
             struct appdata_t
             {
                 float4 vertex : POSITION;
@@ -178,7 +189,7 @@ Shader "MixedRealityToolkit/Standard"
                 float4 position : SV_POSITION;
 #if defined(_BORDER_LIGHT)
                 float4 uv : TEXCOORD0;
-#else
+#elif !defined(_DISABLE_ALBEDO_MAP) || defined(_NORMAL_MAP) || defined(_DISTANCE_TO_EDGE)
                 float2 uv : TEXCOORD0;
 #endif
 #if defined(LIGHTMAP_ON)
@@ -250,9 +261,13 @@ Shader "MixedRealityToolkit/Standard"
 #endif
 
 #if defined(_HOVER_LIGHT)
-            float3 _HoverPosition;
-            float _HoverRadius;
-            fixed4 _HoverColor;
+#if defined(_MULTI_HOVER_LIGHT)
+#define HOVER_LIGHT_COUNT 3
+#else
+#define HOVER_LIGHT_COUNT 1
+#endif
+#define HOVER_LIGHT_DATA_SIZE 2
+            float4 _HoverLightData[HOVER_LIGHT_COUNT * HOVER_LIGHT_DATA_SIZE];
 #if defined(_HOVER_COLOR_OVERRIDE)
             fixed3 _HoverColorOverride;
 #endif
@@ -287,18 +302,28 @@ Shader "MixedRealityToolkit/Standard"
             fixed3 _EnvironmentColorZ;
 #endif
 
+#if defined(_DIRECTIONAL_LIGHT)
+            static const fixed3 _Ambient = fixed3(0.25, 0.25, 0.25);
+#endif
+
 #if defined(_SPECULAR_HIGHLIGHTS)
             static const fixed _Shininess = 800.0;
 #endif
 
 #if defined(_FRESNEL)
-            static const fixed _FresnelPower = 4.0;
-            static const fixed _FresnelPowerInverse = 1.0 / _FresnelPower;
+            static const fixed _FresnelPower = 8.0;
 #endif
 
 #if defined(_BORDER_LIGHT)
             static const fixed _BorderPower = 10.0;
             static const fixed _InverseBorderPower = 1.0 / _BorderPower;
+#endif
+
+#if defined(_HOVER_LIGHT)
+            inline fixed HoverLight(float4 hoverLight, float3 worldPosition, float alpha)
+            {
+                return (1.0 - saturate(length(hoverLight.xyz - worldPosition) / hoverLight.w)) * alpha;
+            }
 #endif
 
 #if defined(_CLIPPING_PLANE)
@@ -317,7 +342,7 @@ Shader "MixedRealityToolkit/Standard"
 #if defined(_TRANSPARENT)
                 return smoothstep(1.0, 0.0, distance / _EdgeSmoothingValue);
 #else
-                return step(distance, 0.0);
+                return (distance < 0.0);
 #endif
             }
 #endif
@@ -344,66 +369,70 @@ Shader "MixedRealityToolkit/Standard"
                 o.scale.z = length(mul(unity_ObjectToWorld, float4(0.0, 0.0, 1.0, 0.0)));
 #endif
 
-#if defined(_BORDER_LIGHT)
+#if defined(_BORDER_LIGHT) || defined(_ROUND_CORNERS)
                 o.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
    
                 float minScale = min(min(o.scale.x, o.scale.y), o.scale.z);
+
+#if defined(_BORDER_LIGHT) 
                 float maxScale = max(max(o.scale.x, o.scale.y), o.scale.z);
                 float minOverMiddleScale = minScale / (o.scale.x + o.scale.y + o.scale.z - minScale - maxScale);
 
                 float areaYZ = o.scale.y * o.scale.z;
                 float areaXZ = o.scale.z * o.scale.x;
                 float areaXY = o.scale.x * o.scale.y;
+
                 float borderWidth = _BorderWidth;
+#endif
 
                 if (abs(v.normal.x) == 1.0) // Y,Z plane.
                 {
                     o.scale.x = o.scale.z;
                     o.scale.y = o.scale.y;
 
+#if defined(_BORDER_LIGHT) 
                     if (areaYZ > areaXZ && areaYZ > areaXY)
                     {
                         borderWidth *= minOverMiddleScale;
                     }
+#endif
                 }
                 else if (abs(v.normal.y) == 1.0) // X,Z plane.
                 {
                     o.scale.x = o.scale.x;
                     o.scale.y = o.scale.z;
 
+#if defined(_BORDER_LIGHT) 
                     if (areaXZ > areaXY && areaXZ > areaYZ)
                     {
                         borderWidth *= minOverMiddleScale;
                     }
+#endif
                 }
                 else  // X,Y plane.
                 {
                     o.scale.x = o.scale.x;
                     o.scale.y = o.scale.y;
 
+#if defined(_BORDER_LIGHT) 
                     if (areaXY > areaYZ && areaXY > areaXZ)
                     {
                         borderWidth *= minOverMiddleScale;
                     }
+#endif
                 }
 
                 o.scale.z = minScale;
+
+#if defined(_BORDER_LIGHT) 
                 float scaleRatio = min(o.scale.x, o.scale.y) / max(o.scale.x, o.scale.y);
 
-                if (o.scale.x > o.scale.y)
-                {
-                    o.uv.z = 1.0 - (borderWidth * scaleRatio);
-                    o.uv.w = 1.0 - borderWidth;
-                }
-                else
-                {
-                    o.uv.z = 1.0 - borderWidth;
-                    o.uv.w = 1.0 - (borderWidth * scaleRatio);
-                }
-#else
+                o.uv.z = IF(o.scale.x > o.scale.y, 1.0 - (borderWidth * scaleRatio), 1.0 - borderWidth);
+                o.uv.w = IF(o.scale.x > o.scale.y, 1.0 - borderWidth, 1.0 - (borderWidth * scaleRatio));
+#endif
+#elif !defined(_DISABLE_ALBEDO_MAP) || defined(_NORMAL_MAP) || defined(_DISTANCE_TO_EDGE)
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 #endif
-
 
 #if defined(LIGHTMAP_ON)
                 o.lightMapUV.xy = v.lightMapUV.xy * unity_LightmapST.xy + unity_LightmapST.zw;
@@ -427,7 +456,7 @@ Shader "MixedRealityToolkit/Standard"
                 return o;
             }
 
-#if !defined(_ALPHA_CLIP) && !defined(_TRANSPARENT)
+#if defined(SHADER_API_D3D11) && !defined(_ALPHA_CLIP) && !defined(_TRANSPARENT)
             [earlydepthstencil]
 #endif
             fixed4 frag(v2f i) : SV_Target
@@ -456,16 +485,16 @@ Shader "MixedRealityToolkit/Standard"
                 float planeDistance = PointVsPlane(i.worldPosition.xyz, _ClipPlane);
 #if defined(_CLIPPING_PLANE_BORDER)
                 fixed3 planeBorderColor = lerp(_ClippingPlaneBorderColor, fixed3(0.0, 0.0, 0.0), planeDistance / _ClippingPlaneBorderWidth);
-                albedo.rgb += step(planeDistance, _ClippingPlaneBorderWidth) * planeBorderColor;
+                albedo.rgb += planeBorderColor * ((planeDistance < _ClippingPlaneBorderWidth) ? 1.0 : 0.0);
 #endif
 #if defined(_ALPHA_CLIP)
-                albedo *= step(0.0, planeDistance);
+                albedo *= (planeDistance > 0.0);
 #else
                 albedo *= saturate(planeDistance);
 #endif
 #endif
 
-#if defined(_ROUND_CORNERS) || defined(_BORDER_LIGHT) || defined(_INNER_GLOW)
+#if defined(_DISTANCE_TO_EDGE)
                 fixed2 distanceToEdge;
                 distanceToEdge.x = abs(i.uv.x - 0.5) * 2.0;
                 distanceToEdge.y = abs(i.uv.y - 0.5) * 2.0;
@@ -473,9 +502,12 @@ Shader "MixedRealityToolkit/Standard"
 
                 // Rounded corner clipping.
 #if defined(_ROUND_CORNERS)
-                fixed cornerCircleRadius = (_RoundCornerRadius - _RoundCornerMargin) * i.scale.z;
-                fixed2 roundCornerPosition = distanceToEdge * 0.5 * i.scale.xy;
-                fixed2 cornerCircleDistance = (i.scale.xy * 0.5) - cornerCircleRadius - _RoundCornerMargin * i.scale.xy;
+                fixed2 halfScale = i.scale.xy * 0.5;
+                fixed2 roundCornerPosition = distanceToEdge * halfScale;
+
+                fixed cornerCircleRadius = saturate(_RoundCornerRadius - _RoundCornerMargin) * i.scale.z;
+                fixed2 cornerCircleDistance = halfScale - (_RoundCornerMargin * i.scale.z) - cornerCircleRadius;
+
                 fixed roundCornerClip = RoundCorners(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
 #endif
 
@@ -483,19 +515,28 @@ Shader "MixedRealityToolkit/Standard"
 
                 // Hover light.
 #if defined(_HOVER_LIGHT)
-                fixed pointToHover = (1.0 - saturate(length(_HoverPosition - i.worldPosition.xyz) / _HoverRadius)) * _HoverColor.a;
+                fixed pointToHover = 0.0;
+                fixed3 hoverColor = fixed3(0.0, 0.0, 0.0);
+                [unroll]
+                for (int lightIndex = 0; lightIndex < HOVER_LIGHT_COUNT; ++lightIndex)
+                {
+                    int dataIndex = lightIndex * HOVER_LIGHT_DATA_SIZE;
+                    fixed hoverValue = HoverLight(_HoverLightData[dataIndex], i.worldPosition.xyz, _HoverLightData[dataIndex + 1].a);
+                    pointToHover += hoverValue;
+                    hoverColor += lerp(fixed3(0.0, 0.0, 0.0), _HoverLightData[dataIndex + 1].rgb, hoverValue);
+                }
 #if defined(_HOVER_COLOR_OVERRIDE)
-                _HoverColor.rgb = _HoverColorOverride.rgb;
+                hoverColor = _HoverColorOverride.rgb;
 #endif
 #if defined(_HOVER_LIGHT_OPAQUE)
 #if defined(_HOVER_COLOR_OPAQUE_OVERRIDE)
-                _HoverColor.rgb = lerp(_HoverColorOpaqueOverride, _HoverColor.rgb, albedo.a);
+                hoverColor = lerp(_HoverColorOpaqueOverride, hoverColor, albedo.a);
 #endif
                 fixed baseBlend = 1.0 + (albedo.a - 1.0) * saturate(pointToHover / (pointToHover + albedo.a));
-                albedo.rgb += -(1.0 - baseBlend) * albedo.rgb + _HoverColor.rgb * max(pointToHover, 1.0 - baseBlend);
+                albedo.rgb += -(1.0 - baseBlend) * albedo.rgb + hoverColor * max(pointToHover, 1.0 - baseBlend);
                 albedo.a = (albedo.a + pointToHover);
 #else
-                albedo.rgb = saturate(albedo.rgb + _HoverColor.rgb * pointToHover);
+                albedo.rgb = saturate(albedo.rgb + hoverColor * pointToHover);
 #endif
 #endif
 
@@ -504,14 +545,18 @@ Shader "MixedRealityToolkit/Standard"
                 fixed3 borderColor = albedo.rgb * _BorderPower;
 #if defined(_HOVER_LIGHT)
 #if defined(_BORDER_LIGHT_USES_HOVER_COLOR)
-                borderColor *= _HoverColor.rgb;
+                borderColor *= hoverColor;
 #endif
 #else
                 fixed pointToHover = 1.0;
 #endif
                 fixed borderValue;
 #if defined(_ROUND_CORNERS)
-                borderValue = 1.0 - RoundCorners(roundCornerPosition, cornerCircleDistance, cornerCircleRadius * (1.0 - (_BorderWidth * 2.0)));
+                fixed borderMargin = _RoundCornerMargin  + _BorderWidth * 0.5;
+                cornerCircleRadius = saturate(_RoundCornerRadius - borderMargin) * i.scale.z;
+                cornerCircleDistance = halfScale - (borderMargin * i.scale.z) - cornerCircleRadius;
+
+                borderValue =  1.0 - RoundCorners(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
 #else
                 borderValue = max(smoothstep(i.uv.z - _EdgeSmoothingValue, i.uv.z + _EdgeSmoothingValue, distanceToEdge.x),
                                   smoothstep(i.uv.w - _EdgeSmoothingValue, i.uv.w + _EdgeSmoothingValue, distanceToEdge.y));
@@ -559,7 +604,7 @@ Shader "MixedRealityToolkit/Standard"
 
 #if defined(_SPECULAR_HIGHLIGHTS)
                 fixed halfVector = max(0.0, dot(worldNormal, normalize(_WorldSpaceLightPos0 + worldViewDir)));
-                fixed specular = saturate(pow(halfVector, _Shininess * pow(_Smoothness, 4)) * _Smoothness);
+                fixed specular = saturate(pow(halfVector, _Shininess * pow(_Smoothness, 4.0)) * _Smoothness);
 #else
                 fixed specular = 0.0;
 #endif
@@ -573,7 +618,9 @@ Shader "MixedRealityToolkit/Standard"
 #if defined(_REFRACTION)
                 fixed4 refractColor = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, refract(incident, worldNormal, _RefractiveIndex));
                 ibl *= DecodeHDR(refractColor, unity_SpecCube0_HDR);
-#endif 
+#endif
+#else
+                fixed3 ibl = unity_IndirectSpecColor.rgb;
 #endif
 
                 // Fresnel lighting.
@@ -582,23 +629,17 @@ Shader "MixedRealityToolkit/Standard"
 #if defined(_RIM_LIGHT)
                 fixed3 fresnelColor = _RimColor * pow(fresnel, _RimPower);
 #else
-                fixed3 fresnelColor = unity_AmbientSky.rgb * _FresnelPowerInverse * pow(fresnel, _FresnelPower);
+                fixed3 fresnelColor = unity_IndirectSpecColor.rgb * (pow(fresnel, _FresnelPower) * _Smoothness);
 #endif
 #endif
                 // Final lighting mix.
                 fixed4 output = albedo;
 
-#if defined(_REFLECTIONS) || defined(_DIRECTIONAL_LIGHT)
+#if defined(_DIRECTIONAL_LIGHT)
                 fixed minProperty = min(_Smoothness, _Metallic);
-#endif
-
-#if defined(_REFLECTIONS)
                 output.rgb += ibl * min((1.0 - _Metallic), 0.5);
                 output.rgb = lerp(output.rgb, ibl, minProperty);
-#endif
-
-#if defined(_DIRECTIONAL_LIGHT)
-                output.rgb *= lerp(unity_AmbientSky.rgb * 1.5 + (albedo.rgb *_LightColor0.rgb * diffuse + _LightColor0.rgb * specular), albedo, minProperty);
+                output.rgb *= lerp(_Ambient + glstate_lightmodel_ambient + (albedo.rgb *_LightColor0.rgb * diffuse + _LightColor0.rgb * specular), albedo, minProperty);
                 output.rgb += (_LightColor0.rgb * albedo * specular) + (_LightColor0.rgb * specular * _Smoothness);
 #endif
 
@@ -606,7 +647,7 @@ Shader "MixedRealityToolkit/Standard"
 #if defined(_RIM_LIGHT)
                 output.rgb += fresnelColor;
 #else
-                output.rgb += fresnelColor * (1 - minProperty);
+                output.rgb += fresnelColor * (1.0 - minProperty);
 #endif
 #endif
 

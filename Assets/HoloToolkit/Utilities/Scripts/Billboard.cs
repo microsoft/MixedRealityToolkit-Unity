@@ -53,37 +53,46 @@ namespace HoloToolkit.Unity
         {
             if (TargetTransform == null)
             {
-                TargetTransform = CameraCache.Main.transform;
+                if (CameraCache.Main != null)
+                {
+                    TargetTransform = CameraCache.Main.transform;
+                }
             }
-
-            Update();
         }
 
         /// <summary>
         /// Keeps the object facing the camera.
         /// </summary>
-        private void Update()
+        private void LateUpdate()
         {
             if (TargetTransform == null)
             {
-                return;
+                if (CameraCache.Main != null)
+                {
+                    TargetTransform = CameraCache.Main.transform;
+                }
+                else
+                {
+                    return;
+                }
             }
 
             // Get a Vector that points from the target to the main camera.
             Vector3 directionToTarget = TargetTransform.position - transform.position;
-            Vector3 targetUpVector = CameraCache.Main.transform.up;
+
+            bool useCameraAsUpVector = true;
 
             // Adjust for the pivot axis.
             switch (PivotAxis)
             {
                 case PivotAxis.X:
                     directionToTarget.x = 0.0f;
-                    targetUpVector = transform.up;
+                    useCameraAsUpVector = false;
                     break;
 
                 case PivotAxis.Y:
                     directionToTarget.y = 0.0f;
-                    targetUpVector = transform.up;
+                    useCameraAsUpVector = false;
                     break;
 
                 case PivotAxis.Z:
@@ -92,7 +101,7 @@ namespace HoloToolkit.Unity
                     break;
 
                 case PivotAxis.XY:
-                    targetUpVector = transform.up;
+                    useCameraAsUpVector = false;
                     break;
 
                 case PivotAxis.XZ:
@@ -116,7 +125,14 @@ namespace HoloToolkit.Unity
             }
 
             // Calculate and apply the rotation required to reorient the object
-            transform.rotation = Quaternion.LookRotation(-directionToTarget, targetUpVector);
+            if (useCameraAsUpVector)
+            {
+                transform.rotation = Quaternion.LookRotation(-directionToTarget, CameraCache.Main.transform.up);
+            }
+            else
+            {
+                transform.rotation = Quaternion.LookRotation(-directionToTarget);
+            }
         }
     }
 }
