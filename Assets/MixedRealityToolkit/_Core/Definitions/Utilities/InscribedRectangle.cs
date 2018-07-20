@@ -52,12 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             get
             {
                 // A rectangle is considered valid if it's center point is valid.
-                if (EdgeUtilities.IsValidPoint(Center))
-                {
-                    return true;
-                }
-
-                return false;
+                return EdgeUtilities.IsValidPoint(Center);
             }
         }
 
