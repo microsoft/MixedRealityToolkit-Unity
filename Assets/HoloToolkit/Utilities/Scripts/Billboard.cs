@@ -53,18 +53,28 @@ namespace HoloToolkit.Unity
         {
             if (TargetTransform == null)
             {
-                TargetTransform = CameraCache.Main.transform;
+                if (CameraCache.Main != null)
+                {
+                    TargetTransform = CameraCache.Main.transform;
+                }
             }
         }
 
         /// <summary>
         /// Keeps the object facing the camera.
         /// </summary>
-        private void Update()
+        private void LateUpdate()
         {
             if (TargetTransform == null)
             {
-                return;
+                if (CameraCache.Main != null)
+                {
+                    TargetTransform = CameraCache.Main.transform;
+                }
+                else
+                {
+                    return;
+                }
             }
 
             // Get a Vector that points from the target to the main camera.
