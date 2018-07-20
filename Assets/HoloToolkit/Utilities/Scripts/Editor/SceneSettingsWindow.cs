@@ -140,12 +140,14 @@ namespace HoloToolkit.Unity
             if (Values[SceneSetting.AddSpatialMapping])
             {
                 var spatialMappingManagers = FindObjectsOfType<SpatialMappingManager>();
-                foreach (var spatialMappingManager in spatialMappingManagers)
+                if (spatialMappingManagers.Length > 0)
                 {
-                    DestroyImmediate(spatialMappingManager.gameObject.GetParentRoot());
+                    Debug.LogWarning("There's already a SpatialMappingManager in the scene. Did not add the SpatialMapping prefab.");
                 }
-
-                PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(SpatialMappingPrefabGUID)));
+                else
+                {
+                    PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(SpatialMappingPrefabGUID)));
+                }
             }
 
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
