@@ -133,15 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 return;
             }
 
-#if !UNITY_WSA
-            // This always returns false in Windows Mixed Reality.
-            if (!Boundary.configured)
-            {
-                Debug.Log("No boundary configured.");
-                return;
-            }
-#endif // !UNITY_WSA
-
             // Get the boundary geometry.
             List<Vector3> boundaryGeometry = new List<Vector3>(0);
             List<Edge> boundaryEdges = new List<Edge>(0);
@@ -228,17 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         /// </remarks>
         private void SetPlatformBoundaryVisibility()
         {
-#if !UNITY_WSA
-            // This always returns false in Windows Mixed Reality.
-            if (!Boundary.configured)
-            {
-                Debug.Log("No boundary configured.");
-                return;
-            }
-
-            // This value cannot be configured on Windows Mixed Reality. Automatic boundary rendering is performed.
             Boundary.visible = EnablePlatformBoundaryRendering;
-#endif // !UNITY_WSA
         }
     }
 }
