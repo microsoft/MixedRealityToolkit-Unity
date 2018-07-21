@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             IMixedRealityBoundarySystem boundaryManager = MixedRealityManager.Instance?.GetManager<IMixedRealityBoundarySystem>();
 
-            InscribedRectangle inscribedRectangle = boundaryManager.InscribedRectangularBounds;
+            InscribedRectangle inscribedRectangle = boundaryManager?.InscribedRectangularBounds;
 
             if (inscribedRectangle != null)
             {
@@ -83,22 +83,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     marker.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
                     // Get the desired material for the marker.
-                    Material material;
+                    Material material = outOfBoundsMaterial;
 
-                    // Check inscribed rectangle first
-                    if (boundaryManager.Contains(position, Boundary.Type.PlayArea))
+                    if (boundaryManager != null)
                     {
-                        material = inscribedRectangleMaterial;
-                    }
-                    // Then check geometry
-                    else if (boundaryManager.Contains(position, Boundary.Type.TrackedArea))
-                    {
-                        material = boundsMaterial;
-                    }
-                    // Otherwise, the position is out of bounds
-                    else
-                    {
-                        material = outOfBoundsMaterial;
+                        // Check inscribed rectangle first
+                        if (boundaryManager.Contains(position, Boundary.Type.PlayArea))
+                        {
+                            material = inscribedRectangleMaterial;
+                        }
+                        // Then check geometry
+                        else if (boundaryManager.Contains(position, Boundary.Type.TrackedArea))
+                        {
+                            material = boundsMaterial;
+                        }
                     }
 
                     marker.GetComponent<MeshRenderer>().sharedMaterial = material;
