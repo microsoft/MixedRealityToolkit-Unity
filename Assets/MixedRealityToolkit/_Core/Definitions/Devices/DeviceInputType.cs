@@ -67,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         ThumbPress,
         ThumbTouch,
         ThumbNearTouch,
+        Thumb,
         IndexFinger,
         MiddleFinger,
         RingFinger,

@@ -49,7 +49,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                 if (IsNodeTypeSupported(nodeStates[i]) && activeControllers.ContainsKey(nodeStates[i].nodeType))
                 {
                     controller = activeControllers[nodeStates[i].nodeType];
-                    if (controller != null && controller.Enabled) controller.UpdateController(nodeStates[i]);
+                    if (controller != null && controller.Enabled)
+                    {
+                        controller.UpdateController(nodeStates[i]);
+                    }
                 }
             }
         }
@@ -119,32 +122,35 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// <remarks>Note, Unity now caches the array between runs, so if you have more than one controller attached, this will fail
         /// TODO: Find a better way?</remarks>
         /// <returns></returns>
-        private SupportedControllerType GetControllerType()
+        private SupportedControllerType CurrentControllerType
         {
-            SupportedControllerType returnControllerType = SupportedControllerType.GenericOpenVR;
-            var controllers = Input.GetJoystickNames();
-
-            for (int i = 0; i < controllers.Length; i++)
+            get
             {
-                switch (controllers[i])
-                {
-                    case "OpenVR Controller(Oculus Rift CV1 (Left Controller)) - Left":
-                    case "OpenVR Controller(Oculus Rift CV1 (Right Controller)) - Right":
-                        return SupportedControllerType.OculusTouch;
-                    case "OpenVR Controller(Oculus remote)":                                // TODO: Yet to test
-                        return SupportedControllerType.OculusRemote;
-                    case "Vive Wand - Left":                                                // TODO: Yet to test
-                    case "Vive Wand - Right":                                               // TODO: Yet to test
-                        return SupportedControllerType.ViveWand;
-                    case "Vive Knuckles - Left":                                            // TODO: Yet to test
-                    case "Vive Knuckles- Right":                                            // TODO: Yet to test
-                        return SupportedControllerType.ViveKnuckles;
-                    default:
-                        break;
-                }
-            }
+                SupportedControllerType returnControllerType = SupportedControllerType.GenericOpenVR;
+                var controllers = Input.GetJoystickNames();
 
-            return returnControllerType;
+                for (int i = 0; i < controllers.Length; i++)
+                {
+                    switch (controllers[i])
+                    {
+                        case "OpenVR Controller(Oculus Rift CV1 (Left Controller)) - Left":
+                        case "OpenVR Controller(Oculus Rift CV1 (Right Controller)) - Right":
+                            return SupportedControllerType.OculusTouch;
+                        case "OpenVR Controller(Oculus remote)":                                // TODO: Yet to test
+                            return SupportedControllerType.OculusRemote;
+                        case "Vive Wand - Left":                                                // TODO: Yet to test
+                        case "Vive Wand - Right":                                               // TODO: Yet to test
+                            return SupportedControllerType.ViveWand;
+                        case "Vive Knuckles - Left":                                            // TODO: Yet to test
+                        case "Vive Knuckles- Right":                                            // TODO: Yet to test
+                            return SupportedControllerType.ViveKnuckles;
+                        default:
+                            break;
+                    }
+                }
+
+                return returnControllerType;
+            }
         }
 
         /// <summary>
@@ -177,12 +183,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     break;
             }
 
-            IMixedRealityInputSource inputSource = InputSystem?.RequestNewGenericInputSource($"{GetControllerType()} Controller {controllingHand}");
+            IMixedRealityInputSource inputSource = InputSystem?.RequestNewGenericInputSource($"{CurrentControllerType} Controller {controllingHand}");
 
             GenericOpenVRController detectedController = null;
 
             //Initialize the controller base on the detected type
-            switch (GetControllerType())
+            switch (CurrentControllerType)
             {
                 case SupportedControllerType.GenericOpenVR:
                     detectedController = new GenericOpenVRController(TrackingState.NotTracked, controllingHand, inputSource);

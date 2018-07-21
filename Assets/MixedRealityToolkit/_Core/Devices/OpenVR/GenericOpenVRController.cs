@@ -168,58 +168,52 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.GripPress:
-                    {
-                        //Update the interaction data source
-                        interactionMapping.SetBoolValue(gripButton > 0);
+                    //Update the interaction data source
+                    interactionMapping.SetBoolValue(gripButton > 0);
 
-                        // If our value changed raise it.
-                        if (interactionMapping.Changed)
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        //Raise input system Event if it enabled
+                        if (gripButton > 0)
                         {
-                            //Raise input system Event if it enabled
-                            if (gripButton > 0)
-                            {
-                                InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
-                            else
-                            {
-                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
-                        break;
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
                     }
+                    break;
                 case DeviceInputType.Grip:
-                    {
-                        //Update the interaction data source
-                        interactionMapping.SetFloatValue(gripButton);
+                    //Update the interaction data source
+                    interactionMapping.SetFloatValue(gripButton);
 
-                        // If our value changed raise it.
-                        if (interactionMapping.Changed)
-                        {
-                            //Raise input system Event if it enabled
-                            InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, gripButton);
-                        }
-                        break;
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        //Raise input system Event if it enabled
+                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, gripButton);
                     }
+                    break;
                 case DeviceInputType.GripTouch:
-                    {
-                        //Update the interaction data source
-                        interactionMapping.SetBoolValue(gripButton > 0 && gripButton < 0.1);
+                    //Update the interaction data source
+                    interactionMapping.SetBoolValue(gripButton > 0 && gripButton < 0.1);
 
-                        // If our value changed raise it.
-                        if (interactionMapping.Changed)
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        //Raise input system Event if it enabled
+                        if (gripButton > 0)
                         {
-                            //Raise input system Event if it enabled
-                            if (gripButton > 0)
-                            {
-                                InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
-                            else
-                            {
-                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
-                        break;
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
                     }
+                    break;
             }
         }
 
@@ -233,68 +227,62 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.TouchpadTouch:
+                    //Get the current Touchpad button Touch state
+                    var touchpadTouchButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton16) : Input.GetKey(KeyCode.JoystickButton17);
+
+                    //Update the interaction data source
+                    interactionMapping.SetBoolValue(touchpadTouchButton);
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
                     {
-                        //Get the current Touchpad button Touch state
-                        var touchpadTouchButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton16) : Input.GetKey(KeyCode.JoystickButton17);
-
-                        //Update the interaction data source
-                        interactionMapping.SetBoolValue(touchpadTouchButton);
-
-                        // If our value changed raise it.
-                        if (interactionMapping.Changed)
+                        //Raise input system Event if it enabled
+                        if (touchpadTouchButton)
                         {
-                            //Raise input system Event if it enabled
-                            if (touchpadTouchButton)
-                            {
-                                InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
-                            else
-                            {
-                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
-                        break;
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
                     }
+                    break;
                 case DeviceInputType.TouchpadPress:
+                    //Get the current Touchpad button state
+                    var touchpadPressButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton8) : Input.GetKey(KeyCode.JoystickButton9);
+
+                    //Update the interaction data source
+                    interactionMapping.SetBoolValue(touchpadPressButton);
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
                     {
-                        //Get the current Touchpad button state
-                        var touchpadPressButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton8) : Input.GetKey(KeyCode.JoystickButton9);
-
-                        //Update the interaction data source
-                        interactionMapping.SetBoolValue(touchpadPressButton);
-
-                        // If our value changed raise it.
-                        if (interactionMapping.Changed)
+                        //Raise input system Event if it enabled
+                        if (touchpadPressButton)
                         {
-                            //Raise input system Event if it enabled
-                            if (touchpadPressButton)
-                            {
-                                InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
-                            else
-                            {
-                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
-                        break;
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
                     }
+                    break;
                 case DeviceInputType.Touchpad:
+                    var touchpadX = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[0]) : Input.GetAxis(VRInputMappings[2]);
+                    var touchpadY = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[1]) : Input.GetAxis(VRInputMappings[3]);
+                    var touchpadPosition = new Vector2(touchpadX, touchpadY);
+
+                    //Update the interaction data source
+                    interactionMapping.SetVector2Value(touchpadPosition);
+
+                    //If our value changed raise it.
+                    if (interactionMapping.Changed)
                     {
-                        var touchpadX = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[0]) : Input.GetAxis(VRInputMappings[2]);
-                        var touchpadY = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[1]) : Input.GetAxis(VRInputMappings[3]);
-                        var touchpadPosition = new Vector2(touchpadX, touchpadY);
-
-                        //Update the interaction data source
-                        interactionMapping.SetVector2Value(touchpadPosition);
-
-                        //If our value changed raise it.
-                        if (interactionMapping.Changed)
-                        {
-                            //Raise input system Event if it enabled
-                            InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, touchpadPosition);
-                        }
-                        break;
+                        //Raise input system Event if it enabled
+                        InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, touchpadPosition);
                     }
+                    break;
                 default:
                     break;
             }
@@ -310,68 +298,62 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.ThumbStickPress:
+                    //Get the current Thumbstick button state
+                    var thumbstickButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton8) : Input.GetKey(KeyCode.JoystickButton9);
+
+                    //Update the interaction data source
+                    interactionMapping.SetBoolValue(thumbstickButton);
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
                     {
-                        //Get the current Thumbstick button state
-                        var thumbstickButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton8) : Input.GetKey(KeyCode.JoystickButton9);
-
-                        //Update the interaction data source
-                        interactionMapping.SetBoolValue(thumbstickButton);
-
-                        // If our value changed raise it.
-                        if (interactionMapping.Changed)
+                        //Raise input system Event if it enabled
+                        if (thumbstickButton)
                         {
-                            //Raise input system Event if it enabled
-                            if (thumbstickButton)
-                            {
-                                InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
-                            else
-                            {
-                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
-                        break;
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
                     }
+                    break;
                 case DeviceInputType.ThumbStick:
+                    var thumbstickX = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[4]) : Input.GetAxis(VRInputMappings[6]);
+                    var thumbstickY = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[5]) : Input.GetAxis(VRInputMappings[7]);
+                    var thumbstickposition = new Vector2(thumbstickX, thumbstickY);
+
+                    //Update the interaction data source
+                    interactionMapping.SetVector2Value(thumbstickposition);
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
                     {
-                        var thumbstickX = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[4]) : Input.GetAxis(VRInputMappings[6]);
-                        var thumbstickY = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[5]) : Input.GetAxis(VRInputMappings[7]);
-                        var thumbstickposition = new Vector2(thumbstickX, thumbstickY);
-
-                        //Update the interaction data source
-                        interactionMapping.SetVector2Value(thumbstickposition);
-
-                        // If our value changed raise it.
-                        if (interactionMapping.Changed)
-                        {
-                            //Raise input system Event if it enabled
-                            InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, thumbstickposition);
-                        }
-                        break;
+                        //Raise input system Event if it enabled
+                        InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, thumbstickposition);
                     }
+                    break;
                 case DeviceInputType.ThumbStickTouch:
+                    //Get the current Thumbstick button state
+                    var thumbstickTouch = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton16) : Input.GetKey(KeyCode.JoystickButton17);
+
+                    //Update the interaction data source
+                    interactionMapping.SetBoolValue(thumbstickTouch);
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
                     {
-                        //Get the current Thumbstick button state
-                        var thumbstickTouch = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton16) : Input.GetKey(KeyCode.JoystickButton17);
-
-                        //Update the interaction data source
-                        interactionMapping.SetBoolValue(thumbstickTouch);
-
-                        // If our value changed raise it.
-                        if (interactionMapping.Changed)
+                        //Raise input system Event if it enabled
+                        if (thumbstickTouch)
                         {
-                            //Raise input system Event if it enabled
-                            if (thumbstickTouch)
-                            {
-                                InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
-                            else
-                            {
-                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
-                        break;
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
                     }
+                    break;
                 default:
                     break;
             }
@@ -388,67 +370,61 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             {
                 case DeviceInputType.TriggerPress:
                 case DeviceInputType.Select:
+                    //Get the current Trigger axis state - ** Does not WORK
+                    var triggerSelect = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[8]) : Input.GetAxis(VRInputMappings[9]);
+
+                    //Update the interaction data source
+                    interactionMapping.SetBoolValue(triggerSelect > 0);
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
                     {
-                        //Get the current Trigger axis state - ** Does not WORK
-                        var triggerSelect = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[8]) : Input.GetAxis(VRInputMappings[9]);
-
-                        //Update the interaction data source
-                        interactionMapping.SetBoolValue(triggerSelect > 0);
-
-                        // If our value changed raise it.
-                        if (interactionMapping.Changed)
+                        //Raise input system Event if it enabled
+                        if (triggerSelect > 0)
                         {
-                            //Raise input system Event if it enabled
-                            if (triggerSelect > 0)
-                            {
-                                InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
-                            else
-                            {
-                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
-                        break;
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
                     }
+                    break;
                 case DeviceInputType.TriggerTouch:
+                    //Get the current Trigger button state
+                    var triggerTouch = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton14) : Input.GetKey(KeyCode.JoystickButton15);
+
+                    //Update the interaction data source
+                    interactionMapping.SetBoolValue(triggerTouch);
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
                     {
-                        //Get the current Trigger button state
-                        var triggerTouch = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton14) : Input.GetKey(KeyCode.JoystickButton15);
-
-                        //Update the interaction data source
-                        interactionMapping.SetBoolValue(triggerTouch);
-
-                        // If our value changed raise it.
-                        if (interactionMapping.Changed)
+                        //Raise input system Event if it enabled
+                        if (triggerTouch)
                         {
-                            //Raise input system Event if it enabled
-                            if (triggerTouch)
-                            {
-                                InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
-                            else
-                            {
-                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
-                        break;
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
                     }
+                    break;
                 case DeviceInputType.Trigger:
+                    //Get the current Trigger axis state - ** Does not WORK
+                    var triggerAxis = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[8]) : Input.GetAxis(VRInputMappings[9]);
+
+                    //Update the interaction data source
+                    interactionMapping.SetFloatValue(triggerAxis);
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
                     {
-                        //Get the current Trigger axis state - ** Does not WORK
-                        var triggerAxis = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[8]) : Input.GetAxis(VRInputMappings[9]);
-
-                        //Update the interaction data source
-                        interactionMapping.SetFloatValue(triggerAxis);
-
-                        // If our value changed raise it.
-                        if (interactionMapping.Changed)
-                        {
-                            //Raise input system Event if it enabled
-                            InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, triggerAxis);
-                        }
-                        break;
+                        //Raise input system Event if it enabled
+                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, triggerAxis);
                     }
+                    break;
                 default:
                     break;
             }
