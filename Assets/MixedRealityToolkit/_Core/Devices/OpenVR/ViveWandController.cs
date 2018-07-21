@@ -7,9 +7,9 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    public class HTCViveController : GenericOpenVRController
+    public class ViveWandController : GenericOpenVRController
     {
-        public HTCViveController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public ViveWandController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions) { }
 
         #region Base override configuration

@@ -75,6 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         break;
                     case DeviceInputType.Select:
                     case DeviceInputType.Trigger:
+                    case DeviceInputType.TriggerTouch:
                     case DeviceInputType.TriggerPress:
                     case DeviceInputType.PointerClick:
                         UpdateTriggerData(interactionSourceState, Interactions[i]);
@@ -98,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         UpdateMenuData(interactionSourceState, Interactions[i]);
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        throw new ArgumentOutOfRangeException($"Input [{Interactions[i].InputType}] is not handled for this controller [WindowsMixedRealityController]");
                 }
             }
 
@@ -405,6 +406,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         {
                             // Raise input system Event if it enabled
                             InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
+                        }
+                        break;
+                    }
+                case DeviceInputType.TriggerTouch:
+                    {
+                        // Update the interaction data source
+                        interactionMapping.SetBoolValue(interactionSourceState.selectPressedAmount > 0);
+
+                        // If our value changed raise it.
+                        if (interactionMapping.Changed)
+                        {
+                            // Raise input system Event if it enabled
+                            if (interactionSourceState.selectPressedAmount > 0)
+                            {
+                                InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
+                            else
+                            {
+                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
                         }
                         break;
                     }

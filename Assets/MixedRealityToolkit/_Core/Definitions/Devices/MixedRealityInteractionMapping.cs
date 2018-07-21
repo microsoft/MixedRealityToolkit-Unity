@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             if (AxisType != AxisType.Raw)
             {
-                Debug.LogError("SetRawValue is only valid for AxisType.Raw InteractionMappings");
+                Debug.LogError($"SetRawValue is only valid for AxisType.Raw InteractionMappings\nPlease check the {inputType} mapping for the current controller");
             }
 
             Changed = rawData != newValue;
@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             if (AxisType != AxisType.Digital)
             {
-                Debug.LogError("SetBoolValue is only valid for AxisType.Digital InteractionMappings");
+                Debug.LogError($"SetBoolValue is only valid for AxisType.Digital InteractionMappings\nPlease check the {inputType} mapping for the current controller");
             }
 
             Changed = boolData != newValue;
@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             if (AxisType != AxisType.SingleAxis)
             {
-                Debug.LogError("SetFloatValue is only valid for AxisType.SingleAxis InteractionMappings");
+                Debug.LogError($"SetFloatValue is only valid for AxisType.SingleAxis InteractionMappings\nPlease check the {inputType} mapping for the current controller");
             }
 
             Changed = !floatData.Equals(newValue);
@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             if (AxisType != AxisType.DualAxis)
             {
-                Debug.LogError("SetVector2Value is only valid for AxisType.DualAxis InteractionMappings");
+                Debug.LogError($"SetVector2Value is only valid for AxisType.DualAxis InteractionMappings\nPlease check the {inputType} mapping for the current controller");
             }
 
             Changed = vector2Data != newValue;
@@ -256,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             if (AxisType != AxisType.ThreeDofPosition)
             {
                 {
-                    Debug.LogError("SetPositionValue is only valid for AxisType.ThreeDoFPosition InteractionMappings");
+                    Debug.LogError($"SetPositionValue is only valid for AxisType.ThreeDoFPosition InteractionMappings\nPlease check the {inputType} mapping for the current controller");
                 }
             }
 
@@ -273,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             if (AxisType != AxisType.ThreeDofRotation)
             {
-                Debug.LogError("SetRotationValue is only valid for AxisType.ThreeDoFRotation InteractionMappings");
+                Debug.LogError($"SetRotationValue is only valid for AxisType.ThreeDoFRotation InteractionMappings\nPlease check the {inputType} mapping for the current controller");
             }
 
             Changed = rotationData != newValue;
@@ -289,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             if (AxisType != AxisType.SixDof)
             {
-                Debug.LogError("SetPoseValue is only valid for AxisType.SixDoF InteractionMappings");
+                Debug.LogError($"SetPoseValue is only valid for AxisType.SixDoF InteractionMappings\nPlease check the {inputType} mapping for the current controller");
             }
 
             Changed = sixDofData != newValue;

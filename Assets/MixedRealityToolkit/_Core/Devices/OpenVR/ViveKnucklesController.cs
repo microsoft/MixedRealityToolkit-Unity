@@ -10,9 +10,9 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    public class ValveKnucklesController : GenericOpenVRController
+    public class ViveKnucklesController : GenericOpenVRController
     {
-        public ValveKnucklesController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public ViveKnucklesController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions) { }
 
         #region Base override configuration
@@ -65,8 +65,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     case DeviceInputType.TouchpadPress:
                         UpdateTouchPadData(Interactions[i]);
                         break;
-                    case DeviceInputType.Menu:
-                    case DeviceInputType.SecondaryButton:
+                    case DeviceInputType.ButtonPress:
+                    case DeviceInputType.SecondaryButtonPress:
                         UpdateButtonData(Interactions[i]);
                         break;
                     case DeviceInputType.IndexFinger:
@@ -161,18 +161,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         {
             switch (interactionMapping.InputType)
             {
-                case DeviceInputType.Menu:
+                case DeviceInputType.ButtonPress:
                     {
                         //Get the current Menu button state
-                        var menuButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton2) : Input.GetKey(KeyCode.JoystickButton0);
+                        var primaryButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton2) : Input.GetKey(KeyCode.JoystickButton0);
                         //Update the interaction data source
-                        interactionMapping.SetBoolValue(menuButton);
+                        interactionMapping.SetBoolValue(primaryButton);
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
                         {
                             //Raise input system Event if it enabled
-                            if (menuButton)
+                            if (primaryButton)
                             {
                                 InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                             }
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         }
                         break;
                     }
-                case DeviceInputType.SecondaryButton:
+                case DeviceInputType.SecondaryButtonPress:
                     {
                         //Get the current Menu button state
                         var secondaryButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton3) : Input.GetKey(KeyCode.JoystickButton1);

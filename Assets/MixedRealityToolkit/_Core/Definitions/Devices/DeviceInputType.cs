@@ -29,6 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         ButtonPress,
         ButtonTouch,
         ButtonNearTouch,
+        SecondaryButtonPress,
+        SecondaryButtonTouch,
+        SecondaryButtonNearTouch,
         Trigger,
         TriggerTouch,
         TriggerNearTouch,
@@ -45,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// 3 Dof Grip with only rotation.
         /// </summary>
         GripRotation,
+        Grip,
         GripPress,
         GripTouch,
         GripNearTouch,
@@ -60,11 +64,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         Start,
         Menu,
         Hand,
-        Thumb,
+        ThumbPress,
+        ThumbTouch,
+        ThumbNearTouch,
         IndexFinger,
         MiddleFinger,
         RingFinger,
-        PinkyFinger,
-        SecondaryButton,
+        PinkyFinger
     }
 }
