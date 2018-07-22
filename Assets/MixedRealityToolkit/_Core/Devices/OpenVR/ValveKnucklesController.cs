@@ -10,9 +10,9 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    public class ViveKnucklesController : GenericOpenVRController
+    public class ValveKnucklesController : GenericOpenVRController
     {
-        public ViveKnucklesController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public ValveKnucklesController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions) { }
 
         #region Base override configuration
@@ -66,7 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         UpdateTouchPadData(Interactions[i]);
                         break;
                     case DeviceInputType.ButtonPress:
-                    case DeviceInputType.SecondaryButtonPress:
                         UpdateButtonData(Interactions[i]);
                         break;
                     case DeviceInputType.IndexFinger:
@@ -82,65 +81,64 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             LastStateReading = xrNodeState;
         }
 
-        /// <inheritdoc />
         protected void UpdateFingerData(MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.IndexFinger:
                     //Get the current Trigger axis state - ** Does not WORK
-                    var IndexFingerAxis = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[12]) : Input.GetAxis(VRInputMappings[13]);
+                    var indexFingerAxis = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[12]) : Input.GetAxis(VRInputMappings[13]);
 
                     //Update the interaction data source
-                    interactionMapping.SetFloatValue(IndexFingerAxis);
+                    interactionMapping.FloatData = indexFingerAxis;
 
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
                         //Raise input system Event if it enabled
-                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, IndexFingerAxis);
+                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, indexFingerAxis);
                     }
                     break;
                 case DeviceInputType.MiddleFinger:
                     //Get the current Trigger axis state - ** Does not WORK
-                    var MiddleFingerAxis = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[14]) : Input.GetAxis(VRInputMappings[15]);
+                    var middleFingerAxis = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[14]) : Input.GetAxis(VRInputMappings[15]);
 
                     //Update the interaction data source
-                    interactionMapping.SetFloatValue(MiddleFingerAxis);
+                    interactionMapping.FloatData = middleFingerAxis;
 
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
                         //Raise input system Event if it enabled
-                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, MiddleFingerAxis);
+                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, middleFingerAxis);
                     }
                     break;
                 case DeviceInputType.RingFinger:
                     //Get the current Trigger axis state - ** Does not WORK
-                    var RingFingerAxis = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[16]) : Input.GetAxis(VRInputMappings[17]);
+                    var ringFingerAxis = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[16]) : Input.GetAxis(VRInputMappings[17]);
 
                     //Update the interaction data source
-                    interactionMapping.SetFloatValue(RingFingerAxis);
+                    interactionMapping.FloatData = ringFingerAxis;
 
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
                         //Raise input system Event if it enabled
-                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, RingFingerAxis);
+                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, ringFingerAxis);
                     }
                     break;
                 case DeviceInputType.PinkyFinger:
                     //Get the current Trigger axis state - ** Does not WORK
-                    var PinkyFingerAxis = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[18]) : Input.GetAxis(VRInputMappings[19]);
+                    var pinkyFingerAxis = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[18]) : Input.GetAxis(VRInputMappings[19]);
 
                     //Update the interaction data source
-                    interactionMapping.SetFloatValue(PinkyFingerAxis);
+                    interactionMapping.FloatData = pinkyFingerAxis;
 
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
                         //Raise input system Event if it enabled
-                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, PinkyFingerAxis);
+                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, pinkyFingerAxis);
                     }
                     break;
                 default:
@@ -154,10 +152,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.ButtonPress:
-                    //Get the current Menu button state
+                    //Get the current primary button state
                     var primaryButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton2) : Input.GetKey(KeyCode.JoystickButton0);
                     //Update the interaction data source
-                    interactionMapping.SetBoolValue(primaryButton);
+                    interactionMapping.BoolData = primaryButton;
 
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
@@ -172,12 +170,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                             InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                     }
-                    break;
-                case DeviceInputType.SecondaryButtonPress:
-                    //Get the current Menu button state
+
+                    //Get the current secondary button state
                     var secondaryButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton3) : Input.GetKey(KeyCode.JoystickButton1);
                     //Update the interaction data source
-                    interactionMapping.SetBoolValue(secondaryButton);
+                    interactionMapping.BoolData = secondaryButton;
 
                     // If our value changed raise it.
                     if (interactionMapping.Changed)

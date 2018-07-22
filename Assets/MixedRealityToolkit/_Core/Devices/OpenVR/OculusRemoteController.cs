@@ -5,12 +5,12 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsGaming
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    // TODO
-    public class ArcadeStickController : BaseController
+    // TODO - Implement
+    public class OculusRemoteController : GenericOpenVRController
     {
-        public ArcadeStickController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public OculusRemoteController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions) { }
 
         public override void SetupDefaultInteractions(Handedness controllerHandedness)

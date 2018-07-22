@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         HoloLensClicker,
         GenericOpenVR,
         ViveWand,
-        ViveKnuckles,
+        ValveKnuckles,
         OculusTouch,
         OculusRemote,
     }

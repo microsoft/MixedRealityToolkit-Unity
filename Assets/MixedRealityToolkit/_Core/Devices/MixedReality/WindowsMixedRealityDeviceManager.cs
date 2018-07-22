@@ -81,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// Retrieve the source controller from the Active Store, or create a new device and register it
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK</param>
+        /// <param name="updateControllerData">Optional, should the controller update it's state as well</param>
         /// <returns>New or Existing Controller Input Source</returns>
         private WindowsMixedRealityController GetOrAddController(InteractionSourceState interactionSourceState, bool updateControllerData = true)
         {

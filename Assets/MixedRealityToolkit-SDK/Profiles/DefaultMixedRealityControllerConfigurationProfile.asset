@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityControllerConfigurationProfile
   m_EditorClassIdentifier: 
   renderMotionControllers: 1
-  animateControllerModel: 1
   useDefaultModels: 0
   overrideLeftHandModel: {fileID: 1949574858733782, guid: 058b1961eebf4ff499d0518a7badf083,
     type: 2}
@@ -27,87 +26,100 @@ MonoBehaviour:
     handedness: 1
     defaultModel: 0
     overrideModel: {fileID: 0}
+    useCustomInteractionMapping: 0
     interactions:
     - id: 0
+      description: Spatial Pointer
       axisType: 7
       inputType: 3
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 0
+    - id: 1
+      description: Spatial Grip
       axisType: 7
-      inputType: 17
+      inputType: 14
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 0
+    - id: 2
+      description: Grip Press
+      axisType: 2
+      inputType: 18
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 3
+      description: Touchpad Position
+      axisType: 4
+      inputType: 25
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 4
+      description: Touchpad Touch
+      axisType: 2
+      inputType: 26
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 5
+      description: Touchpad Press
+      axisType: 2
+      inputType: 28
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 6
+      description: Thumbstick Position
+      axisType: 4
+      inputType: 21
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 7
+      description: Thumbstick Press
+      axisType: 2
+      inputType: 36
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 8
+      description: Trigger Position
       axisType: 3
       inputType: 13
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 0
-      axisType: 2
-      inputType: 14
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 0
-      axisType: 2
-      inputType: 16
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 0
-      axisType: 2
-      inputType: 21
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 0
-      axisType: 4
-      inputType: 24
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 0
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 0
-      axisType: 4
-      inputType: 28
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 0
+    - id: 9
+      description: Trigger Pressed
       axisType: 2
       inputType: 29
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 0
+    - id: 10
+      description: Trigger Touched
       axisType: 2
-      inputType: 31
+      inputType: 11
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 0
+    - id: 11
+      description: Menu Pressed
       axisType: 2
-      inputType: 34
+      inputType: 31
       inputAction:
         id: 0
         description: None
@@ -121,87 +133,100 @@ MonoBehaviour:
     defaultModel: 0
     overrideModel: {fileID: 1836205960537552, guid: 73e991446c2d62f4cab788da47121cad,
       type: 2}
+    useCustomInteractionMapping: 0
     interactions:
     - id: 0
+      description: Spatial Pointer
       axisType: 7
       inputType: 3
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 0
+    - id: 1
+      description: Spatial Grip
       axisType: 7
-      inputType: 17
+      inputType: 14
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 0
+    - id: 2
+      description: Grip Press
+      axisType: 2
+      inputType: 18
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 3
+      description: Touchpad Position
+      axisType: 4
+      inputType: 25
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 4
+      description: Touchpad Touch
+      axisType: 2
+      inputType: 26
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 5
+      description: Touchpad Press
+      axisType: 2
+      inputType: 28
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 6
+      description: Thumbstick Position
+      axisType: 4
+      inputType: 21
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 7
+      description: Thumbstick Press
+      axisType: 2
+      inputType: 36
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+    - id: 8
+      description: Trigger Position
       axisType: 3
       inputType: 13
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 0
-      axisType: 2
-      inputType: 14
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 0
-      axisType: 2
-      inputType: 16
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 0
-      axisType: 2
-      inputType: 21
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 0
-      axisType: 4
-      inputType: 24
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 0
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 0
-      axisType: 4
-      inputType: 28
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 0
+    - id: 9
+      description: Trigger Pressed
       axisType: 2
       inputType: 29
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 0
+    - id: 10
+      description: Trigger Touched
       axisType: 2
-      inputType: 31
+      inputType: 11
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 0
+    - id: 11
+      description: Menu Pressed
       axisType: 2
-      inputType: 34
+      inputType: 31
       inputAction:
         id: 0
         description: None
@@ -214,6 +239,7 @@ MonoBehaviour:
     handedness: 1
     defaultModel: 0
     overrideModel: {fileID: 0}
+    useCustomInteractionMapping: 1
     interactions:
     - id: 0
       axisType: 7
@@ -300,6 +326,7 @@ MonoBehaviour:
     handedness: 2
     defaultModel: 0
     overrideModel: {fileID: 0}
+    useCustomInteractionMapping: 1
     interactions:
     - id: 0
       axisType: 7
@@ -387,8 +414,10 @@ MonoBehaviour:
     defaultModel: 0
     overrideModel: {fileID: 1268912277202494, guid: dfada1db9be415e47a5ea23c03ce9ae3,
       type: 2}
+    useCustomInteractionMapping: 0
     interactions:
     - id: 0
+      description: 
       axisType: 7
       inputType: 3
       inputAction:
@@ -396,6 +425,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 3
       inputType: 13
       inputAction:
@@ -403,6 +433,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 15
       inputAction:
@@ -410,6 +441,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 14
       inputAction:
@@ -417,6 +449,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 16
       inputAction:
@@ -424,6 +457,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 3
       inputType: 20
       inputAction:
@@ -431,6 +465,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 22
       inputAction:
@@ -438,6 +473,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 21
       inputAction:
@@ -445,6 +481,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 4
       inputType: 24
       inputAction:
@@ -452,6 +489,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 27
       inputAction:
@@ -459,6 +497,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 26
       inputAction:
@@ -466,6 +505,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 25
       inputAction:
@@ -473,6 +513,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 8
       inputAction:
@@ -480,6 +521,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 7
       inputAction:
@@ -487,6 +529,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 11
       inputAction:
@@ -494,6 +537,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 10
       inputAction:
@@ -501,6 +545,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 33
       inputAction:
@@ -508,6 +553,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 38
       inputAction:
@@ -515,6 +561,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 37
       inputAction:
@@ -530,8 +577,10 @@ MonoBehaviour:
     defaultModel: 0
     overrideModel: {fileID: 1492106606202448, guid: 103eeb2ce21eed645acbc382c9d0a9b2,
       type: 2}
+    useCustomInteractionMapping: 0
     interactions:
     - id: 0
+      description: 
       axisType: 7
       inputType: 3
       inputAction:
@@ -539,6 +588,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 3
       inputType: 13
       inputAction:
@@ -546,6 +596,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 15
       inputAction:
@@ -553,6 +604,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 14
       inputAction:
@@ -560,6 +612,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 16
       inputAction:
@@ -567,6 +620,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 3
       inputType: 20
       inputAction:
@@ -574,6 +628,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 22
       inputAction:
@@ -581,6 +636,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 21
       inputAction:
@@ -588,6 +644,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 4
       inputType: 24
       inputAction:
@@ -595,6 +652,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 27
       inputAction:
@@ -602,6 +660,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 26
       inputAction:
@@ -609,6 +668,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 25
       inputAction:
@@ -616,6 +676,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 8
       inputAction:
@@ -623,6 +684,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 7
       inputAction:
@@ -630,6 +692,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 11
       inputAction:
@@ -637,6 +700,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 10
       inputAction:
@@ -644,6 +708,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 33
       inputAction:
@@ -651,6 +716,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 38
       inputAction:
@@ -658,6 +724,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
     - id: 0
+      description: 
       axisType: 2
       inputType: 37
       inputAction:

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
@@ -30,6 +31,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
         }
+
+        /// <summary>
+        /// The Windows Mixed Reality Controller default interactions.
+        /// </summary>
+        /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
+        public static readonly MixedRealityInteractionMapping[] DefaultInteractions =
+        {
+            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(2, "Grip Press",AxisType.Digital, DeviceInputType.GripPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(3, "Touchpad Position", AxisType.DualAxis, DeviceInputType.Touchpad, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(4, "Touchpad Touch", AxisType.Digital, DeviceInputType.TouchpadTouch, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(5, "Touchpad Press", AxisType.Digital, DeviceInputType.TouchpadPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(6, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(7, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(8, "Trigger Position", AxisType.SingleAxis, DeviceInputType.TriggerPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(9, "Trigger Pressed",AxisType.Digital, DeviceInputType.Select, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(10, "Trigger Touched", AxisType.Digital, DeviceInputType.TriggerTouch, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(11, "Menu Pressed", AxisType.Digital, DeviceInputType.Menu, MixedRealityInputAction.None),
+        };
 
 #if UNITY_WSA
 
@@ -61,7 +82,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             UpdateControllerData(interactionSourceState);
 
-            Debug.Assert(Interactions != null);
+            Debug.Assert(Interactions != null, "No interaction configuration for controller");
+            if (Interactions == null) { Enabled = false; }
+
             for (int i = 0; i < Interactions?.Length; i++)
             {
                 switch (Interactions[i].InputType)
@@ -69,20 +92,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                     case DeviceInputType.None:
                         break;
                     case DeviceInputType.SpatialPointer:
-                    case DeviceInputType.PointerPosition:
-                    case DeviceInputType.PointerRotation:
                         UpdatePointerData(interactionSourceState, Interactions[i]);
                         break;
                     case DeviceInputType.Select:
-                    case DeviceInputType.Trigger:
-                    case DeviceInputType.TriggerTouch:
                     case DeviceInputType.TriggerPress:
-                    case DeviceInputType.PointerClick:
+                    case DeviceInputType.TriggerTouch:
                         UpdateTriggerData(interactionSourceState, Interactions[i]);
                         break;
                     case DeviceInputType.SpatialGrip:
-                    case DeviceInputType.GripPosition:
-                    case DeviceInputType.GripRotation:
                     case DeviceInputType.GripPress:
                         UpdateGripData(interactionSourceState, Interactions[i]);
                         break;
@@ -186,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             }
 
             // Update the interaction data source
-            interactionMapping.SetPoseValue(currentPointerPose);
+            interactionMapping.PoseData = currentPointerPose;
 
             // If our value changed raise it.
             if (interactionMapping.Changed)
@@ -206,8 +223,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.SpatialGrip:
-                case DeviceInputType.GripPosition:
-                case DeviceInputType.GripRotation:
                     {
                         interactionSourceState.sourcePose.TryGetPosition(out currentGripPosition, InteractionSourceNode.Grip);
                         interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
@@ -219,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         }
 
                         // Update the interaction data source
-                        interactionMapping.SetPoseValue(currentGripPose);
+                        interactionMapping.PoseData = currentGripPose;
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
@@ -232,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 case DeviceInputType.GripPress:
                     {
                         //Update the interaction data source
-                        interactionMapping.SetBoolValue(interactionSourceState.grasped);
+                        interactionMapping.BoolData = interactionSourceState.grasped;
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
@@ -264,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 case DeviceInputType.TouchpadTouch:
                     {
                         // Update the interaction data source
-                        interactionMapping.SetBoolValue(interactionSourceState.touchpadTouched);
+                        interactionMapping.BoolData = interactionSourceState.touchpadTouched;
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
@@ -284,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 case DeviceInputType.TouchpadPress:
                     {
                         //Update the interaction data source
-                        interactionMapping.SetBoolValue(interactionSourceState.touchpadPressed);
+                        interactionMapping.BoolData = interactionSourceState.touchpadPressed;
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
@@ -304,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 case DeviceInputType.Touchpad:
                     {
                         // Update the interaction data source
-                        interactionMapping.SetVector2Value(interactionSourceState.touchpadPosition);
+                        interactionMapping.Vector2Data = interactionSourceState.touchpadPosition;
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
@@ -331,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 case DeviceInputType.ThumbStickPress:
                     {
                         // Update the interaction data source
-                        interactionMapping.SetBoolValue(interactionSourceState.thumbstickPressed);
+                        interactionMapping.BoolData = interactionSourceState.thumbstickPressed;
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
@@ -351,7 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 case DeviceInputType.ThumbStick:
                     {
                         // Update the interaction data source
-                        interactionMapping.SetVector2Value(interactionSourceState.thumbstickPosition);
+                        interactionMapping.Vector2Data = interactionSourceState.thumbstickPosition;
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
@@ -375,11 +390,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             switch (interactionMapping.InputType)
             {
-                case DeviceInputType.TriggerPress:
                 case DeviceInputType.Select:
                     {
                         // Update the interaction data source
-                        interactionMapping.SetBoolValue(interactionSourceState.selectPressed);
+                        interactionMapping.BoolData = interactionSourceState.selectPressed;
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
@@ -396,10 +410,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         }
                         break;
                     }
-                case DeviceInputType.Trigger:
+                case DeviceInputType.TriggerPress:
                     {
                         // Update the interaction data source
-                        interactionMapping.SetFloatValue(interactionSourceState.selectPressedAmount);
+                        interactionMapping.FloatData = interactionSourceState.selectPressedAmount;
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
@@ -412,7 +426,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 case DeviceInputType.TriggerTouch:
                     {
                         // Update the interaction data source
-                        interactionMapping.SetBoolValue(interactionSourceState.selectPressedAmount > 0);
+                        interactionMapping.BoolData = interactionSourceState.selectPressedAmount > 0;
 
                         // If our value changed raise it.
                         if (interactionMapping.Changed)
@@ -442,7 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         private void UpdateMenuData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
             //Update the interaction data source
-            interactionMapping.SetBoolValue(interactionSourceState.menuPressed);
+            interactionMapping.BoolData = interactionSourceState.menuPressed;
 
             // If our value changed raise it.
             if (interactionMapping.Changed)
@@ -462,5 +476,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         #endregion Update data functions
 
 #endif // UNITY_WSA
+
+        /// <inheritdoc />
+        public override void SetupDefaultInteractions(Handedness controllerHandedness)
+        {
+            AssignControllerMappings(DefaultInteractions);
+        }
     }
 }

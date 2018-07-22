@@ -3,6 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using System;
 using UnityEngine;
@@ -15,15 +17,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     [Serializable]
     public struct MixedRealityControllerMapping
     {
-        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject overrideModel, MixedRealityInteractionMapping[] interactions) : this()
+        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject overrideModel) : this()
         {
             this.id = id;
             this.description = description;
             this.controller = controller;
             this.handedness = handedness;
             this.overrideModel = overrideModel;
-            this.interactions = interactions;
-            this.defaultModel = false;
+            useCustomInteractionMapping = false;
+            interactions = null;
+            defaultModel = false;
         }
 
         /// <summary>
@@ -83,6 +86,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         [Tooltip("An override model to display for this specific controller.")]
         private GameObject overrideModel;
 
+        [SerializeField]
+        [Tooltip("Override the default interaction mappings.")]
+        private bool useCustomInteractionMapping;
+
+        /// <summary>
+        /// Is this controller mapping using custom interactions?.
+        /// </summary>
+        public bool IsCustomInteractionMapping => useCustomInteractionMapping;
+
         /// <summary>
         /// Details the list of available buttons / interactions available from the device.
         /// </summary>
@@ -91,5 +103,31 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         [SerializeField]
         [Tooltip("Details the list of available buttons / interactions available from the device.")]
         private MixedRealityInteractionMapping[] interactions;
+
+        /// <summary>
+        /// Sets the default interaction mapping based on the current controller type.
+        /// </summary>
+        public void SetDefaultInteractionMapping()
+        {
+            if (controller.Type == null)
+            {
+                interactions = null;
+            }
+            else if (controller.Type == typeof(WindowsMixedRealityController))
+            {
+                interactions = WindowsMixedRealityController.DefaultInteractions;
+            }
+            else if (controller.Type == typeof(GenericOpenVRController))
+            {
+                if (Handedness == Handedness.Left)
+                {
+                    interactions = GenericOpenVRController.DefaultLeftHandedInteractions;
+                }
+                else if (Handedness == Handedness.Right)
+                {
+                    interactions = GenericOpenVRController.DefaultRightHandedInteractions;
+                }
+            }
+        }
     }
 }
