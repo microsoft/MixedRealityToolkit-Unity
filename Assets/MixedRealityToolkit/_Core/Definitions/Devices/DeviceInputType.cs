@@ -3,7 +3,6 @@
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
-    // TODO - Expand input list for additional controller types and have a filter defined by the controller
     /// <summary>
     /// The InputType defines the types of input exposed by a controller.
     /// Denoting the available buttons / interactions that a controller supports.
@@ -45,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// 3 Dof Grip with only rotation.
         /// </summary>
         GripRotation,
+        Grip,
         GripPress,
         GripTouch,
         GripNearTouch,
@@ -61,10 +61,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         Menu,
         Hand,
         Thumb,
+        ThumbTouch,
+        ThumbNearTouch,
+        ThumbPress,
         IndexFinger,
+        IndexFingerTouch,
+        IndexFingerNearTouch,
+        IndexFingerPress,
         MiddleFinger,
+        MiddleFingerTouch,
+        MiddleFingerNearTouch,
+        MiddleFingerPress,
         RingFinger,
+        RingFingerTouch,
+        RingFingerNearTouch,
+        RingFingerPress,
         PinkyFinger,
-        SecondaryButton,
+        PinkyFingerTouch,
+        PinkyFingerNearTouch,
+        PinkyFingerPress,
     }
 }

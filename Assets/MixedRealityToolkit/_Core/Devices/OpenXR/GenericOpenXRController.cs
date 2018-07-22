@@ -12,5 +12,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
     {
         public GenericOpenXRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions) { }
+
+        public override void SetupDefaultInteractions(Handedness controllerHandedness)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

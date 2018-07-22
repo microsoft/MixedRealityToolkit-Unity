@@ -76,11 +76,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         public bool IsRotationAvailable { get; protected set; }
 
         /// <inheritdoc />
-        public MixedRealityInteractionMapping[] Interactions { get; private set; }
+        public MixedRealityInteractionMapping[] Interactions { get; private set; } = null;
 
         /// <inheritdoc />
-        public virtual InputManagerAxis[] ControllerAxisMappings { get; }
+        public virtual InputManagerAxis[] ControllerAxisMappings { get; } = null;
 
+        /// <summary>
+        /// Setups up the configuration based on the Mixed Reality Controller Mapping Profile.
+        /// </summary>
+        /// <param name="controllerType"></param>
         public void SetupConfiguration(Type controllerType)
         {
             if (MixedRealityManager.Instance.ActiveProfile.EnableControllerProfiles)
@@ -98,9 +102,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                 }
 
                 //If no controller mappings found, warn the user.  Does not stop the project from running.
-                if (Interactions == null || Interactions.Length < 1) { Debug.LogWarning($"No Controller mapping found for {controllerType}"); Enabled = false; }
+                if (Interactions == null || Interactions.Length < 1)
+                {
+                    SetupDefaultInteractions(ControllerHandedness);
+
+                    // We still don't have controller mappings, so this may be a custom controller.
+                    if (Interactions == null || Interactions.Length < 1)
+                    {
+                        Debug.LogError("No default interactions found for controller.");
+                    }
+                }
             }
         }
+
+        /// <summary>
+        /// Assign the default interactions based on controller handedness if necessary.
+        /// </summary>
+        /// <param name="controllerHandedness"></param>
+        public abstract void SetupDefaultInteractions(Handedness controllerHandedness);
 
         /// <summary>
         /// Load the Interaction mappings for this controller from the configured Controller Mapping profile
@@ -112,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
 
             for (uint i = 0; i < mappings.Length; i++)
             {
-                interactions[i] = new MixedRealityInteractionMapping(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].MixedRealityInputAction);
+                interactions[i] = new MixedRealityInteractionMapping(i, mappings[i].Description, mappings[i].AxisType, mappings[i].InputType, mappings[i].MixedRealityInputAction);
             }
 
             Interactions = interactions;
