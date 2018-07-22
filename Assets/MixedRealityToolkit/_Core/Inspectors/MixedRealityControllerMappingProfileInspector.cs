@@ -319,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             else
             {
                 EditorGUILayout.LabelField(InputDescription, GUILayout.Width(96f), GUILayout.ExpandWidth(true));
-                EditorGUILayout.LabelField(ActionContent, GUILayout.Width(96f));
+                EditorGUILayout.LabelField(ActionContent, GUILayout.Width(128f));
             }
 
             GUILayout.EndHorizontal();
@@ -384,7 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     var actionConstraint = action.FindPropertyRelative("axisConstraint");
 
                     EditorGUI.BeginChangeCheck();
-                    actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, CheckValue(actionId.intValue, actionIds.Length - 1), actionLabels, actionIds, GUILayout.Width(96f));
+                    actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, CheckValue(actionId.intValue, actionIds.Length - 1), actionLabels, actionIds, GUILayout.Width(128f));
 
                     if (EditorGUI.EndChangeCheck())
                     {
