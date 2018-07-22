@@ -667,7 +667,7 @@ MonoBehaviour:
     handedness: 1
     defaultModel: 0
     overrideModel: {fileID: 0}
-    useCustomInteractionMapping: 1
+    useCustomInteractionMapping: 0
     interactions:
     - id: 0
       description: Spatial Pointer
