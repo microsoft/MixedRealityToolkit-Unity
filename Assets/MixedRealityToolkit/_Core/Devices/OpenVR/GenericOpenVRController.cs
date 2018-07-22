@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// <summary>
         /// The current source state reading for this OpenVR Controller.
         /// </summary>
-        public XRNodeState LastStateReading;
+        public XRNodeState LastStateReading { get; protected set; }
 
         private Vector2 touchpadPosition = Vector2.zero;
         private Vector2 thumbstickPosition = Vector2.zero;
@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         break;
                     case DeviceInputType.ThumbTouch:
                     case DeviceInputType.ThumbNearTouch:
-                        UpdateOculusTouchThumbData(Interactions[i]);
+                        UpdateOculusTouchThumbRestData(Interactions[i]);
                         break;
                     case DeviceInputType.IndexFinger:
                     case DeviceInputType.MiddleFinger:
@@ -671,7 +671,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
         }
 
-        protected void UpdateOculusTouchThumbData(MixedRealityInteractionMapping interactionMapping)
+        /// <summary>
+        /// Update the Oculus Touch Thumb rest Data.
+        /// </summary>
+        /// <param name="interactionMapping"></param>
+        protected void UpdateOculusTouchThumbRestData(MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
@@ -721,6 +725,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
         }
 
+        /// <summary>
+        /// Update the Valve Knuckles Finger Data.
+        /// </summary>
+        /// <param name="interactionMapping"></param>
         protected void UpdateKnucklesFingerData(MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)

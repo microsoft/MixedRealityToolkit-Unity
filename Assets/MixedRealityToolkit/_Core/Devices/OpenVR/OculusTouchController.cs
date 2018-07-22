@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         break;
                     case DeviceInputType.ThumbTouch:
                     case DeviceInputType.ThumbNearTouch:
-                        UpdateOculusTouchThumbData(Interactions[i]);
+                        UpdateOculusTouchThumbRestData(Interactions[i]);
                         break;
                     case DeviceInputType.ButtonPress:
                         UpdateButtonData(Interactions[i]);
@@ -116,6 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         throw new ArgumentOutOfRangeException($"Input [{Interactions[i].InputType}] is not handled for this controller [OculusTouchController]");
                 }
             }
+
             LastStateReading = xrNodeState;
         }
 
