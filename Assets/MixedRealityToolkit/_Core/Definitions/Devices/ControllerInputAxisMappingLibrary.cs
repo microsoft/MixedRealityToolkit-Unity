@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
+using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         #region ValveKnuckles
 
-        private static readonly string[] ViveKnucklesInputMappings =
+        private static readonly string[] ValveKnucklesInputMappings =
         {
             "VKNUCKLES_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL",   // 0 - TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL
             "VKNUCKLES_TOUCHPAD_LEFT_CONTROLLER_VERTICAL",     // 1 - TOUCHPAD_LEFT_CONTROLLER_VERTICAL
@@ -156,22 +156,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         private static readonly InputManagerAxis[] ValveKnucklesControllerAxisMappings =
         {
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[0], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 1 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[1], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 2 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[2], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 4 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[3], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 5 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[8], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 9 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[9], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 10 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[10], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 11 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[11], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 12 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[12], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 20 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[13], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 21 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[14], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 22 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[15], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 23 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[16], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 24 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[17], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 25 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[18], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 26 },
-            new InputManagerAxis { Name = ViveKnucklesInputMappings[19], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 27 }
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[0], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 1 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[1], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 2 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[2], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 4 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[3], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 5 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[8], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 9 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[9], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 10 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[10], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 11 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[11], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 12 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[12], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 20 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[13], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 21 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[14], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 22 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[15], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 23 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[16], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 24 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[17], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 25 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[18], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 26 },
+            new InputManagerAxis { Name = ValveKnucklesInputMappings[19], Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 27 }
         };
 
         #endregion ValveKnuckles
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Collection of the above Controller mapping configuration, used to load the Unity Input Manager axis mappings.
         /// </summary>
-        private static Dictionary<string, InputManagerAxis[]> InputManagerAxis = new Dictionary<string, InputManagerAxis[]>
+        private static readonly Dictionary<string, InputManagerAxis[]> InputManagerAxis = new Dictionary<string, InputManagerAxis[]>
         {
             { typeof(GenericOpenVRController).FullName, OpenVRControllerAxisMappings },
             { typeof(ViveWandController).FullName, HtcViveControllerAxisMappings },
@@ -194,12 +194,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Collection of the above Controller axis mapping strings, used by controllers to query the correct axis name
         /// </summary>
-        private static Dictionary<string, string[]> InputManagerMappings = new Dictionary<string, string[]>
+        private static readonly Dictionary<string, string[]> InputManagerMappings = new Dictionary<string, string[]>
         {
             { typeof(GenericOpenVRController).FullName, OpenVRInputMappings },
             { typeof(ViveWandController).FullName, ViveWandInputMappings },
             { typeof(OculusTouchController).FullName, OculusTouchInputMappings },
-            { typeof(ValveKnucklesController).FullName, ViveKnucklesInputMappings }
+            { typeof(ValveKnucklesController).FullName, ValveKnucklesInputMappings }
         };
 
         #endregion Controller axis library
