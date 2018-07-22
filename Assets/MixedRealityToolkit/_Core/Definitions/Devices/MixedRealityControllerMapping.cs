@@ -128,6 +128,39 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
                     interactions = GenericOpenVRController.DefaultRightHandedInteractions;
                 }
             }
+            else if (Controller.Type == typeof(OculusTouchController))
+            {
+                if (Handedness == Handedness.Left)
+                {
+                    interactions = OculusTouchController.DefaultLeftHandedInteractions;
+                }
+                else if (handedness == Handedness.Right)
+                {
+                    interactions = OculusTouchController.DefaultRightHandedInteractions;
+                }
+            }
+            else if (Controller.Type == typeof(ViveWandController))
+            {
+                if (Handedness == Handedness.Left)
+                {
+                    interactions = ViveWandController.DefaultLeftHandedInteractions;
+                }
+                else if (handedness == Handedness.Right)
+                {
+                    interactions = ViveWandController.DefaultRightHandedInteractions;
+                }
+            }
+            else if (Controller.Type == typeof(ValveKnucklesController))
+            {
+                if (Handedness == Handedness.Left)
+                {
+                    interactions = ValveKnucklesController.DefaultLeftHandedInteractions;
+                }
+                else if (handedness == Handedness.Right)
+                {
+                    interactions = ValveKnucklesController.DefaultRightHandedInteractions;
+                }
+            }
         }
     }
 }
