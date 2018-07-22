@@ -27,6 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [Tooltip("Material used to draw the area inside of the inscribed rectangle.")]
         private Material inscribedRectangleMaterial = null;
 
+        /// <summary>
+        /// Boundary system implementation.
+        /// </summary>
+        IMixedRealityBoundarySystem boundaryManager = null;
+
         private void Start()
         {
             AddQuad();
@@ -38,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private void AddQuad()
         {
-            IMixedRealityBoundarySystem boundaryManager = MixedRealityManager.Instance?.GetManager<IMixedRealityBoundarySystem>();
+            boundaryManager = boundaryManager ?? MixedRealityManager.Instance?.GetManager<IMixedRealityBoundarySystem>();
 
             InscribedRectangle inscribedRectangle = boundaryManager?.InscribedRectangularBounds;
 
@@ -61,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private void AddIndicators()
         {
-            IMixedRealityBoundarySystem boundaryManager = MixedRealityManager.Instance?.GetManager<IMixedRealityBoundarySystem>();
+            boundaryManager = boundaryManager ?? MixedRealityManager.Instance?.GetManager<IMixedRealityBoundarySystem>();
 
             const int indicatorCount = 20;
             const float indicatorDistance = 0.2f;
