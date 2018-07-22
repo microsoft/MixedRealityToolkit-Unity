@@ -23,13 +23,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <param name="axisType">The axis that the mapping operates on, also denotes the data type for the mapping</param>
         /// <param name="inputType">The physical input device / control</param>
         /// <param name="inputAction">The logical MixedRealityInputAction that this input performs</param>
-        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction)
+        /// <param name="keyCode">Optional KeyCode value to get input from Unity's old input system</param>
+        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction, KeyCode keyCode = KeyCode.None)
         {
             this.id = id;
             this.description = description;
             this.axisType = axisType;
             this.inputType = inputType;
             this.inputAction = inputAction;
+            this.keyCode = keyCode;
             rawData = null;
             boolData = false;
             floatData = 0f;
@@ -86,6 +88,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// Action to be raised to the Input Manager when the input data has changed.
         /// </summary>
         public MixedRealityInputAction MixedRealityInputAction => inputAction;
+
+        [SerializeField]
+        [Tooltip("Optional KeyCode value to get input from Unity's old input system.")]
+        private KeyCode keyCode;
+
+        /// <summary>
+        /// Optional KeyCode value to get input from Unity's old input system.
+        /// </summary>
+        public KeyCode KeyCode => keyCode;
 
         private bool changed;
 

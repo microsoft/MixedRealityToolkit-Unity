@@ -22,14 +22,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// </summary>
         public XRNodeState LastStateReading;
 
+        private Vector2 touchpadPosition = Vector2.zero;
         private Vector2 thumbstickPosition = Vector2.zero;
-
         private Vector3 currentControllerPosition = Vector3.zero;
         private Quaternion currentControllerRotation = Quaternion.identity;
         private MixedRealityPose lastControllerPose = MixedRealityPose.ZeroIdentity;
         private MixedRealityPose currentControllerPose = MixedRealityPose.ZeroIdentity;
 
         private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
+
 
         public static readonly MixedRealityInteractionMapping[] DefaultLeftHandedInteractions =
         {
@@ -73,16 +74,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             // HTC Vive Controller - Left Controller Menu Button (1)
             // Oculus Touch Controller - Button.Three Press
             // Valve Knuckles Controller - Left Controller Inner Face Button
-            new MixedRealityInteractionMapping(13, "Unity Button Id 2", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(13, "Unity Button Id 2", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.JoystickButton2),
             // Oculus Touch Controller - Button.Four Press
             // Valve Knuckles Controller - Left Controller Outer Face Button
-            new MixedRealityInteractionMapping(14, "Unity Button Id 3", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(14, "Unity Button Id 3", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.JoystickButton3),
             // Oculus Touch Controller - Button.Start Press
-            new MixedRealityInteractionMapping(15, "Unity Button Id 7", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(15, "Unity Button Id 7", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.JoystickButton7),
             // Oculus Touch Controller - Button.Three Touch
-            new MixedRealityInteractionMapping(16, "Unity Button Id 12", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(16, "Unity Button Id 12", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.JoystickButton12),
             // Oculus Touch Controller - Button.Four Touch
-            new MixedRealityInteractionMapping(17, "Unity Button Id 13", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(17, "Unity Button Id 13", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.JoystickButton13),
             // Oculus Touch Controller - Touch.PrimaryThumbRest Touch
             new MixedRealityInteractionMapping(18, "Thumb Rest Touch", AxisType.Digital, DeviceInputType.ThumbTouch, MixedRealityInputAction.None),
             // Oculus Touch Controller - Touch.PrimaryThumbRest Near Touch
@@ -140,15 +141,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             // Oculus Remote - Button.One Press
             // Oculus Touch Controller - Button.One Press
             // Valve Knuckles Controller - Right Controller Inner Face Button
-            new MixedRealityInteractionMapping(13, "Unity Button Id 0", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(13, "Unity Button Id 0", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.JoystickButton0),
             // Oculus Remote - Button.Two Press
             // Oculus Touch Controller - Button.Two Press
             // Valve Knuckles Controller - Right Controller Outer Face Button
-            new MixedRealityInteractionMapping(14, "Unity Button Id 1", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(14, "Unity Button Id 1", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.JoystickButton1),
             // Oculus Touch Controller - Button.One Touch
-            new MixedRealityInteractionMapping(15, "Unity Button Id 10", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(15, "Unity Button Id 10", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.JoystickButton10),
             // Oculus Touch Controller - Button.Two Touch
-            new MixedRealityInteractionMapping(16, "Unity Button Id 11", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(16, "Unity Button Id 11", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None, KeyCode.JoystickButton11),
             // Oculus Touch Controller - Touch.SecondaryThumbRest Touch
             new MixedRealityInteractionMapping(17, "Thumb Rest Touch", AxisType.Digital, DeviceInputType.ThumbTouch, MixedRealityInputAction.None),
             // Oculus Touch Controller - Touch.SecondaryThumbRest Near Touch
@@ -252,16 +253,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             LastStateReading = xrNodeState;
         }
 
-        private void UpdateKnucklesFingerData(MixedRealityInteractionMapping mixedRealityInteractionMapping)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void UpdateKnucklesThumbData(MixedRealityInteractionMapping mixedRealityInteractionMapping)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Update the "Controller" input from the device
         /// </summary>
@@ -348,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
             switch (interactionMapping.InputType)
             {
-                case DeviceInputType.GripPress:
+                case DeviceInputType.Grip:
                     // Update the interaction data source
                     interactionMapping.FloatData = gripButtonPress;
 
@@ -357,6 +348,31 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     {
                         //Raise input system Event if it enabled
                         InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, gripButtonPress);
+                    }
+                    break;
+                case DeviceInputType.GripPress:
+                    // Update the interaction data source
+                    interactionMapping.BoolData = gripButtonPress.Equals(1f);
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        if (interactionMapping.BoolData)
+                        {
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
+                    else
+                    {
+                        if (interactionMapping.BoolData)
+                        {
+                            InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
                     }
                     break;
             }
@@ -370,17 +386,31 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         {
             switch (interactionMapping.InputType)
             {
+                case DeviceInputType.Touchpad:
+                    touchpadPosition.x = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[0]) : Input.GetAxis(VRInputMappings[2]);
+                    touchpadPosition.y = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[1]) : Input.GetAxis(VRInputMappings[3]);
+
+                    // Update the interaction data source
+                    interactionMapping.Vector2Data = touchpadPosition;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, touchpadPosition);
+                    }
+                    break;
                 case DeviceInputType.TouchpadTouch:
-                    //Get the current Touchpad button Touch state
+                    // Get the current Touchpad button Touch state
                     var touchpadTouchButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton16) : Input.GetKey(KeyCode.JoystickButton17);
 
-                    //Update the interaction data source
+                    // Update the interaction data source
                     interactionMapping.BoolData = touchpadTouchButton;
 
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
-                        //Raise input system Event if it enabled
+                        // Raise input system Event if it enabled
                         if (touchpadTouchButton)
                         {
                             InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
@@ -390,19 +420,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                             InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                     }
+                    else
+                    {
+                        if (interactionMapping.BoolData)
+                        {
+                            InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
                     break;
                 case DeviceInputType.TouchpadPress:
-                    //Get the current Touchpad button state
+                    // Get the current Touchpad button state
                     var touchpadPressButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton8) : Input.GetKey(KeyCode.JoystickButton9);
 
-                    //Update the interaction data source
+                    // Update the interaction data source
                     interactionMapping.BoolData = touchpadPressButton;
 
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
-                        //Raise input system Event if it enabled
-                        if (touchpadPressButton)
+                        // Raise input system Event if it enabled
+                        if (interactionMapping.BoolData)
                         {
                             InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
@@ -411,25 +448,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                             InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                     }
-                    break;
-                case DeviceInputType.Touchpad:
-                    var touchpadX = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[0]) : Input.GetAxis(VRInputMappings[2]);
-                    var touchpadY = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[1]) : Input.GetAxis(VRInputMappings[3]);
-                    var touchpadPosition = new Vector2(touchpadX, touchpadY);
-
-                    //Update the interaction data source
-                    interactionMapping.Vector2Data = touchpadPosition;
-
-                    //If our value changed raise it.
-                    if (interactionMapping.Changed)
+                    else
                     {
-                        //Raise input system Event if it enabled
-                        InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, touchpadPosition);
+                        if (interactionMapping.BoolData)
+                        {
+                            InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
                     }
                     break;
             }
         }
-
 
         /// <summary>
         /// Update the Thumbstick input from the device
@@ -465,13 +493,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     if (interactionMapping.Changed)
                     {
                         // Raise input system Event if it enabled
-                        if (thumbstickTouch)
+                        if (interactionMapping.BoolData)
                         {
                             InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                         else
                         {
                             InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
+                    else
+                    {
+                        if (interactionMapping.BoolData)
+                        {
+                            InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                     }
                     break;
@@ -486,13 +521,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     if (interactionMapping.Changed)
                     {
                         // Raise input system Event if it enabled
-                        if (thumbstickPress)
+                        if (interactionMapping.BoolData)
                         {
                             InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                         else
                         {
                             InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
+                    else
+                    {
+                        if (interactionMapping.BoolData)
+                        {
+                            InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                     }
                     break;
@@ -546,13 +588,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     if (interactionMapping.Changed)
                     {
                         // Raise input system Event if it enabled
-                        if (triggerTouch)
+                        if (interactionMapping.BoolData)
                         {
                             InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                         else
                         {
                             InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
+                    else
+                    {
+                        if (interactionMapping.BoolData)
+                        {
+                            InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                     }
                     break;
@@ -576,6 +625,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                             InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                     }
+                    else
+                    {
+                        if (interactionMapping.BoolData)
+                        {
+                            InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
                     break;
             }
         }
@@ -586,30 +642,44 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// <param name="interactionMapping"></param>
         protected virtual void UpdateButtonData(MixedRealityInteractionMapping interactionMapping)
         {
-            switch (interactionMapping.InputType)
+            Debug.Assert(interactionMapping.InputType == DeviceInputType.ButtonPress);
+
+            // Get the current input state
+            var buttonPress = Input.GetKey(interactionMapping.KeyCode);
+
+            // Update the interaction data source
+            interactionMapping.BoolData = buttonPress;
+
+            // If our value changed raise it.
+            if (interactionMapping.Changed)
             {
-                case DeviceInputType.ButtonPress:
-                    // Get the current input state
-                    var menuButton = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton2) : Input.GetKey(KeyCode.JoystickButton0);
-
-                    // Update the interaction data source
-                    interactionMapping.BoolData = menuButton;
-
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
-                    {
-                        // Raise input system Event if it enabled
-                        if (menuButton)
-                        {
-                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
-                        else
-                        {
-                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
-                    }
-                    break;
+                // Raise input system Event if it enabled
+                if (interactionMapping.BoolData)
+                {
+                    InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                }
+                else
+                {
+                    InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                }
             }
+            else
+            {
+                if (interactionMapping.BoolData)
+                {
+                    InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                }
+            }
+        }
+
+        private void UpdateKnucklesFingerData(MixedRealityInteractionMapping mixedRealityInteractionMapping)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void UpdateKnucklesThumbData(MixedRealityInteractionMapping mixedRealityInteractionMapping)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion Update data functions
