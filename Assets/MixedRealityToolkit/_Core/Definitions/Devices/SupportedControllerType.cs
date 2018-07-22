@@ -10,8 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     public enum SupportedControllerType
     {
         None = 0,
-        MixedRealityMotionController,
-        HoloLensClicker,
+        MixedRealityController,
         GenericOpenVR,
         ViveWand,
         ValveKnuckles,
