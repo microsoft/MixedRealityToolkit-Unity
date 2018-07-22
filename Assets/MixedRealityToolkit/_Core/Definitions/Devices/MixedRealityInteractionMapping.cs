@@ -24,7 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <param name="inputType">The physical input device / control</param>
         /// <param name="inputAction">The logical MixedRealityInputAction that this input performs</param>
         /// <param name="keyCode">Optional KeyCode value to get input from Unity's old input system</param>
-        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction, KeyCode keyCode = KeyCode.None)
+        /// <param name="axisName">Optional axis definition to get input from Unity's old input system</param>
+        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction, KeyCode keyCode = KeyCode.None, string axisName = null)
         {
             this.id = id;
             this.description = description;
@@ -32,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             this.inputType = inputType;
             this.inputAction = inputAction;
             this.keyCode = keyCode;
+            this.axisName = axisName;
             rawData = null;
             boolData = false;
             floatData = 0f;
@@ -97,6 +99,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// Optional KeyCode value to get input from Unity's old input system.
         /// </summary>
         public KeyCode KeyCode => keyCode;
+
+        [SerializeField]
+        [Tooltip("Optional axis value to get input from Unity's old input system.")]
+        private string axisName;
+
+        /// <summary>
+        /// Optional axis value to get input from Unity's old input system.
+        /// </summary>
+        public string AxisName => axisName;
 
         private bool changed;
 

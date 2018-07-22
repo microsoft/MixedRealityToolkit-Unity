@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static readonly GUIContent InteractionMinusButtonContent = new GUIContent("-", "Remove Interaction Mapping");
         private static readonly GUIContent InteractionContent = new GUIContent("Interaction Mappings");
         private static readonly GUIContent InputDescription = new GUIContent("Description", "The input description");
+        private static readonly GUIContent UnityInputContent = new GUIContent("Unity Input", "Optional KeyCode or Axis value to get Unity Input from.");
         private static readonly GUIContent AxisTypeContent = new GUIContent("Axis Type", "The axis type of the button, e.g. Analogue, Digital, etc.");
         private static readonly GUIContent ControllerInputTypeContent = new GUIContent("Input Type", "The primary action of the input as defined by the controller SDK.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "Action to be raised to the Input Manager when the input data has changed.");
@@ -95,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             //Get the currently configured controllers for comparison later
             for (int i = 0; i < mixedRealityControllerMappingProfiles.arraySize; i++)
             {
-                //Inspect the SerializedProperty - Because Unity does not support a "Value" property.
+                // Inspect the SerializedProperty - Because Unity does not support a "Value" property.
                 SystemType targetController = GetSystemTypeFromSerializedProperty(i);
 
                 if (targetController?.Type != null && !configuredControllerTypes.Contains(targetController.Type.ToString()))
@@ -103,7 +104,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     configuredControllerTypes.Add(targetController.Type.ToString());
                 }
             }
-
 
             EditorGUILayout.PropertyField(renderMotionControllers);
 
@@ -279,6 +279,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     axisType.enumValueIndex = 0;
                     var inputType = interaction.FindPropertyRelative("inputType");
                     inputType.enumValueIndex = 0;
+                    var keyCode = interaction.FindPropertyRelative("keyCode");
+                    keyCode.enumValueIndex = 0;
                     var action = interaction.FindPropertyRelative("inputAction");
                     var actionId = action.FindPropertyRelative("id");
                     var actionDescription = action.FindPropertyRelative("description");
@@ -307,6 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUIUtility.fieldWidth = 24f;
                 EditorGUILayout.LabelField(ControllerInputTypeContent, GUILayout.ExpandWidth(true));
                 EditorGUILayout.LabelField(AxisTypeContent, GUILayout.ExpandWidth(true));
+                EditorGUILayout.LabelField(UnityInputContent, GUILayout.ExpandWidth(true));
                 EditorGUILayout.LabelField(ActionContent, GUILayout.ExpandWidth(true));
                 EditorGUILayout.LabelField(string.Empty, GUILayout.Width(24f));
 
@@ -336,6 +339,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     EditorGUILayout.PropertyField(inputType, GUIContent.none, GUILayout.ExpandWidth(true));
                     var axisType = interaction.FindPropertyRelative("axisType");
                     EditorGUILayout.PropertyField(axisType, GUIContent.none, GUILayout.ExpandWidth(true));
+
+                    if (axisType.enumValueIndex == 2)
+                    {
+                        var keyCode = interaction.FindPropertyRelative("keyCode");
+                        EditorGUILayout.PropertyField(keyCode, GUIContent.none, GUILayout.ExpandWidth(true));
+                    }
+                    else
+                    {
+                        var axisName = interaction.FindPropertyRelative("axisName");
+                        EditorGUILayout.PropertyField(axisName, GUIContent.none, GUILayout.ExpandWidth(true));
+                    }
+
                     var action = interaction.FindPropertyRelative("inputAction");
                     var actionId = action.FindPropertyRelative("id");
                     var actionDescription = action.FindPropertyRelative("description");
