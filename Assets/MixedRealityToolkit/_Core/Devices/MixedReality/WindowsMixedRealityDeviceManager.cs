@@ -10,7 +10,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using System;
 using UnityEngine.XR.WSA.Input;
-using UnityEngine;
 #endif // UNITY_WSA
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
@@ -27,12 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <summary>
         /// Dictionary to capture all active controllers detected
         /// </summary>
-        private readonly Dictionary<uint, IMixedRealityController> activeControllers = new Dictionary<uint, IMixedRealityController>();
+        private readonly Dictionary<uint, WindowsMixedRealityController> activeControllers = new Dictionary<uint, WindowsMixedRealityController>();
 
         /// <inheritdoc/>
         public override IMixedRealityController[] GetActiveControllers()
         {
-            return activeControllers.Values.ToArray();
+            return activeControllers.Values.ToArray<IMixedRealityController>();
         }
 
 #if UNITY_WSA
@@ -88,8 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             //If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(interactionSourceState.source.id))
             {
-                var controller = activeControllers[interactionSourceState.source.id] as WindowsMixedRealityController;
-                Debug.Assert(controller != null);
+                var controller = activeControllers[interactionSourceState.source.id];
 
                 if (updateControllerData)
                 {

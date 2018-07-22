@@ -672,14 +672,117 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
         }
 
-        private void UpdateKnucklesFingerData(MixedRealityInteractionMapping mixedRealityInteractionMapping)
+        private void UpdateKnucklesThumbData(MixedRealityInteractionMapping interactionMapping)
         {
-            throw new NotImplementedException();
+            switch (interactionMapping.InputType)
+            {
+                case DeviceInputType.ThumbTouch:
+                    // Get the current input state
+                    var thumbRestTouch = ControllerHandedness == Handedness.Left ? Input.GetKey(KeyCode.JoystickButton18) : Input.GetKey(KeyCode.JoystickButton19);
+
+                    // Update the interaction data source
+                    interactionMapping.BoolData = thumbRestTouch;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        if (interactionMapping.BoolData)
+                        {
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
+                    else
+                    {
+                        if (interactionMapping.BoolData)
+                        {
+                            InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
+
+                    break;
+                case DeviceInputType.ThumbNearTouch:
+                    // Get the current input state
+                    var triggerPressAmount = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[12]) : Input.GetAxis(VRInputMappings[13]);
+
+                    // Update the interaction data source
+                    interactionMapping.FloatData = triggerPressAmount;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, triggerPressAmount);
+                    }
+                    break;
+            }
         }
 
-        private void UpdateKnucklesThumbData(MixedRealityInteractionMapping mixedRealityInteractionMapping)
+        private void UpdateKnucklesFingerData(MixedRealityInteractionMapping interactionMapping)
         {
-            throw new NotImplementedException();
+            switch (interactionMapping.InputType)
+            {
+                case DeviceInputType.IndexFinger:
+                    // Get the current input state
+                    var indexNearTouchAmount = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[12]) : Input.GetAxis(VRInputMappings[13]);
+
+                    // Update the interaction data source
+                    interactionMapping.FloatData = indexNearTouchAmount;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, indexNearTouchAmount);
+                    }
+                    break;
+                case DeviceInputType.MiddleFinger:
+                    // Get the current input state
+                    var middleNearTouchAmount = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[14]) : Input.GetAxis(VRInputMappings[15]);
+
+                    // Update the interaction data source
+                    interactionMapping.FloatData = middleNearTouchAmount;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, middleNearTouchAmount);
+                    }
+                    break;
+                case DeviceInputType.RingFinger:
+                    // Get the current input state
+                    var ringNearTouchAmount = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[16]) : Input.GetAxis(VRInputMappings[17]);
+
+                    // Update the interaction data source
+                    interactionMapping.FloatData = ringNearTouchAmount;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, ringNearTouchAmount);
+                    }
+                    break;
+                case DeviceInputType.PinkyFinger:
+                    // Get the current input state
+                    var pinkyNearTouchAmount = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[18]) : Input.GetAxis(VRInputMappings[19]);
+
+                    // Update the interaction data source
+                    interactionMapping.FloatData = pinkyNearTouchAmount;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, pinkyNearTouchAmount);
+                    }
+                    break;
+            }
         }
 
         #endregion Update data functions
