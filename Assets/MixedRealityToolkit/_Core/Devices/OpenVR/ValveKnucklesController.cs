@@ -5,9 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using System;
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
@@ -61,60 +59,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         };
 
         #endregion Base override configuration
-
-        #region Update data functions
-
-        /// <inheritdoc />
-        public override void UpdateController(XRNodeState xrNodeState)
-        {
-            UpdateControllerData(xrNodeState);
-
-            Debug.Assert(Interactions != null, "No interaction configuration for controller");
-            if (Interactions == null) Enabled = false;
-
-            for (int i = 0; i < Interactions?.Length; i++)
-            {
-                switch (Interactions[i].InputType)
-                {
-                    case DeviceInputType.None:
-                        break;
-                    case DeviceInputType.SpatialPointer:
-                    case DeviceInputType.PointerPosition:
-                    case DeviceInputType.PointerRotation:
-                        UpdatePointerData(Interactions[i]);
-                        break;
-                    case DeviceInputType.Trigger:
-                    case DeviceInputType.TriggerPress:
-                        UpdateTriggerData(Interactions[i]);
-                        break;
-                    case DeviceInputType.SpatialGrip:
-                    case DeviceInputType.GripPosition:
-                    case DeviceInputType.GripRotation:
-                    case DeviceInputType.GripPress:
-                        UpdateGripData(Interactions[i]);
-                        break;
-                    case DeviceInputType.Touchpad:
-                    case DeviceInputType.TouchpadTouch:
-                    case DeviceInputType.TouchpadPress:
-                        UpdateTouchPadData(Interactions[i]);
-                        break;
-                    case DeviceInputType.ButtonPress:
-                        UpdateButtonData(Interactions[i]);
-                        break;
-                    case DeviceInputType.IndexFinger:
-                    case DeviceInputType.MiddleFinger:
-                    case DeviceInputType.RingFinger:
-                    case DeviceInputType.PinkyFinger:
-                        UpdateKnucklesFingerData(Interactions[i]);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-
-            LastStateReading = xrNodeState;
-        }
-
-        #endregion Update data functions
     }
 }

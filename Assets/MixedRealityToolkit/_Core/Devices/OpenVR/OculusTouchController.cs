@@ -5,9 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using System;
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
@@ -65,62 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             new MixedRealityInteractionMapping(15, "Touch.SecondaryThumbRest Near Touch", AxisType.Digital, DeviceInputType.ThumbNearTouch, MixedRealityInputAction.None),
         };
 
-
         #endregion Base override configuration
-
-        #region Update data functions
-
-        /// <summary>
-        /// Update the controller data from the provided platform state
-        /// </summary>
-        public override void UpdateController(XRNodeState xrNodeState)
-        {
-            UpdateControllerData(xrNodeState);
-
-            Debug.Assert(Interactions != null, "No interaction configuration for controller");
-            if (Interactions == null) { Enabled = false; }
-
-            for (int i = 0; i < Interactions?.Length; i++)
-            {
-                switch (Interactions[i].InputType)
-                {
-                    case DeviceInputType.None:
-                        break;
-                    case DeviceInputType.SpatialPointer:
-                        UpdatePointerData(Interactions[i]);
-                        break;
-                    case DeviceInputType.Trigger:
-                    case DeviceInputType.TriggerTouch:
-                    case DeviceInputType.TriggerPress:
-                    case DeviceInputType.TriggerNearTouch:
-                    case DeviceInputType.PointerClick:
-                        UpdateTriggerData(Interactions[i]);
-                        break;
-                    case DeviceInputType.GripPress:
-                    case DeviceInputType.GripTouch:
-                        UpdateGripData(Interactions[i]);
-                        break;
-                    case DeviceInputType.ThumbStick:
-                    case DeviceInputType.ThumbStickTouch:
-                    case DeviceInputType.ThumbStickNearTouch:
-                        UpdateThumbStickData(Interactions[i]);
-                        break;
-                    case DeviceInputType.ThumbTouch:
-                    case DeviceInputType.ThumbNearTouch:
-                        UpdateOculusTouchThumbRestData(Interactions[i]);
-                        break;
-                    case DeviceInputType.ButtonPress:
-                        UpdateButtonData(Interactions[i]);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException($"Input [{Interactions[i].InputType}] is not handled for this controller [OculusTouchController]");
-                }
-            }
-
-            LastStateReading = xrNodeState;
-        }
-
-        #endregion Update data functions
-
     }
 }
