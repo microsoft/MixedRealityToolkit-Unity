@@ -32,8 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// </summary>
         public override void UpdateController(XRNodeState xrNodeState)
         {
-            Debug.Assert(Interactions != null, "No interaction configuration for controller");
+            UpdateControllerData(xrNodeState);
 
+            Debug.Assert(Interactions != null, "No interaction configuration for controller");
             if (Interactions == null) { Enabled = false; }
 
             for (int i = 0; i < Interactions?.Length; i++)
@@ -43,11 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     case DeviceInputType.None:
                         break;
                     case DeviceInputType.SpatialPointer:
-                    case DeviceInputType.PointerPosition:
-                    case DeviceInputType.PointerRotation:
-                        UpdateControllerData(xrNodeState, Interactions[i]);
+                        UpdatePointerData(Interactions[i]);
                         break;
-                    case DeviceInputType.Select:
                     case DeviceInputType.Trigger:
                     case DeviceInputType.TriggerTouch:
                     case DeviceInputType.TriggerPress:
@@ -55,10 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     case DeviceInputType.PointerClick:
                         UpdateTriggerData(Interactions[i]);
                         break;
-                    case DeviceInputType.SpatialGrip:
-                    case DeviceInputType.GripPosition:
-                    case DeviceInputType.GripRotation:
-                    case DeviceInputType.Grip:
                     case DeviceInputType.GripPress:
                     case DeviceInputType.GripTouch:
                         UpdateGripData(Interactions[i]);
@@ -74,11 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     case DeviceInputType.TouchpadNearTouch:
                         UpdateTouchPadData(Interactions[i]);
                         break;
-                    case DeviceInputType.ThumbStickTouch:
-                    case DeviceInputType.ThumbStickPress:
                     case DeviceInputType.ButtonPress:
-                    case DeviceInputType.ButtonTouch:
-                    case DeviceInputType.Start:
                         UpdateButtonData(Interactions[i]);
                         break;
                     default:

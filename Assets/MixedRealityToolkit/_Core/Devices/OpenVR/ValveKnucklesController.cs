@@ -30,6 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// <inheritdoc />
         public override void UpdateController(XRNodeState xrNodeState)
         {
+            UpdateControllerData(xrNodeState);
+
             Debug.Assert(Interactions != null, "No interaction configuration for controller");
             if (Interactions == null) Enabled = false;
 
@@ -42,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     case DeviceInputType.SpatialPointer:
                     case DeviceInputType.PointerPosition:
                     case DeviceInputType.PointerRotation:
-                        UpdateControllerData(xrNodeState, Interactions[i]);
+                        UpdatePointerData(Interactions[i]);
                         break;
                     case DeviceInputType.Select:
                     case DeviceInputType.Trigger:
