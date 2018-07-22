@@ -24,12 +24,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// <summary>
         /// Tracking states returned from the InputTracking state tracking manager
         /// </summary>
-        private List<XRNodeState> nodeStates = new List<XRNodeState>();
+        private readonly List<XRNodeState> nodeStates = new List<XRNodeState>();
 
         /// <inheritdoc/>
         public override IMixedRealityController[] GetActiveControllers()
         {
-            return activeControllers.Values.ToArray();
+            return activeControllers.Values.ToArray<IMixedRealityController>();
         }
 
         public override void Enable()
@@ -42,17 +42,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
         public override void Update()
         {
-            GenericOpenVRController controller = null;
             InputTracking.GetNodeStates(nodeStates);
             for (int i = 0; i < nodeStates.Count; i++)
             {
-                if (IsNodeTypeSupported(nodeStates[i]) && activeControllers.ContainsKey(nodeStates[i].nodeType))
+                if (IsNodeTypeSupported(nodeStates[i]) &&
+                    activeControllers.ContainsKey(nodeStates[i].nodeType) &&
+                    activeControllers[nodeStates[i].nodeType].Enabled)
                 {
-                    controller = activeControllers[nodeStates[i].nodeType];
-                    if (controller != null && controller.Enabled)
-                    {
-                        controller.UpdateController(nodeStates[i]);
-                    }
+                    activeControllers[nodeStates[i].nodeType].UpdateController(nodeStates[i]);
                 }
             }
         }
@@ -111,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                 case XRNode.LeftHand:
                 case XRNode.RightHand:
                 case XRNode.GameController:
-                 default:
+                default:
                     return true;
             }
         }
@@ -122,11 +119,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// <remarks>Note, Unity now caches the array between runs, so if you have more than one controller attached, this will fail
         /// TODO: Find a better way?</remarks>
         /// <returns></returns>
-        private SupportedControllerType CurrentControllerType
+        private static SupportedControllerType CurrentControllerType
         {
             get
             {
-                SupportedControllerType returnControllerType = SupportedControllerType.GenericOpenVR;
                 var controllers = Input.GetJoystickNames();
 
                 for (int i = 0; i < controllers.Length; i++)
@@ -149,18 +145,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     }
                 }
 
-                return returnControllerType;
+                return SupportedControllerType.GenericOpenVR;
             }
         }
 
         /// <summary>
         /// Retrieve the source controller from the Active Store, or create a new device and register it
         /// </summary>
-        /// <param name="interactionSourceState">Source State provided by the SDK</param>
+        /// <param name="xrNodeState">OpenVR Node State provided by the SDK</param>
         /// <returns>New or Existing Controller Input Source</returns>
         private GenericOpenVRController GetOrAddController(XRNodeState xrNodeState)
         {
-            //If a device is already registered with the ID provided, just return it.
+            // If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(xrNodeState.nodeType))
             {
                 //TODO - Need logic to determine controller type (if possible)
@@ -187,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
             GenericOpenVRController detectedController = null;
 
-            //Initialize the controller base on the detected type
+            // Initialize the controller base on the detected type
             switch (CurrentControllerType)
             {
                 case SupportedControllerType.GenericOpenVR:
@@ -208,10 +204,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     break;
                 case SupportedControllerType.OculusRemote:
                     break;
-                default:
-                    break;
             }
 
+            Debug.Assert(detectedController != null);
             detectedController.UpdateController(xrNodeState);
             activeControllers.Add(xrNodeState.nodeType, detectedController);
             return detectedController;

@@ -15,15 +15,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     [Serializable]
     public struct MixedRealityControllerMapping
     {
-        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject overrideModel, MixedRealityInteractionMapping[] interactions) : this()
+        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject overrideModel) : this()
         {
             this.id = id;
             this.description = description;
             this.controller = controller;
             this.handedness = handedness;
             this.overrideModel = overrideModel;
-            this.interactions = interactions;
-            this.defaultModel = false;
+            useCustomInteractionMappings = false;
+            interactions = null;
+            useDefaultModel = false;
         }
 
         /// <summary>
@@ -63,15 +64,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         [SerializeField]
         [Tooltip("Use the platform SDK to load the default controller model for this controller.")]
-        private bool defaultModel;
+        private bool useDefaultModel;
 
         /// <summary>
         /// User the controller model loader provided by the SDK, or provide override models.
         /// </summary>
-        public bool DefaultModel
+        public bool UseDefaultModel
         {
-            get { return defaultModel; }
-            private set { defaultModel = value; }
+            get { return useDefaultModel; }
+            private set { useDefaultModel = value; }
         }
 
         /// <summary>
@@ -83,6 +84,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         [Tooltip("An override model to display for this specific controller.")]
         private GameObject overrideModel;
 
+        [SerializeField]
+        [Tooltip("Override the default interaction mappings.")]
+        private bool useCustomInteractionMappings;
+
+        /// <summary>
+        /// Is this controller mapping using custom interactions?. 
+        /// </summary>
+        public bool UseCustomInteractionMappings => useCustomInteractionMappings;
+
         /// <summary>
         /// Details the list of available buttons / interactions available from the device.
         /// </summary>
@@ -91,5 +101,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         [SerializeField]
         [Tooltip("Details the list of available buttons / interactions available from the device.")]
         private MixedRealityInteractionMapping[] interactions;
+
+        /// <summary>
+        /// Sets the default interaction mapping based on the current controller type.
+        /// </summary>
+        public void SetDefaultInteractionMapping()
+        {
+            interactions = ControllerMappingLibrary.GetMappingsForControllerType(controller.Type);
+        }
     }
 }

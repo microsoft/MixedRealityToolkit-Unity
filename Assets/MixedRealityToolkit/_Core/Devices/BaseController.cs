@@ -76,11 +76,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         public bool IsRotationAvailable { get; protected set; }
 
         /// <inheritdoc />
-        public MixedRealityInteractionMapping[] Interactions { get; private set; }
+        public MixedRealityInteractionMapping[] Interactions { get; private set; } = null;
 
         /// <inheritdoc />
-        public virtual InputManagerAxis[] ControllerAxisMappings { get; }
+        public virtual InputManagerAxis[] ControllerAxisMappings { get; } = null;
 
+        /// <summary>
+        /// Setups up the configuration based on the Mixed Reality Controller Mapping Profile.
+        /// </summary>
+        /// <param name="controllerType"></param>
         public void SetupConfiguration(Type controllerType)
         {
             if (MixedRealityManager.Instance.ActiveProfile.EnableControllerProfiles)
@@ -88,19 +92,48 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                 // We can only enable controller profiles if mappings exist.
                 var controllerMappings = MixedRealityManager.Instance.ActiveProfile.ControllersProfile.MixedRealityControllerMappingProfiles;
 
+                //Have to test that a controller type has been registered in the profiles, else it's Unity Input manager mappings will not have been setup by the inspector
+                bool profileFound = false;
+
                 for (int i = 0; i < controllerMappings?.Length; i++)
                 {
-                    if (controllerMappings[i].Controller.Type == controllerType && controllerMappings[i].Handedness == ControllerHandedness)
+                    if (!profileFound && controllerMappings[i].Controller.Type == controllerType)
+                    {
+                        profileFound = true;
+                    }
+                    if (!controllerMappings[i].UseCustomInteractionMappings && controllerMappings[i].Controller.Type == controllerType && controllerMappings[i].Handedness == ControllerHandedness)
                     {
                         AssignControllerMappings(controllerMappings[i].Interactions);
                         break;
                     }
                 }
 
+                if (!profileFound)
+                {
+                    Debug.LogError($"No controller profile found for type {controllerType}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
+                    return;
+                }
+
                 //If no controller mappings found, warn the user.  Does not stop the project from running.
-                if (Interactions == null || Interactions.Length < 1) { Debug.LogWarning($"No Controller mapping found for {controllerType}"); Enabled = false; }
+                if (Interactions == null || Interactions.Length < 1)
+                {
+                    SetupDefaultInteractions(ControllerHandedness);
+
+                    // We still don't have controller mappings, so this may be a custom controller. 
+                    if (Interactions == null || Interactions.Length < 1)
+                    {
+                        Debug.LogWarning($"No Controller interaction mappings found for {controllerType} using the {ControllerHandedness} hand");
+                        Enabled = false;
+                    }
+                }
             }
         }
+
+        /// <summary>
+        /// Assign the default interactions based on controller handedness if necessary. 
+        /// </summary>
+        /// <param name="controllerHandedness"></param>
+        public abstract void SetupDefaultInteractions(Handedness controllerHandedness);
 
         /// <summary>
         /// Load the Interaction mappings for this controller from the configured Controller Mapping profile
@@ -112,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
 
             for (uint i = 0; i < mappings.Length; i++)
             {
-                interactions[i] = new MixedRealityInteractionMapping(i, mappings[i].AxisType, mappings[i].InputType, mappings[i].MixedRealityInputAction);
+                interactions[i] = new MixedRealityInteractionMapping(i, mappings[i].Description, mappings[i].AxisType, mappings[i].InputType, mappings[i].MixedRealityInputAction);
             }
 
             Interactions = interactions;
