@@ -29,8 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         private MixedRealityPose lastControllerPose = MixedRealityPose.ZeroIdentity;
         private MixedRealityPose currentControllerPose = MixedRealityPose.ZeroIdentity;
 
-        private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
-
         public static readonly MixedRealityInteractionMapping[] DefaultLeftHandedInteractions =
         {
             // Controller Pose
