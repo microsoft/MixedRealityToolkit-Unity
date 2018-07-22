@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         break;
                     case DeviceInputType.ThumbTouch:
                     case DeviceInputType.ThumbNearTouch:
-                        UpdateKnucklesThumbData(Interactions[i]);
+                        UpdateOculusTouchThumbData(Interactions[i]);
                         break;
                     case DeviceInputType.IndexFinger:
                     case DeviceInputType.MiddleFinger:
@@ -381,7 +381,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// Update the Touchpad input from the device
         /// </summary>
         /// <param name="interactionMapping"></param>
-        protected virtual void UpdateTouchPadData(MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateTouchPadData(MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
@@ -462,7 +462,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// Update the Thumbstick input from the device
         /// </summary>
         /// <param name="interactionMapping"></param>
-        protected virtual void UpdateThumbStickData(MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateThumbStickData(MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
@@ -544,7 +544,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// Update the Trigger input from the device
         /// </summary>
         /// <param name="interactionMapping"></param>
-        protected virtual void UpdateTriggerData(MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateTriggerData(MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
@@ -639,7 +639,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// Update the buttons state.
         /// </summary>
         /// <param name="interactionMapping"></param>
-        protected virtual void UpdateButtonData(MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateButtonData(MixedRealityInteractionMapping interactionMapping)
         {
             Debug.Assert(interactionMapping.InputType == DeviceInputType.ButtonPress);
 
@@ -671,7 +671,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
         }
 
-        private void UpdateKnucklesThumbData(MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateOculusTouchThumbData(MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
@@ -721,7 +721,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
         }
 
-        private void UpdateKnucklesFingerData(MixedRealityInteractionMapping interactionMapping)
+        protected void UpdateKnucklesFingerData(MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
             {
