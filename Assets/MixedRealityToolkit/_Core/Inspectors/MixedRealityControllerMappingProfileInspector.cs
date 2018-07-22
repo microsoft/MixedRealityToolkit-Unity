@@ -8,10 +8,8 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors
 {
