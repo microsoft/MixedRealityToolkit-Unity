@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 
-
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
@@ -123,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 return false;
             }
 
-            return (bool)(MixedRealityManager.Instance?.ActiveProfile?.EnableBoundarySystem);
+            return MixedRealityManager.Instance.ActiveProfile.EnableBoundarySystem;
         }
     }
 }
