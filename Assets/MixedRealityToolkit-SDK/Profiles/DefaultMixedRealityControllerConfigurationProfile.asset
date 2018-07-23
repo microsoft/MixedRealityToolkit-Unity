@@ -305,7 +305,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS9
+      axisCode: MIXEDREALITY_AXIS9
     - id: 2
       description: Trigger Touch
       axisType: 2
@@ -325,7 +325,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS9
+      axisCode: MIXEDREALITY_AXIS9
     - id: 5
       description: Grip
       axisType: 3
@@ -335,7 +335,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS11
+      axisCode: MIXEDREALITY_AXIS11
     - id: 10
       description: Trackpad-Thumbstick Position
       axisType: 4
@@ -415,7 +415,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS10
+      axisCode: MIXEDREALITY_AXIS10
     - id: 2
       description: Trigger Touch
       axisType: 2
@@ -435,7 +435,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS10
+      axisCode: MIXEDREALITY_AXIS10
     - id: 5
       description: Grip
       axisType: 3
@@ -445,7 +445,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS11
+      axisCode: MIXEDREALITY_AXIS11
     - id: 10
       description: Trackpad-Thumbstick Position
       axisType: 4
@@ -525,7 +525,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS9
+      axisCode: MIXEDREALITY_AXIS9
     - id: 2
       description: Axis1D.PrimaryIndexTrigger Touch
       axisType: 2
@@ -545,7 +545,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS13
+      axisCode: MIXEDREALITY_AXIS13
     - id: 4
       description: Axis1D.PrimaryIndexTrigger Press
       axisType: 2
@@ -555,7 +555,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS9
+      axisCode: MIXEDREALITY_AXIS9
     - id: 5
       description: Axis1D.PrimaryHandTrigger Press
       axisType: 3
@@ -565,7 +565,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS11
+      axisCode: MIXEDREALITY_AXIS11
     - id: 6
       description: Axis2D.PrimaryThumbstick
       axisType: 4
@@ -595,7 +595,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS15
+      axisCode: MIXEDREALITY_AXIS15
     - id: 9
       description: Button.PrimaryThumbstick Press
       axisType: 2
@@ -675,7 +675,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS17
+      axisCode: MIXEDREALITY_AXIS17
   - id: 6
     description: Oculus Touch Right
     controller:
@@ -705,7 +705,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS10
+      axisCode: MIXEDREALITY_AXIS10
     - id: 2
       description: Axis1D.SecondaryIndexTrigger Touch
       axisType: 2
@@ -725,7 +725,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS14
+      axisCode: MIXEDREALITY_AXIS14
     - id: 4
       description: Axis1D.SecondaryIndexTrigger Press
       axisType: 2
@@ -735,7 +735,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS10
+      axisCode: MIXEDREALITY_AXIS10
     - id: 5
       description: Axis1D.SecondaryHandTrigger Press
       axisType: 3
@@ -745,7 +745,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS12
+      axisCode: MIXEDREALITY_AXIS12
     - id: 6
       description: Axis2D.SecondaryThumbstick
       axisType: 4
@@ -775,7 +775,7 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS16
+      axisCode: MIXEDREALITY_AXIS16
     - id: 9
       description: Button.SecondaryThumbstick Press
       axisType: 2
@@ -845,4 +845,4 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_OPENVR_AXIS18
+      axisCode: MIXEDREALITY_AXIS18
