@@ -68,7 +68,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         private MixedRealityCameraProfile cameraProfile;
 
         /// <summary>
-        /// Input System Action Mapping profile for wiring up Controller input to Actions.
+        /// Profile for customizing your camera settings based on if your 
+        /// head mounted display (HMD) is a transparent device or an occluded device.
         /// </summary>
         public MixedRealityCameraProfile CameraProfile
         {
