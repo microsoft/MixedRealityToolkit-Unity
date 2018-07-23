@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
@@ -124,8 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 return false;
             }
 
-            MixedRealityConfigurationProfile profile = MixedRealityManager.Instance?.ActiveProfile;
-            return (bool)(profile?.EnableBoundarySystem);
+            return (bool)(MixedRealityManager.Instance?.ActiveProfile?.EnableBoundarySystem);
         }
     }
 }
