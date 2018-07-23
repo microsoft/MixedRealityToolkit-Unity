@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
@@ -30,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// <summary>
         /// Boundary system implementation.
         /// </summary>
-        IMixedRealityBoundarySystem boundaryManager = null;
+        private IMixedRealityBoundarySystem boundaryManager = null;
 
         private void Start()
         {
@@ -43,6 +44,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private void AddQuad()
         {
+            if (!IsBoundarySystemEnabled())
+            {
+                return;
+            }
             boundaryManager = boundaryManager ?? MixedRealityManager.Instance?.GetManager<IMixedRealityBoundarySystem>();
 
             InscribedRectangle inscribedRectangle = boundaryManager?.InscribedRectangularBounds;
@@ -66,7 +71,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private void AddIndicators()
         {
-            boundaryManager = boundaryManager ?? MixedRealityManager.Instance?.GetManager<IMixedRealityBoundarySystem>();
+            if (IsBoundarySystemEnabled())
+            {
+                boundaryManager = boundaryManager ?? MixedRealityManager.Instance?.GetManager<IMixedRealityBoundarySystem>();
+            }
 
             const int indicatorCount = 20;
             const float indicatorDistance = 0.2f;
@@ -107,6 +115,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     marker.GetComponent<MeshRenderer>().sharedMaterial = material;
                 }
             }
+        }
+
+        private bool IsBoundarySystemEnabled()
+        {
+            if (!MixedRealityManager.HasActiveProfile)
+            {
+                return false;
+            }
+
+            MixedRealityConfigurationProfile profile = MixedRealityManager.Instance?.ActiveProfile;
+            return (bool)(profile?.EnableBoundarySystem);
         }
     }
 }
