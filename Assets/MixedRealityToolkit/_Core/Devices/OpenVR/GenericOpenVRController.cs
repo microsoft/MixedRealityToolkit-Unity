@@ -119,20 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             AssignControllerMappings(controllerHandedness == Handedness.Left ? DefaultLeftHandedInteractions : DefaultRightHandedInteractions);
         }
 
-        #region Base override configuration
-
-        /// <summary>
-        /// Mapping method to expose the Unity Input Manager mapping configuration
-        /// </summary>
-        public override InputManagerAxis[] ControllerAxisMappings => ControllerMappingLibrary.GetInputManagerAxes(GetType().FullName);
-
-        /// <summary>
-        /// Mapping method to expose this controllers Unity Input Manager mapping array
-        /// </summary>
-        public virtual string[] VRInputMappings => ControllerMappingLibrary.GetInputManagerMappings(GetType().FullName);
-
-        #endregion Base override configuration
-
         #region Update data functions
 
         /// <summary>
@@ -278,9 +264,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// <param name="interactionMapping"></param>
         protected void UpdateGripData(MixedRealityInteractionMapping interactionMapping)
         {
-            // Get the current grip button press state
-            var gripButtonPress = Input.GetAxis(interactionMapping.AxisCode);
-
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.Grip:
@@ -308,8 +291,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.Touchpad:
-                    touchpadPosition.x = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[0]) : Input.GetAxis(VRInputMappings[2]);
-                    touchpadPosition.y = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[1]) : Input.GetAxis(VRInputMappings[3]);
+                    touchpadPosition.x = ControllerHandedness == Handedness.Left ? Input.GetAxis(ControllerMappingLibrary.MIXEDREALITY_OPENVR_AXIS1) : Input.GetAxis(ControllerMappingLibrary.MIXEDREALITY_OPENVR_AXIS4);
+                    touchpadPosition.y = ControllerHandedness == Handedness.Left ? Input.GetAxis(ControllerMappingLibrary.MIXEDREALITY_OPENVR_AXIS2) : Input.GetAxis(ControllerMappingLibrary.MIXEDREALITY_OPENVR_AXIS5);
 
                     // Update the interaction data source
                     interactionMapping.Vector2Data = touchpadPosition;
@@ -339,8 +322,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             {
                 case DeviceInputType.ThumbStick:
                     // Get the current input state
-                    thumbstickPosition.x = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[4]) : Input.GetAxis(VRInputMappings[6]);
-                    thumbstickPosition.y = ControllerHandedness == Handedness.Left ? Input.GetAxis(VRInputMappings[5]) : Input.GetAxis(VRInputMappings[7]);
+                    thumbstickPosition.x = ControllerHandedness == Handedness.Left ? Input.GetAxis(ControllerMappingLibrary.MIXEDREALITY_OPENVR_AXIS1) : Input.GetAxis(ControllerMappingLibrary.MIXEDREALITY_OPENVR_AXIS4);
+                    thumbstickPosition.y = ControllerHandedness == Handedness.Left ? Input.GetAxis(ControllerMappingLibrary.MIXEDREALITY_OPENVR_AXIS2) : Input.GetAxis(ControllerMappingLibrary.MIXEDREALITY_OPENVR_AXIS5);
 
                     //Update the interaction data source
                     interactionMapping.Vector2Data = thumbstickPosition;
@@ -430,40 +413,40 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
         protected void UpdateSingleAxisFromAxis(MixedRealityInteractionMapping interactionMapping)
         {
-            var triggerPressAmount = Input.GetAxis(interactionMapping.AxisCode);
+            var singleAxisValue = Input.GetAxis(interactionMapping.AxisCode);
 
             // Update the interaction data source
-            interactionMapping.FloatData = triggerPressAmount;
+            interactionMapping.FloatData = singleAxisValue;
 
             // If our value changed raise it.
             if (interactionMapping.Changed)
             {
                 // Raise input system Event if it enabled
-                InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, triggerPressAmount);
+                InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, singleAxisValue);
             }
         }
 
         protected void UpdateButtonFromAxis(MixedRealityInteractionMapping interactionMapping)
         {
-            var triggerNearTouchAmount = Input.GetAxis(interactionMapping.AxisCode);
+            var axisButton = Input.GetAxis(interactionMapping.AxisCode);
 
             // Update the interaction data source
-            interactionMapping.BoolData = triggerNearTouchAmount.Equals(1);
+            interactionMapping.BoolData = axisButton.Equals(1);
 
             // If our value changed raise it.
             if (interactionMapping.Changed)
             {
                 // Raise input system Event if it enabled
-                InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, triggerNearTouchAmount);
+                InputSystem?.RaiseOnInputPressed(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, axisButton);
             }
         }
 
         protected void UpdateButtonFromKey(MixedRealityInteractionMapping interactionMapping)
         {
-            var triggerTouch = Input.GetKey(interactionMapping.KeyCode);
+            var keyButton = Input.GetKey(interactionMapping.KeyCode);
 
             //Update the interaction data source
-            interactionMapping.BoolData = triggerTouch;
+            interactionMapping.BoolData = keyButton;
 
             // If our value changed raise it.
             if (interactionMapping.Changed)

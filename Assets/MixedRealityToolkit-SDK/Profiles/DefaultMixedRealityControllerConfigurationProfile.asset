@@ -559,7 +559,7 @@ MonoBehaviour:
     - id: 5
       description: Axis1D.PrimaryHandTrigger Press
       axisType: 3
-      inputType: 16
+      inputType: 20
       inputAction:
         id: 0
         description: None
@@ -739,7 +739,7 @@ MonoBehaviour:
     - id: 5
       description: Axis1D.SecondaryHandTrigger Press
       axisType: 3
-      inputType: 16
+      inputType: 20
       inputAction:
         id: 0
         description: None

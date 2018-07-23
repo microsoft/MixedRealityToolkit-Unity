@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private readonly List<string> configuredControllerTypes = new List<string>();
         private readonly List<string> updatedControllerTypes = new List<string>();
-        private bool changed = true;
+        private static bool inputAxisUpdated = false;
 
         private static float defaultLabelWidth;
         private static float defaultFieldWidth;
@@ -92,19 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             configuredControllerTypes.Clear();
             updatedControllerTypes.Clear();
 
-            //Get the currently configured controllers for comparison later
-            for (int i = 0; i < mixedRealityControllerMappingProfiles.arraySize; i++)
-            {
-                //Inspect the SerializedProperty - Because Unity does not support a "Value" property.
-                SystemType targetController = GetSystemTypeFromSerializedProperty(i);
-
-                if (targetController?.Type != null && !configuredControllerTypes.Contains(targetController.Type.ToString()))
-                {
-                    configuredControllerTypes.Add(targetController.Type.ToString());
-                }
-            }
-
-
             EditorGUILayout.PropertyField(renderMotionControllers);
 
             if (renderMotionControllers.boolValue)
@@ -122,43 +109,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             serializedObject.ApplyModifiedProperties();
 
-            // Compare updated Controller mappings definitions - Why can't Unity support a "Property.Changed?"
-            for (int i = 0; i < mixedRealityControllerMappingProfiles.arraySize; i++)
+            // When the inspector is first loaded, check the Input Mappings are installed
+            if (!inputAxisUpdated)
             {
-                // Inspect the SerializedProperty - Because Unity does not support a "Value" property.
-                SystemType targetController = GetSystemTypeFromSerializedProperty(i);
+                Internal.Utilities.InputMappingAxisUtility.ApplyMappings(ControllerMappingLibrary.GetOpenVRInputManagerAxes);
 
-                if (targetController?.Type != null && !updatedControllerTypes.Contains(targetController.Type.ToString()))
-                {
-                    updatedControllerTypes.Add(targetController.Type.ToString());
-
-                    if (!configuredControllerTypes.Contains(targetController.Type.ToString()))
-                    {
-                        changed = true;
-                    }
-                }
-            }
-
-            // Check for any controllers that are no longer valid and remove their mappings
-            foreach (var controller in configuredControllerTypes)
-            {
-                if (!updatedControllerTypes.Contains(controller))
-                {
-                    Internal.Utilities.InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.GetInputManagerAxes(controller));
-                    changed = true;
-                }
-            }
-
-            // When the inspector is first loaded or the user alters the settings that results in a change, refresh the InputMappings for all configured controllers
-            if (changed)
-            {
-                // Finally, ensure all mappings for the configured controllers are mapped
-                for (var i = 0; i < updatedControllerTypes.Count; i++)
-                {
-                    Internal.Utilities.InputMappingAxisUtility.ApplyMappings(ControllerMappingLibrary.GetInputManagerAxes(updatedControllerTypes[i]));
-                }
-
-                changed = false;
+                inputAxisUpdated = true;
             }
         }
 
@@ -394,67 +350,5 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             return value;
         }
-
-        #region Serialized Property Inspector
-
-        private static object GetValue_Implementation(object source, string name)
-        {
-            if (source == null)
-            {
-                return null;
-            }
-
-            var type = source.GetType();
-
-            while (type != null)
-            {
-                var field = type.GetField(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-                if (field != null)
-                {
-                    return field.GetValue(source);
-                }
-
-                var property = type.GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
-                if (property != null)
-                {
-                    return property.GetValue(source, null);
-                }
-
-                type = type.BaseType;
-            }
-            return null;
-        }
-
-        private static object GetValue_Implementation(object source, string name, int index)
-        {
-            var enumerable = GetValue_Implementation(source, name) as System.Collections.IEnumerable;
-            if (enumerable == null)
-            {
-                return null;
-            }
-
-            var enumerator = enumerable.GetEnumerator();
-
-            for (int i = 0; i <= index; i++)
-            {
-                if (!enumerator.MoveNext())
-                {
-                    return null;
-                }
-            }
-            return enumerator.Current;
-        }
-
-        private SystemType GetSystemTypeFromSerializedProperty(int i)
-        {
-            var item = mixedRealityControllerMappingProfiles.GetArrayElementAtIndex(i);
-            var controllerType = item.FindPropertyRelative("controller");
-            var targetObject = controllerType.serializedObject.targetObject;
-            var targetObjectClassType = GetValue_Implementation(targetObject, "mixedRealityControllerMappingProfiles", i);
-            var targetController = GetValue_Implementation(targetObjectClassType, "controller") as SystemType;
-            return targetController;
-        }
-
-        #endregion Serialized Property Inspector
     }
 }
