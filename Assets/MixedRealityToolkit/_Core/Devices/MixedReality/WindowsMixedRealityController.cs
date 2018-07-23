@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(2, "Grip Press",AxisType.Digital, DeviceInputType.GripPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(2, "Grip Press",AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(3, "Touchpad Position", AxisType.DualAxis, DeviceInputType.Touchpad, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(4, "Touchpad Touch", AxisType.Digital, DeviceInputType.TouchpadTouch, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(5, "Touchpad Press", AxisType.Digital, DeviceInputType.TouchpadPress, MixedRealityInputAction.None),
@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         UpdateTriggerData(interactionSourceState, Interactions[i]);
                         break;
                     case DeviceInputType.SpatialGrip:
-                    case DeviceInputType.GripPress:
+                    case DeviceInputType.ButtonPress:
                         UpdateGripData(interactionSourceState, Interactions[i]);
                         break;
                     case DeviceInputType.ThumbStick:
@@ -229,11 +229,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionMapping"></param>
         private void UpdateGripData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            switch (interactionMapping.InputType)
+            switch (interactionMapping.AxisType)
             {
-                case DeviceInputType.SpatialGrip:
-                case DeviceInputType.GripPosition:
-                case DeviceInputType.GripRotation:
+                case AxisType.SixDof:
                     {
                         interactionSourceState.sourcePose.TryGetPosition(out currentGripPosition, InteractionSourceNode.Grip);
                         interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
@@ -255,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         }
                     }
                     break;
-                case DeviceInputType.GripPress:
+                case AxisType.Digital:
                     {
                         //Update the interaction data source
                         interactionMapping.BoolData = interactionSourceState.grasped;

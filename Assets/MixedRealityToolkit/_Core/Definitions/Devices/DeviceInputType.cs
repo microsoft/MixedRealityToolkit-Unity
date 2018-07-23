@@ -30,9 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         ButtonPress,                        // Digital
         ButtonTouch,                        // Digital
         ButtonNearTouch,                    // Digital
-        SecondaryButtonPress,               // Digital
-        SecondaryButtonTouch,               // Digital
-        SecondaryButtonNearTouch,           // Digital
         Trigger,                            // Single Axis
         TriggerTouch,                       // Digital
         TriggerNearTouch,                   // Digital
@@ -49,10 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// 3 Dof Grip with only rotation.
         /// </summary>
         GripRotation,                       // ThreeDofRotation Axis
-        Grip,                               // Single Axis
-        GripPress,                          // Digital
-        GripTouch,                          // Digital
-        GripNearTouch,                      // Digital
         ThumbStick,                         // Dual Axis
         ThumbStickPress,                    // Digital
         ThumbStickTouch,                    // Digital
