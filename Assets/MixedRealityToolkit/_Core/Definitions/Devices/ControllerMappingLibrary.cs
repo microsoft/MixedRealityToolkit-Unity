@@ -232,38 +232,36 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         /// <param name="controllerType"></param>
         /// <returns></returns>
-        public static MixedRealityInteractionMapping[] GetMappingsForControllerType(SystemType controllerType)
+        public static MixedRealityInteractionMapping[] GetMappingsForControllerType(SystemType controllerType, Handedness handedness)
         {
             if (controllerType == null)
             {
                 return null;
             }
 
-
             if (controllerType == typeof(WindowsMixedRealityController))
             {
-                return WindowsMixedRealityController.DefaultMixedRealityControllerInteractions;
+                return WindowsMixedRealityController.DefaultInteractions;
             }
             else if (controllerType == typeof(OculusTouchController))
             {
-                return OculusTouchController.DefaultOculusTouchInteractions;
+                return handedness == Handedness.Left ? OculusTouchController.DefaultLeftHandedInteractions : OculusTouchController.DefaultRightHandedInteractions;
             }
             else if (controllerType == typeof(ViveWandController))
             {
-                return ViveWandController.DefaultViveWandInteractions;
+                return handedness == Handedness.Left ? ViveWandController.DefaultLeftHandedInteractions : ViveWandController.DefaultRightHandedInteractions;
             }
             else if (controllerType == typeof(ViveKnucklesController))
             {
-                return ViveKnucklesController.DefaultViveKnucklesInteractions;
+                return handedness == Handedness.Left ? ViveKnucklesController.DefaultLeftHandedInteractions : ViveKnucklesController.DefaultRightHandedInteractions;
             }
             else if (controllerType == typeof(GenericOpenVRController))
             {
-                return GenericOpenVRController.DefaultOpenVRInteractions;
+                return handedness == Handedness.Left ? GenericOpenVRController.DefaultLeftHandedInteractions : GenericOpenVRController.DefaultRightHandedInteractions;
             }
 
             // Unconfigured Controller type
             return null;
-
         }
 
         #endregion Interaction Mapping Default Resolution

@@ -141,14 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         /// <param name="mappings">Configured mappings from a controller mapping profile</param>
         public void AssignControllerMappings(MixedRealityInteractionMapping[] mappings)
         {
-            var interactions = new MixedRealityInteractionMapping[mappings.Length];
-
-            for (uint i = 0; i < mappings.Length; i++)
-            {
-                interactions[i] = new MixedRealityInteractionMapping(i, mappings[i].Description, mappings[i].AxisType, mappings[i].InputType, mappings[i].MixedRealityInputAction);
-            }
-
-            Interactions = interactions;
+            Interactions = mappings;
         }
     }
 }

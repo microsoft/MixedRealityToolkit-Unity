@@ -34,6 +34,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 1
       description: Spatial Grip
       axisType: 7
@@ -42,6 +44,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 2
       description: Grip Press
       axisType: 2
@@ -50,6 +54,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 3
       description: Touchpad Position
       axisType: 4
@@ -58,6 +64,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 4
       description: Touchpad Touch
       axisType: 2
@@ -66,6 +74,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 5
       description: Touchpad Press
       axisType: 2
@@ -74,6 +84,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 6
       description: Thumbstick Position
       axisType: 4
@@ -82,6 +94,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 7
       description: 'Thumbstick Press '
       axisType: 2
@@ -90,6 +104,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 8
       description: Trigger Position
       axisType: 3
@@ -98,6 +114,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 9
       description: Trigger Pressed (Select)
       axisType: 2
@@ -106,6 +124,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 10
       description: Trigger Touched
       axisType: 2
@@ -114,6 +134,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 11
       description: Menu Pressed
       axisType: 2
@@ -122,6 +144,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
   - id: 2
     description: MotionController Right
     controller:
@@ -140,6 +164,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 1
       description: Spatial Grip
       axisType: 7
@@ -148,6 +174,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 2
       description: Grip Press
       axisType: 2
@@ -156,6 +184,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 3
       description: Touchpad Position
       axisType: 4
@@ -164,6 +194,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 4
       description: Touchpad Touch
       axisType: 2
@@ -172,6 +204,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 5
       description: Touchpad Press
       axisType: 2
@@ -180,6 +214,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 6
       description: Thumbstick Position
       axisType: 4
@@ -188,6 +224,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 7
       description: 'Thumbstick Press '
       axisType: 2
@@ -196,6 +234,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 8
       description: Trigger Position
       axisType: 3
@@ -204,6 +244,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 9
       description: Trigger Pressed (Select)
       axisType: 2
@@ -212,6 +254,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 10
       description: Trigger Touched
       axisType: 2
@@ -220,6 +264,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 11
       description: Menu Pressed
       axisType: 2
@@ -228,6 +274,8 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
   - id: 3
     description: OpenVR Controller Left
     controller:
@@ -246,55 +294,9 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 2
-      description: Grip Press
-      axisType: 2
-      inputType: 21
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 3
-      description: Touchpad Position
-      axisType: 4
-      inputType: 28
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 4
-      description: Touchpad Touch
-      axisType: 2
-      inputType: 29
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 5
-      description: Touchpad Press
-      axisType: 2
-      inputType: 31
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 6
-      description: Thumbstick Position
-      axisType: 4
-      inputType: 24
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Thumbstick Press '
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 8
+      keyCode: 0
+      axisCode: 
+    - id: 1
       description: Trigger Position
       axisType: 3
       inputType: 13
@@ -302,30 +304,88 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 9
-      description: Trigger Pressed (Select)
-      axisType: 2
-      inputType: 32
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 10
-      description: Trigger Touched
+      keyCode: 0
+      axisCode: OPENVR_TRIGGER_LEFT_CONTROLLER
+    - id: 2
+      description: Trigger Touch
       axisType: 2
       inputType: 14
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 11
-      description: Menu Pressed
+      keyCode: 345
+      axisCode: 
+    - id: 4
+      description: Trigger Press
       axisType: 2
-      inputType: 34
+      inputType: 16
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: OPENVR_TRIGGER_LEFT_CONTROLLER
+    - id: 5
+      description: Grip
+      axisType: 3
+      inputType: 16
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCode: OPENVR_GRIP_LEFT_CONTROLLER
+    - id: 10
+      description: Trackpad-Thumbstick Position
+      axisType: 4
+      inputType: 28
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCode: 
+    - id: 11
+      description: Trackpad-Thumbstick Touch
+      axisType: 2
+      inputType: 29
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 346
+      axisCode: 
+    - id: 12
+      description: Trackpad-Thumbstick Press
+      axisType: 2
+      inputType: 31
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 338
+      axisCode: 
+    - id: 13
+      description: Unity Button Id 2
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 332
+      axisCode: 
+    - id: 14
+      description: Unity Button Id 3
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 333
+      axisCode: 
   - id: 4
     description: OpenVR Controller Right
     controller:
@@ -344,55 +404,9 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 2
-      description: Grip Press
-      axisType: 2
-      inputType: 21
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 3
-      description: Touchpad Position
-      axisType: 4
-      inputType: 28
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 4
-      description: Touchpad Touch
-      axisType: 2
-      inputType: 29
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 5
-      description: Touchpad Press
-      axisType: 2
-      inputType: 31
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 6
-      description: Thumbstick Position
-      axisType: 4
-      inputType: 24
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Thumbstick Press '
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 8
+      keyCode: 0
+      axisCode: 
+    - id: 1
       description: Trigger Position
       axisType: 3
       inputType: 13
@@ -400,30 +414,88 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 9
-      description: Trigger Pressed (Select)
-      axisType: 2
-      inputType: 32
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 10
-      description: Trigger Touched
+      keyCode: 0
+      axisCode: OPENVR_TRIGGER_RIGHT_CONTROLLER
+    - id: 2
+      description: Trigger Touch
       axisType: 2
       inputType: 14
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 11
-      description: Menu Pressed
+      keyCode: 345
+      axisCode: 
+    - id: 4
+      description: Trigger Press
       axisType: 2
-      inputType: 34
+      inputType: 16
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: OPENVR_TRIGGER_RIGHT_CONTROLLER
+    - id: 5
+      description: Grip
+      axisType: 3
+      inputType: 16
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCode: OPENVR_GRIP_RIGHT_CONTROLLER
+    - id: 10
+      description: Trackpad-Thumbstick Position
+      axisType: 4
+      inputType: 28
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCode: 
+    - id: 11
+      description: Trackpad-Thumbstick Touch
+      axisType: 2
+      inputType: 29
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 347
+      axisCode: 
+    - id: 12
+      description: Trackpad-Thumbstick Press
+      axisType: 2
+      inputType: 31
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 339
+      axisCode: 
+    - id: 13
+      description: Unity Button Id 0
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 330
+      axisCode: 
+    - id: 14
+      description: Unity Button Id 1
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 331
+      axisCode: 
   - id: 5
     description: Oculus Touch Left
     controller:
@@ -442,150 +514,168 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 8
-      description: Trigger Position
+      keyCode: 0
+      axisCode: 
+    - id: 1
+      description: Axis1D.PrimaryIndexTrigger
       axisType: 3
       inputType: 13
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 9
-      description: Trigger Near Touch
-      axisType: 2
-      inputType: 15
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 10
-      description: Trigger Touched
+      keyCode: 0
+      axisCode: OTOUCH_TRIGGER_LEFT_CONTROLLER
+    - id: 2
+      description: Axis1D.PrimaryIndexTrigger Touch
       axisType: 2
       inputType: 14
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 10
-      description: Trigger Selected
-      axisType: 2
-      inputType: 32
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 1
-      description: Grip
-      axisType: 3
-      inputType: 20
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 2
-      description: Grip Press
-      axisType: 2
-      inputType: 21
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+      keyCode: 344
+      axisCode: 
     - id: 3
-      description: Grip Touch
+      description: Axis1D.PrimaryIndexTrigger Near Touch
       axisType: 2
-      inputType: 22
+      inputType: 15
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: OTOUCH_TRIGGER_NEARTOUCH_LEFT_CONTROLLER
+    - id: 4
+      description: Axis1D.PrimaryIndexTrigger Press
+      axisType: 2
+      inputType: 16
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCode: OTOUCH_TRIGGER_LEFT_CONTROLLER
+    - id: 5
+      description: Axis1D.PrimaryHandTrigger Press
+      axisType: 3
+      inputType: 16
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCode: OTOUCH_GRIP_LEFT_CONTROLLER
     - id: 6
-      description: Thumbstick Position
+      description: Axis2D.PrimaryThumbstick
       axisType: 4
       inputType: 24
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: 
     - id: 7
-      description: 'Thumbstick Touch '
+      description: Button.PrimaryThumbstick Touch
       axisType: 2
       inputType: 26
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 7
-      description: 'Thumbstick Near Touch '
-      axisType: 2
-      inputType: 27
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Thumbstick Press '
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Primary Button Touch '
-      axisType: 2
-      inputType: 8
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Primary Button Press '
-      axisType: 2
-      inputType: 7
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Secondary Button Touch '
-      axisType: 2
-      inputType: 11
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Secondary Button Press '
-      axisType: 2
-      inputType: 10
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Thumbrest Near Touch '
+      keyCode: 346
+      axisCode: 
+    - id: 8
+      description: Button.PrimaryThumbstick Near Touch
       axisType: 2
       inputType: 38
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 7
-      description: 'Thumbrest Touch '
+      keyCode: 0
+      axisCode: OTOUCH_THUMBSTICK_NEARTOUCH_LEFT_CONTROLLER
+    - id: 9
+      description: Button.PrimaryThumbstick Press
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 338
+      axisCode: 
+    - id: 10
+      description: Button.Three Press
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 332
+      axisCode: 
+    - id: 11
+      description: Button.Four Press
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 333
+      axisCode: 
+    - id: 12
+      description: Button.Start Press
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 337
+      axisCode: 
+    - id: 13
+      description: Button.Three Touch
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 342
+      axisCode: 
+    - id: 14
+      description: Button.Four Touch
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 343
+      axisCode: 
+    - id: 15
+      description: Touch.PrimaryThumbRest Touch
       axisType: 2
       inputType: 37
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 11
-      description: Start Pressed
+      keyCode: 348
+      axisCode: 
+    - id: 16
+      description: Touch.PrimaryThumbRest Near Touch
       axisType: 2
-      inputType: 33
+      inputType: 38
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: OTOUCH_THUMBREST_LEFT_CONTROLLER
   - id: 6
     description: Oculus Touch Right
     controller:
@@ -604,147 +694,155 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 8
-      description: Trigger Position
+      keyCode: 0
+      axisCode: 
+    - id: 1
+      description: Axis1D.SecondaryIndexTrigger
       axisType: 3
       inputType: 13
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 9
-      description: Trigger Near Touch
-      axisType: 2
-      inputType: 15
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 10
-      description: Trigger Touched
+      keyCode: 0
+      axisCode: OTOUCH_TRIGGER_RIGHT_CONTROLLER
+    - id: 2
+      description: Axis1D.SecondaryIndexTrigger Touch
       axisType: 2
       inputType: 14
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 10
-      description: Trigger Selected
-      axisType: 2
-      inputType: 32
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 1
-      description: Grip
-      axisType: 3
-      inputType: 20
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 2
-      description: Grip Press
-      axisType: 2
-      inputType: 21
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+      keyCode: 345
+      axisCode: 
     - id: 3
-      description: Grip Touch
+      description: Axis1D.SecondaryIndexTrigger Near Touch
       axisType: 2
-      inputType: 22
+      inputType: 15
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: OTOUCH_TRIGGER_NEARTOUCH_RIGHT_CONTROLLER
+    - id: 4
+      description: Axis1D.SecondaryIndexTrigger Press
+      axisType: 2
+      inputType: 16
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCode: OTOUCH_TRIGGER_LEFT_CONTROLLER
+    - id: 5
+      description: Axis1D.SecondaryHandTrigger Press
+      axisType: 3
+      inputType: 16
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCode: OTOUCH_GRIP_RIGHT_CONTROLLER
     - id: 6
-      description: Thumbstick Position
+      description: Axis2D.SecondaryThumbstick
       axisType: 4
       inputType: 24
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: OTOUCH_GRIP_LEFT_CONTROLLER
     - id: 7
-      description: 'Thumbstick Touch '
+      description: Button.SecondaryThumbstick Touch
       axisType: 2
       inputType: 26
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 7
-      description: 'Thumbstick Near Touch '
-      axisType: 2
-      inputType: 27
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Thumbstick Press '
-      axisType: 2
-      inputType: 25
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Primary Button Touch '
-      axisType: 2
-      inputType: 8
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Primary Button Press '
-      axisType: 2
-      inputType: 7
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Secondary Button Touch '
-      axisType: 2
-      inputType: 11
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Secondary Button Press '
-      axisType: 2
-      inputType: 10
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-    - id: 7
-      description: 'Thumbrest Near Touch '
+      keyCode: 347
+      axisCode: 
+    - id: 8
+      description: Button.SecondaryThumbstick Near Touch
       axisType: 2
       inputType: 38
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 7
-      description: 'Thumbrest Touch '
+      keyCode: 0
+      axisCode: OTOUCH_THUMBSTICK_NEARTOUCH_RIGHT_CONTROLLER
+    - id: 9
+      description: Button.SecondaryThumbstick Press
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 339
+      axisCode: 
+    - id: 10
+      description: Button.One Press
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 330
+      axisCode: 
+    - id: 11
+      description: Button.Two Press
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 331
+      axisCode: 
+    - id: 12
+      description: Button.One Touch
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 340
+      axisCode: 
+    - id: 13
+      description: Button.Two Touch
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 341
+      axisCode: 
+    - id: 14
+      description: Touch.SecondaryThumbRest Touch
       axisType: 2
       inputType: 37
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
-    - id: 11
-      description: Start Pressed
+      keyCode: 349
+      axisCode: 
+    - id: 15
+      description: Touch.SecondaryThumbRest Near Touch
       axisType: 2
-      inputType: 33
+      inputType: 38
       inputAction:
         id: 0
         description: None
         axisConstraint: 0
+      keyCode: 0
+      axisCode: OTOUCH_THUMBREST_RIGHT_CONTROLLER

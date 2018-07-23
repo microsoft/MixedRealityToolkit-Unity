@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// The Windows Mixed Reality Controller default interactions.
         /// </summary>
         /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
-        public static readonly MixedRealityInteractionMapping[] DefaultMixedRealityControllerInteractions =
+        public static readonly MixedRealityInteractionMapping[] DefaultInteractions =
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip, MixedRealityInputAction.None),
@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <inheritdoc />
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
-            AssignControllerMappings(DefaultMixedRealityControllerInteractions);
+            AssignControllerMappings(DefaultInteractions);
         }
 
 #if UNITY_WSA
