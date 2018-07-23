@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 
 namespace HoloToolkit.Unity
@@ -9,6 +10,7 @@ namespace HoloToolkit.Unity
     /// SolverBodyLock provides a solver that follows the TrackedObject/TargetTransform. Adjusting "LerpTime"
     /// properties changes how quickly the object moves to the TrackedObject/TargetTransform's position.
     /// </summary>
+    [Obsolete("Body Locked Solvers are replaced by Orbital Solvers. Use the YawOnly/CameraAligned orientations and a World Offset to exactly replace SolverBodyLocked.", false)]
     public class SolverBodyLock : Solver
     {
         #region public enums
