@@ -316,7 +316,7 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 345
       axisCode: 
-    - id: 4
+    - id: 3
       description: Trigger Press
       axisType: 2
       inputType: 13
@@ -326,7 +326,7 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 0
       axisCode: MIXEDREALITY_AXIS9
-    - id: 5
+    - id: 4
       description: Grip
       axisType: 3
       inputType: 10
@@ -336,7 +336,7 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 0
       axisCode: MIXEDREALITY_AXIS11
-    - id: 10
+    - id: 5
       description: Trackpad-Thumbstick Position
       axisType: 4
       inputType: 21
@@ -346,7 +346,7 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 0
       axisCode: 
-    - id: 11
+    - id: 6
       description: Trackpad-Thumbstick Touch
       axisType: 2
       inputType: 22
@@ -356,7 +356,7 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 346
       axisCode: 
-    - id: 12
+    - id: 7
       description: Trackpad-Thumbstick Press
       axisType: 2
       inputType: 24
@@ -366,7 +366,7 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 338
       axisCode: 
-    - id: 13
+    - id: 8
       description: Unity Button Id 2
       axisType: 2
       inputType: 7
@@ -376,7 +376,7 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 332
       axisCode: 
-    - id: 14
+    - id: 9
       description: Unity Button Id 3
       axisType: 2
       inputType: 7
@@ -426,7 +426,7 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 345
       axisCode: 
-    - id: 4
+    - id: 3
       description: Trigger Press
       axisType: 2
       inputType: 13
@@ -436,7 +436,7 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 0
       axisCode: MIXEDREALITY_AXIS10
-    - id: 5
+    - id: 4
       description: Grip
       axisType: 3
       inputType: 10
@@ -445,8 +445,8 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 0
-      axisCode: MIXEDREALITY_AXIS11
-    - id: 10
+      axisCode: MIXEDREALITY_AXIS12
+    - id: 5
       description: Trackpad-Thumbstick Position
       axisType: 4
       inputType: 21
@@ -456,7 +456,7 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 0
       axisCode: 
-    - id: 11
+    - id: 6
       description: Trackpad-Thumbstick Touch
       axisType: 2
       inputType: 22
@@ -466,7 +466,7 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 347
       axisCode: 
-    - id: 12
+    - id: 7
       description: Trackpad-Thumbstick Press
       axisType: 2
       inputType: 24
@@ -476,7 +476,7 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 339
       axisCode: 
-    - id: 13
+    - id: 8
       description: Unity Button Id 0
       axisType: 2
       inputType: 7
@@ -486,7 +486,7 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 330
       axisCode: 
-    - id: 14
+    - id: 9
       description: Unity Button Id 1
       axisType: 2
       inputType: 7
