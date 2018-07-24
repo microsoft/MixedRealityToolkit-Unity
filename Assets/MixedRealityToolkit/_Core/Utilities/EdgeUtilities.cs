@@ -28,10 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <param name="geometryEdges">The geometry for which we are checking the point.</param>
         /// <param name="point">The point being checked.</param>
         /// <returns>
-        /// True if the point falls within the geometry, false otherwise.</returns>
-        public static bool IsInsideBoundary(
-            Edge[] geometryEdges, 
-            Vector2 point)
+        /// True if the point falls within the geometry, false otherwise.
+        /// </returns>
+        public static bool IsInsideBoundary(Edge[] geometryEdges, Vector2 point)
         {
             if (geometryEdges.Length == 0)
             {
@@ -43,9 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             var rightEdge = new Edge(point, new Vector2(maxWidth, point.y));
 
             int intersections = 0;
-            foreach (Edge edge in geometryEdges)
+            for (int i = 0; i < geometryEdges.Length; i++)
             {
-                if (IsValidPoint(GetIntersectionPoint(edge, rightEdge)))
+                if (IsValidPoint(GetIntersectionPoint(geometryEdges[i], rightEdge)))
                 {
                     ++intersections;
                 }
@@ -58,14 +57,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// Checks to see if a point is valid.
         /// </summary>
         /// <param name="point">The point to check.</param>
-        /// <returns>True if the point is valid, false otherwise./returns>
+        /// <returns>True if the point is valid, false otherwise.</returns>
         /// <remarks>
         /// A point is considered invalid if any one of it's coordinate values are infinite or not a number.
         /// </remarks>
         public static bool IsValidPoint(Vector2 point)
         {
-            return ((!float.IsInfinity(point.x) && !float.IsInfinity(point.y)) &&
-                    (!float.IsNaN(point.x) && !float.IsNaN(point.y)));
+            return (!float.IsInfinity(point.x) && !float.IsInfinity(point.y) &&
+                    !float.IsNaN(point.x) && !float.IsNaN(point.y));
         }
 
         /// <summary>

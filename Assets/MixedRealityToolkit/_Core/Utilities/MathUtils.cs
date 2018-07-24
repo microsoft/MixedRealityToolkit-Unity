@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
     /// <summary>
     /// Math Utilities class.
     /// </summary>
-    public static class MathUtils
+    public static class MathUtilities
     {
         /// <summary>
         /// Takes a point in the coordinate space specified by the "from" transform and transforms it to be the correct
@@ -435,9 +435,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// </summary>
         /// <param name="radians">Angle, in radians.</param>
         /// <returns>Angle, in degrees.</returns>
-        public static double RadiansToDegrees(float radians)
+        public static float RadiansToDegrees(float radians)
         {
-            return (double)(radians * Mathf.Rad2Deg);
+            return (radians * Mathf.Rad2Deg);
         }
     }
 }

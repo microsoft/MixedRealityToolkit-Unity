@@ -16,13 +16,27 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <summary>
         /// Total number of starting points randomly generated within the boundary.
         /// </summary>
-        private static readonly int randomPointCount = 30;
+        private const int randomPointCount = 30;
 
         /// <summary>
         /// The total amount of height, in meters,  we want to gain with each binary search
         /// change before we decide that it's good enough.
         /// </summary>
         private const float minimumHeightGain = 0.01f;
+
+        /// <summary>
+        /// Angles to use for fitting the rectangle within the boundary.
+        /// </summary>
+        private static readonly float[] fitAngles = { 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165 };
+
+        /// <summary>
+        /// Aspect ratios used when fitting rectangles within the boundary.
+        /// </summary>
+        private static float[] aspectRatios = {
+                1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f,
+                5.0f, 5.5f, 6, 6.5f, 7, 7.5f, 8.0f, 8.5f, 9.0f,
+                9.5f, 10.0f, 10.5f, 11.0f, 11.5f, 12.0f, 12.5f,
+                13.0f, 13.5f, 14.0f, 14.5f, 15.0f};
 
         /// <summary>
         /// The center point of the inscribed rectangle.
@@ -47,14 +61,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <summary>
         /// Is the described rectangle valid?
         /// </summary>
-        public bool IsValid
-        {
-            get
-            {
-                // A rectangle is considered valid if it's center point is valid.
-                return EdgeUtilities.IsValidPoint(Center);
-            }
-        }
+        /// <remarks>
+        /// A rectangle is considered valid if it's center point is valid.
+        /// </remarks>
+        public bool IsValid => EdgeUtilities.IsValidPoint(Center);
 
         /// <summary>
         /// 
@@ -82,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             }
 
             point -= Center;
-            point = RotatePoint(point, Vector2.zero, MathUtils.DegreesToRadians(-Angle));
+            point = RotatePoint(point, Vector2.zero, MathUtilities.DegreesToRadians(-Angle));
 
             bool inWidth = Mathf.Abs(point.x) <= (Width * 0.5f);
             bool inHeight = Mathf.Abs(point.y) <= (Height * 0.5f);
@@ -104,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <param name="geometryEdges">The boundary geometry.</param>
         /// <param name="randomSeed">Random number generator seed.</param>
         /// <remarks>
-        /// For the most reproducable results, use the same randomSeed value 
+        /// For the most reproducible results, use the same randomSeed value 
         /// each time this method is called.
         /// </remarks>
         private void FindInscribedRectangle(Edge[] geometryEdges, int randomSeed)
@@ -164,13 +174,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
 
                     startingPoints[i] = candidatePoint;
                 }
-
             }
 
-            // Angles to use for fitting the rectangle within the boundary.
-            float[] angles = { 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165 };
-
-            for (int angleIndex = 0; angleIndex < angles.Length; angleIndex++)
+            for (int angleIndex = 0; angleIndex < fitAngles.Length; angleIndex++)
             {
                 for (int pointIndex = 0; pointIndex < startingPoints.Length; pointIndex++)
                 {
@@ -179,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                     Vector2 leftCollisionPoint;
                     Vector2 rightCollisionPoint;
 
-                    float angleRadians = MathUtils.DegreesToRadians(angles[angleIndex]);
+                    float angleRadians = MathUtilities.DegreesToRadians(fitAngles[angleIndex]);
 
                     // Find the collision point of a cross through the given point at the given angle.
                     // Note, we are ignoring the return value as we are checking each point's validity
@@ -193,8 +199,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                         out leftCollisionPoint, 
                         out rightCollisionPoint);
 
-                    float newWidth = 0;
-                    float newHeight = 0;
+                    float newWidth;
+                    float newHeight;
 
                     if (EdgeUtilities.IsValidPoint(topCollisionPoint) && EdgeUtilities.IsValidPoint(bottomCollisionPoint))
                     {
@@ -214,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                             out newHeight))
                         {
                             Center = verticalMidpoint;
-                            Angle = angles[angleIndex];
+                            Angle = fitAngles[angleIndex];
                             Width = newWidth;
                             Height = newHeight;
                         }
@@ -238,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                             out newHeight))
                         {
                             Center = horizontalMidpoint;
-                            Angle = angles[angleIndex];
+                            Angle = fitAngles[angleIndex];
                             Width = newWidth;
                             Height = newHeight;
                         }
@@ -366,7 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         }
 
         /// <summary>
-        /// Rotate a two dimensiopnal point about another point by the specified angle.
+        /// Rotate a two dimensional point about another point by the specified angle.
         /// </summary>
         /// <param name="point">The point to be rotated.</param>
         /// <param name="origin">The point about which the rotation is to occur.</param>
@@ -376,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// </returns>
         private Vector2 RotatePoint(Vector2 point, Vector2 origin, float angleRadians)
         {
-            if (0.0f == angleRadians)
+            if (angleRadians.Equals(0f))
             {
                 return point;
             }
@@ -451,7 +457,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                 }
             }
 
-            // No collsions found with the rectangle. Success!
+            // No collisions found with the rectangle. Success!
             return true;
         }
 
@@ -478,13 +484,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         {
             width = 0.0f;
             height = 0.0f;
-
-            float[] aspectRatios = {
-                1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f,
-                5.0f, 5.5f, 6, 6.5f, 7, 7.5f, 8.0f, 8.5f, 9.0f,
-                9.5f, 10.0f, 10.5f, 11.0f, 11.5f, 12.0f, 12.5f,
-                13.0f, 13.5f, 14.0f, 14.5f, 15.0f};
-
 
             Vector2 topCollisionPoint;
             Vector2 bottomCollisionPoint;
@@ -522,7 +521,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                 float searchHeightUpperBound = Mathf.Max(maxHeight, maxWidth / aspectRatios[i]);
 
                 // Set to the min height that will out perform our previous area at the given aspect ratio. This is 0 the first time.
-                // Derived from biggestAreaSoFar=height*(height*aspctRatio)
+                // Derived from biggestAreaSoFar=height*(height*aspectRatio)
                 float searchHeightLowerBound = Mathf.Sqrt(Mathf.Max((width * height), minArea) / aspectRatios[i]);
 
                 // If the lowest value needed to outperform the previous best is greater than our max, 

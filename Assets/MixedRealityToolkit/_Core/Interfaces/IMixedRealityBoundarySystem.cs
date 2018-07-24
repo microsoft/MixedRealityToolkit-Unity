@@ -55,23 +55,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         float? FloorHeight { get; }
 
         /// <summary>
-        /// Determines if a location is within the tracked area of the boundary space.
-        /// </summary>
-        /// <param name="location">The location to be checked.</param>
-        /// <returns>True if the location is within the tracked area of the boundary space.</returns>
-        bool Contains(Vector3 location);
-
-        /// <summary>
         /// Determines if a location is within the specified area of the boundary space.
         /// </summary>
         /// <param name="location">The location to be checked.</param>
+        /// <param name="boundaryType">The type of boundary space being checked.</param>
         /// <returns>True if the location is within the specified area of the boundary space.</returns>
         /// <remarks>
         /// Use:
-        /// * Boundary.Type.PlayArea for the inscribed volume
-        /// * Boundary.Type.TrackedArea for the area defined by the boundary edges.
+        /// Boundary.Type.PlayArea for the inscribed volume
+        /// Boundary.Type.TrackedArea for the area defined by the boundary edges.
         /// </remarks>
-        bool Contains(Vector3 location, Boundary.Type boundaryType);
+        bool Contains(Vector3 location, Boundary.Type boundaryType = Boundary.Type.TrackedArea);
 
         /// <summary>
         /// Returns the description of the inscribed rectangular bounds.

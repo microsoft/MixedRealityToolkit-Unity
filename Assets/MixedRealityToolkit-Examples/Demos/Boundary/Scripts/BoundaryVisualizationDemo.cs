@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// Demo class to show different ways of using the boundary API.
     /// </summary>
-    public class BoundaryVisualizer : MonoBehaviour
+    public class BoundaryVisualizationDemo : MonoBehaviour
     {
         /// <summary>
         /// The material used to display indicators that are within the boundary geometry.
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             float angle = 0f;
             float width = 0f;
             float height = 0f;
-            if (!(bool)(BoundaryManager?.TryGetRectangularBoundsParams(out center, out angle, out width, out height)))
+            if ((BoundaryManager == null) || !BoundaryManager.TryGetRectangularBoundsParams(out center, out angle, out width, out height))
             {
                 // No rectangular bounds, therefore do not render the quad.
                 return;
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             float angleRect = 0f;
             float widthRect = 0f;
             float heightRect = 0f;
-            if (!(bool)(BoundaryManager?.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect)))
+            if ((BoundaryManager == null) || !BoundaryManager.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
             {
                 // If we have no boundary manager or rectangular bounds we will show no indicators
                 return;
@@ -94,6 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
             const int indicatorCount = 20;
             const float indicatorDistance = 0.2f;
+            const float indicatorScale = 0.1f;
             const float dimension = indicatorCount * indicatorDistance;
 
             Vector3 center = new Vector3(centerRect.x, 0f, centerRect.y);
@@ -109,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     marker.transform.SetParent(transform);
                     marker.transform.position = position;
-                    marker.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                    marker.transform.localScale = Vector3.one * indicatorScale;
 
                     // Get the desired material for the marker.
                     Material material = outOfBoundsMaterial;

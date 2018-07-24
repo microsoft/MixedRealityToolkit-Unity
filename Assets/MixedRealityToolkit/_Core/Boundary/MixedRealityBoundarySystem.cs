@@ -71,13 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             InitializeInternal();
         }
 
-        public bool Contains(Vector3 location)
-        {
-            return Contains(location, Boundary.Type.TrackedArea);
-        }
-
         /// <inheritdoc/>
-        public bool Contains(Vector3 location, Boundary.Type boundaryType)
+        public bool Contains(Vector3 location, Boundary.Type boundaryType = Boundary.Type.TrackedArea)
         {
             if (!EdgeUtilities.IsValidPoint(location))
             {
@@ -193,12 +188,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
         /// <summary>
         /// Creates the two dimensional volume described by the largest rectangle that
-        /// is contained withing the playspace geoometry and the configured height.
+        /// is contained withing the playspace geometry and the configured height.
         /// </summary>
         private void CreateInscribedBounds()
         {
-            // We always use the same seed so that from run to run, the inscribed bounds are
-            // consistent.
+            // We always use the same seed so that from run to run, the inscribed bounds are consistent.
             rectangularBounds = new InscribedRectangle(Bounds, Mathf.Abs("Mixed Reality Toolkit".GetHashCode()));
         }
 
