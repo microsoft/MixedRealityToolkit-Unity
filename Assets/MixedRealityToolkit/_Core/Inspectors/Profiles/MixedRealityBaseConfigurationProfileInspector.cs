@@ -10,13 +10,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     public abstract class MixedRealityBaseConfigurationProfileInspector : Editor
     {
         [SerializeField]
-        private Texture2D logo = null;
+        private Texture2D logoLightTheme = null;
+
+        [SerializeField]
+        private Texture2D logoDarkTheme = null;
 
         protected virtual void Awake()
         {
-            if (logo == null)
+            if (logoLightTheme == null)
             {
-                logo = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/MRTK_Logo.png", typeof(Texture2D));
+                logoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/MRTK_Logo_Black.png", typeof(Texture2D));
+            }
+
+            if (logoDarkTheme == null)
+            {
+                logoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/MRTK_Logo_White.png", typeof(Texture2D));
             }
         }
 
@@ -27,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            GUILayout.Label(logo, GUILayout.MaxHeight(128f));
+            GUILayout.Label(EditorGUIUtility.isProSkin ? logoDarkTheme : logoLightTheme, GUILayout.MaxHeight(128f));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.Space(12f);
