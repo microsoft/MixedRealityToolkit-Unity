@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// <summary>
         /// Update the controller data from the provided platform state
         /// </summary>
-        public virtual void UpdateController(XRNodeState xrNodeState)
+        public void UpdateController(XRNodeState xrNodeState)
         {
             UpdateControllerData(xrNodeState);
 
