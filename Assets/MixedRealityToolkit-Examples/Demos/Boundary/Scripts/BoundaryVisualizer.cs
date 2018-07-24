@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 return;
             }
 
-                const int indicatorCount = 20;
+            const int indicatorCount = 20;
             const float indicatorDistance = 0.2f;
             const float dimension = indicatorCount * indicatorDistance;
 
