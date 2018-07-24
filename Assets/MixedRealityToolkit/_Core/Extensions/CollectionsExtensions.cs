@@ -163,5 +163,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 
             return false;
         }
+        
+        /// <summary>
+        /// Overload extension to enable getting the override model for a specific controller type and hand
+        /// </summary>
+        /// <param name="input">The Controller Mapping array reference</param>
+        /// <param name="controllerType">The type of controller to query for</param>
+        /// <param name="hand">The specific hand assigned to the controller</param>
+        public static GameObject GetControllerModelOverride(this MixedRealityControllerMapping[] input, Type controllerType, Handedness hand)
+        {
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i].Controller.Type == controllerType && (input[i].Handedness == hand || input[i].Handedness == Handedness.Both))
+                {
+                    return input[i].OverrideControllerModel;
+                }
+            }
+
+            return null;
+        }
     }
 }

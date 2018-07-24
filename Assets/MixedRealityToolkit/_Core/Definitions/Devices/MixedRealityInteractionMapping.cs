@@ -19,22 +19,30 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// The constructor for a new Interaction Mapping definition
         /// </summary>
         /// <param name="id">Identity for mapping</param>
+        /// <param name="description">The description of the interaction mapping.</param> 
         /// <param name="axisType">The axis that the mapping operates on, also denotes the data type for the mapping</param>
         /// <param name="inputType">The physical input device / control</param>
         /// <param name="inputAction">The logical MixedRealityInputAction that this input performs</param>
-        public MixedRealityInteractionMapping(uint id, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction)
+        /// <param name="keyCode">Optional KeyCode value to get input from Unity's old input system</param>
+        /// <param name="axisCodeX">Optional horizontal or single axis value to get axis data from Unity's old input system.</param>
+        /// <param name="axisCodeY">Optional vertical axis value to get axis data from Unity's old input system.</param> 
+        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction, KeyCode keyCode = KeyCode.None, string axisCodeX = "", string axisCodeY = "")
         {
             this.id = id;
+            this.description = description;
             this.axisType = axisType;
             this.inputType = inputType;
             this.inputAction = inputAction;
+            this.keyCode = keyCode;
+            this.axisCodeX = axisCodeX;
+            this.axisCodeY = axisCodeY;
             rawData = null;
             boolData = false;
             floatData = 0f;
             vector2Data = Vector2.zero;
             positionData = Vector3.zero;
             rotationData = Quaternion.identity;
-            sixDofData = MixedRealityPose.ZeroIdentity;
+            poseData = MixedRealityPose.ZeroIdentity;
             changed = false;
         }
 
@@ -48,6 +56,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// The Id assigned to the Interaction.
         /// </summary>
         public uint Id => id;
+
+        [SerializeField]
+        [Tooltip("The description of the interaction mapping.")]
+        private string description;
+
+        /// <summary>
+        /// The description of the interaction mapping.
+        /// </summary>
+        public string Description => description;
 
         [SerializeField]
         [Tooltip("The axis type of the button, e.g. Analogue, Digital, etc.")]
@@ -76,6 +93,33 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         public MixedRealityInputAction MixedRealityInputAction => inputAction;
 
+        [SerializeField]
+        [Tooltip("Optional KeyCode value to get input from Unity's old input system.")]
+        private KeyCode keyCode;
+
+        /// <summary>
+        /// Optional KeyCode value to get input from Unity's old input system.
+        /// </summary>
+        public KeyCode KeyCode => keyCode;
+
+        [SerializeField]
+        [Tooltip("Optional horizontal or single axis value to get axis data from Unity's old input system.")]
+        private string axisCodeX;
+
+        /// <summary>
+        /// Optional horizontal or single axis value to get axis data from Unity's old input system.
+        /// </summary>
+        public string AxisCodeX => axisCodeX;
+
+        [SerializeField]
+        [Tooltip("Optional vertical axis value to get axis data from Unity's old input system.")]
+        private string axisCodeY;
+
+        /// <summary>
+        /// Optional vertical axis value to get axis data from Unity's old input system.
+        /// </summary>
+        public string AxisCodeY => axisCodeY;
+
         private bool changed;
 
         /// <summary>
@@ -102,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         #endregion Interaction Properties
 
-        #region Definition Data items
+        #region Definition Data Items
 
         private object rawData;
 
@@ -116,189 +160,178 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         private Quaternion rotationData;
 
-        private MixedRealityPose sixDofData;
+        private MixedRealityPose poseData;
 
-        #endregion Definition Data items
+        #endregion Definition Data Items
 
-        #region Get Operators
-
-        /// <summary>
-        /// Get the Raw (object) data value.
-        /// </summary>
-        public object GetRawValue()
-        {
-            return rawData;
-        }
+        #region Data Properties
 
         /// <summary>
-        /// Get the Boolean data value.
-        /// </summary>
-        public bool GetBoolValue()
-        {
-            return boolData;
-        }
-
-        /// <summary>
-        /// Get the Float data value.
-        /// </summary>
-        public float GetFloatValue()
-        {
-            return floatData;
-        }
-
-        /// <summary>
-        /// Get the Vector2 data value.
-        /// </summary>
-        public Vector2 GetVector2Value()
-        {
-            return vector2Data;
-        }
-
-        /// <summary>
-        /// Get the ThreeDof Vector3 Position data value.
-        /// </summary>
-        public Vector3 GetPositionValue()
-        {
-            return positionData;
-        }
-
-        /// <summary>
-        /// Get the ThreeDof Quaternion Rotation data value.
-        /// </summary>
-        public Quaternion GetRotationValue()
-        {
-            return rotationData;
-        }
-
-        /// <summary>
-        /// Get the SixDof data value.
-        /// </summary>
-        public MixedRealityPose GetSixDofValue()
-        {
-            return sixDofData;
-        }
-
-        #endregion Get Operators
-
-        #region Set Operators
-
-        /// <summary>
-        /// Set the Raw (object) data value.
+        /// The Raw (object) data value.
         /// </summary>
         /// <remarks>Only supported for a Raw mapping axis type</remarks>
-        /// <param name="newValue">Raw (object) value to set</param>
-        public void SetRawValue(object newValue)
+        public object RawData
         {
-            if (AxisType != AxisType.Raw)
+            get
             {
-                Debug.LogError("SetRawValue is only valid for AxisType.Raw InteractionMappings");
+                return rawData;
             }
 
-            Changed = rawData != newValue;
-            rawData = newValue;
+            set
+            {
+                if (AxisType != AxisType.Raw)
+                {
+                    Debug.LogError($"SetRawValue is only valid for AxisType.Raw InteractionMappings\nPlease check the {inputType} mapping for the current controller");
+                }
+
+                Changed = rawData != value;
+                rawData = value;
+            }
         }
 
         /// <summary>
-        /// Set the Bool data value.
+        /// The Bool data value.
         /// </summary>
         /// <remarks>Only supported for a Digital mapping axis type</remarks>
-        /// <param name="newValue">Bool value to set</param>
-        public void SetBoolValue(bool newValue)
+        public bool BoolData
         {
-            if (AxisType != AxisType.Digital)
+            get
             {
-                Debug.LogError("SetBoolValue is only valid for AxisType.Digital InteractionMappings");
+                return boolData;
             }
 
-            Changed = boolData != newValue;
-            boolData = newValue;
+            set
+            {
+                if (AxisType != AxisType.Digital)
+                {
+                    Debug.LogError($"SetBoolValue is only valid for AxisType.Digital InteractionMappings\nPlease check the {inputType} mapping for the current controller");
+                }
+
+                Changed = boolData != value;
+                boolData = value;
+            }
         }
 
         /// <summary>
-        /// Set the Float data value.
+        /// The Float data value.
         /// </summary>
         /// <remarks>Only supported for a SingleAxis mapping axis type</remarks>
-        /// <param name="newValue">Float value to set</param>
-        public void SetFloatValue(float newValue)
+        public float FloatData
         {
-            if (AxisType != AxisType.SingleAxis)
+            get
             {
-                Debug.LogError("SetFloatValue is only valid for AxisType.SingleAxis InteractionMappings");
+                return floatData;
             }
 
-            Changed = !floatData.Equals(newValue);
-            floatData = newValue;
+            set
+            {
+                if (AxisType != AxisType.SingleAxis)
+                {
+                    Debug.LogError($"SetFloatValue is only valid for AxisType.SingleAxis InteractionMappings\nPlease check the {inputType} mapping for the current controller");
+                }
+
+                Changed = !floatData.Equals(value);
+                floatData = value;
+            }
         }
 
         /// <summary>
-        /// Set the Vector2 data value.
+        /// The Vector2 data value.
         /// </summary>
         /// <remarks>Only supported for a DualAxis mapping axis type</remarks>
-        /// <param name="newValue">Vector2 value to set</param>
-        public void SetVector2Value(Vector2 newValue)
+        public Vector2 Vector2Data
         {
-            if (AxisType != AxisType.DualAxis)
+            get
             {
-                Debug.LogError("SetVector2Value is only valid for AxisType.DualAxis InteractionMappings");
+                return vector2Data;
             }
 
-            Changed = vector2Data != newValue;
-            vector2Data = newValue;
-        }
-
-        /// <summary>
-        /// Set the ThreeDof Vector3 Position data value.
-        /// </summary>
-        /// <remarks>Only supported for a ThreeDof mapping axis type</remarks>
-        /// <param name="newValue">Vector3 value to set</param>
-        public void SetPositionValue(Vector3 newValue)
-        {
-            if (AxisType != AxisType.ThreeDofPosition)
+            set
             {
+                if (AxisType != AxisType.DualAxis)
                 {
-                    Debug.LogError("SetPositionValue is only valid for AxisType.ThreeDoFPosition InteractionMappings");
+                    Debug.LogError($"SetVector2Value is only valid for AxisType.DualAxis InteractionMappings\nPlease check the {inputType} mapping for the current controller");
                 }
-            }
 
-            Changed = positionData != newValue;
-            positionData = newValue;
+                Changed = vector2Data != value;
+                vector2Data = value;
+            }
         }
 
         /// <summary>
-        /// Set the ThreeDof Quaternion Rotation data value.
+        /// The ThreeDof Vector3 Position data value.
         /// </summary>
         /// <remarks>Only supported for a ThreeDof mapping axis type</remarks>
-        /// <param name="newValue">Quaternion value to set</param>
-        public void SetRotationValue(Quaternion newValue)
+        public Vector3 PositionData
         {
-            if (AxisType != AxisType.ThreeDofRotation)
+            get
             {
-                Debug.LogError("SetRotationValue is only valid for AxisType.ThreeDoFRotation InteractionMappings");
+                return positionData;
             }
 
-            Changed = rotationData != newValue;
-            rotationData = newValue;
+            set
+            {
+                if (AxisType != AxisType.ThreeDofPosition)
+                {
+                    {
+                        Debug.LogError($"SetPositionValue is only valid for AxisType.ThreeDoFPosition InteractionMappings\nPlease check the {inputType} mapping for the current controller");
+                    }
+                }
+
+                Changed = positionData != value;
+                positionData = value;
+            }
         }
 
         /// <summary>
-        /// Set the SixDof data value.
+        /// The ThreeDof Quaternion Rotation data value.
+        /// </summary>
+        /// <remarks>Only supported for a ThreeDof mapping axis type</remarks>
+        public Quaternion RotationData
+        {
+            get
+            {
+                return rotationData;
+            }
+
+            set
+            {
+                if (AxisType != AxisType.ThreeDofRotation)
+                {
+                    Debug.LogError($"SetRotationValue is only valid for AxisType.ThreeDoFRotation InteractionMappings\nPlease check the {inputType} mapping for the current controller");
+                }
+
+                Changed = rotationData != value;
+                rotationData = value;
+            }
+        }
+
+        /// <summary>
+        /// The Pose data value.
         /// </summary>
         /// <remarks>Only supported for a SixDof mapping axis type</remarks>
-        /// <param name="newValue">SixDof value to set</param>
-        public void SetPoseValue(MixedRealityPose newValue)
+        public MixedRealityPose PoseData
         {
-            if (AxisType != AxisType.SixDof)
+            get
             {
-                Debug.LogError("SetPoseValue is only valid for AxisType.SixDoF InteractionMappings");
+                return poseData;
             }
+            set
+            {
+                if (AxisType != AxisType.SixDof)
+                {
+                    Debug.LogError($"SetPoseValue is only valid for AxisType.SixDoF InteractionMappings\nPlease check the {inputType} mapping for the current controller");
+                }
 
-            Changed = sixDofData != newValue;
+                Changed = poseData != value;
 
-            sixDofData = newValue;
-            positionData = sixDofData.Position;
-            rotationData = sixDofData.Rotation;
+                poseData = value;
+                positionData = poseData.Position;
+                rotationData = poseData.Rotation;
+            }
         }
 
-        #endregion Set Operators
+        #endregion Data Properties
+
     }
 }
