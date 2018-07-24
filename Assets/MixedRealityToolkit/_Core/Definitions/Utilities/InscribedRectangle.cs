@@ -67,40 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         public bool IsValid => EdgeUtilities.IsValidPoint(Center);
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geometryEdges"></param>
-        /// <param name="randomSeed"></param>
-        public InscribedRectangle(Edge[] geometryEdges, int randomSeed)
-        {
-            FindInscribedRectangle(geometryEdges, randomSeed);
-        }
-
-        /// <summary>
-        /// Determine of the provided point lies within the defined rectangle.
-        /// </summary>
-        /// <param name="point">The point to check</param>
-        /// <returns>
-        /// True if the point is within the rectangle's bounds, false otherwise.
-        /// </returns>
-        /// <exception cref="InvalidOperationException">The rectangle is not valid.</exception>
-        public bool IsInsideBoundary(Vector2 point)
-        {
-            if (!IsValid)
-            {
-                throw new InvalidOperationException("A point cannot be within an invalid rectangle.");
-            }
-
-            point -= Center;
-            point = RotatePoint(point, Vector2.zero, MathUtilities.DegreesToRadians(-Angle));
-
-            bool inWidth = Mathf.Abs(point.x) <= (Width * 0.5f);
-            bool inHeight = Mathf.Abs(point.y) <= (Height * 0.5f);
-
-            return (inWidth && inHeight);
-        }
-
-        /// <summary>
         /// Finds a large inscribed rectangle. Tries to be maximal but this is
         /// best effort. The algorithm used was inspired by the blog post
         /// https://d3plus.org/blog/behind-the-scenes/2014/07/08/largest-rect/
@@ -117,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// For the most reproducible results, use the same randomSeed value 
         /// each time this method is called.
         /// </remarks>
-        private void FindInscribedRectangle(Edge[] geometryEdges, int randomSeed)
+        public InscribedRectangle(Edge[] geometryEdges, int randomSeed)
         {
             // Clear previous rectangle
             Center = EdgeUtilities.InvalidPoint;
@@ -369,6 +335,30 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Determine of the provided point lies within the defined rectangle.
+        /// </summary>
+        /// <param name="point">The point to check</param>
+        /// <returns>
+        /// True if the point is within the rectangle's bounds, false otherwise.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">The rectangle is not valid.</exception>
+        public bool IsInsideBoundary(Vector2 point)
+        {
+            if (!IsValid)
+            {
+                throw new InvalidOperationException("A point cannot be within an invalid rectangle.");
+            }
+
+            point -= Center;
+            point = RotatePoint(point, Vector2.zero, MathUtilities.DegreesToRadians(-Angle));
+
+            bool inWidth = Mathf.Abs(point.x) <= (Width * 0.5f);
+            bool inHeight = Mathf.Abs(point.y) <= (Height * 0.5f);
+
+            return (inWidth && inHeight);
         }
 
         /// <summary>
