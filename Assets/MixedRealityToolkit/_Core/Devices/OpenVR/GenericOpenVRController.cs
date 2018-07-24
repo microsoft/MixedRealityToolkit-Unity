@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
-using System;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -51,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             // HTC Vive Controller - Left Controller Trackpad (2)
             // Oculus Touch Controller - Axis2D.PrimaryThumbstick
             // Valve Knuckles Controller - Left Controller Trackpad
-            new MixedRealityInteractionMapping(5, "Trackpad-Thumbstick Position", AxisType.DualAxis, DeviceInputType.Touchpad, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(5, "Trackpad-Thumbstick Position", AxisType.DualAxis, DeviceInputType.Touchpad, MixedRealityInputAction.None, KeyCode.None, ControllerMappingLibrary.MIXEDREALITY_AXIS1, ControllerMappingLibrary.MIXEDREALITY_AXIS2),
             // HTC Vive Controller - Left Controller Trackpad (2)
             // Oculus Touch Controller - Button.PrimaryThumbstick
             // Valve Knuckles Controller - Left Controller Trackpad
@@ -92,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             // HTC Vive Controller - Right Controller Trackpad (2)
             // Oculus Touch Controller - Axis2D.PrimaryThumbstick
             // Valve Knuckles Controller - Right Controller Trackpad
-            new MixedRealityInteractionMapping(5, "Trackpad-Thumbstick Position", AxisType.DualAxis, DeviceInputType.Touchpad, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(5, "Trackpad-Thumbstick Position", AxisType.DualAxis, DeviceInputType.Touchpad, MixedRealityInputAction.None, KeyCode.None, ControllerMappingLibrary.MIXEDREALITY_AXIS4, ControllerMappingLibrary.MIXEDREALITY_AXIS5),
             // HTC Vive Controller - Right Controller Trackpad (2)
             // Oculus Touch Controller - Button.SecondaryThumbstick
             // Valve Knuckles Controller - Right Controller Trackpad
@@ -117,8 +116,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         {
             AssignControllerMappings(controllerHandedness == Handedness.Left ? DefaultLeftHandedInteractions : DefaultRightHandedInteractions);
         }
-
-        #region Update data functions
 
         /// <summary>
         /// Update the controller data from the provided platform state
@@ -171,6 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         break;
                 }
             }
+
             LastStateReading = xrNodeState;
         }
 
@@ -235,6 +233,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
         }
 
+        /// <summary>
+        /// Update Spatial Pointer Data.
+        /// </summary>
+        /// <param name="interactionMapping"></param>
         protected void UpdatePointerData(MixedRealityInteractionMapping interactionMapping)
         {
             // TODO: configure an offset pointer position for each OpenVR Controller?
@@ -249,10 +251,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
         }
 
-        #endregion Update data functions
-
-        #region Event Functions
-
         /// <summary>
         /// Update an Interaction Float data type from a SingleAxis (float) input 
         /// </summary>
@@ -264,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
 
-            var singleAxisValue = Input.GetAxis(interactionMapping.AxisCode);
+            var singleAxisValue = Input.GetAxis(interactionMapping.AxisCodeX);
 
             // Update the interaction data source
             interactionMapping.FloatData = singleAxisValue;
@@ -285,8 +283,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.DualAxis);
 
-            dualAxisPosition.x = ControllerHandedness == Handedness.Left ? Input.GetAxis(ControllerMappingLibrary.MIXEDREALITY_AXIS1) : Input.GetAxis(ControllerMappingLibrary.MIXEDREALITY_AXIS4);
-            dualAxisPosition.y = ControllerHandedness == Handedness.Left ? Input.GetAxis(ControllerMappingLibrary.MIXEDREALITY_AXIS2) : Input.GetAxis(ControllerMappingLibrary.MIXEDREALITY_AXIS5);
+            dualAxisPosition.x = Input.GetAxis(interactionMapping.AxisCodeX);
+            dualAxisPosition.y = Input.GetAxis(interactionMapping.AxisCodeY);
 
             // Update the interaction data source
             interactionMapping.Vector2Data = dualAxisPosition;
@@ -315,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                 case AxisType.Digital:
                     var keyButton = Input.GetKey(interactionMapping.KeyCode);
 
-                    //Update the interaction data source
+                    // Update the interaction data source
                     interactionMapping.BoolData = keyButton;
 
                     // If our value changed raise it.
@@ -340,7 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     }
                     break;
                 case AxisType.SingleAxis:
-                    var axisButtonPressAmount = Input.GetAxis(interactionMapping.AxisCode);
+                    var axisButtonPressAmount = Input.GetAxis(interactionMapping.AxisCodeX);
 
                     // Update the interaction data source
                     interactionMapping.BoolData = axisButtonPressAmount.Equals(1);
@@ -368,7 +366,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     break;
             }
         }
-
-        #endregion Event Functions
     }
 }

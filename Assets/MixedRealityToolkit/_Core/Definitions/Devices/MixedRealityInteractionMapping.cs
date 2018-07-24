@@ -23,8 +23,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <param name="axisType">The axis that the mapping operates on, also denotes the data type for the mapping</param>
         /// <param name="inputType">The physical input device / control</param>
         /// <param name="inputAction">The logical MixedRealityInputAction that this input performs</param>
-        /// <param name="keyCode">Optional KeyCode value to get input from Unity's old input system</param> 
-        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction, KeyCode keyCode = KeyCode.None, string axisCode = "")
+        /// <param name="keyCode">Optional KeyCode value to get input from Unity's old input system</param>
+        /// <param name="axisCodeX">Optional horizontal or single axis value to get axis data from Unity's old input system.</param>
+        /// <param name="axisCodeY">Optional vertical axis value to get axis data from Unity's old input system.</param> 
+        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction, KeyCode keyCode = KeyCode.None, string axisCodeX = "", string axisCodeY = "")
         {
             this.id = id;
             this.description = description;
@@ -32,7 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             this.inputType = inputType;
             this.inputAction = inputAction;
             this.keyCode = keyCode;
-            this.axisCode = axisCode;
+            this.axisCodeX = axisCodeX;
+            this.axisCodeY = axisCodeY;
             rawData = null;
             boolData = false;
             floatData = 0f;
@@ -100,13 +103,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         public KeyCode KeyCode => keyCode;
 
         [SerializeField]
-        [Tooltip("Optional KeyCode value to get input from Unity's old input system.")]
-        private string axisCode;
+        [Tooltip("Optional horizontal or single axis value to get axis data from Unity's old input system.")]
+        private string axisCodeX;
 
         /// <summary>
-        /// Optional AxisCode value to get axis data from Unity's old input system.
+        /// Optional horizontal or single axis value to get axis data from Unity's old input system.
         /// </summary>
-        public string AxisCode => axisCode;
+        public string AxisCodeX => axisCodeX;
+
+        [SerializeField]
+        [Tooltip("Optional vertical axis value to get axis data from Unity's old input system.")]
+        private string axisCodeY;
+
+        /// <summary>
+        /// Optional vertical axis value to get axis data from Unity's old input system.
+        /// </summary>
+        public string AxisCodeY => axisCodeY;
 
         private bool changed;
 
@@ -319,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             }
         }
 
-#endregion Data Properties
+        #endregion Data Properties
 
     }
 }
