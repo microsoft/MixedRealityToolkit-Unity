@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             // HTC Vive Controller - Right Controller Grip Button (8)
             // Oculus Touch Controller - Axis1D.SecondaryHandTrigger
             // Valve Knuckles Controller - Right Controller Grip Average
-            new MixedRealityInteractionMapping(4, "Grip", AxisType.SingleAxis, DeviceInputType.Trigger, MixedRealityInputAction.None, KeyCode.None, ControllerMappingLibrary.MIXEDREALITY_AXIS11),
+            new MixedRealityInteractionMapping(4, "Grip", AxisType.SingleAxis, DeviceInputType.Trigger, MixedRealityInputAction.None, KeyCode.None, ControllerMappingLibrary.MIXEDREALITY_AXIS12),
             // HTC Vive Controller - Right Controller Trackpad (2)
             // Oculus Touch Controller - Axis2D.PrimaryThumbstick
             // Valve Knuckles Controller - Right Controller Trackpad
