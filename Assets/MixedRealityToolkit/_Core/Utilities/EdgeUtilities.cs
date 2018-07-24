@@ -68,6 +68,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         }
 
         /// <summary>
+        /// Value calculated by GetIntersectionPoint()
+        /// </summary>
+        /// <remarks>
+        /// This is to save multiple allocations when GetIntersectionPoint is called repeatedly.
+        /// </remarks>
+        private static Vector2 intersectionPoint = Vector2.zero;
+
+        /// <summary>
         /// Returns the point at which two <see cref="Edge"/> values intersect.
         /// </summary>
         /// <param name="edgeA">The first edge</param>
@@ -85,11 +93,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             float s = (-sA_y * (edgeA.PointA.x - edgeB.PointA.x) + sA_x * (edgeA.PointA.y - edgeB.PointA.y)) / (-sB_x * sA_y + sA_x * sB_y);
             float t = (sB_x * (edgeA.PointA.y - edgeB.PointA.y) - sB_y * (edgeA.PointA.x - edgeB.PointA.x)) / (-sB_x * sA_y + sA_x * sB_y);
 
-
             if ((s >= 0) && (s <= 1) && (t >= 0) && (t <= 1))
             {
                 // Collision detected
-                return new Vector2(edgeA.PointA.x + (t * sA_x), edgeA.PointA.y + (t * sA_y));
+                intersectionPoint.x = edgeA.PointA.x + (t * sA_x);
+                intersectionPoint.y = edgeA.PointA.y + (t * sA_y);
+                return intersectionPoint;
             }
 
             return InvalidPoint;
