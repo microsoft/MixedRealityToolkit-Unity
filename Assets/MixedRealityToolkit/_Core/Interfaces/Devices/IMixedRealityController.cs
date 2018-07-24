@@ -59,10 +59,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// Mapping definition for this controller, linking the Physical inputs to logical Input System Actions
         /// </summary>
         MixedRealityInteractionMapping[] Interactions { get; }
-
-        /// <summary>
-        /// For those platforms that require Unity Input mappings
-        /// </summary>
-        InputManagerAxis[] ControllerAxisMappings { get; }
     }
 }

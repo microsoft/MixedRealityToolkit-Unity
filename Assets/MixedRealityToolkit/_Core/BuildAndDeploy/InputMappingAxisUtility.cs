@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <summary>
         /// This is used to keep a local list of axis names, so we don't have to keep iterating through each SerializedProperty.
         /// </summary>
-        private static List<string> AxisNames = new List<string>();
+        private static readonly List<string> AxisNames = new List<string>();
 
         /// <summary>
         /// This is used to keep a single reference to InputManager.asset, refreshed when necessary.
@@ -37,8 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <remarks>
         /// This only exists as the Unity input manager CANNOT map Axis to an id, it has to be through a mapping
         /// </remarks>
-        /// <param name="useToolkitAxes">Apply the Mixed Reality Toolkit defaults</param>
-        /// <param name="removeMappings">If true, removes the selected mappings, either the defaults or the axisMappings array</param>
         /// <param name="axisMappings">Optional array of Axis Mappings, to configure your own custom set</param>
         public static void ApplyMappings(InputManagerAxis[] axisMappings)
         {
@@ -64,8 +62,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// <remarks>
         /// This only exists as the Unity input manager CANNOT map Axis to an id, it has to be through a mapping
         /// </remarks>
-        /// <param name="useToolkitAxes">Apply the Mixed Reality Toolkit defaults</param>
-        /// <param name="removeMappings">If true, removes the selected mappings, either the defaults or the axisMappings array</param>
         /// <param name="axisMappings">Optional array of Axis Mappings, to configure your own custom set</param>
         public static void RemoveMappings(InputManagerAxis[] axisMappings)
         {

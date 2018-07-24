@@ -867,6 +867,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         }
 
         /// <inheritdoc />
+        public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
+        {
+            // Create input event
+            floatInputEventData.Initialize(source, handedness, inputAction);
+
+            // Pass handler through HandleEvent to perform modal/fallback logic
+            HandleEvent(floatInputEventData, OnInputPressedEventHandler);
+        }
+
+        /// <inheritdoc />
         public void RaiseOnInputPressed(IMixedRealityInputSource source, MixedRealityInputAction inputAction, float pressAmount)
         {
             // Create input event
