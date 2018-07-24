@@ -88,6 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// </summary>
         public bool IsVisible
         {
+            get { return isVisible; }
             set
             {
                 isVisible = value;
