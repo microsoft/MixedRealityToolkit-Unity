@@ -140,7 +140,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         UpdatePointerData(Interactions[i]);
                         break;
                     case DeviceInputType.Trigger:
-                        // Get the current input state
                         UpdateSingleAxisData(Interactions[i]);
                         break;
                     case DeviceInputType.ThumbStick:
@@ -159,11 +158,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     case DeviceInputType.ButtonPress:
                     case DeviceInputType.ThumbTouch:
                     case DeviceInputType.ThumbNearTouch:
+                        UpdateButtonData(Interactions[i]);
+                        break;
                     case DeviceInputType.IndexFinger:
                     case DeviceInputType.MiddleFinger:
                     case DeviceInputType.RingFinger:
                     case DeviceInputType.PinkyFinger:
-                        UpdateButtonData(Interactions[i]);
+                        UpdateSingleAxisData(Interactions[i]);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException($"Input [{Interactions[i].InputType}] is not handled for this controller [GenericOpenVRController]");
