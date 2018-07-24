@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         [Header("Cursor")]
         [SerializeField]
-        protected GameObject CursorPrefab;
+        protected GameObject CursorPrefab = null;
 
         [Header("Interaction")]
         [SerializeField]
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         [SerializeField]
         [Range(0f, 360f)]
-        protected float CurrentPointerOrientation;
+        protected float CurrentPointerOrientation = 0f;
 
         [SerializeField]
         [Range(0.5f, 50f)]
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         [SerializeField]
         [Tooltip("Source transform for raycast origin - leave null to use default transform")]
-        protected Transform RaycastOrigin;
+        protected Transform RaycastOrigin = null;
 
         [SerializeField]
         private MixedRealityInputAction activeHoldAction = MixedRealityInputAction.None;
