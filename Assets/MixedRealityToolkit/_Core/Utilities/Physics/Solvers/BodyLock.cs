@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
 
         [SerializeField]
         [Tooltip("XYZ offset for this object in relation to the TrackedObject/TargetTransform")]
-        private Vector3 offset;
+        private Vector3 offset = Vector3.zero;
 
         [SerializeField]
         [Tooltip("RotationTether snaps the object to be in front of TrackedObject regardless of the object's local rotation.")]

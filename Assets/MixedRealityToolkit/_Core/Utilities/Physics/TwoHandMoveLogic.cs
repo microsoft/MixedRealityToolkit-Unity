@@ -78,6 +78,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics
             return newPosition;
         }
 
+        /// <summary>
+        /// Get the hand pivot position located a bit lower and behind the camera.
+        /// </summary>
         /// <returns>A point that is below and just in front of the head.</returns>
         public static Vector3 GetHandPivotPosition()
         {

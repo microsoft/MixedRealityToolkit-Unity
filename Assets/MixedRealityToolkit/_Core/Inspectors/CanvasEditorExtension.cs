@@ -26,11 +26,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private void OnEnable()
         {
             canvas = (Canvas)target;
-            inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+
+            if (MixedRealityManager.ConfirmInitialized())
+            {
+                inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+            }
         }
 
         public override void OnInspectorGUI()
         {
+            if (inputSystem == null)
+            {
+                EditorGUILayout.HelpBox("No Input System found. Are you missing a Mixed Reality manager in your scene?", MessageType.Error);
+                return;
+            }
+
             EditorGUI.BeginChangeCheck();
             base.OnInspectorGUI();
 
