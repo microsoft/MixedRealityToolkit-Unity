@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <summary>
         /// The rotation angle, in degrees, of the inscribed rectangle.
         /// </summary>
-        public float Angle { get; private set; }
+        public float Angle { get; private set; } = 0f;
 
         /// <summary>
         /// Is the described rectangle valid?

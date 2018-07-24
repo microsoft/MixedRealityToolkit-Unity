@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 
@@ -48,17 +49,25 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
             boundaryManager = boundaryManager ?? MixedRealityManager.Instance?.GetManager<IMixedRealityBoundarySystem>();
 
-            InscribedRectangle inscribedRectangle = boundaryManager?.InscribedRectangularBounds;
-
-            if (inscribedRectangle != null)
+            // Get the rectangular bounds.
+            Vector2 center = EdgeUtilities.InvalidPoint;
+            float angle = 0f;
+            float width = 0f;
+            float height = 0f;
+            if (!boundaryManager.TryGetRectangularBounds(out center, out angle, out width, out height))
             {
-                Vector3 center = new Vector3(inscribedRectangle.Center.x, 0f, inscribedRectangle.Center.y);
-
+                // No rectangular bounds.
+                return;
+            }
+            
+            // Render the rectangular bounds.
+            if (EdgeUtilities.IsValidPoint(center))
+            {
                 GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
                 quad.transform.SetParent(transform);
-                quad.transform.Translate(center + new Vector3(0.0f, 0.005f, 0.0f)); // Add fudge factor to avoid z-fighting
-                quad.transform.Rotate(new Vector3(90, -inscribedRectangle.Angle, 0));
-                quad.transform.localScale = new Vector3(inscribedRectangle.Width, inscribedRectangle.Height, 1.0f);
+                quad.transform.Translate(new Vector3(center.x, 0.005f, center.y)); // Add fudge factor to avoid z-fighting
+                quad.transform.Rotate(new Vector3(90, -angle, 0));
+                quad.transform.localScale = new Vector3(width, height, 1.0f);
                 quad.GetComponent<Renderer>().sharedMaterial = inscribedRectangleMaterial;
             }
         }

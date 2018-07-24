@@ -27,13 +27,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         public bool EnablePlatformBoundaryRendering { get; set; } = true;
 
         /// <inheritdoc/>
-        public Edge[] GeometryBounds { get; private set; } = new Edge[0];
+        public Edge[] Bounds { get; private set; } = new Edge[0];
 
         /// <inheritdoc/>
         public float? FloorHeight { get; private set; } = null;
 
-        /// <inheritdoc/>
-        public InscribedRectangle InscribedRectangularBounds { get; private set; } = null;
+        /// <summary>
+        /// The largest rectangle that is contained withing the playspace geometry.
+        /// </summary>
+        private InscribedRectangle rectangularBounds = null;
 
         /// <summary>
         /// MixedRealityBoundaryManager constructor
@@ -89,6 +91,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 return false;
             }
 
+            // Handle the user teleporting (boundary moves with them).
+            location = CameraCache.Main.transform.parent.InverseTransformPoint(location);
+
             if ((FloorHeight.Value > location.y) ||
                 (BoundaryHeight < location.y))
             {
@@ -102,19 +107,46 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (boundaryType == Boundary.Type.PlayArea)
             {
                 // Check the inscribed rectangle.
-                if (InscribedRectangularBounds != null)
+                if (rectangularBounds != null)
                 {
-                    return InscribedRectangularBounds.IsInsideBoundary(point);
+                    return rectangularBounds.IsInsideBoundary(point);
                 }
             }
             else if(boundaryType == Boundary.Type.TrackedArea)
             {
                 // Check the geometry
-                return EdgeUtilities.IsInsideBoundary(GeometryBounds, point);
+                return EdgeUtilities.IsInsideBoundary(Bounds, point);
             }
 
             // Not in either boundary type.
             return false;
+        }
+
+        /// <inheritdoc/>
+        public bool TryGetRectangularBounds(
+            out Vector2 center, 
+            out float angle, 
+            out float width,
+            out float height)
+        {
+            if (!rectangularBounds.IsValid)
+            {
+                center = EdgeUtilities.InvalidPoint;
+                angle = 0f;
+                width = 0f;
+                height = 0f;
+                return false;
+            }
+
+            // Handle the user teleporting (boundary moves with them).
+            Vector3 transformedCenter = CameraCache.Main.transform.parent.TransformPoint(
+                new Vector3(rectangularBounds.Center.x, 0f, rectangularBounds.Center.y));
+
+            center = new Vector2(transformedCenter.x, transformedCenter.z);
+            angle = rectangularBounds.Angle;
+            width = rectangularBounds.Width;
+            height = rectangularBounds.Height;
+            return true;
         }
 
         /// <summary>
@@ -123,9 +155,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         private void CalculateBoundaryBounds()
         {
             // Reset the bounds
-            GeometryBounds = new Edge[0];
+            Bounds = new Edge[0];
             FloorHeight = null;
-            InscribedRectangularBounds = null;
+            rectangularBounds = null;
 
             // Boundaries are supported for Room Scale experiences only.
             if (XRDevice.GetTrackingSpaceType() != TrackingSpaceType.RoomScale)
@@ -153,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 }
 
                 FloorHeight = floorHeight;
-                GeometryBounds = boundaryEdges.ToArray();
+                Bounds = boundaryEdges.ToArray();
                 CreateInscribedBounds();
             }
             else
@@ -171,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         {
             // We always use the same seed so that from run to run, the inscribed bounds are
             // consistent.
-            InscribedRectangularBounds = new InscribedRectangle(GeometryBounds, Mathf.Abs("Mixed Reality Toolkit".GetHashCode()));
+            rectangularBounds = new InscribedRectangle(Bounds, Mathf.Abs("Mixed Reality Toolkit".GetHashCode()));
         }
 
         /// <summary>

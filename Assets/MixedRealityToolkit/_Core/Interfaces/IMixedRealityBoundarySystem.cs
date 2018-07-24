@@ -44,12 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// BoundaryGeometry should be treated as the outline of the player's space, placed
         /// on the floor.
         /// </remarks>
-        Edge[] GeometryBounds { get; }
-
-        /// <summary>
-        /// The largest rectangle that is contained withing the playspace geometry.
-        /// </summary>
-        InscribedRectangle InscribedRectangularBounds { get; }
+        Edge[] Bounds { get; }
 
         /// <summary>
         /// Indicates the height of the floor, in relation to the coordinate system origin.
@@ -77,5 +72,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// * Boundary.Type.TrackedArea for the area defined by the boundary edges.
         /// </remarks>
         bool Contains(Vector3 location, Boundary.Type boundaryType);
+
+        /// <summary>
+        /// Returns the description of the inscribed rectangular bounds.
+        /// </summary>
+        /// <param name="center">The center of the rectangle.</param>
+        /// <param name="angle">The orientation of the rectangle.</param>
+        /// <param name="width">The width of the rectangle.</param>
+        /// <param name="height">The height of the rectangle.</param>
+        /// <returns></returns>
+        bool TryGetRectangularBounds(
+            out Vector2 center,
+            out float angle,
+            out float width,
+            out float height);
     }
 }
