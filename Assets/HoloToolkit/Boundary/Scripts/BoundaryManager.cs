@@ -215,7 +215,7 @@ namespace HoloToolkit.Unity.Boundary
             var positions = new Vector3[points2d.Length];
             for (int i = 0; i < points2d.Length; ++i)
             {
-                positions[i] = new Vector3(points2d[i].x, boundaryFloor, points2d[i].y);
+                positions[i] = CameraCache.Main.transform.parent.TransformPoint(new Vector3(points2d[i].x, boundaryFloor, points2d[i].y));
             }
             return positions;
         }
