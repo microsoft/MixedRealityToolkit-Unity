@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// <param name="width">The width of the rectangle.</param>
         /// <param name="height">The height of the rectangle.</param>
         /// <returns></returns>
-        bool TryGetRectangularBounds(
+        bool TryGetRectangularBoundsParams(
             out Vector2 center,
             out float angle,
             out float width,

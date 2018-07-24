@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         }
 
         /// <inheritdoc/>
-        public bool TryGetRectangularBounds(
+        public bool TryGetRectangularBoundsParams(
             out Vector2 center, 
             out float angle, 
             out float width,

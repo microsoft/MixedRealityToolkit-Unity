@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             float angle = 0f;
             float width = 0f;
             float height = 0f;
-            if (!boundaryManager.TryGetRectangularBounds(out center, out angle, out width, out height))
+            if (!boundaryManager.TryGetRectangularBoundsParams(out center, out angle, out width, out height))
             {
                 // No rectangular bounds.
                 return;
@@ -83,11 +83,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 boundaryManager = boundaryManager ?? MixedRealityManager.Instance?.GetManager<IMixedRealityBoundarySystem>();
             }
 
+            // Get the rectangular bounds.
+            Vector2 centerRect = EdgeUtilities.InvalidPoint;
+            float angleRect = 0f;
+            float widthRect = 0f;
+            float heightRect = 0f;
+            if (!boundaryManager.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
+            {
+                // No rectangular bounds.
+                return;
+            }
+
             const int indicatorCount = 20;
             const float indicatorDistance = 0.2f;
             const float dimension = indicatorCount * indicatorDistance;
 
-            Vector3 center = Vector3.zero;
+            Vector3 center = new Vector3(centerRect.x, 0f, centerRect.y);
             Vector3 corner = center - (new Vector3(dimension, 0.0f, dimension) / 2.0f);
 
             corner.y += 0.05f;

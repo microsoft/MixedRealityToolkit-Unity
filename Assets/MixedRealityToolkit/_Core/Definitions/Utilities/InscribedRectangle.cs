@@ -91,33 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         }
 
         /// <summary>
-        /// Get the corner points of the rectangle.
-        /// </summary>
-        /// <returns>
-        /// Vector2 array containing the four corner points of the defined rectangle.
-        /// </returns>
-        /// <exception cref="InvalidOperationException">The rectangle is not valid.</exception>
-        public Vector2[] GetCornerPoints()
-        {
-            if (!IsValid)
-            {
-                throw new InvalidOperationException("Cannot get the points of an invalid rectangle.");
-            }
-
-            float x = Width / 2.0f;
-            float y = Height / 2.0f;
-            float angleRadians = MathUtils.DegreesToRadians(Angle);
-
-            return new Vector2[]
-            {
-                RotatePoint(new Vector2(x, y), Center, angleRadians),
-                RotatePoint(new Vector2(x, -y), Center, angleRadians),
-                RotatePoint(new Vector2(-x, -y), Center, angleRadians),
-                RotatePoint(new Vector2(-x, y), Center, angleRadians)
-            };
-        }
-
-        /// <summary>
         /// Finds a large inscribed rectangle. Tries to be maximal but this is
         /// best effort. The algorithm used was inspired by the blog post
         /// https://d3plus.org/blog/behind-the-scenes/2014/07/08/largest-rect/
