@@ -167,7 +167,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         UpdateSingleAxisData(Interactions[i]);
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException($"Input [{Interactions[i].InputType}] is not handled for this controller [GenericOpenVRController]");
+                        Debug.LogError($"Input [{Interactions[i].InputType}] is not handled for this controller [GenericOpenVRController]");
+                        break;
                 }
             }
             LastStateReading = xrNodeState;
