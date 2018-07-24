@@ -117,8 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             AssignControllerMappings(controllerHandedness == Handedness.Left ? DefaultLeftHandedInteractions : DefaultRightHandedInteractions);
         }
 
-        #region Update data functions
-
         /// <summary>
         /// Update the controller data from the provided platform state
         /// </summary>
@@ -170,6 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         break;
                 }
             }
+
             LastStateReading = xrNodeState;
         }
 
@@ -234,6 +233,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
         }
 
+        /// <summary>
+        /// Update Spatial Pointer Data.
+        /// </summary>
+        /// <param name="interactionMapping"></param>
         protected void UpdatePointerData(MixedRealityInteractionMapping interactionMapping)
         {
             // TODO: configure an offset pointer position for each OpenVR Controller?
@@ -247,10 +250,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                 InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
             }
         }
-
-        #endregion Update data functions
-
-        #region Event Functions
 
         /// <summary>
         /// Update an Interaction Float data type from a SingleAxis (float) input 
@@ -367,7 +366,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     break;
             }
         }
-
-        #endregion Event Functions
     }
 }
