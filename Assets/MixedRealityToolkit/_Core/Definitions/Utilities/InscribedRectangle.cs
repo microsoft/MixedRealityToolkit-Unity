@@ -84,8 +84,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             point -= Center;
             point = RotatePoint(point, Vector2.zero, MathUtils.DegreesToRadians(-Angle));
 
-            bool inWidth = Mathf.Abs(point.x) <= (Width / 2.0f);
-            bool inHeight = Mathf.Abs(point.y) <= (Height / 2.0f);
+            bool inWidth = Mathf.Abs(point.x) <= (Width * 0.5f);
+            bool inHeight = Mathf.Abs(point.y) <= (Height * 0.5f);
 
             return (inWidth && inHeight);
         }
@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                         float bY = bottomCollisionPoint.y;
 
                         // Calculate the midpoint between the top and bottom collision points.
-                        Vector2 verticalMidpoint = new Vector2((aX + bX) / 2, (aY + bY) / 2);
+                        Vector2 verticalMidpoint = new Vector2((aX + bX) * 0.5f, (aY + bY) * 0.5f);
                         if (TryFixMaximumRectangle(
                             geometryEdges,
                             verticalMidpoint,
@@ -228,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                         float bY = rightCollisionPoint.y;
 
                         // Calculate the midpoint between the left and right collision points.
-                        Vector2 horizontalMidpoint = new Vector2((aX + bX) / 2, (aY + bY) / 2);
+                        Vector2 horizontalMidpoint = new Vector2((aX + bX) * 0.5f, (aY + bY) * 0.5f);
                         if (TryFixMaximumRectangle(
                             geometryEdges,
                             horizontalMidpoint,
@@ -417,8 +417,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             float width,
             float height)
         {
-            float halfWidth = width / 2.0f;
-            float halfHeight = height / 2.0f;
+            float halfWidth = width * 0.5f;
+            float halfHeight = height * 0.5f;
 
             // Calculate the rectangle corners.
             Vector2 topLeft = new Vector2(centerPoint.x - halfWidth, centerPoint.y + halfHeight);
@@ -533,7 +533,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                     continue;
                 }
 
-                float currentTestingHeight = Mathf.Max(searchHeightLowerBound, maxHeight / 2.0f);
+                float currentTestingHeight = Mathf.Max(searchHeightLowerBound, maxHeight * 0.5f);
 
 
                 // Perform the binary search until continuing to search will not give us a significant win.
@@ -552,13 +552,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
                         width = currentTestingHeight * aspectRatios[i];
                         height = currentTestingHeight;
                         aspectRatio = aspectRatios[i];
-                        currentTestingHeight = (searchHeightUpperBound + currentTestingHeight) / 2.0f;
+                        currentTestingHeight = (searchHeightUpperBound + currentTestingHeight) * 0.5f;
                     }
                     else
                     {
                         // If the rectangle won't fit, update our upper bound and lower our binary search
                         searchHeightUpperBound = currentTestingHeight;
-                        currentTestingHeight = (currentTestingHeight + searchHeightLowerBound) / 2.0f;
+                        currentTestingHeight = (currentTestingHeight + searchHeightLowerBound) * 0.5f;
                     }
                 }
                 while ((searchHeightUpperBound - searchHeightLowerBound) > minimumHeightGain);

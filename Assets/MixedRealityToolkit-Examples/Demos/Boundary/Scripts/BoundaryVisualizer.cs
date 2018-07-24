@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
@@ -15,16 +14,25 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </summary>
     public class BoundaryVisualizer : MonoBehaviour
     {
+        /// <summary>
+        /// The material used to display indicators that are within the boundary geometry.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Material used to draw the boundary geometry.")]
+        [Tooltip("Material used to display indicators that are within the boundary geometry.")]
         private Material boundsMaterial = null;
 
+        /// <summary>
+        /// The material used to display indicators that are outside of the boundary geometry.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Material used to draw the area outside of the boundary geometry.")]
+        [Tooltip("Material used to display indicators that are outside of the boundary geometry.")]
         private Material outOfBoundsMaterial = null;
 
+        /// <summary>
+        /// The material used to display the inscribed rectangle and the indicators that are within it.
+        /// </summary>
         [SerializeField]
-        [Tooltip("Material used to draw the area inside of the inscribed rectangle.")]
+        [Tooltip("Material used to display the inscribed rectangle and the indicators that are within it.")]
         private Material inscribedRectangleMaterial = null;
 
         /// <summary>
@@ -51,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             float height = 0f;
             if (!(bool)(BoundaryManager?.TryGetRectangularBoundsParams(out center, out angle, out width, out height)))
             {
-                // No rectangular bounds.
+                // No rectangular bounds, therefore do not render the quad.
                 return;
             }
             
@@ -78,14 +86,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             float angleRect = 0f;
             float widthRect = 0f;
             float heightRect = 0f;
-            bool haveBoundary = (bool)(BoundaryManager?.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect));
+            if (!(bool)(BoundaryManager?.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect)))
+            {
+                // If we have no boundary manager or rectangular bounds we will show no indicators
+                return;
+            }
 
-            const int indicatorCount = 20;
+                const int indicatorCount = 20;
             const float indicatorDistance = 0.2f;
             const float dimension = indicatorCount * indicatorDistance;
 
             Vector3 center = new Vector3(centerRect.x, 0f, centerRect.y);
-            Vector3 corner = center - (new Vector3(dimension, 0.0f, dimension) / 2.0f);
+            Vector3 corner = center - (new Vector3(dimension, 0.0f, dimension) * 0.5f);
 
             corner.y += 0.05f;
             for (int xIndex = 0; xIndex < indicatorCount; ++xIndex)
@@ -102,18 +114,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     // Get the desired material for the marker.
                     Material material = outOfBoundsMaterial;
 
-                    if (haveBoundary)
+                    // Check inscribed rectangle first
+                    if (BoundaryManager.Contains(position, Boundary.Type.PlayArea))
                     {
-                        // Check inscribed rectangle first
-                        if (BoundaryManager.Contains(position, Boundary.Type.PlayArea))
-                        {
-                            material = inscribedRectangleMaterial;
-                        }
-                        // Then check geometry
-                        else if (BoundaryManager.Contains(position, Boundary.Type.TrackedArea))
-                        {
-                            material = boundsMaterial;
-                        }
+                        material = inscribedRectangleMaterial;
+                    }
+                    // Then check geometry
+                    else if (BoundaryManager.Contains(position, Boundary.Type.TrackedArea))
+                    {
+                        material = boundsMaterial;
                     }
 
                     marker.GetComponent<MeshRenderer>().sharedMaterial = material;

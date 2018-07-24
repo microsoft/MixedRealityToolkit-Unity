@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         {
             SetTrackingSpace();
             CalculateBoundaryBounds();
-            SetPlatformBoundaryVisibility();
+            Boundary.visible = EnablePlatformBoundaryRendering;
         }
 
         /// <inheritdoc/>
@@ -123,11 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         }
 
         /// <inheritdoc/>
-        public bool TryGetRectangularBoundsParams(
-            out Vector2 center, 
-            out float angle, 
-            out float width,
-            out float height)
+        public bool TryGetRectangularBoundsParams(out Vector2 center, out float angle, out float width, out float height)
         {
             if (!rectangularBounds.IsValid)
             {
@@ -239,19 +235,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
                 // TODO: Implement ExperienceScale fallback logic
             }
-        }
-
-        /// <summary>
-        /// Sets the property indicating if the boundary should be rendered by the platform.
-        /// </summary>
-        /// <remarks>
-        /// Not all platforms support specifying whether or not to render the playspace boundary.
-        /// For platforms without boundary rendering control, the default behavior will be unchanged 
-        /// regardless of the value provided.
-        /// </remarks>
-        private void SetPlatformBoundaryVisibility()
-        {
-            Boundary.visible = EnablePlatformBoundaryRendering;
         }
     }
 }
