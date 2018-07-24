@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
         [SerializeField]
         [Tooltip("Input System Class to instantiate at runtime.")]
         [Implements(typeof(IMixedRealityController), TypeGrouping.ByNamespaceFlat)]
-        private SystemType controllerType;
+        private SystemType controllerType = null;
 
         [SerializeField]
         [Tooltip("Disable child objects when detached from controller.")]

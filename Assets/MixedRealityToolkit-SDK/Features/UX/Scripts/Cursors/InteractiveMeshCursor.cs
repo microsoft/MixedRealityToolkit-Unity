@@ -12,24 +12,31 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
     /// </summary>
     public class InteractiveMeshCursor : BaseCursor
     {
+        [SerializeField]
         [Tooltip("The ring or outer element")]
-        private GameObject ring;
+        private GameObject ring = null;
 
+        [SerializeField]
         [Tooltip("Inner cursor element")]
-        private GameObject dot;
+        private GameObject dot = null;
 
+        [SerializeField]
         [Tooltip("The scale factor to soften the distance scaling, we want the cursor to scale in the distance, but not disappear.")]
         private float distanceScaleFactor = 0.3f;
 
+        [SerializeField]
         [Tooltip("The scale both elements will be at their default state")]
         private float defaultScale = 0.75f;
 
+        [SerializeField]
         [Tooltip("The scale both elements will when pressed")]
         private float downScale = 0.5f;
 
+        [SerializeField]
         [Tooltip("The scale both elements will a hand is visible")]
         private float upScale = 1;
 
+        [SerializeField]
         [Tooltip("Time to scale between states")]
         private float scaleTime = 0.5f;
 

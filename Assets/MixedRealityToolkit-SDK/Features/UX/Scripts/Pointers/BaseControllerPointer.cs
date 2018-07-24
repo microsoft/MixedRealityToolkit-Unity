@@ -41,10 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected Transform RaycastOrigin;
 
         [SerializeField]
-        private MixedRealityInputAction activeHoldAction;
+        private MixedRealityInputAction activeHoldAction = MixedRealityInputAction.None;
 
         [SerializeField]
-        private MixedRealityInputAction interactionEnabledAction;
+        private MixedRealityInputAction interactionEnabledAction = MixedRealityInputAction.None;
 
         [SerializeField]
         private bool interactionRequiresHold = false;

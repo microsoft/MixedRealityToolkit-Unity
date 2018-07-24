@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         [SerializeField]
         [Tooltip("The action that will start/stop the dragging.")]
-        private MixedRealityInputAction dragAction;
+        private MixedRealityInputAction dragAction = MixedRealityInputAction.None;
 
         [SerializeField]
         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
