@@ -18,13 +18,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
     public class MixedRealityBoundaryManager : BaseManager, IMixedRealityBoundarySystem
     {
         /// <inheritdoc/>
-        public ExperienceScale Scale { get; set; } = ExperienceScale.Room;
+        public ExperienceScale Scale { get; set; }
 
         /// <inheritdoc/>
-        public float BoundaryHeight { get; set; } = 3.0f;
+        public float BoundaryHeight { get; set; }
 
         /// <inheritdoc/>
-        public bool EnablePlatformBoundaryRendering { get; set; } = true;
+        public bool EnablePlatformBoundaryRendering { get; set; }
 
         /// <inheritdoc/>
         public Edge[] Bounds { get; private set; } = new Edge[0];
