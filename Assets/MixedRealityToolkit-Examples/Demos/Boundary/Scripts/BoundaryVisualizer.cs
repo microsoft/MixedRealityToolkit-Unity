@@ -29,8 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         /// <summary>
         /// Boundary system implementation.
-        /// </summary>
+        /// </summary
         private IMixedRealityBoundarySystem boundaryManager = null;
+        private IMixedRealityBoundarySystem BoundaryManager => boundaryManager ?? (boundaryManager = MixedRealityManager.Instance.GetManager<IMixedRealityBoundarySystem>());
 
         private void Start()
         {
@@ -43,18 +44,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private void AddQuad()
         {
-            if (!IsBoundarySystemEnabled())
-            {
-                return;
-            }
-            boundaryManager = boundaryManager ?? MixedRealityManager.Instance?.GetManager<IMixedRealityBoundarySystem>();
-
             // Get the rectangular bounds.
             Vector2 center = EdgeUtilities.InvalidPoint;
             float angle = 0f;
             float width = 0f;
             float height = 0f;
-            if (!boundaryManager.TryGetRectangularBoundsParams(out center, out angle, out width, out height))
+            if (!(bool)(BoundaryManager?.TryGetRectangularBoundsParams(out center, out angle, out width, out height)))
             {
                 // No rectangular bounds.
                 return;
@@ -78,21 +73,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private void AddIndicators()
         {
-            if (IsBoundarySystemEnabled())
-            {
-                boundaryManager = boundaryManager ?? MixedRealityManager.Instance?.GetManager<IMixedRealityBoundarySystem>();
-            }
-
             // Get the rectangular bounds.
             Vector2 centerRect = EdgeUtilities.InvalidPoint;
             float angleRect = 0f;
             float widthRect = 0f;
             float heightRect = 0f;
-            if (!boundaryManager.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
-            {
-                // No rectangular bounds.
-                return;
-            }
+            bool haveBoundary = (bool)(BoundaryManager?.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect));
 
             const int indicatorCount = 20;
             const float indicatorDistance = 0.2f;
@@ -116,15 +102,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     // Get the desired material for the marker.
                     Material material = outOfBoundsMaterial;
 
-                    if (boundaryManager != null)
+                    if (haveBoundary)
                     {
                         // Check inscribed rectangle first
-                        if (boundaryManager.Contains(position, Boundary.Type.PlayArea))
+                        if (BoundaryManager.Contains(position, Boundary.Type.PlayArea))
                         {
                             material = inscribedRectangleMaterial;
                         }
                         // Then check geometry
-                        else if (boundaryManager.Contains(position, Boundary.Type.TrackedArea))
+                        else if (BoundaryManager.Contains(position, Boundary.Type.TrackedArea))
                         {
                             material = boundsMaterial;
                         }
@@ -133,16 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     marker.GetComponent<MeshRenderer>().sharedMaterial = material;
                 }
             }
-        }
-
-        private bool IsBoundarySystemEnabled()
-        {
-            if (!MixedRealityManager.HasActiveProfile)
-            {
-                return false;
-            }
-
-            return MixedRealityManager.Instance.ActiveProfile.EnableBoundarySystem;
         }
     }
 }
