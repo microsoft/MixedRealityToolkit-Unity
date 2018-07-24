@@ -24,8 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <param name="inputType">The physical input device / control</param>
         /// <param name="inputAction">The logical MixedRealityInputAction that this input performs</param>
         /// <param name="keyCode">Optional KeyCode value to get input from Unity's old input system</param>
-        /// <param name="axisCodeX"></param>
-        /// <param name="axisCodeY"></param> 
+        /// <param name="axisCodeX">Optional horizontal or single axis value to get axis data from Unity's old input system.</param>
+        /// <param name="axisCodeY">Optional vertical axis value to get axis data from Unity's old input system.</param> 
         public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction, KeyCode keyCode = KeyCode.None, string axisCodeX = "", string axisCodeY = "")
         {
             this.id = id;
@@ -103,20 +103,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         public KeyCode KeyCode => keyCode;
 
         [SerializeField]
-        [Tooltip("Optional KeyCode value to get input from Unity's old input system.")]
+        [Tooltip("Optional horizontal or single axis value to get axis data from Unity's old input system.")]
         private string axisCodeX;
 
         /// <summary>
-        /// Optional AxisCodeX value to get axis data from Unity's old input system.
+        /// Optional horizontal or single axis value to get axis data from Unity's old input system.
         /// </summary>
         public string AxisCodeX => axisCodeX;
 
         [SerializeField]
-        [Tooltip("Optional KeyCode value to get input from Unity's old input system.")]
+        [Tooltip("Optional vertical axis value to get axis data from Unity's old input system.")]
         private string axisCodeY;
 
         /// <summary>
-        /// Optional AxisCodeX value to get axis data from Unity's old input system.
+        /// Optional vertical axis value to get axis data from Unity's old input system.
         /// </summary>
         public string AxisCodeY => axisCodeY;
 
