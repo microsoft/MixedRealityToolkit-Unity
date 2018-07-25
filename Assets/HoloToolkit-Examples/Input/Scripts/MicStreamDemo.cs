@@ -54,6 +54,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private bool isRunning;
 
+        //Property for isRunning
         public bool IsRunning
         {
             get { return isRunning; }

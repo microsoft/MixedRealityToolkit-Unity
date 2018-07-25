@@ -30,6 +30,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             initialPosition = transform.position;
         }
 
+        //// Child classes can override the parent Start() class
         public override void OnSourceLost(SourceStateEventData eventData)
         {
             Debug.LogFormat("Joystick {0} with id: \"{1}\" Disconnected", GamePadName, eventData.SourceId);
@@ -37,6 +38,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             debugText.text = "No Controller Connected";
         }
 
+        //// Child classes can override the parent Start() class
         public override void OnXboxInputUpdate(XboxControllerEventData eventData)
         {
             if (string.IsNullOrEmpty(GamePadName))

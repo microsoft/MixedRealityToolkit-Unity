@@ -11,6 +11,7 @@ namespace HoloToolkit.Unity.Tests
         [SerializeField] private float _maxAngle = 0;
         [SerializeField] private float _step = 0;
 
+        //Update is called once per frame
         private void Update()
         {
             transform.Rotate(Vector3.up, _step);

@@ -1,4 +1,6 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Upgrade NOTE: upgraded instancing buffer 'Props' to new syntax.
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 ///
@@ -77,9 +79,10 @@ Shader "MixedRealityToolkit/3DTextShader"
 
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
-			UNITY_INSTANCING_CBUFFER_START(Props)
+			UNITY_INSTANCING_BUFFER_START(Props)
 			UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
-			UNITY_INSTANCING_CBUFFER_END
+#define _Color_arr Props
+			UNITY_INSTANCING_BUFFER_END(Props)
 
             v2f vert (appdata_t v)
             {
@@ -101,7 +104,7 @@ Shader "MixedRealityToolkit/3DTextShader"
 				UNITY_SETUP_INSTANCE_ID(i);
 				half4 col = i.color;
 				col.a *= tex2D(_MainTex, i.texcoord).a;
-				col = col * UNITY_ACCESS_INSTANCED_PROP(_Color);
+				col = col * UNITY_ACCESS_INSTANCED_PROP(_Color_arr, _Color);
 				clip (col.a - 0.01);
 				return col;
             }

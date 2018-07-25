@@ -135,6 +135,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 cancelledCallback();
             }
 
+            //Calling to Dismiss() method
             Dismiss();
         }
 
@@ -142,6 +143,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             if (closeOnNonTargetedTap)
             {
+                //Calling to Dismiss() method
                 Dismiss();
             }
 
@@ -152,6 +154,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             if (closeOnNonTargetedTap)
             {
+                //Calling to Dismiss() method
                 Dismiss();
             }
 

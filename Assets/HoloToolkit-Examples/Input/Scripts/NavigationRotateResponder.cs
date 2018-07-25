@@ -19,8 +19,10 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private float rotationFactor = 0.0f;
         private Vector3 navigationDelta = Vector3.zero;
         
+        //Update is called once per frame
         private void Update()
         {
+            //call to PerformRotation() method
             PerformRotation();
         }
 
@@ -41,13 +43,13 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public void OnNavigationCanceled(NavigationEventData eventData)
         {
-            navigationDelta = Vector3.zero;
+            navigationDelta = Vector3.zero; //Set it back to default values
             InputManager.Instance.OverrideFocusedObject = null;
         }
 
         public void OnNavigationCompleted(NavigationEventData eventData)
         {
-            navigationDelta = Vector3.zero;
+            navigationDelta = Vector3.zero; //Set it back to default values
             InputManager.Instance.OverrideFocusedObject = null;
         }
 

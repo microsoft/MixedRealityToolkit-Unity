@@ -33,6 +33,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         /// </summary>
         public void OnClearSelection()
         {
+            //Calling SendMessageToSelectedObject() method
             SendMessageToSelectedObject("OnClearSelection");
             selectedObject = null;
         }

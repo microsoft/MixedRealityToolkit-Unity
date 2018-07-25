@@ -10,8 +10,10 @@ namespace HoloToolkit.Unity.InputModule.Tests
         public SpeechInputSource SpeechInputSource;
         public TextMesh TextMesh;
 
+        //Use this for initialisation
         private void Start()
         {
+            //If both input is empty or null
             if (SpeechInputSource == null || TextMesh == null)
             {
                 Debug.Log("Please check the variables in the Inspector on DisplaySpeechKeywords.cs on" + name + ".");

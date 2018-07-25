@@ -12,6 +12,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private void Start()
         {
+            //Use this for initialisation
             InputManager.Instance.PushFallbackInputHandler(gameObject);
         }
 

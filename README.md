@@ -45,7 +45,7 @@ The Mixed Reality Toolkit for Unity includes many APIs to accelerate the develop
 | To develop apps for mixed reality headsets, you need the Windows 10 Fall Creators Update | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you test your app without the device in a simulated environment |
 
 # Getting started with MRTK
-To get up and going as quickly as possible, here are some guides to help you get started building Mixed Reality Projects
+To get up and startup as quickly as possible, here are some guides to help you get started building Mixed Reality Projects
 
 | [![Quick Start Guide](External/ReadMeImages/MRTK170802c_Short_22.png)](GettingStarted.md) [Quick start](GettingStarted.md) | [![Contributing to this project](External/ReadMeImages/MRTK170802c_Short_23.png)](CONTRIBUTING.md) [Contributing to this project](CONTRIBUTING.md) | [![Contributing to this project](External/ReadMeImages/MRTK170802c_Short_24.png)](FallCreatorsUpdate.md) [Fall Creators Update](FallCreatorsUpdate.md) |
 |:--- | :--- | :--- |

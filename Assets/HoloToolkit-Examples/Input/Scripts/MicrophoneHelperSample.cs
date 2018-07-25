@@ -12,14 +12,17 @@ namespace HoloToolkit.Unity.Examples
 #if ENABLE_WINMD_SUPPORT
         private async void Update()
 #else
+        //Update is called one per frame
         private void Update()
 #endif
         {
+            //If button M is pressed
             if(Input.GetKeyDown(checkMicrophoneKey))
             {
 #if ENABLE_WINMD_SUPPORT
                 var status = await MicrophoneHelper.GetMicrophoneStatus();
 #else
+                //Call to GetMicrophoneStatus() method
                 var status = MicrophoneHelper.GetMicrophoneStatus();
 #endif
                 Debug.LogFormat("Microphone status: {0}", status);
