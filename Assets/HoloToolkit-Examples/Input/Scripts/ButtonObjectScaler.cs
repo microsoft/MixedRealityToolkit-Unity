@@ -50,22 +50,22 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 switch (ButtonAction)
                 {
                     case buttonAction.Reset:
-                         Debug.Log(InitialScale);
-                         ObjectToScale.transform.localScale = InitialScale;
-                         break;
+                        Debug.Log(InitialScale);
+                        ObjectToScale.transform.localScale = InitialScale;
+                        break;
                     case buttonAction.Grow:
-                         ObjectToScale.transform.localScale = new Vector3((ObjectToScale.transform.localScale.x + ScaleIncrement), (ObjectToScale.transform.localScale.y + ScaleIncrement), (ObjectToScale.transform.localScale.z + ScaleIncrement));
-                         break;
+                        ObjectToScale.transform.localScale = new Vector3((ObjectToScale.transform.localScale.x + ScaleIncrement), (ObjectToScale.transform.localScale.y + ScaleIncrement), (ObjectToScale.transform.localScale.z + ScaleIncrement));
+                        break;
                     case buttonAction.Shrink:
-                         if ((ObjectToScale.transform.localScale.x - ScaleIncrement) < 0.0f)
-                         {
-                             ObjectToScale.transform.localScale = Vector3.zero;
-                         }
-                         else
-                         {
-                             ObjectToScale.transform.localScale = new Vector3((ObjectToScale.transform.localScale.x - ScaleIncrement), (ObjectToScale.transform.localScale.y - ScaleIncrement), (ObjectToScale.transform.localScale.z - ScaleIncrement));
-                         }
-                         break;
+                        if ((ObjectToScale.transform.localScale.x - ScaleIncrement) < 0.0f)
+                        {
+                            ObjectToScale.transform.localScale = Vector3.zero;
+                        }
+                        else
+                        {
+                            ObjectToScale.transform.localScale = new Vector3((ObjectToScale.transform.localScale.x - ScaleIncrement), (ObjectToScale.transform.localScale.y - ScaleIncrement), (ObjectToScale.transform.localScale.z - ScaleIncrement));
+                        }
+                        break;
                 }
             }
 
