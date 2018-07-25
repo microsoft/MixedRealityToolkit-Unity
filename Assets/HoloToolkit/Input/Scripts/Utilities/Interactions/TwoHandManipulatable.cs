@@ -58,7 +58,11 @@ namespace HoloToolkit.Unity.InputModule.Utilities.Interactions
         public AxisConstraint RotationConstraint
         {
             get { return rotationConstraint; }
-            set { rotationConstraint = value; }
+            set
+            {
+                rotationConstraint = value;
+                rotateLogic = new TwoHandRotateLogic(rotationConstraint);
+            }
         }
 
         [SerializeField]
