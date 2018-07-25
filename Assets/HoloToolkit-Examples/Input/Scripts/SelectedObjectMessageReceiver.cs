@@ -43,7 +43,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
             OnClearSelection();
             if (eventData.selectedObject == gameObject)
             {
-                //if current object is selected, call to OnSelectObject() method
                 OnSelectObject();
             }
         }
