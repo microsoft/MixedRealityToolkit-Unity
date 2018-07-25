@@ -41,7 +41,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
             cachedMaterial.SetColor("_Color", originalColor);
         }
 
-        //Destroy object once collision occurs
         private void OnDestroy()
         {
             DestroyImmediate(cachedMaterial);
@@ -52,11 +51,9 @@ namespace HoloToolkit.Unity.InputModule.Tests
             switch (eventData.RecognizedText.ToLower())
             {
                 case "make bigger":
-                    //call to method OnMakeBigger()
                     OnMakeBigger();
                     break;
                 case "make smaller":
-                    //call to method OnMakeSmaller()
                     OnMakeSmaller();
                     break;
             }
@@ -78,13 +75,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public void OnFocusEnter(PointerSpecificEventData eventData)
         {
-            //change the material to red color
             cachedMaterial.SetColor("_Color", FocusedColor);
         }
 
         public void OnFocusExit(PointerSpecificEventData eventData)
         {
-            //change the material backto its original color
+            //change the material back to its original color
             cachedMaterial.SetColor("_Color", originalColor);
         }
     }

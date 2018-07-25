@@ -36,8 +36,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private Material cachedToolTipMaterial;
 
         private bool focused;
-
-        //Property of focused
         public bool Focused
         {
             get { return focused; }
@@ -46,15 +44,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 if (focused != value)
                 {
                     focused = value;
-                    //Calling to UpdateButtonAnimation() method 
                     UpdateButtonAnimation();
                 }
             }
         }
 
         private bool stayFocused;
-
-        //Property of stayFocused
         public bool StayFocused
         {
             get { return stayFocused; }
@@ -63,15 +58,12 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 if (stayFocused != value)
                 {
                     stayFocused = value;
-                    //Calling to UpdateButtonAnimation() method 
                     UpdateButtonAnimation();
                 }
             }
         }
 
         private bool selected;
-
-        //Property of selected
         public bool Selected
         {
             get { return selected; }
@@ -80,7 +72,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 if (selected != value)
                 {
                     selected = value;
-                    //Calling to UpdateButtonAnimation() method 
                     UpdateButtonAnimation();
                 }
             }
@@ -122,9 +113,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 toolTipTimer = 0.0f;
             }
 
-            //Calling to UpdateVisuals() method 
             UpdateVisuals();
-            //Calling to UpdateButtonAnimation() method 
             UpdateButtonAnimation();
         }
 

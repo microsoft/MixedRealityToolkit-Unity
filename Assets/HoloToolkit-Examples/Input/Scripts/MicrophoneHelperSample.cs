@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity.Examples
         private void Update()
 #endif
         {
-            //If button M is pressed
+            //If the button assigned to checkMicrophoneKey is pressed
             if(Input.GetKeyDown(checkMicrophoneKey))
             {
 #if ENABLE_WINMD_SUPPORT

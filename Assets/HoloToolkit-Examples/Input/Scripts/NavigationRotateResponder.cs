@@ -22,7 +22,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
         //Update is called once per frame
         private void Update()
         {
-            //call to PerformRotation() method
             PerformRotation();
         }
 

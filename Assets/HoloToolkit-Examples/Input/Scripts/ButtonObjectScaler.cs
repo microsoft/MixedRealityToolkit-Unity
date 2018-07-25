@@ -64,7 +64,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                         {
                             if ((ObjectToScale.transform.localScale.x - ScaleIncrement) < 0.0f)
                             {
-                                ObjectToScale.transform.localScale = new Vector3(0, 0, 0);
+                                ObjectToScale.transform.localScale = Vector3.zero;
                             }
                             else
                             {

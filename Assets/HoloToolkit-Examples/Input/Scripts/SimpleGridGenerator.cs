@@ -31,7 +31,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
         {
             if (GenerateOnStart)
             {
-                //Calling GenerateGrid() method
                 GenerateGrid();
             }
         }

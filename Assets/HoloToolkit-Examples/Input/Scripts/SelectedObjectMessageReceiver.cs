@@ -35,7 +35,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private void OnDestroy()
         {
-            //Destroy objects that collide
             DestroyImmediate(cachedMaterial);
         }
 
