@@ -78,15 +78,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         private bool useLinkedAltScaleOverride = false;
 
         [SerializeField]
-        [Tooltip("Raycast direction.  Can cast from head in facing dir, or cast from head to object position")]
+        [Tooltip("Raycast direction.  Can cast from head in facing direction, or cast from head to object position")]
         private RaycastDirectionEnum raycastDirection = RaycastDirectionEnum.ToLinkedPosition;
 
         [SerializeField]
-        [Tooltip("OrientationType mode.  None = no orienting, Vertical = Face head, but always oriented up/down, Full = Aligned to surface normal completely")]
+        [Tooltip("Orientation mode.  None = no orienting, Vertical = Face head, but always oriented up/down, Full = Aligned to surface normal completely")]
         private OrientModeEnum orientationMode = OrientModeEnum.Vertical;
 
         [SerializeField]
-        [Tooltip("OrientationType Blend Value 0.0 = All head 1.0 = All surface")]
+        [Tooltip("Orientation Blend Value 0.0 = All head 1.0 = All surface")]
         private float orientBlend = 0.65f;
 
         [SerializeField]

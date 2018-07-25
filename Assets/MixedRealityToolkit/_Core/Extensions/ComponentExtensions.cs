@@ -38,20 +38,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <summary>
         /// Ensure that a component of type <typeparamref name="T"/> exists on the game object.
         /// If it doesn't exist, creates it.
-        /// *Note, this extension has to remain in this class as it is required by the EnsureComponent<Component> method
         /// </summary>
         /// <typeparam name="T">Type of the component.</typeparam>
         /// <param name="gameObject">Game object on which component should be.</param>
+        /// <param name="currentValue"></param>
         /// <returns>The component that was retrieved or created.</returns>
-        public static T EnsureComponent<T>(this GameObject gameObject) where T : Component
+        public static T EnsureComponent<T>(this GameObject gameObject, T currentValue = null) where T : Component
         {
+            if (currentValue != null) { return currentValue; }
             T foundComponent = gameObject.GetComponent<T>();
-            if (foundComponent == null)
-            {
-                return gameObject.AddComponent<T>();
-            }
-
-            return foundComponent;
+            return foundComponent == null ? gameObject.AddComponent<T>() : foundComponent;
         }
     }
 }
