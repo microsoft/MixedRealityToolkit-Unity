@@ -50,18 +50,13 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 switch (ButtonAction)
                 {
                     case buttonAction.Reset:
-                        {
                             Debug.Log(InitialScale);
                             ObjectToScale.transform.localScale = InitialScale;
                             break;
-                        }
                     case buttonAction.Grow:
-                        {
                             ObjectToScale.transform.localScale = new Vector3((ObjectToScale.transform.localScale.x + ScaleIncrement), (ObjectToScale.transform.localScale.y + ScaleIncrement), (ObjectToScale.transform.localScale.z + ScaleIncrement));
                             break;
-                        }
                     case buttonAction.Shrink:
-                        {
                             if ((ObjectToScale.transform.localScale.x - ScaleIncrement) < 0.0f)
                             {
                                 ObjectToScale.transform.localScale = Vector3.zero;
@@ -71,7 +66,6 @@ namespace HoloToolkit.Unity.InputModule.Tests
                                 ObjectToScale.transform.localScale = new Vector3((ObjectToScale.transform.localScale.x - ScaleIncrement), (ObjectToScale.transform.localScale.y - ScaleIncrement), (ObjectToScale.transform.localScale.z - ScaleIncrement));
                             }
                             break;
-                        }
                 }
             }
 
