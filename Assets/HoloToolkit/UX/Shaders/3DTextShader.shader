@@ -79,7 +79,7 @@ Shader "MixedRealityToolkit/3DTextShader"
 			float4 _MainTex_ST;
 			UNITY_INSTANCING_CBUFFER_START(Props)
 			UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
-			UNITY_INSTANCING_CBUFFER_END(Props)
+			UNITY_INSTANCING_CBUFFER_END
 
             v2f vert (appdata_t v)
             {
