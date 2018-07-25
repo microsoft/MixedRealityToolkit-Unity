@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
 using UnityEngine;
@@ -14,34 +12,26 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
 {
     /// <summary>
-    /// Waits for a controller to be initialized, then attaches itself to a specified element
+    /// Waits for a controller to be initialized, then attaches itself to a specified hand.
     /// </summary>
     public class AttachToController : InputSystemGlobalListener, IMixedRealitySourcePoseHandler
     {
         [SerializeField]
-        protected Vector3 PositionOffset = Vector3.zero;
+        private Handedness handedness = Handedness.Left;
 
-        [SerializeField]
-        protected Vector3 RotationOffset = Vector3.zero;
-
-        [SerializeField]
-        protected Vector3 ScaleOffset = Vector3.one;
-
-        [SerializeField]
-        protected bool SetScaleOnAttach = false;
-
-        [SerializeField]
-        protected Handedness Handedness = Handedness.Left;
-
-        [SerializeField]
-        [Tooltip("Input System Class to instantiate at runtime.")]
-        [Implements(typeof(IMixedRealityController), TypeGrouping.ByNamespaceFlat)]
-        private SystemType controllerType;
+        public Handedness Handedness
+        {
+            get { return handedness; }
+            set { handedness = value; }
+        }
 
         [SerializeField]
         [Tooltip("Disable child objects when detached from controller.")]
         private bool setChildrenInactiveWhenDetached = true;
 
+        /// <summary>
+        /// Disable child objects when detached from controller.
+        /// </summary>
         public bool SetChildrenInactiveWhenDetached
         {
             get { return setChildrenInactiveWhenDetached; }
@@ -58,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
 
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
-            if (eventData.Controller.GetType() == controllerType.Type && eventData.Controller.ControllerHandedness == Handedness)
+            if (eventData.Controller.ControllerHandedness == Handedness)
             {
                 ControllerInputSourceId = eventData.Controller.InputSource.SourceId;
 
@@ -71,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
 
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.Controller.GetType() == controllerType.Type && eventData.Controller.ControllerHandedness == Handedness)
+            if (eventData.Controller.ControllerHandedness == Handedness)
             {
                 ControllerInputSourceId = 0;
 
