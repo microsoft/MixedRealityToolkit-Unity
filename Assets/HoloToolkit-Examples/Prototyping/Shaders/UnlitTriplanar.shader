@@ -48,7 +48,7 @@ Shader "MixedRealityToolkit/Examples/UnlitTriplanar"
 			float1 _CameraIntensity;
 			UNITY_INSTANCING_CBUFFER_START(Props)
 			UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
-			UNITY_INSTANCING_CBUFFER_END(Props)
+			UNITY_INSTANCING_CBUFFER_END
 
 
 			v2f vert(float4 pos : POSITION, float3 normal : NORMAL, appdata v)
