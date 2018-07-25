@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
@@ -119,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <typeparam name="T">Type of data stored in the values of the Dictionary</typeparam>
         /// <param name="input">Dictionary to be exported</param>
         /// <returns>array in the type of data stored in the Dictionary</returns>
-        public static T[] ExportDictionaryValuesAsArray<T>(this Dictionary<uint,T> input)
+        public static T[] ExportDictionaryValuesAsArray<T>(this Dictionary<uint, T> input)
         {
             T[] output = new T[input.Count];
             input.Values.CopyTo(output, 0);
@@ -127,18 +129,58 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         }
 
         /// <summary>
-        /// Overload extension to enable saving of an InteractionDefinition inside a Dictionary collection
-        /// *Note can only use generics (in both here and InteractionDefinition)
+        /// Overload extension to enable getting of an InteractionDefinition of a specific type
         /// </summary>
-        /// <typeparam name="T">Type of input being saves</typeparam>
-        /// <param name="input">The InteractionDefinition dictionary reference (generics, performed on a Dictionary)</param>
-        /// <param name="key">The specific DeviceInputType value to update</param>
-        /// <param name="value">The data value to be updated</param>
-        public static void SetDictionaryValue<T>(this Dictionary<Definitions.Devices.DeviceInputType, Definitions.Devices.InteractionMapping> input, Definitions.Devices.DeviceInputType key, T value)
+        /// <param name="input">The InteractionDefinition array reference</param>
+        /// <param name="key">The specific DeviceInputType value to query</param>
+        public static MixedRealityInteractionMapping GetInteractionByType(this MixedRealityInteractionMapping[] input, DeviceInputType key)
         {
-            var entry = input[key];
-            entry.SetValue(value);
-            input[key] = entry;
+            for (int i = 0; i < input?.Length; i++)
+            {
+                if (input[i].InputType == key)
+                {
+                    return input[i];
+                }
+            }
+
+            return default(MixedRealityInteractionMapping);
+        }
+
+        /// <summary>
+        /// Overload extension to enable getting of an InteractionDefinition of a specific type
+        /// </summary>
+        /// <param name="input">The InteractionDefinition array reference</param>
+        /// <param name="key">The specific DeviceInputType value to query</param>
+        public static bool SupportsInputType(this MixedRealityInteractionMapping[] input, DeviceInputType key)
+        {
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i].InputType == key)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        
+        /// <summary>
+        /// Overload extension to enable getting the override model for a specific controller type and hand
+        /// </summary>
+        /// <param name="input">The Controller Mapping array reference</param>
+        /// <param name="controllerType">The type of controller to query for</param>
+        /// <param name="hand">The specific hand assigned to the controller</param>
+        public static GameObject GetControllerModelOverride(this MixedRealityControllerMapping[] input, Type controllerType, Handedness hand)
+        {
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i].Controller.Type == controllerType && (input[i].Handedness == hand || input[i].Handedness == Handedness.Both))
+                {
+                    return input[i].OverrideControllerModel;
+                }
+            }
+
+            return null;
         }
     }
 }

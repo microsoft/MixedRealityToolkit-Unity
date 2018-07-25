@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers
@@ -11,9 +12,36 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
     /// </summary>
     public interface IMixedRealityNavigationHandler : IEventSystemHandler
     {
-        void OnNavigationStarted(NavigationEventData eventData);
-        void OnNavigationUpdated(NavigationEventData eventData);
-        void OnNavigationCompleted(NavigationEventData eventData);
-        void OnNavigationCanceled(NavigationEventData eventData);
+        /// <summary>
+        /// Raised when the navigation gesture is started.
+        /// <remarks>
+        /// The <see cref="InputEventData{T}.InputData"/> is the normalized offset of the starting and ending position of the gesture.</remarks>
+        /// </summary>
+        /// <param name="eventData"></param>
+        void OnNavigationStarted(InputEventData<Vector3> eventData);
+
+        /// <summary>
+        /// Raised when the navigation gesture is updated.
+        /// <remarks>
+        /// The <see cref="InputEventData{T}.InputData"/> is the normalized offset of the starting and ending position of the gesture.</remarks>
+        /// </summary>
+        /// <param name="eventData"></param>
+        void OnNavigationUpdated(InputEventData<Vector3> eventData);
+
+        /// <summary>
+        /// Raised when the navigation gesture is completed.
+        /// <remarks>
+        /// The <see cref="InputEventData{T}.InputData"/> is the normalized offset of the starting and ending position of the gesture.</remarks>
+        /// </summary>
+        /// <param name="eventData"></param>
+        void OnNavigationCompleted(InputEventData<Vector3> eventData);
+
+        /// <summary>
+        /// Raised when the navigation gesture is canceled.
+        /// <remarks>
+        /// The <see cref="InputEventData{T}.InputData"/> is the normalized offset of the starting and ending position of the gesture.</remarks>
+        /// </summary>
+        /// <param name="eventData"></param>
+        void OnNavigationCanceled(InputEventData<Vector3> eventData);
     }
 }

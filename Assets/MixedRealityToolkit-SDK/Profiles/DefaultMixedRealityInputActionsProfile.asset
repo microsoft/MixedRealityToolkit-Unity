@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -21,7 +21,3 @@ MonoBehaviour:
   - id: 3
     description: Grip
     axisConstraint: 7
-  pointerAction:
-    id: 0
-    description: 
-    axisConstraint: 0

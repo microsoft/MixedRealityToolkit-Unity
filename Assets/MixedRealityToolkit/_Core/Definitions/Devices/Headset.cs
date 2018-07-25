@@ -22,9 +22,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         public SDKType HeadsetSDKType { get; set; }
 
         /// <summary>
+        /// Indicates whether or not the headset is currently providing position data.
+        /// </summary>
+        public bool IsPositionAvailable { get; set; }
+
+        /// <summary>
         /// Outputs the current position of the headset, as defined by the SDK / Unity.
         /// </summary>
         public Vector3 Position { get; set; }
+
+        /// <summary>
+        /// Indicates whether or not the headset is currently providing rotation data.
+        /// </summary>
+        public bool IsRotationAvailable { get; set; }
 
         /// <summary>
         /// Outputs the current rotation of the headset, as defined by the SDK / Unity.
@@ -34,6 +44,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Outputs the current state of the headset, whether it is tracked or not. As defined by the SDK / Unity.
         /// </summary>
-        public ControllerState ControllerState { get; set; }
+        public TrackingState TrackingState { get; set; }
+
+        /// <summary>
+        /// Indicates whether or not the headset display is opaque. As defined by the SDK / Unity.
+        /// </summary>
+        public bool IsOpaque { get; set; }
     }
 }

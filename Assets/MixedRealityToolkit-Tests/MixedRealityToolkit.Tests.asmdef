@@ -2,7 +2,9 @@
     "name": "Microsoft.MixedReality.Toolkit.Tests",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.InputSystem"
+        "Microsoft.MixedReality.Toolkit.InputSystem",
+        "Microsoft.MixedReality.Toolkit.Internal.Build",
+        "Microsoft.MixedReality.Toolkit.SDK"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

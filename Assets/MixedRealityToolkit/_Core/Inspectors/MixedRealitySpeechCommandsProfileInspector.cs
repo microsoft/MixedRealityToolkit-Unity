@@ -104,7 +104,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUILayout.PropertyField(keyCode, GUIContent.none, GUILayout.Width(64f));
                 var action = speechCommand.FindPropertyRelative("action");
                 var actionId = action.FindPropertyRelative("id");
+                var actionDescription = action.FindPropertyRelative("description");
+                var actionConstraint = action.FindPropertyRelative("axisConstraint");
+
+                EditorGUI.BeginChangeCheck();
                 actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue.ResetIfGreaterThan(actionIds.Length), actionLabels, actionIds, GUILayout.Width(64f));
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    MixedRealityInputAction inputAction = actionId.intValue == 0 ? (MixedRealityInputAction)MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue];
+                    actionDescription.stringValue = inputAction.Description;
+                    actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
+                }
 
                 if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                 {

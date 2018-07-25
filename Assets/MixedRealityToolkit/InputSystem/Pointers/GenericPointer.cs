@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections;
 using UnityEngine;
@@ -18,8 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="pointerName">The new pointer's name.</param>
-        /// <param name="inputSourceParent">The input source parent of this pointer.</param>
+        /// <param name="pointerName"></param>
+        /// <param name="inputSourceParent"></param>
         public GenericPointer(string pointerName, IMixedRealityInputSource inputSourceParent)
         {
             InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
@@ -37,14 +38,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         /// <inheritdoc />
         public string PointerName { get; set; }
 
-        private IMixedRealityInputSource inputSourceParent;
-
         /// <inheritdoc />
         public virtual IMixedRealityInputSource InputSourceParent
         {
             get { return inputSourceParent; }
             protected set { inputSourceParent = value; }
         }
+
+        private IMixedRealityInputSource inputSourceParent;
 
         /// <inheritdoc />
         public IMixedRealityCursor BaseCursor { get; set; }
@@ -78,6 +79,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         /// <inheritdoc />
         public IBaseRayStabilizer RayStabilizer { get; set; }
+
+        /// <inheritdoc />
+        public RaycastModeType RaycastMode { get; set; } = RaycastModeType.Simple;
+
+        /// <inheritdoc />
+        public float SphereCastRadius { get; set; }
 
         /// <inheritdoc />
         public virtual void OnPreRaycast()
@@ -126,13 +133,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             return left.Equals(right);
         }
 
-        /// <inheritdoc />
         bool IEqualityComparer.Equals(object left, object right)
         {
             return left.Equals(right);
         }
 
-        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
@@ -147,20 +152,18 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             return other != null && PointerId == other.PointerId && string.Equals(PointerName, other.PointerName);
         }
 
-        /// <inheritdoc />
         int IEqualityComparer.GetHashCode(object obj)
         {
             return obj.GetHashCode();
         }
 
-        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked
             {
-                int hashCode = 42;
-                hashCode = (hashCode * 397) ^ PointerId.GetHashCode();
-                hashCode = (hashCode * 397) ^ InputSystem.GetHashCode();
+                int hashCode = 0;
+                hashCode = (hashCode * 397) ^ (int)PointerId;
+                hashCode = (hashCode * 397) ^ (PointerName != null ? PointerName.GetHashCode() : 0);
                 return hashCode;
             }
         }

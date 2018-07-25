@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
+using System.Collections;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
@@ -43,8 +44,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 
         IBaseRayStabilizer RayStabilizer { get; set; }
 
+        /// <summary>
+        /// The physics raycast mode to use.
+        /// </summary>
+        RaycastModeType RaycastMode { get; set; }
+
+        /// <summary>
+        /// The radius to use when <see cref="RaycastMode"/> is set to Sphere.
+        /// </summary>
+        float SphereCastRadius { get; set; }
+
+        /// <summary>
+        /// Called before all rays have casted.
+        /// </summary>
         void OnPreRaycast();
 
+        /// <summary>
+        /// Called after all rays have casted.
+        /// </summary>
         void OnPostRaycast();
 
         /// <summary>
