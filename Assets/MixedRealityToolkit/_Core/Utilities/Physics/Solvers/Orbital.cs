@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
     /// </summary>
     public class Orbital : Solver
     {
-        public enum OrientationReferenceEnum
+        public enum Orientation
         {
             /// <summary>
             /// Use the tracked object's pitch, yaw, and roll
@@ -40,15 +40,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
 
         [SerializeField]
         [Tooltip("The desired orientation of this object. Default sets the object to face the TrackedObject/TargetTransform. CameraFacing sets the object to always face the user.")]
-        private OrientationReferenceEnum orientation = OrientationReferenceEnum.FollowTrackedObject;
+        private Orientation orientationType = Orientation.FollowTrackedObject;
 
         /// <summary>
-        /// The desired orientation of this object. Default sets the object to face the TrackedObject/TargetTransform. CameraFacing sets the object to always face the user.
+        /// The desired orientation of this object.
         /// </summary>
-        public OrientationReferenceEnum Orientation
+        /// <remarks>
+        /// Default sets the object to face the TrackedObject/TargetTransform. CameraFacing sets the object to always face the user.
+        /// </remarks>
+        public Orientation OrientationType
         {
-            get { return orientation; }
-            set { orientation = value; }
+            get { return orientationType; }
+            set { orientationType = value; }
         }
 
         [SerializeField]
@@ -68,11 +71,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         }
 
         [SerializeField]
-        [Tooltip("XYZ offset for this object in worldspace, best used with the YawOnly orientation. Mixing local and world offsets is not recommended.")]
+        [Tooltip("XYZ offset for this object in worldspace, best used with the YawOnly orientationType. Mixing local and world offsets is not recommended.")]
         private Vector3 worldOffset = Vector3.zero;
 
         /// <summary>
-        /// XYZ offset for this object in worldspace, best used with the YawOnly orientation.
+        /// XYZ offset for this object in worldspace, best used with the YawOnly orientationType.
         /// </summary>
         /// <remarks>
         /// Mixing local and world offsets is not recommended.
@@ -162,9 +165,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         {
             Quaternion desiredRot = Quaternion.identity;
 
-            switch (orientation)
+            switch (orientationType)
             {
-                case OrientationReferenceEnum.YawOnly:
+                case Orientation.YawOnly:
                     float targetYRotation;
 
                     if (SolverHandler.TransformTarget != null)
@@ -178,23 +181,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
 
                     desiredRot = Quaternion.Euler(0f, targetYRotation, 0f);
                     break;
-                case OrientationReferenceEnum.Unmodified:
+                case Orientation.Unmodified:
                     desiredRot = transform.rotation;
                     break;
-                case OrientationReferenceEnum.CameraAligned:
+                case Orientation.CameraAligned:
                     desiredRot = CameraCache.Main.transform.rotation;
                     break;
-                case OrientationReferenceEnum.FaceTrackedObject:
+                case Orientation.FaceTrackedObject:
                     desiredRot = Quaternion.LookRotation(SolverHandler.TransformTarget.position - desiredPos);
                     break;
-                case OrientationReferenceEnum.CameraFacing:
+                case Orientation.CameraFacing:
                     desiredRot = Quaternion.LookRotation(CameraCache.Main.transform.position - desiredPos);
                     break;
-                case OrientationReferenceEnum.FollowTrackedObject:
+                case Orientation.FollowTrackedObject:
                     desiredRot = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.rotation : Quaternion.identity;
                     break;
                 default:
-                    Debug.LogError($"Invalid Orientation for Orbital Solver on {gameObject.name}");
+                    Debug.LogError($"Invalid OrientationType for Orbital Solver on {gameObject.name}");
                     break;
             }
 
