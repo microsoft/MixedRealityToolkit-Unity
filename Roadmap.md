@@ -4,14 +4,12 @@ This document outlines the roadmap of the Mixed Reality Toolkit.
 
 # Upcoming Releases
 
-The following table lists the releases planned through the end of 2018 for the Mixed Reality Toolkit and HoloToolkit products. Release details, including backlog items, can be found on the [GitHub project pages](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects).
+The following table lists the releases planned through the end of 2018 for the Mixed Reality Toolkit. Release details, including backlog items, can be found on the [GitHub project pages](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects).
 
 | Product | Version | Timeline | Project board |
 | --- | --- | --- | --- |
-| [HoloToolkit](#holotoolkit-roadmap) | 2017.4.1.0 | July 2018 | [HoloToolkit 2017.4.1.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/9) |
 | [Mixed Reality Toolkit](#mixed-reality-toolkit-mrtk-roadmap) | 2018.7.0.0 (Alpha) | July 2018 | [Version Next Alpha](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/11) |
 | [Mixed Reality Toolkit](#mixed-toolkit-toolkit-roadmap) | 2018.8.0.0 (Beta) | August 2018 | [Version Next Beta](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/12) |
-| [HoloToolkit](#holotoolkit-roadmap) | 2017.4.2.0 | September 2018 | [HoloToolkit 2017.4.2.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/15) |
 | [Mixed Reality Toolkit](#mixed-reality-toolkit-roadmap) | 2018.9.0.0 | September 2018 | [2018.9.0.0 (Version Next initial release)](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/14) |
 | [Mixed Reality Toolkit](#mixed-toolkit-toolkit-roadmap) | 2018.10.0.0 | October 2018 | |
 | [Mixed Reality Toolkit](#mixed-toolkit-toolkit-roadmap) | 2018.11.0.0 | November 2018 | |
@@ -76,7 +74,7 @@ Supported platforms
 
 ## September 2018 - First Release
 
-The September 2018 (2018.9.0.0) release marks the first official release of MRTK vNext. With this release, the Mixed Reality Toolkit will replace the HoloToolkit, which will be transitioned into sustained engineering mode.
+The September 2018 (2018.9.0.0) release marks the first official release of MRTK vNext and will support the same platforms as the Beta. With this release, the Mixed Reality Toolkit will replace the HoloToolkit, which will be transitioned into sustained engineering mode.
 
 The theme(s) for the 2018.9.0.0 release are
 
@@ -90,20 +88,48 @@ Supported platforms
     - Microsoft HoloLens
     - Immersive Headsets
 - OpenVR
-- 
+
 ## October 2018
+
+The October 2018 (2018.10.0.0) release is planned to be the first update to add additional device support.
+
+The theme(s) for the 2018.10.0.0 release are
+
+- Bug fixes
+- New device support
+- Features
+    - Spectator View
+
+Supported platforms
+
+- Windows Mixed Reality
+    - Microsoft HoloLens
+    - Immersive Headsets
+- OpenVR
+- Phone based AR
+    - ARKit
+    - ARCore
 
 ## November 2018
 
+The November 2018 (2018.11.0.0) release will continue to add additional device support.
 
-# HoloToolkit Roadmap
+The theme(s) for the 2018.11.0.0 release are
 
-As the Mixed Reality Toolkit nears completion, the HoloToolkit's release cadence is slowing down. There are two remaining releases planned for 2018 after which the HoloToolkit will enter sustained engineering mode.
+- Bug fixes
+- New device support
 
-## July 2018
+Supported platforms
 
-## September 2018
+- Windows Mixed Reality
+    - Microsoft HoloLens
+    - Immersive Headsets
+- OpenVR
+- Phone based AR
+    - ARKit
+    - ARCore
+- TBD
 
-## Sustained Engineering
+## December 2018
 
-
+There is no planned December 2018 MRTK release. Releases will resume in January 2019.
