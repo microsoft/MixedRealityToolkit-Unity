@@ -16,9 +16,9 @@ In the new input model:
 On the InputManager prefab you will see everything is wired up for getting started.
 It has the updated GazeManager.cs along with GazeStabilizer.
 It also has the stabilization plane being set using the StabilizationPlaneModifier.cs.
-FocusManager.cs script helps make the GazeManager.cs more extensible for VR devices.
+FocusManager.cs script helps in making the GazeManager.cs to be more extensible for VR devices.
 
-**Refer to test scene: Assets\HoloToolkit\Input\Tests\Scenes\InputTapTest.unity**
+**Refer to test scene: Assets\HoloToolkit-Examples\Input\Tests\Scenes\InputTapTest.unity**
 
 ###Gestures
 Previously, you attached the GestureManager script to your Managers object.
@@ -37,11 +37,11 @@ You might have had the OnSelect function or some other method name responding to
 2. In that MonoBehavior, implement the interface called IInputClickHandler. This will get raised when a tap is detected by GesturesInput.
 3. The event data inside the OnInputClicked event handler will provide with the necessary information needed for example tap count etc.
 
-**Refer to test scene: Assets\HoloToolkit\Input\Tests\Scenes\InputTapTest.unity**
+**Refer to test scene: Assets\HoloToolkit-Examples\Input\Tests\Scenes\InputTapTest.unity**
 
 ###How to handle the navigation gesture?
 
 1. In your MonoBehavior, implement the interface called INavigationHandler. These events will get raised for navigation events.
-2. The event data inside the event handler will provide with navigation offset to take your action.
+2. The event data inside the event handler provides navigation offsets.
 
-**Refer to test scene: Assets\HoloToolkit\Input\Tests\Scenes\InputNavigationRotateTest.unity**
+**Refer to test scene: Assets\HoloToolkit-Examples\Input\Tests\Scenes\InputNavigationRotateTest.unity**

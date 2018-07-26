@@ -53,7 +53,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private float minObjectScale = .3f;
 
         private bool isRunning;
-
+        
         public bool IsRunning
         {
             get { return isRunning; }

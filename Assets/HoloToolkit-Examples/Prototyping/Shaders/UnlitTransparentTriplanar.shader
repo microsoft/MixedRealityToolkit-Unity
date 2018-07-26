@@ -56,7 +56,6 @@ Shader "MixedRealityToolkit/Examples/UnlitTransparentTriplanar"
 			UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
 			UNITY_INSTANCING_CBUFFER_END
 
-
 			v2f vert(float4 pos : POSITION, float3 normal : NORMAL, appdata v)
 			{
 				v2f o;

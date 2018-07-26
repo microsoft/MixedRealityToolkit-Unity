@@ -10,6 +10,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private InputManager inputManager;
         private TextMesh textMesh;
 
+        //Use this for initialisation
         private void Start()
         {
             inputManager = InputManager.Instance;
@@ -19,6 +20,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
                 inputManager.OverrideFocusedObject = gameObject;
             }
 
+            //Returns the object that matches the type of TextMesh
             textMesh = FindObjectOfType<TextMesh>();
         }
 

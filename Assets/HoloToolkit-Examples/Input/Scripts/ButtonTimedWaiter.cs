@@ -8,6 +8,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 {
     public class ButtonTimedWaiter : MonoBehaviour
     {
+        //initialisation of variables
         [SerializeField]
         private TestButton button = null;
 
@@ -40,6 +41,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
             while (currentTime <= timeToWait)
             {
                 currentTime += Time.deltaTime;
+                //display text for textMesh
                 textMesh.text = ((currentTime / timeToWait) * 100.0f).ToString("F0") + "%";
                 yield return null;
             }

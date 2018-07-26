@@ -19,6 +19,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private float rotationFactor = 0.0f;
         private Vector3 navigationDelta = Vector3.zero;
         
+        //Update is called once per frame
         private void Update()
         {
             PerformRotation();

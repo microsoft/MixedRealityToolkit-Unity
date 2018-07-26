@@ -26,6 +26,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         [Tooltip("Indicates whether to generate grid on component start.")]
         public bool GenerateOnStart = true;
 
+        //Use this as initialisation
         private void Start()
         {
             if (GenerateOnStart)
@@ -52,6 +53,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         private GameObject GetRandomPrefab()
         {
+            //if there is at least 1 or more prefabs
             if (ObjectPrefabs.Count > 0)
             {
                 int index = Random.Range(0, ObjectPrefabs.Count);

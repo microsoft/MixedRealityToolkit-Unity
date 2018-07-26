@@ -80,6 +80,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public void OnFocusExit(PointerSpecificEventData eventData)
         {
+            //change the material back to its original color
             cachedMaterial.SetColor("_Color", originalColor);
         }
     }
