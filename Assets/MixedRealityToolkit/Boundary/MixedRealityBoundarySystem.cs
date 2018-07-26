@@ -4,13 +4,14 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 using UnityEngine.XR;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Managers
+namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
 {
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene
