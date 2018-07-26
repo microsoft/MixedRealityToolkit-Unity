@@ -15,9 +15,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
 {
     /// <summary>
-    /// The Mixed Reality Visualization component is primarily responsible for rendering the users controllers in a scene.
-    /// It will ensure whether you have a specific model configured against the controller definition and fall back to using the generic default models defined in the Controllers Profile.
-    /// The visualizer can be enabled / disabled on demand (after startup) 
+    /// The Mixed Reality Visualization component is primarily responsible for rendering the user's controllers in a scene.
+    /// It will render either the specific model configured against the controller definition or fall back to using the generic/global default models defined in the Controllers Profile.
+    /// If no model found, then nothing is rendered, in which case the controllers will still operate as normal.
+    /// The visualizer can be enabled / disabled on demand once the project is started. If disabled on start, it cannot function.
     /// </summary>
     /// <example>
     /// To Start, ensure there is a "Controllers Profile" configured against the main Mixed Reality Configuration Profile and that Controller Rendering is enabled in that profile, as well as configuring at least one controller for each platform you intend to support.
@@ -31,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
     public class MixedRealityControllerVisualizer : InputSystemGlobalListener, IMixedRealitySourcePoseHandler, IMixedRealityInputHandler
     {
 
-        #region Private Properties
+        #region Private Variables
 
         private static GameObject leftControllerModel;
         private static IMixedRealityController leftController;
@@ -40,18 +41,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         private static IMixedRealityController rightController;
         private static MixedRealityPose rightControllerOffsetPose = MixedRealityPose.ZeroIdentity;
 
-        #endregion Private Properties
+        #endregion Private Variables
 
-        #region SourcePose Event Handlers
+        #region IMixedRealitySourcePoseHandler Implementation
 
         /// <summary>
         /// The selected controller is moving in the scene, update it's pose in relation to the users movements
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnSourcePoseChanged(SourcePoseEventData eventData)
+        void IMixedRealitySourcePoseHandler.OnSourcePoseChanged(SourcePoseEventData eventData)
         {
-            //Handles.PositionHandle(eventData.MixedRealityPose.Position, eventData.MixedRealityPose.Rotation);
-
             // Update the respective controller if it has been initialized
             switch (eventData.Controller.ControllerHandedness)
             {
@@ -76,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         /// Controller found, create the configured model and position it in the scene
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnSourceDetected(SourceStateEventData eventData)
+        void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
         {
             // Capture the respective controller when it's detected.  However, It'll only be rendered if visualization is enabled.
             if (eventData.Controller != null )
@@ -97,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         /// Controller removed, remove it from the scene
         /// </summary>
         /// <param name="eventData"></param>
-        public void OnSourceLost(SourceStateEventData eventData)
+        void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
             // Clean up when a controller is disconnected
             if (eventData.Controller != null)
@@ -106,9 +105,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
             }
         }
 
-        #endregion SourcePose Event Handlers
+        #endregion IMixedRealityInputHandler Implementation
 
-        #region Input Handlers
+        #region IMixedRealityInputHandler Implementation
 
         /// <summary>
         /// Visualize the pressed button in the controller model, if supported
@@ -117,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         /// Reserved for future implementation
         /// </remarks>
         /// <param name="eventData"></param>
-        public void OnInputDown(InputEventData eventData)
+        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData)
         {
             //Visualize button down
         }
@@ -130,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         /// Reserved for future implementation
         /// </remarks>
         /// <param name="eventData"></param>
-        public void OnInputUp(InputEventData eventData)
+        void IMixedRealityInputHandler.OnInputUp(InputEventData eventData)
         {
             //Visualize button up
         }
@@ -143,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         /// Reserved for future implementation
         /// </remarks>
         /// <param name="eventData"></param>
-        public void OnInputPressed(InputEventData<float> eventData)
+        void IMixedRealityInputHandler.OnInputPressed(InputEventData<float> eventData)
         {
             //Visualize single axis controls
         }
@@ -156,14 +155,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         /// Reserved for future implementation
         /// </remarks>
         /// <param name="eventData"></param>
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData)
+        void IMixedRealityInputHandler.OnPositionInputChanged(InputEventData<Vector2> eventData)
         {
             //Visualize dual axis controls
         }
 
-        #endregion Input Handlers
+        #endregion IMixedRealityInputHandler Implementation
 
-        #region Enable / Disable
+        #region Monobehaviour Implementation
 
         /// <summary>
         /// When the visualizer is enabled, create any attached controllers in the scene.
@@ -193,9 +192,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
             base.OnDisable();
         }
 
-        #endregion Enable / Disable
+        #endregion Monobehaviour Implementation
 
-        #region Controller Visualization Functions
+        #region Controller Visualization Methods
 
         /// <summary>
         /// Get the currently configured model for the controller
@@ -279,7 +278,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
             }
         }
 
-        #endregion Controller Visualization Functions
-
+        #endregion Controller Visualization Methods
     }
 }

@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Controllers
         private SerializedProperty setChildrenInactiveWhenDetachedProperty;
 
 
-        protected void OnEnable()
+        private void OnEnable()
         {
             positionOffsetProperty = serializedObject.FindProperty("PositionOffset");
             rotationOffsetProperty = serializedObject.FindProperty("RotationOffset");

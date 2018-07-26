@@ -26,8 +26,6 @@ These allow you at the top level to define the default model that will be drawn 
 
 Additionally, you can provide position and rotational offsets to affect how the model is drawn, to more accurately represent how you want the model drawn based on the controllers position given by the SDK.
 
-> note, Controller rotation offset values are entered as Quaternions for the Alpha.  We may review this going forward.  Use the [this site](https://quaternions.online/) as an aid to turn Euler rotations to Quaternions and ALWAYS remember W = 1 :D
-
 > See the "Example Models" section below for the controller models and their offsets provided in the SDK's "**Standard Assets**" folder.
 
 ### Add a New Controller Template
@@ -60,7 +58,7 @@ A drop down list of supported controllers by the Mixed Reality Toolkit, namely:
     * Vive Knuckles (experimental as no one has any, using Unity spec)
 * OpenXR
     * To be supported when there is an OpenXR specification
-* Windows Gaming (*note, these are coming soon*)
+* Windows Gaming (these are coming soon*)
     * Arcade stick
     * Gamepad
     * Joystick
@@ -69,7 +67,7 @@ A drop down list of supported controllers by the Mixed Reality Toolkit, namely:
 
 ### Handedness
 Which hand is configured for this controller definition
-> *Note, Both does not configure all controllers at this time.
+> Both does not configure all controllers at this time.
 
 ### Use Default model
 For this controller only, use the model for the controller direct from the SDK (where available), so that you don't have to configure a custom model.
@@ -115,10 +113,10 @@ We recommend applying the following Offsets when using to align with the users v
 * Position - no change
 * Rotation - no change
 
-### HTC Vive wand controllers (provided via the SteamVR SDK)
+### HTC Vive wand controllers (available in the SteamVR SDK)
 Steam provide basic models for the HTC Vive Wand controllers.
 
-We recommend applying the following Offsets when using to align with the users view:
+If you use Steams Models, we recommend applying the following Offsets when using to align with the users view:
 * Position - no change
 * Rotation - no change
 

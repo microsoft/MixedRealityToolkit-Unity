@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
 {
     /// <summary>
-    /// This script keeps track of the GameObjects representations for each button on the Windows Mixed Reality Controllers.
+    /// This script keeps track of the GameObjects representations for each button on the Mixed Reality Controllers.
     /// It also keeps track of the animation Transforms in order to properly animate according to user input.
     /// </summary>
     public class MixedRealityControllerInfo
