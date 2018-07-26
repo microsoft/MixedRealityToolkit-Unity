@@ -12,12 +12,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
     {
         private readonly GUIContent positionContent = new GUIContent("Position");
         private readonly GUIContent rotationContent = new GUIContent("Rotation");
-        private Quaternion rotationCache = Quaternion.identity;
-        private Vector3 rotations = Vector3.zero;
+        private readonly int numberOfLines = 3;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return EditorGUIUtility.singleLineHeight * 3f;
+            return EditorGUIUtility.singleLineHeight * numberOfLines;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -28,28 +27,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
             EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
             EditorGUI.indentLevel++;
 
-            var fieldHeight = position.height / 3f;
+            var fieldHeight = position.height / numberOfLines;
             var positionRect = new Rect(position.x, position.y + fieldHeight, position.width, fieldHeight);
             var rotationRect = new Rect(position.x, position.y + fieldHeight * 2, position.width, fieldHeight);
 
             EditorGUI.PropertyField(positionRect, property.FindPropertyRelative("position"), positionContent);
 
-            var rotationProperty = property.FindPropertyRelative("rotation");
-            rotationCache = rotationProperty.quaternionValue;
-            Debug.Assert(rotationCache.w.Equals(1f));
             EditorGUI.BeginChangeCheck();
-            rotations.x = rotationCache.x;
-            rotations.y = rotationCache.y;
-            rotations.z = rotationCache.z;
-            rotations = EditorGUI.Vector3Field(rotationRect, rotationContent, rotations);
+            var rotationProperty = property.FindPropertyRelative("rotation");
+            var newEulerRotation = EditorGUI.Vector3Field(rotationRect, rotationContent, rotationProperty.quaternionValue.eulerAngles);
 
             if (EditorGUI.EndChangeCheck())
             {
-                rotationCache.w = 1f;
-                rotationCache.x = rotations.x;
-                rotationCache.y = rotations.y;
-                rotationCache.z = rotations.z;
-                rotationProperty.quaternionValue = rotationCache;
+                rotationProperty.quaternionValue = Quaternion.Euler(newEulerRotation);
             }
 
             EditorGUI.indentLevel--;
