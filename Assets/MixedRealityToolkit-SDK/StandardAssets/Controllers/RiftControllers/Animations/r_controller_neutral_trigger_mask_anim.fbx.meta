@@ -1,0 +1,138 @@
+fileFormatVersion: 2
+guid: 840f7f51c23e45444b5cbe0ee9e14998
+timeCreated: 1439342795
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: rctrl:b_button01
+    100004: rctrl:b_button02
+    100006: rctrl:b_hold
+    100008: rctrl:b_stick
+    100010: rctrl:b_stick_IGNORE
+    100012: rctrl:b_trigger
+    100014: rctrl:rig:controller_rig_grp
+    100016: rctrl:rig:f_world
+    100018: rctrl:right_touch_controller_world
+    400000: //RootNode
+    400002: rctrl:b_button01
+    400004: rctrl:b_button02
+    400006: rctrl:b_hold
+    400008: rctrl:b_stick
+    400010: rctrl:b_stick_IGNORE
+    400012: rctrl:b_trigger
+    400014: rctrl:rig:controller_rig_grp
+    400016: rctrl:rig:f_world
+    400018: rctrl:right_touch_controller_world
+    7400000: r_controller_neutral_trigger_mask
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: r_controller_neutral_trigger_mask
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: rctrl:rig:controller_rig_grp
+        weight: 0
+      - path: rctrl:rig:controller_rig_grp/rctrl:rig:f_world
+        weight: 0
+      - path: rctrl:right_touch_controller_world
+        weight: 0
+      - path: rctrl:right_touch_controller_world/rctrl:b_button01
+        weight: 0
+      - path: rctrl:right_touch_controller_world/rctrl:b_button02
+        weight: 0
+      - path: rctrl:right_touch_controller_world/rctrl:b_hold
+        weight: 0
+      - path: rctrl:right_touch_controller_world/rctrl:b_stick
+        weight: 0
+      - path: rctrl:right_touch_controller_world/rctrl:b_stick/rctrl:b_stick_IGNORE
+        weight: 0
+      - path: rctrl:right_touch_controller_world/rctrl:b_trigger
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 1
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 20d82fb66fc22fa40ae34d9489bd6fcd,
+    type: 3}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

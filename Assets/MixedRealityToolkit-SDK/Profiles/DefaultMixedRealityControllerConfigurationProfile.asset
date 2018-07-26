@@ -13,8 +13,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderMotionControllers: 1
   useDefaultModels: 0
-  overrideLeftHandModel: {fileID: 0}
-  overrideRightHandModel: {fileID: 0}
+  globalLeftHandModel: {fileID: 1670523128530642, guid: 02bef524e73fce64bb75d8e087a9ddb3,
+    type: 2}
+  leftHandModelPoseOffset:
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0.707, w: 1}
+  globalRightHandModel: {fileID: 1568362058278088, guid: a2749ae6da9ff9c4c84741192bbbefd5,
+    type: 2}
+  rightHandModelPoseOffset:
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: -0.707, w: 1}
   mixedRealityControllerMappingProfiles:
   - id: 1
     description: MotionController Left
@@ -24,6 +32,9 @@ MonoBehaviour:
     handedness: 1
     useDefaultModel: 0
     overrideModel: {fileID: 0}
+    poseOffset:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -166,6 +177,9 @@ MonoBehaviour:
     handedness: 2
     useDefaultModel: 0
     overrideModel: {fileID: 0}
+    poseOffset:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -308,6 +322,9 @@ MonoBehaviour:
     handedness: 1
     useDefaultModel: 0
     overrideModel: {fileID: 0}
+    poseOffset:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -428,6 +445,9 @@ MonoBehaviour:
     handedness: 2
     useDefaultModel: 0
     overrideModel: {fileID: 0}
+    poseOffset:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -548,6 +568,9 @@ MonoBehaviour:
     handedness: 1
     useDefaultModel: 0
     overrideModel: {fileID: 0}
+    poseOffset:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
@@ -745,6 +768,9 @@ MonoBehaviour:
     handedness: 2
     useDefaultModel: 0
     overrideModel: {fileID: 0}
+    poseOffset:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
     useCustomInteractionMappings: 0
     interactions:
     - id: 0

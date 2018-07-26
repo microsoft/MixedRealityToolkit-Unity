@@ -1,0 +1,132 @@
+fileFormatVersion: 2
+guid: 1bf8f52eeebe8e149b9d6e3477251532
+timeCreated: 1464287782
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: lctrl:b_button01
+    100002: lctrl:b_button02
+    100004: lctrl:b_button03
+    100006: lctrl:b_hold
+    100008: lctrl:b_stick
+    100010: lctrl:b_stick_IGNORE
+    100012: lctrl:b_trigger
+    100014: lctrl:controller_body_PLY
+    100016: lctrl:geometry_null
+    100018: lctrl:left_touch_controller_world
+    100020: lctrl:main_trigger_PLY
+    100022: lctrl:o_button_PLY
+    100024: lctrl:ring_PLY
+    100026: lctrl:side_trigger_PLY
+    100028: lctrl:surface_PLY
+    100030: lctrl:thumbstick_ball_PLY
+    100032: lctrl:x_button_PLY
+    100034: lctrl:y_button_PLY
+    100036: //RootNode
+    100038: lctrl:o_button_decal_PLY
+    400000: lctrl:b_button01
+    400002: lctrl:b_button02
+    400004: lctrl:b_button03
+    400006: lctrl:b_hold
+    400008: lctrl:b_stick
+    400010: lctrl:b_stick_IGNORE
+    400012: lctrl:b_trigger
+    400014: lctrl:controller_body_PLY
+    400016: lctrl:geometry_null
+    400018: lctrl:left_touch_controller_world
+    400020: lctrl:main_trigger_PLY
+    400022: lctrl:o_button_PLY
+    400024: lctrl:ring_PLY
+    400026: lctrl:side_trigger_PLY
+    400028: lctrl:surface_PLY
+    400030: lctrl:thumbstick_ball_PLY
+    400032: lctrl:x_button_PLY
+    400034: lctrl:y_button_PLY
+    400036: //RootNode
+    400038: lctrl:o_button_decal_PLY
+    4300000: lctrl:surface_PLY
+    4300002: lctrl:x_button_PLY
+    4300004: lctrl:y_button_PLY
+    4300006: lctrl:ring_PLY
+    4300008: lctrl:controller_body_PLY
+    4300010: lctrl:main_trigger_PLY
+    4300012: lctrl:o_button_PLY
+    4300014: lctrl:thumbstick_ball_PLY
+    4300016: lctrl:side_trigger_PLY
+    4300018: lctrl:o_button_decal_PLY
+    9500000: //RootNode
+    13700000: lctrl:controller_body_PLY
+    13700002: lctrl:main_trigger_PLY
+    13700004: lctrl:o_button_PLY
+    13700006: lctrl:ring_PLY
+    13700008: lctrl:side_trigger_PLY
+    13700010: lctrl:surface_PLY
+    13700012: lctrl:thumbstick_ball_PLY
+    13700014: lctrl:x_button_PLY
+    13700016: lctrl:y_button_PLY
+    13700018: lctrl:o_button_decal_PLY
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

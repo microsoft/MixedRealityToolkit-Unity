@@ -1,0 +1,204 @@
+fileFormatVersion: 2
+guid: 6c41a6e223fece0458162624394578d6
+timeCreated: 1437690165
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: hands:b_r_grip
+    100002: hands:b_r_hand
+    100004: hands:b_r_hand_ignore
+    100006: hands:b_r_index1
+    100008: hands:b_r_index2
+    100010: hands:b_r_index3
+    100012: hands:b_r_index_ignore
+    100014: hands:b_r_middle1
+    100016: hands:b_r_middle2
+    100018: hands:b_r_middle3
+    100020: hands:b_r_middle_ignore
+    100022: hands:b_r_pinky0
+    100024: hands:b_r_pinky1
+    100026: hands:b_r_pinky2
+    100028: hands:b_r_pinky3
+    100030: hands:b_r_pinky_ignore
+    100032: hands:b_r_ring1
+    100034: hands:b_r_ring2
+    100036: hands:b_r_ring3
+    100038: hands:b_r_ring_ignore
+    100040: hands:b_r_thumb1
+    100042: hands:b_r_thumb2
+    100044: hands:b_r_thumb3
+    100046: hands:b_r_thumb_ignore
+    100048: hands:r_hand_world
+    100050: //RootNode
+    400000: hands:b_r_grip
+    400002: hands:b_r_hand
+    400004: hands:b_r_hand_ignore
+    400006: hands:b_r_index1
+    400008: hands:b_r_index2
+    400010: hands:b_r_index3
+    400012: hands:b_r_index_ignore
+    400014: hands:b_r_middle1
+    400016: hands:b_r_middle2
+    400018: hands:b_r_middle3
+    400020: hands:b_r_middle_ignore
+    400022: hands:b_r_pinky0
+    400024: hands:b_r_pinky1
+    400026: hands:b_r_pinky2
+    400028: hands:b_r_pinky3
+    400030: hands:b_r_pinky_ignore
+    400032: hands:b_r_ring1
+    400034: hands:b_r_ring2
+    400036: hands:b_r_ring3
+    400038: hands:b_r_ring_ignore
+    400040: hands:b_r_thumb1
+    400042: hands:b_r_thumb2
+    400044: hands:b_r_thumb3
+    400046: hands:b_r_thumb_ignore
+    400048: hands:r_hand_world
+    400050: //RootNode
+    7400000: r_hand_hold_generic
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: r_hand_hold_generic
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 2
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: hands:r_hand_world
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_grip
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_hand_ignore
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_index1
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_index1/hands:b_r_index2
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_index1/hands:b_r_index2/hands:b_r_index3
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_index1/hands:b_r_index2/hands:b_r_index3/hands:b_r_index_ignore
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_middle1
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_middle1/hands:b_r_middle2
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_middle1/hands:b_r_middle2/hands:b_r_middle3
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_middle1/hands:b_r_middle2/hands:b_r_middle3/hands:b_r_middle_ignore
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_pinky0
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_pinky0/hands:b_r_pinky1
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_pinky0/hands:b_r_pinky1/hands:b_r_pinky2
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_pinky0/hands:b_r_pinky1/hands:b_r_pinky2/hands:b_r_pinky3
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_pinky0/hands:b_r_pinky1/hands:b_r_pinky2/hands:b_r_pinky3/hands:b_r_pinky_ignore
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_ring1
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_ring1/hands:b_r_ring2
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_ring1/hands:b_r_ring2/hands:b_r_ring3
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_ring1/hands:b_r_ring2/hands:b_r_ring3/hands:b_r_ring_ignore
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_thumb1
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_thumb1/hands:b_r_thumb2
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_thumb1/hands:b_r_thumb2/hands:b_r_thumb3
+        weight: 1
+      - path: hands:r_hand_world/hands:b_r_hand/hands:b_r_thumb1/hands:b_r_thumb2/hands:b_r_thumb3/hands:b_r_thumb_ignore
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 1
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 3d1f4d649230d7c49ab615ba6413f77e,
+    type: 3}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

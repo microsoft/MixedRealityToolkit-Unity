@@ -15,13 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     [Serializable]
     public struct MixedRealityControllerMapping
     {
-        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject overrideModel) : this()
+        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject overrideModel, MixedRealityPose poseOffset) : this()
         {
             this.id = id;
             this.description = description;
             this.controller = controller;
             this.handedness = handedness;
             this.overrideModel = overrideModel;
+            this.poseOffset = poseOffset == new MixedRealityPose() ? MixedRealityPose.ZeroIdentity : PoseOffset;
             useCustomInteractionMappings = false;
             interactions = null;
             useDefaultModel = false;
@@ -83,6 +84,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         [SerializeField]
         [Tooltip("An override model to display for this specific controller.")]
         private GameObject overrideModel;
+
+        /// <summary>
+        /// The controller model prefab to be rendered.
+        /// </summary>
+        public MixedRealityPose PoseOffset => poseOffset;
+
+        [SerializeField]
+        [Tooltip("An override model to display for this specific controller.")]
+        private MixedRealityPose poseOffset;
 
         [SerializeField]
         [Tooltip("Override the default interaction mappings.")]

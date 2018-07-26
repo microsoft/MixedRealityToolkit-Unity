@@ -1,0 +1,202 @@
+{
+    "thumbnail" : "vive_controller_thumbnail.png",
+    "components": {
+        "trigger": {
+            "filename": "trigger.obj",
+            "motion":{
+                "type":"rotate",
+                "controller_axis":1,
+                "controller_axis_component":0,
+                "trigger_path" : "/input/trigger",
+                "value_mapping": [0.0,-17.0],
+                "pivot": [0.0000, -0.016, 0.039],
+                "axis": [1.0, 0.0, 0.0]
+            },
+            "component_local" : {
+                "origin": [0.0, -0.039, 0.051],
+                "rotate_xyz" : [-83.885,0.0,0.0]
+            }
+        },
+        "trackpad": {
+            "filename": "trackpad.obj",
+            "motion":{
+                "type":"trackpad",
+                "controller_axis": 0,
+                "component_path" : "/input/trackpad",
+                "center": [0.0, 0.002, 0.049],
+                "rotate_xyz": [6.55,0.0,0.0],
+                "press_rotation_x": [7,-7],
+                "press_rotation_y": [4,-4],
+                "press_translate": [0.0, -0.001, 0.0]
+            },
+            "component_local" : {
+                "origin": [0.0, 0.002, 0.049],
+                "rotate_xyz" : [0.0,96.55,-90.0]
+            },
+            "visibility": {
+            	"default": true,
+            	"scroll": false
+            }
+        },
+        "trackpad_touch": {
+            "filename": "trackpad_touch.obj",
+            "motion":{
+                "type":"trackpad",
+                "controller_axis": 0,
+                "component_path" : "/input/trackpad",
+                "center": [0.0, 0.002, 0.049],
+                "rotate_xyz": [6.55,0.0,0.0],
+                "press_rotation_x": [7,-7],
+                "press_rotation_y": [4,-4],
+                "press_translate": [0.0, -0.001, 0.0],
+                "touch_translate_x": [ -0.019, 0.019 ],
+                "touch_translate_y": [ 0.019, -0.019 ]
+            },
+            "visibility": {
+            	"default": false,
+            	"touch": true,
+            	"press": true,
+            	"scroll": false
+            },
+            "component_local" : {
+                "origin": [0.0, 0.002, 0.049],
+                "rotate_xyz" : [0.0,96.55,-90.0]
+            }
+        },
+        "lgrip": {
+            "filename": "l_grip.obj",
+            "motion":{
+                "type":"rotate",
+                "pressed_path" : "/input/grip/click",
+                "controller_button": 2,
+                "value_mapping": [0.0,2.0],
+                "pivot": [-0.019, -0.006, 0.075],
+                "axis": [0.0, 1.0, 0.0]
+            },
+            "component_local" : {
+                "origin": [-0.020, -0.015, 0.088],
+                "rotate_xyz" : [0.0,94.234,0.0]
+            }
+        },
+        "rgrip": {
+            "filename": "r_grip.obj",
+            "motion":{
+                "type":"rotate",
+                "pressed_path" : "/input/grip/click",
+                "controller_button": 2,
+                "value_mapping": [0.0,-2.0],
+                "pivot": [0.019, -0.006, 0.075],
+                "axis": [0.0, 1.0, 0.0]
+            },
+            "component_local" : {
+                "origin": [0.020, -0.015, 0.088],
+                "rotate_xyz" : [0.0,-94.234,0.0]
+            }
+        },
+        "sys_button": {
+            "filename": "sys_button.obj",
+            "motion":{
+                "type":"translate",
+                "pressed_path" : "/input/system/click",
+                "controller_button": 0,
+                "value_mapping": [0.0, 0.00075],
+                "axis": [0.0, -1.0, 0.0]
+            },
+            "component_local" : {
+                "origin": [0.0, 0.004, 0.088],
+                "rotate_xyz" : [94.93,0.0,0.0]
+            }
+        },
+        "button": {
+            "filename": "button.obj",
+            "motion":{
+                "type":"translate",
+                "pressed_path" : "/input/application_menu/click",
+                "controller_button": 1,
+                "value_mapping": [0.0, 0.00075],
+                "axis": [0.0, -1.0, 0.0]
+            },
+            "component_local" : {
+                "origin": [0.0, 0.008, 0.019],
+                "rotate_xyz" : [86.028,0.0,0.0]
+            }
+        },
+        "status": {
+            "filename": "status.obj",
+            "component_local" : {
+                "origin": [0.0, -0.002, 0.146],
+                "rotate_xyz" : [95.927,0.0,0.0]
+            },
+            "visibility": {
+                "default": false
+            }
+        },
+        "led": {
+            "filename": "led.obj",
+            "component_local" : {
+                "origin": [0.0, 0.003, 0.096],
+                "rotate_xyz" : [95.132,0.0,0.0]
+            }
+        },
+        "body": {
+            "filename": "body.obj",
+            "component_local" : {
+                "origin": [0.0, 0.003, 0.097],
+                "rotate_xyz" : [5.037,0.0,0.0]
+            }
+        },
+        "base": {
+            "component_local" : {
+                "origin": [0.0, -0.014, 0.174],
+                "rotate_xyz" : [-0.821,-180.0,0.0]
+            }
+        },
+        "gdc2015": {
+            "component_local" : {
+                "origin": [0.0, 0.0, 0.0],
+                "rotate_xyz" : [0.0,0.0,0.0]
+            }
+        },
+        "tip": {
+            "component_local" : {
+                "origin": [0.0, -0.01, -0.007],
+                "rotate_xyz" : [1.282,0.0,0.0]
+            }
+        },
+        "handgrip": {
+            "component_local" : {
+                "origin": [0.0, 0.003, 0.097],
+                "rotate_xyz" : [5.037,0.0,0.0]
+             }
+        },
+        "scroll_wheel": {
+            "filename": "scroll_wheel.obj",
+            "motion":{
+                "type":"rotate",
+                "touched_path" : "/input/trackpad/touch",
+                "x_path" : "/input/trackpad/y",
+                "controller_axis":0,
+                "controller_axis_component":1,
+                "value_mapping": [0.0,-40.0],
+                "pivot": [0.0000, -0.006, 0.048],
+                "axis": [1.0, 0.0, 0.0]
+            },
+            "component_local" : {
+                "origin": [0.0, 0.002, 0.049],
+                "rotate_xyz" : [0.0,96.55,-90.0]
+            },
+            "visibility": {
+            	"default": false,
+            	"scroll": true
+            }
+          },
+        "trackpad_scroll_cut": {
+            "filename": "trackpad_scroll_cut.obj",
+            "visibility": {
+            	"default": false,
+            	"scroll": true
+            }
+          }
+        }
+    }
+}
