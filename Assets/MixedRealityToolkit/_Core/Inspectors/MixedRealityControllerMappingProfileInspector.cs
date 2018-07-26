@@ -3,11 +3,9 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -36,8 +34,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private SerializedProperty renderMotionControllers;
         private SerializedProperty useDefaultModels;
-        private SerializedProperty overrideLeftHandModel;
-        private SerializedProperty overrideRightHandModel;
+        private SerializedProperty leftHandModel;
+        private SerializedProperty leftHandModelPose;
+        private SerializedProperty rightHandModel;
+        private SerializedProperty rightHandModelPose;
 
         private readonly List<string> configuredControllerTypes = new List<string>();
         private readonly List<string> updatedControllerTypes = new List<string>();
@@ -64,8 +64,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
             useDefaultModels = serializedObject.FindProperty("useDefaultModels");
-            overrideLeftHandModel = serializedObject.FindProperty("overrideLeftHandModel");
-            overrideRightHandModel = serializedObject.FindProperty("overrideRightHandModel");
+            leftHandModel = serializedObject.FindProperty("globalLeftHandModel");
+            leftHandModelPose = serializedObject.FindProperty("leftHandModelPoseOffset");
+            rightHandModel = serializedObject.FindProperty("globalRightHandModel");
+            rightHandModelPose = serializedObject.FindProperty("rightHandModelPoseOffset");
 
             defaultLabelWidth = EditorGUIUtility.labelWidth;
             defaultFieldWidth = EditorGUIUtility.fieldWidth;
@@ -100,8 +102,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                 if (!useDefaultModels.boolValue)
                 {
-                    EditorGUILayout.PropertyField(overrideLeftHandModel);
-                    EditorGUILayout.PropertyField(overrideRightHandModel);
+                    EditorGUILayout.PropertyField(leftHandModel);
+                    EditorGUILayout.PropertyField(leftHandModelPose, true);
+                    EditorGUILayout.PropertyField(rightHandModel);
+                    EditorGUILayout.PropertyField(rightHandModelPose, true);
                 }
             }
 
@@ -170,6 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     var controllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
                     var useDefaultModel = mixedRealityControllerMapping.FindPropertyRelative("useDefaultModel");
                     var controllerModel = mixedRealityControllerMapping.FindPropertyRelative("overrideModel");
+                    var controllerPoseOffset = mixedRealityControllerMapping.FindPropertyRelative("poseOffset");
                     var interactionsList = mixedRealityControllerMapping.FindPropertyRelative("interactions");
                     var useCustomInteractionMappings = mixedRealityControllerMapping.FindPropertyRelative("useCustomInteractionMappings");
 
@@ -194,6 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     if (!useDefaultModel.boolValue)
                     {
                         EditorGUILayout.PropertyField(controllerModel);
+                        EditorGUILayout.PropertyField(controllerPoseOffset, true);
                     }
 
                     EditorGUIUtility.labelWidth = previousLabelWidth;

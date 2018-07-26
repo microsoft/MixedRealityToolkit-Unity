@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.SDK.UX.MotionController;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Controllers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.MotionController
+namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Controllers
 {
     [CustomEditor(typeof(AttachToController))]
-    public class AttachToControllerInspector : ControllerFinderInspector
+    public class AttachToControllerInspector : Editor
     {
         private SerializedProperty positionOffsetProperty;
         private SerializedProperty rotationOffsetProperty;
@@ -16,10 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.MotionController
         private SerializedProperty setScaleOnAttachProperty;
         private SerializedProperty setChildrenInactiveWhenDetachedProperty;
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
 
+        protected void OnEnable()
+        {
             positionOffsetProperty = serializedObject.FindProperty("PositionOffset");
             rotationOffsetProperty = serializedObject.FindProperty("RotationOffset");
             scaleOffsetProperty = serializedObject.FindProperty("ScaleOffset");
