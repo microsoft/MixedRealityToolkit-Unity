@@ -14,7 +14,7 @@ using UnityEngine.XR;
 namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
 {
     /// <summary>
-    /// The Boundary system controls the presentation and display of the users boundary in a scene
+    /// The Boundary system controls the presentation and display of the users boundary in a scene.
     /// </summary>
     public class MixedRealityBoundaryManager : BaseManager, IMixedRealityBoundarySystem
     {
@@ -182,7 +182,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
             }
             else
             {
-                // TODO: How do we determine if we have a floor without boundaries
                 Debug.LogWarning("Failed to calculate boundary bounds.");
             }
         }
@@ -228,7 +227,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
             bool trackingSpaceSet = XRDevice.SetTrackingSpaceType(trackingSpace);
             if (!trackingSpaceSet)
             {
-                // TODO: Implement ExperienceScale fallback logic
+                // TODO: how best to handle this scenario?
             }
         }
     }
