@@ -6,12 +6,11 @@ using UnityEngine;
 namespace HoloToolkit.Unity
 {
     /// <summary>
-    /// SolverObjectLock provides a solver that follows the TrackedObject/TargetTransform. Adjusting "LerpTime"
+    /// SolverOrbital provides a solver that offsets from the TrackedObject/TargetTransform. Adjusting "LerpTime"
     /// properties changes how quickly the object moves to the TrackedObject/TargetTransform's position.
     /// </summary>
     public class SolverOrbital : Solver
     {
-        #region public enums
         public enum OrientationReferenceEnum
         {
             /// <summary>
@@ -39,13 +38,15 @@ namespace HoloToolkit.Unity
             /// </summary>
             CameraAligned,
         }
-        #endregion
 
         #region public members
         [Tooltip("The desired orientation of this object. Default sets the object to face the TrackedObject/TargetTransform. CameraFacing sets the object to always face the user.")]
         [SerializeField]
         private OrientationReferenceEnum orientation = OrientationReferenceEnum.FollowTrackedObject;
 
+        /// <summary>
+        /// The desired orientation of this object. Default sets the object to face the TrackedObject/TargetTransform. CameraFacing sets the object to always face the user.
+        /// </summary>
         public OrientationReferenceEnum Orientation
         {
             get { return orientation; }
@@ -56,6 +57,9 @@ namespace HoloToolkit.Unity
         [SerializeField]
         private Vector3 localOffset = new Vector3(0,-1,1);
 
+        /// <summary>
+        /// XYZ offset for this object in relation to the TrackedObject/TargetTransform. Mixing local and world offsets is not recommended.
+        /// </summary>
         public Vector3 LocalOffset
         {
             get { return localOffset; }
@@ -66,6 +70,9 @@ namespace HoloToolkit.Unity
         [SerializeField]
         private Vector3 worldOffset = Vector3.zero;
 
+        /// <summary>
+        /// XYZ offset for this object in worldspace, best used with the YawOnly orientation. Mixing local and world offsets is not recommended.
+        /// </summary>
         public Vector3 WorldOffset
         {
             get { return worldOffset; }
@@ -76,6 +83,9 @@ namespace HoloToolkit.Unity
         [SerializeField]
         private bool useAngleSteppingForWorldOffset = false;
 
+        /// <summary>
+        /// Lock the rotation to a specified number of steps around the tracked object.
+        /// </summary>
         public bool UseAngleSteppingForWorldOffset
         {
             get { return useAngleSteppingForWorldOffset; }
@@ -121,7 +131,6 @@ namespace HoloToolkit.Unity
             }
 
             float stepAngle = 360f / TetherAngleSteps;
-            float overage = solverHandler.TransformTarget.transform.localEulerAngles.y % stepAngle;
             int numberOfSteps = Mathf.RoundToInt(solverHandler.TransformTarget.transform.localEulerAngles.y / stepAngle);
 
             float newAngle = stepAngle * numberOfSteps;
