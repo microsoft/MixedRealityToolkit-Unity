@@ -96,11 +96,20 @@ namespace HoloToolkit.Unity
         [Range(2, 24)]
         [SerializeField]
         private int tetherAngleSteps = 6;
-
+        /// <summary>
+        /// TetherAngleSteps is the division of steps this object can tether to. Higher the number, the more snapple steps.
+        /// </summary>
         public int TetherAngleSteps
         {
             get { return tetherAngleSteps;}
-            set { tetherAngleSteps = value; }
+            set 
+            {
+                if (value > 24 || value < 2)
+                {
+                    Debug.LogError("TetherAngleSteps was set to a size larger than it's max range. Clamping to a valid value.");
+                }
+                tetherAngleSteps = Mathf.Clamp(value, 2, 24);
+            }
         }
         #endregion
 
