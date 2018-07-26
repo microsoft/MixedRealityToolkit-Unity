@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Distorters;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         }
 
         [Header("Rotation")]
+
         [SerializeField]
         [Tooltip("The rotation mode used in the GetRotation function. You can visualize rotations by checking Draw Rotations under Editor Settings.")]
         private LineRotationType rotationType = LineRotationType.Velocity;
@@ -61,12 +63,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         [Tooltip("These vectors are used with ManualUpVectorBlend to determine rotation along the line in Velocity rotation mode. Vectors are distributed along the normalized length of the line.")]
         private Vector3[] manualUpVectors = { Vector3.up, Vector3.up, Vector3.up };
 
-        [Tooltip("Used in Velocity rotation mode. Smaller values are more accurate but more expensive")]
-        [Range(0.0001f, 0.1f)]
         [SerializeField]
+        [Range(0.0001f, 0.1f)]
+        [Tooltip("Used in Velocity rotation mode. Smaller values are more accurate but more expensive")]
         private float velocitySearchRange = 0.02f;
 
         [Header("Distortion")]
+
         [SerializeField]
         [Tooltip("NormalizedLength mode uses the DistortionStrength curve for distortion strength, Uniform uses UniformDistortionStrength along entire line")]
         private DistortionType distortionType = DistortionType.NormalizedLength;
@@ -121,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         }
 
         /// <summary>
-        /// Get the UNCLAMPED world length of the line
+        /// Get the UnClamped world length of the line
         /// </summary>
         /// <returns></returns>
         protected abstract float GetUnClampedWorldLengthInternal();
@@ -279,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         }
 
         /// <summary>
-        /// Gets a point along the line at the specified length
+        /// Gets a point along the line at the specified normalized length.
         /// </summary>
         /// <param name="normalizedLength"></param>
         /// <returns></returns>

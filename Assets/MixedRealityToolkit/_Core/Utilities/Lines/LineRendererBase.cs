@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         [Tooltip("The source Line this component will render")]
         private LineBase source;
 
-        public virtual LineBase Source
+        public LineBase Source
         {
             get
             {
@@ -31,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         }
 
         [Header("Visual Settings")]
+
         [SerializeField]
         [Tooltip("Color gradient applied to line's normalized length")]
         private Gradient lineColor;
@@ -57,7 +59,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         public float WidthMultiplier
         {
             get { return widthMultiplier; }
-            set { widthMultiplier = value; }
+            set
+            {
+                if (value < 0f)
+                {
+                    widthMultiplier = 0f;
+                }
+                else if (value > 10f)
+                {
+                    widthMultiplier = 10f;
+                }
+                else
+                {
+                    widthMultiplier = value;
+                }
+            }
         }
 
         [Header("Offsets")]
@@ -73,7 +89,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         public float ColorOffset
         {
             get { return colorOffset; }
-            set { colorOffset = value; }
+            set
+            {
+                if (value < 0f)
+                {
+                    colorOffset = 0f;
+                }
+                else if (value > 10f)
+                {
+                    colorOffset = 10f;
+                }
+                else
+                {
+                    colorOffset = value;
+                }
+            }
         }
 
         [Range(0f, 10f)]
@@ -146,8 +176,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
                 }
             }
         }
-
-        private float[] normalizedLengths;
 
         /// <summary>
         /// Get the <see cref="Color"/> along the normalized length of the line.

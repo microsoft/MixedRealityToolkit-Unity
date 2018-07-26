@@ -1,132 +1,128 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
 {
-    public class LineObjectCollection : MonoBehaviour
+    [DisallowMultipleComponent]
+    public class LineObjectCollection : LineBase
     {
-        public List<Transform> Objects = new List<Transform>();
+        [SerializeField]
+        private Transform[] objects = null;
 
         [Range(-2f, 2f)]
-        public float DistributionOffset = 0f;
+        [SerializeField]
+        private float distributionOffset = 0f;
+
         [Range(0f, 2f)]
-        public float LengthOffset = 0f;
-        [Range(0f, 2f)]
-        public float ScaleOffset = 0f;
+        [SerializeField]
+        private float scaleOffset = 0f;
+
         [Range(0.001f, 2f)]
-        public float ScaleMultiplier = 1f;
-        [Range(0.001f, 2f)]
-        public float PositionMultiplier = 1f;
+        [SerializeField]
+        private float scaleMultiplier = 1f;
 
-        public float DistributionOffsetPerObject
-        {
-            get
-            {
-                return 1f / Objects.Count;
-            }
-        }
+        public float DistributionOffsetPerObject => 1f / objects.Length;
 
-        public AnimationCurve ObjectScale = AnimationCurve.Linear(0f, 1f, 1f, 1f);
+        [SerializeField]
+        private AnimationCurve objectScale = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 
-        public AnimationCurve ObjectPosition = AnimationCurve.Linear(0f, 0f, 1f, 0f);
+        [SerializeField]
+        private Vector3 rotationOffset = Vector3.zero;
 
-        public bool FlipRotation = false;
-
-        public Vector3 RotationOffset = Vector3.zero;
-
-        public Vector3 PositionOffset = Vector3.zero;
-
-        public LineRotationType RotationTypeOverride = LineRotationType.None;
-
-        public PointDistributionType DistributionType = PointDistributionType.None;
+        [SerializeField]
+        private LineRotationType rotationTypeOverride = LineRotationType.None;
 
         [Header("Object Placement")]
-        public StepMode StepMode = StepMode.Interpolated;
 
         [SerializeField]
-        private LineBase source;
+        private StepMode stepMode = StepMode.Interpolated;
 
         [SerializeField]
-        private Transform transformHelper;
+        private Transform lineCollectionRoot;
 
-        public virtual LineBase Source
+        /// <inheritdoc />
+        public override int PointCount => objects.Length;
+
+        /// <inheritdoc />
+        protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
-            get
+            if (pointIndex > objects.Length || pointIndex < 0)
             {
-                if (source == null)
-                {
-                    source = GetComponent<LineBase>();
-                }
-                return source;
+                Debug.LogError("invalid point index");
+                return;
             }
-            set
-            {
-                source = value;
-                if (source == null)
-                {
-                    enabled = false;
-                }
-            }
+
+            objects[pointIndex].position = point;
         }
 
-        // Convenience functions
+        /// <inheritdoc />
+        protected override Vector3 GetPointInternal(float normalizedLength)
+        {
+            return GetPointInternal(Mathf.RoundToInt(normalizedLength * objects.Length));
+        }
+
+        /// <inheritdoc />
+        protected override Vector3 GetPointInternal(int pointIndex)
+        {
+            if (pointIndex > objects.Length || pointIndex < 0)
+            {
+                Debug.LogError("invalid point index");
+                return Vector3.zero;
+            }
+
+            return objects[pointIndex].position;
+        }
+
         public float GetOffsetFromObjectIndex(int index, bool wrap = true)
         {
-            if (Objects.Count == 0)
+            if (objects.Length == 0)
             {
                 return 0;
             }
 
-            if (wrap)
-            {
-                index = WrapIndex(index, Objects.Count);
-            }
-            else
-            {
-                index = Mathf.Clamp(index, 0, Objects.Count - 1);
-            }
+            index = wrap ? WrapIndex(index, objects.Length) : Mathf.Clamp(index, 0, objects.Length - 1);
 
-            return (1f / Objects.Count * (index + 1));
+            return 1f / objects.Length * (index + 1);
         }
 
         public int GetNextObjectIndex(int index, bool wrap = true)
         {
-            if (Objects.Count == 0)
+            if (objects.Length == 0)
             {
                 return 0;
             }
 
             index++;
 
-            if (wrap)
-            {
-                return WrapIndex(index, Objects.Count);
-            }
-            else
-            {
-                return Mathf.Clamp(index, 0, Objects.Count - 1);
-            }
+            return wrap ? WrapIndex(index, objects.Length) : Mathf.Clamp(index, 0, objects.Length - 1);
         }
 
         public int GetPrevObjectIndex(int index, bool wrap = true)
         {
-            if (Objects.Count == 0)
+            if (objects.Length == 0)
             {
                 return 0;
             }
 
             index--;
 
-            if (wrap)
+            return wrap ? WrapIndex(index, objects.Length) : Mathf.Clamp(index, 0, objects.Length - 1);
+        }
+
+        private void OnValidate()
+        {
+            if (lineCollectionRoot == null)
             {
-                return WrapIndex(index, Objects.Count);
-            }
-            else
-            {
-                return Mathf.Clamp(index, 0, Objects.Count - 1);
+                lineCollectionRoot = transform.Find("Line Object Collection");
+
+                if (lineCollectionRoot == null)
+                {
+                    lineCollectionRoot = new GameObject("Line Object Collection").transform;
+                    lineCollectionRoot.parent = transform;
+                }
             }
         }
 
@@ -135,55 +131,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             UpdateCollection();
         }
 
-        public void UpdateCollection()
+        protected override float GetUnClampedWorldLengthInternal()
         {
-            if (Source == null)
+            // Crude approximation
+            // TODO optimize
+            float distance = 0f;
+            Vector3 last = GetUnClampedPoint(0f);
+
+            for (int i = 1; i < 10; i++)
             {
-                return;
+                Vector3 current = GetUnClampedPoint((float)i / 10);
+                distance += Vector3.Distance(last, current);
             }
 
-            if (transformHelper == null)
-            {
-                transformHelper = transform.Find("TransformHelper");
-                if (transformHelper == null)
-                {
-                    transformHelper = new GameObject("TransformHelper").transform;
-                    transformHelper.parent = transform;
-                }
-            }
-
-            switch (StepMode)
-            {
-                case StepMode.FromSource:
-                    break;
-
-                case StepMode.Interpolated:
-                    for (int i = 0; i < Objects.Count; i++)
-                    {
-                        if (Objects[i] == null)
-                        {
-                            continue;
-                        }
-
-                        float normalizedDistance = Mathf.Repeat(((float)i / Objects.Count) + DistributionOffset, 1f);
-                        Objects[i].position = Source.GetPoint(normalizedDistance);
-                        Objects[i].rotation = Source.GetRotation(normalizedDistance, RotationTypeOverride);
-
-                        transformHelper.localScale = Vector3.one;
-                        transformHelper.position = Objects[i].position;
-                        transformHelper.localRotation = Quaternion.identity;
-                        Transform tempParent = Objects[i].parent;
-                        Objects[i].parent = transformHelper;
-                        transformHelper.localEulerAngles = RotationOffset;
-                        Objects[i].parent = tempParent;
-                        Objects[i].transform.localScale = Vector3.one * ObjectScale.Evaluate(Mathf.Repeat(ScaleOffset + normalizedDistance, 1f)) * ScaleMultiplier;
-                    }
-                    break;
-            }
+            return distance;
         }
 
-#if UNITY_EDITOR
-        private void OnDrawGizmos()
+        protected override void OnDrawGizmos()
         {
             if (Application.isPlaying)
             {
@@ -192,7 +156,32 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
 
             UpdateCollection();
         }
-#endif
+
+        public void UpdateCollection()
+        {
+            if (stepMode == StepMode.Interpolated)
+            {
+                for (int i = 0; i < objects.Length; i++)
+                {
+                    if (objects[i] == null)
+                    {
+                        continue;
+                    }
+
+                    float normalizedDistance = Mathf.Repeat(((float)i / objects.Length) + distributionOffset, 1f);
+                    objects[i].position = GetPoint(normalizedDistance);
+                    objects[i].rotation = GetRotation(normalizedDistance, rotationTypeOverride);
+                    lineCollectionRoot.localScale = Vector3.one;
+                    lineCollectionRoot.position = objects[i].position;
+                    lineCollectionRoot.localRotation = Quaternion.identity;
+                    Transform tempParent = objects[i].parent;
+                    objects[i].parent = lineCollectionRoot;
+                    lineCollectionRoot.localEulerAngles = rotationOffset;
+                    objects[i].parent = tempParent;
+                    objects[i].transform.localScale = Vector3.one * objectScale.Evaluate(Mathf.Repeat(scaleOffset + normalizedDistance, 1f)) * scaleMultiplier;
+                }
+            }
+        }
 
         private static int WrapIndex(int index, int numObjects)
         {

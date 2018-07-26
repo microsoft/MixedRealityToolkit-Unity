@@ -9,65 +9,151 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
 {
     public class LineMeshes : LineRendererBase
     {
-        private readonly string InvisibleShaderName = "MixedRealityToolkit/InvisibleShader";
+        private const string InvisibleShaderName = "MixedRealityToolkit/InvisibleShader";
 
         [Header("Instanced Mesh Settings")]
-        public Mesh LineMesh;
 
-        public Material LineMaterial;
+        [SerializeField]
+        private Mesh lineMesh = null;
 
-        public string ColorProp = "_Color";
+        public Mesh LineMesh
+        {
+            get { return lineMesh; }
+            set
+            {
+                enabled = false;
+                lineMesh = value;
+                enabled = true;
+            }
+        }
 
-        // Command buffer properties
-        private MaterialPropertyBlock linePropertyBlock;
-        private int colorID;
-        private Matrix4x4[] meshTransforms;
+        [SerializeField]
+        private Material lineMaterial = null;
+
+        public Material LineMaterial
+        {
+            get { return lineMaterial; }
+            set
+            {
+                enabled = false;
+                lineMaterial = value;
+                enabled = true;
+            }
+        }
+
+        [SerializeField]
+        private string colorProp = "_Color";
+
+        public string ColorProp
+        {
+            get { return colorProp; }
+            set
+            {
+                enabled = false;
+                colorProp = value;
+
+                if (!lineMaterial.HasProperty(value))
+                {
+                    Debug.LogError($"Unable to find the property {value} for the line material");
+                    return;
+                }
+
+                enabled = true;
+            }
+        }
+
+        #region Command buffer properties
+
+        private readonly Dictionary<Camera, CommandBuffer> cameras = new Dictionary<Camera, CommandBuffer>();
+
+        private int colorId;
         private Vector4[] colorValues;
+        private Matrix4x4[] meshTransforms;
         private bool executeCommandBuffer = false;
-        private Dictionary<Camera, CommandBuffer> cameras = new Dictionary<Camera, CommandBuffer>();
-        // OnWillRenderObject helpers
-        private MeshRenderer onWillRenderHelper;
-        private Mesh onWillRenderMesh;
-        private Material onWillRenderMat;
-        private Vector3[] meshVertices = new Vector3[3];
+        private MaterialPropertyBlock linePropertyBlock;
+
+        #endregion
+
+        #region OnWillRenderObject helpers
+
+        private readonly Vector3[] meshVertices = new Vector3[3];
+
+        [SerializeField]
+        [HideInInspector]
+        private Material renderedMaterial = null;
+
+        [SerializeField]
+        [HideInInspector]
+        private Mesh renderedMesh = null;
+
+        private MeshRenderer meshRenderer;
+
+        #endregion OnWillRenderObject helpers
+
+        private void OnValidate()
+        {
+            if (lineMaterial == null)
+            {
+                Debug.LogError("Line material cannot be null.");
+            }
+
+            if (lineMesh == null)
+            {
+                Debug.LogError("Line mesh cannot be null.");
+            }
+
+            if (renderedMaterial == null)
+            {
+                // Create an 'invisible' material so the mesh doesn't show up pink
+                renderedMaterial = new Material(Shader.Find(InvisibleShaderName));
+            }
+
+            if (renderedMesh == null)
+            {
+                // create a simple 1-triangle mesh to ensure OnWillRenderObject is always called.
+                renderedMesh = new Mesh
+                {
+                    vertices = meshVertices,
+                    triangles = new[] { 0, 1, 2 }
+                };
+            }
+        }
 
         protected void OnEnable()
         {
-            if (LineMaterial == null)
+            if (lineMaterial == null)
             {
                 Debug.LogError("Line material cannot be null.");
                 enabled = false;
                 return;
             }
 
-            if (linePropertyBlock == null)
+            if (lineMesh == null)
             {
-                LineMaterial.enableInstancing = true;
-                linePropertyBlock = new MaterialPropertyBlock();
-                colorID = Shader.PropertyToID(ColorProp);
+                Debug.LogError("Line mesh cannot be null.");
+                enabled = false;
+                return;
             }
 
-            if (onWillRenderHelper == null)
-            {   // OnWillRenderObject won't be called unless there's a renderer attached
-                // and if the renderer's bounds are visible.
-                // So we create a simple 1-triangle mesh to ensure it's always called.
-                // Hacky, but it works.
-                onWillRenderHelper = gameObject.AddComponent<MeshRenderer>();
-                onWillRenderHelper.receiveShadows = false;
-                onWillRenderHelper.shadowCastingMode = ShadowCastingMode.Off;
-                onWillRenderHelper.lightProbeUsage = LightProbeUsage.Off;
-                onWillRenderHelper.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
+            if (linePropertyBlock == null)
+            {
+                lineMaterial.enableInstancing = true;
+                linePropertyBlock = new MaterialPropertyBlock();
+                colorId = Shader.PropertyToID(colorProp);
+            }
 
-                onWillRenderMesh = new Mesh();
-                onWillRenderMesh.vertices = meshVertices;
-                onWillRenderMesh.triangles = new int[] { 0, 1, 2 };
+            if (meshRenderer == null)
+            {
+                // HACK: OnWillRenderObject won't be called unless there's a renderer attached and its bounds are visible.
+                meshRenderer = gameObject.AddComponent<MeshRenderer>();
+                meshRenderer.receiveShadows = false;
+                meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
+                meshRenderer.lightProbeUsage = LightProbeUsage.Off;
+                meshRenderer.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
+                meshRenderer.sharedMaterial = renderedMaterial;
 
-                MeshFilter helperMeshFilter = gameObject.AddComponent<MeshFilter>();
-                helperMeshFilter.sharedMesh = onWillRenderMesh;
-
-                // Create an 'invisible' material so the mesh doesn't show up pink
-                onWillRenderMat = new Material(Shader.Find(InvisibleShaderName));
-                onWillRenderHelper.sharedMaterial = onWillRenderMat;
+                var meshFilter = gameObject.AddComponent<MeshFilter>();
+                meshFilter.sharedMesh = renderedMesh;
             }
         }
 
@@ -95,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
                     meshTransforms[i] = Matrix4x4.TRS(Source.GetPoint(normalizedDistance), Source.GetRotation(normalizedDistance), Vector3.one * GetWidth(normalizedDistance));
                 }
 
-                linePropertyBlock.SetVectorArray(colorID, colorValues);
+                linePropertyBlock.SetVectorArray(colorId, colorValues);
 
                 executeCommandBuffer = true;
             }
@@ -103,43 +189,45 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
 
         private void OnDisable()
         {
-            foreach (KeyValuePair<Camera, CommandBuffer> cam in cameras)
+            foreach (KeyValuePair<Camera, CommandBuffer> bufferCamera in cameras)
             {
-                if (cam.Key != null)
+                if (bufferCamera.Key != null)
                 {
-                    cam.Key.RemoveCommandBuffer(CameraEvent.AfterForwardOpaque, cam.Value);
+                    bufferCamera.Key.RemoveCommandBuffer(CameraEvent.AfterForwardOpaque, bufferCamera.Value);
                 }
             }
+
             cameras.Clear();
         }
 
         private void OnWillRenderObject()
         {
-            Camera cam = Camera.current;
-            CommandBuffer buffer = null;
-            if (!cameras.TryGetValue(cam, out buffer))
+            Camera currentCamera = Camera.current;
+            CommandBuffer buffer;
+
+            if (!cameras.TryGetValue(currentCamera, out buffer))
             {
-                buffer = new CommandBuffer();
-                buffer.name = "Line Mesh Renderer " + cam.name;
-                cam.AddCommandBuffer(CameraEvent.AfterForwardOpaque, buffer);
-                cameras.Add(cam, buffer);
+                buffer = new CommandBuffer { name = $"Line Mesh Renderer {currentCamera.name}" };
+                currentCamera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, buffer);
+                cameras.Add(currentCamera, buffer);
             }
 
             buffer.Clear();
+
             if (executeCommandBuffer)
             {
-                buffer.DrawMeshInstanced(LineMesh, 0, LineMaterial, 0, meshTransforms, meshTransforms.Length, linePropertyBlock);
+                buffer.DrawMeshInstanced(lineMesh, 0, lineMaterial, 0, meshTransforms, meshTransforms.Length, linePropertyBlock);
             }
         }
 
         private void LateUpdate()
         {
             // Update our helper mesh so OnWillRenderObject will be called
-            meshVertices[0] = transform.InverseTransformPoint(Source.GetPoint(0.0f));// - transform.position;
-            meshVertices[1] = transform.InverseTransformPoint(Source.GetPoint(0.5f));// - transform.position;
-            meshVertices[2] = transform.InverseTransformPoint(Source.GetPoint(1.0f));// - transform.position;
-            onWillRenderMesh.vertices = meshVertices;
-            onWillRenderMesh.RecalculateBounds();
+            meshVertices[0] = transform.InverseTransformPoint(Source.GetPoint(0.0f)); // - transform.position;
+            meshVertices[1] = transform.InverseTransformPoint(Source.GetPoint(0.5f)); // - transform.position;
+            meshVertices[2] = transform.InverseTransformPoint(Source.GetPoint(1.0f)); // - transform.position;
+            renderedMesh.vertices = meshVertices;
+            renderedMesh.RecalculateBounds();
         }
     }
 }

@@ -8,55 +8,61 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
     public class Line : LineBase
     {
         [Header("Line Settings")]
-        public Vector3 Start = Vector3.zero;
-        public Vector3 End = Vector3.one;
 
-        public override int PointCount
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        [SerializeField]
+        private Vector3 start = Vector3.zero;
 
+        [SerializeField]
+        private Vector3 end = Vector3.one;
+
+        /// <inheritdoc />
+        public override int PointCount => 2;
+
+        /// <inheritdoc />
         protected override Vector3 GetPointInternal(int pointIndex)
         {
             switch (pointIndex)
             {
                 case 0:
-                default:
-                    return Start;
-
+                    return start;
                 case 1:
-                    return End;
+                    return end;
+                default:
+                    Debug.LogError("Invalid point index");
+                    return Vector3.zero;
             }
         }
 
+        /// <inheritdoc />
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
             switch (pointIndex)
             {
                 case 0:
-                default:
-                    Start = point;
+                    start = point;
                     break;
-
                 case 1:
-                    End = point;
+                    end = point;
+                    break;
+                default:
+                    Debug.LogError("Invalid point index");
                     break;
             }
         }
 
+        /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
-            return Vector3.Lerp(Start, End, normalizedDistance);
+            return Vector3.Lerp(start, end, normalizedDistance);
         }
 
+        /// <inheritdoc />
         protected override float GetUnClampedWorldLengthInternal()
         {
-            return Vector3.Distance(Start, End);
+            return Vector3.Distance(start, end);
         }
 
+        /// <inheritdoc />
         protected override Vector3 GetUpVectorInternal(float normalizedLength)
         {
             return transform.up;

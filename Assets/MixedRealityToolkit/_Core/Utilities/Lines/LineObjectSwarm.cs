@@ -1,90 +1,206 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
 {
     [ExecuteInEditMode]
-    public class LineObjectSwarm : MonoBehaviour
+    public class LineObjectSwarm : LineBase
     {
-        const int RandomValueResolution = 1024;
-
-        public List<Transform> Objects = new List<Transform>();
-
-        [Range(0, 100)]
-        public int Seed = 0;
+        private const int RandomValueResolution = 1024;
+        private readonly FastSimplexNoise noise = new FastSimplexNoise();
 
         [SerializeField]
-        private LineBase source;
+        private Transform[] objects;
 
-        [Header("Noise Settings")]
-        public float ScaleMultiplier = 10f;
-        public float SpeedMultiplier = 1f;
-        public float StrengthMultiplier = 0.5f;
-        public Vector3 AxisStrength = Vector3.one;
-        public Vector3 AxisSpeed = Vector3.one;
-        public Vector3 AxisOffset = Vector3.zero;
+        private Vector3[] swarmPoints;
 
-        private Vector3[] prevPoints;
-        private System.Random randomPosition;
-        private System.Random randomRotation;
-        private FastSimplexNoise noise = new FastSimplexNoise();
+        [Range(0, 100)]
+        [SerializeField]
+        private int seed = 0;
 
-        [Header("Swarm Settings")]
-        [Range(0f, 1f)]
-        public float NormalizedDistance = 0f;
-
-        public Vector3 SwarmScale = Vector3.one;
-
-        public AnimationCurve ObjectScale = AnimationCurve.Linear(0f, 1f, 1f, 1f);
-
-        public AnimationCurve ObjectOffset = AnimationCurve.Linear(0f, 0f, 1f, 0f);
-
-        public LineRotationType RotationTypeOverride = LineRotationType.None;
-
-        public bool SwarmVelocities = true;
-
-        public float VelocityBlend = 0.5f;
-
-        public Vector3 RotationOffset = Vector3.zero;
-
-        public Vector3 AxisScale = Vector3.one;
-
-        public virtual LineBase Source
+        public int Seed
         {
-            get
-            {
-                if (source == null)
-                {
-                    source = GetComponent<LineBase>();
-                }
-
-                return source;
-            }
+            get { return seed; }
             set
             {
-                source = value;
-
-                if (source == null)
+                if (value < 0)
                 {
-                    enabled = false;
+                    seed = 0;
+                }
+                else if (value > 100)
+                {
+                    seed = 100;
+                }
+                else
+                {
+                    seed = value;
+                }
+
+                randomPosition = new System.Random(seed);
+            }
+        }
+
+        private System.Random randomPosition;
+
+        [Header("Noise Settings")]
+
+        [SerializeField]
+        private float scaleMultiplier = 10f;
+
+        [SerializeField]
+        private float speedMultiplier = 1f;
+
+        [SerializeField]
+        private float strengthMultiplier = 0.5f;
+
+        [SerializeField]
+        private Vector3 axisStrength = Vector3.one;
+
+        [SerializeField]
+        private Vector3 axisSpeed = Vector3.one;
+
+        [SerializeField]
+        private Vector3 axisOffset = Vector3.zero;
+
+        [Header("Swarm Settings")]
+
+        [Range(0f, 1f)]
+        [SerializeField]
+        private float normalizedDistance = 0f;
+
+        public float NormalizedDistance
+        {
+            get { return normalizedDistance; }
+            set
+            {
+                if (value < 0f)
+                {
+                    normalizedDistance = 0f;
+                }
+                else if (value > 1f)
+                {
+                    normalizedDistance = 1f;
+                }
+                else
+                {
+                    normalizedDistance = value;
                 }
             }
         }
 
-        public Vector3 GetRandomPoint()
+        [SerializeField]
+        private Vector3 swarmScale = Vector3.one;
+
+        public Vector3 SwarmScale
+        {
+            get { return swarmScale; }
+            set { swarmScale = value; }
+        }
+
+        [SerializeField]
+        private LineRotationType rotationTypeOverride = LineRotationType.None;
+
+        public LineRotationType RotationTypeOverride
+        {
+            get { return rotationTypeOverride; }
+            set { rotationTypeOverride = value; }
+        }
+
+        [SerializeField]
+        private bool swarmVelocities = true;
+
+        public bool SwarmVelocities
+        {
+            get { return swarmVelocities; }
+            set { swarmVelocities = value; }
+        }
+
+        [SerializeField]
+        private float velocityBlend = 0.5f;
+
+        public float VelocityBlend
+        {
+            get { return velocityBlend; }
+            set { velocityBlend = value; }
+        }
+
+        [SerializeField]
+        private Vector3 rotationOffset = Vector3.zero;
+
+        public Vector3 RotationOffset
+        {
+            get { return rotationOffset; }
+            set { rotationOffset = value; }
+        }
+
+        public override int PointCount => objects.Length;
+
+        protected override void SetPointInternal(int pointIndex, Vector3 point)
+        {
+            if (pointIndex > objects.Length || pointIndex < 0)
+            {
+                Debug.LogError("invalid point index");
+                return;
+            }
+
+            objects[pointIndex].position = point;
+        }
+
+        protected override Vector3 GetPointInternal(float normalizedLength)
+        {
+            return GetPointInternal(Mathf.RoundToInt(normalizedLength * objects.Length));
+        }
+
+        protected override Vector3 GetPointInternal(int pointIndex)
+        {
+            if (pointIndex > objects.Length || pointIndex < 0)
+            {
+                Debug.LogError("invalid point index");
+                return Vector3.zero;
+            }
+
+            return objects[pointIndex].position;
+        }
+
+        protected override float GetUnClampedWorldLengthInternal()
+        {
+            // Crude approximation
+            // TODO optimize
+            float distance = 0f;
+            Vector3 last = GetUnClampedPoint(0f);
+
+            for (int i = 1; i < 10; i++)
+            {
+                Vector3 current = GetUnClampedPoint((float)i / 10);
+                distance += Vector3.Distance(last, current);
+            }
+
+            return distance;
+        }
+
+        private Vector3 GetRandomPoint()
         {
             Vector3 randomPoint = Vector3.one;
             randomPoint.x = (float)randomPosition.Next(-RandomValueResolution, RandomValueResolution) / (RandomValueResolution * 2);
             randomPoint.y = (float)randomPosition.Next(-RandomValueResolution, RandomValueResolution) / (RandomValueResolution * 2);
             randomPoint.z = (float)randomPosition.Next(-RandomValueResolution, RandomValueResolution) / (RandomValueResolution * 2);
-
-            return Vector3.Scale(randomPoint, SwarmScale);
+            return Vector3.Scale(randomPoint, swarmScale);
         }
 
-        public void Update()
+        private void OnValidate()
+        {
+            randomPosition = new System.Random(seed);
+        }
+
+        private void Awake()
+        {
+            randomPosition = new System.Random(seed);
+        }
+
+        private void Update()
         {
             UpdateCollection();
 
@@ -93,47 +209,48 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
 #endif
         }
 
-        public void UpdateCollection()
+        private void UpdateCollection()
         {
-            if (Source == null)
+            if (objects == null)
             {
                 return;
             }
 
-            if (prevPoints == null || prevPoints.Length != Objects.Count)
+            if (swarmPoints == null || swarmPoints.Length != objects.Length)
             {
-                prevPoints = new Vector3[Objects.Count];
+                swarmPoints = new Vector3[objects.Length];
             }
 
-            randomPosition = new System.Random(Seed);
-            Vector3 linePoint = source.GetPoint(NormalizedDistance);
-            Quaternion lineRotation = source.GetRotation(NormalizedDistance, RotationTypeOverride);
+            Vector3 linePoint = GetPoint(normalizedDistance);
+            Quaternion lineRotation = GetRotation(normalizedDistance, rotationTypeOverride);
 
-            for (int i = 0; i < Objects.Count; i++)
+            for (int i = 0; i < objects.Length; i++)
             {
-                if (Objects[i] == null)
+                if (objects[i] == null)
                 {
                     continue;
                 }
 
-                Vector3 point = source.transform.TransformVector(GetRandomPoint());
-                point.x = (float)(point.x + (noise.Evaluate((point.x + AxisOffset.x) * ScaleMultiplier, Time.unscaledTime * AxisSpeed.x * SpeedMultiplier)) * AxisStrength.x * StrengthMultiplier);
-                point.y = (float)(point.y + (noise.Evaluate((point.y + AxisOffset.y) * ScaleMultiplier, Time.unscaledTime * AxisSpeed.y * SpeedMultiplier)) * AxisStrength.y * StrengthMultiplier);
-                point.z = (float)(point.z + (noise.Evaluate((point.z + AxisOffset.z) * ScaleMultiplier, Time.unscaledTime * AxisSpeed.z * SpeedMultiplier)) * AxisStrength.z * StrengthMultiplier);
+                Vector3 point = transform.TransformVector(GetRandomPoint());
+                point.x = (float)(point.x + (noise.Evaluate((point.x + axisOffset.x) * scaleMultiplier, Time.unscaledTime * axisSpeed.x * speedMultiplier)) * axisStrength.x * strengthMultiplier);
+                point.y = (float)(point.y + (noise.Evaluate((point.y + axisOffset.y) * scaleMultiplier, Time.unscaledTime * axisSpeed.y * speedMultiplier)) * axisStrength.y * strengthMultiplier);
+                point.z = (float)(point.z + (noise.Evaluate((point.z + axisOffset.z) * scaleMultiplier, Time.unscaledTime * axisSpeed.z * speedMultiplier)) * axisStrength.z * strengthMultiplier);
 
-                Objects[i].position = point + linePoint;
-                if (SwarmVelocities)
+                SetPointInternal(i, point + linePoint);
+
+                if (swarmVelocities)
                 {
-                    Vector3 velocity = prevPoints[i] - point;
-                    Objects[i].rotation = Quaternion.Lerp(lineRotation, Quaternion.LookRotation(velocity, Vector3.up), VelocityBlend);
+                    Vector3 velocity = swarmPoints[i] - point;
+                    objects[i].rotation = Quaternion.Lerp(lineRotation, Quaternion.LookRotation(velocity, Vector3.up), velocityBlend);
                 }
                 else
                 {
-                    Objects[i].rotation = lineRotation;
+                    objects[i].rotation = lineRotation;
                 }
-                Objects[i].Rotate(RotationOffset);
 
-                prevPoints[i] = point;
+                objects[i].Rotate(rotationOffset);
+
+                swarmPoints[i] = point;
             }
         }
     }

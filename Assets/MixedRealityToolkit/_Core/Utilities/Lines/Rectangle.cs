@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         }
 
         [Header("Rectangle Settings")]
+
         [SerializeField]
         private Vector3[] points;
 
@@ -93,6 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             return LineUtility.InterpolateVectorArray(points, normalizedDistance);
         }
 
+        /// <inheritdoc />
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
             if (pointIndex <= 7 && pointIndex >= 0)
@@ -101,11 +103,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             }
         }
 
+        /// <inheritdoc />
         protected override Vector3 GetPointInternal(int pointIndex)
         {
             return pointIndex <= 7 && pointIndex >= 0 ? points[pointIndex] : Vector3.zero;
         }
 
+        /// <inheritdoc />
         protected override float GetUnClampedWorldLengthInternal()
         {
             BuildPoints();
@@ -122,6 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             return distance;
         }
 
+        /// <inheritdoc />
         protected override Vector3 GetUpVectorInternal(float normalizedLength)
         {
             // Rectangle 'up' vector always points out from center

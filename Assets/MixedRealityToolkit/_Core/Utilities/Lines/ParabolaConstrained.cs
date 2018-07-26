@@ -9,18 +9,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
     public class ParabolaConstrained : Parabola
     {
         [Header("Constrained Parabola Settings")]
+
         public Vector3 End = Vector3.forward;
         public Vector3 UpDirection = Vector3.up;
+
         [Range(0.01f, 10f)]
         public float Height = 1f;
 
-        public override int PointCount
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int PointCount => 2;
 
         protected override Vector3 GetPointInternal(int pointIndex)
         {
