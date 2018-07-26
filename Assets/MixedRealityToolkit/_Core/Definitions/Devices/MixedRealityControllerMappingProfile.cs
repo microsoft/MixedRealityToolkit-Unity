@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
@@ -35,29 +36,55 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         }
 
         [SerializeField]
-        [Tooltip("Override Left Controller Model.")]
-        private GameObject overrideLeftHandModel;
+        [Tooltip("Left Controller Model.")]
+        private GameObject globalLeftHandModel;
 
         /// <summary>
         /// The Default controller model when there is no specific controller model for the Left hand or when no hand is specified (Handedness = none)
         /// </summary>
-        public GameObject OverrideLeftHandModel
+        public GameObject GlobalLeftHandModel
         {
-            get { return overrideLeftHandModel; }
-            private set { overrideLeftHandModel = value; }
+            get { return globalLeftHandModel; }
+            private set { globalLeftHandModel = value; }
         }
 
         [SerializeField]
-        [Tooltip("Override Right Controller Model.")]
-        private GameObject overrideRightHandModel;
+        [Tooltip("Left Controller Model Offset Pose.")]
+        private MixedRealityPose leftHandModelPoseOffset = MixedRealityPose.ZeroIdentity;
+
+        /// <summary>
+        /// The offset pose for the left hand rendered model
+        /// </summary>
+        public MixedRealityPose LeftHandModelPoseOffset
+        {
+            get { return leftHandModelPoseOffset; }
+            private set { leftHandModelPoseOffset = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Right Controller Model.")]
+        private GameObject globalRightHandModel;
 
         /// <summary>
         /// The Default controller model when there is no specific controller model for the Right hand
         /// </summary>
-        public GameObject OverrideRightHandModel
+        public GameObject GlobalRightHandModel
         {
-            get { return overrideRightHandModel; }
-            private set { overrideRightHandModel = value; }
+            get { return globalRightHandModel; }
+            private set { globalRightHandModel = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Right Controller Model Offset Pose.")]
+        private MixedRealityPose rightHandModelPoseOffset = MixedRealityPose.ZeroIdentity;
+
+        /// <summary>
+        /// The offset pose for the right hand rendered model
+        /// </summary>
+        public MixedRealityPose RightHandModelPoseOffset
+        {
+            get { return rightHandModelPoseOffset; }
+            private set { rightHandModelPoseOffset = value; }
         }
 
         [SerializeField]

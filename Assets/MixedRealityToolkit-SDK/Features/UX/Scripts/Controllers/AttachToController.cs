@@ -11,7 +11,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
 {
     /// <summary>
     /// Waits for a controller to be initialized, then attaches itself to a specified element
