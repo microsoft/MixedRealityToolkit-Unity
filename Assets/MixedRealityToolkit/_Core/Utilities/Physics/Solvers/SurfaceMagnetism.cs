@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
         private float orientBlend = 0.65f;
 
         [SerializeField]
-        private bool debugEnabled;
+        private bool debugEnabled = false;
 
         private BoxCollider boxCollider;
 
