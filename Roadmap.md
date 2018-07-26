@@ -22,7 +22,7 @@ The Mixed Reality Toolkit (also known as "vNext") is an all-new product, built t
 
 The Mixed Reality Toolkit will require Unity 2018 or newer.
 
-| When Unity releases an LTS (Long Term Support) product, the Mixed Reality Toolkit will branch (ex: mrtk_2018_LTS) and require an LTS release. This branch will be targeted at developers who wish to have the most stable MRTK on which to build. It is expected that the branched Mixed Reality Toolkit will receive bug fixes and no new features. The mrtk_development branch will update to the next Unity Tech release (ex: 2019.1) and **may** drop backward compatibility.
+> When Unity releases an LTS (Long Term Support) product, the Mixed Reality Toolkit will branch (ex: mrtk_2018_LTS) and require an LTS release. This branch will be targeted at developers who wish to have the most stable MRTK on which to build. It is expected that the branched Mixed Reality Toolkit will receive bug fixes and no new features. The mrtk_development branch will update to the next Unity Tech release (ex: 2019.1) and **may** drop backward compatibility.
 
 ## New Architecture
 
@@ -36,7 +36,6 @@ The theme(s) for the Alpha release are
 
 - Minimum Viable Product
     - New architecture
-    - Render scene
     - VR Boundary support
     - Input and Interactions
     - Locomotion / Teleportation
@@ -45,15 +44,15 @@ The theme(s) for the Alpha release are
 Supported platforms 
 
 - Windows Mixed Reality
-    - Microsoft HoloLens
     - Immersive Headsets
+    - Microsoft HoloLens
 - OpenVR
 
 ## August 2018 - Beta
 
 The MRTK Beta release will introduce initial support for modularization. It is also when the vast majority of HoloToolkit features will be added. Supported platforms will be unchanged from the Alpha release.
 
-| It is important to note that the goal is feature parity and **not** zero app code change. There will be consolidation of duplicated functionality as well as namespace, component and API changes.
+> It is important to note that the goal is feature parity and **not** zero app code change. There will be consolidation of duplicated functionality as well as namespace, component and API changes.
 
 The theme(s) for the Beta release are
 
@@ -68,8 +67,8 @@ The theme(s) for the Beta release are
 Supported platforms 
 
 - Windows Mixed Reality
-    - Microsoft HoloLens
     - Immersive Headsets
+    - Microsoft HoloLens
 - OpenVR
 
 ## September 2018 - First Release
@@ -85,8 +84,8 @@ The theme(s) for the 2018.9.0.0 release are
 Supported platforms 
 
 - Windows Mixed Reality
-    - Microsoft HoloLens
     - Immersive Headsets
+    - Microsoft HoloLens
 - OpenVR
 
 ## October 2018
@@ -103,8 +102,8 @@ The theme(s) for the 2018.10.0.0 release are
 Supported platforms
 
 - Windows Mixed Reality
-    - Microsoft HoloLens
     - Immersive Headsets
+    - Microsoft HoloLens
 - OpenVR
 - Phone based AR
     - ARKit
@@ -122,8 +121,8 @@ The theme(s) for the 2018.11.0.0 release are
 Supported platforms
 
 - Windows Mixed Reality
-    - Microsoft HoloLens
     - Immersive Headsets
+    - Microsoft HoloLens
 - OpenVR
 - Phone based AR
     - ARKit
