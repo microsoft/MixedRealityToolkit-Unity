@@ -42,6 +42,6 @@ You might have had the OnSelect function or some other method name responding to
 ###How to handle the navigation gesture?
 
 1. In your MonoBehavior, implement the interface called INavigationHandler. These events will get raised for navigation events.
-2. The event data inside the event handler will provide navigation offset to take your action.
+2. The event data inside the event handler provides navigation offsets.
 
 **Refer to test scene: Assets\HoloToolkit-Examples\Input\Tests\Scenes\InputNavigationRotateTest.unity**
