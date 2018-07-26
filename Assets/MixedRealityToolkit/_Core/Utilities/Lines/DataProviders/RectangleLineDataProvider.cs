@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
-    public class Rectangle : LineBase
+    public class RectangleLineDataProvider : BaseMixedRealityLineDataProvider
     {
         public override int PointCount => 8;
 
@@ -15,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             {
                 // Force to loop
                 Loops = true;
-                return base.Loops;
+                return true;
             }
         }
 
@@ -163,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             }
 
             // Only draw a gizmo if we don't have a line renderer
-            var baseLineRenderer = gameObject.GetComponent<LineRendererBase>();
+            var baseLineRenderer = gameObject.GetComponent<BaseMixedRealityLineRenderer>();
 
             if (baseLineRenderer != null)
             {

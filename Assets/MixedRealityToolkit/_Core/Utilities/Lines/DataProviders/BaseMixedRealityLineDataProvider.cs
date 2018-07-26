@@ -2,13 +2,17 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Distorters;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
-    public abstract class LineBase : MonoBehaviour
+    /// <summary>
+    /// Base class that provides data about a line that can be used by a line renderer.
+    /// </summary>
+    public abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {
         private const float MinRotationMagnitude = 0.0001f;
 
@@ -21,23 +25,82 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         [Tooltip("Clamps the line's normalized start point. This setting will affect line renderers.")]
         private float lineStartClamp = 0f;
 
+        /// <summary>
+        /// Clamps the line's normalized start point. This setting will affect line renderers.
+        /// </summary>
+        public float LineStartClamp
+        {
+            get { return lineStartClamp; }
+            set
+            {
+                if (value < 0f)
+                {
+                    lineStartClamp = 0f;
+                }
+                else if (value > 1f)
+                {
+                    lineStartClamp = 1f;
+                }
+                else
+                {
+                    lineStartClamp = value;
+                }
+            }
+        }
+
         [Range(0f, 1f)]
         [SerializeField]
         [Tooltip("Clamps the line's normalized end point. This setting will affect line renderers.")]
         private float lineEndClamp = 1f;
 
+        /// <summary>
+        /// Clamps the line's normalized end point. This setting will affect line renderers.
+        /// </summary>
+        public float LineEndClamp
+        {
+            get { return lineEndClamp; }
+            set
+            {
+                if (value < 0f)
+                {
+                    lineEndClamp = 0f;
+                }
+                else if (value > 1f)
+                {
+                    lineEndClamp = 1f;
+                }
+                else
+                {
+                    lineEndClamp = value;
+                }
+            }
+        }
+
         [SerializeField]
         [Tooltip("Transform to use when translating points from local to world space. If null, this object's transform is used.")]
         private Transform customLineTransform;
+
+        /// <summary>
+        /// Transform to use when translating points from local to world space. If null, this object's transform is used.
+        /// </summary>
+        public Transform LineTransform
+        {
+            get { return customLineTransform != null ? customLineTransform : transform; }
+            set { customLineTransform = value; }
+        }
 
         [SerializeField]
         [Tooltip("Controls whether this line loops (Note: some classes override this setting)")]
         private bool loops = false;
 
+        /// <summary>
+        /// Controls whether this line loops
+        /// </summary>
+        /// <remarks>Some classes override this setting.</remarks>
         public virtual bool Loops
         {
             get { return loops; }
-            protected set { loops = value; }
+            set { loops = value; }
         }
 
         [Header("Rotation")]
@@ -46,27 +109,112 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         [Tooltip("The rotation mode used in the GetRotation function. You can visualize rotations by checking Draw Rotations under Editor Settings.")]
         private LineRotationType rotationType = LineRotationType.Velocity;
 
+        /// <summary>
+        /// The rotation mode used in the GetRotation function. You can visualize rotations by checking Draw Rotations under Editor Settings.
+        /// </summary>
+        public LineRotationType RotationType
+        {
+            get { return rotationType; }
+            set { rotationType = value; }
+        }
+
         [SerializeField]
         [Tooltip("Reverses up vector when determining rotation along line")]
         private bool flipUpVector = false;
 
+        /// <summary>
+        /// Reverses up vector when determining rotation along line
+        /// </summary>
+        public bool FlipUpVector
+        {
+            get { return flipUpVector; }
+            set { flipUpVector = value; }
+        }
+
         [SerializeField]
         [Tooltip("Local space offset to transform position. Used to determine rotation along line in RelativeToOrigin rotation mode")]
         private Vector3 originOffset = Vector3.zero;
+
+        /// <summary>
+        /// Local space offset to transform position. Used to determine rotation along line in RelativeToOrigin rotation mode
+        /// </summary>
+        public Vector3 OriginOffset
+        {
+            get { return originOffset; }
+            set { originOffset = value; }
+        }
 
         [Range(0f, 1f)]
         [SerializeField]
         [Tooltip("The weight of manual up vectors in Velocity rotation mode")]
         private float manualUpVectorBlend = 0f;
 
+        /// <summary>
+        /// The weight of manual up vectors in Velocity rotation mode
+        /// </summary>
+        public float ManualUpVectorBlend
+        {
+            get { return manualUpVectorBlend; }
+            set
+            {
+                if (value < 0f)
+                {
+                    manualUpVectorBlend = 0f;
+                }
+                else if (value > 1f)
+                {
+                    manualUpVectorBlend = 1;
+                }
+                else
+                {
+                    manualUpVectorBlend = value;
+                }
+            }
+        }
+
         [SerializeField]
         [Tooltip("These vectors are used with ManualUpVectorBlend to determine rotation along the line in Velocity rotation mode. Vectors are distributed along the normalized length of the line.")]
         private Vector3[] manualUpVectors = { Vector3.up, Vector3.up, Vector3.up };
+
+        /// <summary>
+        /// These vectors are used with ManualUpVectorBlend to determine rotation along the line in Velocity rotation mode. Vectors are distributed along the normalized length of the line.
+        /// </summary>
+        public Vector3[] ManualUpVectors
+        {
+            get { return manualUpVectors; }
+            set { manualUpVectors = value; }
+        }
 
         [SerializeField]
         [Range(0.0001f, 0.1f)]
         [Tooltip("Used in Velocity rotation mode. Smaller values are more accurate but more expensive")]
         private float velocitySearchRange = 0.02f;
+
+        /// <summary>
+        /// Used in Velocity rotation mode. 
+        /// </summary>
+        /// <remarks>
+        /// Smaller values are more accurate but more expensive
+        /// </remarks>
+        public float VelocitySearchRange
+        {
+            get { return velocitySearchRange; }
+            set
+            {
+                if (value < 0.0001f)
+                {
+                    velocitySearchRange = 0.0001f;
+                }
+                else if (value > 0.1f)
+                {
+                    velocitySearchRange = 0.1f;
+                }
+                else
+                {
+                    velocitySearchRange = value;
+                }
+            }
+        }
 
         [Header("Distortion")]
 
@@ -74,16 +222,76 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         [Tooltip("NormalizedLength mode uses the DistortionStrength curve for distortion strength, Uniform uses UniformDistortionStrength along entire line")]
         private DistortionType distortionType = DistortionType.NormalizedLength;
 
+        /// <summary>
+        /// NormalizedLength mode uses the DistortionStrength curve for distortion strength, Uniform uses UniformDistortionStrength along entire line
+        /// </summary>
+        public DistortionType DistortionType
+        {
+            get { return distortionType; }
+            set { distortionType = value; }
+        }
+
         [SerializeField]
         private AnimationCurve distortionStrength = AnimationCurve.Linear(0f, 1f, 1f, 1f);
+
+        public AnimationCurve DistortionStrength
+        {
+            get { return distortionStrength; }
+            set { distortionStrength = value; }
+        }
 
         [Range(0f, 1f)]
         [SerializeField]
         private float uniformDistortionStrength = 1f;
 
+        public float UniformDistortionStrength
+        {
+            get { return uniformDistortionStrength; }
+            set
+            {
+                if (value < 0f)
+                {
+                    uniformDistortionStrength = 0f;
+                }
+                else if (value > 1f)
+                {
+                    uniformDistortionStrength = 1f;
+                }
+                else
+                {
+                    uniformDistortionStrength = value;
+                }
+            }
+        }
+
         [SerializeField]
         [Tooltip("A list of distorters that apply to this line")]
         private List<Distorter> distorters = new List<Distorter>();
+
+        /// <summary>
+        /// A list of distorters that apply to this line
+        /// </summary>
+        public List<Distorter> Distorters
+        {
+            get { return distorters; }
+            set
+            {
+                distorters = value;
+                distorters.Sort();
+            }
+        }
+
+        public Vector3 FirstPoint
+        {
+            get { return GetPoint(0); }
+            set { SetPoint(0, value); }
+        }
+
+        public Vector3 LastPoint
+        {
+            get { return GetPoint(PointCount - 1); }
+            set { SetPoint(PointCount - 1, value); }
+        }
 
         /// <summary>
         /// The number of points this line has.
@@ -129,20 +337,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         /// <returns></returns>
         protected abstract float GetUnClampedWorldLengthInternal();
 
-        public Vector3 FirstPoint
-        {
-            get { return GetPoint(0); }
-            set { SetPoint(0, value); }
-        }
-
-        public Vector3 LastPoint
-        {
-            get { return GetPoint(PointCount - 1); }
-            set { SetPoint(PointCount - 1, value); }
-        }
-
-        public Transform LineTransform => customLineTransform != null ? customLineTransform : transform;
-
+        /// <summary>
+        /// Add a distorter to the line.
+        /// </summary>
+        /// <param name="newDistorter"></param>
         public void AddDistorter(Distorter newDistorter)
         {
             if (!distorters.Contains(newDistorter))
@@ -336,14 +534,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             SetPointInternal(pointIndex, LineTransform.InverseTransformPoint(point));
         }
 
+        /// <summary>
+        /// Append point to the end of the line.
+        /// </summary>
+        /// <param name="point"></param>
         public virtual void AppendPoint(Vector3 point)
         {
             // Does nothing by default
-        }
-
-        protected virtual void OnEnable()
-        {
-            distorters.Sort();
         }
 
         private Vector3 DistortPoint(Vector3 point, float normalizedLength)
@@ -372,6 +569,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             return Mathf.Lerp(Mathf.Max(lineStartClamp, 0.0001f), Mathf.Min(lineEndClamp, 0.9999f), Mathf.Clamp01(normalizedLength));
         }
 
+        protected virtual void OnEnable()
+        {
+            distorters.Sort();
+        }
+
 #if UNITY_EDITOR
         protected virtual void OnDrawGizmos()
         {
@@ -384,7 +586,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             }
 
             // Only draw a gizmo if we don't have a line renderer
-            var lineRenderer = gameObject.GetComponent<LineRendererBase>();
+            var lineRenderer = gameObject.GetComponent<BaseMixedRealityLineRenderer>();
 
             if (lineRenderer != null)
             {

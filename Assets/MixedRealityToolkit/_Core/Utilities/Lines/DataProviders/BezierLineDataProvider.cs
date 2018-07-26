@@ -4,9 +4,9 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
-    public class Bezier : LineBase
+    public class BezierLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [Serializable]
         private struct PointSet

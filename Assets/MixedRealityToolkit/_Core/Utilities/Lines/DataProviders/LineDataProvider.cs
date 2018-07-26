@@ -3,11 +3,11 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
-    public class Line : LineBase
+    public class LineDataProvider : BaseMixedRealityLineDataProvider
     {
-        [Header("Line Settings")]
+        [Header("LineDataProvider Settings")]
 
         [SerializeField]
         private Vector3 start = Vector3.zero;

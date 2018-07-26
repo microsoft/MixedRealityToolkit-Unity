@@ -3,9 +3,9 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
-    public class Ellipse : LineBase
+    public class EllipseLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [Header("Ellipse Settings")]
 

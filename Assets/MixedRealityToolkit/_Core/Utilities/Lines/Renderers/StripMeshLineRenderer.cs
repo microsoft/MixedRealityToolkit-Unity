@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 {
-    public class LineStripMesh : LineRendererBase
+    public class StripMeshLineRenderer : BaseMixedRealityLineRenderer
     {
         [Header("Strip Mesh Settings")]
         public Material LineMaterial;
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         {
             if (LineMaterial == null)
             {
-                Debug.LogError("Line material cannot be null.");
+                Debug.LogError("LineDataProvider material cannot be null.");
                 enabled = false;
                 return;
             }

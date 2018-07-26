@@ -4,10 +4,10 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
     [DisallowMultipleComponent]
-    public class LineObjectCollection : LineBase
+    public class ObjectCollectionLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
         private Transform[] objects = null;
@@ -116,11 +116,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         {
             if (lineCollectionRoot == null)
             {
-                lineCollectionRoot = transform.Find("Line Object Collection");
+                lineCollectionRoot = transform.Find("LineDataProvider Object Collection");
 
                 if (lineCollectionRoot == null)
                 {
-                    lineCollectionRoot = new GameObject("Line Object Collection").transform;
+                    lineCollectionRoot = new GameObject("LineDataProvider Object Collection").transform;
                     lineCollectionRoot.parent = transform;
                 }
             }

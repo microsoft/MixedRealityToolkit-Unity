@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 {
-    public class LineMeshes : LineRendererBase
+    public class MeshLineRenderer : BaseMixedRealityLineRenderer
     {
         private const string InvisibleShaderName = "MixedRealityToolkit/InvisibleShader";
 
@@ -94,12 +94,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         {
             if (lineMaterial == null)
             {
-                Debug.LogError("Line material cannot be null.");
+                Debug.LogError("LineDataProvider material cannot be null.");
             }
 
             if (lineMesh == null)
             {
-                Debug.LogError("Line mesh cannot be null.");
+                Debug.LogError("LineDataProvider mesh cannot be null.");
             }
 
             if (renderedMaterial == null)
@@ -123,14 +123,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         {
             if (lineMaterial == null)
             {
-                Debug.LogError("Line material cannot be null.");
+                Debug.LogError("LineDataProvider material cannot be null.");
                 enabled = false;
                 return;
             }
 
             if (lineMesh == null)
             {
-                Debug.LogError("Line mesh cannot be null.");
+                Debug.LogError("LineDataProvider mesh cannot be null.");
                 enabled = false;
                 return;
             }
@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
 
             if (!cameras.TryGetValue(currentCamera, out buffer))
             {
-                buffer = new CommandBuffer { name = $"Line Mesh Renderer {currentCamera.name}" };
+                buffer = new CommandBuffer { name = $"LineDataProvider Mesh Renderer {currentCamera.name}" };
                 currentCamera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, buffer);
                 cameras.Add(currentCamera, buffer);
             }

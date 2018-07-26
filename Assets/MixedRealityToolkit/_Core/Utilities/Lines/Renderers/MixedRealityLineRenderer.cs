@@ -5,16 +5,16 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 {
-    public class UnityLine : LineRendererBase
+    public class MixedRealityLineRenderer : BaseMixedRealityLineRenderer
     {
         private const string DefaultLineShader = "Particles/Alpha Blended";
         private const string DefaultLineShaderColor = "_TintColor";
 
-        [Header("UnityLine Settings")]
+        [Header("MixedRealityLineRenderer Settings")]
         [SerializeField]
-        [Tooltip("The material to use for the Unity LineRenderer (will be auto-generated if null)")]
+        [Tooltip("The material to use for the Unity MixedRealityLineRenderer (will be auto-generated if null)")]
         private Material lineMaterial = null;
 
         public Material LineMaterial
@@ -43,13 +43,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
 
         [SerializeField]
         [HideInInspector]
-        private LineRenderer lineRenderer;
+        private UnityEngine.LineRenderer lineRenderer;
 
         private Vector3[] positions;
 
         private void OnValidate()
         {
-            lineRenderer = gameObject.EnsureComponent<LineRenderer>();
+            lineRenderer = gameObject.EnsureComponent<UnityEngine.LineRenderer>();
         }
 
         protected void OnEnable()

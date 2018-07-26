@@ -3,12 +3,20 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
-    public abstract class Parabola : LineBase
+    public abstract class ParabolaLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [Header("Parabola Settings")]
-        public Vector3 Start = Vector3.zero;
+
+        [SerializeField]
+        private Vector3 start = Vector3.zero;
+
+        public Vector3 Start
+        {
+            get { return start; }
+            set { start = value; }
+        }
 
         protected override float GetUnClampedWorldLengthInternal()
         {
@@ -21,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
                 Vector3 current = GetUnClampedPoint((float)i / 10);
                 distance += Vector3.Distance(last, current);
             }
+
             return distance;
         }
 

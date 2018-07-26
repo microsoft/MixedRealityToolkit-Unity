@@ -4,16 +4,22 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
     [ExecuteInEditMode]
-    public class LineObjectSwarm : LineBase
+    public class ObjectSwarmLineDataProvider : BaseMixedRealityLineDataProvider
     {
         private const int RandomValueResolution = 1024;
         private readonly FastSimplexNoise noise = new FastSimplexNoise();
 
         [SerializeField]
         private Transform[] objects;
+
+        public Transform[] Objects
+        {
+            get { return objects; }
+            set { objects = value; }
+        }
 
         private Vector3[] swarmPoints;
 
@@ -50,20 +56,56 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         [SerializeField]
         private float scaleMultiplier = 10f;
 
+        public float ScaleMultiplier
+        {
+            get { return scaleMultiplier; }
+            set { scaleMultiplier = value; }
+        }
+
         [SerializeField]
         private float speedMultiplier = 1f;
+
+        public float SpeedMultiplier
+        {
+            get { return speedMultiplier; }
+            set { speedMultiplier = value; }
+        }
 
         [SerializeField]
         private float strengthMultiplier = 0.5f;
 
+        public float StrengthMultiplier
+        {
+            get { return strengthMultiplier; }
+            set { strengthMultiplier = value; }
+        }
+
         [SerializeField]
         private Vector3 axisStrength = Vector3.one;
+
+        public Vector3 AxisStrength
+        {
+            get { return axisStrength; }
+            set { axisStrength = value; }
+        }
 
         [SerializeField]
         private Vector3 axisSpeed = Vector3.one;
 
+        public Vector3 AxisSpeed
+        {
+            get { return axisSpeed; }
+            set { axisSpeed = value; }
+        }
+
         [SerializeField]
         private Vector3 axisOffset = Vector3.zero;
+
+        public Vector3 AxisOffset
+        {
+            get { return axisOffset; }
+            set { axisOffset = value; }
+        }
 
         [Header("Swarm Settings")]
 

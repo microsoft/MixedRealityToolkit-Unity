@@ -2,23 +2,24 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 {
-    public abstract class LineRendererBase : MonoBehaviour
+    public abstract class BaseMixedRealityLineRenderer : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("The source Line this component will render")]
-        private LineBase source;
+        [Tooltip("The source LineDataProvider this component will render")]
+        private BaseMixedRealityLineDataProvider source;
 
-        public LineBase Source
+        public BaseMixedRealityLineDataProvider Source
         {
             get
             {
                 if (source == null)
                 {
-                    source = GetComponent<LineBase>();
+                    source = GetComponent<BaseMixedRealityLineDataProvider>();
                 }
 
                 enabled = source != null;
@@ -137,11 +138,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         [Header("Point Placement")]
 
         [SerializeField]
-        [Tooltip("Method for gathering points along line. Interpolated uses normalized length. FromSource uses line's base points. (FromSource may not look right for all Line types.)")]
+        [Tooltip("Method for gathering points along line. Interpolated uses normalized length. FromSource uses line's base points. (FromSource may not look right for all LineDataProvider types.)")]
         private StepMode stepMode = StepMode.Interpolated;
 
         /// <summary>
-        /// Method for gathering points along line. Interpolated uses normalized length. FromSource uses line's base points. (FromSource may not look right for all Line types.)
+        /// Method for gathering points along line. Interpolated uses normalized length. FromSource uses line's base points. (FromSource may not look right for all LineDataProvider types.)
         /// </summary>
         public StepMode StepMode
         {
@@ -214,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
 
             if (source == null)
             {
-                source = gameObject.GetComponent<LineBase>();
+                source = gameObject.GetComponent<BaseMixedRealityLineDataProvider>();
 
             }
 
@@ -226,7 +227,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             GizmosDrawLineRenderer(source, this);
         }
 
-        private static void GizmosDrawLineRenderer(LineBase source, LineRendererBase renderer)
+        private static void GizmosDrawLineRenderer(BaseMixedRealityLineDataProvider source, BaseMixedRealityLineRenderer renderer)
         {
             if (renderer.stepMode == StepMode.FromSource)
             {
@@ -238,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             }
         }
 
-        private static void GizmosDrawLineFromSource(LineBase source, LineRendererBase renderer)
+        private static void GizmosDrawLineFromSource(BaseMixedRealityLineDataProvider source, BaseMixedRealityLineRenderer renderer)
         {
             Vector3 firstPos = source.GetPoint(0);
             Vector3 lastPos = firstPos;
@@ -266,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             }
         }
 
-        private static void GizmosDrawLineInterpolated(LineBase source, LineRendererBase renderer)
+        private static void GizmosDrawLineInterpolated(BaseMixedRealityLineDataProvider source, BaseMixedRealityLineRenderer renderer)
         {
             Vector3 firstPos = source.GetPoint(0f);
             Vector3 lastPos = firstPos;

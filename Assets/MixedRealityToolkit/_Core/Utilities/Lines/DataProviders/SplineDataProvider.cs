@@ -5,9 +5,9 @@ using System;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
-    public class Spline : LineBase
+    public class SplineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
         [Header("Spline Settings")]

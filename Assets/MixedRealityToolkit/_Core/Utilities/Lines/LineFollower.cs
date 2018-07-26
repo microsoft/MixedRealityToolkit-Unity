@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
 {
     [ExecuteInEditMode]
-    [RequireComponent(typeof(LineBase))]
+    [RequireComponent(typeof(BaseMixedRealityLineDataProvider))]
     public class LineFollower : MonoBehaviour
     {
         [SerializeField]
@@ -20,13 +21,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
 
         [SerializeField]
         [HideInInspector]
-        private LineBase source = null;
+        private BaseMixedRealityLineDataProvider source = null;
 
         private void OnValidate()
         {
             if (source == null)
             {
-                source = GetComponent<LineBase>();
+                source = GetComponent<BaseMixedRealityLineDataProvider>();
             }
         }
 
