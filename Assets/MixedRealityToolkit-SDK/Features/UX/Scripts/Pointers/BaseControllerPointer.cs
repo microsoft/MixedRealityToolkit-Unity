@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     /// <summary>
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
-    public abstract class BaseControllerPointer : AttachToController, IMixedRealityInputHandler, IMixedRealityPointer
+    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityInputHandler, IMixedRealityPointer
     {
         IMixedRealityInputSystem IMixedRealityPointer.InputSystem => InputSystem;
 
