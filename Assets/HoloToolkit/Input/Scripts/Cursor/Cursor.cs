@@ -294,9 +294,9 @@ namespace HoloToolkit.Unity.InputModule
             {
                 TargetedObject = newFocusedObject;
 
-                CursorModifier newModifier = (newFocusedObject == null)
+                ICursorModifier newModifier = (newFocusedObject == null)
                     ? null
-                    : newFocusedObject.GetComponent<CursorModifier>();
+                    : newFocusedObject.GetComponent<ICursorModifier>();
 
                 OnActiveModifier(newModifier);
             }
@@ -306,7 +306,7 @@ namespace HoloToolkit.Unity.InputModule
         /// Override function when a new modifier is found or no modifier is valid
         /// </summary>
         /// <param name="modifier"></param>
-        protected virtual void OnActiveModifier(CursorModifier modifier)
+        protected virtual void OnActiveModifier(ICursorModifier modifier)
         {
             TargetedCursorModifier = modifier;
         }

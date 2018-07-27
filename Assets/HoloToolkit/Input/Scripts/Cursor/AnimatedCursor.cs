@@ -69,19 +69,27 @@ namespace HoloToolkit.Unity.InputModule
         /// Override to set the cursor animation trigger
         /// </summary>
         /// <param name="modifier"></param>
-        protected override void OnActiveModifier(CursorModifier modifier)
+        protected override void OnActiveModifier(ICursorModifier cursorModifier)
         {
-            base.OnActiveModifier(modifier);
+            base.OnActiveModifier(cursorModifier);
 
-            if (modifier != null)
+            if (cursorModifier != null)
             {
-                if ((modifier.CursorParameters != null) && (modifier.CursorParameters.Length > 0))
+                if (cursorModifier is CursorModifier)
                 {
-                    OnCursorStateChange(CursorStateEnum.Contextual);
-                    foreach (var param in modifier.CursorParameters)
+                    CursorModifier modifier = cursorModifier as CursorModifier;
+                    if ((modifier.CursorParameters != null) && (modifier.CursorParameters.Length > 0))
                     {
-                        SetAnimatorParameter(param);
+                        OnCursorStateChange(CursorStateEnum.Contextual);
+                        foreach (var param in modifier.CursorParameters)
+                        {
+                            SetAnimatorParameter(param);
+                        }
                     }
+                }
+                else
+                {
+                    OnCursorStateChange(CursorStateEnum.None);
                 }
             }
             else
