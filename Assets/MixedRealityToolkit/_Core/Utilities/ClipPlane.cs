@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         /// The renderer(s) that should be affected by the clip plane.
         /// </summary>
         [SerializeField]
-        private Renderer[] renderers;
+        private Renderer[] renderers = null;
 
         private int clipPlaneID;
         private MaterialPropertyBlock materialPropertyBlock;
