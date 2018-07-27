@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
+namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 {
     [CustomEditor(typeof(PointerClickHandler))]
     public class PointerClickHandlerInspector : BaseInputHandlerInspector
