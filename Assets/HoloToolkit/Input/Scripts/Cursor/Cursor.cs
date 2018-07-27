@@ -306,9 +306,27 @@ namespace HoloToolkit.Unity.InputModule
         /// Override function when a new modifier is found or no modifier is valid
         /// </summary>
         /// <param name="modifier"></param>
-        protected virtual void OnActiveModifier(ICursorModifier modifier)
+        [System.Obsolete("Use OnActiveModifier(ICursorModifier modifier) instead.")]
+        protected virtual void OnActiveModifier(CursorModifier modifier)
         {
             TargetedCursorModifier = modifier;
+        }
+
+        /// <summary>
+        /// Override function when a new modifier is found or no modifier is valid
+        /// </summary>
+        /// <param name="modifier"></param>
+        protected virtual void OnActiveModifier(ICursorModifier modifier)
+        {
+            CursorModifier cursorModifier = modifier as CursorModifier;
+            if (cursorModifier != null)
+            {
+                OnActiveModifier(cursorModifier);
+            }
+            else
+            {
+                TargetedCursorModifier = modifier;
+            }
         }
 
         /// <summary>
