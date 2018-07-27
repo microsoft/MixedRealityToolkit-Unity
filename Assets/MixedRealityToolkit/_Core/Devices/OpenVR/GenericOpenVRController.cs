@@ -182,6 +182,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
             XRNode nodeType = state.nodeType;
 
+            lastControllerPose = currentControllerPose;
+
             if (nodeType == XRNode.LeftHand || nodeType == XRNode.RightHand)
             {
                 // The source is either a hand or a controller that supports pointing.
@@ -196,8 +198,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
                 if (CameraCache.Main.transform.parent != null)
                 {
-                    currentControllerPose.Position = CameraCache.Main.transform.parent.TransformPoint(currentControllerPosition);
-                    currentControllerPose.Rotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentControllerRotation.eulerAngles));
+                    currentControllerPosition = CameraCache.Main.transform.parent.TransformPoint(currentControllerPosition);
+                    currentControllerRotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentControllerRotation.eulerAngles));
                 }
             }
             else
@@ -206,7 +208,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                 TrackingState = TrackingState.NotApplicable;
             }
 
-            lastControllerPose = currentControllerPose;
             currentControllerPose.Position = currentControllerPosition;
             currentControllerPose.Rotation = currentControllerRotation;
 
