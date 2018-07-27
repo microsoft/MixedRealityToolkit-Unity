@@ -6,10 +6,9 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.SDK.Input;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
+namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 {
     /// <summary>
     /// Waits for a controller to be initialized, then synchronizes its transform position to a specified handedness.

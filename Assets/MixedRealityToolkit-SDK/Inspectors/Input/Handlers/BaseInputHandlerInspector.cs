@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors
+namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 {
     public class BaseInputHandlerInspector : Editor
     {

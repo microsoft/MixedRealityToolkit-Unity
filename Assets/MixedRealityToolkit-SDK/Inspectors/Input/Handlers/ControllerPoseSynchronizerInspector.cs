@@ -2,15 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.SDK.UX.MotionController;
+using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.MotionController
+namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 {
     [CustomEditor(typeof(ControllerPoseSynchronizer))]
     public class ControllerPoseSynchronizerInspector : Editor
     {
-        private static readonly string[] handednessLabels = { "Left", "Right" };
+        private static readonly string[] HandednessLabels = { "Left", "Right" };
 
         private SerializedProperty handedness;
         private SerializedProperty disableChildren;
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.MotionController
             var handIndex = currentHandedness == Handedness.Right ? 1 : 0;
 
             EditorGUI.BeginChangeCheck();
-            var newHandednessIndex = EditorGUILayout.Popup(handedness.displayName, handIndex, handednessLabels);
+            var newHandednessIndex = EditorGUILayout.Popup(handedness.displayName, handIndex, HandednessLabels);
 
             if (EditorGUI.EndChangeCheck())
             {
