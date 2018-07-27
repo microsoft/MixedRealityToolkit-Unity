@@ -12,6 +12,8 @@ Shader "Mixed Reality Toolkit/Standard"
         _Cutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
         _Metallic("Metallic", Range(0.0, 1.0)) = 0.0
         _Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
+        [Toggle(_CHANNEL_MAP)] _EnableChannelMap("Enable Channel Map", Float) = 0.0
+        [NoScaleOffset] _ChannelMap("Channel Map", 2D) = "white" {}
         [Toggle(_NORMAL_MAP)] _EnableNormalMap("Enable Normal Map", Float) = 0.0
         [NoScaleOffset] _NormalMap("Normal Map", 2D) = "bump" {}
         [Toggle(_EMISSION)] _EnableEmission("Enable Emission", Float) = 0.0
@@ -71,6 +73,11 @@ Shader "Mixed Reality Toolkit/Standard"
         [Enum(UnityEngine.Rendering.ColorWriteMask)] _ColorWriteMask("Color Write Mask", Float) = 15 // "All"
         [Enum(UnityEngine.Rendering.CullMode)] _CullMode("Cull Mode", Float) = 2                     // "Back"
         _RenderQueueOverride("Render Queue Override", Range(-1.0, 5000)) = -1
+        [Toggle(_INSTANCED_COLOR)] _InstancedColor("Instanced Color", Float) = 0.0
+        [Toggle(_STENCIL)] _Stencil("Enable Stencil Testing", Float) = 0.0
+        _StencilReference("Stencil Reference", Range(0, 255)) = 0
+        [Enum(UnityEngine.Rendering.CompareFunction)]_StencilComparison("Stencil Comparison", Int) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]_StencilOperation("Stencil Operation", Int) = 0
     }
 
     SubShader
@@ -85,6 +92,13 @@ Shader "Mixed Reality Toolkit/Standard"
             ZWrite[_ZWrite]
             Cull[_CullMode]
             ColorMask[_ColorWriteMask]
+
+            Stencil
+            {
+                Ref[_StencilReference]
+                Comp[_StencilComparison]
+                Pass[_StencilOperation]
+            }
 
             CGPROGRAM
 
@@ -101,6 +115,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON
             #pragma shader_feature _DISABLE_ALBEDO_MAP
             #pragma shader_feature _ _METALLIC_TEXTURE_ALBEDO_CHANNEL_A _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature _CHANNEL_MAP            
             #pragma shader_feature _NORMAL_MAP
             #pragma shader_feature _EMISSION
             #pragma shader_feature _DIRECTIONAL_LIGHT
@@ -121,8 +136,9 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _BORDER_LIGHT_OPAQUE
             #pragma shader_feature _INNER_GLOW
             #pragma shader_feature _ENVIRONMENT_COLORING
+            #pragma shader_feature _INSTANCED_COLOR
 
-            #define IF(a, b, c) lerp(b, c, step((fixed) (a), 0.0));
+            #define IF(a, b, c) lerp(b, c, step((fixed) (a), 0.0)); 
 
             #include "UnityCG.cginc"
             #include "UnityStandardConfig.cginc"
@@ -170,6 +186,12 @@ Shader "Mixed Reality Toolkit/Standard"
             #undef _DISTANCE_TO_EDGE
 #endif
 
+#if !defined(_DISABLE_ALBEDO_MAP) || defined(_CHANNEL_MAP) || defined(_NORMAL_MAP) || defined(_DISTANCE_TO_EDGE)
+            #define _UV
+#else
+            #undef _UV
+#endif
+
             struct appdata_t
             {
                 float4 vertex : POSITION;
@@ -189,7 +211,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 float4 position : SV_POSITION;
 #if defined(_BORDER_LIGHT)
                 float4 uv : TEXCOORD0;
-#elif !defined(_DISABLE_ALBEDO_MAP) || defined(_NORMAL_MAP) || defined(_DISTANCE_TO_EDGE)
+#elif defined(_UV)
                 float2 uv : TEXCOORD0;
 #endif
 #if defined(LIGHTMAP_ON)
@@ -215,9 +237,18 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 #endif
                 UNITY_VERTEX_OUTPUT_STEREO
+#if defined(_INSTANCED_COLOR)
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+#endif
             };
 
+#if defined(_INSTANCED_COLOR)
+            UNITY_INSTANCING_BUFFER_START(Props)
+            UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
+            UNITY_INSTANCING_BUFFER_END(Props)
+#else
             fixed4 _Color;
+#endif
             sampler2D _MainTex;
             fixed4 _MainTex_ST;
 
@@ -227,6 +258,10 @@ Shader "Mixed Reality Toolkit/Standard"
 
             fixed _Metallic;
             fixed _Smoothness;
+
+#if defined(_CHANNEL_MAP)
+            sampler2D _ChannelMap;
+#endif
 
 #if defined(_NORMAL_MAP)
             sampler2D _NormalMap;
@@ -351,6 +386,9 @@ Shader "Mixed Reality Toolkit/Standard"
                 v2f o;
                 UNITY_SETUP_INSTANCE_ID(v);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+#if defined(_INSTANCED_COLOR)
+                UNITY_TRANSFER_INSTANCE_ID(v, o);
+#endif
                 o.position = UnityObjectToClipPos(v.vertex);
 
 #if defined(_WORLD_POSITION)
@@ -426,11 +464,10 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_BORDER_LIGHT) 
                 float scaleRatio = min(o.scale.x, o.scale.y) / max(o.scale.x, o.scale.y);
-
                 o.uv.z = IF(o.scale.x > o.scale.y, 1.0 - (borderWidth * scaleRatio), 1.0 - borderWidth);
                 o.uv.w = IF(o.scale.x > o.scale.y, 1.0 - borderWidth, 1.0 - (borderWidth * scaleRatio));
 #endif
-#elif !defined(_DISABLE_ALBEDO_MAP) || defined(_NORMAL_MAP) || defined(_DISTANCE_TO_EDGE)
+#elif defined(_UV)
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 #endif
 
@@ -461,6 +498,9 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
             fixed4 frag(v2f i) : SV_Target
             {
+#if defined(_INSTANCED_COLOR)
+                UNITY_SETUP_INSTANCE_ID(i);
+#endif
                 // Texturing.
 #if defined(_DISABLE_ALBEDO_MAP)
                 fixed4 albedo = fixed4(1.0, 1.0, 1.0, 1.0);
@@ -472,6 +512,12 @@ Shader "Mixed Reality Toolkit/Standard"
                 albedo.rgb *= DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.lightMapUV));
 #endif
 
+#if defined(_CHANNEL_MAP)
+                fixed4 channel = tex2D(_ChannelMap, i.uv);
+                _Metallic = channel.r;
+                albedo *= channel.g;
+                _Smoothness = channel.a * 2.0;
+#else
 #if defined(_METALLIC_TEXTURE_ALBEDO_CHANNEL_A)
                 _Metallic = albedo.a;
                 albedo.a = 1.0;
@@ -479,7 +525,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 _Smoothness = albedo.a;
                 albedo.a = 1.0;
 #endif 
-
+#endif
                 // Plane clipping.
 #if defined(_CLIPPING_PLANE)
                 float planeDistance = PointVsPlane(i.worldPosition.xyz, _ClipPlane);
@@ -511,7 +557,11 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed roundCornerClip = RoundCorners(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
 #endif
 
+#if defined(_INSTANCED_COLOR)
+                albedo *= UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
+#else
                 albedo *= _Color;
+#endif
 
                 // Hover light.
 #if defined(_HOVER_LIGHT)
@@ -652,7 +702,11 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_EMISSION)
+#if defined(_CHANNEL_MAP)
+                output.rgb += _EmissiveColor * channel.b;
+#else
                 output.rgb += _EmissiveColor;
+#endif
 #endif
 
                 // Inner glow.
