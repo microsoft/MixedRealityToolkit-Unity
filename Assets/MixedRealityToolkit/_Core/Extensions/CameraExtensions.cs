@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
             float horizontalFovHalf = camera.GetHorizontalFieldOfViewRadians() * Mathf.Rad2Deg * 0.5f;
 
             Vector3 deltaPos = position - camera.transform.position;
-            Vector3 headDeltaPos = MathUtils.TransformDirectionFromTo(null, camera.transform, deltaPos).normalized;
+            Vector3 headDeltaPos = MathUtilities.TransformDirectionFromTo(null, camera.transform, deltaPos).normalized;
 
             float yaw = Mathf.Asin(headDeltaPos.x) * Mathf.Rad2Deg;
             float pitch = Mathf.Asin(headDeltaPos.y) * Mathf.Rad2Deg;

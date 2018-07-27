@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
     /// <summary>
     /// Math Utilities class.
     /// </summary>
-    public static class MathUtils
+    public static class MathUtilities
     {
         /// <summary>
         /// Takes a point in the coordinate space specified by the "from" transform and transforms it to be the correct
@@ -418,6 +418,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             Matrix4x4 sumOfProductInverse = sumOfProduct.inverse;
             Vector3 nearestPoint = sumOfProductInverse * sumOfProductTimesDirection;
             return nearestPoint;
+        }
+
+        /// <summary>
+        /// Convert degrees to radians.
+        /// </summary>
+        /// <param name="degrees">Angle, in degrees.</param>
+        /// <returns>Angle, in radians.</returns>
+        public static float DegreesToRadians(double degrees)
+        {
+            return (float)(degrees * Mathf.Deg2Rad);
+        }
+
+        /// <summary>
+        /// Convert radians to degrees.
+        /// </summary>
+        /// <param name="radians">Angle, in radians.</param>
+        /// <returns>Angle, in degrees.</returns>
+        public static float RadiansToDegrees(float radians)
+        {
+            return (radians * Mathf.Rad2Deg);
         }
     }
 }
