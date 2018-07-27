@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     case DeviceInputType.None:
                         break;
                     case DeviceInputType.SpatialPointer:
-                        UpdatePointerData(Interactions[i]);
+                        UpdatePointerData(xrNodeState, Interactions[i]);
                         break;
                     case DeviceInputType.Trigger:
                         UpdateSingleAxisData(Interactions[i]);
@@ -193,12 +193,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
                 // Devices are considered tracked if we receive position OR rotation data from the sensors.
                 TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
-
-                if (CameraCache.Main.transform.parent != null)
-                {
-                    currentControllerPose.Position = CameraCache.Main.transform.parent.TransformPoint(currentControllerPosition);
-                    currentControllerPose.Rotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentControllerRotation.eulerAngles));
-                }
             }
             else
             {
@@ -237,8 +231,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// Update Spatial Pointer Data.
         /// </summary>
         /// <param name="interactionMapping"></param>
-        protected void UpdatePointerData(MixedRealityInteractionMapping interactionMapping)
+        protected void UpdatePointerData(XRNodeState xrNodeState, MixedRealityInteractionMapping interactionMapping)
         {
+            xrNodeState.TryGetPosition(out currentControllerPosition);
+            xrNodeState.TryGetRotation(out currentControllerRotation);
+
+            if (CameraCache.Main.transform.parent != null)
+            {
+                currentControllerPose.Position = CameraCache.Main.transform.parent.TransformPoint(currentControllerPosition);
+                currentControllerPose.Rotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentControllerRotation.eulerAngles));
+            }
+
             // TODO: configure an offset pointer position for each OpenVR Controller?
             // Update the interaction data source
             interactionMapping.PoseData = currentControllerPose; // Currently no way to get pointer specific data, so we use the last controller pose.
