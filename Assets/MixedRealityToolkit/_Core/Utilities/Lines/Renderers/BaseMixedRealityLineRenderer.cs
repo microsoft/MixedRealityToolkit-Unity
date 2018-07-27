@@ -7,28 +7,43 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 {
+    [ExecuteInEditMode]
     public abstract class BaseMixedRealityLineRenderer : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("The source LineDataProvider this component will render")]
-        private BaseMixedRealityLineDataProvider source;
+        [Tooltip("The line data this component will render")]
+        private BaseMixedRealityLineDataProvider lineDataSource;
 
-        public BaseMixedRealityLineDataProvider Source
+        /// <summary>
+        /// The line data this component will render
+        /// </summary>
+        public BaseMixedRealityLineDataProvider LineDataSource
         {
             get
             {
-                if (source == null)
+                if (lineDataSource == null)
                 {
-                    source = GetComponent<BaseMixedRealityLineDataProvider>();
+                    lineDataSource = GetComponent<BaseMixedRealityLineDataProvider>();
+                    var lineDataType = lineDataSource.GetType();
+
+                    if (lineDataType == typeof(RectangleLineDataProvider))
+                    {
+                        StepMode = StepMode.FromSource;
+                    }
                 }
 
-                enabled = source != null;
-                return source;
+                if (lineDataSource == null)
+                {
+                    Debug.LogError($"Missing a Line Data Provider on {gameObject.name}");
+                    enabled = false;
+                }
+
+                return lineDataSource;
             }
             set
             {
-                source = value;
-                enabled = source != null;
+                lineDataSource = value;
+                enabled = lineDataSource != null;
             }
         }
 
@@ -36,8 +51,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 
         [SerializeField]
         [Tooltip("Color gradient applied to line's normalized length")]
-        private Gradient lineColor;
+        private Gradient lineColor = new Gradient();
 
+        /// <summary>
+        /// Color gradient applied to line's normalized length
+        /// </summary>
         public Gradient LineColor
         {
             get { return lineColor; }
@@ -45,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         }
 
         [SerializeField]
-        private AnimationCurve lineWidth = AnimationCurve.Linear(0f, 0.05f, 1f, 0.05f);
+        private AnimationCurve lineWidth = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 
         public AnimationCurve LineWidth
         {
@@ -53,9 +71,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
             set { lineWidth = value; }
         }
 
-        [Range(0f, 10f)]
+        [Range(0.01f, 10f)]
         [SerializeField]
-        private float widthMultiplier = 0.25f;
+        private float widthMultiplier = 0.01f;
 
         public float WidthMultiplier
         {
@@ -104,6 +122,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
                 {
                     colorOffset = value;
                 }
+
+
+                LineColor = new Gradient();
             }
         }
 
@@ -150,10 +171,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
             set { stepMode = value; }
         }
 
-        [Range(0, 2048)]
+        [Range(2, 2048)]
         [SerializeField]
         [Tooltip("Number of steps to interpolate along line in Interpolated step mode")]
-        private int lineStepCount = 10;
+        private int lineStepCount = 16;
 
         /// <summary>
         /// Number of steps to interpolate along line in Interpolated step mode
@@ -163,9 +184,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
             get { return lineStepCount; }
             set
             {
-                if (value < 0)
+                if (value < 2)
                 {
-                    lineStepCount = 0;
+                    lineStepCount = 2;
                 }
                 else if (value > 2048)
                 {
@@ -213,83 +234,85 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         {
             if (Application.isPlaying) { return; }
 
-            if (source == null)
+            if (lineDataSource == null)
             {
-                source = gameObject.GetComponent<BaseMixedRealityLineDataProvider>();
-
+                lineDataSource = gameObject.GetComponent<BaseMixedRealityLineDataProvider>();
             }
 
-            if (source == null || !source.enabled)
+            if (lineDataSource == null || !lineDataSource.enabled)
             {
                 return;
             }
 
-            GizmosDrawLineRenderer(source, this);
+            GizmosDrawLineRenderer();
         }
 
-        private static void GizmosDrawLineRenderer(BaseMixedRealityLineDataProvider source, BaseMixedRealityLineRenderer renderer)
+        private void GizmosDrawLineRenderer()
         {
-            if (renderer.stepMode == StepMode.FromSource)
+            if (stepMode == StepMode.FromSource)
             {
-                GizmosDrawLineFromSource(source, renderer);
+                GizmosDrawLineFromSource();
             }
             else
             {
-                GizmosDrawLineInterpolated(source, renderer);
+                GizmosDrawLineInterpolated();
             }
         }
 
-        private static void GizmosDrawLineFromSource(BaseMixedRealityLineDataProvider source, BaseMixedRealityLineRenderer renderer)
+        private void GizmosDrawLineFromSource()
         {
-            Vector3 firstPos = source.GetPoint(0);
+            Vector3 firstPos = lineDataSource.GetPoint(0);
             Vector3 lastPos = firstPos;
-            Color gColor = renderer.GetColor(0);
+            Color gColor = GetColor(0);
 
             gColor.a = 0.5f;
             Gizmos.color = gColor;
-            Gizmos.DrawSphere(firstPos, renderer.GetWidth(0) * 0.5f);
+            Gizmos.DrawSphere(firstPos, GetWidth(0) * 0.5f);
 
-            for (int i = 1; i < source.PointCount; i++)
+            for (int i = 1; i < lineDataSource.PointCount; i++)
             {
-                float normalizedLength = (1f / source.PointCount) * i;
-                Vector3 currentPos = source.GetPoint(i);
-                gColor = renderer.GetColor(normalizedLength);
+                float normalizedLength = (1f / lineDataSource.PointCount) * i;
+                Vector3 currentPos = lineDataSource.GetPoint(i);
+
+                gColor = GetColor(normalizedLength);
                 gColor.a = gColor.a * 0.5f;
                 Gizmos.color = gColor;
                 Gizmos.DrawLine(lastPos, currentPos);
-                Gizmos.DrawSphere(currentPos, renderer.GetWidth(normalizedLength) * 0.5f);
+                Gizmos.DrawSphere(currentPos, GetWidth(normalizedLength) * 0.5f);
+
                 lastPos = currentPos;
             }
 
-            if (source.Loops)
+            if (lineDataSource.Loops)
             {
                 Gizmos.DrawLine(lastPos, firstPos);
             }
         }
 
-        private static void GizmosDrawLineInterpolated(BaseMixedRealityLineDataProvider source, BaseMixedRealityLineRenderer renderer)
+        private void GizmosDrawLineInterpolated()
         {
-            Vector3 firstPos = source.GetPoint(0f);
+            Vector3 firstPos = lineDataSource.GetPoint(0f);
             Vector3 lastPos = firstPos;
-            Color gColor = renderer.GetColor(0f);
+            Color gColor = GetColor(0f);
 
             gColor.a = 0.5f;
             Gizmos.color = gColor;
-            Gizmos.DrawSphere(firstPos, renderer.GetWidth(0f) * 0.5f);
+            Gizmos.DrawSphere(firstPos, GetWidth(0f) * 0.5f);
 
-            for (int i = 1; i <= renderer.lineStepCount; i++)
+            for (int i = 1; i <= lineStepCount; i++)
             {
-                float normalizedLength = (1f / renderer.lineStepCount) * i;
-                Vector3 currentPos = source.GetPoint(normalizedLength);
-                gColor = renderer.GetColor(normalizedLength);
+                float normalizedLength = (1f / lineStepCount) * i;
+                Vector3 currentPos = lineDataSource.GetPoint(normalizedLength);
+                gColor = GetColor(normalizedLength);
                 gColor.a = gColor.a * 0.5f;
+
                 Gizmos.color = gColor;
                 Gizmos.DrawLine(lastPos, currentPos);
-                Gizmos.DrawSphere(currentPos, renderer.GetWidth(normalizedLength) * 0.5f);
+                Gizmos.DrawSphere(currentPos, GetWidth(normalizedLength) * 0.5f);
                 lastPos = currentPos;
             }
 
-            if (source.Loops)
+            if (lineDataSource.Loops)
             {
                 Gizmos.DrawLine(lastPos, firstPos);
             }

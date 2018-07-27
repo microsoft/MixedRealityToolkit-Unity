@@ -5,15 +5,49 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
-    public class LineDataProvider : BaseMixedRealityLineDataProvider
+    /// <summary>
+    /// A simple line with two points.
+    /// </summary>
+    public class SimpleLineDataProvider : BaseMixedRealityLineDataProvider
     {
-        [Header("LineDataProvider Settings")]
-
         [SerializeField]
+        [HideInInspector]
         private Vector3 start = Vector3.zero;
 
+        /// <summary>
+        /// The Starting point of this line.
+        /// </summary>
+        /// <remarks>Always located at this <see cref="GameObject"/>'s <see cref="Transform.position"/></remarks>
+        public Vector3 Start
+        {
+            get { return start; }
+            private set { start = value; }
+        }
+
         [SerializeField]
-        private Vector3 end = Vector3.one;
+        [Tooltip("The point where this line will end.")]
+        private Vector3 end = Vector3.zero;
+
+        /// <summary>
+        /// The point where this line will end.
+        /// </summary>
+        public Vector3 End
+        {
+            get { return end; }
+            set { end = value; }
+        }
+
+        private void OnValidate()
+        {
+            start = LineTransform.position;
+
+            if (end == start)
+            {
+                end = start + Vector3.forward;
+            }
+        }
+
+        #region Line Data Provider Implementation
 
         /// <inheritdoc />
         public override int PointCount => 2;
@@ -67,5 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         {
             return transform.up;
         }
+
+        #endregion Line Data Provider Implementation
     }
 }

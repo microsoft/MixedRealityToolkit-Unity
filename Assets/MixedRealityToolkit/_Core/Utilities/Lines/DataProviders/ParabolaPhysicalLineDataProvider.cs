@@ -1,15 +1,20 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
-    public class PhysicalParabolaLineDataProvider : ParabolaLineDataProvider
+    /// <summary>
+    /// Creates a parabolic line based on physics.
+    /// </summary>
+    public class ParabolaPhysicalLineDataProvider : ParabolaLineDataProvider
     {
         [Header("Physical Parabola Settings")]
 
         [SerializeField]
+        [Vector3Range(-1f, 1f)]
         private Vector3 direction = Vector3.forward;
 
         public Vector3 Direction
@@ -76,20 +81,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         /// Sets the point at index.
         /// </summary>
         /// <remarks>
-        /// This specific override can only set the start point of the parabola. Any other index besides 0 will throw an invalid point index error.
+        /// This specific override doesn't set any points.
         /// </remarks>
         /// <param name="pointIndex"></param>
         /// <param name="point"></param>
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
-            if (pointIndex == 0)
-            {
-                Start = point;
-            }
-            else
-            {
-                Debug.LogError("Invalid point index!");
-            }
+            // Intentionally does nothing. Start point is always the LineTransform.Position and End point is always GetPointInternal(1f);
         }
 
         /// <inheritdoc />

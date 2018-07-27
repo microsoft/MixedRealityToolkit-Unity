@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         {
             executeCommandBuffer = false;
 
-            if (Source.enabled)
+            if (LineDataSource.enabled)
             {
                 if (meshTransforms == null || meshTransforms.Length != LineStepCount)
                 {
@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
                 {
                     float normalizedDistance = (1f / (LineStepCount - 1)) * i;
                     colorValues[i] = GetColor(normalizedDistance);
-                    meshTransforms[i] = Matrix4x4.TRS(Source.GetPoint(normalizedDistance), Source.GetRotation(normalizedDistance), Vector3.one * GetWidth(normalizedDistance));
+                    meshTransforms[i] = Matrix4x4.TRS(LineDataSource.GetPoint(normalizedDistance), LineDataSource.GetRotation(normalizedDistance), Vector3.one * GetWidth(normalizedDistance));
                 }
 
                 linePropertyBlock.SetVectorArray(colorId, colorValues);
@@ -223,9 +223,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         private void LateUpdate()
         {
             // Update our helper mesh so OnWillRenderObject will be called
-            meshVertices[0] = transform.InverseTransformPoint(Source.GetPoint(0.0f)); // - transform.position;
-            meshVertices[1] = transform.InverseTransformPoint(Source.GetPoint(0.5f)); // - transform.position;
-            meshVertices[2] = transform.InverseTransformPoint(Source.GetPoint(1.0f)); // - transform.position;
+            meshVertices[0] = transform.InverseTransformPoint(LineDataSource.GetPoint(0.0f)); // - transform.position;
+            meshVertices[1] = transform.InverseTransformPoint(LineDataSource.GetPoint(0.5f)); // - transform.position;
+            meshVertices[2] = transform.InverseTransformPoint(LineDataSource.GetPoint(1.0f)); // - transform.position;
             renderedMesh.vertices = meshVertices;
             renderedMesh.RecalculateBounds();
         }

@@ -10,14 +10,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
     public class StripMeshLineRenderer : BaseMixedRealityLineRenderer
     {
         [Header("Strip Mesh Settings")]
-        public Material LineMaterial;
+
+        [SerializeField]
+        private Material lineMaterial;
 
         [SerializeField]
         private float uvOffset = 0f;
 
         private Mesh stripMesh;
-        private MeshRenderer stripMeshRenderer;
         private Material lineMatInstance;
+        private MeshRenderer stripMeshRenderer;
+        private GameObject meshRendererGameObject;
+
         private readonly List<Vector3> positions = new List<Vector3>();
         private readonly List<Vector3> forwards = new List<Vector3>();
         private readonly List<Color> colors = new List<Color>();
@@ -28,18 +32,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         private static Vector2[] stripMeshUvs = null;
         private static int[] stripMeshTriangles = null;
 
-        private GameObject meshRendererGameObject;
-
         protected void OnEnable()
         {
-            if (LineMaterial == null)
+            if (lineMaterial == null)
             {
                 Debug.LogError("LineDataProvider material cannot be null.");
                 enabled = false;
                 return;
             }
 
-            lineMatInstance = new Material(LineMaterial);
+            lineMatInstance = new Material(lineMaterial);
 
             // Create a mesh
             if (stripMesh == null)
@@ -58,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
             stripMeshRenderer.receiveShadows = false;
             stripMeshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
 
-            MeshFilter stripMeshFilter = stripMeshRenderer.EnsureComponent<MeshFilter>();
+            var stripMeshFilter = stripMeshRenderer.EnsureComponent<MeshFilter>();
             stripMeshFilter.sharedMesh = stripMesh;
         }
 
@@ -78,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 
         public void Update()
         {
-            if (!Source.enabled)
+            if (!LineDataSource.enabled)
             {
                 stripMeshRenderer.enabled = false;
                 return;
@@ -93,10 +95,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
             for (int i = 0; i <= LineStepCount; i++)
             {
                 float normalizedDistance = (1f / (LineStepCount - 1)) * i;
-                positions.Add(Source.GetPoint(normalizedDistance));
+                positions.Add(LineDataSource.GetPoint(normalizedDistance));
                 colors.Add(GetColor(normalizedDistance));
                 widths.Add(GetWidth(normalizedDistance));
-                forwards.Add(Source.GetRotation(normalizedDistance) * Vector3.down);
+                forwards.Add(LineDataSource.GetRotation(normalizedDistance) * Vector3.down);
             }
 
             GenerateStripMesh(positions, colors, widths, uvOffset, forwards, stripMesh);
@@ -112,10 +114,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
             {
                 stripMeshVertices = new Vector3[vertexCount];
             }
+
             if (stripMeshColors == null || stripMeshColors.Length != colorCount)
             {
                 stripMeshColors = new Color[colorCount];
             }
+
             if (stripMeshUvs == null || stripMeshUvs.Length != uvCount)
             {
                 stripMeshUvs = new Vector2[uvCount];
@@ -123,20 +127,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 
             for (int x = 0; x < positionList.Count; x++)
             {
-                Vector3 forward = forwardList[x / 2];
+                int index = (int)(x * 0.5f);
+                Vector3 forward = forwardList[index];
                 Vector3 right = Vector3.Cross(forward, Vector3.up).normalized;
-                float thickness = thicknessList[x / 2] / 2;
+                float thickness = thicknessList[index] * 0.5f;
                 stripMeshVertices[2 * x] = positionList[x] - right * thickness;
                 stripMeshVertices[2 * x + 1] = positionList[x] + right * thickness;
                 stripMeshColors[2 * x] = colorList[x];
                 stripMeshColors[2 * x + 1] = colorList[x];
 
                 float uv = uvOffsetLocal;
+
                 if (x == positionList.Count - 1 && x > 1)
                 {
-                    float dist_last = (positionList[x - 2] - positionList[x - 1]).magnitude;
-                    float dist_cur = (positionList[x] - positionList[x - 1]).magnitude;
-                    uv += 1 - dist_cur / dist_last;
+                    float distLast = (positionList[x - 2] - positionList[x - 1]).magnitude;
+                    float distCur = (positionList[x] - positionList[x - 1]).magnitude;
+                    uv += 1 - distCur / distLast;
                 }
 
                 stripMeshUvs[2 * x] = new Vector2(0, x - uv);
@@ -144,11 +150,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
             }
 
             int numTriangles = ((positionList.Count * 2 - 2) * 3);
+
             if (stripMeshTriangles == null || stripMeshTriangles.Length != numTriangles)
             {
                 stripMeshTriangles = new int[numTriangles];
             }
+
             int j = 0;
+
             for (int i = 0; i < positionList.Count * 2 - 3; i += 2, j++)
             {
                 stripMeshTriangles[i * 3] = j * 2;

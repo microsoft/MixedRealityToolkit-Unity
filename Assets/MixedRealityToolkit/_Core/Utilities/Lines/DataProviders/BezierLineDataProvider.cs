@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
+    /// <summary>
+    /// A Bezier line.
+    /// TODO: Support point set array, with the ability to add/remove point sets.
+    /// </summary>
     public class BezierLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [Serializable]
@@ -25,9 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             public Vector3 Point4;
         }
 
-        [Header("Bézier Settings")]
-
         [SerializeField]
+        [HideInInspector]
         private PointSet points = new PointSet(0.5f);
 
         public Vector3[] Points

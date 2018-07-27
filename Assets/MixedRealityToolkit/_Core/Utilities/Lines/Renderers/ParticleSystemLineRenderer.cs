@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 
         private void Update()
         {
-            if (!Source.enabled)
+            if (!LineDataSource.enabled)
             {
                 mainNoiseModule.enabled = particleNoiseOnDisabled;
                 mainNoiseModule.strengthX = noiseStrength.x;
@@ -252,13 +252,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
                 decayStartTime = -1;
             }
 
-            if (Source.enabled)
+            if (LineDataSource.enabled)
             {
                 for (int i = 0; i < LineStepCount; i++)
                 {
                     float normalizedDistance = (1f / (LineStepCount - 1)) * i;
                     ParticleSystem.Particle particle = mainParticleArray[i];
-                    particle.position = Source.GetPoint(normalizedDistance);
+                    particle.position = LineDataSource.GetPoint(normalizedDistance);
                     particle.startColor = GetColor(normalizedDistance);
                     particle.startSize = GetWidth(normalizedDistance);
                     mainParticleArray[i] = particle;

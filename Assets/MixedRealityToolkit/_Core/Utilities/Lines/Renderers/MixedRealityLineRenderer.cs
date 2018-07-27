@@ -4,15 +4,18 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 {
+    [RequireComponent(typeof(LineRenderer))]
     public class MixedRealityLineRenderer : BaseMixedRealityLineRenderer
     {
         private const string DefaultLineShader = "Particles/Alpha Blended";
         private const string DefaultLineShaderColor = "_TintColor";
 
-        [Header("MixedRealityLineRenderer Settings")]
+        [Header("Mixed Reality Line Renderer Settings")]
+
         [SerializeField]
         [Tooltip("The material to use for the Unity MixedRealityLineRenderer (will be auto-generated if null)")]
         private Material lineMaterial = null;
@@ -43,21 +46,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 
         [SerializeField]
         [HideInInspector]
-        private UnityEngine.LineRenderer lineRenderer;
+        private LineRenderer lineRenderer;
 
         private Vector3[] positions;
 
-        private void OnValidate()
-        {
-            lineRenderer = gameObject.EnsureComponent<UnityEngine.LineRenderer>();
-        }
-
         protected void OnEnable()
         {
+            lineRenderer = gameObject.EnsureComponent<LineRenderer>();
+
             if (lineMaterial == null)
             {
                 lineMaterial = new Material(Shader.Find(DefaultLineShader));
-                lineMaterial.SetColor(DefaultLineShaderColor, Color.white);
+                lineMaterial.SetColor(DefaultLineShaderColor, Color.gray);
             }
         }
 
@@ -65,53 +65,59 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         {
             if (isActiveAndEnabled)
             {
-                if (!Source.enabled)
+                UpdateLineRenderer();
+            }
+        }
+
+        private void UpdateLineRenderer()
+        {
+            if (LineDataSource == null)
+            {
+                enabled = false;
+                lineRenderer.enabled = false;
+                return;
+            }
+
+            lineRenderer.enabled = LineDataSource.enabled;
+            lineRenderer.positionCount = StepMode == StepMode.FromSource ? LineDataSource.PointCount : LineStepCount;
+
+            if (positions == null || positions.Length != lineRenderer.positionCount)
+            {
+                positions = new Vector3[lineRenderer.positionCount];
+            }
+
+            for (int i = 0; i < positions.Length; i++)
+            {
+                if (StepMode == StepMode.FromSource)
                 {
-                    lineRenderer.enabled = false;
+                    positions[i] = LineDataSource.GetPoint(i);
                 }
                 else
                 {
-                    lineRenderer.enabled = true;
-                    lineRenderer.positionCount = StepMode == StepMode.FromSource ? Source.PointCount : LineStepCount;
-
-                    if (positions == null || positions.Length != lineRenderer.positionCount)
-                    {
-                        positions = new Vector3[lineRenderer.positionCount];
-                    }
-
-                    for (int i = 0; i < positions.Length; i++)
-                    {
-                        if (StepMode == StepMode.FromSource)
-                        {
-                            positions[i] = Source.GetPoint(i);
-                        }
-                        else
-                        {
-                            float normalizedDistance = (1f / (LineStepCount - 1)) * i;
-                            positions[i] = Source.GetPoint(normalizedDistance);
-                        }
-                    }
-
-                    // Set line renderer properties
-                    lineRenderer.loop = Source.Loops;
-                    lineRenderer.numCapVertices = roundedCaps ? 8 : 0;
-                    lineRenderer.numCornerVertices = roundedEdges ? 8 : 0;
-                    lineRenderer.useWorldSpace = true;
-                    lineRenderer.startWidth = 1;
-                    lineRenderer.endWidth = 1;
-                    lineRenderer.startColor = Color.white;
-                    lineRenderer.endColor = Color.white;
-                    lineRenderer.sharedMaterial = lineMaterial;
-                    lineRenderer.widthCurve = LineWidth;
-                    lineRenderer.widthMultiplier = WidthMultiplier;
-                    lineRenderer.colorGradient = LineColor;
-                    lineRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                    lineRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
-                    // Set positions
-                    lineRenderer.positionCount = positions.Length;
-                    lineRenderer.SetPositions(positions);
+                    float normalizedDistance = (1f / (LineStepCount - 1)) * i;
+                    positions[i] = LineDataSource.GetPoint(normalizedDistance);
                 }
             }
+
+            // Set line renderer properties
+            lineRenderer.loop = LineDataSource.Loops;
+            lineRenderer.numCapVertices = roundedCaps ? 8 : 0;
+            lineRenderer.numCornerVertices = roundedEdges ? 8 : 0;
+            lineRenderer.useWorldSpace = true;
+            lineRenderer.startWidth = 1;
+            lineRenderer.endWidth = 1;
+            lineRenderer.startColor = Color.white;
+            lineRenderer.endColor = Color.white;
+            lineRenderer.sharedMaterial = lineMaterial;
+            lineRenderer.widthCurve = LineWidth;
+            lineRenderer.widthMultiplier = WidthMultiplier;
+            lineRenderer.colorGradient = LineColor;
+            lineRenderer.shadowCastingMode = ShadowCastingMode.Off;
+            lineRenderer.lightProbeUsage = LightProbeUsage.Off;
+
+            // Set positions
+            lineRenderer.positionCount = positions.Length;
+            lineRenderer.SetPositions(positions);
         }
     }
 }

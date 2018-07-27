@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
@@ -10,14 +10,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
     public class SplineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
-        [Header("Spline Settings")]
+        [HideInInspector]
         private MixedRealityPose[] points = new MixedRealityPose[4];
 
-        public MixedRealityPose[] Points
-        {
-            get { return points; }
-            set { points = value; }
-        }
+        public MixedRealityPose[] Points => points;
 
         [SerializeField]
         private bool alignControlPoints = true;
@@ -39,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
         public void ForceUpdateAlignment()
         {
-            if (AlignControlPoints)
+            if (alignControlPoints)
             {
                 for (int i = 0; i < PointCount; i++)
                 {
@@ -50,10 +46,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
         private void ForceUpdateAlignment(int pointIndex)
         {
-            if (AlignControlPoints)
+            if (alignControlPoints)
             {
-                int prevControlPoint = 0;
-                int changedControlPoint = 0;
+                int prevControlPoint;
+                int changedControlPoint;
                 int midPointIndex = ((pointIndex + 1) / 3) * 3;
 
                 if (pointIndex <= midPointIndex)
@@ -91,7 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
                     Vector3 tangent = midPoint - points[prevControlPoint].Position;
                     tangent = tangent.normalized * Vector3.Distance(midPoint, points[changedControlPoint].Position);
                     points[changedControlPoint].Position = midPoint + tangent;
-
                 }
                 else if (changedControlPoint >= 0 && changedControlPoint < PointCount && prevControlPoint >= 0 && prevControlPoint < PointCount)
                 {
@@ -103,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             }
         }
 
+        /// <inheritdoc />
         public override void AppendPoint(Vector3 point)
         {
             int pointIndex = points.Length;
@@ -110,6 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             SetPoint(pointIndex, point);
         }
 
+        /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
             var totalDistance = normalizedDistance * (PointCount - 1);
@@ -127,6 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
                 {
                     return points[PointCount - 1].Position;
                 }
+
                 if (point1Index < 0)
                 {
                     return points[0].Position;
@@ -135,7 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
                 point2Index = point1Index + 1;
                 point3Index = point1Index + 2;
                 point4Index = point1Index + 3;
-
             }
             else
             {
@@ -152,6 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             return LineUtility.InterpolateBezeirPoints(point1, point2, point3, point4, subDistance);
         }
 
+        /// <inheritdoc />
         protected override Vector3 GetPointInternal(int pointIndex)
         {
             if (pointIndex < 0 || pointIndex >= points.Length)
@@ -169,6 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             return points[pointIndex].Position;
         }
 
+        /// <inheritdoc />
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
             if (pointIndex < 0 || pointIndex >= points.Length)
@@ -223,21 +222,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             }
 
             points[pointIndex].Position = point;
-
             ForceUpdateAlignment(pointIndex);
         }
 
+        /// <inheritdoc />
         protected override Vector3 GetUpVectorInternal(float normalizedLength)
         {
-
             float arrayValueLength = 1f / points.Length;
             int indexA = Mathf.FloorToInt(normalizedLength * points.Length);
+
             if (indexA >= points.Length)
             {
                 indexA = 0;
             }
 
             int indexB = indexA + 1;
+
             if (indexB >= points.Length)
             {
                 indexB = 0;
@@ -248,6 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             return rotation * transform.up;
         }
 
+        /// <inheritdoc />
         protected override float GetUnClampedWorldLengthInternal()
         {
             // Crude approximation

@@ -1,17 +1,25 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
-    public class ConstrainedParabolaLineDataProvider : ParabolaLineDataProvider
+    /// <summary>
+    /// Generates a parabolic line between two points.
+    /// </summary>
+    public class ParabolaConstrainedLineDataProvider : ParabolaLineDataProvider
     {
         [Header("Constrained Parabola Settings")]
 
         [SerializeField]
-        private Vector3 end = Vector3.forward;
+        [Tooltip("The point where this line will end.")]
+        private Vector3 end = Vector3.zero;
 
+        /// <summary>
+        /// The point where this line will end.
+        /// </summary>
         public Vector3 End
         {
             get { return end; }
@@ -19,12 +27,53 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         }
 
         [SerializeField]
+        [Vector3Range(-1f, 1f)]
         private Vector3 upDirection = Vector3.up;
 
         public Vector3 UpDirection
         {
             get { return upDirection; }
-            set { upDirection = value; }
+            set
+            {
+                if (upDirection.x > 1f)
+                {
+                    upDirection.x = 1f;
+                }
+                else if (upDirection.x < -1f)
+                {
+                    upDirection.x = -1f;
+                }
+                else
+                {
+                    upDirection.x = value.x;
+                }
+
+                if (upDirection.y > 1f)
+                {
+                    upDirection.y = 1f;
+                }
+                else if (upDirection.y < -1f)
+                {
+                    upDirection.y = -1f;
+                }
+                else
+                {
+                    upDirection.y = value.y;
+                }
+
+                if (upDirection.z > 1f)
+                {
+                    upDirection.z = 1f;
+                }
+                else if (upDirection.z < -1f)
+                {
+                    upDirection.z = -1f;
+                }
+                else
+                {
+                    upDirection.z = value.z;
+                }
+            }
         }
 
         [SerializeField]
@@ -51,6 +100,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             }
         }
 
+        private void OnValidate()
+        {
+            if (end == Start)
+            {
+                end = Start + Vector3.forward;
+            }
+        }
+
         public override int PointCount => 2;
 
         protected override Vector3 GetPointInternal(int pointIndex)
@@ -71,10 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         {
             switch (pointIndex)
             {
-                case 0:
-                    Start = point;
-                    break;
-
                 case 1:
                     end = point;
                     break;

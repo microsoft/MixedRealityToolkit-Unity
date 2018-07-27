@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
+    /// <summary>
+    /// Creates an elliptical line shape.
+    /// </summary>
+    /// <remarks>This line loops.</remarks>
     public class EllipseLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [Header("Ellipse Settings")]

@@ -10,15 +10,15 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
     /// <summary>
-    /// Base class that provides data about a line that can be used by a line renderer.
+    /// Base class that provides data about a line.
     /// </summary>
+    /// <remarks>Data to be consumed by other classes like the <see cref="BaseMixedRealityLineRenderer"/></remarks>
+    [DisallowMultipleComponent]
     public abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {
         private const float MinRotationMagnitude = 0.0001f;
 
         public float UnClampedWorldLength => GetUnClampedWorldLengthInternal();
-
-        [Header("Basic Settings")]
 
         [Range(0f, 1f)]
         [SerializeField]
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         }
 
         [SerializeField]
-        [Tooltip("Controls whether this line loops (Note: some classes override this setting)")]
+        [Tooltip("Controls whether this line loops \nNote: some classes override this setting")]
         private bool loops = false;
 
         /// <summary>
@@ -102,8 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             get { return loops; }
             set { loops = value; }
         }
-
-        [Header("Rotation")]
 
         [SerializeField]
         [Tooltip("The rotation mode used in the GetRotation function. You can visualize rotations by checking Draw Rotations under Editor Settings.")]
@@ -216,7 +214,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             }
         }
 
-        [Header("Distortion")]
+        [SerializeField]
+        [Tooltip("A list of distorters that apply to this line")]
+        private List<Distorter> distorters = new List<Distorter>();
+
+        /// <summary>
+        /// A list of distorters that apply to this line
+        /// </summary>
+        public List<Distorter> Distorters
+        {
+            get { return distorters; }
+            set
+            {
+                distorters = value;
+                distorters.Sort();
+            }
+        }
 
         [SerializeField]
         [Tooltip("NormalizedLength mode uses the DistortionStrength curve for distortion strength, Uniform uses UniformDistortionStrength along entire line")]
@@ -261,23 +274,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
                 {
                     uniformDistortionStrength = value;
                 }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("A list of distorters that apply to this line")]
-        private List<Distorter> distorters = new List<Distorter>();
-
-        /// <summary>
-        /// A list of distorters that apply to this line
-        /// </summary>
-        public List<Distorter> Distorters
-        {
-            get { return distorters; }
-            set
-            {
-                distorters = value;
-                distorters.Sort();
             }
         }
 
@@ -577,25 +573,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 #if UNITY_EDITOR
         protected virtual void OnDrawGizmos()
         {
-            // Show gizmos if this object is not selected
-            // (SceneGUI will display it otherwise)
-
-            if (Application.isPlaying || UnityEditor.Selection.activeGameObject == gameObject)
+            if (Application.isPlaying)
             {
                 return;
             }
 
-            // Only draw a gizmo if we don't have a line renderer
-            var lineRenderer = gameObject.GetComponent<BaseMixedRealityLineRenderer>();
-
-            if (lineRenderer != null)
+            if (GetComponent<BaseMixedRealityLineRenderer>() != null)
             {
                 return;
             }
 
             Vector3 firstPos = GetPoint(0f);
             Vector3 lastPos = firstPos;
-            Gizmos.color = Color.Lerp(Color.white, Color.clear, 0.25f);
+            Gizmos.color = Color.magenta;
             const int numSteps = 16;
 
             for (int i = 1; i < numSteps; i++)

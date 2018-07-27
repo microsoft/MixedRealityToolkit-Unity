@@ -8,50 +8,39 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
     public class RectangleLineDataProvider : BaseMixedRealityLineDataProvider
     {
-        public override int PointCount => 8;
-
-        public override bool Loops
-        {
-            get
-            {
-                // Force to loop
-                Loops = true;
-                return true;
-            }
-        }
+        [SerializeField]
+        [HideInInspector]
+        private Vector3[] points;
 
         [Header("Rectangle Settings")]
 
         [SerializeField]
-        private Vector3[] points;
+        private float width = 1f;
 
-        [SerializeField]
-        private float xSize = 1f;
-
-        public float XSize
+        public float Width
         {
-            get { return xSize; }
+            get { return width; }
             set
             {
-                if (!xSize.Equals(value))
+                if (!width.Equals(value))
                 {
-                    xSize = value;
+                    width = value;
                     BuildPoints();
                 }
             }
         }
 
         [SerializeField]
-        private float ySize = 1f;
+        private float height = 1f;
 
-        public float YSize
+        public float Height
         {
-            get { return ySize; }
+            get { return height; }
             set
             {
-                if (!ySize.Equals(value))
+                if (!height.Equals(value))
                 {
-                    ySize = value;
+                    height = value;
                     BuildPoints();
                 }
             }
@@ -76,11 +65,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             }
         }
 
-        private void OnValidate()
+        #region BaseMixedRealityLineDataProvider Implementation
+
+        public override int PointCount => 8;
+
+        public override bool Loops
         {
-            if (points == null || points.Length != 8)
+            get
             {
-                points = new Vector3[PointCount];
+                // Force to loop
+                Loops = true;
+                return true;
             }
         }
 
@@ -134,12 +129,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             return (GetPoint(normalizedLength) - transform.position).normalized;
         }
 
+        #endregion BaseMixedRealityLineDataProvider Implementation
+
         private void BuildPoints()
         {
-            Vector3 top = Vector3.up * YSize * 0.5f;
-            Vector3 bot = Vector3.down * YSize * 0.5f;
-            Vector3 left = Vector3.left * XSize * 0.5f;
-            Vector3 right = Vector3.right * XSize * 0.5f;
+            Vector3 top = Vector3.up * Height * 0.5f;
+            Vector3 bot = Vector3.down * Height * 0.5f;
+            Vector3 left = Vector3.left * Width * 0.5f;
+            Vector3 right = Vector3.right * Width * 0.5f;
             Vector3 offset = Vector3.forward * ZOffset;
 
             SetPointInternal(0, top + left + offset);
@@ -152,28 +149,35 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             SetPointInternal(7, left + offset);
         }
 
+        #region Monobehaviour Implementation
+
+        private void OnValidate()
+        {
+            if (points == null || points.Length != 8)
+            {
+                points = new Vector3[PointCount];
+            }
+
+            BuildPoints();
+        }
+
 #if UNITY_EDITOR
         protected override void OnDrawGizmos()
         {
-            // Show gizmos if this object is not selected
-            // (SceneGUI will display it otherwise)
-
-            if (Application.isPlaying || UnityEditor.Selection.activeGameObject == gameObject)
+            if (Application.isPlaying)
             {
                 return;
             }
 
             // Only draw a gizmo if we don't have a line renderer
-            var baseLineRenderer = gameObject.GetComponent<BaseMixedRealityLineRenderer>();
-
-            if (baseLineRenderer != null)
+            if (GetComponent<BaseMixedRealityLineRenderer>() != null)
             {
                 return;
             }
 
             Vector3 firstPos = GetPoint(0);
             Vector3 lastPos = firstPos;
-            Gizmos.color = Color.Lerp(Color.white, Color.clear, 0.25f);
+            Gizmos.color = Color.magenta;
 
             for (int i = 1; i < PointCount; i++)
             {
@@ -185,5 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             Gizmos.DrawLine(lastPos, firstPos);
         }
 #endif
+
+        #endregion Monobehaviour Implementation
     }
 }
