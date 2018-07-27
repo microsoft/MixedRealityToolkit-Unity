@@ -103,13 +103,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         protected override void OnEnable()
         {
-            // Subscribe to interaction events
-            base.OnEnable();
-
             if (DisableChildren)
             {
                 gameObject.SetChildrenActive(false);
             }
+
+            // Subscribe to interaction events
+            base.OnEnable();
         }
 
         #endregion Monobehaviour Implementation
