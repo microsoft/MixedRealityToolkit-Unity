@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
+using UnityEngine.Experimental.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
 {
@@ -36,15 +37,44 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         bool EnablePlatformBoundaryRendering { get; set; }
 
         /// <summary>
-        /// A three dimensional volume as described by the smallest rectangle
-        /// containing the complete playspace and the configured height.
+        /// Two dimensional representation of the geometry of the boundary, as provided
+        /// by the platform.
         /// </summary>
-        Bounds OutscribedVolume { get; }
+        /// <remarks>
+        /// BoundaryGeometry should be treated as the outline of the player's space, placed
+        /// on the floor.
+        /// </remarks>
+        Edge[] Bounds { get; }
 
         /// <summary>
-        /// A three dimensional volume as described by the largest rectangle that
-        /// is contained withing the playspace and the configured height.
+        /// Indicates the height of the floor, in relation to the coordinate system origin.
         /// </summary>
-        Bounds InscribedVolume { get; }
+        /// <remarks>
+        /// If a floor has been located, FloorHeight.HasValue will be true, otherwise it will be false.
+        /// </remarks>
+        float? FloorHeight { get; }
+
+        /// <summary>
+        /// Determines if a location is within the specified area of the boundary space.
+        /// </summary>
+        /// <param name="location">The location to be checked.</param>
+        /// <param name="boundaryType">The type of boundary space being checked.</param>
+        /// <returns>True if the location is within the specified area of the boundary space.</returns>
+        /// <remarks>
+        /// Use:
+        /// Boundary.Type.PlayArea for the inscribed volume
+        /// Boundary.Type.TrackedArea for the area defined by the boundary edges.
+        /// </remarks>
+        bool Contains(Vector3 location, Boundary.Type boundaryType = Boundary.Type.TrackedArea);
+
+        /// <summary>
+        /// Returns the description of the inscribed rectangular bounds.
+        /// </summary>
+        /// <param name="center">The center of the rectangle.</param>
+        /// <param name="angle">The orientation of the rectangle.</param>
+        /// <param name="width">The width of the rectangle.</param>
+        /// <param name="height">The height of the rectangle.</param>
+        /// <returns></returns>
+        bool TryGetRectangularBoundsParams(out Vector2 center, out float angle, out float width, out float height);
     }
 }
