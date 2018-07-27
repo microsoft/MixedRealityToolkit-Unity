@@ -27,7 +27,7 @@ MonoBehaviour:
   controllersProfile: {fileID: 11400000, guid: 4319257468937c74ebb69e41792d60c5, type: 2}
   enableBoundarySystem: 1
   boundarySystemType:
-    reference: Microsoft.MixedReality.Toolkit.Internal.Managers.MixedRealityBoundaryManager,
-      Microsoft.MixedReality.Toolkit
+    reference: Microsoft.MixedReality.Toolkit.Internal.BoundarySystem.MixedRealityBoundaryManager,
+      Microsoft.MixedReality.Toolkit.BoundarySystem
   boundaryHeight: 3
   enablePlatformBoundaryRendering: 1
