@@ -102,34 +102,32 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.LabelField("Experience Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(targetExperienceScale, new GUIContent("Target Scale:"));
             ExperienceScale scale = (ExperienceScale)targetExperienceScale.intValue;
-            string scaleDesciription = string.Empty;
+            string scaleDescription = string.Empty;
             switch (scale)
             {
                 case ExperienceScale.OrientationOnly:
-                    scaleDesciription = "The user is stationary. Position data does not change.";
+                    scaleDescription = "The user is stationary. Position data does not change.";
                     break;
 
                 case ExperienceScale.Seated:
-                    scaleDesciription = "The user is stationary and seated. The origin of the world is at a neutral head-level position.";
+                    scaleDescription = "The user is stationary and seated. The origin of the world is at a neutral head-level position.";
                     break;
 
                 case ExperienceScale.Standing:
-                    scaleDesciription = "The user is stationary and standing. The origin of the world is on the floor, facing forward.";
+                    scaleDescription = "The user is stationary and standing. The origin of the world is on the floor, facing forward.";
                     break;
 
                 case ExperienceScale.Room:
-                    scaleDesciription = "The user is free to move about the room. The origin of the world is on the floor, facing forward. Boundaries are available.";
+                    scaleDescription = "The user is free to move about the room. The origin of the world is on the floor, facing forward. Boundaries are available.";
                     break;
 
                 case ExperienceScale.World:
-                    scaleDesciription = "The user is free to move about the world. Relies upon knowledge of the environment (Spatial Anchors and Spatial Mapping).";
+                    scaleDescription = "The user is free to move about the world. Relies upon knowledge of the environment (Spatial Anchors and Spatial Mapping).";
                     break;
             }
-            if (scaleDesciription != string.Empty)
+            if (scaleDescription != string.Empty)
             {
-                GUILayout.Space(6f);
-                EditorGUILayout.LabelField("Description:", EditorStyles.label);
-                EditorGUILayout.LabelField(scaleDesciription, EditorStyles.wordWrappedLabel);
+                EditorGUILayout.HelpBox(scaleDescription, MessageType.Info);
             }
 
             // Camera Profile configuration
