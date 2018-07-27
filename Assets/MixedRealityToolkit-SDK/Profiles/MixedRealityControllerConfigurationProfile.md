@@ -99,8 +99,21 @@ The models provided in the Mixed Reality Toolkit "Standard Assets" folder are as
 
 > These can be found in "Mixed Reality Toolkit SDK / Standard Assets / Controllers"
 
+### Debug Controllers
+The Mixed Reality Toolkit provides a set of basic Gizmo style controllers, used to help align your models to the controller position output by the SDK, to help with offset settings.
+> Note, the ability to display BOTH the Gizmo and the controller models isn't supported as yet. This will be included in a future release.
+
+We recommend applying the following Prefab transform values to align the controller model when using to align with the users view:
+* Position - no change
+* Rotation - X 90 (left) -90 (right), Y 0 , Z 0
+
+## Additional models available to download
+---
+
 ### Oculus Hands (provided via the Oculus Opensource project)
 Oculus provide two basic hand models, including animation (although not available through the visualizer currently).  
+
+Source -> [Oculus Hand Package download](https://developer.oculus.com/downloads/package/oculus-hand-models/)
 
 We recommend applying the following Prefab transform values to align the controller model with the users view:
 * Position - no change
@@ -109,6 +122,8 @@ We recommend applying the following Prefab transform values to align the control
 ### Oculus Rift touch controllers (provided via the Oculus Opensource project)
 Oculus also provide animated controller models for their touch controllers.
 
+Source -> [Oculus Sample Framework for Unity Project](https://developer.oculus.com/downloads/package/oculus-sample-framework-for-unity-5-project/)
+
 We recommend applying the following Prefab transform values to align the controller model when using to align with the users view:
 * Position - no change
 * Rotation - no change
@@ -116,14 +131,9 @@ We recommend applying the following Prefab transform values to align the control
 ### HTC Vive wand controllers (available in the SteamVR SDK)
 Steam provide basic models for the HTC Vive Wand controllers.
 
+Source -> Included as part of the Unity SteamVR SDK, or the Steam VR Client
+"(Steam Install Folder)\Steam\steamapps\common\SteamVR\resources\rendermodels"
+
 If you use Steams Models, we recommend applying the following Prefab transform values to align the controller model when using to align with the users view:
 * Position - no change
 * Rotation - no change
-
-### Debug Controllers
-The Mixed Reality Toolkit provides a set of basic Gizmo style controllers, used to help align your models to the controller position output by the SDK, to help with offset settings.
-> Note, the ability to display BOTH the Gizmo and the controller models isn't supported as yet. This will be included in a future release.
-
-We recommend applying the following Prefab transform values to align the controller model when using to align with the users view:
-* Position - no change
-* Rotation - X 90 (left) -90 (right), Y 0 , Z 0
