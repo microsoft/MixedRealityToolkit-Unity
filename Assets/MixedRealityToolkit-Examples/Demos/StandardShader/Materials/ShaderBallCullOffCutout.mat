@@ -4,7 +4,7 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ShaderBallCullOffCutout
   m_Shader: {fileID: 4800000, guid: d45c0efca53019e43891b0f610f8146e, type: 3}
@@ -20,6 +20,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ChannelMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -48,7 +52,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 1e4fd09f6e3a8b94885838909afe7453, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -67,6 +71,7 @@ Material:
     - _BorderLightOpaque: 0
     - _BorderLightUsesHoverColor: 0
     - _BorderMinValue: 0.02
+    - _BorderPower: 10
     - _BorderWidth: 0.1
     - _BorderWidthHorizontal: 0.1
     - _BorderWidthVertical: 0.1
@@ -83,6 +88,7 @@ Material:
     - _DirectionalLight: 1
     - _DstBlend: 0
     - _EdgeSmoothingValue: 0.002
+    - _EnableChannelMap: 0
     - _EnableEmission: 0
     - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 0
@@ -98,6 +104,7 @@ Material:
     - _HoverLight: 1
     - _HoverLightOpaque: 0
     - _InnerGlow: 0
+    - _InstancedColor: 0
     - _Metallic: 0.5
     - _Mode: 1
     - _MyCullVariable: 2
@@ -117,6 +124,10 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComparison: 0
+    - _StencilOperation: 0
+    - _StencilReference: 0
     - _UVSec: 0
     - _ZTest: 4
     - _ZWrite: 1
@@ -133,4 +144,4 @@ Material:
     - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}
-    - _RimColor: {r: 0.7490196, g: 0, b: 0.9098039, a: 1}
+    - _RimColor: {r: 0.7482759, g: 0, b: 0.9117647, a: 1}
