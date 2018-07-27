@@ -170,17 +170,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         /// <param name="input">The Controller Mapping array reference</param>
         /// <param name="controllerType">The type of controller to query for</param>
         /// <param name="hand">The specific hand assigned to the controller</param>
-        public static void GetControllerModelOverride(this MixedRealityControllerMapping[] input, Type controllerType, Handedness hand, out GameObject model, out MixedRealityPose poseOffset)
+        public static void GetControllerModelOverride(this MixedRealityControllerMapping[] input, Type controllerType, Handedness hand, out GameObject model)
         {
             model = null;
-            poseOffset = MixedRealityPose.ZeroIdentity;
 
             for (int i = 0; i < input.Length; i++)
             {
-                if (input[i].Controller.Type == controllerType && (input[i].Handedness == hand || input[i].Handedness == Handedness.Both))
+                if (input[i].ControllerType.Type == controllerType && (input[i].Handedness == hand || input[i].Handedness == Handedness.Both))
                 {
                     model = input[i].OverrideControllerModel;
-                    poseOffset = MixedRealityPose.ZeroIdentity;
                 }
             }
         }

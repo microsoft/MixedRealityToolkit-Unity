@@ -94,11 +94,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
 
                 for (int i = 0; i < controllerMappings?.Length; i++)
                 {
-                    if (!profileFound && controllerMappings[i].Controller.Type == controllerType)
+                    if (!profileFound && controllerMappings[i].ControllerType.Type == controllerType)
                     {
                         profileFound = true;
                     }
-                    if (!controllerMappings[i].UseCustomInteractionMappings && controllerMappings[i].Controller.Type == controllerType && controllerMappings[i].Handedness == ControllerHandedness)
+                    if (!controllerMappings[i].UseCustomInteractionMappings && controllerMappings[i].ControllerType.Type == controllerType && controllerMappings[i].Handedness == ControllerHandedness)
                     {
                         AssignControllerMappings(controllerMappings[i].Interactions);
                         break;

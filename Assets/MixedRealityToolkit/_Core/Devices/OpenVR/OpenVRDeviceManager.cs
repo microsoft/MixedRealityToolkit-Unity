@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         {
             if (IsNodeTypeSupported(obj))
             {
-                if (!activeControllers.ContainsKey(obj.nodeType))
+                if (activeControllers.ContainsKey(obj.nodeType))
                 {
                     var controller = GetOrAddController(obj);
                     InputSystem?.RaiseSourceDetected(controller?.InputSource, controller);

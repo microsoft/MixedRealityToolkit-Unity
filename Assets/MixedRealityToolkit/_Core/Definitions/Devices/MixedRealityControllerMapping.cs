@@ -15,21 +15,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     [Serializable]
     public struct MixedRealityControllerMapping
     {
-        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject overrideModel, MixedRealityPose poseOffset) : this()
+        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject overrideModel) : this()
         {
             this.id = id;
             this.description = description;
-            this.controller = controller;
+            this.controllerType = controller;
             this.handedness = handedness;
             this.overrideModel = overrideModel;
-            this.poseOffset = poseOffset == new MixedRealityPose() ? MixedRealityPose.ZeroIdentity : PoseOffset;
             useCustomInteractionMappings = false;
             interactions = null;
             useDefaultModel = false;
         }
-
-        [SerializeField]
-        private uint id;
 
         /// <summary>
         /// The ID assigned to the Device.
@@ -37,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         public uint Id => id;
 
         [SerializeField]
-        private string description;
+        private uint id;
 
         /// <summary>
         /// Description of the Device.
@@ -45,23 +41,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         public string Description => description;
 
         [SerializeField]
-        [Tooltip("Controller type to instantiate at runtime.")]
-        [Implements(typeof(IMixedRealityController), TypeGrouping.ByNamespaceFlat)]
-        private SystemType controller;
+        private string description;
 
         /// <summary>
         /// Controller Type to instantiate at runtime.
         /// </summary>
-        public SystemType Controller => controller;
+        public SystemType ControllerType => controllerType;
 
         [SerializeField]
-        [Tooltip("The designated hand that the device is managing.")]
-        private Handedness handedness;
+        [Tooltip("Controller type to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealityController), TypeGrouping.ByNamespaceFlat)]
+        private SystemType controllerType;
 
         /// <summary>
         /// The designated hand that the device is managing.
         /// </summary>
         public Handedness Handedness => handedness;
+
+        [SerializeField]
+        [Tooltip("The designated hand that the device is managing.")]
+        private Handedness handedness;
 
         [SerializeField]
         [Tooltip("Use the platform SDK to load the default controller model for this controller.")]
@@ -76,10 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             private set { useDefaultModel = value; }
         }
 
-        [SerializeField]
-        [Tooltip("An override model to display for this specific controller.")]
-        private GameObject overrideModel;
-
         /// <summary>
         /// The controller model prefab to be rendered.
         /// </summary>
@@ -87,12 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         [SerializeField]
         [Tooltip("An override model to display for this specific controller.")]
-        private MixedRealityPose poseOffset;
-
-        /// <summary>
-        /// The controller model prefab to be rendered.
-        /// </summary>
-        public MixedRealityPose PoseOffset => poseOffset;
+        private GameObject overrideModel;
 
         [SerializeField]
         [Tooltip("Override the default interaction mappings.")]
@@ -103,21 +93,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         public bool UseCustomInteractionMappings => useCustomInteractionMappings;
 
-        [SerializeField]
-        [Tooltip("Details the list of available buttons / interactions available from the device.")]
-        private MixedRealityInteractionMapping[] interactions;
-
         /// <summary>
         /// Details the list of available buttons / interactions available from the device.
         /// </summary>
         public MixedRealityInteractionMapping[] Interactions => interactions;
+
+        [SerializeField]
+        [Tooltip("Details the list of available buttons / interactions available from the device.")]
+        private MixedRealityInteractionMapping[] interactions;
 
         /// <summary>
         /// Sets the default interaction mapping based on the current controller type.
         /// </summary>
         public void SetDefaultInteractionMapping()
         {
-            interactions = ControllerMappingLibrary.GetMappingsForControllerType(controller.Type, handedness);
+            interactions = ControllerMappingLibrary.GetMappingsForControllerType(controllerType.Type, handedness);
         }
     }
 }

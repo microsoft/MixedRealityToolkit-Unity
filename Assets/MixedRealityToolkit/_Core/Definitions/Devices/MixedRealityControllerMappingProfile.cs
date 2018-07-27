@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
@@ -36,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         }
 
         [SerializeField]
-        [Tooltip("Left Controller Model.")]
+        [Tooltip("Override Left Controller Model.")]
         private GameObject globalLeftHandModel;
 
         /// <summary>
@@ -49,20 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         }
 
         [SerializeField]
-        [Tooltip("Left Controller Model Offset Pose.")]
-        private MixedRealityPose leftHandModelPoseOffset = MixedRealityPose.ZeroIdentity;
-
-        /// <summary>
-        /// The offset pose for the left hand rendered model
-        /// </summary>
-        public MixedRealityPose LeftHandModelPoseOffset
-        {
-            get { return leftHandModelPoseOffset; }
-            private set { leftHandModelPoseOffset = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Right Controller Model.")]
+        [Tooltip("Override Right Controller Model.")]
         private GameObject globalRightHandModel;
 
         /// <summary>
@@ -72,19 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             get { return globalRightHandModel; }
             private set { globalRightHandModel = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Right Controller Model Offset Pose.")]
-        private MixedRealityPose rightHandModelPoseOffset = MixedRealityPose.ZeroIdentity;
-
-        /// <summary>
-        /// The offset pose for the right hand rendered model
-        /// </summary>
-        public MixedRealityPose RightHandModelPoseOffset
-        {
-            get { return rightHandModelPoseOffset; }
-            private set { rightHandModelPoseOffset = value; }
         }
 
         [SerializeField]
