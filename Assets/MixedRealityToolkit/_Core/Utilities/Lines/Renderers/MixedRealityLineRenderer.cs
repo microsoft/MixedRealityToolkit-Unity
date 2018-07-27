@@ -3,12 +3,14 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 {
     [RequireComponent(typeof(LineRenderer))]
+    [RequireComponent(typeof(BaseMixedRealityLineDataProvider))]
     public class MixedRealityLineRenderer : BaseMixedRealityLineRenderer
     {
         private const string DefaultLineShader = "Particles/Alpha Blended";
