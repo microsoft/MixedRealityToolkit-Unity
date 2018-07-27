@@ -616,7 +616,7 @@ Prefab:
         type: 2}
       propertyPath: Cursor
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1085969722}
     - target: {fileID: 114000012009196210, guid: 3eddd1c29199313478dd3f912bfab2ab,
         type: 2}
       propertyPath: MaxGazeCollisionDistance
