@@ -14,7 +14,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         /// The TextMesh game object showing the description of the manipulation.
         /// </summary>
         [SerializeField]
-        private TextMesh descriptionText;
+        private TextMesh descriptionText = null;
         /// <summary>
         /// The TwoHandManipulatable object to change the rotation constraints at run time.
         /// </summary>
@@ -26,7 +26,7 @@ namespace HoloToolkit.Unity.InputModule.Tests
         private const string DescriptionPostfix = "\nTap on the model to toggle between X and Y constraints";
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             twoHandManipulatable = GetComponent<TwoHandManipulatable>();
         }
