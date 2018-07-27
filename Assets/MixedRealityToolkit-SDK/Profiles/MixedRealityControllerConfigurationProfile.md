@@ -24,9 +24,9 @@ This option will use the models for the controller direct from the SDK (where av
 ### Global Left / Right hand models
 These allow you at the top level to define the default model that will be drawn for each controlling hand.  If no hand is available, the Left most model will be used by default.
 
-Additionally, you can provide position and rotational offsets to affect how the model is drawn, to more accurately represent how you want the model drawn based on the controllers position given by the SDK.
+To alter the position and rotation of the displayed model in relation to the Controller pose, then update the controllers Model Prefab transform values.
 
-> See the "Example Models" section below for the controller models and their offsets provided in the SDK's "**Standard Assets**" folder.
+> See the "Example Models" section below for the controller models and their recommended transform settings provided in the SDK's "**Standard Assets**" folder.
 
 ### Add a New Controller Template
 
@@ -74,7 +74,7 @@ For this controller only, use the model for the controller direct from the SDK (
 > This overrides the Global Model setting
 
 ### Override Model
-Like the Global Model options, allows you to provide a model to be drawn for this specific controller, including the same offset position and rotation options.
+Like the Global Model options, allows you to provide a model to be drawn for this specific controller.
 > This overrides the Global Model setting
 
 ### Interaction Mappings
@@ -102,21 +102,21 @@ The models provided in the Mixed Reality Toolkit "Standard Assets" folder are as
 ### Oculus Hands (provided via the Oculus Opensource project)
 Oculus provide two basic hand models, including animation (although not available through the visualizer currently).  
 
-We recommend applying the following Offsets when using to align with the users view:
+We recommend applying the following Prefab transform values to align the controller model with the users view:
 * Position - no change
-* Rotation - X 0, Y 0 , Z 0.707 (left) -0.707 (right), W 1
+* Rotation - X 0, Y 0 , Z 90 (left) -90 (right)
 
 ### Oculus Rift touch controllers (provided via the Oculus Opensource project)
 Oculus also provide animated controller models for their touch controllers.
 
-We recommend applying the following Offsets when using to align with the users view:
+We recommend applying the following Prefab transform values to align the controller model when using to align with the users view:
 * Position - no change
 * Rotation - no change
 
 ### HTC Vive wand controllers (available in the SteamVR SDK)
 Steam provide basic models for the HTC Vive Wand controllers.
 
-If you use Steams Models, we recommend applying the following Offsets when using to align with the users view:
+If you use Steams Models, we recommend applying the following Prefab transform values to align the controller model when using to align with the users view:
 * Position - no change
 * Rotation - no change
 
@@ -124,7 +124,6 @@ If you use Steams Models, we recommend applying the following Offsets when using
 The Mixed Reality Toolkit provides a set of basic Gizmo style controllers, used to help align your models to the controller position output by the SDK, to help with offset settings.
 > Note, the ability to display BOTH the Gizmo and the controller models isn't supported as yet. This will be included in a future release.
 
-
-We recommend applying the following Offsets when using to align with the users view:
+We recommend applying the following Prefab transform values to align the controller model when using to align with the users view:
 * Position - no change
-* Rotation - no change
+* Rotation - X 90 (left) -90 (right), Y 0 , Z 0
