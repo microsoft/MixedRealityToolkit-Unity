@@ -13,9 +13,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderMotionControllers: 1
   useDefaultModels: 0
-  globalLeftHandModel: {fileID: 1670523128530642, guid: 02bef524e73fce64bb75d8e087a9ddb3,
+  globalLeftHandModel: {fileID: 1370450866519632, guid: 511c8e3b953c66f42a25d9f7e463134d,
     type: 2}
-  globalRightHandModel: {fileID: 1568362058278088, guid: a2749ae6da9ff9c4c84741192bbbefd5,
+  globalRightHandModel: {fileID: 1760394390528354, guid: f0faad94cced3f143889b9b87d575f6a,
     type: 2}
   mixedRealityControllerMappingProfiles:
   - id: 1
