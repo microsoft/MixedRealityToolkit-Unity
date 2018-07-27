@@ -287,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <param name="listener">Listener to add.</param>
         public override void Register(GameObject listener)
         {
-            Debug.Assert(!EventListeners.Contains(listener), $"{listener.name} is already registered to receive input events!");
+            if (EventListeners.Contains(listener)) { return; }
             EventListeners.Add(listener);
         }
 
@@ -297,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
         {
-            Debug.Assert(EventListeners.Contains(listener), $"{listener.name} was never registered for input events!");
+            if (!EventListeners.Contains(listener)) { return; }
             EventListeners.Remove(listener);
         }
 
