@@ -103,10 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         protected override void OnEnable()
         {
-            if (DisableChildren)
-            {
-                gameObject.SetChildrenActive(false);
-            }
+            ResetControllerReference();
 
             // Subscribe to interaction events
             base.OnEnable();
