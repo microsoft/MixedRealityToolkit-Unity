@@ -11,7 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
     public class SimpleLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
-        [HideInInspector]
         private Vector3 start = Vector3.zero;
 
         /// <summary>
@@ -25,27 +24,33 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         }
 
         [SerializeField]
-        [Tooltip("The point where this line will end.")]
-        private Vector3 end = Vector3.zero;
+        [Tooltip("The point where this line will end.\nNote: Start point is always located at the GameObject's transform position.")]
+        private Vector3 endPoint = Vector3.zero;
 
         /// <summary>
         /// The point where this line will end.
         /// </summary>
-        public Vector3 End
+        public Vector3 EndPoint
         {
-            get { return end; }
-            set { end = value; }
+            get { return endPoint; }
+            set { endPoint = value; }
         }
 
-        private void OnValidate()
+        #region Monobehaviour Implementation
+
+        protected override void OnValidate()
         {
+            base.OnValidate();
+
             start = LineTransform.position;
 
-            if (end == start)
+            if (endPoint == start)
             {
-                end = start + Vector3.forward;
+                endPoint = start + Vector3.forward;
             }
         }
+
+        #endregion Monobehaviour Implementation
 
         #region Line Data Provider Implementation
 
@@ -60,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
                 case 0:
                     return start;
                 case 1:
-                    return end;
+                    return endPoint;
                 default:
                     Debug.LogError("Invalid point index");
                     return Vector3.zero;
@@ -76,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
                     start = point;
                     break;
                 case 1:
-                    end = point;
+                    endPoint = point;
                     break;
                 default:
                     Debug.LogError("Invalid point index");
@@ -87,13 +92,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
-            return Vector3.Lerp(start, end, normalizedDistance);
+            return Vector3.Lerp(start, endPoint, normalizedDistance);
         }
 
         /// <inheritdoc />
         protected override float GetUnClampedWorldLengthInternal()
         {
-            return Vector3.Distance(start, end);
+            return Vector3.Distance(start, endPoint);
         }
 
         /// <inheritdoc />

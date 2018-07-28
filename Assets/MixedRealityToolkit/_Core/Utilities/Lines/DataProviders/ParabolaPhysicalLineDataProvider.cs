@@ -11,8 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
     /// </summary>
     public class ParabolaPhysicalLineDataProvider : ParabolaLineDataProvider
     {
-        [Header("Physical Parabola Settings")]
-
         [SerializeField]
         [Vector3Range(-1f, 1f)]
         private Vector3 direction = Vector3.forward;
@@ -20,7 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         public Vector3 Direction
         {
             get { return direction; }
-            set { direction = value; }
+            set
+            {
+                direction.x = Mathf.Clamp(value.x, -1f, 1f);
+                direction.y = Mathf.Clamp(value.y, -1f, 1f);
+                direction.z = Mathf.Clamp(value.z, -1f, 1f);
+            }
         }
 
         [SerializeField]
@@ -68,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             switch (pointIndex)
             {
                 case 0:
-                    return Start;
+                    return StartPoint;
                 case 1:
                     return GetPointInternal(1f);
                 default:
@@ -87,13 +90,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         /// <param name="point"></param>
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
-            // Intentionally does nothing. Start point is always the LineTransform.Position and End point is always GetPointInternal(1f);
+            // Intentionally does nothing. StartPoint is always the base.FirstPoint and EndPoint is always the base.LastPoint.
         }
 
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
-            return LineUtility.GetPointAlongPhysicalParabola(Start, direction, velocity, useCustomGravity ? gravity : UnityEngine.Physics.gravity, normalizedDistance * timeMultiplier);
+            return LineUtility.GetPointAlongPhysicalParabola(StartPoint, direction, velocity, useCustomGravity ? gravity : UnityEngine.Physics.gravity, normalizedDistance * timeMultiplier);
         }
     }
 }

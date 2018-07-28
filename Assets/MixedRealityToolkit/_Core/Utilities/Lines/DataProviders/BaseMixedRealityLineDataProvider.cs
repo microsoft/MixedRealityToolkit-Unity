@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Distorters;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
     /// <summary>
     /// Base class that provides data about a line.
     /// </summary>
-    /// <remarks>Data to be consumed by other classes like the <see cref="BaseMixedRealityLineRenderer"/></remarks>
+    /// <remarks>Data to be consumed by other classes like the <see cref="Renderers.BaseMixedRealityLineRenderer"/></remarks>
     [DisallowMultipleComponent]
     public abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {
@@ -31,21 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         public float LineStartClamp
         {
             get { return lineStartClamp; }
-            set
-            {
-                if (value < 0f)
-                {
-                    lineStartClamp = 0f;
-                }
-                else if (value > 1f)
-                {
-                    lineStartClamp = 1f;
-                }
-                else
-                {
-                    lineStartClamp = value;
-                }
-            }
+            set { lineStartClamp = Mathf.Clamp01(value); }
         }
 
         [Range(0f, 1f)]
@@ -59,21 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         public float LineEndClamp
         {
             get { return lineEndClamp; }
-            set
-            {
-                if (value < 0f)
-                {
-                    lineEndClamp = 0f;
-                }
-                else if (value > 1f)
-                {
-                    lineEndClamp = 1f;
-                }
-                else
-                {
-                    lineEndClamp = value;
-                }
-            }
+            set { lineEndClamp = Mathf.Clamp01(value); }
         }
 
         [SerializeField]
@@ -153,21 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         public float ManualUpVectorBlend
         {
             get { return manualUpVectorBlend; }
-            set
-            {
-                if (value < 0f)
-                {
-                    manualUpVectorBlend = 0f;
-                }
-                else if (value > 1f)
-                {
-                    manualUpVectorBlend = 1;
-                }
-                else
-                {
-                    manualUpVectorBlend = value;
-                }
-            }
+            set { manualUpVectorBlend = Mathf.Clamp01(value); }
         }
 
         [SerializeField]
@@ -197,25 +154,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         public float VelocitySearchRange
         {
             get { return velocitySearchRange; }
-            set
-            {
-                if (value < 0.0001f)
-                {
-                    velocitySearchRange = 0.0001f;
-                }
-                else if (value > 0.1f)
-                {
-                    velocitySearchRange = 0.1f;
-                }
-                else
-                {
-                    velocitySearchRange = value;
-                }
-            }
+            set { velocitySearchRange = Mathf.Clamp(value, 0.001f, 0.1f); }
         }
 
         [SerializeField]
-        [Tooltip("A list of distorters that apply to this line")]
         private List<Distorter> distorters = new List<Distorter>();
 
         /// <summary>
@@ -223,11 +165,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         /// </summary>
         public List<Distorter> Distorters
         {
-            get { return distorters; }
-            set
+            get
             {
-                distorters = value;
+                if (distorters.Count == 0)
+                {
+                    var newDistorters = GetComponents<Distorter>();
+
+                    for (int i = 0; i < newDistorters.Length; i++)
+                    {
+                        distorters.Add(newDistorters[i]);
+                    }
+                }
+
                 distorters.Sort();
+                return distorters;
             }
         }
 
@@ -260,21 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         public float UniformDistortionStrength
         {
             get { return uniformDistortionStrength; }
-            set
-            {
-                if (value < 0f)
-                {
-                    uniformDistortionStrength = 0f;
-                }
-                else if (value > 1f)
-                {
-                    uniformDistortionStrength = 1f;
-                }
-                else
-                {
-                    uniformDistortionStrength = value;
-                }
-            }
+            set { uniformDistortionStrength = Mathf.Clamp01(value); }
         }
 
         public Vector3 FirstPoint
@@ -288,6 +225,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             get { return GetPoint(PointCount - 1); }
             set { SetPoint(PointCount - 1, value); }
         }
+
+        #region BaseMixedRealityLineDataProvider Abstract Declarations
 
         /// <summary>
         /// The number of points this line has.
@@ -333,34 +272,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         /// <returns></returns>
         protected abstract float GetUnClampedWorldLengthInternal();
 
-        /// <summary>
-        /// Add a distorter to the line.
-        /// </summary>
-        /// <param name="newDistorter"></param>
-        public void AddDistorter(Distorter newDistorter)
+        #endregion BaseMixedRealityLineDataProvider Abstract Declarations
+
+        #region Monobehavior Implementation
+
+        protected virtual void OnValidate()
         {
-            if (!distorters.Contains(newDistorter))
-            {
-                distorters.Add(newDistorter);
-            }
+            distorters.Sort();
         }
 
-        /// <summary>
-        /// Places all points between the first and last point in a straight line
-        /// </summary>
-        public virtual void MakeStraightLine()
+        protected virtual void OnEnable()
         {
-            if (PointCount > 2)
-            {
-                Vector3 startPosition = GetPoint(0);
-                Vector3 endPosition = GetPoint(PointCount - 1);
-
-                for (int i = 1; i < PointCount - 2; i++)
-                {
-                    SetPoint(i, Vector3.Lerp(startPosition, endPosition, (1f / PointCount * 1)));
-                }
-            }
+            distorters.Sort();
         }
+
+        #endregion Monobehavior Implementation
 
         /// <summary>
         /// Returns a normalized length corresponding to a world length
@@ -530,15 +456,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             SetPointInternal(pointIndex, LineTransform.InverseTransformPoint(point));
         }
 
-        /// <summary>
-        /// Append point to the end of the line.
-        /// </summary>
-        /// <param name="point"></param>
-        public virtual void AppendPoint(Vector3 point)
-        {
-            // Does nothing by default
-        }
-
         private Vector3 DistortPoint(Vector3 point, float normalizedLength)
         {
             float strength = uniformDistortionStrength;
@@ -564,43 +481,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         {
             return Mathf.Lerp(Mathf.Max(lineStartClamp, 0.0001f), Mathf.Min(lineEndClamp, 0.9999f), Mathf.Clamp01(normalizedLength));
         }
-
-        protected virtual void OnEnable()
-        {
-            distorters.Sort();
-        }
-
-#if UNITY_EDITOR
-        protected virtual void OnDrawGizmos()
-        {
-            if (Application.isPlaying)
-            {
-                return;
-            }
-
-            if (GetComponent<BaseMixedRealityLineRenderer>() != null)
-            {
-                return;
-            }
-
-            Vector3 firstPos = GetPoint(0f);
-            Vector3 lastPos = firstPos;
-            Gizmos.color = Color.magenta;
-            const int numSteps = 16;
-
-            for (int i = 1; i < numSteps; i++)
-            {
-                float normalizedLength = (1f / (numSteps - 1)) * i;
-                Vector3 currentPos = GetPoint(normalizedLength);
-                Gizmos.DrawLine(lastPos, currentPos);
-                lastPos = currentPos;
-            }
-
-            if (Loops)
-            {
-                Gizmos.DrawLine(lastPos, firstPos);
-            }
-        }
-#endif
     }
 }

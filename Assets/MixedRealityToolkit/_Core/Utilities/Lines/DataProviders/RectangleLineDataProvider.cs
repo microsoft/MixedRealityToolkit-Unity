@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
@@ -9,10 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
     public class RectangleLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
-        [HideInInspector]
-        private Vector3[] points;
-
-        [Header("Rectangle Settings")]
+        private Vector3[] points = new Vector3[8];
 
         [SerializeField]
         private float width = 1f;
@@ -64,6 +60,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
                 }
             }
         }
+
+        #region Monobehaviour Implementation
+
+        protected override void OnValidate()
+        {
+            BuildPoints();
+        }
+
+        #endregion Monobehaviour Implementation
 
         #region BaseMixedRealityLineDataProvider Implementation
 
@@ -148,48 +153,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             SetPointInternal(6, bot + left + offset);
             SetPointInternal(7, left + offset);
         }
-
-        #region Monobehaviour Implementation
-
-        private void OnValidate()
-        {
-            if (points == null || points.Length != 8)
-            {
-                points = new Vector3[PointCount];
-            }
-
-            BuildPoints();
-        }
-
-#if UNITY_EDITOR
-        protected override void OnDrawGizmos()
-        {
-            if (Application.isPlaying)
-            {
-                return;
-            }
-
-            // Only draw a gizmo if we don't have a line renderer
-            if (GetComponent<BaseMixedRealityLineRenderer>() != null)
-            {
-                return;
-            }
-
-            Vector3 firstPos = GetPoint(0);
-            Vector3 lastPos = firstPos;
-            Gizmos.color = Color.magenta;
-
-            for (int i = 1; i < PointCount; i++)
-            {
-                Vector3 currentPos = GetPoint(i);
-                Gizmos.DrawLine(lastPos, currentPos);
-                lastPos = currentPos;
-            }
-
-            Gizmos.DrawLine(lastPos, firstPos);
-        }
-#endif
-
-        #endregion Monobehaviour Implementation
     }
 }

@@ -10,10 +10,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
     public class SplineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
-        [HideInInspector]
-        private MixedRealityPose[] points = new MixedRealityPose[4];
+        private MixedRealityPose[] controlPoints =
+        {
+            MixedRealityPose.ZeroIdentity,
+            new MixedRealityPose(new Vector3(0f, 0.5f, 0.5f), Quaternion.identity),
+            new MixedRealityPose(new Vector3(0f, -0.5f, 0.5f), Quaternion.identity),
+            new MixedRealityPose(Vector3.forward, Quaternion.identity),
+        };
 
-        public MixedRealityPose[] Points => points;
+        public MixedRealityPose[] ControlPoints => controlPoints;
 
         [SerializeField]
         private bool alignControlPoints = true;
@@ -31,20 +36,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             }
         }
 
-        public override int PointCount => points.Length;
-
         public void ForceUpdateAlignment()
         {
             if (alignControlPoints)
             {
                 for (int i = 0; i < PointCount; i++)
                 {
-                    ForceUpdateAlignment(i);
+                    UpdatePointAlignment(i);
                 }
             }
         }
 
-        private void ForceUpdateAlignment(int pointIndex)
+        private void UpdatePointAlignment(int pointIndex)
         {
             if (alignControlPoints)
             {
@@ -83,28 +86,25 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
                         prevControlPoint = prevControlPoint % (PointCount - 1);
                     }
 
-                    Vector3 midPoint = points[midPointIndex].Position;
-                    Vector3 tangent = midPoint - points[prevControlPoint].Position;
-                    tangent = tangent.normalized * Vector3.Distance(midPoint, points[changedControlPoint].Position);
-                    points[changedControlPoint].Position = midPoint + tangent;
+                    Vector3 midPoint = controlPoints[midPointIndex].Position;
+                    Vector3 tangent = midPoint - controlPoints[prevControlPoint].Position;
+                    tangent = tangent.normalized * Vector3.Distance(midPoint, controlPoints[changedControlPoint].Position);
+                    controlPoints[changedControlPoint].Position = midPoint + tangent;
                 }
                 else if (changedControlPoint >= 0 && changedControlPoint < PointCount && prevControlPoint >= 0 && prevControlPoint < PointCount)
                 {
-                    Vector3 midPoint = points[midPointIndex].Position;
-                    Vector3 tangent = midPoint - points[prevControlPoint].Position;
-                    tangent = tangent.normalized * Vector3.Distance(midPoint, points[changedControlPoint].Position);
-                    points[changedControlPoint].Position = midPoint + tangent;
+                    Vector3 midPoint = controlPoints[midPointIndex].Position;
+                    Vector3 tangent = midPoint - controlPoints[prevControlPoint].Position;
+                    tangent = tangent.normalized * Vector3.Distance(midPoint, controlPoints[changedControlPoint].Position);
+                    controlPoints[changedControlPoint].Position = midPoint + tangent;
                 }
             }
         }
 
+        #region BaseMixedRealityLineDataProvider Implementation
+
         /// <inheritdoc />
-        public override void AppendPoint(Vector3 point)
-        {
-            int pointIndex = points.Length;
-            Array.Resize(ref points, points.Length + 1);
-            SetPoint(pointIndex, point);
-        }
+        public override int PointCount => controlPoints.Length;
 
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
@@ -122,12 +122,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             {
                 if (point1Index + 3 >= PointCount)
                 {
-                    return points[PointCount - 1].Position;
+                    return controlPoints[PointCount - 1].Position;
                 }
 
                 if (point1Index < 0)
                 {
-                    return points[0].Position;
+                    return controlPoints[0].Position;
                 }
 
                 point2Index = point1Index + 1;
@@ -141,10 +141,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
                 point4Index = (point1Index + 3) % (PointCount - 1);
             }
 
-            Vector3 point1 = points[point1Index].Position;
-            Vector3 point2 = points[point2Index].Position;
-            Vector3 point3 = points[point3Index].Position;
-            Vector3 point4 = points[point4Index].Position;
+            Vector3 point1 = controlPoints[point1Index].Position;
+            Vector3 point2 = controlPoints[point2Index].Position;
+            Vector3 point3 = controlPoints[point3Index].Position;
+            Vector3 point4 = controlPoints[point4Index].Position;
 
             return LineUtility.InterpolateBezeirPoints(point1, point2, point3, point4, subDistance);
         }
@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(int pointIndex)
         {
-            if (pointIndex < 0 || pointIndex >= points.Length)
+            if (pointIndex < 0 || pointIndex >= controlPoints.Length)
             {
                 Debug.LogError("Invalid point index!");
                 return Vector3.zero;
@@ -160,17 +160,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
             if (Loops && pointIndex == PointCount - 1)
             {
-                points[pointIndex] = points[0];
+                controlPoints[pointIndex] = controlPoints[0];
                 pointIndex = 0;
             }
 
-            return points[pointIndex].Position;
+            return controlPoints[pointIndex].Position;
         }
 
         /// <inheritdoc />
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
-            if (pointIndex < 0 || pointIndex >= points.Length)
+            if (pointIndex < 0 || pointIndex >= controlPoints.Length)
             {
                 Debug.LogError("Invalid point index!");
                 return;
@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
             if (Loops && pointIndex == PointCount - 1)
             {
-                points[pointIndex] = points[0];
+                controlPoints[pointIndex] = controlPoints[0];
                 pointIndex = 0;
             }
 
@@ -186,65 +186,66 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             {
                 if (pointIndex % 3 == 0)
                 {
-                    Vector3 delta = point - points[pointIndex].Position;
+                    Vector3 delta = point - controlPoints[pointIndex].Position;
                     if (Loops)
                     {
                         if (pointIndex == 0)
                         {
-                            points[1].Position += delta;
-                            points[PointCount - 2].Position += delta;
-                            points[PointCount - 1].Position = point;
+                            controlPoints[1].Position += delta;
+                            controlPoints[PointCount - 2].Position += delta;
+                            controlPoints[PointCount - 1].Position = point;
                         }
                         else if (pointIndex == PointCount)
                         {
-                            points[0].Position = point;
-                            points[1].Position += delta;
-                            points[pointIndex - 1].Position += delta;
+                            controlPoints[0].Position = point;
+                            controlPoints[1].Position += delta;
+                            controlPoints[pointIndex - 1].Position += delta;
                         }
                         else
                         {
-                            points[pointIndex - 1].Position += delta;
-                            points[pointIndex + 1].Position += delta;
+                            controlPoints[pointIndex - 1].Position += delta;
+                            controlPoints[pointIndex + 1].Position += delta;
                         }
                     }
                     else
                     {
                         if (pointIndex > 0)
                         {
-                            points[pointIndex - 1].Position += delta;
+                            controlPoints[pointIndex - 1].Position += delta;
                         }
-                        if (pointIndex + 1 < points.Length)
+
+                        if (pointIndex + 1 < controlPoints.Length)
                         {
-                            points[pointIndex + 1].Position += delta;
+                            controlPoints[pointIndex + 1].Position += delta;
                         }
                     }
                 }
             }
 
-            points[pointIndex].Position = point;
-            ForceUpdateAlignment(pointIndex);
+            controlPoints[pointIndex].Position = point;
+            UpdatePointAlignment(pointIndex);
         }
 
         /// <inheritdoc />
         protected override Vector3 GetUpVectorInternal(float normalizedLength)
         {
-            float arrayValueLength = 1f / points.Length;
-            int indexA = Mathf.FloorToInt(normalizedLength * points.Length);
+            float arrayValueLength = 1f / controlPoints.Length;
+            int indexA = Mathf.FloorToInt(normalizedLength * controlPoints.Length);
 
-            if (indexA >= points.Length)
+            if (indexA >= controlPoints.Length)
             {
                 indexA = 0;
             }
 
             int indexB = indexA + 1;
 
-            if (indexB >= points.Length)
+            if (indexB >= controlPoints.Length)
             {
                 indexB = 0;
             }
 
             float blendAmount = (normalizedLength - (arrayValueLength * indexA)) / arrayValueLength;
-            Quaternion rotation = Quaternion.Lerp(points[indexA].Rotation, points[indexB].Rotation, blendAmount);
+            Quaternion rotation = Quaternion.Lerp(controlPoints[indexA].Rotation, controlPoints[indexB].Rotation, blendAmount);
             return rotation * transform.up;
         }
 
@@ -264,5 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
             return distance;
         }
+
+        #endregion BaseMixedRealityLineDataProvider Implementation
     }
 }

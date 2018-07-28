@@ -11,8 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
     /// </summary>
     public class ParabolaConstrainedLineDataProvider : ParabolaLineDataProvider
     {
-        [Header("Constrained Parabola Settings")]
-
         [SerializeField]
         [Tooltip("The point where this line will end.")]
         private Vector3 end = Vector3.zero;
@@ -35,44 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             get { return upDirection; }
             set
             {
-                if (upDirection.x > 1f)
-                {
-                    upDirection.x = 1f;
-                }
-                else if (upDirection.x < -1f)
-                {
-                    upDirection.x = -1f;
-                }
-                else
-                {
-                    upDirection.x = value.x;
-                }
-
-                if (upDirection.y > 1f)
-                {
-                    upDirection.y = 1f;
-                }
-                else if (upDirection.y < -1f)
-                {
-                    upDirection.y = -1f;
-                }
-                else
-                {
-                    upDirection.y = value.y;
-                }
-
-                if (upDirection.z > 1f)
-                {
-                    upDirection.z = 1f;
-                }
-                else if (upDirection.z < -1f)
-                {
-                    upDirection.z = -1f;
-                }
-                else
-                {
-                    upDirection.z = value.z;
-                }
+                upDirection.x = Mathf.Clamp(value.x, -1f, 1f);
+                upDirection.y = Mathf.Clamp(value.y, -1f, 1f);
+                upDirection.z = Mathf.Clamp(value.z, -1f, 1f);
             }
         }
 
@@ -83,30 +46,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         public float Height
         {
             get { return height; }
-            set
+            set { height = Mathf.Clamp(value, 0.01f, 10f); }
+        }
+
+        #region Monobehaviour Implementation
+
+        protected override void OnValidate()
+        {
+            if (end == StartPoint)
             {
-                if (value < 0.01f)
-                {
-                    height = 0.01f;
-                }
-                else if (value > 10f)
-                {
-                    height = 10f;
-                }
-                else
-                {
-                    height = value;
-                }
+                end = StartPoint + Vector3.forward;
             }
         }
 
-        private void OnValidate()
-        {
-            if (end == Start)
-            {
-                end = Start + Vector3.forward;
-            }
-        }
+        #endregion Monobehaviour Implementation
+
+        #region Line Data Provider Implementation
 
         public override int PointCount => 2;
 
@@ -115,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             switch (pointIndex)
             {
                 case 0:
-                    return Start;
+                    return StartPoint;
                 case 1:
                     return end;
                 default:
@@ -139,7 +94,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
-            return LineUtility.GetPointAlongConstrainedParabola(Start, end, upDirection, height, normalizedDistance);
+            return LineUtility.GetPointAlongConstrainedParabola(StartPoint, end, upDirection, height, normalizedDistance);
         }
+
+        #endregion Line Data Provider Implementation
     }
 }

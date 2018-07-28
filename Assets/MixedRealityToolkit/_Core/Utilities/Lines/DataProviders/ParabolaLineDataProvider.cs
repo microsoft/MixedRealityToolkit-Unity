@@ -11,23 +11,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
     public abstract class ParabolaLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
-        [HideInInspector]
-        private Vector3 start = Vector3.zero;
+        private Vector3 startPoint = Vector3.zero;
 
         /// <summary>
         /// The Starting point of this line.
         /// </summary>
         /// <remarks>Always located at this <see cref="GameObject"/>'s <see cref="Transform.position"/></remarks>
-        public Vector3 Start
+        public Vector3 StartPoint => startPoint;
+
+        #region Monobehaviour Implementation
+
+        protected override void OnValidate()
         {
-            get { return start; }
-            set { start = value; }
+            startPoint = LineTransform.position;
         }
 
-        private void OnValidate()
-        {
-            start = LineTransform.position;
-        }
+        #endregion Monobehaviour Implementation
+
+        #region Line Data Provider Implementation
 
         protected override float GetUnClampedWorldLengthInternal()
         {
@@ -48,5 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         {
             return transform.up;
         }
+
+        #endregion Line Data Provider Implementation
     }
 }

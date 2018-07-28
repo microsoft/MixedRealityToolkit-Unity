@@ -28,32 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
                 {
                     var vectorData = property.vector3Value;
 
-                    if (vectorData.x < range.Min)
-                    {
-                        vectorData.x = range.Min;
-                    }
-                    else if (vectorData.x > range.Max)
-                    {
-                        vectorData.x = range.Max;
-                    }
-
-                    if (vectorData.y < range.Min)
-                    {
-                        vectorData.y = range.Min;
-                    }
-                    else if (vectorData.y > range.Max)
-                    {
-                        vectorData.y = range.Max;
-                    }
-
-                    if (vectorData.z < range.Min)
-                    {
-                        vectorData.z = range.Min;
-                    }
-                    else if (vectorData.z > range.Max)
-                    {
-                        vectorData.z = range.Max;
-                    }
+                    vectorData.x = Mathf.Clamp(vectorData.x, range.Min, range.Max);
+                    vectorData.y = Mathf.Clamp(vectorData.y, range.Min, range.Max);
+                    vectorData.z = Mathf.Clamp(vectorData.z, range.Min, range.Max);
 
                     property.vector3Value = vectorData;
                     property.serializedObject.ApplyModifiedProperties();
