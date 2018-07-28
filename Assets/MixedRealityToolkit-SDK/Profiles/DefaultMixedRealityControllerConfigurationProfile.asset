@@ -13,12 +13,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderMotionControllers: 1
   useDefaultModels: 0
-  overrideLeftHandModel: {fileID: 0}
-  overrideRightHandModel: {fileID: 0}
+  globalLeftHandModel: {fileID: 1370450866519632, guid: 511c8e3b953c66f42a25d9f7e463134d,
+    type: 2}
+  globalRightHandModel: {fileID: 1760394390528354, guid: f0faad94cced3f143889b9b87d575f6a,
+    type: 2}
   mixedRealityControllerMappingProfiles:
   - id: 1
     description: MotionController Left
-    controller:
+    controllerType:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
@@ -160,7 +162,7 @@ MonoBehaviour:
       axisCodeY: 
   - id: 2
     description: MotionController Right
-    controller:
+    controllerType:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
@@ -302,7 +304,7 @@ MonoBehaviour:
       axisCodeY: 
   - id: 3
     description: OpenVR Controller Left
-    controller:
+    controllerType:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
@@ -422,7 +424,7 @@ MonoBehaviour:
       axisCodeY: 
   - id: 4
     description: OpenVR Controller Right
-    controller:
+    controllerType:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
@@ -542,7 +544,7 @@ MonoBehaviour:
       axisCodeY: 
   - id: 5
     description: Oculus Touch Left
-    controller:
+    controllerType:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.OculusTouchController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
@@ -739,7 +741,7 @@ MonoBehaviour:
       axisCodeY: 
   - id: 6
     description: Oculus Touch Right
-    controller:
+    controllerType:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.OculusTouchController,
         Microsoft.MixedReality.Toolkit
     handedness: 2

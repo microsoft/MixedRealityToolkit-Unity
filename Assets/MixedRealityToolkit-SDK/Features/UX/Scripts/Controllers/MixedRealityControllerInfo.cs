@@ -4,13 +4,13 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
 {
     /// <summary>
-    /// This script keeps track of the GameObjects representations for each button on the Windows Mixed Reality Controllers.
+    /// This script keeps track of the GameObjects representations for each button on the Mixed Reality Controllers.
     /// It also keeps track of the animation Transforms in order to properly animate according to user input.
     /// </summary>
-    public class WindowsMixedRealityControllerInfo
+    public class MixedRealityControllerInfo
     {
         public readonly GameObject ControllerParent;
         public readonly Handedness Handedness;
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
         private Vector2 lastTouchpadPosition;
         private double lastSelectPressedAmount;
 
-        public WindowsMixedRealityControllerInfo(GameObject controllerParent, Handedness handedness)
+        public MixedRealityControllerInfo(GameObject controllerParent, Handedness handedness)
         {
             ControllerParent = controllerParent;
             Handedness = handedness;
@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
         /// </summary>
         /// <param name="childTransforms">The transforms of the glTF model.</param>
         /// <param name="motionControllerVisualizer"></param>
-        public void LoadInfo(Transform[] childTransforms, MotionControllerVisualizer motionControllerVisualizer)
+        public void LoadInfo(Transform[] childTransforms, MixedRealityControllerVisualizer motionControllerVisualizer)
         {
             foreach (Transform child in childTransforms)
             {
@@ -158,9 +158,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.MotionController
                 // visualizer.
                 switch (child.name.ToLower())
                 {
-                    case "touch":
-                        touchpadTouchVisualizer = motionControllerVisualizer.SpawnTouchpadVisualizer(child);
-                        break;
                     case "pointing_pose":
                         pointingPose = child.gameObject;
                         break;
