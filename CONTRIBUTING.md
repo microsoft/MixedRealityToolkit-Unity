@@ -6,7 +6,7 @@ If you have any questions, please reach out on the [HoloLens forums](https://for
 # Process
 
 1. [Make a proposal](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues)
-> If you are implementing something from our backlog, you do not need to file a new proposal.
+    - If you are implementing something from our backlog, you do not need to file a new proposal.
 2. Implement the change, including any needed demo scenes and/or unit tests.
 3. Start a pull request & address comments.
 4. Merge.
@@ -31,7 +31,7 @@ Note:  If you wish to work on something that already exists on our backlog, you 
 6. Follow the [Coding Guidelines](/CodingGuidelines.md).
 7. Ensure the code and feature(s) are documented as describred in the [Documentation Guidelines](/DocumentationGuidelines.md).
 8. Ensure the code works as intended on all [platforms](#supported-platforms).
-> For Windows UWP projects, your code must be [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; Store -> Create App Packages. Follow the prompts and run WACK tests. Make sure they all succeed.
+    - For Windows UWP projects, your code must be [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; Store -> Create App Packages. Follow the prompts and run WACK tests. Make sure they all succeed.
 9. Update the [documentation](#update-documentation) with additional information as needed.
 
 ## Update Documentation
