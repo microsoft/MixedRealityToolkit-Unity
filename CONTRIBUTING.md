@@ -20,7 +20,6 @@ Instead, start by [opening an issue](https://github.com/Microsoft/MixedRealityTo
 This will let us have a brief discussion about the problem and, hopefully, identify some potential pitfalls before too much time is spent.
 
 Note:  If you wish to work on something that already exists on our backlog, you can use that work item as your proposal.
-Please take ownership of the issue so that others do not duplicate your effort.
 
 # Implementation
 
@@ -42,19 +41,18 @@ The Mixed Reality Toolkit provides the following forms of documentation.
 - API
 This documentation is generated from the product code and is reviewed as part of **all** pull requests.
 - Conceptual
-Conceptual documentation is hosted on https://docs.microsoft.com/en-us/windows/mixed-reality. Please submit our changes via Pull Requuest at https://github.com/MicrosoftDocs/mixed-reality.
+Conceptual documentation is hosted on https://docs.microsoft.com/en-us/windows/mixed-reality. Please submit our changes via Pull Request at https://github.com/MicrosoftDocs/mixed-reality.
 - Readme.md files
 As part of your pull request, please update (or create) the Readme.md file in the appropriate feature folder. This will allow GitHub users to gain a high-level understanding of your new feature.
 
-
 ## Supported Platforms
 
-The Mixed Reality Toolkit supports thge following mixed reality (AR/VR/XR) platforms.
+The Mixed Reality Toolkit supports the following mixed reality (AR/VR/XR) platforms.
 
 - Windows Mixed Reality
     - Immersive devices
-    - Microsoft Hololens
-- Open VR
+    - Microsoft HoloLens
+- OpenVR
 
 # Pull request
 
@@ -69,6 +67,4 @@ Address any review comments, push to your topic branch, and post a comment letti
 
 # Merge
 
-If the pull request review goes well, a project maintainer will merge your changes. Thank you for helping improve MixedRealityToolkit!
-
-
+If the pull request review goes well, a project maintainer will merge your changes. Thank you for helping improve the Mixed Reality Toolkit!
