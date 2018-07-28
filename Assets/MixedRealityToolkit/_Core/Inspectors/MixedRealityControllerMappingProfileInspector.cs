@@ -36,8 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private SerializedProperty renderMotionControllers;
         private SerializedProperty useDefaultModels;
-        private SerializedProperty overrideLeftHandModel;
-        private SerializedProperty overrideRightHandModel;
+        private SerializedProperty globalLeftHandModel;
+        private SerializedProperty globalRightHandModel;
 
         private readonly List<string> configuredControllerTypes = new List<string>();
         private readonly List<string> updatedControllerTypes = new List<string>();
@@ -64,8 +64,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
             useDefaultModels = serializedObject.FindProperty("useDefaultModels");
-            overrideLeftHandModel = serializedObject.FindProperty("overrideLeftHandModel");
-            overrideRightHandModel = serializedObject.FindProperty("overrideRightHandModel");
+            globalLeftHandModel = serializedObject.FindProperty("globalLeftHandModel");
+            globalRightHandModel = serializedObject.FindProperty("globalRightHandModel");
 
             defaultLabelWidth = EditorGUIUtility.labelWidth;
             defaultFieldWidth = EditorGUIUtility.fieldWidth;
@@ -100,8 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                 if (!useDefaultModels.boolValue)
                 {
-                    EditorGUILayout.PropertyField(overrideLeftHandModel);
-                    EditorGUILayout.PropertyField(overrideRightHandModel);
+                    EditorGUILayout.PropertyField(globalLeftHandModel);
+                    EditorGUILayout.PropertyField(globalRightHandModel);
                 }
             }
 
@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 {
                     EditorGUILayout.EndHorizontal();
 
-                    var controllerType = mixedRealityControllerMapping.FindPropertyRelative("controller");
+                    var controllerType = mixedRealityControllerMapping.FindPropertyRelative("controllerType");
 
                     var controllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
                     var useDefaultModel = mixedRealityControllerMapping.FindPropertyRelative("useDefaultModel");

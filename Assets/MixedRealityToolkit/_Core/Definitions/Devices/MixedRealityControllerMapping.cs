@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             this.id = id;
             this.description = description;
-            this.controller = controller;
+            this.controllerType = controller;
             this.handedness = handedness;
             this.overrideModel = overrideModel;
             useCustomInteractionMappings = false;
@@ -46,12 +46,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Controller Type to instantiate at runtime.
         /// </summary>
-        public SystemType Controller => controller;
+        public SystemType ControllerType => controllerType;
 
         [SerializeField]
         [Tooltip("Controller type to instantiate at runtime.")]
         [Implements(typeof(IMixedRealityController), TypeGrouping.ByNamespaceFlat)]
-        private SystemType controller;
+        private SystemType controllerType;
 
         /// <summary>
         /// The designated hand that the device is managing.
@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         public void SetDefaultInteractionMapping()
         {
-            interactions = ControllerMappingLibrary.GetMappingsForControllerType(controller.Type, handedness);
+            interactions = ControllerMappingLibrary.GetMappingsForControllerType(controllerType.Type, handedness);
         }
     }
 }
