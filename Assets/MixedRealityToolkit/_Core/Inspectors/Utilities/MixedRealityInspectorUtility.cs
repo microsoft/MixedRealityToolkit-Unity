@@ -32,7 +32,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
 
         #region Handles
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="origin"></param>
+        /// <param name="direction"></param>
+        /// <param name="distance"></param>
+        /// <param name="handleSize"></param>
+        /// <param name="recordUndo"></param>
+        /// <param name="autoSize"></param>
+        /// <returns></returns>
         public static float AxisMoveHandle(Object target, Vector3 origin, Vector3 direction, float distance, float handleSize = 0.2f, bool recordUndo = true, bool autoSize = true)
         {
             Vector3 position = origin + (direction.normalized * distance);
@@ -62,6 +72,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
             return distance;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="position"></param>
+        /// <param name="handleSize"></param>
+        /// <param name="autoSize"></param>
+        /// <param name="xScale"></param>
+        /// <param name="yScale"></param>
+        /// <param name="zScale"></param>
+        /// <param name="recordUndo"></param>
+        /// <returns></returns>
         public static Vector3 CircleMoveHandle(Object target, Vector3 position, float handleSize = 0.2f, bool autoSize = true, float xScale = 1f, float yScale = 1f, float zScale = 1f, bool recordUndo = true)
         {
             Handles.color = HandleColorCircle;
@@ -85,6 +107,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
             return position;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="position"></param>
+        /// <param name="handleSize"></param>
+        /// <param name="autoSize"></param>
+        /// <param name="xScale"></param>
+        /// <param name="yScale"></param>
+        /// <param name="zScale"></param>
+        /// <param name="recordUndo"></param>
+        /// <returns></returns>
         public static Vector3 SquareMoveHandle(Object target, Vector3 position, float handleSize = 0.2f, bool autoSize = true, float xScale = 1f, float yScale = 1f, float zScale = 1f, bool recordUndo = true)
         {
             Handles.color = HandleColorSquare;
@@ -109,6 +143,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
             return position;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="position"></param>
+        /// <param name="handleSize"></param>
+        /// <param name="autoSize"></param>
+        /// <param name="xScale"></param>
+        /// <param name="yScale"></param>
+        /// <param name="zScale"></param>
+        /// <param name="recordUndo"></param>
+        /// <returns></returns>
         public static Vector3 SphereMoveHandle(Object target, Vector3 position, float handleSize = 0.2f, bool autoSize = true, float xScale = 1f, float yScale = 1f, float zScale = 1f, bool recordUndo = true)
         {
             Handles.color = HandleColorSphere;
@@ -133,6 +179,19 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
             return position;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="origin"></param>
+        /// <param name="vector"></param>
+        /// <param name="normalize"></param>
+        /// <param name="handleLength"></param>
+        /// <param name="clamp"></param>
+        /// <param name="handleSize"></param>
+        /// <param name="recordUndo"></param>
+        /// <param name="autoSize"></param>
+        /// <returns></returns>
         public static Vector3 VectorHandle(Object target, Vector3 origin, Vector3 vector, bool normalize = true, float handleLength = 1f, bool clamp = true, float handleSize = 0.1f, bool recordUndo = true, bool autoSize = true)
         {
             Handles.color = HandleColorTangent;
@@ -197,6 +256,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
             return vector;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <param name="handleSize"></param>
+        /// <param name="autoSize"></param>
+        /// <param name="recordUndo"></param>
+        /// <returns></returns>
         public static Quaternion RotationHandle(Object target, Vector3 position, Quaternion rotation, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorRotation;

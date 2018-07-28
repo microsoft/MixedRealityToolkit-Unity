@@ -13,11 +13,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
     [CustomEditor(typeof(BaseMixedRealityLineDataProvider))]
     public class BaseMixedRealityLineDataProviderInspector : Editor
     {
+        private const string BasicSettingsFoldoutKey = "MRTK_Line_Inspector_BasicSettings";
+        private const string EditorSettingsFoldoutKey = "MRTK_Line_Inspector_EditorSettings";
+        private const string RotationSettingsFoldoutKey = "MRTK_Line_Inspector_RotationSettings";
+        private const string DistortionSettingsFoldoutKey = "MRTK_Line_Inspector_DistortionSettings";
+
         private static readonly GUIContent BasicSettingsContent = new GUIContent("Basic Settings");
         private static readonly GUIContent EditorSettingsContent = new GUIContent("Editor Settings");
+        private static readonly GUIContent ManualUpVectorContent = new GUIContent("Manual Up Vectors");
         private static readonly GUIContent RotationSettingsContent = new GUIContent("Rotation Settings");
         private static readonly GUIContent DistortionSettingsContent = new GUIContent("Distortion Settings");
-        private static readonly GUIContent ManualUpVectorContent = new GUIContent("Manual Up Vectors");
 
         private static bool basicSettingsFoldout = true;
         private static bool editorSettingsFoldout = false;
@@ -25,10 +30,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
         private static bool distortionSettingsFoldout = true;
 
         protected static int LinePreviewResolution = 16;
-        protected static bool DrawLinePoints = false;
+
         protected static bool DrawDottedLine = true;
+        protected static bool DrawLinePoints = false;
         protected static bool DrawLineRotations = false;
         protected static bool DrawLineManualUpVectors = false;
+
         protected static float LineRotationLength = 0.5f;
         protected static float LineManualUpVectorLength = 1f;
 
@@ -54,6 +61,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
 
         protected virtual void OnEnable()
         {
+            basicSettingsFoldout = SessionState.GetBool(BasicSettingsFoldoutKey, true);
+            editorSettingsFoldout = SessionState.GetBool(EditorSettingsFoldoutKey, false);
+            rotationSettingsFoldout = SessionState.GetBool(RotationSettingsFoldoutKey, true);
+            distortionSettingsFoldout = SessionState.GetBool(DistortionSettingsFoldoutKey, true);
+
             LineData = (BaseMixedRealityLineDataProvider)target;
             customLineTransform = serializedObject.FindProperty("customLineTransform");
             lineStartClamp = serializedObject.FindProperty("lineStartClamp");
@@ -88,11 +100,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
             serializedObject.ApplyModifiedProperties();
         }
 
+
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
             editorSettingsFoldout = EditorGUILayout.Foldout(editorSettingsFoldout, EditorSettingsContent, true);
+            SessionState.SetBool(EditorSettingsFoldoutKey, editorSettingsFoldout);
 
             if (editorSettingsFoldout)
             {
@@ -126,6 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
             }
 
             basicSettingsFoldout = EditorGUILayout.Foldout(basicSettingsFoldout, BasicSettingsContent, true);
+            SessionState.SetBool(BasicSettingsFoldoutKey, basicSettingsFoldout);
 
             if (basicSettingsFoldout)
             {
@@ -140,6 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
             }
 
             rotationSettingsFoldout = EditorGUILayout.Foldout(rotationSettingsFoldout, RotationSettingsContent, true);
+            SessionState.SetBool(RotationSettingsFoldoutKey, rotationSettingsFoldout);
 
             if (rotationSettingsFoldout)
             {
@@ -179,6 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
             }
 
             distortionSettingsFoldout = EditorGUILayout.Foldout(distortionSettingsFoldout, DistortionSettingsContent, true);
+            SessionState.SetBool(DistortionSettingsFoldoutKey, distortionSettingsFoldout);
 
             if (distortionSettingsFoldout)
             {
