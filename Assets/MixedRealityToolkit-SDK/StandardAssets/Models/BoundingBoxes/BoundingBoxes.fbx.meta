@@ -1,0 +1,222 @@
+fileFormatVersion: 2
+guid: df7e3630162f8004f9b6aec77a60b9a5
+timeCreated: 1450214136
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: lc_line02
+    100004: lc_line03
+    100006: lc_line04
+    100008: lc_line05
+    100010: lc_line06
+    100012: lc_line07
+    100014: lc_line08
+    100016: lc_line09
+    100018: lc_line10
+    100020: lc_line11
+    100022: lc_line12
+    100024: pCube2
+    100026: pCube3
+    100028: pCube4
+    100030: pCube5
+    100032: pCube6
+    100034: pCube7
+    100036: pCube8
+    100038: pCube9
+    100040: back
+    100042: LiveCube
+    100044: pSphere1
+    100046: pSphere2
+    100048: pSphere3
+    100050: pSphere4
+    100052: bbCube
+    100054: bbEdges
+    100056: bbSphere
+    100058: Directional Light
+    400000: //RootNode
+    400002: lc_line02
+    400004: lc_line03
+    400006: lc_line04
+    400008: lc_line05
+    400010: lc_line06
+    400012: lc_line07
+    400014: lc_line08
+    400016: lc_line09
+    400018: lc_line10
+    400020: lc_line11
+    400022: lc_line12
+    400024: pCube2
+    400026: pCube3
+    400028: pCube4
+    400030: pCube5
+    400032: pCube6
+    400034: pCube7
+    400036: pCube8
+    400038: pCube9
+    400040: back
+    400042: LiveCube
+    400044: pSphere1
+    400046: pSphere2
+    400048: pSphere3
+    400050: pSphere4
+    400052: bbCube
+    400054: bbEdges
+    400056: bbSphere
+    400058: Directional Light
+    2300000: //RootNode
+    2300002: lc_line02
+    2300004: lc_line03
+    2300006: lc_line04
+    2300008: lc_line05
+    2300010: lc_line06
+    2300012: lc_line07
+    2300014: lc_line08
+    2300016: lc_line09
+    2300018: lc_line10
+    2300020: lc_line11
+    2300022: lc_line12
+    2300024: pCube2
+    2300026: pCube3
+    2300028: pCube4
+    2300030: pCube5
+    2300032: pCube6
+    2300034: pCube7
+    2300036: pCube8
+    2300038: pCube9
+    2300040: LiveCube
+    2300042: pSphere1
+    2300044: pSphere2
+    2300046: pSphere3
+    2300048: pSphere4
+    2300050: bbCube
+    2300052: bbEdges
+    2300054: bbSphere
+    3300000: //RootNode
+    3300002: lc_line02
+    3300004: lc_line03
+    3300006: lc_line04
+    3300008: lc_line05
+    3300010: lc_line06
+    3300012: lc_line07
+    3300014: lc_line08
+    3300016: lc_line09
+    3300018: lc_line10
+    3300020: lc_line11
+    3300022: lc_line12
+    3300024: pCube2
+    3300026: pCube3
+    3300028: pCube4
+    3300030: pCube5
+    3300032: pCube6
+    3300034: pCube7
+    3300036: pCube8
+    3300038: pCube9
+    3300040: LiveCube
+    3300042: pSphere1
+    3300044: pSphere2
+    3300046: pSphere3
+    3300048: pSphere4
+    3300050: bbCube
+    3300052: bbEdges
+    3300054: bbSphere
+    4300000: LiveCube
+    4300002: lc_line02
+    4300004: lc_line03
+    4300006: lc_line04
+    4300008: lc_line05
+    4300010: lc_line06
+    4300012: lc_line07
+    4300014: lc_line08
+    4300016: lc_line09
+    4300018: lc_line10
+    4300020: lc_line11
+    4300022: lc_line12
+    4300024: pCube2
+    4300026: pCube3
+    4300028: pCube4
+    4300030: pCube5
+    4300032: pCube7
+    4300034: pCube6
+    4300036: pCube8
+    4300038: pCube9
+    4300040: pSphere4
+    4300042: pSphere3
+    4300044: pSphere2
+    4300046: pSphere1
+    4300048: bbEdges
+    4300050: bbSphere
+    4300052: bbCube
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
