@@ -5,8 +5,9 @@ If you have any questions, please reach out on the [HoloLens forums](https://for
 
 # Process
 
-1. [Make a proposal](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) (either new, or for something from our backlog)
-2. Implement the proposal, including any demo scenes and unit tests.
+1. [Make a proposal](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues)
+> If you are implementing something from our backlog, you do not need to file a new proposal.
+2. Implement the change, including any needed demo scenes and/or unit tests.
 3. Start a pull request & address comments.
 4. Merge.
 
