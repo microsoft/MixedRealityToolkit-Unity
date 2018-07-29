@@ -1638,20 +1638,20 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: "Line Examples\n<size=75%>\nThe Mixed Reality Toolkit's built in lines are
     split into two components: Data and Renderers.\n</size>\nLine Data Providers<size=75%>\nLine
-    components that define what a line is and all the data associated with it. This
-    does not handle any aspect of rendering a line in the scene, and can be used for
-    paths, interpolation, and more.\n\n\u2022<indent=3%>Simple Line \u2013 a line
-    with two points</indent>\n\u2022<indent=3%>Parabola \u2013  parabolic arc between
-    two points</indent>\n\u2022<indent=3%>Rectange \u2013 a line that loops back on
-    itself with 4 cxorners</indent>\n\u2022<indent=3%>Ellipse \u2013 a line that loops
-    back on itself with no corners</indent>\n\u2022<indent=3%>Spline \u2013 a multi-point
-    line with Bezier interpolation</indent>\r\n</size>\nLine Renderers<size=75%>\nThe
-    components take the line data and render it in the scene.\n\n\u2022<indent=3%>MixedRealityLineRenderer
+    components that define all the characteristics of that line and all the data associated
+    with it. This does not handle any aspect of rendering a line in the scene, and
+    can be used for paths, interpolation, and more.\n\n\u2022<indent=3%>Simple Line
+    \u2013 a line with two points</indent>\n\u2022<indent=3%>Parabola \u2013  parabolic
+    arc between two points</indent>\n\u2022<indent=3%>Rectange \u2013 a line that
+    loops back on itself with 4 corners</indent>\n\u2022<indent=3%>Ellipse \u2013
+    a line that loops back on itself with no corners</indent>\n\u2022<indent=3%>Spline
+    \u2013 a multi-point line with Bezier interpolation</indent>\r\n</size>\nLine
+    Renderers<size=75%>\nThe components take the line data and render it in the scene.\n\n\u2022<indent=3%>MixedRealityLineRenderer
     \u2013 Implements Unity's built in line renderer component, and applies the line
     data to it</indent>\n\u2022<indent=3%>ParticleSystemLineRenderer \u2013 attaches
-    a set of particles to the line</indent>\r\n\u2022<indent=3%>MeshLineRenderer \u2013
-    creates insances of a mesh along the line</indent>\n\u2022<indent=3%>StripMeshLineRenderer
-    \u2013 draws a strip of polygons along the line</indent>"
+    a set of particle systems along the length of the line</indent>\r\n\u2022<indent=3%>MeshLineRenderer
+    \u2013 creates insances of a mesh, then places them along the length of the line</indent>\n\u2022<indent=3%>StripMeshLineRenderer
+    \u2013 draws a strip of polygons along the length of the line</indent>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1719,10 +1719,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1505022811}
-    characterCount: 980
+    characterCount: 1071
     spriteCount: 0
-    spaceCount: 169
-    wordCount: 155
+    spaceCount: 184
+    wordCount: 170
     linkCount: 0
     lineCount: 28
     pageCount: 1
