@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
         #region Line Data Provider Implementation
 
+        /// <inheritdoc />
         protected override float GetUnClampedWorldLengthInternal()
         {
             // Crude approximation
@@ -48,6 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             return distance;
         }
 
+        /// <inheritdoc />
         protected override Vector3 GetUpVectorInternal(float normalizedLength)
         {
             return transform.up;
