@@ -29,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
 
             if (MixedRealityManager.IsInitialized &&
                 MixedRealityManager.ConfirmInitialized() &&
+                MixedRealityManager.Instance.ActiveProfile != null &&
                 MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
             {
                 inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
@@ -38,7 +39,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
 
         public override void OnInspectorGUI()
         {
-            if (!MixedRealityManager.IsInitialized || !MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
+            if (!MixedRealityManager.IsInitialized ||
+                 MixedRealityManager.Instance.ActiveProfile == null ||
+                !MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
             {
                 base.OnInspectorGUI();
                 return;
