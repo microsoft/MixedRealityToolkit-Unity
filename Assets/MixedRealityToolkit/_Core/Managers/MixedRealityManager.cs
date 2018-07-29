@@ -38,7 +38,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     return false;
                 }
 
-                return Instance.activeProfile != null;
+                if (!ConfirmInitialized())
+                {
+                    return false;
+                }
+
+                return Instance.ActiveProfile != null;
             }
         }
 
