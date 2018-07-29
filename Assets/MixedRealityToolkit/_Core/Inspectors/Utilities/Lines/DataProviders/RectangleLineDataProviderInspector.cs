@@ -30,6 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
             // Rectangles only support 4 points, so our preview will reflect that.
             LinePreviewResolution = 4;
 
+            // Rectangle doesn't support line rotations
+            DrawLineRotations = false;
+
             serializedObject.Update();
 
             EditorGUILayout.LabelField("Rectangle Settings");

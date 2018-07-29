@@ -78,21 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         public float WidthMultiplier
         {
             get { return widthMultiplier; }
-            set
-            {
-                if (value < 0f)
-                {
-                    widthMultiplier = 0f;
-                }
-                else if (value > 10f)
-                {
-                    widthMultiplier = 10f;
-                }
-                else
-                {
-                    widthMultiplier = value;
-                }
-            }
+            set { widthMultiplier = Mathf.Clamp(value, 0f, 10f); }
         }
 
         [Header("Offsets")]
@@ -108,24 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         public float ColorOffset
         {
             get { return colorOffset; }
-            set
-            {
-                if (value < 0f)
-                {
-                    colorOffset = 0f;
-                }
-                else if (value > 10f)
-                {
-                    colorOffset = 10f;
-                }
-                else
-                {
-                    colorOffset = value;
-                }
-
-
-                LineColor = new Gradient();
-            }
+            set { colorOffset = Mathf.Clamp(value, 0f, 10f); }
         }
 
         [Range(0f, 10f)]
@@ -139,21 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         public float WidthOffset
         {
             get { return widthOffset; }
-            set
-            {
-                if (value < 0f)
-                {
-                    widthOffset = 0f;
-                }
-                else if (value > 10f)
-                {
-                    widthOffset = 10f;
-                }
-                else
-                {
-                    widthOffset = value;
-                }
-            }
+            set { widthOffset = Mathf.Clamp(value, 0f, 10f); }
         }
 
         [Header("Point Placement")]
@@ -182,21 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         public int LineStepCount
         {
             get { return lineStepCount; }
-            set
-            {
-                if (value < 2)
-                {
-                    lineStepCount = 2;
-                }
-                else if (value > 2048)
-                {
-                    lineStepCount = 2048;
-                }
-                else
-                {
-                    lineStepCount = value;
-                }
-            }
+            set { lineStepCount = Mathf.Clamp(value, 2, 2048); }
         }
 
         /// <summary>
@@ -263,8 +204,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         {
             Vector3 firstPos = lineDataSource.GetPoint(0);
             Vector3 lastPos = firstPos;
-            Color gColor = GetColor(0);
 
+            Color gColor = GetColor(0);
             gColor.a = 0.5f;
             Gizmos.color = gColor;
             Gizmos.DrawSphere(firstPos, GetWidth(0) * 0.5f);
@@ -275,9 +216,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
                 Vector3 currentPos = lineDataSource.GetPoint(i);
 
                 gColor = GetColor(normalizedLength);
-                gColor.a = gColor.a * 0.5f;
-                Gizmos.color = gColor;
+                Gizmos.color = gColor.Invert();
                 Gizmos.DrawLine(lastPos, currentPos);
+
+                gColor.a = 0.5f;
+                Gizmos.color = gColor;
                 Gizmos.DrawSphere(currentPos, GetWidth(normalizedLength) * 0.5f);
 
                 lastPos = currentPos;
@@ -285,6 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 
             if (lineDataSource.Loops)
             {
+                Gizmos.color = gColor.Invert();
                 Gizmos.DrawLine(lastPos, firstPos);
             }
         }
@@ -303,17 +247,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
             {
                 float normalizedLength = (1f / lineStepCount) * i;
                 Vector3 currentPos = lineDataSource.GetPoint(normalizedLength);
-                gColor = GetColor(normalizedLength);
-                gColor.a = gColor.a * 0.5f;
 
-                Gizmos.color = gColor;
+                gColor = GetColor(normalizedLength);
+                Gizmos.color = gColor.Invert();
                 Gizmos.DrawLine(lastPos, currentPos);
+
+                gColor.a = 0.5f;
+                Gizmos.color = gColor;
                 Gizmos.DrawSphere(currentPos, GetWidth(normalizedLength) * 0.5f);
                 lastPos = currentPos;
             }
 
             if (lineDataSource.Loops)
             {
+                Gizmos.color = gColor.Invert();
                 Gizmos.DrawLine(lastPos, firstPos);
             }
         }

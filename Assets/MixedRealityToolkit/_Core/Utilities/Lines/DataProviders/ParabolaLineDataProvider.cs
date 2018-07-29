@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
@@ -11,19 +12,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
     public abstract class ParabolaLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
-        private Vector3 startPoint = Vector3.zero;
+        private MixedRealityPose startPoint = MixedRealityPose.ZeroIdentity;
 
         /// <summary>
         /// The Starting point of this line.
         /// </summary>
         /// <remarks>Always located at this <see cref="GameObject"/>'s <see cref="Transform.position"/></remarks>
-        public Vector3 StartPoint => startPoint;
+        public MixedRealityPose StartPoint => startPoint;
 
         #region Monobehaviour Implementation
 
         protected override void OnValidate()
         {
-            startPoint = LineTransform.position;
+            base.OnValidate();
+
+            startPoint.Position = transform.transform.InverseTransformPoint(LineTransform.position);
         }
 
         #endregion Monobehaviour Implementation

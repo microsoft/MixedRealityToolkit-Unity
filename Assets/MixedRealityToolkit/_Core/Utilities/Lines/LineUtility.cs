@@ -13,6 +13,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         public static readonly Vector3 DefaultUpVector = Vector3.up;
 
         /// <summary>
+        /// Inverts the color
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public static Color Invert(this Color color)
+        {
+            color.r = 1.0f - color.r;
+            color.g = 1.0f - color.g;
+            color.b = 1.0f - color.b;
+            return color;
+        }
+
+        /// <summary>
         /// Returns normalized length for OffsetModeEnum.Manual
         /// </summary>
         /// <param name="step"></param>
@@ -136,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
                 case InterpolationType.CatmullRom:
                     return InterpolateCatmullRomPoints(point1, point2, point3, point4, length);
                 default:
-                    return InterpolateBezeirPoints(point1, point2, point3, point4, length);
+                    return InterpolateBezierPoints(point1, point2, point3, point4, length);
             }
         }
 
@@ -171,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             return 0.5f * (p1 + (p2 * normalizedLength) + (p3 * normalizedLength * normalizedLength) + (p4 * normalizedLength * normalizedLength * normalizedLength));
         }
 
-        public static Vector3 InterpolateBezeirPoints(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, float normalizedLength)
+        public static Vector3 InterpolateBezierPoints(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, float normalizedLength)
         {
             float invertedDistance = 1f - normalizedLength;
             return invertedDistance * invertedDistance * invertedDistance * point1 +
@@ -189,13 +202,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
                    normalizedLength * normalizedLength * normalizedLength * point4;
         }
 
-        private static Vector3 ellipsePoint = Vector3.zero;
+
         public static Vector3 GetEllipsePoint(float radiusX, float radiusY, float angle)
         {
             ellipsePoint.x = radiusX * Mathf.Cos(angle);
-            ellipsePoint.y = radiusY;
+            ellipsePoint.y = radiusY * Mathf.Sin(angle);
             ellipsePoint.z = 0.0f;
             return ellipsePoint;
         }
+
+        private static Vector3 ellipsePoint = Vector3.zero;
     }
 }

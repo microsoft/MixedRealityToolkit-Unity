@@ -11,8 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
     /// <remarks>This line loops.</remarks>
     public class EllipseLineDataProvider : BaseMixedRealityLineDataProvider
     {
-        [Header("Ellipse Settings")]
-
         [SerializeField]
         private int resolution = 36;
 

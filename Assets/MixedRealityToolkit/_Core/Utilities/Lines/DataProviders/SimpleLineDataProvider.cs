@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
@@ -11,26 +12,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
     public class SimpleLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
-        private Vector3 start = Vector3.zero;
+        private MixedRealityPose startPoint = MixedRealityPose.ZeroIdentity;
 
         /// <summary>
         /// The Starting point of this line.
         /// </summary>
         /// <remarks>Always located at this <see cref="GameObject"/>'s <see cref="Transform.position"/></remarks>
-        public Vector3 Start
-        {
-            get { return start; }
-            private set { start = value; }
-        }
+        public MixedRealityPose StartPoint => startPoint;
 
         [SerializeField]
         [Tooltip("The point where this line will end.\nNote: Start point is always located at the GameObject's transform position.")]
-        private Vector3 endPoint = Vector3.zero;
+        private MixedRealityPose endPoint = new MixedRealityPose(Vector3.right, Quaternion.identity);
 
         /// <summary>
         /// The point where this line will end.
         /// </summary>
-        public Vector3 EndPoint
+        public MixedRealityPose EndPoint
         {
             get { return endPoint; }
             set { endPoint = value; }
@@ -42,12 +39,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         {
             base.OnValidate();
 
-            start = LineTransform.position;
-
-            if (endPoint == start)
+            if (endPoint.Position == startPoint.Position)
             {
-                endPoint = start + Vector3.forward;
+                endPoint.Position = transform.InverseTransformPoint(LineTransform.position) + Vector3.right;
             }
+
+            startPoint.Position = transform.transform.InverseTransformPoint(LineTransform.position);
         }
 
         #endregion Monobehaviour Implementation
@@ -63,9 +60,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             switch (pointIndex)
             {
                 case 0:
-                    return start;
+                    return startPoint.Position;
                 case 1:
-                    return endPoint;
+                    return endPoint.Position;
                 default:
                     Debug.LogError("Invalid point index");
                     return Vector3.zero;
@@ -77,11 +74,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         {
             switch (pointIndex)
             {
-                case 0:
-                    start = point;
-                    break;
                 case 1:
-                    endPoint = point;
+                    endPoint.Position = point;
                     break;
                 default:
                     Debug.LogError("Invalid point index");
@@ -92,13 +86,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
-            return Vector3.Lerp(start, endPoint, normalizedDistance);
+            return Vector3.Lerp(startPoint.Position, endPoint.Position, normalizedDistance);
         }
 
         /// <inheritdoc />
         protected override float GetUnClampedWorldLengthInternal()
         {
-            return Vector3.Distance(start, endPoint);
+            return Vector3.Distance(startPoint.Position, endPoint.Position);
         }
 
         /// <inheritdoc />

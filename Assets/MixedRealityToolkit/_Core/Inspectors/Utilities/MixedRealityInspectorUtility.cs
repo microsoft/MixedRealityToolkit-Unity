@@ -27,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
         public static readonly Color HandleColorAxis = new Color(0.0f, 1f, 0.2f);
         public static readonly Color HandleColorRotation = new Color(0.0f, 1f, 0.2f);
         public static readonly Color HandleColorTangent = new Color(0.1f, 0.8f, 0.5f, 0.7f);
+        public static readonly Color LineVelocityColor = new Color(0.9f, 1f, 0f, 0.8f);
 
         #endregion Colors
 
@@ -212,6 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
             {
                 // If the handle isn't normalized, brighten based on distance to origin
                 Handles.color = Color.Lerp(Color.gray, HandleColorTangent, distanceToOrigin * 0.85f);
+
                 if (clamp)
                 {
                     // To indicate that we're at the clamped limit, make the handle 'pop' slightly larger
@@ -244,6 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
                 if (!normalize)
                 {
                     distanceToOrigin = Vector3.Distance(origin, newPosition) / handleLength;
+
                     if (clamp)
                     {
                         distanceToOrigin = Mathf.Clamp01(distanceToOrigin);
@@ -290,7 +293,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
                 if (rotation != newRotation)
                 {
                     Undo.RegisterCompleteObjectUndo(target, target.name);
-
                     rotation = newRotation;
                 }
             }

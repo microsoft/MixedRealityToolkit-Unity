@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 
         [SerializeField]
         [HideInInspector]
-        private LineRenderer lineRenderer;
+        private LineRenderer lineRenderer = null;
 
         private Vector3[] positions;
 

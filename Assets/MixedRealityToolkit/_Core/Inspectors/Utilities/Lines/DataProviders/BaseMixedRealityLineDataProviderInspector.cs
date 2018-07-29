@@ -13,10 +13,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
     [CustomEditor(typeof(BaseMixedRealityLineDataProvider))]
     public class BaseMixedRealityLineDataProviderInspector : Editor
     {
+        private const string DrawLinePointsKey = "MRTK_Line_Inspector_DrawLinePoints";
         private const string BasicSettingsFoldoutKey = "MRTK_Line_Inspector_BasicSettings";
+        private const string DrawLineRotationsKey = "MRTK_Line_Inspector_DrawLineRotations";
         private const string EditorSettingsFoldoutKey = "MRTK_Line_Inspector_EditorSettings";
+        private const string RotationArrowLengthKey = "MRTK_Line_Inspector_RotationArrowLength";
         private const string RotationSettingsFoldoutKey = "MRTK_Line_Inspector_RotationSettings";
+        private const string ManualUpVectorLengthKey = "MRTK_Line_Inspector_ManualUpVectorLength";
+        private const string LinePreviewResolutionKey = "MRTK_Line_Inspector_LinePreviewResolution";
         private const string DistortionSettingsFoldoutKey = "MRTK_Line_Inspector_DistortionSettings";
+        private const string DrawLineManualUpVectorsKey = "MRTK_Line_Inspector_DrawLineManualUpVectors";
+
+        private const float ManualUpVectorHandleSizeModifier = 0.1f;
 
         private static readonly GUIContent BasicSettingsContent = new GUIContent("Basic Settings");
         private static readonly GUIContent EditorSettingsContent = new GUIContent("Editor Settings");
@@ -31,13 +39,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
 
         protected static int LinePreviewResolution = 16;
 
-        protected static bool DrawDottedLine = true;
         protected static bool DrawLinePoints = false;
         protected static bool DrawLineRotations = false;
         protected static bool DrawLineManualUpVectors = false;
 
-        protected static float LineRotationLength = 0.5f;
-        protected static float LineManualUpVectorLength = 1f;
+        protected static float ManualUpVectorLength = 1f;
+        protected static float RotationArrowLength = 0.5f;
 
         private SerializedProperty customLineTransform;
         private SerializedProperty lineStartClamp;
@@ -61,10 +68,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
 
         protected virtual void OnEnable()
         {
-            basicSettingsFoldout = SessionState.GetBool(BasicSettingsFoldoutKey, true);
-            editorSettingsFoldout = SessionState.GetBool(EditorSettingsFoldoutKey, false);
-            rotationSettingsFoldout = SessionState.GetBool(RotationSettingsFoldoutKey, true);
-            distortionSettingsFoldout = SessionState.GetBool(DistortionSettingsFoldoutKey, true);
+            basicSettingsFoldout = SessionState.GetBool(BasicSettingsFoldoutKey, basicSettingsFoldout);
+            editorSettingsFoldout = SessionState.GetBool(EditorSettingsFoldoutKey, editorSettingsFoldout);
+            rotationSettingsFoldout = SessionState.GetBool(RotationSettingsFoldoutKey, rotationSettingsFoldout);
+            distortionSettingsFoldout = SessionState.GetBool(DistortionSettingsFoldoutKey, distortionSettingsFoldout);
+
+            LinePreviewResolution = SessionState.GetInt(LinePreviewResolutionKey, LinePreviewResolution);
+            DrawLinePoints = SessionState.GetBool(DrawLinePointsKey, DrawLinePoints);
+            DrawLineRotations = SessionState.GetBool(DrawLineRotationsKey, DrawLineRotations);
+            RotationArrowLength = SessionState.GetFloat(RotationArrowLengthKey, RotationArrowLength);
+            DrawLineManualUpVectors = SessionState.GetBool(DrawLineManualUpVectorsKey, DrawLineManualUpVectors);
+            ManualUpVectorLength = SessionState.GetFloat(ManualUpVectorLengthKey, ManualUpVectorLength);
 
             LineData = (BaseMixedRealityLineDataProvider)target;
             customLineTransform = serializedObject.FindProperty("customLineTransform");
@@ -82,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
             distortionStrength = serializedObject.FindProperty("distortionStrength");
             uniformDistortionStrength = serializedObject.FindProperty("uniformDistortionStrength");
 
-            manualUpVectorList = new ReorderableList(serializedObject, manualUpVectors, true, true, true, true);
+            manualUpVectorList = new ReorderableList(serializedObject, manualUpVectors, false, true, true, true);
             manualUpVectorList.drawElementCallback += DrawManualUpVectorListElement;
             manualUpVectorList.drawHeaderCallback += DrawManualUpVectorHeader;
 
@@ -100,7 +114,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
             serializedObject.ApplyModifiedProperties();
         }
 
-
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
@@ -111,29 +124,67 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
             if (editorSettingsFoldout)
             {
                 EditorGUI.indentLevel++;
+                EditorGUI.BeginChangeCheck();
 
+                GUI.enabled = RenderLinePreview;
                 EditorGUI.BeginChangeCheck();
                 LinePreviewResolution = EditorGUILayout.IntSlider("Preview Resolution", LinePreviewResolution, 2, 128);
 
                 if (EditorGUI.EndChangeCheck())
                 {
-                    SceneView.RepaintAll();
+                    SessionState.SetInt(LinePreviewResolutionKey, LinePreviewResolution);
                 }
 
-                DrawDottedLine = EditorGUILayout.Toggle("Draw Dotted Line", DrawDottedLine);
+                EditorGUI.BeginChangeCheck();
                 DrawLinePoints = EditorGUILayout.Toggle("Draw Line Points", DrawLinePoints);
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    SessionState.SetBool(DrawLinePointsKey, DrawLinePoints);
+                }
+
+                GUI.enabled = true;
+                EditorGUI.BeginChangeCheck();
                 DrawLineRotations = EditorGUILayout.Toggle("Draw Line Rotations", DrawLineRotations);
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    SessionState.SetBool(DrawLineRotationsKey, DrawLineRotations);
+                }
 
                 if (DrawLineRotations)
                 {
-                    LineRotationLength = EditorGUILayout.Slider("Rotation Arrow Length", LineRotationLength, 0.01f, 5f);
+                    EditorGUI.BeginChangeCheck();
+                    RotationArrowLength = EditorGUILayout.Slider("Rotation Arrow Length", RotationArrowLength, 0.01f, 5f);
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        SessionState.SetFloat(RotationArrowLengthKey, RotationArrowLength);
+                    }
                 }
 
+                EditorGUI.BeginChangeCheck();
                 DrawLineManualUpVectors = EditorGUILayout.Toggle("Draw Manual Up Vectors", DrawLineManualUpVectors);
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    SessionState.SetBool(DrawLineManualUpVectorsKey, DrawLineManualUpVectors);
+                }
 
                 if (DrawLineManualUpVectors)
                 {
-                    LineManualUpVectorLength = EditorGUILayout.Slider("Manual Up Vector Length", LineManualUpVectorLength, 1f, 10f);
+                    EditorGUI.BeginChangeCheck();
+                    ManualUpVectorLength = EditorGUILayout.Slider("Manual Up Vector Length", ManualUpVectorLength, 1f, 10f);
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        SessionState.SetFloat(ManualUpVectorLengthKey, ManualUpVectorLength);
+                    }
+                }
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    SceneView.RepaintAll();
                 }
 
                 EditorGUI.indentLevel--;
@@ -223,26 +274,72 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
 
         protected virtual void OnSceneGUI()
         {
-            if (Application.isPlaying || !RenderLinePreview)
+            if (DrawLineManualUpVectors)
+            {
+                if (LineData.ManualUpVectors == null || LineData.ManualUpVectors.Length < 2)
+                {
+                    LineData.ManualUpVectors = new[] { Vector3.up, Vector3.up };
+                }
+
+                for (int i = 0; i < LineData.ManualUpVectors.Length; i++)
+                {
+                    float normalizedLength = (1f / (LineData.ManualUpVectors.Length - 1)) * i;
+                    var position = LineData.GetPoint(normalizedLength);
+                    float handleSize = HandleUtility.GetHandleSize(position);
+                    LineData.ManualUpVectors[i] = MixedRealityInspectorUtility.VectorHandle(LineData, position, LineData.ManualUpVectors[i], false, ManualUpVectorLength * handleSize, true, handleSize * ManualUpVectorHandleSizeModifier);
+                }
+            }
+
+            if (Application.isPlaying)
             {
                 return;
             }
 
-            Vector3 firstPos = LineData.GetPoint(0f);
-            Vector3 lastPos = firstPos;
-            Handles.color = Color.magenta;
+            Vector3 firstPosition = LineData.FirstPoint;
+            Vector3 lastPosition = firstPosition;
 
             for (int i = 1; i < LinePreviewResolution; i++)
             {
-                float normalizedLength = (1f / (LinePreviewResolution - 1)) * i;
-                Vector3 currentPos = LineData.GetPoint(normalizedLength);
-                Handles.DrawLine(lastPos, currentPos);
-                lastPos = currentPos;
+                Vector3 currentPosition;
+                Quaternion rotation;
+
+                if (i == LinePreviewResolution - 1)
+                {
+                    currentPosition = LineData.LastPoint;
+                    rotation = LineData.GetRotation(LineData.PointCount - 1);
+                }
+                else
+                {
+                    float normalizedLength = (1f / (LinePreviewResolution - 1)) * i;
+                    currentPosition = LineData.GetPoint(normalizedLength);
+                    rotation = LineData.GetRotation(normalizedLength);
+                }
+
+                if (RenderLinePreview)
+                {
+                    Handles.color = Color.magenta;
+                    Handles.DrawLine(lastPosition, currentPosition);
+                }
+
+                if (DrawLineRotations)
+                {
+                    float arrowSize = HandleUtility.GetHandleSize(currentPosition) * RotationArrowLength;
+                    Handles.color = MixedRealityInspectorUtility.LineVelocityColor;
+                    Handles.color = Color.Lerp(MixedRealityInspectorUtility.LineVelocityColor, Handles.zAxisColor, 0.75f);
+                    Handles.ArrowHandleCap(0, currentPosition, Quaternion.LookRotation(rotation * Vector3.forward), arrowSize, EventType.Repaint);
+                    Handles.color = Color.Lerp(MixedRealityInspectorUtility.LineVelocityColor, Handles.xAxisColor, 0.75f);
+                    Handles.ArrowHandleCap(0, currentPosition, Quaternion.LookRotation(rotation * Vector3.right), arrowSize, EventType.Repaint);
+                    Handles.color = Color.Lerp(MixedRealityInspectorUtility.LineVelocityColor, Handles.yAxisColor, 0.75f);
+                    Handles.ArrowHandleCap(0, currentPosition, Quaternion.LookRotation(rotation * Vector3.up), arrowSize, EventType.Repaint);
+                }
+
+                lastPosition = currentPosition;
             }
 
-            if (LineData.Loops)
+            if (LineData.Loops && RenderLinePreview)
             {
-                Handles.DrawLine(lastPos, firstPos);
+                Handles.color = Color.magenta;
+                Handles.DrawLine(lastPosition, firstPosition);
             }
         }
 

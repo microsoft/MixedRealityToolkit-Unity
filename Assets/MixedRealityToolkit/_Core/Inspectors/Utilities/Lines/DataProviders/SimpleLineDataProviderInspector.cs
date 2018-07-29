@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders;
 using UnityEditor;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
     public class SimpleLineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
     {
         private SerializedProperty endPoint;
+        private SerializedProperty endPointPosition;
 
         protected override void OnEnable()
         {
@@ -23,9 +25,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
         {
             base.OnInspectorGUI();
             serializedObject.Update();
+
+            // We only have two points.
+            LinePreviewResolution = 2;
+
             EditorGUILayout.LabelField("Simple Line Settings");
             EditorGUI.indentLevel++;
+
+            EditorGUI.BeginChangeCheck();
+
             EditorGUILayout.PropertyField(endPoint);
+
             EditorGUI.indentLevel--;
             serializedObject.ApplyModifiedProperties();
         }
@@ -36,15 +46,28 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
 
             serializedObject.Update();
 
+            var rotation = endPoint.FindPropertyRelative("rotation");
+
             if (Tools.current == Tool.Move)
             {
                 EditorGUI.BeginChangeCheck();
-                Vector3 newTargetPosition = Handles.PositionHandle(LineData.transform.TransformPoint(endPoint.vector3Value), Quaternion.identity);
+                Vector3 newTargetPosition = Handles.PositionHandle(LineData.GetPoint(1), Quaternion.identity);
 
                 if (EditorGUI.EndChangeCheck())
                 {
                     Undo.RecordObject(LineData, "Change Spline Point Position");
-                    endPoint.vector3Value = LineData.transform.InverseTransformPoint(newTargetPosition);
+                    LineData.SetPoint(1, CameraCache.Main.transform.InverseTransformPoint(newTargetPosition));
+                }
+            }
+            else if (Tools.current == Tool.Rotate)
+            {
+                EditorGUI.BeginChangeCheck();
+                Quaternion newTargetRotation = Handles.RotationHandle(rotation.quaternionValue, LineData.GetPoint(1));
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    Undo.RecordObject(LineData, "Change Spline Point Rotation");
+                    rotation.quaternionValue = newTargetRotation;
                 }
             }
 

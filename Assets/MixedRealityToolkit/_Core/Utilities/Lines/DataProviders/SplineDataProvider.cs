@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
@@ -13,24 +12,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         private MixedRealityPose[] controlPoints =
         {
             MixedRealityPose.ZeroIdentity,
-            new MixedRealityPose(new Vector3(0f, 0.5f, 0.5f), Quaternion.identity),
-            new MixedRealityPose(new Vector3(0f, -0.5f, 0.5f), Quaternion.identity),
-            new MixedRealityPose(Vector3.forward, Quaternion.identity),
+            new MixedRealityPose(new Vector3(0.5f, 0.5f, 0f), Quaternion.identity),
+            new MixedRealityPose(new Vector3(0.5f, -0.5f, 0f), Quaternion.identity),
+            new MixedRealityPose(Vector3.right, Quaternion.identity),
         };
 
         public MixedRealityPose[] ControlPoints => controlPoints;
 
         [SerializeField]
-        private bool alignControlPoints = true;
+        private bool alignAllControlPoints = true;
 
-        public bool AlignControlPoints
+        public bool AlignAllControlPoints
         {
-            get { return alignControlPoints; }
+            get { return alignAllControlPoints; }
             set
             {
-                if (alignControlPoints != value)
+                if (alignAllControlPoints != value)
                 {
-                    alignControlPoints = value;
+                    alignAllControlPoints = value;
                     ForceUpdateAlignment();
                 }
             }
@@ -38,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
         public void ForceUpdateAlignment()
         {
-            if (alignControlPoints)
+            if (alignAllControlPoints)
             {
                 for (int i = 0; i < PointCount; i++)
                 {
@@ -49,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
         private void UpdatePointAlignment(int pointIndex)
         {
-            if (alignControlPoints)
+            if (alignAllControlPoints)
             {
                 int prevControlPoint;
                 int changedControlPoint;
@@ -146,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             Vector3 point3 = controlPoints[point3Index].Position;
             Vector3 point4 = controlPoints[point4Index].Position;
 
-            return LineUtility.InterpolateBezeirPoints(point1, point2, point3, point4, subDistance);
+            return LineUtility.InterpolateBezierPoints(point1, point2, point3, point4, subDistance);
         }
 
         /// <inheritdoc />
@@ -182,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
                 pointIndex = 0;
             }
 
-            if (AlignControlPoints)
+            if (alignAllControlPoints)
             {
                 if (pointIndex % 3 == 0)
                 {

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders;
 using System.Collections.Generic;
 using UnityEditor;
@@ -14,27 +15,40 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
     public class SplineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
     {
         private const float OverlappingPointThreshold = 0.015f;
-        private static HashSet<int> overlappingPointIndexes = new HashSet<int>();
+        private const float HandleSizeModifier = 0.04f;
+        private const float PickSizeModifier = 0.06f;
+
+        private static readonly HashSet<int> OverlappingPointIndexes = new HashSet<int>();
+
+        private static readonly Vector2 ControlPointButtonSize = new Vector2(16, 16);
+        private static readonly Vector2 LeftControlPointPositionOffset = Vector2.left * 12;
+        private static readonly Vector2 RightControlPointPositionOffset = Vector2.right * 24;
+
+        private static readonly Vector2 ControlPointButtonHandleOffset = Vector3.up * 24;
 
         private static readonly GUIContent PositionContent = new GUIContent("Position");
         private static readonly GUIContent RotationContent = new GUIContent("Rotation");
+        private static readonly GUIContent AddControlPointContent = new GUIContent("+", "Add a control point");
+        private static readonly GUIContent RemoveControlPointContent = new GUIContent("-", "Remove a control point");
         private static readonly GUIContent ControlPointHeaderContent = new GUIContent("Spline Control Points", "The current control points for the spline.");
 
         private static bool controlPointFoldout = true;
 
-        private SerializedProperty alignControlPoints;
         private SerializedProperty controlPoints;
+        private SerializedProperty alignAllControlPoints;
 
         private SplineDataProvider splineData;
         private ReorderableList controlPointList;
+
+        private int selectedHandleIndex = -1;
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
             splineData = (SplineDataProvider)target;
-            alignControlPoints = serializedObject.FindProperty("alignControlPoints");
             controlPoints = serializedObject.FindProperty("controlPoints");
+            alignAllControlPoints = serializedObject.FindProperty("alignAllControlPoints");
 
             controlPointList = new ReorderableList(serializedObject, controlPoints, false, false, false, false)
             {
@@ -42,6 +56,170 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
             };
 
             controlPointList.drawElementCallback += DrawControlPointElement;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+            serializedObject.Update();
+
+            // We always draw line points for splines.
+            DrawLinePoints = true;
+
+            EditorGUILayout.LabelField("Spline Settings");
+
+            EditorGUI.indentLevel++;
+
+            EditorGUILayout.PropertyField(alignAllControlPoints);
+            GUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Add New Point", GUILayout.Width(48f), GUILayout.ExpandWidth(true)))
+            {
+                AddControlPoint();
+            }
+
+            GUI.enabled = controlPoints.arraySize > 4;
+
+            if (GUILayout.Button("Remove Last Point", GUILayout.Width(48f), GUILayout.ExpandWidth(true)))
+            {
+                RemoveControlPoint();
+            }
+
+            GUI.enabled = true;
+            GUILayout.EndHorizontal();
+
+            controlPointFoldout = EditorGUILayout.Foldout(controlPointFoldout, ControlPointHeaderContent, true);
+
+            if (controlPointFoldout)
+            {
+                // If we found overlapping points, provide an option to auto-separate them
+                if (OverlappingPointIndexes.Count > 0)
+                {
+                    EditorGUILayout.HelpBox("We noticed some of your control points have the same position.", MessageType.Warning);
+
+                    if (GUILayout.Button("Fix overlapping points"))
+                    {
+                        // Move them slightly out of the way
+                        foreach (int pointIndex in OverlappingPointIndexes)
+                        {
+                            var controlPointProperty = controlPoints.GetArrayElementAtIndex(pointIndex);
+                            var position = controlPointProperty.FindPropertyRelative("position");
+                            position.vector3Value += Random.onUnitSphere * OverlappingPointThreshold * 2;
+                        }
+                        OverlappingPointIndexes.Clear();
+                    }
+                }
+
+                controlPointList.DoLayoutList();
+            }
+
+            EditorGUI.indentLevel--;
+
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        protected override void OnSceneGUI()
+        {
+            base.OnSceneGUI();
+
+            // We skip the first point as it should always remain at the GameObject's local origin (Pose.ZeroIdentity)
+            for (int i = 1; i < controlPoints?.arraySize; i++)
+            {
+                bool isTangentHandle = i % 3 != 0;
+
+                serializedObject.Update();
+
+                bool isLastPoint = i == controlPoints.arraySize - 1;
+
+                var controlPointPosition = LineData.GetPoint(i);
+                var controlPointProperty = controlPoints.GetArrayElementAtIndex(i);
+                var controlPointRotation = controlPointProperty.FindPropertyRelative("rotation");
+
+                // Draw our tangent lines
+                Handles.color = Color.gray;
+                if (i == 1)
+                {
+                    Handles.DrawLine(LineData.GetPoint(0), LineData.GetPoint(1));
+                }
+                else if (!isTangentHandle)
+                {
+                    Handles.DrawLine(LineData.GetPoint(i), LineData.GetPoint(i - 1));
+
+                    if (!isLastPoint)
+                    {
+                        Handles.DrawLine(LineData.GetPoint(i), LineData.GetPoint(i + 1));
+                    }
+                }
+
+                Handles.color = isTangentHandle ? Color.white : Color.green;
+                float handleSize = HandleUtility.GetHandleSize(controlPointPosition);
+
+                if (Handles.Button(controlPointPosition, controlPointRotation.quaternionValue, handleSize * HandleSizeModifier, handleSize * PickSizeModifier, Handles.DotHandleCap))
+                {
+                    selectedHandleIndex = i;
+                }
+
+                // Draw our handles
+                if (Tools.current == Tool.Move && selectedHandleIndex == i)
+                {
+                    EditorGUI.BeginChangeCheck();
+
+                    var newTargetPosition = Handles.PositionHandle(controlPointPosition, controlPointRotation.quaternionValue);
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        Undo.RecordObject(LineData, "Change Spline Point Position");
+                        LineData.SetPoint(i, CameraCache.Main.transform.InverseTransformPoint(newTargetPosition));
+                    }
+
+                    if (isLastPoint)
+                    {
+                        DrawSceneControlOptionButtons(controlPointPosition);
+                    }
+                }
+                else if (Tools.current == Tool.Rotate && selectedHandleIndex == i)
+                {
+                    EditorGUI.BeginChangeCheck();
+                    Quaternion newTargetRotation = Handles.RotationHandle(controlPointRotation.quaternionValue, controlPointPosition);
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        Undo.RecordObject(LineData, "Change Spline Point Rotation");
+                        controlPointRotation.quaternionValue = newTargetRotation;
+                    }
+                }
+
+                serializedObject.ApplyModifiedProperties();
+            }
+
+            // Check for overlapping points
+            OverlappingPointIndexes.Clear();
+
+            for (int i = 0; i < splineData.ControlPoints.Length; i++)
+            {
+                for (int j = 0; j < splineData.ControlPoints.Length; j++)
+                {
+                    if (i == j)
+                    {
+                        continue;
+                    }
+
+                    if (Vector3.Distance(splineData.ControlPoints[i].Position, splineData.ControlPoints[j].Position) < OverlappingPointThreshold)
+                    {
+                        if (i != 0)
+                        {
+                            OverlappingPointIndexes.Add(i);
+                        }
+
+                        if (j != 0)
+                        {
+                            OverlappingPointIndexes.Add(j);
+                        }
+
+                        break;
+                    }
+                }
+            }
         }
 
         private void AddControlPoint()
@@ -72,14 +250,41 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
         {
             if (controlPoints.arraySize <= 4) { return; }
 
+            serializedObject.Update();
+            Undo.RecordObject(LineData, "Remove Spline Control Point");
             controlPoints.DeleteArrayElementAtIndex(controlPoints.arraySize - 1);
             controlPoints.DeleteArrayElementAtIndex(controlPoints.arraySize - 1);
             controlPoints.DeleteArrayElementAtIndex(controlPoints.arraySize - 1);
+            serializedObject.ApplyModifiedProperties();
         }
 
-        private static void DrawControlPointHeader(Rect rect)
+        private void DrawSceneControlOptionButtons(Vector3 position)
         {
-            EditorGUI.LabelField(rect, ControlPointHeaderContent);
+            Handles.BeginGUI();
+
+            var buttonPosition = HandleUtility.WorldToGUIPoint(position);
+            var buttonRect = new Rect(buttonPosition + ControlPointButtonHandleOffset, ControlPointButtonSize);
+
+            // Move the button slightly to the left
+            buttonRect.position += LeftControlPointPositionOffset;
+
+            if (GUI.Button(buttonRect, AddControlPointContent))
+            {
+                AddControlPoint();
+            }
+
+            if (controlPoints.arraySize > 4)
+            {
+                // Move the button slightly to the right
+                buttonRect.position += RightControlPointPositionOffset;
+
+                if (GUI.Button(buttonRect, RemoveControlPointContent))
+                {
+                    RemoveControlPoint();
+                }
+            }
+
+            Handles.EndGUI();
         }
 
         private void DrawControlPointElement(Rect rect, int index, bool isActive, bool isFocused)
@@ -126,130 +331,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
             EditorGUI.indentLevel--;
             EditorGUIUtility.wideMode = lastMode;
             EditorGUIUtility.labelWidth = lastLabelWidth;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-            serializedObject.Update();
-
-            EditorGUILayout.LabelField("Spline Settings");
-
-            EditorGUI.indentLevel++;
-
-            EditorGUILayout.PropertyField(alignControlPoints);
-            GUILayout.BeginHorizontal();
-
-            if (GUILayout.Button("Add New Point", GUILayout.Width(48f), GUILayout.ExpandWidth(true)))
-            {
-                AddControlPoint();
-            }
-
-            GUI.enabled = controlPoints.arraySize > 4;
-
-            if (GUILayout.Button("Remove Last Point", GUILayout.Width(48f), GUILayout.ExpandWidth(true)))
-            {
-                RemoveControlPoint();
-            }
-
-            GUI.enabled = true;
-            GUILayout.EndHorizontal();
-
-            controlPointFoldout = EditorGUILayout.Foldout(controlPointFoldout, ControlPointHeaderContent, true);
-
-            if (controlPointFoldout)
-            {
-                // If we found overlapping points, provide an option to auto-separate them
-                if (overlappingPointIndexes.Count > 0)
-                {
-                    EditorGUILayout.HelpBox("We noticed some of your control points have the same position.", MessageType.Warning);
-
-                    if (GUILayout.Button("Fix overlapping points"))
-                    {
-                        // Move them slightly out of the way
-                        foreach (int pointIndex in overlappingPointIndexes)
-                        {
-                            var controlPointProperty = controlPoints.GetArrayElementAtIndex(pointIndex);
-                            var position = controlPointProperty.FindPropertyRelative("position");
-                            position.vector3Value += Random.onUnitSphere * OverlappingPointThreshold * 2;
-                        }
-                        overlappingPointIndexes.Clear();
-                    }
-                }
-
-                controlPointList.DoLayoutList();
-            }
-
-            EditorGUI.indentLevel--;
-
-            serializedObject.ApplyModifiedProperties();
-        }
-
-        protected override void OnSceneGUI()
-        {
-            base.OnSceneGUI();
-
-            // We skip the first point as it should always remain at the GameObject's local origin (Pose.ZeroIdentity)
-            for (int i = 1; i < controlPoints?.arraySize; i++)
-            {
-                serializedObject.Update();
-                var pointProperty = controlPoints.GetArrayElementAtIndex(i);
-                var positionProperty = pointProperty.FindPropertyRelative("position");
-                var rotationProperty = pointProperty.FindPropertyRelative("rotation");
-
-                if (Tools.current == Tool.Move)
-                {
-                    EditorGUI.BeginChangeCheck();
-                    Vector3 newTargetPosition = Handles.PositionHandle(LineData.transform.TransformPoint(positionProperty.vector3Value), rotationProperty.quaternionValue);
-
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        Undo.RecordObject(LineData, "Change Spline Point Position");
-                        positionProperty.vector3Value = LineData.transform.InverseTransformPoint(newTargetPosition);
-                    }
-                }
-                else if (Tools.current == Tool.Rotate)
-                {
-                    EditorGUI.BeginChangeCheck();
-                    Quaternion newTargetRotation = Handles.RotationHandle(rotationProperty.quaternionValue, LineData.transform.TransformPoint(positionProperty.vector3Value));
-
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        Undo.RecordObject(LineData, "Change Spline Point Rotation");
-                        rotationProperty.quaternionValue = newTargetRotation;
-                    }
-                }
-
-                serializedObject.ApplyModifiedProperties();
-            }
-
-            // Check for overlapping points
-            overlappingPointIndexes.Clear();
-            for (int i = 0; i < splineData.ControlPoints.Length; i++)
-            {
-                for (int j = 0; j < splineData.ControlPoints.Length; j++)
-                {
-                    if (i == j)
-                    {
-                        continue;
-                    }
-
-                    if (Vector3.Distance(splineData.ControlPoints[i].Position, splineData.ControlPoints[j].Position) < OverlappingPointThreshold)
-                    {
-                        if (i != 0)
-                        {
-                            overlappingPointIndexes.Add(i);
-                        }
-
-                        if (j != 0)
-                        {
-                            overlappingPointIndexes.Add(j);
-                        }
-
-                        break;
-                    }
-                }
-            }
         }
     }
 }

@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             switch (pointIndex)
             {
                 case 0:
-                    return StartPoint;
+                    return StartPoint.Position;
                 case 1:
                     return GetPointInternal(1f);
                 default:
@@ -90,13 +90,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         /// <param name="point"></param>
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
-            // Intentionally does nothing. StartPoint is always the base.FirstPoint and EndPoint is always the base.LastPoint.
+            // Intentionally does nothing. StartPoint is always the base.FirstPoint and EndPoint is always calculated by the physics.
         }
 
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
-            return LineUtility.GetPointAlongPhysicalParabola(StartPoint, direction, velocity, useCustomGravity ? gravity : UnityEngine.Physics.gravity, normalizedDistance * timeMultiplier);
+            return LineUtility.GetPointAlongPhysicalParabola(StartPoint.Position, direction, velocity, useCustomGravity ? gravity : UnityEngine.Physics.gravity, normalizedDistance * timeMultiplier);
         }
     }
 }

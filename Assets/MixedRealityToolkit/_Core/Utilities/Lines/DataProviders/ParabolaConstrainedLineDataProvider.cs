@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
@@ -13,15 +14,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
     {
         [SerializeField]
         [Tooltip("The point where this line will end.")]
-        private Vector3 end = Vector3.zero;
+        private MixedRealityPose endPoint = MixedRealityPose.ZeroIdentity;
 
         /// <summary>
         /// The point where this line will end.
         /// </summary>
-        public Vector3 End
+        public MixedRealityPose EndPoint
         {
-            get { return end; }
-            set { end = value; }
+            get { return endPoint; }
+            set { endPoint = value; }
         }
 
         [SerializeField]
@@ -53,48 +54,53 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
         protected override void OnValidate()
         {
-            if (end == StartPoint)
+            if (endPoint == StartPoint)
             {
-                end = StartPoint + Vector3.forward;
+                endPoint.Position = transform.InverseTransformPoint(LineTransform.position) + Vector3.forward;
             }
+
+            base.OnValidate();
         }
 
         #endregion Monobehaviour Implementation
 
         #region Line Data Provider Implementation
 
+        /// <inheritdoc />
         public override int PointCount => 2;
 
+        /// <inheritdoc />
         protected override Vector3 GetPointInternal(int pointIndex)
         {
             switch (pointIndex)
             {
                 case 0:
-                    return StartPoint;
+                    return StartPoint.Position;
                 case 1:
-                    return end;
+                    return endPoint.Position;
                 default:
                     Debug.LogError("Invalid point index!");
                     return Vector3.zero;
             }
         }
 
+        /// <inheritdoc />
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
-            switch (pointIndex)
+            if (pointIndex == 1)
             {
-                case 1:
-                    end = point;
-                    break;
-                default:
-                    Debug.LogError("Invalid point index!");
-                    break;
+                endPoint.Position = point;
+            }
+            else
+            {
+                Debug.LogError("Invalid point index!");
             }
         }
 
+        /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
-            return LineUtility.GetPointAlongConstrainedParabola(StartPoint, end, upDirection, height, normalizedDistance);
+            return LineUtility.GetPointAlongConstrainedParabola(StartPoint.Position, endPoint.Position, upDirection, height, normalizedDistance);
         }
 
         #endregion Line Data Provider Implementation
