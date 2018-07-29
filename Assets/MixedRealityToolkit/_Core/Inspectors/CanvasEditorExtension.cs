@@ -28,7 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
             canvas = (Canvas)target;
 
             if (MixedRealityManager.HasActiveProfile &&
-                MixedRealityManager.ConfirmInitialized() &&
                 MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
             {
                 inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
