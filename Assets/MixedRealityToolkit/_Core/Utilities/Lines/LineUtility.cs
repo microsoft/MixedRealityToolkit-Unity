@@ -3,15 +3,15 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
 {
+    /// <summary>
+    /// Mixed Reality line utility class with helpful math functions for calculation, and other convenience methods.
+    /// </summary>
     public static class LineUtility
     {
-        public static readonly Vector3 DefaultUpVector = Vector3.up;
-
         /// <summary>
         /// Inverts the color
         /// </summary>
@@ -26,39 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         }
 
         /// <summary>
-        /// Returns normalized length for OffsetModeEnum.Manual
-        /// </summary>
-        /// <param name="step"></param>
-        /// <param name="offsetValue"></param>
-        /// <param name="repeat"></param>
-        /// <returns></returns>
-        public static float GetDistanceSingleValue(int step, float offsetValue, bool repeat)
-        {
-            float value = step * offsetValue;
-            return repeat ? Mathf.Repeat(value, 1f) : Mathf.Clamp01(value);
-        }
-
-        /// <summary>
-        /// Returns normalized length for OffsetModeEnum.CurveNormalized
-        /// </summary>
-        /// <param name="step"></param>
-        /// <param name="numSteps"></param>
-        /// <param name="offsetCurve"></param>
-        /// <param name="repeat"></param>
-        /// <returns></returns>
-        public static float GetDistanceCurveValue(int step, int numSteps, AnimationCurve offsetCurve, bool repeat)
-        {
-            float value = offsetCurve.Evaluate((float)step / numSteps);
-            return repeat ? Mathf.Repeat(value, 1f) : Mathf.Clamp01(value);
-        }
-
-        /// <summary>
         /// Returns a blended value from a collection of vectors
         /// </summary>
-        /// <param name="vectorCollection"></param>
-        /// <param name="normalizedLength"></param>
+        /// <param name="vectorCollection">The collection to use to calculate the blend.</param>
+        /// <param name="normalizedLength">the normalized length along the line to calculate the point.</param>
         /// <param name="repeat"></param>
-        /// <returns></returns>
+        /// <returns>The calculated point found along the normalized length.</returns>
         public static Vector3 GetVectorCollectionBlend(Vector3[] vectorCollection, float normalizedLength, bool repeat)
         {
             if (vectorCollection.Length == 0)
@@ -90,40 +63,45 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             return Vector3.Lerp(vectorCollection[indexA], vectorCollection[indexB], blendAmount);
         }
 
-        public static float ClosestTo(this IEnumerable<float> collection, float target)
+        /// <summary>
+        /// Gets the point along a physics based parabola.
+        /// </summary>
+        /// <param name="origin">The point in space where the parabola starts</param>
+        /// <param name="direction">The direction the line is intended to go</param>
+        /// <param name="velocity"></param>
+        /// <param name="gravity"></param>
+        /// <param name="time"></param>
+        /// <returns>The calculated point.</returns>
+        public static Vector3 GetPointAlongPhysicalParabola(Vector3 origin, Vector3 direction, float velocity, Vector3 gravity, float time)
         {
-            // NB Method will return float.MaxValue for a sequence containing no elements.
-            // Apply any defensive coding here as necessary. 
-            var closest = float.MaxValue;
-            var minDifference = float.MaxValue;
-
-            foreach (var element in collection)
-            {
-                var difference = Mathf.Abs(element - target);
-                if (minDifference > difference)
-                {
-                    minDifference = difference;
-                    closest = element;
-                }
-            }
-
-            return closest;
+            return (origin + ((direction.normalized * velocity) * time)) + (0.5f * gravity * (time * time));
         }
 
-        public static Vector3 GetPointAlongPhysicalParabola(Vector3 start, Vector3 direction, float velocity, Vector3 gravity, float time)
-        {
-            return (start + ((direction.normalized * velocity) * time)) + (0.5f * gravity * (time * time));
-        }
-
-        public static Vector3 GetPointAlongConstrainedParabola(Vector3 start, Vector3 end, Vector3 up, float height, float normalizedLength)
+        /// <summary>
+        /// Gets the point along a constrained parabola.
+        /// </summary>
+        /// <param name="origin">The point in space where the parabola starts.</param>
+        /// <param name="end">The point in space where the parabola ends.</param>
+        /// <param name="upDirection">The up direction of the arc.</param>
+        /// <param name="height">The height of the arc.</param>
+        /// <param name="normalizedLength">the normalized length along the line to calculate the point.</param>
+        /// <returns>The calculated point found along the normalized length.</returns>
+        public static Vector3 GetPointAlongConstrainedParabola(Vector3 origin, Vector3 end, Vector3 upDirection, float height, float normalizedLength)
         {
             float parabolaTime = normalizedLength * 2 - 1;
-            Vector3 direction = end - start;
-            Vector3 pos = start + normalizedLength * direction;
-            pos += ((-parabolaTime * parabolaTime + 1) * height) * up.normalized;
+            Vector3 direction = end - origin;
+            Vector3 pos = origin + normalizedLength * direction;
+            pos += ((-parabolaTime * parabolaTime + 1) * height) * upDirection.normalized;
             return pos;
         }
 
+        /// <summary>
+        /// Gets the point along the spline.
+        /// </summary>
+        /// <param name="points">the points of the whole spline.</param>
+        /// <param name="normalizedLength">the normalized length along the line to calculate the point.</param>
+        /// <param name="interpolation">Optional Interpolation type to use when calculating the point.</param>
+        /// <returns>The calculated point found along the normalized length.</returns>
         public static Vector3 GetPointAlongSpline(MixedRealityPose[] points, float normalizedLength, InterpolationType interpolation = InterpolationType.Bezier)
         {
             int pointIndex = (Mathf.RoundToInt(normalizedLength * points.Length));
@@ -153,6 +131,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             }
         }
 
+        /// <summary>
+        /// Interpolate a position between the provided points.
+        /// </summary>
+        /// <param name="points">The points to use in the calculation.</param>
+        /// <param name="normalizedLength">the normalized length along the line to calculate the point.</param>
+        /// <returns>The calculated point found along the normalized length.</returns>
         public static Vector3 InterpolateVectorArray(Vector3[] points, float normalizedLength)
         {
             float arrayValueLength = 1f / points.Length;
@@ -175,6 +159,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             return Vector3.Lerp(points[indexA], points[indexB], blendAmount);
         }
 
+        /// <summary>
+        /// Interpolate the provided points using Catmull Rom algorithm.
+        /// </summary>
+        /// <param name="point1"></param>
+        /// <param name="point2"></param>
+        /// <param name="point3"></param>
+        /// <param name="point4"></param>
+        /// <param name="normalizedLength">the normalized length along the line to calculate the point.</param>
+        /// <returns>The calculated point found along the normalized length.</returns>
         public static Vector3 InterpolateCatmullRomPoints(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, float normalizedLength)
         {
             Vector3 p1 = 2f * point2;
@@ -184,6 +177,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             return 0.5f * (p1 + (p2 * normalizedLength) + (p3 * normalizedLength * normalizedLength) + (p4 * normalizedLength * normalizedLength * normalizedLength));
         }
 
+        /// <summary>
+        /// Interpolate the provided points using the standard Bezier algorithm.
+        /// </summary>
+        /// <param name="point1"></param>
+        /// <param name="point2"></param>
+        /// <param name="point3"></param>
+        /// <param name="point4"></param>
+        /// <param name="normalizedLength">the normalized length along the line to calculate the point.</param>
+        /// <returns>The calculated point found along the normalized length.</returns>
         public static Vector3 InterpolateBezierPoints(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, float normalizedLength)
         {
             float invertedDistance = 1f - normalizedLength;
@@ -193,6 +195,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
                    normalizedLength * normalizedLength * normalizedLength * point4;
         }
 
+        /// <summary>
+        /// Interpolate the provided points using the Hermite algorithm.
+        /// </summary>
+        /// <param name="point1"></param>
+        /// <param name="point2"></param>
+        /// <param name="point3"></param>
+        /// <param name="point4"></param>
+        /// <param name="normalizedLength">the normalized length along the line to calculate the point.</param>
+        /// <returns>The calculated point found along the normalized length.</returns>
         public static Vector3 InterpolateHermitePoints(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, float normalizedLength)
         {
             float invertedDistance = 1f - normalizedLength;
@@ -202,15 +213,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
                    normalizedLength * normalizedLength * normalizedLength * point4;
         }
 
-
-        public static Vector3 GetEllipsePoint(float radiusX, float radiusY, float angle)
+        /// <summary>
+        /// Calculate the ellipse point at the angle provided.
+        /// </summary>
+        /// <param name="radius">The radius of the ellipse.</param>
+        /// <param name="angle">Angle along the ellipse to find the point.</param>
+        /// <returns>The calculated point at the specified angle.</returns>
+        public static Vector3 GetEllipsePoint(Vector2 radius, float angle)
         {
-            ellipsePoint.x = radiusX * Mathf.Cos(angle);
-            ellipsePoint.y = radiusY * Mathf.Sin(angle);
-            ellipsePoint.z = 0.0f;
-            return ellipsePoint;
+            cachedEllipsePoint.x = radius.x * Mathf.Cos(angle);
+            cachedEllipsePoint.y = radius.y * Mathf.Sin(angle);
+            cachedEllipsePoint.z = 0.0f;
+            return cachedEllipsePoint;
         }
 
-        private static Vector3 ellipsePoint = Vector3.zero;
+        /// <summary>
+        /// Used to calculate the ellipse point in <see cref="GetEllipsePoint"/>
+        /// </summary>
+        private static Vector3 cachedEllipsePoint = Vector3.zero;
     }
 }

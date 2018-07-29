@@ -62,14 +62,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
-            return LineUtility.GetEllipsePoint(radius.x, radius.y, normalizedDistance * 2f * Mathf.PI);
+            return LineUtility.GetEllipsePoint(radius, normalizedDistance * 2f * Mathf.PI);
         }
 
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(int pointIndex)
         {
             float angle = ((float)pointIndex / resolution) * 2f * Mathf.PI;
-            return LineUtility.GetEllipsePoint(radius.x, radius.y, angle);
+            return LineUtility.GetEllipsePoint(radius, angle);
         }
 
         /// <inheritdoc />

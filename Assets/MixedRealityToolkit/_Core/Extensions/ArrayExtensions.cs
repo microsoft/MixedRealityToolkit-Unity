@@ -5,8 +5,17 @@ using System;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 {
+    /// <summary>
+    /// <see cref="Array"/> type method extensions.
+    /// </summary>
     public static class ArrayExtensions
     {
+        /// <summary>
+        /// Wraps the index around to the beginning of the array if the provided index is longer than the array.
+        /// </summary>
+        /// <param name="array">The array to wrap the index around.</param>
+        /// <param name="index">The index to look for.</param>
+        /// <returns></returns>
         public static int WrapIndex(this Array array, int index)
         {
             int length = array.Length;

@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
 {
+    /// <summary>
+    /// Custom property drawer for <see cref="Vector3RangeAttribute"/> decorated <see cref="Vector3"/> values rendered in the inspector.
+    /// </summary>
     [CustomPropertyDrawer(typeof(Vector3RangeAttribute))]
     public class Vector3RangePropertyDrawer : PropertyDrawer
     {

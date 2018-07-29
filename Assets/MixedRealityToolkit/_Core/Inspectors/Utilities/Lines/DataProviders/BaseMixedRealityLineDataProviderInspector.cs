@@ -286,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
                     float normalizedLength = (1f / (LineData.ManualUpVectors.Length - 1)) * i;
                     var position = LineData.GetPoint(normalizedLength);
                     float handleSize = HandleUtility.GetHandleSize(position);
-                    LineData.ManualUpVectors[i] = MixedRealityInspectorUtility.VectorHandle(LineData, position, LineData.ManualUpVectors[i], false, ManualUpVectorLength * handleSize, true, handleSize * ManualUpVectorHandleSizeModifier);
+                    LineData.ManualUpVectors[i] = MixedRealityInspectorUtility.VectorHandle(LineData, position, LineData.ManualUpVectors[i], false, true, ManualUpVectorLength * handleSize, handleSize * ManualUpVectorHandleSizeModifier);
                 }
             }
 

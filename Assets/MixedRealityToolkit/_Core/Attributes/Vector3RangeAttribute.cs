@@ -6,14 +6,24 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Attributes
 {
+    /// <summary>
+    /// Attribute used to make a float or int variable in a script be restricted to a specific range.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
     public class Vector3RangeAttribute : PropertyAttribute
     {
+        /// <summary>
+        /// Minimum value.
+        /// </summary>
         public readonly float Min;
+
+        /// <summary>
+        /// Maximum value.
+        /// </summary>
         public readonly float Max;
 
         /// <summary>
-        ///   <para>Attribute used to make a float or int variable in a script be restricted to a specific range.</para>
+        /// Attribute used to make a float or int variable in a script be restricted to a specific range.
         /// </summary>
         /// <param name="min">The minimum allowed value.</param>
         /// <param name="max">The maximum allowed value.</param>

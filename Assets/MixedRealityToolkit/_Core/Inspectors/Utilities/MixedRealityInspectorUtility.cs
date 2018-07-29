@@ -34,17 +34,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
         #region Handles
 
         /// <summary>
-        /// 
+        /// Draw an axis move handle.
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="origin"></param>
-        /// <param name="direction"></param>
-        /// <param name="distance"></param>
-        /// <param name="handleSize"></param>
-        /// <param name="recordUndo"></param>
-        /// <param name="autoSize"></param>
-        /// <returns></returns>
-        public static float AxisMoveHandle(Object target, Vector3 origin, Vector3 direction, float distance, float handleSize = 0.2f, bool recordUndo = true, bool autoSize = true)
+        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="origin">The initial position of the axis.</param>
+        /// <param name="direction">The direction the axis is facing.</param>
+        /// <param name="distance">Distance from the axis.</param>
+        /// <param name="handleSize">Optional handle size.</param>
+        /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
+        /// <param name="recordUndo">Optional, records undo state.</param>
+        /// <returns>The new <see cref="float"/> value.</returns>
+        public static float AxisMoveHandle(Object target, Vector3 origin, Vector3 direction, float distance, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Vector3 position = origin + (direction.normalized * distance);
 
@@ -74,18 +74,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Draw a Circle Move Handle.
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="position"></param>
-        /// <param name="handleSize"></param>
-        /// <param name="autoSize"></param>
-        /// <param name="xScale"></param>
-        /// <param name="yScale"></param>
-        /// <param name="zScale"></param>
-        /// <param name="recordUndo"></param>
-        /// <returns></returns>
-        public static Vector3 CircleMoveHandle(Object target, Vector3 position, float handleSize = 0.2f, bool autoSize = true, float xScale = 1f, float yScale = 1f, float zScale = 1f, bool recordUndo = true)
+        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="position">The position to draw the handle.</param>
+        /// <param name="xScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="yScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="zScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="handleSize">Optional handle size.</param>
+        /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
+        /// <param name="recordUndo">Optional, records undo state.</param>
+        /// <returns>The new <see cref="Vector3"/> value.</returns>
+        public static Vector3 CircleMoveHandle(Object target, Vector3 position, float xScale = 1f, float yScale = 1f, float zScale = 1f, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorCircle;
 
@@ -109,18 +109,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Draw a square move handle.
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="position"></param>
-        /// <param name="handleSize"></param>
-        /// <param name="autoSize"></param>
-        /// <param name="xScale"></param>
-        /// <param name="yScale"></param>
-        /// <param name="zScale"></param>
-        /// <param name="recordUndo"></param>
-        /// <returns></returns>
-        public static Vector3 SquareMoveHandle(Object target, Vector3 position, float handleSize = 0.2f, bool autoSize = true, float xScale = 1f, float yScale = 1f, float zScale = 1f, bool recordUndo = true)
+        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="position">The position to draw the handle.</param>
+        /// <param name="xScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="yScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="zScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="handleSize">Optional handle size.</param>
+        /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
+        /// <param name="recordUndo">Optional, records undo state.</param>
+        /// <returns>The new <see cref="Vector3"/> value.</returns>
+        public static Vector3 SquareMoveHandle(Object target, Vector3 position, float xScale = 1f, float yScale = 1f, float zScale = 1f, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorSquare;
 
@@ -145,18 +145,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Draw a sphere move handle.
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="position"></param>
-        /// <param name="handleSize"></param>
-        /// <param name="autoSize"></param>
-        /// <param name="xScale"></param>
-        /// <param name="yScale"></param>
-        /// <param name="zScale"></param>
-        /// <param name="recordUndo"></param>
-        /// <returns></returns>
-        public static Vector3 SphereMoveHandle(Object target, Vector3 position, float handleSize = 0.2f, bool autoSize = true, float xScale = 1f, float yScale = 1f, float zScale = 1f, bool recordUndo = true)
+        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="position">The position to draw the handle.</param>
+        /// <param name="xScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="yScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="zScale">Scale the new value on the x axis by this amount.</param>
+        /// <param name="handleSize">Optional handle size.</param>
+        /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
+        /// <param name="recordUndo">Optional, records undo state.</param>
+        /// <returns>The new <see cref="Vector3"/> value.</returns>
+        public static Vector3 SphereMoveHandle(Object target, Vector3 position, float xScale = 1f, float yScale = 1f, float zScale = 1f, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorSphere;
 
@@ -181,19 +181,19 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Draw a vector handle.
         /// </summary>
-        /// <param name="target"></param>
+        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
         /// <param name="origin"></param>
         /// <param name="vector"></param>
-        /// <param name="normalize"></param>
-        /// <param name="handleLength"></param>
-        /// <param name="clamp"></param>
-        /// <param name="handleSize"></param>
-        /// <param name="recordUndo"></param>
-        /// <param name="autoSize"></param>
-        /// <returns></returns>
-        public static Vector3 VectorHandle(Object target, Vector3 origin, Vector3 vector, bool normalize = true, float handleLength = 1f, bool clamp = true, float handleSize = 0.1f, bool recordUndo = true, bool autoSize = true)
+        /// <param name="normalize">Optional, Normalize the new vector value.</param>
+        /// <param name="clamp">Optional, Clamp new vector's value based on the distance to the origin.</param>
+        /// <param name="handleLength">Optional, handle length.</param>
+        /// <param name="handleSize">Optional, handle size.</param>
+        /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
+        /// <param name="recordUndo">Optional, records undo state.</param>
+        /// <returns>The new <see cref="Vector3"/> value.</returns>
+        public static Vector3 VectorHandle(Object target, Vector3 origin, Vector3 vector, bool normalize = true, bool clamp = true, float handleLength = 1f, float handleSize = 0.1f, bool recordUndo = true, bool autoSize = true)
         {
             Handles.color = HandleColorTangent;
 
@@ -260,15 +260,15 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Draw a rotation handle.
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
-        /// <param name="handleSize"></param>
-        /// <param name="autoSize"></param>
-        /// <param name="recordUndo"></param>
-        /// <returns></returns>
+        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="position">The position to draw the handle.</param>
+        /// <param name="rotation">The rotation to draw the handle.</param>
+        /// <param name="handleSize">Optional, handle size.</param>
+        /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
+        /// <param name="recordUndo">Optional, records undo state.</param>
+        /// <returns>The new <see cref="Quaternion"/> value.</returns>
         public static Quaternion RotationHandle(Object target, Vector3 position, Quaternion rotation, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorRotation;
