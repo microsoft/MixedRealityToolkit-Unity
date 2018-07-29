@@ -18,6 +18,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             get { return width; }
             set
             {
+                if (value < 0)
+                {
+                    value = width;
+                }
+
                 if (!width.Equals(value))
                 {
                     width = value;
@@ -34,6 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             get { return height; }
             set
             {
+                if (value < 0)
+                {
+                    value = height;
+                }
+
                 if (!height.Equals(value))
                 {
                     height = value;

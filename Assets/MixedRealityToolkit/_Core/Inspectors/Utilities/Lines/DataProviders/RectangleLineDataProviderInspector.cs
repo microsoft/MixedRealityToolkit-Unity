@@ -49,24 +49,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
 
             if (EditorGUI.EndChangeCheck())
             {
-                if (height.floatValue.Equals(0f))
+                if (height.floatValue <= 0)
                 {
                     height.floatValue = prevHeight;
                 }
 
-                if (height.floatValue < 0)
-                {
-                    height.floatValue = height.floatValue * -1f;
-                }
-
-                if (width.floatValue.Equals(0f))
+                if (width.floatValue <= 0)
                 {
                     width.floatValue = prevWidth;
-                }
-
-                if (width.floatValue < 0)
-                {
-                    width.floatValue = width.floatValue * -1f;
                 }
             }
 
