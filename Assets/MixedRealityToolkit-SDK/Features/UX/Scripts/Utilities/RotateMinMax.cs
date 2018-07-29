@@ -3,8 +3,11 @@
 
 using UnityEngine;
 
-namespace HoloToolkit.Unity.Tests
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
 {
+    /// <summary>
+    /// Simple rotation script that turns an object on it's Y Axis between the configured angles.
+    /// </summary>
     public class RotateMinMax : MonoBehaviour
     {
         [SerializeField] private float _minAngle = 0;
