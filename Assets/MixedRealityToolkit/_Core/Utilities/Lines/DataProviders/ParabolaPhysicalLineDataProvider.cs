@@ -62,6 +62,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             set { gravity = value; }
         }
 
+        #region Line Data Provider Implementation
+
         /// <inheritdoc />
         public override int PointCount => 2;
 
@@ -98,5 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         {
             return LineUtility.GetPointAlongPhysicalParabola(StartPoint.Position, direction, velocity, useCustomGravity ? gravity : UnityEngine.Physics.gravity, normalizedDistance * timeMultiplier);
         }
+
+        #endregion Line Data Provider Implementation
     }
 }

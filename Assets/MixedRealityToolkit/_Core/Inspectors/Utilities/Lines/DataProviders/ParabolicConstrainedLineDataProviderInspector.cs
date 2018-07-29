@@ -8,17 +8,21 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProviders
 {
-    [CustomEditor(typeof(SimpleLineDataProvider))]
-    public class SimpleLineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
+    [CustomEditor(typeof(ParabolaConstrainedLineDataProvider))]
+    public class ParabolicConstrainedLineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
     {
+        private SerializedProperty height;
         private SerializedProperty endPoint;
+        private SerializedProperty upDirection;
         private SerializedProperty endPointPosition;
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
+            height = serializedObject.FindProperty("height");
             endPoint = serializedObject.FindProperty("endPoint");
+            upDirection = serializedObject.FindProperty("upDirection");
         }
 
         public override void OnInspectorGUI()
@@ -26,14 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
             base.OnInspectorGUI();
             serializedObject.Update();
 
-            // We only have two points.
-            LinePreviewResolution = 2;
-
-            EditorGUILayout.LabelField("Simple Line Settings");
+            EditorGUILayout.LabelField("Constrained Parabola Line Settings");
             EditorGUI.indentLevel++;
 
             EditorGUI.BeginChangeCheck();
 
+            EditorGUILayout.PropertyField(height);
+            EditorGUILayout.PropertyField(upDirection);
             EditorGUILayout.PropertyField(endPoint);
 
             EditorGUI.indentLevel--;
@@ -55,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
 
                 if (EditorGUI.EndChangeCheck())
                 {
-                    Undo.RecordObject(LineData, "Change Simple Point Position");
+                    Undo.RecordObject(LineData, "Change Parabola Point Position");
                     LineData.SetPoint(1, CameraCache.Main.transform.InverseTransformPoint(newTargetPosition));
                 }
             }
@@ -66,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
 
                 if (EditorGUI.EndChangeCheck())
                 {
-                    Undo.RecordObject(LineData, "Change Simple Point Rotation");
+                    Undo.RecordObject(LineData, "Change Parabola Point Rotation");
                     rotation.quaternionValue = newTargetRotation;
                 }
             }
