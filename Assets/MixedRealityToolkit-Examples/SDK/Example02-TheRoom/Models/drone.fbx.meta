@@ -1,0 +1,220 @@
+fileFormatVersion: 2
+guid: ba80b456d26ad2142a9620f4b6166ecf
+timeCreated: 1526504527
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Cilindro
+    100002: Cilindro_1
+    100004: Cilindro_2
+    100006: Cilindro_3
+    100008: Cilindro_4
+    100010: Cilindro_5
+    100012: Cubo
+    100014: Cubo_1
+    100016: Cubo_1_2
+    100018: Cubo_1_4
+    100020: Cubo_1_5
+    100022: Cubo_1_6
+    100024: Cubo_1_8
+    100026: Cubo_2
+    100028: Cubo_2_2
+    100030: Cubo_2_3
+    100032: Cubo_3
+    100034: Cubo_3_2
+    100036: Cubo_3_3
+    100038: Cubo_4
+    100040: Cubo_5
+    100042: Cubo_6
+    100044: Cubo_7
+    100046: Cubo_8
+    100048: "C\xE1psula"
+    100050: "C\xE1psula_2"
+    100052: //RootNode
+    400000: Cilindro
+    400002: Cilindro_1
+    400004: Cilindro_2
+    400006: Cilindro_3
+    400008: Cilindro_4
+    400010: Cilindro_5
+    400012: Cubo
+    400014: Cubo_1
+    400016: Cubo_1_2
+    400018: Cubo_1_4
+    400020: Cubo_1_5
+    400022: Cubo_1_6
+    400024: Cubo_1_8
+    400026: Cubo_2
+    400028: Cubo_2_2
+    400030: Cubo_2_3
+    400032: Cubo_3
+    400034: Cubo_3_2
+    400036: Cubo_3_3
+    400038: Cubo_4
+    400040: Cubo_5
+    400042: Cubo_6
+    400044: Cubo_7
+    400046: Cubo_8
+    400048: "C\xE1psula"
+    400050: "C\xE1psula_2"
+    400052: //RootNode
+    2100000: No Name
+    2300000: Cilindro
+    2300002: Cilindro_1
+    2300004: Cilindro_2
+    2300006: Cilindro_3
+    2300008: Cilindro_4
+    2300010: Cilindro_5
+    2300012: Cubo
+    2300014: Cubo_1
+    2300016: Cubo_1_2
+    2300018: Cubo_1_4
+    2300020: Cubo_1_5
+    2300022: Cubo_1_6
+    2300024: Cubo_1_8
+    2300026: Cubo_2
+    2300028: Cubo_2_2
+    2300030: Cubo_2_3
+    2300032: Cubo_3
+    2300034: Cubo_3_2
+    2300036: Cubo_3_3
+    2300038: Cubo_4
+    2300040: Cubo_5
+    2300042: Cubo_6
+    2300044: Cubo_7
+    2300046: Cubo_8
+    2300048: "C\xE1psula"
+    2300050: "C\xE1psula_2"
+    3300000: Cilindro
+    3300002: Cilindro_1
+    3300004: Cilindro_2
+    3300006: Cilindro_3
+    3300008: Cilindro_4
+    3300010: Cilindro_5
+    3300012: Cubo
+    3300014: Cubo_1
+    3300016: Cubo_1_2
+    3300018: Cubo_1_4
+    3300020: Cubo_1_5
+    3300022: Cubo_1_6
+    3300024: Cubo_1_8
+    3300026: Cubo_2
+    3300028: Cubo_2_2
+    3300030: Cubo_2_3
+    3300032: Cubo_3
+    3300034: Cubo_3_2
+    3300036: Cubo_3_3
+    3300038: Cubo_4
+    3300040: Cubo_5
+    3300042: Cubo_6
+    3300044: Cubo_7
+    3300046: Cubo_8
+    3300048: "C\xE1psula"
+    3300050: "C\xE1psula_2"
+    4300000: Cilindro_1
+    4300002: Cilindro_5
+    4300004: Cubo_8
+    4300006: Cubo_5
+    4300008: Cubo_1_5
+    4300010: Cilindro_3
+    4300012: Cubo_6
+    4300014: "C\xE1psula_2"
+    4300016: Cilindro_4
+    4300018: Cubo_7
+    4300020: Cubo_1_6
+    4300022: Cubo_1_8
+    4300024: Cubo_2_3
+    4300026: Cubo_3_3
+    4300028: Cubo_2
+    4300030: Cubo_1
+    4300032: Cilindro
+    4300034: Cubo_3
+    4300036: "C\xE1psula"
+    4300038: Cilindro_2
+    4300040: Cubo_4
+    4300042: Cubo_1_2
+    4300044: Cubo_1_4
+    4300046: Cubo_2_2
+    4300048: Cubo_3_2
+    4300050: Cubo
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
