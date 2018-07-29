@@ -84,10 +84,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         /// <param name="controllerType"></param>
         public void SetupConfiguration(Type controllerType)
         {
-            if (MixedRealityManager.Instance.ActiveProfile.EnableControllerProfiles)
+            if (MixedRealityManager.Instance.ActiveProfile.EnableControllerMapping)
             {
                 // We can only enable controller profiles if mappings exist.
-                var controllerMappings = MixedRealityManager.Instance.ActiveProfile.ControllersProfile.MixedRealityControllerMappingProfiles;
+                var controllerMappings = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
 
                 //Have to test that a controller type has been registered in the profiles, else it's Unity Input manager mappings will not have been setup by the inspector
                 bool profileFound = false;
