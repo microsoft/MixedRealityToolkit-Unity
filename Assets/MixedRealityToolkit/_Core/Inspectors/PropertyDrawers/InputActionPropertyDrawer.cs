@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
             }
             else
             {
-                if (!MixedRealityManager.IsInitialized || !MixedRealityManager.HasActiveProfile || MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null)
+                if (!MixedRealityManager.HasActiveProfile || MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
                 {
                     profile = null;
                     actionLabels = new[] { new GUIContent("Missing Input Action Profile") };

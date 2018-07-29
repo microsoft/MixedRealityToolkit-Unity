@@ -9,7 +9,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
-using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
@@ -28,15 +27,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
     /// For Alpha, this visualizer only does basic rendering and management of controllers.  In future versions, it will expose specific transforms on a controller model (if it has them) to be able to attach items to any part of the model
     /// It will also support animation of controller parts and possibly fading in and our of controllers.
     /// </remarks>
-    /// <seealso cref="MixedRealityControllerMappingProfile"/>
+    /// <seealso cref="Internal.Definitions.Devices.MixedRealityControllerMappingProfile"/>
     public class MixedRealityControllerVisualizer : InputSystemGlobalListener, IMixedRealitySourcePoseHandler, IMixedRealityInputHandler
     {
 
         #region Private Variables
 
-        private static GameObject leftControllerModel, leftControllerHand;
+        private static GameObject leftControllerModel;
+        private static GameObject leftControllerHand;
         private static IMixedRealityController leftController;
-        private static GameObject rightControllerModel, rightControllerHand;
+
+        private static GameObject rightControllerModel;
+        private static GameObject rightControllerHand;
         private static IMixedRealityController rightController;
 
         #endregion Private Variables
@@ -76,16 +78,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
         {
             // Capture the respective controller when it's detected.  However, It'll only be rendered if visualization is enabled.
-            if (eventData.Controller != null )
+            if (eventData.Controller != null)
             {
-                if (eventData.Controller.ControllerHandedness == Handedness.Right)
+                switch (eventData.Controller.ControllerHandedness)
                 {
-                    rightController = eventData.Controller;
+                    case Handedness.Right:
+                        rightController = eventData.Controller;
+                        break;
+                    case Handedness.Left:
+                        leftController = eventData.Controller;
+                        break;
                 }
-                else
-                {
-                    leftController = eventData.Controller;
-                }
+
                 CreateControllerInstance(eventData.Controller.ControllerHandedness);
             }
         }
@@ -119,7 +123,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
             //Visualize button down
         }
 
-
         /// <summary>
         /// Visualize the released button in the controller model, if supported
         /// </summary>
@@ -132,7 +135,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
             //Visualize button up
         }
 
-
         /// <summary>
         /// Visualize the held trigger in the controller model, if supported
         /// </summary>
@@ -144,7 +146,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         {
             //Visualize single axis controls
         }
-
 
         /// <summary>
         /// Visualize the movement of a dual axis input in the controller model, if supported
@@ -172,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         {
             base.OnEnable();
 
-            if (MixedRealityManager.Instance.ActiveProfile.ControllersProfile != null && MixedRealityManager.Instance.ActiveProfile.ControllersProfile.RenderMotionControllers)
+            if (MixedRealityManager.Instance.ActiveProfile.EnableControllerMapping && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.RenderMotionControllers)
             {
                 CreateControllerInstance(Handedness.Left);
                 CreateControllerInstance(Handedness.Right);
@@ -205,38 +206,46 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         /// <param name="sourceController"></param>
         /// <param name="controllerModel"></param>
         /// <returns>Returns true if a controller model is found and outputs the GameObject definition.  if no controller is found, the response is false</returns>
-        public bool TryGetControllerModel(IMixedRealityController sourceController, out GameObject controllerModel)
+        public static bool TryGetControllerModel(IMixedRealityController sourceController, out GameObject controllerModel)
         {
             controllerModel = null;
 
-            //Try and get the controller model from the specific COntroller definition
-            MixedRealityManager.Instance.ActiveProfile.ControllersProfile?.MixedRealityControllerMappingProfiles.GetControllerModelOverride(sourceController.GetType(), sourceController.ControllerHandedness, out controllerModel);
+            // Try and get the controller model from the specific Controller definition
+            if (MixedRealityManager.Instance.ActiveProfile.EnableControllerMapping)
+            {
+                MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles.GetControllerModelOverride(sourceController.GetType(), sourceController.ControllerHandedness, out controllerModel);
+            }
+            else
+            {
+                Debug.LogWarning("No Controller model found. Missing Controller Profile.");
+                return false;
+            }
+
             if (controllerModel != null)
             {
                 return true;
             }
 
-            //If no specific controller model found for the device type, try and get the generic override models from the main Controllers profile
-            if (sourceController.ControllerHandedness == Handedness.Left && MixedRealityManager.Instance.ActiveProfile.ControllersProfile?.GlobalLeftHandModel != null)
+            // If no specific controller model found for the device type, try and get the generic override models from the main Controllers profile
+            if (sourceController.ControllerHandedness == Handedness.Left && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalLeftHandModel != null)
             {
-                controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllersProfile.GlobalLeftHandModel;
+                controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalLeftHandModel;
                 return true;
             }
 
-            if (sourceController.ControllerHandedness == Handedness.Right && MixedRealityManager.Instance.ActiveProfile.ControllersProfile?.GlobalRightHandModel != null)
+            if (sourceController.ControllerHandedness == Handedness.Right && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalRightHandModel != null)
             {
-                controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllersProfile.GlobalRightHandModel;
+                controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalRightHandModel;
                 return true;
             }
 
-            //No model found, give up, go home and bake cookies.  Nothing to see here.
-            controllerModel = null;
+            // No model found, give up, go home and bake cookies.  Nothing to see here.
             return false;
         }
 
         private void CreateControllerInstance(Handedness controllingHand)
         {
-            GameObject controllerModelGameObject = null;
+            GameObject controllerModelGameObject;
 
             switch (controllingHand)
             {
@@ -247,9 +256,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
                         {
                             leftControllerHand = new GameObject("Left Hand");
                         }
+
                         leftControllerHand.transform.parent = CameraCache.Main.transform.parent;
                         leftControllerModel = Instantiate(controllerModelGameObject, leftControllerHand.transform);
                     }
+
                     break;
                 case Handedness.Right:
                     if (rightController != null && TryGetControllerModel(rightController, out controllerModelGameObject))
@@ -258,14 +269,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
                         {
                             rightControllerHand = new GameObject("Right Hand");
                         }
+
                         rightControllerHand.transform.parent = CameraCache.Main.transform.parent;
                         rightControllerModel = Instantiate(controllerModelGameObject, rightControllerHand.transform);
                     }
+
                     break;
             }
         }
 
-        private void DestroyControllerInstance(Handedness controllingHand)
+        private static void DestroyControllerInstance(Handedness controllingHand)
         {
             switch (controllingHand)
             {

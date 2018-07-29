@@ -158,28 +158,28 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]
-        private bool enableControllerProfiles = false;
+        private bool enableControllerMapping = false;
 
         /// <summary>
         /// Enable and configure the devices for your application.
         /// </summary>
-        public bool EnableControllerProfiles
+        public bool EnableControllerMapping
         {
-            get { return controllersProfile != null && enableControllerProfiles; }
-            private set { enableControllerProfiles = value; }
+            get { return controllerMappingProfile != null && enableControllerMapping; }
+            private set { enableControllerMapping = value; }
         }
 
         [SerializeField]
         [Tooltip("Device profile for wiring up physical inputs to Actions.")]
-        private MixedRealityControllerMappingProfile controllersProfile;
+        private MixedRealityControllerMappingProfile controllerMappingProfile;
 
         /// <summary>
         /// Active profile for controller mapping configuration
         /// </summary>
-        public MixedRealityControllerMappingProfile ControllersProfile
+        public MixedRealityControllerMappingProfile ControllerMappingProfile
         {
-            get { return controllersProfile; }
-            private set { controllersProfile = value; }
+            get { return controllerMappingProfile; }
+            private set { controllerMappingProfile = value; }
         }
 
         [SerializeField]

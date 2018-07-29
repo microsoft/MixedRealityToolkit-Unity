@@ -26,8 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty inputActionsProfile;
         private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
-        private SerializedProperty enableControllerProfiles;
-        private SerializedProperty controllersProfile;
+        private SerializedProperty enableControllerMapping;
+        private SerializedProperty controllerMappingProfile;
         // Boundary system properties
         private SerializedProperty enableBoundarySystem;
         private SerializedProperty boundarySystemType;
@@ -78,8 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
-            enableControllerProfiles = serializedObject.FindProperty("enableControllerProfiles");
-            controllersProfile = serializedObject.FindProperty("controllersProfile");
+            enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
+            controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
             // Boundary system configuration
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
             boundarySystemType = serializedObject.FindProperty("boundarySystemType");
@@ -158,11 +158,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             // Controller mapping configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Controller Mapping Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(enableControllerProfiles);
+            EditorGUILayout.PropertyField(enableControllerMapping);
 
-            if (enableControllerProfiles.boolValue)
+            if (enableControllerMapping.boolValue)
             {
-                RenderProfile(controllersProfile);
+                RenderProfile(controllerMappingProfile);
             }
 
             // Boundary System configuration
