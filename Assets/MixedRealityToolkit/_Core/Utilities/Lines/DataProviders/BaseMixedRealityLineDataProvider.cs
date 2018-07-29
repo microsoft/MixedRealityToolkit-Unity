@@ -76,15 +76,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
         [SerializeField]
         [Tooltip("The rotation mode used in the GetRotation function. You can visualize rotations by checking Draw Rotations under Editor Settings.")]
-        private LineRotationType rotationType = LineRotationType.Velocity;
+        private LineRotationMode rotationMode = LineRotationMode.Velocity;
 
         /// <summary>
         /// The rotation mode used in the GetRotation function. You can visualize rotations by checking Draw Rotations under Editor Settings.
         /// </summary>
-        public LineRotationType RotationType
+        public LineRotationMode RotationMode
         {
-            get { return rotationType; }
-            set { rotationType = value; }
+            get { return rotationMode; }
+            set { rotationMode = value; }
         }
 
         [SerializeField]
@@ -184,15 +184,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
         [SerializeField]
         [Tooltip("NormalizedLength mode uses the DistortionStrength curve for distortion strength, Uniform uses UniformDistortionStrength along entire line")]
-        private DistortionType distortionType = DistortionType.NormalizedLength;
+        private DistortionMode distortionMode = DistortionMode.NormalizedLength;
 
         /// <summary>
         /// NormalizedLength mode uses the DistortionStrength curve for distortion strength, Uniform uses UniformDistortionStrength along entire line
         /// </summary>
-        public DistortionType DistortionType
+        public DistortionMode DistortionMode
         {
-            get { return distortionType; }
-            set { distortionType = value; }
+            get { return distortionMode; }
+            set { distortionMode = value; }
         }
 
         [SerializeField]
@@ -348,24 +348,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         /// Gets the rotation of a point along the line at the specified length
         /// </summary>
         /// <param name="normalizedLength"></param>
-        /// <param name="lineRotationType"></param>
+        /// <param name="lineRotationMode"></param>
         /// <returns></returns>
-        public Quaternion GetRotation(float normalizedLength, LineRotationType lineRotationType = LineRotationType.None)
+        public Quaternion GetRotation(float normalizedLength, LineRotationMode lineRotationMode = LineRotationMode.None)
         {
-            lineRotationType = (lineRotationType != LineRotationType.None) ? lineRotationType : rotationType;
+            lineRotationMode = (lineRotationMode != LineRotationMode.None) ? lineRotationMode : rotationMode;
             Vector3 rotationVector = Vector3.zero;
 
-            switch (lineRotationType)
+            switch (lineRotationMode)
             {
-                case LineRotationType.Velocity:
+                case LineRotationMode.Velocity:
                     rotationVector = GetVelocity(normalizedLength);
                     break;
-                case LineRotationType.RelativeToOrigin:
+                case LineRotationMode.RelativeToOrigin:
                     Vector3 point = GetPoint(normalizedLength);
                     Vector3 origin = LineTransform.TransformPoint(originOffset);
                     rotationVector = (point - origin).normalized;
                     break;
-                case LineRotationType.None:
+                case LineRotationMode.None:
                     break;
             }
 
@@ -394,11 +394,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         /// Gets the rotation of a point along the line at the specified index
         /// </summary>
         /// <param name="pointIndex"></param>
-        /// <param name="lineRotationType"></param>
+        /// <param name="lineRotationMode"></param>
         /// <returns></returns>
-        public Quaternion GetRotation(int pointIndex, LineRotationType lineRotationType = LineRotationType.None)
+        public Quaternion GetRotation(int pointIndex, LineRotationMode lineRotationMode = LineRotationMode.None)
         {
-            return GetRotation((float)pointIndex / PointCount, lineRotationType != LineRotationType.None ? lineRotationType : rotationType);
+            return GetRotation((float)pointIndex / PointCount, lineRotationMode != LineRotationMode.None ? lineRotationMode : rotationMode);
         }
 
         /// <summary>
@@ -460,7 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         {
             float strength = uniformDistortionStrength;
 
-            if (distortionType == DistortionType.NormalizedLength)
+            if (distortionMode == DistortionMode.NormalizedLength)
             {
                 strength = distortionStrength.Evaluate(normalizedLength);
             }

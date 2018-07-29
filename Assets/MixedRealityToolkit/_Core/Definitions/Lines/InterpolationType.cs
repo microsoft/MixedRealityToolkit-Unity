@@ -3,9 +3,12 @@
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines
 {
+    /// <summary>
+    /// Defines the type of interpolation to use when calculating a spline.
+    /// </summary>
     public enum InterpolationType
     {
-        Bezeir,
+        Bezier = 0,
         CatmullRom,
         Hermite,
     }

@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             return pos;
         }
 
-        public static Vector3 GetPointAlongSpline(MixedRealityPose[] points, float normalizedLength, InterpolationType interpolation = InterpolationType.Bezeir)
+        public static Vector3 GetPointAlongSpline(MixedRealityPose[] points, float normalizedLength, InterpolationType interpolation = InterpolationType.Bezier)
         {
             int pointIndex = (Mathf.RoundToInt(normalizedLength * points.Length));
             float length = normalizedLength - ((float)pointIndex / points.Length);

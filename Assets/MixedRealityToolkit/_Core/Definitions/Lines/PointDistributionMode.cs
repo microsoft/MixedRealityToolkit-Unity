@@ -4,21 +4,25 @@
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines
 {
     /// <summary>
-    /// Default options for how to distribute interpolated points in a line renderer
+    /// Defines how to get an interpolated point along a line
     /// </summary>
-    public enum InterpolationMode
+    public enum PointDistributionMode
     {
         /// <summary>
-        /// Specify the number of interpolation steps manually
+        /// Don't adjust placement
         /// </summary>
-        FromSteps = 0,
+        None = 0,
         /// <summary>
-        /// Create steps based on total length of line + manually specified length
+        /// Adjust placement automatically (default)
         /// </summary>
-        FromLength,
+        Auto,
         /// <summary>
-        /// Create steps based on total length of line + animation curve
+        /// Place based on distance
         /// </summary>
-        FromCurve
+        DistanceSingleValue,
+        /// <summary>
+        /// Place based on curve
+        /// </summary>
+        DistanceCurveValue,
     }
 }

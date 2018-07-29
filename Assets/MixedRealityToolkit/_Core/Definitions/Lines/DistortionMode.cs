@@ -4,17 +4,17 @@
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines
 {
     /// <summary>
-    /// Defines how to generate points in a line renderer
+    /// How to apply the distortion along the line.
     /// </summary>
-    public enum StepMode
+    public enum DistortionMode
     {
         /// <summary>
-        /// Draw points based on LineStepCount
+        /// Use the normalized length of the line plus its distortion strength curve to determine distortion strength
         /// </summary>
-        Interpolated = 0,
+        NormalizedLength = 0,
         /// <summary>
-        /// Draw only the points available in the source - use this for hard edges
+        /// Use a single value to determine distortion strength
         /// </summary>
-        FromSource,
+        Uniform,
     }
 }

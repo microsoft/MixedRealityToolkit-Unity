@@ -4,17 +4,21 @@
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Lines
 {
     /// <summary>
-    /// Defines how to generate points in a line renderer
+    /// Defines how to calculate the line's rotation at any given point.
     /// </summary>
-    public enum StepMode
+    public enum LineRotationMode
     {
         /// <summary>
-        /// Draw points based on LineStepCount
+        /// Don't rotate
         /// </summary>
-        Interpolated = 0,
+        None = 0,
         /// <summary>
-        /// Draw only the points available in the source - use this for hard edges
+        /// Use velocity to calculate the line's rotation
         /// </summary>
-        FromSource,
+        Velocity,
+        /// <summary>
+        /// Rotate relative to direction from origin point
+        /// </summary>
+        RelativeToOrigin,
     }
 }
