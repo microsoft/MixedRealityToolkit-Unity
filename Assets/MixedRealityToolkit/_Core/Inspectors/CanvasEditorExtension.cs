@@ -8,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
 {
     /// <summary>
     /// Helper class to assign the UIRaycastCamera when creating a new canvas object and assigning the world space render mode.
@@ -27,17 +27,27 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             canvas = (Canvas)target;
 
-            if (MixedRealityManager.ConfirmInitialized())
+            if (MixedRealityManager.IsInitialized &&
+                MixedRealityManager.ConfirmInitialized() &&
+                MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
             {
                 inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
+                CheckCanvasSettings();
             }
         }
 
         public override void OnInspectorGUI()
         {
-            if (inputSystem == null)
+            if (!MixedRealityManager.IsInitialized || !MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
             {
-                EditorGUILayout.HelpBox("No Input System found. Are you missing a Mixed Reality manager in your scene?", MessageType.Error);
+                base.OnInspectorGUI();
+                return;
+            }
+
+            if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem && inputSystem == null)
+            {
+                EditorGUILayout.HelpBox("No Input System Profile found in the Mixed Reality Manager's Active Profile.", MessageType.Error);
+                base.OnInspectorGUI();
                 return;
             }
 
@@ -47,45 +57,50 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             // We will only ask if we have a focus manager in our scene.
             if (EditorGUI.EndChangeCheck())
             {
-                bool removeHelper = false;
+                CheckCanvasSettings();
+            }
+        }
 
-                // Update the world camera if we need to.
-                if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera != inputSystem.FocusProvider.UIRaycastCamera)
+        private void CheckCanvasSettings()
+        {
+            bool removeHelper = false;
+
+            // Update the world camera if we need to.
+            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera != inputSystem.FocusProvider.UIRaycastCamera)
+            {
+                if (EditorUtility.DisplayDialog("Attention!", DialogText, "OK", "Cancel"))
                 {
-                    if (EditorUtility.DisplayDialog("Attention!", DialogText, "OK", "Cancel"))
-                    {
-                        canvas.worldCamera = inputSystem.FocusProvider.UIRaycastCamera;
-                    }
-                    else
-                    {
-                        removeHelper = true;
-                    }
+                    canvas.worldCamera = inputSystem.FocusProvider.UIRaycastCamera;
                 }
-
-                // Add the Canvas Helper if we need it.
-                if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera == inputSystem.FocusProvider.UIRaycastCamera)
+                else
                 {
-                    var helper = canvas.gameObject.EnsureComponent<CanvasUtility>();
-                    helper.Canvas = canvas;
-                }
-
-                // Reset the world canvas if we need to.
-                if (canvas.isRootCanvas && canvas.renderMode != RenderMode.WorldSpace && canvas.worldCamera == inputSystem.FocusProvider.UIRaycastCamera)
-                {
-                    // Sets it back to MainCamera default.
-                    canvas.worldCamera = null;
                     removeHelper = true;
                 }
+            }
 
-                // Remove the helper if we don't need it.
-                if (removeHelper)
+            // Add the Canvas Helper if we need it.
+            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.WorldSpace && canvas.worldCamera == inputSystem.FocusProvider.UIRaycastCamera)
+            {
+                var helper = canvas.gameObject.EnsureComponent<CanvasUtility>();
+                helper.Canvas = canvas;
+            }
+
+            // Reset the world canvas if we need to.
+            if (canvas.isRootCanvas && canvas.renderMode != RenderMode.WorldSpace && canvas.worldCamera == inputSystem.FocusProvider.UIRaycastCamera)
+            {
+                // Sets it back to MainCamera default.
+                canvas.worldCamera = null;
+                removeHelper = true;
+            }
+
+            // Remove the helper if we don't need it.
+            if (removeHelper)
+            {
+                // Remove the helper if needed.
+                var helper = canvas.GetComponent<CanvasUtility>();
+                if (helper != null)
                 {
-                    // Remove the helper if needed.
-                    var helper = canvas.GetComponent<CanvasUtility>();
-                    if (helper != null)
-                    {
-                        DestroyImmediate(helper);
-                    }
+                    DestroyImmediate(helper);
                 }
             }
         }
