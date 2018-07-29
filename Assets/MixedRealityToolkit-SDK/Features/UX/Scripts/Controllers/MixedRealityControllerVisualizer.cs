@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         {
             base.OnEnable();
 
-            if (MixedRealityManager.Instance.ActiveProfile.ControllersProfile != null && MixedRealityManager.Instance.ActiveProfile.ControllersProfile.RenderMotionControllers)
+            if (MixedRealityManager.Instance.ActiveProfile.EnableControllerMapping && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.RenderMotionControllers)
             {
                 CreateControllerInstance(Handedness.Left);
                 CreateControllerInstance(Handedness.Right);
@@ -211,9 +211,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
             controllerModel = null;
 
             // Try and get the controller model from the specific Controller definition
-            if (MixedRealityManager.Instance.ActiveProfile.ControllersProfile != null)
+            if (MixedRealityManager.Instance.ActiveProfile.EnableControllerMapping)
             {
-                MixedRealityManager.Instance.ActiveProfile.ControllersProfile.MixedRealityControllerMappingProfiles.GetControllerModelOverride(sourceController.GetType(), sourceController.ControllerHandedness, out controllerModel);
+                MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles.GetControllerModelOverride(sourceController.GetType(), sourceController.ControllerHandedness, out controllerModel);
             }
             else
             {
@@ -227,15 +227,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
             }
 
             // If no specific controller model found for the device type, try and get the generic override models from the main Controllers profile
-            if (sourceController.ControllerHandedness == Handedness.Left && MixedRealityManager.Instance.ActiveProfile.ControllersProfile.GlobalLeftHandModel != null)
+            if (sourceController.ControllerHandedness == Handedness.Left && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalLeftHandModel != null)
             {
-                controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllersProfile.GlobalLeftHandModel;
+                controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalLeftHandModel;
                 return true;
             }
 
-            if (sourceController.ControllerHandedness == Handedness.Right && MixedRealityManager.Instance.ActiveProfile.ControllersProfile.GlobalRightHandModel != null)
+            if (sourceController.ControllerHandedness == Handedness.Right && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalRightHandModel != null)
             {
-                controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllersProfile.GlobalRightHandModel;
+                controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalRightHandModel;
                 return true;
             }
 

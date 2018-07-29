@@ -26,7 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         private bool isMixedRealityManagerInitializing = false;
 
         /// <summary>
-        /// Is there a valid Active Profile on this manager?
+        /// Checks if there is a valid instance of the MixedRealityManager, then checks if there
+        /// is there a valid Active Profile on this manager.
         /// </summary>
         public static bool HasActiveProfile
         {
@@ -37,7 +38,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     return false;
                 }
 
-                return Instance.activeProfile != null;
+                if (!ConfirmInitialized())
+                {
+                    return false;
+                }
+
+                return Instance.ActiveProfile != null;
             }
         }
 
