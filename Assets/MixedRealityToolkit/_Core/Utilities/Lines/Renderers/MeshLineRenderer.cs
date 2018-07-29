@@ -7,6 +7,9 @@ using UnityEngine.Rendering;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 {
+    /// <summary>
+    /// Creates instances of a mesh along the line
+    /// </summary>
     public class MeshLineRenderer : BaseMixedRealityLineRenderer
     {
         private const string InvisibleShaderName = "MixedRealityToolkit/InvisibleShader";
@@ -42,15 +45,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         }
 
         [SerializeField]
-        private string colorProp = "_Color";
+        private string colorProperty = "_Color";
 
-        public string ColorProp
+        public string ColorProperty
         {
-            get { return colorProp; }
+            get { return colorProperty; }
             set
             {
                 enabled = false;
-                colorProp = value;
+                colorProperty = value;
 
                 if (!lineMaterial.HasProperty(value))
                 {
@@ -139,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
             {
                 lineMaterial.enableInstancing = true;
                 linePropertyBlock = new MaterialPropertyBlock();
-                colorId = Shader.PropertyToID(colorProp);
+                colorId = Shader.PropertyToID(colorProperty);
             }
 
             if (meshRenderer == null)

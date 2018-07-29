@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
+    /// <summary>
+    /// Creates a spline based on control points.
+    /// </summary>
     public class SplineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
@@ -35,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             }
         }
 
+        /// <summary>
+        /// Forces all the control points into alignment.
+        /// </summary>
         public void ForceUpdateAlignment()
         {
             if (alignAllControlPoints)

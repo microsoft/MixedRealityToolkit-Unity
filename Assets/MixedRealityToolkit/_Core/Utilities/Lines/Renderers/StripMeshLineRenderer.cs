@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 {
+    /// <summary>
+    /// Draws a strip of polygons along the line
+    /// </summary>
     public class StripMeshLineRenderer : BaseMixedRealityLineRenderer
     {
         [Header("Strip Mesh Settings")]

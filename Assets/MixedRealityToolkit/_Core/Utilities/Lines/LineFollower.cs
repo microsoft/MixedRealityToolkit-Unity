@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
 {
+    /// <summary>
+    /// Synchronizes the follower's transform position with the point along the line.
+    /// </summary>
     [ExecuteInEditMode]
     public class LineFollower : MonoBehaviour
     {
@@ -38,6 +41,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         [Tooltip("Gets a point along the line at the specified normalized length.")]
         private float normalizedLength = 0f;
 
+        /// <summary>
+        /// Gets a point along the line at the specified normalized length.
+        /// </summary>
         public float NormalizedLength
         {
             get { return normalizedLength; }

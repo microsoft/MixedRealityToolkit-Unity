@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 {
+    /// <summary>
+    /// Defines a line in the shape of a rectangle.
+    /// </summary>
     public class RectangleLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]

@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 {
+    /// <summary>
+    /// attaches a set of particles to the line
+    /// </summary>
     [RequireComponent(typeof(ParticleSystem))]
     public class ParticleSystemLineRenderer : BaseMixedRealityLineRenderer
     {
@@ -29,21 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         public int MaxParticles
         {
             get { return maxParticles; }
-            set
-            {
-                if (value < 128)
-                {
-                    maxParticles = 128;
-                }
-                else if (value > GlobalMaxParticles)
-                {
-                    maxParticles = GlobalMaxParticles;
-                }
-                else
-                {
-                    maxParticles = value;
-                }
-            }
+            set { maxParticles = Mathf.Clamp(value, 128, GlobalMaxParticles); }
         }
 
         [Header("Noise settings")]
@@ -82,21 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         public int NoiseOcatives
         {
             get { return noiseOcatives; }
-            set
-            {
-                if (value < 1)
-                {
-                    noiseOcatives = 1;
-                }
-                else if (value > 10)
-                {
-                    noiseOcatives = 10;
-                }
-                else
-                {
-                    noiseOcatives = value;
-                }
-            }
+            set { noiseOcatives = Mathf.Clamp(value, 1, 10); }
         }
 
         [SerializeField]
@@ -106,21 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         public float NoiseSpeed
         {
             get { return noiseSpeed; }
-            set
-            {
-                if (value < -10f)
-                {
-                    noiseSpeed = -10f;
-                }
-                else if (value > 10f)
-                {
-                    noiseSpeed = 10f;
-                }
-                else
-                {
-                    noiseSpeed = value;
-                }
-            }
+            set { noiseSpeed = Mathf.Clamp(value, -10f, 10f); }
         }
 
         [SerializeField]
@@ -130,21 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         public float LifetimeAfterDisabled
         {
             get { return lifetimeAfterDisabled; }
-            set
-            {
-                if (value < 0.01f)
-                {
-                    lifetimeAfterDisabled = 0.01f;
-                }
-                else if (value > 0.5f)
-                {
-                    lifetimeAfterDisabled = 0.5f;
-                }
-                else
-                {
-                    lifetimeAfterDisabled = value;
-                }
-            }
+            set { lifetimeAfterDisabled = Mathf.Clamp(value, 0.01f, 0.5f); }
         }
 
         [SerializeField]

@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 {
+    /// <summary>
+    /// Base class for Mixed Reality Line Renderers.
+    /// </summary>
     [ExecuteInEditMode]
     public abstract class BaseMixedRealityLineRenderer : MonoBehaviour
     {

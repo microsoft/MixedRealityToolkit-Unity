@@ -9,6 +9,9 @@ using UnityEngine.Rendering;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 {
+    /// <summary>
+    /// Implements Unity's built in line renderer component, and applies the line data to it.
+    /// </summary>
     [RequireComponent(typeof(LineRenderer))]
     [RequireComponent(typeof(BaseMixedRealityLineDataProvider))]
     public class MixedRealityLineRenderer : BaseMixedRealityLineRenderer
