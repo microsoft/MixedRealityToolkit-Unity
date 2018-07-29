@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
         {
             canvas = (Canvas)target;
 
-            if (MixedRealityManager.IsInitialized &&
+            if (MixedRealityManager.HasActiveProfile &&
                 MixedRealityManager.ConfirmInitialized() &&
                 MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
             {
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
 
         public override void OnInspectorGUI()
         {
-            if (!MixedRealityManager.IsInitialized ||
+            if (!MixedRealityManager.HasActiveProfile ||
                 !MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
             {
                 base.OnInspectorGUI();
