@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 PointerExtent = pointerExtent;
                 this.gazeTransform = gazeTransform;
                 this.stabilizer = stabilizer;
-                InteractionEnabled = true;
+                IsInteractionEnabled = true;
             }
 
             public override IMixedRealityInputSource InputSourceParent { get; protected set; }

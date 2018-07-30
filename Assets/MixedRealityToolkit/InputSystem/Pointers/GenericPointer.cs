@@ -57,10 +57,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         public ITeleportTarget TeleportTarget { get; set; }
 
         /// <inheritdoc />
-        public bool InteractionEnabled { get; set; }
+        public bool IsInteractionEnabled { get; set; }
 
         /// <inheritdoc />
-        public bool FocusLocked { get; set; }
+        public bool IsFocusLocked { get; set; }
 
         /// <inheritdoc />
         public float? PointerExtent { get; set; }

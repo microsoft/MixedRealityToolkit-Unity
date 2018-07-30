@@ -511,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             pointer.Pointer.OnPreRaycast();
 
             // If pointer interaction isn't enabled, clear its result object and return
-            if (!pointer.Pointer.InteractionEnabled)
+            if (!pointer.Pointer.IsInteractionEnabled)
             {
                 // Don't clear the previous focused object since we still want to trigger FocusExit events
                 pointer.ResetFocusedObjects(false);
@@ -522,7 +522,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 // Keep the focus objects the same
                 // This will ensure that we execute events on those objects
                 // even if the pointer isn't pointing at them
-                if (!pointer.Pointer.FocusLocked)
+                if (!pointer.Pointer.IsFocusLocked)
                 {
                     // Otherwise, continue
                     var prioritizedLayerMasks = (pointer.Pointer.PrioritizedLayerMasksOverride ?? pointingRaycastLayerMasks);
