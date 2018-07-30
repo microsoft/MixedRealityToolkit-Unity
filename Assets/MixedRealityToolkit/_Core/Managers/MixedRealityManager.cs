@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             Debug.Assert(ActiveProfile.ActiveManagers.Count == 0, "Active Managers were not cleaned up properly.");
             ActiveProfile.ActiveManagers.Clear();
 
-            if (ActiveProfile.EnableCameraProfile)
+            if (ActiveProfile.IsCameraProfileEnabled)
             {
                 if (MixedRealityCameraProfile.IsOpaque)
                 {
@@ -151,14 +151,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             #region  Managers Registration
 
             //If the Input system has been selected for initialization in the Active profile, enable it in the project
-            if (ActiveProfile.EnableInputSystem)
+            if (ActiveProfile.IsInputSystemEnabled)
             {
                 //Enable Input (example initializer)
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
             }
 
             //If the Boundary system has been selected for initialization in the Active profile, enable it in the project
-            if (ActiveProfile.EnableBoundarySystem)
+            if (ActiveProfile.IsBoundarySystemEnabled)
             {
                 //Enable Boundary (example initializer)
                 AddManager(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem);

@@ -152,11 +152,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 }
             }
 
-            if (addedComponents)
-            {
-                UnityEditor.EditorGUIUtility.PingObject(FocusProvider.UIRaycastCamera);
-            }
-
 #endif // Unity Editor
 
             if (!addedComponents)

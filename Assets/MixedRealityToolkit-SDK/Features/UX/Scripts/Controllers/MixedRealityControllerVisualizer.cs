@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         {
             base.OnEnable();
 
-            if (MixedRealityManager.Instance.ActiveProfile.EnableControllerMapping && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.RenderMotionControllers)
+            if (MixedRealityManager.Instance.ActiveProfile.IsControllerMappingEnabled && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.RenderMotionControllers)
             {
                 CreateControllerInstance(Handedness.Left);
                 CreateControllerInstance(Handedness.Right);
@@ -211,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
             controllerModel = null;
 
             // Try and get the controller model from the specific Controller definition
-            if (MixedRealityManager.Instance.ActiveProfile.EnableControllerMapping)
+            if (MixedRealityManager.Instance.ActiveProfile.IsControllerMappingEnabled)
             {
                 MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles.GetControllerModelOverride(sourceController.GetType(), sourceController.ControllerHandedness, out controllerModel);
             }

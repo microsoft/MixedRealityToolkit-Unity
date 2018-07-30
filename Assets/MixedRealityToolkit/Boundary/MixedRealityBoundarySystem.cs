@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
         {
             Scale = MixedRealityManager.Instance.ActiveProfile.TargetExperienceScale;
             BoundaryHeight = MixedRealityManager.Instance.ActiveProfile.BoundaryHeight;
-            EnablePlatformBoundaryRendering = MixedRealityManager.Instance.ActiveProfile.EnablePlatformBoundaryRendering;
+            EnablePlatformBoundaryRendering = MixedRealityManager.Instance.ActiveProfile.IsPlatformBoundaryRenderingEnabled;
         }
 
         /// <inheritdoc/>
@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
                     return rectangularBounds.IsInsideBoundary(point);
                 }
             }
-            else if(boundaryType == Boundary.Type.TrackedArea)
+            else if (boundaryType == Boundary.Type.TrackedArea)
             {
                 // Check the geometry
                 return EdgeUtilities.IsInsideBoundary(Bounds, point);
@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
                     Vector3 pointB = boundaryGeometry[(i + 1) % boundaryGeometry.Count];
                     boundaryEdges.Add(new Edge(pointA, pointB));
 
-                    floorHeight = Mathf.Min(floorHeight, boundaryGeometry[i].y); 
+                    floorHeight = Mathf.Min(floorHeight, boundaryGeometry[i].y);
                 }
 
                 FloorHeight = floorHeight;
