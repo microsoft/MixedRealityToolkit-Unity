@@ -147,7 +147,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #region MonoBehaviour Functions
 
-        private void Awake()
+        public virtual void Awake()
         {
             originalDefaultCursorDistance = DefaultCursorDistance;
 
