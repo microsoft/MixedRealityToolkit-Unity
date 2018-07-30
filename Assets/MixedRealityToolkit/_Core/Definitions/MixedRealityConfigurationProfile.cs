@@ -7,9 +7,9 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
@@ -57,13 +57,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Enable the Camera Profile on Startup")]
+        [Tooltip("Enable the Camera Profile on Startup.")]
         private bool enableCameraProfile = false;
 
         /// <summary>
         /// Enable and configure the Camera Profile for the Mixed Reality Toolkit
         /// </summary>
-        public bool EnableCameraProfile
+        public bool IsCameraProfileEnabled
         {
             get
             {
@@ -87,18 +87,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Enable the Input System on Startup")]
+        [Tooltip("Enable the Input System on Startup.")]
         private bool enableInputSystem = false;
 
         /// <summary>
         /// Enable and configure the Input System component for the Mixed Reality Toolkit
         /// </summary>
-        public bool EnableInputSystem
+        public bool IsInputSystemEnabled
         {
             get
             {
-                return inputActionsProfile != null &&
-                       enableInputSystem;
+                return inputActionsProfile != null && enableInputSystem;
             }
             private set { enableInputSystem = value; }
         }
@@ -137,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// <summary>
         /// Enable and configure the speech commands for your application.
         /// </summary>
-        public bool EnableSpeechCommands
+        public bool IsSpeechCommandsEnabled
         {
             get { return speechCommandsProfile != null && enableSpeechCommands; }
             private set { enableSpeechCommands = value; }
@@ -163,9 +162,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// <summary>
         /// Enable and configure the devices for your application.
         /// </summary>
-        public bool EnableControllerMapping
+        public bool IsControllerMappingEnabled
         {
-            get { return controllerMappingProfile != null && enableControllerMapping; }
+            get { return controllerMappingProfile != null && enableControllerMapping && enableInputSystem; }
             private set { enableControllerMapping = value; }
         }
 
@@ -189,13 +188,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// <summary>
         /// Enable and configure the boundary system.
         /// </summary>
-        public bool EnableBoundarySystem
+        public bool IsBoundarySystemEnabled
         {
-            get
-            {
-                return boundarySystemType?.Type != null &&
-                       enableBoundarySystem;
-            }
+            get { return boundarySystemType?.Type != null && enableBoundarySystem; }
             private set { enableInputSystem = value; }
         }
 
@@ -239,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// <remarks>
         /// Not all platforms support the EnablePlatformBoundaryRendering property.
         /// </remarks>
-        public bool EnablePlatformBoundaryRendering
+        public bool IsPlatformBoundaryRenderingEnabled
         {
             get { return enablePlatformBoundaryRendering; }
             set { enablePlatformBoundaryRendering = value; }
