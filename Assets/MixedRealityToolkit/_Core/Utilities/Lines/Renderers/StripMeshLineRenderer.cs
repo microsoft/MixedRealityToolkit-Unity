@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         private static Vector2[] stripMeshUvs = null;
         private static int[] stripMeshTriangles = null;
 
-        protected void OnEnable()
+        private void OnEnable()
         {
             if (lineMaterial == null)
             {
