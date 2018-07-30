@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,9 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// Configuration profile settings for the Mixed Reality Toolkit.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Configuration Profile", fileName = "MixedRealityConfigurationProfile", order = 0)]
-    public class MixedRealityConfigurationProfile : ScriptableObject
+    public class MixedRealityConfigurationProfile : ScriptableObject, ISerializationCallbackReceiver
     {
         #region Manager Registry properties
+
+        [SerializeField]
+        private SystemType[] initialManagerTypes = null;
 
         /// <summary>
         /// Dictionary list of active managers used by the Mixed Reality Manager at runtime
@@ -178,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool IsBoundarySystemEnabled
         {
-            get { return boundarySystemType?.Type != null && enableBoundarySystem; }
+            get { return boundarySystemType.Type != null && enableBoundarySystem; }
             private set { enableInputSystem = value; }
         }
 
@@ -229,5 +231,33 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         #endregion Mixed Reality Manager configurable properties
+
+        #region ISerializationCallbackReceiver Implementation
+
+        /// <inheritdoc />
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+            var count = ActiveManagers.Count;
+            initialManagerTypes = new SystemType[count];
+
+            foreach (var manager in ActiveManagers)
+            {
+                --count;
+                initialManagerTypes[count] = new SystemType(manager.Value.GetType());
+            }
+        }
+
+        /// <inheritdoc />
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
+        {
+            if (ActiveManagers.Count == 0)
+            {
+                for (int i = 0; i < initialManagerTypes?.Length; i++)
+                {
+                    ActiveManagers.Add(initialManagerTypes[i], Activator.CreateInstance(initialManagerTypes[i]) as IMixedRealityManager);
+                }
+            }
+        }
     }
+    #endregion  ISerializationCallbackReceiver Implementation
 }

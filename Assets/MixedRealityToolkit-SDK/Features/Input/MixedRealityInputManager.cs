@@ -195,44 +195,41 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             InputDisabled?.Invoke();
 
-            if (focusProvider != null)
+            focusProvider = CameraCache.Main.gameObject.EnsureComponent<FocusProvider>();
+            gazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
+
+            focusProvider.enabled = false;
+
+            if (FocusProvider.UIRaycastCamera != null)
             {
-                focusProvider.enabled = false;
-
-                if (FocusProvider.UIRaycastCamera != null)
-                {
-                    if (Application.isEditor)
-                    {
-                        UnityEngine.Object.DestroyImmediate(FocusProvider.UIRaycastCamera.gameObject);
-                    }
-                    else
-                    {
-                        UnityEngine.Object.Destroy(FocusProvider.UIRaycastCamera.gameObject);
-                    }
-                }
-
                 if (Application.isEditor)
                 {
-                    UnityEngine.Object.DestroyImmediate(focusProvider);
+                    UnityEngine.Object.DestroyImmediate(FocusProvider.UIRaycastCamera.gameObject);
                 }
                 else
                 {
-                    UnityEngine.Object.Destroy(focusProvider);
+                    UnityEngine.Object.Destroy(FocusProvider.UIRaycastCamera.gameObject);
                 }
             }
 
-            if (gazeProvider != null)
+            if (Application.isEditor)
             {
-                gazeProvider.enabled = false;
+                UnityEngine.Object.DestroyImmediate(focusProvider);
+            }
+            else
+            {
+                UnityEngine.Object.Destroy(focusProvider);
+            }
 
-                if (Application.isEditor)
-                {
-                    UnityEngine.Object.DestroyImmediate(gazeProvider);
-                }
-                else
-                {
-                    UnityEngine.Object.Destroy(gazeProvider);
-                }
+            gazeProvider.enabled = false;
+
+            if (Application.isEditor)
+            {
+                UnityEngine.Object.DestroyImmediate(gazeProvider);
+            }
+            else
+            {
+                UnityEngine.Object.Destroy(gazeProvider);
             }
 
             base.Destroy();

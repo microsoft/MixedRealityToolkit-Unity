@@ -38,16 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
         /// </summary>
         private InscribedRectangle rectangularBounds = null;
 
-        /// <summary>
-        /// MixedRealityBoundaryManager constructor
-        /// </summary>
-        public MixedRealityBoundaryManager()
-        {
-            Scale = MixedRealityManager.Instance.ActiveProfile.TargetExperienceScale;
-            BoundaryHeight = MixedRealityManager.Instance.ActiveProfile.BoundaryHeight;
-            EnablePlatformBoundaryRendering = MixedRealityManager.Instance.ActiveProfile.IsPlatformBoundaryRenderingEnabled;
-        }
-
         /// <inheritdoc/>
         public override void Initialize()
         {
@@ -60,6 +50,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
         /// </summary>
         private void InitializeInternal()
         {
+            Scale = MixedRealityManager.Instance.ActiveProfile.TargetExperienceScale;
+            BoundaryHeight = MixedRealityManager.Instance.ActiveProfile.BoundaryHeight;
+            EnablePlatformBoundaryRendering = MixedRealityManager.Instance.ActiveProfile.IsPlatformBoundaryRenderingEnabled;
+
             SetTrackingSpace();
             CalculateBoundaryBounds();
             Boundary.visible = EnablePlatformBoundaryRendering;
