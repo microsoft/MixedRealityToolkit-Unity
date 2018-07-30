@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Attributes
     /// Attribute used to make a float or int variable in a script be restricted to a specific range.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    public class Vector3RangeAttribute : PropertyAttribute
+    public sealed class Vector3RangeAttribute : PropertyAttribute
     {
         /// <summary>
         /// Minimum value.
