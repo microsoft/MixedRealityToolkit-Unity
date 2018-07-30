@@ -53,6 +53,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private void Awake()
         {
+            base.Awake();
             mAwakeScale = transform.localScale;
         }
 
