@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
 
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent content)
         {
-            if (!MixedRealityManager.ConfirmInitialized() || !MixedRealityManager.HasActiveProfile)
+            if (!MixedRealityManager.HasActiveProfile)
             {
                 profile = null;
                 actionLabels = new[] { new GUIContent("Missing Mixed Reality Manager") };

@@ -42,6 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private void OnEnable()
         {
+            configurationProfile = target as MixedRealityConfigurationProfile;
+
             // Create The MR Manager if none exists.
             if (!MixedRealityManager.IsInitialized)
             {
@@ -56,23 +58,23 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         "Yes",
                         "Later"))
                     {
-                        var profile = target as MixedRealityConfigurationProfile;
-                        Debug.Assert(profile != null);
-                        profile.ActiveManagers.Clear();
-                        MixedRealityManager.Instance.ActiveProfile = profile;
+                        MixedRealityManager.Instance.ActiveProfile = configurationProfile;
                     }
                     else
                     {
                         Debug.LogWarning("No Mixed Reality Manager in your scene.");
+                        return;
                     }
-                }
-                else
-                {
-                    MixedRealityManager.ConfirmInitialized();
                 }
             }
 
-            configurationProfile = target as MixedRealityConfigurationProfile;
+            if (!MixedRealityManager.ConfirmInitialized())
+            {
+                return;
+            }
+
+            Debug.Assert(MixedRealityManager.HasActiveProfile);
+
             // Experience configuration
             targetExperienceScale = serializedObject.FindProperty("targetExperienceScale");
             // Camera configuration
@@ -98,6 +100,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             serializedObject.Update();
             RenderMixedRealityToolkitLogo();
+
+            if (!MixedRealityManager.IsInitialized)
+            {
+                EditorGUILayout.HelpBox("Unable to find Mixed Reality Manager!", MessageType.Error);
+                return;
+            }
 
             var previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 160f;

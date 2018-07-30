@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,17 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     {
         #region Manager Registry properties
 
-        /// <summary>
-        /// Serialized list of managers for the Mixed Reality manager
-        /// </summary>
         [SerializeField]
-        private IMixedRealityManager[] initialManagers = null;
-
-        /// <summary>
-        /// Serialized list of the Interface types for the Mixed Reality manager
-        /// </summary>
-        [SerializeField]
-        private Type[] initialManagerTypes = null;
+        private SystemType[] initialManagerTypes = null;
 
         /// <summary>
         /// Dictionary list of active managers used by the Mixed Reality Manager at runtime
@@ -130,11 +120,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Profile for configuring pointers.")]
+        [Tooltip("Pointer Configuration options")]
         private MixedRealityPointerProfile pointerProfile;
 
         /// <summary>
-        /// Active profile for controller mapping configuration
+        /// Pointer configuration options
         /// </summary>
         public MixedRealityPointerProfile PointerProfile
         {
@@ -203,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool IsBoundarySystemEnabled
         {
-            get { return boundarySystemType?.Type != null && enableBoundarySystem; }
+            get { return boundarySystemType.Type != null && enableBoundarySystem; }
             private set { enableInputSystem = value; }
         }
 
@@ -257,37 +247,30 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 
         #region ISerializationCallbackReceiver Implementation
 
-        /// <summary>
-        /// Unity function to prepare data for serialization.
-        /// </summary>
+        /// <inheritdoc />
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
             var count = ActiveManagers.Count;
-            initialManagers = new IMixedRealityManager[count];
-            initialManagerTypes = new Type[count];
+            initialManagerTypes = new SystemType[count];
 
             foreach (var manager in ActiveManagers)
             {
                 --count;
-                initialManagers[count] = manager.Value;
-                initialManagerTypes[count] = manager.Key;
+                initialManagerTypes[count] = new SystemType(manager.Value.GetType());
             }
         }
 
-        /// <summary>
-        /// Unity function to resolve data from serialization when a project is loaded
-        /// </summary>
+        /// <inheritdoc />
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             if (ActiveManagers.Count == 0)
             {
-                for (int i = 0; i < initialManagers?.Length; i++)
+                for (int i = 0; i < initialManagerTypes?.Length; i++)
                 {
-                    MixedRealityManager.Instance.AddManager(initialManagerTypes[i], initialManagers[i]);
+                    ActiveManagers.Add(initialManagerTypes[i], Activator.CreateInstance(initialManagerTypes[i]) as IMixedRealityManager);
                 }
             }
         }
-
-        #endregion  ISerializationCallbackReceiver Implementation
     }
+    #endregion  ISerializationCallbackReceiver Implementation
 }
