@@ -15,11 +15,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     [Serializable]
     public struct MixedRealityControllerMapping
     {
-        public MixedRealityControllerMapping(uint id, string description, SystemType controller, Handedness handedness, GameObject overrideModel) : this()
+        public MixedRealityControllerMapping(uint id, string description, IMixedRealityController controllerType, Handedness handedness, GameObject overrideModel) : this()
         {
             this.id = id;
             this.description = description;
-            this.controllerType = controller;
+            this.controllerType = new SystemType(controllerType.GetType());
             this.handedness = handedness;
             this.overrideModel = overrideModel;
             useCustomInteractionMappings = false;

@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         {
             get
             {
-                if (inputSystem == null && MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
+                if (inputSystem == null && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
                 {
                     inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
                 }
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         /// <param name="controllerType"></param>
         public void SetupConfiguration(Type controllerType)
         {
-            if (MixedRealityManager.Instance.ActiveProfile.EnableControllerMapping)
+            if (MixedRealityManager.Instance.ActiveProfile.IsControllerMappingEnabled)
             {
                 // We can only enable controller profiles if mappings exist.
                 var controllerMappings = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
@@ -98,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                     {
                         profileFound = true;
                     }
+
                     if (!controllerMappings[i].UseCustomInteractionMappings && controllerMappings[i].ControllerType.Type == controllerType && controllerMappings[i].Handedness == ControllerHandedness)
                     {
                         AssignControllerMappings(controllerMappings[i].Interactions);
