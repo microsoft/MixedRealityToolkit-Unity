@@ -56,8 +56,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             }
         }
 
+        #region BaseMixedRealityLineDataProvider Implementation
+
         /// <inheritdoc />
         public override int PointCount => resolution;
+
+        /// <inheritdoc />
+        public override bool Loops
+        {
+            get
+            {
+                base.Loops = true;
+                return true;
+            }
+        }
 
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
@@ -94,5 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
             return distance;
         }
+
+        #endregion BaseMixedRealityLineDataProvider Implementation
     }
 }
