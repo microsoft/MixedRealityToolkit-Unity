@@ -65,14 +65,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     {
                         Debug.LogWarning("No Mixed Reality Manager in your scene.");
                     }
-                }
-                else
-                {
-                    MixedRealityManager.ConfirmInitialized();
+
+                    return;
                 }
             }
 
             configurationProfile = target as MixedRealityConfigurationProfile;
+
             // Experience configuration
             targetExperienceScale = serializedObject.FindProperty("targetExperienceScale");
             // Camera configuration
