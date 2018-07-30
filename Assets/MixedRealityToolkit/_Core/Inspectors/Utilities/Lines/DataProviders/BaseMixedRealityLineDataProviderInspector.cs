@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
         private SerializedProperty manualUpVectors;
         private SerializedProperty velocitySearchRange;
         private SerializedProperty distorters;
-        private SerializedProperty distortionType;
+        private SerializedProperty distortionMode;
         private SerializedProperty distortionStrength;
         private SerializedProperty uniformDistortionStrength;
 
@@ -85,14 +85,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
             lineStartClamp = serializedObject.FindProperty("lineStartClamp");
             lineEndClamp = serializedObject.FindProperty("lineEndClamp");
             loops = serializedObject.FindProperty("loops");
-            rotationType = serializedObject.FindProperty("rotationType");
+            rotationType = serializedObject.FindProperty("rotationMode");
             flipUpVector = serializedObject.FindProperty("flipUpVector");
             originOffset = serializedObject.FindProperty("originOffset");
             manualUpVectorBlend = serializedObject.FindProperty("manualUpVectorBlend");
             manualUpVectors = serializedObject.FindProperty("manualUpVectors");
             velocitySearchRange = serializedObject.FindProperty("velocitySearchRange");
             distorters = serializedObject.FindProperty("distorters");
-            distortionType = serializedObject.FindProperty("distortionType");
+            distortionMode = serializedObject.FindProperty("distortionMode");
             distortionStrength = serializedObject.FindProperty("distortionStrength");
             uniformDistortionStrength = serializedObject.FindProperty("uniformDistortionStrength");
 
@@ -256,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
 
                     if (distorters.arraySize > 0)
                     {
-                        EditorGUILayout.PropertyField(distortionType);
+                        EditorGUILayout.PropertyField(distortionMode);
                         EditorGUILayout.PropertyField(distortionStrength);
                         EditorGUILayout.PropertyField(uniformDistortionStrength);
                     }
