@@ -17,27 +17,29 @@ namespace HoloToolkit.Unity.InputModule.Tests
 
         public bool GetCursorVisibility()
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public Vector3 GetModifiedPosition(ICursor cursor)
         {
-            throw new System.NotImplementedException();
+            return cursor.Position;
         }
 
         public Quaternion GetModifiedRotation(ICursor cursor)
         {
-            throw new System.NotImplementedException();
+            return cursor.Rotation;
         }
 
         public Vector3 GetModifiedScale(ICursor cursor)
         {
-            throw new System.NotImplementedException();
+            return cursor.LocalScale;
         }
 
         public void GetModifiedTransform(ICursor cursor, out Vector3 position, out Quaternion rotation, out Vector3 scale)
         {
-            throw new System.NotImplementedException();
+            position = GetModifiedPosition(cursor);
+            rotation = GetModifiedRotation(cursor);
+            scale = GetModifiedScale(cursor);
         }
 
         /// <summary>
