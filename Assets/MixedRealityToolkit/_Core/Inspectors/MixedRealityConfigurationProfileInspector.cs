@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty enableInputSystem;
         private SerializedProperty inputSystemType;
         private SerializedProperty inputActionsProfile;
-        private SerializedProperty pointerProfile;
+        //private SerializedProperty pointerProfile;
         private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
         private SerializedProperty enableControllerMapping;
@@ -64,11 +64,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     else
                     {
                         Debug.LogWarning("No Mixed Reality Manager in your scene.");
+                        return;
                     }
-
-                    return;
                 }
             }
+
+            if (!MixedRealityManager.ConfirmInitialized())
+            {
+                return;
+            }
+
+            Debug.Assert(MixedRealityManager.HasActiveProfile);
 
             configurationProfile = target as MixedRealityConfigurationProfile;
 
@@ -97,6 +103,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             serializedObject.Update();
             RenderMixedRealityToolkitLogo();
+
+            if (!MixedRealityManager.IsInitialized)
+            {
+                EditorGUILayout.HelpBox("Unable to find Mixed Reality Manager!", MessageType.Error);
+                return;
+            }
 
             var previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 160f;
