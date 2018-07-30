@@ -13,7 +13,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     [CustomEditor(typeof(MixedRealityConfigurationProfile))]
     public class MixedRealityConfigurationProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
+        private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
+        private static readonly GUIContent PlatformRenderingContent = new GUIContent("Platform Rendering:");
+        private static readonly GUIContent BoundaryHeightContent = new GUIContent("Boundary Height (in m):");
 
         // Experience properties
         private SerializedProperty targetExperienceScale;
@@ -24,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty enableInputSystem;
         private SerializedProperty inputSystemType;
         private SerializedProperty inputActionsProfile;
+        private SerializedProperty pointerProfile;
         private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
         private SerializedProperty enableControllerMapping;
@@ -33,8 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty boundarySystemType;
         private SerializedProperty boundaryHeight;
         private SerializedProperty enablePlatformBoundaryRendering;
-
-        private SerializedProperty testThis;
 
         private MixedRealityConfigurationProfile configurationProfile;
 
@@ -48,8 +50,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                 if (managerSearch.Length == 0)
                 {
-                    if (EditorUtility.DisplayDialog("Attention!",
-                        "There is no active Mixed Reality Manager in your scene. Would you like to create one now?", "Yes",
+                    if (EditorUtility.DisplayDialog(
+                        "Attention!",
+                        "There is no active Mixed Reality Manager in your scene!\n\nWould you like to create one now?",
+                        "Yes",
                         "Later"))
                     {
                         var profile = target as MixedRealityConfigurationProfile;
@@ -78,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             enableInputSystem = serializedObject.FindProperty("enableInputSystem");
             inputSystemType = serializedObject.FindProperty("inputSystemType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
+            pointerProfile = serializedObject.FindProperty("pointerProfile");
             enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
@@ -100,9 +105,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             // Experience configuration
             EditorGUILayout.LabelField("Experience Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(targetExperienceScale, new GUIContent("Target Scale:"));
+
+            EditorGUILayout.PropertyField(targetExperienceScale, TargetScaleContent);
             ExperienceScale scale = (ExperienceScale)targetExperienceScale.intValue;
             string scaleDescription = string.Empty;
+
             switch (scale)
             {
                 case ExperienceScale.OrientationOnly:
@@ -125,6 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     scaleDescription = "The user is free to move about the world. Relies upon knowledge of the environment (Spatial Anchors and Spatial Mapping).";
                     break;
             }
+
             if (scaleDescription != string.Empty)
             {
                 EditorGUILayout.HelpBox(scaleDescription, MessageType.Info);
@@ -149,22 +157,20 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             {
                 EditorGUILayout.PropertyField(inputSystemType);
                 RenderProfile(inputActionsProfile);
+                RenderProfile(pointerProfile);
 
                 EditorGUILayout.PropertyField(enableSpeechCommands);
                 if (enableSpeechCommands.boolValue)
                 {
                     RenderProfile(speechCommandsProfile);
                 }
-            }
 
-            // Controller mapping configuration
-            GUILayout.Space(12f);
-            EditorGUILayout.LabelField("Controller Mapping Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(enableControllerMapping);
+                EditorGUILayout.PropertyField(enableControllerMapping);
 
-            if (enableControllerMapping.boolValue)
-            {
-                RenderProfile(controllerMappingProfile);
+                if (enableControllerMapping.boolValue)
+                {
+                    RenderProfile(controllerMappingProfile);
+                }
             }
 
             // Boundary System configuration
@@ -179,8 +185,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                 if (scale == ExperienceScale.Room)
                 {
-                    EditorGUILayout.PropertyField(boundaryHeight, new GUIContent("Boundary Height (in m):"));
-                    EditorGUILayout.PropertyField(enablePlatformBoundaryRendering, new GUIContent("Platform Rendering:"));
+                    EditorGUILayout.PropertyField(boundaryHeight, BoundaryHeightContent);
+                    EditorGUILayout.PropertyField(enablePlatformBoundaryRendering, PlatformRenderingContent);
                 }
                 else
                 {
