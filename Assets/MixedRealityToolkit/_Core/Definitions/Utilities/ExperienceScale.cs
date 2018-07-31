@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// </summary>
         Standing,
         /// <summary>
-        /// An experience designed to support movement thoughtout a room. The coordinate system origin is at floor level.
+        /// An experience designed to support movement throughout a room. The coordinate system origin is at floor level.
         /// </summary>
         Room,
         /// <summary>
