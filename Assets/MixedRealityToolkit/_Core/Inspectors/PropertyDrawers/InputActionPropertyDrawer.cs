@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
                 profile = null;
                 actionLabels = new[] { new GUIContent("Missing Mixed Reality Manager") };
                 actionIds = new[] { 0 };
-                return;
             }
 
             if (profile == null)
@@ -36,15 +35,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
                     actionIds = profile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
                 }
             }
-            else
+
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
             {
-                if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
-                {
-                    profile = null;
-                    actionLabels = new[] { new GUIContent("Input System Disabled") };
-                    actionIds = new[] { 0 };
-                    return;
-                }
+                profile = null;
+                actionLabels = new[] { new GUIContent("Input System Disabled") };
+                actionIds = new[] { 0 };
             }
 
             var label = EditorGUI.BeginProperty(rect, content, property);
