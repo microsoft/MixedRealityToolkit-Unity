@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                 if (eventSystems.Length == 0)
                 {
-                    FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
+                    focusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
                     addedComponents = true;
                 }
                 else
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                     if (eventSystems.Length == 1)
                     {
-                        raiseWarning = eventSystems[0].gameObject != focusProvider.gameObject;
+                        raiseWarning = eventSystems[0].gameObject != FocusProvider.UIRaycastCamera.gameObject;
                     }
                     else
                     {
@@ -125,13 +125,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                     if (raiseWarning)
                     {
-                        Debug.LogWarning("Found an existing event system in your scene. The Mixed Reality Input System requires only one, and must be found on the focus provider.");
+                        Debug.LogWarning("Found an existing event system in your scene. The Mixed Reality Input System requires only one, and must be found on the UIRaycastCamera.");
                     }
                 }
 
                 if (standaloneInputModules.Length == 0)
                 {
-                    FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
+                    focusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
                     addedComponents = true;
                 }
                 else
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                     if (standaloneInputModules.Length == 1)
                     {
-                        raiseWarning = standaloneInputModules[0].gameObject != focusProvider.gameObject;
+                        raiseWarning = standaloneInputModules[0].gameObject != FocusProvider.UIRaycastCamera.gameObject;
                     }
                     else
                     {
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                     if (raiseWarning)
                     {
-                        Debug.LogWarning("Found an existing Standalone Input Module in your scene. The Mixed Reality Input System requires only one, and must be found on the focus provider.");
+                        Debug.LogWarning("Found an existing Standalone Input Module in your scene. The Mixed Reality Input System requires only one, and must be found on the UIRaycastCamera.");
                     }
                 }
             }
@@ -158,8 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             if (!addedComponents)
             {
-                FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
-                FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
+                focusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
+                focusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
             }
 
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
