@@ -13,9 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
     [ExecuteInEditMode]
     public class ClipPlane : MonoBehaviour
     {
-        /// <summary>
-        /// The renderer(s) that should be affected by the clip plane.
-        /// </summary>
+        [Tooltip("The renderer(s) that should be affected by the clip plane.")]
         [SerializeField]
         private Renderer[] renderers = null;
 
@@ -25,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         private const string clippingPlaneKeyword = "_CLIPPING_PLANE";
         private const string clippingPlaneProperty = "_ClippingPlane";
         private Dictionary<Material, bool> modifiedMaterials = new Dictionary<Material, bool>();
+        private List<Material> allocatedMaterials = new List<Material>();
 
         public Renderer[] Renderers => renderers;
 
@@ -76,13 +75,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         private void OnDestroy()
         {
-            if (Renderers == null)
+            if (renderers == null)
             {
                 return;
             }
 
-            foreach (Renderer renderer in Renderers)
+            for (int i = 0; i < renderers.Length; ++i)
             {
+                Renderer renderer = renderers[i];
+
                 if (!renderer)
                 {
                     continue;
@@ -100,6 +101,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
                     }
                 }
             }
+
+            for (int i = 0; i < allocatedMaterials.Count; ++i)
+            {
+                Destroy(allocatedMaterials[i]);
+            }
         }
 
         private void Initialize()
@@ -110,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         private void UpdatePlanePosition()
         {
-            if (Renderers == null)
+            if (renderers == null)
             {
                 return;
             }
@@ -118,8 +124,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             Vector3 up = transform.up;
             Vector4 plane = new Vector4(up.x, up.y, up.z, Vector3.Dot(up, transform.position));
 
-            foreach (Renderer renderer in Renderers)
+            for (int i = 0; i < renderers.Length; ++i)
             {
+                Renderer renderer = renderers[i];
+
                 if (!renderer)
                 {
                     continue;
@@ -133,13 +141,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         private void ToggleClippingPlanes(bool clippingPlaneOn)
         {
-            if (Renderers == null)
+            if (renderers == null)
             {
                 return;
             }
 
-            foreach (Renderer renderer in Renderers)
+            for (int i = 0; i < renderers.Length; ++i)
             {
+                Renderer renderer = renderers[i];
+
                 if (!renderer)
                 {
                     continue;
@@ -168,7 +178,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             }
             else
             {
-                return renderer.material;
+                Material material = renderer.material;
+
+                if (!allocatedMaterials.Contains(material))
+                {
+                    allocatedMaterials.Add(material);
+                }
+
+                return material;
             }
         }
 

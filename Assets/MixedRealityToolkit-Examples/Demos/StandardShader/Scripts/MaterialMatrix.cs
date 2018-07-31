@@ -34,8 +34,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
         {
             List<Transform> children = transform.Cast<Transform>().ToList();
 
-            foreach (Transform child in children)
+            for (int i = 0; i < children.Count; ++i)
             {
+                Transform child = children[i];
+
                 if (Application.isPlaying)
                 {
                     Destroy(child.gameObject);

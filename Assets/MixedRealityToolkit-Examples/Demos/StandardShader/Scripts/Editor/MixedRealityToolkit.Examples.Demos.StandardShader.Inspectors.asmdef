@@ -1,5 +1,5 @@
 {
-    "name": "MixedRealityToolkit.Examples.Demos.StandardShader.Editor",
+    "name": "MixedRealityToolkit.Examples.Demos.StandardShader.Inspectors",
     "references": [
         "Microsoft.MixedReality.Toolkit.Examples"
     ],
