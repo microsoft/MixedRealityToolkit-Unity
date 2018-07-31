@@ -43,8 +43,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void Start()
         {
-            AddQuad();
-            AddIndicators();
+            if (MixedRealityManager.HasActiveProfile && MixedRealityManager.Instance.ActiveProfile.IsBoundarySystemEnabled)
+            {
+                AddQuad();
+                AddIndicators();
+            }
         }
 
         /// <summary>
@@ -53,16 +56,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private void AddQuad()
         {
             // Get the rectangular bounds.
-            Vector2 center = EdgeUtilities.InvalidPoint;
-            float angle = 0f;
-            float width = 0f;
-            float height = 0f;
+            Vector2 center;
+            float angle;
+            float width;
+            float height;
             if ((BoundaryManager == null) || !BoundaryManager.TryGetRectangularBoundsParams(out center, out angle, out width, out height))
             {
                 // No rectangular bounds, therefore do not render the quad.
                 return;
             }
-            
+
             // Render the rectangular bounds.
             if (EdgeUtilities.IsValidPoint(center))
             {
@@ -82,10 +85,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private void AddIndicators()
         {
             // Get the rectangular bounds.
-            Vector2 centerRect = EdgeUtilities.InvalidPoint;
-            float angleRect = 0f;
-            float widthRect = 0f;
-            float heightRect = 0f;
+            Vector2 centerRect;
+            float angleRect;
+            float widthRect;
+            float heightRect;
             if ((BoundaryManager == null) || !BoundaryManager.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
             {
                 // If we have no boundary manager or rectangular bounds we will show no indicators
