@@ -97,58 +97,60 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             bool addedComponents = false;
 
 #if UNITY_EDITOR
-
-            var eventSystems = UnityEngine.Object.FindObjectsOfType<EventSystem>();
-            var standaloneInputModules = UnityEngine.Object.FindObjectsOfType<StandaloneInputModule>();
-
-            CameraCache.Main.transform.position = Vector3.zero;
-            CameraCache.Main.transform.rotation = Quaternion.identity;
-
-            if (eventSystems.Length == 0)
+            if (!UnityEditor.EditorApplication.isPlaying)
             {
-                FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
-                addedComponents = true;
-            }
-            else
-            {
-                bool raiseWarning;
+                var eventSystems = UnityEngine.Object.FindObjectsOfType<EventSystem>();
+                var standaloneInputModules = UnityEngine.Object.FindObjectsOfType<StandaloneInputModule>();
 
-                if (eventSystems.Length == 1)
+                CameraCache.Main.transform.position = Vector3.zero;
+                CameraCache.Main.transform.rotation = Quaternion.identity;
+
+                if (eventSystems.Length == 0)
                 {
-                    raiseWarning = eventSystems[0].gameObject != focusProvider.gameObject;
+                    FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
+                    addedComponents = true;
                 }
                 else
                 {
-                    raiseWarning = true;
+                    bool raiseWarning;
+
+                    if (eventSystems.Length == 1)
+                    {
+                        raiseWarning = eventSystems[0].gameObject != focusProvider.gameObject;
+                    }
+                    else
+                    {
+                        raiseWarning = true;
+                    }
+
+                    if (raiseWarning)
+                    {
+                        Debug.LogWarning("Found an existing event system in your scene. The Mixed Reality Input System requires only one, and must be found on the focus provider.");
+                    }
                 }
 
-                if (raiseWarning)
+                if (standaloneInputModules.Length == 0)
                 {
-                    Debug.LogWarning("Found an existing event system in your scene. The Mixed Reality Input System requires only one, and must be found on the focus provider.");
-                }
-            }
-
-            if (standaloneInputModules.Length == 0)
-            {
-                FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
-                addedComponents = true;
-            }
-            else
-            {
-                bool raiseWarning;
-
-                if (standaloneInputModules.Length == 1)
-                {
-                    raiseWarning = standaloneInputModules[0].gameObject != focusProvider.gameObject;
+                    FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
+                    addedComponents = true;
                 }
                 else
                 {
-                    raiseWarning = true;
-                }
+                    bool raiseWarning;
 
-                if (raiseWarning)
-                {
-                    Debug.LogWarning("Found an existing Standalone Input Module in your scene. The Mixed Reality Input System requires only one, and must be found on the focus provider.");
+                    if (standaloneInputModules.Length == 1)
+                    {
+                        raiseWarning = standaloneInputModules[0].gameObject != focusProvider.gameObject;
+                    }
+                    else
+                    {
+                        raiseWarning = true;
+                    }
+
+                    if (raiseWarning)
+                    {
+                        Debug.LogWarning("Found an existing Standalone Input Module in your scene. The Mixed Reality Input System requires only one, and must be found on the focus provider.");
+                    }
                 }
             }
 
@@ -194,6 +196,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public override void Destroy()
         {
             InputDisabled?.Invoke();
+
+            if (Application.isPlaying)
+            {
+                base.Destroy();
+                return;
+            }
 
             focusProvider = CameraCache.Main.gameObject.EnsureComponent<FocusProvider>();
             gazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();

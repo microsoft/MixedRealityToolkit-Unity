@@ -129,11 +129,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 return;
             }
 
+#if UNITY_EDITOR
             if (ActiveProfile.ActiveManagers.Count > 0)
             {
-                Debug.LogWarning("Active Managers were not cleaned up properly!");
-                ActiveProfile.ActiveManagers.Clear();
+                if (!Application.isPlaying)
+                {
+                    DisableAllManagers();
+                    DestroyAllManagers();
+                }
+                else
+                {
+                    ActiveProfile.ActiveManagers.Clear();
+                }
             }
+#endif
 
             if (ActiveProfile.IsCameraProfileEnabled)
             {

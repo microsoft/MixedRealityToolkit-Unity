@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
         /// <inheritdoc/>
         public bool TryGetRectangularBoundsParams(out Vector2 center, out float angle, out float width, out float height)
         {
-            if (!rectangularBounds.IsValid)
+            if (rectangularBounds == null || !rectangularBounds.IsValid)
             {
                 center = EdgeUtilities.InvalidPoint;
                 angle = 0f;
