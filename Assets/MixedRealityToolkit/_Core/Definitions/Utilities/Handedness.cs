@@ -30,13 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// </summary>
         Both = Left | Right,
         /// <summary>
-        /// Reserved, for systems that provide alternate hand state.
-        /// </summary>
-        Other = 4,
-        /// <summary>
         /// Global catchall, used to map actions to any controller (provided the controller supports it)
         /// </summary>
         /// <remarks>Note, by default the specific hand actions will override settings mapped as both</remarks>
-        Any = None | Other | Left | Right,
+        Any = None | Left | Right,
+        /// <summary>
+        /// Reserved, for systems that provide alternate hand state.
+        /// </summary>
+        Other = 4,
     }
 }
