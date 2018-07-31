@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public override void OnPreRaycast()
         {
-            if (lineBase == null) { return; }
+            Debug.Assert(lineBase != null);
 
             Vector3 pointerPosition;
             TryGetPointerPosition(out pointerPosition);

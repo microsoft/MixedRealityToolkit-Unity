@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             switch (pointIndex)
             {
                 case 0:
-                    return LineTransform.position;
+                    return startPoint.Position;
                 case 1:
                     return endPoint.Position;
                 default:
@@ -75,8 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             switch (pointIndex)
             {
                 case 0:
-                    LineTransform.position = point;
-                    startPoint.Position = transform.InverseTransformPoint(LineTransform.position);
+                    endPoint.Position = point;
                     break;
                 case 1:
                     endPoint.Position = point;

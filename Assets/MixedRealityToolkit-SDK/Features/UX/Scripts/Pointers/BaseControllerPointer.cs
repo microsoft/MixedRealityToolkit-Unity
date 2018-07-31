@@ -172,17 +172,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         IMixedRealityInputSystem IMixedRealityPointer.InputSystem => InputSystem;
 
-        public IMixedRealityController Controller
+        public override IMixedRealityController Controller
         {
-            get { return controller; }
+            get { return base.Controller; }
             set
             {
-                controller = value;
-                InputSourceParent = controller.InputSource;
+                base.Controller = value;
+                InputSourceParent = base.Controller.InputSource;
             }
         }
-
-        private IMixedRealityController controller;
 
         private uint pointerId;
 

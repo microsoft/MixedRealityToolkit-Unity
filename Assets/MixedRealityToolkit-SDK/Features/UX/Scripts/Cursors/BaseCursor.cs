@@ -295,16 +295,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             Debug.Assert(Pointer != null, "No Pointer has been assigned!");
 
             FocusDetails focusDetails;
+
             if (!Pointer.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
             {
-                if (Pointer.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
-                {
-                    Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
-                }
-                else
-                {
-                    Debug.LogError($"{pointer.GetType().Name} has not been registered!");
-                }
+                Debug.LogError(Pointer.InputSystem.FocusProvider.IsPointerRegistered(Pointer)
+                    ? $"{name}: Unable to get focus details for {pointer.GetType().Name}!"
+                    : $"{pointer.GetType().Name} has not been registered!");
 
                 return;
             }
