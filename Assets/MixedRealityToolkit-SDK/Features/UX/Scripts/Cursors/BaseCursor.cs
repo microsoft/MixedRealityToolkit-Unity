@@ -143,8 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// <inheritdoc />
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
-            var controller = eventData.Controller;
-            if (eventData.Controller.Interactions.SupportsInputType(DeviceInputType.Hand))
+            if (eventData.Controller != null && eventData.Controller.Interactions.SupportsInputType(DeviceInputType.Hand))
             {
                 visibleHandsCount++;
             }
@@ -158,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// <inheritdoc />
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.Controller.Interactions.SupportsInputType(DeviceInputType.Hand))
+            if (eventData.Controller != null && eventData.Controller.Interactions.SupportsInputType(DeviceInputType.Hand))
             {
                 visibleHandsCount--;
             }
