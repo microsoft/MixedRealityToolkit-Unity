@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                     if (raiseWarning)
                     {
-                        Debug.LogWarning("Found an existing event system in your scene. The Mixed Reality Input System requires only one, and must be found on the focus provider.");
+                        Debug.LogWarning("Found an existing event system in your scene. The Mixed Reality Input System requires only one, and must be found on the UIRaycastCamera.");
                     }
                 }
 
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                     if (raiseWarning)
                     {
-                        Debug.LogWarning("Found an existing Standalone Input Module in your scene. The Mixed Reality Input System requires only one, and must be found on the focus provider.");
+                        Debug.LogWarning("Found an existing Standalone Input Module in your scene. The Mixed Reality Input System requires only one, and must be found on the UIRaycastCamera.");
                     }
                 }
             }
