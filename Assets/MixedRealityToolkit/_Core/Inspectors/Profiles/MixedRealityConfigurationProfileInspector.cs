@@ -34,8 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty boundaryHeight;
         private SerializedProperty enablePlatformBoundaryRendering;
 
-        private SerializedProperty testThis;
-
         private MixedRealityConfigurationProfile configurationProfile;
 
         private void OnEnable()

@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// is a transparent device or an occluded device.
     /// Based on those values, you can customize your camera settings.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Camera Profile", fileName = "MixedRealityCameraProfile", order = 0)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Camera Profile", fileName = "MixedRealityCameraProfile", order = 1)]
     public class MixedRealityCameraProfile : ScriptableObject
     {
         private enum DisplayType
