@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get
             {
-                return inputActionsProfile != null && enableInputSystem;
+                return inputActionsProfile != null && inputSystemType.Type != null && enableInputSystem;
             }
             private set { enableInputSystem = value; }
         }
@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool IsSpeechCommandsEnabled
         {
-            get { return speechCommandsProfile != null && enableSpeechCommands; }
+            get { return speechCommandsProfile != null && enableSpeechCommands && enableInputSystem; }
             private set { enableSpeechCommands = value; }
         }
 
