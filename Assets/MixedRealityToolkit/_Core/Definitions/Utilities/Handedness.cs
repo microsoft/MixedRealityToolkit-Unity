@@ -37,6 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// Global catchall, used to map actions to any controller (provided the controller supports it)
         /// </summary>
         /// <remarks>Note, by default the specific hand actions will override settings mapped as both</remarks>
-        Any = Other | Left | Right,
+        Any = None | Other | Left | Right,
     }
 }
