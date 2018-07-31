@@ -34,6 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
         {
             base.OnInspectorGUI();
 
+            serializedObject.Update();
+
             linePointerFoldout = EditorGUILayout.Foldout(linePointerFoldout, "Line Pointer Settings", true);
 
             if (linePointerFoldout)
@@ -47,6 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
                 EditorGUILayout.PropertyField(lineRenderers, true);
                 EditorGUI.indentLevel--;
             }
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
