@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
@@ -31,6 +32,19 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
 
         /// <inheritdoc />
         public IMixedRealityInputSystem InputSystem { get; }
+
+        /// <inheritdoc />
+        public virtual IMixedRealityController Controller
+        {
+            get { return controller; }
+            set
+            {
+                controller = value;
+                inputSourceParent = controller.InputSource;
+            }
+        }
+
+        private IMixedRealityController controller;
 
         /// <inheritdoc />
         public uint PointerId { get; }

@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
@@ -33,6 +34,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 ScreenPointRay = ray;
                 Lifetime = 0.0f;
             }
+
+            /// <inheritdoc />
+            public override IMixedRealityController Controller { get; set; }
         }
 
         private const float K_CONTACT_EPSILON = 2.0f / 60.0f;

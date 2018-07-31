@@ -496,11 +496,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             // Create input event
             sourceStateEventData.Initialize(source, controller);
 
-            AddSource(source);
-        }
-
-        private void AddSource(IMixedRealityInputSource source)
-        {
             Debug.Assert(!DetectedInputSources.Contains(source), $"{source.SourceName} has already been registered with the Input Manager!");
 
             DetectedInputSources.Add(source);
@@ -522,11 +517,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             // Create input event
             sourceStateEventData.Initialize(source, controller);
 
-            RemoveSource(source);
-        }
-
-        private void RemoveSource(IMixedRealityInputSource source)
-        {
             Debug.Assert(DetectedInputSources.Contains(source), $"{source.SourceName} was never registered with the Input Manager!");
 
             DetectedInputSources.Remove(source);

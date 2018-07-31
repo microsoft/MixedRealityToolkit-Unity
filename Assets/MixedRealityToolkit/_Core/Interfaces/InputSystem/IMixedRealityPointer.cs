@@ -20,6 +20,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         IMixedRealityInputSystem InputSystem { get; }
 
         /// <summary>
+        /// The pointer's current controller reference.
+        /// </summary>
+        IMixedRealityController Controller { get; set; }
+
+        /// <summary>
         /// This pointer's id.
         /// </summary>
         uint PointerId { get; }

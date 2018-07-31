@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
@@ -143,13 +144,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 IsInteractionEnabled = true;
             }
 
+            /// <inheritdoc />
+            public override IMixedRealityController Controller { get; set; }
+
+            /// <inheritdoc />
             public override IMixedRealityInputSource InputSourceParent { get; protected set; }
 
-            public void SetGazeInputSourceParent(IMixedRealityInputSource gazeInputSource)
+            /// <summary>
+            /// Only for use when initializing Gaze Pointer on startup.
+            /// </summary>
+            /// <param name="gazeInputSource"></param>
+            internal void SetGazeInputSourceParent(IMixedRealityInputSource gazeInputSource)
             {
                 InputSourceParent = gazeInputSource;
             }
 
+            /// <inheritdoc />
             public override void OnPreRaycast()
             {
                 Vector3 newGazeOrigin = gazeTransform.position;

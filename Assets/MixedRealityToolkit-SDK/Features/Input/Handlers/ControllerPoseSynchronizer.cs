@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <inheritdoc />
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.Controller.ControllerHandedness == Handedness)
+            if (eventData.Controller?.ControllerHandedness == Handedness)
             {
                 ResetControllerReference();
             }
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                 SetControllerReference(eventData);
             }
 
-            if (eventData.Controller.InputSource.SourceId != controllerInputSourceId)
+            if (eventData.Controller?.InputSource.SourceId != controllerInputSourceId)
             {
                 return;
             }
@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         private void SetControllerReference(SourceStateEventData eventData)
         {
-            if (eventData.Controller.ControllerHandedness == Handedness)
+            if (eventData.Controller?.ControllerHandedness == Handedness)
             {
                 controllerInputSourceId = eventData.Controller.InputSource.SourceId;
 

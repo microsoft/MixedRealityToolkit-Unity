@@ -9,6 +9,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System.Collections;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
@@ -21,6 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     {
         [SerializeField]
         private GameObject cursorPrefab = null;
+
+        private GameObject cursorInstance = null;
 
         [SerializeField]
         [Tooltip("Source transform for raycast origin - leave null to use default transform")]
@@ -85,26 +88,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public void SetCursor(GameObject newCursor = null)
         {
             // Destroy the old cursor instance.
-            if (cursorPrefab != null)
+            if (cursorInstance != null)
             {
                 if (Application.isEditor)
                 {
-                    DestroyImmediate(cursorPrefab);
+                    DestroyImmediate(cursorInstance);
                 }
                 else
                 {
-                    Destroy(cursorPrefab);
+                    Destroy(cursorInstance);
                 }
 
-                cursorPrefab = newCursor;
+                cursorInstance = newCursor;
             }
 
-            var cursorObj = Instantiate(cursorPrefab, transform);
-            cursorObj.name = $"{name}_Cursor";
-            BaseCursor = cursorObj.GetComponent<IMixedRealityCursor>();
-            Debug.Assert(BaseCursor != null, "Failed to load cursor");
-            BaseCursor.Pointer = this;
-            Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");
+            if (cursorInstance == null)
+            {
+                cursorInstance = Instantiate(cursorPrefab, transform);
+                cursorInstance.name = $"{name}_Cursor";
+                BaseCursor = cursorInstance.GetComponent<IMixedRealityCursor>();
+                Debug.Assert(BaseCursor != null, "Failed to load cursor");
+                BaseCursor.Pointer = this;
+                Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");
+            }
         }
 
         protected virtual void OnSelectPressed()
@@ -166,6 +172,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         IMixedRealityInputSystem IMixedRealityPointer.InputSystem => InputSystem;
 
+        public IMixedRealityController Controller
+        {
+            get { return controller; }
+            set
+            {
+                controller = value;
+                InputSourceParent = controller.InputSource;
+            }
+        }
+
+        private IMixedRealityController controller;
+
         private uint pointerId;
 
         /// <inheritdoc />
@@ -190,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         /// <inheritdoc />
-        public IMixedRealityInputSource InputSourceParent { get; set; }
+        public IMixedRealityInputSource InputSourceParent { get; private set; }
 
         /// <inheritdoc />
         public IMixedRealityCursor BaseCursor { get; set; }

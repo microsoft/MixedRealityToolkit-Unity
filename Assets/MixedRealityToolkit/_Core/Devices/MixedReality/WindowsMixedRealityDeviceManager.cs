@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -120,6 +122,29 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             detectedController.SetupConfiguration(typeof(WindowsMixedRealityController));
             detectedController.UpdateController(interactionSourceState);
             activeControllers.Add(interactionSourceState.source.id, detectedController);
+
+            if (MixedRealityManager.HasActiveProfile &&
+                MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
+                MixedRealityManager.Instance.ActiveProfile.PointerProfile != null)
+            {
+                for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions.Length; i++)
+                {
+                    var pointerProfile = MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions[i];
+
+                    if (pointerProfile.ControllerType == null ||
+                        pointerProfile.ControllerType == typeof(WindowsMixedRealityController))
+                    {
+                        if (pointerProfile.Handedness == Handedness.Any ||
+                            pointerProfile.Handedness == Handedness.Both ||
+                            pointerProfile.Handedness == controllingHand)
+                        {
+                            var pointerObject = UnityEngine.Object.Instantiate(pointerProfile.PointerPrefab);
+                            var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
+                            pointer.Controller = detectedController;
+                        }
+                    }
+                }
+            }
 
             return detectedController;
         }

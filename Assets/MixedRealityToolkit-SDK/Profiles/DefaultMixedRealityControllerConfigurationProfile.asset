@@ -132,8 +132,8 @@ MonoBehaviour:
       axisType: 2
       inputType: 25
       inputAction:
-        id: 0
-        description: None
+        id: 1
+        description: Select
         axisConstraint: 0
       keyCode: 0
       axisCodeX: 
@@ -274,8 +274,8 @@ MonoBehaviour:
       axisType: 2
       inputType: 25
       inputAction:
-        id: 0
-        description: None
+        id: 1
+        description: Select
         axisConstraint: 0
       keyCode: 0
       axisCodeX: 
