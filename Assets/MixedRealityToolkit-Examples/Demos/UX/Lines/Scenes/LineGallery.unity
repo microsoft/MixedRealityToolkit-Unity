@@ -348,7 +348,7 @@ LineRenderer:
     textureMode: 0
     generateLightingData: 0
   m_UseWorldSpace: 1
-  m_Loop: 0
+  m_Loop: 1
 --- !u!114 &85486647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,8 +363,8 @@ MonoBehaviour:
   lineStartClamp: 0
   lineEndClamp: 1
   customLineTransform: {fileID: 0}
-  loops: 0
-  rotationType: 1
+  loops: 1
+  rotationMode: 1
   flipUpVector: 0
   originOffset: {x: 0, y: 0, z: 0}
   manualUpVectorBlend: 0
@@ -374,7 +374,7 @@ MonoBehaviour:
   - {x: 0, y: 1, z: 0}
   velocitySearchRange: 0.02
   distorters: []
-  distortionType: 0
+  distortionMode: 0
   distortionStrength:
     serializedVersion: 2
     m_Curve:
@@ -705,7 +705,7 @@ MonoBehaviour:
   lineEndClamp: 1
   customLineTransform: {fileID: 0}
   loops: 0
-  rotationType: 1
+  rotationMode: 1
   flipUpVector: 0
   originOffset: {x: 0, y: 0, z: 0}
   manualUpVectorBlend: 0
@@ -715,7 +715,7 @@ MonoBehaviour:
   - {x: 0, y: 1, z: 0}
   velocitySearchRange: 0.02
   distorters: []
-  distortionType: 0
+  distortionMode: 0
   distortionStrength:
     serializedVersion: 2
     m_Curve:
@@ -1142,7 +1142,7 @@ MonoBehaviour:
   lineEndClamp: 1
   customLineTransform: {fileID: 0}
   loops: 0
-  rotationType: 1
+  rotationMode: 1
   flipUpVector: 0
   originOffset: {x: 0, y: 0, z: 0}
   manualUpVectorBlend: 0
@@ -1152,7 +1152,7 @@ MonoBehaviour:
   - {x: 0, y: 1, z: 0}
   velocitySearchRange: 0.02
   distorters: []
-  distortionType: 0
+  distortionMode: 0
   distortionStrength:
     serializedVersion: 2
     m_Curve:
@@ -1846,7 +1846,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d1a2a33ffcac354298137001635a001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorPrefab: {fileID: 0}
+  cursorPrefab: {fileID: 1000012072213228, guid: 62718441f3682f94ab10c70a637e014b,
+    type: 2}
   maxGazeCollisionDistance: 10
   raycastLayerMasks:
   - serializedVersion: 2
@@ -2187,7 +2188,7 @@ MonoBehaviour:
   lineEndClamp: 1
   customLineTransform: {fileID: 0}
   loops: 1
-  rotationType: 1
+  rotationMode: 1
   flipUpVector: 0
   originOffset: {x: 0, y: 0, z: 0}
   manualUpVectorBlend: 0
@@ -2197,7 +2198,7 @@ MonoBehaviour:
   - {x: 0, y: 1, z: 0}
   velocitySearchRange: 0.02
   distorters: []
-  distortionType: 0
+  distortionMode: 0
   distortionStrength:
     serializedVersion: 2
     m_Curve:
@@ -2375,7 +2376,7 @@ MonoBehaviour:
   lineEndClamp: 1
   customLineTransform: {fileID: 0}
   loops: 0
-  rotationType: 1
+  rotationMode: 1
   flipUpVector: 0
   originOffset: {x: 0, y: 0, z: 0}
   manualUpVectorBlend: 0
@@ -2384,7 +2385,7 @@ MonoBehaviour:
   - {x: 0, y: 1, z: 0}
   velocitySearchRange: 0.02
   distorters: []
-  distortionType: 0
+  distortionMode: 0
   distortionStrength:
     serializedVersion: 2
     m_Curve:
