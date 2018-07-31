@@ -65,6 +65,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
             }
         }
 
+        private bool IsInitialized
+        {
+            get
+            {
+                Debug.Assert(lineMesh != null, "Missing assigned line mesh.");
+                Debug.Assert(lineMaterial != null, "Missing assigned line material.");
+                Debug.Assert(lineMaterial.HasProperty(colorProperty), $"Unable to find the property \"{colorProperty}\" for the line material");
+                return lineMaterial != null && lineMesh != null && lineMaterial.HasProperty(colorProperty);
+            }
+        }
+
         #region Command buffer properties
 
         private readonly Dictionary<Camera, CommandBuffer> cameras = new Dictionary<Camera, CommandBuffer>();
@@ -95,14 +106,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 
         private void OnValidate()
         {
-            if (lineMaterial == null)
+            if (!IsInitialized)
             {
-                Debug.LogError("LineDataProvider material cannot be null.");
-            }
-
-            if (lineMesh == null)
-            {
-                Debug.LogError("LineDataProvider mesh cannot be null.");
+                enabled = false;
+                return;
             }
 
             if (renderedMaterial == null)
@@ -122,18 +129,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
             }
         }
 
-        protected void OnEnable()
+        protected virtual void OnEnable()
         {
-            if (lineMaterial == null)
+            if (!IsInitialized)
             {
-                Debug.LogError("LineDataProvider material cannot be null.");
-                enabled = false;
-                return;
-            }
-
-            if (lineMesh == null)
-            {
-                Debug.LogError("LineDataProvider mesh cannot be null.");
                 enabled = false;
                 return;
             }

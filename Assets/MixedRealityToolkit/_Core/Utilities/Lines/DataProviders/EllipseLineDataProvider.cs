@@ -12,26 +12,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
     public class EllipseLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
+        [Range(0, 2048)]
         private int resolution = 36;
 
         public int Resolution
         {
             get { return resolution; }
-            set
-            {
-                if (value < 0)
-                {
-                    resolution = 0;
-                }
-                else if (value > 2048)
-                {
-                    resolution = 2048;
-                }
-                else
-                {
-                    resolution = value;
-                }
-            }
+            set { resolution = Mathf.Clamp(value, 0, 2048); }
         }
 
         [SerializeField]

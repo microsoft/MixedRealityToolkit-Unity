@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 
         private Vector3[] positions;
 
-        protected void OnEnable()
+        private void OnEnable()
         {
             lineRenderer = gameObject.EnsureComponent<LineRenderer>();
 
@@ -67,14 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         }
 
         private void Update()
-        {
-            if (isActiveAndEnabled)
-            {
-                UpdateLineRenderer();
-            }
-        }
-
-        private void UpdateLineRenderer()
         {
             if (LineDataSource == null)
             {
