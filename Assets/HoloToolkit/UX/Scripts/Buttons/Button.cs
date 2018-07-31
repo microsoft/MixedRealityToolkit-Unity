@@ -170,7 +170,7 @@ namespace HoloToolkit.Unity.Buttons
             {
                 if (ButtonPressFilter == InteractionSourcePressInfo.None || ButtonPressFilter == eventData.PressType)
                 {
-                    DoButtonPressed(true);
+                    DoButtonClicked(true);
                 }
             }
         }
@@ -293,6 +293,25 @@ namespace HoloToolkit.Unity.Buttons
         #endregion
 
         /// <summary>
+        /// Called when button is "Clicked".
+        /// </summary>
+        protected void DoButtonClicked(bool bRelease = false)
+        {
+            ButtonStateEnum newState = ButtonStateEnum.Pressed;
+            this.OnStateChange(newState);
+
+            if (OnButtonClicked != null)
+            {
+                OnButtonClicked(gameObject);
+            }
+
+            if (bRelease)
+            {
+                StartCoroutine(DelayedRelease(0.2f));
+            }
+        }
+        
+        /// <summary>
         /// Called when button is pressed down.
         /// </summary>
         protected void DoButtonPressed(bool bRelease = false)
@@ -303,11 +322,6 @@ namespace HoloToolkit.Unity.Buttons
             if (OnButtonPressed != null)
             {
                 OnButtonPressed(gameObject);
-            }
-
-            if(OnButtonClicked != null)
-            {
-                OnButtonClicked(gameObject);
             }
 
             if (bRelease)
