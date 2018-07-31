@@ -29,13 +29,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         }
 
         [SerializeField]
-        [Tooltip("The type of Controller this pointer will attach itself to at runtime.")]
+        [Tooltip("The type of Controller this pointer will attach itself to at runtime.\nNote: If None is selected, then it will attach to any controller type.")]
         [Implements(typeof(IMixedRealityController), TypeGrouping.ByNamespaceFlat)]
         private SystemType controllerType;
 
         /// <summary>
         /// The type of Controller this pointer will attach itself to at runtime.
         /// </summary>
+        /// <remarks>If <see cref="Utilities.Handedness.None"/> is selected, then it will attach to any controller type</remarks>
         public SystemType ControllerType => controllerType;
 
         [SerializeField]

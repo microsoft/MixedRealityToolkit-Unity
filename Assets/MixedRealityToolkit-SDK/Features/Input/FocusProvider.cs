@@ -419,6 +419,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             if (IsPointerRegistered(pointer)) { return false; }
 
+            Debug.Log($"Added {pointer.GetType().Name}");
+
             pointers.Add(new PointerData(pointer));
             return true;
         }
@@ -455,6 +457,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
 
             pointers.Remove(pointerData);
+            Debug.Log($"Removed {pointer.GetType().Name}");
             return true;
         }
 
@@ -809,9 +812,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             // If our input source does not have any pointers, then skip.
             if (eventData.InputSource.Pointers == null) { return; }
 
-            foreach (var sourcePointer in eventData.InputSource.Pointers)
+            for (var i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
-                RegisterPointer(sourcePointer);
+                RegisterPointer(eventData.InputSource.Pointers[i]);
 
                 // Special Registration for Gaze
                 if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
@@ -820,7 +823,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                     if (gazeProviderPointingData == null)
                     {
-                        gazeProviderPointingData = new PointerData(sourcePointer);
+                        gazeProviderPointingData = new PointerData(eventData.InputSource.Pointers[i]);
                     }
 
                     Debug.Assert(gazeProviderPointingData != null);
@@ -833,22 +836,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             // If the input source does not have pointers, then skip.
             if (eventData.InputSource.Pointers == null) { return; }
 
-            foreach (var sourcePointer in eventData.InputSource.Pointers)
+            for (var i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
                 // Special unregistration for Gaze
                 if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
                 {
+                    Debug.Log("UnRegistering focus pointer");
                     Debug.Assert(gazeProviderPointingData != null);
 
                     // If the source lost is the gaze input source, then reset it.
-                    if (sourcePointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
+                    if (eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                     {
                         gazeProviderPointingData.ResetFocusedObjects();
                         gazeProviderPointingData = null;
                     }
                 }
 
-                UnregisterPointer(sourcePointer);
+                UnregisterPointer(eventData.InputSource.Pointers[i]);
             }
         }
 

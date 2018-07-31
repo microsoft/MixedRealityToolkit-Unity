@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         {
             RenderMixedRealityToolkitLogo();
             EditorGUILayout.LabelField("Pointer Options", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Pointers attach themselves onto controllers as those controllers are initialized.", MessageType.Info);
+            EditorGUILayout.HelpBox("Pointers attach themselves onto controllers as they are initialized.", MessageType.Info);
             EditorGUILayout.Space();
 
             serializedObject.Update();
