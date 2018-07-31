@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
             /// <summary>
             /// An overlay to indicate intent.
             /// </summary>
-            Overlay = 2 << 0,
+            Overlay = 1 << 1,
             /// <summary>
             /// Both highlight and overlay.
             /// </summary>
