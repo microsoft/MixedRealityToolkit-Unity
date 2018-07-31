@@ -16,15 +16,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <summary>
         /// No hand specified by the SDK for the controller
         /// </summary>
-        None = 0,
+        None = 0 << 0,
         /// <summary>
         /// The controller is identified as being provided in a Left hand
         /// </summary>
-        Left,
+        Left = 1 << 0,
         /// <summary>
         /// The controller is identified as being provided in a Right hand
         /// </summary>
-        Right,
+        Right = 1 << 1,
         /// <summary>
         /// The controller is identified as being either left and/or right handed.
         /// </summary>
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <summary>
         /// Reserved, for systems that provide alternate hand state.
         /// </summary>
-        Other,
+        Other = 1 << 2,
         /// <summary>
         /// Global catchall, used to map actions to any controller (provided the controller supports it)
         /// </summary>
