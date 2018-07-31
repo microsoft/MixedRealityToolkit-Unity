@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                 if (eventSystems.Length == 0)
                 {
-                    FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
+                    focusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
                     addedComponents = true;
                 }
                 else
@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                 if (standaloneInputModules.Length == 0)
                 {
-                    FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
+                    focusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
                     addedComponents = true;
                 }
                 else
@@ -158,8 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             if (!addedComponents)
             {
-                FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
-                FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
+                focusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
+                focusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
             }
 
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
