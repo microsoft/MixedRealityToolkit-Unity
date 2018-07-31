@@ -71,7 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
             {
                 Debug.Assert(lineMesh != null, "Missing assigned line mesh.");
                 Debug.Assert(lineMaterial != null, "Missing assigned line material.");
-                return lineMaterial != null && lineMesh != null;
+                Debug.Assert(lineMaterial.HasProperty(colorProperty), $"Unable to find the property \"{colorProperty}\" for the line material");
+                return lineMaterial != null && lineMesh != null && lineMaterial.HasProperty(colorProperty);
             }
         }
 

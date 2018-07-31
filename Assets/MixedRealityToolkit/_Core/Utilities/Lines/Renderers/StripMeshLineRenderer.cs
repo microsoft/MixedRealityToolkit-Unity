@@ -71,12 +71,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         {
             if (lineMatInstance != null)
             {
-                Destroy(lineMatInstance);
+                if (Application.isEditor)
+                {
+                    DestroyImmediate(lineMatInstance);
+                }
+                else
+                {
+                    Destroy(lineMatInstance);
+                }
             }
 
             if (meshRendererGameObject != null)
             {
-                Destroy(meshRendererGameObject);
+                if (Application.isEditor)
+                {
+                    DestroyImmediate(meshRendererGameObject);
+                }
+                else
+                {
+                    Destroy(meshRendererGameObject);
+                }
                 stripMeshRenderer = null;
             }
         }

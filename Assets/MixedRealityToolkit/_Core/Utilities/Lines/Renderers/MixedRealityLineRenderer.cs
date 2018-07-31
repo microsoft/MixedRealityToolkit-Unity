@@ -68,14 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 
         private void Update()
         {
-            if (isActiveAndEnabled)
-            {
-                UpdateLineRenderer();
-            }
-        }
-
-        private void UpdateLineRenderer()
-        {
             if (LineDataSource == null)
             {
                 enabled = false;
