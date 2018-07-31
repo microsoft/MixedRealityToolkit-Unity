@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                     if (eventSystems.Length == 1)
                     {
-                        raiseWarning = eventSystems[0].gameObject != focusProvider.gameObject;
+                        raiseWarning = eventSystems[0].gameObject != FocusProvider.UIRaycastCamera.gameObject;
                     }
                     else
                     {
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                     if (standaloneInputModules.Length == 1)
                     {
-                        raiseWarning = standaloneInputModules[0].gameObject != focusProvider.gameObject;
+                        raiseWarning = standaloneInputModules[0].gameObject != FocusProvider.UIRaycastCamera.gameObject;
                     }
                     else
                     {
