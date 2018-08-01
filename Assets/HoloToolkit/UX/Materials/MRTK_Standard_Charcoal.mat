@@ -8,10 +8,10 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: MRTK_Standard_Charcoal
   m_Shader: {fileID: 4800000, guid: d45c0efca53019e43891b0f610f8146e, type: 3}
-  m_ShaderKeywords: _BORDER_LIGHT _BORDER_LIGHT_USES_HOVER_COLOR _DIRECTIONAL_LIGHT
-    _DISABLE_ALBEDO_MAP _LIGHTMAPPING_REALTIME _SPECULAR_HIGHLIGHTS
+  m_ShaderKeywords: _BORDER_LIGHT_USES_HOVER_COLOR _DIRECTIONAL_LIGHT _DISABLE_ALBEDO_MAP
+    _LIGHTMAPPING_REALTIME _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 1
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
   stringTagMap:
@@ -63,7 +63,7 @@ Material:
     m_Floats:
     - _AlbedoAlphaMode: 0
     - _BlendOp: 0
-    - _BorderLight: 1
+    - _BorderLight: 0
     - _BorderLightOpaque: 0
     - _BorderLightUsesHoverColor: 1
     - _BorderMinValue: 0.108

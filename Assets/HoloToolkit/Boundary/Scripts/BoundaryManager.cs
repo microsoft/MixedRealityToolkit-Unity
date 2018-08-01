@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_2017_2_OR_NEWER
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
-using UnityEngine.XR.WSA;
 #endif
 
 namespace HoloToolkit.Unity.Boundary
@@ -16,7 +16,7 @@ namespace HoloToolkit.Unity.Boundary
     /// </summary>
     public class BoundaryManager : Singleton<BoundaryManager>
     {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_2017_2_OR_NEWER
         [Tooltip("Quad prefab to display as the floor.")]
         public GameObject FloorQuad = null;
         private GameObject floorQuadInstance = null;
@@ -25,7 +25,12 @@ namespace HoloToolkit.Unity.Boundary
         [Tooltip("Approximate max Y height of your space.")]
         private float boundaryHeight = 10f;
 
-        private Bounds boundaryBounds;
+        // Minimum boundary Y value
+        private float boundaryFloor = 0.0f;
+
+        private InscribedRectangle inscribedRectangle;
+
+        private Edge[] boundaryGeometryEdges = new Edge[0];
 
         [SerializeField]
         // Defaulting coordinate system to RoomScale in immersive headsets.
@@ -37,6 +42,7 @@ namespace HoloToolkit.Unity.Boundary
         // Defaulting coordinate system to Stationary for transparent headsets, like HoloLens.
         // This puts the origin (0, 0, 0) at the first place where the user started the application.
         //private TrackingSpaceType transparentTrackingSpaceType = TrackingSpaceType.Stationary;
+
         // Testing in the editor found that this moved the floor out of the way enough, and it is only
         // used in the case where a headset isn't attached. Otherwise, the floor is positioned like normal.
         private readonly Vector3 floorPositionInEditor = new Vector3(0f, -3f, 0f);
@@ -70,14 +76,20 @@ namespace HoloToolkit.Unity.Boundary
                 }
             }
         }
-#endif
 
         protected override void Awake()
         {
             base.Awake();
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
-            if (HolographicSettings.IsDisplayOpaque)
+#if UNITY_WSA
+            bool isDisplayOpaque = UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque;
+#else
+            // Assume displays on non Windows MR platforms are all opaque.
+            // This will likely change as new hardware comes to market.
+            bool isDisplayOpaque = true;
+#endif
+
+            if (isDisplayOpaque && XRSettings.enabled)
             {
                 XRDevice.SetTrackingSpaceType(opaqueTrackingSpaceType);
             }
@@ -90,8 +102,11 @@ namespace HoloToolkit.Unity.Boundary
                 return;
             }
 
-            // Render the floor based on if you are in editor or immersive device.
-            RenderFloorQuad();
+            if (XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale)
+            {
+                // Render the floor if you are in editor or a room scale device.
+                RenderFloorQuad();
+            }
 
             // Render boundary if configured.
             SetBoundaryRendering();
@@ -106,24 +121,20 @@ namespace HoloToolkit.Unity.Boundary
             {
                 floorQuadInstance.SetActive(renderFloor);
             }
-#endif
         }
 
         private void SetBoundaryRendering()
         {
-#if UNITY_WSA &&  UNITY_2017_2_OR_NEWER
-            // TODO: BUG: Unity: configured bool always returns false in 2017.2.0p2-MRTP5.
+            // This always returns false in WindowsMR.
             if (UnityEngine.Experimental.XR.Boundary.configured)
             {
                 UnityEngine.Experimental.XR.Boundary.visible = renderBoundary;
             }
-#endif
         }
 
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
         private void RenderFloorQuad()
         {
-            if (FloorQuad != null && XRDevice.GetTrackingSpaceType() == TrackingSpaceType.RoomScale)
+            if (FloorQuad != null)
             {
                 floorQuadInstance = Instantiate(FloorQuad);
 
@@ -142,15 +153,89 @@ namespace HoloToolkit.Unity.Boundary
         }
 
         /// <summary>
+        /// Pass in the game object's position to check if
+        /// it's within the tracked area boundary space.
+        /// </summary>
+        /// <param name="gameObjectPosition">The position of the GameObject to check.</param>
+        /// <returns>True if the point is in the tracked area boundary space.</returns>
+        public bool ContainsObject(Vector3 gameObjectPosition)
+        {
+            return ContainsObject(gameObjectPosition, UnityEngine.Experimental.XR.Boundary.Type.TrackedArea);
+        }
+
+        /// <summary>
         /// Pass in the game object's position to check if it's within 
         /// the specified boundary space.
         /// </summary>
-        /// <param name="gameObjectPosition"></param>
-        /// <returns></returns>
-        public bool ContainsObject(Vector3 gameObjectPosition)
+        /// <param name="gameObjectPosition">The position of the GameObject to check.</param>
+        /// <param name="boundaryType">The type of the boundary. Use PlayArea for the inscribed rectangle or TrackedArea for the bounds containing the whole space.</param>
+        /// <returns>True if the point is in the boundary type's bounds.</returns>
+        public bool ContainsObject(Vector3 gameObjectPosition, UnityEngine.Experimental.XR.Boundary.Type boundaryType)
         {
-            // Check if the supplied game object's position is within the bounds volume.
-            return boundaryBounds.Contains(gameObjectPosition);
+            gameObjectPosition = CameraCache.Main.transform.parent.InverseTransformPoint(gameObjectPosition);
+
+            if (gameObjectPosition.y < boundaryFloor || gameObjectPosition.y > boundaryHeight)
+            {
+                return false;
+            }
+
+            if (boundaryType == UnityEngine.Experimental.XR.Boundary.Type.PlayArea)
+            {
+                if (inscribedRectangle == null || !inscribedRectangle.IsRectangleValid)
+                {
+                    return false;
+                }
+
+                return inscribedRectangle.IsPointInRectangleBounds(new Vector2(gameObjectPosition.x, gameObjectPosition.z));
+            }
+            else if (boundaryType == UnityEngine.Experimental.XR.Boundary.Type.TrackedArea)
+            {
+                // Check if the supplied game object's position is within the bounds volume.
+                return EdgeHelpers.IsInside(boundaryGeometryEdges, new Vector2(gameObjectPosition.x, gameObjectPosition.z));
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns the corner points of a 2D rectangle that is the
+        /// largest rectangle we could find within the geometry of
+        /// the space bounds.
+        /// </summary>
+        /// <returns>Array of 3D points, all with the same y value.</returns>
+        public Vector3[] TryGetBoundaryRectanglePoints()
+        {
+            if (inscribedRectangle == null || !inscribedRectangle.IsRectangleValid)
+            {
+                return null;
+            }
+
+            var points2d = inscribedRectangle.GetRectanglePoints();
+
+            var positions = new Vector3[points2d.Length];
+            for (int i = 0; i < points2d.Length; ++i)
+            {
+                positions[i] = CameraCache.Main.transform.parent.TransformPoint(new Vector3(points2d[i].x, boundaryFloor, points2d[i].y));
+            }
+            return positions;
+        }
+
+        /// <summary>
+        /// Returns parameters describing the boundary rectangle.
+        /// </summary>
+        internal bool TryGetBoundaryRectangleParams(out Vector3 center, out float angle, out float width, out float height)
+        {
+            if (inscribedRectangle == null || !inscribedRectangle.IsRectangleValid)
+            {
+                center = Vector3.zero;
+                angle = width = height = 0.0f;
+                return false;
+            }
+
+            Vector2 center2D;
+            inscribedRectangle.GetRectangleParams(out center2D, out angle, out width, out height);
+            center = CameraCache.Main.transform.parent.TransformPoint(new Vector3(center2D.x, boundaryFloor, center2D.y));
+            return true;
         }
 
         /// <summary>
@@ -158,13 +243,14 @@ namespace HoloToolkit.Unity.Boundary
         /// </summary>
         public void CalculateBoundaryVolume()
         {
-            // TODO: BUG: Unity: Should return true if a floor and boundary has been established by user.
-            // But this always returns false with in 2017.2.0p2-MRTP5.
-            //if (!UnityEngine.Experimental.XR.Boundary.configured)
-            //{
-            //    Debug.Log("Boundary not configured.");
-            //    return;
-            //}
+#if !UNITY_WSA
+            // This always returns false in WindowsMR.
+            if (!UnityEngine.Experimental.XR.Boundary.configured)
+            {
+                Debug.Log("Boundary not configured.");
+                return;
+            }
+#endif
 
             if (XRDevice.GetTrackingSpaceType() != TrackingSpaceType.RoomScale)
             {
@@ -172,30 +258,26 @@ namespace HoloToolkit.Unity.Boundary
                 return;
             }
 
-            boundaryBounds = new Bounds();
-
             // Get all the bounds setup by the user.
-            var boundaryGeometry = new List<Vector3>(0);
-            // TODO: BUG: Unity: Should return true if a floor and boundary has been established by user.
-            // But this always returns false with in 2017.2.0p2-MRTP5.
-            if (UnityEngine.Experimental.XR.Boundary.TryGetGeometry(boundaryGeometry))
+            var boundaryGeometryPoints = new List<Vector3>(0);
+            if (UnityEngine.Experimental.XR.Boundary.TryGetGeometry(boundaryGeometryPoints, UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
             {
-                if (boundaryGeometry.Count > 0)
+                if (boundaryGeometryPoints.Count > 0)
                 {
-                    // Create a UnityEngine.Bounds volume with those values.
-                    foreach (Vector3 boundaryGeo in boundaryGeometry)
+                    for (int pointIndex = 0; pointIndex < boundaryGeometryPoints.Count; pointIndex++)
                     {
-                        boundaryBounds.Encapsulate(boundaryGeo);
+                        boundaryFloor = Math.Min(boundaryFloor, boundaryGeometryPoints[pointIndex].y);
                     }
+
+                    boundaryGeometryEdges = EdgeHelpers.ConvertVector3ListToEdgeArray(boundaryGeometryPoints);
+
+                    inscribedRectangle = new InscribedRectangle(boundaryGeometryEdges);
                 }
             }
             else
             {
-                Debug.Log("TryGetGeometry always returns false.");
+                Debug.Log("TryGetGeometry returned false.");
             }
-
-            // Ensuring that we set height of the bounds volume to be say 10 feet tall.
-            boundaryBounds.Encapsulate(new Vector3(0, boundaryHeight, 0));
         }
 #endif
     }

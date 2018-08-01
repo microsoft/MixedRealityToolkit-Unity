@@ -7,11 +7,15 @@ namespace UnityEngine.XR.iOS
     {
         private MeshCollider meshCollider; //declared to avoid code stripping of class
         private MeshFilter meshFilter; //declared to avoid code stripping of class
+#if UNITY_IOS || UNITY_EDITOR
         private static GameObject planePrefab = null;
+#endif
 
         public static void InitializePlanePrefab(GameObject go)
         {
+#if UNITY_IOS || UNITY_EDITOR
             planePrefab = go;
+#endif
         }
 
 #if UNITY_IOS || UNITY_EDITOR
@@ -49,7 +53,6 @@ namespace UnityEngine.XR.iOS
 
             return plane;
         }
-
 #endif
 
     }

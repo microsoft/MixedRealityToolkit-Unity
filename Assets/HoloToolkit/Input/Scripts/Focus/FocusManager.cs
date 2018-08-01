@@ -611,7 +611,6 @@ namespace HoloToolkit.Unity.InputModule
 
         private void RaycastUnityUI(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-            Debug.Assert(pointer.End.Point != Vector3.zero, "No pointer source end point found to raycast against!");
             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusManager before you can process uGUI raycasting.");
 
             RaycastResult uiRaycastResult = default(RaycastResult);

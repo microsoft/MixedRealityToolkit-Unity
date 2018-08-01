@@ -83,7 +83,7 @@ Material:
     - _ColorWriteMask: 15
     - _CullMode: 0
     - _CustomMode: 1
-    - _Cutoff: 0.5
+    - _Cutoff: 1
     - _DetailNormalMapScale: 1
     - _DirectionalLight: 1
     - _DstBlend: 0
@@ -104,7 +104,7 @@ Material:
     - _HoverLight: 1
     - _HoverLightOpaque: 0
     - _InnerGlow: 0
-    - _Metallic: 1
+    - _Metallic: 0.5
     - _Mode: 1
     - _NearPlaneFade: 0
     - _OcclusionStrength: 1
@@ -117,9 +117,9 @@ Material:
     - _RimPower: 3
     - _RoundCornerMargin: 0.1
     - _RoundCornerPower: 0.4
-    - _RoundCornerRadius: 0.25
+    - _RoundCornerRadius: 0.16
     - _RoundCorners: 1
-    - _Smoothness: 0
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -137,6 +137,6 @@ Material:
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
     - _HoverColor: {r: 1, g: 0, b: 0, a: 1}
     - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
-    - _HoverColorOverride: {r: 0.8206897, g: 0, b: 1, a: 1}
+    - _HoverColorOverride: {r: 0.1397059, g: 0.14563891, b: 1, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}

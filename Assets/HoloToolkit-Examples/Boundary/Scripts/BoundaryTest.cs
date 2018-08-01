@@ -7,7 +7,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
 {
     public class BoundaryTest : MonoBehaviour
     {
-#if UNITY_WSA && UNITY_2017_2_OR_NEWER
+#if UNITY_2017_2_OR_NEWER
         private Material[] defaultMaterials = null;
 
         private void Start()
@@ -16,15 +16,17 @@ namespace HoloToolkit.Unity.Boundary.Tests
             BoundaryManager.Instance.RenderFloor = true;
 
             defaultMaterials = GetComponent<Renderer>().materials;
-        
-            if (BoundaryManager.Instance.ContainsObject(gameObject.transform.position))
+
+            int colorPropertyId = Shader.PropertyToID("_Color");
+
+            if (BoundaryManager.Instance.ContainsObject(gameObject.transform.position, UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
             {
                 Debug.LogFormat("Object {0} is within established boundary. Position: {1}", name, gameObject.transform.position);
 
                 for (int i = 0; i < defaultMaterials.Length; i++)
                 {
                     // Color the cube green if object is within specified boundary.
-                    defaultMaterials[i].SetColor("_Color", Color.green);
+                    defaultMaterials[i].SetColor(colorPropertyId, Color.green);
                 }
             }
             else
@@ -34,7 +36,7 @@ namespace HoloToolkit.Unity.Boundary.Tests
                 for (int i = 0; i < defaultMaterials.Length; i++)
                 {
                     // Color the cube red if object is outside specified boundary.
-                    defaultMaterials[i].SetColor("_Color", Color.red);
+                    defaultMaterials[i].SetColor(colorPropertyId, Color.red);
                 }
             }
         }

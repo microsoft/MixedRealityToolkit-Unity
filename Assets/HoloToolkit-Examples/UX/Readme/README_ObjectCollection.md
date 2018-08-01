@@ -1,7 +1,7 @@
 # Object Collection
 ![Object Collection](/External/ReadMeImages/MRTK_ObjectCollection.jpg)
 
-Object collection is a script which helps you lay out an array of objects in predefined three-dimensional shapes. It supports four different surface styles - plane, cylinder, sphere and scatter. You can adjust the radius, size and the space between the items. Since it supports any object in Unity, you can use it to layout both 2D and 3D objects.
+Object collection is a script which helps you lay out an array of objects in predefined three-dimensional shapes. It supports five different surface styles - plane, cylinder, sphere, scatter, and radial. You can adjust the radius, size and the space between the items. Since it supports any object in Unity, you can use it to layout both 2D and 3D objects.
 
 ## Object collection examples ##
 Periodic Table of the Elements is an example app that demonstrates how Object collection works. It uses Object collection to layout the 3D element boxes in different shapes.

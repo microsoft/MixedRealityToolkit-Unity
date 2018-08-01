@@ -946,10 +946,10 @@ namespace HoloToolkit.Unity.InputModule
 
         private void InteractionManager_InteractionSourceLost(InteractionSourceLostEventArgs args)
         {
+            InputManager.Instance.RaiseSourceLost(this, args.state.source.id);
+
             // NOTE: We don't care whether the source ID previously existed or not, so we blindly call Remove:
             sourceIdToData.Remove(args.state.source.id);
-
-            InputManager.Instance.RaiseSourceLost(this, args.state.source.id);
         }
 
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)

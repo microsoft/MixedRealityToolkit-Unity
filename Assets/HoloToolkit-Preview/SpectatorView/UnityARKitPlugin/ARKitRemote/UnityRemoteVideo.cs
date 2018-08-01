@@ -16,18 +16,19 @@ namespace UnityEngine.XR.iOS
         private bool bTexturesInitialized;
 
         private int currentFrameIndex;
-        private byte[] m_textureYBytes;
-        private byte[] m_textureUVBytes;
-        private byte[] m_textureYBytes2;
-        private byte[] m_textureUVBytes2;
+#if !UNITY_EDITOR
+        private byte[] m_textureYBytes = null;
+        private byte[] m_textureUVBytes = null;
+        private byte[] m_textureYBytes2 = null;
+        private byte[] m_textureUVBytes2 = null;
+#endif
         private GCHandle m_pinnedYArray;
         private GCHandle m_pinnedUVArray;
 
-        #if !UNITY_EDITOR
-
+#if !UNITY_EDITOR
         public void Start()
         {
-#if UNITY_IOS || UNITY_EDITOR
+#if UNITY_IOS
             m_Session = UnityARSessionNativeInterface.GetARSessionNativeInterface ();
             UnityARSessionNativeInterface.ARFrameUpdatedEvent += UpdateCamera;
             currentFrameIndex = 0;
@@ -35,7 +36,7 @@ namespace UnityEngine.XR.iOS
 #endif
         }
 
-#if UNITY_IOS || UNITY_EDITOR
+#if UNITY_IOS
         void UpdateCamera(UnityARCamera camera)
         {
             if (!bTexturesInitialized) {
@@ -115,8 +116,7 @@ namespace UnityEngine.XR.iOS
             connectToEditor.SendToEditor (ConnectionMessageIds.screenCaptureYMsgId, YByteArrayForFrame(1-currentFrameIndex));
             connectToEditor.SendToEditor (ConnectionMessageIds.screenCaptureUVMsgId, UVByteArrayForFrame(1-currentFrameIndex));
 #endif
-            
         }
-        #endif
+#endif
     }
 }
