@@ -60,12 +60,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         private MixedRealityInputAction inputSourceAction = MixedRealityInputAction.None;
 
         [SerializeField]
-        [Tooltip("The hold action that will enable the interaction for this pointer.")]
+        [Tooltip("The hold action that will enable the raise the input event for this pointer.")]
         private MixedRealityInputAction activeHoldAction = MixedRealityInputAction.None;
 
         [SerializeField]
-        [Tooltip("The action that will enable the interaction for this pointer.")]
-        private MixedRealityInputAction interactionAction = MixedRealityInputAction.None;
+        [Tooltip("The action that will enable the raise the input event for this pointer.")]
+        private MixedRealityInputAction pointerAction = MixedRealityInputAction.None;
 
         [SerializeField]
         [Tooltip("Does the interaction require hold?")]
@@ -382,9 +382,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     IsHoldPressed = false;
                 }
 
-                if (eventData.MixedRealityInputAction == interactionAction)
+                if (eventData.MixedRealityInputAction == pointerAction)
                 {
                     IsSelectPressed = false;
+                    InputSystem.RaisePointerClicked(this, Handedness, pointerAction, 0);
+                    InputSystem.RaisePointerUp(this, Handedness, pointerAction);
                 }
             }
         }
@@ -399,8 +401,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     IsHoldPressed = true;
                 }
 
-                if (eventData.MixedRealityInputAction == interactionAction)
+                if (eventData.MixedRealityInputAction == pointerAction)
                 {
+                    InputSystem.RaisePointerDown(this, Handedness, pointerAction);
                     IsSelectPressed = true;
                     HasSelectPressedOnce = true;
                 }

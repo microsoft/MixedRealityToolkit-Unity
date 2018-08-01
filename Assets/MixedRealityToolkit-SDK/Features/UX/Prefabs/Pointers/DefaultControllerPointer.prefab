@@ -261,7 +261,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  LineCastResolution: 25
+  LineCastResolution: 5
   lineBase: {fileID: 114689919749246242}
   lineRenderers:
   - {fileID: 114903794112201558}

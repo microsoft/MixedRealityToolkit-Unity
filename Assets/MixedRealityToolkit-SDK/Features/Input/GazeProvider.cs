@@ -234,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             if (cursorPrefab != null)
             {
-                var cursorObj = Instantiate(cursorPrefab, transform);
+                var cursorObj = Instantiate(cursorPrefab);
                 GazePointer.BaseCursor = cursorObj.GetComponent<IMixedRealityCursor>();
                 Debug.Assert(GazePointer.BaseCursor != null, "Failed to load cursor");
                 GazePointer.BaseCursor.Pointer = GazePointer;
@@ -303,9 +303,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void OnDestroy()
         {
-            if (GazePointer.BaseCursor != null)
+            if (GazePointer?.BaseCursor != null)
             {
-                Destroy(GazePointer.BaseCursor.GetGameObjectReference());
+                var cursorObject = GazePointer.BaseCursor.GetGameObjectReference();
+
+                if (cursorObject != null)
+                {
+                    Destroy(GazePointer.BaseCursor.GetGameObjectReference());
+                }
             }
         }
 
