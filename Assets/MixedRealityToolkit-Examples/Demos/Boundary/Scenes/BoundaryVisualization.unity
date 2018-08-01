@@ -1596,5 +1596,4 @@ CanvasRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2144915448}
-  
+  m_GameObject: {fileID: 2144915448}  
