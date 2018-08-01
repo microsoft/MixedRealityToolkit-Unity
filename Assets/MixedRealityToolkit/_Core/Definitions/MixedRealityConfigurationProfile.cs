@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         private MixedRealityCameraProfile cameraProfile;
 
         /// <summary>
-        /// Profile for customizing your camera settings based on if your 
+        /// Profile for customizing your camera and quality settings based on if your 
         /// head mounted display (HMD) is a transparent device or an occluded device.
         /// </summary>
         public MixedRealityCameraProfile CameraProfile
