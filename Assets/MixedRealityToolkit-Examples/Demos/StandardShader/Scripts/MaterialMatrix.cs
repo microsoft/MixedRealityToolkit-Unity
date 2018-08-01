@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
     public class MaterialMatrix : MonoBehaviour
     {
         [SerializeField]
-        private Material material;
+        private Material material = null;
         [SerializeField]
         [Range(2, 100)]
         private int dimension = 5;
