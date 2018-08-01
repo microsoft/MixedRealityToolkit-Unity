@@ -141,6 +141,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             var lastState = TrackingState;
             var sourceKind = interactionSourceState.source.kind;
 
+            lastControllerPose = currentControllerPose;
+
             if (sourceKind == InteractionSourceKind.Hand ||
                (sourceKind == InteractionSourceKind.Controller && interactionSourceState.source.supportsPointing))
             {
@@ -161,6 +163,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
                 // Devices are considered tracked if we receive position OR rotation data from the sensors.
                 TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
+
+                if (CameraCache.Main.transform.parent != null)
+                {
+                    currentControllerPosition = CameraCache.Main.transform.parent.TransformPoint(currentControllerPosition);
+                    currentControllerRotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentControllerRotation.eulerAngles));
+                }
             }
             else
             {
@@ -168,7 +176,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 TrackingState = TrackingState.NotApplicable;
             }
 
-            lastControllerPose = currentControllerPose;
             currentControllerPose.Position = currentControllerPosition;
             currentControllerPose.Rotation = currentControllerRotation;
 
@@ -210,6 +217,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 currentPointerPose.Position = CameraCache.Main.transform.parent.TransformPoint(currentPointerPosition);
                 currentPointerPose.Rotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentPointerRotation.eulerAngles));
             }
+            else
+            {
+                currentPointerPose.Position = currentPointerPosition;
+                currentPointerPose.Rotation = currentPointerRotation;
+            }
 
             // Update the interaction data source
             interactionMapping.PoseData = currentPointerPose;
@@ -240,6 +252,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         {
                             currentGripPose.Position = CameraCache.Main.transform.parent.TransformPoint(currentGripPosition);
                             currentGripPose.Rotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentGripRotation.eulerAngles));
+                        }
+                        else
+                        {
+                            currentGripPose.Position = currentGripPosition;
+                            currentGripPose.Rotation = currentGripRotation;
                         }
 
                         // Update the interaction data source

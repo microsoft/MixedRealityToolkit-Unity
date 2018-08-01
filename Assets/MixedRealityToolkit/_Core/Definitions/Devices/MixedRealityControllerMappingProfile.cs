@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Controller Configuration Profile", fileName = "MixedRealityControllerConfigurationProfile", order = 2)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Controller Configuration Profile", fileName = "MixedRealityControllerConfigurationProfile", order = 4)]
     public class MixedRealityControllerMappingProfile : ScriptableObject
     {
         [SerializeField]
@@ -36,28 +36,28 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         [SerializeField]
         [Tooltip("Override Left Controller Model.")]
-        private GameObject overrideLeftHandModel;
+        private GameObject globalLeftHandModel;
 
         /// <summary>
         /// The Default controller model when there is no specific controller model for the Left hand or when no hand is specified (Handedness = none)
         /// </summary>
-        public GameObject OverrideLeftHandModel
+        public GameObject GlobalLeftHandModel
         {
-            get { return overrideLeftHandModel; }
-            private set { overrideLeftHandModel = value; }
+            get { return globalLeftHandModel; }
+            private set { globalLeftHandModel = value; }
         }
 
         [SerializeField]
         [Tooltip("Override Right Controller Model.")]
-        private GameObject overrideRightHandModel;
+        private GameObject globalRightHandModel;
 
         /// <summary>
         /// The Default controller model when there is no specific controller model for the Right hand
         /// </summary>
-        public GameObject OverrideRightHandModel
+        public GameObject GlobalRightHandModel
         {
-            get { return overrideRightHandModel; }
-            private set { overrideRightHandModel = value; }
+            get { return globalRightHandModel; }
+            private set { globalRightHandModel = value; }
         }
 
         [SerializeField]

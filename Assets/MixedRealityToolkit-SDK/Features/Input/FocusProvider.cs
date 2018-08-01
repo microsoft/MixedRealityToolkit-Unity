@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     /// The focus provider handles the focused objects per input source.
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     /// </summary>
+    [DisallowMultipleComponent]
     public class FocusProvider : InputSystemGlobalListener, IMixedRealityFocusProvider
     {
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
@@ -83,10 +84,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// of StabilizationPlaneModifier and potentially other components that care where the user's looking, we need
         /// to do a gaze raycast even if gaze isn't used for focus.
         /// </summary>
-        private PointerData gazeManagerPointingData;
+        private PointerData gazeProviderPointingData;
 
         /// <summary>
-        /// Cached vector 3 reference to the new raycast position.
+        /// Cached <see cref="Vector3"/> reference to the new raycast position.
         /// <remarks>Only used to update UI raycast results.</remarks>
         /// </summary>
         private Vector3 newUiRaycastPosition = Vector3.zero;
@@ -815,14 +816,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 // Special Registration for Gaze
                 if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
                 {
-                    Debug.Assert(gazeManagerPointingData == null, "Gaze Manager Pointer Data was already registered!");
+                    Debug.Assert(gazeProviderPointingData == null, "Gaze Provider Pointer Data was already registered!");
 
-                    if (gazeManagerPointingData == null)
+                    if (gazeProviderPointingData == null)
                     {
-                        gazeManagerPointingData = new PointerData(sourcePointer);
+                        gazeProviderPointingData = new PointerData(sourcePointer);
                     }
 
-                    Debug.Assert(gazeManagerPointingData != null);
+                    Debug.Assert(gazeProviderPointingData != null);
                 }
             }
         }
@@ -837,13 +838,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 // Special unregistration for Gaze
                 if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
                 {
-                    Debug.Assert(gazeManagerPointingData != null);
+                    Debug.Assert(gazeProviderPointingData != null);
 
                     // If the source lost is the gaze input source, then reset it.
-                    if (sourcePointer.PointerId == gazeManagerPointingData.Pointer.PointerId)
+                    if (sourcePointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
                     {
-                        gazeManagerPointingData.ResetFocusedObjects();
-                        gazeManagerPointingData = null;
+                        gazeProviderPointingData.ResetFocusedObjects();
+                        gazeProviderPointingData = null;
                     }
                 }
 

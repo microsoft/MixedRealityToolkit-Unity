@@ -18,15 +18,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Utilities
         [Flags]
         public enum HighlightedMaterialStyle
         {
-            None = 0,
+            None = 0 << 0,
             /// <summary>
             /// A highlight to indicate focus.
             /// </summary>
-            Highlight = 1,
+            Highlight = 1 << 0,
             /// <summary>
             /// An overlay to indicate intent.
             /// </summary>
-            Overlay = 2,
+            Overlay = 1 << 1,
             /// <summary>
             /// Both highlight and overlay.
             /// </summary>

@@ -93,36 +93,74 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             focusProvider = CameraCache.Main.gameObject.EnsureComponent<FocusProvider>();
             gazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
-            FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
-            FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
+
+            bool addedComponents = false;
 
 #if UNITY_EDITOR
-            bool addedComponents = false;
-            var eventSystems = UnityEngine.Object.FindObjectsOfType<EventSystem>();
-            var standaloneInputModules = UnityEngine.Object.FindObjectsOfType<StandaloneInputModule>();
-
-            if (eventSystems.Length == 0)
+            if (!UnityEditor.EditorApplication.isPlaying)
             {
-                Debug.LogWarning("No Event System was found in scene! We've added the required component to the UIRaycastCamera.");
-                FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
-                addedComponents = true;
+                var eventSystems = UnityEngine.Object.FindObjectsOfType<EventSystem>();
+                var standaloneInputModules = UnityEngine.Object.FindObjectsOfType<StandaloneInputModule>();
+
+                CameraCache.Main.transform.position = Vector3.zero;
+                CameraCache.Main.transform.rotation = Quaternion.identity;
+
+                if (eventSystems.Length == 0)
+                {
+                    focusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
+                    addedComponents = true;
+                }
+                else
+                {
+                    bool raiseWarning;
+
+                    if (eventSystems.Length == 1)
+                    {
+                        raiseWarning = eventSystems[0].gameObject != FocusProvider.UIRaycastCamera.gameObject;
+                    }
+                    else
+                    {
+                        raiseWarning = true;
+                    }
+
+                    if (raiseWarning)
+                    {
+                        Debug.LogWarning("Found an existing event system in your scene. The Mixed Reality Input System requires only one, and must be found on the UIRaycastCamera.");
+                    }
+                }
+
+                if (standaloneInputModules.Length == 0)
+                {
+                    focusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
+                    addedComponents = true;
+                }
+                else
+                {
+                    bool raiseWarning;
+
+                    if (standaloneInputModules.Length == 1)
+                    {
+                        raiseWarning = standaloneInputModules[0].gameObject != FocusProvider.UIRaycastCamera.gameObject;
+                    }
+                    else
+                    {
+                        raiseWarning = true;
+                    }
+
+                    if (raiseWarning)
+                    {
+                        Debug.LogWarning("Found an existing Standalone Input Module in your scene. The Mixed Reality Input System requires only one, and must be found on the UIRaycastCamera.");
+                    }
+                }
             }
 
-            if (standaloneInputModules.Length == 0)
-            {
-                Debug.LogWarning("No Standalone Input Module was found in scene! We've added the required component to the UIRaycastCamera.");
-                FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
-                addedComponents = true;
-            }
+#endif // Unity Editor
 
-            if (addedComponents)
+            if (!addedComponents)
             {
-                UnityEditor.EditorGUIUtility.PingObject(FocusProvider.UIRaycastCamera);
+                focusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
+                focusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
             }
-#else
-            FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<EventSystem>();
-            FocusProvider.UIRaycastCamera.gameObject.EnsureComponent<StandaloneInputModule>();
-#endif
 
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
             sourcePoseEventData = new SourcePoseEventData(EventSystem.current);
@@ -159,44 +197,47 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             InputDisabled?.Invoke();
 
-            if (focusProvider != null)
+            if (Application.isPlaying)
             {
-                focusProvider.enabled = false;
+                base.Destroy();
+                return;
+            }
 
-                if (FocusProvider.UIRaycastCamera != null)
-                {
-                    if (Application.isEditor)
-                    {
-                        UnityEngine.Object.DestroyImmediate(FocusProvider.UIRaycastCamera.gameObject);
-                    }
-                    else
-                    {
-                        UnityEngine.Object.Destroy(FocusProvider.UIRaycastCamera.gameObject);
-                    }
-                }
+            focusProvider = CameraCache.Main.gameObject.EnsureComponent<FocusProvider>();
+            gazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
 
+            focusProvider.enabled = false;
+
+            if (FocusProvider.UIRaycastCamera != null)
+            {
                 if (Application.isEditor)
                 {
-                    UnityEngine.Object.DestroyImmediate(focusProvider);
+                    UnityEngine.Object.DestroyImmediate(FocusProvider.UIRaycastCamera.gameObject);
                 }
                 else
                 {
-                    UnityEngine.Object.Destroy(focusProvider);
+                    UnityEngine.Object.Destroy(FocusProvider.UIRaycastCamera.gameObject);
                 }
             }
 
-            if (gazeProvider != null)
+            if (Application.isEditor)
             {
-                gazeProvider.enabled = false;
+                UnityEngine.Object.DestroyImmediate(focusProvider);
+            }
+            else
+            {
+                UnityEngine.Object.Destroy(focusProvider);
+            }
 
-                if (Application.isEditor)
-                {
-                    UnityEngine.Object.DestroyImmediate(gazeProvider);
-                }
-                else
-                {
-                    UnityEngine.Object.Destroy(gazeProvider);
-                }
+            gazeProvider.enabled = false;
+
+            if (Application.isEditor)
+            {
+                UnityEngine.Object.DestroyImmediate(gazeProvider);
+            }
+            else
+            {
+                UnityEngine.Object.Destroy(gazeProvider);
             }
 
             base.Destroy();
@@ -287,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <param name="listener">Listener to add.</param>
         public override void Register(GameObject listener)
         {
-            Debug.Assert(!EventListeners.Contains(listener), $"{listener.name} is already registered to receive input events!");
+            if (EventListeners.Contains(listener)) { return; }
             EventListeners.Add(listener);
         }
 
@@ -297,7 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
         {
-            Debug.Assert(EventListeners.Contains(listener), $"{listener.name} was never registered for input events!");
+            if (!EventListeners.Contains(listener)) { return; }
             EventListeners.Remove(listener);
         }
 
