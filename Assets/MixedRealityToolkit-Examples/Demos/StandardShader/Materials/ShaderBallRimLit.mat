@@ -4,7 +4,7 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ShaderBallRimLit
   m_Shader: {fileID: 4800000, guid: d45c0efca53019e43891b0f610f8146e, type: 3}
@@ -21,6 +21,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ChannelMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -88,7 +92,9 @@ Material:
     - _DirectionalLight: 0
     - _DstBlend: 1
     - _EdgeSmoothingValue: 0.002
+    - _EnableChannelMap: 0
     - _EnableEmission: 0
+    - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 0
     - _EnableLightMap: 0
     - _EnableNormalMap: 0
@@ -101,7 +107,9 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _HoverLight: 1
+    - _HoverLightOpaque: 0
     - _InnerGlow: 0
+    - _InstancedColor: 0
     - _Metallic: 0
     - _Mode: 4
     - _MyCullVariable: 1
@@ -122,6 +130,10 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComparison: 0
+    - _StencilOperation: 0
+    - _StencilReference: 0
     - _UVSec: 0
     - _ZTest: 4
     - _ZWrite: 0
@@ -134,6 +146,7 @@ Material:
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
+    - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}

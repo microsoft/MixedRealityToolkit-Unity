@@ -1,0 +1,12 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader.Inspectors",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Examples"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
