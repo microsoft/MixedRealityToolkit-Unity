@@ -20,7 +20,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
 {
     /// <summary>
-    /// The Input system controls the orchestration of input events in a scene
+    /// The Mixed Reality Toolkit's specific implementation of the <see cref="IMixedRealityInputSystem"/>
     /// </summary>
     public class MixedRealityInputManager : MixedRealityEventManager, IMixedRealityInputSystem
     {
@@ -1389,74 +1389,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         #endregion Manipulation Events
 
         #endregion Gestures
-
-        #region Teleport Events
-
-        //private static readonly ExecuteEvents.EventFunction<IMixedRealityTeleportHandler> OnTeleportIntentHandler =
-        //        delegate (IMixedRealityTeleportHandler handler, BaseEventData eventData)
-        //        {
-        //            var casted = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
-        //            handler.OnTeleportIntent(casted);
-        //        };
-
-        //public void RaiseTeleportIntent(TeleportPointer pointer)
-        //{
-        //    // Create input event
-        //    teleportEventData.Initialize(pointer.InputSourceParent);
-
-        //    // Pass handler through HandleEvent to perform modal/fallback logic
-        //    HandleEvent(teleportEventData, OnTeleportIntentHandler);
-        //}
-
-        //private static readonly ExecuteEvents.EventFunction<IMixedRealityTeleportHandler> OnTeleportStartedHandler =
-        //        delegate (IMixedRealityTeleportHandler handler, BaseEventData eventData)
-        //        {
-        //            var casted = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
-        //            handler.OnTeleportStarted(casted);
-        //        };
-
-        //public void RaiseTeleportStarted(TeleportPointer pointer)
-        //{
-        //    // Create input event
-        //    teleportEventData.Initialize(pointer.InputSourceParent);
-
-        //    // Pass handler through HandleEvent to perform modal/fallback logic
-        //    HandleEvent(teleportEventData, OnTeleportStartedHandler);
-        //}
-
-        //private static readonly ExecuteEvents.EventFunction<IMixedRealityTeleportHandler> OnTeleportCompletedHandler =
-        //        delegate (IMixedRealityTeleportHandler handler, BaseEventData eventData)
-        //        {
-        //            var casted = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
-        //            handler.OnTeleportCompleted(casted);
-        //        };
-
-        //public void RaiseTeleportCompleted(TeleportPointer pointer)
-        //{
-        //    // Create input event
-        //    teleportEventData.Initialize(pointer.InputSourceParent);
-
-        //    // Pass handler through HandleEvent to perform modal/fallback logic
-        //    HandleEvent(teleportEventData, OnTeleportCompletedHandler);
-        //}
-
-        //private static readonly ExecuteEvents.EventFunction<IMixedRealityTeleportHandler> OnTeleportCanceledHandler =
-        //        delegate (IMixedRealityTeleportHandler handler, BaseEventData eventData)
-        //        {
-        //            var casted = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
-        //            handler.OnTeleportCanceled(casted);
-        //        };
-
-        //public void RaiseTeleportCanceled(TeleportPointer pointer)
-        //{
-        //    // Create input event
-        //    teleportEventData.Initialize(pointer.InputSourceParent);
-
-        //    // Pass handler through HandleEvent to perform modal/fallback logic
-        //    HandleEvent(teleportEventData, OnTeleportCanceledHandler);
-        //}
-
-        #endregion Teleport Events
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 

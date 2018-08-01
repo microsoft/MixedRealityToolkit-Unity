@@ -92,12 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             {
                 var controller = activeControllers[interactionSourceState.source.id] as WindowsMixedRealityController;
                 Debug.Assert(controller != null);
-
-                if (updateControllerData)
-                {
-                    controller.UpdateController(interactionSourceState);
-                }
-
                 return controller;
             }
 
@@ -136,7 +130,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         {
                             var pointerObject = UnityEngine.Object.Instantiate(pointerProfile.PointerPrefab);
                             var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-                            pointers.Add(pointer);
+
+                            if (pointer != null)
+                            {
+                                pointers.Add(pointer);
+                            }
                         }
                     }
                 }
@@ -144,14 +142,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             var inputSource = InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {controllingHand}", pointers.ToArray());
             var detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
+
             detectedController.SetupConfiguration(typeof(WindowsMixedRealityController));
-            detectedController.UpdateController(interactionSourceState);
-            activeControllers.Add(interactionSourceState.source.id, detectedController);
 
             for (int i = 0; i < detectedController.InputSource.Pointers.Length; i++)
             {
                 detectedController.InputSource.Pointers[i].Controller = detectedController;
             }
+
+            activeControllers.Add(interactionSourceState.source.id, detectedController);
 
             return detectedController;
         }

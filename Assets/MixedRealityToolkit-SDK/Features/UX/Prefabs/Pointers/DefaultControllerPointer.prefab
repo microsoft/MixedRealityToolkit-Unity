@@ -101,17 +101,22 @@ MonoBehaviour:
     type: 2}
   raycastOrigin: {fileID: 0}
   pointerOrientation: 0
+  useSourcePoseData: 0
+  inputSourceAction:
+    id: 4
+    description: Pointer Pose
+    axisConstraint: 7
   activeHoldAction:
     id: 0
     description: None
     axisConstraint: 0
   interactionAction:
     id: 1
-    description: None
-    axisConstraint: 0
+    description: Select
+    axisConstraint: 2
   requiresHoldAction: 0
-  pointerExtent: 2
-  lineColorSelected:
+  pointerExtent: 10
+  LineColorSelected:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
     key1: {r: 0, g: 0, b: 1, a: 1}
@@ -140,7 +145,36 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  lineColorValid:
+  LineColorValid:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  LineColorInvalid:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
     key1: {r: 0, g: 1, b: 0, a: 1}
@@ -169,7 +203,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  lineColorNoTarget:
+  LineColorNoTarget:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
     key1: {r: 1, g: 1, b: 1, a: 0}
@@ -198,7 +232,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  lineColorLockFocus:
+  LineColorLockFocus:
     serializedVersion: 2
     key0: {r: 0, g: 0, b: 1, a: 1}
     key1: {r: 0, g: 1, b: 0, a: 1}
@@ -227,11 +261,12 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  lineCastResolution: 25
+  LineCastResolution: 25
   lineBase: {fileID: 114689919749246242}
   lineRenderers:
   - {fileID: 114903794112201558}
-  distorterGravity: {fileID: 114052612917089170}
+  LineRenderers: []
+  gravityDistorter: {fileID: 114052612917089170}
 --- !u!114 &114689919749246242
 MonoBehaviour:
   m_ObjectHideFlags: 1

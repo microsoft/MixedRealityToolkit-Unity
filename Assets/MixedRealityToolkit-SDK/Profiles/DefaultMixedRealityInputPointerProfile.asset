@@ -13,8 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointerOptions:
   - controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
-        Microsoft.MixedReality.Toolkit
-    handedness: 3
+      reference: 
+    handedness: 7
     pointerPrefab: {fileID: 1247086986094436, guid: 47372085a0372d94a9f7fcbe61a2e0a1,
       type: 2}

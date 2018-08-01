@@ -54,7 +54,25 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
             }
             else
             {
+                EditorGUI.BeginChangeCheck();
                 inputActionId.intValue = EditorGUI.IntPopup(rect, label, inputActionId.intValue.ResetIfGreaterThan(profile.InputActions.Length), actionLabels, actionIds);
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    var description = property.FindPropertyRelative("description");
+                    var axisConstraint = property.FindPropertyRelative("axisConstraint");
+
+                    if (inputActionId.intValue > 0)
+                    {
+                        description.stringValue = profile.InputActions[inputActionId.intValue - 1].Description;
+                        axisConstraint.intValue = (int)profile.InputActions[inputActionId.intValue - 1].AxisConstraint;
+                    }
+                    else
+                    {
+                        description.stringValue = "None";
+                        axisConstraint.intValue = 0;
+                    }
+                }
             }
 
             EditorGUI.EndProperty();

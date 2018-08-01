@@ -22,11 +22,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
         {
             base.OnEnable();
 
-            lineColorSelected = serializedObject.FindProperty("lineColorSelected");
-            lineColorValid = serializedObject.FindProperty("lineColorValid");
-            lineColorNoTarget = serializedObject.FindProperty("lineColorNoTarget");
-            lineColorLockFocus = serializedObject.FindProperty("lineColorLockFocus");
-            lineCastResolution = serializedObject.FindProperty("lineCastResolution");
+            lineColorSelected = serializedObject.FindProperty("LineColorSelected");
+            lineColorValid = serializedObject.FindProperty("LineColorValid");
+            lineColorNoTarget = serializedObject.FindProperty("LineColorNoTarget");
+            lineColorLockFocus = serializedObject.FindProperty("LineColorLockFocus");
+            lineCastResolution = serializedObject.FindProperty("LineCastResolution");
             lineRenderers = serializedObject.FindProperty("lineRenderers");
         }
 

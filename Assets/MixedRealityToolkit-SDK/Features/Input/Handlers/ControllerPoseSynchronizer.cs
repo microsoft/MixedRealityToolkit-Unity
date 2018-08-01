@@ -79,6 +79,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <inheritdoc />
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
+            IsTracked = false;
+            TrackingState = TrackingState.NotTracked;
+
             if (eventData.Controller?.ControllerHandedness == Handedness)
             {
                 if (disableChildren)
@@ -91,11 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <inheritdoc />
         public virtual void OnSourcePoseChanged(SourcePoseEventData eventData)
         {
-            if (Controller == null)
-            {
-                Controller = eventData.Controller;
-            }
-
             if (eventData.Controller?.InputSource.SourceId != Controller.InputSource.SourceId)
             {
                 return;
