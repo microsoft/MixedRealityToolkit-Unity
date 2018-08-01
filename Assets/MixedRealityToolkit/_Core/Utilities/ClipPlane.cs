@@ -17,6 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         [SerializeField]
         private Renderer[] renderers = null;
 
+        /// <summary>
+        /// The renderer(s) that should be affected by the clip plane.
+        /// </summary>
+        public Renderer[] Renderers => renderers;
+
         private int clipPlaneID;
         private MaterialPropertyBlock materialPropertyBlock;
 
@@ -24,8 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         private const string clippingPlaneProperty = "_ClippingPlane";
         private Dictionary<Material, bool> modifiedMaterials = new Dictionary<Material, bool>();
         private List<Material> allocatedMaterials = new List<Material>();
-
-        public Renderer[] Renderers => renderers;
 
         private void OnValidate()
         {
