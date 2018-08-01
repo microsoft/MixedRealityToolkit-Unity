@@ -4,7 +4,7 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ShaderBallNearPlaneFade
   m_Shader: {fileID: 4800000, guid: d45c0efca53019e43891b0f610f8146e, type: 3}
@@ -21,6 +21,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ChannelMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -88,13 +92,14 @@ Material:
     - _DirectionalLight: 0
     - _DstBlend: 1
     - _EdgeSmoothingValue: 0.002
+    - _EnableChannelMap: 0
     - _EnableEmission: 0
     - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 0
     - _EnableLightMap: 0
     - _EnableNormalMap: 0
     - _EnvironmentColorIntensity: 1
-    - _EnvironmentColorThreshold: 3
+    - _EnvironmentColorThreshold: 1.5
     - _EnvironmentColoring: 1
     - _FadeBeginDistance: 3
     - _FadeCompleteDistance: 1
@@ -104,6 +109,7 @@ Material:
     - _HoverLight: 1
     - _HoverLightOpaque: 0
     - _InnerGlow: 0
+    - _InstancedColor: 0
     - _Metallic: 0
     - _Mode: 4
     - _MyCullVariable: 1
@@ -123,6 +129,10 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComparison: 0
+    - _StencilOperation: 0
+    - _StencilReference: 0
     - _UVSec: 0
     - _ZTest: 4
     - _ZWrite: 0

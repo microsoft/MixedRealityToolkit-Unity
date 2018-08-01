@@ -2,8 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.SDK.UX.Utilities;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Utilities
 {

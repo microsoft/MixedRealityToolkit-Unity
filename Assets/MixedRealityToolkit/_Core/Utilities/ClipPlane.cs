@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
@@ -12,24 +13,39 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
     [ExecuteInEditMode]
     public class ClipPlane : MonoBehaviour
     {
+        [Tooltip("The renderer(s) that should be affected by the clip plane.")]
         [SerializeField]
         private Renderer[] renderers = null;
 
-        private int clipPlaneId;
-        private Material[] materials;
+        /// <summary>
+        /// The renderer(s) that should be affected by the clip plane.
+        /// </summary>
+        public Renderer[] Renderers => renderers;
+
+        private int clipPlaneID;
         private MaterialPropertyBlock materialPropertyBlock;
+
+        private const string clippingPlaneKeyword = "_CLIPPING_PLANE";
+        private const string clippingPlaneProperty = "_ClippingPlane";
+        private Dictionary<Material, bool> modifiedMaterials = new Dictionary<Material, bool>();
+        private List<Material> allocatedMaterials = new List<Material>();
+
+        private void OnValidate()
+        {
+            ToggleClippingPlanes(true);
+        }
 
         private void OnEnable()
         {
             Initialize();
             UpdatePlanePosition();
-            ToggleClippingPlane(true);
+            ToggleClippingPlanes(true);
         }
 
         private void OnDisable()
         {
             UpdatePlanePosition();
-            ToggleClippingPlane(false);
+            ToggleClippingPlanes(false);
         }
 
         private void Update()
@@ -62,38 +78,42 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 
         private void OnDestroy()
         {
-            if (materials != null)
+            if (renderers == null)
             {
-                foreach (Material material in materials)
+                return;
+            }
+
+            for (int i = 0; i < renderers.Length; ++i)
+            {
+                Renderer renderer = renderers[i];
+
+                if (!renderer)
                 {
-                    if (Application.isPlaying)
-                    {
-                        Destroy(material);
-                    }
+                    continue;
                 }
 
-                materials = null;
+                Material material = GetMaterial(renderer);
+
+                if (material)
+                {
+                    bool clippingPlaneOn;
+
+                    if (modifiedMaterials.TryGetValue(material, out clippingPlaneOn))
+                    {
+                        ToggleClippingPlaneKeyword(material, clippingPlaneOn);
+                    }
+                }
+            }
+
+            for (int i = 0; i < allocatedMaterials.Count; ++i)
+            {
+                Destroy(allocatedMaterials[i]);
             }
         }
 
         private void Initialize()
         {
-            clipPlaneId = Shader.PropertyToID("_ClipPlane");
-
-            materials = new Material[renderers.Length];
-
-            for (int i = 0; i < renderers.Length; ++i)
-            {
-                if (Application.isPlaying)
-                {
-                    materials[i] = renderers[i].material;
-                }
-                else
-                {
-                    materials[i] = renderers[i].sharedMaterial;
-                }
-            }
-
+            clipPlaneID = Shader.PropertyToID("_ClipPlane");
             materialPropertyBlock = new MaterialPropertyBlock();
         }
 
@@ -107,49 +127,82 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
             Vector3 up = transform.up;
             Vector4 plane = new Vector4(up.x, up.y, up.z, Vector3.Dot(up, transform.position));
 
-            foreach (Renderer renderer in renderers)
+            for (int i = 0; i < renderers.Length; ++i)
             {
-                if (renderer == null)
+                Renderer renderer = renderers[i];
+
+                if (!renderer)
                 {
                     continue;
                 }
 
                 renderer.GetPropertyBlock(materialPropertyBlock);
-                materialPropertyBlock.SetVector(clipPlaneId, plane);
+                materialPropertyBlock.SetVector(clipPlaneID, plane);
                 renderer.SetPropertyBlock(materialPropertyBlock);
             }
         }
 
-        private void ToggleClippingPlane(bool isClippingPlaneOn)
+        private void ToggleClippingPlanes(bool clippingPlaneOn)
         {
-            if (materials == null)
+            if (renderers == null)
             {
                 return;
             }
 
-            foreach (Material material in materials)
+            for (int i = 0; i < renderers.Length; ++i)
             {
-                if (material == null)
+                Renderer renderer = renderers[i];
+
+                if (!renderer)
                 {
                     continue;
                 }
 
-                const string clippingPlaneKeyword = "_CLIPPING_PLANE";
+                Material material = GetMaterial(renderer);
 
-                if (isClippingPlaneOn)
+                if (material)
                 {
-                    if (!material.IsKeywordEnabled(clippingPlaneKeyword))
+                    // Cache the initial keyword state of the material.
+                    if (!modifiedMaterials.ContainsKey(material))
                     {
-                        material.EnableKeyword(clippingPlaneKeyword);
+                        modifiedMaterials[material] = material.IsKeywordEnabled(clippingPlaneKeyword);
                     }
+
+                    ToggleClippingPlaneKeyword(material, clippingPlaneOn);
                 }
-                else
+            }
+        }
+
+        private Material GetMaterial(Renderer renderer)
+        {
+            if (Application.isEditor && !Application.isPlaying)
+            {
+                return renderer.sharedMaterial;
+            }
+            else
+            {
+                Material material = renderer.material;
+
+                if (!allocatedMaterials.Contains(material))
                 {
-                    if (material.IsKeywordEnabled(clippingPlaneKeyword))
-                    {
-                        material.DisableKeyword(clippingPlaneKeyword);
-                    }
+                    allocatedMaterials.Add(material);
                 }
+
+                return material;
+            }
+        }
+
+        private void ToggleClippingPlaneKeyword(Material material, bool clippingPlaneOn)
+        {
+            if (clippingPlaneOn)
+            {
+                material.EnableKeyword(clippingPlaneKeyword);
+                material.SetFloat(clippingPlaneProperty, 1.0f);
+            }
+            else
+            {
+                material.DisableKeyword(clippingPlaneKeyword);
+                material.SetFloat(clippingPlaneProperty, 0.0f);
             }
         }
     }
