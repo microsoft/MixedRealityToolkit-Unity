@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     /// The focus provider handles the focused objects per input source.
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     /// </summary>
+    [DisallowMultipleComponent]
     public class FocusProvider : InputSystemGlobalListener, IMixedRealityFocusProvider
     {
         private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();

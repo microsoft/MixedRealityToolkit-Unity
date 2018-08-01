@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
 
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent content)
         {
-            if (!MixedRealityManager.IsInitialized)
+            if (!MixedRealityManager.HasActiveProfile)
             {
                 profile = null;
                 actionLabels = new[] { new GUIContent("Missing Mixed Reality Manager") };
@@ -28,21 +28,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
 
             if (profile == null)
             {
-                if (MixedRealityManager.HasActiveProfile)
+                if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
                 {
                     profile = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile;
                     actionLabels = profile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
                     actionIds = profile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
                 }
             }
-            else
+
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
             {
-                if (!MixedRealityManager.HasActiveProfile || MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
-                {
-                    profile = null;
-                    actionLabels = new[] { new GUIContent("Missing Input Action Profile") };
-                    actionIds = new[] { 0 };
-                }
+                profile = null;
+                actionLabels = new[] { new GUIContent("Input System Disabled") };
+                actionIds = new[] { 0 };
             }
 
             var label = EditorGUI.BeginProperty(rect, content, property);

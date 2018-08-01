@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
         private static IEnumerable<string> RegisteredKeywords()
         {
             if (!MixedRealityManager.HasActiveProfile ||
-                !MixedRealityManager.Instance.ActiveProfile.EnableSpeechCommands ||
+                !MixedRealityManager.Instance.ActiveProfile.IsSpeechCommandsEnabled ||
                  MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
             {
                 yield break;

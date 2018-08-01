@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
             canvas = (Canvas)target;
 
             if (MixedRealityManager.HasActiveProfile &&
-                MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
+                MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
                 CheckCanvasSettings();
@@ -38,13 +38,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
         public override void OnInspectorGUI()
         {
             if (!MixedRealityManager.HasActiveProfile ||
-                !MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
+                !MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
             {
                 base.OnInspectorGUI();
                 return;
             }
 
-            if (MixedRealityManager.Instance.ActiveProfile.EnableInputSystem && inputSystem == null)
+            if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && inputSystem == null)
             {
                 EditorGUILayout.HelpBox("No Input System Profile found in the Mixed Reality Manager's Active Profile.", MessageType.Error);
                 base.OnInspectorGUI();

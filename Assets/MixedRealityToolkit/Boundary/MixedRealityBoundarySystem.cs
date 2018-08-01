@@ -38,16 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
         /// </summary>
         private InscribedRectangle rectangularBounds = null;
 
-        /// <summary>
-        /// MixedRealityBoundaryManager constructor
-        /// </summary>
-        public MixedRealityBoundaryManager()
-        {
-            Scale = MixedRealityManager.Instance.ActiveProfile.TargetExperienceScale;
-            BoundaryHeight = MixedRealityManager.Instance.ActiveProfile.BoundaryHeight;
-            EnablePlatformBoundaryRendering = MixedRealityManager.Instance.ActiveProfile.EnablePlatformBoundaryRendering;
-        }
-
         /// <inheritdoc/>
         public override void Initialize()
         {
@@ -60,6 +50,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
         /// </summary>
         private void InitializeInternal()
         {
+            Scale = MixedRealityManager.Instance.ActiveProfile.TargetExperienceScale;
+            BoundaryHeight = MixedRealityManager.Instance.ActiveProfile.BoundaryHeight;
+            EnablePlatformBoundaryRendering = MixedRealityManager.Instance.ActiveProfile.IsPlatformBoundaryRenderingEnabled;
+
             SetTrackingSpace();
             CalculateBoundaryBounds();
             Boundary.visible = EnablePlatformBoundaryRendering;
@@ -108,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
                     return rectangularBounds.IsInsideBoundary(point);
                 }
             }
-            else if(boundaryType == Boundary.Type.TrackedArea)
+            else if (boundaryType == Boundary.Type.TrackedArea)
             {
                 // Check the geometry
                 return EdgeUtilities.IsInsideBoundary(Bounds, point);
@@ -121,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
         /// <inheritdoc/>
         public bool TryGetRectangularBoundsParams(out Vector2 center, out float angle, out float width, out float height)
         {
-            if (!rectangularBounds.IsValid)
+            if (rectangularBounds == null || !rectangularBounds.IsValid)
             {
                 center = EdgeUtilities.InvalidPoint;
                 angle = 0f;
@@ -173,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
                     Vector3 pointB = boundaryGeometry[(i + 1) % boundaryGeometry.Count];
                     boundaryEdges.Add(new Edge(pointA, pointB));
 
-                    floorHeight = Mathf.Min(floorHeight, boundaryGeometry[i].y); 
+                    floorHeight = Mathf.Min(floorHeight, boundaryGeometry[i].y);
                 }
 
                 FloorHeight = floorHeight;
