@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers

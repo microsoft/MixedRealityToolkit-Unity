@@ -38,3 +38,7 @@ MonoBehaviour:
       Microsoft.MixedReality.Toolkit.BoundarySystem
   boundaryHeight: 3
   enablePlatformBoundaryRendering: 1
+  enableTeleportSystem: 0
+  teleportSystemType:
+    reference: Microsoft.MixedReality.Toolkit.SDK.Teleportation.MixedRealityTeleportManager,
+      Microsoft.MixedReality.Toolkit.SDK

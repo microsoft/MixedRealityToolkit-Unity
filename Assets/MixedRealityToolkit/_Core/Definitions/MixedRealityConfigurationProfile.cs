@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -241,6 +242,33 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get { return enablePlatformBoundaryRendering; }
             set { enablePlatformBoundaryRendering = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable the Teleport System on Startup")]
+        private bool enableTeleportSystem = false;
+
+        /// <summary>
+        /// Enable and configure the boundary system.
+        /// </summary>
+        public bool IsTeleportSystemEnabled
+        {
+            get { return teleportSystemType.Type != null && enableTeleportSystem; }
+            private set { enableTeleportSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Boundary System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealityTeleportSystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType teleportSystemType;
+
+        /// <summary>
+        /// Boundary System Script File to instantiate at runtime.
+        /// </summary>
+        public SystemType TeleportSystemSystemType
+        {
+            get { return teleportSystemType; }
+            private set { teleportSystemType = value; }
         }
 
         #endregion Mixed Reality Manager configurable properties

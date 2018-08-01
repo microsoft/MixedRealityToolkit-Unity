@@ -89,11 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        /// <summary>
-        /// Line pointer stays inactive until select is pressed for first time
-        /// </summary>
-        public override bool IsInteractionEnabled => IsSelectPressed && HasSelectPressedOnce && base.IsInteractionEnabled;
-
         /// <inheritdoc />
         public override void OnPreRaycast()
         {

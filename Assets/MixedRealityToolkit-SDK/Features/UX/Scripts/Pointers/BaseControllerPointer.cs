@@ -10,6 +10,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System.Collections;
 using UnityEngine;
