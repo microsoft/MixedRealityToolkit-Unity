@@ -9,34 +9,46 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 {
+    /// <summary>
+    /// A simple line pointer for drawing lines from the input source origin to the current pointer position.
+    /// </summary>
     [RequireComponent(typeof(DistorterGravity))]
     public class LinePointer : BaseControllerPointer
     {
         [SerializeField]
-        private Gradient lineColorSelected = new Gradient();
+        protected Gradient LineColorSelected = new Gradient();
 
         [SerializeField]
-        private Gradient lineColorValid = new Gradient();
+        protected Gradient LineColorValid = new Gradient();
 
         [SerializeField]
-        private Gradient lineColorNoTarget = new Gradient();
+        protected Gradient LineColorInvalid = new Gradient();
 
         [SerializeField]
-        private Gradient lineColorLockFocus = new Gradient();
+        protected Gradient LineColorNoTarget = new Gradient();
+
+        [SerializeField]
+        protected Gradient LineColorLockFocus = new Gradient();
 
         [Range(5, 100)]
         [SerializeField]
-        private int lineCastResolution = 25;
+        protected int LineCastResolution = 25;
 
         [SerializeField]
         private BaseMixedRealityLineDataProvider lineBase;
+
+        public BaseMixedRealityLineDataProvider LineBase => lineBase;
 
         [SerializeField]
         [Tooltip("If no line renderers are specified, this array will be auto-populated on startup.")]
         private BaseMixedRealityLineRenderer[] lineRenderers;
 
+        public BaseMixedRealityLineRenderer[] LineRenderers;
+
         [SerializeField]
-        private DistorterGravity distorterGravity = null;
+        private DistorterGravity gravityDistorter = null;
+
+        public DistorterGravity GravityDistorter => gravityDistorter;
 
         private void OnValidate()
         {
@@ -61,9 +73,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 Debug.LogError($"No Mixed Reality Line Data Provider found on {gameObject.name}.");
             }
 
-            if (distorterGravity == null)
+            if (gravityDistorter == null)
             {
-                distorterGravity = GetComponent<DistorterGravity>();
+                gravityDistorter = GetComponent<DistorterGravity>();
             }
 
             if (lineBase != null && (lineRenderers == null || lineRenderers.Length == 0))
@@ -80,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <summary>
         /// Line pointer stays inactive until select is pressed for first time
         /// </summary>
-        public override bool IsInteractionEnabled => HasSelectPressedOnce & base.IsInteractionEnabled;
+        public override bool IsInteractionEnabled => IsSelectPressed && HasSelectPressedOnce && base.IsInteractionEnabled;
 
         /// <inheritdoc />
         public override void OnPreRaycast()
@@ -95,16 +107,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             lineBase.LastPoint = pointerPosition + (PointerDirection * (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent));
 
             // Make sure our array will hold
-            if (Rays == null || Rays.Length != lineCastResolution)
+            if (Rays == null || Rays.Length != LineCastResolution)
             {
-                Rays = new RayStep[lineCastResolution];
+                Rays = new RayStep[LineCastResolution];
             }
 
             // Set up our rays
             if (!IsFocusLocked)
             {
                 // Turn off gravity so we get accurate rays
-                distorterGravity.enabled = false;
+                gravityDistorter.enabled = false;
             }
 
             float stepSize = 1f / Rays.Length;
@@ -123,8 +135,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             // Use the results from the last update to set our NavigationResult
             float clearWorldLength = 0f;
-            distorterGravity.enabled = false;
-            Gradient lineColor = lineColorNoTarget;
+            gravityDistorter.enabled = false;
+            Gradient lineColor = LineColorNoTarget;
 
             if (IsInteractionEnabled)
             {
@@ -132,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
                 if (IsSelectPressed)
                 {
-                    lineColor = lineColorSelected;
+                    lineColor = LineColorSelected;
                 }
 
                 // If we hit something
@@ -154,17 +166,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     }
 
                     // Clamp the end of the parabola to the result hit's point
-                    lineBase.LineEndClamp = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, lineCastResolution);
+                    lineBase.LineEndClamp = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, LineCastResolution);
 
                     if (FocusTarget != null)
                     {
-                        lineColor = lineColorValid;
+                        lineColor = LineColorValid;
                     }
 
                     if (IsFocusLocked)
                     {
-                        distorterGravity.enabled = true;
-                        distorterGravity.WorldCenterOfGravity = Result.CurrentPointerTarget.transform.position;
+                        gravityDistorter.enabled = true;
+                        gravityDistorter.WorldCenterOfGravity = Result.CurrentPointerTarget.transform.position;
                     }
                 }
                 else
@@ -179,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (IsFocusLocked)
             {
-                lineColor = lineColorLockFocus;
+                lineColor = LineColorLockFocus;
             }
 
             for (int i = 0; i < lineRenderers.Length; i++)

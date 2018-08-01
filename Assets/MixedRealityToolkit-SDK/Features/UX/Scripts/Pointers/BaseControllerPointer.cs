@@ -335,6 +335,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #endregion IMixedRealityPointer Implementation
 
+        #region IMixedRealitySourcePoseHandler Implementation
+
+        /// <inheritdoc />
+        public override void OnSourceLost(SourceStateEventData eventData)
+        {
+            base.OnSourceLost(eventData);
+
+            Destroy(gameObject);
+        }
+
+        #endregion IMixedRealitySourcePoseHandler Implementation
+
         #region IMixedRealityInputHandler Implementation
 
         /// <inheritdoc />

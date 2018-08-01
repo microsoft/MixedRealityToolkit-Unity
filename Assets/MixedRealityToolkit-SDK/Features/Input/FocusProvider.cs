@@ -419,8 +419,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             if (IsPointerRegistered(pointer)) { return false; }
 
-            Debug.Log($"Added {pointer.GetType().Name}");
-
             pointers.Add(new PointerData(pointer));
             return true;
         }
@@ -457,7 +455,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
 
             pointers.Remove(pointerData);
-            Debug.Log($"Removed {pointer.GetType().Name}");
             return true;
         }
 
