@@ -12,11 +12,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
     {
         private readonly GUIContent positionContent = new GUIContent("Position");
         private readonly GUIContent rotationContent = new GUIContent("Rotation");
-        private readonly int numberOfLines = 3;
+        private const int NumberOfLines = 3;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return EditorGUIUtility.singleLineHeight * numberOfLines;
+            return EditorGUIUtility.singleLineHeight * NumberOfLines;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
             EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
             EditorGUI.indentLevel++;
 
-            var fieldHeight = position.height / numberOfLines;
+            var fieldHeight = position.height / NumberOfLines;
             var positionRect = new Rect(position.x, position.y + fieldHeight, position.width, fieldHeight);
             var rotationRect = new Rect(position.x, position.y + fieldHeight * 2, position.width, fieldHeight);
 

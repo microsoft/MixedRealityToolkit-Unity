@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         {
             get
             {
-                if (inputSystem == null && MixedRealityManager.Instance.ActiveProfile.EnableInputSystem)
+                if (inputSystem == null && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
                 {
                     inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
                 }
