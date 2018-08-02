@@ -303,14 +303,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void OnDestroy()
         {
-            if (GazePointer?.BaseCursor != null)
-            {
-                var cursorObject = GazePointer.BaseCursor.GetGameObjectReference();
+            var cursorObject = GazePointer?.BaseCursor?.GetGameObjectReference();
 
-                if (cursorObject != null)
-                {
-                    Destroy(GazePointer.BaseCursor.GetGameObjectReference());
-                }
+            if (cursorObject != null)
+            {
+                Destroy(cursorObject);
             }
         }
 
