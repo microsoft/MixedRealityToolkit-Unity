@@ -121,9 +121,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 6
+        description: Trigger
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -252,9 +252,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 18
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 6
+        description: Trigger
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: 
       axisCodeY: 

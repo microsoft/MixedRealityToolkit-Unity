@@ -25,5 +25,8 @@ MonoBehaviour:
     description: Pointer Pose
     axisConstraint: 7
   - id: 5
-    description: Teleport
+    description: Teleport Direction
     axisConstraint: 4
+  - id: 6
+    description: Trigger
+    axisConstraint: 3

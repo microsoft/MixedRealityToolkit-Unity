@@ -5,6 +5,8 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
 using System;
@@ -14,6 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 {
     public class TeleportPointer : LinePointer
     {
+        private static IMixedRealityTeleportSystem teleportSystem = null;
+        protected static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = MixedRealityManager.Instance.GetManager<IMixedRealityTeleportSystem>());
+
         [SerializeField]
         private MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
 
@@ -142,16 +147,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                 TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
             {
-                // TODO PointerTeleportManager.Instance.InitiateTeleport(this);
+                TeleportSystem.RaiseTeleportRequest(this, TeleportTarget);
             }
         }
 
         /// <inheritdoc />
         public override void OnInputUp(InputEventData eventData)
         {
-            base.OnInputUp(eventData);
+            TeleportSystem.RaiseTeleportStarted(this, TeleportTarget);
 
-            // TODO PointerTeleportManager.Instance.TryToTeleport();
+            base.OnInputUp(eventData);
         }
 
         /// <inheritdoc />

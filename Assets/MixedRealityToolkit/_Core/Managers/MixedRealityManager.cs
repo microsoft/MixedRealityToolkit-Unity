@@ -10,6 +10,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Managers
@@ -158,18 +159,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             #region  Managers Registration
 
-            //If the Input system has been selected for initialization in the Active profile, enable it in the project
+            // If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsInputSystemEnabled)
             {
                 //Enable Input (example initializer)
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
             }
 
-            //If the Boundary system has been selected for initialization in the Active profile, enable it in the project
+            // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
                 //Enable Boundary (example initializer)
                 AddManager(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem);
+            }
+
+            // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
+            if (ActiveProfile.IsTeleportSystemEnabled)
+            {
+                AddManager(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
             }
 
             #region ActiveSDK Discovery
@@ -880,7 +887,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             if (manager == null)
             {
-                throw new NullReferenceException($"Unable to find {nameof(type)} Manager.");
+                throw new NullReferenceException($"Unable to find {type.Name} Manager.");
             }
         }
 

@@ -244,9 +244,9 @@ MonoBehaviour:
     description: None
     axisConstraint: 0
   pointerAction:
-    id: 0
-    description: None
-    axisConstraint: 0
+    id: 6
+    description: Trigger
+    axisConstraint: 3
   requiresHoldAction: 0
   overrideGlobalPointerExtent: 0
   pointerExtent: 10
@@ -395,14 +395,14 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  LineCastResolution: 25
+  LineCastResolution: 100
   lineBase: {fileID: 0}
   lineRenderers: []
   gravityDistorter: {fileID: 0}
   teleportAction:
-    id: 0
-    description: None
-    axisConstraint: 0
+    id: 5
+    description: Teleport
+    axisConstraint: 4
   angleOffset: -82.5
   minValidDot: 0.2
   LineColorHotSpot:

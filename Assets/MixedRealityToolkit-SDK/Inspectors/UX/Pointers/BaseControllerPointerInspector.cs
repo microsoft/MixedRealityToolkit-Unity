@@ -54,8 +54,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
                 {
                     EditorGUILayout.PropertyField(inputSourceAction);
                 }
+            }
 
-                EditorGUILayout.PropertyField(pointerAction);
+            EditorGUILayout.PropertyField(pointerAction);
+
+            if (DrawBasePointerActions)
+            {
                 EditorGUILayout.PropertyField(requiresHoldAction);
 
                 if (requiresHoldAction.boolValue)
