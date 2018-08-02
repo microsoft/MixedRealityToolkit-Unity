@@ -43,7 +43,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         [Tooltip("If no line renderers are specified, this array will be auto-populated on startup.")]
         private BaseMixedRealityLineRenderer[] lineRenderers;
 
-        public BaseMixedRealityLineRenderer[] LineRenderers;
+        public BaseMixedRealityLineRenderer[] LineRenderers
+        {
+            get { return lineRenderers; }
+            set { lineRenderers = value; }
+        }
 
         [SerializeField]
         private DistorterGravity gravityDistorter = null;

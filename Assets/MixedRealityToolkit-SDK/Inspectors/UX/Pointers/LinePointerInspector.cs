@@ -33,7 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-
             serializedObject.Update();
 
             linePointerFoldout = EditorGUILayout.Foldout(linePointerFoldout, "Line Pointer Settings", true);
