@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 cursorInstance = newCursor;
             }
 
-            if (cursorInstance == null)
+            if (cursorInstance == null && cursorPrefab != null)
             {
                 cursorInstance = Instantiate(cursorPrefab, transform);
                 cursorInstance.name = $"{name}_Cursor";
