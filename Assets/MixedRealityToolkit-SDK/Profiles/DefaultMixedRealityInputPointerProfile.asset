@@ -17,3 +17,9 @@ MonoBehaviour:
     handedness: 7
     pointerPrefab: {fileID: 1247086986094436, guid: 47372085a0372d94a9f7fcbe61a2e0a1,
       type: 2}
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 3
+    pointerPrefab: {fileID: 1196247974088106, guid: c7bc7b635227ee646b8aa7d08e77cb7f,
+      type: 2}
