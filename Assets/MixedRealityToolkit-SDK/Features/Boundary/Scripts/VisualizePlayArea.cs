@@ -2,10 +2,12 @@
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
-using UnityEngine.Experimental.XR;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Boundary
 {
+    /// <summary>
+    /// Visualizes the inscribed rectangular play area within the configured boundary.
+    /// </summary>
     public class VisualizePlayArea : MonoBehaviour
     {
         [Tooltip("The material to use when visualizing the play area rectangle.")]
@@ -55,11 +57,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Boundary
         {
             if (!isPlayAreaVisualized)
             {
-                // Hide the play area object
+                // Hide the play area object.
                 playArea?.SetActive(false);
             }
             else
             {
+                // Show or create the play area object.
                 if (playArea != null)
                 {
                     playArea.SetActive(true);
@@ -71,6 +74,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Boundary
             }
         }
 
+        /// <summary>
+        /// Creates a rectangular <see cref="GameObject"/> to represent the 
+        /// play area within the configured boundary.
+        /// </summary>
         private void CreatePlayAreaObject()
         {
             // Get the rectangular bounds.
