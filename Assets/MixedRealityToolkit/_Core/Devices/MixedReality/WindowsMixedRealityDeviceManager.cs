@@ -145,13 +145,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             detectedController.SetupConfiguration(typeof(WindowsMixedRealityController));
 
-            for (int i = 0; i < detectedController.InputSource.Pointers.Length; i++)
+            Debug.Assert(detectedController != null);
+
+            for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
             {
                 detectedController.InputSource.Pointers[i].Controller = detectedController;
             }
 
             activeControllers.Add(interactionSourceState.source.id, detectedController);
-
             return detectedController;
         }
 
