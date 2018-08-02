@@ -83,9 +83,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// Retrieve the source controller from the Active Store, or create a new device and register it
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK</param>
-        /// <param name="updateControllerData">Optional, should the controller update its state as well</param> 
         /// <returns>New or Existing Controller Input Source</returns>
-        private WindowsMixedRealityController GetOrAddController(InteractionSourceState interactionSourceState, bool updateControllerData = true)
+        private WindowsMixedRealityController GetOrAddController(InteractionSourceState interactionSourceState)
         {
             //If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(interactionSourceState.source.id))
@@ -136,6 +135,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                             {
                                 pointers.Add(pointer);
                             }
+                            else
+                            {
+                                Debug.LogWarning($"Failed to attach {pointerProfile.PointerPrefab.name} to Windows Mixed Reality Controller.");
+                            }
                         }
                     }
                 }
@@ -163,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
         private void RemoveController(InteractionSourceState interactionSourceState)
         {
-            var controller = GetOrAddController(interactionSourceState, false);
+            var controller = GetOrAddController(interactionSourceState);
             InputSystem?.RaiseSourceLost(controller?.InputSource, controller);
             activeControllers.Remove(interactionSourceState.source.id);
         }

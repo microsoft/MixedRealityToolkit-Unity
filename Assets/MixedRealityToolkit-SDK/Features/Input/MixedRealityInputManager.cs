@@ -14,6 +14,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -264,11 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             GameObject focusedObject = FocusProvider?.GetFocusedObject(baseInputEventData);
 
             // Send the event to global listeners
-            for (int i = 0; i < EventListeners.Count; i++)
-            {
-                // Global listeners should only get events on themselves, as opposed to their hierarchy.
-                ExecuteEvents.Execute(EventListeners[i], baseInputEventData, eventHandler);
-            }
+            base.HandleEvent(eventData, eventHandler);
 
             if (baseInputEventData.used)
             {
@@ -328,8 +325,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <param name="listener">Listener to add.</param>
         public override void Register(GameObject listener)
         {
-            if (EventListeners.Contains(listener)) { return; }
-            EventListeners.Add(listener);
+            base.Register(listener);
         }
 
         /// <summary>
@@ -338,8 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
         {
-            if (!EventListeners.Contains(listener)) { return; }
-            EventListeners.Remove(listener);
+            base.Unregister(listener);
         }
 
         #endregion IEventSystemManager Implementation

@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #region Monobehaviour Implementation
 
-        private void OnValidate()
+        protected virtual void OnValidate()
         {
             CheckInitialization();
         }

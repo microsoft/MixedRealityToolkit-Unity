@@ -362,7 +362,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             base.OnSourceLost(eventData);
 
-            Destroy(gameObject);
+            if (eventData.InputSource.SourceId == InputSourceParent.SourceId)
+            {
+                if (Application.isEditor)
+                {
+                    DestroyImmediate(gameObject);
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
+            }
         }
 
         /// <inheritdoc />
