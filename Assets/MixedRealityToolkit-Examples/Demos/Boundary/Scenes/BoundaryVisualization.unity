@@ -412,6 +412,7 @@ GameObject:
   m_Component:
   - component: {fileID: 353698135}
   - component: {fileID: 353698136}
+  - component: {fileID: 353698137}
   m_Layer: 0
   m_Name: BoundaryVisualizer
   m_TagString: Untagged
@@ -447,6 +448,19 @@ MonoBehaviour:
   outOfBoundsMaterial: {fileID: 2100000, guid: 360c90aa3bc85c9438a05d511deb80ae, type: 2}
   inscribedRectangleMaterial: {fileID: 2100000, guid: 693646fbd4009244e9cc6a4cd5b72585,
     type: 2}
+--- !u!114 &353698137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 353698134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bfc11696910c3a4a95bec35024e1ce0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playAreaMaterial: {fileID: 2100000, guid: 693646fbd4009244e9cc6a4cd5b72585, type: 2}
+  isPlayAreaVisualized: 1
 --- !u!1 &380504073
 GameObject:
   m_ObjectHideFlags: 0
