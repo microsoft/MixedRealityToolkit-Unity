@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
         [Header("Strip Mesh Settings")]
 
         [SerializeField]
-        private Material lineMaterial;
+        private Material lineMaterial = null;
 
         [SerializeField]
         private float uvOffset = 0f;
