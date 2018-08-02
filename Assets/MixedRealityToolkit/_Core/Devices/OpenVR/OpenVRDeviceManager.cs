@@ -143,12 +143,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         case "Vive Knuckles - Left":                                            // TODO: Yet to test
                         case "Vive Knuckles- Right":                                            // TODO: Yet to test
                             return SupportedControllerType.ViveKnuckles;
-                        default:
-                            break;
                     }
                 }
 
-                return SupportedControllerType.GenericOpenVR;
+                return SupportedControllerType.None;
             }
         }
 
@@ -169,6 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
 
             Handedness controllingHand;
+
             switch (xrNodeState.nodeType)
             {
                 case XRNode.LeftHand:
@@ -202,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     controllerType = typeof(OculusRemoteController);
                     break;
                 default:
-                    Debug.LogError($"Unsupported controller type {nameof(controllerType)}.");
+                    Debug.LogError($"Unsupported controller type detected.");
                     return null;
             }
 
