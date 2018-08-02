@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected LayerMask InvalidLayers = 1 << 2; // Ignore raycast
 
         [SerializeField]
-        private float inputThreshold = 0.05f;
+        private float inputThreshold = 0.5f;
 
         private Vector2 currentInputPosition = Vector2.zero;
 

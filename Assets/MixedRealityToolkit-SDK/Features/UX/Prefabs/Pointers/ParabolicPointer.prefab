@@ -236,9 +236,9 @@ MonoBehaviour:
   pointerOrientation: 0
   useSourcePoseData: 0
   inputSourceAction:
-    id: 0
-    description: None
-    axisConstraint: 0
+    id: 3
+    description: Grip Pose
+    axisConstraint: 7
   activeHoldAction:
     id: 0
     description: None
@@ -396,9 +396,10 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   LineCastResolution: 100
-  lineBase: {fileID: 0}
-  lineRenderers: []
-  gravityDistorter: {fileID: 0}
+  lineBase: {fileID: 114203474425088848}
+  lineRenderers:
+  - {fileID: 114102700686190618}
+  gravityDistorter: {fileID: 114225980339285346}
   teleportAction:
     id: 5
     description: Teleport
