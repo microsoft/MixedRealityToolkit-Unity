@@ -297,8 +297,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             base.OnDisable();
             GazePointer.BaseCursor?.SetVisibility(false);
-            InputSystem.RaiseSourceLost(GazeInputSource);
             InputSystem.FocusProvider.UnregisterPointer(GazePointer);
+            InputSystem.RaiseSourceLost(GazeInputSource);
         }
 
         #endregion Monobehaiour Implementation
