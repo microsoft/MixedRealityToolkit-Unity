@@ -63,12 +63,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
         {
             Debug.Assert(eventData != null);
-            var baseInputEventData = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
-            Debug.Assert(baseInputEventData != null);
-            Debug.Assert(!baseInputEventData.used);
+            var teleportData = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
+            Debug.Assert(teleportData != null);
+            Debug.Assert(!teleportData.used);
 
             // Process all the event listeners
-            base.HandleEvent(eventData, eventHandler);
+            base.HandleEvent(teleportData, eventHandler);
         }
 
         /// <summary>
@@ -91,28 +91,72 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
         #endregion IEventSystemManager Implementation
 
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityTeleportHandler> OnTeleportRequestHandler =
+            delegate (IMixedRealityTeleportHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
+                handler.OnTeleportRequest(casted);
+            };
+
         /// <inheritdoc />
         public void RaiseTeleportRequest(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
         {
+            // initialize event
             teleportEventData.Initialize(pointer, target);
+
+            // Pass handler
+            HandleEvent(teleportEventData, OnTeleportRequestHandler);
         }
+
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityTeleportHandler> OnTeleportStartedHandler =
+            delegate (IMixedRealityTeleportHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
+                handler.OnTeleportStarted(casted);
+            };
 
         /// <inheritdoc />
         public void RaiseTeleportStarted(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
         {
+            // initialize event
             teleportEventData.Initialize(pointer, target);
+
+            // Pass handler
+            HandleEvent(teleportEventData, OnTeleportStartedHandler);
         }
+
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityTeleportHandler> OnTeleportCompletedHandler =
+            delegate (IMixedRealityTeleportHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
+                handler.OnTeleportCompleted(casted);
+            };
 
         /// <inheritdoc />
         public void RaiseTeleportComplete(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
         {
+            // initialize event
             teleportEventData.Initialize(pointer, target);
+
+            // Pass handler
+            HandleEvent(teleportEventData, OnTeleportCompletedHandler);
         }
+
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityTeleportHandler> OnTeleportCanceledHandler =
+            delegate (IMixedRealityTeleportHandler handler, BaseEventData eventData)
+            {
+                var casted = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
+                handler.OnTeleportCanceled(casted);
+            };
 
         /// <inheritdoc />
         public void RaiseTeleportCanceled(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
         {
+            // initialize event
             teleportEventData.Initialize(pointer, target);
+
+            // Pass handler
+            HandleEvent(teleportEventData, OnTeleportCanceledHandler);
         }
     }
 }

@@ -5,8 +5,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
 using System;
@@ -16,9 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 {
     public class TeleportPointer : LinePointer
     {
-        private static IMixedRealityTeleportSystem teleportSystem = null;
-        protected static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = MixedRealityManager.Instance.GetManager<IMixedRealityTeleportSystem>());
-
         [SerializeField]
         private MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
 
@@ -289,13 +284,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 // Offset the angle so it's 'forward' facing
                 angle += angleOffset;
                 PointerOrientation = angle;
-                //teleportEnabled = true;
+
+                if (!teleportEnabled)
+                {
+                    teleportEnabled = true;
+                    TeleportSystem.RaiseTeleportRequest(this, TeleportTarget);
+                }
             }
             else
             {
-                //teleportEnabled = false;
+                if (teleportEnabled)
+                {
+                    teleportEnabled = false;
+                    TeleportSystem.RaiseTeleportCanceled(this, TeleportTarget);
+                }
+
                 if (canTeleport)
                 {
+                    canTeleport = false;
                     TeleportSystem.RaiseTeleportStarted(this, TeleportTarget);
                 }
             }
@@ -304,8 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                 TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
             {
-                TeleportSystem.RaiseTeleportRequest(this, TeleportTarget);
-                //canTeleport = true;
+                canTeleport = true;
             }
         }
 

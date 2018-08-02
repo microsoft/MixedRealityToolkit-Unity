@@ -12,6 +12,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System.Collections;
 using UnityEngine;
@@ -24,6 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     [DisallowMultipleComponent]
     public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer, IMixedRealitySpatialInputHandler, IMixedRealityTeleportHandler
     {
+        private static IMixedRealityTeleportSystem teleportSystem = null;
+        protected static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = MixedRealityManager.Instance.GetManager<IMixedRealityTeleportSystem>());
+
         [SerializeField]
         private GameObject cursorPrefab = null;
 
@@ -140,6 +144,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             {
                 InputSystem.FocusProvider.RegisterPointer(this);
             }
+
+            TeleportSystem.Register(gameObject);
         }
 
         protected virtual void Start()
@@ -155,6 +161,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected override void OnDisable()
         {
             base.OnDisable();
+            TeleportSystem.Unregister(gameObject);
+
             IsHoldPressed = false;
             IsSelectPressed = false;
             HasSelectPressedOnce = false;
@@ -489,9 +497,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public virtual void OnTeleportRequest(TeleportEventData eventData)
         {
-            Debug.Log("Teleport request raised.");
             if (eventData.Pointer.PointerId != PointerId)
             {
+                Debug.Log("Teleport request raised.");
                 // Only turn off pointers that aren't making the request.
                 IsTeleportRequestActive = true;
             }
@@ -500,7 +508,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public virtual void OnTeleportStarted(TeleportEventData eventData)
         {
-            Debug.Log("Teleport Started.");
+            if (eventData.Pointer.PointerId != PointerId)
+            {
+                Debug.Log("Teleport Started.");
+            }
+
             // Turn off all pointers while we teleport.
             IsTeleportRequestActive = true;
         }
@@ -508,7 +520,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public virtual void OnTeleportCompleted(TeleportEventData eventData)
         {
-            Debug.Log("Teleport Completed.");
+            if (eventData.Pointer.PointerId != PointerId)
+            {
+                Debug.Log("Teleport Completed.");
+            }
+
             // Turn all our pointers back on.
             IsTeleportRequestActive = false;
         }
@@ -516,7 +532,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public virtual void OnTeleportCanceled(TeleportEventData eventData)
         {
-            Debug.Log("Teleport request Canceled.");
+            if (eventData.Pointer.PointerId != PointerId)
+            {
+                Debug.Log("Teleport request Canceled.");
+            }
+
             // Turn all our pointers back on.
             IsTeleportRequestActive = false;
         }

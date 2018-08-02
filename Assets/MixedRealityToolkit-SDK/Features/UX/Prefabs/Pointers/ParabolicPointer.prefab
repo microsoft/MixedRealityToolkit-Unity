@@ -113,7 +113,7 @@ MonoBehaviour:
   colorOffset: 0
   widthOffset: 0
   stepMode: 0
-  lineStepCount: 16
+  lineStepCount: 256
   lineMaterial: {fileID: 0}
   roundedEdges: 1
   roundedCaps: 1
@@ -441,7 +441,7 @@ MonoBehaviour:
   InvalidLayers:
     serializedVersion: 2
     m_Bits: 4
-  inputThreshold: 0.05
+  inputThreshold: 0.5
   minParabolaVelocity: 3
   maxParabolaVelocity: 3
   parabolicLineData: {fileID: 114203474425088848}

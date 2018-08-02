@@ -49,7 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             // Make sure our parabola only rotates on y/x axis
             // NOTE: Parabola's custom line transform field should be set to a transform OTHER than its gameObject's transform
             parabolicLineData.Direction = transform.forward + Vector3.up;
-            parabolicLineData.LineTransform.eulerAngles = Vector3.zero;
+            parabolicLineData.LineTransform.rotation = Quaternion.identity;
+
             // Use our up angle and distance curve to determine the velocity
             // This can be used to make the parabola point farther when aimed up
             float angle = Mathf.Clamp01(Vector3.Angle(transform.forward, Vector3.up) / 180f);

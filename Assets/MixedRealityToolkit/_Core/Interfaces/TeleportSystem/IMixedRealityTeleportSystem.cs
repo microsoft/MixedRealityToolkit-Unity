@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem
@@ -9,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem
     /// Manager interface for a Teleport system in the Mixed Reality Toolkit
     /// All replacement systems for providing Teleportation functionality should derive from this interface
     /// </summary>
-    public interface IMixedRealityTeleportSystem : IMixedRealityManager
+    public interface IMixedRealityTeleportSystem : IMixedRealityEventSystem
     {
         /// <summary>
         /// Raise a teleportation request event.
