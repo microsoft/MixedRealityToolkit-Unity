@@ -229,6 +229,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                             {
                                 pointers.Add(pointer);
                             }
+                            else
+                            {
+                                Debug.LogWarning($"Failed to attach {pointerProfile.PointerPrefab.name} to {controllerType.Name}.");
+                            }
                         }
                     }
                 }
