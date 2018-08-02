@@ -11,8 +11,16 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices
 {
+    /// <summary>
+    /// Base Device manager to inherit from.
+    /// </summary>
     public class BaseDeviceManager : IMixedRealityDeviceManager
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="priority"></param>
         public BaseDeviceManager(string name, uint priority)
         {
             Name = name;
@@ -71,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                             pointerProfile.Handedness == Handedness.Both ||
                             pointerProfile.Handedness == controllingHand)
                         {
-                            var pointerObject = UnityEngine.Object.Instantiate(pointerProfile.PointerPrefab);
+                            var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
                             var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
 
                             if (pointer != null)
