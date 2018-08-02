@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
@@ -24,18 +24,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         private float angleOffset = -82.5f;
 
         [SerializeField]
-        protected float MinValidDot = 0.2f;
-
-        [Header("Navigation Colors")]
+        private float minValidDot = 0.2f;
 
         [SerializeField]
         protected Gradient LineColorHotSpot = new Gradient();
 
-        [Header("Layers & Tags")]
-
         [SerializeField]
         [Tooltip("Layers that are considered 'valid' for navigation")]
-        protected LayerMask ValidLayers = 1 << 1; // Default
+        protected LayerMask ValidLayers = 1 << 0; // Default
 
         [SerializeField]
         [Tooltip("Layers that are considered 'invalid' for navigation")]
@@ -245,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                         {
                             // If it's NOT a hotspot, check if the hit normal is too steep 
                             // (Hotspots override dot requirements)
-                            TeleportSurfaceResult = Vector3.Dot(Result.StartPoint, Vector3.up) < MinValidDot
+                            TeleportSurfaceResult = Vector3.Dot(Result.StartPoint, Vector3.up) < minValidDot
                                 ? TeleportSurfaceResult.Valid
                                 : TeleportSurfaceResult.Invalid;
                         }
