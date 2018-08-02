@@ -1,17 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
-using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
@@ -224,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                             pointerProfile.Handedness == Handedness.Both ||
                             pointerProfile.Handedness == controllingHand)
                         {
-                            var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
+                            var pointerObject = UnityEngine.Object.Instantiate(pointerProfile.PointerPrefab);
                             var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
 
                             if (pointer != null)
