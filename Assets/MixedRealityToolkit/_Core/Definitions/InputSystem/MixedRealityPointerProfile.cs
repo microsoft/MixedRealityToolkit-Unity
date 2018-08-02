@@ -14,6 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         [SerializeField]
         private PointerOption[] pointerOptions = new PointerOption[0];
 
+        /// <summary>
+        /// The Pointer options for this profile.
+        /// </summary>
         public PointerOption[] PointerOptions => pointerOptions;
     }
 }

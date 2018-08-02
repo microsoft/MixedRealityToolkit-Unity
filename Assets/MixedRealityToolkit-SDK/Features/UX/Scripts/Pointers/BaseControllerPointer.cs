@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         [SerializeField]
-        [Tooltip("Should the pointers position be driven from the source pose or from input handler?")]
+        [Tooltip("Should the pointer's position be driven from the source pose or from input handler?")]
         private bool useSourcePoseData = false;
 
         [SerializeField]
@@ -165,6 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         IMixedRealityInputSystem IMixedRealityPointer.InputSystem => InputSystem;
 
+        /// <inheritdoc />
         public override IMixedRealityController Controller
         {
             get { return base.Controller; }
@@ -298,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #region IEquality Implementation
 
-        public static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)
+        private static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)
         {
             return left.Equals(right);
         }
@@ -356,6 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             Destroy(gameObject);
         }
 
+        /// <inheritdoc />
         public override void OnSourcePoseChanged(SourcePoseEventData eventData)
         {
             if (useSourcePoseData)
