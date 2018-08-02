@@ -611,7 +611,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
 
             // Raise Focus Events on the pointers cursor if it has one.
-            if (pointer.BaseCursor?.GameObjectReference != null)
+            if (pointer.BaseCursor != null)
             {
                 try
                 {
@@ -650,7 +650,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
 
             // Raise Focus Events on the pointers cursor if it has one.
-            if (pointer.BaseCursor?.GameObjectReference != null)
+            if (pointer.BaseCursor != null)
             {
                 try
                 {
