@@ -310,6 +310,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     DontDestroyOnLoad(instance.transform.root);
                 }
 
+                Application.quitting += ApplicationOnQuitting;
+
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.playModeStateChanged += playModeState =>
                 {
@@ -324,6 +326,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
                 Initialize();
             }
+        }
+
+        private void ApplicationOnQuitting()
+        {
+            DisableAllManagers();
+            DestroyAllManagers();
         }
 
         /// <summary>
