@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <summary>
         /// The pointer's maximum extent when raycasting.
         /// </summary>
-        float? PointerExtent { get; set; }
+        float PointerExtent { get; set; }
 
         /// <summary>
         /// The raycast rays.

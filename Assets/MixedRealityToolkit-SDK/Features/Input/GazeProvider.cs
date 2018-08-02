@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                     newGazeNormal = stabilizer.StableRay.direction;
                 }
 
-                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent)));
+                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * PointerExtent));
 
                 gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
             }
@@ -299,16 +299,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             GazePointer.BaseCursor?.SetVisibility(false);
             InputSystem.RaiseSourceLost(GazeInputSource);
             InputSystem.FocusProvider.UnregisterPointer(GazePointer);
-        }
-
-        private void OnDestroy()
-        {
-            var cursorObject = GazePointer?.BaseCursor?.GetGameObjectReference();
-
-            if (cursorObject != null)
-            {
-                Destroy(cursorObject);
-            }
         }
 
         #endregion Monobehaiour Implementation
