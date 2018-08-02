@@ -37,12 +37,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         [SerializeField]
         private BaseMixedRealityLineDataProvider lineBase;
 
+        /// <summary>
+        /// The Line Data Provider driving this pointer.
+        /// </summary>
         public BaseMixedRealityLineDataProvider LineBase => lineBase;
 
         [SerializeField]
         [Tooltip("If no line renderers are specified, this array will be auto-populated on startup.")]
         private BaseMixedRealityLineRenderer[] lineRenderers;
 
+        /// <summary>
+        /// The current line renderers that this pointer is utilizing.
+        /// </summary>
+        /// <remarks>
+        /// If no line renderers are specified, this array will be auto-populated on startup.
+        /// </remarks>
         public BaseMixedRealityLineRenderer[] LineRenderers
         {
             get { return lineRenderers; }
@@ -52,7 +61,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         [SerializeField]
         private DistorterGravity gravityDistorter = null;
 
+        /// <summary>
+        /// The Gravity Distorter that is affecting the <see cref="BaseMixedRealityLineDataProvider"/> attached to this pointer.
+        /// </summary>
         public DistorterGravity GravityDistorter => gravityDistorter;
+
+        #region Monobehaviour Implementation
 
         private void OnValidate()
         {
@@ -64,6 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             base.OnEnable();
             CheckInitialization();
         }
+
+        #endregion Monobehaviour Implementation
 
         private void CheckInitialization()
         {
@@ -92,6 +108,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 Debug.LogError($"No Mixed Reality Line Renderers found on {gameObject.name}. Did you forget to add a Mixed Reality Line Renderer?");
             }
         }
+
+        #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
         public override void OnPreRaycast()
@@ -198,5 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 lineRenderers[i].LineColor = lineColor;
             }
         }
+
+        #endregion IMixedRealityPointer Implementation
     }
 }
