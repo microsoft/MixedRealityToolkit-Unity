@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
