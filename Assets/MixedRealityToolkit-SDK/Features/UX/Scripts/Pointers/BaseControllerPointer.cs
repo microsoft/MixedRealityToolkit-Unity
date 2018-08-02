@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
@@ -21,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
     [DisallowMultipleComponent]
-    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer, IMixedRealitySpatialInputHandler
+    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer, IMixedRealitySpatialInputHandler, IMixedRealityTeleportHandler
     {
         [SerializeField]
         private GameObject cursorPrefab = null;
@@ -83,6 +84,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected bool HasSelectPressedOnce = false;
 
         protected bool IsHoldPressed = false;
+
+        private bool isTeleportRequestActive = false;
 
         private bool delayPointerRegistration = true;
 
@@ -216,6 +219,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             get
             {
+                if (isTeleportRequestActive)
+                {
+                    return false;
+                }
+
                 if (requiresHoldAction && IsHoldPressed)
                 {
                     return true;
@@ -465,5 +473,40 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         #endregion IMixedRealitySpatialInputHandler Implementation 
+
+        #region IMixedRealityTeleportHandler Implementation
+
+        /// <inheritdoc />
+        public virtual void OnTeleportRequest(TeleportEventData eventData)
+        {
+            if (eventData.Pointer.PointerId != PointerId)
+            {
+                // Only turn off pointers that aren't making the request.
+                isTeleportRequestActive = true;
+            }
+        }
+
+        /// <inheritdoc />
+        public virtual void OnTeleportStarted(TeleportEventData eventData)
+        {
+            // Turn off all pointers while we teleport.
+            isTeleportRequestActive = true;
+        }
+
+        /// <inheritdoc />
+        public virtual void OnTeleportCompleted(TeleportEventData eventData)
+        {
+            // Turn all our pointers back on.
+            isTeleportRequestActive = false;
+        }
+
+        /// <inheritdoc />
+        public virtual void OnTeleportCanceled(TeleportEventData eventData)
+        {
+            // Turn all our pointers back on.
+            isTeleportRequestActive = false;
+        }
+
+        #endregion IMixedRealityTeleportHandler Implementation
     }
 }

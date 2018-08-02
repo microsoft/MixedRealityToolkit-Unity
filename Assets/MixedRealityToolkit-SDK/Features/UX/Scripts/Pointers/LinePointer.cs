@@ -66,21 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// </summary>
         public DistorterGravity GravityDistorter => gravityDistorter;
 
-        #region Monobehaviour Implementation
-
-        private void OnValidate()
-        {
-            CheckInitialization();
-        }
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-            CheckInitialization();
-        }
-
-        #endregion Monobehaviour Implementation
-
         private void CheckInitialization()
         {
             if (lineBase == null)
@@ -108,6 +93,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 Debug.LogError($"No Mixed Reality Line Renderers found on {gameObject.name}. Did you forget to add a Mixed Reality Line Renderer?");
             }
         }
+
+        #region Monobehaviour Implementation
+
+        private void OnValidate()
+        {
+            CheckInitialization();
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            CheckInitialization();
+        }
+
+        #endregion Monobehaviour Implementation
 
         #region IMixedRealityPointer Implementation
 

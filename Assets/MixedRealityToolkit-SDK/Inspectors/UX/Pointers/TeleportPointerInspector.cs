@@ -6,6 +6,41 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
 {
+    [CustomEditor(typeof(ParabolicTeleportPointer))]
+    public class ParabolicTeleportPointerInspector : TeleportPointerInspector
+    {
+        private SerializedProperty minParabolaVelocity;
+        private SerializedProperty maxParabolaVelocity;
+
+        private bool parabolicTeleportFoldout = true;
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            minParabolaVelocity = serializedObject.FindProperty("minParabolaVelocity");
+            maxParabolaVelocity = serializedObject.FindProperty("maxParabolaVelocity");
+        }
+
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+            serializedObject.Update();
+
+            parabolicTeleportFoldout = EditorGUILayout.Foldout(parabolicTeleportFoldout, "Parabolic Pointer Options", true);
+
+            if (parabolicTeleportFoldout)
+            {
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(minParabolaVelocity);
+                EditorGUILayout.PropertyField(maxParabolaVelocity);
+                EditorGUI.indentLevel--;
+            }
+
+            serializedObject.ApplyModifiedProperties();
+        }
+    }
+
     [CustomEditor(typeof(TeleportPointer))]
     public class TeleportPointerInspector : LinePointerInspector
     {
