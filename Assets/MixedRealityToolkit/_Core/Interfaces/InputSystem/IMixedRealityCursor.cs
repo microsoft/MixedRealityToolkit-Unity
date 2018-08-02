@@ -46,6 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// Returns the <see cref="IMixedRealityCursor"/>'s <see cref="GameObject"/> reference.
         /// </summary>
         /// <returns>The <see cref="GameObject"/> this <see cref="IMixedRealityCursor"/> component is attached to.</returns>
-        GameObject GetGameObjectReference();
+        GameObject GameObjectReference { get; }
     }
 }

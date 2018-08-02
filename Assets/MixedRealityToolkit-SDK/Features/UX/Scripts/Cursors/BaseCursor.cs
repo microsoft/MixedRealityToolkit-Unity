@@ -125,10 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         }
 
         /// <inheritdoc />
-        public GameObject GetGameObjectReference()
-        {
-            return gameObject;
-        }
+        public GameObject GameObjectReference => gameObject;
 
         #endregion IMixedRealityCursor Implementation
 

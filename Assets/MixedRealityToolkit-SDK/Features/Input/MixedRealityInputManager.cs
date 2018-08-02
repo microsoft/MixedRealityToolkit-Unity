@@ -618,7 +618,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             // Raise Focus Events on the pointers cursor if it has one.
             if (pointer.BaseCursor != null)
             {
-                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GetGameObjectReference(), focusEventData, OnPreFocusChangedHandler);
+                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GameObjectReference, focusEventData, OnPreFocusChangedHandler);
             }
         }
 
@@ -648,7 +648,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             // Raise Focus Events on the pointers cursor if it has one.
             if (pointer.BaseCursor != null)
             {
-                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GetGameObjectReference(), focusEventData, OnFocusChangedHandler);
+                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GameObjectReference, focusEventData, OnFocusChangedHandler);
             }
         }
 
