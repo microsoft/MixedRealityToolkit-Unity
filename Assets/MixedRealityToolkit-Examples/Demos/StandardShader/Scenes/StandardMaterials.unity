@@ -2686,7 +2686,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d1a2a33ffcac354298137001635a001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorPrefab: {fileID: 0}
+  cursorPrefab: {fileID: 1000012072213228, guid: 62718441f3682f94ab10c70a637e014b,
+    type: 2}
   maxGazeCollisionDistance: 10
   raycastLayerMasks:
   - serializedVersion: 2
