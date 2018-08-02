@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     controllerType = typeof(ViveWandController);
                     break;
                 case SupportedControllerType.ViveKnuckles:
-                    controllerType = typeof(GenericOpenVRController);
+                    controllerType = typeof(ViveKnucklesController);
                     break;
                 case SupportedControllerType.OculusTouch:
                     controllerType = typeof(OculusTouchController);
@@ -205,43 +205,34 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     return null;
             }
 
-            var pointers = new List<IMixedRealityPointer>();
+            var pointers = RequestPointers(controllerType, controllingHand);
+            var inputSource = InputSystem?.RequestNewGenericInputSource($"{CurrentControllerType} Controller {controllingHand}", pointers);
 
-            if (MixedRealityManager.HasActiveProfile &&
-                MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
-                MixedRealityManager.Instance.ActiveProfile.PointerProfile != null)
+            GenericOpenVRController detectedController = null;
+
+            switch (CurrentControllerType)
             {
-                for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions.Length; i++)
-                {
-                    var pointerProfile = MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions[i];
-
-                    if (pointerProfile.ControllerType.Type == null ||
-                        pointerProfile.ControllerType == controllerType)
-                    {
-                        if (pointerProfile.Handedness == Handedness.Any ||
-                            pointerProfile.Handedness == Handedness.Both ||
-                            pointerProfile.Handedness == controllingHand)
-                        {
-                            var pointerObject = UnityEngine.Object.Instantiate(pointerProfile.PointerPrefab);
-                            var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-
-                            if (pointer != null)
-                            {
-                                pointers.Add(pointer);
-                            }
-                        }
-                    }
-                }
+                case SupportedControllerType.GenericOpenVR:
+                    detectedController = new GenericOpenVRController(TrackingState.NotTracked, controllingHand, inputSource);
+                    break;
+                case SupportedControllerType.ViveWand:
+                    detectedController = new ViveWandController(TrackingState.NotTracked, controllingHand, inputSource);
+                    break;
+                case SupportedControllerType.ViveKnuckles:
+                    detectedController = new ViveKnucklesController(TrackingState.NotTracked, controllingHand, inputSource);
+                    break;
+                case SupportedControllerType.OculusTouch:
+                    detectedController = new OculusTouchController(TrackingState.NotTracked, controllingHand, inputSource);
+                    break;
+                case SupportedControllerType.OculusRemote:
+                    detectedController = new OculusRemoteController(TrackingState.NotTracked, controllingHand, inputSource);
+                    break;
             }
 
-            IMixedRealityInputSource inputSource = InputSystem?.RequestNewGenericInputSource($"{CurrentControllerType} Controller {controllingHand}", pointers.ToArray());
-
-            var detectedController = new GenericOpenVRController(TrackingState.NotTracked, controllingHand, inputSource);
-            detectedController.SetupConfiguration(controllerType);
-
             Debug.Assert(detectedController != null);
+            detectedController?.SetupConfiguration(controllerType);
 
-            for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
+            for (int i = 0; i < detectedController?.InputSource?.Pointers?.Length; i++)
             {
                 detectedController.InputSource.Pointers[i].Controller = detectedController;
             }

@@ -110,41 +110,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                     throw new ArgumentOutOfRangeException();
             }
 
-            var pointers = new List<IMixedRealityPointer>();
-
-            if (interactionSourceState.source.supportsPointing &&
-                MixedRealityManager.HasActiveProfile &&
-                MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
-                MixedRealityManager.Instance.ActiveProfile.PointerProfile != null)
-            {
-                for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions.Length; i++)
-                {
-                    var pointerProfile = MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions[i];
-
-                    if (pointerProfile.ControllerType.Type == null ||
-                        pointerProfile.ControllerType == typeof(WindowsMixedRealityController))
-                    {
-                        if (pointerProfile.Handedness == Handedness.Any ||
-                            pointerProfile.Handedness == Handedness.Both ||
-                            pointerProfile.Handedness == controllingHand)
-                        {
-                            var pointerObject = UnityEngine.Object.Instantiate(pointerProfile.PointerPrefab);
-                            var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-
-                            if (pointer != null)
-                            {
-                                pointers.Add(pointer);
-                            }
-                            else
-                            {
-                                Debug.LogWarning($"Failed to attach {pointerProfile.PointerPrefab.name} to Windows Mixed Reality Controller.");
-                            }
-                        }
-                    }
-                }
-            }
-
-            var inputSource = InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {controllingHand}", pointers.ToArray());
+            var pointers = RequestPointers(typeof(WindowsMixedRealityController), controllingHand);
+            var inputSource = InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {controllingHand}", pointers);
             var detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
 
             detectedController.SetupConfiguration(typeof(WindowsMixedRealityController));
