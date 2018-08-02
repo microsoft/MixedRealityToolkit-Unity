@@ -497,11 +497,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public virtual void OnTeleportRequest(TeleportEventData eventData)
         {
+            // Only turn off pointers that aren't making the request.
             if (eventData.Pointer.PointerId != PointerId)
             {
                 Debug.Log("Teleport request raised.");
-                // Only turn off pointers that aren't making the request.
+
                 IsTeleportRequestActive = true;
+                BaseCursor?.SetVisibility(false);
             }
         }
 
@@ -515,6 +517,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             // Turn off all pointers while we teleport.
             IsTeleportRequestActive = true;
+            BaseCursor?.SetVisibility(false);
         }
 
         /// <inheritdoc />
@@ -527,6 +530,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             // Turn all our pointers back on.
             IsTeleportRequestActive = false;
+            BaseCursor?.SetVisibility(true);
         }
 
         /// <inheritdoc />
@@ -539,6 +543,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             // Turn all our pointers back on.
             IsTeleportRequestActive = false;
+            BaseCursor?.SetVisibility(true);
         }
 
         #endregion IMixedRealityTeleportHandler Implementation
