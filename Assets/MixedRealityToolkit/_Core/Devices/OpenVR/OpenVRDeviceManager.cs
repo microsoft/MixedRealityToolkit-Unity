@@ -1,14 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
+using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
@@ -43,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         public override void Update()
         {
             InputTracking.GetNodeStates(nodeStates);
+
             for (int i = 0; i < nodeStates.Count; i++)
             {
                 if (IsNodeTypeSupported(nodeStates[i]) &&
@@ -179,35 +183,71 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     break;
             }
 
-            IMixedRealityInputSource inputSource = InputSystem?.RequestNewGenericInputSource($"{CurrentControllerType} Controller {controllingHand}");
+            Type controllerType;
 
-            GenericOpenVRController detectedController = null;
-
-            // Initialize the controller base on the detected type
             switch (CurrentControllerType)
             {
                 case SupportedControllerType.GenericOpenVR:
-                    detectedController = new GenericOpenVRController(TrackingState.NotTracked, controllingHand, inputSource);
-                    detectedController.SetupConfiguration(typeof(GenericOpenVRController));
+                    controllerType = typeof(GenericOpenVRController);
                     break;
                 case SupportedControllerType.ViveWand:
-                    detectedController = new ViveWandController(TrackingState.NotTracked, controllingHand, inputSource);
-                    detectedController.SetupConfiguration(typeof(ViveWandController));
+                    controllerType = typeof(ViveWandController);
                     break;
                 case SupportedControllerType.ViveKnuckles:
-                    detectedController = new ViveKnucklesController(TrackingState.NotTracked, controllingHand, inputSource);
-                    detectedController.SetupConfiguration(typeof(ViveKnucklesController));
+                    controllerType = typeof(GenericOpenVRController);
                     break;
                 case SupportedControllerType.OculusTouch:
-                    detectedController = new OculusTouchController(TrackingState.NotTracked, controllingHand, inputSource);
-                    detectedController.SetupConfiguration(typeof(OculusTouchController));
+                    controllerType = typeof(OculusTouchController);
                     break;
                 case SupportedControllerType.OculusRemote:
+                    controllerType = typeof(OculusRemoteController);
                     break;
+                default:
+                    Debug.LogError($"Unsupported controller type {nameof(controllerType)}.");
+                    return null;
             }
 
+            var pointers = new List<IMixedRealityPointer>();
+
+            if (MixedRealityManager.HasActiveProfile &&
+                MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
+                MixedRealityManager.Instance.ActiveProfile.PointerProfile != null)
+            {
+                for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions.Length; i++)
+                {
+                    var pointerProfile = MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions[i];
+
+                    if (pointerProfile.ControllerType.Type == null ||
+                        pointerProfile.ControllerType == controllerType)
+                    {
+                        if (pointerProfile.Handedness == Handedness.Any ||
+                            pointerProfile.Handedness == Handedness.Both ||
+                            pointerProfile.Handedness == controllingHand)
+                        {
+                            var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
+                            var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
+
+                            if (pointer != null)
+                            {
+                                pointers.Add(pointer);
+                            }
+                        }
+                    }
+                }
+            }
+
+            IMixedRealityInputSource inputSource = InputSystem?.RequestNewGenericInputSource($"{CurrentControllerType} Controller {controllingHand}", pointers.ToArray());
+
+            var detectedController = new GenericOpenVRController(TrackingState.NotTracked, controllingHand, inputSource);
+            detectedController.SetupConfiguration(controllerType);
+
             Debug.Assert(detectedController != null);
-            detectedController.UpdateController(xrNodeState);
+
+            for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
+            {
+                detectedController.InputSource.Pointers[i].Controller = detectedController;
+            }
+
             activeControllers.Add(xrNodeState.nodeType, detectedController);
             return detectedController;
         }
