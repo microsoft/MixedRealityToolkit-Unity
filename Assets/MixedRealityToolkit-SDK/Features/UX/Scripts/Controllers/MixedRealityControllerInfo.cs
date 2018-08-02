@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         private GameObject touchpadTouchY;
         private Transform touchpadTouchYMin;
         private Transform touchpadTouchYMax;
-        private GameObject touchpadTouchVisualizer;
+        private GameObject touchpadTouchVisualizer = null;
         private GameObject pointingPose;
 
         // These values are used to determine if a button's state has changed.
