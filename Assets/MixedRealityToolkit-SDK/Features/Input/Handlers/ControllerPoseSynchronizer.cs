@@ -68,12 +68,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <inheritdoc />
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
-            if (eventData.Controller?.ControllerHandedness == Handedness)
+            if (Controller == null ||
+                eventData.Controller == null ||
+                eventData.Controller.InputSource.SourceId != Controller.InputSource.SourceId)
             {
-                if (Controller == null)
-                {
-                    Controller = eventData.Controller;
-                }
+                return;
+            }
+
+            if (eventData.Controller.ControllerHandedness == Handedness &&
+                eventData.Controller.InputSource.SourceId == Controller.InputSource.SourceId)
+            {
 
                 if (disableChildren)
                 {
@@ -85,11 +89,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <inheritdoc />
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-            IsTracked = false;
-            TrackingState = TrackingState.NotTracked;
+            if (Controller == null ||
+                eventData.Controller == null ||
+                eventData.Controller.InputSource.SourceId != Controller.InputSource.SourceId)
+            {
+                return;
+            }
 
             if (eventData.Controller?.ControllerHandedness == Handedness)
             {
+                IsTracked = false;
+                TrackingState = TrackingState.NotTracked;
+
                 if (disableChildren)
                 {
                     gameObject.SetChildrenActive(false);
@@ -100,7 +111,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <inheritdoc />
         public virtual void OnSourcePoseChanged(SourcePoseEventData eventData)
         {
-            if (eventData.Controller?.InputSource.SourceId != Controller.InputSource.SourceId)
+            if (Controller == null ||
+                eventData.Controller == null ||
+                eventData.Controller.InputSource.SourceId != Controller.InputSource.SourceId)
             {
                 return;
             }
