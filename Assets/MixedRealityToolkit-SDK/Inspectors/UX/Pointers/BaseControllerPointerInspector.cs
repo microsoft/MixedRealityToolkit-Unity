@@ -46,16 +46,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
             EditorGUILayout.PropertyField(pointerExtent);
             EditorGUILayout.PropertyField(pointerOrientation);
 
+            EditorGUILayout.PropertyField(useSourcePoseData);
+
+            if (!useSourcePoseData.boolValue)
+            {
+                EditorGUILayout.PropertyField(inputSourceAction);
+            }
+
+            EditorGUILayout.PropertyField(pointerAction);
+
             if (DrawBasePointerActions)
             {
-                EditorGUILayout.PropertyField(useSourcePoseData);
-
-                if (!useSourcePoseData.boolValue)
-                {
-                    EditorGUILayout.PropertyField(inputSourceAction);
-                }
-
-                EditorGUILayout.PropertyField(pointerAction);
                 EditorGUILayout.PropertyField(requiresHoldAction);
 
                 if (requiresHoldAction.boolValue)
