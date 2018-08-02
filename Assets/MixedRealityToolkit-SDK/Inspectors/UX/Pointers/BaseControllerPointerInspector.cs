@@ -20,6 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
         private SerializedProperty pointerOrientation;
         private SerializedProperty requiresHoldAction;
 
+        protected bool DrawBasePointerActions = true;
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -43,19 +45,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
             EditorGUILayout.PropertyField(raycastOrigin);
             EditorGUILayout.PropertyField(pointerExtent);
             EditorGUILayout.PropertyField(pointerOrientation);
-            EditorGUILayout.PropertyField(useSourcePoseData);
 
-            if (!useSourcePoseData.boolValue)
+            if (DrawBasePointerActions)
             {
-                EditorGUILayout.PropertyField(inputSourceAction);
-            }
+                EditorGUILayout.PropertyField(useSourcePoseData);
 
-            EditorGUILayout.PropertyField(pointerAction);
-            EditorGUILayout.PropertyField(requiresHoldAction);
+                if (!useSourcePoseData.boolValue)
+                {
+                    EditorGUILayout.PropertyField(inputSourceAction);
+                }
 
-            if (requiresHoldAction.boolValue)
-            {
-                EditorGUILayout.PropertyField(activeHoldAction);
+                EditorGUILayout.PropertyField(pointerAction);
+                EditorGUILayout.PropertyField(requiresHoldAction);
+
+                if (requiresHoldAction.boolValue)
+                {
+                    EditorGUILayout.PropertyField(activeHoldAction);
+                }
             }
 
             serializedObject.ApplyModifiedProperties();
