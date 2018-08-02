@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
         private SerializedProperty activeHoldAction;
         private SerializedProperty useSourcePoseData;
         private SerializedProperty inputSourceAction;
-        private SerializedProperty interactionAction;
+        private SerializedProperty pointerAction;
         private SerializedProperty pointerOrientation;
         private SerializedProperty requiresHoldAction;
 
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
             activeHoldAction = serializedObject.FindProperty("activeHoldAction");
             useSourcePoseData = serializedObject.FindProperty("useSourcePoseData");
             inputSourceAction = serializedObject.FindProperty("inputSourceAction");
-            interactionAction = serializedObject.FindProperty("interactionAction");
+            pointerAction = serializedObject.FindProperty("pointerAction");
             pointerOrientation = serializedObject.FindProperty("pointerOrientation");
             requiresHoldAction = serializedObject.FindProperty("requiresHoldAction");
         }
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
                 EditorGUILayout.PropertyField(inputSourceAction);
             }
 
-            EditorGUILayout.PropertyField(interactionAction);
+            EditorGUILayout.PropertyField(pointerAction);
             EditorGUILayout.PropertyField(requiresHoldAction);
 
             if (requiresHoldAction.boolValue)

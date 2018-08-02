@@ -403,9 +403,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
                 if (eventData.MixedRealityInputAction == pointerAction)
                 {
-                    InputSystem.RaisePointerDown(this, Handedness, pointerAction);
                     IsSelectPressed = true;
                     HasSelectPressedOnce = true;
+                    InputSystem.RaisePointerDown(this, Handedness, pointerAction);
                 }
             }
         }
