@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         protected bool IsHoldPressed = false;
 
-        private bool isTeleportRequestActive = false;
+        protected bool IsTeleportRequestActive { get; private set; } = false;
 
         private bool delayPointerRegistration = true;
 
@@ -212,14 +212,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public ICursorModifier CursorModifier { get; set; }
 
         /// <inheritdoc />
-        public ITeleportTarget TeleportTarget { get; set; }
+        public IMixedRealityTeleportTarget TeleportTarget { get; set; }
 
         /// <inheritdoc />
         public virtual bool IsInteractionEnabled
         {
             get
             {
-                if (isTeleportRequestActive)
+                if (IsTeleportRequestActive)
                 {
                     return false;
                 }
@@ -479,32 +479,36 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public virtual void OnTeleportRequest(TeleportEventData eventData)
         {
+            Debug.Log("Teleport request raised.");
             if (eventData.Pointer.PointerId != PointerId)
             {
                 // Only turn off pointers that aren't making the request.
-                isTeleportRequestActive = true;
+                IsTeleportRequestActive = true;
             }
         }
 
         /// <inheritdoc />
         public virtual void OnTeleportStarted(TeleportEventData eventData)
         {
+            Debug.Log("Teleport Started.");
             // Turn off all pointers while we teleport.
-            isTeleportRequestActive = true;
+            IsTeleportRequestActive = true;
         }
 
         /// <inheritdoc />
         public virtual void OnTeleportCompleted(TeleportEventData eventData)
         {
+            Debug.Log("Teleport Completed.");
             // Turn all our pointers back on.
-            isTeleportRequestActive = false;
+            IsTeleportRequestActive = false;
         }
 
         /// <inheritdoc />
         public virtual void OnTeleportCanceled(TeleportEventData eventData)
         {
+            Debug.Log("Teleport request Canceled.");
             // Turn all our pointers back on.
-            isTeleportRequestActive = false;
+            IsTeleportRequestActive = false;
         }
 
         #endregion IMixedRealityTeleportHandler Implementation

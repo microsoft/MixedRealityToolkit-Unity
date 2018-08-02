@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport
         /// <summary>
         /// The teleport target.
         /// </summary>
-        public ITeleportTarget Target { get; private set; }
+        public IMixedRealityTeleportTarget Target { get; private set; }
 
         /// <summary>
         /// Constructor.
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport
         /// </summary>
         /// <param name="pointer"></param>
         /// <param name="target"></param>
-        public void Initialize(IMixedRealityPointer pointer, ITeleportTarget target)
+        public void Initialize(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
         {
             Pointer = pointer;
             Target = target;

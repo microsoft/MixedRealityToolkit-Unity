@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         public ICursorModifier CursorModifier { get; set; }
 
         /// <inheritdoc />
-        public ITeleportTarget TeleportTarget { get; set; }
+        public IMixedRealityTeleportTarget TeleportTarget { get; set; }
 
         /// <inheritdoc />
         public bool IsInteractionEnabled { get; set; }

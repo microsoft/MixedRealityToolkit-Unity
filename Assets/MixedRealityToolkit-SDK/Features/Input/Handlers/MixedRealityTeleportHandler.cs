@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
@@ -10,13 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
     /// <summary>
     /// SDK component handling teleportation when a user focuses this <see cref="GameObject"/> and triggers the teleport action.
     /// </summary>
-    public class TeleportHandler : BaseFocusHandler, ITeleportTarget
+    public class MixedRealityTeleportHandler : BaseFocusHandler, IMixedRealityTeleportTarget
     {
-        [SerializeField]
-        [Tooltip("Should the destination orientation be overridden? " +
-                 "Useful when you want to orient the user in a specific direction when they teleport to this position. " +
-                 "Override orientation is the transform forward of the GameObject this component is attached to.")]
-        private bool overrideOrientation = false;
+        private static IMixedRealityTeleportSystem teleportSystem = null;
+        protected static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = MixedRealityManager.Instance.GetManager<IMixedRealityTeleportSystem>());
+
+        #region IMixedRealityTeleportTarget Implementation
 
         /// <inheritdoc />
         public Vector3 Position => transform.position;
@@ -27,6 +27,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <inheritdoc />
         public bool IsActive => isActiveAndEnabled;
 
+        [SerializeField]
+        [Tooltip("Should the destination orientation be overridden? " +
+                 "Useful when you want to orient the user in a specific direction when they teleport to this position. " +
+                 "Override orientation is the transform forward of the GameObject this component is attached to.")]
+        private bool overrideOrientation = false;
+
         /// <inheritdoc />
         public bool OverrideTargetOrientation => overrideOrientation;
 
@@ -34,20 +40,31 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         public float TargetOrientation => transform.eulerAngles.y;
 
         /// <inheritdoc />
+        public GameObject GameObjectReference => gameObject;
+
+        #endregion IMixedRealityTeleportTarget Implementation
+
+        #region IMixedRealityFocusHandler Implementation
+
+        /// <inheritdoc />
         public override void OnBeforeFocusChange(FocusEventData eventData)
         {
             base.OnBeforeFocusChange(eventData);
-
             if (eventData.NewFocusedObject == gameObject)
             {
                 eventData.Pointer.TeleportTarget = this;
+                TeleportSystem.RaiseTeleportCanceled(eventData.Pointer, this);
+                TeleportSystem.RaiseTeleportRequest(eventData.Pointer, this);
             }
 
             if (eventData.OldFocusedObject == gameObject)
             {
+                TeleportSystem.RaiseTeleportCanceled(eventData.Pointer, this);
                 eventData.Pointer.TeleportTarget = null;
             }
         }
+
+        #endregion IMixedRealityFocusHandler Implementation
 
         private void OnDrawGizmos()
         {

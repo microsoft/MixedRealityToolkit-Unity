@@ -20,16 +20,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #region Monobehaviour Implementation
 
-        private void OnValidate()
+        protected override void OnValidate()
         {
+            base.OnValidate();
+
             if (parabolicLineData == null)
             {
                 parabolicLineData = GetComponent<ParabolaPhysicalLineDataProvider>();
             }
         }
 
-        private void Awake()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             if (parabolicLineData == null)
             {
                 parabolicLineData = GetComponent<ParabolaPhysicalLineDataProvider>();

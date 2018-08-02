@@ -50,6 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         private bool teleportEnabled = false;
 
+        private bool canTeleport = false;
+
         /// <summary>
         /// The position of the teleport target
         /// </summary>
@@ -115,67 +117,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        #region Monobehaviour Implementation
-
-        private void Update()
-        {
-            teleportEnabled = false;
-
-            if (Mathf.Abs(currentInputPosition.y) > inputThreshold ||
-                Mathf.Abs(currentInputPosition.x) > inputThreshold)
-            {
-                // Get the angle of the pointer input
-                float angle = Mathf.Atan2(currentInputPosition.y, currentInputPosition.x) * Mathf.Rad2Deg;
-
-                // Offset the angle so it's 'forward' facing
-                angle += angleOffset;
-                PointerOrientation = angle;
-                teleportEnabled = true;
-            }
-        }
-
-        #endregion Monobehaviour Implementation
-
-        #region IMixedRealityInputHandler Implementation
-
-        /// <inheritdoc />
-        public override void OnInputPressed(InputEventData<float> eventData)
-        {
-            base.OnInputPressed(eventData);
-
-            if (teleportEnabled &&
-                TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
-                TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
-            {
-                TeleportSystem.RaiseTeleportRequest(this, TeleportTarget);
-            }
-        }
-
-        /// <inheritdoc />
-        public override void OnInputUp(InputEventData eventData)
-        {
-            TeleportSystem.RaiseTeleportStarted(this, TeleportTarget);
-
-            base.OnInputUp(eventData);
-        }
-
-        /// <inheritdoc />
-        public override void OnPositionInputChanged(InputEventData<Vector2> eventData)
-        {
-            if (eventData.SourceId == InputSourceParent.SourceId &&
-                eventData.Handedness == Handedness &&
-                eventData.MixedRealityInputAction == teleportAction)
-            {
-                currentInputPosition = eventData.InputData;
-            }
-        }
-
-        #endregion IMixedRealityInputHandler Implementation
-
         #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
-        public override bool IsInteractionEnabled => base.IsInteractionEnabled && teleportEnabled;
+        public override bool IsInteractionEnabled => !IsTeleportRequestActive && teleportEnabled;
 
         /// <inheritdoc />
         public override float PointerOrientation
@@ -323,26 +268,73 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #endregion IMixedRealityPointer Implementation
 
+        #region IMixedRealityInputHandler Implementation
+
+        /// <inheritdoc />
+        public override void OnPositionInputChanged(InputEventData<Vector2> eventData)
+        {
+            if (eventData.SourceId == InputSourceParent.SourceId &&
+                eventData.Handedness == Handedness &&
+                eventData.MixedRealityInputAction == teleportAction)
+            {
+                currentInputPosition = eventData.InputData;
+            }
+
+            if (Mathf.Abs(currentInputPosition.y) > inputThreshold ||
+                Mathf.Abs(currentInputPosition.x) > inputThreshold)
+            {
+                // Get the angle of the pointer input
+                float angle = Mathf.Atan2(currentInputPosition.y, currentInputPosition.x) * Mathf.Rad2Deg;
+
+                // Offset the angle so it's 'forward' facing
+                angle += angleOffset;
+                PointerOrientation = angle;
+                //teleportEnabled = true;
+            }
+            else
+            {
+                //teleportEnabled = false;
+                if (canTeleport)
+                {
+                    TeleportSystem.RaiseTeleportStarted(this, TeleportTarget);
+                }
+            }
+
+            if (IsInteractionEnabled &&
+                TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
+                TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
+            {
+                TeleportSystem.RaiseTeleportRequest(this, TeleportTarget);
+                //canTeleport = true;
+            }
+        }
+
+        #endregion IMixedRealityInputHandler Implementation
+
         #region IMixedRealityTeleportHandler Implementation
 
         /// <inheritdoc />
         public override void OnTeleportRequest(TeleportEventData eventData)
         {
+            base.OnTeleportRequest(eventData);
         }
 
         /// <inheritdoc />
         public override void OnTeleportStarted(TeleportEventData eventData)
         {
+            base.OnTeleportStarted(eventData);
         }
 
         /// <inheritdoc />
         public override void OnTeleportCompleted(TeleportEventData eventData)
         {
+            base.OnTeleportCompleted(eventData);
         }
 
         /// <inheritdoc />
         public override void OnTeleportCanceled(TeleportEventData eventData)
         {
+            base.OnTeleportCanceled(eventData);
         }
 
         #endregion IMixedRealityTeleportHandler Implementation

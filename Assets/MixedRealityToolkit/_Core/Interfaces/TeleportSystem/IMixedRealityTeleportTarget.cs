@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem
 {
-    public interface ITeleportTarget
+    public interface IMixedRealityTeleportTarget
     {
         /// <summary>
         /// The position the teleport will end at.
@@ -35,5 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem
         /// </remarks>
         /// </summary>
         float TargetOrientation { get; }
+
+        /// <summary>
+        /// Returns the <see cref="GameObject"/> reference for this teleport target.
+        /// </summary>
+        GameObject GameObjectReference { get; }
     }
 }

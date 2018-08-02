@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <summary>
         /// The currently active teleport target.
         /// </summary>
-        ITeleportTarget TeleportTarget { get; set; }
+        IMixedRealityTeleportTarget TeleportTarget { get; set; }
 
         /// <summary>
         /// Has the conditions for the interaction been satisfied to enable the interaction?

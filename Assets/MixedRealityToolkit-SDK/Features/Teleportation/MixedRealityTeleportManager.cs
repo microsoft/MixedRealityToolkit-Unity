@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -67,16 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             Debug.Assert(!baseInputEventData.used);
 
             // Process all the event listeners
-            for (int i = 0; i < EventListeners.Count; i++)
-            {
-                // Stop if we've used the input event data.
-                if (baseInputEventData.used)
-                {
-                    break;
-                }
-
-                ExecuteEvents.Execute(EventListeners[i], baseInputEventData, eventHandler);
-            }
+            base.HandleEvent(eventData, eventHandler);
         }
 
         /// <summary>
@@ -85,8 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         /// <param name="listener"></param>
         public override void Register(GameObject listener)
         {
-            if (EventListeners.Contains(listener)) { return; }
-            EventListeners.Add(listener);
+            base.Register(listener);
         }
 
         /// <summary>
@@ -95,32 +86,31 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
         {
-            if (!EventListeners.Contains(listener)) { return; }
-            EventListeners.Remove(listener);
+            base.Unregister(listener);
         }
 
         #endregion IEventSystemManager Implementation
 
         /// <inheritdoc />
-        public void RaiseTeleportRequest(IMixedRealityPointer pointer, ITeleportTarget target)
+        public void RaiseTeleportRequest(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
         {
             teleportEventData.Initialize(pointer, target);
         }
 
         /// <inheritdoc />
-        public void RaiseTeleportStarted(IMixedRealityPointer pointer, ITeleportTarget target)
+        public void RaiseTeleportStarted(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
         {
             teleportEventData.Initialize(pointer, target);
         }
 
         /// <inheritdoc />
-        public void RaiseTeleportComplete(IMixedRealityPointer pointer, ITeleportTarget target)
+        public void RaiseTeleportComplete(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
         {
             teleportEventData.Initialize(pointer, target);
         }
 
         /// <inheritdoc />
-        public void RaiseTeleportCanceled(IMixedRealityPointer pointer, ITeleportTarget target)
+        public void RaiseTeleportCanceled(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
         {
             teleportEventData.Initialize(pointer, target);
         }
