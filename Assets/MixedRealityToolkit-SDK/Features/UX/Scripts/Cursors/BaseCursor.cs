@@ -22,55 +22,47 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// <summary>
         /// Maximum distance for cursor if nothing is hit
         /// </summary>
+        [SerializeField]
+        [Header("Cursor Distance")]
         [Tooltip("The maximum distance the cursor can be with nothing hit")]
         protected float DefaultCursorDistance = 2.0f;
 
         /// <summary>
         /// Surface distance to place the cursor off of the surface at
         /// </summary>
+        [SerializeField]
         [Tooltip("The distance from the hit surface to place the cursor")]
         private float surfaceCursorDistance = 0.02f;
 
         [Header("Motion")]
+        [SerializeField]
         [Tooltip("When lerping, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
         private bool useUnscaledTime = true;
 
-        /// <summary>
-        /// Blend value for surface normal to user facing lerp
-        /// </summary>
+        [SerializeField]
+        [Tooltip("Blend value for surface normal to user facing lerp")]
         private float positionLerpTime = 0.01f;
 
-        /// <summary>
-        /// Blend value for surface normal to user facing lerp
-        /// </summary>
+        [SerializeField]
+        [Tooltip("Blend value for surface normal to user facing lerp")]
         private float scaleLerpTime = 0.01f;
 
-        /// <summary>
-        /// Blend value for surface normal to user facing lerp
-        /// </summary>
+        [SerializeField]
+        [Tooltip("Blend value for surface normal to user facing lerp")]
         private float rotationLerpTime = 0.01f;
 
-        /// <summary>
-        /// Blend value for surface normal to user facing lerp
-        /// </summary>
         [Range(0, 1)]
+        [SerializeField]
+        [Tooltip("Blend value for surface normal to user facing lerp")]
         private float lookRotationBlend = 0.5f;
 
-        /// <summary>
-        /// Visual that is displayed when cursor is active normally
-        /// </summary>
-        [SerializeField]
         [Header("Transform References")]
+        [SerializeField]
+        [Tooltip("Visual that is displayed when cursor is active normally")]
         private Transform primaryCursorVisual = null;
 
-        /// <summary>
-        /// Indicates if the source is detected.
-        /// </summary>
         protected bool IsHandDetected = false;
 
-        /// <summary>
-        /// Indicates pointer or air tap down
-        /// </summary>
         protected bool IsPointerDown = false;
 
         protected GameObject TargetedObject = null;
@@ -78,7 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         private uint visibleHandsCount = 0;
         private bool isVisible = true;
 
-        // Position, scale and rotational goals for cursor
         private Vector3 targetPosition;
         private Vector3 targetScale;
         private Quaternion targetRotation;
@@ -378,6 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         private void UpdateCursorState()
         {
             CursorStateEnum newState = CheckCursorState();
+
             if (CursorState != newState)
             {
                 OnCursorStateChange(newState);

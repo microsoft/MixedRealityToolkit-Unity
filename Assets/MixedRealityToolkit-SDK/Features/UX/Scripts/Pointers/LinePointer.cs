@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         [SerializeField]
         protected Gradient LineColorLockFocus = new Gradient();
 
-        [Range(5, 100)]
+        [Range(2, 100)]
         [SerializeField]
         protected int LineCastResolution = 25;
 
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (lineBase == null)
             {
-                Debug.LogError($"No Mixed Reality Line Data Provider found on {gameObject.name}.");
+                Debug.LogError($"No Mixed Reality Line Data Provider found on {gameObject.name}. Did you forget to add a Line Data provider?");
             }
 
             if (gravityDistorter == null)
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (lineRenderers == null || lineRenderers.Length == 0)
             {
-                Debug.LogError($"No Mixed Reality Line Renderers found on {gameObject.name}.");
+                Debug.LogError($"No Mixed Reality Line Renderers found on {gameObject.name}. Did you forget to add a Mixed Reality Line Renderer?");
             }
         }
 
