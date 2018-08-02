@@ -611,9 +611,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
 
             // Raise Focus Events on the pointers cursor if it has one.
-            if (pointer.BaseCursor != null)
+            if (pointer.BaseCursor?.GameObjectReference != null)
             {
-                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GameObjectReference, focusEventData, OnPreFocusChangedHandler);
+                try
+                {
+                    // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
+                    // We'll ignore when this happens.
+                    ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GameObjectReference, focusEventData, OnPreFocusChangedHandler);
+                }
+                catch (Exception)
+                {
+                    // ignored.
+                }
             }
         }
 
@@ -641,9 +650,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
 
             // Raise Focus Events on the pointers cursor if it has one.
-            if (pointer.BaseCursor != null)
+            if (pointer.BaseCursor?.GameObjectReference != null)
             {
-                ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GameObjectReference, focusEventData, OnFocusChangedHandler);
+                try
+                {
+                    // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
+                    // We'll ignore when this happens.
+                    ExecuteEvents.ExecuteHierarchy(pointer.BaseCursor.GameObjectReference, focusEventData, OnFocusChangedHandler);
+                }
+                catch (Exception)
+                {
+                    // ignored.
+                }
             }
         }
 
