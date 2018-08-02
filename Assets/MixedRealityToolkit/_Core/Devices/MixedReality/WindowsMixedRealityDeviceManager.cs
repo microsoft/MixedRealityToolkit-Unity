@@ -113,7 +113,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
             var pointers = new List<IMixedRealityPointer>();
 
-            if (MixedRealityManager.HasActiveProfile &&
+            if (interactionSourceState.source.supportsPointing &&
+                MixedRealityManager.HasActiveProfile &&
                 MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
                 MixedRealityManager.Instance.ActiveProfile.PointerProfile != null)
             {
