@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             // Set our first and last points
             lineBase.FirstPoint = pointerPosition;
-            lineBase.LastPoint = pointerPosition + (PointerDirection * (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent));
+            lineBase.LastPoint = pointerPosition + (PointerDirection * PointerExtent);
 
             // Make sure our array will hold
             if (Rays == null || Rays.Length != LineCastResolution)

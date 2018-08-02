@@ -119,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 cursorInstance.name = $"{name}_Cursor";
                 BaseCursor = cursorInstance.GetComponent<IMixedRealityCursor>();
                 Debug.Assert(BaseCursor != null, "Failed to load cursor");
+                BaseCursor.DefaultCursorDistance = PointerExtent;
                 BaseCursor.Pointer = this;
                 Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");
             }
@@ -156,14 +157,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             HasSelectPressedOnce = false;
             BaseCursor?.SetVisibility(false);
             InputSystem.FocusProvider.UnregisterPointer(this);
-        }
-
-        protected virtual void OnDestroy()
-        {
-            if (BaseCursor != null)
-            {
-                Destroy(BaseCursor.GetGameObjectReference());
-            }
         }
 
         #endregion  Monobehaviour Implementation
@@ -240,14 +233,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public bool IsFocusLocked { get; set; }
 
         [SerializeField]
-        [Range(0.5f, 50f)]
-        private float pointerExtent = 2f;
+        private bool overrideGlobalPointerExtent = false;
+
+        [SerializeField]
+        private float pointerExtent = 10f;
 
         /// <inheritdoc />
-        public float? PointerExtent
+        public float PointerExtent
         {
-            get { return pointerExtent; }
-            set { pointerExtent = value ?? InputSystem.FocusProvider.GlobalPointingExtent; }
+            get { return overrideGlobalPointerExtent ? InputSystem.FocusProvider.GlobalPointingExtent : pointerExtent; }
+            set { pointerExtent = value; }
         }
 
         /// <inheritdoc />

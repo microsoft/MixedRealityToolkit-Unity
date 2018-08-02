@@ -17,6 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         IMixedRealityPointer Pointer { get; set; }
 
         /// <summary>
+        /// The maximum distance the cursor can be with nothing hit
+        /// </summary>
+        float DefaultCursorDistance { get; set; }
+
+        /// <summary>
         /// Position of the <see cref="IMixedRealityCursor"/>.
         /// </summary>
         Vector3 Position { get; }

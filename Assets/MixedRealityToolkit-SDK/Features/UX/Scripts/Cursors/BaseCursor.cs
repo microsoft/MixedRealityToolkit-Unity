@@ -20,14 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
         /// <summary>
-        /// Maximum distance for cursor if nothing is hit
-        /// </summary>
-        [SerializeField]
-        [Header("Cursor Distance")]
-        [Tooltip("The maximum distance the cursor can be with nothing hit")]
-        protected float DefaultCursorDistance = 2.0f;
-
-        /// <summary>
         /// Surface distance to place the cursor off of the surface at
         /// </summary>
         [SerializeField]
@@ -104,6 +96,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         private IMixedRealityPointer pointer;
 
         /// <inheritdoc />
+        public float DefaultCursorDistance
+        {
+            get { return defaultCursorDistance; }
+            set { defaultCursorDistance = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("The maximum distance the cursor can be with nothing hit")]
+        private float defaultCursorDistance = 2.0f;
+
+        /// <inheritdoc />
         public virtual Vector3 Position => transform.position;
 
         /// <inheritdoc />
@@ -157,6 +160,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             {
                 IsHandDetected = false;
                 IsPointerDown = false;
+            }
+
+            // If our input source pointer is lost then clean ourselves up.
+            if (eventData.InputSource.SourceId == Pointer.InputSourceParent.SourceId)
+            {
+                Destroy(gameObject);
             }
         }
 
@@ -307,8 +316,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             {
                 TargetedObject = null;
 
-                targetPosition = RayStep.GetPointByDistance(Pointer.Rays, DefaultCursorDistance);
-                lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, DefaultCursorDistance);
+                targetPosition = RayStep.GetPointByDistance(Pointer.Rays, defaultCursorDistance);
+                lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, defaultCursorDistance);
                 targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
             }
             else

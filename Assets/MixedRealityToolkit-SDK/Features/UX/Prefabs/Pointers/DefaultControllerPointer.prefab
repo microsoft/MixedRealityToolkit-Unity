@@ -110,7 +110,7 @@ MonoBehaviour:
     id: 0
     description: None
     axisConstraint: 0
-  interactionAction:
+  pointerAction:
     id: 1
     description: Select
     axisConstraint: 2
@@ -261,7 +261,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  LineCastResolution: 5
+  LineCastResolution: 100
   lineBase: {fileID: 114689919749246242}
   lineRenderers:
   - {fileID: 114903794112201558}
