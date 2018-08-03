@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
@@ -201,24 +202,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("The approximate height of the playspace, in meters.")]
-        private float boundaryHeight = 3.0f;
-
-        /// <summary>
-        /// The approximate height of the playspace, in meters.
-        /// </summary>
-        /// <remarks>
-        /// The BoundaryHeight property is used to create a three dimensional volume for the playspace.
-        /// </remarks>
-        public float BoundaryHeight
-        {
-            get { return boundaryHeight; }
-            set { boundaryHeight = value; }
-        }
-
-        [SerializeField]
         [Tooltip("Instruct the platform whether or not to render the playspace boundary. Note: not all platforms support configuring this option.")]
-        private bool enablePlatformBoundaryRendering = true;
+        private bool enablePlatformBoundaryRendering = false;
 
         /// <summary>
         /// Instruct the platform whether or not to render the playspace boundary.
@@ -228,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </remarks>
         public bool IsPlatformBoundaryRenderingEnabled
         {
-            get { return enablePlatformBoundaryRendering; }
+            get { return boundaryVisualizationProfile != null && enablePlatformBoundaryRendering; }
             set { enablePlatformBoundaryRendering = value; }
         }
 

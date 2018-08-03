@@ -10,13 +10,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     [CustomEditor(typeof(MixedRealityBoundaryVisualizationProfile))]
     public class MixedRealityBoundaryVisualizationProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private SerializedProperty playAreaMaterial;
-        private SerializedProperty trackedAreaMaterial;
-        private SerializedProperty floorPlaneMaterial;
+        private SerializedProperty boundaryHeight;
         private SerializedProperty floorPlaneScale;
+        private SerializedProperty playAreaMaterial;
+        private SerializedProperty floorPlaneMaterial;
+        private SerializedProperty trackedAreaMaterial;
 
-        private readonly GUIContent materialContent = new GUIContent("Material");
         private readonly GUIContent scaleContent = new GUIContent("Scale");
+        private readonly GUIContent materialContent = new GUIContent("Material");
 
         private void OnEnable()
         {
@@ -25,15 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 return;
             }
 
-            // Find the play area properties.
-            playAreaMaterial = serializedObject.FindProperty("playAreaMaterial");
-
-            // Find the tracked area properties.
-            trackedAreaMaterial = serializedObject.FindProperty("trackedAreaMaterial");
-
-            // Find the floor plane properties.
-            floorPlaneMaterial = serializedObject.FindProperty("floorPlaneMaterial");
+            boundaryHeight = serializedObject.FindProperty("boundaryHeight");
             floorPlaneScale = serializedObject.FindProperty("floorPlaneScale");
+            playAreaMaterial = serializedObject.FindProperty("playAreaMaterial");
+            floorPlaneMaterial = serializedObject.FindProperty("floorPlaneMaterial");
+            trackedAreaMaterial = serializedObject.FindProperty("trackedAreaMaterial");
         }
 
         public override void OnInspectorGUI()
@@ -44,6 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.Space();
 
             serializedObject.Update();
+
+            EditorGUILayout.PropertyField(boundaryHeight);
 
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Play Area Settings:", EditorStyles.boldLabel);
