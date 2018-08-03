@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             switch (pointIndex)
             {
                 case 0:
-                    endPoint.Position = point;
+                    startPoint.Position = point;
                     break;
                 case 1:
                     endPoint.Position = point;
