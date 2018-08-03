@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     }
                 }
 
-                return SupportedControllerType.None;
+                return SupportedControllerType.GenericOpenVR;
             }
         }
 
