@@ -42,13 +42,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         /// The the size at which to display the rectangular floor plane <see cref="GameObject"/>.
         /// </summary>
         public Vector3 FloorPlaneScale => floorPlaneScale;
-
-        [SerializeField]
-        private BoundaryVisualizationOption[] boundaryVisualizationOptions;
-
-        /// <summary>
-        /// The Boundary Visualization options for this profile.
-        /// </summary>
-        public BoundaryVisualizationOption[] BoundaryVisualizationOptions => boundaryVisualizationOptions;
     }
 }

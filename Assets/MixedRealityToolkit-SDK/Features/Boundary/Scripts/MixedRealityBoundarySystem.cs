@@ -57,7 +57,28 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         public float BoundaryHeight { get; set; }
 
         /// <inheritdoc/>
-        public bool EnablePlatformBoundaryRendering { get; set; }
+        public bool EnablePlatformBoundaryRendering
+        {
+            get { return enablePlatformBoundaryRendering; }
+            set
+            {
+                enablePlatformBoundaryRendering = value;
+                UnityEngine.Experimental.XR.Boundary.visible = value;
+
+                if (value)
+                {
+                    CreateFloorPlaneVisualization();
+                    CreatePlaySpaceVisualization();
+                }
+                else
+                {
+                    Object.Destroy(currentPlayArea);
+                    Object.Destroy(currentFloorPlane);
+                }
+            }
+        }
+
+        private bool enablePlatformBoundaryRendering;
 
         /// <inheritdoc/>
         public Edge[] Bounds { get; private set; } = new Edge[0];
@@ -83,8 +104,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             // Handle the user teleporting (boundary moves with them).
             location = CameraCache.Main.transform.parent.InverseTransformPoint(location);
 
-            if ((FloorHeight.Value > location.y) ||
-                (BoundaryHeight < location.y))
+            if (FloorHeight.Value > location.y ||
+                BoundaryHeight < location.y)
             {
                 // Location below the floor or above the boundary height.
                 return false;
@@ -135,20 +156,69 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         }
 
         /// <inheritdoc/>
-        public GameObject GetBoundaryVisualizer(string sceneName = "", int sceneId = -1)
+        public GameObject CreatePlaySpaceVisualization()
         {
-            return null;
+            if (currentPlayArea != null)
+            {
+                return currentPlayArea;
+            }
+
+            // Get the rectangular bounds.
+            Vector2 center;
+            float angle;
+            float width;
+            float height;
+
+            if (!TryGetRectangularBoundsParams(out center, out angle, out width, out height))
+            {
+                // No rectangular bounds, therefore do not render the quad.
+                return null;
+            }
+
+            // Render the rectangular bounds.
+            if (EdgeUtilities.IsValidPoint(center))
+            {
+                currentPlayArea = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                currentPlayArea.name = "Boundary System Play Area Visualization";
+                currentPlayArea.transform.Translate(new Vector3(center.x, 0.005f, center.y)); // Add fudge factor to avoid z-fighting
+                currentPlayArea.transform.Rotate(new Vector3(90, -angle, 0));
+                currentPlayArea.transform.localScale = new Vector3(width, height, 1.0f);
+                currentPlayArea.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.PlayAreaMaterial;
+            }
+
+            return currentPlayArea;
+        }
+
+        /// <inheritdoc/>
+        public GameObject CreateFloorPlaneVisualization()
+        {
+            if (currentFloorPlane != null)
+            {
+                return currentFloorPlane;
+            }
+
+            // Render the floor.
+            currentFloorPlane = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            currentFloorPlane.transform.Translate(Vector3.zero);
+            currentFloorPlane.transform.Rotate(90, 0, 0);
+            currentFloorPlane.transform.localScale = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorPlaneScale;
+            currentFloorPlane.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorPlaneMaterial;
+
+            return currentFloorPlane;
         }
 
         #endregion IMixedRealityBoundarySystem Implementation
 
         /// <summary>
-        /// The largest rectangle that is contained withing the playspace geometry.
+        /// The largest rectangle that is contained withing the play space geometry.
         /// </summary>
         private InscribedRectangle rectangularBounds = null;
 
+        private GameObject currentPlayArea;
+        private GameObject currentFloorPlane;
+
         /// <summary>
-        /// Retrieves the boundary geometry and creates the boundary and inscribed playspace volumes.
+        /// Retrieves the boundary geometry and creates the boundary and inscribed play space volumes.
         /// </summary>
         private void CalculateBoundaryBounds()
         {
@@ -171,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             {
                 // FloorHeight starts out as null. Use a suitably high value for the floor to ensure
                 // that we do not accidentally set it too low.
-                float floorHeight = 10000f;
+                float floorHeight = float.MaxValue;
 
                 for (int i = 0; i < boundaryGeometry.Count; i++)
                 {
@@ -194,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
 
         /// <summary>
         /// Creates the two dimensional volume described by the largest rectangle that
-        /// is contained withing the playspace geometry and the configured height.
+        /// is contained withing the play space geometry and the configured height.
         /// </summary>
         private void CreateInscribedBounds()
         {
@@ -231,6 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             }
 
             bool trackingSpaceSet = XRDevice.SetTrackingSpaceType(trackingSpace);
+
             if (!trackingSpaceSet)
             {
                 // TODO: how best to handle this scenario?

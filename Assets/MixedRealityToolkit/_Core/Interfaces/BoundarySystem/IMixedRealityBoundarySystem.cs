@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem
         ExperienceScale Scale { get; set; }
 
         /// <summary>
-        /// The height of the playspace, in meters.
+        /// The height of the play space, in meters.
         /// </summary>
         /// <remarks>
         /// This is used to create a three dimensional boundary volume.
@@ -27,10 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem
         float BoundaryHeight { get; set; }
 
         /// <summary>
-        /// Enable / disable the platform's playspace boundary rendering.
+        /// Enable / disable the platform's play space boundary rendering.
         /// </summary>
         /// <remarks>
-        /// Not all platforms support specifying whether or not to render the playspace boundary.
+        /// Not all platforms support specifying whether or not to render the play space boundary.
         /// For platforms without boundary rendering control, the default behavior will be unchanged 
         /// regardless of the value provided.
         /// </remarks>
@@ -74,17 +74,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem
         /// <param name="angle">The orientation of the rectangle.</param>
         /// <param name="width">The width of the rectangle.</param>
         /// <param name="height">The height of the rectangle.</param>
-        /// <returns></returns>
+        /// <returns>???</returns>
         bool TryGetRectangularBoundsParams(out Vector2 center, out float angle, out float width, out float height);
 
         /// <summary>
-        /// Get the play area visualizer for the specified scene.
+        /// Generate the play area visualizer in the scene.
         /// </summary>
-        /// <remarks>
-        /// If no scene name, nor id is passed, then the default is returned.
-        /// </remarks>
-        /// <param name="sceneName"></param>
-        /// <param name="sceneId"></param>
-        GameObject GetBoundaryVisualizer(string sceneName = "", int sceneId = -1);
+        /// <returns>The reference to the newly created Play Space Visualizer.</returns>
+        GameObject CreatePlaySpaceVisualization();
+
+        /// <summary>
+        /// Generate the floor plane visualizer in the scene.
+        /// </summary>
+        /// <returns>The reference to the newly created Floor Plane Visualizer.</returns>
+        GameObject CreateFloorPlaneVisualization();
     }
 }
