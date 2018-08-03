@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -86,6 +87,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         }
 
         #endregion
+
+        #region IMixedRealityEventSource Implementation
+
+        /// <inheritdoc />
+        bool IEqualityComparer.Equals(object x, object y)
+        {
+            // There shouldn't be other Boundary Managers to compare to.
+            return false;
+        }
+
+        /// <inheritdoc />
+        public int GetHashCode(object obj)
+        {
+            return Mathf.Abs(SourceName.GetHashCode());
+        }
+
+        /// <inheritdoc />
+        public uint SourceId { get; } = 0;
+
+        /// <inheritdoc />
+        public string SourceName { get; } = "Mixed Reality Boundary System";
+
+        #endregion IMixedRealityEventSource Implementation
 
         #region IMixedRealityBoundarySystem Implementation
 
@@ -266,6 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         private InscribedRectangle rectangularBounds = null;
 
         private GameObject currentPlayArea;
+
         private GameObject currentFloorPlane;
 
         /// <summary>

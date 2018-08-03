@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem
     /// Manager interface for a Boundary system in the Mixed Reality Toolkit
     /// All replacement systems for providing Boundary functionality should derive from this interface
     /// </summary>
-    public interface IMixedRealityBoundarySystem : IMixedRealityManager
+    public interface IMixedRealityBoundarySystem : IMixedRealityEventSystem, IMixedRealityEventSource
     {
         /// <summary>
         /// The scale (ex: World Scale) of the experience.

@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Boundary;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
@@ -12,21 +14,51 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// Demo class to show different ways of using the boundary API.
     /// </summary>
-    public class BoundaryIndicatorDemo : MonoBehaviour
+    public class BoundaryIndicatorDemo : MonoBehaviour, IMixedRealityBoundaryHandler
     {
-        /// <summary>
-        /// Boundary system implementation.
-        /// </summary
-        private IMixedRealityBoundarySystem boundaryManager = null;
         private IMixedRealityBoundarySystem BoundaryManager => boundaryManager ?? (boundaryManager = MixedRealityManager.Instance.GetManager<IMixedRealityBoundarySystem>());
+        private IMixedRealityBoundarySystem boundaryManager = null;
 
-        private void Start()
+        private readonly List<GameObject> markers = new List<GameObject>();
+
+        #region MonoBehaviour Implementation
+
+        private void OnEnable()
         {
-            if (MixedRealityManager.HasActiveProfile && MixedRealityManager.Instance.ActiveProfile.IsBoundarySystemEnabled)
+            BoundaryManager.Register(gameObject);
+        }
+
+        private void OnDisable()
+        {
+            BoundaryManager.Unregister(gameObject);
+        }
+
+        #endregion MonoBehaviour Implementation
+
+        #region IMixedRealityBoundaryHandler Implementation
+
+        /// <inheritdoc />
+        public void OnBoundaryVisualizationChanged(BoundaryEventData eventData)
+        {
+            if (eventData.IsPlatformRenderingEnabled)
             {
-                AddIndicators();
+                if (markers.Count == 0)
+                {
+                    AddIndicators();
+                }
+            }
+            else
+            {
+                for (int i = 0; i < markers.Count; i++)
+                {
+                    Destroy(markers[i]);
+                }
+
+                markers.Clear();
             }
         }
+
+        #endregion IMixedRealityBoundaryHandler Implementation
 
         /// <summary>
         /// Displays the boundary as an array of spheres where spheres in the
@@ -39,7 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             float angleRect;
             float widthRect;
             float heightRect;
-            if ((BoundaryManager == null) || !BoundaryManager.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
+
+            if (!BoundaryManager.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
             {
                 // If we have no boundary manager or rectangular bounds we will show no indicators
                 return;
@@ -87,6 +120,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     }
 
                     marker.GetComponent<MeshRenderer>().sharedMaterial = material;
+
+                    markers.Add(marker);
                 }
             }
         }
