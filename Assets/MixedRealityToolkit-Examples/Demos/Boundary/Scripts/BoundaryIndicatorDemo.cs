@@ -28,6 +28,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             BoundaryManager.Register(gameObject);
         }
 
+        private void Start()
+        {
+            if (BoundaryManager != null && BoundaryManager.EnablePlatformBoundaryRendering)
+            {
+                if (markers.Count == 0)
+                {
+                    AddIndicators();
+                }
+            }
+        }
+
         private void OnDisable()
         {
             BoundaryManager.Unregister(gameObject);
