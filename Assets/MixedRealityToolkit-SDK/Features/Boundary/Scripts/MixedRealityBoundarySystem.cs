@@ -32,7 +32,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         private void InitializeInternal()
         {
             Scale = MixedRealityManager.Instance.ActiveProfile.TargetExperienceScale;
-            BoundaryHeight = MixedRealityManager.Instance.ActiveProfile.BoundaryHeight;
+
+            if (MixedRealityManager.Instance.ActiveProfile.IsPlatformBoundaryRenderingEnabled)
+            {
+                BoundaryHeight = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryHeight;
+            }
+
             EnablePlatformBoundaryRendering = MixedRealityManager.Instance.ActiveProfile.IsPlatformBoundaryRenderingEnabled;
 
             SetTrackingSpace();
