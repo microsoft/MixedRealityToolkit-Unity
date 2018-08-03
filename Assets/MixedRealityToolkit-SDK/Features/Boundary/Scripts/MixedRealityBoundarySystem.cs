@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         public ExperienceScale Scale { get; set; }
 
         /// <inheritdoc/>
-        public float BoundaryHeight { get; set; }
+        public float BoundaryHeight { get; set; } = 3f;
 
         /// <inheritdoc/>
         public bool EnablePlatformBoundaryRendering
