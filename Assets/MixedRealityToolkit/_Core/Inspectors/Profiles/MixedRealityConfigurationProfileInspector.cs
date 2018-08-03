@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
         private static readonly GUIContent PlatformRenderingContent = new GUIContent("Platform Rendering:");
         private static readonly GUIContent BoundaryHeightContent = new GUIContent("Boundary Height (in m):");
+        private static readonly GUIContent BoundaryVisualizationProfileContent = new GUIContent("Boundary Visualization Profile");
 
         // Experience properties
         private SerializedProperty targetExperienceScale;
@@ -36,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty boundarySystemType;
         private SerializedProperty boundaryHeight;
         private SerializedProperty enablePlatformBoundaryRendering;
+        private SerializedProperty boundaryVisualizationProfile;
 
         private MixedRealityConfigurationProfile configurationProfile;
 
@@ -92,6 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             boundarySystemType = serializedObject.FindProperty("boundarySystemType");
             boundaryHeight = serializedObject.FindProperty("boundaryHeight");
             enablePlatformBoundaryRendering = serializedObject.FindProperty("enablePlatformBoundaryRendering");
+            boundaryVisualizationProfile = serializedObject.FindProperty("boundaryVisualizationProfile");
         }
 
         public override void OnInspectorGUI()
@@ -192,6 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 {
                     EditorGUILayout.PropertyField(boundaryHeight, BoundaryHeightContent);
                     EditorGUILayout.PropertyField(enablePlatformBoundaryRendering, PlatformRenderingContent);
+                    EditorGUILayout.PropertyField(boundaryVisualizationProfile, BoundaryVisualizationProfileContent);
                 }
                 else
                 {

@@ -8,20 +8,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
     /// <summary>
     /// Configuration profile settings for setting up boundary visualizations.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Boundary Profile", fileName = "MixedRealityEnvironmentBoundaryProfile", order = 6)]
-    public class MixedRealityBoundaryProfile : ScriptableObject
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Boundary Visualization Profile", fileName = "MixedRealityBoundaryVisualizationProfile", order = 6)]
+    public class MixedRealityBoundaryVisualizationProfile : ScriptableObject
     {
-        [SerializeField]
-        private bool showPlayArea = true;
-
-        /// <summary>
-        /// Indicates whether or not the play area is to be displayed.
-        /// </summary>
-        /// <remarks>
-        /// The size of the play area is determined by the boundary system.
-        /// </remarks>
-        public bool ShowPlayArea => showPlayArea;
-
         [SerializeField]
         private Material playAreaMaterial = null;
 
@@ -31,12 +20,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         public Material PlayAreaMaterial => playAreaMaterial;
 
         [SerializeField]
-        private bool showFloorPlane = true;
+        private Material trackedAreaMaterial = null;
 
         /// <summary>
-        /// Indicates whether or not the floor plane is to be displayed.
+        /// The material to use for the boundary geometry <see cref="GameObject"/>.
         /// </summary>
-        public bool ShowFloorPlane => showFloorPlane;
+        public Material TrackedAreaMaterial => trackedAreaMaterial;
 
         [SerializeField]
         private Material floorPlaneMaterial = null;
@@ -47,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         public Material FloorPlaneMaterial => floorPlaneMaterial;
 
         [SerializeField]
-        private Vector3 floorPlaneScale = new Vector3(3f, 3f, 1f);
+        private Vector3 floorPlaneScale = new Vector3(5f, 5f, 1f);
 
         /// <summary>
         /// The the size at which to display the rectangular floor plane <see cref="GameObject"/>.

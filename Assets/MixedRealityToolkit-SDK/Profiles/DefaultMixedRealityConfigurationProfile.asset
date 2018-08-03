@@ -37,3 +37,5 @@ MonoBehaviour:
       Microsoft.MixedReality.Toolkit.BoundarySystem
   boundaryHeight: 3
   enablePlatformBoundaryRendering: 1
+  boundaryVisualizationProfile: {fileID: 11400000, guid: c1f4aa213e301a446aca3858e6f4ad17,
+    type: 2}

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
@@ -229,6 +230,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get { return enablePlatformBoundaryRendering; }
             set { enablePlatformBoundaryRendering = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Profile for wiring up boundary visualization assets.")]
+        private MixedRealityBoundaryVisualizationProfile boundaryVisualizationProfile;
+
+        /// <summary>
+        /// Active profile for controller mapping configuration
+        /// </summary>
+        public MixedRealityBoundaryVisualizationProfile BoundaryVisualizationProfile
+        {
+            get { return boundaryVisualizationProfile; }
+            private set { boundaryVisualizationProfile = value; }
         }
 
         #endregion Mixed Reality Manager configurable properties

@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 
@@ -12,29 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// Demo class to show different ways of using the boundary API.
     /// </summary>
-    public class BoundaryVisualizationDemo : MonoBehaviour
+    public class BoundaryIndicatorDemo : MonoBehaviour
     {
-        /// <summary>
-        /// The material used to display indicators that are within the boundary geometry.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Material used to display indicators that are within the boundary geometry.")]
-        private Material boundsMaterial = null;
-
-        /// <summary>
-        /// The material used to display indicators that are outside of the boundary geometry.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Material used to display indicators that are outside of the boundary geometry.")]
-        private Material outOfBoundsMaterial = null;
-
-        /// <summary>
-        /// The material used to display the indicators that are within the inscribed rectangle..
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Material used to display the indicators that are within the inscribed rectangle.")]
-        private Material inscribedRectangleMaterial = null;
-
         /// <summary>
         /// Boundary system implementation.
         /// </summary
@@ -66,6 +45,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 return;
             }
 
+            MixedRealityBoundaryVisualizationProfile visualizationProfile = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile;
+            if (visualizationProfile == null)
+            {
+                // We do not have a visualization profile configured, therefore do not render the indicators.
+                return;
+            }
+
             const int indicatorCount = 20;
             const float indicatorDistance = 0.2f;
             const float indicatorScale = 0.1f;
@@ -87,17 +73,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     marker.transform.localScale = Vector3.one * indicatorScale;
 
                     // Get the desired material for the marker.
-                    Material material = outOfBoundsMaterial;
+                    Material material = visualizationProfile.FloorPlaneMaterial;
 
                     // Check inscribed rectangle first
                     if (BoundaryManager.Contains(position, Boundary.Type.PlayArea))
                     {
-                        material = inscribedRectangleMaterial;
+                        material = visualizationProfile.PlayAreaMaterial;
                     }
                     // Then check geometry
                     else if (BoundaryManager.Contains(position, Boundary.Type.TrackedArea))
                     {
-                        material = boundsMaterial;
+                        material = visualizationProfile.TrackedAreaMaterial;
                     }
 
                     marker.GetComponent<MeshRenderer>().sharedMaterial = material;
