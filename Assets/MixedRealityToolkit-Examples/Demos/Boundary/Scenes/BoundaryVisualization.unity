@@ -338,8 +338,6 @@ GameObject:
   m_Component:
   - component: {fileID: 353698135}
   - component: {fileID: 353698136}
-  - component: {fileID: 353698138}
-  - component: {fileID: 353698137}
   m_Layer: 0
   m_Name: BoundaryVisualizer
   m_TagString: Untagged
@@ -371,30 +369,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647fd3dd3cb11e749850897a69f040db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &353698137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 353698134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bfc11696910c3a4a95bec35024e1ce0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isPlayAreaVisualized: 1
---- !u!114 &353698138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 353698134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85c42b1383d59b344b03d394b4d43861, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isFloorPlaneVisualized: 1
 --- !u!1 &1229001241
 GameObject:
   m_ObjectHideFlags: 0

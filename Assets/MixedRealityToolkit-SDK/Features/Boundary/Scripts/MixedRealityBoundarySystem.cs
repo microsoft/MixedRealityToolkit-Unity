@@ -106,13 +106,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
 
                 if (value)
                 {
-                    CreateFloorPlaneVisualization();
-                    CreatePlaySpaceVisualization();
+                    if (Application.isPlaying)
+                    {
+                        CreateFloorPlaneVisualization();
+                        CreatePlaySpaceVisualization();
+                    }
                 }
                 else
                 {
-                    Object.Destroy(currentPlayArea);
-                    Object.Destroy(currentFloorPlane);
+                    if (Application.isEditor)
+                    {
+                        Object.DestroyImmediate(currentPlayArea);
+                        Object.DestroyImmediate(currentFloorPlane);
+                    }
+                    else
+                    {
+                        Object.Destroy(currentPlayArea);
+                        Object.Destroy(currentFloorPlane);
+                    }
                 }
             }
         }
@@ -218,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             if (EdgeUtilities.IsValidPoint(center))
             {
                 currentPlayArea = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                currentPlayArea.name = "Boundary System Play Area Visualization";
+                currentPlayArea.name = "Boundary System Play Area";
                 currentPlayArea.transform.Translate(new Vector3(center.x, 0.005f, center.y)); // Add fudge factor to avoid z-fighting
                 currentPlayArea.transform.Rotate(new Vector3(90, -angle, 0));
                 currentPlayArea.transform.localScale = new Vector3(width, height, 1.0f);
@@ -238,6 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
 
             // Render the floor.
             currentFloorPlane = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            currentFloorPlane.name = "Boundary System Floor Plane";
             currentFloorPlane.transform.Translate(Vector3.zero);
             currentFloorPlane.transform.Rotate(90, 0, 0);
             currentFloorPlane.transform.localScale = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorPlaneScale;
