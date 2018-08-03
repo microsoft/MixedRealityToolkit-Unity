@@ -1,42 +1,22 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.XR;
 using UnityEngine.XR;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
+namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
 {
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene.
     /// </summary>
-    public class MixedRealityBoundaryManager : BaseManager, IMixedRealityBoundarySystem
+    public class MixedRealityBoundaryManager : MixedRealityEventManager, IMixedRealityBoundarySystem
     {
-        /// <inheritdoc/>
-        public ExperienceScale Scale { get; set; }
-
-        /// <inheritdoc/>
-        public float BoundaryHeight { get; set; }
-
-        /// <inheritdoc/>
-        public bool EnablePlatformBoundaryRendering { get; set; }
-
-        /// <inheritdoc/>
-        public Edge[] Bounds { get; private set; } = new Edge[0];
-
-        /// <inheritdoc/>
-        public float? FloorHeight { get; private set; } = null;
-
-        /// <summary>
-        /// The largest rectangle that is contained withing the playspace geometry.
-        /// </summary>
-        private InscribedRectangle rectangularBounds = null;
+        #region IMixedRealityManager Implementation
 
         /// <inheritdoc/>
         public override void Initialize()
@@ -56,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
 
             SetTrackingSpace();
             CalculateBoundaryBounds();
-            Boundary.visible = EnablePlatformBoundaryRendering;
+            UnityEngine.Experimental.XR.Boundary.visible = EnablePlatformBoundaryRendering;
         }
 
         /// <inheritdoc/>
@@ -66,8 +46,27 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
             InitializeInternal();
         }
 
+        #endregion IMixedRealityManager Implementation
+
+        #region IMixedRealityBoundarySystem Implementation
+
         /// <inheritdoc/>
-        public bool Contains(Vector3 location, Boundary.Type boundaryType = Boundary.Type.TrackedArea)
+        public ExperienceScale Scale { get; set; }
+
+        /// <inheritdoc/>
+        public float BoundaryHeight { get; set; }
+
+        /// <inheritdoc/>
+        public bool EnablePlatformBoundaryRendering { get; set; }
+
+        /// <inheritdoc/>
+        public Edge[] Bounds { get; private set; } = new Edge[0];
+
+        /// <inheritdoc/>
+        public float? FloorHeight { get; private set; } = null;
+
+        /// <inheritdoc/>
+        public bool Contains(Vector3 location, UnityEngine.Experimental.XR.Boundary.Type boundaryType = UnityEngine.Experimental.XR.Boundary.Type.TrackedArea)
         {
             if (!EdgeUtilities.IsValidPoint(location))
             {
@@ -94,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
             // Boundary coordinates are always "on the floor"
             Vector2 point = new Vector2(location.x, location.z);
 
-            if (boundaryType == Boundary.Type.PlayArea)
+            if (boundaryType == UnityEngine.Experimental.XR.Boundary.Type.PlayArea)
             {
                 // Check the inscribed rectangle.
                 if (rectangularBounds != null)
@@ -102,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
                     return rectangularBounds.IsInsideBoundary(point);
                 }
             }
-            else if (boundaryType == Boundary.Type.TrackedArea)
+            else if (boundaryType == UnityEngine.Experimental.XR.Boundary.Type.TrackedArea)
             {
                 // Check the geometry
                 return EdgeUtilities.IsInsideBoundary(Bounds, point);
@@ -135,6 +134,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
             return true;
         }
 
+        /// <inheritdoc/>
+        public GameObject GetBoundaryVisualizer(string sceneName = "", int sceneId = -1)
+        {
+            return null;
+        }
+
+        #endregion IMixedRealityBoundarySystem Implementation
+
+        /// <summary>
+        /// The largest rectangle that is contained withing the playspace geometry.
+        /// </summary>
+        private InscribedRectangle rectangularBounds = null;
+
         /// <summary>
         /// Retrieves the boundary geometry and creates the boundary and inscribed playspace volumes.
         /// </summary>
@@ -152,10 +164,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.BoundarySystem
             }
 
             // Get the boundary geometry.
-            List<Vector3> boundaryGeometry = new List<Vector3>(0);
-            List<Edge> boundaryEdges = new List<Edge>(0);
+            var boundaryGeometry = new List<Vector3>(0);
+            var boundaryEdges = new List<Edge>(0);
 
-            if (Boundary.TryGetGeometry(boundaryGeometry, Boundary.Type.TrackedArea))
+            if (UnityEngine.Experimental.XR.Boundary.TryGetGeometry(boundaryGeometry, UnityEngine.Experimental.XR.Boundary.Type.TrackedArea))
             {
                 // FloorHeight starts out as null. Use a suitably high value for the floor to ensure
                 // that we do not accidentally set it too low.

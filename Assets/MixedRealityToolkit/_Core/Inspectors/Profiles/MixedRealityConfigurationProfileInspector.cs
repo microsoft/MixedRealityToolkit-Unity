@@ -195,12 +195,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 {
                     EditorGUILayout.PropertyField(boundaryHeight, BoundaryHeightContent);
                     EditorGUILayout.PropertyField(enablePlatformBoundaryRendering, PlatformRenderingContent);
-                    EditorGUILayout.PropertyField(boundaryVisualizationProfile, BoundaryVisualizationProfileContent);
+
+                    if (enablePlatformBoundaryRendering.boolValue)
+                    {
+                        EditorGUILayout.PropertyField(boundaryVisualizationProfile, BoundaryVisualizationProfileContent);
+                    }
                 }
                 else
                 {
                     GUILayout.Space(6f);
-                    EditorGUILayout.LabelField("Boundaries are only supported in Room scale experiences.", EditorStyles.label);
+                    EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Info);
                 }
             }
 

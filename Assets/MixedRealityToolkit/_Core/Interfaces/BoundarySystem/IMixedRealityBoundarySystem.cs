@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
+namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem
 {
     /// <summary>
     /// Manager interface for a Boundary system in the Mixed Reality Toolkit
@@ -76,5 +76,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// <param name="height">The height of the rectangle.</param>
         /// <returns></returns>
         bool TryGetRectangularBoundsParams(out Vector2 center, out float angle, out float width, out float height);
+
+        /// <summary>
+        /// Get the play area visualizer for the specified scene.
+        /// </summary>
+        /// <remarks>
+        /// If no scene name, nor id is passed, then the default is returned.
+        /// </remarks>
+        /// <param name="sceneName"></param>
+        /// <param name="sceneId"></param>
+        GameObject GetBoundaryVisualizer(string sceneName = "", int sceneId = -1);
     }
 }
