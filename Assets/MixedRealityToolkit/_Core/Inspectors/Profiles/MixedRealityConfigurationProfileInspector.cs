@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     {
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
-        private static readonly GUIContent PlatformRenderingContent = new GUIContent("Platform Rendering:");
+        private static readonly GUIContent BoundaryHeightContent = new GUIContent("Boundary Height:");
         private static readonly GUIContent BoundaryVisualizationProfileContent = new GUIContent("Boundary Visualization Profile");
 
         // Experience properties
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         // Boundary system properties
         private SerializedProperty enableBoundarySystem;
         private SerializedProperty boundarySystemType;
-        private SerializedProperty enablePlatformBoundaryRendering;
+        private SerializedProperty boundaryHeight;
         private SerializedProperty boundaryVisualizationProfile;
 
         private MixedRealityConfigurationProfile configurationProfile;
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             // Boundary system configuration
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
             boundarySystemType = serializedObject.FindProperty("boundarySystemType");
-            enablePlatformBoundaryRendering = serializedObject.FindProperty("enablePlatformBoundaryRendering");
+            boundaryHeight = serializedObject.FindProperty("boundaryHeight");
             boundaryVisualizationProfile = serializedObject.FindProperty("boundaryVisualizationProfile");
         }
 
@@ -186,16 +186,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             if (enableBoundarySystem.boolValue)
             {
                 EditorGUILayout.PropertyField(boundarySystemType);
-                // Boundary settings depend on the experience scale
 
+                // Boundary settings depend on the experience scale
                 if (scale == ExperienceScale.Room)
                 {
-                    EditorGUILayout.PropertyField(enablePlatformBoundaryRendering, PlatformRenderingContent);
-
-                    if (enablePlatformBoundaryRendering.boolValue)
-                    {
-                        EditorGUILayout.PropertyField(boundaryVisualizationProfile, BoundaryVisualizationProfileContent);
-                    }
+                    EditorGUILayout.PropertyField(boundaryHeight, BoundaryHeightContent);
+                    EditorGUILayout.PropertyField(boundaryVisualizationProfile, BoundaryVisualizationProfileContent);
                 }
                 else
                 {

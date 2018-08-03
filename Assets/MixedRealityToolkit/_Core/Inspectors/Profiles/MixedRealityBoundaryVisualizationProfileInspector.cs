@@ -10,7 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     [CustomEditor(typeof(MixedRealityBoundaryVisualizationProfile))]
     public class MixedRealityBoundaryVisualizationProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private SerializedProperty boundaryHeight;
         private SerializedProperty floorPlaneScale;
         private SerializedProperty playAreaMaterial;
         private SerializedProperty floorPlaneMaterial;
@@ -26,7 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 return;
             }
 
-            boundaryHeight = serializedObject.FindProperty("boundaryHeight");
             floorPlaneScale = serializedObject.FindProperty("floorPlaneScale");
             playAreaMaterial = serializedObject.FindProperty("playAreaMaterial");
             floorPlaneMaterial = serializedObject.FindProperty("floorPlaneMaterial");
@@ -41,8 +39,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.Space();
 
             serializedObject.Update();
-
-            EditorGUILayout.PropertyField(boundaryHeight);
 
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Play Area Settings:", EditorStyles.boldLabel);

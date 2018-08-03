@@ -202,20 +202,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Instruct the platform whether or not to render the playspace boundary. Note: not all platforms support configuring this option.")]
-        private bool enablePlatformBoundaryRendering = false;
+        [Tooltip("The approximate height of the play space, in meters.")]
+        private float boundaryHeight = 3.0f;
 
         /// <summary>
-        /// Instruct the platform whether or not to render the playspace boundary.
+        /// The approximate height of the play space, in meters.
         /// </summary>
         /// <remarks>
-        /// Not all platforms support the EnablePlatformBoundaryRendering property.
+        /// The BoundaryHeight property is used to create a three dimensional volume for the play space.
         /// </remarks>
-        public bool IsPlatformBoundaryRenderingEnabled
-        {
-            get { return boundaryVisualizationProfile != null && enablePlatformBoundaryRendering; }
-            set { enablePlatformBoundaryRendering = value; }
-        }
+        public float BoundaryHeight => boundaryHeight;
 
         [SerializeField]
         [Tooltip("Profile for wiring up boundary visualization assets.")]

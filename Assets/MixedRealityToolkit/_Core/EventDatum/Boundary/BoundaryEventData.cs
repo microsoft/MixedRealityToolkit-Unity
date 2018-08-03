@@ -7,14 +7,40 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Boundary
 {
     /// <summary>
-    /// Describes a boundary event.
+    /// The data describing the boundary system event.
     /// </summary>
     public class BoundaryEventData : GenericBaseEventData
     {
         /// <summary>
-        /// The new state of the Boundary systems platform rendering.
+        /// Is the ceiling being visualized by the boundary system.
         /// </summary>
-        public bool IsPlatformRenderingEnabled { get; private set; }
+        /// <remarks>
+        /// The boundary system defines the ceiling as a plane set at <see cref="IMixedRealityBoundarySystem.BoundaryHeight"/> above the floor.
+        /// </remarks>
+        // todo: coming in Beta
+        // public bool IsCeilingVisualized { get; private set; }
+
+        /// <summary>
+        /// Is the floor being visualized by the boundary system.
+        /// </summary>
+        public bool IsFloorVisualized { get; private set; }
+
+        /// <summary>
+        /// Is the play area being visualized by the boundary system.
+        /// </summary>
+        public bool IsPlayAreaVisualized { get; private set; }
+
+        /// <summary>
+        /// Is the tracked area being visualized by the boundary system.
+        /// </summary>
+        // todo: coming in Beta
+        // public bool IsTrackedAreaVisualized { get; private set; }
+
+        /// <summary>
+        /// Are the boundary walls being visualized by the boundary system.
+        /// </summary>
+        // todo: coming in Beta
+        // public bool AreBoundaryWallsVisualized { get; private set; }
 
         /// <summary>
         /// Constructor.
@@ -22,10 +48,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Boundary
         /// <param name="eventSystem"></param>
         public BoundaryEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-        public void Initialize(IMixedRealityBoundarySystem boundarySystem, bool isPlatformRenderingEnabled)
+        public void Initialize(
+            IMixedRealityBoundarySystem boundarySystem, 
+            bool isFloorVisualized,
+            bool isPlayAreaVisualized)
+            // todo: coming in Beta
+            // bool isCeilingVisualized,
+            // bool isTrackedAreaVisualized,
+            // bool areBoundaryWallsVisualized)
         {
             base.BaseInitialize(boundarySystem);
-            IsPlatformRenderingEnabled = isPlatformRenderingEnabled;
+            IsFloorVisualized = isFloorVisualized;
+            IsPlayAreaVisualized = isPlayAreaVisualized;
+            // todo: coming in Beta
+            // IsCeilingVisualized = isCeilingVisualized;
+            // IsTrackedAreaVisualized = isTrackedAreaVisualized;
+            // AreBoundaryWallsVisualized = areBoundaryWallsVisualized;
         }
     }
 }

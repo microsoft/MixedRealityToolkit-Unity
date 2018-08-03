@@ -12,31 +12,46 @@ using UnityEngine.Experimental.XR;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// Demo class to show different ways of using the boundary API.
+    /// Demo class to show different ways of using the boundary system and visualizing the data.
     /// </summary>
-    public class BoundaryIndicatorDemo : MonoBehaviour, IMixedRealityBoundaryHandler
+    public class BoundaryVisualizationDemo : MonoBehaviour, IMixedRealityBoundaryHandler
     {
         private IMixedRealityBoundarySystem BoundaryManager => boundaryManager ?? (boundaryManager = MixedRealityManager.Instance.GetManager<IMixedRealityBoundarySystem>());
         private IMixedRealityBoundarySystem boundaryManager = null;
 
         private readonly List<GameObject> markers = new List<GameObject>();
 
+        [SerializeField]
+        private bool showFloor = true;
+
+        [SerializeField]
+        private bool showPlayArea = true;
+
         #region MonoBehaviour Implementation
+
+        private void Start()
+        {
+            if (BoundaryManager != null)
+            {
+                if (markers.Count == 0)
+                {
+                    AddMarkers();
+                }
+            }
+        }
+
+        private void Update()
+        {
+            if (BoundaryManager != null)
+            {
+                BoundaryManager.ShowFloor = showFloor;
+                BoundaryManager.ShowPlayArea = showPlayArea;
+            }
+        }
 
         private void OnEnable()
         {
             BoundaryManager.Register(gameObject);
-        }
-
-        private void Start()
-        {
-            if (BoundaryManager != null && BoundaryManager.EnablePlatformBoundaryRendering)
-            {
-                if (markers.Count == 0)
-                {
-                    AddIndicators();
-                }
-            }
         }
 
         private void OnDisable()
@@ -51,22 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// <inheritdoc />
         public void OnBoundaryVisualizationChanged(BoundaryEventData eventData)
         {
-            if (eventData.IsPlatformRenderingEnabled)
-            {
-                if (markers.Count == 0)
-                {
-                    AddIndicators();
-                }
-            }
-            else
-            {
-                for (int i = 0; i < markers.Count; i++)
-                {
-                    Destroy(markers[i]);
-                }
-
-                markers.Clear();
-            }
+            Debug.Log("[BoundaryVisualizationDemo] Boundary visualization changed.");
         }
 
         #endregion IMixedRealityBoundaryHandler Implementation
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// Displays the boundary as an array of spheres where spheres in the
         /// bounds are a different color.
         /// </summary>
-        private void AddIndicators()
+        private void AddMarkers()
         {
             // Get the rectangular bounds.
             Vector2 centerRect;
@@ -111,14 +111,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 {
                     Vector3 offset = new Vector3(xIndex * indicatorDistance, 0.0f, yIndex * indicatorDistance);
                     Vector3 position = corner + offset;
-                    GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    marker.transform.SetParent(transform);
-                    marker.transform.position = position;
-                    marker.transform.localScale = Vector3.one * indicatorScale;
 
-                    // Get the desired material for the marker.
-                    Material material = visualizationProfile.FloorPlaneMaterial;
-
+                    Material material = null;
                     // Check inscribed rectangle first
                     if (BoundaryManager.Contains(position, Boundary.Type.PlayArea))
                     {
@@ -130,9 +124,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                         material = visualizationProfile.TrackedAreaMaterial;
                     }
 
-                    marker.GetComponent<MeshRenderer>().sharedMaterial = material;
-
-                    markers.Add(marker);
+                    if (material != null)
+                    {
+                        GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        marker.name = "Boundary Demo Marker";
+                        marker.transform.SetParent(transform);
+                        marker.transform.position = position;
+                        marker.transform.localScale = Vector3.one * indicatorScale;
+                        marker.GetComponent<MeshRenderer>().sharedMaterial = material;
+                        markers.Add(marker);
+                    }
                 }
             }
         }

@@ -28,14 +28,35 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem
         float BoundaryHeight { get; set; }
 
         /// <summary>
-        /// Enable / disable the platform's play space boundary rendering.
+        /// Enable / disable boundary wall rendering.
+        /// </summary>
+        // todo: coming in Beta
+        // bool ShowBoundaryWalls { get; set; }
+
+        /// <summary>
+        /// Enable / disable ceiling rendering.
         /// </summary>
         /// <remarks>
-        /// Not all platforms support specifying whether or not to render the play space boundary.
-        /// For platforms without boundary rendering control, the default behavior will be unchanged 
-        /// regardless of the value provided.
+        /// The ceiling is defined as a <see cref="GameObject"/> positioned <see cref="BoundaryHeight"/> above the floor.
         /// </remarks>
-        bool EnablePlatformBoundaryRendering { get; set; }
+        // todo: coming in Beta
+        // bool ShowCeiling { get; set; }
+
+        /// <summary>
+        /// Enable / disable floor rendering.
+        /// </summary>
+        bool ShowFloor { get; set; }
+
+        /// <summary>
+        /// Enable / disable play area rendering.
+        /// </summary>
+        bool ShowPlayArea { get; set; }
+
+        /// <summary>
+        /// Enable / disable tracked area rendering.
+        /// </summary>
+        // todo: coming in Beta
+        // bool ShowTrackedArea { get; set; }
 
         /// <summary>
         /// Two dimensional representation of the geometry of the boundary, as provided
@@ -75,19 +96,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem
         /// <param name="angle">The orientation of the rectangle.</param>
         /// <param name="width">The width of the rectangle.</param>
         /// <param name="height">The height of the rectangle.</param>
-        /// <returns>???</returns>
+        /// <returns>True if an inscribed rectangle was found in the boundary geometry, false otherwise.</returns>
         bool TryGetRectangularBoundsParams(out Vector2 center, out float angle, out float width, out float height);
 
         /// <summary>
-        /// Generate the play area visualizer in the scene.
+        /// Gets the <see cref="GameObject"/> that represents the user's play area.
         /// </summary>
-        /// <returns>The reference to the newly created Play Space Visualizer.</returns>
-        GameObject CreatePlaySpaceVisualization();
+        /// <returns>The play area visualization object or null if one does not exist.</returns>
+        GameObject GetPlayAreaVisualization();
 
         /// <summary>
-        /// Generate the floor plane visualizer in the scene.
+        /// Gets the <see cref="GameObject"/> that represents the user's floor.
         /// </summary>
-        /// <returns>The reference to the newly created Floor Plane Visualizer.</returns>
-        GameObject CreateFloorPlaneVisualization();
+        /// <returns>The floor visualization object or null if one does not exist.</returns>
+        GameObject GetFloorVisualization();
     }
 }
