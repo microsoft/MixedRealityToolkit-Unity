@@ -150,6 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             var controller = GetOrAddController(args.state);
             InputSystem?.RaiseSourceDetected(controller?.InputSource, controller);
+            controller?.UpdateController(args.state);
         }
 
         /// <summary>
