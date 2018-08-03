@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
@@ -52,6 +53,34 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         }
 
         #endregion IMixedRealityManager Implementation
+
+        #region IMixedRealtyEventSystem Implementation
+
+        /// <inheritdoc />
+        public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
+        {
+            base.HandleEvent(eventData, eventHandler);
+        }
+
+        /// <summary>
+        /// Registers the <see cref="GameObject"/> to listen for boundary events.
+        /// </summary>
+        /// <param name="listener"></param>
+        public override void Register(GameObject listener)
+        {
+            base.Register(listener);
+        }
+
+        /// <summary>
+        /// UnRegisters the <see cref="GameObject"/> to listen for boundary events.
+        /// /// </summary>
+        /// <param name="listener"></param>
+        public override void Unregister(GameObject listener)
+        {
+            base.Unregister(listener);
+        }
+
+        #endregion
 
         #region IMixedRealityBoundarySystem Implementation
 
