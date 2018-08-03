@@ -46,6 +46,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             InitializeInternal();
         }
 
+        public override void Destroy()
+        {
+            EnablePlatformBoundaryRendering = false;
+        }
+
         #endregion IMixedRealityManager Implementation
 
         #region IMixedRealityBoundarySystem Implementation
