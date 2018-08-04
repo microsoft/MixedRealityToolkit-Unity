@@ -339,9 +339,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 11
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 345
       axisCodeX: 
       axisCodeY: 
@@ -350,9 +350,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 13
       inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS9
       axisCodeY: 
@@ -459,9 +459,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 11
       inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 345
       axisCodeX: 
       axisCodeY: 
@@ -470,9 +470,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 13
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS10
       axisCodeY: 
