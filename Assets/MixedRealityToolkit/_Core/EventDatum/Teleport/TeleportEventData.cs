@@ -35,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport
         /// <param name="target"></param>
         public void Initialize(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
         {
+            Reset();
             Pointer = pointer;
             Target = target;
         }
