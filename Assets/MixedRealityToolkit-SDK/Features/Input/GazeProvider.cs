@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
@@ -140,16 +141,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 PointerExtent = pointerExtent;
                 this.gazeTransform = gazeTransform;
                 this.stabilizer = stabilizer;
-                InteractionEnabled = true;
+                IsInteractionEnabled = true;
             }
 
+            /// <inheritdoc />
+            public override IMixedRealityController Controller { get; set; }
+
+            /// <inheritdoc />
             public override IMixedRealityInputSource InputSourceParent { get; protected set; }
 
-            public void SetGazeInputSourceParent(IMixedRealityInputSource gazeInputSource)
+            /// <summary>
+            /// Only for use when initializing Gaze Pointer on startup.
+            /// </summary>
+            /// <param name="gazeInputSource"></param>
+            internal void SetGazeInputSourceParent(IMixedRealityInputSource gazeInputSource)
             {
                 InputSourceParent = gazeInputSource;
             }
 
+            /// <inheritdoc />
             public override void OnPreRaycast()
             {
                 Vector3 newGazeOrigin = gazeTransform.position;
@@ -163,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                     newGazeNormal = stabilizer.StableRay.direction;
                 }
 
-                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent)));
+                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * PointerExtent));
 
                 gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
             }
@@ -224,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             if (cursorPrefab != null)
             {
-                var cursorObj = Instantiate(cursorPrefab, transform);
+                var cursorObj = Instantiate(cursorPrefab);
                 GazePointer.BaseCursor = cursorObj.GetComponent<IMixedRealityCursor>();
                 Debug.Assert(GazePointer.BaseCursor != null, "Failed to load cursor");
                 GazePointer.BaseCursor.Pointer = GazePointer;
@@ -287,16 +297,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             base.OnDisable();
             GazePointer.BaseCursor?.SetVisibility(false);
-            InputSystem.RaiseSourceLost(GazeInputSource);
             InputSystem.FocusProvider.UnregisterPointer(GazePointer);
-        }
-
-        private void OnDestroy()
-        {
-            if (GazePointer.BaseCursor != null)
-            {
-                Destroy(GazePointer.BaseCursor.GetGameObjectReference());
-            }
+            InputSystem.RaiseSourceLost(GazeInputSource);
         }
 
         #endregion Monobehaiour Implementation

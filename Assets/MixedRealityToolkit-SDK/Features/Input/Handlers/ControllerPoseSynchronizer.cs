@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using UnityEngine;
 
@@ -22,15 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <summary>
         /// The handedness this controller should synchronize with.
         /// </summary>
-        public Handedness Handedness
-        {
-            get { return handedness; }
-            set
-            {
-                handedness = value;
-                ResetControllerReference();
-            }
-        }
+        public Handedness Handedness => handedness;
 
         [SerializeField]
         [Tooltip("Disables child GameObjects when the controller source is lost.")]
@@ -48,49 +41,90 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <summary>
         /// Is the controller this Synchronizer is registered to currently tracked?
         /// </summary>
-        public bool IsTracked { get; private set; } = false;
+        public bool IsTracked { get; protected set; } = false;
 
-        private TrackingState lastTrackingState = TrackingState.NotTracked;
+        /// <summary>
+        /// The current tracking state of the assigned <see cref="IMixedRealityController"/>
+        /// </summary>
+        protected TrackingState TrackingState = TrackingState.NotTracked;
 
-        private uint controllerInputSourceId = 0;
+        /// <summary>
+        /// The currently assigned Controller.
+        /// </summary>
+        public virtual IMixedRealityController Controller
+        {
+            get { return controller; }
+            set
+            {
+                handedness = value.ControllerHandedness;
+                controller = value;
+            }
+        }
+
+        private IMixedRealityController controller;
 
         #region IMixedRealitySourcePoseHandler Implementation
 
         /// <inheritdoc />
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
-            SetControllerReference(eventData);
+            if (Controller == null ||
+                eventData.Controller == null ||
+                eventData.Controller.InputSource.SourceId != Controller.InputSource.SourceId)
+            {
+                return;
+            }
+
+            if (eventData.Controller.ControllerHandedness == Handedness &&
+                eventData.Controller.InputSource.SourceId == Controller.InputSource.SourceId)
+            {
+
+                if (disableChildren)
+                {
+                    gameObject.SetChildrenActive(true);
+                }
+            }
         }
 
         /// <inheritdoc />
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.Controller.ControllerHandedness == Handedness)
+            if (Controller == null ||
+                eventData.Controller == null ||
+                eventData.Controller.InputSource.SourceId != Controller.InputSource.SourceId)
             {
-                ResetControllerReference();
+                return;
+            }
+
+            if (eventData.Controller?.ControllerHandedness == Handedness)
+            {
+                IsTracked = false;
+                TrackingState = TrackingState.NotTracked;
+
+                if (disableChildren)
+                {
+                    gameObject.SetChildrenActive(false);
+                }
             }
         }
 
         /// <inheritdoc />
         public virtual void OnSourcePoseChanged(SourcePoseEventData eventData)
         {
-            if (controllerInputSourceId == 0)
-            {
-                SetControllerReference(eventData);
-            }
-
-            if (eventData.Controller.InputSource.SourceId != controllerInputSourceId)
+            if (Controller == null ||
+                eventData.Controller == null ||
+                eventData.Controller.InputSource.SourceId != Controller.InputSource.SourceId)
             {
                 return;
             }
 
-            if (eventData.TrackingState != lastTrackingState)
+            if (eventData.TrackingState != TrackingState)
             {
                 IsTracked = eventData.TrackingState == TrackingState.Tracked;
-                lastTrackingState = eventData.TrackingState;
+                TrackingState = eventData.TrackingState;
             }
 
-            if (lastTrackingState == TrackingState.Tracked)
+            if (TrackingState == TrackingState.Tracked)
             {
                 transform.position = eventData.MixedRealityPose.Position;
                 transform.rotation = eventData.MixedRealityPose.Rotation;
@@ -98,40 +132,5 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         }
 
         #endregion IMixedRealitySourcePoseHandler Implementation
-
-        #region Monobehaviour Implementation
-
-        protected override void OnEnable()
-        {
-            ResetControllerReference();
-
-            // Subscribe to interaction events
-            base.OnEnable();
-        }
-
-        #endregion Monobehaviour Implementation
-
-        private void ResetControllerReference()
-        {
-            controllerInputSourceId = 0;
-
-            if (DisableChildren)
-            {
-                gameObject.SetChildrenActive(false);
-            }
-        }
-
-        private void SetControllerReference(SourceStateEventData eventData)
-        {
-            if (eventData.Controller.ControllerHandedness == Handedness)
-            {
-                controllerInputSourceId = eventData.Controller.InputSource.SourceId;
-
-                if (DisableChildren)
-                {
-                    gameObject.SetChildrenActive(true);
-                }
-            }
-        }
     }
 }

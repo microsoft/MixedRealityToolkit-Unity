@@ -27,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty enableInputSystem;
         private SerializedProperty inputSystemType;
         private SerializedProperty inputActionsProfile;
+        private SerializedProperty pointerProfile;
         private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
         private SerializedProperty enableControllerMapping;
@@ -83,6 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             enableInputSystem = serializedObject.FindProperty("enableInputSystem");
             inputSystemType = serializedObject.FindProperty("inputSystemType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
+            pointerProfile = serializedObject.FindProperty("pointerProfile");
             enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
@@ -163,6 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             {
                 EditorGUILayout.PropertyField(inputSystemType);
                 RenderProfile(inputActionsProfile);
+                RenderProfile(pointerProfile);
 
                 EditorGUILayout.PropertyField(enableSpeechCommands);
                 if (enableSpeechCommands.boolValue)

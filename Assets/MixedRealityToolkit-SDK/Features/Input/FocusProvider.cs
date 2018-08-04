@@ -512,7 +512,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             pointer.Pointer.OnPreRaycast();
 
             // If pointer interaction isn't enabled, clear its result object and return
-            if (!pointer.Pointer.InteractionEnabled)
+            if (!pointer.Pointer.IsInteractionEnabled)
             {
                 // Don't clear the previous focused object since we still want to trigger FocusExit events
                 pointer.ResetFocusedObjects(false);
@@ -523,7 +523,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 // Keep the focus objects the same
                 // This will ensure that we execute events on those objects
                 // even if the pointer isn't pointing at them
-                if (!pointer.Pointer.FocusLocked)
+                if (!pointer.Pointer.IsFocusLocked)
                 {
                     // Otherwise, continue
                     var prioritizedLayerMasks = (pointer.Pointer.PrioritizedLayerMasksOverride ?? pointingRaycastLayerMasks);
@@ -809,9 +809,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             // If our input source does not have any pointers, then skip.
             if (eventData.InputSource.Pointers == null) { return; }
 
-            foreach (var sourcePointer in eventData.InputSource.Pointers)
+            for (var i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
-                RegisterPointer(sourcePointer);
+                RegisterPointer(eventData.InputSource.Pointers[i]);
 
                 // Special Registration for Gaze
                 if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
@@ -820,7 +820,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
                     if (gazeProviderPointingData == null)
                     {
-                        gazeProviderPointingData = new PointerData(sourcePointer);
+                        gazeProviderPointingData = new PointerData(eventData.InputSource.Pointers[i]);
                     }
 
                     Debug.Assert(gazeProviderPointingData != null);
@@ -833,22 +833,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             // If the input source does not have pointers, then skip.
             if (eventData.InputSource.Pointers == null) { return; }
 
-            foreach (var sourcePointer in eventData.InputSource.Pointers)
+            for (var i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
                 // Special unregistration for Gaze
                 if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
                 {
+                    Debug.Log("UnRegistering focus pointer");
                     Debug.Assert(gazeProviderPointingData != null);
 
                     // If the source lost is the gaze input source, then reset it.
-                    if (sourcePointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
+                    if (eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                     {
                         gazeProviderPointingData.ResetFocusedObjects();
                         gazeProviderPointingData = null;
                     }
                 }
 
-                UnregisterPointer(sourcePointer);
+                UnregisterPointer(eventData.InputSource.Pointers[i]);
             }
         }
 

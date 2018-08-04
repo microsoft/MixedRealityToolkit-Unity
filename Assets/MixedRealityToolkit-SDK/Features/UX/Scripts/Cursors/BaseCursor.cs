@@ -20,57 +20,41 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
         /// <summary>
-        /// Maximum distance for cursor if nothing is hit
-        /// </summary>
-        [Tooltip("The maximum distance the cursor can be with nothing hit")]
-        protected float DefaultCursorDistance = 2.0f;
-
-        /// <summary>
         /// Surface distance to place the cursor off of the surface at
         /// </summary>
+        [SerializeField]
         [Tooltip("The distance from the hit surface to place the cursor")]
         private float surfaceCursorDistance = 0.02f;
 
         [Header("Motion")]
+        [SerializeField]
         [Tooltip("When lerping, use unscaled time. This is useful for games that have a pause mechanism or otherwise adjust the game timescale.")]
         private bool useUnscaledTime = true;
 
-        /// <summary>
-        /// Blend value for surface normal to user facing lerp
-        /// </summary>
+        [SerializeField]
+        [Tooltip("Blend value for surface normal to user facing lerp")]
         private float positionLerpTime = 0.01f;
 
-        /// <summary>
-        /// Blend value for surface normal to user facing lerp
-        /// </summary>
+        [SerializeField]
+        [Tooltip("Blend value for surface normal to user facing lerp")]
         private float scaleLerpTime = 0.01f;
 
-        /// <summary>
-        /// Blend value for surface normal to user facing lerp
-        /// </summary>
+        [SerializeField]
+        [Tooltip("Blend value for surface normal to user facing lerp")]
         private float rotationLerpTime = 0.01f;
 
-        /// <summary>
-        /// Blend value for surface normal to user facing lerp
-        /// </summary>
         [Range(0, 1)]
+        [SerializeField]
+        [Tooltip("Blend value for surface normal to user facing lerp")]
         private float lookRotationBlend = 0.5f;
 
-        /// <summary>
-        /// Visual that is displayed when cursor is active normally
-        /// </summary>
-        [SerializeField]
         [Header("Transform References")]
+        [SerializeField]
+        [Tooltip("Visual that is displayed when cursor is active normally")]
         private Transform primaryCursorVisual = null;
 
-        /// <summary>
-        /// Indicates if the source is detected.
-        /// </summary>
         protected bool IsHandDetected = false;
 
-        /// <summary>
-        /// Indicates pointer or air tap down
-        /// </summary>
         protected bool IsPointerDown = false;
 
         protected GameObject TargetedObject = null;
@@ -78,7 +62,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         private uint visibleHandsCount = 0;
         private bool isVisible = true;
 
-        // Position, scale and rotational goals for cursor
         private Vector3 targetPosition;
         private Vector3 targetScale;
         private Quaternion targetRotation;
@@ -113,6 +96,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         private IMixedRealityPointer pointer;
 
         /// <inheritdoc />
+        public float DefaultCursorDistance
+        {
+            get { return defaultCursorDistance; }
+            set { defaultCursorDistance = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("The maximum distance the cursor can be with nothing hit")]
+        private float defaultCursorDistance = 2.0f;
+
+        /// <inheritdoc />
         public virtual Vector3 Position => transform.position;
 
         /// <inheritdoc />
@@ -131,10 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         }
 
         /// <inheritdoc />
-        public GameObject GetGameObjectReference()
-        {
-            return gameObject;
-        }
+        public GameObject GameObjectReference => gameObject;
 
         #endregion IMixedRealityCursor Implementation
 
@@ -166,6 +157,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             {
                 IsHandDetected = false;
                 IsPointerDown = false;
+            }
+
+            // If our input source pointer is lost then clean ourselves up.
+            if (eventData.InputSource.SourceId == Pointer.InputSourceParent.SourceId)
+            {
+                Destroy(gameObject);
             }
         }
 
@@ -295,16 +292,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             Debug.Assert(Pointer != null, "No Pointer has been assigned!");
 
             FocusDetails focusDetails;
+
             if (!Pointer.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
             {
-                if (Pointer.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
-                {
-                    Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
-                }
-                else
-                {
-                    Debug.LogError($"{pointer.GetType().Name} has not been registered!");
-                }
+                Debug.LogError(Pointer.InputSystem.FocusProvider.IsPointerRegistered(Pointer)
+                    ? $"{name}: Unable to get focus details for {pointer.GetType().Name}!"
+                    : $"{pointer.GetType().Name} has not been registered!");
 
                 return;
             }
@@ -320,8 +313,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             {
                 TargetedObject = null;
 
-                targetPosition = RayStep.GetPointByDistance(Pointer.Rays, DefaultCursorDistance);
-                lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, DefaultCursorDistance);
+                targetPosition = RayStep.GetPointByDistance(Pointer.Rays, defaultCursorDistance);
+                lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, defaultCursorDistance);
                 targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
             }
             else
@@ -382,6 +375,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         private void UpdateCursorState()
         {
             CursorStateEnum newState = CheckCursorState();
+
             if (CursorState != newState)
             {
                 OnCursorStateChange(newState);

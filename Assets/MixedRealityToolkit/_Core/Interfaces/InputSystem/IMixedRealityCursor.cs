@@ -17,6 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         IMixedRealityPointer Pointer { get; set; }
 
         /// <summary>
+        /// The maximum distance the cursor can be with nothing hit
+        /// </summary>
+        float DefaultCursorDistance { get; set; }
+
+        /// <summary>
         /// Position of the <see cref="IMixedRealityCursor"/>.
         /// </summary>
         Vector3 Position { get; }
@@ -41,6 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// Returns the <see cref="IMixedRealityCursor"/>'s <see cref="GameObject"/> reference.
         /// </summary>
         /// <returns>The <see cref="GameObject"/> this <see cref="IMixedRealityCursor"/> component is attached to.</returns>
-        GameObject GetGameObjectReference();
+        GameObject GameObjectReference { get; }
     }
 }

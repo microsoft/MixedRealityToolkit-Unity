@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -43,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         public override void Update()
         {
             InputTracking.GetNodeStates(nodeStates);
+
             for (int i = 0; i < nodeStates.Count; i++)
             {
                 if (IsNodeTypeSupported(nodeStates[i]) &&
@@ -140,8 +141,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         case "Vive Knuckles - Left":                                            // TODO: Yet to test
                         case "Vive Knuckles- Right":                                            // TODO: Yet to test
                             return SupportedControllerType.ViveKnuckles;
-                        default:
-                            break;
                     }
                 }
 
@@ -166,6 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
 
             Handedness controllingHand;
+
             switch (xrNodeState.nodeType)
             {
                 case XRNode.LeftHand:
@@ -179,35 +179,62 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     break;
             }
 
-            IMixedRealityInputSource inputSource = InputSystem?.RequestNewGenericInputSource($"{CurrentControllerType} Controller {controllingHand}");
+            Type controllerType;
+
+            switch (CurrentControllerType)
+            {
+                case SupportedControllerType.GenericOpenVR:
+                    controllerType = typeof(GenericOpenVRController);
+                    break;
+                case SupportedControllerType.ViveWand:
+                    controllerType = typeof(ViveWandController);
+                    break;
+                case SupportedControllerType.ViveKnuckles:
+                    controllerType = typeof(ViveKnucklesController);
+                    break;
+                case SupportedControllerType.OculusTouch:
+                    controllerType = typeof(OculusTouchController);
+                    break;
+                case SupportedControllerType.OculusRemote:
+                    controllerType = typeof(OculusRemoteController);
+                    break;
+                default:
+                    Debug.LogError($"Unsupported controller type detected.");
+                    return null;
+            }
+
+            var pointers = RequestPointers(controllerType, controllingHand);
+            var inputSource = InputSystem?.RequestNewGenericInputSource($"{CurrentControllerType} Controller {controllingHand}", pointers);
 
             GenericOpenVRController detectedController = null;
 
-            // Initialize the controller base on the detected type
             switch (CurrentControllerType)
             {
                 case SupportedControllerType.GenericOpenVR:
                     detectedController = new GenericOpenVRController(TrackingState.NotTracked, controllingHand, inputSource);
-                    detectedController.SetupConfiguration(typeof(GenericOpenVRController));
                     break;
                 case SupportedControllerType.ViveWand:
                     detectedController = new ViveWandController(TrackingState.NotTracked, controllingHand, inputSource);
-                    detectedController.SetupConfiguration(typeof(ViveWandController));
                     break;
                 case SupportedControllerType.ViveKnuckles:
                     detectedController = new ViveKnucklesController(TrackingState.NotTracked, controllingHand, inputSource);
-                    detectedController.SetupConfiguration(typeof(ViveKnucklesController));
                     break;
                 case SupportedControllerType.OculusTouch:
                     detectedController = new OculusTouchController(TrackingState.NotTracked, controllingHand, inputSource);
-                    detectedController.SetupConfiguration(typeof(OculusTouchController));
                     break;
                 case SupportedControllerType.OculusRemote:
+                    detectedController = new OculusRemoteController(TrackingState.NotTracked, controllingHand, inputSource);
                     break;
             }
 
             Debug.Assert(detectedController != null);
-            detectedController.UpdateController(xrNodeState);
+            detectedController?.SetupConfiguration(controllerType);
+
+            for (int i = 0; i < detectedController?.InputSource?.Pointers?.Length; i++)
+            {
+                detectedController.InputSource.Pointers[i].Controller = detectedController;
+            }
+
             activeControllers.Add(xrNodeState.nodeType, detectedController);
             return detectedController;
         }

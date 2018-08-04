@@ -1,9 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
@@ -16,77 +19,116 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     /// <summary>
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
-    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityInputHandler, IMixedRealityPointer
+    [DisallowMultipleComponent]
+    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer, IMixedRealitySpatialInputHandler
     {
-        IMixedRealityInputSystem IMixedRealityPointer.InputSystem => InputSystem;
-
-        [Header("Cursor")]
         [SerializeField]
-        protected GameObject CursorPrefab = null;
+        private GameObject cursorPrefab = null;
 
-        [Header("Interaction")]
-        [SerializeField]
-        private bool interactionEnabled = true;
-
-        [SerializeField]
-        [Range(0f, 360f)]
-        protected float CurrentPointerOrientation = 0f;
-
-        [SerializeField]
-        [Range(0.5f, 50f)]
-        private float pointerExtent = 2f;
+        private GameObject cursorInstance = null;
 
         [SerializeField]
         [Tooltip("Source transform for raycast origin - leave null to use default transform")]
-        protected Transform RaycastOrigin = null;
+        private Transform raycastOrigin = null;
 
         [SerializeField]
-        private MixedRealityInputAction activeHoldAction = MixedRealityInputAction.None;
-
-        [SerializeField]
-        private MixedRealityInputAction interactionEnabledAction = MixedRealityInputAction.None;
-
-        [SerializeField]
-        private bool interactionRequiresHold = false;
+        [Range(0f, 360f)]
+        [Tooltip("The Y orientation of the pointer - used for touchpad rotation and navigation")]
+        private float pointerOrientation = 0f;
 
         /// <summary>
-        /// True if select is pressed right now
-        /// </summary>
-        protected bool SelectPressed = false;
-
-        /// <summary>
-        /// True if select has been pressed once since startup
-        /// </summary>
-        protected bool SelectPressedOnce = false;
-
-        private bool delayPointerRegistration = true;
-
-        /// <summary>
-        /// The Y orientation of the pointer target - used for touchpad rotation and navigation
+        /// The Y orientation of the pointer - used for touchpad rotation and navigation
         /// </summary>
         public virtual float PointerOrientation
         {
             get
             {
-                return CurrentPointerOrientation + (RaycastOrigin != null ? RaycastOrigin.eulerAngles.y : transform.eulerAngles.y);
+                return pointerOrientation + (raycastOrigin != null ? raycastOrigin.eulerAngles.y : transform.eulerAngles.y);
             }
             set
             {
-                CurrentPointerOrientation = value;
+                pointerOrientation = Mathf.Clamp(value, 0f, 360f);
             }
         }
+
+        [SerializeField]
+        [Tooltip("Should the pointer's position be driven from the source pose or from input handler?")]
+        private bool useSourcePoseData = false;
+
+        [SerializeField]
+        [Tooltip("The input action that will drive the pointer's pose, position, or rotation.")]
+        private MixedRealityInputAction inputSourceAction = MixedRealityInputAction.None;
+
+        [SerializeField]
+        [Tooltip("The hold action that will enable the raise the input event for this pointer.")]
+        private MixedRealityInputAction activeHoldAction = MixedRealityInputAction.None;
+
+        [SerializeField]
+        [Tooltip("The action that will enable the raise the input event for this pointer.")]
+        private MixedRealityInputAction pointerAction = MixedRealityInputAction.None;
+
+        [SerializeField]
+        [Tooltip("Does the interaction require hold?")]
+        private bool requiresHoldAction = false;
+
+        /// <summary>
+        /// True if select is pressed right now
+        /// </summary>
+        protected bool IsSelectPressed = false;
+
+        /// <summary>
+        /// True if select has been pressed once since this component was enabled
+        /// </summary>
+        protected bool HasSelectPressedOnce = false;
+
+        protected bool IsHoldPressed = false;
+
+        private bool delayPointerRegistration = true;
 
         /// <summary>
         /// The forward direction of the targeting ray
         /// </summary>
-        public virtual Vector3 PointerDirection => RaycastOrigin != null ? RaycastOrigin.forward : transform.forward;
+        public virtual Vector3 PointerDirection => raycastOrigin != null ? raycastOrigin.forward : transform.forward;
+
+        /// <summary>
+        /// Set a new cursor for this <see cref="IMixedRealityPointer"/>
+        /// </summary>
+        /// <remarks>This <see cref="GameObject"/> must have a <see cref="IMixedRealityCursor"/> attached to it.</remarks>
+        /// <param name="newCursor"></param>
+        public void SetCursor(GameObject newCursor = null)
+        {
+            // Destroy the old cursor instance.
+            if (cursorInstance != null)
+            {
+                if (Application.isEditor)
+                {
+                    DestroyImmediate(cursorInstance);
+                }
+                else
+                {
+                    Destroy(cursorInstance);
+                }
+
+                cursorInstance = newCursor;
+            }
+
+            if (cursorInstance == null && cursorPrefab != null)
+            {
+                cursorInstance = Instantiate(cursorPrefab, transform);
+                cursorInstance.name = $"{name}_Cursor";
+                BaseCursor = cursorInstance.GetComponent<IMixedRealityCursor>();
+                Debug.Assert(BaseCursor != null, "Failed to load cursor");
+                BaseCursor.DefaultCursorDistance = PointerExtent;
+                BaseCursor.Pointer = this;
+                Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");
+            }
+        }
 
         #region Monobehaviour Implementation
 
         protected override void OnEnable()
         {
             base.OnEnable();
-            SelectPressed = false;
 
             BaseCursor?.SetVisibility(true);
 
@@ -109,51 +151,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected override void OnDisable()
         {
             base.OnDisable();
-            SelectPressed = false;
+            IsHoldPressed = false;
+            IsSelectPressed = false;
+            HasSelectPressedOnce = false;
             BaseCursor?.SetVisibility(false);
             InputSystem.FocusProvider.UnregisterPointer(this);
         }
 
-        protected virtual void OnDestroy()
-        {
-            if (BaseCursor != null)
-            {
-                Destroy(BaseCursor.GetGameObjectReference());
-            }
-        }
-
         #endregion  Monobehaviour Implementation
 
-        public void SetCursor(GameObject newCursor = null)
-        {
-            CursorPrefab = newCursor == null ? CursorPrefab : newCursor;
+        #region IMixedRealityPointer Implementation
 
-            if (CursorPrefab != null)
+        IMixedRealityInputSystem IMixedRealityPointer.InputSystem => InputSystem;
+
+        /// <inheritdoc />
+        public override IMixedRealityController Controller
+        {
+            get { return base.Controller; }
+            set
             {
-                var cursorObj = Instantiate(CursorPrefab, transform);
-                cursorObj.name = $"{name}_Cursor";
-                BaseCursor = cursorObj.GetComponent<IMixedRealityCursor>();
-                Debug.Assert(BaseCursor != null, "Failed to load cursor");
-                BaseCursor.Pointer = this;
-                Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");
+                base.Controller = value;
+                InputSourceParent = base.Controller.InputSource;
             }
         }
-
-        /// <summary>
-        /// Call to initiate a select action for this pointer
-        /// </summary>
-        public virtual void OnSelectPressed()
-        {
-            SelectPressed = true;
-            SelectPressedOnce = true;
-        }
-
-        public virtual void OnSelectReleased()
-        {
-            SelectPressed = false;
-        }
-
-        #region IMixedRealityPointer Implementation
 
         private uint pointerId;
 
@@ -179,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         /// <inheritdoc />
-        public IMixedRealityInputSource InputSourceParent { get; set; }
+        public IMixedRealityInputSource InputSourceParent { get; private set; }
 
         /// <inheritdoc />
         public IMixedRealityCursor BaseCursor { get; set; }
@@ -191,20 +211,38 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public ITeleportTarget TeleportTarget { get; set; }
 
         /// <inheritdoc />
-        public virtual bool InteractionEnabled
+        public virtual bool IsInteractionEnabled
         {
-            get { return interactionEnabled; }
-            set { interactionEnabled = value; }
+            get
+            {
+                if (requiresHoldAction && IsHoldPressed)
+                {
+                    return true;
+                }
+
+                if (IsSelectPressed)
+                {
+                    return true;
+                }
+
+                return HasSelectPressedOnce;
+            }
         }
 
         /// <inheritdoc />
-        public bool FocusLocked { get; set; }
+        public bool IsFocusLocked { get; set; }
+
+        [SerializeField]
+        private bool overrideGlobalPointerExtent = false;
+
+        [SerializeField]
+        private float pointerExtent = 10f;
 
         /// <inheritdoc />
-        public float? PointerExtent
+        public float PointerExtent
         {
-            get { return pointerExtent; }
-            set { pointerExtent = value ?? InputSystem.FocusProvider.GlobalPointingExtent; }
+            get { return overrideGlobalPointerExtent ? InputSystem.FocusProvider.GlobalPointingExtent : pointerExtent; }
+            set { pointerExtent = value; }
         }
 
         /// <inheritdoc />
@@ -237,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public virtual bool TryGetPointerPosition(out Vector3 position)
         {
-            position = RaycastOrigin != null ? RaycastOrigin.position : transform.position;
+            position = raycastOrigin != null ? raycastOrigin.position : transform.position;
             return true;
         }
 
@@ -253,14 +291,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public bool TryGetPointerRotation(out Quaternion rotation)
         {
-            Vector3 pointerRotation = RaycastOrigin != null ? RaycastOrigin.eulerAngles : transform.eulerAngles;
+            Vector3 pointerRotation = raycastOrigin != null ? raycastOrigin.eulerAngles : transform.eulerAngles;
             rotation = Quaternion.Euler(pointerRotation.x, PointerOrientation, pointerRotation.z);
             return true;
         }
 
         #region IEquality Implementation
 
-        public static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)
+        private static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)
         {
             return left.Equals(right);
         }
@@ -308,6 +346,37 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #endregion IMixedRealityPointer Implementation
 
+        #region IMixedRealitySourcePoseHandler Implementation
+
+        /// <inheritdoc />
+        public override void OnSourceLost(SourceStateEventData eventData)
+        {
+            base.OnSourceLost(eventData);
+
+            if (eventData.InputSource.SourceId == InputSourceParent.SourceId)
+            {
+                if (Application.isEditor)
+                {
+                    DestroyImmediate(gameObject);
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public override void OnSourcePoseChanged(SourcePoseEventData eventData)
+        {
+            if (useSourcePoseData)
+            {
+                base.OnSourcePoseChanged(eventData);
+            }
+        }
+
+        #endregion IMixedRealitySourcePoseHandler Implementation
+
         #region IMixedRealityInputHandler Implementation
 
         /// <inheritdoc />
@@ -315,14 +384,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
-                if (interactionRequiresHold && eventData.MixedRealityInputAction == activeHoldAction)
+                if (requiresHoldAction && eventData.MixedRealityInputAction == activeHoldAction)
                 {
-                    InteractionEnabled = false;
+                    IsHoldPressed = false;
                 }
 
-                if (eventData.MixedRealityInputAction == interactionEnabledAction)
+                if (eventData.MixedRealityInputAction == pointerAction)
                 {
-                    OnSelectReleased();
+                    IsSelectPressed = false;
+                    InputSystem.RaisePointerClicked(this, Handedness, pointerAction, 0);
+                    InputSystem.RaisePointerUp(this, Handedness, pointerAction);
                 }
             }
         }
@@ -332,14 +403,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
-                if (interactionRequiresHold && (eventData.MixedRealityInputAction == activeHoldAction))
+                if (requiresHoldAction && eventData.MixedRealityInputAction == activeHoldAction)
                 {
-                    InteractionEnabled = true;
+                    IsHoldPressed = true;
                 }
 
-                if (eventData.MixedRealityInputAction == interactionEnabledAction)
+                if (eventData.MixedRealityInputAction == pointerAction)
                 {
-                    OnSelectPressed();
+                    IsSelectPressed = true;
+                    HasSelectPressedOnce = true;
+                    InputSystem.RaisePointerDown(this, Handedness, pointerAction);
                 }
             }
         }
@@ -351,5 +424,55 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public virtual void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
 
         #endregion  IMixedRealityInputHandler Implementation
+
+        #region IMixedRealitySpatialInputHandler Implementation
+
+        /// <inheritdoc />
+        public virtual void OnPositionChanged(InputEventData<Vector3> eventData)
+        {
+            if (eventData.SourceId == InputSourceParent.SourceId)
+            {
+                if (!useSourcePoseData &&
+                    inputSourceAction == eventData.MixedRealityInputAction)
+                {
+                    IsTracked = true;
+                    TrackingState = TrackingState.Tracked;
+                    transform.position = eventData.InputData;
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public virtual void OnRotationChanged(InputEventData<Quaternion> eventData)
+        {
+            if (eventData.SourceId == InputSourceParent.SourceId)
+            {
+                if (!useSourcePoseData &&
+                    inputSourceAction == eventData.MixedRealityInputAction)
+                {
+                    IsTracked = true;
+                    TrackingState = TrackingState.Tracked;
+                    transform.rotation = eventData.InputData;
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public virtual void OnPoseInputChanged(InputEventData<MixedRealityPose> eventData)
+        {
+            if (eventData.SourceId == InputSourceParent.SourceId)
+            {
+                if (!useSourcePoseData &&
+                    inputSourceAction == eventData.MixedRealityInputAction)
+                {
+                    IsTracked = true;
+                    TrackingState = TrackingState.Tracked;
+                    transform.position = eventData.InputData.Position;
+                    transform.rotation = eventData.InputData.Rotation;
+                }
+            }
+        }
+
+        #endregion IMixedRealitySpatialInputHandler Implementation 
     }
 }

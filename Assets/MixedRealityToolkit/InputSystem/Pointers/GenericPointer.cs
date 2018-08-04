@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
@@ -33,6 +34,19 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         public IMixedRealityInputSystem InputSystem { get; }
 
         /// <inheritdoc />
+        public virtual IMixedRealityController Controller
+        {
+            get { return controller; }
+            set
+            {
+                controller = value;
+                inputSourceParent = controller.InputSource;
+            }
+        }
+
+        private IMixedRealityController controller;
+
+        /// <inheritdoc />
         public uint PointerId { get; }
 
         /// <inheritdoc />
@@ -57,13 +71,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         public ITeleportTarget TeleportTarget { get; set; }
 
         /// <inheritdoc />
-        public bool InteractionEnabled { get; set; }
+        public bool IsInteractionEnabled { get; set; }
 
         /// <inheritdoc />
-        public bool FocusLocked { get; set; }
+        public bool IsFocusLocked { get; set; }
 
         /// <inheritdoc />
-        public float? PointerExtent { get; set; }
+        public virtual float PointerExtent { get; set; } = 10f;
 
         /// <inheritdoc />
         public RayStep[] Rays { get; protected set; } = { new RayStep(Vector3.zero, Vector3.forward) };
@@ -92,13 +106,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             Ray pointingRay;
             if (TryGetPointingRay(out pointingRay))
             {
-                Rays[0].CopyRay(pointingRay, (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent));
+                Rays[0].CopyRay(pointingRay, PointerExtent);
             }
 
             if (RayStabilizer != null)
             {
                 RayStabilizer.UpdateStability(Rays[0].Origin, Rays[0].Direction);
-                Rays[0].CopyRay(RayStabilizer.StableRay, (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent));
+                Rays[0].CopyRay(RayStabilizer.StableRay, PointerExtent);
             }
         }
 

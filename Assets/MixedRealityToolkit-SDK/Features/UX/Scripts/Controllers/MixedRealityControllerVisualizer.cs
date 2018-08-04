@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         void IMixedRealitySourcePoseHandler.OnSourcePoseChanged(SourcePoseEventData eventData)
         {
             // Update the respective controller if it has been initialized
-            switch (eventData.Controller.ControllerHandedness)
+            switch (eventData.Controller?.ControllerHandedness)
             {
                 case Handedness.Left:
                     if (leftControllerHand != null)

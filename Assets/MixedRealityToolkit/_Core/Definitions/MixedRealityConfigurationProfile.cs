@@ -121,6 +121,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
+        [Tooltip("Pointer Configuration options")]
+        private MixedRealityPointerProfile pointerProfile;
+
+        /// <summary>
+        /// Pointer configuration options
+        /// </summary>
+        public MixedRealityPointerProfile PointerProfile
+        {
+            get { return pointerProfile; }
+            private set { pointerProfile = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Enable Speech Commands on startup.")]
         private bool enableSpeechCommands = false;
 

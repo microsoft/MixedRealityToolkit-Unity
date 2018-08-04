@@ -10,13 +10,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
     [CustomEditor(typeof(ControllerPoseSynchronizer))]
     public class ControllerPoseSynchronizerInspector : Editor
     {
+        private const string SynchronizationSettingsKey = "MRTK_Inspector_SynchronizationSettingsFoldout";
         private static readonly string[] HandednessLabels = { "Left", "Right" };
+
+        private static bool synchronizationSettingsFoldout = true;
 
         private SerializedProperty handedness;
         private SerializedProperty disableChildren;
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
+            synchronizationSettingsFoldout = SessionState.GetBool(SynchronizationSettingsKey, synchronizationSettingsFoldout);
             handedness = serializedObject.FindProperty("handedness");
             disableChildren = serializedObject.FindProperty("disableChildren");
         }
@@ -24,7 +28,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+
             EditorGUILayout.Space();
+            EditorGUI.BeginChangeCheck();
+            synchronizationSettingsFoldout = EditorGUILayout.Foldout(synchronizationSettingsFoldout, "Synchronization Settings", true);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                SessionState.SetBool(SynchronizationSettingsKey, synchronizationSettingsFoldout);
+            }
+
+            if (!synchronizationSettingsFoldout) { return; }
+
             EditorGUI.indentLevel++;
 
             var currentHandedness = (Handedness)handedness.enumValueIndex;
