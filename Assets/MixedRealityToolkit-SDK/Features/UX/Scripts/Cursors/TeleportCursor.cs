@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             {
                 Debug.Assert(value.GetType() == typeof(TeleportPointer) ||
                              value.GetType() == typeof(ParabolicTeleportPointer),
-                    "Teleport Cursor's Pointer must derive from TeleportPointer type.");
+                    "Teleport Cursor's Pointer must derive from a TeleportPointer type.");
 
                 pointer = (TeleportPointer)value;
                 pointer.BaseCursor = this;
@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
 
             if (pointer.Result == null) { return; }
 
-            transform.position = pointer.TeleportTargetPosition;
+            transform.position = pointer.Result.Details.Point;
 
             Vector3 forward = CameraCache.Main.transform.forward;
             forward.y = 0f;

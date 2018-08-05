@@ -48,38 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         private bool canTeleport = false;
 
         /// <summary>
-        /// The position of the teleport target
-        /// </summary>
-        public virtual Vector3 TeleportTargetPosition
-        {
-            get
-            {
-                if (TeleportTarget != null && TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
-                {
-                    return TeleportTarget.Position;
-                }
-
-                return Result.Details.Point;
-            }
-        }
-
-        /// <summary>
-        /// The normal of the teleport target
-        /// </summary>
-        public virtual Vector3 TeleportTargetNormal
-        {
-            get
-            {
-                if (TeleportTarget != null && TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
-                {
-                    return TeleportTarget.Normal;
-                }
-
-                return Result.StartPoint;
-            }
-        }
-
-        /// <summary>
         /// The result from the last raycast.
         /// </summary>
         public TeleportSurfaceResult TeleportSurfaceResult { get; private set; } = TeleportSurfaceResult.None;

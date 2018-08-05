@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders;
 using UnityEngine;
 
@@ -63,10 +64,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #region IMixedRealityPointer Implementation
 
+        /// <inheritdoc />
         public override void OnPreRaycast()
         {
             parabolicLineData.LineTransform.rotation = Quaternion.identity;
-            parabolicLineData.Direction = transform.forward;
+            parabolicLineData.Direction = CameraCache.Main.transform.TransformDirection(transform.forward);
 
             // when pointing straight up, upDot should be close to 1.
             // when pointing straight down, upDot should be close to -1.
@@ -76,8 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             var velocity = minParabolaVelocity;
             var distance = minDistanceModifier;
 
+            // If we're pointing below the horizon, always use the minimum modifiers.
             if (upDot > 0f)
             {
+                // Increase the modifier multipliers the higher we point.
                 velocity = Mathf.Lerp(minParabolaVelocity, maxParabolaVelocity, upDot);
                 distance = Mathf.Lerp(minDistanceModifier, maxDistanceModifier, upDot);
             }

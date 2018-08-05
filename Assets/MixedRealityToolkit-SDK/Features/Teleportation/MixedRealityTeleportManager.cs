@@ -6,10 +6,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Pointers;
-using System.Threading.Tasks;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async.AwaitYieldInstructions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -24,8 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
         private bool isTeleporting = false;
         private bool isProcessingTeleportRequest = false;
-
-        private float startTime;
 
         private Vector3 startPosition = Vector3.zero;
         private Vector3 startRotation = Vector3.zero;
@@ -249,11 +243,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             if (eventData.HotSpot != null)
             {
                 targetPosition = eventData.HotSpot.Position;
-                targetRotation.y = eventData.HotSpot.OverrideTargetOrientation ? eventData.HotSpot.TargetOrientation : eventData.Pointer.PointerOrientation;
+                targetRotation.y = eventData.HotSpot.OverrideTargetOrientation
+                    ? eventData.HotSpot.TargetOrientation
+                    : eventData.Pointer.PointerOrientation;
             }
             else
             {
-                targetPosition = ((TeleportPointer)eventData.Pointer).TeleportTargetPosition;
+                targetPosition = eventData.Pointer.Result.Details.Point;
                 targetRotation.y = eventData.Pointer.PointerOrientation;
             }
 
@@ -264,6 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
             isProcessingTeleportRequest = false;
 
+            // Raise complete event using the pointer and hot spot provided.
             RaiseTeleportComplete(eventData.Pointer, eventData.HotSpot);
         }
     }
