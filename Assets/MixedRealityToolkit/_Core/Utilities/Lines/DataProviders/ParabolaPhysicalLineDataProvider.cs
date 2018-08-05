@@ -36,12 +36,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         }
 
         [SerializeField]
-        private float timeMultiplier = 1f;
+        private float distanceMultiplier = 1f;
 
-        public float TimeMultiplier
+        public float DistanceMultiplier
         {
-            get { return timeMultiplier; }
-            set { timeMultiplier = value; }
+            get { return distanceMultiplier; }
+            set { distanceMultiplier = value; }
         }
 
         [SerializeField]
@@ -98,7 +98,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
-            return LineUtility.GetPointAlongPhysicalParabola(StartPoint.Position, direction, velocity, useCustomGravity ? gravity : UnityEngine.Physics.gravity, normalizedDistance * timeMultiplier);
+            return LineUtility.GetPointAlongPhysicalParabola(StartPoint.Position, direction, velocity, useCustomGravity ? gravity : UnityEngine.Physics.gravity, normalizedDistance * distanceMultiplier);
+        }
+
+        /// <inheritdoc />
+        protected override Vector3 GetUpVectorInternal(float normalizedLength)
+        {
+            return Vector3.up;
         }
 
         #endregion Line Data Provider Implementation

@@ -101,6 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         /// <inheritdoc />
         public float SphereCastRadius { get; set; }
 
+        public float PointerOrientation { get; } = 0f;
+
         /// <inheritdoc />
         public virtual void OnPreRaycast()
         {

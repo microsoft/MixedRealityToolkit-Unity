@@ -5,7 +5,11 @@ using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Pointers;
 using System.Threading.Tasks;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async.AwaitYieldInstructions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,6 +22,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
     {
         private TeleportEventData teleportEventData;
 
+        private bool isTeleporting = false;
+        private bool isProcessingTeleportRequest = false;
+
+        private float startTime;
+
+        private Vector3 startPosition = Vector3.zero;
+        private Vector3 startRotation = Vector3.zero;
+
+        private Vector3 targetPosition = Vector3.zero;
+        private Vector3 targetRotation = Vector3.zero;
+
         #region IMixedRealityManager Implementation
 
         /// <inheritdoc />
@@ -29,9 +44,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
         private void InitializeInternal()
         {
+            if (CameraCache.Main.transform.parent == null)
+            {
+                var cameraParent = new GameObject("Body");
+                CameraCache.Main.transform.SetParent(cameraParent.transform);
+            }
+
+            // Make sure the camera is at the scene origin.
+            CameraCache.Main.transform.parent.transform.position = Vector3.zero;
+            CameraCache.Main.transform.localPosition = Vector3.zero;
+
 #if UNITY_EDITOR
             if (!UnityEditor.EditorApplication.isPlaying)
             {
+
                 var eventSystems = Object.FindObjectsOfType<EventSystem>();
 
                 if (eventSystems.Length == 0)
@@ -52,6 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             }
 #endif // UNITY_EDITOR
 
+            TeleportDuration = MixedRealityManager.Instance.ActiveProfile.TeleportDuration;
             teleportEventData = new TeleportEventData(EventSystem.current);
         }
 
@@ -91,6 +118,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
         #endregion IEventSystemManager Implementation
 
+        #region IMixedRealityTeleportSystem Implementation
+
+        public float TeleportDuration
+        {
+            get { return teleportDuration; }
+            set
+            {
+                if (isProcessingTeleportRequest)
+                {
+                    Debug.LogWarning("Couldn't change teleport duration. Teleport in progress.");
+                    return;
+                }
+
+                teleportDuration = value;
+            }
+        }
+
+        private float teleportDuration = 0.25f;
+
         private static readonly ExecuteEvents.EventFunction<IMixedRealityTeleportHandler> OnTeleportRequestHandler =
             delegate (IMixedRealityTeleportHandler handler, BaseEventData eventData)
             {
@@ -118,11 +164,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         /// <inheritdoc />
         public void RaiseTeleportStarted(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
         {
+            if (isTeleporting)
+            {
+                Debug.LogError("Teleportation already in progress");
+                return;
+            }
+
+            isTeleporting = true;
+
             // initialize event
             teleportEventData.Initialize(pointer, target);
 
             // Pass handler
             HandleEvent(teleportEventData, OnTeleportStartedHandler);
+
+            ProcessTeleportationRequest(teleportEventData);
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityTeleportHandler> OnTeleportCompletedHandler =
@@ -135,11 +191,27 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         /// <inheritdoc />
         public void RaiseTeleportComplete(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
         {
+            // Check to make sure no one from outside the Teleport System called this method.
+            // Other implementations may have a different way of processing requests.
+            if (isProcessingTeleportRequest)
+            {
+                Debug.LogError("Calls to this method from outside the Teleport System is not allowed in this implementation.");
+                return;
+            }
+
+            if (!isTeleporting)
+            {
+                Debug.LogError("No Active Teleportation in progress.");
+                return;
+            }
+
             // initialize event
             teleportEventData.Initialize(pointer, target);
 
             // Pass handler
             HandleEvent(teleportEventData, OnTeleportCompletedHandler);
+
+            isTeleporting = false;
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityTeleportHandler> OnTeleportCanceledHandler =
@@ -157,6 +229,42 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
             // Pass handler
             HandleEvent(teleportEventData, OnTeleportCanceledHandler);
+        }
+
+        #endregion IMixedRealityTeleportSystem Implementation
+
+        private void ProcessTeleportationRequest(TeleportEventData eventData)
+        {
+            isProcessingTeleportRequest = true;
+
+            var cameraParent = CameraCache.Main.transform.parent;
+            startPosition = cameraParent.position;
+
+            startRotation = CameraCache.Main.transform.eulerAngles;
+            startRotation.x = 0f;
+            startRotation.z = 0f;
+
+            cameraParent.eulerAngles = startRotation;
+
+            if (eventData.HotSpot != null)
+            {
+                targetPosition = eventData.HotSpot.Position;
+                targetRotation.y = eventData.HotSpot.OverrideTargetOrientation ? eventData.HotSpot.TargetOrientation : eventData.Pointer.PointerOrientation;
+            }
+            else
+            {
+                targetPosition = ((TeleportPointer)eventData.Pointer).TeleportTargetPosition;
+                targetRotation.y = eventData.Pointer.PointerOrientation;
+            }
+
+            Debug.Log($"Moving {cameraParent.name} to {targetPosition} | {targetRotation}");
+
+            cameraParent.position = targetPosition;
+            cameraParent.eulerAngles = targetRotation;
+
+            isProcessingTeleportRequest = false;
+
+            RaiseTeleportComplete(eventData.Pointer, eventData.HotSpot);
         }
     }
 }

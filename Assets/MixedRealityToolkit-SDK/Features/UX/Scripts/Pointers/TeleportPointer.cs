@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
 using System;
 using UnityEngine;
@@ -17,15 +16,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         [SerializeField]
         private MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
 
-        /// <summary>
-        /// Pressing 'forward' on the thumbstick gives us an angle that doesn't quite feel like
-        /// the forward direction, so we apply this offset to make navigation feel more natural
-        /// </summary>
         [SerializeField]
-        private float angleOffset = -82.5f;
+        [Tooltip("The angle from the pointer's forward position that will activate the teleport.")]
+        private float activationAngle = 45f;
 
         [SerializeField]
-        private float minValidDot = 0.2f;
+        [Tooltip("If Pressing 'forward' on the thumbstick gives us an angle that doesn't quite feel like the forward direction, we apply this offset to make navigation feel more natural")]
+        private float angleOffset = 0f;
+
+        [SerializeField]
+        private float upDirectionThreshold = 0.2f;
 
         [SerializeField]
         protected Gradient LineColorHotSpot = new Gradient();
@@ -50,21 +50,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <summary>
         /// The position of the teleport target
         /// </summary>
-        protected virtual Vector3 TeleportTargetPosition
+        public virtual Vector3 TeleportTargetPosition
         {
             get
             {
-                if (!IsInteractionEnabled)
-                {
-                    return Vector3.zero;
-                }
-
                 if (TeleportTarget != null && TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                 {
                     return TeleportTarget.Position;
                 }
 
-                Debug.Assert(Result != null);
                 return Result.Details.Point;
             }
         }
@@ -72,15 +66,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <summary>
         /// The normal of the teleport target
         /// </summary>
-        protected virtual Vector3 TeleportTargetNormal
+        public virtual Vector3 TeleportTargetNormal
         {
             get
             {
-                if (!IsInteractionEnabled)
-                {
-                    return Vector3.up;
-                }
-
                 if (TeleportTarget != null && TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                 {
                     return TeleportTarget.Normal;
@@ -93,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <summary>
         /// The result from the last raycast.
         /// </summary>
-        protected TeleportSurfaceResult TeleportSurfaceResult = TeleportSurfaceResult.None;
+        public TeleportSurfaceResult TeleportSurfaceResult { get; private set; } = TeleportSurfaceResult.None;
 
         protected Gradient GetLineGradient(TeleportSurfaceResult targetResult)
         {
@@ -112,6 +101,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            BaseCursor?.SetVisibility(false);
+        }
+
         #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
@@ -122,24 +117,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             get
             {
-                if (!IsInteractionEnabled)
-                {
-                    return 0f;
-                }
-
-                if (TeleportSurfaceResult == TeleportSurfaceResult.HotSpot &&
-                    TeleportTarget != null && TeleportTarget.OverrideTargetOrientation)
+                if (
+                    TeleportTarget != null &&
+                    TeleportTarget.OverrideTargetOrientation &&
+                    TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                 {
                     return TeleportTarget.TargetOrientation;
                 }
 
-                // Use the camera orientation by default
-                return CameraCache.Main.transform.eulerAngles.y - PointerOrientation;
+                return base.PointerOrientation;
             }
             set
             {
-                // Store pointer orientation as the difference between camera and input
-                base.PointerOrientation = value;
+                base.PointerOrientation = value * -1f;
             }
         }
 
@@ -203,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                         {
                             // If it's NOT a hotspot, check if the hit normal is too steep 
                             // (Hotspots override dot requirements)
-                            TeleportSurfaceResult = Vector3.Dot(Result.StartPoint, Vector3.up) < minValidDot
+                            TeleportSurfaceResult = Vector3.Dot(Result.StartPoint, Vector3.up) < upDirectionThreshold
                                 ? TeleportSurfaceResult.Valid
                                 : TeleportSurfaceResult.Invalid;
                         }
@@ -285,28 +275,34 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 angle += angleOffset;
                 PointerOrientation = angle;
 
-                if (!teleportEnabled)
+                if (!teleportEnabled && Mathf.Abs(angle) < activationAngle)
                 {
                     teleportEnabled = true;
+
                     TeleportSystem.RaiseTeleportRequest(this, TeleportTarget);
                 }
             }
             else
             {
-                if (teleportEnabled)
-                {
-                    teleportEnabled = false;
-                    TeleportSystem.RaiseTeleportCanceled(this, TeleportTarget);
-                }
+                currentInputPosition = Vector2.zero;
+                PointerOrientation = 0f;
 
                 if (canTeleport)
                 {
                     canTeleport = false;
+                    teleportEnabled = false;
                     TeleportSystem.RaiseTeleportStarted(this, TeleportTarget);
+                }
+
+                if (teleportEnabled)
+                {
+                    canTeleport = false;
+                    teleportEnabled = false;
+                    TeleportSystem.RaiseTeleportCanceled(this, TeleportTarget);
                 }
             }
 
-            if (IsInteractionEnabled &&
+            if (teleportEnabled &&
                 TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                 TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
             {
@@ -321,25 +317,45 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public override void OnTeleportRequest(TeleportEventData eventData)
         {
-            base.OnTeleportRequest(eventData);
+            if (eventData.Pointer.PointerId == PointerId)
+            {
+                Debug.Log($"Teleport request raised: {eventData.HotSpot} | {eventData.Pointer}");
+                BaseCursor?.SetVisibility(true);
+            }
         }
 
         /// <inheritdoc />
         public override void OnTeleportStarted(TeleportEventData eventData)
         {
+            if (eventData.Pointer.PointerId == PointerId)
+            {
+                Debug.Log($"Teleport started:{eventData.HotSpot} | {eventData.Pointer}");
+            }
+
             base.OnTeleportStarted(eventData);
         }
 
         /// <inheritdoc />
         public override void OnTeleportCompleted(TeleportEventData eventData)
         {
-            base.OnTeleportCompleted(eventData);
+            if (eventData.Pointer.PointerId == PointerId)
+            {
+                Debug.Log($"Teleport completed: {eventData.HotSpot} | {eventData.Pointer}");
+            }
+
+            IsTeleportRequestActive = false;
         }
 
         /// <inheritdoc />
         public override void OnTeleportCanceled(TeleportEventData eventData)
         {
-            base.OnTeleportCanceled(eventData);
+            if (eventData.Pointer.PointerId == PointerId)
+            {
+                Debug.Log($"Teleport request Canceled: {eventData.Pointer}");
+            }
+
+            IsTeleportRequestActive = false;
+            BaseCursor?.SetVisibility(false);
         }
 
         #endregion IMixedRealityTeleportHandler Implementation

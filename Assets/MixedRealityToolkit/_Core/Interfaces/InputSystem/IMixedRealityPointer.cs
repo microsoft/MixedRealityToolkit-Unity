@@ -108,6 +108,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         float SphereCastRadius { get; set; }
 
         /// <summary>
+        /// The Y orientation of the pointer - used for touchpad rotation and navigation
+        /// </summary>
+        float PointerOrientation { get; }
+
+        /// <summary>
         /// Called before all rays have casted.
         /// </summary>
         void OnPreRaycast();

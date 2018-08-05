@@ -10,10 +10,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     public class ParabolicTeleportPointer : TeleportPointer
     {
         [SerializeField]
-        private float minParabolaVelocity = 3f;
+        private float minParabolaVelocity = 1f;
 
         [SerializeField]
-        private float maxParabolaVelocity = 3f;
+        private float maxParabolaVelocity = 5f;
+
+        [SerializeField]
+        private float minDistanceModifier = 1f;
+
+        [SerializeField]
+        private float maxDistanceModifier = 5f;
 
         [SerializeField]
         private ParabolaPhysicalLineDataProvider parabolicLineData;
@@ -23,17 +29,30 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected override void OnValidate()
         {
             base.OnValidate();
+            EnsureSetup();
 
-            if (parabolicLineData == null)
+            if (parabolicLineData.LineTransform == transform)
             {
-                parabolicLineData = GetComponent<ParabolaPhysicalLineDataProvider>();
+                Debug.LogWarning("Missing Parabolic line helper.\nThe Parabolic Teleport Pointer requires an empty GameObject child for calculating the parabola arc.");
             }
         }
 
         protected override void OnEnable()
         {
             base.OnEnable();
+            EnsureSetup();
 
+            if (parabolicLineData.LineTransform == transform)
+            {
+                var pointerHelper = new GameObject("ParabolicLinePointerHelper");
+                pointerHelper.transform.SetParent(transform);
+                pointerHelper.transform.localPosition = Vector3.zero;
+                parabolicLineData.LineTransform = pointerHelper.transform;
+            }
+        }
+
+        private void EnsureSetup()
+        {
             if (parabolicLineData == null)
             {
                 parabolicLineData = GetComponent<ParabolaPhysicalLineDataProvider>();
@@ -46,17 +65,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         public override void OnPreRaycast()
         {
-            // Make sure our parabola only rotates on y/x axis
-            // NOTE: Parabola's custom line transform field should be set to a transform OTHER than its gameObject's transform
-            parabolicLineData.Direction = transform.forward + Vector3.up;
             parabolicLineData.LineTransform.rotation = Quaternion.identity;
+            parabolicLineData.Direction = transform.forward;
 
-            // Use our up angle and distance curve to determine the velocity
-            // This can be used to make the parabola point farther when aimed up
-            float angle = Mathf.Clamp01(Vector3.Angle(transform.forward, Vector3.up) / 180f);
-            float velocity = Mathf.Lerp(minParabolaVelocity, maxParabolaVelocity, angle);
+            // when pointing straight up, upDot should be close to 1.
+            // when pointing straight down, upDot should be close to -1.
+            // when pointing straight forward in any direction, upDot should be 0.
+            var upDot = Vector3.Dot(transform.forward, Vector3.up);
+
+            var velocity = minParabolaVelocity;
+            var distance = minDistanceModifier;
+
+            if (upDot > 0f)
+            {
+                velocity = Mathf.Lerp(minParabolaVelocity, maxParabolaVelocity, upDot);
+                distance = Mathf.Lerp(minDistanceModifier, maxDistanceModifier, upDot);
+            }
+
             parabolicLineData.Velocity = velocity;
-
+            parabolicLineData.DistanceMultiplier = distance;
             base.OnPreRaycast();
         }
 

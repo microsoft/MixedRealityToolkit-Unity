@@ -6,48 +6,14 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
 {
-    [CustomEditor(typeof(ParabolicTeleportPointer))]
-    public class ParabolicTeleportPointerInspector : TeleportPointerInspector
-    {
-        private SerializedProperty minParabolaVelocity;
-        private SerializedProperty maxParabolaVelocity;
-
-        private bool parabolicTeleportFoldout = true;
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
-            minParabolaVelocity = serializedObject.FindProperty("minParabolaVelocity");
-            maxParabolaVelocity = serializedObject.FindProperty("maxParabolaVelocity");
-        }
-
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-            serializedObject.Update();
-
-            parabolicTeleportFoldout = EditorGUILayout.Foldout(parabolicTeleportFoldout, "Parabolic Pointer Options", true);
-
-            if (parabolicTeleportFoldout)
-            {
-                EditorGUI.indentLevel++;
-                EditorGUILayout.PropertyField(minParabolaVelocity);
-                EditorGUILayout.PropertyField(maxParabolaVelocity);
-                EditorGUI.indentLevel--;
-            }
-
-            serializedObject.ApplyModifiedProperties();
-        }
-    }
-
     [CustomEditor(typeof(TeleportPointer))]
     public class TeleportPointerInspector : LinePointerInspector
     {
         private SerializedProperty teleportAction;
         private SerializedProperty inputThreshold;
+        private SerializedProperty activationAngle;
         private SerializedProperty angleOffset;
-        private SerializedProperty minValidDot;
+        private SerializedProperty upDirectionThreshold;
         private SerializedProperty lineColorHotSpot;
         private SerializedProperty validLayers;
         private SerializedProperty invalidLayers;
@@ -61,8 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
 
             teleportAction = serializedObject.FindProperty("teleportAction");
             inputThreshold = serializedObject.FindProperty("inputThreshold");
+            activationAngle = serializedObject.FindProperty("activationAngle");
             angleOffset = serializedObject.FindProperty("angleOffset");
-            minValidDot = serializedObject.FindProperty("minValidDot");
+            upDirectionThreshold = serializedObject.FindProperty("upDirectionThreshold");
             lineColorHotSpot = serializedObject.FindProperty("LineColorHotSpot");
             validLayers = serializedObject.FindProperty("ValidLayers");
             invalidLayers = serializedObject.FindProperty("InvalidLayers");
@@ -80,8 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(teleportAction);
                 EditorGUILayout.PropertyField(inputThreshold);
+                EditorGUILayout.PropertyField(activationAngle);
                 EditorGUILayout.PropertyField(angleOffset);
-                EditorGUILayout.PropertyField(minValidDot);
+                EditorGUILayout.PropertyField(upDirectionThreshold);
                 EditorGUILayout.PropertyField(lineColorHotSpot);
                 EditorGUILayout.PropertyField(validLayers);
                 EditorGUILayout.PropertyField(invalidLayers);

@@ -40,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         // Teleport system properties
         private SerializedProperty enableTeleportSystem;
         private SerializedProperty teleportSystemType;
+        private SerializedProperty teleportDuration;
 
         private MixedRealityConfigurationProfile configurationProfile;
 
@@ -100,6 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             // Teleport system configuration
             enableTeleportSystem = serializedObject.FindProperty("enableTeleportSystem");
             teleportSystemType = serializedObject.FindProperty("teleportSystemType");
+            teleportDuration = serializedObject.FindProperty("teleportDuration");
         }
 
         public override void OnInspectorGUI()
@@ -217,6 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             if (enableTeleportSystem.boolValue)
             {
                 EditorGUILayout.PropertyField(teleportSystemType);
+                EditorGUILayout.PropertyField(teleportDuration);
             }
 
             EditorGUIUtility.labelWidth = previousLabelWidth;

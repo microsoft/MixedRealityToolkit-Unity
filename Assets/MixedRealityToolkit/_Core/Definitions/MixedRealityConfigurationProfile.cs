@@ -272,6 +272,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
             private set { teleportSystemType = value; }
         }
 
+        [SerializeField]
+        [Tooltip("The duration of the teleport in seconds.")]
+        private float teleportDuration = 0.25f;
+
+        /// <summary>
+        /// The duration of the teleport in seconds.
+        /// </summary>
+        public float TeleportDuration
+        {
+            get { return teleportDuration; }
+            set { teleportDuration = value; }
+        }
+
         #endregion Mixed Reality Manager configurable properties
 
         #region ISerializationCallbackReceiver Implementation

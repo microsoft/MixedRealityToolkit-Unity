@@ -18,9 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport
         public IMixedRealityPointer Pointer { get; private set; }
 
         /// <summary>
-        /// The teleport target.
+        /// The teleport hot spot.
         /// </summary>
-        public IMixedRealityTeleportTarget Target { get; private set; }
+        public IMixedRealityTeleportTarget HotSpot { get; private set; }
 
         /// <summary>
         /// Constructor.
@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport
         {
             Reset();
             Pointer = pointer;
-            Target = target;
+            HotSpot = target;
         }
     }
 }

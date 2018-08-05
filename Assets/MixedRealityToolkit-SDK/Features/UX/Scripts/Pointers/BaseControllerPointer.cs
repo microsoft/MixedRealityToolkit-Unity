@@ -38,26 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         private Transform raycastOrigin = null;
 
         [SerializeField]
-        [Range(0f, 360f)]
-        [Tooltip("The Y orientation of the pointer - used for touchpad rotation and navigation")]
-        private float pointerOrientation = 0f;
-
-        /// <summary>
-        /// The Y orientation of the pointer - used for touchpad rotation and navigation
-        /// </summary>
-        public virtual float PointerOrientation
-        {
-            get
-            {
-                return pointerOrientation + (raycastOrigin != null ? raycastOrigin.eulerAngles.y : transform.eulerAngles.y);
-            }
-            set
-            {
-                pointerOrientation = Mathf.Clamp(value, 0f, 360f);
-            }
-        }
-
-        [SerializeField]
         [Tooltip("Should the pointer's position be driven from the source pose or from input handler?")]
         private bool useSourcePoseData = false;
 
@@ -89,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         protected bool IsHoldPressed = false;
 
-        protected bool IsTeleportRequestActive { get; private set; } = false;
+        protected bool IsTeleportRequestActive { get; set; } = false;
 
         private bool delayPointerRegistration = true;
 
@@ -105,7 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <param name="newCursor"></param>
         public void SetCursor(GameObject newCursor = null)
         {
-            // Destroy the old cursor instance.
             if (cursorInstance != null)
             {
                 if (Application.isEditor)
@@ -123,12 +102,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             if (cursorInstance == null && cursorPrefab != null)
             {
                 cursorInstance = Instantiate(cursorPrefab, transform);
-                cursorInstance.name = $"{name}_Cursor";
+            }
+
+            if (cursorInstance != null)
+            {
+                cursorInstance.name = $"{Handedness}_{name}_Cursor";
                 BaseCursor = cursorInstance.GetComponent<IMixedRealityCursor>();
-                Debug.Assert(BaseCursor != null, "Failed to load cursor");
-                BaseCursor.DefaultCursorDistance = PointerExtent;
-                BaseCursor.Pointer = this;
-                Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");
+
+                if (BaseCursor != null)
+                {
+                    BaseCursor.DefaultCursorDistance = PointerExtent;
+                    BaseCursor.Pointer = this;
+                }
+                else
+                {
+                    Debug.LogError($"No IMixedRealityCursor component found on {cursorInstance.name}");
+                }
             }
         }
 
@@ -282,6 +271,27 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         /// <inheritdoc />
         public float SphereCastRadius { get; set; } = 0.1f;
+
+        [SerializeField]
+        [Range(0f, 360f)]
+        [Tooltip("The Y orientation of the pointer - used for touchpad rotation and navigation")]
+        private float pointerOrientation = 0f;
+
+        /// <inheritdoc />
+        public virtual float PointerOrientation
+        {
+            get
+            {
+                return pointerOrientation + (raycastOrigin != null ? raycastOrigin.eulerAngles.y : transform.eulerAngles.y);
+            }
+            set
+            {
+                pointerOrientation = value < 0
+                    ? Mathf.Clamp(value, -360f, 0f)
+                    : Mathf.Clamp(value, 0f, 360f);
+
+            }
+        }
 
         /// <inheritdoc />
         public virtual void OnPreRaycast() { }
@@ -498,23 +508,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public virtual void OnTeleportRequest(TeleportEventData eventData)
         {
             // Only turn off pointers that aren't making the request.
-            if (eventData.Pointer.PointerId != PointerId)
-            {
-                Debug.Log("Teleport request raised.");
-
-                IsTeleportRequestActive = true;
-                BaseCursor?.SetVisibility(false);
-            }
+            IsTeleportRequestActive = true;
+            BaseCursor?.SetVisibility(false);
         }
 
         /// <inheritdoc />
         public virtual void OnTeleportStarted(TeleportEventData eventData)
         {
-            if (eventData.Pointer.PointerId != PointerId)
-            {
-                Debug.Log("Teleport Started.");
-            }
-
             // Turn off all pointers while we teleport.
             IsTeleportRequestActive = true;
             BaseCursor?.SetVisibility(false);
@@ -523,11 +523,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public virtual void OnTeleportCompleted(TeleportEventData eventData)
         {
-            if (eventData.Pointer.PointerId != PointerId)
-            {
-                Debug.Log("Teleport Completed.");
-            }
-
             // Turn all our pointers back on.
             IsTeleportRequestActive = false;
             BaseCursor?.SetVisibility(true);
@@ -536,11 +531,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public virtual void OnTeleportCanceled(TeleportEventData eventData)
         {
-            if (eventData.Pointer.PointerId != PointerId)
-            {
-                Debug.Log("Teleport request Canceled.");
-            }
-
             // Turn all our pointers back on.
             IsTeleportRequestActive = false;
             BaseCursor?.SetVisibility(true);

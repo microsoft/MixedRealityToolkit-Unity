@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
     {
         private SerializedProperty lineColorSelected;
         private SerializedProperty lineColorValid;
+        private SerializedProperty lineColorInvalid;
         private SerializedProperty lineColorNoTarget;
         private SerializedProperty lineColorLockFocus;
         private SerializedProperty lineCastResolution;
@@ -24,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
 
             lineColorSelected = serializedObject.FindProperty("LineColorSelected");
             lineColorValid = serializedObject.FindProperty("LineColorValid");
+            lineColorInvalid = serializedObject.FindProperty("LineColorInvalid");
             lineColorNoTarget = serializedObject.FindProperty("LineColorNoTarget");
             lineColorLockFocus = serializedObject.FindProperty("LineColorLockFocus");
             lineCastResolution = serializedObject.FindProperty("LineCastResolution");
@@ -42,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(lineColorSelected);
                 EditorGUILayout.PropertyField(lineColorValid);
+                EditorGUILayout.PropertyField(lineColorInvalid);
                 EditorGUILayout.PropertyField(lineColorNoTarget);
                 EditorGUILayout.PropertyField(lineColorLockFocus);
                 EditorGUILayout.PropertyField(lineCastResolution);
