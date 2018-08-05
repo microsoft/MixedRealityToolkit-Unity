@@ -21,28 +21,28 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem
         /// Raise a teleportation request event.
         /// </summary>
         /// <param name="pointer">The pointer that raised the event.</param>
-        /// <param name="target">The teleport target</param>
-        void RaiseTeleportRequest(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target);
+        /// <param name="hotSpot">The teleport target</param>
+        void RaiseTeleportRequest(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot);
 
         /// <summary>
         /// Raise a teleportation started event.
         /// </summary>
         /// <param name="pointer">The pointer that raised the event.</param>
-        /// <param name="target">The teleport target</param>
-        void RaiseTeleportStarted(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target);
+        /// <param name="hotSpot">The teleport target</param>
+        void RaiseTeleportStarted(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot);
 
         /// <summary>
         /// Raise a teleportation completed event.
         /// </summary>
         /// <param name="pointer">The pointer that raised the event.</param>
-        /// <param name="target">The teleport target</param>
-        void RaiseTeleportComplete(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target);
+        /// <param name="hotSpot">The teleport target</param>
+        void RaiseTeleportComplete(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot);
 
         /// <summary>
         /// Raise a teleportation canceled event.
         /// </summary>
         /// <param name="pointer">The pointer that raised the event.</param>
-        /// <param name="target">The teleport target</param>
-        void RaiseTeleportCanceled(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target);
+        /// <param name="hotSpot">The teleport target</param>
+        void RaiseTeleportCanceled(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot);
     }
 }

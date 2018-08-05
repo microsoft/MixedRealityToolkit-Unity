@@ -86,11 +86,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             get
             {
                 if (
-                    TeleportTarget != null &&
-                    TeleportTarget.OverrideTargetOrientation &&
+                    TeleportHotSpot != null &&
+                    TeleportHotSpot.OverrideTargetOrientation &&
                     TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                 {
-                    return TeleportTarget.TargetOrientation;
+                    return TeleportHotSpot.TargetOrientation;
                 }
 
                 return base.PointerOrientation;
@@ -150,11 +150,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     if (((1 << Result.CurrentPointerTarget.layer) & ValidLayers.value) != 0)
                     {
                         // See if it's a hot spot
-                        if (TeleportTarget != null && TeleportTarget.IsActive)
+                        if (TeleportHotSpot != null && TeleportHotSpot.IsActive)
                         {
                             TeleportSurfaceResult = TeleportSurfaceResult.HotSpot;
                             // Turn on gravity, point it at hotspot
-                            GravityDistorter.WorldCenterOfGravity = TeleportTarget.Position;
+                            GravityDistorter.WorldCenterOfGravity = TeleportHotSpot.Position;
                             GravityDistorter.enabled = true;
                         }
                         else
@@ -226,6 +226,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public override void OnPositionInputChanged(InputEventData<Vector2> eventData)
         {
+            // Don't process input if we've got an active teleport request.
+            if (IsTeleportRequestActive) { return; }
+
             if (eventData.SourceId == InputSourceParent.SourceId &&
                 eventData.Handedness == Handedness &&
                 eventData.MixedRealityInputAction == teleportAction)
@@ -247,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     teleportEnabled = true;
 
-                    TeleportSystem.RaiseTeleportRequest(this, TeleportTarget);
+                    TeleportSystem.RaiseTeleportRequest(this, TeleportHotSpot);
                 }
             }
             else
@@ -259,14 +262,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     canTeleport = false;
                     teleportEnabled = false;
-                    TeleportSystem.RaiseTeleportStarted(this, TeleportTarget);
+                    TeleportSystem.RaiseTeleportStarted(this, TeleportHotSpot);
                 }
 
                 if (teleportEnabled)
                 {
                     canTeleport = false;
                     teleportEnabled = false;
-                    TeleportSystem.RaiseTeleportCanceled(this, TeleportTarget);
+                    TeleportSystem.RaiseTeleportCanceled(this, TeleportHotSpot);
                 }
             }
 

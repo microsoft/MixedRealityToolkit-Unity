@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem
 {
-    public interface IMixedRealityTeleportTarget
+    public interface IMixedRealityTeleportHotSpot
     {
         /// <summary>
         /// The position the teleport will end at.

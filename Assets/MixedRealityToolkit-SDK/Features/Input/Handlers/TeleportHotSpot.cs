@@ -11,9 +11,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 {
     /// <summary>
-    /// SDK component handling teleportation when a user focuses this <see cref="GameObject"/> and triggers the teleport action.
+    /// SDK component handling teleportation to a specific position & orientation when a user focuses
+    /// this <see cref="GameObject"/> and triggers the teleport action.
     /// </summary>
-    public class MixedRealityTeleportHandler : BaseFocusHandler, IMixedRealityTeleportTarget, IMixedRealityTeleportHandler
+    public class TeleportHotSpot : BaseFocusHandler, IMixedRealityTeleportHotSpot
     {
         private static IMixedRealityTeleportSystem teleportSystem = null;
         protected static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = MixedRealityManager.Instance.GetManager<IMixedRealityTeleportSystem>());
@@ -29,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
             if (eventData.NewFocusedObject == gameObject)
             {
-                eventData.Pointer.TeleportTarget = this;
+                eventData.Pointer.TeleportHotSpot = this;
 
                 if (eventData.Pointer.IsInteractionEnabled)
                 {
@@ -39,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             }
             else if (eventData.OldFocusedObject == gameObject)
             {
-                eventData.Pointer.TeleportTarget = null;
+                eventData.Pointer.TeleportHotSpot = null;
 
                 if (eventData.Pointer.IsInteractionEnabled)
                 {
@@ -78,32 +79,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         #endregion IMixedRealityTeleportTarget Implementation
 
-        #region IMixedRealityTeleportHandler Implementation
-
-        public void OnTeleportRequest(TeleportEventData eventData)
-        {
-        }
-
-        public void OnTeleportStarted(TeleportEventData eventData)
-        {
-        }
-
-        public void OnTeleportCompleted(TeleportEventData eventData)
-        {
-        }
-
-        public void OnTeleportCanceled(TeleportEventData eventData)
-        {
-        }
-
-        #endregion IMixedRealityTeleportHandler Implementation
-
         private void OnDrawGizmos()
         {
             Gizmos.color = IsActive ? Color.green : Color.red;
             Gizmos.DrawLine(Position + (Vector3.up * 0.1f), Position + (Vector3.up * 0.1f) + (transform.forward * 0.1f));
             Gizmos.DrawSphere(Position + (Vector3.up * 0.1f) + (transform.forward * 0.1f), 0.01f);
         }
-
     }
 }

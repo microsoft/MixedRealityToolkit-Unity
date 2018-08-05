@@ -51,9 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         ICursorModifier CursorModifier { get; set; }
 
         /// <summary>
-        /// The currently active teleport target.
+        /// The currently active teleport hotspot.
         /// </summary>
-        IMixedRealityTeleportTarget TeleportTarget { get; set; }
+        IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
 
         /// <summary>
         /// Has the conditions for the interaction been satisfied to enable the interaction?

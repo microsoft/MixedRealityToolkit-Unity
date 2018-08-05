@@ -21,7 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         private bool isTeleporting = false;
         private bool isProcessingTeleportRequest = false;
 
-        private Vector3 startPosition = Vector3.zero;
         private Vector3 startRotation = Vector3.zero;
 
         private Vector3 targetPosition = Vector3.zero;
@@ -139,10 +138,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             };
 
         /// <inheritdoc />
-        public void RaiseTeleportRequest(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
+        public void RaiseTeleportRequest(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
             // initialize event
-            teleportEventData.Initialize(pointer, target);
+            teleportEventData.Initialize(pointer, hotSpot);
 
             // Pass handler
             HandleEvent(teleportEventData, OnTeleportRequestHandler);
@@ -156,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             };
 
         /// <inheritdoc />
-        public void RaiseTeleportStarted(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
+        public void RaiseTeleportStarted(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
             if (isTeleporting)
             {
@@ -167,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             isTeleporting = true;
 
             // initialize event
-            teleportEventData.Initialize(pointer, target);
+            teleportEventData.Initialize(pointer, hotSpot);
 
             // Pass handler
             HandleEvent(teleportEventData, OnTeleportStartedHandler);
@@ -183,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             };
 
         /// <inheritdoc />
-        public void RaiseTeleportComplete(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
+        public void RaiseTeleportComplete(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
             // Check to make sure no one from outside the Teleport System called this method.
             // Other implementations may have a different way of processing requests.
@@ -200,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             }
 
             // initialize event
-            teleportEventData.Initialize(pointer, target);
+            teleportEventData.Initialize(pointer, hotSpot);
 
             // Pass handler
             HandleEvent(teleportEventData, OnTeleportCompletedHandler);
@@ -216,10 +215,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             };
 
         /// <inheritdoc />
-        public void RaiseTeleportCanceled(IMixedRealityPointer pointer, IMixedRealityTeleportTarget target)
+        public void RaiseTeleportCanceled(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
             // initialize event
-            teleportEventData.Initialize(pointer, target);
+            teleportEventData.Initialize(pointer, hotSpot);
 
             // Pass handler
             HandleEvent(teleportEventData, OnTeleportCanceledHandler);
@@ -232,7 +231,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             isProcessingTeleportRequest = true;
 
             var cameraParent = CameraCache.Main.transform.parent;
-            startPosition = cameraParent.position;
 
             startRotation = CameraCache.Main.transform.eulerAngles;
             startRotation.x = 0f;

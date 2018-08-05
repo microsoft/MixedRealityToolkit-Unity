@@ -209,7 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public ICursorModifier CursorModifier { get; set; }
 
         /// <inheritdoc />
-        public IMixedRealityTeleportTarget TeleportTarget { get; set; }
+        public IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
 
         /// <inheritdoc />
         public virtual bool IsInteractionEnabled
