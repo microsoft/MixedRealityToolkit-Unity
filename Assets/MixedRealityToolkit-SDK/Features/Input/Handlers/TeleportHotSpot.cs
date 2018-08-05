@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.UX.Pointers;
@@ -11,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 {
     /// <summary>
-    /// SDK component handling teleportation to a specific position & orientation when a user focuses
+    /// SDK component handling teleportation to a specific position &amp; orientation when a user focuses
     /// this <see cref="GameObject"/> and triggers the teleport action.
     /// </summary>
     public class TeleportHotSpot : BaseFocusHandler, IMixedRealityTeleportHotSpot
