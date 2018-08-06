@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         public Material FloorPlaneMaterial => floorPlaneMaterial;
 
         [SerializeField]
-        private Vector3 floorPlaneScale = new Vector3(5f, 5f, 1f);
+        private Vector3 floorPlaneScale = new Vector3(10f, 10f, 1f);
 
         /// <summary>
         /// The the size at which to display the rectangular floor plane <see cref="GameObject"/>.
