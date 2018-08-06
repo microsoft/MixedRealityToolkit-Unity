@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using System.Collections;
 using UnityEngine;
 
@@ -51,9 +52,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         ICursorModifier CursorModifier { get; set; }
 
         /// <summary>
-        /// The currently active teleport target.
+        /// The currently active teleport hotspot.
         /// </summary>
-        ITeleportTarget TeleportTarget { get; set; }
+        IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
 
         /// <summary>
         /// Has the conditions for the interaction been satisfied to enable the interaction?
@@ -106,6 +107,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// The radius to use when <see cref="RaycastMode"/> is set to Sphere.
         /// </summary>
         float SphereCastRadius { get; set; }
+
+        /// <summary>
+        /// The Y orientation of the pointer - used for touchpad rotation and navigation
+        /// </summary>
+        float PointerOrientation { get; }
 
         /// <summary>
         /// Called before all rays have casted.

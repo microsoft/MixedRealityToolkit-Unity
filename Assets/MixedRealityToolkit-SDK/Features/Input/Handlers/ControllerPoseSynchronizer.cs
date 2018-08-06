@@ -36,6 +36,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             set { destroyOnLost = value; }
         }
 
+        /// <summary>
+        /// Is the controller this Synchronizer is registered to currently tracked?
+        /// </summary>
+        public bool IsTracked { get; protected set; } = false;
+
+        /// <summary>
+        /// The current tracking state of the assigned <see cref="IMixedRealityController"/>
+        /// </summary>
+        protected TrackingState TrackingState = TrackingState.NotTracked;
+
         private IMixedRealityController controller;
 
         /// <inheritdoc />
@@ -72,16 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         }
 
         #endregion IMixedRealityControllerPoseSynchronizer Implementation
-
-        /// <summary>
-        /// Is the controller this Synchronizer is registered to currently tracked?
-        /// </summary>
-        public bool IsTracked { get; protected set; } = false;
-
-        /// <summary>
-        /// The current tracking state of the assigned <see cref="IMixedRealityController"/>
-        /// </summary>
-        protected TrackingState TrackingState = TrackingState.NotTracked;
 
         #region IMixedRealitySourcePoseHandler Implementation
 
@@ -135,8 +135,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
             if (TrackingState == TrackingState.Tracked)
             {
-                transform.position = eventData.MixedRealityPose.Position;
-                transform.rotation = eventData.MixedRealityPose.Rotation;
+                transform.localPosition = eventData.MixedRealityPose.Position;
+                transform.localRotation = eventData.MixedRealityPose.Rotation;
             }
         }
 
@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                 {
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
-                    transform.position = eventData.InputData;
+                    transform.localPosition = eventData.InputData;
                 }
             }
         }
@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                 {
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
-                    transform.rotation = eventData.InputData;
+                    transform.localRotation = eventData.InputData;
                 }
             }
         }
@@ -196,8 +196,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                 {
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
-                    transform.position = eventData.InputData.Position;
-                    transform.rotation = eventData.InputData.Rotation;
+                    transform.localPosition = eventData.InputData.Position;
+                    transform.localRotation = eventData.InputData.Rotation;
                 }
             }
         }

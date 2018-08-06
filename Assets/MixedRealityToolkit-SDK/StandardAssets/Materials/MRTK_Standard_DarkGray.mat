@@ -25,6 +25,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ChannelMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _CubeMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -100,6 +104,7 @@ Material:
     - _DirectionalLight: 1
     - _DstBlend: 0
     - _EdgeSmoothingValue: 0.002
+    - _EnableChannelMap: 0
     - _EnableEmission: 0
     - _EnableHoverColorOpaqueOverride: 0
     - _EnableHoverColorOverride: 0
@@ -117,6 +122,7 @@ Material:
     - _HoverLight: 1
     - _HoverLightOpaque: 0
     - _InnerGlow: 0
+    - _InstancedColor: 0
     - _MainTex_OFFSET: 0
     - _MainTex_SCALE: 0
     - _Metallic: 0
@@ -140,6 +146,10 @@ Material:
     - _Specular: 10
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComparison: 0
+    - _StencilOperation: 0
+    - _StencilReference: 0
     - _UVSec: 0
     - _UseAmbient: 1
     - _UseBumpMap: 0
@@ -161,7 +171,7 @@ Material:
     m_Colors:
     - _ClipPlane: {r: 0, g: 1, b: 0, a: 0}
     - _ClippingPlaneBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 0.2352941, g: 0.2352941, b: 0.2352941, a: 1}
+    - _Color: {r: 0.25, g: 0.25, b: 0.25, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}

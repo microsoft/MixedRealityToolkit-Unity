@@ -163,12 +163,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
 
                 // Devices are considered tracked if we receive position OR rotation data from the sensors.
                 TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
-
-                if (CameraCache.Main.transform.parent != null)
-                {
-                    currentControllerPosition = CameraCache.Main.transform.parent.TransformPoint(currentControllerPosition);
-                    currentControllerRotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentControllerRotation.eulerAngles));
-                }
             }
             else
             {
@@ -212,16 +206,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             interactionSourceState.sourcePose.TryGetPosition(out currentPointerPosition, InteractionSourceNode.Pointer);
             interactionSourceState.sourcePose.TryGetRotation(out currentPointerRotation, InteractionSourceNode.Pointer);
 
-            if (CameraCache.Main.transform.parent != null)
-            {
-                currentPointerPose.Position = CameraCache.Main.transform.parent.TransformPoint(currentPointerPosition);
-                currentPointerPose.Rotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentPointerRotation.eulerAngles));
-            }
-            else
-            {
-                currentPointerPose.Position = currentPointerPosition;
-                currentPointerPose.Rotation = currentPointerRotation;
-            }
+            currentPointerPose.Position = currentPointerPosition;
+            currentPointerPose.Rotation = currentPointerRotation;
 
             // Update the interaction data source
             interactionMapping.PoseData = currentPointerPose;

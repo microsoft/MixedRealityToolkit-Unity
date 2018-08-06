@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         [Header("Transform References")]
         [SerializeField]
         [Tooltip("Visual that is displayed when cursor is active normally")]
-        private Transform primaryCursorVisual = null;
+        protected Transform PrimaryCursorVisual = null;
 
         protected bool IsHandDetected = false;
 
@@ -118,9 +118,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// <inheritdoc />
         public virtual void SetVisibility(bool visible)
         {
-            if (primaryCursorVisual != null)
+            if (PrimaryCursorVisual != null)
             {
-                primaryCursorVisual.gameObject.SetActive(visible);
+                PrimaryCursorVisual.gameObject.SetActive(visible);
             }
         }
 

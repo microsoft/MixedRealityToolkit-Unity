@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
         private SerializedProperty gravity;
         private SerializedProperty velocity;
         private SerializedProperty direction;
-        private SerializedProperty timeMultiplier;
+        private SerializedProperty distanceMultiplier;
         private SerializedProperty useCustomGravity;
 
         protected override void OnEnable()
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
             gravity = serializedObject.FindProperty("gravity");
             velocity = serializedObject.FindProperty("velocity");
             direction = serializedObject.FindProperty("direction");
-            timeMultiplier = serializedObject.FindProperty("timeMultiplier");
+            distanceMultiplier = serializedObject.FindProperty("distanceMultiplier");
             useCustomGravity = serializedObject.FindProperty("useCustomGravity");
         }
 
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
 
             EditorGUILayout.PropertyField(velocity);
             EditorGUILayout.PropertyField(direction);
-            EditorGUILayout.PropertyField(timeMultiplier);
+            EditorGUILayout.PropertyField(distanceMultiplier);
             EditorGUILayout.PropertyField(useCustomGravity);
 
             if (useCustomGravity.boolValue)
