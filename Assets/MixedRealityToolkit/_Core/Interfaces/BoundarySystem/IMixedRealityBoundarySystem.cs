@@ -2,16 +2,17 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
+namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem
 {
     /// <summary>
     /// Manager interface for a Boundary system in the Mixed Reality Toolkit
     /// All replacement systems for providing Boundary functionality should derive from this interface
     /// </summary>
-    public interface IMixedRealityBoundarySystem : IMixedRealityManager
+    public interface IMixedRealityBoundarySystem : IMixedRealityEventSystem, IMixedRealityEventSource
     {
         /// <summary>
         /// The scale (ex: World Scale) of the experience.
@@ -19,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         ExperienceScale Scale { get; set; }
 
         /// <summary>
-        /// The height of the playspace, in meters.
+        /// The height of the play space, in meters.
         /// </summary>
         /// <remarks>
         /// This is used to create a three dimensional boundary volume.
@@ -27,14 +28,35 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         float BoundaryHeight { get; set; }
 
         /// <summary>
-        /// Enable / disable the platform's playspace boundary rendering.
+        /// Enable / disable boundary wall rendering.
+        /// </summary>
+        // todo: coming in Beta
+        // bool ShowBoundaryWalls { get; set; }
+
+        /// <summary>
+        /// Enable / disable ceiling rendering.
         /// </summary>
         /// <remarks>
-        /// Not all platforms support specifying whether or not to render the playspace boundary.
-        /// For platforms without boundary rendering control, the default behavior will be unchanged 
-        /// regardless of the value provided.
+        /// The ceiling is defined as a <see cref="GameObject"/> positioned <see cref="BoundaryHeight"/> above the floor.
         /// </remarks>
-        bool EnablePlatformBoundaryRendering { get; set; }
+        // todo: coming in Beta
+        // bool ShowCeiling { get; set; }
+
+        /// <summary>
+        /// Enable / disable floor rendering.
+        /// </summary>
+        bool ShowFloor { get; set; }
+
+        /// <summary>
+        /// Enable / disable play area rendering.
+        /// </summary>
+        bool ShowPlayArea { get; set; }
+
+        /// <summary>
+        /// Enable / disable tracked area rendering.
+        /// </summary>
+        // todo: coming in Beta
+        // bool ShowTrackedArea { get; set; }
 
         /// <summary>
         /// Two dimensional representation of the geometry of the boundary, as provided
@@ -74,7 +96,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// <param name="angle">The orientation of the rectangle.</param>
         /// <param name="width">The width of the rectangle.</param>
         /// <param name="height">The height of the rectangle.</param>
-        /// <returns></returns>
+        /// <returns>True if an inscribed rectangle was found in the boundary geometry, false otherwise.</returns>
         bool TryGetRectangularBoundsParams(out Vector2 center, out float angle, out float width, out float height);
+
+        /// <summary>
+        /// Gets the <see cref="GameObject"/> that represents the user's play area.
+        /// </summary>
+        /// <returns>The play area visualization object or null if one does not exist.</returns>
+        GameObject GetPlayAreaVisualization();
+
+        /// <summary>
+        /// Gets the <see cref="GameObject"/> that represents the user's floor.
+        /// </summary>
+        /// <returns>The floor visualization object or null if one does not exist.</returns>
+        GameObject GetFloorVisualization();
     }
 }
