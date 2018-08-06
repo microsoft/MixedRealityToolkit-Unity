@@ -289,7 +289,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 pointerOrientation = value < 0
                     ? Mathf.Clamp(value, -360f, 0f)
                     : Mathf.Clamp(value, 0f, 360f);
-
             }
         }
 
@@ -374,24 +373,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         #endregion IMixedRealityPointer Implementation
 
         #region IMixedRealitySourcePoseHandler Implementation
-
-        /// <inheritdoc />
-        public override void OnSourceLost(SourceStateEventData eventData)
-        {
-            base.OnSourceLost(eventData);
-
-            if (eventData.InputSource.SourceId == InputSourceParent.SourceId)
-            {
-                if (Application.isEditor)
-                {
-                    DestroyImmediate(gameObject);
-                }
-                else
-                {
-                    Destroy(gameObject);
-                }
-            }
-        }
 
         /// <inheritdoc />
         public override void OnSourcePoseChanged(SourcePoseEventData eventData)
