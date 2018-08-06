@@ -15,8 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     {
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
-        private static readonly GUIContent BoundaryHeightContent = new GUIContent("Boundary Height:");
-        private static readonly GUIContent BoundaryVisualizationProfileContent = new GUIContent("Boundary Visualization Profile");
 
         // Experience properties
         private SerializedProperty targetExperienceScale;
@@ -190,8 +188,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 // Boundary settings depend on the experience scale
                 if (scale == ExperienceScale.Room)
                 {
-                    EditorGUILayout.PropertyField(boundaryHeight, BoundaryHeightContent);
-                    EditorGUILayout.PropertyField(boundaryVisualizationProfile, BoundaryVisualizationProfileContent);
+                    EditorGUILayout.PropertyField(boundaryHeight);
+                    RenderProfile(boundaryVisualizationProfile);
                 }
                 else
                 {

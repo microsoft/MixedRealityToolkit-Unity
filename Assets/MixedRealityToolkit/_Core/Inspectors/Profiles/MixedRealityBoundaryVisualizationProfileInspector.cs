@@ -38,6 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.HelpBox("Boundary visualizations can help users stay oriented and comfortable in the experience.", MessageType.Info);
             EditorGUILayout.Space();
 
+            if (!CheckMixedRealityManager())
+            {
+                return;
+            }
+
             serializedObject.Update();
 
             GUILayout.Space(12f);

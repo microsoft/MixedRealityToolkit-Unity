@@ -11,12 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Boundary
     /// </summary>
     public class BoundaryEventData : GenericBaseEventData
     {
-        /// <summary>
-        /// Is the ceiling being visualized by the boundary system.
-        /// </summary>
-        /// <remarks>
-        /// The boundary system defines the ceiling as a plane set at <see cref="IMixedRealityBoundarySystem.BoundaryHeight"/> above the floor.
-        /// </remarks>
+        ///// <summary>
+        ///// Is the ceiling being visualized by the boundary system.
+        ///// </summary>
+        ///// <remarks>
+        ///// The boundary system defines the ceiling as a plane set at <see cref="IMixedRealityBoundarySystem.BoundaryHeight"/> above the floor.
+        ///// </remarks>
         // todo: coming in Beta
         // public bool IsCeilingVisualized { get; private set; }
 
@@ -30,15 +30,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Boundary
         /// </summary>
         public bool IsPlayAreaVisualized { get; private set; }
 
-        /// <summary>
-        /// Is the tracked area being visualized by the boundary system.
-        /// </summary>
+        ///// <summary>
+        ///// Is the tracked area being visualized by the boundary system.
+        ///// </summary>
         // todo: coming in Beta
         // public bool IsTrackedAreaVisualized { get; private set; }
 
-        /// <summary>
-        /// Are the boundary walls being visualized by the boundary system.
-        /// </summary>
+        ///// <summary>
+        ///// Are the boundary walls being visualized by the boundary system.
+        ///// </summary>
         // todo: coming in Beta
         // public bool AreBoundaryWallsVisualized { get; private set; }
 

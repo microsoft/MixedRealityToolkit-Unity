@@ -214,7 +214,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                         GetFloorVisualization();
                     }
 
-                    currentFloorPlane?.SetActive(value);
+                    if (currentFloorPlane != null)
+                    {
+                        currentFloorPlane.SetActive(value);
+                    }
 
                     RaiseBoundaryVisualizationChanged();
                 }
@@ -238,7 +241,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                         GetPlayAreaVisualization();
                     }
 
-                    currentPlayArea?.SetActive(value);
+                    if (currentPlayArea != null)
+                    {
+                        currentPlayArea.SetActive(value);
+                    }
 
                     RaiseBoundaryVisualizationChanged();
                 }
@@ -258,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         public float? FloorHeight { get; private set; } = null;
 
         /// <inheritdoc/>
-        public bool Contains(Vector3 location, UnityEngine.Experimental.XR.Boundary.Type boundaryType = UnityEngine.Experimental.XR.Boundary.Type.TrackedArea)
+        public bool Contains(Vector3 location, Boundary.Type boundaryType = Boundary.Type.TrackedArea)
         {
             if (!EdgeUtilities.IsValidPoint(location))
             {
@@ -285,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             // Boundary coordinates are always "on the floor"
             Vector2 point = new Vector2(location.x, location.z);
 
-            if (boundaryType == UnityEngine.Experimental.XR.Boundary.Type.PlayArea)
+            if (boundaryType == Boundary.Type.PlayArea)
             {
                 // Check the inscribed rectangle.
                 if (rectangularBounds != null)
@@ -293,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                     return rectangularBounds.IsInsideBoundary(point);
                 }
             }
-            else if (boundaryType == UnityEngine.Experimental.XR.Boundary.Type.TrackedArea)
+            else if (boundaryType == Boundary.Type.TrackedArea)
             {
                 // Check the geometry
                 return EdgeUtilities.IsInsideBoundary(Bounds, point);
@@ -365,7 +371,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         {
             if (currentFloorPlane != null)
             {
-                // We already have a floor plane.
                 return currentFloorPlane;
             }
 

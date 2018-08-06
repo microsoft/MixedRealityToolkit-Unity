@@ -164,22 +164,12 @@ Prefab:
     - target: {fileID: 114995780653097258, guid: cf1e39a641f010e42a8168c9737d1803,
         type: 2}
       propertyPath: m_Text
-      value: 'This scene demonstrates visualizing the boundary geometry and a rectangular
-        playspace inscribed within those bounds.
-
-
-
-        Displays spheres that indicate areas within and outside of the boundary geometry.
-
-
-
-        Visualizes the inscribed rectangular play area. This visualization can be
-        toggled on and off in the inspector and from script.
-
-
-
-        Visualizes the floor. This visualization can be toggled on and off in the
-        inspector and from script.'
+      value: "This scene demonstrates visualizing the boundary geometry and a rectangular
+        playspace inscribed within those bounds.\n\n\nContols the visualization of
+        the user's configured boundary, including spheres that indicate the shape
+        of the space.\n\n\n     Instructs the Boundary System to show or hide the
+        floor.\n\n\n\n     Instructs the Boundary System to show or hide a rectanglular
+        representation of the user's Play Area."
       objectReference: {fileID: 0}
     - target: {fileID: 114713125240876806, guid: cf1e39a641f010e42a8168c9737d1803,
         type: 2}
@@ -196,12 +186,12 @@ Prefab:
     - target: {fileID: 114121190672569774, guid: cf1e39a641f010e42a8168c9737d1803,
         type: 2}
       propertyPath: m_Text
-      value: PlayAreaVisualizer.cs
+      value: '    Show Floor'
       objectReference: {fileID: 0}
     - target: {fileID: 114186135864427680, guid: cf1e39a641f010e42a8168c9737d1803,
         type: 2}
       propertyPath: m_Text
-      value: FloorPlaneVisualizer.cs
+      value: '    Show Play Area'
       objectReference: {fileID: 0}
     - target: {fileID: 224849082003076088, guid: cf1e39a641f010e42a8168c9737d1803,
         type: 2}
@@ -369,6 +359,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647fd3dd3cb11e749850897a69f040db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showFloor: 1
+  showPlayArea: 1
 --- !u!1 &1229001241
 GameObject:
   m_ObjectHideFlags: 0

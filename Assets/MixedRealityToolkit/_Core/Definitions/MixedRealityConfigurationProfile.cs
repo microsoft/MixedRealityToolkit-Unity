@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         private float boundaryHeight = 3.0f;
 
         /// <summary>
-        /// The approximate height of the play space, in meters.
+        /// The developer defined height of the boundary, in meters.
         /// </summary>
         /// <remarks>
         /// The BoundaryHeight property is used to create a three dimensional volume for the play space.

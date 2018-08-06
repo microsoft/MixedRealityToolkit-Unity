@@ -11,8 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8989e381a7c097840b2d40378a63497a, type: 3}
   m_Name: DefaultMixedRealityBoundaryVisualizationProfile
   m_EditorClassIdentifier: 
-  boundaryHeight: 3
   playAreaMaterial: {fileID: 2100000, guid: 30d693ff62c571241b431ef4e206b09a, type: 2}
   trackedAreaMaterial: {fileID: 2100000, guid: 1ab3a050711c97243a200ca653272343, type: 2}
   floorPlaneMaterial: {fileID: 2100000, guid: e106645f46550d54bacf6c82811c99e6, type: 2}
-  floorPlaneScale: {x: 5, y: 5, z: 1}
+  floorPlaneScale: {x: 3, y: 3, z: 1}
