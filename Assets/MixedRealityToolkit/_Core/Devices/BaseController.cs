@@ -85,12 +85,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         /// <param name="controllerType"></param>
         public void SetupConfiguration(Type controllerType)
         {
+
             if (MixedRealityManager.Instance.ActiveProfile.IsControllerMappingEnabled)
             {
+                if (MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.RenderMotionControllers)
+                {
+                    TryRenderControllerModel(controllerType);
+                }
+
                 // We can only enable controller profiles if mappings exist.
                 var controllerMappings = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
-                var renderControllers = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.RenderMotionControllers;
-                var renderDefaultControllerModels = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.UseDefaultModels;
 
                 // Have to test that a controller type has been registered in the profiles,
                 // else it's Unity Input manager mappings will not have been setup by the inspector
@@ -130,8 +134,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                             Enabled = false;
                         }
                     }
-
-                    TryRenderControllerModel(controllerMappings[i].ControllerType.Type);
                 }
             }
         }
