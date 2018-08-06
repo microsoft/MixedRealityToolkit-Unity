@@ -18,11 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices
         Handedness Handedness { get; }
 
         /// <summary>
-        /// Disables child <see cref="UnityEngine.GameObject"/>s the controller source is lost.
-        /// </summary>
-        bool DisableChildren { get; }
-
-        /// <summary>
         /// Should this <see cref="UnityEngine.GameObject"/> clean itself up when it's controller is lost?
         /// </summary>
         bool DestroyOnLost { get; }

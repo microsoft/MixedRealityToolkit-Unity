@@ -649,10 +649,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handedness: 2
-  disableChildren: 1
   destroyOnLost: 1
   useSourcePoseData: 1
   poseAction:
     id: 0
-    description: 
+    description: None
     axisConstraint: 0

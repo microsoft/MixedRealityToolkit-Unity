@@ -97,15 +97,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handedness: 1
   disableChildren: 1
+  destroyOnLost: 1
+  useSourcePoseData: 0
+  poseAction:
+    id: 4
+    description: Pointer Pose
+    axisConstraint: 7
   cursorPrefab: {fileID: 1000012072213228, guid: 62718441f3682f94ab10c70a637e014b,
     type: 2}
   raycastOrigin: {fileID: 0}
   pointerOrientation: 0
-  useSourcePoseData: 0
-  inputSourceAction:
-    id: 4
-    description: Pointer Pose
-    axisConstraint: 7
   activeHoldAction:
     id: 0
     description: None

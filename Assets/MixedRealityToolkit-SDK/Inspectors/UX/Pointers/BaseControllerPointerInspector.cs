@@ -18,6 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
         private SerializedProperty pointerOrientation;
         private SerializedProperty requiresHoldAction;
 
+        private bool basePointerFoldout = true;
+
         protected bool DrawBasePointerActions = true;
 
         protected override void OnEnable()
@@ -31,28 +33,37 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
             pointerAction = serializedObject.FindProperty("pointerAction");
             pointerOrientation = serializedObject.FindProperty("pointerOrientation");
             requiresHoldAction = serializedObject.FindProperty("requiresHoldAction");
+
+            DrawHandednessProperty = false;
         }
 
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
+
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(cursorPrefab);
-            EditorGUILayout.PropertyField(raycastOrigin);
-            EditorGUILayout.PropertyField(pointerExtent);
-            EditorGUILayout.PropertyField(pointerOrientation);
-            EditorGUILayout.PropertyField(pointerAction);
+            basePointerFoldout = EditorGUILayout.Foldout(basePointerFoldout, "Base Pointer Settings", true);
 
-            if (DrawBasePointerActions)
+            if (basePointerFoldout)
             {
-                EditorGUILayout.PropertyField(requiresHoldAction);
+                EditorGUILayout.PropertyField(cursorPrefab);
+                EditorGUILayout.PropertyField(raycastOrigin);
+                EditorGUILayout.PropertyField(pointerExtent);
+                EditorGUILayout.PropertyField(pointerOrientation);
+                EditorGUILayout.PropertyField(pointerAction);
 
-                if (requiresHoldAction.boolValue)
+                if (DrawBasePointerActions)
                 {
-                    EditorGUILayout.PropertyField(activeHoldAction);
-                }
-            }
+                    EditorGUILayout.PropertyField(requiresHoldAction);
 
+                    if (requiresHoldAction.boolValue)
+                    {
+                        EditorGUILayout.PropertyField(activeHoldAction);
+                    }
+                }
+
+            }
             serializedObject.ApplyModifiedProperties();
         }
     }

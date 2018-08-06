@@ -1113,10 +1113,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handedness: 1
-  disableChildren: 1
   destroyOnLost: 1
   useSourcePoseData: 1
   poseAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+    id: 4
+    description: Pointer Pose
+    axisConstraint: 7

@@ -183,6 +183,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
             {
                 var controllerObject = UnityEngine.Object.Instantiate(controllerModel, CameraCache.Main.transform.parent);
                 controllerObject.name = $"{ControllerHandedness}_{controllerObject.name}";
+                var poseSynchronizer = controllerObject.GetComponent<IMixedRealityControllerPoseSynchronizer>();
+
+                if (poseSynchronizer != null)
+                {
+                    poseSynchronizer.Controller = this;
+                }
+                else
+                {
+                    Debug.LogWarning($"{controllerObject.name} is missing a IMixedRealityControllerPoseSynchronizer component");
+                }
             }
         }
     }
