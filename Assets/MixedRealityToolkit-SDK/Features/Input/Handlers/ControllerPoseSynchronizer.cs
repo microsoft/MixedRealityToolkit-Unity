@@ -2,10 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using UnityEngine;
 
@@ -14,43 +15,42 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
     /// <summary>
     /// Waits for a controller to be initialized, then synchronizes its transform position to a specified handedness.
     /// </summary>
-    public class ControllerPoseSynchronizer : InputSystemGlobalListener, IMixedRealitySourcePoseHandler
+    public class ControllerPoseSynchronizer : InputSystemGlobalListener, IMixedRealitySourcePoseHandler, IMixedRealityControllerPoseSynchronizer
     {
+        #region IMixedRealityControllerPoseSynchronizer Implementation
+
         [SerializeField]
         [Tooltip("The handedness this controller should synchronize with.")]
         private Handedness handedness = Handedness.Left;
 
-        /// <summary>
-        /// The handedness this controller should synchronize with.
-        /// </summary>
+        /// <inheritdoc />
         public Handedness Handedness => handedness;
 
         [SerializeField]
         [Tooltip("Disables child GameObjects when the controller source is lost.")]
         private bool disableChildren = true;
 
-        /// <summary>
-        ///Disables child <see cref="GameObject"/>s the controller source is lost.
-        /// </summary>
+        /// <inheritdoc />
         public bool DisableChildren
         {
             get { return disableChildren; }
             set { disableChildren = value; }
         }
 
-        /// <summary>
-        /// Is the controller this Synchronizer is registered to currently tracked?
-        /// </summary>
-        public bool IsTracked { get; protected set; } = false;
+        [SerializeField]
+        [Tooltip("Should this GameObject clean itself up when it's controller is lost?")]
+        private bool destroyOnLost = true;
 
-        /// <summary>
-        /// The current tracking state of the assigned <see cref="IMixedRealityController"/>
-        /// </summary>
-        protected TrackingState TrackingState = TrackingState.NotTracked;
+        /// <inheritdoc />
+        public bool DestroyOnLost
+        {
+            get { return destroyOnLost; }
+            set { destroyOnLost = value; }
+        }
 
-        /// <summary>
-        /// The currently assigned Controller.
-        /// </summary>
+        private IMixedRealityController controller;
+
+        /// <inheritdoc />
         public virtual IMixedRealityController Controller
         {
             get { return controller; }
@@ -61,7 +61,39 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             }
         }
 
-        private IMixedRealityController controller;
+        [SerializeField]
+        [Tooltip("Should the Transform's position be driven from the source pose or from input handler?")]
+        private bool useSourcePoseData = true;
+
+        /// <inheritdoc />
+        public bool UseSourcePoseData
+        {
+            get { return useSourcePoseData; }
+            set { useSourcePoseData = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("The input action that will drive the Transform's pose, position, or rotation.")]
+        private MixedRealityInputAction poseAction = MixedRealityInputAction.None;
+
+        /// <inheritdoc />
+        public MixedRealityInputAction PoseAction
+        {
+            get { return poseAction; }
+            set { poseAction = value; }
+        }
+
+        #endregion IMixedRealityControllerPoseSynchronizer Implementation
+
+        /// <summary>
+        /// Is the controller this Synchronizer is registered to currently tracked?
+        /// </summary>
+        public bool IsTracked { get; protected set; } = false;
+
+        /// <summary>
+        /// The current tracking state of the assigned <see cref="IMixedRealityController"/>
+        /// </summary>
+        protected TrackingState TrackingState = TrackingState.NotTracked;
 
         #region IMixedRealitySourcePoseHandler Implementation
 
@@ -105,6 +137,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                 {
                     gameObject.SetChildrenActive(false);
                 }
+
+                if (destroyOnLost)
+                {
+                    if (Application.isEditor)
+                    {
+                        DestroyImmediate(gameObject);
+                    }
+                    else
+                    {
+                        Destroy(gameObject);
+                    }
+                }
             }
         }
 
@@ -132,5 +176,67 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         }
 
         #endregion IMixedRealitySourcePoseHandler Implementation
+
+        #region IMixedRealityInputHandler Implementation
+
+        public virtual void OnInputUp(InputEventData eventData) { }
+
+        public virtual void OnInputDown(InputEventData eventData) { }
+
+        public virtual void OnInputPressed(InputEventData<float> eventData) { }
+
+        public virtual void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
+
+        #endregion  IMixedRealityInputHandler Implementation
+
+        #region IMixedRealitySpatialInputHandler Implementation
+
+        /// <inheritdoc />
+        public virtual void OnPositionChanged(InputEventData<Vector3> eventData)
+        {
+            if (eventData.SourceId == Controller.InputSource.SourceId)
+            {
+                if (!UseSourcePoseData &&
+                    PoseAction == eventData.MixedRealityInputAction)
+                {
+                    IsTracked = true;
+                    TrackingState = TrackingState.Tracked;
+                    transform.position = eventData.InputData;
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public virtual void OnRotationChanged(InputEventData<Quaternion> eventData)
+        {
+            if (eventData.SourceId == Controller.InputSource.SourceId)
+            {
+                if (!UseSourcePoseData &&
+                    PoseAction == eventData.MixedRealityInputAction)
+                {
+                    IsTracked = true;
+                    TrackingState = TrackingState.Tracked;
+                    transform.rotation = eventData.InputData;
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public virtual void OnPoseInputChanged(InputEventData<MixedRealityPose> eventData)
+        {
+            if (eventData.SourceId == Controller.InputSource.SourceId)
+            {
+                if (!UseSourcePoseData &&
+                    PoseAction == eventData.MixedRealityInputAction)
+                {
+                    IsTracked = true;
+                    TrackingState = TrackingState.Tracked;
+                    transform.position = eventData.InputData.Position;
+                    transform.rotation = eventData.InputData.Rotation;
+                }
+            }
+        }
+
+        #endregion IMixedRealitySpatialInputHandler Implementation 
     }
 }

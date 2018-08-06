@@ -14,8 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
         private SerializedProperty raycastOrigin;
         private SerializedProperty pointerExtent;
         private SerializedProperty activeHoldAction;
-        private SerializedProperty useSourcePoseData;
-        private SerializedProperty inputSourceAction;
         private SerializedProperty pointerAction;
         private SerializedProperty pointerOrientation;
         private SerializedProperty requiresHoldAction;
@@ -30,8 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
             raycastOrigin = serializedObject.FindProperty("raycastOrigin");
             pointerExtent = serializedObject.FindProperty("pointerExtent");
             activeHoldAction = serializedObject.FindProperty("activeHoldAction");
-            useSourcePoseData = serializedObject.FindProperty("useSourcePoseData");
-            inputSourceAction = serializedObject.FindProperty("inputSourceAction");
             pointerAction = serializedObject.FindProperty("pointerAction");
             pointerOrientation = serializedObject.FindProperty("pointerOrientation");
             requiresHoldAction = serializedObject.FindProperty("requiresHoldAction");
@@ -45,14 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
             EditorGUILayout.PropertyField(raycastOrigin);
             EditorGUILayout.PropertyField(pointerExtent);
             EditorGUILayout.PropertyField(pointerOrientation);
-
-            EditorGUILayout.PropertyField(useSourcePoseData);
-
-            if (!useSourcePoseData.boolValue)
-            {
-                EditorGUILayout.PropertyField(inputSourceAction);
-            }
-
             EditorGUILayout.PropertyField(pointerAction);
 
             if (DrawBasePointerActions)

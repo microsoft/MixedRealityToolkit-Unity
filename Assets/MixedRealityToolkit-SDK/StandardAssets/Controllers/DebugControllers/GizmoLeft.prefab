@@ -231,6 +231,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4607474556101662}
+  - component: {fileID: 114204106623223072}
   m_Layer: 0
   m_Name: GizmoLeft
   m_TagString: Untagged
@@ -1100,3 +1101,22 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1069666104943182}
   m_Mesh: {fileID: 4300000, guid: 019c5b0a7f9941b459c292c17a1de7ff, type: 3}
+--- !u!114 &114204106623223072
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1370450866519632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03314f8008ae1ed4fbd45c95a7ed5182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handedness: 1
+  disableChildren: 1
+  destroyOnLost: 1
+  useSourcePoseData: 1
+  poseAction:
+    id: 0
+    description: 
+    axisConstraint: 0
