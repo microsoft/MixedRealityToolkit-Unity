@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport
     /// <summary>
     /// Describes a Teleportation Event.
     /// </summary>
-    public class TeleportEventData : BaseEventData
+    public class TeleportEventData : GenericBaseEventData
     {
         /// <summary>
         /// The pointer that raised the event.
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport
         /// <param name="target"></param>
         public void Initialize(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot target)
         {
-            Reset();
+            BaseInitialize(pointer.InputSourceParent);
             Pointer = pointer;
             HotSpot = target;
         }

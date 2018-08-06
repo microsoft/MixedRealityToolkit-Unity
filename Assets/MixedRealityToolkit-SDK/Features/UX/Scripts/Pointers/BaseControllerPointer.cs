@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 InputSystem.FocusProvider.RegisterPointer(this);
             }
 
-            TeleportSystem.Register(gameObject);
+            TeleportSystem?.Register(gameObject);
         }
 
         protected virtual void Start()
@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected override void OnDisable()
         {
             base.OnDisable();
-            TeleportSystem.Unregister(gameObject);
+            TeleportSystem?.Unregister(gameObject);
 
             IsHoldPressed = false;
             IsSelectPressed = false;

@@ -290,7 +290,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             if (eventData.Pointer.PointerId == PointerId)
             {
-                Debug.Log($"Teleport request raised: {eventData.HotSpot} | {eventData.Pointer}");
                 BaseCursor?.SetVisibility(true);
             }
         }
@@ -298,33 +297,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public override void OnTeleportStarted(TeleportEventData eventData)
         {
-            if (eventData.Pointer.PointerId == PointerId)
-            {
-                Debug.Log($"Teleport started:{eventData.HotSpot} | {eventData.Pointer}");
-            }
-
             base.OnTeleportStarted(eventData);
         }
 
         /// <inheritdoc />
         public override void OnTeleportCompleted(TeleportEventData eventData)
         {
-            if (eventData.Pointer.PointerId == PointerId)
-            {
-                Debug.Log($"Teleport completed: {eventData.HotSpot} | {eventData.Pointer}");
-            }
-
             IsTeleportRequestActive = false;
         }
 
         /// <inheritdoc />
         public override void OnTeleportCanceled(TeleportEventData eventData)
         {
-            if (eventData.Pointer.PointerId == PointerId)
-            {
-                Debug.Log($"Teleport request Canceled: {eventData.Pointer}");
-            }
-
             IsTeleportRequestActive = false;
             BaseCursor?.SetVisibility(false);
         }
