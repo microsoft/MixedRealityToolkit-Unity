@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             var inputSource = InputSystem?.RequestNewGenericInputSource($"{CurrentControllerType} Controller {controllingHand}", pointers);
 
             GenericOpenVRController detectedController = Activator.CreateInstance(controllerType, 
-                new object[] { TrackingState.NotTracked, controllingHand, inputSource, null }) as GenericOpenVRController;
+                TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
 
             Debug.Assert(detectedController != null);
             detectedController?.SetupConfiguration(controllerType);
