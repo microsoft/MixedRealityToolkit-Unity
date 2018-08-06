@@ -112,6 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
         #region IMixedRealityTeleportSystem Implementation
 
+        private float teleportDuration = 0.25f;
+
         /// <inheritdoc />
         public float TeleportDuration
         {
@@ -127,8 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
                 teleportDuration = value;
             }
         }
-
-        private float teleportDuration = 0.25f;
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityTeleportHandler> OnTeleportRequestHandler =
             delegate (IMixedRealityTeleportHandler handler, BaseEventData eventData)
