@@ -113,6 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
         #region IMixedRealityTeleportSystem Implementation
 
+        /// <inheritdoc />
         public float TeleportDuration
         {
             get { return teleportDuration; }

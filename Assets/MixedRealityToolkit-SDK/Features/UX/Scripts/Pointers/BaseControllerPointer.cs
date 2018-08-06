@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         [SerializeField]
         [Range(0f, 360f)]
-        [Tooltip("The Y orientation of the pointer - used for touchpad rotation and navigation")]
+        [Tooltip("The Y orientation of the pointer - used for rotation and navigation")]
         private float pointerOrientation = 0f;
 
         /// <inheritdoc />

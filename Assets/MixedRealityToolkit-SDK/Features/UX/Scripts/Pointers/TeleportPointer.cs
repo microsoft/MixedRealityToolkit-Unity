@@ -85,8 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             get
             {
-                if (
-                    TeleportHotSpot != null &&
+                if (TeleportHotSpot != null &&
                     TeleportHotSpot.OverrideTargetOrientation &&
                     TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                 {
