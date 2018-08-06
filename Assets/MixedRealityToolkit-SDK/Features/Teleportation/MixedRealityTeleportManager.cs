@@ -50,7 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 #if UNITY_EDITOR
             if (!UnityEditor.EditorApplication.isPlaying)
             {
-
                 var eventSystems = Object.FindObjectsOfType<EventSystem>();
 
                 if (eventSystems.Length == 0)
