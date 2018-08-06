@@ -206,26 +206,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             var pointers = RequestPointers(controllerType, controllingHand);
             var inputSource = InputSystem?.RequestNewGenericInputSource($"{CurrentControllerType} Controller {controllingHand}", pointers);
 
-            GenericOpenVRController detectedController = null;
-
-            switch (CurrentControllerType)
-            {
-                case SupportedControllerType.GenericOpenVR:
-                    detectedController = new GenericOpenVRController(TrackingState.NotTracked, controllingHand, inputSource);
-                    break;
-                case SupportedControllerType.ViveWand:
-                    detectedController = new ViveWandController(TrackingState.NotTracked, controllingHand, inputSource);
-                    break;
-                case SupportedControllerType.ViveKnuckles:
-                    detectedController = new ViveKnucklesController(TrackingState.NotTracked, controllingHand, inputSource);
-                    break;
-                case SupportedControllerType.OculusTouch:
-                    detectedController = new OculusTouchController(TrackingState.NotTracked, controllingHand, inputSource);
-                    break;
-                case SupportedControllerType.OculusRemote:
-                    detectedController = new OculusRemoteController(TrackingState.NotTracked, controllingHand, inputSource);
-                    break;
-            }
+            GenericOpenVRController detectedController = Activator.CreateInstance(controllerType, 
+                TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
 
             Debug.Assert(detectedController != null);
             detectedController?.SetupConfiguration(controllerType);
