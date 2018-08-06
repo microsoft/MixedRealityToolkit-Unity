@@ -14,4 +14,4 @@ MonoBehaviour:
   playAreaMaterial: {fileID: 2100000, guid: 30d693ff62c571241b431ef4e206b09a, type: 2}
   trackedAreaMaterial: {fileID: 2100000, guid: 1ab3a050711c97243a200ca653272343, type: 2}
   floorPlaneMaterial: {fileID: 2100000, guid: e106645f46550d54bacf6c82811c99e6, type: 2}
-  floorPlaneScale: {x: 3, y: 3, z: 1}
+  floorPlaneScale: {x: 10, y: 10, z: 1}
