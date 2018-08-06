@@ -210,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                 new object[] { TrackingState.NotTracked, controllingHand, inputSource }) as GenericOpenVRController;
 
             Debug.Assert(detectedController != null);
-            detectedController.SetupConfiguration(controllerType);
+            detectedController?.SetupConfiguration(controllerType);
 
             for (int i = 0; i < detectedController?.InputSource?.Pointers?.Length; i++)
             {
