@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public override void OnPreRaycast()
         {
             parabolicLineData.LineTransform.rotation = Quaternion.identity;
-            parabolicLineData.Direction = CameraCache.Main.transform.TransformDirection(transform.forward);
+            parabolicLineData.Direction = transform.forward;
 
             // when pointing straight up, upDot should be close to 1.
             // when pointing straight down, upDot should be close to -1.

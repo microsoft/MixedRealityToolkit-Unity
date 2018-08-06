@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         protected bool IsHoldPressed = false;
 
-        protected bool IsTeleportRequestActive { get; set; } = false;
+        protected bool IsTeleportRequestActive = false;
 
         private bool delayPointerRegistration = true;
 
@@ -464,7 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
-                    transform.position = eventData.InputData;
+                    transform.localPosition = eventData.InputData;
                 }
             }
         }
@@ -479,7 +479,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
-                    transform.rotation = eventData.InputData;
+                    transform.localRotation = eventData.InputData;
                 }
             }
         }
@@ -494,8 +494,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
-                    transform.position = eventData.InputData.Position;
-                    transform.rotation = eventData.InputData.Rotation;
+                    transform.localPosition = eventData.InputData.Position;
+                    transform.localRotation = eventData.InputData.Rotation;
                 }
             }
         }

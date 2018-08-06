@@ -126,8 +126,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
             if (TrackingState == TrackingState.Tracked)
             {
-                transform.position = eventData.MixedRealityPose.Position;
-                transform.rotation = eventData.MixedRealityPose.Rotation;
+                transform.localPosition = eventData.MixedRealityPose.Position;
+                transform.localRotation = eventData.MixedRealityPose.Rotation;
             }
         }
 

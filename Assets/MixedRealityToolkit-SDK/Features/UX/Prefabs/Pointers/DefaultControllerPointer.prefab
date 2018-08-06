@@ -100,7 +100,6 @@ MonoBehaviour:
   cursorPrefab: {fileID: 1000012072213228, guid: 62718441f3682f94ab10c70a637e014b,
     type: 2}
   raycastOrigin: {fileID: 0}
-  pointerOrientation: 0
   useSourcePoseData: 0
   inputSourceAction:
     id: 4
@@ -117,6 +116,7 @@ MonoBehaviour:
   requiresHoldAction: 0
   overrideGlobalPointerExtent: 0
   pointerExtent: 10
+  pointerOrientation: 0
   LineColorSelected:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}

@@ -328,9 +328,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS9
       axisCodeY: 
@@ -350,9 +350,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 13
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS9
       axisCodeY: 
@@ -372,9 +372,9 @@ MonoBehaviour:
       axisType: 4
       inputType: 21
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS1
       axisCodeY: MIXEDREALITY_AXIS2
@@ -383,9 +383,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 22
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 346
       axisCodeX: 
       axisCodeY: 
@@ -459,9 +459,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 11
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 345
       axisCodeX: 
       axisCodeY: 
@@ -470,9 +470,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 13
       inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS10
       axisCodeY: 
@@ -492,9 +492,9 @@ MonoBehaviour:
       axisType: 4
       inputType: 21
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS4
       axisCodeY: MIXEDREALITY_AXIS5
@@ -503,9 +503,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 22
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 347
       axisCodeX: 
       axisCodeY: 
