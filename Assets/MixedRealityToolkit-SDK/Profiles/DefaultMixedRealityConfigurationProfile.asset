@@ -14,8 +14,8 @@ MonoBehaviour:
   initialManagerTypes:
   - reference: Microsoft.MixedReality.Toolkit.SDK.Input.MixedRealityInputManager,
       Microsoft.MixedReality.Toolkit.SDK
-  - reference: Microsoft.MixedReality.Toolkit.Internal.BoundarySystem.MixedRealityBoundaryManager,
-      Microsoft.MixedReality.Toolkit.BoundarySystem
+  - reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,
+      Microsoft.MixedReality.Toolkit.SDK
   targetExperienceScale: 3
   enableCameraProfile: 1
   cameraProfile: {fileID: 11400000, guid: b9a895b32a50a7f45b1e4da728d50741, type: 2}
@@ -34,7 +34,8 @@ MonoBehaviour:
     type: 2}
   enableBoundarySystem: 1
   boundarySystemType:
-    reference: Microsoft.MixedReality.Toolkit.Internal.BoundarySystem.MixedRealityBoundaryManager,
-      Microsoft.MixedReality.Toolkit.BoundarySystem
-  boundaryHeight: 3
+    reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,
+      Microsoft.MixedReality.Toolkit.SDK
   enablePlatformBoundaryRendering: 1
+  boundaryVisualizationProfile: {fileID: 11400000, guid: c1f4aa213e301a446aca3858e6f4ad17,
+    type: 2}

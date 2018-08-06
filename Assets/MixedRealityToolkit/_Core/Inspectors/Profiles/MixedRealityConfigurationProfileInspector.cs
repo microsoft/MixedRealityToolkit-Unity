@@ -15,8 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     {
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
-        private static readonly GUIContent PlatformRenderingContent = new GUIContent("Platform Rendering:");
-        private static readonly GUIContent BoundaryHeightContent = new GUIContent("Boundary Height (in m):");
 
         // Experience properties
         private SerializedProperty targetExperienceScale;
@@ -36,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty enableBoundarySystem;
         private SerializedProperty boundarySystemType;
         private SerializedProperty boundaryHeight;
-        private SerializedProperty enablePlatformBoundaryRendering;
+        private SerializedProperty boundaryVisualizationProfile;
 
         private MixedRealityConfigurationProfile configurationProfile;
 
@@ -93,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
             boundarySystemType = serializedObject.FindProperty("boundarySystemType");
             boundaryHeight = serializedObject.FindProperty("boundaryHeight");
-            enablePlatformBoundaryRendering = serializedObject.FindProperty("enablePlatformBoundaryRendering");
+            boundaryVisualizationProfile = serializedObject.FindProperty("boundaryVisualizationProfile");
         }
 
         public override void OnInspectorGUI()
@@ -189,17 +187,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             if (enableBoundarySystem.boolValue)
             {
                 EditorGUILayout.PropertyField(boundarySystemType);
-                // Boundary settings depend on the experience scale
 
+                // Boundary settings depend on the experience scale
                 if (scale == ExperienceScale.Room)
                 {
-                    EditorGUILayout.PropertyField(boundaryHeight, BoundaryHeightContent);
-                    EditorGUILayout.PropertyField(enablePlatformBoundaryRendering, PlatformRenderingContent);
+                    EditorGUILayout.PropertyField(boundaryHeight);
+                    RenderProfile(boundaryVisualizationProfile);
                 }
                 else
                 {
                     GUILayout.Space(6f);
-                    EditorGUILayout.LabelField("Boundaries are only supported in Room scale experiences.", EditorStyles.label);
+                    EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Info);
                 }
             }
 

@@ -1,97 +1,98 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Boundary;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// Demo class to show different ways of using the boundary API.
+    /// Demo class to show different ways of using the boundary system and visualizing the data.
     /// </summary>
-    public class BoundaryVisualizationDemo : MonoBehaviour
+    public class BoundaryVisualizationDemo : MonoBehaviour, IMixedRealityBoundaryHandler
     {
-        /// <summary>
-        /// The material used to display indicators that are within the boundary geometry.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Material used to display indicators that are within the boundary geometry.")]
-        private Material boundsMaterial = null;
-
-        /// <summary>
-        /// The material used to display indicators that are outside of the boundary geometry.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Material used to display indicators that are outside of the boundary geometry.")]
-        private Material outOfBoundsMaterial = null;
-
-        /// <summary>
-        /// The material used to display the inscribed rectangle and the indicators that are within it.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Material used to display the inscribed rectangle and the indicators that are within it.")]
-        private Material inscribedRectangleMaterial = null;
-
-        /// <summary>
-        /// Boundary system implementation.
-        /// </summary
-        private IMixedRealityBoundarySystem boundaryManager = null;
         private IMixedRealityBoundarySystem BoundaryManager => boundaryManager ?? (boundaryManager = MixedRealityManager.Instance.GetManager<IMixedRealityBoundarySystem>());
+        private IMixedRealityBoundarySystem boundaryManager = null;
+
+        private readonly List<GameObject> markers = new List<GameObject>();
+
+        [SerializeField]
+        private bool showFloor = true;
+
+        [SerializeField]
+        private bool showPlayArea = true;
+
+        #region MonoBehaviour Implementation
 
         private void Start()
         {
-            if (MixedRealityManager.HasActiveProfile && MixedRealityManager.Instance.ActiveProfile.IsBoundarySystemEnabled)
+            if (BoundaryManager != null)
             {
-                AddQuad();
-                AddIndicators();
+                if (markers.Count == 0)
+                {
+                    AddMarkers();
+                }
             }
         }
 
-        /// <summary>
-        /// Displays the boundary as a quad primitive.
-        /// </summary>
-        private void AddQuad()
+        private void Update()
         {
-            // Get the rectangular bounds.
-            Vector2 center;
-            float angle;
-            float width;
-            float height;
-            if ((BoundaryManager == null) || !BoundaryManager.TryGetRectangularBoundsParams(out center, out angle, out width, out height))
+            if (BoundaryManager != null)
             {
-                // No rectangular bounds, therefore do not render the quad.
-                return;
-            }
-
-            // Render the rectangular bounds.
-            if (EdgeUtilities.IsValidPoint(center))
-            {
-                GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                quad.transform.SetParent(transform);
-                quad.transform.Translate(new Vector3(center.x, 0.005f, center.y)); // Add fudge factor to avoid z-fighting
-                quad.transform.Rotate(new Vector3(90, -angle, 0));
-                quad.transform.localScale = new Vector3(width, height, 1.0f);
-                quad.GetComponent<Renderer>().sharedMaterial = inscribedRectangleMaterial;
+                BoundaryManager.ShowFloor = showFloor;
+                BoundaryManager.ShowPlayArea = showPlayArea;
             }
         }
+
+        private void OnEnable()
+        {
+            BoundaryManager.Register(gameObject);
+        }
+
+        private void OnDisable()
+        {
+            BoundaryManager.Unregister(gameObject);
+        }
+
+        #endregion MonoBehaviour Implementation
+
+        #region IMixedRealityBoundaryHandler Implementation
+
+        /// <inheritdoc />
+        public void OnBoundaryVisualizationChanged(BoundaryEventData eventData)
+        {
+            Debug.Log("[BoundaryVisualizationDemo] Boundary visualization changed.");
+        }
+
+        #endregion IMixedRealityBoundaryHandler Implementation
 
         /// <summary>
         /// Displays the boundary as an array of spheres where spheres in the
         /// bounds are a different color.
         /// </summary>
-        private void AddIndicators()
+        private void AddMarkers()
         {
             // Get the rectangular bounds.
             Vector2 centerRect;
             float angleRect;
             float widthRect;
             float heightRect;
-            if ((BoundaryManager == null) || !BoundaryManager.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
+
+            if (!BoundaryManager.TryGetRectangularBoundsParams(out centerRect, out angleRect, out widthRect, out heightRect))
             {
                 // If we have no boundary manager or rectangular bounds we will show no indicators
+                return;
+            }
+
+            MixedRealityBoundaryVisualizationProfile visualizationProfile = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile;
+            if (visualizationProfile == null)
+            {
+                // We do not have a visualization profile configured, therefore do not render the indicators.
                 return;
             }
 
@@ -110,26 +111,29 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 {
                     Vector3 offset = new Vector3(xIndex * indicatorDistance, 0.0f, yIndex * indicatorDistance);
                     Vector3 position = corner + offset;
-                    GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    marker.transform.SetParent(transform);
-                    marker.transform.position = position;
-                    marker.transform.localScale = Vector3.one * indicatorScale;
 
-                    // Get the desired material for the marker.
-                    Material material = outOfBoundsMaterial;
-
+                    Material material = null;
                     // Check inscribed rectangle first
                     if (BoundaryManager.Contains(position, Boundary.Type.PlayArea))
                     {
-                        material = inscribedRectangleMaterial;
+                        material = visualizationProfile.PlayAreaMaterial;
                     }
                     // Then check geometry
                     else if (BoundaryManager.Contains(position, Boundary.Type.TrackedArea))
                     {
-                        material = boundsMaterial;
+                        material = visualizationProfile.TrackedAreaMaterial;
                     }
 
-                    marker.GetComponent<MeshRenderer>().sharedMaterial = material;
+                    if (material != null)
+                    {
+                        GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        marker.name = "Boundary Demo Marker";
+                        marker.transform.SetParent(transform);
+                        marker.transform.position = position;
+                        marker.transform.localScale = Vector3.one * indicatorScale;
+                        marker.GetComponent<MeshRenderer>().sharedMaterial = material;
+                        markers.Add(marker);
+                    }
                 }
             }
         }
