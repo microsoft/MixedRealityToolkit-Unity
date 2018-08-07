@@ -8,10 +8,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8989e381a7c097840b2d40378a63497a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9fd6338e77774badb73a2b1320b41caf, type: 3}
   m_Name: DefaultMixedRealityBoundaryVisualizationProfile
   m_EditorClassIdentifier: 
-  playAreaMaterial: {fileID: 2100000, guid: 30d693ff62c571241b431ef4e206b09a, type: 2}
-  trackedAreaMaterial: {fileID: 2100000, guid: 1ab3a050711c97243a200ca653272343, type: 2}
-  floorPlaneMaterial: {fileID: 2100000, guid: e106645f46550d54bacf6c82811c99e6, type: 2}
+  playAreaMaterial: {fileID: 2100000, guid: 3c55769e893c4f4c8c51b7fa69bee2b9, type: 2}
+  trackedAreaMaterial: {fileID: 2100000, guid: cb74390ea57642f8b5ca0aa8f5fb38c1, type: 2}
+  floorPlaneMaterial: {fileID: 2100000, guid: d5334c45caee46be937b095a1e977dc6, type: 2}
   floorPlaneScale: {x: 10, y: 10, z: 1}
