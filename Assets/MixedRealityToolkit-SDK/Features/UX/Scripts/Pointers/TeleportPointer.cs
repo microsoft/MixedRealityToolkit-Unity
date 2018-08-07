@@ -75,6 +75,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             BaseCursor?.SetVisibility(false);
         }
 
+        /// <inheritdoc />
+        public override void SetCursor(GameObject newCursor = null)
+        {
+            base.SetCursor(newCursor);
+            BaseCursor?.SetVisibility(false);
+        }
         #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
@@ -287,22 +293,32 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public override void OnTeleportRequest(TeleportEventData eventData)
         {
+            // Only turn off the pointer if we're not the one sending the request
             if (eventData.Pointer.PointerId == PointerId)
             {
+                IsTeleportRequestActive = false;
                 BaseCursor?.SetVisibility(true);
+            }
+            else
+            {
+                IsTeleportRequestActive = true;
+                BaseCursor?.SetVisibility(false);
             }
         }
 
         /// <inheritdoc />
         public override void OnTeleportStarted(TeleportEventData eventData)
         {
-            base.OnTeleportStarted(eventData);
+            // Turn off all pointers while we teleport.
+            IsTeleportRequestActive = true;
+            BaseCursor?.SetVisibility(false);
         }
 
         /// <inheritdoc />
         public override void OnTeleportCompleted(TeleportEventData eventData)
         {
             IsTeleportRequestActive = false;
+            BaseCursor?.SetVisibility(false);
         }
 
         /// <inheritdoc />
