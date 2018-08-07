@@ -99,6 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                             var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
                             var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
                             pointerObject.transform.SetParent(CameraCache.Main.transform.parent);
+                            pointerObject.name = $"{pointerProfile.Handedness}_{pointerObject.name}";
 
                             if (pointer != null)
                             {
