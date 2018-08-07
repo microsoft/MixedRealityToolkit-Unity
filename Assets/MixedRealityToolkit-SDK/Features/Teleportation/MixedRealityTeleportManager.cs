@@ -179,17 +179,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
                 handler.OnTeleportCompleted(casted);
             };
 
-        /// <inheritdoc />
-        public void RaiseTeleportComplete(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
+        /// <summary>
+        /// Raise a teleportation completed event.
+        /// </summary>
+        /// <param name="pointer">The pointer that raised the event.</param>
+        /// <param name="hotSpot">The teleport target</param>
+        private void RaiseTeleportComplete(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
-            // Check to make sure no one from outside the Teleport System called this method.
-            // Other implementations may have a different way of processing requests.
-            if (isProcessingTeleportRequest)
-            {
-                Debug.LogError("Calls to this method from outside the Teleport System is not allowed in this implementation.");
-                return;
-            }
-
             if (!isTeleporting)
             {
                 Debug.LogError("No Active Teleportation in progress.");
