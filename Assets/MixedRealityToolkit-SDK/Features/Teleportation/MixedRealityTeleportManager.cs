@@ -251,6 +251,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
                 targetRotation.y = eventData.Pointer.PointerOrientation;
             }
 
+            float yAxis = targetPosition.y;
+            targetPosition -= CameraCache.Main.transform.position - CameraCache.Main.transform.parent.position;
+            targetPosition.y = yAxis;
             cameraParent.position = targetPosition;
             cameraParent.eulerAngles = targetRotation;
 
