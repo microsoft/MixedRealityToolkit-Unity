@@ -36,10 +36,11 @@ MonoBehaviour:
   boundarySystemType:
     reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,
       Microsoft.MixedReality.Toolkit.SDK
-  enablePlatformBoundaryRendering: 1
+  boundaryHeight: 3
+  boundaryVisualizationProfile: {fileID: 11400000, guid: c1f4aa213e301a446aca3858e6f4ad17,
+    type: 2}
   enableTeleportSystem: 1
   teleportSystemType:
     reference: Microsoft.MixedReality.Toolkit.SDK.Teleportation.MixedRealityTeleportManager,
       Microsoft.MixedReality.Toolkit.SDK
-  boundaryVisualizationProfile: {fileID: 11400000, guid: c1f4aa213e301a446aca3858e6f4ad17,
-    type: 2}
+  teleportDuration: 0.25

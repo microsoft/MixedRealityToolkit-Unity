@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// </summary>
         /// <remarks>This <see cref="GameObject"/> must have a <see cref="IMixedRealityCursor"/> attached to it.</remarks>
         /// <param name="newCursor"></param>
-        public void SetCursor(GameObject newCursor = null)
+        public virtual void SetCursor(GameObject newCursor = null)
         {
             if (cursorInstance != null)
             {

@@ -267,7 +267,7 @@ Animator:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1466073170848862}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: 6e9e603a0869edf45a8a4fea496c6d9b, type: 3}
   m_Controller: {fileID: 9100000, guid: 65931ac36f624f549a6fe2c27af849ab, type: 2}
   m_CullingMode: 0
@@ -341,11 +341,11 @@ MonoBehaviour:
   - name: Valid
     cursorState: 1
     parameter:
-      parameterType: 0
+      parameterType: 4
       defaultInt: 0
       defaultFloat: 0
       defaultBool: 0
-      name: 
+      name: Valid
   inputEnabledParameter:
     parameterType: 0
     defaultInt: 0
