@@ -21,8 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         private bool isTeleporting = false;
         private bool isProcessingTeleportRequest = false;
 
-        private Vector3 startRotation = Vector3.zero;
-
         private Vector3 targetPosition = Vector3.zero;
         private Vector3 targetRotation = Vector3.zero;
 
@@ -181,17 +179,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
                 handler.OnTeleportCompleted(casted);
             };
 
-        /// <inheritdoc />
-        public void RaiseTeleportComplete(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
+        /// <summary>
+        /// Raise a teleportation completed event.
+        /// </summary>
+        /// <param name="pointer">The pointer that raised the event.</param>
+        /// <param name="hotSpot">The teleport target</param>
+        private void RaiseTeleportComplete(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
-            // Check to make sure no one from outside the Teleport System called this method.
-            // Other implementations may have a different way of processing requests.
-            if (isProcessingTeleportRequest)
-            {
-                Debug.LogError("Calls to this method from outside the Teleport System is not allowed in this implementation.");
-                return;
-            }
-
             if (!isTeleporting)
             {
                 Debug.LogError("No Active Teleportation in progress.");
@@ -232,27 +226,26 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
             var cameraParent = CameraCache.Main.transform.parent;
 
-            startRotation = CameraCache.Main.transform.eulerAngles;
-            startRotation.x = 0f;
-            startRotation.z = 0f;
-
-            cameraParent.eulerAngles = startRotation;
+            targetRotation = Vector3.zero;
+            targetRotation.y = eventData.Pointer.PointerOrientation;
+            targetPosition = eventData.Pointer.Result.Details.Point;
 
             if (eventData.HotSpot != null)
             {
                 targetPosition = eventData.HotSpot.Position;
-                targetRotation.y = eventData.HotSpot.OverrideTargetOrientation
-                    ? eventData.HotSpot.TargetOrientation
-                    : eventData.Pointer.PointerOrientation;
-            }
-            else
-            {
-                targetPosition = eventData.Pointer.Result.Details.Point;
-                targetRotation.y = eventData.Pointer.PointerOrientation;
+
+                if (eventData.HotSpot.OverrideTargetOrientation)
+                {
+                    targetRotation.y = eventData.HotSpot.TargetOrientation;
+                }
             }
 
+            float height = targetPosition.y;
+            targetPosition -= CameraCache.Main.transform.position - cameraParent.position;
+            targetPosition.y = height;
             cameraParent.position = targetPosition;
-            cameraParent.eulerAngles = targetRotation;
+
+            cameraParent.RotateAround(CameraCache.Main.transform.position, Vector3.up, targetRotation.y - CameraCache.Main.transform.eulerAngles.y);
 
             isProcessingTeleportRequest = false;
 

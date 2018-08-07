@@ -32,11 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         [SerializeField]
         [Tooltip("Layers that are considered 'valid' for navigation")]
-        protected LayerMask ValidLayers = 1 << 0; // Default
+        protected LayerMask ValidLayers = Physics.DefaultRaycastLayers;
 
         [SerializeField]
         [Tooltip("Layers that are considered 'invalid' for navigation")]
-        protected LayerMask InvalidLayers = 1 << 2; // Ignore raycast
+        protected LayerMask InvalidLayers = Physics.IgnoreRaycastLayer;
 
         [SerializeField]
         private float inputThreshold = 0.5f;
@@ -81,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             base.SetCursor(newCursor);
             BaseCursor?.SetVisibility(false);
         }
+
         #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
@@ -102,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
             set
             {
-                base.PointerOrientation = value * -1f;
+                base.PointerOrientation = value;
             }
         }
 
@@ -245,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 Mathf.Abs(currentInputPosition.x) > inputThreshold)
             {
                 // Get the angle of the pointer input
-                float angle = Mathf.Atan2(currentInputPosition.y, currentInputPosition.x) * Mathf.Rad2Deg;
+                float angle = -Mathf.Atan2(currentInputPosition.y, currentInputPosition.x) * Mathf.Rad2Deg;
 
                 // Offset the angle so it's 'forward' facing
                 angle += angleOffset;
@@ -260,9 +261,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
             else
             {
-                currentInputPosition = Vector2.zero;
-                PointerOrientation = 0f;
-
                 if (canTeleport)
                 {
                     canTeleport = false;
