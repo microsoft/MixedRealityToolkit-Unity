@@ -21,8 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         private bool isTeleporting = false;
         private bool isProcessingTeleportRequest = false;
 
-        private Vector3 startRotation = Vector3.zero;
-
         private Vector3 targetPosition = Vector3.zero;
         private Vector3 targetRotation = Vector3.zero;
 
@@ -232,30 +230,26 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
             var cameraParent = CameraCache.Main.transform.parent;
 
-            startRotation = CameraCache.Main.transform.eulerAngles;
-            startRotation.x = 0f;
-            startRotation.z = 0f;
-
-            cameraParent.eulerAngles = startRotation;
+            targetRotation = Vector3.zero;
+            targetRotation.y = eventData.Pointer.PointerOrientation;
+            targetPosition = eventData.Pointer.Result.Details.Point;
 
             if (eventData.HotSpot != null)
             {
                 targetPosition = eventData.HotSpot.Position;
-                targetRotation.y = eventData.HotSpot.OverrideTargetOrientation
-                    ? eventData.HotSpot.TargetOrientation
-                    : eventData.Pointer.PointerOrientation;
-            }
-            else
-            {
-                targetPosition = eventData.Pointer.Result.Details.Point;
-                targetRotation.y = eventData.Pointer.PointerOrientation;
+
+                if (eventData.HotSpot.OverrideTargetOrientation)
+                {
+                    targetRotation.y = eventData.HotSpot.TargetOrientation;
+                }
             }
 
-            float yAxis = targetPosition.y;
-            targetPosition -= CameraCache.Main.transform.position - CameraCache.Main.transform.parent.position;
-            targetPosition.y = yAxis;
+            float height = targetPosition.y;
+            targetPosition -= CameraCache.Main.transform.position - cameraParent.position;
+            targetPosition.y = height;
             cameraParent.position = targetPosition;
-            cameraParent.eulerAngles = targetRotation;
+
+            cameraParent.RotateAround(CameraCache.Main.transform.position, Vector3.up, targetRotation.y - CameraCache.Main.transform.eulerAngles.y);
 
             isProcessingTeleportRequest = false;
 

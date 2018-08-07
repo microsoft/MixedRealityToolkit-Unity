@@ -81,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             base.SetCursor(newCursor);
             BaseCursor?.SetVisibility(false);
         }
+
         #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
