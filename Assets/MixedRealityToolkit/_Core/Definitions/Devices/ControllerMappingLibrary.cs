@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
@@ -90,6 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         public const string MIXEDREALITY_AXIS18 = "MIXEDREALITY_AXIS18";
 
         /// <summary>
+        /// "WMR Touchpad Position Hoizontal
+        /// </summary>
+        public const string MIXEDREALITY_AXIS19 = "MIXEDREALITY_AXIS19";
+
+        /// <summary>
         /// INDEXFINGER_LEFT_CONTROLLER
         /// </summary>
         public const string MIXEDREALITY_AXIS20 = "MIXEDREALITY_AXIS20";
@@ -142,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             get
             {
-                return new InputManagerAxis[]
+                return new[]
                 {
                     new InputManagerAxis { Name = MIXEDREALITY_AXIS1, Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 1 },
                     new InputManagerAxis { Name = MIXEDREALITY_AXIS2, Dead = 0.1f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 2 },
@@ -158,6 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
                     new InputManagerAxis { Name = MIXEDREALITY_AXIS16, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 16 },
                     new InputManagerAxis { Name = MIXEDREALITY_AXIS17, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 17 },
                     new InputManagerAxis { Name = MIXEDREALITY_AXIS18, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 18 },
+                    new InputManagerAxis { Name = MIXEDREALITY_AXIS19, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 19 },
                     new InputManagerAxis { Name = MIXEDREALITY_AXIS20, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 20 },
                     new InputManagerAxis { Name = MIXEDREALITY_AXIS21, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 21 },
                     new InputManagerAxis { Name = MIXEDREALITY_AXIS22, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 22 },
@@ -179,6 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// Retrieve the defaults for a specific controller type
         /// </summary>
         /// <param name="controllerType"></param>
+        /// <param name="handedness"></param>
         /// <returns></returns>
         public static MixedRealityInteractionMapping[] GetMappingsForControllerType(SystemType controllerType, Handedness handedness)
         {
@@ -191,19 +197,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             {
                 return WindowsMixedRealityController.DefaultInteractions;
             }
-            else if (controllerType == typeof(OculusTouchController))
+
+            if (controllerType == typeof(OculusTouchController))
             {
                 return handedness == Handedness.Left ? OculusTouchController.DefaultLeftHandedInteractions : OculusTouchController.DefaultRightHandedInteractions;
             }
-            else if (controllerType == typeof(ViveWandController))
+
+            if (controllerType == typeof(ViveWandController))
             {
                 return handedness == Handedness.Left ? ViveWandController.DefaultLeftHandedInteractions : ViveWandController.DefaultRightHandedInteractions;
             }
-            else if (controllerType == typeof(ViveKnucklesController))
+
+            if (controllerType == typeof(ViveKnucklesController))
             {
                 return handedness == Handedness.Left ? ViveKnucklesController.DefaultLeftHandedInteractions : ViveKnucklesController.DefaultRightHandedInteractions;
             }
-            else if (controllerType == typeof(GenericOpenVRController))
+
+            if (controllerType == typeof(GenericOpenVRController))
             {
                 return handedness == Handedness.Left ? GenericOpenVRController.DefaultLeftHandedInteractions : GenericOpenVRController.DefaultRightHandedInteractions;
             }
