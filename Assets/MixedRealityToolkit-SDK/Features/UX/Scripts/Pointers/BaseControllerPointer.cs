@@ -362,19 +362,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #endregion IMixedRealityPointer Implementation
 
-        #region IMixedRealitySourcePoseHandler Implementation
-
-        /// <inheritdoc />
-        public override void OnSourcePoseChanged(SourcePoseEventData eventData)
-        {
-            if (UseSourcePoseData)
-            {
-                base.OnSourcePoseChanged(eventData);
-            }
-        }
-
-        #endregion IMixedRealitySourcePoseHandler Implementation
-
         #region IMixedRealityInputHandler Implementation
 
         /// <inheritdoc />
