@@ -97,6 +97,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handedness: 1
   disableChildren: 1
+  destroyOnSourceLost: 1
   cursorPrefab: {fileID: 1000012072213228, guid: 62718441f3682f94ab10c70a637e014b,
     type: 2}
   raycastOrigin: {fileID: 0}
