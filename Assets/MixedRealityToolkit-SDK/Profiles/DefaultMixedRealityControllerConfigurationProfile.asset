@@ -328,36 +328,36 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS9
       axisCodeY: 
     - id: 2
-      description: Trigger Touch
-      axisType: 2
-      inputType: 11
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 345
-      axisCodeX: 
-      axisCodeY: 
-    - id: 3
-      description: Trigger Press
+      description: Trigger Press (Select)
       axisType: 2
       inputType: 13
       inputAction:
         id: 1
         description: Select
         axisConstraint: 2
+      keyCode: 344
+      axisCodeX: 
+      axisCodeY: 
+    - id: 3
+      description: Trigger Touch
+      axisType: 2
+      inputType: 11
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS9
       axisCodeY: 
     - id: 4
-      description: Grip
+      description: Grip Trigger Position
       axisType: 3
       inputType: 10
       inputAction:
@@ -366,6 +366,17 @@ MonoBehaviour:
         axisConstraint: 0
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS11
+      axisCodeY: 
+    - id: 4
+      description: Grip Press
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 334
+      axisCodeX: 
       axisCodeY: 
     - id: 5
       description: Trackpad-Thumbstick Position
@@ -383,9 +394,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 22
       inputAction:
-        id: 5
-        description: Teleport Direction
-        axisConstraint: 4
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 346
       axisCodeX: 
       axisCodeY: 
@@ -422,6 +433,28 @@ MonoBehaviour:
       keyCode: 333
       axisCodeX: 
       axisCodeY: 
+    - id: 10
+      description: WMR Touchpad Touch
+      axisType: 2
+      inputType: 22
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 348
+      axisCodeX: 
+      axisCodeY: 
+    - id: 11
+      description: WMR Touchpad Position
+      axisType: 4
+      inputType: 21
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: MIXEDREALITY_AXIS17
+      axisCodeY: MIXEDREALITY_AXIS18
   - id: 4
     description: OpenVR Controller Right
     controllerType:
@@ -455,9 +488,9 @@ MonoBehaviour:
       axisCodeX: MIXEDREALITY_AXIS10
       axisCodeY: 
     - id: 2
-      description: Trigger Touch
+      description: Trigger Press (Select)
       axisType: 2
-      inputType: 11
+      inputType: 13
       inputAction:
         id: 1
         description: Select
@@ -466,9 +499,9 @@ MonoBehaviour:
       axisCodeX: 
       axisCodeY: 
     - id: 3
-      description: Trigger Press
+      description: Trigger Touch
       axisType: 2
-      inputType: 13
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -487,6 +520,17 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS12
       axisCodeY: 
+    - id: 4
+      description: Grip Press
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 335
+      axisCodeX: 
+      axisCodeY: 
     - id: 5
       description: Trackpad-Thumbstick Position
       axisType: 4
@@ -503,9 +547,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 22
       inputAction:
-        id: 5
-        description: Teleport Direction
-        axisConstraint: 4
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 347
       axisCodeX: 
       axisCodeY: 
@@ -542,6 +586,28 @@ MonoBehaviour:
       keyCode: 331
       axisCodeX: 
       axisCodeY: 
+    - id: 10
+      description: WMR Touchpad Touch
+      axisType: 2
+      inputType: 22
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 349
+      axisCodeX: 
+      axisCodeY: 
+    - id: 11
+      description: WMR Touchpad Position
+      axisType: 4
+      inputType: 21
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: MIXEDREALITY_AXIS19
+      axisCodeY: MIXEDREALITY_AXIS20
   - id: 5
     description: Oculus Touch Left
     controllerType:
