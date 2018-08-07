@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal.
 
         // These fields are public but NonSerialized because we don't want them serialized by the
         // Json Utility, but we also don't want their values overwritten when deserialization happens.
-        #region Json Overwriten Fields
+        #region Json Overwritten Fields
 
         /// <summary>
         /// The current CSRF Token for the device.
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal.
 
         private Dictionary<string, string> authorization;
 
-        #endregion Json Overwriten Fields
+        #endregion Json Overwritten Fields
 
         // Properties are not serialized by the Unity JSON serializer, but become null whenever deserialized.
         #region Properties

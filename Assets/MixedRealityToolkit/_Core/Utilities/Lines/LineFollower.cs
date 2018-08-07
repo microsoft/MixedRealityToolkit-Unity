@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
         [HideInInspector]
         private BaseMixedRealityLineDataProvider source = null;
 
-        #region Monobeahviour Implementation
+        #region MonoBehaviour Implementation
 
         private void OnValidate() => EnsureSetup();
 
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines
             follower.position = linePoint;
         }
 
-        #endregion Monobeahviour Implementation
+        #endregion MonoBehaviour Implementation
 
         private void EnsureSetup()
         {

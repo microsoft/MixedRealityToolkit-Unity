@@ -74,14 +74,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             }
         }
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         protected override void OnValidate()
         {
             BuildPoints();
         }
 
-        #endregion Monobehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
         #region BaseMixedRealityLineDataProvider Implementation
 

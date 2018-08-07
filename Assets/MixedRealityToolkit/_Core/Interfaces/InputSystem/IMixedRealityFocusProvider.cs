@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// </summary>
         /// <param name="eventData"></param>
         /// <param name="pointer"></param>
-        /// <returns>True, if event datas pointer input source is registered.</returns>
+        /// <returns>True, if event data's pointer input source is registered.</returns>
         bool TryGetPointingSource(BaseInputEventData eventData, out IMixedRealityPointer pointer);
 
         /// <summary>

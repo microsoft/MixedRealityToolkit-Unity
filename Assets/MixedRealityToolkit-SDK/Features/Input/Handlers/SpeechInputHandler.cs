@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         private void Start()
         {
@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             }
         }
 
-        #endregion Monobehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
         #region IMixedRealitySpeechHandler Implementation
 

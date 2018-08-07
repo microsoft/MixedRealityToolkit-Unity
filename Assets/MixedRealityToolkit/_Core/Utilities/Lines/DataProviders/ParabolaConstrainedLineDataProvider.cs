@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             set { height = Mathf.Clamp(value, 0.01f, 10f); }
         }
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         protected override void OnValidate()
         {
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             base.OnValidate();
         }
 
-        #endregion Monobehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
         #region Line Data Provider Implementation
 
