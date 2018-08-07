@@ -261,9 +261,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
             else
             {
-                currentInputPosition = Vector2.zero;
-                PointerOrientation = 0f;
-
                 if (canTeleport)
                 {
                     canTeleport = false;
