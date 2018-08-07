@@ -56,6 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             {
                 handedness = value.ControllerHandedness;
                 controller = value;
+                gameObject.name = $"{handedness}_{gameObject.name}";
             }
         }
 
