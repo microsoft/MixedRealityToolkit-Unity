@@ -260,7 +260,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handedness: 1
   destroyOnLost: 1
-  destroyOnSourceLost: 1
   useSourcePoseData: 0
   poseAction:
     id: 4
