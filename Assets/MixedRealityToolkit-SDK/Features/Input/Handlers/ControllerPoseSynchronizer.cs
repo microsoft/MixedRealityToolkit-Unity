@@ -38,6 +38,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             set { disableChildren = value; }
         }
 
+        [SerializeField]
+        [Tooltip("Should this GameObject clean itself up after source is lost?")]
+        private bool destroyOnSourceLost = true;
+
+        /// <summary>
+        /// Should this GameObject clean itself up after source is lost?
+        /// </summary>
+        public bool DestroyOnSourceLost
+        {
+            get { return destroyOnSourceLost; }
+            set { destroyOnSourceLost = value; }
+        }
+
         /// <summary>
         /// Is the controller this Synchronizer is registered to currently tracked?
         /// </summary>
@@ -105,6 +118,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                 {
                     gameObject.SetChildrenActive(false);
                 }
+
+                if (destroyOnSourceLost)
+                {
+                    if (Application.isEditor)
+                    {
+                        DestroyImmediate(gameObject);
+                    }
+                    else
+                    {
+                        Destroy(gameObject);
+                    }
+                }
             }
         }
 
@@ -126,8 +151,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
             if (TrackingState == TrackingState.Tracked)
             {
-                transform.position = eventData.MixedRealityPose.Position;
-                transform.rotation = eventData.MixedRealityPose.Rotation;
+                transform.localPosition = eventData.MixedRealityPose.Position;
+                transform.localRotation = eventData.MixedRealityPose.Rotation;
             }
         }
 

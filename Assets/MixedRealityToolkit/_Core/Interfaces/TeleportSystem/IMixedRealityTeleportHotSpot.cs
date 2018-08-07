@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem
 {
-    public interface ITeleportTarget : IMixedRealityFocusChangedHandler
+    public interface IMixedRealityTeleportHotSpot
     {
         /// <summary>
         /// The position the teleport will end at.
@@ -36,5 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// </remarks>
         /// </summary>
         float TargetOrientation { get; }
+
+        /// <summary>
+        /// Returns the <see cref="GameObject"/> reference for this teleport target.
+        /// </summary>
+        GameObject GameObjectReference { get; }
     }
 }

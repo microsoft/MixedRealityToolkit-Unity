@@ -6,10 +6,13 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System.Collections;
 using UnityEngine;
@@ -20,8 +23,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
     [DisallowMultipleComponent]
-    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer, IMixedRealitySpatialInputHandler
+    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer, IMixedRealitySpatialInputHandler, IMixedRealityTeleportHandler
     {
+        private static IMixedRealityTeleportSystem teleportSystem = null;
+        protected static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = MixedRealityManager.Instance.GetManager<IMixedRealityTeleportSystem>());
+
         [SerializeField]
         private GameObject cursorPrefab = null;
 
@@ -30,26 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         [SerializeField]
         [Tooltip("Source transform for raycast origin - leave null to use default transform")]
         private Transform raycastOrigin = null;
-
-        [SerializeField]
-        [Range(0f, 360f)]
-        [Tooltip("The Y orientation of the pointer - used for touchpad rotation and navigation")]
-        private float pointerOrientation = 0f;
-
-        /// <summary>
-        /// The Y orientation of the pointer - used for touchpad rotation and navigation
-        /// </summary>
-        public virtual float PointerOrientation
-        {
-            get
-            {
-                return pointerOrientation + (raycastOrigin != null ? raycastOrigin.eulerAngles.y : transform.eulerAngles.y);
-            }
-            set
-            {
-                pointerOrientation = Mathf.Clamp(value, 0f, 360f);
-            }
-        }
 
         [SerializeField]
         [Tooltip("Should the pointer's position be driven from the source pose or from input handler?")]
@@ -83,6 +69,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         protected bool IsHoldPressed = false;
 
+        protected bool IsTeleportRequestActive = false;
+
         private bool delayPointerRegistration = true;
 
         /// <summary>
@@ -95,9 +83,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// </summary>
         /// <remarks>This <see cref="GameObject"/> must have a <see cref="IMixedRealityCursor"/> attached to it.</remarks>
         /// <param name="newCursor"></param>
-        public void SetCursor(GameObject newCursor = null)
+        public virtual void SetCursor(GameObject newCursor = null)
         {
-            // Destroy the old cursor instance.
             if (cursorInstance != null)
             {
                 if (Application.isEditor)
@@ -115,12 +102,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             if (cursorInstance == null && cursorPrefab != null)
             {
                 cursorInstance = Instantiate(cursorPrefab, transform);
-                cursorInstance.name = $"{name}_Cursor";
+            }
+
+            if (cursorInstance != null)
+            {
+                cursorInstance.name = $"{Handedness}_{name}_Cursor";
                 BaseCursor = cursorInstance.GetComponent<IMixedRealityCursor>();
-                Debug.Assert(BaseCursor != null, "Failed to load cursor");
-                BaseCursor.DefaultCursorDistance = PointerExtent;
-                BaseCursor.Pointer = this;
-                Debug.Assert(BaseCursor.Pointer != null, "Failed to assign cursor!");
+
+                if (BaseCursor != null)
+                {
+                    BaseCursor.DefaultCursorDistance = PointerExtent;
+                    BaseCursor.Pointer = this;
+                }
+                else
+                {
+                    Debug.LogError($"No IMixedRealityCursor component found on {cursorInstance.name}");
+                }
             }
         }
 
@@ -136,6 +133,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             {
                 InputSystem.FocusProvider.RegisterPointer(this);
             }
+
+            TeleportSystem?.Register(gameObject);
         }
 
         protected virtual void Start()
@@ -151,6 +150,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected override void OnDisable()
         {
             base.OnDisable();
+            TeleportSystem?.Unregister(gameObject);
+
             IsHoldPressed = false;
             IsSelectPressed = false;
             HasSelectPressedOnce = false;
@@ -208,13 +209,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public ICursorModifier CursorModifier { get; set; }
 
         /// <inheritdoc />
-        public ITeleportTarget TeleportTarget { get; set; }
+        public IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
 
         /// <inheritdoc />
         public virtual bool IsInteractionEnabled
         {
             get
             {
+                if (IsTeleportRequestActive)
+                {
+                    return false;
+                }
+
                 if (requiresHoldAction && IsHoldPressed)
                 {
                     return true;
@@ -265,6 +271,26 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         /// <inheritdoc />
         public float SphereCastRadius { get; set; } = 0.1f;
+
+        [SerializeField]
+        [Range(0f, 360f)]
+        [Tooltip("The Y orientation of the pointer - used for rotation and navigation")]
+        private float pointerOrientation = 0f;
+
+        /// <inheritdoc />
+        public virtual float PointerOrientation
+        {
+            get
+            {
+                return pointerOrientation + (raycastOrigin != null ? raycastOrigin.eulerAngles.y : transform.eulerAngles.y);
+            }
+            set
+            {
+                pointerOrientation = value < 0
+                    ? Mathf.Clamp(value, -360f, 0f)
+                    : Mathf.Clamp(value, 0f, 360f);
+            }
+        }
 
         /// <inheritdoc />
         public virtual void OnPreRaycast() { }
@@ -349,24 +375,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         #region IMixedRealitySourcePoseHandler Implementation
 
         /// <inheritdoc />
-        public override void OnSourceLost(SourceStateEventData eventData)
-        {
-            base.OnSourceLost(eventData);
-
-            if (eventData.InputSource.SourceId == InputSourceParent.SourceId)
-            {
-                if (Application.isEditor)
-                {
-                    DestroyImmediate(gameObject);
-                }
-                else
-                {
-                    Destroy(gameObject);
-                }
-            }
-        }
-
-        /// <inheritdoc />
         public override void OnSourcePoseChanged(SourcePoseEventData eventData)
         {
             if (useSourcePoseData)
@@ -437,7 +445,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
-                    transform.position = eventData.InputData;
+                    transform.localPosition = eventData.InputData;
                 }
             }
         }
@@ -452,7 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
-                    transform.rotation = eventData.InputData;
+                    transform.localRotation = eventData.InputData;
                 }
             }
         }
@@ -467,12 +475,48 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     IsTracked = true;
                     TrackingState = TrackingState.Tracked;
-                    transform.position = eventData.InputData.Position;
-                    transform.rotation = eventData.InputData.Rotation;
+                    transform.localPosition = eventData.InputData.Position;
+                    transform.localRotation = eventData.InputData.Rotation;
                 }
             }
         }
 
         #endregion IMixedRealitySpatialInputHandler Implementation 
+
+        #region IMixedRealityTeleportHandler Implementation
+
+        /// <inheritdoc />
+        public virtual void OnTeleportRequest(TeleportEventData eventData)
+        {
+            // Only turn off pointers that aren't making the request.
+            IsTeleportRequestActive = true;
+            BaseCursor?.SetVisibility(false);
+        }
+
+        /// <inheritdoc />
+        public virtual void OnTeleportStarted(TeleportEventData eventData)
+        {
+            // Turn off all pointers while we teleport.
+            IsTeleportRequestActive = true;
+            BaseCursor?.SetVisibility(false);
+        }
+
+        /// <inheritdoc />
+        public virtual void OnTeleportCompleted(TeleportEventData eventData)
+        {
+            // Turn all our pointers back on.
+            IsTeleportRequestActive = false;
+            BaseCursor?.SetVisibility(true);
+        }
+
+        /// <inheritdoc />
+        public virtual void OnTeleportCanceled(TeleportEventData eventData)
+        {
+            // Turn all our pointers back on.
+            IsTeleportRequestActive = false;
+            BaseCursor?.SetVisibility(true);
+        }
+
+        #endregion IMixedRealityTeleportHandler Implementation
     }
 }

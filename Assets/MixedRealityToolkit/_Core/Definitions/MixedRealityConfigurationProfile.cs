@@ -9,6 +9,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -237,6 +238,46 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get { return boundaryVisualizationProfile; }
             private set { boundaryVisualizationProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable the Teleport System on Startup")]
+        private bool enableTeleportSystem = false;
+
+        /// <summary>
+        /// Enable and configure the boundary system.
+        /// </summary>
+        public bool IsTeleportSystemEnabled
+        {
+            get { return teleportSystemType.Type != null && enableTeleportSystem; }
+            private set { enableTeleportSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Boundary System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealityTeleportSystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType teleportSystemType;
+
+        /// <summary>
+        /// Boundary System Script File to instantiate at runtime.
+        /// </summary>
+        public SystemType TeleportSystemSystemType
+        {
+            get { return teleportSystemType; }
+            private set { teleportSystemType = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("The duration of the teleport in seconds.")]
+        private float teleportDuration = 0.25f;
+
+        /// <summary>
+        /// The duration of the teleport in seconds.
+        /// </summary>
+        public float TeleportDuration
+        {
+            get { return teleportDuration; }
+            set { teleportDuration = value; }
         }
 
         #endregion Mixed Reality Manager configurable properties

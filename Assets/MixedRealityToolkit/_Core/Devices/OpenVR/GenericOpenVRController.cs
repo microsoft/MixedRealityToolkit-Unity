@@ -195,12 +195,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
                 // Devices are considered tracked if we receive position OR rotation data from the sensors.
                 TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
-
-                if (CameraCache.Main.transform.parent != null)
-                {
-                    currentControllerPosition = CameraCache.Main.transform.parent.TransformPoint(currentControllerPosition);
-                    currentControllerRotation = Quaternion.Euler(CameraCache.Main.transform.parent.TransformDirection(currentControllerRotation.eulerAngles));
-                }
             }
             else
             {
