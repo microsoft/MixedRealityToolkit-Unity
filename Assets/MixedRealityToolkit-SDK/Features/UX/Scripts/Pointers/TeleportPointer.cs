@@ -32,11 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         [SerializeField]
         [Tooltip("Layers that are considered 'valid' for navigation")]
-        protected LayerMask ValidLayers = 1 << 0; // Default
+        protected LayerMask ValidLayers = Physics.DefaultRaycastLayers;
 
         [SerializeField]
         [Tooltip("Layers that are considered 'invalid' for navigation")]
-        protected LayerMask InvalidLayers = 1 << 2; // Ignore raycast
+        protected LayerMask InvalidLayers = Physics.IgnoreRaycastLayer;
 
         [SerializeField]
         private float inputThreshold = 0.5f;
