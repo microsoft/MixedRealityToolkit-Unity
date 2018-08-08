@@ -157,26 +157,25 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         {
             GameObject controllerModel = null;
 
-            // Get the global controller model for each hand.
-            if (ControllerHandedness == Handedness.Left && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalLeftHandModel != null)
-            {
-                controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalLeftHandModel;
-            }
-            else if (ControllerHandedness == Handedness.Right && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalRightHandModel != null)
-            {
-                controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalRightHandModel;
-            }
+            if (!MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.RenderMotionControllers) { return; }
 
             // If a specific controller template wants to override the global model, assign that instead.
             if (MixedRealityManager.Instance.ActiveProfile.IsControllerMappingEnabled &&
-                MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.RenderMotionControllers &&
-               !MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.UseDefaultModels)
+                !MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.UseDefaultModels)
             {
-                var controllerModelType = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
+                controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
+            }
 
-                if (controllerModelType != null)
+            // Get the global controller model for each hand.
+            if (controllerModel == null)
+            {
+                if (ControllerHandedness == Handedness.Left && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalLeftHandModel != null)
                 {
-                    controllerModel = controllerModelType;
+                    controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalLeftHandModel;
+                }
+                else if (ControllerHandedness == Handedness.Right && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalRightHandModel != null)
+                {
+                    controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalRightHandModel;
                 }
             }
 

@@ -27,13 +27,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
         [SerializeField]
         [Tooltip("Should this GameObject clean itself up when it's controller is lost?")]
-        private bool destroyOnLost = true;
+        private bool destroyOnSourceLost = true;
 
         /// <inheritdoc />
         public bool DestroyOnLost
         {
-            get { return destroyOnLost; }
-            set { destroyOnLost = value; }
+            get { return destroyOnSourceLost; }
+            set { destroyOnSourceLost = value; }
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                 IsTracked = false;
                 TrackingState = TrackingState.NotTracked;
 
-                if (destroyOnLost)
+                if (destroyOnSourceLost)
                 {
                     if (Application.isEditor)
                     {
