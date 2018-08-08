@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         protected override void OnEnable()
         {
@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             InputSystem.FocusProvider.UnregisterPointer(this);
         }
 
-        #endregion  Monobehaviour Implementation
+        #endregion  MonoBehaviour Implementation
 
         #region IMixedRealityPointer Implementation
 

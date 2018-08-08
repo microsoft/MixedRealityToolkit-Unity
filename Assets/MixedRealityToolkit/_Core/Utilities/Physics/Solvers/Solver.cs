@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             }
         }
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         private void OnValidate()
         {
@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             currentLifetime = 0;
         }
 
-        #endregion Monobehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
         /// <summary>
         /// Update the solver.

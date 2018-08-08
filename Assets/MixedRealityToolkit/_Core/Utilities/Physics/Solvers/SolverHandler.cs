@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
 
         private readonly List<Solver> solvers = new List<Solver>();
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         private void OnValidate()
         {
@@ -93,6 +93,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
             }
         }
 
-        #endregion Monobehaviour Implementation
+        #endregion MonoBehaviour Implementation
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum
 {
     /// <summary>
-    /// Generic Base Event Data for Sending Events through the the Event System.
+    /// Generic Base Event Data for Sending Events through the Event System.
     /// </summary>
     public class GenericBaseEventData : BaseEventData
     {

@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             set { isFocusRequired = value; }
         }
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         protected override void OnEnable()
         {
@@ -41,6 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             }
         }
 
-        #endregion Monobehaviour Implementation
+        #endregion MonoBehaviour Implementation
     }
 }

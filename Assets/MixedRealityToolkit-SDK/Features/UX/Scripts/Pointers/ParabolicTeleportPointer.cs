@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         [SerializeField]
         private ParabolaPhysicalLineDataProvider parabolicLineData;
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         protected override void OnValidate()
         {
@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        #endregion Monobehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
         #region IMixedRealityPointer Implementation
 
