@@ -107,12 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                         profileFound = true;
                     }
 
-                    if (!profileFound)
-                    {
-                        Debug.LogError($"No controller profile found for type {controllerType}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
-                        return;
-                    }
-
                     // Assign any known interaction mappings.
                     if (!controllerMappings[i].UseCustomInteractionMappings &&
                         controllerMappings[i].ControllerType.Type == controllerType &&
@@ -134,6 +128,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                             Enabled = false;
                         }
                     }
+                }
+
+                if (!profileFound)
+                {
+                    Debug.LogError($"No controller profile found for type {controllerType}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
                 }
             }
         }
