@@ -68,13 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
         #region Unity InteractionManager Events
 
-        private void InputTracking_nodeAdded(XRNodeState obj)
-        {
-        }
-        private void InputTracking_nodeRemoved(XRNodeState obj)
-        {
-        }
-
         private void InputTracking_trackingAcquired(XRNodeState obj)
         {
             if (IsNodeTypeSupported(obj))
