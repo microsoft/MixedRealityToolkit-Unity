@@ -678,9 +678,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 24
       inputAction:
-        id: 5
-        description: Teleport Direction
-        axisConstraint: 4
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 346
       axisCodeX: 
       axisCodeY: 
@@ -693,6 +693,28 @@ MonoBehaviour:
         description: None
         axisConstraint: 0
       keyCode: 336
+      axisCodeX: 
+      axisCodeY: 
+    - id: 9
+      description: Thumbstick Position
+      axisType: 4
+      inputType: 17
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: MIXEDREALITY_AXIS1
+      axisCodeY: MIXEDREALITY_AXIS2
+    - id: 10
+      description: Thumbstick Click
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 338
       axisCodeX: 
       axisCodeY: 
   - id: 6
