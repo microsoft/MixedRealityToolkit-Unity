@@ -231,7 +231,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4607474556101662}
-  - component: {fileID: 114204106623223072}
   m_Layer: 0
   m_Name: GizmoLeft
   m_TagString: Untagged
@@ -1072,9 +1071,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 64165286eff98134b82f4a6081c52d0f, type: 2}
-  - {fileID: 2100000, guid: 30d693ff62c571241b431ef4e206b09a, type: 2}
-  - {fileID: 2100000, guid: fc8611c6103f5cd4d925d914342feaf5, type: 2}
+  - {fileID: 2100000, guid: c4a1b7475a654dd0acaa0cfdfba2e20c, type: 2}
+  - {fileID: 2100000, guid: 3c55769e893c4f4c8c51b7fa69bee2b9, type: 2}
+  - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1100,22 +1099,4 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1069666104943182}
-  m_Mesh: {fileID: 4300000, guid: 019c5b0a7f9941b459c292c17a1de7ff, type: 3}
---- !u!114 &114204106623223072
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1370450866519632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03314f8008ae1ed4fbd45c95a7ed5182, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handedness: 1
-  destroyOnLost: 1
-  useSourcePoseData: 1
-  poseAction:
-    id: 4
-    description: Pointer Pose
-    axisConstraint: 7
+  m_Mesh: {fileID: 4300000, guid: 164467aaab0440cbb011a7c287072878, type: 3}
