@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
@@ -12,7 +13,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Managers
