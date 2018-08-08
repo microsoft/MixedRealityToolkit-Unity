@@ -8,17 +8,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a687a6ef6bb1ba4d8e2cb4fbe7b9453, type: 3}
+  m_Script: {fileID: 11500000, guid: db393d206eab4604ab74278cb6cda355, type: 3}
   m_Name: DefaultMixedRealityInputPointerProfile
   m_EditorClassIdentifier: 
   pointerOptions:
   - controllerType:
       reference: 
     handedness: 7
-    pointerPrefab: {fileID: 1247086986094436, guid: 47372085a0372d94a9f7fcbe61a2e0a1,
+    pointerPrefab: {fileID: 1247086986094436, guid: d5b94136462644c9873bb3347169ae7e,
       type: 2}
   - controllerType:
       reference: 
     handedness: 3
-    pointerPrefab: {fileID: 1196247974088106, guid: c7bc7b635227ee646b8aa7d08e77cb7f,
+    pointerPrefab: {fileID: 1196247974088106, guid: c4fd3c6fc7ff484eb434775066e7f327,
       type: 2}

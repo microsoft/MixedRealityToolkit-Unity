@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e569cd7bc9f68144e93314f457ba916e
+guid: 1104611d051d4e42a68391888b61b32e
 timeCreated: 1509574985
 licenseType: Pro
 ModelImporter:
@@ -21,7 +21,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: shader_ball
-    second: {fileID: 2100000, guid: 507f1f09965e0d94982d6921db7ea788, type: 2}
+    second: {fileID: 2100000, guid: 3b60d35429b8406b82b7863df5a08351, type: 2}
   materials:
     importMaterials: 0
     materialName: 0
