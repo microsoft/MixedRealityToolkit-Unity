@@ -39,6 +39,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 1
       description: Spatial Grip
       axisType: 7
@@ -50,6 +51,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 2
       description: Grip Press
       axisType: 2
@@ -61,6 +63,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 3
       description: Touchpad Position
       axisType: 4
@@ -72,6 +75,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 4
       description: Touchpad Touch
       axisType: 2
@@ -83,6 +87,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 5
       description: Touchpad Press
       axisType: 2
@@ -94,6 +99,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 6
       description: Thumbstick Position
       axisType: 4
@@ -105,6 +111,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 7
       description: 'Thumbstick Press '
       axisType: 2
@@ -116,6 +123,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 8
       description: Trigger Position
       axisType: 3
@@ -127,6 +135,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 9
       description: Trigger Pressed (Select)
       axisType: 2
@@ -138,6 +147,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 10
       description: Trigger Touched
       axisType: 2
@@ -149,6 +159,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 11
       description: Menu Pressed
       axisType: 2
@@ -160,6 +171,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
   - id: 2
     description: Motion Controller Right
     controllerType:
@@ -181,6 +193,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 1
       description: Spatial Grip
       axisType: 7
@@ -192,6 +205,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 2
       description: Grip Press
       axisType: 2
@@ -203,6 +217,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 3
       description: Touchpad Position
       axisType: 4
@@ -214,6 +229,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 4
       description: Touchpad Touch
       axisType: 2
@@ -225,6 +241,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 5
       description: Touchpad Press
       axisType: 2
@@ -236,6 +253,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 6
       description: Thumbstick Position
       axisType: 4
@@ -247,6 +265,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 7
       description: 'Thumbstick Press '
       axisType: 2
@@ -258,6 +277,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 8
       description: Trigger Position
       axisType: 3
@@ -269,6 +289,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 9
       description: Trigger Pressed (Select)
       axisType: 2
@@ -280,6 +301,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 10
       description: Trigger Touched
       axisType: 2
@@ -291,6 +313,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 11
       description: Menu Pressed
       axisType: 2
@@ -302,6 +325,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
   - id: 3
     description: OpenVR Controller Left
     controllerType:
@@ -323,6 +347,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 1
       description: Trigger Position
       axisType: 3
@@ -334,6 +359,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS9
       axisCodeY: 
+      invertYAxis: 0
     - id: 2
       description: Trigger Press (Select)
       axisType: 2
@@ -345,6 +371,7 @@ MonoBehaviour:
       keyCode: 344
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 3
       description: Trigger Touch
       axisType: 2
@@ -356,6 +383,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS9
       axisCodeY: 
+      invertYAxis: 0
     - id: 4
       description: Grip Trigger Position
       axisType: 3
@@ -367,6 +395,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS11
       axisCodeY: 
+      invertYAxis: 0
     - id: 5
       description: Trackpad-Thumbstick Position
       axisType: 4
@@ -378,6 +407,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS1
       axisCodeY: MIXEDREALITY_AXIS2
+      invertYAxis: 0
     - id: 6
       description: Trackpad-Thumbstick Touch
       axisType: 2
@@ -389,6 +419,7 @@ MonoBehaviour:
       keyCode: 346
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 7
       description: Trackpad-Thumbstick Press
       axisType: 2
@@ -400,6 +431,7 @@ MonoBehaviour:
       keyCode: 338
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 8
       description: Unity Button Id 2
       axisType: 2
@@ -411,6 +443,7 @@ MonoBehaviour:
       keyCode: 332
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 9
       description: Unity Button Id 3
       axisType: 2
@@ -422,6 +455,7 @@ MonoBehaviour:
       keyCode: 333
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 10
       description: WMR Touchpad Touch
       axisType: 2
@@ -433,6 +467,7 @@ MonoBehaviour:
       keyCode: 348
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 11
       description: WMR Touchpad Position
       axisType: 4
@@ -444,6 +479,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS17
       axisCodeY: MIXEDREALITY_AXIS18
+      invertYAxis: 0
   - id: 4
     description: OpenVR Controller Right
     controllerType:
@@ -465,6 +501,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 1
       description: Trigger Position
       axisType: 3
@@ -476,6 +513,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS10
       axisCodeY: 
+      invertYAxis: 0
     - id: 2
       description: Trigger Press (Select)
       axisType: 2
@@ -487,6 +525,7 @@ MonoBehaviour:
       keyCode: 345
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 3
       description: Trigger Touch
       axisType: 2
@@ -498,6 +537,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS10
       axisCodeY: 
+      invertYAxis: 0
     - id: 4
       description: Grip
       axisType: 3
@@ -509,6 +549,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS12
       axisCodeY: 
+      invertYAxis: 0
     - id: 5
       description: Trackpad-Thumbstick Position
       axisType: 4
@@ -520,6 +561,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS4
       axisCodeY: MIXEDREALITY_AXIS5
+      invertYAxis: 0
     - id: 6
       description: Trackpad-Thumbstick Touch
       axisType: 2
@@ -531,6 +573,7 @@ MonoBehaviour:
       keyCode: 347
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 7
       description: Trackpad-Thumbstick Press
       axisType: 2
@@ -542,6 +585,7 @@ MonoBehaviour:
       keyCode: 339
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 8
       description: Unity Button Id 0
       axisType: 2
@@ -553,6 +597,7 @@ MonoBehaviour:
       keyCode: 330
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 9
       description: Unity Button Id 1
       axisType: 2
@@ -564,6 +609,7 @@ MonoBehaviour:
       keyCode: 331
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 10
       description: WMR Touchpad Touch
       axisType: 2
@@ -575,6 +621,7 @@ MonoBehaviour:
       keyCode: 349
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 11
       description: WMR Touchpad Position
       axisType: 4
@@ -586,6 +633,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS19
       axisCodeY: MIXEDREALITY_AXIS20
+      invertYAxis: 0
   - id: 5
     description: WMR Open VR Controller Left
     controllerType:
@@ -607,6 +655,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 1
       description: Spatial Grip
       axisType: 7
@@ -618,6 +667,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 2
       description: Trigger Position
       axisType: 3
@@ -629,6 +679,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS9
       axisCodeY: 
+      invertYAxis: 0
     - id: 3
       description: Trigger Press (Select)
       axisType: 2
@@ -640,6 +691,7 @@ MonoBehaviour:
       keyCode: 344
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 4
       description: Grip Button
       axisType: 2
@@ -651,6 +703,7 @@ MonoBehaviour:
       keyCode: 334
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 5
       description: Touchpad Position
       axisType: 4
@@ -662,6 +715,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS17
       axisCodeY: MIXEDREALITY_AXIS18
+      invertYAxis: 0
     - id: 6
       description: Touchpad Touch
       axisType: 2
@@ -673,6 +727,7 @@ MonoBehaviour:
       keyCode: 348
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 7
       description: Touchpad Press
       axisType: 2
@@ -684,6 +739,7 @@ MonoBehaviour:
       keyCode: 346
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 8
       description: Menu Button
       axisType: 2
@@ -695,6 +751,7 @@ MonoBehaviour:
       keyCode: 336
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 9
       description: Thumbstick Position
       axisType: 4
@@ -706,6 +763,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS1
       axisCodeY: MIXEDREALITY_AXIS2
+      invertYAxis: 0
     - id: 10
       description: Thumbstick Click
       axisType: 2
@@ -717,6 +775,7 @@ MonoBehaviour:
       keyCode: 338
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
   - id: 6
     description: WMR Open VR Controller Right
     controllerType:
@@ -738,6 +797,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 1
       description: Spatial Grip
       axisType: 7
@@ -749,6 +809,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 2
       description: Trigger Position
       axisType: 3
@@ -760,6 +821,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS10
       axisCodeY: 
+      invertYAxis: 0
     - id: 3
       description: Trigger Press (Select)
       axisType: 2
@@ -771,6 +833,7 @@ MonoBehaviour:
       keyCode: 345
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 4
       description: Grip Button
       axisType: 2
@@ -782,6 +845,7 @@ MonoBehaviour:
       keyCode: 335
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 5
       description: Touchpad Position
       axisType: 4
@@ -793,6 +857,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS19
       axisCodeY: MIXEDREALITY_AXIS20
+      invertYAxis: 0
     - id: 6
       description: Touchpad Touch
       axisType: 2
@@ -804,6 +869,7 @@ MonoBehaviour:
       keyCode: 349
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 7
       description: Touchpad Press
       axisType: 2
@@ -815,6 +881,7 @@ MonoBehaviour:
       keyCode: 347
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 8
       description: Menu Button
       axisType: 2
@@ -826,6 +893,7 @@ MonoBehaviour:
       keyCode: 337
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
     - id: 9
       description: Thumbstick Position
       axisType: 4
@@ -837,6 +905,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS4
       axisCodeY: MIXEDREALITY_AXIS5
+      invertYAxis: 0
     - id: 8
       description: Thumbstick Click
       axisType: 2
@@ -848,3 +917,4 @@ MonoBehaviour:
       keyCode: 339
       axisCodeX: 
       axisCodeY: 
+      invertYAxis: 0
