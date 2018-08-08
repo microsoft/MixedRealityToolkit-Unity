@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             // If we're the new target object
             // Add the pointer to the list of focusers
             // and update our hasFocus flag if focusing is enabled.
-            if (eventData.NewFocusedObject == this)
+            if (eventData.NewFocusedObject == gameObject)
             {
                 eventData.Pointer.FocusTarget = this;
                 Focusers.Add(eventData.Pointer);
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             }
             // If we're the old focused target object
             // update our flag and remove the pointer from our list.
-            else if (eventData.OldFocusedObject == this)
+            else if (eventData.OldFocusedObject == gameObject)
             {
                 hasFocus = false;
 

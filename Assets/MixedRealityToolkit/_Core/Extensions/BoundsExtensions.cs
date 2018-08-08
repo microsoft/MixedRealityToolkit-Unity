@@ -331,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
 
             // Calculate the new bounds size along each axis. The size on each axis is calculated by summing up the 
             // corresponding vector component values of the rotated extents vectors. We multiply by 2 because we want
-            // to get a size and curently we are working with extents which represent half the size.
+            // to get a size and currently we are working with extents which represent half the size.
             float newSizeX = (Mathf.Abs(rotatedExtentsRight.x) + Mathf.Abs(rotatedExtentsUp.x) + Mathf.Abs(rotatedExtentsLook.x)) * 2.0f;
             float newSizeY = (Mathf.Abs(rotatedExtentsRight.y) + Mathf.Abs(rotatedExtentsUp.y) + Mathf.Abs(rotatedExtentsLook.y)) * 2.0f;
             float newSizeZ = (Mathf.Abs(rotatedExtentsRight.z) + Mathf.Abs(rotatedExtentsUp.z) + Mathf.Abs(rotatedExtentsLook.z)) * 2.0f;

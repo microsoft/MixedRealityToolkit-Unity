@@ -395,7 +395,7 @@ MonoBehaviour:
   widthOffset: 0
   stepMode: 0
   lineStepCount: 16
-  lineMaterial: {fileID: 0}
+  lineMaterial: {fileID: 2100000, guid: 11727442de02c1d4b8d37a063c748aec, type: 2}
   roundedEdges: 1
   roundedCaps: 1
   lineRenderer: {fileID: 120690711267243118}

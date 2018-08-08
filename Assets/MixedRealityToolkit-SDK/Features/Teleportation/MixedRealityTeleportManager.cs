@@ -24,6 +24,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         private Vector3 targetPosition = Vector3.zero;
         private Vector3 targetRotation = Vector3.zero;
 
+        /// <summary>
+        /// only used to clean up event system when shutting down if this system created one.
+        /// </summary>
+        private GameObject eventSystemReference;
+
         #region IMixedRealityManager Implementation
 
         /// <inheritdoc />
@@ -54,7 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
                 {
                     if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
                     {
-                        new GameObject("Event System").AddComponent<EventSystem>();
+                        eventSystemReference = new GameObject("Event System");
+                        eventSystemReference.AddComponent<EventSystem>();
                     }
                     else
                     {
@@ -70,6 +76,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
             TeleportDuration = MixedRealityManager.Instance.ActiveProfile.TeleportDuration;
             teleportEventData = new TeleportEventData(EventSystem.current);
+        }
+
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+            base.Destroy();
+
+            if (eventSystemReference != null)
+            {
+                if (Application.isEditor)
+                {
+                    Object.DestroyImmediate(eventSystemReference);
+                }
+                else
+                {
+                    Object.Destroy(eventSystemReference);
+                }
+            }
         }
 
         #endregion IMixedRealityManager Implementation

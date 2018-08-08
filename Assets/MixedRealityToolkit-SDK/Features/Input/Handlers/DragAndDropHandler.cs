@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         private IMixedRealityPointer currentPointer;
         private IMixedRealityInputSource currentInputSource;
 
-        #region Monobehavior Implemetation
+        #region MonoBehaviour Implementation
 
         private void Start()
         {
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             }
         }
 
-        #endregion Monobehavior Implemetation
+        #endregion MonoBehaviour Implementation
 
         #region IMixedRealityPointerHandler Implementation
 
