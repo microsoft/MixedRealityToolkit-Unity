@@ -15,10 +15,6 @@ using System.Linq;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor;
-#endif
-
 namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 {
     /// <summary>
@@ -170,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
 #if UNITY_EDITOR
                 // Make sure unity axis mappings are set.
-                InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+                Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
                 //Enable Input (example initializer)
