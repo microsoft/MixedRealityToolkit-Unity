@@ -5,6 +5,10 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 
+#if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities.Editor;
+#endif
+
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
     /// <summary>
@@ -162,6 +166,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         #region InputAxisConfig
 
+#if UNITY_EDITOR
+
         /// <summary>
         /// Get the InputManagerAxis data needed to configure the Input Mappings for a controller
         /// </summary>
@@ -192,6 +198,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             new InputManagerAxis { Name = MIXEDREALITY_AXIS26, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 26 },
             new InputManagerAxis { Name = MIXEDREALITY_AXIS27, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 27 }
         };
+
+#endif
 
         #endregion
 

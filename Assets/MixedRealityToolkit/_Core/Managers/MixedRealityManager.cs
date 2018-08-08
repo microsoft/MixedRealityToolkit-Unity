@@ -13,8 +13,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 {
@@ -165,8 +168,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             // If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsInputSystemEnabled)
             {
+#if UNITY_EDITOR
                 // Make sure unity axis mappings are set.
                 InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+#endif
+
                 //Enable Input (example initializer)
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
             }
