@@ -16,13 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
     [RequireComponent(typeof(BaseMixedRealityLineDataProvider))]
     public class MixedRealityLineRenderer : BaseMixedRealityLineRenderer
     {
-        private const string DefaultLineShader = "Particles/Alpha Blended";
-        private const string DefaultLineShaderColor = "_TintColor";
-
         [Header("Mixed Reality Line Renderer Settings")]
 
         [SerializeField]
-        [Tooltip("The material to use for the Unity MixedRealityLineRenderer (will be auto-generated if null)")]
+        [Tooltip("The material to use for the Unity MixedRealityLineRenderer.")]
         private Material lineMaterial = null;
 
         public Material LineMaterial
@@ -61,8 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers
 
             if (lineMaterial == null)
             {
-                lineMaterial = new Material(Shader.Find(DefaultLineShader));
-                lineMaterial.SetColor(DefaultLineShaderColor, Color.gray);
+                Debug.LogError("MixedRealityLineRenderer needs a material.");
+                gameObject.SetActive(false);
             }
         }
 
