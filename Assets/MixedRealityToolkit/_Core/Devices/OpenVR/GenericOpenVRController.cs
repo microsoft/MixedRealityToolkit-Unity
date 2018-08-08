@@ -28,6 +28,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         private MixedRealityPose lastControllerPose = MixedRealityPose.ZeroIdentity;
         private MixedRealityPose currentControllerPose = MixedRealityPose.ZeroIdentity;
 
+        private Vector3 pointerOffset = Vector3.zero;
+        private MixedRealityPose pointerOffsetPose = MixedRealityPose.ZeroIdentity;
+
+        /// <summary>
+        /// The pointer offset for this controller.
+        /// </summary>
+        public float PointerOffset;
+
         public static readonly MixedRealityInteractionMapping[] DefaultLeftHandedInteractions =
         {
             // Controller Pose
@@ -141,44 +149,27 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         {
             UpdateControllerData(xrNodeState);
 
-            Debug.Assert(Interactions != null, "No interaction configuration for controller");
+            Debug.Assert(Interactions != null, "No interactions configuration for controller!");
+
             if (Interactions == null) { Enabled = false; }
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
-                switch (Interactions[i].InputType)
+                switch (Interactions[i].AxisType)
                 {
-                    case DeviceInputType.None:
+                    case AxisType.None:
                         break;
-                    case DeviceInputType.SpatialPointer:
-                        UpdatePointerData(Interactions[i]);
-                        break;
-                    case DeviceInputType.Trigger:
-                        UpdateSingleAxisData(Interactions[i]);
-                        break;
-                    case DeviceInputType.ThumbStick:
-                    case DeviceInputType.Touchpad:
-                        UpdateDualAxisData(Interactions[i]);
-                        break;
-                    case DeviceInputType.TriggerTouch:
-                    case DeviceInputType.TriggerNearTouch:
-                    case DeviceInputType.TriggerPress:
-                    case DeviceInputType.ThumbStickNearTouch:
-                    case DeviceInputType.ThumbStickTouch:
-                    case DeviceInputType.ThumbStickPress:
-                    case DeviceInputType.TouchpadNearTouch:
-                    case DeviceInputType.TouchpadTouch:
-                    case DeviceInputType.TouchpadPress:
-                    case DeviceInputType.ButtonPress:
-                    case DeviceInputType.ThumbTouch:
-                    case DeviceInputType.ThumbNearTouch:
+                    case AxisType.Digital:
                         UpdateButtonData(Interactions[i]);
                         break;
-                    case DeviceInputType.IndexFinger:
-                    case DeviceInputType.MiddleFinger:
-                    case DeviceInputType.RingFinger:
-                    case DeviceInputType.PinkyFinger:
+                    case AxisType.SingleAxis:
                         UpdateSingleAxisData(Interactions[i]);
+                        break;
+                    case AxisType.DualAxis:
+                        UpdateDualAxisData(Interactions[i]);
+                        break;
+                    case AxisType.SixDof:
+                        UpdatePoseData(Interactions[i]);
                         break;
                     default:
                         Debug.LogError($"Input [{Interactions[i].InputType}] is not handled for this controller [GenericOpenVRController]");
@@ -249,11 +240,26 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// Update Spatial Pointer Data.
         /// </summary>
         /// <param name="interactionMapping"></param>
-        protected void UpdatePointerData(MixedRealityInteractionMapping interactionMapping)
+        protected void UpdatePoseData(MixedRealityInteractionMapping interactionMapping)
         {
-            // TODO: configure an offset pointer position for each OpenVR Controller?
-            // Update the interaction data source
-            interactionMapping.PoseData = currentControllerPose; // Currently no way to get pointer specific data, so we use the last controller pose.
+            if (interactionMapping.InputType == DeviceInputType.SpatialPointer)
+            {
+                // TODO Currently no way to get pointer specific data, so we use the last controller pose.
+                // TODO: configure an offset pointer position for each OpenVR Controller?
+
+                pointerOffsetPose = currentControllerPose;
+                pointerOffset = currentControllerPose.Rotation.eulerAngles;
+                pointerOffsetPose.Rotation = Quaternion.Euler(pointerOffset.x + PointerOffset, pointerOffset.y, pointerOffset.z);
+
+                // Update the interaction data source
+                interactionMapping.PoseData = currentControllerPose;
+            }
+
+            if (interactionMapping.InputType == DeviceInputType.SpatialGrip)
+            {
+                // Update the interaction data source
+                interactionMapping.PoseData = currentControllerPose;
+            }
 
             // If our value changed raise it.
             if (interactionMapping.Changed)
