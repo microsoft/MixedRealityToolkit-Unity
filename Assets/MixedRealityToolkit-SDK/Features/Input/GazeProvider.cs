@@ -212,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #endregion IMixedRealityPointer Implementation
 
-        #region Monobehaiour Implementation
+        #region MonoBehaviour Implementation
 
         private void OnValidate()
         {
@@ -301,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             InputSystem.RaiseSourceLost(GazeInputSource);
         }
 
-        #endregion Monobehaiour Implementation
+        #endregion MonoBehaviour Implementation
 
         #region Utilities
 

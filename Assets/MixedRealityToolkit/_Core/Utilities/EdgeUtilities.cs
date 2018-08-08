@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
 {
     /// <summary>
-    /// The EdgeUtilities class provides funtionality for working with <see cref="Edge"/> objects.
+    /// The EdgeUtilities class provides functionality for working with <see cref="Edge"/> objects.
     /// </summary>
     public static class EdgeUtilities
     {

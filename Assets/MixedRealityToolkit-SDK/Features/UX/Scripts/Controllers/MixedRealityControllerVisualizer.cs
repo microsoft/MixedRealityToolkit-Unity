@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
 
         #endregion IMixedRealityInputHandler Implementation
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         /// <summary>
         /// When the visualizer is enabled, create any attached controllers in the scene.
@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
             base.OnDisable();
         }
 
-        #endregion Monobehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
         #region Controller Visualization Methods
 

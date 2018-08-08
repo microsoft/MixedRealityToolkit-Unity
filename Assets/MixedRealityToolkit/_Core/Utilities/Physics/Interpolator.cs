@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics
         /// </summary>
         public bool Running => AnimatingPosition || AnimatingRotation || AnimatingLocalRotation || AnimatingLocalScale;
 
-        #region Monobehavior Implementation
+        #region MonoBehaviour Implementation
 
         private void Awake()
         {
@@ -250,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics
 
         /// <summary>
         /// Stops the transform in place and terminates any animations.<para/>
-        /// <remarks>Reset() is usually reserved as a Monobehavior API call in editor, but is used in this case as a convienence method.</remarks>
+        /// <remarks>Reset() is usually reserved as a MonoBehaviour API call in editor, but is used in this case as a convienence method.</remarks>
         /// </summary>
         public void Reset()
         {
@@ -267,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics
             enabled = false;
         }
 
-        #endregion Monobehavior Implementation
+        #endregion MonoBehaviour Implementation
 
         /// <summary>
         /// Sets the target position for the transform and if position wasn't
