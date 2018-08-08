@@ -128,23 +128,30 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
                 for (int i = 0; i < controllers.Length; i++)
                 {
-                    switch (controllers[i])
+                    if (controllers[i].Contains("Oculus Rift CV1 "))
                     {
-                        case "OpenVR Controller(Oculus Rift CV1 (Left Controller)) - Left":
-                        case "OpenVR Controller(Oculus Rift CV1 (Right Controller)) - Right":
-                            return SupportedControllerType.OculusTouch;
-                        case "OpenVR Controller(Oculus remote)":                                // TODO: Yet to test
-                            return SupportedControllerType.OculusRemote;
-                        case "Vive Wand - Left":                                                // TODO: Yet to test
-                        case "Vive Wand - Right":                                               // TODO: Yet to test
-                            return SupportedControllerType.ViveWand;
-                        case "Vive Knuckles - Left":                                            // TODO: Yet to test
-                        case "Vive Knuckles- Right":                                            // TODO: Yet to test
-                            return SupportedControllerType.ViveKnuckles;
-                        case "OpenVR Controller(WindowsMR: 0x045E/0x065B/0/1) - Left":
-                        case "OpenVR Controller(WindowsMR: 0x045E/0x065B/0/2) - Right":
-                            return SupportedControllerType.WindowsMixedReality;
+                        return SupportedControllerType.OculusTouch;
                     }
+                    if (controllers[i].Contains("Oculus remote"))
+                    {
+                        return SupportedControllerType.OculusRemote;
+                    }
+                    if (controllers[i].Contains("Vive Wand"))
+                    {
+                        return SupportedControllerType.ViveWand;
+                    }
+
+                    if (controllers[i].Contains("Vive Knuckles"))
+                    {
+                        return SupportedControllerType.ViveKnuckles;
+                    }
+
+                    if (controllers[i].Contains("WindowsMR"))
+                    {
+                        return SupportedControllerType.WindowsMixedReality;
+                    }
+
+                    Debug.Log($"{controllers[i]} does not have a defined controller type, falling back to generic controller type");
                 }
 
                 return SupportedControllerType.GenericOpenVR;
@@ -212,8 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             var pointers = RequestPointers(controllerType, controllingHand);
             var inputSource = InputSystem?.RequestNewGenericInputSource($"{CurrentControllerType} Controller {controllingHand}", pointers);
 
-            GenericOpenVRController detectedController = Activator.CreateInstance(controllerType,
-                TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
+            GenericOpenVRController detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
 
             Debug.Assert(detectedController != null);
             detectedController?.SetupConfiguration(controllerType);
