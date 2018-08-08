@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices
         /// <summary>
         /// Should this <see cref="UnityEngine.GameObject"/> clean itself up when it's controller is lost?
         /// </summary>
-        bool DestroyOnLost { get; }
+        bool DestroyOnSourceLost { get; set; }
 
         /// <summary>
         /// The current controller reference.
