@@ -33,23 +33,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static bool[] controllerFoldouts;
         private static bool[] controllerInteractionFoldouts;
 
-        private SerializedProperty mixedRealityControllerMappingProfiles;
-        private static GUIContent[] actionLabels;
         private static int[] actionIds;
+        private static GUIContent[] actionLabels;
 
-        private static GUIContent[] axisLabels;
-        private static int[] axisIds;
         private static int axisId;
+        private static int[] axisIds;
+        private static GUIContent[] axisLabels;
 
+        private static float defaultLabelWidth;
+        private static float defaultFieldWidth;
+
+        private SerializedProperty mixedRealityControllerMappingProfiles;
         private SerializedProperty renderMotionControllers;
         private SerializedProperty useDefaultModels;
         private SerializedProperty globalLeftHandModel;
         private SerializedProperty globalRightHandModel;
-
-        private static bool inputAxisUpdated = false;
-
-        private static float defaultLabelWidth;
-        private static float defaultFieldWidth;
 
         private void OnEnable()
         {
@@ -129,13 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             RenderControllerProfilesList(mixedRealityControllerMappingProfiles);
 
             serializedObject.ApplyModifiedProperties();
-
-            // When the inspector is first loaded, check the Input Mappings are installed
-            if (!inputAxisUpdated)
-            {
-                Internal.Utilities.InputMappingAxisUtility.ApplyMappings(ControllerMappingLibrary.UnityInputManagerAxes);
-                inputAxisUpdated = true;
-            }
         }
 
         private void RenderControllerProfilesList(SerializedProperty list)

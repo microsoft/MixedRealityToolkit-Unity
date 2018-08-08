@@ -32,13 +32,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         #region Mappings Functions
 
         /// <summary>
-        /// Simple static function to apply Unity InputManager Axis configuration
+        /// Simple static function to check Unity InputManager Axis configuration, and apply if needed.
         /// </summary>
         /// <remarks>
         /// This only exists as the Unity input manager CANNOT map Axis to an id, it has to be through a mapping
         /// </remarks>
         /// <param name="axisMappings">Optional array of Axis Mappings, to configure your own custom set</param>
-        public static void ApplyMappings(InputManagerAxis[] axisMappings)
+        public static void CheckUnityInputManagerMappings(InputManagerAxis[] axisMappings)
         {
             AssureInputManagerReference();
 
