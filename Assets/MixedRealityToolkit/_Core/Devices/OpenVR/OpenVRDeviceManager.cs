@@ -34,8 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
         public override void Enable()
         {
-            InputTracking.nodeAdded += InputTracking_nodeAdded;
-            InputTracking.nodeRemoved += InputTracking_nodeRemoved;
             InputTracking.trackingAcquired += InputTracking_trackingAcquired;
             InputTracking.trackingLost += InputTracking_trackingLost;
         }
@@ -55,21 +53,33 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             }
         }
 
+        public override void Disable()
+        {
+            InputTracking.trackingAcquired -= InputTracking_trackingAcquired;
+            InputTracking.trackingLost -= InputTracking_trackingLost;
+
+            foreach (var genericOpenVRController in activeControllers)
+            {
+                InputSystem?.RaiseSourceLost(genericOpenVRController.Value?.InputSource, genericOpenVRController.Value);
+            }
+
+            activeControllers.Clear();
+        }
+
         #region Unity InteractionManager Events
 
         private void InputTracking_nodeAdded(XRNodeState obj)
         {
-            if (IsNodeTypeSupported(obj))
-            {
-                GetOrAddController(obj);
-            }
+        }
+        private void InputTracking_nodeRemoved(XRNodeState obj)
+        {
         }
 
         private void InputTracking_trackingAcquired(XRNodeState obj)
         {
             if (IsNodeTypeSupported(obj))
             {
-                if (activeControllers.ContainsKey(obj.nodeType))
+                if (!activeControllers.ContainsKey(obj.nodeType))
                 {
                     var controller = GetOrAddController(obj);
                     InputSystem?.RaiseSourceDetected(controller?.InputSource, controller);
@@ -81,14 +91,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         {
             if (IsNodeTypeSupported(obj))
             {
-                var controller = GetOrAddController(obj);
-                InputSystem?.RaiseSourceLost(controller?.InputSource, controller);
+                if (activeControllers.ContainsKey(obj.nodeType))
+                {
+                    var controller = GetOrAddController(obj);
+                    InputSystem?.RaiseSourceLost(controller?.InputSource, controller);
+                    activeControllers.Remove(obj.nodeType);
+                }
             }
-        }
-
-        private void InputTracking_nodeRemoved(XRNodeState obj)
-        {
-            activeControllers.Remove(obj.nodeType);
         }
 
         #endregion Unity InteractionManager Events
@@ -128,14 +137,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 
                 for (int i = 0; i < controllers.Length; i++)
                 {
+                    if (string.IsNullOrEmpty(controllers[i]))
+                    {
+                        return SupportedControllerType.None;
+                    }
+
                     if (controllers[i].Contains("Oculus Rift CV1 "))
                     {
                         return SupportedControllerType.OculusTouch;
                     }
+
                     if (controllers[i].Contains("Oculus remote"))
                     {
                         return SupportedControllerType.OculusRemote;
                     }
+
                     if (controllers[i].Contains("Vive Wand"))
                     {
                         return SupportedControllerType.ViveWand;
