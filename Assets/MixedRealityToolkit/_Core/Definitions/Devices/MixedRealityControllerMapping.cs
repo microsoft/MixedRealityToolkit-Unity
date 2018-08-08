@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using System;
 using UnityEngine;
 
