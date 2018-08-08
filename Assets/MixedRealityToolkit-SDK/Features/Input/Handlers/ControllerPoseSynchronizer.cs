@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         private bool destroyOnSourceLost = true;
 
         /// <inheritdoc />
-        public bool DestroyOnLost
+        public bool DestroyOnSourceLost
         {
             get { return destroyOnSourceLost; }
             set { destroyOnSourceLost = value; }
