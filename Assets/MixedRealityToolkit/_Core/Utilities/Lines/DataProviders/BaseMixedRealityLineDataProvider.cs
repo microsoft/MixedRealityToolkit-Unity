@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
 
         #endregion BaseMixedRealityLineDataProvider Abstract Declarations
 
-        #region Monobehavior Implementation
+        #region MonoBehaviour Implementation
 
         protected virtual void OnValidate()
         {
@@ -286,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             distorters.Sort();
         }
 
-        #endregion Monobehavior Implementation
+        #endregion MonoBehaviour Implementation
 
         /// <summary>
         /// Returns a normalized length corresponding to a world length

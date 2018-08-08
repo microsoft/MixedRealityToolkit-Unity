@@ -14,11 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
         private SerializedProperty raycastOrigin;
         private SerializedProperty pointerExtent;
         private SerializedProperty activeHoldAction;
-        private SerializedProperty useSourcePoseData;
-        private SerializedProperty inputSourceAction;
         private SerializedProperty pointerAction;
         private SerializedProperty pointerOrientation;
         private SerializedProperty requiresHoldAction;
+
+        private bool basePointerFoldout = true;
 
         protected bool DrawBasePointerActions = true;
 
@@ -30,41 +30,40 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
             raycastOrigin = serializedObject.FindProperty("raycastOrigin");
             pointerExtent = serializedObject.FindProperty("pointerExtent");
             activeHoldAction = serializedObject.FindProperty("activeHoldAction");
-            useSourcePoseData = serializedObject.FindProperty("useSourcePoseData");
-            inputSourceAction = serializedObject.FindProperty("inputSourceAction");
             pointerAction = serializedObject.FindProperty("pointerAction");
             pointerOrientation = serializedObject.FindProperty("pointerOrientation");
             requiresHoldAction = serializedObject.FindProperty("requiresHoldAction");
+
+            DrawHandednessProperty = false;
         }
 
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
+
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(cursorPrefab);
-            EditorGUILayout.PropertyField(raycastOrigin);
-            EditorGUILayout.PropertyField(pointerExtent);
-            EditorGUILayout.PropertyField(pointerOrientation);
+            basePointerFoldout = EditorGUILayout.Foldout(basePointerFoldout, "Base Pointer Settings", true);
 
-            EditorGUILayout.PropertyField(useSourcePoseData);
-
-            if (!useSourcePoseData.boolValue)
+            if (basePointerFoldout)
             {
-                EditorGUILayout.PropertyField(inputSourceAction);
-            }
+                EditorGUILayout.PropertyField(cursorPrefab);
+                EditorGUILayout.PropertyField(raycastOrigin);
+                EditorGUILayout.PropertyField(pointerExtent);
+                EditorGUILayout.PropertyField(pointerOrientation);
+                EditorGUILayout.PropertyField(pointerAction);
 
-            EditorGUILayout.PropertyField(pointerAction);
-
-            if (DrawBasePointerActions)
-            {
-                EditorGUILayout.PropertyField(requiresHoldAction);
-
-                if (requiresHoldAction.boolValue)
+                if (DrawBasePointerActions)
                 {
-                    EditorGUILayout.PropertyField(activeHoldAction);
-                }
-            }
+                    EditorGUILayout.PropertyField(requiresHoldAction);
 
+                    if (requiresHoldAction.boolValue)
+                    {
+                        EditorGUILayout.PropertyField(activeHoldAction);
+                    }
+                }
+
+            }
             serializedObject.ApplyModifiedProperties();
         }
     }

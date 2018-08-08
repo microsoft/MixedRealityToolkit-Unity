@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             set { endPoint = value; }
         }
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         protected override void OnValidate()
         {
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders
             startPoint.Position = transform.transform.InverseTransformPoint(LineTransform.position);
         }
 
-        #endregion Monobehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
         #region Line Data Provider Implementation
 

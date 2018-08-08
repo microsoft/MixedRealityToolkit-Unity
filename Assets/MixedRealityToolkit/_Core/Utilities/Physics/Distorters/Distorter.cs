@@ -101,18 +101,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Distorters
         /// <returns></returns>
         protected abstract Vector3 DistortScaleInternal(Vector3 point, float strength);
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         protected virtual void OnEnable()
         {
-            // Used implicitly for enable/disable functionality of the Monobehaviour
+            // Used implicitly for enable/disable functionality of the MonoBehaviour
         }
 
         protected virtual void OnDisable()
         {
-            // Used implicitly for enable/disable functionality of the Monobehaviour
+            // Used implicitly for enable/disable functionality of the MonoBehaviour
         }
 
-        #endregion Monobehaviour Implementation
+        #endregion MonoBehaviour Implementation
     }
 }

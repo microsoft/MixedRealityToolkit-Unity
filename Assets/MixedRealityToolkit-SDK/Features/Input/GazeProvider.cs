@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
 using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
@@ -212,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #endregion IMixedRealityPointer Implementation
 
-        #region Monobehaiour Implementation
+        #region MonoBehaviour Implementation
 
         private void OnValidate()
         {
@@ -301,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             InputSystem.RaiseSourceLost(GazeInputSource);
         }
 
-        #endregion Monobehaiour Implementation
+        #endregion MonoBehaviour Implementation
 
         #region Utilities
 

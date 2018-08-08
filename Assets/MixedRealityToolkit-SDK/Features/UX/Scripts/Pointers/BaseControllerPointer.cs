@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
@@ -23,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
     [DisallowMultipleComponent]
-    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer, IMixedRealitySpatialInputHandler, IMixedRealityTeleportHandler
+    public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer, IMixedRealityTeleportHandler
     {
         private static IMixedRealityTeleportSystem teleportSystem = null;
         protected static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = MixedRealityManager.Instance.GetManager<IMixedRealityTeleportSystem>());
@@ -36,14 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         [SerializeField]
         [Tooltip("Source transform for raycast origin - leave null to use default transform")]
         private Transform raycastOrigin = null;
-
-        [SerializeField]
-        [Tooltip("Should the pointer's position be driven from the source pose or from input handler?")]
-        private bool useSourcePoseData = false;
-
-        [SerializeField]
-        [Tooltip("The input action that will drive the pointer's pose, position, or rotation.")]
-        private MixedRealityInputAction inputSourceAction = MixedRealityInputAction.None;
 
         [SerializeField]
         [Tooltip("The hold action that will enable the raise the input event for this pointer.")]
@@ -121,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         protected override void OnEnable()
         {
@@ -159,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             InputSystem.FocusProvider.UnregisterPointer(this);
         }
 
-        #endregion  Monobehaviour Implementation
+        #endregion  MonoBehaviour Implementation
 
         #region IMixedRealityPointer Implementation
 
@@ -372,24 +362,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #endregion IMixedRealityPointer Implementation
 
-        #region IMixedRealitySourcePoseHandler Implementation
-
-        /// <inheritdoc />
-        public override void OnSourcePoseChanged(SourcePoseEventData eventData)
-        {
-            if (useSourcePoseData)
-            {
-                base.OnSourcePoseChanged(eventData);
-            }
-        }
-
-        #endregion IMixedRealitySourcePoseHandler Implementation
-
         #region IMixedRealityInputHandler Implementation
 
         /// <inheritdoc />
-        public virtual void OnInputUp(InputEventData eventData)
+        public override void OnInputUp(InputEventData eventData)
         {
+            base.OnInputUp(eventData);
+
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
                 if (requiresHoldAction && eventData.MixedRealityInputAction == activeHoldAction)
@@ -407,8 +386,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         /// <inheritdoc />
-        public virtual void OnInputDown(InputEventData eventData)
+        public override void OnInputDown(InputEventData eventData)
         {
+            base.OnInputDown(eventData);
+
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
                 if (requiresHoldAction && eventData.MixedRealityInputAction == activeHoldAction)
@@ -425,63 +406,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        /// <inheritdoc />
-        public virtual void OnInputPressed(InputEventData<float> eventData) { }
-
-        /// <inheritdoc />
-        public virtual void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
-
         #endregion  IMixedRealityInputHandler Implementation
-
-        #region IMixedRealitySpatialInputHandler Implementation
-
-        /// <inheritdoc />
-        public virtual void OnPositionChanged(InputEventData<Vector3> eventData)
-        {
-            if (eventData.SourceId == InputSourceParent.SourceId)
-            {
-                if (!useSourcePoseData &&
-                    inputSourceAction == eventData.MixedRealityInputAction)
-                {
-                    IsTracked = true;
-                    TrackingState = TrackingState.Tracked;
-                    transform.localPosition = eventData.InputData;
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        public virtual void OnRotationChanged(InputEventData<Quaternion> eventData)
-        {
-            if (eventData.SourceId == InputSourceParent.SourceId)
-            {
-                if (!useSourcePoseData &&
-                    inputSourceAction == eventData.MixedRealityInputAction)
-                {
-                    IsTracked = true;
-                    TrackingState = TrackingState.Tracked;
-                    transform.localRotation = eventData.InputData;
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        public virtual void OnPoseInputChanged(InputEventData<MixedRealityPose> eventData)
-        {
-            if (eventData.SourceId == InputSourceParent.SourceId)
-            {
-                if (!useSourcePoseData &&
-                    inputSourceAction == eventData.MixedRealityInputAction)
-                {
-                    IsTracked = true;
-                    TrackingState = TrackingState.Tracked;
-                    transform.localPosition = eventData.InputData.Position;
-                    transform.localRotation = eventData.InputData.Rotation;
-                }
-            }
-        }
-
-        #endregion IMixedRealitySpatialInputHandler Implementation 
 
         #region IMixedRealityTeleportHandler Implementation
 

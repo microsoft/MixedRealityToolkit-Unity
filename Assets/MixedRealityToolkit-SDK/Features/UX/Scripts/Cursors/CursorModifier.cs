@@ -220,13 +220,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
 
         #endregion IMixedRealityFocusChangedHandler Implementation
 
-        #region Monobehaviour Implementation
+        #region MonoBehaviour Implementation
 
         private void OnValidate()
         {
             Debug.Assert(HostTransform.GetComponent<Collider>() != null, $"A collider component is required on {hostTransform.gameObject.name} for the cursor modifier component on {gameObject.name} to function properly.");
         }
 
-        #endregion Monobehaviour Implementaiton
+        #endregion MonoBehaviour Implementaiton
     }
 }
