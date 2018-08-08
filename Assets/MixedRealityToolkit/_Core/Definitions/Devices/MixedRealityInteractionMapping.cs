@@ -30,8 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             this.description = description;
             this.axisType = axisType;
             this.inputType = inputType;
-            this.inputAction = MixedRealityInputAction.None;
-            this.keyCode = KeyCode.None;
+            inputAction = MixedRealityInputAction.None;
+            keyCode = KeyCode.None;
             this.axisCodeX = axisCodeX;
             this.axisCodeY = axisCodeY;
             rawData = null;

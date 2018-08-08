@@ -4,10 +4,9 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,22 +24,28 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static readonly GUIContent AxisTypeContent = new GUIContent("Axis Type", "The axis type of the button, e.g. Analogue, Digital, etc.");
         private static readonly GUIContent ControllerInputTypeContent = new GUIContent("Input Type", "The primary action of the input as defined by the controller SDK.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "Action to be raised to the Input Manager when the input data has changed.");
+        private static readonly GUIContent KeyCodeContent = new GUIContent("KeyCode", "Unity Input KeyCode id to listen for.");
+        private static readonly GUIContent XAxisContent = new GUIContent("X Axis", "Horizontal Axis to listen for.");
+        private static readonly GUIContent YAxisContent = new GUIContent("Y Axis", "Vertical Axis to listen for.");
 
         private static MixedRealityControllerMappingProfile thisProfile;
 
         private static bool[] controllerFoldouts;
+        private static bool[] controllerInteractionFoldouts;
 
         private SerializedProperty mixedRealityControllerMappingProfiles;
         private static GUIContent[] actionLabels;
         private static int[] actionIds;
+
+        private static GUIContent[] axisLabels;
+        private static int[] axisIds;
+        private static int axisId;
 
         private SerializedProperty renderMotionControllers;
         private SerializedProperty useDefaultModels;
         private SerializedProperty globalLeftHandModel;
         private SerializedProperty globalRightHandModel;
 
-        private readonly List<string> configuredControllerTypes = new List<string>();
-        private readonly List<string> updatedControllerTypes = new List<string>();
         private static bool inputAxisUpdated = false;
 
         private static float defaultLabelWidth;
@@ -54,6 +59,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
 
             mixedRealityControllerMappingProfiles = serializedObject.FindProperty("mixedRealityControllerMappingProfiles");
+
+            if (controllerInteractionFoldouts == null || controllerInteractionFoldouts.Length != mixedRealityControllerMappingProfiles.arraySize)
+            {
+                controllerInteractionFoldouts = new bool[mixedRealityControllerMappingProfiles.arraySize];
+
+                // Open all the interaction foldouts by default.
+                for (int i = 0; i < controllerInteractionFoldouts.Length; i++)
+                {
+                    controllerInteractionFoldouts[i] = true;
+                }
+            }
+
             if (controllerFoldouts == null || controllerFoldouts.Length != mixedRealityControllerMappingProfiles.arraySize)
             {
                 controllerFoldouts = new bool[mixedRealityControllerMappingProfiles.arraySize];
@@ -61,6 +78,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
             actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
+
+            axisLabels = ControllerMappingLibrary.UnityInputManagerAxes.Select(axis => new GUIContent(axis.Name)).Prepend(new GUIContent("None")).ToArray();
+            axisIds = new int[axisLabels.Length];
+
+            for (int i = 1; i < axisIds.Length; i++)
+            {
+                axisIds[i] = i;
+            }
 
             renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
             useDefaultModels = serializedObject.FindProperty("useDefaultModels");
@@ -76,7 +101,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-
             EditorGUILayout.LabelField("Controller Templates", EditorStyles.boldLabel);
 
             if (!CheckMixedRealityManager())
@@ -88,9 +112,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                                     "After defining all your Input Actions, you can then wire them up to hardware sensors, controllers, and other input devices.", MessageType.Info);
 
             serializedObject.Update();
-
-            configuredControllerTypes.Clear();
-            updatedControllerTypes.Clear();
 
             EditorGUILayout.PropertyField(renderMotionControllers);
 
@@ -112,8 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             // When the inspector is first loaded, check the Input Mappings are installed
             if (!inputAxisUpdated)
             {
-                Internal.Utilities.InputMappingAxisUtility.ApplyMappings(ControllerMappingLibrary.GetOpenVRInputManagerAxes);
-
+                Internal.Utilities.InputMappingAxisUtility.ApplyMappings(ControllerMappingLibrary.UnityInputManagerAxes);
                 inputAxisUpdated = true;
             }
         }
@@ -125,12 +145,27 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             if (GUILayout.Button(ControllerAddButtonContent, EditorStyles.miniButton))
             {
-                list.arraySize += 1;
+                list.InsertArrayElementAtIndex(list.arraySize);
                 var mixedRealityControllerMapping = list.GetArrayElementAtIndex(list.arraySize - 1);
                 var mixedRealityControllerMappingId = mixedRealityControllerMapping.FindPropertyRelative("id");
                 var mixedRealityControllerMappingDescription = mixedRealityControllerMapping.FindPropertyRelative("description");
                 mixedRealityControllerMappingDescription.stringValue = $"New Controller Template {mixedRealityControllerMappingId.intValue = list.arraySize}";
+                var mixedRealityControllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
+                mixedRealityControllerHandedness.intValue = 0;
+                var mixedRealityControllerInteractions = mixedRealityControllerMapping.FindPropertyRelative("interactions");
+                mixedRealityControllerInteractions.ClearArray();
+                serializedObject.ApplyModifiedProperties();
+
+                thisProfile.MixedRealityControllerMappingProfiles[list.arraySize - 1].ControllerType.Type = null;
+
+                controllerInteractionFoldouts = new bool[list.arraySize];
                 controllerFoldouts = new bool[list.arraySize];
+
+                for (int i = 0; i < controllerInteractionFoldouts?.Length; i++)
+                {
+                    controllerInteractionFoldouts[i] = true;
+                }
+
                 return;
             }
 
@@ -145,69 +180,105 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             for (int i = 0; i < list?.arraySize; i++)
             {
                 GUILayout.BeginVertical();
-                EditorGUILayout.BeginHorizontal();
 
                 var previousLabelWidth = EditorGUIUtility.labelWidth;
                 var mixedRealityControllerMapping = list.GetArrayElementAtIndex(i);
-                var mixedRealityControllerMappingId = mixedRealityControllerMapping.FindPropertyRelative("id");
                 var mixedRealityControllerMappingDescription = mixedRealityControllerMapping.FindPropertyRelative("description");
 
-                EditorGUIUtility.labelWidth = 64f;
-                EditorGUILayout.PropertyField(mixedRealityControllerMappingDescription, new GUIContent($"Controller {mixedRealityControllerMappingId.intValue = i + 1}"));
-                EditorGUIUtility.labelWidth = previousLabelWidth;
+                controllerFoldouts[i] = EditorGUILayout.Foldout(controllerFoldouts[i], $"{mixedRealityControllerMappingDescription.stringValue}", true);
 
-                if (GUILayout.Button(ControllerMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                if (controllerFoldouts[i])
                 {
-                    list.DeleteArrayElementAtIndex(i);
-                    EditorGUILayout.EndHorizontal();
-                }
-                else
-                {
-                    EditorGUILayout.EndHorizontal();
-
-                    var controllerType = mixedRealityControllerMapping.FindPropertyRelative("controllerType");
-
-                    var controllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
-                    var useDefaultModel = mixedRealityControllerMapping.FindPropertyRelative("useDefaultModel");
-                    var controllerModel = mixedRealityControllerMapping.FindPropertyRelative("overrideModel");
-                    var interactionsList = mixedRealityControllerMapping.FindPropertyRelative("interactions");
-                    var useCustomInteractionMappings = mixedRealityControllerMapping.FindPropertyRelative("useCustomInteractionMappings");
-
-                    EditorGUI.indentLevel++;
-                    EditorGUIUtility.labelWidth = 128f;
-
-                    EditorGUI.BeginChangeCheck();
-                    EditorGUILayout.PropertyField(controllerType);
-                    EditorGUILayout.PropertyField(controllerHandedness);
-                    EditorGUIUtility.labelWidth = 224f;
-                    EditorGUILayout.PropertyField(useCustomInteractionMappings);
-
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        serializedObject.ApplyModifiedProperties();
-                        thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping();
-                    }
-
-                    EditorGUIUtility.labelWidth = 128f;
-                    EditorGUILayout.PropertyField(useDefaultModel);
-
-                    if (!useDefaultModel.boolValue)
-                    {
-                        EditorGUILayout.PropertyField(controllerModel);
-                    }
-
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUIUtility.labelWidth = 96f;
+                    EditorGUILayout.PropertyField(mixedRealityControllerMappingDescription);
                     EditorGUIUtility.labelWidth = previousLabelWidth;
 
-                    controllerFoldouts[i] = EditorGUILayout.Foldout(controllerFoldouts[i], InteractionContent, true);
-
-                    if (controllerFoldouts[i])
+                    if (GUILayout.Button(ControllerMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                     {
-                        GUILayout.BeginHorizontal();
-                        RenderInteractionList(interactionsList, useCustomInteractionMappings.boolValue);
-                        GUILayout.EndHorizontal();
+                        list.DeleteArrayElementAtIndex(i);
+                        EditorGUILayout.EndHorizontal();
                     }
+                    else
+                    {
+                        EditorGUILayout.EndHorizontal();
 
-                    EditorGUI.indentLevel--;
+                        var controllerType = mixedRealityControllerMapping.FindPropertyRelative("controllerType");
+                        var controllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
+                        var useDefaultModel = mixedRealityControllerMapping.FindPropertyRelative("useDefaultModel");
+                        var controllerModel = mixedRealityControllerMapping.FindPropertyRelative("overrideModel");
+                        var interactionsList = mixedRealityControllerMapping.FindPropertyRelative("interactions");
+                        var useCustomInteractionMappings = mixedRealityControllerMapping.FindPropertyRelative("useCustomInteractionMappings");
+
+                        EditorGUI.indentLevel++;
+                        EditorGUIUtility.labelWidth = 128f;
+
+                        EditorGUI.BeginChangeCheck();
+                        EditorGUILayout.PropertyField(controllerType);
+                        EditorGUILayout.PropertyField(controllerHandedness);
+                        EditorGUIUtility.labelWidth = 224f;
+
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            serializedObject.ApplyModifiedProperties();
+
+                            if (thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type == null)
+                            {
+                                controllerHandedness.intValue = 0;
+                            }
+
+                            // Only allow custom interaction mappings on generic controller types.
+                            useCustomInteractionMappings.boolValue = thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type == typeof(GenericOpenVRController);
+                            interactionsList.ClearArray();
+                            serializedObject.ApplyModifiedProperties();
+                            thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping();
+                            serializedObject.ApplyModifiedProperties();
+
+                            // Bail so we can execute our controller type set command.
+                            EditorGUI.indentLevel--;
+                            GUILayout.EndVertical();
+                            GUILayout.Space(12f);
+                            GUILayout.EndVertical();
+                            GUILayout.EndVertical();
+                            return;
+                        }
+
+                        EditorGUIUtility.labelWidth = 128f;
+                        EditorGUILayout.PropertyField(useDefaultModel);
+
+                        if (!useDefaultModel.boolValue)
+                        {
+                            EditorGUILayout.PropertyField(controllerModel);
+                        }
+
+                        EditorGUIUtility.labelWidth = previousLabelWidth;
+
+                        controllerInteractionFoldouts[i] = EditorGUILayout.Foldout(controllerInteractionFoldouts[i], InteractionContent, true);
+
+                        if (controllerInteractionFoldouts[i])
+                        {
+                            RenderInteractionList(interactionsList, useCustomInteractionMappings.boolValue);
+                        }
+
+                        GUILayout.Space(24f);
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Space(24f);
+
+                        if (useCustomInteractionMappings.boolValue)
+                        {
+                            if (GUILayout.Button("Reset Interaction Mappings", EditorStyles.miniButton))
+                            {
+                                interactionsList.ClearArray();
+                                serializedObject.ApplyModifiedProperties();
+                                thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping();
+                                serializedObject.ApplyModifiedProperties();
+                            }
+                        }
+
+                        GUILayout.EndHorizontal();
+
+                        EditorGUI.indentLevel--;
+                    }
                 }
 
                 GUILayout.EndVertical();
@@ -218,8 +289,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             GUILayout.EndVertical();
         }
 
-        private static void RenderInteractionList(SerializedProperty list, bool useCustomInteractionMapping)
+        private void RenderInteractionList(SerializedProperty list, bool useCustomInteractionMapping)
         {
+            if (Event.current.type == EventType.ExecuteCommand && Event.current.commandName == "TypeReferenceUpdated") { return; }
+
+            GUILayout.BeginHorizontal();
             GUILayout.BeginVertical();
 
             if (useCustomInteractionMapping)
@@ -249,6 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 if (list == null || list.arraySize == 0)
                 {
                     EditorGUILayout.HelpBox("Create an Interaction Mapping.", MessageType.Warning);
+                    GUILayout.EndHorizontal();
                     GUILayout.EndVertical();
                     return;
                 }
@@ -264,6 +339,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUILayout.LabelField(ControllerInputTypeContent, GUILayout.ExpandWidth(true));
                 EditorGUILayout.LabelField(AxisTypeContent, GUILayout.ExpandWidth(true));
                 EditorGUILayout.LabelField(ActionContent, GUILayout.ExpandWidth(true));
+                EditorGUILayout.LabelField(KeyCodeContent, GUILayout.ExpandWidth(true));
+                EditorGUILayout.LabelField(XAxisContent, GUILayout.ExpandWidth(true));
+                EditorGUILayout.LabelField(YAxisContent, GUILayout.ExpandWidth(true));
                 EditorGUILayout.LabelField(string.Empty, GUILayout.Width(24f));
 
                 EditorGUIUtility.labelWidth = defaultLabelWidth;
@@ -302,9 +380,40 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                     if (EditorGUI.EndChangeCheck())
                     {
-                        MixedRealityInputAction inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
+                        var inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
                         actionDescription.stringValue = inputAction.Description;
                         actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
+                    }
+
+                    if ((AxisType)axisType.intValue == AxisType.Digital)
+                    {
+                        var keyCode = interaction.FindPropertyRelative("keyCode");
+                        EditorGUILayout.PropertyField(keyCode, GUIContent.none, GUILayout.ExpandWidth(true));
+                    }
+                    else
+                    {
+                        EditorGUILayout.LabelField(GUIContent.none, GUILayout.ExpandWidth(true));
+                    }
+
+                    if ((AxisType)axisType.intValue == AxisType.SingleAxis ||
+                        (AxisType)axisType.intValue == AxisType.DualAxis)
+                    {
+                        var axisCodeX = interaction.FindPropertyRelative("axisCodeX");
+                        RenderAxisPopup(axisCodeX);
+                    }
+                    else
+                    {
+                        EditorGUILayout.LabelField(GUIContent.none, GUILayout.ExpandWidth(true));
+                    }
+
+                    if ((AxisType)axisType.intValue == AxisType.DualAxis)
+                    {
+                        var axisCodeY = interaction.FindPropertyRelative("axisCodeY");
+                        RenderAxisPopup(axisCodeY);
+                    }
+                    else
+                    {
+                        EditorGUILayout.LabelField(GUIContent.none, GUILayout.ExpandWidth(true));
                     }
 
                     if (GUILayout.Button(InteractionMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
@@ -339,6 +448,45 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
 
             GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+        }
+
+        private void RenderAxisPopup(SerializedProperty axisCode)
+        {
+            axisId = -1;
+
+            for (int j = 0; j < ControllerMappingLibrary.UnityInputManagerAxes.Length; j++)
+            {
+                if (ControllerMappingLibrary.UnityInputManagerAxes[j].Name == axisCode.stringValue)
+                {
+                    axisId = j + 1;
+                    break;
+                }
+            }
+
+            EditorGUI.BeginChangeCheck();
+            axisId = EditorGUILayout.IntPopup(GUIContent.none, axisId, axisLabels, axisIds, GUILayout.ExpandWidth(true));
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                if (axisId == 0)
+                {
+                    axisCode.stringValue = string.Empty;
+                    serializedObject.ApplyModifiedProperties();
+                }
+                else
+                {
+                    for (int j = 0; j < ControllerMappingLibrary.UnityInputManagerAxes.Length; j++)
+                    {
+                        if (axisId - 1 == j)
+                        {
+                            axisCode.stringValue = ControllerMappingLibrary.UnityInputManagerAxes[j].Name;
+                            serializedObject.ApplyModifiedProperties();
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         private static int CheckValue(int value, int against)

@@ -13,7 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
     public class GenericOpenVRController : BaseController
     {
         public GenericOpenVRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions) { }
+            : base(trackingState, controllerHandedness, inputSource, interactions)
+        {
+        }
 
         /// <summary>
         /// The current source state reading for this OpenVR Controller.

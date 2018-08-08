@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// Get the InputManagerAxis data needed to configure the Input Mappings for a controller
         /// </summary>
         /// <returns></returns>
-        public static InputManagerAxis[] GetOpenVRInputManagerAxes => new[]
+        public static InputManagerAxis[] UnityInputManagerAxes => new[]
         {
             new InputManagerAxis { Name = MIXEDREALITY_AXIS1,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 1  },
             new InputManagerAxis { Name = MIXEDREALITY_AXIS2,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 2  },
@@ -217,6 +217,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
                 return WindowsMixedRealityController.DefaultInteractions;
             }
 
+            // For our open VR controllers we expect either left or right handedness
+            if (handedness != Handedness.Left && handedness != Handedness.Right)
+            {
+                return null;
+            }
+
             if (controllerType == typeof(OculusTouchController))
             {
                 return handedness == Handedness.Left ? OculusTouchController.DefaultLeftHandedInteractions : OculusTouchController.DefaultRightHandedInteractions;
@@ -230,6 +236,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             if (controllerType == typeof(ViveKnucklesController))
             {
                 return handedness == Handedness.Left ? ViveKnucklesController.DefaultLeftHandedInteractions : ViveKnucklesController.DefaultRightHandedInteractions;
+            }
+
+            if (controllerType == typeof(WindowsMixedRealityOpenVRController))
+            {
+                return handedness == Handedness.Left ? WindowsMixedRealityOpenVRController.DefaultLeftHandedInteractions : WindowsMixedRealityOpenVRController.DefaultRightHandedInteractions;
             }
 
             if (controllerType == typeof(GenericOpenVRController))

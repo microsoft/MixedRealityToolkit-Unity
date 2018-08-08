@@ -89,14 +89,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             get { return type; }
             set
             {
-#if WINDOWS_UWP && !ENABLE_IL2CPP
-                bool isValid = value.IsValueType() && !value.IsEnum() || value.IsClass();
-#else
-                bool isValid = value.IsValueType && !value.IsEnum || value.IsClass;
-#endif // WINDOWS_UWP && !ENABLE_IL2CPP
-                if (value != null && !isValid)
+                if (value != null)
                 {
-                    throw new ArgumentException($"'{value.FullName}' is not a class or struct type.", nameof(value));
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+                    bool isValid = value.IsValueType() && !value.IsEnum() || value.IsClass();
+#else
+                    bool isValid = value.IsValueType && !value.IsEnum || value.IsClass;
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
+                    if (!isValid)
+                    {
+                        throw new ArgumentException($"'{value.FullName}' is not a class or struct type.", nameof(value));
+                    }
                 }
 
                 type = value;

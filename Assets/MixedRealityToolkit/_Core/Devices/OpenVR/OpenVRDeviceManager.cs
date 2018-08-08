@@ -141,6 +141,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         case "Vive Knuckles - Left":                                            // TODO: Yet to test
                         case "Vive Knuckles- Right":                                            // TODO: Yet to test
                             return SupportedControllerType.ViveKnuckles;
+                        case "OpenVR Controller(WindowsMR: 0x045E/0x065B/0/1) - Left":
+                        case "OpenVR Controller(WindowsMR: 0x045E/0x065B/0/2) - Right":
+                            return SupportedControllerType.WindowsMixedReality;
                     }
                 }
 
@@ -198,6 +201,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                 case SupportedControllerType.OculusRemote:
                     controllerType = typeof(OculusRemoteController);
                     break;
+                case SupportedControllerType.WindowsMixedReality:
+                    controllerType = typeof(WindowsMixedRealityOpenVRController);
+                    break;
                 default:
                     Debug.LogError($"Unsupported controller type detected.");
                     return null;
@@ -206,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             var pointers = RequestPointers(controllerType, controllingHand);
             var inputSource = InputSystem?.RequestNewGenericInputSource($"{CurrentControllerType} Controller {controllingHand}", pointers);
 
-            GenericOpenVRController detectedController = Activator.CreateInstance(controllerType, 
+            GenericOpenVRController detectedController = Activator.CreateInstance(controllerType,
                 TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
 
             Debug.Assert(detectedController != null);

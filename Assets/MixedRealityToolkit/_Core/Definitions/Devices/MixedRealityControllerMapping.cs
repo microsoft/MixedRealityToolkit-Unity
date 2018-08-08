@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         private bool useCustomInteractionMappings;
 
         /// <summary>
-        /// Is this controller mapping using custom interactions?. 
+        /// Is this controller mapping using custom interactions?
         /// </summary>
         public bool UseCustomInteractionMappings => useCustomInteractionMappings;
 
