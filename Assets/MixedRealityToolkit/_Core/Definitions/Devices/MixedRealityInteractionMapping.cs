@@ -177,6 +177,31 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         public string AxisCodeY => axisCodeY;
 
+        [SerializeField]
+        [Tooltip("Should the Y axis be inverted?")]
+        private bool invertYAxis = false;
+
+        /// <summary>
+        /// Should the Y axis be inverted?
+        /// </summary>
+        /// <remarks>
+        /// Only valid for <see cref="Utilities.AxisType.DualAxis"/> inputs.
+        /// </remarks>
+        public bool InvertYAxis
+        {
+            get { return invertYAxis; }
+            set
+            {
+                if (axisType != AxisType.DualAxis)
+                {
+                    Debug.LogWarning("inverted Y axis only valid for Dual Axis inputs.");
+                    return;
+                }
+
+                invertYAxis = value;
+            }
+        }
+
         private bool changed;
 
         /// <summary>
@@ -311,7 +336,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
                 }
 
                 Changed = vector2Data != value;
-                vector2Data = value;
+
+                if (invertYAxis)
+                {
+                    vector2Data.x = value.x;
+                    vector2Data.y = value.y * -1f;
+                }
+                else
+                {
+                    vector2Data = value;
+                }
             }
         }
 
