@@ -75,7 +75,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                 if (!activeControllers.ContainsKey(obj.nodeType))
                 {
                     var controller = GetOrAddController(obj);
-                    InputSystem?.RaiseSourceDetected(controller?.InputSource, controller);
+
+                    if (controller != null)
+                    {
+                        InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                    }
                 }
             }
         }
@@ -221,7 +225,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     controllerType = typeof(WindowsMixedRealityOpenVRController);
                     break;
                 default:
-                    Debug.LogError($"Unsupported controller type detected.");
                     return null;
             }
 
