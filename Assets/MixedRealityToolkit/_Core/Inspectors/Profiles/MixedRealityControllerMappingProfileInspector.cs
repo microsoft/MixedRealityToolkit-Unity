@@ -34,11 +34,24 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static bool[] controllerFoldouts;
         private static bool[] controllerInteractionFoldouts;
 
-        private static int[] actionIds;
-        private static GUIContent[] actionLabels;
-
         private static int axisId;
         private static GUIContent[] axisLabels;
+        private static int[] actionIds;
+        private static GUIContent[] actionLabels;
+        private static int[] rawActionIds;
+        private static GUIContent[] rawActionLabels;
+        private static int[] digitalActionIds;
+        private static GUIContent[] digitalActionLabels;
+        private static int[] singleAxisActionIds;
+        private static GUIContent[] singleAxisActionLabels;
+        private static int[] dualAxisActionIds;
+        private static GUIContent[] dualAxisActionLabels;
+        private static int[] threeDofPositionActionIds;
+        private static GUIContent[] threeDofPositionActionLabels;
+        private static int[] threeDofRotationActionIds;
+        private static GUIContent[] threeDofRotationActionLabels;
+        private static int[] sixDofActionIds;
+        private static GUIContent[] sixDofActionLabels;
 
         private static float defaultLabelWidth;
         private static float defaultFieldWidth;
@@ -49,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty globalLeftHandModel;
         private SerializedProperty globalRightHandModel;
         private Vector2[] horizontalScrollPositions;
+
 
         private void OnEnable()
         {
@@ -80,10 +94,92 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 horizontalScrollPositions = new Vector2[mixedRealityControllerMappingProfiles.arraySize];
             }
 
-            actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
-            actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
+            actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Select(action => (int)action.Id)
+                .Prepend(0).ToArray();
 
-            axisLabels = ControllerMappingLibrary.UnityInputManagerAxes.Select(axis => new GUIContent(axis.Name)).Prepend(new GUIContent("None")).ToArray();
+            axisLabels = ControllerMappingLibrary.UnityInputManagerAxes
+                .Select(axis => new GUIContent(axis.Name))
+                .Prepend(new GUIContent("None")).ToArray();
+
+            actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.None)
+                .Select(action => (int)action.Id)
+                .Prepend(0).ToArray();
+
+            actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.None)
+                .Select(inputAction => new GUIContent(inputAction.Description))
+                .Prepend(new GUIContent("None")).ToArray();
+
+            rawActionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.Raw)
+                .Select(action => (int)action.Id)
+                .Prepend(0).ToArray();
+
+            rawActionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                 .Where(inputAction => inputAction.AxisConstraint == AxisType.Raw)
+                 .Select(inputAction => new GUIContent(inputAction.Description))
+                 .Prepend(new GUIContent("None")).ToArray();
+
+            digitalActionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.Digital)
+                .Select(action => (int)action.Id)
+                .Prepend(0).ToArray();
+
+            digitalActionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.Digital)
+                .Select(inputAction => new GUIContent(inputAction.Description))
+                .Prepend(new GUIContent("None")).ToArray();
+
+            singleAxisActionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.SingleAxis)
+                .Select(action => (int)action.Id)
+                .Prepend(0).ToArray();
+
+            singleAxisActionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.SingleAxis)
+                .Select(inputAction => new GUIContent(inputAction.Description))
+                .Prepend(new GUIContent("None")).ToArray();
+
+            dualAxisActionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.DualAxis)
+                .Select(action => (int)action.Id).Prepend(0).ToArray();
+
+            dualAxisActionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.DualAxis)
+                .Select(inputAction => new GUIContent(inputAction.Description))
+                .Prepend(new GUIContent("None")).ToArray();
+
+            threeDofPositionActionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.ThreeDofPosition)
+                .Select(action => (int)action.Id)
+                .Prepend(0).ToArray();
+
+            threeDofPositionActionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.ThreeDofPosition)
+                .Select(inputAction => new GUIContent(inputAction.Description))
+                .Prepend(new GUIContent("None")).ToArray();
+
+            threeDofRotationActionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.ThreeDofRotation)
+                .Select(action => (int)action.Id)
+                .Prepend(0).ToArray();
+
+            threeDofRotationActionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.ThreeDofRotation)
+                .Select(inputAction => new GUIContent(inputAction.Description))
+                .Prepend(new GUIContent("None")).ToArray();
+
+            sixDofActionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.SixDof)
+                .Select(action => (int)action.Id)
+                .Prepend(0).ToArray();
+
+            sixDofActionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
+                .Where(inputAction => inputAction.AxisConstraint == AxisType.SixDof)
+                .Select(inputAction => new GUIContent(inputAction.Description))
+                .Prepend(new GUIContent("None")).ToArray();
 
             renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
             useDefaultModels = serializedObject.FindProperty("useDefaultModels");
@@ -368,14 +464,55 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     var axisType = interaction.FindPropertyRelative("axisType");
                     EditorGUILayout.PropertyField(axisType, GUIContent.none, GUILayout.Width(customLabelWidth));
                     var invertYAxis = interaction.FindPropertyRelative("invertYAxis");
+                    var interactionAxisConstraint = interaction.FindPropertyRelative("axisType");
 
                     var action = interaction.FindPropertyRelative("inputAction");
                     var actionId = action.FindPropertyRelative("id");
                     var actionDescription = action.FindPropertyRelative("description");
                     var actionConstraint = action.FindPropertyRelative("axisConstraint");
 
+                    GUIContent[] labels;
+                    int[] ids;
+
+                    switch ((AxisType)interactionAxisConstraint.intValue)
+                    {
+                        default:
+                        case AxisType.None:
+                            labels = actionLabels;
+                            ids = actionIds;
+                            break;
+                        case AxisType.Raw:
+                            labels = rawActionLabels;
+                            ids = rawActionIds;
+                            break;
+                        case AxisType.Digital:
+                            labels = digitalActionLabels;
+                            ids = digitalActionIds;
+                            break;
+                        case AxisType.SingleAxis:
+                            labels = singleAxisActionLabels;
+                            ids = singleAxisActionIds;
+                            break;
+                        case AxisType.DualAxis:
+                            labels = dualAxisActionLabels;
+                            ids = dualAxisActionIds;
+                            break;
+                        case AxisType.ThreeDofPosition:
+                            labels = threeDofPositionActionLabels;
+                            ids = threeDofPositionActionIds;
+                            break;
+                        case AxisType.ThreeDofRotation:
+                            labels = threeDofRotationActionLabels;
+                            ids = threeDofRotationActionIds;
+                            break;
+                        case AxisType.SixDof:
+                            labels = sixDofActionLabels;
+                            ids = sixDofActionIds;
+                            break;
+                    }
+
                     EditorGUI.BeginChangeCheck();
-                    actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, CheckValue(actionId.intValue, actionIds.Length - 1), actionLabels, actionIds, GUILayout.Width(customLabelWidth));
+                    actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, labels, ids, GUILayout.Width(customLabelWidth));
 
                     if (EditorGUI.EndChangeCheck())
                     {
@@ -436,19 +573,62 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 else
                 {
                     var interactionDescription = interaction.FindPropertyRelative("description");
+                    var interactionAxisConstraint = interaction.FindPropertyRelative("axisType");
                     var action = interaction.FindPropertyRelative("inputAction");
                     var actionId = action.FindPropertyRelative("id");
                     var actionDescription = action.FindPropertyRelative("description");
                     var actionConstraint = action.FindPropertyRelative("axisConstraint");
 
+                    GUIContent[] labels;
+                    int[] ids;
+
+                    switch ((AxisType)interactionAxisConstraint.intValue)
+                    {
+                        default:
+                        case AxisType.None:
+                            labels = actionLabels;
+                            ids = actionIds;
+                            break;
+                        case AxisType.Raw:
+                            labels = rawActionLabels;
+                            ids = rawActionIds;
+                            break;
+                        case AxisType.Digital:
+                            labels = digitalActionLabels;
+                            ids = digitalActionIds;
+                            break;
+                        case AxisType.SingleAxis:
+                            labels = singleAxisActionLabels;
+                            ids = singleAxisActionIds;
+                            break;
+                        case AxisType.DualAxis:
+                            labels = dualAxisActionLabels;
+                            ids = dualAxisActionIds;
+                            break;
+                        case AxisType.ThreeDofPosition:
+                            labels = threeDofPositionActionLabels;
+                            ids = threeDofPositionActionIds;
+                            break;
+                        case AxisType.ThreeDofRotation:
+                            labels = threeDofRotationActionLabels;
+                            ids = threeDofRotationActionIds;
+                            break;
+                        case AxisType.SixDof:
+                            labels = sixDofActionLabels;
+                            ids = sixDofActionIds;
+                            break;
+                    }
+
                     EditorGUI.BeginChangeCheck();
-                    actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, CheckValue(actionId.intValue, actionIds.Length - 1), actionLabels, actionIds, GUILayout.Width(80f));
+                    actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, labels, ids, GUILayout.Width(80f));
 
                     if (EditorGUI.EndChangeCheck())
                     {
                         MixedRealityInputAction inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
+                        actionId.intValue = (int)inputAction.Id;
                         actionDescription.stringValue = inputAction.Description;
                         actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
+                        serializedObject.ApplyModifiedProperties();
                     }
 
                     EditorGUILayout.LabelField(interactionDescription.stringValue, GUILayout.ExpandWidth(true));
@@ -502,16 +682,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     }
                 }
             }
-        }
-
-        private static int CheckValue(int value, int against)
-        {
-            if (value > against)
-            {
-                value = 0;
-            }
-
-            return value;
         }
     }
 }
