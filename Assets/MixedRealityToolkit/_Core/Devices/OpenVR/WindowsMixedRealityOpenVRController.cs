@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             new MixedRealityInteractionMapping(6, "Touchpad Touch", AxisType.Digital, DeviceInputType.TouchpadTouch, KeyCode.JoystickButton18),
             new MixedRealityInteractionMapping(7, "Touchpad Press", AxisType.Digital, DeviceInputType.TouchpadPress, KeyCode.JoystickButton16),
             new MixedRealityInteractionMapping(8, "Menu Button", AxisType.Digital, DeviceInputType.ButtonPress,  KeyCode.JoystickButton6),
-            new MixedRealityInteractionMapping(9, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerMappingLibrary.MIXEDREALITY_AXIS1, ControllerMappingLibrary.MIXEDREALITY_AXIS2),
+            new MixedRealityInteractionMapping(9, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerMappingLibrary.MIXEDREALITY_AXIS1, ControllerMappingLibrary.MIXEDREALITY_AXIS2, true),
             new MixedRealityInteractionMapping(10, "Thumbstick Click", AxisType.Digital, DeviceInputType.ButtonPress,  KeyCode.JoystickButton8),
         };
 
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             new MixedRealityInteractionMapping(6, "Touchpad Touch", AxisType.Digital, DeviceInputType.TouchpadTouch, KeyCode.JoystickButton19),
             new MixedRealityInteractionMapping(7, "Touchpad Press", AxisType.Digital, DeviceInputType.TouchpadPress, KeyCode.JoystickButton17),
             new MixedRealityInteractionMapping(8, "Menu Button", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.JoystickButton7),
-            new MixedRealityInteractionMapping(9, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerMappingLibrary.MIXEDREALITY_AXIS4, ControllerMappingLibrary.MIXEDREALITY_AXIS5),
+            new MixedRealityInteractionMapping(9, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerMappingLibrary.MIXEDREALITY_AXIS4, ControllerMappingLibrary.MIXEDREALITY_AXIS5, true),
             new MixedRealityInteractionMapping(10, "Thumbstick Click", AxisType.Digital, DeviceInputType.ButtonPress,  KeyCode.JoystickButton9),
         };
 

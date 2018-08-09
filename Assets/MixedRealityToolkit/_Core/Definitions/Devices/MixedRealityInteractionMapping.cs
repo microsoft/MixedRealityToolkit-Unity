@@ -23,8 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <param name="axisType">The axis that the mapping operates on, also denotes the data type for the mapping</param>
         /// <param name="inputType">The physical input device / control</param>
         /// <param name="axisCodeX">Optional horizontal or single axis value to get axis data from Unity's old input system.</param>
-        /// <param name="axisCodeY">Optional vertical axis value to get axis data from Unity's old input system.</param> 
-        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, string axisCodeX, string axisCodeY = "")
+        /// <param name="axisCodeY">Optional vertical axis value to get axis data from Unity's old input system.</param>
+        /// <param name="invertYAxis">Optional vertical axis invert option.</param> 
+        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, string axisCodeX, string axisCodeY = "", bool invertYAxis = false)
         {
             this.id = id;
             this.description = description;
@@ -34,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             keyCode = KeyCode.None;
             this.axisCodeX = axisCodeX;
             this.axisCodeY = axisCodeY;
+            this.invertYAxis = invertYAxis;
             rawData = null;
             boolData = false;
             floatData = 0f;
@@ -82,8 +84,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <param name="inputAction">The logical MixedRealityInputAction that this input performs</param>
         /// <param name="keyCode">Optional KeyCode value to get input from Unity's old input system</param>
         /// <param name="axisCodeX">Optional horizontal or single axis value to get axis data from Unity's old input system.</param>
-        /// <param name="axisCodeY">Optional vertical axis value to get axis data from Unity's old input system.</param> 
-        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction, KeyCode keyCode = KeyCode.None, string axisCodeX = "", string axisCodeY = "")
+        /// <param name="axisCodeY">Optional vertical axis value to get axis data from Unity's old input system.</param>
+        /// <param name="invertYAxis">Optional vertical axis invert option.</param> 
+        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction, KeyCode keyCode = KeyCode.None, string axisCodeX = "", string axisCodeY = "", bool invertYAxis = false)
         {
             this.id = id;
             this.description = description;
@@ -93,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             this.keyCode = keyCode;
             this.axisCodeX = axisCodeX;
             this.axisCodeY = axisCodeY;
+            this.invertYAxis = invertYAxis;
             rawData = null;
             boolData = false;
             floatData = 0f;
@@ -335,15 +339,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
                     Debug.LogError($"SetVector2Value is only valid for AxisType.DualAxis InteractionMappings\nPlease check the {inputType} mapping for the current controller");
                 }
 
-                Changed = vector2Data != value;
-
                 if (invertYAxis)
                 {
+                    Changed = !vector2Data.x.Equals(value.x) &&
+                              !vector2Data.y.Equals(value.y * -1f);
+
                     vector2Data.x = value.x;
                     vector2Data.y = value.y * -1f;
                 }
                 else
                 {
+                    Changed = vector2Data != value;
                     vector2Data = value;
                 }
             }

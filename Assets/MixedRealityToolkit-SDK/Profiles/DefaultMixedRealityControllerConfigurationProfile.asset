@@ -407,7 +407,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS1
       axisCodeY: MIXEDREALITY_AXIS2
-      invertYAxis: 0
+      invertYAxis: 1
     - id: 6
       description: Trackpad-Thumbstick Touch
       axisType: 2
@@ -561,7 +561,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS4
       axisCodeY: MIXEDREALITY_AXIS5
-      invertYAxis: 0
+      invertYAxis: 1
     - id: 6
       description: Trackpad-Thumbstick Touch
       axisType: 2
@@ -763,7 +763,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS1
       axisCodeY: MIXEDREALITY_AXIS2
-      invertYAxis: 0
+      invertYAxis: 1
     - id: 10
       description: Thumbstick Click
       axisType: 2
@@ -905,7 +905,7 @@ MonoBehaviour:
       keyCode: 0
       axisCodeX: MIXEDREALITY_AXIS4
       axisCodeY: MIXEDREALITY_AXIS5
-      invertYAxis: 0
+      invertYAxis: 1
     - id: 10
       description: Thumbstick Click
       axisType: 2
