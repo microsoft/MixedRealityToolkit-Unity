@@ -62,16 +62,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             // HTC Vive Controller - Left Controller Trackpad (2)
             // Oculus Touch Controller - Button.PrimaryThumbstick
             // Valve Knuckles Controller - Left Controller Trackpad
-            // Windows Mixed Reality Controller - Left Trackpad Press
+            // Windows Mixed Reality Controller - Left Touchpad Touch
             new MixedRealityInteractionMapping(6, "Trackpad-Thumbstick Touch", AxisType.Digital, DeviceInputType.TouchpadTouch, KeyCode.JoystickButton16),
             // HTC Vive Controller - Left Controller Trackpad (2)
             // Oculus Touch Controller - Button.PrimaryThumbstick
             // Valve Knuckles Controller - Left Controller Trackpad
-            // Windows Mixed Reality Controller - Left Thumbstick Press
+            // Windows Mixed Reality Controller - Left Touchpad Press
             new MixedRealityInteractionMapping(7, "Trackpad-Thumbstick Press", AxisType.Digital, DeviceInputType.TouchpadPress, KeyCode.JoystickButton8),
             // HTC Vive Controller - Left Controller Menu Button (1)
             // Oculus Touch Controller - Button.Three Press
             // Valve Knuckles Controller - Left Controller Inner Face Button
+            // Windows Mixed Reality Controller - Left Menu Button
             new MixedRealityInteractionMapping(8, "Unity Button Id 2", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.JoystickButton2),
             // Oculus Touch Controller - Button.Four Press
             // Valve Knuckles Controller - Left Controller Outer Face Button
@@ -84,10 +85,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         {
             // Controller Pose
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
-            // HTC Vive Controller - Right Controller Trigger (7)
-            // Oculus Touch Controller - Axis1D.SecondaryIndexTrigger
-            // Valve Knuckles Controller - Right Controller Trigger
-            // Windows Mixed Reality Controller - Right Trigger
+            // HTC Vive Controller - Right Controller Trigger (7) Squeeze
+            // Oculus Touch Controller - Axis1D.SecondaryIndexTrigger Squeeze
+            // Valve Knuckles Controller - Right Controller Trigger Squeeze
+            // Windows Mixed Reality Controller - Right Trigger Squeeze
             new MixedRealityInteractionMapping(1, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger, ControllerMappingLibrary.MIXEDREALITY_AXIS10),
             // HTC Vive Controller - Right Controller Trigger (7)
             // Oculus Touch Controller - Axis1D.SecondaryIndexTrigger
@@ -111,17 +112,18 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
             // HTC Vive Controller - Right Controller Trackpad (2)
             // Oculus Touch Controller - Button.SecondaryThumbstick
             // Valve Knuckles Controller - Right Controller Trackpad
-            // Windows Mixed Reality Controller - Left Trackpad Press
+            // Windows Mixed Reality Controller - Right Touchpad Touch
             new MixedRealityInteractionMapping(6, "Trackpad-Thumbstick Touch", AxisType.Digital, DeviceInputType.TouchpadTouch, KeyCode.JoystickButton17),
             // HTC Vive Controller - Right Controller Trackpad (2)
             // Oculus Touch Controller - Button.SecondaryThumbstick
             // Valve Knuckles Controller - Right Controller Trackpad
-            // Windows Mixed Reality Controller - Right Thumbstick Press
+            // Windows Mixed Reality Controller - Right Touchpad Press
             new MixedRealityInteractionMapping(7, "Trackpad-Thumbstick Press", AxisType.Digital, DeviceInputType.TouchpadPress, KeyCode.JoystickButton9),
             // HTC Vive Controller - Right Controller Menu Button (1)
             // Oculus Remote - Button.One Press
             // Oculus Touch Controller - Button.One Press
             // Valve Knuckles Controller - Right Controller Inner Face Button
+            // Windows Mixed Reality Controller - Right Menu Button
             new MixedRealityInteractionMapping(8, "Unity Button Id 0", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.JoystickButton0),
             // Oculus Remote - Button.Two Press
             // Oculus Touch Controller - Button.Two Press
