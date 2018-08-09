@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                         return SupportedControllerType.None;
                     }
 
-                    if (controllers[i].Contains("Oculus Rift CV1 "))
+                    if (controllers[i].Contains("Oculus Rift CV1"))
                     {
                         return SupportedControllerType.OculusTouch;
                     }
