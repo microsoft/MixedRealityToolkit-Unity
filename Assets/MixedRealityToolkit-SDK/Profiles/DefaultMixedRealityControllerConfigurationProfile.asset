@@ -342,7 +342,7 @@ MonoBehaviour:
         id: 1
         description: Select
         axisConstraint: 2
-      keyCode: 345
+      keyCode: 344
       axisCodeX: 
       axisCodeY: 
     - id: 3
