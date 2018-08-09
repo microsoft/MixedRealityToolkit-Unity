@@ -113,7 +113,7 @@ MonoBehaviour:
       axisCodeY: 
       invertYAxis: 0
     - id: 7
-      description: 'Thumbstick Press '
+      description: Thumbstick Press
       axisType: 2
       inputType: 18
       inputAction:
@@ -267,7 +267,7 @@ MonoBehaviour:
       axisCodeY: 
       invertYAxis: 0
     - id: 7
-      description: 'Thumbstick Press '
+      description: Thumbstick Press
       axisType: 2
       inputType: 18
       inputAction:
