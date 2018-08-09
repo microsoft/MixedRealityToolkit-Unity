@@ -11,7 +11,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handler
     /// </summary>
     public interface IMixedRealityFocusChangedHandler : IEventSystemHandler
     {
+        /// <summary>
+        /// Focus event that is raised before the focus is actually changed.
+        /// <remarks>Useful for logic that needs to take place before focus changes.</remarks>
+        /// </summary>
+        /// <param name="eventData"></param>
         void OnBeforeFocusChange(FocusEventData eventData);
+
+        /// <summary>
+        /// Focus event that is raised when the focused object is changed.
+        /// </summary>
+        /// <param name="eventData"></param>
         void OnFocusChanged(FocusEventData eventData);
     }
 }

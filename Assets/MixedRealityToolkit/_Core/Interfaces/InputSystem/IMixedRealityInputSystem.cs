@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events;
 using System;
 using System.Collections.Generic;
@@ -295,6 +296,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <param name="source"></param>
         /// <param name="inputAction"></param>
         void RaiseOnInputPressed(IMixedRealityInputSource source, MixedRealityInputAction inputAction);
+
+        /// <summary>
+        /// Raise Input Pressed.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="handedness"></param>
+        /// <param name="inputAction"></param>
+        void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction);
 
         /// <summary>
         /// Raise Input Pressed.

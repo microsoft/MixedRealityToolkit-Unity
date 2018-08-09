@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System.Collections.Generic;
 using System.Linq;
-
 #if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
@@ -82,19 +82,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK</param>
         /// <returns>New or Existing Controller Input Source</returns>
-        private WindowsMixedRealityController GetOrAddController(InteractionSourceState interactionSourceState, bool updateControllerData = true)
+        private WindowsMixedRealityController GetOrAddController(InteractionSourceState interactionSourceState)
         {
             //If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(interactionSourceState.source.id))
             {
                 var controller = activeControllers[interactionSourceState.source.id] as WindowsMixedRealityController;
                 Debug.Assert(controller != null);
-
-                if (updateControllerData)
-                {
-                    controller.UpdateController(interactionSourceState);
-                }
-
                 return controller;
             }
 
@@ -114,12 +108,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                     throw new ArgumentOutOfRangeException();
             }
 
-            var inputSource = InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {controllingHand}");
+            IMixedRealityPointer[] pointers = interactionSourceState.source.supportsPointing ? RequestPointers(typeof(WindowsMixedRealityController), controllingHand) : null;
+            var inputSource = InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {controllingHand}", pointers);
             var detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
-            detectedController.SetupConfiguration(typeof(WindowsMixedRealityController));
-            detectedController.UpdateController(interactionSourceState);
-            activeControllers.Add(interactionSourceState.source.id, detectedController);
 
+            detectedController.SetupConfiguration(typeof(WindowsMixedRealityController));
+
+            Debug.Assert(detectedController != null);
+
+            for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
+            {
+                detectedController.InputSource.Pointers[i].Controller = detectedController;
+            }
+
+            activeControllers.Add(interactionSourceState.source.id, detectedController);
             return detectedController;
         }
 
@@ -129,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
         private void RemoveController(InteractionSourceState interactionSourceState)
         {
-            var controller = GetOrAddController(interactionSourceState, false);
+            var controller = GetOrAddController(interactionSourceState);
             InputSystem?.RaiseSourceLost(controller?.InputSource, controller);
             activeControllers.Remove(interactionSourceState.source.id);
         }
@@ -146,6 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             var controller = GetOrAddController(args.state);
             InputSystem?.RaiseSourceDetected(controller?.InputSource, controller);
+            controller?.UpdateController(args.state);
         }
 
         /// <summary>

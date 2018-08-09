@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
     public enum ExperienceScale
     {
         /// <summary>
-        /// An experience which utilizes only the headset orientantion and is gravity aligned. The coordinate system origin is at head level.
+        /// An experience which utilizes only the headset orientation and is gravity aligned. The coordinate system origin is at head level.
         /// </summary>
         OrientationOnly = 0,
         /// <summary>
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// </summary>
         Standing,
         /// <summary>
-        /// An experience designed to support movement thoughtout a room. The coordinate system origin is at floor level.
+        /// An experience designed to support movement throughout a room. The coordinate system origin is at floor level.
         /// </summary>
         Room,
         /// <summary>

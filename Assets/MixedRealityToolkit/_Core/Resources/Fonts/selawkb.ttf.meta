@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 55651ae5ac8b2804f94b620dd47797c3
+guid: a99e8b1ed1154eb58270cc6a18605657
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -12,7 +12,7 @@ TrueTypeFontImporter:
   fontNames:
   - Selawik
   fallbackFontReferences:
-  - {fileID: 12800000, guid: 03d8727af681c3342a00825e0d19c780, type: 3}
+  - {fileID: 12800000, guid: e869342c56e54acf989b2422b4b80dcc, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

@@ -1,9 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
+using System.Collections;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
@@ -13,34 +16,86 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
     /// </summary>
     public interface IMixedRealityPointer : IEqualityComparer
     {
+        /// <summary>
+        /// The pointer's current input system reference.
+        /// </summary>
         IMixedRealityInputSystem InputSystem { get; }
 
+        /// <summary>
+        /// The pointer's current controller reference.
+        /// </summary>
+        IMixedRealityController Controller { get; set; }
+
+        /// <summary>
+        /// This pointer's id.
+        /// </summary>
         uint PointerId { get; }
 
+        /// <summary>
+        /// This pointer's name.
+        /// </summary>
         string PointerName { get; set; }
 
+        /// <summary>
+        /// This pointer's input source parent.
+        /// </summary>
         IMixedRealityInputSource InputSourceParent { get; }
 
+        /// <summary>
+        /// The pointer's cursor.
+        /// </summary>
         IMixedRealityCursor BaseCursor { get; set; }
 
+        /// <summary>
+        /// The currently active cursor modifier.
+        /// </summary>
         ICursorModifier CursorModifier { get; set; }
 
-        ITeleportTarget TeleportTarget { get; set; }
+        /// <summary>
+        /// The currently active teleport hotspot.
+        /// </summary>
+        IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
 
-        bool InteractionEnabled { get; }
+        /// <summary>
+        /// Has the conditions for the interaction been satisfied to enable the interaction?
+        /// </summary>
+        bool IsInteractionEnabled { get; }
 
-        bool FocusLocked { get; set; }
+        /// <summary>
+        /// Is the focus for this pointer currently locked?
+        /// </summary>
+        bool IsFocusLocked { get; set; }
 
-        float? PointerExtent { get; set; }
+        /// <summary>
+        /// The pointer's maximum extent when raycasting.
+        /// </summary>
+        float PointerExtent { get; set; }
 
+        /// <summary>
+        /// The raycast rays.
+        /// </summary>
         RayStep[] Rays { get; }
 
+        /// <summary>
+        /// The physics layers to use when raycasting.
+        /// </summary>
+        /// <remarks>If set, will override the <see cref="IMixedRealityInputSystem"/>'s default raycasting layer mask array.
+        /// </remarks>
         LayerMask[] PrioritizedLayerMasksOverride { get; set; }
 
+        /// <summary>
+        /// The currently focused target.
+        /// </summary>
         IMixedRealityFocusHandler FocusTarget { get; set; }
 
+        /// <summary>
+        /// The physics raycast pointer result.
+        /// </summary>
         IPointerResult Result { get; set; }
 
+        /// <summary>
+        /// Ray stabilizer used when calculating position of pointer end point.
+        /// </summary>
         IBaseRayStabilizer RayStabilizer { get; set; }
 
         /// <summary>
@@ -52,6 +107,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// The radius to use when <see cref="RaycastMode"/> is set to Sphere.
         /// </summary>
         float SphereCastRadius { get; set; }
+
+        /// <summary>
+        /// The Y orientation of the pointer - used for touchpad rotation and navigation
+        /// </summary>
+        float PointerOrientation { get; }
 
         /// <summary>
         /// Called before all rays have casted.

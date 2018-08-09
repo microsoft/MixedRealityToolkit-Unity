@@ -16,30 +16,30 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test01_TestObjectChanged()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.Raw, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.Raw, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue1 = (object)1f;
             var testValue2 = (object)false;
 
-            var initialValue = interaction.GetRawValue();
+            var initialValue = interaction.RawData;
 
             Assert.IsNull(initialValue);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetRawValue(testValue1);
+            interaction.RawData = testValue1;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue1 = interaction.GetRawValue();
+            var setValue1 = interaction.RawData;
 
             Assert.IsNotNull(setValue1);
             Assert.AreEqual(setValue1, testValue1);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetRawValue(testValue2);
+            interaction.RawData = testValue2;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue2 = interaction.GetRawValue();
+            var setValue2 = interaction.RawData;
 
             Assert.IsNotNull(setValue2);
             Assert.AreEqual(setValue2, testValue2);
@@ -49,34 +49,34 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test02_TestObjectNoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.Raw, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.Raw, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = new object();
 
-            var initialValue = interaction.GetRawValue();
+            var initialValue = interaction.RawData;
 
             Assert.IsNull(initialValue);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetRawValue(testValue);
+            interaction.RawData = testValue;
 
             Assert.IsTrue(interaction.Changed);
 
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetRawValue(testValue);
+            interaction.RawData = testValue;
 
             // Make sure if we set the same value it's false
             Assert.IsFalse(interaction.Changed);
 
             //Check setting the value twice with the same value produces no change
-            var newValue = interaction.GetRawValue();
+            var newValue = interaction.RawData;
 
             // Make sure if we set the same value it's false
             Assert.IsFalse(interaction.Changed, newValue.ToString());
 
             // Make sure setting again after query, we query again it's false
-            interaction.SetRawValue(testValue);
+            interaction.RawData = testValue;
 
             // Make sure if we set the same value it's false
             Assert.IsFalse(interaction.Changed);
@@ -89,30 +89,30 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test03_TestBoolChanged()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.Digital, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.Digital, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue1 = true;
             var testValue2 = false;
 
-            var initialValue = interaction.GetBoolValue();
+            var initialValue = interaction.BoolData;
 
             Assert.IsFalse(initialValue);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetBoolValue(testValue1);
+            interaction.BoolData = testValue1;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue1 = interaction.GetBoolValue();
+            var setValue1 = interaction.BoolData;
 
             Assert.IsTrue(setValue1);
             Assert.True(setValue1 == testValue1);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetBoolValue(testValue2);
+            interaction.BoolData = testValue2;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue2 = interaction.GetBoolValue();
+            var setValue2 = interaction.BoolData;
 
             Assert.IsFalse(setValue2);
             Assert.True(setValue2 == testValue2);
@@ -122,22 +122,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test04_TestBoolNoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.Digital, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.Digital, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = true;
 
-            var initialValue = interaction.GetBoolValue();
+            var initialValue = interaction.BoolData;
 
             Assert.IsFalse(initialValue);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetBoolValue(testValue);
+            interaction.BoolData = testValue;
 
             Assert.IsTrue(interaction.Changed);
 
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetBoolValue(testValue);
+            interaction.BoolData = testValue;
 
             // Make sure if we set the same value it's false
             Assert.IsFalse(interaction.Changed);
@@ -150,29 +150,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test05_TestFloatChanged()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.SingleAxis, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue1 = 1f;
             var testValue2 = 9001f;
 
-            var initialValue = interaction.GetFloatValue();
+            var initialValue = interaction.FloatData;
 
             Assert.AreEqual(initialValue, 0d, double.Epsilon);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetFloatValue(testValue1);
+            interaction.FloatData = testValue1;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue1 = interaction.GetFloatValue();
+            var setValue1 = interaction.FloatData;
 
             Assert.AreEqual(setValue1, testValue1, double.Epsilon);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetFloatValue(testValue2);
+            interaction.FloatData = testValue2;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue2 = interaction.GetFloatValue();
+            var setValue2 = interaction.FloatData;
 
             Assert.AreEqual(setValue2, testValue2, double.Epsilon);
             Assert.IsFalse(interaction.Changed);
@@ -181,22 +181,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test06_TestFloatNoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.SingleAxis, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = 1f;
 
-            var initialValue = interaction.GetFloatValue();
+            var initialValue = interaction.FloatData;
 
             Assert.AreEqual(initialValue, 0d, double.Epsilon);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetFloatValue(testValue);
+            interaction.FloatData = testValue;
 
             Assert.IsTrue(interaction.Changed);
 
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetFloatValue(testValue);
+            interaction.FloatData = testValue;
 
             // Make sure if we set the same value it's false
             Assert.IsFalse(interaction.Changed);
@@ -209,29 +209,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test07_TestVector2Changed()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.DualAxis, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue1 = Vector2.one;
             var testValue2 = Vector2.zero;
 
-            var initialValue = interaction.GetVector2Value();
+            var initialValue = interaction.Vector2Data;
 
             Assert.True(initialValue == Vector2.zero);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetVector2Value(testValue1);
+            interaction.Vector2Data = testValue1;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue1 = interaction.GetVector2Value();
+            var setValue1 = interaction.Vector2Data;
 
             Assert.True(setValue1 == testValue1);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetVector2Value(testValue2);
+            interaction.Vector2Data = testValue2;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue2 = interaction.GetVector2Value();
+            var setValue2 = interaction.Vector2Data;
 
             Assert.True(setValue2 == testValue2);
             Assert.IsFalse(interaction.Changed);
@@ -240,22 +240,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test08_TestVector2NoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.DualAxis, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = Vector2.one;
 
-            var initialValue = interaction.GetVector2Value();
+            var initialValue = interaction.Vector2Data;
 
             Assert.True(initialValue == Vector2.zero);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetVector2Value(testValue);
+            interaction.Vector2Data = testValue;
 
             Assert.IsTrue(interaction.Changed);
 
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetVector2Value(testValue);
+            interaction.Vector2Data = testValue;
 
             // Make sure if we set the same value it's false
             Assert.IsFalse(interaction.Changed);
@@ -268,29 +268,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test09_TestVector3Changed()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.ThreeDofPosition, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.ThreeDofPosition, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
-            var initialValue = interaction.GetPositionValue();
+            var initialValue = interaction.PositionData;
 
             Assert.True(initialValue == Vector3.zero);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetPositionValue(testValue1);
+            interaction.PositionData = testValue1;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue1 = interaction.GetPositionValue();
+            var setValue1 = interaction.PositionData;
 
             Assert.True(setValue1 == testValue1);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetPositionValue(testValue2);
+            interaction.PositionData = testValue2;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue2 = interaction.GetPositionValue();
+            var setValue2 = interaction.PositionData;
 
             Assert.True(setValue2 == testValue2);
             Assert.IsFalse(interaction.Changed);
@@ -299,22 +299,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test10_TestVector3NoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.ThreeDofPosition, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.ThreeDofPosition, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = Vector3.one;
 
-            var initialValue = interaction.GetPositionValue();
+            var initialValue = interaction.PositionData;
 
             Assert.True(initialValue == Vector3.zero);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetPositionValue(testValue);
+            interaction.PositionData = testValue;
 
             Assert.IsTrue(interaction.Changed);
 
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetPositionValue(testValue);
+            interaction.PositionData = testValue;
 
             // Make sure if we set the same value it's false
             Assert.IsFalse(interaction.Changed);
@@ -327,29 +327,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test11_TestQuaternionChanged()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.ThreeDofRotation, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.ThreeDofRotation, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
-            var initialValue = interaction.GetRotationValue();
+            var initialValue = interaction.RotationData;
 
             Assert.IsTrue(initialValue == Quaternion.identity);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetRotationValue(testValue1);
+            interaction.RotationData = testValue1;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue1 = interaction.GetRotationValue();
+            var setValue1 = interaction.RotationData;
 
             Assert.True(setValue1 == testValue1);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetRotationValue(testValue2);
+            interaction.RotationData = testValue2;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue2 = interaction.GetRotationValue();
+            var setValue2 = interaction.RotationData;
 
             Assert.True(setValue2 == testValue2);
             Assert.IsFalse(interaction.Changed);
@@ -358,22 +358,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test12_TestQuaternionNoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.ThreeDofRotation, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.ThreeDofRotation, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = Quaternion.Euler(45f, 45f, 45f);
 
-            var initialValue = interaction.GetRotationValue();
+            var initialValue = interaction.RotationData;
 
             Assert.IsTrue(initialValue == Quaternion.identity);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetRotationValue(testValue);
+            interaction.RotationData = testValue;
 
             Assert.IsTrue(interaction.Changed);
 
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetRotationValue(testValue);
+            interaction.RotationData = testValue;
 
             // Make sure if we set the same value it's false
             Assert.IsFalse(interaction.Changed);
@@ -386,29 +386,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test13_TestMixedRealityPoseChanged()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.SixDof, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.SixDof, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue1 = new MixedRealityPose(Vector3.up, Quaternion.identity);
             var testValue2 = new MixedRealityPose(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
 
-            var initialValue = interaction.GetSixDofValue();
+            var initialValue = interaction.PoseData;
 
             Assert.IsTrue(initialValue == MixedRealityPose.ZeroIdentity);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetPoseValue(testValue1);
+            interaction.PoseData = testValue1;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue1 = interaction.GetSixDofValue();
+            var setValue1 = interaction.PoseData;
 
             Assert.IsTrue(setValue1 == testValue1);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetPoseValue(testValue2);
+            interaction.PoseData = testValue2;
 
             Assert.IsTrue(interaction.Changed);
 
-            var setValue2 = interaction.GetSixDofValue();
+            var setValue2 = interaction.PoseData;
 
             Assert.IsTrue(setValue2 == testValue2);
             Assert.IsFalse(interaction.Changed);
@@ -417,22 +417,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test14_TesMixedRealityPoseNoChange()
         {
-            var interaction = new MixedRealityInteractionMapping(1, AxisType.SixDof, DeviceInputType.None, MixedRealityInputAction.None);
+            var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.SixDof, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = new MixedRealityPose(Vector3.up, Quaternion.identity);
 
-            var initialValue = interaction.GetSixDofValue();
+            var initialValue = interaction.PoseData;
 
             Assert.IsTrue(initialValue == MixedRealityPose.ZeroIdentity);
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetPoseValue(testValue);
+            interaction.PoseData = testValue;
 
             Assert.IsTrue(interaction.Changed);
 
             // Make sure the second time we query it's false
             Assert.IsFalse(interaction.Changed);
 
-            interaction.SetPoseValue(testValue);
+            interaction.PoseData = testValue;
 
             // Make sure if we set the same value it's false
             Assert.IsFalse(interaction.Changed);
@@ -445,256 +445,277 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test15_InteractionArrayObject()
         {
-            var interactions = new MixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.Raw, DeviceInputType.None, MixedRealityInputAction.None);
+            var interactions = new[]
+            {
+                new MixedRealityInteractionMapping(1, string.Empty, AxisType.Raw, DeviceInputType.None, MixedRealityInputAction.None)
+            };
+
             var testValue1 = (object)1f;
             var testValue2 = (object)false;
 
             var initialValue = interactions[0];
 
             Assert.IsNotNull(initialValue);
-            Assert.IsNull(initialValue.GetRawValue());
+            Assert.IsNull(initialValue.RawData);
             Assert.IsFalse(initialValue.Changed);
 
-            initialValue.SetRawValue(testValue1);
+            initialValue.RawData = testValue1;
 
             Assert.IsTrue(initialValue.Changed);
 
             var setValue1 = interactions[0];
 
             Assert.IsNotNull(setValue1);
-            Assert.IsNotNull(setValue1.GetRawValue());
-            Assert.AreEqual(setValue1.GetRawValue(), testValue1);
+            Assert.IsNotNull(setValue1.RawData);
+            Assert.AreEqual(setValue1.RawData, testValue1);
             Assert.IsFalse(setValue1.Changed);
 
-            setValue1.SetRawValue(testValue2);
+            setValue1.RawData = testValue2;
 
             Assert.IsTrue(setValue1.Changed);
 
             var setValue2 = interactions[0];
 
             Assert.IsNotNull(setValue2);
-            Assert.IsNotNull(setValue2.GetRawValue());
-            Assert.AreEqual(setValue2.GetRawValue(), testValue2);
+            Assert.IsNotNull(setValue2.RawData);
+            Assert.AreEqual(setValue2.RawData, testValue2);
             Assert.IsFalse(setValue2.Changed);
         }
 
         [Test]
         public void Test16_InteractionArrayBool()
         {
-            var interactions = new MixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.Digital, DeviceInputType.None, MixedRealityInputAction.None);
+            var interactions = new[]
+            {
+                new MixedRealityInteractionMapping(1, string.Empty, AxisType.Digital, DeviceInputType.None, MixedRealityInputAction.None)
+            };
+
             var testValue1 = true;
             var testValue2 = false;
 
             var initialValue = interactions[0];
 
             Assert.IsNotNull(initialValue);
-            Assert.IsFalse(initialValue.GetBoolValue());
+            Assert.IsFalse(initialValue.BoolData);
             Assert.IsFalse(initialValue.Changed);
 
-            initialValue.SetBoolValue(testValue1);
+            initialValue.BoolData = testValue1;
 
             Assert.IsTrue(initialValue.Changed);
 
             var setValue1 = interactions[0];
 
             Assert.IsNotNull(setValue1);
-            Assert.IsTrue(setValue1.GetBoolValue());
-            Assert.IsTrue(setValue1.GetBoolValue() == testValue1);
+            Assert.IsTrue(setValue1.BoolData);
+            Assert.IsTrue(setValue1.BoolData == testValue1);
             Assert.IsFalse(setValue1.Changed);
 
-            setValue1.SetBoolValue(testValue2);
+            setValue1.BoolData = testValue2;
 
             Assert.IsTrue(setValue1.Changed);
 
             var setValue2 = interactions[0];
 
             Assert.IsNotNull(setValue2);
-            Assert.IsFalse(setValue2.GetBoolValue());
-            Assert.IsTrue(setValue2.GetBoolValue() == testValue2);
+            Assert.IsFalse(setValue2.BoolData);
+            Assert.IsTrue(setValue2.BoolData == testValue2);
             Assert.IsFalse(setValue2.Changed);
         }
 
         [Test]
         public void Test17_InteractionArrayFloat()
         {
-            var interactions = new MixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.SingleAxis, DeviceInputType.None, MixedRealityInputAction.None);
+            var interactions = new[]
+            {
+                new MixedRealityInteractionMapping(1, string.Empty, AxisType.SingleAxis, DeviceInputType.None, MixedRealityInputAction.None)
+            };
+
             var testValue1 = 1f;
             var testValue2 = 9001f;
 
             var initialValue = interactions[0];
 
             Assert.IsNotNull(initialValue);
-            Assert.AreEqual(initialValue.GetFloatValue(), 0d, double.Epsilon);
+            Assert.AreEqual(initialValue.FloatData, 0d, double.Epsilon);
             Assert.IsFalse(initialValue.Changed);
 
-            initialValue.SetFloatValue(testValue1);
+            initialValue.FloatData = testValue1;
 
             Assert.IsTrue(initialValue.Changed);
 
             var setValue1 = interactions[0];
 
             Assert.IsNotNull(setValue1);
-            Assert.AreEqual(setValue1.GetFloatValue(), testValue1, double.Epsilon);
+            Assert.AreEqual(setValue1.FloatData, testValue1, double.Epsilon);
             Assert.IsFalse(setValue1.Changed);
 
-            setValue1.SetFloatValue(testValue2);
+            setValue1.FloatData = testValue2;
 
             Assert.IsTrue(setValue1.Changed);
 
             var setValue2 = interactions[0];
 
             Assert.IsNotNull(setValue2);
-            Assert.AreEqual(setValue2.GetFloatValue(), testValue2, double.Epsilon);
+            Assert.AreEqual(setValue2.FloatData, testValue2, double.Epsilon);
             Assert.IsFalse(setValue2.Changed);
         }
 
         [Test]
         public void Test18_InteractionArrayVector2()
         {
-            var interactions = new MixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.DualAxis, DeviceInputType.None, MixedRealityInputAction.None);
+            var interactions = new[]
+            {
+                new MixedRealityInteractionMapping(1, string.Empty, AxisType.DualAxis, DeviceInputType.None, MixedRealityInputAction.None)
+            };
+
             var testValue1 = Vector2.one;
             var testValue2 = Vector2.zero;
 
             var initialValue = interactions[0];
 
             Assert.IsNotNull(initialValue);
-            Assert.True(initialValue.GetVector2Value() == Vector2.zero);
+            Assert.True(initialValue.Vector2Data == Vector2.zero);
             Assert.IsFalse(initialValue.Changed);
 
-            initialValue.SetVector2Value(testValue1);
+            initialValue.Vector2Data = testValue1;
 
             Assert.IsTrue(initialValue.Changed);
 
             var setValue1 = interactions[0];
 
             Assert.IsNotNull(setValue1);
-            Assert.True(setValue1.GetVector2Value() == testValue1);
+            Assert.True(setValue1.Vector2Data == testValue1);
             Assert.IsFalse(setValue1.Changed);
 
-            setValue1.SetVector2Value(testValue2);
+            setValue1.Vector2Data = testValue2;
 
             Assert.IsTrue(setValue1.Changed);
 
             var setValue2 = interactions[0];
 
             Assert.IsNotNull(setValue2);
-            Assert.True(setValue2.GetVector2Value() == testValue2);
+            Assert.True(setValue2.Vector2Data == testValue2);
             Assert.IsFalse(setValue2.Changed);
         }
 
         [Test]
         public void Test19_InteractionArrayVector3()
         {
-            var interactions = new MixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.ThreeDofPosition, DeviceInputType.None, MixedRealityInputAction.None);
+            var interactions = new[]
+            {
+                new MixedRealityInteractionMapping(1, string.Empty, AxisType.ThreeDofPosition, DeviceInputType.None, MixedRealityInputAction.None)
+            };
+
             var testValue1 = Vector3.one;
             var testValue2 = Vector3.zero;
 
             var initialValue = interactions[0];
 
             Assert.IsNotNull(initialValue);
-            Assert.True(initialValue.GetPositionValue() == Vector3.zero);
+            Assert.True(initialValue.PositionData == Vector3.zero);
             Assert.IsFalse(initialValue.Changed);
 
-            initialValue.SetPositionValue(testValue1);
+            initialValue.PositionData = testValue1;
 
             Assert.IsTrue(initialValue.Changed);
 
             var setValue1 = interactions[0];
 
             Assert.IsNotNull(setValue1);
-            Assert.True(setValue1.GetPositionValue() == testValue1);
+            Assert.True(setValue1.PositionData == testValue1);
             Assert.IsFalse(setValue1.Changed);
 
-            setValue1.SetPositionValue(testValue2);
+            setValue1.PositionData = testValue2;
 
             Assert.IsTrue(setValue1.Changed);
 
             var setValue2 = interactions[0];
 
             Assert.IsNotNull(setValue2);
-            Assert.True(setValue2.GetPositionValue() == testValue2);
+            Assert.True(setValue2.PositionData == testValue2);
             Assert.IsFalse(setValue2.Changed);
         }
 
         [Test]
         public void Test20_InteractionArrayQuaternion()
         {
-            var interactions = new MixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.ThreeDofRotation, DeviceInputType.None, MixedRealityInputAction.None);
+            var interactions = new[]
+            {
+                new MixedRealityInteractionMapping(1, string.Empty, AxisType.ThreeDofRotation, DeviceInputType.None, MixedRealityInputAction.None)
+            };
+
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
             var testValue2 = Quaternion.identity;
 
             var initialValue = interactions[0];
 
             Assert.IsNotNull(initialValue);
-            Assert.True(initialValue.GetRotationValue().eulerAngles == Quaternion.identity.eulerAngles);
+            Assert.True(initialValue.RotationData.eulerAngles == Quaternion.identity.eulerAngles);
             Assert.IsFalse(initialValue.Changed);
 
-            initialValue.SetRotationValue(testValue1);
+            initialValue.RotationData = testValue1;
 
             Assert.IsTrue(initialValue.Changed);
 
             var setValue1 = interactions[0];
 
             Assert.IsNotNull(setValue1);
-            Assert.True(setValue1.GetRotationValue() == testValue1);
+            Assert.True(setValue1.RotationData == testValue1);
             Assert.IsFalse(setValue1.Changed);
 
-            setValue1.SetRotationValue(testValue2);
+            setValue1.RotationData = testValue2;
 
             Assert.IsTrue(setValue1.Changed);
 
             var setValue2 = interactions[0];
 
             Assert.IsNotNull(setValue2);
-            Assert.True(setValue2.GetRotationValue() == testValue2);
+            Assert.True(setValue2.RotationData == testValue2);
             Assert.IsFalse(setValue2.Changed);
         }
 
         [Test]
         public void Test21_InteractionArrayMixedRealityPose()
         {
-            var interactions = new MixedRealityInteractionMapping[1];
-            interactions[0] = new MixedRealityInteractionMapping(1, AxisType.SixDof, DeviceInputType.None, MixedRealityInputAction.None);
+            var interactions = new[]
+            {
+                new MixedRealityInteractionMapping(1, string.Empty, AxisType.SixDof, DeviceInputType.None, MixedRealityInputAction.None)
+            };
+
             var testValue1 = new MixedRealityPose(Vector3.one, new Quaternion(45f, 45f, 45f, 45f));
-            var testValue2 = new MixedRealityPose(Vector3.zero, Quaternion.identity);
+            var testValue2 = MixedRealityPose.ZeroIdentity;
 
             var initialValue = interactions[0];
 
             Assert.IsNotNull(initialValue);
-            MixedRealityPose initialSixDofValue = initialValue.GetSixDofValue();
+            MixedRealityPose initialSixDofValue = initialValue.PoseData;
 
             Assert.IsTrue(initialSixDofValue.Position == Vector3.zero);
             Assert.IsTrue(initialSixDofValue == MixedRealityPose.ZeroIdentity);
             Assert.IsFalse(initialValue.Changed);
 
-            initialValue.SetPoseValue(testValue1);
+            initialValue.PoseData = testValue1;
 
             Assert.IsTrue(initialValue.Changed);
 
             var setValue1 = interactions[0];
 
             Assert.IsNotNull(setValue1);
-            Assert.IsTrue(setValue1.GetSixDofValue() == testValue1);
-            Assert.IsTrue(setValue1.GetSixDofValue().Position == testValue1.Position);
-            Assert.IsTrue(setValue1.GetSixDofValue().Rotation == testValue1.Rotation);
+            Assert.IsTrue(setValue1.PoseData == testValue1);
+            Assert.IsTrue(setValue1.PoseData.Position == testValue1.Position);
+            Assert.IsTrue(setValue1.PoseData.Rotation == testValue1.Rotation);
             Assert.IsFalse(setValue1.Changed);
 
-            setValue1.SetPoseValue(testValue2);
+            setValue1.PoseData = testValue2;
 
             Assert.IsTrue(setValue1.Changed);
 
             var setValue2 = interactions[0];
 
             Assert.IsNotNull(setValue2);
-            Assert.IsTrue(setValue2.GetSixDofValue() == testValue2);
-            Assert.IsTrue(setValue2.GetSixDofValue().Position == testValue2.Position);
-            Assert.IsTrue(setValue2.GetSixDofValue().Rotation == testValue2.Rotation);
+            Assert.IsTrue(setValue2.PoseData == testValue2);
+            Assert.IsTrue(setValue2.PoseData.Position == testValue2.Position);
+            Assert.IsTrue(setValue2.PoseData.Rotation == testValue2.Rotation);
             Assert.IsFalse(setValue1.Changed);
         }
         #endregion Interaction Array Tests

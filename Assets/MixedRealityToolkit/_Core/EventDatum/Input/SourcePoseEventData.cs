@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -91,11 +91,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// </summary>
         /// <param name="inputSource"></param>
         /// <param name="controller"></param>
-        /// <param name="position"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityController controller, MixedRealityPose position)
+        /// <param name="pose"></param>
+        public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityController controller, MixedRealityPose pose)
         {
             Initialize(inputSource, controller);
-            MixedRealityPose = position;
+            ThreeDofPosition = pose.Position;
+            ThreeDofRotation = pose.Rotation;
+            MixedRealityPose = pose;
         }
     }
 }

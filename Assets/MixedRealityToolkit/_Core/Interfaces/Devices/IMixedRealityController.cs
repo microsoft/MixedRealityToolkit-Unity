@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
+namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices
 {
     /// <summary>
     /// Mixed Reality Toolkit controller definition, used to manage a specific controller type
@@ -59,10 +59,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces
         /// Mapping definition for this controller, linking the Physical inputs to logical Input System Actions
         /// </summary>
         MixedRealityInteractionMapping[] Interactions { get; }
-
-        /// <summary>
-        /// For those platforms that require Unity Input mappings
-        /// </summary>
-        InputManagerAxis[] ControllerAxisMappings { get; }
     }
 }

@@ -2,8 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections;
 using UnityEngine;
@@ -25,11 +28,24 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
             InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
             PointerId = InputSystem.FocusProvider.GenerateNewPointerId();
             PointerName = pointerName;
-            InputSourceParent = inputSourceParent;
+            this.inputSourceParent = inputSourceParent;
         }
 
         /// <inheritdoc />
         public IMixedRealityInputSystem InputSystem { get; }
+
+        /// <inheritdoc />
+        public virtual IMixedRealityController Controller
+        {
+            get { return controller; }
+            set
+            {
+                controller = value;
+                inputSourceParent = controller.InputSource;
+            }
+        }
+
+        private IMixedRealityController controller;
 
         /// <inheritdoc />
         public uint PointerId { get; }
@@ -38,7 +54,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         public string PointerName { get; set; }
 
         /// <inheritdoc />
-        public virtual IMixedRealityInputSource InputSourceParent { get; protected set; }
+        public virtual IMixedRealityInputSource InputSourceParent
+        {
+            get { return inputSourceParent; }
+            protected set { inputSourceParent = value; }
+        }
+
+        private IMixedRealityInputSource inputSourceParent;
 
         /// <inheritdoc />
         public IMixedRealityCursor BaseCursor { get; set; }
@@ -47,16 +69,16 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         public ICursorModifier CursorModifier { get; set; }
 
         /// <inheritdoc />
-        public ITeleportTarget TeleportTarget { get; set; }
+        public IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
 
         /// <inheritdoc />
-        public bool InteractionEnabled { get; set; }
+        public bool IsInteractionEnabled { get; set; }
 
         /// <inheritdoc />
-        public bool FocusLocked { get; set; }
+        public bool IsFocusLocked { get; set; }
 
         /// <inheritdoc />
-        public float? PointerExtent { get; set; }
+        public virtual float PointerExtent { get; set; } = 10f;
 
         /// <inheritdoc />
         public RayStep[] Rays { get; protected set; } = { new RayStep(Vector3.zero, Vector3.forward) };
@@ -79,19 +101,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         /// <inheritdoc />
         public float SphereCastRadius { get; set; }
 
+        public float PointerOrientation { get; } = 0f;
+
         /// <inheritdoc />
         public virtual void OnPreRaycast()
         {
             Ray pointingRay;
             if (TryGetPointingRay(out pointingRay))
             {
-                Rays[0].CopyRay(pointingRay, (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent));
+                Rays[0].CopyRay(pointingRay, PointerExtent);
             }
 
             if (RayStabilizer != null)
             {
                 RayStabilizer.UpdateStability(Rays[0].Origin, Rays[0].Direction);
-                Rays[0].CopyRay(RayStabilizer.StableRay, (PointerExtent ?? InputSystem.FocusProvider.GlobalPointingExtent));
+                Rays[0].CopyRay(RayStabilizer.StableRay, PointerExtent);
             }
         }
 

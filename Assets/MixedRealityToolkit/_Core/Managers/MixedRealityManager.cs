@@ -5,8 +5,10 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         private bool isMixedRealityManagerInitializing = false;
 
         /// <summary>
-        /// Is there a valid Active Profile on this manager?
+        /// Checks if there is a valid instance of the MixedRealityManager, then checks if there
+        /// is there a valid Active Profile on this manager.
         /// </summary>
         public static bool HasActiveProfile
         {
@@ -37,7 +40,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     return false;
                 }
 
-                return Instance.activeProfile != null;
+                if (!ConfirmInitialized())
+                {
+                    return false;
+                }
+
+                return Instance.ActiveProfile != null;
             }
         }
 
@@ -107,10 +115,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
         #endregion Mixed Reality runtime component registry
 
-        #region Active SDK components
-
-        #endregion Active SDK components
-
         /// <summary>
         /// Function called when the instance is assigned.
         /// Once all managers are registered and properties updated, the Mixed Reality Manager will initialize all active managers.
@@ -127,10 +131,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 return;
             }
 
-            Debug.Assert(ActiveProfile.ActiveManagers.Count == 0, "Active Managers were not cleaned up properly.");
-            ActiveProfile.ActiveManagers.Clear();
+#if UNITY_EDITOR
+            if (ActiveProfile.ActiveManagers.Count > 0)
+            {
+                if (!Application.isPlaying)
+                {
+                    DisableAllManagers();
+                    DestroyAllManagers();
+                }
+                else
+                {
+                    ActiveProfile.ActiveManagers.Clear();
+                }
+            }
+#endif
 
-            if (ActiveProfile.EnableCameraProfile)
+            if (ActiveProfile.IsCameraProfileEnabled)
             {
                 if (MixedRealityCameraProfile.IsOpaque)
                 {
@@ -144,18 +160,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             #region  Managers Registration
 
-            //If the Input system has been selected for initialization in the Active profile, enable it in the project
-            if (ActiveProfile.EnableInputSystem)
+            // If the Input system has been selected for initialization in the Active profile, enable it in the project
+            if (ActiveProfile.IsInputSystemEnabled)
             {
                 //Enable Input (example initializer)
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
             }
 
-            //If the Boundary system has been selected for initialization in the Active profile, enable it in the project
-            if (ActiveProfile.EnableBoundarySystem)
+            // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
+            if (ActiveProfile.IsBoundarySystemEnabled)
             {
                 //Enable Boundary (example initializer)
                 AddManager(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem);
+            }
+
+            // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
+            if (ActiveProfile.IsTeleportSystemEnabled)
+            {
+                AddManager(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
             }
 
             #region ActiveSDK Discovery
@@ -289,6 +311,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     DontDestroyOnLoad(instance.transform.root);
                 }
 
+                Application.quitting += ApplicationOnQuitting;
+
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.playModeStateChanged += playModeState =>
                 {
@@ -303,6 +327,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
                 Initialize();
             }
+        }
+
+        private void ApplicationOnQuitting()
+        {
+            DisableAllManagers();
+            DestroyAllManagers();
         }
 
         /// <summary>
@@ -709,10 +739,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         private void InitializeAllManagers()
         {
             //If the Mixed Reality Manager is not configured, stop.
-            if (ActiveProfile == null) { return; }
+            if (activeProfile == null) { return; }
 
             //Initialize all managers
-            foreach (var manager in ActiveProfile.ActiveManagers)
+            foreach (var manager in activeProfile.ActiveManagers)
             {
                 manager.Value.Initialize();
             }
@@ -727,10 +757,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         private void ResetAllManagers()
         {
             //If the Mixed Reality Manager is not configured, stop.
-            if (ActiveProfile == null) { return; }
+            if (activeProfile == null) { return; }
 
             // Reset all active managers in the registry
-            foreach (var manager in ActiveProfile.ActiveManagers)
+            foreach (var manager in activeProfile.ActiveManagers)
             {
                 manager.Value.Reset();
             }
@@ -745,10 +775,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         private void EnableAllManagers()
         {
             //If the Mixed Reality Manager is not configured, stop.
-            if (ActiveProfile == null) { return; }
+            if (activeProfile == null) { return; }
 
             // Enable all active managers in the registry
-            foreach (var manager in ActiveProfile.ActiveManagers)
+            foreach (var manager in activeProfile.ActiveManagers)
             {
                 manager.Value.Enable();
             }
@@ -763,10 +793,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         private void UpdateAllManagers()
         {
             //If the Mixed Reality Manager is not configured, stop.
-            if (ActiveProfile == null) { return; }
+            if (activeProfile == null) { return; }
 
             // Update manager registry
-            foreach (var manager in ActiveProfile.ActiveManagers)
+            foreach (var manager in activeProfile.ActiveManagers)
             {
                 manager.Value.Update();
             }
@@ -778,13 +808,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
         }
 
+
         private void DisableAllManagers()
         {
             //If the Mixed Reality Manager is not configured, stop.
-            if (ActiveProfile == null) { return; }
+            if (activeProfile == null) { return; }
 
             // Disable all active managers in the registry
-            foreach (var manager in ActiveProfile.ActiveManagers)
+            foreach (var manager in activeProfile.ActiveManagers)
             {
                 manager.Value.Disable();
             }
@@ -799,15 +830,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         private void DestroyAllManagers()
         {
             //If the Mixed Reality Manager is not configured, stop.
-            if (ActiveProfile == null) { return; }
+            if (activeProfile == null) { return; }
 
             // Destroy all active managers in the registry
-            foreach (var manager in ActiveProfile.ActiveManagers)
+            foreach (var manager in activeProfile.ActiveManagers)
             {
                 manager.Value.Destroy();
             }
 
-            ActiveProfile.ActiveManagers.Clear();
+            activeProfile.ActiveManagers.Clear();
 
             // Destroy all registered runtime components
             foreach (var manager in MixedRealityComponents)
@@ -865,7 +896,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             if (manager == null)
             {
-                throw new NullReferenceException($"Unable to find {nameof(type)} Manager.");
+                throw new NullReferenceException($"Unable to find {type.Name} Manager.");
             }
         }
 

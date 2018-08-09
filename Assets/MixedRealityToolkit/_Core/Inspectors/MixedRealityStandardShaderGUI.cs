@@ -59,6 +59,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             public static string depthTestName = "_ZTest";
             public static string depthWriteName = "_ZWrite";
             public static string colorWriteMaskName = "_ColorWriteMask";
+            public static string instancedColorName = "_InstancedColor";
+            public static string instancedColorFeatureName = "_INSTANCED_COLOR";
+            public static string stencilComparisonName = "_StencilComparison";
+            public static string stencilOperationName = "_StencilOperation";
             public static string alphaTestOnName = "_ALPHATEST_ON";
             public static string alphaBlendOnName = "_ALPHABLEND_ON";
             public static string disableAlbedoMapName = "_DISABLE_ALBEDO_MAP";
@@ -74,22 +78,25 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             public static GUIContent depthTest = new GUIContent("Depth Test", "How Should Depth Testing Be Performed.");
             public static GUIContent depthWrite = new GUIContent("Depth Write", "Controls Whether Pixels From This Object Are Written to the Depth Buffer");
             public static GUIContent colorWriteMask = new GUIContent("Color Write Mask", "Color Channel Writing Mask");
+            public static GUIContent instancedColor = new GUIContent("Instanced Color", "Enable a Unique Color Per Instance");
             public static GUIContent cullMode = new GUIContent("Cull Mode", "Triangle Culling Mode");
             public static GUIContent renderQueueOverride = new GUIContent("Render Queue Override", "Manually Override the Render Queue");
-            public static GUIContent albedo = new GUIContent("Albedo", "Albedo (RGB) and Transparency (A)");
+            public static GUIContent albedo = new GUIContent("Albedo", "Albedo (RGB) and Transparency (Alpha)");
             public static GUIContent alphaCutoff = new GUIContent("Alpha Cutoff", "Threshold for Alpha Cutoff");
             public static GUIContent metallic = new GUIContent("Metallic", "Metallic Value");
             public static GUIContent smoothness = new GUIContent("Smoothness", "Smoothness Value");
+            public static GUIContent enableChannelMap = new GUIContent("Channel Map", "Enable Channel Map, a Channel Packing Texture That Follows Unity's Standard Channel Setup");
+            public static GUIContent channelMap = new GUIContent("Channel Map", "Metallic (Red), Occlusion (Green), Emission (Blue), Smoothness (Alpha)");
             public static GUIContent enableNormalMap = new GUIContent("Normal Map", "Enable Normal Map");
             public static GUIContent normalMap = new GUIContent("Normal Map");
             public static GUIContent enableEmission = new GUIContent("Emission", "Enable Emission");
             public static GUIContent emissiveColor = new GUIContent("Color");
-            public static GUIContent directionalLight = new GUIContent("Directional Light", "Affected by Unity Directional Light");
+            public static GUIContent directionalLight = new GUIContent("Directional Light", "Affected by One Unity Directional Light");
             public static GUIContent specularHighlights = new GUIContent("Specular Highlights", "Calculate Specular Highlights");
             public static GUIContent reflections = new GUIContent("Reflections", "Calculate Glossy Reflections");
             public static GUIContent refraction = new GUIContent("Refraction", "Calculate Refraction");
             public static GUIContent refractiveIndex = new GUIContent("Refractive Index", "Ratio of Indices of Refraction at the Surface Interface");
-            public static GUIContent rimLight = new GUIContent("Rim Light", "Enable Rim/Edge Lighting");
+            public static GUIContent rimLight = new GUIContent("Rim Light", "Enable Rim (Fresnel) Lighting");
             public static GUIContent rimColor = new GUIContent("Color", "Rim Highlight Color");
             public static GUIContent rimPower = new GUIContent("Power", "Rim Highlight Saturation");
             public static GUIContent clippingPlane = new GUIContent("Clipping Plane", "Enable Clipping Against a Plane");
@@ -97,35 +104,39 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             public static GUIContent clippingPlaneBorder = new GUIContent("Border", "Enable a Border Along the Clipping Plane");
             public static GUIContent clippingPlaneBorderWidth = new GUIContent("Width", "Width of the Clipping Plane Border");
             public static GUIContent clippingPlaneBorderColor = new GUIContent("Color", "Interpolated Color of the Clipping Plane Border");
-            public static GUIContent nearPlaneFade = new GUIContent("Near Plane Fade", "Objects Disappear (Turn to Black) as the Camera Nears Them");
+            public static GUIContent nearPlaneFade = new GUIContent("Near Plane Fade", "Objects Disappear (Turn to Black/Transparent) as the Camera Nears Them");
             public static GUIContent fadeBeginDistance = new GUIContent("Fade Begin", "Distance From Camera to Begin Fade In");
             public static GUIContent fadeCompleteDistance = new GUIContent("Fade Complete", "Distance From Camera When Fade is Fully In");
-            public static GUIContent hoverLight = new GUIContent("Hover Light", "Enable utilization of a Hover Light");
-            public static GUIContent enableHoverColorOverride = new GUIContent("Override Color", "Override Global Hover Color");
-            public static GUIContent hoverLightOpaque = new GUIContent("Hover Light Opaque", "Enable Hover Light on Transparent pixels");
-            public static GUIContent enableHoverColorOpaqueOverride = new GUIContent("Override Color", "Override Opaque Hover Color");
+            public static GUIContent hoverLight = new GUIContent("Hover Light", "Enable utilization of Hover Light(s)");
+            public static GUIContent enableHoverColorOverride = new GUIContent("Override Color", "Override Global Hover Light Color");
+            public static GUIContent hoverLightOpaque = new GUIContent("Hover Light Opaque", "Enable Hover Light on Transparent Pixels");
+            public static GUIContent enableHoverColorOpaqueOverride = new GUIContent("Override Color", "Override Opaque Hover Light Color");
             public static GUIContent hoverColorOpaqueOverride = new GUIContent("Color", "Override Hover Color for Transparent Pixels");
-            public static GUIContent hoverColorOverride = new GUIContent("Color", "Override Hover Color");
-            public static GUIContent roundCorners = new GUIContent("Round Corners", "(Assumes UVs Specify Borders)");
+            public static GUIContent hoverColorOverride = new GUIContent("Color", "Override Hover Light Color");
+            public static GUIContent roundCorners = new GUIContent("Round Corners", "(Assumes UVs Specify Borders of Surface, Works Best on Unity Cube, Quad, and Plane)");
             public static GUIContent roundCornerRadius = new GUIContent("Unit Radius", "Rounded Rectangle Corner Unit Sphere Radius");
             public static GUIContent roundCornerMargin = new GUIContent("Margin %", "Distance From Geometry Edge");
-            public static GUIContent borderLight = new GUIContent("Border Light", "Enable Border Lighting (Assumes UVs Specify Borders)");
-            public static GUIContent borderLightUsesHoverColor = new GUIContent("Use Hover Color", "Border Color Comes From Hover Light");
+            public static GUIContent borderLight = new GUIContent("Border Light", "Enable Border Lighting (Assumes UVs Specify Borders of Surface, Works Best on Unity Cube, Quad, and Plane)");
+            public static GUIContent borderLightUsesHoverColor = new GUIContent("Use Hover Color", "Border Color Comes From Hover Light Color");
             public static GUIContent borderLightOpaque = new GUIContent("Opaque Borders", "Borders Override Alpha Value to Appear Opaque");
             public static GUIContent borderWidth = new GUIContent("Width %", "Uniform Width Along Border as a % of the Smallest XYZ Dimension");
             public static GUIContent borderMinValue = new GUIContent("Min Value", "Minimum Border Saturation");
             public static GUIContent edgeSmoothingValue = new GUIContent("Edge Smoothing Value", "Smooths Edges When Round Corners and Transparency Is Enabled");
-            public static GUIContent innerGlow = new GUIContent("Inner Glow", "Enable Inner Glow (Assumes UVs Specify Borders)");
+            public static GUIContent innerGlow = new GUIContent("Inner Glow", "Enable Inner Glow (Assumes UVs Specify Borders of Surface, Works Best on Unity Cube, Quad, and Plane)");
             public static GUIContent innerGlowColor = new GUIContent("Color", "Inner Glow Color (RGB) and Intensity (A)");
             public static GUIContent environmentColoring = new GUIContent("Environment Coloring", "Change Color Based on View");
             public static GUIContent environmentColorThreshold = new GUIContent("Threshold", "Threshold When Environment Coloring Should Appear Based on Surface Normal");
             public static GUIContent environmentColorIntensity = new GUIContent("Intensity", "Intensity (or Brightness) of the Environment Coloring");
-            public static GUIContent environmentColorX = new GUIContent("X-Axis Color", "Color Along the Worldspace X-Axis");
-            public static GUIContent environmentColorY = new GUIContent("Y-Axis Color", "Color Along the Worldspace Y-Axis");
-            public static GUIContent environmentColorZ = new GUIContent("Z-Axis Color", "Color Along the Worldspace Z-Axis");
+            public static GUIContent environmentColorX = new GUIContent("X-Axis Color", "Color Along the World Space X-Axis");
+            public static GUIContent environmentColorY = new GUIContent("Y-Axis Color", "Color Along the World Space Y-Axis");
+            public static GUIContent environmentColorZ = new GUIContent("Z-Axis Color", "Color Along the World Space Z-Axis");
+            public static GUIContent stencil = new GUIContent("Enable Stencil Testing", "Enabled Stencil Testing Operations");
+            public static GUIContent stencilReference = new GUIContent("Stencil Reference", "Value to Compared Against (if Comparison is Anything but Always) and/or the Value to be Written to the Buffer (if Either Pass, Fail or ZFail is Set to Replace)");
+            public static GUIContent stencilComparison = new GUIContent("Stencil Comparison", "Function to Compare the Reference Value to");
+            public static GUIContent stencilOperation = new GUIContent("Stencil Operation", "What to do When the Stencil Test Passes");
         }
 
-        protected bool initilized;
+        protected bool initialized;
 
         protected MaterialProperty renderingMode;
         protected MaterialProperty customRenderingMode;
@@ -135,12 +146,15 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         protected MaterialProperty depthTest;
         protected MaterialProperty depthWrite;
         protected MaterialProperty colorWriteMask;
+        protected MaterialProperty instancedColor;
         protected MaterialProperty cullMode;
         protected MaterialProperty renderQueueOverride;
         protected MaterialProperty albedoMap;
         protected MaterialProperty albedoColor;
         protected MaterialProperty albedoAlphaMode;
         protected MaterialProperty alphaCutoff;
+        protected MaterialProperty enableChannelMap;
+        protected MaterialProperty channelMap;
         protected MaterialProperty enableNormalMap;
         protected MaterialProperty normalMap;
         protected MaterialProperty enableEmission;
@@ -186,6 +200,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         protected MaterialProperty environmentColorX;
         protected MaterialProperty environmentColorY;
         protected MaterialProperty environmentColorZ;
+        protected MaterialProperty stencil;
+        protected MaterialProperty stencilReference;
+        protected MaterialProperty stencilComparison;
+        protected MaterialProperty stencilOperation;
 
         protected void FindProperties(MaterialProperty[] props)
         {
@@ -197,6 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             depthTest = FindProperty(Styles.depthTestName, props);
             depthWrite = FindProperty(Styles.depthWriteName, props);
             colorWriteMask = FindProperty(Styles.colorWriteMaskName, props);
+            instancedColor = FindProperty(Styles.instancedColorName, props);
             cullMode = FindProperty("_CullMode", props);
             renderQueueOverride = FindProperty("_RenderQueueOverride", props);
             albedoMap = FindProperty("_MainTex", props);
@@ -205,6 +224,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             alphaCutoff = FindProperty("_Cutoff", props);
             metallic = FindProperty("_Metallic", props);
             smoothness = FindProperty("_Smoothness", props);
+            enableChannelMap = FindProperty("_EnableChannelMap", props);
+            channelMap = FindProperty("_ChannelMap", props);
             enableNormalMap = FindProperty("_EnableNormalMap", props);
             normalMap = FindProperty("_NormalMap", props);
             enableEmission = FindProperty("_EnableEmission", props);
@@ -248,6 +269,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             environmentColorX = FindProperty("_EnvironmentColorX", props);
             environmentColorY = FindProperty("_EnvironmentColorY", props);
             environmentColorZ = FindProperty("_EnvironmentColorZ", props);
+            stencil = FindProperty("_Stencil", props);
+            stencilReference = FindProperty("_StencilReference", props);
+            stencilComparison = FindProperty(Styles.stencilComparisonName, props);
+            stencilOperation = FindProperty(Styles.stencilOperationName, props);
         }
 
         public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] props)
@@ -343,10 +368,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         protected void Initialize(Material material)
         {
-            if (!initilized)
+            if (!initialized)
             {
                 MaterialChanged(material);
-                initilized = true;
+                initialized = true;
             }
         }
 
@@ -405,28 +430,41 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             materialEditor.TexturePropertySingleLine(Styles.albedo, albedoMap, albedoColor);
 
-            EditorGUI.indentLevel += 2;
+            materialEditor.ShaderProperty(enableChannelMap, Styles.enableChannelMap);
 
-            albedoAlphaMode.floatValue = EditorGUILayout.Popup(albedoAlphaMode.displayName, (int)albedoAlphaMode.floatValue, Styles.albedoAlphaModeNames);
-
-            if ((RenderingMode)renderingMode.floatValue == RenderingMode.TransparentCutout)
+            if (PropertyEnabled(enableChannelMap))
             {
-                materialEditor.ShaderProperty(alphaCutoff, Styles.alphaCutoff.text);
+                EditorGUI.indentLevel += 2;
+                materialEditor.TexturePropertySingleLine(Styles.channelMap, channelMap);
+                GUILayout.Box("Metallic (Red), Occlusion (Green), Emission (Blue), Smoothness (Alpha)", EditorStyles.helpBox, new GUILayoutOption[0]);
+                EditorGUI.indentLevel -= 2;
             }
 
-            if ((AlbedoAlphaMode)albedoAlphaMode.floatValue != AlbedoAlphaMode.Metallic)
+            if (!PropertyEnabled(enableChannelMap))
             {
-                materialEditor.ShaderProperty(metallic, Styles.metallic);
+                EditorGUI.indentLevel += 2;
+
+                albedoAlphaMode.floatValue = EditorGUILayout.Popup(albedoAlphaMode.displayName, (int)albedoAlphaMode.floatValue, Styles.albedoAlphaModeNames);
+
+                if ((RenderingMode)renderingMode.floatValue == RenderingMode.TransparentCutout)
+                {
+                    materialEditor.ShaderProperty(alphaCutoff, Styles.alphaCutoff.text);
+                }
+
+                if ((AlbedoAlphaMode)albedoAlphaMode.floatValue != AlbedoAlphaMode.Metallic)
+                {
+                    materialEditor.ShaderProperty(metallic, Styles.metallic);
+                }
+
+                if ((AlbedoAlphaMode)albedoAlphaMode.floatValue != AlbedoAlphaMode.Smoothness)
+                {
+                    materialEditor.ShaderProperty(smoothness, Styles.smoothness);
+                }
+
+                SetupMaterialWithAlbedo(material, albedoMap, albedoAlphaMode);
+
+                EditorGUI.indentLevel -= 2;
             }
-
-            if ((AlbedoAlphaMode)albedoAlphaMode.floatValue != AlbedoAlphaMode.Smoothness)
-            {
-                materialEditor.ShaderProperty(smoothness, Styles.smoothness);
-            }
-
-            SetupMaterialWithAlbedo(material, albedoMap, albedoAlphaMode);
-
-            EditorGUI.indentLevel -= 2;
 
             if (PropertyEnabled(directionalLight) ||
                 PropertyEnabled(reflections) ||
@@ -437,7 +475,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                 if (PropertyEnabled(enableNormalMap))
                 {
+                    EditorGUI.indentLevel += 2;
                     materialEditor.TexturePropertySingleLine(Styles.normalMap, normalMap);
+                    EditorGUI.indentLevel -= 2;
                 }
             }
 
@@ -625,6 +665,33 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
 
             materialEditor.EnableInstancingField();
+
+            if (material.enableInstancing)
+            {
+                GUI.enabled = true;
+                materialEditor.ShaderProperty(instancedColor, Styles.instancedColor, 2);
+            }
+            else
+            {
+                // When instancing is disable, disable instanced color.
+                SetFloatProperty(material, Styles.instancedColorFeatureName, Styles.instancedColorName, 0.0f);
+            }
+
+            materialEditor.ShaderProperty(stencil, Styles.stencil);
+
+            if (PropertyEnabled(stencil))
+            {
+                materialEditor.ShaderProperty(stencilReference, Styles.stencilReference, 2);
+                materialEditor.ShaderProperty(stencilComparison, Styles.stencilComparison, 2);
+                materialEditor.ShaderProperty(stencilOperation, Styles.stencilOperation, 2);
+            }
+            else
+            {
+                // When stencil is disable, revert to the default stencil operations. Note, when tested on D3D11 hardware the stencil state 
+                // is still set even when the CompareFunction.Disabled is selected, but this does not seem to affect performance.
+                material.SetInt(Styles.stencilComparisonName, (int)CompareFunction.Disabled);
+                material.SetInt(Styles.stencilOperationName, (int)StencilOp.Keep);
+            }
         }
 
         protected static void SetupMaterialWithAlbedo(Material material, MaterialProperty albedoMap, MaterialProperty albedoAlphaMode)
@@ -756,7 +823,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         {
                             case CustomRenderingMode.Opaque:
                                 {
-
                                     material.DisableKeyword(Styles.alphaTestOnName);
                                     material.DisableKeyword(Styles.alphaBlendOnName);
                                 }
