@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
 using System;
 using UnityEngine;
@@ -17,14 +18,42 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         private MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
 
         [SerializeField]
-        [Tooltip("The angle from the pointer's forward position that will activate the teleport.")]
-        private float activationAngle = 45f;
+        [Range(0f, 1f)]
+        [Tooltip("The threshold amount for joystick input (Dead Zone)")]
+        private float inputThreshold = 0.5f;
 
         [SerializeField]
+        [Range(0f, 360f)]
         [Tooltip("If Pressing 'forward' on the thumbstick gives us an angle that doesn't quite feel like the forward direction, we apply this offset to make navigation feel more natural")]
         private float angleOffset = 0f;
 
         [SerializeField]
+        [Range(5f, 90f)]
+        [Tooltip("The angle from the pointer's forward position that will activate the teleport.")]
+        private float teleportActivationAngle = 45f;
+
+        [SerializeField]
+        [Range(5f, 90f)]
+        [Tooltip("The angle from the joystick left and right position that will activate a rotation")]
+        private float rotateActivationAngle = 22.5f;
+
+        [SerializeField]
+        [Range(5f, 180f)]
+        [Tooltip("The amount to rotate the camera when rotation is activated")]
+        private float rotationAmount = 90f;
+
+        [SerializeField]
+        [Range(5, 90f)]
+        [Tooltip("The angle from the joystick down position that will activate a strafe that will move the camera back")]
+        private float backStrafeActivationAngle = 45f;
+
+        [SerializeField]
+        [Tooltip("The distance to move the camera when the strafe is activated")]
+        private float strafeAmount = 0.25f;
+
+        [SerializeField]
+        [Range(0f, 1f)]
+        [Tooltip("The up direction threshold to use when determining if a surface is 'flat' enough to teleport to.")]
         private float upDirectionThreshold = 0.2f;
 
         [SerializeField]
@@ -38,14 +67,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         [Tooltip("Layers that are considered 'invalid' for navigation")]
         protected LayerMask InvalidLayers = Physics.IgnoreRaycastLayer;
 
-        [SerializeField]
-        private float inputThreshold = 0.5f;
-
         private Vector2 currentInputPosition = Vector2.zero;
 
         private bool teleportEnabled = false;
 
         private bool canTeleport = false;
+
+        private bool canMove = false;
 
         /// <summary>
         /// The result from the last raycast.
@@ -252,15 +280,72 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 angle += angleOffset;
                 PointerOrientation = angle;
 
-                if (!teleportEnabled && Mathf.Abs(angle) < activationAngle)
+                if (!teleportEnabled)
                 {
-                    teleportEnabled = true;
+                    float absoluteAngle = Mathf.Abs(angle);
 
-                    TeleportSystem.RaiseTeleportRequest(this, TeleportHotSpot);
+                    if (absoluteAngle < teleportActivationAngle)
+                    {
+                        teleportEnabled = true;
+
+                        TeleportSystem.RaiseTeleportRequest(this, TeleportHotSpot);
+                    }
+                    else if (canMove)
+                    {
+                        // wrap the angle value.
+                        if (absoluteAngle > 180f)
+                        {
+                            absoluteAngle = Mathf.Abs(absoluteAngle - 360f);
+                        }
+
+                        // Calculate the offset rotation angle from the 90 degree mark.
+                        // Half the rotation activation angle amount to make sure the activation angle stays centered at 90.
+                        float offsetRotationAngle = 90f - rotateActivationAngle;
+
+                        // subtract it from our current angle reading
+                        offsetRotationAngle = absoluteAngle - offsetRotationAngle;
+
+                        // if it's less than zero, then we don't have activation
+                        if (offsetRotationAngle > 0)
+                        {
+                            // check to make sure we're still under our activation threshold.
+                            if (offsetRotationAngle < rotateActivationAngle)
+                            {
+                                canMove = false;
+                                // Rotate the camera by the rotation amount.  If our angle is positive then rotate in the positive direction, otherwise in the opposite direction.
+                                CameraCache.Main.transform.parent.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
+                            }
+                            else // We may be trying to strafe backwards.
+                            {
+                                // Calculate the offset rotation angle from the 180 degree mark.
+                                // Half the strafe activation angle to make sure the activation angle stays centered at 180f
+                                float offsetStrafeAngle = 180f - backStrafeActivationAngle;
+                                // subtract it from our current angle reading
+                                offsetStrafeAngle = absoluteAngle - offsetStrafeAngle;
+
+                                // Check to make sure we're still under our activation threshold.
+                                if (offsetStrafeAngle > 0 && offsetStrafeAngle < backStrafeActivationAngle)
+                                {
+                                    canMove = false;
+                                    Debug.LogWarning("Back Strafe");
+
+                                    // TODO: Calculate how to move backwards in the direction of camera.
+                                    CameraCache.Main.transform.parent.position += Vector3.back * strafeAmount;
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else
             {
+                if (!canTeleport && !teleportEnabled)
+                {
+                    // Reset the move flag when the user stops moving the joystick
+                    // but hasn't yet started teleport request.
+                    canMove = true;
+                }
+
                 if (canTeleport)
                 {
                     canTeleport = false;
