@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             Debug.Assert(eventData != null);
             IMixedRealityPointer pointer;
             TryGetPointingSource(eventData, out pointer);
-            return GetFocusedObject(pointer);
+            return pointer != null ? GetFocusedObject(pointer) : null;
         }
 
         /// <inheritdoc />
