@@ -247,16 +247,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public GameObject GetFocusedObject(BaseInputEventData eventData)
         {
             Debug.Assert(eventData != null);
-            if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
-
-            FocusDetails focusDetails;
-            if (!TryGetFocusDetails(eventData, out focusDetails)) { return null; }
-
             IMixedRealityPointer pointer;
             TryGetPointingSource(eventData, out pointer);
-            GraphicInputEventData graphicInputEventData = GetSpecificPointerGraphicEventData(pointer);
-            Debug.Assert(graphicInputEventData != null);
-            return graphicInputEventData.selectedObject;
+            return GetFocusedObject(pointer);
         }
 
         /// <inheritdoc />
