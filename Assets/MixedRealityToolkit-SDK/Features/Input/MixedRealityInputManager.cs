@@ -267,8 +267,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             Debug.Assert(baseInputEventData.InputSource != null, $"Failed to find an input source for {baseInputEventData}");
             Debug.Assert(!baseInputEventData.used);
 
-            GameObject focusedObject = FocusProvider?.GetFocusedObject(baseInputEventData);
-
             // Send the event to global listeners
             base.HandleEvent(eventData, eventHandler);
 
@@ -278,6 +276,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 // the event from going any further.
                 return;
             }
+
+            GameObject focusedObject = FocusProvider?.GetFocusedObject(baseInputEventData);
 
             // Handle modal input if one exists
             if (modalInputStack.Count > 0)
