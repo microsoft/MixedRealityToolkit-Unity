@@ -247,6 +247,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public GameObject GetFocusedObject(BaseInputEventData eventData)
         {
             Debug.Assert(eventData != null);
+            if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
+
             IMixedRealityPointer pointer;
             TryGetPointingSource(eventData, out pointer);
             return pointer != null ? GetFocusedObject(pointer) : null;
