@@ -11,7 +11,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fd6338e77774badb73a2b1320b41caf, type: 3}
   m_Name: DefaultMixedRealityBoundaryVisualizationProfile
   m_EditorClassIdentifier: 
+  showFloor: 1
+  floorMaterial: {fileID: 2100000, guid: 835cb4a58f172d7478801db95e510f56, type: 2}
+  floorScale: {x: 10, y: 10}
+  showPlayArea: 1
   playAreaMaterial: {fileID: 2100000, guid: 3c55769e893c4f4c8c51b7fa69bee2b9, type: 2}
+  showTrackedArea: 1
   trackedAreaMaterial: {fileID: 2100000, guid: cb74390ea57642f8b5ca0aa8f5fb38c1, type: 2}
-  floorPlaneMaterial: {fileID: 2100000, guid: d5334c45caee46be937b095a1e977dc6, type: 2}
-  floorPlaneScale: {x: 10, y: 10, z: 1}
+  showBoundaryWalls: 1
+  boundaryWallMaterial: {fileID: 2100000, guid: 6a92a01febd262544a43a7fe54b88013,
+    type: 2}
+  showBoundaryCeiling: 1
+  boundaryCeilingMaterial: {fileID: 2100000, guid: 163c37494bc2d0540b3488a9d901ee07,
+    type: 2}

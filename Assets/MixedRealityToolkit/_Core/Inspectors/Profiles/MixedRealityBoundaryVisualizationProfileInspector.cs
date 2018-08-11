@@ -10,11 +10,23 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     [CustomEditor(typeof(MixedRealityBoundaryVisualizationProfile))]
     public class MixedRealityBoundaryVisualizationProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private SerializedProperty floorPlaneScale;
+        private SerializedProperty showFloor;
+        private SerializedProperty floorMaterial;
+        private SerializedProperty floorScale;
+
+        private SerializedProperty showPlayArea;
         private SerializedProperty playAreaMaterial;
-        private SerializedProperty floorPlaneMaterial;
+
+        private SerializedProperty showTrackedArea;
         private SerializedProperty trackedAreaMaterial;
 
+        private SerializedProperty showBoundaryWalls;
+        private SerializedProperty boundaryWallMaterial;
+
+        private SerializedProperty showBoundaryCeiling;
+        private SerializedProperty boundaryCeilingMaterial;
+
+        private readonly GUIContent showContent = new GUIContent("Show");
         private readonly GUIContent scaleContent = new GUIContent("Scale");
         private readonly GUIContent materialContent = new GUIContent("Material");
 
@@ -25,10 +37,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 return;
             }
 
-            floorPlaneScale = serializedObject.FindProperty("floorPlaneScale");
+            showFloor = serializedObject.FindProperty("showFloor");
+            floorMaterial = serializedObject.FindProperty("floorMaterial");
+            floorScale = serializedObject.FindProperty("floorScale");
+
+            showPlayArea = serializedObject.FindProperty("showPlayArea");
             playAreaMaterial = serializedObject.FindProperty("playAreaMaterial");
-            floorPlaneMaterial = serializedObject.FindProperty("floorPlaneMaterial");
+
+            showTrackedArea = serializedObject.FindProperty("showTrackedArea");
             trackedAreaMaterial = serializedObject.FindProperty("trackedAreaMaterial");
+
+            showBoundaryWalls = serializedObject.FindProperty("showBoundaryWalls");
+            boundaryWallMaterial = serializedObject.FindProperty("boundaryWallMaterial");
+
+            showBoundaryCeiling = serializedObject.FindProperty("showBoundaryCeiling");
+            boundaryCeilingMaterial = serializedObject.FindProperty("boundaryCeilingMaterial");
         }
 
         public override void OnInspectorGUI()
@@ -46,17 +69,45 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             serializedObject.Update();
 
             GUILayout.Space(12f);
+            EditorGUILayout.LabelField("Floor Settings:", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(showFloor, showContent);
+            if (showFloor.boolValue)
+            {
+                EditorGUILayout.PropertyField(floorMaterial, materialContent);
+                EditorGUILayout.PropertyField(floorScale, scaleContent);
+            }
+
+            GUILayout.Space(12f);
             EditorGUILayout.LabelField("Play Area Settings:", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(playAreaMaterial, materialContent);
+            EditorGUILayout.PropertyField(showPlayArea, showContent);
+            if (showPlayArea.boolValue)
+            {
+                EditorGUILayout.PropertyField(playAreaMaterial, materialContent);
+            }
 
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Tracked Area Settings:", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(trackedAreaMaterial, materialContent);
+            EditorGUILayout.PropertyField(showTrackedArea, showContent);
+            if (showTrackedArea.boolValue)
+            {
+                EditorGUILayout.PropertyField(trackedAreaMaterial, materialContent);
+            }
 
             GUILayout.Space(12f);
-            EditorGUILayout.LabelField("Floor Plane Settings:", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(floorPlaneMaterial, materialContent);
-            EditorGUILayout.PropertyField(floorPlaneScale, scaleContent);
+            EditorGUILayout.LabelField("Boundary Wall Settings:", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(showBoundaryWalls, showContent);
+            if (showBoundaryWalls.boolValue)
+            {
+                EditorGUILayout.PropertyField(boundaryWallMaterial, materialContent);
+            }
+
+            GUILayout.Space(12f);
+            EditorGUILayout.LabelField("Boundary Ceiling Settings:", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(showBoundaryCeiling, showContent);
+            if (showBoundaryCeiling.boolValue)
+            {
+                EditorGUILayout.PropertyField(boundaryCeilingMaterial, materialContent);
+            }
 
             serializedObject.ApplyModifiedProperties();
         }

@@ -39,12 +39,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             boundaryEventData = new BoundaryEventData(EventSystem.current);
 
             Scale = MixedRealityManager.Instance.ActiveProfile.TargetExperienceScale;
-
             BoundaryHeight = MixedRealityManager.Instance.ActiveProfile.BoundaryHeight;
 
             SetTrackingSpace();
             CalculateBoundaryBounds();
             Boundary.visible = true;
+
+            ShowFloor = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowFloor;
+            ShowPlayArea = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowPlayArea;
+            ShowTrackedArea = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowTrackedArea;
+            ShowBoundaryWalls = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowBoundaryWalls;
+            ShowBoundaryCeiling = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.ShowBoundaryCeiling;
 
             if (ShowFloor)
             {
@@ -70,30 +75,30 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             // Cleanup game objects created during execution.
             if (Application.isPlaying)
             {
-                if (currentFloorPlane != null)
+                if (currentFloorObject != null)
                 {
                     if (Application.isEditor)
                     {
-                        Object.DestroyImmediate(currentFloorPlane);
+                        Object.DestroyImmediate(currentFloorObject);
                     }
                     else
                     {
-                        Object.Destroy(currentFloorPlane);
+                        Object.Destroy(currentFloorObject);
                     }
-                    currentFloorPlane = null;
+                    currentFloorObject = null;
                 }
 
-                if (currentPlayArea != null)
+                if (currentPlayAreaObject != null)
                 {
                     if (Application.isEditor)
                     {
-                        Object.DestroyImmediate(currentPlayArea);
+                        Object.DestroyImmediate(currentPlayAreaObject);
                     }
                     else
                     {
-                        Object.Destroy(currentPlayArea);
+                        Object.Destroy(currentPlayAreaObject);
                     }
-                    currentPlayArea = null;
+                    currentPlayAreaObject = null;
                 }
 
                 showFloor = false;
@@ -184,20 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         /// <inheritdoc/>
         public float BoundaryHeight { get; set; } = 3f;
 
-        // todo: coming in Beta
-        //// Default to not showing the boundary walls.
-        // private bool showBoundaryWallss = false;
-        ///// <inheritdoc/>
-        //public bool ShowBoundaryWalls { get; set; } = false;
-
-        // todo: coming in Beta
-        //// Default to not showing the ceiling plane.
-        // private bool showCeiling = false;
-        ///// <inheritdoc/>
-        //public bool ShowCeiling { get; set; } = false;
-
-        // Default to showing the floor plane.
-        private bool showFloor = true;
+        private bool showFloor = false;
 
         /// <inheritdoc/>
         public bool ShowFloor
@@ -209,14 +201,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                 {
                     showFloor = value;
 
-                    if (value && (currentFloorPlane == null))
+                    if (value && (currentFloorObject == null))
                     {
                         GetFloorVisualization();
                     }
 
-                    if (currentFloorPlane != null)
+                    if (currentFloorObject != null)
                     {
-                        currentFloorPlane.SetActive(value);
+                        currentFloorObject.SetActive(value);
                     }
 
                     RaiseBoundaryVisualizationChanged();
@@ -224,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             }
         }
 
-        private bool showPlayArea = true;
+        private bool showPlayArea = false;
 
         /// <inheritdoc/>
         public bool ShowPlayArea
@@ -236,14 +228,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                 {
                     showPlayArea = value;
 
-                    if (value && (currentPlayArea == null))
+                    if (value && (currentPlayAreaObject == null))
                     {
                         GetPlayAreaVisualization();
                     }
 
-                    if (currentPlayArea != null)
+                    if (currentPlayAreaObject != null)
                     {
-                        currentPlayArea.SetActive(value);
+                        currentPlayAreaObject.SetActive(value);
                     }
 
                     RaiseBoundaryVisualizationChanged();
@@ -251,11 +243,88 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             }
         }
 
-        // todo: coming in Beta
-        //// Default to not showing the tracked area.
-        // private bool showTrackedArea = false;
-        ///// <inheritdoc/>
-        //public bool ShowTrackedArea { get; set; } = false;
+        private bool showTrackedArea = false;
+
+        /// <inheritdoc/>
+        public bool ShowTrackedArea
+        {
+            get { return showTrackedArea; }
+            set
+            {
+                if (showTrackedArea != value)
+                {
+                    showTrackedArea = value;
+
+                    // todo:
+                    //if (value && (currentFloorObject == null))
+                    //{
+                    //    GetFloorVisualization();
+                    //}
+
+                    //if (currentFloorObject != null)
+                    //{
+                    //    currentFloorObject.SetActive(value);
+                    //}
+
+                    RaiseBoundaryVisualizationChanged();
+                }
+            }
+        }
+
+        private bool showBoundaryWalls = false;
+
+        /// <inheritdoc/>
+        public bool ShowBoundaryWalls
+        {
+            get { return showBoundaryWalls; }
+            set
+            {
+                if (showBoundaryWalls != value)
+                {
+                    showBoundaryWalls = value;
+
+                    // todo:
+                    //if (value && (currentFloorObject == null))
+                    //{
+                    //    GetFloorVisualization();
+                    //}
+
+                    //if (currentFloorObject != null)
+                    //{
+                    //    currentFloorObject.SetActive(value);
+                    //}
+
+                    RaiseBoundaryVisualizationChanged();
+                }
+            }
+        }
+
+        private bool showCeiling = false;
+
+        /// <inheritdoc/>
+        public bool ShowBoundaryCeiling
+        {
+            get { return showCeiling; }
+            set
+            {
+                if (showCeiling != value)
+                {
+                    showCeiling = value;
+
+                    if (value && (currentCeilingObject == null))
+                    {
+                        GetBoundaryCeilingVisualization();
+                    }
+
+                    if (currentCeilingObject != null)
+                    {
+                        currentCeilingObject.SetActive(value);
+                    }
+
+                    RaiseBoundaryVisualizationChanged();
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public Edge[] Bounds { get; private set; } = new Edge[0];
@@ -333,11 +402,37 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         }
 
         /// <inheritdoc/>
+        public GameObject GetFloorVisualization()
+        {
+            if (currentFloorObject != null)
+            {
+                return currentFloorObject;
+            }
+
+            if (!FloorHeight.HasValue)
+            {
+                // We were unable to locate the floor.
+                return null;
+            }
+
+            Vector3 floorScale = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorScale;
+
+            // Render the floor.
+            currentFloorObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            currentFloorObject.name = "Boundary System Floor";
+            currentFloorObject.transform.localScale = new Vector3(floorScale.x, 0.05f, floorScale.y);
+            currentFloorObject.transform.Translate(new Vector3(0f, FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f), 0f));
+            currentFloorObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorMaterial;
+
+            return currentFloorObject;
+        }
+
+        /// <inheritdoc/>
         public GameObject GetPlayAreaVisualization()
         {
-            if (currentPlayArea != null)
+            if (currentPlayAreaObject != null)
             {
-                return currentPlayArea;
+                return currentPlayAreaObject;
             }
 
             // Get the rectangular bounds.
@@ -355,40 +450,51 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             // Render the rectangular bounds.
             if (EdgeUtilities.IsValidPoint(center))
             {
-                currentPlayArea = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                currentPlayArea.name = "Boundary System Play Area";
-                currentPlayArea.transform.Translate(new Vector3(center.x, 0.005f, center.y)); // Add fudge factor to avoid z-fighting
-                currentPlayArea.transform.Rotate(new Vector3(90, -angle, 0));
-                currentPlayArea.transform.localScale = new Vector3(width, height, 1.0f);
-                currentPlayArea.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.PlayAreaMaterial;
+                currentPlayAreaObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                currentPlayAreaObject.name = "Boundary System Play Area";
+                // todo: replace with rendering z-order
+                currentPlayAreaObject.transform.Translate(new Vector3(center.x, 0.005f, center.y)); // Add fudge factor to avoid z-fighting
+                currentPlayAreaObject.transform.Rotate(new Vector3(90, -angle, 0));
+                currentPlayAreaObject.transform.localScale = new Vector3(width, height, 1.0f);
+                currentPlayAreaObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.PlayAreaMaterial;
             }
 
-            return currentPlayArea;
+            return currentPlayAreaObject;
         }
 
         /// <inheritdoc/>
-        public GameObject GetFloorVisualization()
+        public GameObject GetTrackedAreaVisualization()
         {
-            if (currentFloorPlane != null)
+            // todo
+            return null;
+        }
+
+        // todo: 
+        /// <inheritdoc/>
+        public GameObject GetBoundaryCeilingVisualization()
+        {
+            if (currentCeilingObject != null)
             {
-                return currentFloorPlane;
+                return currentCeilingObject;
             }
 
-            if (!FloorHeight.HasValue)
+            // Get the smallest rectangle that contains the entire boundary.
+            // todo: move this to the calc boundary method
+            Bounds boundaryBoundingBox = new Bounds();
+            for (int i = 0; i < Bounds.Length; i++)
             {
-                // We were unable to locate the floor.
-                return null;
+                boundaryBoundingBox.Encapsulate(Bounds[i].PointA);
+                boundaryBoundingBox.Encapsulate(Bounds[i].PointB);
             }
 
-            // Render the floor.
-            currentFloorPlane = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            currentFloorPlane.name = "Boundary System Floor";
-            currentFloorPlane.transform.Translate(new Vector3(0f, FloorHeight.Value, 0f));
-            currentFloorPlane.transform.Rotate(90, 0, 0);
-            currentFloorPlane.transform.localScale = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorPlaneScale;
-            currentFloorPlane.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorPlaneMaterial;
+            // Render the ceiling.
+            currentCeilingObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            currentCeilingObject.name = "Boundary System Ceiling";
+            currentCeilingObject.transform.localScale = new Vector3(boundaryBoundingBox.size.x, 0.05f, boundaryBoundingBox.size.y);
+            currentCeilingObject.transform.Translate(new Vector3(0f, BoundaryHeight + (currentCeilingObject.transform.localScale.y * 0.5f), 0f));
+            currentCeilingObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryCeilingMaterial;
 
-            return currentFloorPlane;
+            return currentCeilingObject;
         }
 
         #endregion IMixedRealityBoundarySystem Implementation
@@ -398,9 +504,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         /// </summary>
         private InscribedRectangle rectangularBounds = null;
 
-        private GameObject currentPlayArea;
-
-        private GameObject currentFloorPlane;
+        private GameObject currentFloorObject = null;
+        private GameObject currentPlayAreaObject = null;
+        // todo: is the tracked outline one or multiple gameobjects?
+        private List<GameObject> currentBoundaryWallObjects = new List<GameObject>();
+        private GameObject currentCeilingObject = null;
 
         /// <summary>
         /// Retrieves the boundary geometry and creates the boundary and inscribed play space volumes.
