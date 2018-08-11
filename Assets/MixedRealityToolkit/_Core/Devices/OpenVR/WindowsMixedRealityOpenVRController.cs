@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         public WindowsMixedRealityOpenVRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
+            PointerOffsetAngle = -30f;
         }
 
         /// <summary>

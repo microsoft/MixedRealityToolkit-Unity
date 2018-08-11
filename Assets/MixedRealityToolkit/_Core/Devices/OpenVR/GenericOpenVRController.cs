@@ -22,13 +22,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// </summary>
         public XRNodeState LastStateReading { get; protected set; }
 
+        /// <summary>
+        /// The pointer's offset angle.
+        /// </summary>
+        public float PointerOffsetAngle { get; protected set; } = 0f;
+
         private Vector2 dualAxisPosition = Vector2.zero;
         private Vector3 currentControllerPosition = Vector3.zero;
         private Quaternion currentControllerRotation = Quaternion.identity;
         private MixedRealityPose lastControllerPose = MixedRealityPose.ZeroIdentity;
         private MixedRealityPose currentControllerPose = MixedRealityPose.ZeroIdentity;
-
-        private Vector3 pointerOffsetPosition = Vector3.zero;
         private MixedRealityPose pointerOffsetPose = MixedRealityPose.ZeroIdentity;
 
         public static readonly MixedRealityInteractionMapping[] DefaultLeftHandedInteractions =
@@ -241,15 +244,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         {
             if (interactionMapping.InputType == DeviceInputType.SpatialPointer)
             {
-                // TODO Currently no way to get pointer specific data, so we use the last controller pose.
-                // TODO: configure an offset pointer position for each OpenVR Controller?
-
-                pointerOffsetPose = currentControllerPose;
-                pointerOffsetPosition = currentControllerPose.Rotation.eulerAngles;
-                pointerOffsetPose.Rotation = Quaternion.Euler(pointerOffsetPosition.x, pointerOffsetPosition.y, pointerOffsetPosition.z);
+                pointerOffsetPose.Rotation = currentControllerPose.Rotation * Quaternion.AngleAxis(PointerOffsetAngle, Vector3.left);
 
                 // Update the interaction data source
-                interactionMapping.PoseData = currentControllerPose;
+                interactionMapping.PoseData = pointerOffsetPose;
             }
 
             if (interactionMapping.InputType == DeviceInputType.SpatialGrip)
