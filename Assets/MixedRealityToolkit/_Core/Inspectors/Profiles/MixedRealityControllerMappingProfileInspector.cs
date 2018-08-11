@@ -4,9 +4,10 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR;
 using UnityEditor;
 using UnityEngine;
 
@@ -254,6 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     controllerInteractionFoldouts[i] = true;
                 }
 
+                serializedObject.ApplyModifiedProperties();
                 return;
             }
 
@@ -291,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     {
                         EditorGUILayout.EndHorizontal();
 
-                        var controllerType = mixedRealityControllerMapping.FindPropertyRelative("controllerType");
+                        var controllerTypeProperty = mixedRealityControllerMapping.FindPropertyRelative("controllerType");
                         var controllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
                         var useDefaultModel = mixedRealityControllerMapping.FindPropertyRelative("useDefaultModel");
                         var controllerModel = mixedRealityControllerMapping.FindPropertyRelative("overrideModel");
@@ -302,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         EditorGUIUtility.labelWidth = 128f;
 
                         EditorGUI.BeginChangeCheck();
-                        EditorGUILayout.PropertyField(controllerType);
+                        EditorGUILayout.PropertyField(controllerTypeProperty);
                         EditorGUILayout.PropertyField(controllerHandedness);
                         EditorGUIUtility.labelWidth = 224f;
 
@@ -315,8 +317,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                                 controllerHandedness.intValue = 0;
                             }
 
-                            // Only allow custom interaction mappings on generic controller types.
-                            useCustomInteractionMappings.boolValue = thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type == typeof(GenericOpenVRController);
+                            // Only allow custom interaction mappings on generic controller types
+                            var controllerType = thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type;
+                            useCustomInteractionMappings.boolValue = controllerType == typeof(GenericUnityController) ||
+                                                                     controllerType == typeof(GenericOpenVRController);
                             interactionsList.ClearArray();
                             serializedObject.ApplyModifiedProperties();
                             thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping();

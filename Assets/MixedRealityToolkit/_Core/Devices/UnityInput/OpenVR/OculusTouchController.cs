@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 {
     public class OculusTouchController : GenericOpenVRController
     {

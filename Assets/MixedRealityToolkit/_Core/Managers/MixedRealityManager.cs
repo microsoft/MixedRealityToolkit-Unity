@@ -2,8 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
@@ -166,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
 #if UNITY_EDITOR
                 // Make sure unity axis mappings are set.
-                Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
+                Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
                 //Enable Input (example initializer)

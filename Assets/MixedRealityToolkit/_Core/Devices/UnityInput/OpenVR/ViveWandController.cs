@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 {
     public class ViveWandController : GenericOpenVRController
     {
@@ -19,7 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
         public ViveWandController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions) { }
+                : base(trackingState, controllerHandedness, inputSource, interactions)
+        {
+        }
 
         /// <summary>
         /// The Generic OpenVR Controller default interactions.

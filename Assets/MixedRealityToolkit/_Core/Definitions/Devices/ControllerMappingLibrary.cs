@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 
 #if UNITY_EDITOR
@@ -17,8 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     public static class ControllerMappingLibrary
     {
         #region Controller axis mapping configuration
-
-        //Axis and Input mapping configuration for each controller type.  Centralized here... Because Unity..
 
         #region Constants
 
@@ -206,6 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         #endregion Controller axis mapping configuration
 
         #region Interaction Mapping Default Resolution
+
         // TODO: Find a better way.
         /// <summary>
         /// Retrieve the defaults for a specific controller type
@@ -261,6 +260,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         }
 
         #endregion Interaction Mapping Default Resolution
-
     }
 }

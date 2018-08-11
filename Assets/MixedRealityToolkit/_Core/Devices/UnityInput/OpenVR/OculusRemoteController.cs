@@ -5,9 +5,8 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 {
-    // TODO - Implement
     public class OculusRemoteController : GenericOpenVRController
     {
         /// <summary>
@@ -18,12 +17,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
         public OculusRemoteController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions) { }
+                : base(trackingState, controllerHandedness, inputSource, interactions)
+        {
+        }
 
         /// <inheritdoc />
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
     }
 }

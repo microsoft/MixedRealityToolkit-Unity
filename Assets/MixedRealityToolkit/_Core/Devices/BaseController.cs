@@ -85,7 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         /// <param name="controllerType"></param>
         public void SetupConfiguration(Type controllerType)
         {
-
             if (MixedRealityManager.Instance.ActiveProfile.IsControllerMappingEnabled)
             {
                 if (MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.RenderMotionControllers)

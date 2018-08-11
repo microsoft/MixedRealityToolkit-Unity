@@ -10,7 +10,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 {
     public class OpenVRDeviceManager : BaseDeviceManager
     {
