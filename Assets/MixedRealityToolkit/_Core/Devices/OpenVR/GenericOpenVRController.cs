@@ -244,6 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         {
             if (interactionMapping.InputType == DeviceInputType.SpatialPointer)
             {
+                pointerOffsetPose.Position = currentControllerPose.Position;
                 pointerOffsetPose.Rotation = currentControllerPose.Rotation * Quaternion.AngleAxis(PointerOffsetAngle, Vector3.left);
 
                 // Update the interaction data source
