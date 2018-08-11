@@ -30,3 +30,6 @@ MonoBehaviour:
   - id: 6
     description: Trigger
     axisConstraint: 3
+  - id: 7
+    description: Grip Press
+    axisConstraint: 3

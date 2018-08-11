@@ -288,9 +288,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
             set
             {
-                if (AxisType != AxisType.Digital)
+                if (AxisType != AxisType.Digital && AxisType != AxisType.SingleAxis)
                 {
-                    Debug.LogError($"SetBoolValue is only valid for AxisType.Digital InteractionMappings\nPlease check the {inputType} mapping for the current controller");
+                    Debug.LogError($"SetBoolValue is only valid for AxisType.Digital or AxisType.SingleAxis InteractionMappings\nPlease check the {inputType} mapping for the current controller");
                 }
 
                 Changed = boolData != value;
