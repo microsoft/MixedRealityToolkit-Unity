@@ -353,9 +353,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 6
-        description: Trigger
-        axisConstraint: 3
+        id: 0
+        description: None
+        axisConstraint: 0
       keyCode: 0
       axisCodeX: AXIS_9
       axisCodeY: 
@@ -505,7 +505,7 @@ MonoBehaviour:
     - id: 1
       description: Trigger Position
       axisType: 3
-      inputType: 11
+      inputType: 10
       inputAction:
         id: 0
         description: None
@@ -517,7 +517,7 @@ MonoBehaviour:
     - id: 2
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 14
+      inputType: 13
       inputAction:
         id: 1
         description: Select
@@ -529,7 +529,7 @@ MonoBehaviour:
     - id: 3
       description: Trigger Touch
       axisType: 2
-      inputType: 12
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -541,7 +541,7 @@ MonoBehaviour:
     - id: 4
       description: Grip Trigger Position
       axisType: 3
-      inputType: 11
+      inputType: 10
       inputAction:
         id: 6
         description: Trigger
@@ -553,7 +553,7 @@ MonoBehaviour:
     - id: 5
       description: Trackpad-Thumbstick Position
       axisType: 4
-      inputType: 22
+      inputType: 21
       inputAction:
         id: 5
         description: Teleport Direction
@@ -565,7 +565,7 @@ MonoBehaviour:
     - id: 6
       description: Trackpad-Thumbstick Touch
       axisType: 2
-      inputType: 23
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -577,7 +577,7 @@ MonoBehaviour:
     - id: 7
       description: Trackpad-Thumbstick Press
       axisType: 2
-      inputType: 25
+      inputType: 24
       inputAction:
         id: 0
         description: None
@@ -613,7 +613,7 @@ MonoBehaviour:
     - id: 10
       description: WMR Touchpad Touch
       axisType: 2
-      inputType: 23
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -625,7 +625,7 @@ MonoBehaviour:
     - id: 11
       description: WMR Touchpad Position
       axisType: 4
-      inputType: 22
+      inputType: 21
       inputAction:
         id: 0
         description: None
