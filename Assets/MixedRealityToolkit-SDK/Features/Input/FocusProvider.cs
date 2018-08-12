@@ -393,9 +393,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         }
 
         /// <summary>
-        /// Helper for assigning world space canvases event cameras.<para/>
-        /// <remarks>Warning! Very expensive. Use sparingly at runtime.</remarks>
+        /// Helper for assigning world space canvases event cameras.
         /// </summary>
+        /// <remarks>Warning! Very expensive. Use sparingly at runtime.</remarks>
         public void UpdateCanvasEventSystems()
         {
             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusProvider before updating your canvases.");
