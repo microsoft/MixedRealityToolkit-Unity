@@ -291,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         {
             if (Pointer == null)
             {
-                Debug.LogError("No Pointer has been assigned!");
+                Debug.LogError($"[BaseCursor.{name}] No Pointer has been assigned!");
                 return;
             }
 
