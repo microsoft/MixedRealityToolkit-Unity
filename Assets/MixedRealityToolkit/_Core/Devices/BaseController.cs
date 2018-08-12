@@ -107,9 +107,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                     }
 
                     // Assign any known interaction mappings.
-                    if (!controllerMappings[i].UseCustomInteractionMappings &&
-                        controllerMappings[i].ControllerType.Type == controllerType &&
-                        controllerMappings[i].Handedness == ControllerHandedness)
+                    if (controllerMappings[i].ControllerType.Type == controllerType &&
+                        controllerMappings[i].Handedness == ControllerHandedness && 
+                        controllerMappings[i].Interactions.Length > 0)
                     {
                         AssignControllerMappings(controllerMappings[i].Interactions);
                         break;
@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
 
                 if (!profileFound)
                 {
-                    Debug.LogError($"No controller profile found for type {controllerType}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
+                    Debug.LogWarning($"No controller profile found for type {controllerType}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
                 }
             }
         }
