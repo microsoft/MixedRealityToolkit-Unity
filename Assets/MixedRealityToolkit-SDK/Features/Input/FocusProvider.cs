@@ -315,13 +315,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public bool TryGetFocusDetails(IMixedRealityPointer pointer, out FocusDetails focusDetails)
         {
-            foreach (var pointerData in pointers)
+            PointerData pointerData;
+            if (TryGetPointerData(pointer, out pointerData))
             {
-                if (pointerData.Pointer.PointerId == pointer.PointerId)
-                {
-                    focusDetails = pointerData.Details;
-                    return true;
-                }
+                focusDetails = pointerData.Details;
+                return true;
             }
 
             focusDetails = default(FocusDetails);
