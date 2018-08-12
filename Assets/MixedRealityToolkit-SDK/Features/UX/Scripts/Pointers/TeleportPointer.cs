@@ -327,10 +327,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                                 if (offsetStrafeAngle > 0 && offsetStrafeAngle < backStrafeActivationAngle)
                                 {
                                     canMove = false;
-                                    Debug.LogWarning("Back Strafe");
-
-                                    // TODO: Calculate how to move backwards in the direction of camera.
-                                    CameraCache.Main.transform.parent.position += Vector3.back * strafeAmount;
+                                    var height = CameraCache.Main.transform.parent.position.y;
+                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount;
+                                    newPosition.y = height;
+                                    CameraCache.Main.transform.parent.position += newPosition;
                                 }
                             }
                         }
