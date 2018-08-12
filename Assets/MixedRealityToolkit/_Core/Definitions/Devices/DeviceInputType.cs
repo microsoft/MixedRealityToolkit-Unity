@@ -29,7 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         ButtonPress,
         ButtonTouch,
         ButtonNearTouch,
-        DirectionalPad,
         Trigger,
         TriggerTouch,
         TriggerNearTouch,
@@ -78,5 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         PinkyFingerTouch,
         PinkyFingerNearTouch,
         PinkyFingerPress,
+        DirectionalPad,
     }
 }
