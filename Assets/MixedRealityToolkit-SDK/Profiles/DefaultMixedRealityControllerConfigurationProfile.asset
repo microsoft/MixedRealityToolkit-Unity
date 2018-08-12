@@ -539,7 +539,7 @@ MonoBehaviour:
       axisCodeY: 
       invertYAxis: 0
     - id: 4
-      description: Grip
+      description: Grip Trigger Position
       axisType: 3
       inputType: 10
       inputAction:
