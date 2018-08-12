@@ -161,6 +161,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                 return HostTransform.position + HostTransform.TransformVector(CursorPositionOffset);
             }
 
+            if (cursor.Pointer == null)
+            {
+                Debug.LogError($"{cursor.GameObjectReference.name} has no pointer set in it's cursor component!");
+                return Vector3.zero;
+            }
+
             FocusDetails focusDetails;
             if (InputSystem.FocusProvider.TryGetFocusDetails(cursor.Pointer, out focusDetails))
             {

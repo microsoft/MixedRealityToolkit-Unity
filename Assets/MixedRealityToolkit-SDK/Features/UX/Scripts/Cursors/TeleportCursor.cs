@@ -80,7 +80,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// <inheritdoc />
         protected override void UpdateCursorTransform()
         {
-            Debug.Assert(Pointer != null, "No Pointer has been assigned!");
+            if (Pointer == null)
+            {
+                Debug.LogError($"[TeleportCursor.{name}] No Pointer has been assigned!");
+                return;
+            }
 
             FocusDetails focusDetails;
 

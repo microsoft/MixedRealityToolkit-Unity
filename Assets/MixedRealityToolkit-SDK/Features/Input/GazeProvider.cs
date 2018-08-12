@@ -297,7 +297,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             base.OnDisable();
             GazePointer.BaseCursor?.SetVisibility(false);
-            InputSystem.FocusProvider.UnregisterPointer(GazePointer);
             InputSystem.RaiseSourceLost(GazeInputSource);
         }
 
@@ -318,9 +317,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void RaiseSourceDetected()
         {
-            InputSystem.FocusProvider.RegisterPointer(GazePointer);
-            GazePointer.BaseCursor?.SetVisibility(true);
             InputSystem.RaiseSourceDetected(GazeInputSource);
+            GazePointer.BaseCursor?.SetVisibility(true);
         }
 
         #endregion Utilities
