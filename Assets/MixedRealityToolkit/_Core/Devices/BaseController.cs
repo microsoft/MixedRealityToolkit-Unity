@@ -85,7 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         /// <param name="controllerType"></param>
         public void SetupConfiguration(Type controllerType)
         {
-
             if (MixedRealityManager.Instance.ActiveProfile.IsControllerMappingEnabled)
             {
                 if (MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.RenderMotionControllers)
@@ -108,9 +107,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                     }
 
                     // Assign any known interaction mappings.
-                    if (!controllerMappings[i].UseCustomInteractionMappings &&
-                        controllerMappings[i].ControllerType.Type == controllerType &&
-                        controllerMappings[i].Handedness == ControllerHandedness)
+                    if (controllerMappings[i].ControllerType.Type == controllerType &&
+                        controllerMappings[i].Handedness == ControllerHandedness && 
+                        controllerMappings[i].Interactions.Length > 0)
                     {
                         AssignControllerMappings(controllerMappings[i].Interactions);
                         break;
@@ -124,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                         // We still don't have controller mappings, so this may be a custom controller. 
                         if (Interactions == null || Interactions.Length < 1)
                         {
-                            Debug.LogWarning($"No Controller interaction mappings found for {controllerType} using the {ControllerHandedness} hand");
+                            Debug.LogWarning($"No Controller interaction mappings found for {controllerMappings[i].Description}.");
                             Enabled = false;
                         }
                     }
@@ -132,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
 
                 if (!profileFound)
                 {
-                    Debug.LogError($"No controller profile found for type {controllerType}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
+                    Debug.LogWarning($"No controller profile found for type {controllerType}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
                 }
             }
         }
