@@ -351,7 +351,7 @@ MonoBehaviour:
     - id: 1
       description: Trigger Position
       axisType: 3
-      inputType: 10
+      inputType: 11
       inputAction:
         id: 6
         description: Trigger
@@ -363,7 +363,7 @@ MonoBehaviour:
     - id: 2
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 13
+      inputType: 14
       inputAction:
         id: 1
         description: Select
@@ -375,7 +375,7 @@ MonoBehaviour:
     - id: 3
       description: Trigger Touch
       axisType: 2
-      inputType: 11
+      inputType: 12
       inputAction:
         id: 0
         description: None
@@ -387,7 +387,7 @@ MonoBehaviour:
     - id: 4
       description: Grip Trigger Position
       axisType: 3
-      inputType: 10
+      inputType: 11
       inputAction:
         id: 6
         description: Trigger
@@ -399,7 +399,7 @@ MonoBehaviour:
     - id: 5
       description: Trackpad-Thumbstick Position
       axisType: 4
-      inputType: 21
+      inputType: 22
       inputAction:
         id: 5
         description: Teleport Direction
@@ -411,7 +411,7 @@ MonoBehaviour:
     - id: 6
       description: Trackpad-Thumbstick Touch
       axisType: 2
-      inputType: 22
+      inputType: 23
       inputAction:
         id: 0
         description: None
@@ -423,7 +423,7 @@ MonoBehaviour:
     - id: 7
       description: Trackpad-Thumbstick Press
       axisType: 2
-      inputType: 24
+      inputType: 25
       inputAction:
         id: 0
         description: None
@@ -459,7 +459,7 @@ MonoBehaviour:
     - id: 10
       description: WMR Touchpad Touch
       axisType: 2
-      inputType: 22
+      inputType: 23
       inputAction:
         id: 0
         description: None
@@ -471,7 +471,7 @@ MonoBehaviour:
     - id: 11
       description: WMR Touchpad Position
       axisType: 4
-      inputType: 21
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -505,7 +505,7 @@ MonoBehaviour:
     - id: 1
       description: Trigger Position
       axisType: 3
-      inputType: 10
+      inputType: 11
       inputAction:
         id: 0
         description: None
@@ -517,7 +517,7 @@ MonoBehaviour:
     - id: 2
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 13
+      inputType: 14
       inputAction:
         id: 1
         description: Select
@@ -529,7 +529,7 @@ MonoBehaviour:
     - id: 3
       description: Trigger Touch
       axisType: 2
-      inputType: 11
+      inputType: 12
       inputAction:
         id: 0
         description: None
@@ -541,7 +541,7 @@ MonoBehaviour:
     - id: 4
       description: Grip Trigger Position
       axisType: 3
-      inputType: 10
+      inputType: 11
       inputAction:
         id: 6
         description: Trigger
@@ -553,7 +553,7 @@ MonoBehaviour:
     - id: 5
       description: Trackpad-Thumbstick Position
       axisType: 4
-      inputType: 21
+      inputType: 22
       inputAction:
         id: 5
         description: Teleport Direction
@@ -565,7 +565,7 @@ MonoBehaviour:
     - id: 6
       description: Trackpad-Thumbstick Touch
       axisType: 2
-      inputType: 22
+      inputType: 23
       inputAction:
         id: 0
         description: None
@@ -577,7 +577,7 @@ MonoBehaviour:
     - id: 7
       description: Trackpad-Thumbstick Press
       axisType: 2
-      inputType: 24
+      inputType: 25
       inputAction:
         id: 0
         description: None
@@ -613,7 +613,7 @@ MonoBehaviour:
     - id: 10
       description: WMR Touchpad Touch
       axisType: 2
-      inputType: 22
+      inputType: 23
       inputAction:
         id: 0
         description: None
@@ -625,7 +625,7 @@ MonoBehaviour:
     - id: 11
       description: WMR Touchpad Position
       axisType: 4
-      inputType: 21
+      inputType: 22
       inputAction:
         id: 0
         description: None
@@ -931,7 +931,7 @@ MonoBehaviour:
     - id: 0
       description: Left Thumbstick
       axisType: 4
-      inputType: 18
+      inputType: 17
       inputAction:
         id: 0
         description: None
@@ -955,7 +955,7 @@ MonoBehaviour:
     - id: 0
       description: Right Thumbstick
       axisType: 4
-      inputType: 18
+      inputType: 17
       inputAction:
         id: 5
         description: Teleport Direction
@@ -979,7 +979,7 @@ MonoBehaviour:
     - id: 0
       description: D-Pad
       axisType: 4
-      inputType: 10
+      inputType: 49
       inputAction:
         id: 0
         description: None
@@ -991,7 +991,7 @@ MonoBehaviour:
     - id: 0
       description: Shared Trigger
       axisType: 3
-      inputType: 11
+      inputType: 10
       inputAction:
         id: 0
         description: None
@@ -1003,7 +1003,7 @@ MonoBehaviour:
     - id: 0
       description: Left Trigger
       axisType: 3
-      inputType: 11
+      inputType: 10
       inputAction:
         id: 0
         description: None
@@ -1015,7 +1015,7 @@ MonoBehaviour:
     - id: 0
       description: Right Trigger
       axisType: 3
-      inputType: 11
+      inputType: 10
       inputAction:
         id: 0
         description: None
