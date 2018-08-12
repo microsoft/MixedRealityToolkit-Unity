@@ -138,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             {
                 this.gazeProvider = gazeProvider;
                 PrioritizedLayerMasksOverride = raycastLayerMasks;
-                PointerExtent = pointerExtent;
+                this.pointerExtent = pointerExtent;
                 this.gazeTransform = gazeTransform;
                 this.stabilizer = stabilizer;
                 IsInteractionEnabled = true;
@@ -149,6 +149,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             /// <inheritdoc />
             public override IMixedRealityInputSource InputSourceParent { get; protected set; }
+
+            private float pointerExtent;
+
+            /// <inheritdoc />
+            public override float PointerExtent
+            {
+                get { return pointerExtent; }
+                set { pointerExtent = value; }
+            }
 
             /// <summary>
             /// Only for use when initializing Gaze Pointer on startup.
@@ -173,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                     newGazeNormal = stabilizer.StableRay.direction;
                 }
 
-                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * PointerExtent));
+                Rays[0].UpdateRayStep(newGazeOrigin, newGazeOrigin + (newGazeNormal * pointerExtent));
 
                 gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
             }
