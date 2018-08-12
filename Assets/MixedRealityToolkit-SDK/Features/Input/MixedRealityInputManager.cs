@@ -684,8 +684,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             ExecuteEvents.ExecuteHierarchy(focusedObject, focusEventData, OnFocusEnterEventHandler);
 
-            var graphicEventData = FocusProvider.GetSpecificPointerGraphicEventData(pointer);
-            if (graphicEventData != null)
+            GraphicInputEventData graphicEventData;
+            if (FocusProvider.TryGetSpecificPointerGraphicEventData(pointer, out graphicEventData))
             {
                 ExecuteEvents.ExecuteHierarchy(focusedObject, graphicEventData, ExecuteEvents.pointerEnterHandler);
             }
@@ -705,8 +705,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             ExecuteEvents.ExecuteHierarchy(unfocusedObject, focusEventData, OnFocusExitEventHandler);
 
-            var graphicEventData = FocusProvider.GetSpecificPointerGraphicEventData(pointer);
-            if (graphicEventData != null)
+            GraphicInputEventData graphicEventData;
+            if (FocusProvider.TryGetSpecificPointerGraphicEventData(pointer, out graphicEventData))
             {
                 ExecuteEvents.ExecuteHierarchy(unfocusedObject, graphicEventData, ExecuteEvents.pointerExitHandler);
             }
@@ -750,12 +750,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             ExecutePointerDown(HandlePointerDown(pointer));
         }
 
-        private GraphicInputEventData HandlePointerDown(IMixedRealityPointer pointingSource)
+        private GraphicInputEventData HandlePointerDown(IMixedRealityPointer pointer)
         {
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(pointerEventData, OnPointerDownEventHandler);
-
-            return FocusProvider.GetSpecificPointerGraphicEventData(pointingSource);
+            GraphicInputEventData graphicEventData;
+            FocusProvider.TryGetSpecificPointerGraphicEventData(pointer, out graphicEventData);
+            return graphicEventData;
         }
 
         private static void ExecutePointerDown(GraphicInputEventData graphicInputEventData)
@@ -846,12 +847,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
         }
 
-        private GraphicInputEventData HandlePointerUp(IMixedRealityPointer pointingSource)
+        private GraphicInputEventData HandlePointerUp(IMixedRealityPointer pointer)
         {
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(pointerEventData, OnPointerUpEventHandler);
 
-            return FocusProvider.GetSpecificPointerGraphicEventData(pointingSource);
+            GraphicInputEventData graphicEventData;
+            FocusProvider.TryGetSpecificPointerGraphicEventData(pointer, out graphicEventData);
+            return graphicEventData;
         }
 
         #endregion Pointer Up

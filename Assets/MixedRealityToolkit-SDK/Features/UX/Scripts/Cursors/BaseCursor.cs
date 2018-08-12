@@ -289,7 +289,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// </summary>
         protected virtual void UpdateCursorTransform()
         {
-            Debug.Assert(Pointer != null, "No Pointer has been assigned!");
+            if (Pointer == null)
+            {
+                Debug.LogError("No Pointer has been assigned!");
+                return;
+            }
 
             FocusDetails focusDetails;
 

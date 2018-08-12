@@ -250,8 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
 
             IMixedRealityPointer pointer;
-            TryGetPointingSource(eventData, out pointer);
-            return pointer != null ? GetFocusedObject(pointer) : null;
+            return TryGetPointingSource(eventData, out pointer) ? GetFocusedObject(pointer) : null;
         }
 
         /// <inheritdoc />
@@ -293,14 +292,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public GameObject GetFocusedObject(IMixedRealityPointer pointingSource)
         {
+            if (pointingSource == null)
+            {
+                Debug.LogError("No Pointer passed to get focused object");
+                return null;
+            }
+
             if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
 
             FocusDetails focusDetails;
             if (!TryGetFocusDetails(pointingSource, out focusDetails)) { return null; }
 
-            GraphicInputEventData graphicInputEventData = GetSpecificPointerGraphicEventData(pointingSource);
-            Debug.Assert(graphicInputEventData != null);
-            graphicInputEventData.selectedObject = focusDetails.Object;
+            GraphicInputEventData graphicInputEventData;
+            if (TryGetSpecificPointerGraphicEventData(pointingSource, out graphicInputEventData))
+            {
+                graphicInputEventData.selectedObject = focusDetails.Object;
+            }
 
             return focusDetails.Object;
         }
@@ -308,15 +315,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public bool TryGetFocusDetails(IMixedRealityPointer pointer, out FocusDetails focusDetails)
         {
-            if (pointer != null)
+            foreach (var pointerData in pointers)
             {
-                foreach (var pointerData in pointers)
+                if (pointerData.Pointer.PointerId == pointer.PointerId)
                 {
-                    if (pointerData.Pointer.PointerId == pointer.PointerId)
-                    {
-                        focusDetails = pointerData.Details;
-                        return true;
-                    }
+                    focusDetails = pointerData.Details;
+                    return true;
                 }
             }
 
@@ -325,9 +329,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         }
 
         /// <inheritdoc />
-        public GraphicInputEventData GetSpecificPointerGraphicEventData(IMixedRealityPointer pointer)
+        public bool TryGetSpecificPointerGraphicEventData(IMixedRealityPointer pointer, out GraphicInputEventData graphicInputEventData)
         {
-            return GetPointerData(pointer)?.GraphicEventData;
+            PointerData pointerData;
+            if (GetPointerData(pointer, out pointerData))
+            {
+                graphicInputEventData = pointerData.GraphicEventData;
+                return true;
+            }
+
+            graphicInputEventData = null;
+            return false;
         }
 
         #endregion Focus Details by IMixedRealityPointer
@@ -383,7 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         }
 
         /// <summary>
-        /// Helper for assigning world space canvases event cameras.
+        /// Helper for assigning world space canvases event cameras.<para/>
         /// <remarks>Warning! Very expensive. Use sparingly at runtime.</remarks>
         /// </summary>
         public void UpdateCanvasEventSystems()
@@ -407,7 +419,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public bool IsPointerRegistered(IMixedRealityPointer pointer)
         {
             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
-            return GetPointerData(pointer) != null;
+            PointerData pointerData;
+            return GetPointerData(pointer, out pointerData);
         }
 
         /// <inheritdoc />
@@ -426,8 +439,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
 
-            PointerData pointerData = GetPointerData(pointer);
-            if (pointerData == null) { return false; }
+            PointerData pointerData;
+            if (!GetPointerData(pointer, out pointerData)) { return false; }
 
             // Raise focus events if needed.
             if (pointerData.CurrentPointerTarget != null)
@@ -459,19 +472,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <summary>
         /// Returns the registered PointerData for the provided pointing input source.
         /// </summary>
-        /// <param name="pointer"></param>
+        /// <param name="pointer">the pointer who's data we're looking for</param>
+        /// <param name="data">The data associated to the pointer</param>
         /// <returns>Pointer Data if the pointing source is registered.</returns>
-        private PointerData GetPointerData(IMixedRealityPointer pointer)
+        private bool GetPointerData(IMixedRealityPointer pointer, out PointerData data)
         {
             foreach (var pointerData in pointers)
             {
                 if (pointerData.Pointer.PointerId == pointer.PointerId)
                 {
-                    return pointerData;
+                    data = pointerData;
+                    return true;
                 }
             }
 
-            return null;
+            data = null;
+            return false;
         }
 
         private void UpdatePointers()
