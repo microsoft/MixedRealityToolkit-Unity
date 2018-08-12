@@ -419,7 +419,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             if (useCustomInteractionMapping)
             {
-                var scrollHeight = list.arraySize * (EditorGUIUtility.singleLineHeight * 1.35f);
+                var scrollHeight = (list.arraySize * EditorGUIUtility.singleLineHeight * 1.11f) + EditorGUIUtility.singleLineHeight * 3;
                 horizontalScrollPositions[controllerId] = EditorGUILayout.BeginScrollView(horizontalScrollPositions[controllerId], true, false, GUILayout.ExpandWidth(true), GUILayout.Height(scrollHeight));
             }
 

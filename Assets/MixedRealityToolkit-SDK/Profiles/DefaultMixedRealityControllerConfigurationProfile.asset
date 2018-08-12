@@ -19,7 +19,7 @@ MonoBehaviour:
     type: 2}
   mixedRealityControllerMappingProfiles:
   - id: 1
-    description: MotionController Left
+    description: WMR Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
@@ -173,7 +173,7 @@ MonoBehaviour:
       axisCodeY: 
       invertYAxis: 0
   - id: 2
-    description: MotionController Right
+    description: WMR Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
@@ -327,7 +327,7 @@ MonoBehaviour:
       axisCodeY: 
       invertYAxis: 0
   - id: 3
-    description: OpenVR Controller Left
+    description: Generic OVR Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit
@@ -481,7 +481,7 @@ MonoBehaviour:
       axisCodeY: MIXEDREALITY_AXIS18
       invertYAxis: 0
   - id: 4
-    description: OpenVR Controller Right
+    description: Generic OVR Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit
@@ -635,7 +635,7 @@ MonoBehaviour:
       axisCodeY: MIXEDREALITY_AXIS20
       invertYAxis: 0
   - id: 5
-    description: WMR Open VR Left
+    description: OVR WMR Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.WindowsMixedRealityOpenVRController,
         Microsoft.MixedReality.Toolkit
@@ -777,7 +777,7 @@ MonoBehaviour:
       axisCodeY: 
       invertYAxis: 0
   - id: 6
-    description: WMR Open VR Right
+    description: OVR WMR Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.WindowsMixedRealityOpenVRController,
         Microsoft.MixedReality.Toolkit
