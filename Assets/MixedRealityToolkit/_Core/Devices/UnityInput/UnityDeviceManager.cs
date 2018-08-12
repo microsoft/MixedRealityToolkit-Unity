@@ -5,6 +5,8 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
@@ -13,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
     {
         public UnityDeviceManager(string name, uint priority) : base(name, priority) { }
 
-        private readonly Dictionary<string, GenericUnityController> activeControllers = new Dictionary<string, GenericUnityController>();
+        protected readonly Dictionary<string, GenericUnityController> ActiveControllers = new Dictionary<string, GenericUnityController>();
 
         private float deviceRefreshTimer;
         protected float DeviceRefreshInterval = 3.0f;
@@ -34,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
                 RefreshDevices();
             }
 
-            foreach (KeyValuePair<string, GenericUnityController> controller in activeControllers)
+            foreach (KeyValuePair<string, GenericUnityController> controller in ActiveControllers)
             {
                 controller.Value?.UpdateController();
             }
@@ -42,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
 
         public override void Disable()
         {
-            foreach (var genericOpenVRController in activeControllers)
+            foreach (var genericOpenVRController in ActiveControllers)
             {
                 if (genericOpenVRController.Value != null)
                 {
@@ -50,7 +52,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
                 }
             }
 
-            activeControllers.Clear();
+            ActiveControllers.Clear();
+        }
+
+        /// <inheritdoc/>
+        public override IMixedRealityController[] GetActiveControllers()
+        {
+            return ActiveControllers.Values.ToArray<IMixedRealityController>();
         }
 
         protected virtual void RefreshDevices()
@@ -65,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
                 {
                     if (joystickNames[i].Equals(LastDeviceList[i])) { continue; }
 
-                    if (activeControllers.ContainsKey(LastDeviceList[i]))
+                    if (ActiveControllers.ContainsKey(LastDeviceList[i]))
                     {
                         var controller = GetOrAddController(LastDeviceList[i]);
 
@@ -73,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
                         {
                             InputSystem?.RaiseSourceLost(controller.InputSource, controller);
                         }
-                        activeControllers.Remove(LastDeviceList[i]);
+                        ActiveControllers.Remove(LastDeviceList[i]);
                     }
                 }
             }
@@ -85,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
                     continue;
                 }
 
-                if (!activeControllers.ContainsKey(joystickNames[i]))
+                if (!ActiveControllers.ContainsKey(joystickNames[i]))
                 {
                     var controller = GetOrAddController(joystickNames[i]);
 
@@ -101,9 +109,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
 
         protected virtual GenericUnityController GetOrAddController(string joystickName)
         {
-            if (activeControllers.ContainsKey(joystickName))
+            if (ActiveControllers.ContainsKey(joystickName))
             {
-                var controller = activeControllers[joystickName];
+                var controller = ActiveControllers[joystickName];
                 Debug.Assert(controller != null);
                 return controller;
             }
@@ -128,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
             detectedController?.SetupConfiguration(controllerType);
 
             Debug.Log($"Found controller: {joystickName}");
-            activeControllers.Add(joystickName, detectedController);
+            ActiveControllers.Add(joystickName, detectedController);
             return detectedController;
         }
 

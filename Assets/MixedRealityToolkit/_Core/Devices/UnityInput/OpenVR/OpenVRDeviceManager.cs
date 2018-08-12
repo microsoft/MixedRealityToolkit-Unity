@@ -3,12 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 {
@@ -16,204 +12,41 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
     {
         public OpenVRDeviceManager(string name, uint priority) : base(name, priority) { }
 
-        /// <summary>
-        /// Dictionary to capture all active controllers detected
-        /// </summary>
-        private readonly Dictionary<XRNode, GenericOpenVRController> activeControllers = new Dictionary<XRNode, GenericOpenVRController>();
-
-        /// <summary>
-        /// Tracking states returned from the InputTracking state tracking manager
-        /// </summary>
-        private readonly List<XRNodeState> nodeStates = new List<XRNodeState>();
-
-        /// <inheritdoc/>
-        public override IMixedRealityController[] GetActiveControllers()
-        {
-            return activeControllers.Values.ToArray<IMixedRealityController>();
-        }
-
-        public override void Enable()
-        {
-            InputTracking.trackingAcquired += InputTracking_trackingAcquired;
-            InputTracking.trackingLost += InputTracking_trackingLost;
-        }
-
-        public override void Update()
-        {
-            InputTracking.GetNodeStates(nodeStates);
-
-            for (int i = 0; i < nodeStates.Count; i++)
-            {
-                if (IsNodeTypeSupported(nodeStates[i]) &&
-                    activeControllers.ContainsKey(nodeStates[i].nodeType) &&
-                    activeControllers[nodeStates[i].nodeType].Enabled)
-                {
-                    activeControllers[nodeStates[i].nodeType].UpdateController(nodeStates[i]);
-                }
-            }
-        }
-
-        public override void Disable()
-        {
-            InputTracking.trackingAcquired -= InputTracking_trackingAcquired;
-            InputTracking.trackingLost -= InputTracking_trackingLost;
-
-            foreach (var genericOpenVRController in activeControllers)
-            {
-                if (genericOpenVRController.Value != null)
-                {
-                    InputSystem?.RaiseSourceLost(genericOpenVRController.Value.InputSource, genericOpenVRController.Value);
-                }
-            }
-
-            activeControllers.Clear();
-        }
-
-        #region Unity InteractionManager Events
-
-        private void InputTracking_trackingAcquired(XRNodeState obj)
-        {
-            if (IsNodeTypeSupported(obj))
-            {
-                if (!activeControllers.ContainsKey(obj.nodeType))
-                {
-                    Debug.Log($"Tracking acquired: {obj.nodeType} | {obj.uniqueID}");
-                    var controller = GetOrAddController(obj);
-
-                    if (controller != null)
-                    {
-                        InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
-                    }
-                }
-            }
-        }
-
-        private void InputTracking_trackingLost(XRNodeState obj)
-        {
-            if (IsNodeTypeSupported(obj))
-            {
-                if (activeControllers.ContainsKey(obj.nodeType))
-                {
-                    Debug.Log($"Tracking Lost: {obj.nodeType} | {obj.uniqueID}");
-                    var controller = GetOrAddController(obj);
-
-                    if (controller != null)
-                    {
-                        InputSystem?.RaiseSourceLost(controller.InputSource, controller);
-                    }
-
-                    activeControllers.Remove(obj.nodeType);
-                }
-            }
-        }
-
-        #endregion Unity InteractionManager Events
-
         #region Controller Utilities
-
-        private bool IsNodeTypeSupported(XRNodeState obj)
-        {
-            switch (obj.nodeType)
-            {
-                case XRNode.LeftEye:
-                case XRNode.RightEye:
-                case XRNode.CenterEye:
-                case XRNode.Head:
-                case XRNode.TrackingReference:
-                case XRNode.HardwareTracker:
-                    return false;
-                case XRNode.LeftHand:
-                case XRNode.RightHand:
-                case XRNode.GameController:
-                default:
-                    return true;
-            }
-        }
-
-        /// <summary>
-        /// Function to guess which type of controller is attached from the Joystick array
-        /// </summary>
-        /// <remarks>Note, Unity now caches the array between runs, so if you have more than one controller attached, this will fail
-        /// TODO: Find a better way?</remarks>
-        /// <returns></returns>
-        private static SupportedControllerType CurrentControllerType
-        {
-            get
-            {
-                var controllers = Input.GetJoystickNames();
-
-                for (int i = 0; i < controllers.Length; i++)
-                {
-                    if (string.IsNullOrEmpty(controllers[i]) || !controllers[i].Contains("OpenVR"))
-                    {
-                        return SupportedControllerType.None;
-                    }
-
-                    if (controllers[i].Contains("Oculus Rift CV1"))
-                    {
-                        return SupportedControllerType.OculusTouch;
-                    }
-
-                    if (controllers[i].Contains("Oculus remote"))
-                    {
-                        return SupportedControllerType.OculusRemote;
-                    }
-
-                    if (controllers[i].Contains("Vive Wand"))
-                    {
-                        return SupportedControllerType.ViveWand;
-                    }
-
-                    if (controllers[i].Contains("Vive Knuckles"))
-                    {
-                        return SupportedControllerType.ViveKnuckles;
-                    }
-
-                    if (controllers[i].Contains("WindowsMR"))
-                    {
-                        return SupportedControllerType.WindowsMixedReality;
-                    }
-
-                    Debug.Log($"{controllers[i]} does not have a defined controller type, falling back to generic controller type");
-                }
-
-                return SupportedControllerType.GenericOpenVR;
-            }
-        }
 
         /// <summary>
         /// Retrieve the source controller from the Active Store, or create a new device and register it
         /// </summary>
-        /// <param name="xrNodeState">OpenVR Node State provided by the SDK</param>
         /// <returns>New or Existing Controller Input Source</returns>
-        private GenericOpenVRController GetOrAddController(XRNodeState xrNodeState)
+        protected override GenericUnityController GetOrAddController(string joystickName)
         {
             // If a device is already registered with the ID provided, just return it.
-            if (activeControllers.ContainsKey(xrNodeState.nodeType))
+            if (ActiveControllers.ContainsKey(joystickName))
             {
-                var controller = activeControllers[xrNodeState.nodeType];
+                var controller = ActiveControllers[joystickName];
                 Debug.Assert(controller != null);
                 return controller;
             }
 
             Handedness controllingHand;
 
-            switch (xrNodeState.nodeType)
+            if (joystickName.Contains("Left"))
             {
-                case XRNode.LeftHand:
-                    controllingHand = Handedness.Left;
-                    break;
-                case XRNode.RightHand:
-                    controllingHand = Handedness.Right;
-                    break;
-                default:
-                    controllingHand = Handedness.None;
-                    break;
+                controllingHand = Handedness.Left;
+            }
+            else if (joystickName.Contains("Right"))
+            {
+                controllingHand = Handedness.Right;
+            }
+            else
+            {
+                controllingHand = Handedness.None;
             }
 
+            var currentControllerType = GetCurrentControllerType(joystickName);
             Type controllerType;
 
-            switch (CurrentControllerType)
+            switch (currentControllerType)
             {
                 case SupportedControllerType.GenericOpenVR:
                     controllerType = typeof(GenericOpenVRController);
@@ -238,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
             }
 
             var pointers = RequestPointers(controllerType, controllingHand);
-            var inputSource = InputSystem?.RequestNewGenericInputSource($"{CurrentControllerType} Controller {controllingHand}", pointers);
+            var inputSource = InputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
             if (detectedController == null) { Debug.LogError($"Failed to create {controllerType.Name} controller"); }
             detectedController?.SetupConfiguration(controllerType);
@@ -248,8 +81,45 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
                 detectedController.InputSource.Pointers[i].Controller = detectedController;
             }
 
-            activeControllers.Add(xrNodeState.nodeType, detectedController);
+            ActiveControllers.Add(joystickName, detectedController);
             return detectedController;
+        }
+
+        protected override SupportedControllerType GetCurrentControllerType(string joystickName)
+        {
+            if (string.IsNullOrEmpty(joystickName) || !joystickName.Contains("OpenVR"))
+            {
+                return SupportedControllerType.None;
+            }
+
+            if (joystickName.Contains("Oculus Rift CV1"))
+            {
+                return SupportedControllerType.OculusTouch;
+            }
+
+            if (joystickName.Contains("Oculus remote"))
+            {
+                return SupportedControllerType.OculusRemote;
+            }
+
+            if (joystickName.Contains("Vive Wand"))
+            {
+                return SupportedControllerType.ViveWand;
+            }
+
+            if (joystickName.Contains("Vive Knuckles"))
+            {
+                return SupportedControllerType.ViveKnuckles;
+            }
+
+            if (joystickName.Contains("WindowsMR"))
+            {
+                return SupportedControllerType.WindowsMixedReality;
+            }
+
+            Debug.Log($"{joystickName} does not have a defined controller type, falling back to generic controller type");
+
+            return SupportedControllerType.GenericOpenVR;
         }
 
         #endregion Controller Utilities

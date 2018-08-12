@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -15,12 +16,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
         public GenericOpenVRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
+            nodeType = controllerHandedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand;
         }
+
+        private XRNode nodeType;
 
         /// <summary>
         /// The current source state reading for this OpenVR Controller.
         /// </summary>
         public XRNodeState LastXrNodeStateReading { get; protected set; }
+
+        /// <summary>
+        /// Tracking states returned from the InputTracking state tracking manager
+        /// </summary>
+        private readonly List<XRNodeState> nodeStates = new List<XRNodeState>();
 
         public static readonly MixedRealityInteractionMapping[] DefaultLeftHandedInteractions =
         {
@@ -130,14 +139,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
             AssignControllerMappings(controllerHandedness == Handedness.Left ? DefaultLeftHandedInteractions : DefaultRightHandedInteractions);
         }
 
-        /// <summary>
-        /// Update the controller data from the provided platform state
-        /// </summary>
-        public void UpdateController(XRNodeState xrNodeState)
+        /// <inheritdoc />
+        public override void UpdateController()
         {
-            UpdateControllerData(xrNodeState);
-            UpdateController();
-            LastXrNodeStateReading = xrNodeState;
+            InputTracking.GetNodeStates(nodeStates);
+
+            for (int i = 0; i < nodeStates.Count; i++)
+            {
+                if (nodeStates[i].nodeType == nodeType)
+                {
+                    var xrNodeState = nodeStates[i];
+                    UpdateControllerData(xrNodeState);
+                    LastXrNodeStateReading = xrNodeState;
+                    break;
+                }
+            }
+
+            base.UpdateController();
         }
 
         /// <summary>
@@ -147,8 +165,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
         protected void UpdateControllerData(XRNodeState state)
         {
             var lastState = TrackingState;
-
-            XRNode nodeType = state.nodeType;
 
             LastControllerPose = CurrentControllerPose;
 

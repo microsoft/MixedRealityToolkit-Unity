@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
         /// <summary>
         /// Update the controller data from Unity's Input Manager
         /// </summary>
-        public void UpdateController()
+        public virtual void UpdateController()
         {
             Debug.Assert(Interactions != null, "No interactions configuration for controller!");
 
