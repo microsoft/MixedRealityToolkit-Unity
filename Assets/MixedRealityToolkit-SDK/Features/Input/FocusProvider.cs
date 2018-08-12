@@ -332,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public bool TryGetSpecificPointerGraphicEventData(IMixedRealityPointer pointer, out GraphicInputEventData graphicInputEventData)
         {
             PointerData pointerData;
-            if (GetPointerData(pointer, out pointerData))
+            if (TryGetPointerData(pointer, out pointerData))
             {
                 graphicInputEventData = pointerData.GraphicEventData;
                 return true;
@@ -420,7 +420,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
             PointerData pointerData;
-            return GetPointerData(pointer, out pointerData);
+            return TryGetPointerData(pointer, out pointerData);
         }
 
         /// <inheritdoc />
@@ -440,7 +440,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
 
             PointerData pointerData;
-            if (!GetPointerData(pointer, out pointerData)) { return false; }
+            if (!TryGetPointerData(pointer, out pointerData)) { return false; }
 
             // Raise focus events if needed.
             if (pointerData.CurrentPointerTarget != null)
@@ -475,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <param name="pointer">the pointer who's data we're looking for</param>
         /// <param name="data">The data associated to the pointer</param>
         /// <returns>Pointer Data if the pointing source is registered.</returns>
-        private bool GetPointerData(IMixedRealityPointer pointer, out PointerData data)
+        private bool TryGetPointerData(IMixedRealityPointer pointer, out PointerData data)
         {
             foreach (var pointerData in pointers)
             {
