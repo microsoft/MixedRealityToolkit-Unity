@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 
@@ -21,26 +22,37 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         #region Constants
 
         /// <summary>
+        /// Mouse: Position Horizontal Movement<para/>
         /// HTC Vive Controller: Left Controller Trackpad (2) Horizontal Movement<para/>
         /// Oculus Touch Controller: Axis2D.PrimaryThumbstick Horizontal Movement<para/>
         /// Valve Knuckles Controller: Left Controller Trackpad Horizontal Movement<para/>
         /// Windows Mixed Reality Motion Controller: Left Thumbstick Horizontal Movement<para/>
+        /// Xbox Controller: Left Thumbstick Horizontal Movement<para/>
         /// </summary>
         public const string AXIS_1 = "AXIS_1";
 
         /// <summary>
+        /// Mouse: Position Vertical Movement<para/>
         /// HTC Vive Controller: Left Controller Trackpad (2) Vertical Movement<para/>
         /// Oculus Touch Controller: Axis2D.PrimaryThumbstick Vertical Movement<para/>
         /// Valve Knuckles Controller: Left Controller Trackpad Vertical Movement<para/>
         /// Windows Mixed Reality Motion Controller: Left Thumbstick Vertical Movement<para/>
+        /// Xbox Controller: Left Thumbstick Vertical Movement<para/>
         /// </summary>
         public const string AXIS_2 = "AXIS_2";
+
+        /// <summary>
+        /// Mouse: Scroll<para/>
+        /// Xbox Controller: Shared Trigger<para/>
+        /// </summary>
+        public const string AXIS_3 = "AXIS_3";
 
         /// <summary>
         /// HTC Vive Controller: Right Controller Trackpad (2) Horizontal Movement<para/>
         /// Oculus Touch Controller: Axis2D.SecondaryThumbstick Horizontal Movement<para/>
         /// Valve Knuckles Controller: Right Controller Trackpad Horizontal Movement<para/>
         /// Windows Mixed Reality Motion Controller: Right Thumbstick Horizontal Movement<para/>
+        /// Xbox Controller: Right Thumbstick Vertical Movement<para/>
         /// </summary>
         public const string AXIS_4 = "AXIS_4";
 
@@ -49,8 +61,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// Oculus Touch Controller: Axis2D.SecondaryThumbstick Vertical Movement<para/>
         /// Valve Knuckles Controller: Right Controller Trackpad Vertical Movement<para/>
         /// Windows Mixed Reality Motion Controller: Right Thumbstick Vertical Movement<para/>
+        /// Xbox Controller: Right Thumbstick Vertical Movement<para/>
         /// </summary>
         public const string AXIS_5 = "AXIS_5";
+
+        /// <summary>
+        /// None
+        /// </summary>
+        public const string AXIS_6 = "AXIS_6";
+
+        /// <summary>
+        /// Xbox Controller: D-Pad Horizontal<para/>
+        /// </summary>
+        public const string AXIS_7 = "AXIS_7";
+
+        /// <summary>
+        /// Xbox Controller: D-Pad Vertical<para/>
+        /// </summary>
+        public const string AXIS_8 = "AXIS_8";
 
         /// <summary>
         /// HTC Vive Controller: Left Controller Trigger (7) Squeeze<para/>
@@ -174,8 +202,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             new InputManagerAxis { Name = AXIS_1,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 1  },
             new InputManagerAxis { Name = AXIS_2,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 2  },
+            new InputManagerAxis { Name = AXIS_3,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 3  },
             new InputManagerAxis { Name = AXIS_4,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 4  },
             new InputManagerAxis { Name = AXIS_5,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 5  },
+            new InputManagerAxis { Name = AXIS_6,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 6  },
+            new InputManagerAxis { Name = AXIS_7,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 7  },
+            new InputManagerAxis { Name = AXIS_8,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 8  },
             new InputManagerAxis { Name = AXIS_9,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 9  },
             new InputManagerAxis { Name = AXIS_10, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 10 },
             new InputManagerAxis { Name = AXIS_11, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 11 },
@@ -222,6 +254,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             if (controllerType == typeof(WindowsMixedRealityController))
             {
                 return WindowsMixedRealityController.DefaultInteractions;
+            }
+
+            if (controllerType == typeof(XboxUnityController))
+            {
+                return XboxUnityController.DefaultInteractions;
             }
 
             // For our open VR controllers we expect either left or right handedness

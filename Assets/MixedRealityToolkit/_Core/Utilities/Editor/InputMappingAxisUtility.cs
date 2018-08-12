@@ -44,16 +44,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor
 
             if (axisMappings != null)
             {
-                foreach (InputManagerAxis axis in axisMappings)
+                for (var i = 0; i < axisMappings.Length; i++)
                 {
-                    if (!DoesAxisNameExist(axis.Name))
+                    if (!DoesAxisNameExist(axisMappings[i].Name))
                     {
-                        AddAxis(axis);
+                        AddAxis(axisMappings[i]);
                     }
                 }
-            }
 
-            inputManagerAsset.ApplyModifiedProperties();
+                inputManagerAsset.ApplyModifiedProperties();
+            }
         }
 
         /// <summary>

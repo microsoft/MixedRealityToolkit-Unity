@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                         // We still don't have controller mappings, so this may be a custom controller. 
                         if (Interactions == null || Interactions.Length < 1)
                         {
-                            Debug.LogWarning($"No Controller interaction mappings found for {controllerType} using the {ControllerHandedness} hand");
+                            Debug.LogWarning($"No Controller interaction mappings found for {controllerMappings[i].Description}.");
                             Enabled = false;
                         }
                     }

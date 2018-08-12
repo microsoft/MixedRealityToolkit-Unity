@@ -12,6 +12,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Managers
@@ -940,6 +941,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
                 case RuntimePlatform.WindowsPlayer:
                 case RuntimePlatform.WindowsEditor:
+                    AddManager(typeof(IMixedRealityDeviceManager), new UnityDeviceManager("Unity Device Manager", 10));
                     AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("OpenVR Device Manager", 10));
                     break;
                 case RuntimePlatform.OSXPlayer:
@@ -955,8 +957,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 case RuntimePlatform.WSAPlayerARM:
                     AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
                     break;
-                default:
-                    break;
             }
         }
 
@@ -968,6 +968,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
                 case UnityEditor.BuildTarget.StandaloneWindows:
                 case UnityEditor.BuildTarget.StandaloneWindows64:
+                    AddManager(typeof(IMixedRealityDeviceManager), new UnityDeviceManager("Unity Device Manager", 10));
                     AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("OpenVR Device Manager", 10));
                     break;
                 case UnityEditor.BuildTarget.StandaloneOSX:
@@ -979,8 +980,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     break;
                 case UnityEditor.BuildTarget.WSAPlayer:
                     AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
-                    break;
-                default:
                     break;
             }
         }

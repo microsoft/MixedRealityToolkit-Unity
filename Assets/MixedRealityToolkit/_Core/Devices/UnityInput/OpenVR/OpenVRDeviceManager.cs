@@ -12,7 +12,7 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 {
-    public class OpenVRDeviceManager : BaseDeviceManager
+    public class OpenVRDeviceManager : UnityDeviceManager
     {
         public OpenVRDeviceManager(string name, uint priority) : base(name, priority) { }
 
@@ -60,7 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 
             foreach (var genericOpenVRController in activeControllers)
             {
-                InputSystem?.RaiseSourceLost(genericOpenVRController.Value?.InputSource, genericOpenVRController.Value);
+                if (genericOpenVRController.Value != null)
+                {
+                    InputSystem?.RaiseSourceLost(genericOpenVRController.Value.InputSource, genericOpenVRController.Value);
+                }
             }
 
             activeControllers.Clear();
@@ -74,6 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
             {
                 if (!activeControllers.ContainsKey(obj.nodeType))
                 {
+                    Debug.Log($"Tracking acquired: {obj.nodeType} | {obj.uniqueID}");
                     var controller = GetOrAddController(obj);
 
                     if (controller != null)
@@ -90,8 +94,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
             {
                 if (activeControllers.ContainsKey(obj.nodeType))
                 {
+                    Debug.Log($"Tracking Lost: {obj.nodeType} | {obj.uniqueID}");
                     var controller = GetOrAddController(obj);
-                    InputSystem?.RaiseSourceLost(controller?.InputSource, controller);
+
+                    if (controller != null)
+                    {
+                        InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                    }
+
                     activeControllers.Remove(obj.nodeType);
                 }
             }
@@ -134,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 
                 for (int i = 0; i < controllers.Length; i++)
                 {
-                    if (string.IsNullOrEmpty(controllers[i]))
+                    if (string.IsNullOrEmpty(controllers[i]) || !controllers[i].Contains("OpenVR"))
                     {
                         return SupportedControllerType.None;
                     }
@@ -181,7 +191,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
             // If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(xrNodeState.nodeType))
             {
-                //TODO - Need logic to determine controller type (if possible)
                 var controller = activeControllers[xrNodeState.nodeType];
                 Debug.Assert(controller != null);
                 return controller;
@@ -230,10 +239,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 
             var pointers = RequestPointers(controllerType, controllingHand);
             var inputSource = InputSystem?.RequestNewGenericInputSource($"{CurrentControllerType} Controller {controllingHand}", pointers);
-
-            GenericOpenVRController detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
-
-            Debug.Assert(detectedController != null);
+            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
+            if (detectedController == null) { Debug.LogError($"Failed to create {controllerType.Name} controller"); }
             detectedController?.SetupConfiguration(controllerType);
 
             for (int i = 0; i < detectedController?.InputSource?.Pointers?.Length; i++)
