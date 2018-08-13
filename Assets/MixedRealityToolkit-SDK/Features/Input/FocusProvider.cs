@@ -292,13 +292,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public GameObject GetFocusedObject(IMixedRealityPointer pointingSource)
         {
+            if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
+
             if (pointingSource == null)
             {
                 Debug.LogError("No Pointer passed to get focused object");
                 return null;
             }
-
-            if (OverrideFocusedObject != null) { return OverrideFocusedObject; }
 
             FocusDetails focusDetails;
             if (!TryGetFocusDetails(pointingSource, out focusDetails)) { return null; }
