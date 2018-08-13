@@ -103,8 +103,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
 
                 showFloor = false;
                 showPlayArea = false;
-                // todo: coming in Beta
-                // set other boundary flags to false
+                showTrackedArea = false;
+                showBoundaryWalls = false;
+                showCeiling = false;
+
                 RaiseBoundaryVisualizationChanged();
             }
         }
@@ -255,16 +257,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                 {
                     showTrackedArea = value;
 
-                    // todo:
-                    //if (value && (currentFloorObject == null))
-                    //{
-                    //    GetFloorVisualization();
-                    //}
+                    if (value && (currentTrackedAreaObject == null))
+                    {
+                        GetTrackedAreaVisualization();
+                    }
 
-                    //if (currentFloorObject != null)
-                    //{
-                    //    currentFloorObject.SetActive(value);
-                    //}
+                    if (currentTrackedAreaObject != null)
+                    {
+                        currentTrackedAreaObject.SetActive(value);
+                    }
 
                     RaiseBoundaryVisualizationChanged();
                 }
@@ -448,16 +449,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             }
 
             // Render the rectangular bounds.
-            if (EdgeUtilities.IsValidPoint(center))
+            if (!EdgeUtilities.IsValidPoint(center))
             {
-                currentPlayAreaObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                currentPlayAreaObject.name = "Boundary System Play Area";
-                // todo: replace with rendering z-order
-                currentPlayAreaObject.transform.Translate(new Vector3(center.x, 0.005f, center.y)); // Add fudge factor to avoid z-fighting
-                currentPlayAreaObject.transform.Rotate(new Vector3(90, -angle, 0));
-                currentPlayAreaObject.transform.localScale = new Vector3(width, height, 1.0f);
-                currentPlayAreaObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.PlayAreaMaterial;
+                // Invalid rectangle / play area not found
+                return null;
             }
+
+            currentPlayAreaObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            currentPlayAreaObject.name = "Boundary System Play Area";
+            // todo: replace with rendering z-order
+            currentPlayAreaObject.transform.Translate(new Vector3(center.x, 0.005f, center.y)); // Add fudge factor to avoid z-fighting
+            currentPlayAreaObject.transform.Rotate(new Vector3(90, -angle, 0));
+            currentPlayAreaObject.transform.localScale = new Vector3(width, height, 1.0f);
+            currentPlayAreaObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.PlayAreaMaterial;
+
+            // Attach the play area to the camera parent
+            currentPlayAreaObject.transform.parent = CameraCache.Main.transform.parent;
 
             return currentPlayAreaObject;
         }
@@ -465,8 +472,43 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         /// <inheritdoc/>
         public GameObject GetTrackedAreaVisualization()
         {
-            // todo
-            return null;
+            if (currentTrackedAreaObject != null)
+            {
+                return currentTrackedAreaObject;
+            }
+
+            if (Bounds.Length == 0)
+            {
+                // If we do not have boundary edges, we cannot render them.
+                return null;
+            }
+
+            // Get the line vertices
+            List<Vector3> lineVertices = new List<Vector3>();
+            for (int i = 0; i < Bounds.Length; i++)
+            {
+                lineVertices.Add(new Vector3(Bounds[i].PointA.x, 0.005f, Bounds[i].PointA.y));
+            }
+            // Add the first vertex again to ensure the loop closes.
+            lineVertices.Add(lineVertices[0]);
+
+            // We use an empty object and attach a line renderer.
+            currentTrackedAreaObject = new GameObject();
+            currentTrackedAreaObject.name = "Boundary System Tracked Area";
+            currentTrackedAreaObject.AddComponent<LineRenderer>();
+
+            // Configure the renderer properties.
+            LineRenderer lineRenderer = currentTrackedAreaObject.GetComponent<LineRenderer>();
+            lineRenderer.sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.TrackedAreaMaterial;
+            lineRenderer.startWidth = 0.01f;
+            lineRenderer.endWidth = 0.01f;
+            lineRenderer.positionCount = lineVertices.Count;
+            lineRenderer.SetPositions(lineVertices.ToArray());
+
+            // Attach the tracked area to the camera parent
+            currentTrackedAreaObject.transform.parent = CameraCache.Main.transform.parent;
+
+            return currentTrackedAreaObject;
         }
 
         // todo: 
@@ -476,6 +518,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             if (currentCeilingObject != null)
             {
                 return currentCeilingObject;
+            }
+
+            if (Bounds.Length == 0)
+            {
+                // If we do not have boundary edges, we cannot render a ceiling.
+                return null;
             }
 
             // Get the smallest rectangle that contains the entire boundary.
@@ -494,6 +542,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             currentCeilingObject.transform.Translate(new Vector3(0f, BoundaryHeight + (currentCeilingObject.transform.localScale.y * 0.5f), 0f));
             currentCeilingObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryCeilingMaterial;
 
+            // Attach the ceiling to the camera parent
+            currentCeilingObject.transform.parent = CameraCache.Main.transform.parent;
+
             return currentCeilingObject;
         }
 
@@ -506,8 +557,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
 
         private GameObject currentFloorObject = null;
         private GameObject currentPlayAreaObject = null;
-        // todo: is the tracked outline one or multiple gameobjects?
-        private List<GameObject> currentBoundaryWallObjects = new List<GameObject>();
+        private GameObject currentTrackedAreaObject = null;
+        // todo: private List<GameObject> currentBoundaryWallObjects = new List<GameObject>();
         private GameObject currentCeilingObject = null;
 
         /// <summary>
