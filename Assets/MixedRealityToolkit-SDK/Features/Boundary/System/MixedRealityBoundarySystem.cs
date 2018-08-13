@@ -422,7 +422,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             currentFloorObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             currentFloorObject.name = "Boundary System Floor";
             currentFloorObject.transform.localScale = new Vector3(floorScale.x, 0.05f, floorScale.y);
-            currentFloorObject.transform.Translate(new Vector3(0f, FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f), 0f));
+            currentFloorObject.transform.Translate(new Vector3(
+                CameraCache.Main.transform.parent.position.x, 
+                FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f), 
+                CameraCache.Main.transform.parent.position.z));
             currentFloorObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorMaterial;
 
             return currentFloorObject;
@@ -487,7 +490,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             List<Vector3> lineVertices = new List<Vector3>();
             for (int i = 0; i < Bounds.Length; i++)
             {
-                lineVertices.Add(new Vector3(Bounds[i].PointA.x, 0.005f, Bounds[i].PointA.y));
+                lineVertices.Add(new Vector3(Bounds[i].PointA.x, 0f, Bounds[i].PointA.y));
             }
             // Add the first vertex again to ensure the loop closes.
             lineVertices.Add(lineVertices[0]);
@@ -496,10 +499,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             currentTrackedAreaObject = new GameObject();
             currentTrackedAreaObject.name = "Boundary System Tracked Area";
             currentTrackedAreaObject.AddComponent<LineRenderer>();
+            currentTrackedAreaObject.transform.Translate(new Vector3(
+                CameraCache.Main.transform.parent.position.x,
+                0.005f, // todo: get rid of this....
+                CameraCache.Main.transform.parent.position.z));
 
             // Configure the renderer properties.
             LineRenderer lineRenderer = currentTrackedAreaObject.GetComponent<LineRenderer>();
             lineRenderer.sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.TrackedAreaMaterial;
+            lineRenderer.useWorldSpace = false;
             lineRenderer.startWidth = 0.01f;
             lineRenderer.endWidth = 0.01f;
             lineRenderer.positionCount = lineVertices.Count;
@@ -539,7 +547,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             currentCeilingObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             currentCeilingObject.name = "Boundary System Ceiling";
             currentCeilingObject.transform.localScale = new Vector3(boundaryBoundingBox.size.x, 0.05f, boundaryBoundingBox.size.y);
-            currentCeilingObject.transform.Translate(new Vector3(0f, BoundaryHeight + (currentCeilingObject.transform.localScale.y * 0.5f), 0f));
+            currentCeilingObject.transform.Translate(new Vector3(
+                CameraCache.Main.transform.parent.position.x,
+                BoundaryHeight + (currentCeilingObject.transform.localScale.y * 0.5f),
+                CameraCache.Main.transform.parent.position.z));
             currentCeilingObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryCeilingMaterial;
 
             // Attach the ceiling to the camera parent
