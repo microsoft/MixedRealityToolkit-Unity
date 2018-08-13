@@ -328,9 +328,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                                 {
                                     canMove = false;
                                     var height = CameraCache.Main.transform.parent.position.y;
-                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount;
+                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + CameraCache.Main.transform.parent.position;
                                     newPosition.y = height;
-                                    CameraCache.Main.transform.parent.position += newPosition;
+                                    CameraCache.Main.transform.parent.position = newPosition;
                                 }
                             }
                         }
