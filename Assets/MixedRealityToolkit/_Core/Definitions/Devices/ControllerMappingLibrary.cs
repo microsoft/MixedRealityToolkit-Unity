@@ -1,11 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
-
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities.Editor;
 #endif
@@ -234,68 +229,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         #endregion
 
         #endregion Controller axis mapping configuration
-
-        #region Interaction Mapping Default Resolution
-
-        // TODO: Find a better way.
-        /// <summary>
-        /// Retrieve the defaults for a specific controller type
-        /// </summary>
-        /// <param name="controllerType"></param>
-        /// <param name="handedness"></param>
-        /// <returns></returns>
-        public static MixedRealityInteractionMapping[] GetMappingsForControllerType(SystemType controllerType, Handedness handedness)
-        {
-            if (controllerType == null)
-            {
-                return null;
-            }
-
-            if (controllerType == typeof(WindowsMixedRealityController))
-            {
-                return WindowsMixedRealityController.DefaultInteractions;
-            }
-
-            if (controllerType == typeof(XboxUnityController))
-            {
-                return XboxUnityController.DefaultInteractions;
-            }
-
-            // For our open VR controllers we expect either left or right handedness
-            if (handedness != Handedness.Left && handedness != Handedness.Right)
-            {
-                return null;
-            }
-
-            if (controllerType == typeof(OculusTouchController))
-            {
-                return handedness == Handedness.Left ? OculusTouchController.DefaultLeftHandedInteractions : OculusTouchController.DefaultRightHandedInteractions;
-            }
-
-            if (controllerType == typeof(ViveWandController))
-            {
-                return handedness == Handedness.Left ? ViveWandController.DefaultLeftHandedInteractions : ViveWandController.DefaultRightHandedInteractions;
-            }
-
-            if (controllerType == typeof(ViveKnucklesController))
-            {
-                return handedness == Handedness.Left ? ViveKnucklesController.DefaultLeftHandedInteractions : ViveKnucklesController.DefaultRightHandedInteractions;
-            }
-
-            if (controllerType == typeof(WindowsMixedRealityOpenVRController))
-            {
-                return handedness == Handedness.Left ? WindowsMixedRealityOpenVRController.DefaultLeftHandedInteractions : WindowsMixedRealityOpenVRController.DefaultRightHandedInteractions;
-            }
-
-            if (controllerType == typeof(GenericOpenVRController))
-            {
-                return handedness == Handedness.Left ? GenericOpenVRController.DefaultLeftHandedInteractions : GenericOpenVRController.DefaultRightHandedInteractions;
-            }
-
-            // Unconfigured Controller type
-            return null;
-        }
-
-        #endregion Interaction Mapping Default Resolution
     }
 }

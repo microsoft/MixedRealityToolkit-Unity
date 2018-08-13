@@ -320,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                             // Only allow custom interaction mappings on generic controller types
                             var controllerType = thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type;
                             useCustomInteractionMappings.boolValue = controllerType == typeof(GenericUnityController) ||
-                                                                     controllerType == typeof(GenericOpenVRController);
+                                                                     controllerType == typeof(GenericUnityOpenVRController);
                             interactionsList.ClearArray();
                             serializedObject.ApplyModifiedProperties();
                             thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping();

@@ -11,9 +11,9 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 {
-    public class GenericOpenVRController : GenericUnityController
+    public class GenericUnityOpenVRController : GenericUnityController
     {
-        public GenericOpenVRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public GenericUnityOpenVRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
             nodeType = controllerHandedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand;
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
         /// </summary>
         private readonly List<XRNodeState> nodeStates = new List<XRNodeState>();
 
-        public static readonly MixedRealityInteractionMapping[] DefaultLeftHandedInteractions =
+        public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
         {
             // Controller Pose
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
             new MixedRealityInteractionMapping(11, "WMR Touchpad Position", AxisType.DualAxis, DeviceInputType.Touchpad, ControllerMappingLibrary.AXIS_17, ControllerMappingLibrary.AXIS_18),
         };
 
-        public static readonly MixedRealityInteractionMapping[] DefaultRightHandedInteractions =
+        public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => new[]
         {
             // Controller Pose
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),

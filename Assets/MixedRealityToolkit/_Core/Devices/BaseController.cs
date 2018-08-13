@@ -38,6 +38,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
             Enabled = true;
         }
 
+        /// <summary>
+        /// The default interactions for this controller.
+        /// </summary>
+        public virtual MixedRealityInteractionMapping[] DefaultInteractions { get; } = null;
+
+        /// <summary>
+        /// The Default Left Handed interactions for this controller.
+        /// </summary>
+        public virtual MixedRealityInteractionMapping[] DefaultLeftHandedInteractions { get; } = null;
+
+        /// <summary>
+        /// The Default Right Handed interactions for this controller.
+        /// </summary>
+        public virtual MixedRealityInteractionMapping[] DefaultRightHandedInteractions { get; } = null;
+
         public bool Enabled { get; set; }
 
         /// <summary>
@@ -108,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
 
                     // Assign any known interaction mappings.
                     if (controllerMappings[i].ControllerType.Type == controllerType &&
-                        controllerMappings[i].Handedness == ControllerHandedness && 
+                        controllerMappings[i].Handedness == ControllerHandedness &&
                         controllerMappings[i].Interactions.Length > 0)
                     {
                         AssignControllerMappings(controllerMappings[i].Interactions);

@@ -329,7 +329,7 @@ MonoBehaviour:
   - id: 3
     description: Generic OVR Controller Left
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR.GenericOpenVRController,
+      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR.GenericUnityOpenVRController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
     useDefaultModel: 0
@@ -483,7 +483,7 @@ MonoBehaviour:
   - id: 4
     description: Generic OVR Controller Right
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR.GenericOpenVRController,
+      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR.GenericUnityOpenVRController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
     useDefaultModel: 0
@@ -637,7 +637,7 @@ MonoBehaviour:
   - id: 5
     description: OVR WMR Controller Left
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR.WindowsMixedRealityOpenVRController,
+      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR.UnityWindowsMixedRealityUnityOpenVRController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
     useDefaultModel: 0
@@ -779,7 +779,7 @@ MonoBehaviour:
   - id: 6
     description: OVR WMR Controller Right
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR.WindowsMixedRealityOpenVRController,
+      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR.UnityWindowsMixedRealityUnityOpenVRController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
     useDefaultModel: 0

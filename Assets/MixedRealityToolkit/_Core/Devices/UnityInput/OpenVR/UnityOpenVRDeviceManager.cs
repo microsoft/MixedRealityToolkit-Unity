@@ -8,9 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 {
-    public class OpenVRDeviceManager : UnityDeviceManager
+    public class UnityOpenVRDeviceManager : UnityDeviceManager
     {
-        public OpenVRDeviceManager(string name, uint priority) : base(name, priority) { }
+        public UnityOpenVRDeviceManager(string name, uint priority) : base(name, priority) { }
 
         #region Controller Utilities
 
@@ -49,22 +49,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
             switch (currentControllerType)
             {
                 case SupportedControllerType.GenericOpenVR:
-                    controllerType = typeof(GenericOpenVRController);
+                    controllerType = typeof(GenericUnityOpenVRController);
                     break;
                 case SupportedControllerType.ViveWand:
-                    controllerType = typeof(ViveWandController);
+                    controllerType = typeof(UnityViveWandController);
                     break;
                 case SupportedControllerType.ViveKnuckles:
-                    controllerType = typeof(ViveKnucklesController);
+                    controllerType = typeof(UnityViveKnucklesController);
                     break;
                 case SupportedControllerType.OculusTouch:
-                    controllerType = typeof(OculusTouchController);
+                    controllerType = typeof(UnityOculusTouchController);
                     break;
                 case SupportedControllerType.OculusRemote:
-                    controllerType = typeof(OculusRemoteController);
+                    controllerType = typeof(UnityOculusRemoteController);
                     break;
                 case SupportedControllerType.WindowsMixedReality:
-                    controllerType = typeof(WindowsMixedRealityOpenVRController);
+                    controllerType = typeof(UnityWindowsMixedRealityUnityOpenVRController);
                     break;
                 default:
                     return null;
@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 
             var pointers = RequestPointers(controllerType, controllingHand);
             var inputSource = InputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers);
-            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
+            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericUnityOpenVRController;
             if (detectedController == null) { Debug.LogError($"Failed to create {controllerType.Name} controller"); }
             detectedController?.SetupConfiguration(controllerType);
 
