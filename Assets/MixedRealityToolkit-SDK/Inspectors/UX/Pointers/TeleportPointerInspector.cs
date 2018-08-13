@@ -11,8 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
     {
         private SerializedProperty teleportAction;
         private SerializedProperty inputThreshold;
-        private SerializedProperty activationAngle;
         private SerializedProperty angleOffset;
+        private SerializedProperty teleportActivationAngle;
+        private SerializedProperty rotateActivationAngle;
+        private SerializedProperty rotationAmount;
+        private SerializedProperty backStrafeActivationAngle;
+        private SerializedProperty strafeAmount;
         private SerializedProperty upDirectionThreshold;
         private SerializedProperty lineColorHotSpot;
         private SerializedProperty validLayers;
@@ -27,8 +31,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
 
             teleportAction = serializedObject.FindProperty("teleportAction");
             inputThreshold = serializedObject.FindProperty("inputThreshold");
-            activationAngle = serializedObject.FindProperty("activationAngle");
             angleOffset = serializedObject.FindProperty("angleOffset");
+            teleportActivationAngle = serializedObject.FindProperty("teleportActivationAngle");
+            rotateActivationAngle = serializedObject.FindProperty("rotateActivationAngle");
+            rotationAmount = serializedObject.FindProperty("rotationAmount");
+            backStrafeActivationAngle = serializedObject.FindProperty("backStrafeActivationAngle");
+            strafeAmount = serializedObject.FindProperty("strafeAmount");
             upDirectionThreshold = serializedObject.FindProperty("upDirectionThreshold");
             lineColorHotSpot = serializedObject.FindProperty("LineColorHotSpot");
             validLayers = serializedObject.FindProperty("ValidLayers");
@@ -47,8 +55,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(teleportAction);
                 EditorGUILayout.PropertyField(inputThreshold);
-                EditorGUILayout.PropertyField(activationAngle);
                 EditorGUILayout.PropertyField(angleOffset);
+                EditorGUILayout.PropertyField(teleportActivationAngle);
+                EditorGUILayout.PropertyField(rotateActivationAngle);
+                EditorGUILayout.PropertyField(rotationAmount);
+                EditorGUILayout.PropertyField(backStrafeActivationAngle);
+                EditorGUILayout.PropertyField(strafeAmount);
                 EditorGUILayout.PropertyField(upDirectionThreshold);
                 EditorGUILayout.PropertyField(lineColorHotSpot);
                 EditorGUILayout.PropertyField(validLayers);
