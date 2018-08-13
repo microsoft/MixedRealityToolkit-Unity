@@ -361,6 +361,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showFloor: 1
   showPlayArea: 1
+  showTrackedArea: 1
+  showBoundaryWalls: 1
+  showBoundaryCeiling: 1
 --- !u!1 &1229001241
 GameObject:
   m_ObjectHideFlags: 0
