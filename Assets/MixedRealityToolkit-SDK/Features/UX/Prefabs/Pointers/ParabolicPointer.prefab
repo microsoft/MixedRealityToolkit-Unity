@@ -435,7 +435,7 @@ MonoBehaviour:
     description: Teleport
     axisConstraint: 4
   inputThreshold: 0.5
-  angleOffset: 90
+  angleOffset: 0
   teleportActivationAngle: 45
   rotateActivationAngle: 22.5
   rotationAmount: 90

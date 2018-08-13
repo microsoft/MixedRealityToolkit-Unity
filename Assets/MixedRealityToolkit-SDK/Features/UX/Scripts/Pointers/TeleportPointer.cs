@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 Mathf.Abs(currentInputPosition.x) > inputThreshold)
             {
                 // Get the angle of the pointer input
-                float angle = -Mathf.Atan2(currentInputPosition.y, currentInputPosition.x) * Mathf.Rad2Deg;
+                float angle = Mathf.Atan2(currentInputPosition.x, currentInputPosition.y) * Mathf.Rad2Deg;
 
                 // Offset the angle so it's 'forward' facing
                 angle += angleOffset;
