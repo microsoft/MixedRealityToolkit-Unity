@@ -1,0 +1,173 @@
+fileFormatVersion: 2
+guid: d1e8aebead229c34da882e880e574340
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Couch
+    100002: Handrail
+    100004: InfinityScreen
+    100006: RoomWalls
+    100008: Stairs
+    100010: Table
+    100012: TargetBase
+    100014: TargetBullseye
+    100016: TargetMount
+    100018: TargetRing_1
+    100020: TargetRing_2
+    100022: TargetRing_3
+    100024: TargetRing_4
+    100026: //RootNode
+    100028: TargetRing_5
+    100030: TargetStand
+    100032: TargetSupport
+    400000: Couch
+    400002: Handrail
+    400004: InfinityScreen
+    400006: RoomWalls
+    400008: Stairs
+    400010: Table
+    400012: TargetBase
+    400014: TargetBullseye
+    400016: TargetMount
+    400018: TargetRing_1
+    400020: TargetRing_2
+    400022: TargetRing_3
+    400024: TargetRing_4
+    400026: //RootNode
+    400028: TargetRing_5
+    400030: TargetStand
+    400032: TargetSupport
+    2100000: No Name
+    2300000: Couch
+    2300002: Handrail
+    2300004: InfinityScreen
+    2300006: RoomWalls
+    2300008: Stairs
+    2300010: Table
+    2300012: TargetBase
+    2300014: TargetBullseye
+    2300016: TargetMount
+    2300018: TargetRing_1
+    2300020: TargetRing_2
+    2300022: TargetRing_3
+    2300024: TargetRing_4
+    2300026: TargetRing_5
+    2300028: TargetSupport
+    2300030: //RootNode
+    3300000: Couch
+    3300002: Handrail
+    3300004: InfinityScreen
+    3300006: RoomWalls
+    3300008: Stairs
+    3300010: Table
+    3300012: TargetBase
+    3300014: TargetBullseye
+    3300016: TargetMount
+    3300018: TargetRing_1
+    3300020: TargetRing_2
+    3300022: TargetRing_3
+    3300024: TargetRing_4
+    3300026: TargetRing_5
+    3300028: TargetSupport
+    3300030: //RootNode
+    4300000: Couch
+    4300002: Table
+    4300004: RoomWalls
+    4300006: Handrail
+    4300008: InfinityScreen
+    4300010: Stairs
+    4300012: TargetRing_5
+    4300014: TargetRing_4
+    4300016: TargetRing_3
+    4300018: TargetRing_2
+    4300020: TargetRing_1
+    4300022: TargetBullseye
+    4300024: TargetBase
+    4300026: TargetMount
+    4300028: TargetSupport
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: 53e16873f54e4324286365b2f31d3398, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 20
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
