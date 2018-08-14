@@ -814,7 +814,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
         }
 
-
         private void DisableAllManagers()
         {
             //If the Mixed Reality Manager is not configured, stop.
