@@ -61,8 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         protected bool IsTeleportRequestActive = false;
 
-        private bool delayPointerRegistration = true;
-
         /// <summary>
         /// The forward direction of the targeting ray
         /// </summary>
@@ -116,25 +114,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected override void OnEnable()
         {
             base.OnEnable();
-
-            BaseCursor?.SetVisibility(true);
-
-            if (!delayPointerRegistration)
-            {
-                InputSystem.FocusProvider.RegisterPointer(this);
-            }
-
-            TeleportSystem?.Register(gameObject);
-        }
-
-        protected virtual void Start()
-        {
-            Debug.Assert(InputSourceParent != null, "This Pointer must have a Input Source Assigned");
-
-            InputSystem.FocusProvider.RegisterPointer(this);
-            delayPointerRegistration = false;
-
             SetCursor();
+            BaseCursor?.SetVisibility(true);
+            TeleportSystem?.Register(gameObject);
         }
 
         protected override void OnDisable()
@@ -146,7 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             IsSelectPressed = false;
             HasSelectPressedOnce = false;
             BaseCursor?.SetVisibility(false);
-            InputSystem.FocusProvider.UnregisterPointer(this);
         }
 
         #endregion  MonoBehaviour Implementation
