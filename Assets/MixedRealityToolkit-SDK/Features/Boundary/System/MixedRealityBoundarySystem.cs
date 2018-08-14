@@ -116,8 +116,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
 
                 if (currentBoundaryWallObject != null)
                 {
-                    // todo: cleanup child objects
-
                     if (Application.isEditor)
                     {
                         Object.DestroyImmediate(currentBoundaryWallObject);
@@ -459,7 +457,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             Vector3 floorScale = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorScale;
 
             // Render the floor.
-            float floorDepth = 0.05f;
+            float floorDepth = 0.005f;
             currentFloorObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             currentFloorObject.name = "Boundary System Floor";
             currentFloorObject.transform.localScale = new Vector3(floorScale.x, floorDepth, floorScale.y);
@@ -600,7 +598,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                 Vector3 rotationPoint = new Vector3(mid.x, FloorHeight.Value, mid.y);
                 wall.transform.position = new Vector3(mid.x, (BoundaryHeight * 0.5f), mid.y);
                 float rotationAngle = MathUtilities.GetAngleBetween(Bounds[i].PointB, Bounds[i].PointA);
-                wall.transform.rotation = Quaternion.Euler(0f, -rotationAngle, 0f);
+                wall.transform.rotation = Quaternion.Euler(0.0f, -rotationAngle, 0.0f);
 
                 wall.transform.parent = currentBoundaryWallObject.transform;
             }
@@ -623,23 +621,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             }
 
             // Get the smallest rectangle that contains the entire boundary.
-            // todo: move this to the calc boundary method
             Bounds boundaryBoundingBox = new Bounds();
             for (int i = 0; i < Bounds.Length; i++)
             {
-                boundaryBoundingBox.Encapsulate(Bounds[i].PointA);
-                boundaryBoundingBox.Encapsulate(Bounds[i].PointB);
+                boundaryBoundingBox.Encapsulate(new Vector3(Bounds[i].PointA.x, BoundaryHeight * 0.5f, Bounds[i].PointA.y));
+                boundaryBoundingBox.Encapsulate(new Vector3(Bounds[i].PointB.x, BoundaryHeight * 0.5f, Bounds[i].PointB.y));
             }
 
             // Render the ceiling.
-            float ceilingDepth = 0.05f;
+            float ceilingDepth = 0.005f;
             currentCeilingObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             currentCeilingObject.name = "Boundary System Ceiling";
-            currentCeilingObject.transform.localScale = new Vector3(boundaryBoundingBox.size.x, ceilingDepth, boundaryBoundingBox.size.y);
+            currentCeilingObject.transform.localScale = new Vector3(boundaryBoundingBox.size.x, ceilingDepth, boundaryBoundingBox.size.z);
             currentCeilingObject.transform.Translate(new Vector3(
-                CameraCache.Main.transform.parent.position.x,
+                boundaryBoundingBox.center.x,
                 BoundaryHeight + (currentCeilingObject.transform.localScale.y * 0.5f),
-                CameraCache.Main.transform.parent.position.z));
+                boundaryBoundingBox.center.z));
             currentCeilingObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryCeilingMaterial;
 
             // Attach the ceiling to the camera parent
