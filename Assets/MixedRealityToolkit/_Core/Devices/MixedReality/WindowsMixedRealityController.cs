@@ -87,8 +87,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         {
             UpdateControllerData(interactionSourceState);
 
-            Debug.Assert(Interactions != null, "No interaction configuration for controller");
-            if (Interactions == null) { Enabled = false; }
+            if (Interactions == null)
+            {
+                Debug.LogError($"No interaction configuration for Windows Mixed Reality Motion Controller {ControllerHandedness}");
+                Enabled = false;
+            }
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
