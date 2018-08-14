@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         /// Setups up the configuration based on the Mixed Reality Controller Mapping Profile.
         /// </summary>
         /// <param name="controllerType"></param>
-        public void SetupConfiguration(Type controllerType)
+        public bool SetupConfiguration(Type controllerType)
         {
             if (MixedRealityManager.Instance.ActiveProfile.IsControllerMappingEnabled)
             {
@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                         if (Interactions == null || Interactions.Length < 1)
                         {
                             Debug.LogWarning($"No Controller interaction mappings found for {controllerMappings[i].Description}.");
-                            Enabled = false;
+                            return false;
                         }
                     }
                 }
@@ -152,8 +152,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                 if (!profileFound)
                 {
                     Debug.LogWarning($"No controller profile found for type {controllerType}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
+                    return false;
                 }
             }
+
+            return true;
         }
 
         /// <summary>

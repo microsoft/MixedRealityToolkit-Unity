@@ -116,7 +116,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             var inputSource = InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {controllingHand}", pointers);
             var detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
 
-            detectedController.SetupConfiguration(typeof(WindowsMixedRealityController));
+            if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityController)))
+            {
+                // Controller failed to be setup correctly.
+                // Return null so we don't raise the source detected.
+                return null;
+            }
 
             Debug.Assert(detectedController != null);
 

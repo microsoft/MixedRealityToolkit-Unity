@@ -150,10 +150,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
 
             var inputSource = InputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller");
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericUnityController;
-            if (detectedController == null) { Debug.LogError($"Failed to create {controllerType.Name} controller"); }
-            detectedController?.SetupConfiguration(controllerType);
 
-            Debug.Log($"Found controller: {joystickName}");
+            if (detectedController == null)
+            {
+                Debug.LogError($"Failed to create {controllerType.Name} controller");
+                return null;
+            }
+
+            if (!detectedController.SetupConfiguration(controllerType))
+            {
+                // Controller failed to be setup correctly.
+                // Return null so we don't raise the source detected.
+                return null;
+            }
+
             ActiveControllers.Add(joystickName, detectedController);
             return detectedController;
         }

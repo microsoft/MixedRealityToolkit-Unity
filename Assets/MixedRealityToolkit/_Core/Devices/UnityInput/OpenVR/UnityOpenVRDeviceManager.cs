@@ -78,8 +78,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
             var pointers = RequestPointers(controllerType, controllingHand);
             var inputSource = InputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericUnityOpenVRController;
-            if (detectedController == null) { Debug.LogError($"Failed to create {controllerType.Name} controller"); }
-            detectedController?.SetupConfiguration(controllerType);
+
+            if (detectedController == null)
+            {
+                Debug.LogError($"Failed to create {controllerType.Name} controller");
+                return null;
+            }
+
+            if (!detectedController.SetupConfiguration(controllerType))
+            {
+                // Controller failed to be setup correctly.
+                // Return null so we don't raise the source detected.
+                return null;
+            }
 
             for (int i = 0; i < detectedController?.InputSource?.Pointers?.Length; i++)
             {

@@ -142,6 +142,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
         /// <inheritdoc />
         public override void UpdateController()
         {
+            if (!Enabled) { return; }
+
             InputTracking.GetNodeStates(nodeStates);
 
             for (int i = 0; i < nodeStates.Count; i++)

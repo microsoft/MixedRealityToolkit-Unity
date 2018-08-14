@@ -38,9 +38,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
         /// </summary>
         public virtual void UpdateController()
         {
-            Debug.Assert(Interactions != null, "No interactions configuration for controller!");
+            if (!Enabled) { return; }
 
-            if (Interactions == null) { Enabled = false; }
+            if (Interactions == null)
+            {
+                Debug.LogError($"No interaction configuration for {GetType().Name}");
+                Enabled = false;
+            }
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
