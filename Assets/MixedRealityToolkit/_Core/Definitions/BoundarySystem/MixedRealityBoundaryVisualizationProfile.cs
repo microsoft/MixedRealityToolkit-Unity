@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         #region Boundary wall settings
 
         [SerializeField]
-        private bool showBoundaryWalls = true;
+        private bool showBoundaryWalls = false;
 
         /// <summary>
         /// Should the boundary system display the boundary geometry walls?
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         #endregion Boundary wall settings
 
         [SerializeField]
-        private bool showBoundaryCeiling = true;
+        private bool showBoundaryCeiling = false;
 
         /// <summary>
         /// Should the boundary system display the boundary ceiling?

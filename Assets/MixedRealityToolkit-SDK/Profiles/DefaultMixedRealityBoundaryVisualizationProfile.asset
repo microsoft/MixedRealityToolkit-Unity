@@ -18,9 +18,9 @@ MonoBehaviour:
   playAreaMaterial: {fileID: 2100000, guid: 3c55769e893c4f4c8c51b7fa69bee2b9, type: 2}
   showTrackedArea: 1
   trackedAreaMaterial: {fileID: 2100000, guid: cb74390ea57642f8b5ca0aa8f5fb38c1, type: 2}
-  showBoundaryWalls: 1
+  showBoundaryWalls: 0
   boundaryWallMaterial: {fileID: 2100000, guid: 978c13c1492639341a61913375335e64,
     type: 2}
-  showBoundaryCeiling: 1
+  showBoundaryCeiling: 0
   boundaryCeilingMaterial: {fileID: 2100000, guid: 163c37494bc2d0540b3488a9d901ee07,
     type: 2}
