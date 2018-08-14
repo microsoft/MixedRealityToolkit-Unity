@@ -11,8 +11,16 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
 {
+    /// <summary>
+    /// Manages devices using unity input system.
+    /// </summary>
     public class UnityDeviceManager : BaseDeviceManager
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="priority"></param>
         public UnityDeviceManager(string name, uint priority) : base(name, priority) { }
 
         private const float DeviceRefreshInterval = 3.0f;
@@ -22,11 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
         private float deviceRefreshTimer;
         private string[] lastDeviceList;
 
+        /// <inheritdoc />
         public override void Enable()
         {
             RefreshDevices();
         }
 
+        /// <inheritdoc />
         public override void Update()
         {
             deviceRefreshTimer += Time.unscaledDeltaTime;
@@ -43,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
             }
         }
 
+        /// <inheritdoc />
         public override void Disable()
         {
             foreach (var genericOpenVRController in ActiveControllers)
@@ -62,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
             return ActiveControllers.Values.ToArray<IMixedRealityController>();
         }
 
-        protected void RefreshDevices()
+        private void RefreshDevices()
         {
             var joystickNames = Input.GetJoystickNames();
 
@@ -109,6 +120,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
             lastDeviceList = joystickNames;
         }
 
+        /// <summary>
+        /// Gets or adds a controller using the joystick name provided.
+        /// </summary>
+        /// <param name="joystickName">The name of they joystick from Unity's <see cref="Input.GetJoystickNames"/></param>
+        /// <returns>A new controller reference.</returns>
         protected virtual GenericUnityController GetOrAddController(string joystickName)
         {
             if (ActiveControllers.ContainsKey(joystickName))
@@ -142,6 +158,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
             return detectedController;
         }
 
+        /// <summary>
+        /// Gets the current controller type for the joystick name provided.
+        /// </summary>
+        /// <param name="joystickName">The name of they joystick from Unity's <see cref="Input.GetJoystickNames"/></param>
+        /// <returns>The supported controller type</returns>
         protected virtual SupportedControllerType GetCurrentControllerType(string joystickName)
         {
             if (string.IsNullOrEmpty(joystickName) ||

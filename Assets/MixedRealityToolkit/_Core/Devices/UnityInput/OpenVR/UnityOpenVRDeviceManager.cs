@@ -8,16 +8,21 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 {
+    /// <summary>
+    /// Manages Open VR Devices using unity's input system.
+    /// </summary>
     public class UnityOpenVRDeviceManager : UnityDeviceManager
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="priority"></param>
         public UnityOpenVRDeviceManager(string name, uint priority) : base(name, priority) { }
 
         #region Controller Utilities
 
-        /// <summary>
-        /// Retrieve the source controller from the Active Store, or create a new device and register it
-        /// </summary>
-        /// <returns>New or Existing Controller Input Source</returns>
+        /// <inheritdoc />
         protected override GenericUnityController GetOrAddController(string joystickName)
         {
             // If a device is already registered with the ID provided, just return it.
@@ -85,6 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
             return detectedController;
         }
 
+        /// <inheritdoc />
         protected override SupportedControllerType GetCurrentControllerType(string joystickName)
         {
             if (string.IsNullOrEmpty(joystickName) || !joystickName.Contains("OpenVR"))
