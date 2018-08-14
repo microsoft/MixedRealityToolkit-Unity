@@ -3,10 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
@@ -15,11 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
     {
         public UnityDeviceManager(string name, uint priority) : base(name, priority) { }
 
-        protected readonly Dictionary<string, GenericUnityController> ActiveControllers = new Dictionary<string, GenericUnityController>();
+        private const float DeviceRefreshInterval = 3.0f;
+
+        protected static readonly Dictionary<string, GenericUnityController> ActiveControllers = new Dictionary<string, GenericUnityController>();
 
         private float deviceRefreshTimer;
-        protected float DeviceRefreshInterval = 3.0f;
-        protected string[] LastDeviceList;
+        private string[] lastDeviceList;
 
         public override void Enable()
         {
@@ -36,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
                 RefreshDevices();
             }
 
-            foreach (KeyValuePair<string, GenericUnityController> controller in ActiveControllers)
+            foreach (var controller in ActiveControllers)
             {
                 controller.Value?.UpdateController();
             }
@@ -61,27 +62,28 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
             return ActiveControllers.Values.ToArray<IMixedRealityController>();
         }
 
-        protected virtual void RefreshDevices()
+        protected void RefreshDevices()
         {
             var joystickNames = Input.GetJoystickNames();
 
             if (joystickNames.Length <= 0) { return; }
 
-            if (LastDeviceList != null && joystickNames.Length == LastDeviceList.Length)
+            if (lastDeviceList != null && joystickNames.Length == lastDeviceList.Length)
             {
-                for (int i = 0; i < LastDeviceList.Length; i++)
+                for (int i = 0; i < lastDeviceList.Length; i++)
                 {
-                    if (joystickNames[i].Equals(LastDeviceList[i])) { continue; }
+                    if (joystickNames[i].Equals(lastDeviceList[i])) { continue; }
 
-                    if (ActiveControllers.ContainsKey(LastDeviceList[i]))
+                    if (ActiveControllers.ContainsKey(lastDeviceList[i]))
                     {
-                        var controller = GetOrAddController(LastDeviceList[i]);
+                        var controller = GetOrAddController(lastDeviceList[i]);
 
                         if (controller != null)
                         {
                             InputSystem?.RaiseSourceLost(controller.InputSource, controller);
                         }
-                        ActiveControllers.Remove(LastDeviceList[i]);
+
+                        ActiveControllers.Remove(lastDeviceList[i]);
                     }
                 }
             }
@@ -104,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
                 }
             }
 
-            LastDeviceList = joystickNames;
+            lastDeviceList = joystickNames;
         }
 
         protected virtual GenericUnityController GetOrAddController(string joystickName)

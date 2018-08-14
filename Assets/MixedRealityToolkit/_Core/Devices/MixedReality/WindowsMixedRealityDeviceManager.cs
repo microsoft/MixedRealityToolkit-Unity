@@ -53,7 +53,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
             for (var i = 0; i < states.Length; i++)
             {
-                GetOrAddController(states[i])?.UpdateController(states[i]);
+                var controller = GetOrAddController(states[i]);
+
+                if (controller != null)
+                {
+                    controller.UpdateController(states[i]);
+                    InputSystem.RaiseSourceDetected(controller.InputSource, controller);
+                }
             }
         }
 
@@ -95,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             Handedness controllingHand;
             switch (interactionSourceState.source.handedness)
             {
-                case InteractionSourceHandedness.Unknown:
+                default:
                     controllingHand = Handedness.None;
                     break;
                 case InteractionSourceHandedness.Left:
@@ -104,8 +110,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                 case InteractionSourceHandedness.Right:
                     controllingHand = Handedness.Right;
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
 
             IMixedRealityPointer[] pointers = interactionSourceState.source.supportsPointing ? RequestPointers(typeof(WindowsMixedRealityController), controllingHand) : null;
@@ -132,7 +136,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         private void RemoveController(InteractionSourceState interactionSourceState)
         {
             var controller = GetOrAddController(interactionSourceState);
-            InputSystem?.RaiseSourceLost(controller?.InputSource, controller);
+
+            if (controller != null)
+            {
+                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+            }
+
             activeControllers.Remove(interactionSourceState.source.id);
         }
 
@@ -147,7 +156,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
         {
             var controller = GetOrAddController(args.state);
-            InputSystem?.RaiseSourceDetected(controller?.InputSource, controller);
+
+            if (controller != null)
+            {
+                InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+            }
+
             controller?.UpdateController(args.state);
         }
 

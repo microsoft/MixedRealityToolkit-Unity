@@ -8,7 +8,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
 #if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
-using System;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
@@ -341,8 +340,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         }
                         break;
                     }
-                default:
-                    throw new IndexOutOfRangeException();
             }
         }
 
@@ -388,8 +385,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         }
                         break;
                     }
-                default:
-                    throw new IndexOutOfRangeException();
             }
         }
 
@@ -456,8 +451,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         }
                         break;
                     }
-                default:
-                    throw new IndexOutOfRangeException();
             }
         }
 
