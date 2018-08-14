@@ -257,9 +257,27 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         #region IMixedRealityBoundarySystem Implementation
 
         /// <summary>
+        /// The thickness of three dimensional generated boundary objects.
+        /// </summary>
+        private const float boundaryObjectThickness = 0.005f;
+
+        /// <summary>
+        /// A small offset to avoid render conflicts, primarilly with the floor.
+        /// </summary>
+        /// <remarks>
+        /// This offset is used to avoid consuming mutiple physics layers.
+        /// </remarks>
+        private const float boundaryObjectRenderOffset = 0.001f;
+
+        /// <summary>
         /// Parent <see cref="GameObject"/> which will encapsulate all of the teleportable boundary visualizations.
         /// </summary>
         private GameObject boundaryVisualizationParent;
+
+        /// <summary>
+        /// Layer used to tell the (non-floor) boundary objects to not accept raycasts
+        /// </summary>
+        private readonly int ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
 
         /// <inheritdoc/>
         public ExperienceScale Scale { get; set; }
@@ -494,10 +512,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             Vector3 floorScale = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorScale;
 
             // Render the floor.
-            float floorDepth = 0.005f;
             currentFloorObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             currentFloorObject.name = "Boundary System Floor";
-            currentFloorObject.transform.localScale = new Vector3(floorScale.x, floorDepth, floorScale.y);
+            currentFloorObject.transform.localScale = new Vector3(floorScale.x, boundaryObjectThickness, floorScale.y);
             currentFloorObject.transform.Translate(new Vector3(
                 CameraCache.Main.transform.parent.position.x, 
                 FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f), 
@@ -536,8 +553,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
 
             currentPlayAreaObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
             currentPlayAreaObject.name = "Play Area";
-            // todo: replace with rendering z-order
-            currentPlayAreaObject.transform.Translate(new Vector3(center.x, 0.005f, center.y)); // Add fudge factor to avoid z-fighting
+            currentPlayAreaObject.layer = ignoreRaycastLayer;
+            currentPlayAreaObject.transform.Translate(new Vector3(center.x, boundaryObjectRenderOffset, center.y));
             currentPlayAreaObject.transform.Rotate(new Vector3(90, -angle, 0));
             currentPlayAreaObject.transform.localScale = new Vector3(width, height, 1.0f);
             currentPlayAreaObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.PlayAreaMaterial;
@@ -572,10 +589,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
 
             // We use an empty object and attach a line renderer.
             currentTrackedAreaObject = new GameObject("Tracked Area");
+            currentTrackedAreaObject.layer = ignoreRaycastLayer;
             currentTrackedAreaObject.AddComponent<LineRenderer>();
             currentTrackedAreaObject.transform.Translate(new Vector3(
                 CameraCache.Main.transform.parent.position.x,
-                0.005f, // todo: get rid of this....
+                boundaryObjectRenderOffset,
                 CameraCache.Main.transform.parent.position.z));
 
             // Configure the renderer properties.
@@ -616,13 +634,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             currentBoundaryWallObject = new GameObject("Tracked Area Walls");
 
             // Create and parent the child objects
-            float wallDepth = 0.005f;
+            float wallDepth = boundaryObjectThickness;
             for (int i = 0; i < Bounds.Length; i++)
             {
                 GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 wall.name = $"Wall {i}";
                 wall.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryWallMaterial;
                 wall.transform.localScale = new Vector3((Bounds[i].PointB - Bounds[i].PointA).magnitude, BoundaryHeight, wallDepth);
+                wall.layer = ignoreRaycastLayer;
 
                 // Position and rotate the wall.
                 Vector2 mid = Vector2.Lerp(Bounds[i].PointA, Bounds[i].PointB, 0.5f);
@@ -661,9 +680,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             }
 
             // Render the ceiling.
-            float ceilingDepth = 0.005f;
+            float ceilingDepth = boundaryObjectThickness;
             currentCeilingObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             currentCeilingObject.name = "Ceiling";
+            currentCeilingObject.layer = ignoreRaycastLayer;
             currentCeilingObject.transform.localScale = new Vector3(boundaryBoundingBox.size.x, ceilingDepth, boundaryBoundingBox.size.z);
             currentCeilingObject.transform.Translate(new Vector3(
                 boundaryBoundingBox.center.x,

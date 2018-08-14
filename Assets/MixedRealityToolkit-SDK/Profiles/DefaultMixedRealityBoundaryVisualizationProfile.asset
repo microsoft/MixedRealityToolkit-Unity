@@ -19,7 +19,7 @@ MonoBehaviour:
   showTrackedArea: 1
   trackedAreaMaterial: {fileID: 2100000, guid: cb74390ea57642f8b5ca0aa8f5fb38c1, type: 2}
   showBoundaryWalls: 1
-  boundaryWallMaterial: {fileID: 2100000, guid: 6a92a01febd262544a43a7fe54b88013,
+  boundaryWallMaterial: {fileID: 2100000, guid: 978c13c1492639341a61913375335e64,
     type: 2}
   showBoundaryCeiling: 1
   boundaryCeilingMaterial: {fileID: 2100000, guid: 163c37494bc2d0540b3488a9d901ee07,
