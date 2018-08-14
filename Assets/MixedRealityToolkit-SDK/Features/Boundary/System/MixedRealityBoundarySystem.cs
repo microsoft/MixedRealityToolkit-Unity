@@ -101,6 +101,47 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                     currentPlayAreaObject = null;
                 }
 
+                if (currentTrackedAreaObject != null)
+                {
+                    if (Application.isEditor)
+                    {
+                        Object.DestroyImmediate(currentTrackedAreaObject);
+                    }
+                    else
+                    {
+                        Object.Destroy(currentTrackedAreaObject);
+                    }
+                    currentTrackedAreaObject = null;
+                }
+
+                if (currentBoundaryWallObject != null)
+                {
+                    // todo: cleanup child objects
+
+                    if (Application.isEditor)
+                    {
+                        Object.DestroyImmediate(currentBoundaryWallObject);
+                    }
+                    else
+                    {
+                        Object.Destroy(currentBoundaryWallObject);
+                    }
+                    currentBoundaryWallObject = null;
+                }
+
+                if (currentCeilingObject != null)
+                {
+                    if (Application.isEditor)
+                    {
+                        Object.DestroyImmediate(currentCeilingObject);
+                    }
+                    else
+                    {
+                        Object.Destroy(currentCeilingObject);
+                    }
+                    currentCeilingObject = null;
+                }
+
                 showFloor = false;
                 showPlayArea = false;
                 showTrackedArea = false;
@@ -284,16 +325,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                 {
                     showBoundaryWalls = value;
 
-                    // todo:
-                    //if (value && (currentFloorObject == null))
-                    //{
-                    //    GetFloorVisualization();
-                    //}
+                    if (value && (currentBoundaryWallObject == null))
+                    {
+                        GetBoundaryWallVisualization();
+                    }
 
-                    //if (currentFloorObject != null)
-                    //{
-                    //    currentFloorObject.SetActive(value);
-                    //}
+                    if (currentBoundaryWallObject != null)
+                    {
+                        currentBoundaryWallObject.SetActive(value);
+                    }
 
                     RaiseBoundaryVisualizationChanged();
                 }
@@ -419,9 +459,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             Vector3 floorScale = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.FloorScale;
 
             // Render the floor.
+            float floorDepth = 0.05f;
             currentFloorObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             currentFloorObject.name = "Boundary System Floor";
-            currentFloorObject.transform.localScale = new Vector3(floorScale.x, 0.05f, floorScale.y);
+            currentFloorObject.transform.localScale = new Vector3(floorScale.x, floorDepth, floorScale.y);
             currentFloorObject.transform.Translate(new Vector3(
                 CameraCache.Main.transform.parent.position.x, 
                 FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f), 
@@ -505,11 +546,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                 CameraCache.Main.transform.parent.position.z));
 
             // Configure the renderer properties.
+            float lineWidth = 0.01f;
             LineRenderer lineRenderer = currentTrackedAreaObject.GetComponent<LineRenderer>();
             lineRenderer.sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.TrackedAreaMaterial;
             lineRenderer.useWorldSpace = false;
-            lineRenderer.startWidth = 0.01f;
-            lineRenderer.endWidth = 0.01f;
+            lineRenderer.startWidth = lineWidth;
+            lineRenderer.endWidth = lineWidth;
             lineRenderer.positionCount = lineVertices.Count;
             lineRenderer.SetPositions(lineVertices.ToArray());
 
@@ -519,7 +561,53 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             return currentTrackedAreaObject;
         }
 
-        // todo: 
+        /// <inheritdoc/>
+        public GameObject GetBoundaryWallVisualization()
+        {
+            if (currentBoundaryWallObject != null)
+            {
+                return currentBoundaryWallObject;
+            }
+
+            if (!FloorHeight.HasValue)
+            {
+                // We need a floor on which to place the walls.
+                return null;
+            }
+
+            if (Bounds.Length == 0)
+            {
+                // If we do not have boundary edges, we cannot render walls.
+                return null;
+            }
+
+            currentBoundaryWallObject = new GameObject();
+            currentBoundaryWallObject.name = "Boundary System Walls";
+
+            // Attach the ceiling to the camera parent
+            currentBoundaryWallObject.transform.parent = CameraCache.Main.transform.parent;
+
+            // Create and parent the child objects
+            float wallDepth = 0.005f;
+            for (int i = 0; i < Bounds.Length; i++)
+            {
+                GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                wall.name = $"Boundary Wall {i}";
+                wall.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryWallMaterial;
+                wall.transform.localScale = new Vector3((Bounds[i].PointB - Bounds[i].PointA).magnitude, BoundaryHeight, wallDepth);
+
+                Vector2 mid = Vector2.Lerp(Bounds[i].PointA, Bounds[i].PointB, 0.5f);
+                Vector3 rotationPoint = new Vector3(mid.x, FloorHeight.Value, mid.y);
+                wall.transform.position = new Vector3(mid.x, (BoundaryHeight * 0.5f), mid.y);
+                float rotationAngle = MathUtilities.GetAngleBetween(Bounds[i].PointB, Bounds[i].PointA);
+                wall.transform.rotation = Quaternion.Euler(0f, -rotationAngle, 0f);
+
+                wall.transform.parent = currentBoundaryWallObject.transform;
+            }
+
+            return currentBoundaryWallObject;
+        }
+
         /// <inheritdoc/>
         public GameObject GetBoundaryCeilingVisualization()
         {
@@ -544,9 +632,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             }
 
             // Render the ceiling.
+            float ceilingDepth = 0.05f;
             currentCeilingObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             currentCeilingObject.name = "Boundary System Ceiling";
-            currentCeilingObject.transform.localScale = new Vector3(boundaryBoundingBox.size.x, 0.05f, boundaryBoundingBox.size.y);
+            currentCeilingObject.transform.localScale = new Vector3(boundaryBoundingBox.size.x, ceilingDepth, boundaryBoundingBox.size.y);
             currentCeilingObject.transform.Translate(new Vector3(
                 CameraCache.Main.transform.parent.position.x,
                 BoundaryHeight + (currentCeilingObject.transform.localScale.y * 0.5f),
@@ -569,7 +658,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         private GameObject currentFloorObject = null;
         private GameObject currentPlayAreaObject = null;
         private GameObject currentTrackedAreaObject = null;
-        // todo: private List<GameObject> currentBoundaryWallObjects = new List<GameObject>();
+        private GameObject currentBoundaryWallObject = null;
         private GameObject currentCeilingObject = null;
 
         /// <summary>

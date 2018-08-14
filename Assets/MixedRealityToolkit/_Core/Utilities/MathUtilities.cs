@@ -439,5 +439,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
         {
             return (radians * Mathf.Rad2Deg);
         }
+
+        /// <summary>
+        /// Calculates the angle (at pointA) between two, two-dimensional points.
+        /// </summary>
+        /// <param name="pointA">The first point.</param>
+        /// <param name="pointB">The second point.</param>
+        /// <returns>
+        /// The angle between the two points.
+        /// </returns>
+        public static float GetAngleBetween(Vector2 pointA, Vector2 pointB)
+        {
+            Vector2 diff = pointA - pointB;
+            return MathUtilities.RadiansToDegrees(Mathf.Atan2(diff.y, diff.x));
+        }
     }
 }
