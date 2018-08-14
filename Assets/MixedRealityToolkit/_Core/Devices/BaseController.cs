@@ -53,8 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         /// </summary>
         public virtual MixedRealityInteractionMapping[] DefaultRightHandedInteractions { get; } = null;
 
-        public bool Enabled { get; set; }
-
         /// <summary>
         /// Returns the current Input System if enabled, otherwise null.
         /// </summary>
@@ -72,6 +70,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         }
 
         private IMixedRealityInputSystem inputSystem;
+
+        #region IMixedRealityController Implementation
+
+        /// <inheritdoc />
+        public bool Enabled { get; set; }
 
         /// <inheritdoc />
         public TrackingState TrackingState { get; protected set; }
@@ -93,6 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
 
         /// <inheritdoc />
         public MixedRealityInteractionMapping[] Interactions { get; private set; } = null;
+
+        #endregion IMixedRealityController Implementation
 
         /// <summary>
         /// Setups up the configuration based on the Mixed Reality Controller Mapping Profile.
