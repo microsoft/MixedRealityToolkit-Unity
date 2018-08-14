@@ -38,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         {
             boundaryEventData = new BoundaryEventData(EventSystem.current);
 
+            boundaryVisualizationParent = new GameObject("Boundary System");
+            boundaryVisualizationParent.transform.parent = CameraCache.Main.transform.parent;
+
             Scale = MixedRealityManager.Instance.ActiveProfile.TargetExperienceScale;
             BoundaryHeight = MixedRealityManager.Instance.ActiveProfile.BoundaryHeight;
 
@@ -59,6 +62,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             {
                 GetPlayAreaVisualization();
             }
+            if (ShowTrackedArea)
+            {
+                GetTrackedAreaVisualization();
+            }
+            if (ShowBoundaryWalls)
+            {
+                GetBoundaryWallVisualization();
+            }
+            if (ShowBoundaryWalls)
+            {
+                GetBoundaryCeilingVisualization();
+            }
 
             RaiseBoundaryVisualizationChanged();
         }
@@ -75,6 +90,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             // Cleanup game objects created during execution.
             if (Application.isPlaying)
             {
+                // First, detach the child objects (we are tracking them separately)
+                // and clean up the parent.
+                if (boundaryVisualizationParent != null)
+                {
+                    boundaryVisualizationParent.transform.DetachChildren();
+                    if (Application.isEditor)
+                    {
+                        Object.DestroyImmediate(boundaryVisualizationParent);
+                    }
+                    else
+                    {
+                        Object.Destroy(boundaryVisualizationParent);
+                    }
+                    boundaryVisualizationParent = null;
+                }
+
+                // Next, clean up the detached children.
                 if (currentFloorObject != null)
                 {
                     if (Application.isEditor)
@@ -223,6 +255,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         #endregion IMixedRealityEventSource Implementation
 
         #region IMixedRealityBoundarySystem Implementation
+
+        /// <summary>
+        /// Parent <see cref="GameObject"/> which will encapsulate all of the teleportable boundary visualizations.
+        /// </summary>
+        private GameObject boundaryVisualizationParent;
 
         /// <inheritdoc/>
         public ExperienceScale Scale { get; set; }
@@ -498,15 +535,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             }
 
             currentPlayAreaObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            currentPlayAreaObject.name = "Boundary System Play Area";
+            currentPlayAreaObject.name = "Play Area";
             // todo: replace with rendering z-order
             currentPlayAreaObject.transform.Translate(new Vector3(center.x, 0.005f, center.y)); // Add fudge factor to avoid z-fighting
             currentPlayAreaObject.transform.Rotate(new Vector3(90, -angle, 0));
             currentPlayAreaObject.transform.localScale = new Vector3(width, height, 1.0f);
             currentPlayAreaObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.PlayAreaMaterial;
 
-            // Attach the play area to the camera parent
-            currentPlayAreaObject.transform.parent = CameraCache.Main.transform.parent;
+            currentPlayAreaObject.transform.parent = boundaryVisualizationParent.transform;
 
             return currentPlayAreaObject;
         }
@@ -535,8 +571,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             lineVertices.Add(lineVertices[0]);
 
             // We use an empty object and attach a line renderer.
-            currentTrackedAreaObject = new GameObject();
-            currentTrackedAreaObject.name = "Boundary System Tracked Area";
+            currentTrackedAreaObject = new GameObject("Tracked Area");
             currentTrackedAreaObject.AddComponent<LineRenderer>();
             currentTrackedAreaObject.transform.Translate(new Vector3(
                 CameraCache.Main.transform.parent.position.x,
@@ -553,8 +588,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             lineRenderer.positionCount = lineVertices.Count;
             lineRenderer.SetPositions(lineVertices.ToArray());
 
-            // Attach the tracked area to the camera parent
-            currentTrackedAreaObject.transform.parent = CameraCache.Main.transform.parent;
+            currentTrackedAreaObject.transform.parent = boundaryVisualizationParent.transform;
 
             return currentTrackedAreaObject;
         }
@@ -579,29 +613,27 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                 return null;
             }
 
-            currentBoundaryWallObject = new GameObject();
-            currentBoundaryWallObject.name = "Boundary System Walls";
-
-            // Attach the ceiling to the camera parent
-            currentBoundaryWallObject.transform.parent = CameraCache.Main.transform.parent;
+            currentBoundaryWallObject = new GameObject("Tracked Area Walls");
 
             // Create and parent the child objects
             float wallDepth = 0.005f;
             for (int i = 0; i < Bounds.Length; i++)
             {
                 GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                wall.name = $"Boundary Wall {i}";
+                wall.name = $"Wall {i}";
                 wall.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryWallMaterial;
                 wall.transform.localScale = new Vector3((Bounds[i].PointB - Bounds[i].PointA).magnitude, BoundaryHeight, wallDepth);
 
+                // Position and rotate the wall.
                 Vector2 mid = Vector2.Lerp(Bounds[i].PointA, Bounds[i].PointB, 0.5f);
-                Vector3 rotationPoint = new Vector3(mid.x, FloorHeight.Value, mid.y);
                 wall.transform.position = new Vector3(mid.x, (BoundaryHeight * 0.5f), mid.y);
                 float rotationAngle = MathUtilities.GetAngleBetween(Bounds[i].PointB, Bounds[i].PointA);
                 wall.transform.rotation = Quaternion.Euler(0.0f, -rotationAngle, 0.0f);
 
                 wall.transform.parent = currentBoundaryWallObject.transform;
             }
+
+            currentBoundaryWallObject.transform.parent = boundaryVisualizationParent.transform;
 
             return currentBoundaryWallObject;
         }
@@ -624,23 +656,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             Bounds boundaryBoundingBox = new Bounds();
             for (int i = 0; i < Bounds.Length; i++)
             {
+                // The boundary geometry is a closed loop. As such, we can encapsulate only PointA of each Edge.
                 boundaryBoundingBox.Encapsulate(new Vector3(Bounds[i].PointA.x, BoundaryHeight * 0.5f, Bounds[i].PointA.y));
-                boundaryBoundingBox.Encapsulate(new Vector3(Bounds[i].PointB.x, BoundaryHeight * 0.5f, Bounds[i].PointB.y));
             }
 
             // Render the ceiling.
             float ceilingDepth = 0.005f;
             currentCeilingObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            currentCeilingObject.name = "Boundary System Ceiling";
+            currentCeilingObject.name = "Ceiling";
             currentCeilingObject.transform.localScale = new Vector3(boundaryBoundingBox.size.x, ceilingDepth, boundaryBoundingBox.size.z);
             currentCeilingObject.transform.Translate(new Vector3(
                 boundaryBoundingBox.center.x,
                 BoundaryHeight + (currentCeilingObject.transform.localScale.y * 0.5f),
                 boundaryBoundingBox.center.z));
             currentCeilingObject.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryCeilingMaterial;
-
-            // Attach the ceiling to the camera parent
-            currentCeilingObject.transform.parent = CameraCache.Main.transform.parent;
+            currentCeilingObject.transform.parent = boundaryVisualizationParent.transform;
 
             return currentCeilingObject;
         }
