@@ -11,11 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7612acbc1a4a4ed0afa5f4ccbe42bee4, type: 3}
   m_Name: DefaultMixedRealityConfigurationProfile
   m_EditorClassIdentifier: 
-  initialManagerTypes:
-  - reference: Microsoft.MixedReality.Toolkit.SDK.Input.MixedRealityInputManager,
-      Microsoft.MixedReality.Toolkit.SDK
-  - reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,
-      Microsoft.MixedReality.Toolkit.SDK
+  initialManagerTypes: []
   targetExperienceScale: 3
   enableCameraProfile: 1
   cameraProfile: {fileID: 11400000, guid: 8089ccfdd4494cd38f676f9fc1f46a04, type: 2}
@@ -29,6 +25,7 @@ MonoBehaviour:
   enableSpeechCommands: 1
   speechCommandsProfile: {fileID: 11400000, guid: e8d0393e66374dae9646851a57dc6bc1,
     type: 2}
+  inputSourceOptions: {fileID: 11400000, guid: f1f82874193db4c419ef41355b89e52c, type: 2}
   enableControllerMapping: 1
   controllerMappingProfile: {fileID: 11400000, guid: 3b591b9f56584e888f557aa29796cbf8,
     type: 2}

@@ -70,6 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
+        public SpeechInputSource SpeechInputSource { get; private set; }
+
+        public DictationInputSource DictationInputSource { get; private set; }
+
+        public TouchscreenInputSource TouchscreenInputSource { get; private set; }
+
         #region IMixedRealityManager Implementation
 
         /// <summary>
@@ -188,6 +194,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             dictationEventData = new DictationEventData(EventSystem.current);
 
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+
+            if (MixedRealityManager.Instance.ActiveProfile.IsSpeechCommandsEnabled)
+            {
+                SpeechInputSource = new SpeechInputSource(MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands);
+            }
+
+            DictationInputSource = new DictationInputSource();
+            TouchscreenInputSource = new TouchscreenInputSource();
+
+            if (MixedRealityManager.Instance.ActiveProfile.InputSourceOptions != null)
+            {
+                DictationInputSource.HypothesisAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HypothesisAction;
+                DictationInputSource.ResultAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.ResultAction;
+                DictationInputSource.CompleteAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.CompleteAction;
+                DictationInputSource.ErrorAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.ErrorAction;
+                TouchscreenInputSource.PointerDownAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.PointerDownAction;
+                TouchscreenInputSource.PointerClickedAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.PointerClickedAction;
+                TouchscreenInputSource.PointerUpAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.PointerUpAction;
+                TouchscreenInputSource.HoldStartedAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldStartedAction;
+                TouchscreenInputSource.HoldUpdatedAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldUpdatedAction;
+                TouchscreenInputSource.HoldCompletedAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldCompletedAction;
+                TouchscreenInputSource.HoldCanceledAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldCanceledAction;
+            }
         }
 
         /// <inheritdoc />
@@ -246,6 +275,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 UnityEngine.Object.Destroy(gazeProvider);
             }
 
+            SpeechInputSource?.Dispose();
+            DictationInputSource?.Dispose();
+            TouchscreenInputSource?.Dispose();
             base.Destroy();
         }
 

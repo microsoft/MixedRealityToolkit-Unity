@@ -8,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityConfigurationProfile))]
     public class MixedRealityConfigurationProfileInspector : MixedRealityBaseConfigurationProfileInspector
@@ -26,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty inputSystemType;
         private SerializedProperty inputActionsProfile;
         private SerializedProperty pointerProfile;
+        private SerializedProperty inputSourceOptions;
         private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
         private SerializedProperty enableControllerMapping;
@@ -87,6 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             inputSystemType = serializedObject.FindProperty("inputSystemType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
+            inputSourceOptions = serializedObject.FindProperty("inputSourceOptions");
             enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
@@ -171,6 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             {
                 EditorGUILayout.PropertyField(inputSystemType);
                 RenderProfile(inputActionsProfile);
+                RenderProfile(inputSourceOptions);
                 RenderProfile(pointerProfile);
 
                 EditorGUILayout.PropertyField(enableSpeechCommands);

@@ -163,6 +163,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
+        [Tooltip("Input Source Options for wiring up actions to input sources that aren't controllers.")]
+        private MixedRealityInputSourceOptionsProfile inputSourceOptions;
+
+        /// <summary>
+        /// Input Source Options for wiring up actions to input sources that aren't controllers.
+        /// </summary>
+        public MixedRealityInputSourceOptionsProfile InputSourceOptions
+        {
+            get { return inputSourceOptions; }
+            private set { inputSourceOptions = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]
         private bool enableControllerMapping = false;
 
