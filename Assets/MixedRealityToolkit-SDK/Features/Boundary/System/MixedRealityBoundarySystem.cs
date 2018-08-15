@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         /// </returns>
         private GameObject CreateBoundaryVisualizationParent()
         {
-            GameObject visualizationParent = new GameObject("Boundary System");
+            GameObject visualizationParent = new GameObject("Boundary System Visualizations");
             visualizationParent.transform.parent = CameraCache.Main.transform.parent;
 
             return visualizationParent;
