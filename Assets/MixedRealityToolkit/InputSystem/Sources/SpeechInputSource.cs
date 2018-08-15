@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             WindowsSetup(newKeywords);
 #else
-            throw new NotImplementedException();
+            // TODO: Implement on other platforms
 #endif
         }
 
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             OnPhraseRecognized(RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, null, keyword);
 #else
-            throw new NotImplementedException();
+            // TODO: Implement on other platforms
 #endif
         }
 
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             WindowsCleanup();
 #else
-            throw new NotImplementedException();
+            // TODO: Implement on other platforms
 #endif
         }
 
@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             WindowsStartRecognition();
 #else
-            throw new NotImplementedException();
+            // TODO: Implement on other platforms
 #endif
         }
 
@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             WindowsStopRecognition();
 #else
-            throw new NotImplementedException();
+            // TODO: Implement on other platforms
 #endif
         }
 
