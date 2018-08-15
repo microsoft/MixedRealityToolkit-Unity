@@ -70,10 +70,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
+        /// <summary>
+        /// Current Speech Input Source.
+        /// </summary>
         public SpeechInputSource SpeechInputSource { get; private set; }
 
+        /// <summary>
+        /// Current Dictation Input Source.
+        /// </summary>
         public DictationInputSource DictationInputSource { get; private set; }
 
+        /// <summary>
+        /// Current Touch Screen Input Source.
+        /// </summary>
         public TouchscreenInputSource TouchscreenInputSource { get; private set; }
 
         #region IMixedRealityManager Implementation
