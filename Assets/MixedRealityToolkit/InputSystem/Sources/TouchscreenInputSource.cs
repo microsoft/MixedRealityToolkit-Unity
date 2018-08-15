@@ -77,18 +77,39 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         private static readonly WaitForUpdate NextUpdate = new WaitForUpdate();
 
+        /// <summary>
+        /// Action to raise when pointer down event is raised by Touch Screen Input Source.
+        /// </summary>
         public static MixedRealityInputAction PointerDownAction { get; set; } = MixedRealityInputAction.None;
 
+        /// <summary>
+        /// Action to raise when pointer clicked event is raised by Touch Screen Input Source.
+        /// </summary>
         public static MixedRealityInputAction PointerClickedAction { get; set; } = MixedRealityInputAction.None;
 
+        /// <summary>
+        /// Action to raise when pointer up event is raised by Touch Screen Input Source.
+        /// </summary>
         public static MixedRealityInputAction PointerUpAction { get; set; } = MixedRealityInputAction.None;
 
+        /// <summary>
+        /// Action to raise when hold event is raised by Touch Screen Input Source.
+        /// </summary>
         public static MixedRealityInputAction HoldStartedAction { get; set; } = MixedRealityInputAction.None;
 
+        /// <summary>
+        /// Action to raise when hold updated event is raised by Touch Screen Input Source.
+        /// </summary>
         public static MixedRealityInputAction HoldUpdatedAction { get; set; } = MixedRealityInputAction.None;
 
+        /// <summary>
+        /// Action to raise when hold completed event is raised by Touch Screen Input Source.
+        /// </summary>
         public static MixedRealityInputAction HoldCompletedAction { get; set; } = MixedRealityInputAction.None;
 
+        /// <summary>
+        /// Action to raise when hold canceled event is raised by Touch Screen Input Source.
+        /// </summary>
         public static MixedRealityInputAction HoldCanceledAction { get; set; } = MixedRealityInputAction.None;
 
         private async void Run()
