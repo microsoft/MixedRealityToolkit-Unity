@@ -15,12 +15,6 @@ MonoBehaviour:
   - keyword: Menu
     keyCode: 9
     action:
-      id: 0
-      description: None
-      axisConstraint: 0
-  - keyword: Test
-    keyCode: 32
-    action:
-      id: 0
-      description: None
-      axisConstraint: 0
+      id: 2
+      description: Menu
+      axisConstraint: 2
