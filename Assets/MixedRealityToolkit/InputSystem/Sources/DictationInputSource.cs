@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async.AwaitYieldInstructions;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -111,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// </summary>
         private static AudioClip dictationAudioClip;
 
-        private static readonly WaitForFixedUpdate NextUpdate = new WaitForFixedUpdate();
+        private static readonly WaitForUpdate NextUpdate = new WaitForUpdate();
 
         private static async void Run()
         {
