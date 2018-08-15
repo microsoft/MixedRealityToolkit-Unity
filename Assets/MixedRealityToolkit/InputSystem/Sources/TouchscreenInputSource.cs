@@ -50,9 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             Run();
         }
 
-        /// <inheritdoc />
-        public override void Dispose() { }
-
         public override IMixedRealityPointer[] Pointers
         {
             get
