@@ -197,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool IsBoundarySystemEnabled
         {
-            get { return boundarySystemType.Type != null && enableBoundarySystem; }
+            get { return boundarySystemType != null && boundarySystemType.Type != null && enableBoundarySystem; }
             private set { enableInputSystem = value; }
         }
 
@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool IsTeleportSystemEnabled
         {
-            get { return teleportSystemType.Type != null && enableTeleportSystem; }
+            get { return teleportSystemType != null && teleportSystemType.Type != null && enableTeleportSystem; }
             private set { enableTeleportSystem = value; }
         }
 
