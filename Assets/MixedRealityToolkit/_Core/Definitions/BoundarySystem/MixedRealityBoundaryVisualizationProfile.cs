@@ -105,6 +105,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
 
         #endregion Boundary wall settings
 
+        #region Boundary ceiling settings
+
         [SerializeField]
         private bool showBoundaryCeiling = false;
 
@@ -121,7 +123,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         /// </summary>
         public Material BoundaryCeilingMaterial => boundaryCeilingMaterial;
 
-        #region Boundary ceiling settings
         #endregion Boundary ceiling settings
     }
 }
