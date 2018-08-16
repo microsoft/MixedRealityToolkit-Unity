@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
                     controllerType = typeof(GenericUnityController);
                     break;
                 case SupportedControllerType.XboxController:
-                    controllerType = typeof(XboxUnityController);
+                    controllerType = typeof(XboxController);
                     break;
             }
 

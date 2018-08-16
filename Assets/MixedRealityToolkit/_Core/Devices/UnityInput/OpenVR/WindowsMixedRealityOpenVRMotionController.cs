@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
     /// <summary>
     /// Open VR Implementation of the Windows Mixed Reality Motion Controllers.
     /// </summary>
-    public class UnityWindowsMixedRealityUnityOpenVRController : GenericUnityOpenVRController
+    public class WindowsMixedRealityOpenVRMotionController : GenericUnityOpenVRController
     {
         /// <summary>
         /// Constructor.
@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
         /// <param name="controllerHandedness"></param>
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
-        public UnityWindowsMixedRealityUnityOpenVRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public WindowsMixedRealityOpenVRMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
             PointerOffsetAngle = -30f;

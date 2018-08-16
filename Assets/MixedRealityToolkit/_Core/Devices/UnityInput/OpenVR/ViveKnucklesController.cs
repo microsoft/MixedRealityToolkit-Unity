@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 {
-    public class UnityViveKnucklesController : GenericUnityOpenVRController
+    public class ViveKnucklesController : GenericUnityOpenVRController
     {
         /// <summary>
         /// Constructor.
@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
         /// <param name="controllerHandedness"></param>
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
-        public UnityViveKnucklesController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public ViveKnucklesController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
         }

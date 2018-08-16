@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 {
-    public class UnityOculusRemoteController : GenericUnityOpenVRController
+    public class OculusRemoteController : GenericUnityOpenVRController
     {
         /// <summary>
         /// Constructor.
@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
         /// <param name="controllerHandedness"></param>
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
-        public UnityOculusRemoteController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public OculusRemoteController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
         }

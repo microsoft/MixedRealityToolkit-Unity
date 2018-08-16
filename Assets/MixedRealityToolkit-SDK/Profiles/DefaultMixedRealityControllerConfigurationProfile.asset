@@ -637,7 +637,7 @@ MonoBehaviour:
   - id: 5
     description: OVR WMR Controller Left
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR.UnityWindowsMixedRealityUnityOpenVRController,
+      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR.WindowsMixedRealityOpenVRMotionController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
     useDefaultModel: 0
@@ -779,7 +779,7 @@ MonoBehaviour:
   - id: 6
     description: OVR WMR Controller Right
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR.UnityWindowsMixedRealityUnityOpenVRController,
+      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR.WindowsMixedRealityOpenVRMotionController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
     useDefaultModel: 0
@@ -921,7 +921,7 @@ MonoBehaviour:
   - id: 7
     description: Xbox Controller
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.XboxUnityController,
+      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.XboxController,
         Microsoft.MixedReality.Toolkit
     handedness: 0
     useDefaultModel: 0

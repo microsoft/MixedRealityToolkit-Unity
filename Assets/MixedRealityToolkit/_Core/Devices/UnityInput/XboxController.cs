@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
     /// <summary>
     /// Xbox Controller using Unity Input System
     /// </summary>
-    public class XboxUnityController : GenericUnityController
+    public class XboxController : GenericUnityController
     {
         /// <summary>
         /// Constructor.
@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
         /// <param name="controllerHandedness"></param>
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
-        public XboxUnityController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public XboxController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
         }

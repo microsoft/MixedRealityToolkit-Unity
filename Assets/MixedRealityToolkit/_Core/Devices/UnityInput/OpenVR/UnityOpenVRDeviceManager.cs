@@ -57,19 +57,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
                     controllerType = typeof(GenericUnityOpenVRController);
                     break;
                 case SupportedControllerType.ViveWand:
-                    controllerType = typeof(UnityViveWandController);
+                    controllerType = typeof(ViveWandController);
                     break;
                 case SupportedControllerType.ViveKnuckles:
-                    controllerType = typeof(UnityViveKnucklesController);
+                    controllerType = typeof(ViveKnucklesController);
                     break;
                 case SupportedControllerType.OculusTouch:
-                    controllerType = typeof(UnityOculusTouchController);
+                    controllerType = typeof(OculusTouchController);
                     break;
                 case SupportedControllerType.OculusRemote:
-                    controllerType = typeof(UnityOculusRemoteController);
+                    controllerType = typeof(OculusRemoteController);
                     break;
                 case SupportedControllerType.WindowsMixedReality:
-                    controllerType = typeof(UnityWindowsMixedRealityUnityOpenVRController);
+                    controllerType = typeof(WindowsMixedRealityOpenVRMotionController);
                     break;
                 default:
                     return null;
