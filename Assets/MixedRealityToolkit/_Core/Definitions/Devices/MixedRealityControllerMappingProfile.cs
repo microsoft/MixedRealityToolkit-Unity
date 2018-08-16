@@ -77,7 +77,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             for (int i = 0; i < mixedRealityControllerMappingProfiles.Length; i++)
             {
-                if (mixedRealityControllerMappingProfiles[i].ControllerType.Type == controllerType &&
+                if (mixedRealityControllerMappingProfiles[i].ControllerType != null &&
+                    mixedRealityControllerMappingProfiles[i].ControllerType.Type == controllerType &&
                    (mixedRealityControllerMappingProfiles[i].Handedness == hand || mixedRealityControllerMappingProfiles[i].Handedness == Handedness.Both))
                 {
                     return mixedRealityControllerMappingProfiles[i].OverrideControllerModel;
