@@ -41,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty teleportDuration;
         // Spatial awareness system properties
         private SerializedProperty enableSpatialAwarenessSystem;
+        private SerializedProperty spatialAwarenessSystemType;
         private SerializedProperty spatialAwarenessProfile;
 
         private MixedRealityConfigurationProfile configurationProfile;
@@ -105,6 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             teleportDuration = serializedObject.FindProperty("teleportDuration");
             // Spatial awareness system configuration
             enableSpatialAwarenessSystem = serializedObject.FindProperty("enableSpatialAwarenessSystem");
+            spatialAwarenessSystemType = serializedObject.FindProperty("spatialAwarenessSystemType");
             spatialAwarenessProfile = serializedObject.FindProperty("spatialAwarenessProfile");
         }
 
@@ -233,6 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             if (enableSpatialAwarenessSystem.boolValue)
             {
+                EditorGUILayout.PropertyField(spatialAwarenessSystemType);
                 RenderProfile(spatialAwarenessProfile);
             }
 

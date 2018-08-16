@@ -291,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool IsSpatialAwarenessSystemEnabled
         {
-            get { return boundarySystemType != null && boundarySystemType.Type != null && enableBoundarySystem; }
+            get { return spatialAwarenessSystemType != null && spatialAwarenessSystemType.Type != null && enableSpatialAwarenessSystem; }
             private set { enableSpatialAwarenessSystem = value; }
         }
 

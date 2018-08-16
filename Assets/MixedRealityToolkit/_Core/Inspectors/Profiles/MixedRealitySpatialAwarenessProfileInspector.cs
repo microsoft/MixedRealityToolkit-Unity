@@ -8,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.SpatialAwareness;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealitySpatialAwarenessProfile))]
     public class MixedRealitySpatialAwarenessProfileInspector : MixedRealityBaseConfigurationProfileInspector
