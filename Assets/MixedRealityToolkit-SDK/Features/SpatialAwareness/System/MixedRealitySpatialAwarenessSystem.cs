@@ -55,15 +55,15 @@ public class MixedRealitySpatialAwarenessSystem : MixedRealityEventManager, IMix
     public bool AutoStart { get; set; } // todo
 
     /// <inheritdoc/>
-    public Vector3 Extents { get; set; } // todo
+    public Vector3 ObservationExtents { get; set; } // todo
 
     /// <inheritdoc/>
     public int PhysicsLayer { get; set; } // todo
 
     /// <inheritdoc/>
-    public int UpdateInterval { get; set; } // todo
+    public float UpdateInterval { get; set; } // todo
 
-    #region Mesh settings
+    #region Mesh
 
     /// <inheritdoc/>
     public int TrianglesPerCubicMeter { get; set; } // todo
@@ -71,17 +71,14 @@ public class MixedRealitySpatialAwarenessSystem : MixedRealityEventManager, IMix
     /// <inheritdoc/>
     public bool RecalculateNormals { get; set; } // todo
 
-    #endregion Mesh settings
+    #endregion Mesh
 
-    #region Surface settings
-
-    /// <inheritdoc/>
-    public float MinimumSurfaceSize { get; set; } // todo
+    #region Surface
 
     /// <inheritdoc/>
-    public SpatialAwarenessSurfaceTypes SurfaceTypes { get; set; } // todo gfs
+    public float MinimumSurfaceArea { get; set; } // todo
 
-    #endregion Surface settings
+    #endregion Surface
 
     #endregion IMixedRealitySpatialAwarenessSystem Implmentation
 }

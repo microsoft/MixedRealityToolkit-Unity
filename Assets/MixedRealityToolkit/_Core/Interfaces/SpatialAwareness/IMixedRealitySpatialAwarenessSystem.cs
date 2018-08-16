@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSys
         /// <summary>
         /// The size of the observation volume.
         /// </summary>
-        Vector3 Extents { get; set; }
+        Vector3 ObservationExtents { get; set; }
 
         /// <summary>
         /// The physics layer to which identified meshes and surfaces should be attached.
@@ -28,9 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSys
         /// <summary>
         /// The interval, in seconds, between observation updates.
         /// </summary>
-        int UpdateInterval { get; set; }
+        float UpdateInterval { get; set; }
 
-        #region Mesh settings
+        #region Mesh
 
         /// <summary>
         /// The number of triangles to calculate per cubic meter. 
@@ -42,20 +42,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSys
         /// </summary>
         bool RecalculateNormals { get; set; }
 
-        #endregion Mesh settings
+        #endregion Mesh
 
-        #region Surface settings
-
-        /// <summary>
-        /// The minimum size, in square meters, threshold before a surface plane will be identified.
-        /// </summary>
-        float MinimumSurfaceSize { get; set; }
+        #region Surface
 
         /// <summary>
-        /// The types of surfaces to identify.
+        /// The minimum area, in square meters, threshold before a surface plane will be identified.
         /// </summary>
-        SpatialAwarenessSurfaceTypes SurfaceTypes { get; set; }
+        float MinimumSurfaceArea { get; set; }
 
-        #endregion Surface settings
+        #endregion Surface
     }
 }

@@ -44,3 +44,7 @@ MonoBehaviour:
     reference: Microsoft.MixedReality.Toolkit.SDK.Teleportation.MixedRealityTeleportManager,
       Microsoft.MixedReality.Toolkit.SDK
   teleportDuration: 0.25
+  enableSpatialAwarenessSystem: 1
+  spatialAwarenessSystemType:
+    reference: 
+  spatialAwarenessProfile: {fileID: 0}
