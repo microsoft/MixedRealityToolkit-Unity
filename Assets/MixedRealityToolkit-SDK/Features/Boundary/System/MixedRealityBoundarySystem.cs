@@ -287,23 +287,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
         /// </summary>
         private GameObject BoundaryVisualizationParent => boundaryVisualizationParent ?? (boundaryVisualizationParent = CreateBoundaryVisualizationParent());
 
-        private int ignoreRaycastLayerValue = -1;
-
         /// <summary>
         /// Layer used to tell the (non-floor) boundary objects to not accept raycasts
         /// </summary>
-        private int IgnoreRaycastLayerValue
-        {
-            get
-            {
-                if (ignoreRaycastLayerValue < 0)
-                {
-                    ignoreRaycastLayerValue = LayerMask.NameToLayer("Ignore Raycast");
-                }
-
-                return ignoreRaycastLayerValue;
-            }
-        }
+        private int ignoreRaycastLayerValue = 2;
 
         /// <inheritdoc/>
         public ExperienceScale Scale { get; set; }
@@ -579,7 +566,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
 
             currentPlayAreaObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
             currentPlayAreaObject.name = "Play Area";
-            currentPlayAreaObject.layer = IgnoreRaycastLayerValue;
+            currentPlayAreaObject.layer = ignoreRaycastLayerValue;
             currentPlayAreaObject.transform.Translate(new Vector3(center.x, boundaryObjectRenderOffset, center.y));
             currentPlayAreaObject.transform.Rotate(new Vector3(90, -angle, 0));
             currentPlayAreaObject.transform.localScale = new Vector3(width, height, 1.0f);
@@ -615,7 +602,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
 
             // We use an empty object and attach a line renderer.
             currentTrackedAreaObject = new GameObject("Tracked Area");
-            currentTrackedAreaObject.layer = IgnoreRaycastLayerValue;
+            currentTrackedAreaObject.layer = ignoreRaycastLayerValue;
             currentTrackedAreaObject.AddComponent<LineRenderer>();
             currentTrackedAreaObject.transform.Translate(new Vector3(
                 CameraCache.Main.transform.parent.position.x,
@@ -667,7 +654,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
                 wall.name = $"Wall {i}";
                 wall.GetComponent<Renderer>().sharedMaterial = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryWallMaterial;
                 wall.transform.localScale = new Vector3((Bounds[i].PointB - Bounds[i].PointA).magnitude, BoundaryHeight, wallDepth);
-                wall.layer = IgnoreRaycastLayerValue;
+                wall.layer = ignoreRaycastLayerValue;
 
                 // Position and rotate the wall.
                 Vector2 mid = Vector2.Lerp(Bounds[i].PointA, Bounds[i].PointB, 0.5f);
@@ -709,7 +696,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             float ceilingDepth = boundaryObjectThickness;
             currentCeilingObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             currentCeilingObject.name = "Ceiling";
-            currentCeilingObject.layer = IgnoreRaycastLayerValue;
+            currentCeilingObject.layer = ignoreRaycastLayerValue;
             currentCeilingObject.transform.localScale = new Vector3(boundaryBoundingBox.size.x, ceilingDepth, boundaryBoundingBox.size.z);
             currentCeilingObject.transform.Translate(new Vector3(
                 boundaryBoundingBox.center.x,
