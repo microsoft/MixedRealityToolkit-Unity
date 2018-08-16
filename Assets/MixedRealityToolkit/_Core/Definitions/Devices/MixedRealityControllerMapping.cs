@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         public void SetDefaultInteractionMapping()
         {
-            interactions = ControllerMappingLibrary.GetMappingsForControllerType(controllerType.Type, handedness);
+            interactions = ControllerMappingLibrary.GetMappingsForControllerType(controllerType?.Type, handedness);
         }
     }
 }
