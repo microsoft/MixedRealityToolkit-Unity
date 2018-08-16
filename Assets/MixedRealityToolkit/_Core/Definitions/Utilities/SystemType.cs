@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
 
         public static string GetReference(Type type)
         {
-            if (type == null)
+            if (type == null || string.IsNullOrEmpty(type.AssemblyQualifiedName))
             {
                 return string.Empty;
             }
@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
 #endif // WINDOWS_UWP && !ENABLE_IL2CPP
                     if (!isValid)
                     {
-                        throw new ArgumentException($"'{value.FullName}' is not a class or struct type.", nameof(value));
+                        Debug.LogError($"'{value.FullName}' is not a class or struct type.");
                     }
                 }
 
