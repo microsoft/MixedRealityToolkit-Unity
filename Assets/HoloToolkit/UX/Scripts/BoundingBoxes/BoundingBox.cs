@@ -370,7 +370,6 @@ namespace HoloToolkit.Unity.UX
 
             // Store the local scale of the target bb
             targetBoundsLocalScale = localTargetBounds.size;
-            targetBoundsLocalScale.Scale(target.transform.localScale);
 
             // Now check our flatten behavior
             UpdateFlattenedAxis();
@@ -442,6 +441,8 @@ namespace HoloToolkit.Unity.UX
             // Get position of object based on renderers
             transform.position = targetBoundsWorldCenter;
             Vector3 scale = targetBoundsLocalScale;
+            scale = target.transform.TransformVector(scale);  // transform the target's local scale to world scale
+            scale = transform.InverseTransformVector(scale);  // transform world scale to the local scale of the bounding box
 
             // Use absolute value when determining smallest axis
             // so we don't get fooled by inverted scales
