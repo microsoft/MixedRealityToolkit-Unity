@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
 
         public static string GetReference(Type type)
         {
-            if (type == null)
+            if (type == null || string.IsNullOrEmpty(type.AssemblyQualifiedName))
             {
                 return string.Empty;
             }
@@ -89,14 +89,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             get { return type; }
             set
             {
-#if WINDOWS_UWP && !ENABLE_IL2CPP
-                bool isValid = value.IsValueType() && !value.IsEnum() || value.IsClass();
-#else
-                bool isValid = value.IsValueType && !value.IsEnum || value.IsClass;
-#endif // WINDOWS_UWP && !ENABLE_IL2CPP
-                if (value != null && !isValid)
+                if (value != null)
                 {
-                    throw new ArgumentException($"'{value.FullName}' is not a class or struct type.", nameof(value));
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+                    bool isValid = value.IsValueType() && !value.IsEnum() || value.IsClass();
+#else
+                    bool isValid = value.IsValueType && !value.IsEnum || value.IsClass;
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
+                    if (!isValid)
+                    {
+                        Debug.LogError($"'{value.FullName}' is not a class or struct type.");
+                    }
                 }
 
                 type = value;
