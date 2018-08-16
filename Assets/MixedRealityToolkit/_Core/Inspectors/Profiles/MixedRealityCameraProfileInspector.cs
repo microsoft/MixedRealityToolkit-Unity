@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityCameraProfile))]
     public class MixedRealityCameraProfileInspector : MixedRealityBaseConfigurationProfileInspector

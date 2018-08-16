@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityBoundaryVisualizationProfile))]
     public class MixedRealityBoundaryVisualizationProfileInspector : MixedRealityBaseConfigurationProfileInspector
