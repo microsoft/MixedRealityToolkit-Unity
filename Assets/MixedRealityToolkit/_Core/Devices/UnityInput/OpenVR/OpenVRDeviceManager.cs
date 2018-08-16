@@ -11,14 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
     /// <summary>
     /// Manages Open VR Devices using unity's input system.
     /// </summary>
-    public class UnityOpenVRDeviceManager : UnityDeviceManager
+    public class OpenVRDeviceManager : UnityDeviceManager
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public UnityOpenVRDeviceManager(string name, uint priority) : base(name, priority) { }
+        public OpenVRDeviceManager(string name, uint priority) : base(name, priority) { }
 
         #region Controller Utilities
 
