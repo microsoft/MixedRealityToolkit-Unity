@@ -7,9 +7,9 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
-    public class ViveKnucklesController : GenericUnityOpenVRController
+    public class ViveKnucklesController : GenericOpenVRController
     {
         /// <summary>
         /// Constructor.

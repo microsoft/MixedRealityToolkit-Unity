@@ -3,10 +3,11 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
     /// <summary>
     /// Manages Open VR Devices using unity's input system.
@@ -54,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
             switch (currentControllerType)
             {
                 case SupportedControllerType.GenericOpenVR:
-                    controllerType = typeof(GenericUnityOpenVRController);
+                    controllerType = typeof(GenericOpenVRController);
                     break;
                 case SupportedControllerType.ViveWand:
                     controllerType = typeof(ViveWandController);
@@ -77,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
 
             var pointers = RequestPointers(controllerType, controllingHand);
             var inputSource = InputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers);
-            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericUnityOpenVRController;
+            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
 
             if (detectedController == null)
             {

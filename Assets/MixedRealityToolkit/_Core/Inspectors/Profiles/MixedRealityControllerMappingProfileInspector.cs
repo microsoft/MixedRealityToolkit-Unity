@@ -4,10 +4,10 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Linq;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR;
 using UnityEditor;
 using UnityEngine;
 
@@ -320,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                             // Only allow custom interaction mappings on generic controller types
                             var controllerType = thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type;
                             useCustomInteractionMappings.boolValue = controllerType == typeof(GenericUnityController) ||
-                                                                     controllerType == typeof(GenericUnityOpenVRController);
+                                                                     controllerType == typeof(GenericOpenVRController);
                             interactionsList.ClearArray();
                             serializedObject.ApplyModifiedProperties();
                             thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping();

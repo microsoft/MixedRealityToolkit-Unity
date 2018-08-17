@@ -7,12 +7,12 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.OpenVR
+namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
 {
     /// <summary>
     /// Open VR Implementation of the Windows Mixed Reality Motion Controllers.
     /// </summary>
-    public class WindowsMixedRealityOpenVRMotionController : GenericUnityOpenVRController
+    public class WindowsMixedRealityOpenVRMotionController : GenericOpenVRController
     {
         /// <summary>
         /// Constructor.
