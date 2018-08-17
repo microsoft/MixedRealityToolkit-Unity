@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         /// Type of surface to map the collection to.
         /// </summary>
         [Tooltip("Type of surface to map the collection to")]
-        private SurfaceTypeEnum surfaceType = SurfaceTypeEnum.Plane;
+        private ObjectOrientationSurfaceType surfaceType = ObjectOrientationSurfaceType.Plane;
 
         /// <summary>
         /// Should the objects in the collection face the origin of the collection
@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         /// Whether to sort objects by row first or by column first
         /// </summary>
         [Tooltip("Whether to sort objects by row first or by column first")]
-        private LayoutTypeEnum layoutType = LayoutTypeEnum.ColumnThenRow;
+        private LayoutType layout = LayoutType.ColumnThenRow;
 
         /// <summary>
         /// This is the radius of either the Cylinder or Sphere mapping and is ignored when using the plane mapping.
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         #endregion
 
         #region public accessors
-        public SurfaceTypeEnum SurfaceType
+        public ObjectOrientationSurfaceType SurfaceType
         {
             get { return surfaceType; }
             set { surfaceType = value; }
@@ -86,10 +86,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             set { orientType = value; }
 
         }
-        public LayoutTypeEnum LayoutType
+        public LayoutType Layout
         {
-            get { return layoutType; }
-            set { layoutType = value; }
+            get { return layout; }
+            set { layout = value; }
 
         }
         public float Radius
@@ -176,9 +176,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             cellCounter = 0;
 
             // First start with a grid then project onto surface
-            switch (LayoutType)
+            switch (layout)
             {
-                case LayoutTypeEnum.ColumnThenRow:
+                case LayoutType.ColumnThenRow:
                 default:
                     for (int c = 0; c < columns; c++)
                     {
@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     }
                     break;
 
-                case LayoutTypeEnum.RowThenColumn:
+                case LayoutType.RowThenColumn:
                     for (int r = 0; r < Rows; r++)
                     {
                         for (int c = 0; c < columns; c++)
@@ -211,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
             switch (SurfaceType)
             {
-                case SurfaceTypeEnum.Plane:
+                case ObjectOrientationSurfaceType.Plane:
                     for (int i = 0; i < NodeList.Count; i++)
                     {
                         newPos = nodeGrid[i];
@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                         }
                     }
                     break;
-                case SurfaceTypeEnum.Cylinder:
+                case ObjectOrientationSurfaceType.Cylinder:
                     for (int i = 0; i < NodeList.Count; i++)
                     {
                         newPos = CylindricalMapping(nodeGrid[i], Radius);
@@ -273,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                         NodeList[i].transform.localPosition = newPos;
                     }
                     break;
-                case SurfaceTypeEnum.Sphere:
+                case ObjectOrientationSurfaceType.Sphere:
 
                     for (int i = 0; i < NodeList.Count; i++)
                     {
@@ -310,7 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     }
                     break;
 
-                case SurfaceTypeEnum.Scatter:
+                case ObjectOrientationSurfaceType.Scatter:
                     // Get randomized planar mapping
                     // Calculate radius of each node while we're here
                     // Then use the packer function to shift them into place
@@ -351,7 +351,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     }
 
                     // Iterate [x] times
-                    // TODO move center, iterations and padding into a public field
                     for (int i = 0; i < 100; i++)
                     {
                         IterateScatterPacking(NodeList, Radius);
@@ -465,15 +464,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         protected virtual void OnDrawGizmosSelected()
         {
             Vector3 scale = (2f * Radius) * Vector3.one;
-            switch (SurfaceType)
+            switch (surfaceType)
             {
-                case SurfaceTypeEnum.Plane:
+                case ObjectOrientationSurfaceType.Plane:
                     break;
-                case SurfaceTypeEnum.Cylinder:
+                case ObjectOrientationSurfaceType.Cylinder:
                     Gizmos.color = Color.green;
                     Gizmos.DrawWireMesh(CylinderMesh, transform.position, transform.rotation, scale);
                     break;
-                case SurfaceTypeEnum.Sphere:
+                case ObjectOrientationSurfaceType.Sphere:
                     Gizmos.color = Color.green;
                     Gizmos.DrawWireMesh(SphereMesh, transform.position, transform.rotation, scale);
                     break;
