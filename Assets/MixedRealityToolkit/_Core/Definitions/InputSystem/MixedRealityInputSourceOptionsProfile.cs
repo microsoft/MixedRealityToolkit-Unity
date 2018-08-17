@@ -48,66 +48,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         public MixedRealityInputAction ErrorAction => errorAction;
 
         [SerializeField]
-        [Tooltip("Action to raise when pointer down event is raised by Touch Screen Input Source.")]
-        private MixedRealityInputAction pointerDownAction;
+        [Tooltip("Action to raise when pointer event is raised by Touch Screen Input Source.")]
+        private MixedRealityInputAction pointerAction;
 
         /// <summary>
-        /// Action to raise when pointer down event is raised by Touch Screen Input Source.
+        /// Action to raise when pointer event is raised by Touch Screen Input Source.
         /// </summary>
-        public MixedRealityInputAction PointerDownAction => pointerDownAction;
-
-        [SerializeField]
-        [Tooltip("Action to raise when pointer clicked event is raised by Touch Screen Input Source.")]
-        private MixedRealityInputAction pointerClickedAction;
-
-        /// <summary>
-        /// Action to raise when pointer clicked event is raised by Touch Screen Input Source.
-        /// </summary>
-        public MixedRealityInputAction PointerClickedAction => pointerClickedAction;
-
-        [SerializeField]
-        [Tooltip("Action to raise when pointer up event is raised by Touch Screen Input Source.")]
-        private MixedRealityInputAction pointerUpAction;
-
-        /// <summary>
-        /// Action to raise when pointer up event is raised by Touch Screen Input Source.
-        /// </summary>
-        public MixedRealityInputAction PointerUpAction => pointerUpAction;
+        public MixedRealityInputAction PointerAction => pointerAction;
 
         [SerializeField]
         [Tooltip("Action to raise when hold event is raised by Touch Screen Input Source.")]
-        private MixedRealityInputAction holdStartedAction;
+        private MixedRealityInputAction holdAction;
 
         /// <summary>
         /// Action to raise when hold event is raised by Touch Screen Input Source.
         /// </summary>
-        public MixedRealityInputAction HoldStartedAction => holdStartedAction;
-
-        [SerializeField]
-        [Tooltip("Action to raise when hold updated event is raised by Touch Screen Input Source.")]
-        private MixedRealityInputAction holdUpdatedAction;
-
-        /// <summary>
-        /// Action to raise when hold updated event is raised by Touch Screen Input Source.
-        /// </summary>
-        public MixedRealityInputAction HoldUpdatedAction => holdUpdatedAction;
-
-        [SerializeField]
-        [Tooltip("Action to raise when hold completed event is raised by Touch Screen Input Source.")]
-        private MixedRealityInputAction holdCompletedAction;
-
-        /// <summary>
-        /// Action to raise when hold completed event is raised by Touch Screen Input Source.
-        /// </summary>
-        public MixedRealityInputAction HoldCompletedAction => holdCompletedAction;
-
-        [SerializeField]
-        [Tooltip("Action to raise when hold canceled event is raised by Touch Screen Input Source.")]
-        private MixedRealityInputAction holdCanceledAction;
-
-        /// <summary>
-        /// Action to raise when hold canceled event is raised by Touch Screen Input Source.
-        /// </summary>
-        public MixedRealityInputAction HoldCanceledAction => holdCanceledAction;
+        public MixedRealityInputAction HoldAction => holdAction;
     }
 }

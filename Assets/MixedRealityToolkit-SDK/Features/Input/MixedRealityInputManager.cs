@@ -218,13 +218,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 DictationInputSource.ResultAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.ResultAction;
                 DictationInputSource.CompleteAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.CompleteAction;
                 DictationInputSource.ErrorAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.ErrorAction;
-                TouchscreenInputSource.PointerDownAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.PointerDownAction;
-                TouchscreenInputSource.PointerClickedAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.PointerClickedAction;
-                TouchscreenInputSource.PointerUpAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.PointerUpAction;
-                TouchscreenInputSource.HoldStartedAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldStartedAction;
-                TouchscreenInputSource.HoldUpdatedAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldUpdatedAction;
-                TouchscreenInputSource.HoldCompletedAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldCompletedAction;
-                TouchscreenInputSource.HoldCanceledAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldCanceledAction;
+                TouchscreenInputSource.PointerAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.PointerAction;
+                TouchscreenInputSource.HoldAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldAction;
             }
         }
 

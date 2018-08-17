@@ -77,37 +77,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <summary>
         /// Action to raise when pointer down event is raised by Touch Screen Input Source.
         /// </summary>
-        public static MixedRealityInputAction PointerDownAction { get; set; } = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// Action to raise when pointer clicked event is raised by Touch Screen Input Source.
-        /// </summary>
-        public static MixedRealityInputAction PointerClickedAction { get; set; } = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// Action to raise when pointer up event is raised by Touch Screen Input Source.
-        /// </summary>
-        public static MixedRealityInputAction PointerUpAction { get; set; } = MixedRealityInputAction.None;
+        public static MixedRealityInputAction PointerAction { get; set; } = MixedRealityInputAction.None;
 
         /// <summary>
         /// Action to raise when hold event is raised by Touch Screen Input Source.
         /// </summary>
-        public static MixedRealityInputAction HoldStartedAction { get; set; } = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// Action to raise when hold updated event is raised by Touch Screen Input Source.
-        /// </summary>
-        public static MixedRealityInputAction HoldUpdatedAction { get; set; } = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// Action to raise when hold completed event is raised by Touch Screen Input Source.
-        /// </summary>
-        public static MixedRealityInputAction HoldCompletedAction { get; set; } = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// Action to raise when hold canceled event is raised by Touch Screen Input Source.
-        /// </summary>
-        public static MixedRealityInputAction HoldCanceledAction { get; set; } = MixedRealityInputAction.None;
+        public static MixedRealityInputAction HoldAction { get; set; } = MixedRealityInputAction.None;
 
         private async void Run()
         {
@@ -160,8 +135,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
             var newTouch = new TouchPointer($"Touch {touch.fingerId}", touch, ray, this);
             activeTouches.Add(newTouch);
-            InputSystem.RaisePointerDown(newTouch, PointerDownAction);
-            InputSystem.RaiseHoldStarted(this, HoldStartedAction);
+            InputSystem.RaisePointerDown(newTouch, PointerAction);
+            InputSystem.RaiseHoldStarted(this, HoldAction);
         }
 
         private void RemoveTouch(Touch touch)
@@ -174,24 +149,24 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                     {
                         if (knownTouch.Lifetime < K_CONTACT_EPSILON)
                         {
-                            InputSystem.RaiseHoldCanceled(this, HoldCanceledAction);
+                            InputSystem.RaiseHoldCanceled(this, HoldAction);
                         }
                         else if (knownTouch.Lifetime < MaxTapContactTime)
                         {
-                            InputSystem.RaiseHoldCanceled(this, HoldCanceledAction);
-                            InputSystem.RaisePointerClicked(knownTouch, PointerClickedAction, knownTouch.TouchData.tapCount);
+                            InputSystem.RaiseHoldCanceled(this, HoldAction);
+                            InputSystem.RaisePointerClicked(knownTouch, PointerAction, knownTouch.TouchData.tapCount);
                         }
                         else
                         {
-                            InputSystem.RaiseHoldCompleted(this, HoldCompletedAction);
+                            InputSystem.RaiseHoldCompleted(this, HoldAction);
                         }
                     }
                     else
                     {
-                        InputSystem.RaiseHoldCanceled(this, HoldCanceledAction);
+                        InputSystem.RaiseHoldCanceled(this, HoldAction);
                     }
 
-                    InputSystem.RaisePointerUp(knownTouch, PointerUpAction);
+                    InputSystem.RaisePointerUp(knownTouch, PointerAction);
                     activeTouches.Remove(knownTouch);
 
                     if (activeTouches.Count == 0)
