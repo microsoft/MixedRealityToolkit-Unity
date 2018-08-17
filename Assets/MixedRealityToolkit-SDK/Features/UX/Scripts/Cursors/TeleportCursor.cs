@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
     {
         [SerializeField]
         [Tooltip("Arrow Transform to point in the Teleporting direction.")]
-        private Transform arrowTransform;
+        private Transform arrowTransform = null;
 
         private Vector3 cursorOrientation = Vector3.zero;
 
