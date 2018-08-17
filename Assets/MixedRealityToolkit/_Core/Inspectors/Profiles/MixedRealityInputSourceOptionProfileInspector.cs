@@ -13,13 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty resultAction;
         private SerializedProperty completeAction;
         private SerializedProperty errorAction;
-        private SerializedProperty pointerDownAction;
-        private SerializedProperty pointerClickedAction;
-        private SerializedProperty pointerUpAction;
-        private SerializedProperty holdStartedAction;
-        private SerializedProperty holdUpdatedAction;
-        private SerializedProperty holdCompletedAction;
-        private SerializedProperty holdCanceledAction;
+        private SerializedProperty pointerAction;
+        private SerializedProperty holdAction;
 
         private void OnEnable()
         {
@@ -32,13 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             resultAction = serializedObject.FindProperty("resultAction");
             completeAction = serializedObject.FindProperty("completeAction");
             errorAction = serializedObject.FindProperty("errorAction");
-            pointerDownAction = serializedObject.FindProperty("pointerDownAction");
-            pointerClickedAction = serializedObject.FindProperty("pointerClickedAction");
-            pointerUpAction = serializedObject.FindProperty("pointerUpAction");
-            holdStartedAction = serializedObject.FindProperty("holdStartedAction");
-            holdUpdatedAction = serializedObject.FindProperty("holdUpdatedAction");
-            holdCompletedAction = serializedObject.FindProperty("holdCompletedAction");
-            holdCanceledAction = serializedObject.FindProperty("holdCanceledAction");
+            pointerAction = serializedObject.FindProperty("pointerAction");
+            holdAction = serializedObject.FindProperty("holdAction");
         }
 
         public override void OnInspectorGUI()
@@ -69,13 +59,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.LabelField("Touch Screen Input Source Actions", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
 
-            EditorGUILayout.PropertyField(pointerDownAction);
-            EditorGUILayout.PropertyField(pointerClickedAction);
-            EditorGUILayout.PropertyField(pointerUpAction);
-            EditorGUILayout.PropertyField(holdStartedAction);
-            EditorGUILayout.PropertyField(holdUpdatedAction);
-            EditorGUILayout.PropertyField(holdCompletedAction);
-            EditorGUILayout.PropertyField(holdCanceledAction);
+            EditorGUILayout.PropertyField(pointerAction);
+            EditorGUILayout.PropertyField(holdAction);
 
             EditorGUI.indentLevel--;
             serializedObject.ApplyModifiedProperties();
