@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     {
         [SerializeField]
         [Tooltip("Action to raise when hypothesis event is raised by Dictation Input Source.")]
-        private MixedRealityInputAction hypothesisAction;
+        private MixedRealityInputAction hypothesisAction = MixedRealityInputAction.None;
 
         /// <summary>
         /// Action to raise when hypothesis event is raised by Dictation Input Source.
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 
         [SerializeField]
         [Tooltip("Action to raise when result event is raised by Dictation Input Source.")]
-        private MixedRealityInputAction resultAction;
+        private MixedRealityInputAction resultAction = MixedRealityInputAction.None;
 
         /// <summary>
         /// Action to raise when result event is raised by Dictation Input Source.
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 
         [SerializeField]
         [Tooltip("Action to raise when complete event is raised by Dictation Input Source.")]
-        private MixedRealityInputAction completeAction;
+        private MixedRealityInputAction completeAction = MixedRealityInputAction.None;
 
         /// <summary>
         /// Action to raise when complete event is raised by Dictation Input Source.
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 
         [SerializeField]
         [Tooltip("Action to raise when error event is raised by Dictation Input Source.")]
-        private MixedRealityInputAction errorAction;
+        private MixedRealityInputAction errorAction = MixedRealityInputAction.None;
 
         /// <summary>
         /// Action to raise when error event is raised by Dictation Input Source.
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 
         [SerializeField]
         [Tooltip("Action to raise when pointer event is raised.")]
-        private MixedRealityInputAction pointerAction;
+        private MixedRealityInputAction pointerAction = MixedRealityInputAction.None;
 
         /// <summary>
         /// Action to raise when pointer event is raised.
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 
         [SerializeField]
         [Tooltip("Action to raise when hold event is raised.")]
-        private MixedRealityInputAction holdAction;
+        private MixedRealityInputAction holdAction = MixedRealityInputAction.None;
 
         /// <summary>
         /// Action to raise when hold event is raised.
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 
         [SerializeField]
         [Tooltip("Action to raise when navigation event is raised.")]
-        private MixedRealityInputAction navigationAction;
+        private MixedRealityInputAction navigationAction = MixedRealityInputAction.None;
 
         /// <summary>
         /// Action to raise when navigation event is raised.
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 
         [SerializeField]
         [Tooltip(" Action to raise when manipulation event is raised.")]
-        private MixedRealityInputAction manipulationAction;
+        private MixedRealityInputAction manipulationAction = MixedRealityInputAction.None;
 
         /// <summary>
         /// Action to raise when manipulation event is raised.
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 
         [SerializeField]
         [Tooltip("Should the gesture input source use rails navigation?")]
-        private bool useRailsNavigation;
+        private bool useRailsNavigation = false;
 
         /// <summary>
         /// Should the gesture input source use rails navigation?
