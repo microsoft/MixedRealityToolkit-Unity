@@ -78,5 +78,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         PinkyFingerTouch,                   // Digital
         PinkyFingerNearTouch,               // Digital
         PinkyFingerPress,                   // Digital
+        DPad,                               // Dual Axis
     }
 }

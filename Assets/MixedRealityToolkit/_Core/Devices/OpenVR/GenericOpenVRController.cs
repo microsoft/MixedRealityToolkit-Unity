@@ -163,6 +163,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     case DeviceInputType.PinkyFinger:
                         UpdateSingleAxisData(Interactions[i]);
                         break;
+                    case DeviceInputType.DPad:
+                        UpdateDualAxisData(Interactions[i]);
+                        break;
                     default:
                         Debug.LogError($"Input [{Interactions[i].InputType}] is not handled for this controller [GenericOpenVRController]");
                         break;
@@ -333,7 +336,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
                     }
                     break;
                 case AxisType.SingleAxis:
+                case AxisType.NegativeSingleAxis:
                     var axisButtonPressAmount = Input.GetAxis(interactionMapping.AxisCodeX);
+                    if (interactionMapping.AxisType == AxisType.NegativeSingleAxis) { axisButtonPressAmount *= -1; }
 
                     // Update the interaction data source
                     interactionMapping.BoolData = axisButtonPressAmount.Equals(1);
