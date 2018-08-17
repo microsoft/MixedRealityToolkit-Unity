@@ -8,9 +8,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
     /// </summary>
     public enum LayoutTypeEnum
     {
-        ColumnThenRow,          // Sort by column, then by row
-        RowThenColumn,          // Sort by row, then by column
-        Horizontal,             // Sort horizontally
-        Vertical                // Sort vertically
+        /// <summary>
+        /// Sort by column, then by row
+        /// </summary>
+        ColumnThenRow,
+        /// <summary>
+        /// Sort by row, then by column
+        /// </summary>
+        RowThenColumn,
+        /// <summary>
+        /// Sort horizontally
+        /// </summary>
+        Horizontal,
+        /// <summary>
+        /// Sort vertically
+        /// </summary>
+        Vertical
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 {
@@ -13,84 +14,139 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
     /// layout parameters.  The object collection can be used to quickly create 
     /// control panels or sets of prefab/objects.
     /// </summary>
-    public class GridCollection : BaseCollection
+    public class GridObjectCollection : BaseObjectCollection
     {
-        #region public members
-
+        #region private variables
         /// <summary>
         /// Type of surface to map the collection to.
         /// </summary>
         [Tooltip("Type of surface to map the collection to")]
-        public SurfaceTypeEnum SurfaceType = SurfaceTypeEnum.Plane;
+        private SurfaceTypeEnum surfaceType = SurfaceTypeEnum.Plane;
 
         /// <summary>
         /// Should the objects in the collection face the origin of the collection
         /// </summary>
         [Tooltip("Should the objects in the collection be rotated / how should they be rotated")]
-        public OrientTypeEnum OrientType = OrientTypeEnum.FaceOrigin;
+        private OrientationType orientType = OrientationType.FaceOrigin;
 
         /// <summary>
         /// Whether to sort objects by row first or by column first
         /// </summary>
         [Tooltip("Whether to sort objects by row first or by column first")]
-        public LayoutTypeEnum LayoutType = LayoutTypeEnum.ColumnThenRow;
+        private LayoutTypeEnum layoutType = LayoutTypeEnum.ColumnThenRow;
 
         /// <summary>
         /// This is the radius of either the Cylinder or Sphere mapping and is ignored when using the plane mapping.
         /// </summary>
         [Range(0.05f, 5.0f)]
         [Tooltip("Radius for the sphere or cylinder")]
-        public float Radius = 2f;
+        [SerializeField]
+        private float radius = 2f;
 
         /// <summary>
         /// Number of rows per column, column number is automatically determined
         /// </summary>
         [Tooltip("Number of rows per column")]
-        public int Rows = 3;
+        [SerializeField]
+        private int rows = 3;
 
         /// <summary>
         /// Width of the cell per object in the collection.
         /// </summary>
         [Tooltip("Width of cell per object")]
-        public float CellWidth = 0.5f;
+        [SerializeField]
+        private float cellWidth = 0.5f;
 
         /// <summary>
         /// Height of the cell per object in the collection.
         /// </summary>
         [Tooltip("Height of cell per object")]
-        public float CellHeight = 0.5f;
+        [SerializeField]
+        private float cellHeight = 0.5f;
+
+        private Mesh sphereMesh;
+        private Mesh cylinderMesh;
+        private int columns;
+        private float width;
+        private float height;
+        private float circumferenc;
+        private Vector2 halfcell;
+        #endregion
+
+        #region public accessors
+        public SurfaceTypeEnum SurfaceType
+        {
+            get { return surfaceType; }
+            set { surfaceType = value; }
+
+        }
+        public OrientationType OrientType
+        {
+            get { return orientType; }
+            set { orientType = value; }
+
+        }
+        public LayoutTypeEnum LayoutType
+        {
+            get { return layoutType; }
+            set { layoutType = value; }
+
+        }
+        public float Radius
+        {
+            get { return radius; }
+            set { radius = value; }
+
+        }
+        public int Rows
+        {
+            get { return rows; }
+            set { rows = value; }
+
+        }
+        public float CellWidth
+        {
+            get { return cellWidth; }
+            set { cellWidth = value; }
+
+        }
+        public float CellHeight
+        {
+            get { return cellHeight; }
+            set { cellHeight = value; }
+
+        }
 
         /// <summary>
         /// Reference mesh to use for rendering the sphere layout
         /// </summary>
-        [HideInInspector]
-        public Mesh SphereMesh;
+        public Mesh SphereMesh
+        {
+            get { return sphereMesh; }
+            set { sphereMesh = value; }
+
+        }
 
         /// <summary>
         /// Reference mesh to use for rendering the cylinder layout
         /// </summary>
-        [HideInInspector]
-        public Mesh CylinderMesh;
-        #endregion
-
-
-        #region private variables
-        private int _columns;
-        private float _width;
-        private float _height;
-        private float _circumference;
-        private Vector2 _halfCell;
-        #endregion
+        public Mesh CylinderMesh
+        {
+            get { return cylinderMesh; }
+            set { cylinderMesh = value; }
+        }
 
         public float Width
         {
-            get { return _width; }
+            get { return width; }
         }
 
         public float Height
         {
-            get { return _height; }
+            get { return height; }
         }
+        #endregion
+
 
         /// <summary>
         /// Overriding base function function for laying out all the children when UpdateCollection is called.
@@ -98,11 +154,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         protected override void LayoutChildren()
         {
 
-            _columns = Mathf.CeilToInt((float)NodeList.Count / Rows);
-            _width = _columns * CellWidth;
-            _height = Rows * CellHeight;
-            _halfCell = new Vector2(CellWidth / 2f, CellHeight / 2f);
-            _circumference = 2f * Mathf.PI * Radius;
+            columns = Mathf.CeilToInt((float)NodeList.Count / Rows);
+            width = columns * CellWidth;
+            height = Rows * CellHeight;
+            halfcell = new Vector2(CellWidth / 2f, CellHeight / 2f);
+            circumferenc = 2f * Mathf.PI * Radius;
 
 
             int cellCounter = 0;
@@ -114,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             Vector3 newRot = Vector3.zero;
 
             // Now lets lay out the grid
-            startOffsetX = (_columns * 0.5f) * CellWidth;
+            startOffsetX = (columns * 0.5f) * CellWidth;
             startOffsetY = (Rows * 0.5f) * CellHeight;
 
             cellCounter = 0;
@@ -124,13 +180,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             {
                 case LayoutTypeEnum.ColumnThenRow:
                 default:
-                    for (int c = 0; c < _columns; c++)
+                    for (int c = 0; c < columns; c++)
                     {
                         for (int r = 0; r < Rows; r++)
                         {
                             if (cellCounter < NodeList.Count)
                             {
-                                nodeGrid[cellCounter] = new Vector3((c * CellWidth) - startOffsetX + _halfCell.x, -(r * CellHeight) + startOffsetY - _halfCell.y, 0f) + (Vector3)((NodeList[cellCounter])).Offset;
+                                nodeGrid[cellCounter] = new Vector3((c * CellWidth) - startOffsetX + halfcell.x, -(r * CellHeight) + startOffsetY - halfcell.y, 0f) + (Vector3)((NodeList[cellCounter])).Offset;
                             }
                             cellCounter++;
                         }
@@ -140,11 +196,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                 case LayoutTypeEnum.RowThenColumn:
                     for (int r = 0; r < Rows; r++)
                     {
-                        for (int c = 0; c < _columns; c++)
+                        for (int c = 0; c < columns; c++)
                         {
                             if (cellCounter < NodeList.Count)
                             {
-                                nodeGrid[cellCounter] = new Vector3((c * CellWidth) - startOffsetX + _halfCell.x, -(r * CellHeight) + startOffsetY - _halfCell.y, 0f) + (Vector3)((NodeList[cellCounter])).Offset;
+                                nodeGrid[cellCounter] = new Vector3((c * CellWidth) - startOffsetX + halfcell.x, -(r * CellHeight) + startOffsetY - halfcell.y, 0f) + (Vector3)((NodeList[cellCounter])).Offset;
                             }
                             cellCounter++;
                         }
@@ -162,19 +218,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                         NodeList[i].transform.localPosition = newPos;
                         switch (OrientType)
                         {
-                            case OrientTypeEnum.FaceOrigin:
-                            case OrientTypeEnum.FaceFoward:
+                            case OrientationType.FaceOrigin:
+                            case OrientationType.FaceFoward:
                                 NodeList[i].transform.forward = transform.forward;
                                 break;
 
-                            case OrientTypeEnum.FaceOriginReversed:
-                            case OrientTypeEnum.FaceForwardReversed:
+                            case OrientationType.FaceOriginReversed:
+                            case OrientationType.FaceForwardReversed:
                                 newRot = Vector3.zero;
                                 NodeList[i].transform.forward = transform.forward;
                                 NodeList[i].transform.Rotate(0f, 180f, 0f);
                                 break;
 
-                            case OrientTypeEnum.None:
+                            case OrientationType.None:
                                 break;
 
                             default:
@@ -188,27 +244,27 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                         newPos = CylindricalMapping(nodeGrid[i], Radius);
                         switch (OrientType)
                         {
-                            case OrientTypeEnum.FaceOrigin:
+                            case OrientationType.FaceOrigin:
                                 newRot = new Vector3(newPos.x, 0.0f, newPos.z);
                                 NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
                                 break;
 
-                            case OrientTypeEnum.FaceOriginReversed:
+                            case OrientationType.FaceOriginReversed:
                                 newRot = new Vector3(newPos.x, 0f, newPos.z);
                                 NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
                                 NodeList[i].transform.Rotate(0f, 180f, 0f);
                                 break;
 
-                            case OrientTypeEnum.FaceFoward:
+                            case OrientationType.FaceFoward:
                                 NodeList[i].transform.forward = transform.forward;
                                 break;
 
-                            case OrientTypeEnum.FaceForwardReversed:
+                            case OrientationType.FaceForwardReversed:
                                 NodeList[i].transform.forward = transform.forward;
                                 NodeList[i].transform.Rotate(0f, 180f, 0f);
                                 break;
 
-                            case OrientTypeEnum.None:
+                            case OrientationType.None:
                                 break;
 
                             default:
@@ -224,27 +280,27 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                         newPos = SphericalMapping(nodeGrid[i], Radius);
                         switch (OrientType)
                         {
-                            case OrientTypeEnum.FaceOrigin:
+                            case OrientationType.FaceOrigin:
                                 newRot = newPos;
                                 NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
                                 break;
 
-                            case OrientTypeEnum.FaceOriginReversed:
+                            case OrientationType.FaceOriginReversed:
                                 newRot = newPos;
                                 NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
                                 NodeList[i].transform.Rotate(0f, 180f, 0f);
                                 break;
 
-                            case OrientTypeEnum.FaceFoward:
+                            case OrientationType.FaceFoward:
                                 NodeList[i].transform.forward = transform.forward;
                                 break;
 
-                            case OrientTypeEnum.FaceForwardReversed:
+                            case OrientationType.FaceForwardReversed:
                                 NodeList[i].transform.forward = transform.forward;
                                 NodeList[i].transform.Rotate(0f, 180f, 0f);
                                 break;
 
-                            case OrientTypeEnum.None:
+                            case OrientationType.None:
                                 break;
 
                             default:
@@ -270,25 +326,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                         }
                         else
                         {
-                            // Make the radius a default value
-                            // TODO move this into a public field ?
-                            NodeList[i].Radius = 1f;
+                            NodeList[i].Radius = Radius;
                         }
                         NodeList[i].transform.localPosition = newPos;
                         switch (OrientType)
                         {
-                            case OrientTypeEnum.FaceOrigin:
-                            case OrientTypeEnum.FaceFoward:
+                            case OrientationType.FaceOrigin:
+                            case OrientationType.FaceFoward:
                                 NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
                                 break;
 
-                            case OrientTypeEnum.FaceOriginReversed:
-                            case OrientTypeEnum.FaceForwardReversed:
+                            case OrientationType.FaceOriginReversed:
+                            case OrientationType.FaceForwardReversed:
                                 NodeList[i].transform.rotation = Quaternion.LookRotation(newRot);
                                 NodeList[i].transform.Rotate(0f, 180f, 0f);
                                 break;
 
-                            case OrientTypeEnum.None:
+                            case OrientationType.None:
                                 break;
 
                             default:
@@ -306,19 +360,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             }
         }
 
-        /// <summary>
-        /// Internal function for getting the relative mapping based on a source Vec3 and a radius for spherical mapping.
-        /// </summary>
-        /// <param name="source">The source <see cref="Vector3"/> to be mapped to sphere</param>
-        /// <param name="radius">This is a <see cref="float"/> for the radius of the sphere</param>
-        /// <returns></returns>
+        // Internal function for getting the relative mapping based on a source Vec3 and a radius for spherical mapping.
+        // The source to be mapped to sphere, radius the radius of the sphere</param>
         private Vector3 SphericalMapping(Vector3 source, float radius)
         {
             Radius = radius >= 0 ? Radius : radius;
             Vector3 newPos = new Vector3(0f, 0f, Radius);
 
-            float xAngle = (source.x / _circumference) * 360f;
-            float yAngle = -(source.y / _circumference) * 360f;
+            float xAngle = (source.x / circumferenc) * 360f;
+            float yAngle = -(source.y / circumferenc) * 360f;
 
             Quaternion rot = Quaternion.Euler(yAngle, xAngle, 0.0f);
             newPos = rot * newPos;
@@ -326,18 +376,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             return newPos;
         }
 
-        /// <summary>
-        /// Internal function for getting the relative mapping based on a source Vec3 and a radius for cylinder mapping.
-        /// </summary>
-        /// <param name="source">The source <see cref="Vector3"/> to be mapped to cylinder</param>
-        /// <param name="radius">This is a <see cref="float"/> for the radius of the cylinder</param>
-        /// <returns></returns>
+        // Internal function for getting the relative mapping based on a source Vec3 and a radius for cylinder mapping.
+        // source to be mapped to cylinder, Radius for the radius of the cylinder
         private Vector3 CylindricalMapping(Vector3 source, float radius)
         {
             Radius = radius >= 0 ? Radius : radius;
             Vector3 newPos = new Vector3(0f, source.y, Radius);
 
-            float xAngle = (source.x / _circumference) * 360f;
+            float xAngle = (source.x / circumferenc) * 360f;
 
             Quaternion rot = Quaternion.Euler(0.0f, xAngle, 0.0f);
             newPos = rot * newPos;
@@ -345,11 +391,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             return newPos;
         }
 
-        /// <summary>
-        /// Internal function to check if a node exists in the NodeList.
-        /// </summary>
-        /// <param name="node">A <see cref="Transform"/> of the node to see if it's in the NodeList</param>
-        /// <returns></returns>
+        // Internal function to check if a node exists in the NodeList.
         private bool ContainsNode(Transform node)
         {
             for (int i = 0; i < NodeList.Count; i++)
@@ -365,12 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             return false;
         }
 
-        /// <summary>
-        /// Internal function for randomized mapping based on a source Vec3 and a radius for randomization distance.
-        /// </summary>
-        /// <param name="source">The source <see cref="Vector3"/> to be mapped to cylinder</param>
-        /// <param name="radius">This is a <see cref="float"/> for the radius of the cylinder</param>
-        /// <returns></returns>
+        // Internal function for randomized mapping based on a source Vec3 and a radius for randomization distance.
         private Vector3 ScatterMapping(Vector3 source, float radius)
         {
             source.x = UnityEngine.Random.Range(-radius, radius);
@@ -379,16 +416,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         }
 
 
-        /// <summary>
-        /// Internal function to pack randomly spaced nodes so they don't overlap
-        /// Usually requires about 25 iterations for decent packing
-        /// </summary>
-        /// <returns></returns>
-        private void IterateScatterPacking(List<CollectionNode> nodes, float radiusPadding)
+        // Internal function to pack randomly spaced nodes so they don't overlap
+        // Usually requires about 25 iterations for decent packing
+        private void IterateScatterPacking(List<ObjectCollectionNode> nodes, float radiusPadding)
         {
             // Sort by closest to center (don't worry about z axis)
             // Use the position of the collection as the packing center
-            nodes.Sort(delegate (CollectionNode circle1, CollectionNode circle2) {
+            nodes.Sort(delegate (ObjectCollectionNode circle1, ObjectCollectionNode circle2) {
                 float distance1 = (circle1.transform.localPosition).sqrMagnitude;
                 float distance2 = (circle2.transform.localPosition).sqrMagnitude;
                 return distance1.CompareTo(distance2);
@@ -427,9 +461,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             }
         }
 
-        /// <summary>
-        /// Gizmos to draw when the Collection is selected.
-        /// </summary>
+        // Gizmos to draw when the Collection is selected.
         protected virtual void OnDrawGizmosSelected()
         {
             Vector3 scale = (2f * Radius) * Vector3.one;

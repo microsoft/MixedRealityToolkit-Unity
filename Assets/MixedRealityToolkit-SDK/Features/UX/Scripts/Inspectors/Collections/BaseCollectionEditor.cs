@@ -3,11 +3,11 @@
 
 using UnityEngine;
 using UnityEditor;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Collections;
 
-
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Inspectors.Collections
 {
-    [CustomEditor( typeof(BaseCollection), true )]
+    [CustomEditor( typeof(BaseObjectCollection), true )]
     public class CollectionEditor : Editor
     {
         public override void OnInspectorGUI()
@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             base.OnInspectorGUI();
 
             // Place the button at the bottom
-            BaseCollection collection = (BaseCollection)target;
+            BaseObjectCollection collection = (BaseObjectCollection)target;
             if (GUILayout.Button("Update Collection"))
             {
                 collection.UpdateCollection();

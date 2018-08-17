@@ -7,10 +7,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 {
     /// <summary>
-    /// Collection node is a data storage class for individual data about an object in the collection.
+    /// Collection node is a data storage class for individual data about an object in a collection.
     /// </summary>
     [Serializable]
-    public class CollectionNode
+    public class ObjectCollectionNode
     {
         public string Name;
         public Vector2 Offset;
