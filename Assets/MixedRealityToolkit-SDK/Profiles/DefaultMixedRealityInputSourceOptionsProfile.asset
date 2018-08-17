@@ -32,6 +32,15 @@ MonoBehaviour:
     description: Select
     axisConstraint: 2
   holdAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+    id: 7
+    description: Hold
+    axisConstraint: 2
+  navigationAction:
+    id: 9
+    description: Navigate
+    axisConstraint: 2
+  manipulationAction:
+    id: 8
+    description: Manipulate
+    axisConstraint: 2
+  useRailsNavigation: 0
