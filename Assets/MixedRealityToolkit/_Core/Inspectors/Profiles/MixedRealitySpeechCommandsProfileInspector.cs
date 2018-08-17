@@ -31,6 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 return;
             }
 
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
+                MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null) { return; }
+
             speechCommands = serializedObject.FindProperty("speechCommands");
             actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(
                 action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
@@ -49,6 +52,20 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             }
 
             EditorGUILayout.HelpBox("Speech Commands are any/all spoken keywords your users will be able say to raise an Input Action in your application.", MessageType.Info);
+
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                return;
+            }
+
+            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null)
+            {
+
+                EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
+                return;
+            }
 
             serializedObject.Update();
             RenderList(speechCommands);
