@@ -133,6 +133,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
             {
                 Debug.LogException(e);
             }
+
         }
 
         /// <summary>
@@ -163,6 +164,8 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
             {
                 Debug.LogError("Failed to capturing image");
             }
+
+            photoCaptureFrame.Dispose();
 
             photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
         }
