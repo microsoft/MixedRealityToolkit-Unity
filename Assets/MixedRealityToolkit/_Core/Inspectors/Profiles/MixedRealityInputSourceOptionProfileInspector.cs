@@ -15,6 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty errorAction;
         private SerializedProperty pointerAction;
         private SerializedProperty holdAction;
+        private SerializedProperty manipulationAction;
+        private SerializedProperty navigationAction;
 
         private void OnEnable()
         {
@@ -29,6 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             errorAction = serializedObject.FindProperty("errorAction");
             pointerAction = serializedObject.FindProperty("pointerAction");
             holdAction = serializedObject.FindProperty("holdAction");
+            manipulationAction = serializedObject.FindProperty("manipulationAction");
+            navigationAction = serializedObject.FindProperty("navigationAction");
         }
 
         public override void OnInspectorGUI()
@@ -44,7 +48,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.HelpBox("These input sources do not have controller definitions, but each input source raises events when specific criteria are met. These optional input actions could help determine additional logic to take when the event is raised.", MessageType.Info);
 
             serializedObject.Update();
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Generic Input Source Actions", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
 
+            EditorGUILayout.PropertyField(pointerAction);
+            EditorGUILayout.PropertyField(holdAction);
+            EditorGUILayout.PropertyField(manipulationAction);
+            EditorGUILayout.PropertyField(navigationAction);
+
+            EditorGUI.indentLevel--;
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Dictation Input Source Actions", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
@@ -53,14 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.PropertyField(resultAction);
             EditorGUILayout.PropertyField(completeAction);
             EditorGUILayout.PropertyField(errorAction);
-
-            EditorGUI.indentLevel--;
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Touch Screen Input Source Actions", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
-
-            EditorGUILayout.PropertyField(pointerAction);
-            EditorGUILayout.PropertyField(holdAction);
 
             EditorGUI.indentLevel--;
             serializedObject.ApplyModifiedProperties();

@@ -49,21 +49,39 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         public MixedRealityInputAction ErrorAction => errorAction;
 
         [SerializeField]
-        [Tooltip("Action to raise when pointer event is raised by Touch Screen Input Source.")]
+        [Tooltip("Action to raise when pointer event is raised.")]
         private MixedRealityInputAction pointerAction;
 
         /// <summary>
-        /// Action to raise when pointer event is raised by Touch Screen Input Source.
+        /// Action to raise when pointer event is raised.
         /// </summary>
         public MixedRealityInputAction PointerAction => pointerAction;
 
         [SerializeField]
-        [Tooltip("Action to raise when hold event is raised by Touch Screen Input Source.")]
+        [Tooltip("Action to raise when hold event is raised.")]
         private MixedRealityInputAction holdAction;
 
         /// <summary>
-        /// Action to raise when hold event is raised by Touch Screen Input Source.
+        /// Action to raise when hold event is raised.
         /// </summary>
         public MixedRealityInputAction HoldAction => holdAction;
+
+        [SerializeField]
+        [Tooltip("Action to raise when navigation event is raised.")]
+        private MixedRealityInputAction navigationAction;
+
+        /// <summary>
+        /// Action to raise when navigation event is raised.
+        /// </summary>
+        public MixedRealityInputAction NavigationAction => navigationAction;
+
+        [SerializeField]
+        [Tooltip(" Action to raise when manipulation event is raised.")]
+        private MixedRealityInputAction manipulationAction;
+
+        /// <summary>
+        /// Action to raise when manipulation event is raised.
+        /// </summary>
+        public MixedRealityInputAction ManipulationAction => manipulationAction;
     }
 }
