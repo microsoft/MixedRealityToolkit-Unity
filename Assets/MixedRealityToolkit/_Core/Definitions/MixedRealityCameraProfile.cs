@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
     /// is a transparent device or an occluded device.
     /// Based on those values, you can customize your camera and quality settings.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Camera Profile", fileName = "MixedRealityCameraProfile", order = 1)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Camera Profile", fileName = "MixedRealityCameraProfile", order = (int)CreateProfileMenuItemIndices.Camera)]
     public class MixedRealityCameraProfile : ScriptableObject
     {
         private enum DisplayType

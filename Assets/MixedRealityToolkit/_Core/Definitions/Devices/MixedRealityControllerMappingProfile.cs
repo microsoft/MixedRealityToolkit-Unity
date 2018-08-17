@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Controller Configuration Profile", fileName = "MixedRealityControllerConfigurationProfile", order = 4)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Controller Configuration Profile", fileName = "MixedRealityControllerConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Controller)]
     public class MixedRealityControllerMappingProfile : ScriptableObject
     {
         [SerializeField]
@@ -77,7 +77,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         {
             for (int i = 0; i < mixedRealityControllerMappingProfiles.Length; i++)
             {
-                if (mixedRealityControllerMappingProfiles[i].ControllerType.Type == controllerType &&
+                if (mixedRealityControllerMappingProfiles[i].ControllerType != null &&
+                    mixedRealityControllerMappingProfiles[i].ControllerType.Type == controllerType &&
                    (mixedRealityControllerMappingProfiles[i].Handedness == hand || mixedRealityControllerMappingProfiles[i].Handedness == Handedness.Both))
                 {
                     return mixedRealityControllerMappingProfiles[i].OverrideControllerModel;
