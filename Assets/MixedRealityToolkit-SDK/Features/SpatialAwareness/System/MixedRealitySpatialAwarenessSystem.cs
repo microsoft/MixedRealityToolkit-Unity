@@ -63,6 +63,21 @@ public class MixedRealitySpatialAwarenessSystem : MixedRealityEventManager, IMix
     /// <inheritdoc/>
     public float UpdateInterval { get; set; } // todo
 
+    /// <inheritdoc/>
+    public bool IsObserverRunning { get; private set; }
+
+    /// <inheritdoc/>
+    public void StartObserver()
+    {
+        // todo
+    }
+
+    /// <inheritdoc/>
+    public void StopObserver()
+    {
+        // todo
+    }
+
     #region Mesh
 
     /// <inheritdoc/>
@@ -70,6 +85,9 @@ public class MixedRealitySpatialAwarenessSystem : MixedRealityEventManager, IMix
 
     /// <inheritdoc/>
     public bool RecalculateNormals { get; set; } // todo
+
+    /// <inheritdoc/>
+    public bool IsMeshDataSupported { get; private set; } // todo
 
     #endregion Mesh
 

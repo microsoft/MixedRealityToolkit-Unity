@@ -30,6 +30,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSys
         /// </summary>
         float UpdateInterval { get; set; }
 
+        /// <summary>
+        /// Indicates whether or not the spatial observer is currently running.
+        /// </summary>
+        bool IsObserverRunning { get; }
+        
+        /// <summary>
+        /// Starts the spatial observer.
+        /// </summary>
+        void StartObserver();
+
+        /// <summary>
+        /// Stops the spatial observer.
+        /// </summary>
+        void StopObserver();
+
         #region Mesh
 
         /// <summary>
@@ -41,6 +56,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSys
         /// Indicates whether or not normals should be recalculated when observations are updated.
         /// </summary>
         bool RecalculateNormals { get; set; }
+
+        /// <summary>
+        /// Indicates whether or not the platform supports returning spatial mesh data.
+        /// </summary>
+        bool IsMeshDataSupported { get; }
 
         #endregion Mesh
 
