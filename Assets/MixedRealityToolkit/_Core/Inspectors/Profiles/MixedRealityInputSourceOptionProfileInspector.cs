@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 return;
             }
 
-            EditorGUILayout.HelpBox("Each input source raises events when specific criteria are met. These optional input actions could help determine additional logic to take when the event is raised.", MessageType.Info);
+            EditorGUILayout.HelpBox("These input sources do not have controller definitions, but each input source raises events when specific criteria are met. These optional input actions could help determine additional logic to take when the event is raised.", MessageType.Info);
 
             serializedObject.Update();
 
