@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
@@ -8,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     /// <summary>
     /// Configuration profile settings for setting up input source actions.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input Source Options Profile", fileName = "MixedRealitySpeechCommandsProfile", order = 7)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input Source Options Profile", fileName = "MixedRealitySpeechCommandsProfile", order = (int)CreateProfileMenuItemIndices.GenericInputSourceOptions)]
     public class MixedRealityInputSourceOptionsProfile : ScriptableObject
     {
         [SerializeField]

@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         Speech,
         BoundaryVisualization,
         SpatialAwareness,
+        GenericInputSourceOptions,
 
         Assembly = 99
     }
