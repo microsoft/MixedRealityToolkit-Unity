@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty holdAction;
         private SerializedProperty manipulationAction;
         private SerializedProperty navigationAction;
+        private SerializedProperty useRailsNavigation;
 
         private void OnEnable()
         {
@@ -33,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             holdAction = serializedObject.FindProperty("holdAction");
             manipulationAction = serializedObject.FindProperty("manipulationAction");
             navigationAction = serializedObject.FindProperty("navigationAction");
+            useRailsNavigation = serializedObject.FindProperty("useRailsNavigation");
         }
 
         public override void OnInspectorGUI()
@@ -56,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.PropertyField(holdAction);
             EditorGUILayout.PropertyField(manipulationAction);
             EditorGUILayout.PropertyField(navigationAction);
+            EditorGUILayout.PropertyField(useRailsNavigation);
 
             EditorGUI.indentLevel--;
             EditorGUILayout.Space();

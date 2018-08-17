@@ -83,5 +83,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
         /// Action to raise when manipulation event is raised.
         /// </summary>
         public MixedRealityInputAction ManipulationAction => manipulationAction;
+
+        [SerializeField]
+        [Tooltip("Should the gesture input source use rails navigation?")]
+        private bool useRailsNavigation;
+
+        /// <summary>
+        /// Should the gesture input source use rails navigation?
+        /// </summary>
+        public bool UseRailsNavigation => useRailsNavigation;
     }
 }

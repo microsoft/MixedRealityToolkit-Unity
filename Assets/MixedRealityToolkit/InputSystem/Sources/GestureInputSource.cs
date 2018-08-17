@@ -15,26 +15,27 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <summary>
         /// Pointer Action for Gesture Tap or "Click"
         /// </summary>
-        public MixedRealityInputAction PointerAction { get; set; } = MixedRealityInputAction.None;
+        public static MixedRealityInputAction PointerAction { get; set; } = MixedRealityInputAction.None;
 
         /// <summary>
         /// Hold action to use when events are raised.
         /// </summary>
-        public MixedRealityInputAction HoldAction { get; set; } = MixedRealityInputAction.None;
+        public static MixedRealityInputAction HoldAction { get; set; } = MixedRealityInputAction.None;
 
         /// <summary>
         /// Manipulation action to use when events are raised.
         /// </summary>
-        public MixedRealityInputAction ManipulationAction { get; set; } = MixedRealityInputAction.None;
+        public static MixedRealityInputAction ManipulationAction { get; set; } = MixedRealityInputAction.None;
 
         /// <summary>
         /// Navigation action to use when events are raised.
         /// </summary>
-        public MixedRealityInputAction NavigationAction { get; set; } = MixedRealityInputAction.None;
+        public static MixedRealityInputAction NavigationAction { get; set; } = MixedRealityInputAction.None;
 
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="useRailsNavigation">Should the gesture input source use rails navigation?</param>
         public GestureInputSource(bool useRailsNavigation) : base("Gesture Input Source")
         {
             gestureRecognizer = new GestureRecognizer();

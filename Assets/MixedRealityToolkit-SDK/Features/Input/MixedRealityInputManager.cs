@@ -85,6 +85,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// </summary>
         public TouchscreenInputSource TouchscreenInputSource { get; private set; }
 
+        /// <summary>
+        /// Current Gesture Input Source.
+        /// </summary>
+        public GestureInputSource GestureInputSource { get; private set; }
+
         #region IMixedRealityManager Implementation
 
         /// <summary>
@@ -211,6 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             DictationInputSource = new DictationInputSource();
             TouchscreenInputSource = new TouchscreenInputSource();
+            GestureInputSource = new GestureInputSource(MixedRealityManager.Instance.ActiveProfile != null && MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.UseRailsNavigation);
 
             if (MixedRealityManager.Instance.ActiveProfile.InputSourceOptions != null)
             {
@@ -218,8 +224,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 DictationInputSource.ResultAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.ResultAction;
                 DictationInputSource.CompleteAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.CompleteAction;
                 DictationInputSource.ErrorAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.ErrorAction;
+
                 TouchscreenInputSource.PointerAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.PointerAction;
                 TouchscreenInputSource.HoldAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldAction;
+
+                GestureInputSource.PointerAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.PointerAction;
+                GestureInputSource.HoldAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldAction;
+                GestureInputSource.ManipulationAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.ManipulationAction;
+                GestureInputSource.NavigationAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.NavigationAction;
             }
         }
 
@@ -282,6 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             SpeechInputSource?.Dispose();
             DictationInputSource?.Dispose();
             TouchscreenInputSource?.Dispose();
+            GestureInputSource?.Dispose();
             base.Destroy();
         }
 
