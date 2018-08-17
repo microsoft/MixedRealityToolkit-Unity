@@ -55,14 +55,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
             {
-
                 EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
                 return;
             }
 
             if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null)
             {
-
                 EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
                 return;
             }
