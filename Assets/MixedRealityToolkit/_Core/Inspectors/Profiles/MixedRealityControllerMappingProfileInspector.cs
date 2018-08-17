@@ -95,6 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 horizontalScrollPositions = new Vector2[mixedRealityControllerMappingProfiles.arraySize];
             }
 
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
+                MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null) { return; }
+
             actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions
                 .Select(action => (int)action.Id)
                 .Prepend(0).ToArray();
@@ -205,6 +208,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             EditorGUILayout.HelpBox("Controller templates define all the controllers your users will be able to use in your application.\n\n" +
                                     "After defining all your Input Actions, you can then wire them up to hardware sensors, controllers, and other input devices.", MessageType.Info);
+
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                return;
+            }
+            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null)
+            {
+                EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
+                return;
+            }
 
             serializedObject.Update();
 
