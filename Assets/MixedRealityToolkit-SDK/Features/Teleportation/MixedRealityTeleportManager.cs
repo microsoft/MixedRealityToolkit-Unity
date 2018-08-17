@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         /// <summary>
         /// only used to clean up event system when shutting down if this system created one.
         /// </summary>
-        private GameObject eventSystemReference;
+        private GameObject eventSystemReference = null;
 
         #region IMixedRealityManager Implementation
 
