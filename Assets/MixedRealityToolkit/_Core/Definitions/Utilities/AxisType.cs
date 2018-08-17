@@ -26,6 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// </summary>
         SingleAxis,
         /// <summary>
+        /// Negative Single Axis analogue input.
+        /// </summary>
+        NegativeSingleAxis,
+        /// <summary>
         /// Dual Axis analogue input.
         /// </summary>
         DualAxis,

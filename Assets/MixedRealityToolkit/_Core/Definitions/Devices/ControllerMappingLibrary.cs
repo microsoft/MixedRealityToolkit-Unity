@@ -35,9 +35,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         public const string MIXEDREALITY_AXIS4 = "MIXEDREALITY_AXIS4";
 
         /// <summary>
-        /// TOUCHPAD-THUMSTICK_RIGHT_CONTROLLER_VERTICAL
+        /// TOUCHPAD-THUMSTICK_RIGHT_CONTROLLER_VERTICAL | DPAD LEFT AND RIGHT
         /// </summary>
         public const string MIXEDREALITY_AXIS5 = "MIXEDREALITY_AXIS5";
+
+        /// <summary>
+        /// DPAD UP AND DOWN
+        /// </summary>
+        public const string MIXEDREALITY_AXIS6 = "MIXEDREALITY_AXIS6";
 
         /// <summary>
         /// TRIGGER_LEFT_CONTROLLER
