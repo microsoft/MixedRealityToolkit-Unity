@@ -12,9 +12,24 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// </summary>
     public class GestureInputSource : BaseGenericInputSource
     {
+        /// <summary>
+        /// Pointer Action for Gesture Tap or "Click"
+        /// </summary>
         public MixedRealityInputAction PointerAction { get; set; } = MixedRealityInputAction.None;
+
+        /// <summary>
+        /// Hold action to use when events are raised.
+        /// </summary>
         public MixedRealityInputAction HoldAction { get; set; } = MixedRealityInputAction.None;
+
+        /// <summary>
+        /// Manipulation action to use when events are raised.
+        /// </summary>
         public MixedRealityInputAction ManipulationAction { get; set; } = MixedRealityInputAction.None;
+
+        /// <summary>
+        /// Navigation action to use when events are raised.
+        /// </summary>
         public MixedRealityInputAction NavigationAction { get; set; } = MixedRealityInputAction.None;
 
         /// <summary>
@@ -65,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             }
         }
 
+        /// <inheritdoc />
         public override void Dispose()
         {
             if (gestureRecognizer != null && gestureRecognizer.IsCapturingGestures())
