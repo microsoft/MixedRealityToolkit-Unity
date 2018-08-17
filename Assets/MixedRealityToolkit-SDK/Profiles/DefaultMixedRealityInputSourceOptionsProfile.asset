@@ -27,31 +27,11 @@ MonoBehaviour:
     id: 0
     description: 
     axisConstraint: 0
-  pointerDownAction:
-    id: 0
-    description: 
-    axisConstraint: 0
-  pointerClickedAction:
-    id: 0
-    description: 
-    axisConstraint: 0
-  pointerUpAction:
-    id: 0
-    description: 
-    axisConstraint: 0
-  holdStartedAction:
-    id: 0
-    description: 
-    axisConstraint: 0
-  holdUpdatedAction:
-    id: 0
-    description: 
-    axisConstraint: 0
-  holdCompletedAction:
-    id: 0
-    description: 
-    axisConstraint: 0
-  holdCanceledAction:
+  pointerAction:
+    id: 1
+    description: Select
+    axisConstraint: 2
+  holdAction:
     id: 0
     description: 
     axisConstraint: 0
