@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityBoundaryVisualizationProfile
   m_EditorClassIdentifier: 
   showFloor: 1
-  floorMaterial: {fileID: 2100000, guid: 835cb4a58f172d7478801db95e510f56, type: 2}
+  floorMaterial: {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   floorScale: {x: 10, y: 10}
   showPlayArea: 1
   playAreaMaterial: {fileID: 2100000, guid: 3c55769e893c4f4c8c51b7fa69bee2b9, type: 2}
   showTrackedArea: 1
   trackedAreaMaterial: {fileID: 2100000, guid: cb74390ea57642f8b5ca0aa8f5fb38c1, type: 2}
   showBoundaryWalls: 0
-  boundaryWallMaterial: {fileID: 2100000, guid: 978c13c1492639341a61913375335e64,
+  boundaryWallMaterial: {fileID: 2100000, guid: c6bd404f506e1894289fde7b1689f901,
     type: 2}
   showBoundaryCeiling: 0
-  boundaryCeilingMaterial: {fileID: 2100000, guid: 163c37494bc2d0540b3488a9d901ee07,
+  boundaryCeilingMaterial: {fileID: 2100000, guid: c6bd404f506e1894289fde7b1689f901,
     type: 2}
