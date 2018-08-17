@@ -26,14 +26,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
                 actionIds = new[] { 0 };
             }
 
-            if (profile == null || profile.InputActions != MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions)
+            if (profile == null ||
+                (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
+                 profile.InputActions != MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions))
             {
-                if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
-                {
-                    profile = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile;
-                    actionLabels = profile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
-                    actionIds = profile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
-                }
+                profile = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile;
+                actionLabels = profile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
+                actionIds = profile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
             }
 
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
