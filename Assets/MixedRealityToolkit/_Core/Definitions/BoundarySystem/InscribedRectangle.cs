@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
 {
     /// <summary>
     /// The InscribedRectangle class defines the largest rectangle within an
