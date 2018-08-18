@@ -31,12 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
         private string[] lastDeviceList;
 
         /// <inheritdoc />
-        public override void Enable()
-        {
-            RefreshDevices();
-        }
-
-        /// <inheritdoc />
         public override void Update()
         {
             deviceRefreshTimer += Time.unscaledDeltaTime;
