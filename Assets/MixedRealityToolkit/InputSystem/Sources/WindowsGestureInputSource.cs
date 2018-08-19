@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
@@ -121,6 +122,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <param name="useRailsNavigation">Should the gesture input source use rails navigation?</param>
         public WindowsGestureInputSource(bool useRailsNavigation) : base("Gesture Input Source")
         {
+            if (!Application.isPlaying) { return; }
+
             gestureRecognizer = new GestureRecognizer();
 
             gestureRecognizer.Tapped += GestureRecognizer_Tapped;

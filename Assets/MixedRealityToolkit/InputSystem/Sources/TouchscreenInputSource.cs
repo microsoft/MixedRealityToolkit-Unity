@@ -47,7 +47,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// </summary>
         public TouchscreenInputSource() : base("Touch Screen Input Source")
         {
-            Run();
+            if (Application.isPlaying)
+            {
+                Run();
+            }
         }
 
         public override IMixedRealityPointer[] Pointers

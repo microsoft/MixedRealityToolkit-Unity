@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         private void Initialize()
         {
-            if (Commands.Length == 0) { return; }
+            if (!Application.isPlaying || Commands.Length == 0) { return; }
 
             var newKeywords = new string[Commands.Length];
 

@@ -16,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Windows.Speech;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
 {
@@ -210,7 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 SpeechInputSource = new SpeechInputSource(
                     MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-                    , (ConfidenceLevel)MixedRealityManager.Instance.ActiveProfile.SpeechRecognitionConfidenceLevel
+                    , (UnityEngine.Windows.Speech.ConfidenceLevel)MixedRealityManager.Instance.ActiveProfile.SpeechRecognitionConfidenceLevel
 #endif
                 );
             }

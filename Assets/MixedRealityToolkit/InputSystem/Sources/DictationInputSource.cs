@@ -33,6 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// </summary>
         public DictationInputSource() : base("Dictation")
         {
+            if (!Application.isPlaying) { return; }
+
             source = this;
             dictationResult = string.Empty;
 
