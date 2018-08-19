@@ -2,12 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine;
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 {
@@ -52,14 +55,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             }
             set
             {
+#if UNITY_WSA
                 if (gestureRecognizer == null)
                 {
                     gestureRecognizerEnabled = false;
                     return;
                 }
-
+#endif
                 gestureRecognizerEnabled = value;
-
+#if UNITY_WSA
                 if (!gestureRecognizer.IsCapturingGestures() && gestureRecognizerEnabled)
                 {
                     NavigationRecognizerEnabled = false;
@@ -70,6 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 {
                     gestureRecognizer.StopCapturingGestures();
                 }
+#endif
             }
         }
 
@@ -89,14 +94,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             }
             set
             {
+#if UNITY_WSA
                 if (navigationGestureRecognizer == null)
                 {
                     navigationRecognizerEnabled = false;
                     return;
                 }
-
+#endif
                 navigationRecognizerEnabled = value;
-
+#if UNITY_WSA
                 if (!navigationGestureRecognizer.IsCapturingGestures() && navigationRecognizerEnabled)
                 {
                     GestureRecognizerEnabled = false;
@@ -107,11 +113,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 {
                     navigationGestureRecognizer.StopCapturingGestures();
                 }
+#endif
             }
         }
 
+#if UNITY_WSA
         private static GestureRecognizer gestureRecognizer;
         private static GestureRecognizer navigationGestureRecognizer;
+#endif
 
         private static IMixedRealityDeviceManager deviceManager = null;
         private static IMixedRealityDeviceManager DeviceManager => deviceManager ?? (deviceManager = MixedRealityManager.Instance.GetManager(typeof(WindowsMixedRealityDeviceManager)) as IMixedRealityDeviceManager);
@@ -124,6 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         {
             if (!Application.isPlaying) { return; }
 
+#if UNITY_WSA
             gestureRecognizer = new GestureRecognizer();
 
             gestureRecognizer.Tapped += GestureRecognizer_Tapped;
@@ -155,11 +165,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             {
                 navigationGestureRecognizer.SetRecognizableGestures(GestureSettings.NavigationX | GestureSettings.NavigationY | GestureSettings.NavigationZ);
             }
+#endif
         }
 
         /// <inheritdoc />
         public override void Dispose()
         {
+
+#if UNITY_WSA
             if (gestureRecognizer != null)
             {
                 gestureRecognizer.Tapped -= GestureRecognizer_Tapped;
@@ -185,10 +198,12 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
                 navigationGestureRecognizer.Dispose();
             }
+#endif
         }
 
         #region Raise GestureRecognizer Events
 
+#if UNITY_WSA
         private void GestureRecognizer_Tapped(TappedEventArgs args)
         {
             if (args.source.kind == InteractionSourceKind.Hand)
@@ -267,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         {
             InputSystem.RaiseNavigationCanceled(this, (Handedness)args.source.handedness, NavigationAction);
         }
-
+#endif
         #endregion Raise GestureRecognizer Events
     }
 }

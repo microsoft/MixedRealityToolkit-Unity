@@ -54,11 +54,14 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// <inheritdoc />
         public override void Dispose()
         {
-            dictationRecognizer.DictationHypothesis -= DictationRecognizer_DictationHypothesis;
-            dictationRecognizer.DictationResult -= DictationRecognizer_DictationResult;
-            dictationRecognizer.DictationComplete -= DictationRecognizer_DictationComplete;
-            dictationRecognizer.DictationError -= DictationRecognizer_DictationError;
-            dictationRecognizer.Dispose();
+            if (dictationRecognizer != null)
+            {
+                dictationRecognizer.DictationHypothesis -= DictationRecognizer_DictationHypothesis;
+                dictationRecognizer.DictationResult -= DictationRecognizer_DictationResult;
+                dictationRecognizer.DictationComplete -= DictationRecognizer_DictationComplete;
+                dictationRecognizer.DictationError -= DictationRecognizer_DictationError;
+                dictationRecognizer?.Dispose();
+            }
         }
 
         private static IMixedRealityInputSource source;
