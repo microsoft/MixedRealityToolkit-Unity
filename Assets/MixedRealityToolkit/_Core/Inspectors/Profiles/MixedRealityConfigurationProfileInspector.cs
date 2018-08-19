@@ -13,8 +13,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityConfigurationProfile))]
     public class MixedRealityConfigurationProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
         private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
+        private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
+        private static readonly GUIContent SpeechConfidenceContent = new GUIContent("Recognition Confidence Level", "The speech recognizer's minimum confidence level setting that will raise the action.");
+        private static readonly GUIContent[] SpeechConfidenceOptionContent =
+        {
+            new GUIContent("High"),
+            new GUIContent("Medium"),
+            new GUIContent("Low"),
+            new GUIContent("Unrecognized")
+        };
+
+        private static readonly int[] SpeechConfidenceOptions = { 0, 1, 2, 3 };
 
         // Experience properties
         private SerializedProperty targetExperienceScale;
@@ -26,9 +36,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty inputSystemType;
         private SerializedProperty inputActionsProfile;
         private SerializedProperty pointerProfile;
-        private SerializedProperty inputSourceOptions;
         private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
+        private SerializedProperty recognitionConfidenceLevel;
+        private SerializedProperty enableDictation;
+        private SerializedProperty enableTouchScreenInput;
+        private SerializedProperty touchScreenInputProfile;
+        private SerializedProperty enableGestureInput;
+        private SerializedProperty gestureInputSourceProfile;
         private SerializedProperty enableControllerMapping;
         private SerializedProperty controllerMappingProfile;
         // Boundary system properties
@@ -90,9 +105,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             inputSystemType = serializedObject.FindProperty("inputSystemType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
-            inputSourceOptions = serializedObject.FindProperty("inputSourceOptions");
             enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
+            recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
+            enableDictation = serializedObject.FindProperty("enableDictation");
+            enableTouchScreenInput = serializedObject.FindProperty("enableTouchScreenInput");
+            touchScreenInputProfile = serializedObject.FindProperty("touchScreenInputProfile");
+            enableGestureInput = serializedObject.FindProperty("enableGestureInput");
+            gestureInputSourceProfile = serializedObject.FindProperty("gestureInputSourceProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
             controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
             // Boundary system configuration
@@ -175,13 +195,30 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             {
                 EditorGUILayout.PropertyField(inputSystemType);
                 RenderProfile(inputActionsProfile);
-                RenderProfile(inputSourceOptions);
                 RenderProfile(pointerProfile);
 
                 EditorGUILayout.PropertyField(enableSpeechCommands);
+
                 if (enableSpeechCommands.boolValue)
                 {
                     RenderProfile(speechCommandsProfile);
+                    recognitionConfidenceLevel.intValue = EditorGUILayout.IntPopup(SpeechConfidenceContent, recognitionConfidenceLevel.intValue, SpeechConfidenceOptionContent, SpeechConfidenceOptions);
+                }
+
+                EditorGUILayout.PropertyField(enableDictation);
+
+                EditorGUILayout.PropertyField(enableTouchScreenInput);
+
+                if (enableTouchScreenInput.boolValue)
+                {
+                    RenderProfile(touchScreenInputProfile);
+                }
+
+                EditorGUILayout.PropertyField(enableGestureInput);
+
+                if (enableGestureInput.boolValue)
+                {
+                    RenderProfile(gestureInputSourceProfile);
                 }
 
                 EditorGUILayout.PropertyField(enableControllerMapping);

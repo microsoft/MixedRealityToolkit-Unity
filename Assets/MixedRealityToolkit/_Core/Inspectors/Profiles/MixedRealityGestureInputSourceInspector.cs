@@ -6,13 +6,9 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 {
-    [CustomEditor(typeof(MixedRealityInputSourceOptionsProfile))]
-    public class MixedRealityInputSourceOptionProfileInspector : MixedRealityBaseConfigurationProfileInspector
+    [CustomEditor(typeof(MixedRealityGestureInputProfile))]
+    public class MixedRealityGestureInputSourceInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private SerializedProperty hypothesisAction;
-        private SerializedProperty resultAction;
-        private SerializedProperty completeAction;
-        private SerializedProperty errorAction;
         private SerializedProperty pointerAction;
         private SerializedProperty holdAction;
         private SerializedProperty manipulationAction;
@@ -26,10 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 return;
             }
 
-            hypothesisAction = serializedObject.FindProperty("hypothesisAction");
-            resultAction = serializedObject.FindProperty("resultAction");
-            completeAction = serializedObject.FindProperty("completeAction");
-            errorAction = serializedObject.FindProperty("errorAction");
             pointerAction = serializedObject.FindProperty("pointerAction");
             holdAction = serializedObject.FindProperty("holdAction");
             manipulationAction = serializedObject.FindProperty("manipulationAction");
@@ -61,16 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.PropertyField(useRailsNavigation);
 
             EditorGUI.indentLevel--;
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Dictation Input Source Actions", EditorStyles.boldLabel);
-            EditorGUI.indentLevel++;
 
-            EditorGUILayout.PropertyField(hypothesisAction);
-            EditorGUILayout.PropertyField(resultAction);
-            EditorGUILayout.PropertyField(completeAction);
-            EditorGUILayout.PropertyField(errorAction);
-
-            EditorGUI.indentLevel--;
             serializedObject.ApplyModifiedProperties();
         }
     }

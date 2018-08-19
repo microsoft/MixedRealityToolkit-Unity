@@ -26,26 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// </summary>
         public static bool IsListening { get; private set; } = false;
 
-        /// <summary>
-        /// Action that will be associated with a dictation hypothesis input event.
-        /// </summary>
-        public static MixedRealityInputAction HypothesisAction { get; set; } = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// Action that will be associated with a dictation result input event.
-        /// </summary>
-        public static MixedRealityInputAction ResultAction { get; set; } = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// Action that will be associated with a dictation complete input event.
-        /// </summary>
-        public static MixedRealityInputAction CompleteAction { get; set; } = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// Action that will be associated with a dictation error input event.
-        /// </summary>
-        public static MixedRealityInputAction ErrorAction { get; set; } = MixedRealityInputAction.None;
-
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         /// <summary>
@@ -127,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 if (!hasFailed && dictationRecognizer.Status == SpeechSystemStatus.Failed)
                 {
                     hasFailed = true;
-                    InputSystem.RaiseDictationError(source, ErrorAction, "Dictation recognizer has failed!");
+                    InputSystem.RaiseDictationError(source, "Dictation recognizer has failed!");
                 }
 
                 await NextUpdate;
@@ -178,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
             if (dictationRecognizer.Status == SpeechSystemStatus.Failed)
             {
-                InputSystem.RaiseDictationError(source, ErrorAction, "Dictation recognizer failed to start!");
+                InputSystem.RaiseDictationError(source, "Dictation recognizer failed to start!");
                 return;
             }
 
@@ -243,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             // We don't want to append to textSoFar yet, because the hypothesis may have changed on the next event.
             dictationResult = $"{textSoFar} {text}...";
 
-            InputSystem.RaiseDictationHypothesis(source, HypothesisAction, dictationResult);
+            InputSystem.RaiseDictationHypothesis(source, dictationResult);
         }
 
         /// <summary>
@@ -257,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
             dictationResult = textSoFar.ToString();
 
-            InputSystem.RaiseDictationResult(source, ResultAction, dictationResult);
+            InputSystem.RaiseDictationResult(source, dictationResult);
         }
 
         /// <summary>
@@ -275,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 dictationResult = "Dictation has timed out. Please try again.";
             }
 
-            InputSystem.RaiseDictationComplete(source, CompleteAction, dictationResult, dictationAudioClip);
+            InputSystem.RaiseDictationComplete(source, dictationResult, dictationAudioClip);
             textSoFar = null;
             dictationResult = string.Empty;
         }
@@ -289,7 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         {
             dictationResult = $"{error}\nHRESULT: {hresult}";
 
-            InputSystem.RaiseDictationError(source, ErrorAction, dictationResult);
+            InputSystem.RaiseDictationError(source, dictationResult);
             textSoFar = null;
             dictationResult = string.Empty;
         }

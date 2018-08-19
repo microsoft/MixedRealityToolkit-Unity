@@ -9,38 +9,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3732f9adf77448c59af7e61f1dfc25c0, type: 3}
-  m_Name: DefaultMixedRealityInputSourceOptionsProfile
+  m_Name: DefaultMixedRealityGestureInputProfile
   m_EditorClassIdentifier: 
-  hypothesisAction:
-    id: 0
-    description: None
-    axisConstraint: 0
-  resultAction:
-    id: 0
-    description: None
-    axisConstraint: 0
-  completeAction:
-    id: 0
-    description: None
-    axisConstraint: 0
-  errorAction:
-    id: 0
-    description: 
-    axisConstraint: 0
   pointerAction:
-    id: 1
-    description: Select
-    axisConstraint: 2
+    id: 0
+    description: None
+    axisConstraint: 0
   holdAction:
-    id: 7
-    description: Hold
-    axisConstraint: 2
+    id: 0
+    description: None
+    axisConstraint: 0
   navigationAction:
-    id: 9
-    description: Navigate
-    axisConstraint: 2
+    id: 0
+    description: None
+    axisConstraint: 0
   manipulationAction:
-    id: 8
-    description: Manipulate
-    axisConstraint: 2
+    id: 0
+    description: None
+    axisConstraint: 0
   useRailsNavigation: 0

@@ -163,16 +163,77 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Input Source Options for wiring up actions to input sources that aren't controllers.")]
-        private MixedRealityInputSourceOptionsProfile inputSourceOptions;
+        [Tooltip("Enable dictation input for your application.")]
+        private bool enableDictation = false;
 
         /// <summary>
-        /// Input Source Options for wiring up actions to input sources that aren't controllers.
+        /// Enable dictation input for your application.
         /// </summary>
-        public MixedRealityInputSourceOptionsProfile InputSourceOptions
+        public bool IsDictationEnabled
         {
-            get { return inputSourceOptions; }
-            private set { inputSourceOptions = value; }
+            get { return enableDictation && enableInputSystem; }
+            private set { enableDictation = value; }
+        }
+
+        [SerializeField]
+        private int recognitionConfidenceLevel = 1;
+
+        /// <summary>
+        /// The speech recognizer's minimum confidence level setting that will raise the action.<para/>
+        /// 0 == High, 1 == Medium, 2 == Low, 3 == Unknown
+        /// </summary>
+        public int SpeechRecognitionConfidenceLevel => recognitionConfidenceLevel;
+
+        [SerializeField]
+        [Tooltip("Enable Touch Screen Input for your application.")]
+        private bool enableTouchScreenInput = false;
+
+        /// <summary>
+        /// Enable Touch Screen Input for your application.
+        /// </summary>
+        public bool IsTouchScreenInputEnabled
+        {
+            get { return touchScreenInputProfile != null && enableTouchScreenInput && enableInputSystem; }
+            private set { enableTouchScreenInput = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Touch Screen Input Source profile for wiring up Actions.")]
+        private MixedRealityTouchInputProfile touchScreenInputProfile;
+
+        /// <summary>
+        /// Touch Screen Input Source profile for wiring up Actions.
+        /// </summary>
+        public MixedRealityTouchInputProfile TouchScreenInputProfile
+        {
+            get { return touchScreenInputProfile; }
+            private set { touchScreenInputProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable Gesture Input for your application.")]
+        private bool enableGestureInput = false;
+
+        /// <summary>
+        /// Enable and configure the speech commands for your application.
+        /// </summary>
+        public bool IsGestureInputEnabled
+        {
+            get { return gestureInputSourceProfile != null && enableGestureInput && enableInputSystem; }
+            private set { enableGestureInput = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Gesture Input Source profile for wiring up actions.")]
+        private MixedRealityGestureInputProfile gestureInputSourceProfile;
+
+        /// <summary>
+        /// Gesture Input Source profile for wiring up actions.
+        /// </summary>
+        public MixedRealityGestureInputProfile GestureInputSourceProfile
+        {
+            get { return gestureInputSourceProfile; }
+            private set { gestureInputSourceProfile = value; }
         }
 
         [SerializeField]

@@ -9,45 +9,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     /// <summary>
     /// Configuration profile settings for setting up input source actions.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input Source Options Profile", fileName = "MixedRealitySpeechCommandsProfile", order = (int)CreateProfileMenuItemIndices.GenericInputSourceOptions)]
-    public class MixedRealityInputSourceOptionsProfile : ScriptableObject
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Gesture Input Profile", fileName = "MixedRealityGestureInputProfile", order = (int)CreateProfileMenuItemIndices.Gestures)]
+    public class MixedRealityGestureInputProfile : ScriptableObject
     {
-        [SerializeField]
-        [Tooltip("Action to raise when hypothesis event is raised by Dictation Input Source.")]
-        private MixedRealityInputAction hypothesisAction = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// Action to raise when hypothesis event is raised by Dictation Input Source.
-        /// </summary>
-        public MixedRealityInputAction HypothesisAction => hypothesisAction;
-
-        [SerializeField]
-        [Tooltip("Action to raise when result event is raised by Dictation Input Source.")]
-        private MixedRealityInputAction resultAction = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// Action to raise when result event is raised by Dictation Input Source.
-        /// </summary>
-        public MixedRealityInputAction ResultAction => resultAction;
-
-        [SerializeField]
-        [Tooltip("Action to raise when complete event is raised by Dictation Input Source.")]
-        private MixedRealityInputAction completeAction = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// Action to raise when complete event is raised by Dictation Input Source.
-        /// </summary>
-        public MixedRealityInputAction CompleteAction => completeAction;
-
-        [SerializeField]
-        [Tooltip("Action to raise when error event is raised by Dictation Input Source.")]
-        private MixedRealityInputAction errorAction = MixedRealityInputAction.None;
-
-        /// <summary>
-        /// Action to raise when error event is raised by Dictation Input Source.
-        /// </summary>
-        public MixedRealityInputAction ErrorAction => errorAction;
-
         [SerializeField]
         [Tooltip("Action to raise when pointer event is raised.")]
         private MixedRealityInputAction pointerAction = MixedRealityInputAction.None;
