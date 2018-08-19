@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Boundary;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
@@ -19,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private IMixedRealityBoundarySystem BoundaryManager => boundaryManager ?? (boundaryManager = MixedRealityManager.Instance.GetManager<IMixedRealityBoundarySystem>());
         private IMixedRealityBoundarySystem boundaryManager = null;
 
+        private GameObject markerParent;
         private readonly List<GameObject> markers = new List<GameObject>();
 
         [SerializeField]
@@ -27,10 +29,27 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [SerializeField]
         private bool showPlayArea = true;
 
+        [SerializeField]
+        private bool showTrackedArea = true;
+
+        [SerializeField]
+        private bool showBoundaryWalls = true;
+
+        [SerializeField]
+        private bool showBoundaryCeiling = true;
+
         #region MonoBehaviour Implementation
+
+        private void Awake()
+        {
+            markerParent = new GameObject();
+            markerParent.name = "Boundary Demo Markers";
+            markerParent.transform.parent = CameraCache.Main.transform.parent;
+        }
 
         private void Start()
         {
+
             if (BoundaryManager != null)
             {
                 if (markers.Count == 0)
@@ -46,6 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             {
                 BoundaryManager.ShowFloor = showFloor;
                 BoundaryManager.ShowPlayArea = showPlayArea;
+                BoundaryManager.ShowTrackedArea = showTrackedArea;
+                BoundaryManager.ShowBoundaryWalls = showBoundaryWalls;
+                BoundaryManager.ShowBoundaryCeiling = showBoundaryCeiling;
             }
         }
 
@@ -128,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     {
                         GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                         marker.name = "Boundary Demo Marker";
-                        marker.transform.SetParent(transform);
+                        marker.transform.parent = markerParent.transform;
                         marker.transform.position = position;
                         marker.transform.localScale = Vector3.one * indicatorScale;
                         marker.GetComponent<MeshRenderer>().sharedMaterial = material;

@@ -43,6 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
         private MixedRealityConfigurationProfile configurationProfile;
 
+        private static bool skipReset = false;
+
         private void OnEnable()
         {
             configurationProfile = target as MixedRealityConfigurationProfile;
@@ -226,10 +228,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
 
-            if (EditorGUI.EndChangeCheck())
+            if (!skipReset && EditorGUI.EndChangeCheck())
             {
                 MixedRealityManager.Instance.ResetConfiguration(configurationProfile);
             }
+
+            skipReset = false;
         }
 
         private static void RenderProfile(SerializedProperty property)
@@ -246,6 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                     ScriptableObject profile = CreateInstance(profileTypeName);
                     profile.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject));
                     property.objectReferenceValue = profile;
+                    skipReset = true;
                 }
             }
 

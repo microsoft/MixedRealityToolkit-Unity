@@ -28,11 +28,21 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
 
             if (profile == null ||
                 (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
+                 profile.InputActions != null &&
                  profile.InputActions != MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions))
             {
                 profile = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile;
-                actionLabels = profile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
-                actionIds = profile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
+
+                if (profile != null)
+                {
+                    actionLabels = profile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
+                    actionIds = profile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
+                }
+                else
+                {
+                    actionLabels = new[] { new GUIContent("No input action profile found") };
+                    actionIds = new[] { 0 };
+                }
             }
 
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
