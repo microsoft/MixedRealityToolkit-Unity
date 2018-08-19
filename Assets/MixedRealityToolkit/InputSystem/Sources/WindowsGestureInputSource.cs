@@ -194,6 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             }
             else if (args.source.kind == InteractionSourceKind.Controller)
             {
+                // TODO Do we even need this?  Shouldn't pressing the trigger in the WMR Controller raise the same event?
                 var activeControllers = DeviceManager.GetActiveControllers();
 
                 for (int i = 0; i < activeControllers.Length; i++)
