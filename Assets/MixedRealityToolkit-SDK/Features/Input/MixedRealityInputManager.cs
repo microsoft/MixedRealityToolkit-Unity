@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <summary>
         /// Current Gesture Input Source.
         /// </summary>
-        public GestureInputSource GestureInputSource { get; private set; }
+        public WindowsGestureInputSource GestureInputSource { get; private set; }
 
         #region IMixedRealityManager Implementation
 
@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             DictationInputSource = new DictationInputSource();
             TouchscreenInputSource = new TouchscreenInputSource();
-            GestureInputSource = new GestureInputSource(MixedRealityManager.Instance.ActiveProfile != null && MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.UseRailsNavigation);
+            GestureInputSource = new WindowsGestureInputSource(MixedRealityManager.Instance.ActiveProfile != null && MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.UseRailsNavigation);
 
             if (MixedRealityManager.Instance.ActiveProfile.InputSourceOptions != null)
             {
@@ -228,10 +228,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 TouchscreenInputSource.PointerAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.PointerAction;
                 TouchscreenInputSource.HoldAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldAction;
 
-                GestureInputSource.PointerAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.PointerAction;
-                GestureInputSource.HoldAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldAction;
-                GestureInputSource.ManipulationAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.ManipulationAction;
-                GestureInputSource.NavigationAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.NavigationAction;
+                WindowsGestureInputSource.PointerAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.PointerAction;
+                WindowsGestureInputSource.HoldAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.HoldAction;
+                WindowsGestureInputSource.ManipulationAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.ManipulationAction;
+                WindowsGestureInputSource.NavigationAction = MixedRealityManager.Instance.ActiveProfile.InputSourceOptions.NavigationAction;
             }
         }
 

@@ -3,6 +3,9 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using UnityEngine.XR.WSA.Input;
 
 namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
@@ -10,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// <summary>
     /// Input source supporting input from gesture recognizer.
     /// </summary>
-    public class GestureInputSource : BaseGenericInputSource
+    public class WindowsGestureInputSource : BaseGenericInputSource
     {
         /// <summary>
         /// Pointer Action for Gesture Tap or "Click"
@@ -32,11 +35,91 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// </summary>
         public static MixedRealityInputAction NavigationAction { get; set; } = MixedRealityInputAction.None;
 
+        private static bool gestureRecognizerEnabled;
+
+        /// <summary>
+        /// Enables or disables the gesture recognizer.
+        /// </summary>
+        /// <remarks>
+        /// Automatically disabled navigation recognizer if enabled.
+        /// </remarks>
+        public static bool GestureRecognizerEnabled
+        {
+            get
+            {
+                return gestureRecognizerEnabled;
+            }
+            set
+            {
+                if (gestureRecognizer == null)
+                {
+                    gestureRecognizerEnabled = false;
+                    return;
+                }
+
+                gestureRecognizerEnabled = value;
+
+                if (!gestureRecognizer.IsCapturingGestures() && gestureRecognizerEnabled)
+                {
+                    NavigationRecognizerEnabled = false;
+                    gestureRecognizer.StartCapturingGestures();
+                }
+
+                if (gestureRecognizer.IsCapturingGestures() && !gestureRecognizerEnabled)
+                {
+                    gestureRecognizer.StopCapturingGestures();
+                }
+            }
+        }
+
+        private static bool navigationRecognizerEnabled;
+
+        /// <summary>
+        /// Enables or disables the navigation recognizer.
+        /// </summary>
+        /// <remarks>
+        /// Automatically disables the gesture recognizer if enabled.
+        /// </remarks>
+        public static bool NavigationRecognizerEnabled
+        {
+            get
+            {
+                return navigationRecognizerEnabled;
+            }
+            set
+            {
+                if (navigationGestureRecognizer == null)
+                {
+                    navigationRecognizerEnabled = false;
+                    return;
+                }
+
+                navigationRecognizerEnabled = value;
+
+                if (!navigationGestureRecognizer.IsCapturingGestures() && navigationRecognizerEnabled)
+                {
+                    GestureRecognizerEnabled = false;
+                    navigationGestureRecognizer.StartCapturingGestures();
+                }
+
+                if (navigationGestureRecognizer.IsCapturingGestures() && !navigationRecognizerEnabled)
+                {
+                    navigationGestureRecognizer.StopCapturingGestures();
+                }
+            }
+        }
+
+        private static GestureRecognizer gestureRecognizer;
+        private static GestureRecognizer navigationGestureRecognizer;
+
+        private static IMixedRealityDeviceManager deviceManager = null;
+        private static IMixedRealityDeviceManager DeviceManager => deviceManager ?? (deviceManager = MixedRealityManager.Instance.GetManager(typeof(WindowsMixedRealityDeviceManager)) as IMixedRealityDeviceManager);
+
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="useRailsNavigation">Should the gesture input source use rails navigation?</param>
-        public GestureInputSource(bool useRailsNavigation) : base("Gesture Input Source")
+        public WindowsGestureInputSource(bool useRailsNavigation) : base("Gesture Input Source")
         {
             gestureRecognizer = new GestureRecognizer();
 
@@ -69,31 +152,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             {
                 navigationGestureRecognizer.SetRecognizableGestures(GestureSettings.NavigationX | GestureSettings.NavigationY | GestureSettings.NavigationZ);
             }
-
-            if (gestureRecognizer != null && !gestureRecognizer.IsCapturingGestures())
-            {
-                gestureRecognizer.StartCapturingGestures();
-            }
-
-            if (navigationGestureRecognizer != null && !navigationGestureRecognizer.IsCapturingGestures())
-            {
-                navigationGestureRecognizer.StartCapturingGestures();
-            }
         }
 
         /// <inheritdoc />
         public override void Dispose()
         {
-            if (gestureRecognizer != null && gestureRecognizer.IsCapturingGestures())
-            {
-                gestureRecognizer.StopCapturingGestures();
-            }
-
-            if (navigationGestureRecognizer != null && navigationGestureRecognizer.IsCapturingGestures())
-            {
-                navigationGestureRecognizer.StopCapturingGestures();
-            }
-
             if (gestureRecognizer != null)
             {
                 gestureRecognizer.Tapped -= GestureRecognizer_Tapped;
@@ -121,14 +184,29 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             }
         }
 
-        private readonly GestureRecognizer gestureRecognizer;
-        private readonly GestureRecognizer navigationGestureRecognizer;
-
         #region Raise GestureRecognizer Events
 
         private void GestureRecognizer_Tapped(TappedEventArgs args)
         {
-            InputSystem.RaisePointerClicked(InputSystem.GazeProvider.GazePointer, (Handedness)args.source.handedness, PointerAction, args.tapCount);
+            if (args.source.kind == InteractionSourceKind.Hand)
+            {
+                InputSystem.RaisePointerClicked(InputSystem.GazeProvider.GazePointer, (Handedness)args.source.handedness, PointerAction, args.tapCount);
+            }
+            else if (args.source.kind == InteractionSourceKind.Controller)
+            {
+                var activeControllers = DeviceManager.GetActiveControllers();
+
+                for (int i = 0; i < activeControllers.Length; i++)
+                {
+                    var controller = activeControllers[i] as WindowsMixedRealityController;
+
+                    if (controller != null && controller.LastSourceStateReading.source.id == args.source.id)
+                    {
+                        // TODO How do we want to figure out which pointer to raise the click event? Does it matter? Should we instead replace pointer param with Input Source?
+                        InputSystem.RaisePointerClicked(controller.InputSource.Pointers[0], (Handedness)args.source.handedness, PointerAction, args.tapCount);
+                    }
+                }
+            }
         }
 
         private void GestureRecognizer_HoldStarted(HoldStartedEventArgs args)
