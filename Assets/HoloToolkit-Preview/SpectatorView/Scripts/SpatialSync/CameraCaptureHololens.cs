@@ -50,7 +50,7 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         /// Texture to which the photo will be saved to
         /// </summary>
         private Texture2D targetTexture;
-        
+
         /// <summary>
         /// Vertical resolution of the capture camera image
         /// </summary>
@@ -118,14 +118,22 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
         /// <param name="result">Result of the intent of starting the camera</param>
         private void OnPhotoModeStarted(PhotoCapture.PhotoCaptureResult result)
         {
-            if (result.success)
+            try
             {
-                photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
+                if (result.success)
+                {
+                    photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
+                }
+                else
+                {
+                    Debug.LogError("Unable to start photo mode!");
+                }
             }
-            else
+            catch (System.Exception e)
             {
-                Debug.LogError("Unable to start photo mode!");
+                Debug.LogException(e);
             }
+
         }
 
         /// <summary>
@@ -156,6 +164,8 @@ namespace HoloToolkit.Unity.Preview.SpectatorView
             {
                 Debug.LogError("Failed to capturing image");
             }
+
+            photoCaptureFrame.Dispose();
 
             photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
         }
