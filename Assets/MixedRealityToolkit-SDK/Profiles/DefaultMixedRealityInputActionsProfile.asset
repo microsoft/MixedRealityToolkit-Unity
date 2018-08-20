@@ -31,11 +31,5 @@ MonoBehaviour:
     description: Trigger
     axisConstraint: 3
   - id: 7
-    description: Hold
-    axisConstraint: 2
-  - id: 8
-    description: Manipulate
-    axisConstraint: 2
-  - id: 9
-    description: Navigate
-    axisConstraint: 2
+    description: Grip Press
+    axisConstraint: 3

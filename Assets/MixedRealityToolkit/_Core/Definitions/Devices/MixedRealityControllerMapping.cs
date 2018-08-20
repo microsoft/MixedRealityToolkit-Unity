@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using System;
 using UnityEngine;
@@ -89,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         private bool useCustomInteractionMappings;
 
         /// <summary>
-        /// Is this controller mapping using custom interactions?. 
+        /// Is this controller mapping using custom interactions?
         /// </summary>
         public bool UseCustomInteractionMappings => useCustomInteractionMappings;
 
@@ -107,7 +108,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// </summary>
         public void SetDefaultInteractionMapping()
         {
-            interactions = ControllerMappingLibrary.GetMappingsForControllerType(controllerType?.Type, handedness);
+            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, handedness, null, null) as BaseController;
+
+            if (detectedController != null)
+            {
+                switch (handedness)
+                {
+                    case Handedness.Left:
+                        interactions = detectedController.DefaultLeftHandedInteractions;
+                        break;
+                    case Handedness.Right:
+                        interactions = detectedController.DefaultRightHandedInteractions;
+                        break;
+                    default:
+                        interactions = detectedController.DefaultInteractions;
+                        break;
+                }
+            }
         }
     }
 }

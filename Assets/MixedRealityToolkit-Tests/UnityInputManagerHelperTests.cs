@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor;
 using NUnit.Framework;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -12,55 +12,62 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void Test01_TestAddCustomMappings()
         {
-            InputManagerAxis[] OpenVRControllerAxisMappings =
-            {
-                new InputManagerAxis() { Name = "OPENVR_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL",  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 1 },
-                new InputManagerAxis() { Name = "OPENVR_TOUCHPAD_LEFT_CONTROLLER_VERTICAL",    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputManagerAxisType.JoystickAxis, Axis = 2 },
-                new InputManagerAxis() { Name = "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL",  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 4 },
-                new InputManagerAxis() { Name = "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL",    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputManagerAxisType.JoystickAxis, Axis = 5 },
-                new InputManagerAxis() { Name = "OPENVR_TRIGGER_LEFT_CONTROLLER",    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputManagerAxisType.JoystickAxis, Axis = 9 },
-                new InputManagerAxis() { Name = "OPENVR_TRIGGER_RIGHT_CONTROLLER",    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputManagerAxisType.JoystickAxis, Axis = 10 },
-                new InputManagerAxis() { Name = "OPENVR_GRIP_LEFT_CONTROLLER",    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputManagerAxisType.JoystickAxis, Axis = 11 },
-                new InputManagerAxis() { Name = "OPENVR_GRIP_RIGHT_CONTROLLER",    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputManagerAxisType.JoystickAxis, Axis = 12 }
-            };
+            InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
 
-            InputMappingAxisUtility.ApplyMappings(OpenVRControllerAxisMappings);
-
-            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL"));
-            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_TOUCHPAD_LEFT_CONTROLLER_VERTICAL"));
-            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL"));
-            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL"));
-            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_TRIGGER_LEFT_CONTROLLER"));
-            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_TRIGGER_RIGHT_CONTROLLER"));
-            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_GRIP_LEFT_CONTROLLER"));
-            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_GRIP_RIGHT_CONTROLLER"));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_1));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_2));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_4));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_5));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_9));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_10));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_11));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_12));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_13));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_14));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_15));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_16));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_17));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_18));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_19));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_20));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_21));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_22));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_23));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_24));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_25));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_26));
+            Assert.IsTrue(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_27));
         }
 
         [Test]
         public void Test02_TestRemoveCustomMappings()
         {
-            InputManagerAxis[] OpenVRControllerAxisMappings =
-            {
-                new InputManagerAxis() { Name = "OPENVR_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL",  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 1 },
-                new InputManagerAxis() { Name = "OPENVR_TOUCHPAD_LEFT_CONTROLLER_VERTICAL",    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputManagerAxisType.JoystickAxis, Axis = 2 },
-                new InputManagerAxis() { Name = "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL",  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 4 },
-                new InputManagerAxis() { Name = "OPENVR_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL",    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputManagerAxisType.JoystickAxis, Axis = 5 },
-                new InputManagerAxis() { Name = "OPENVR_TRIGGER_LEFT_CONTROLLER",    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputManagerAxisType.JoystickAxis, Axis = 9 },
-                new InputManagerAxis() { Name = "OPENVR_TRIGGER_RIGHT_CONTROLLER",    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputManagerAxisType.JoystickAxis, Axis = 10 },
-                new InputManagerAxis() { Name = "OPENVR_GRIP_LEFT_CONTROLLER",    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputManagerAxisType.JoystickAxis, Axis = 11 },
-                new InputManagerAxis() { Name = "OPENVR_GRIP_RIGHT_CONTROLLER",    Dead = 0.001f, Sensitivity = 1, Invert = false,  Type = InputManagerAxisType.JoystickAxis, Axis = 12 }
-            };
 
-            InputMappingAxisUtility.RemoveMappings(OpenVRControllerAxisMappings);
+            InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
 
-            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_TOUCHPAD_LEFT_CONTROLLER_HORIZONTAL"));
-            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_TOUCHPAD_LEFT_CONTROLLER_VERTICAL"));
-            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_TOUCHPAD_RIGHT_CONTROLLER_HORIZONTAL"));
-            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_TOUCHPAD_RIGHT_CONTROLLER_VERTICAL"));
-            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_TRIGGER_LEFT_CONTROLLER"));
-            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_TRIGGER_RIGHT_CONTROLLER"));
-            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_GRIP_LEFT_CONTROLLER"));
-            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist("OPENVR_GRIP_RIGHT_CONTROLLER"));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_1));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_2));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_4));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_5));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_9));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_10));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_11));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_12));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_13));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_14));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_15));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_16));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_17));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_18));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_19));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_20));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_21));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_22));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_23));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_24));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_25));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_26));
+            Assert.IsFalse(InputMappingAxisUtility.DoesAxisNameExist(ControllerMappingLibrary.AXIS_27));
         }
     }
 }

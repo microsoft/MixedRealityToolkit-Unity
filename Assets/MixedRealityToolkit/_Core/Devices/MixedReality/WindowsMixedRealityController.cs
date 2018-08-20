@@ -8,7 +8,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
 #if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Internal.Utilities;
-using System;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
@@ -36,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// The Windows Mixed Reality Controller default interactions.
         /// </summary>
         /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
-        public static readonly MixedRealityInteractionMapping[] DefaultInteractions =
+        public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip, MixedRealityInputAction.None),
@@ -45,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             new MixedRealityInteractionMapping(4, "Touchpad Touch", AxisType.Digital, DeviceInputType.TouchpadTouch, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(5, "Touchpad Press", AxisType.Digital, DeviceInputType.TouchpadPress, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(6, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(7, "Thumbstick Press ", AxisType.Digital, DeviceInputType.ThumbStickPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(7, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(8, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(9, "Trigger Pressed (Select)", AxisType.Digital, DeviceInputType.Select, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(10, "Trigger Touched", AxisType.Digital, DeviceInputType.TriggerTouch, MixedRealityInputAction.None),
@@ -86,10 +85,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         public void UpdateController(InteractionSourceState interactionSourceState)
         {
+            if (!Enabled) { return; }
+
             UpdateControllerData(interactionSourceState);
 
-            Debug.Assert(Interactions != null, "No interaction configuration for controller");
-            if (Interactions == null) { Enabled = false; }
+            if (Interactions == null)
+            {
+                Debug.LogError($"No interaction configuration for Windows Mixed Reality Motion Controller {ControllerHandedness}");
+                Enabled = false;
+            }
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
@@ -341,8 +345,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         }
                         break;
                     }
-                default:
-                    throw new IndexOutOfRangeException();
             }
         }
 
@@ -388,8 +390,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         }
                         break;
                     }
-                default:
-                    throw new IndexOutOfRangeException();
             }
         }
 
@@ -456,8 +456,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         }
                         break;
                     }
-                default:
-                    throw new IndexOutOfRangeException();
             }
         }
 
