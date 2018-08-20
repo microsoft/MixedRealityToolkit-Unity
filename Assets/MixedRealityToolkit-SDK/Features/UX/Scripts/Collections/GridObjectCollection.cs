@@ -17,48 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
     /// </summary>
     public class GridObjectCollection : BaseObjectCollection
     {
-        #region private fields
+        #region public accessors
         [Tooltip("Type of surface to map the collection to")]
         private ObjectOrientationSurfaceTypeEnum surfaceType = ObjectOrientationSurfaceTypeEnum.Plane;
-
-        [Tooltip("Should the objects in the collection be rotated / how should they be rotated")]
-        private OrientationTypeEnum orientType = OrientationTypeEnum.FaceOrigin;
-
-        [Tooltip("Whether to sort objects by row first or by column first")]
-        private LayoutOrderTypeEnum layout = LayoutOrderTypeEnum.ColumnThenRow;
-
-        [Range(0.05f, 5.0f)]
-        [Tooltip("Radius for the sphere or cylinder")]
-        [SerializeField]
-        private float radius = 2f;
-
-        [SerializeField]
-        [Tooltip("Radial range for radial layout")]
-        [Range(5f, 360f)]
-        private float radialRange = 180f;
-
-        [Tooltip("Number of rows per column")]
-        [SerializeField]
-        private int rows = 3;
-
-        [Tooltip("Width of cell per object")]
-        [SerializeField]
-        private float cellWidth = 0.5f;
-
-        [Tooltip("Height of cell per object")]
-        [SerializeField]
-        private float cellHeight = 0.5f;
-
-        private Mesh sphereMesh;
-        private Mesh cylinderMesh;
-        private int columns;
-        private float width;
-        private float height;
-        private float circumference;
-        private Vector2 halfCell;
-        #endregion private fields
-
-        #region public accessors
         /// <summary>
         /// Type of surface to map the collection to.
         /// </summary>
@@ -66,9 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         {
             get { return surfaceType; }
             set { surfaceType = value; }
-
         }
 
+        [Tooltip("Should the objects in the collection be rotated / how should they be rotated")]
+        private OrientationTypeEnum orientType = OrientationTypeEnum.FaceOrigin;
         /// <summary>
         /// Should the objects in the collection face the origin of the collection
         /// </summary>
@@ -76,9 +38,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         {
             get { return orientType; }
             set { orientType = value; }
-
         }
 
+        [Tooltip("Whether to sort objects by row first or by column first")]
+        private LayoutOrderTypeEnum layout = LayoutOrderTypeEnum.ColumnThenRow;
         /// <summary>
         /// Whether to sort objects by row first or by column first
         /// </summary>
@@ -86,9 +49,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         {
             get { return layout; }
             set { layout = value; }
-
         }
 
+        [Range(0.05f, 5.0f)]
+        [Tooltip("Radius for the sphere or cylinder")]
+        [SerializeField]
+        private float radius = 2f;
         /// <summary>
         /// This is the radius of either the Cylinder or Sphere mapping and is ignored when using the plane mapping.
         /// </summary>
@@ -96,9 +62,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         {
             get { return radius; }
             set { radius = value; }
-
         }
 
+        [SerializeField]
+        [Tooltip("Radial range for radial layout")]
+        [Range(5f, 360f)]
+        private float radialRange = 180f;
         /// <summary>
         /// This is the radial range for creating a radial fan layout.
         /// </summary>
@@ -108,6 +77,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             set { radialRange = value; }
         }
 
+        [Tooltip("Number of rows per column")]
+        [SerializeField]
+        private int rows = 3;
         /// <summary>
         /// Number of rows per column, column number is automatically determined
         /// </summary>
@@ -115,9 +87,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         {
             get { return rows; }
             set { rows = value; }
-
         }
 
+        [Tooltip("Width of cell per object")]
+        [SerializeField]
+        private float cellWidth = 0.5f;
         /// <summary>
         /// Width of the cell per object in the collection.
         /// </summary>
@@ -125,9 +99,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         {
             get { return cellWidth; }
             set { cellWidth = value; }
-
         }
 
+        [Tooltip("Height of cell per object")]
+        [SerializeField]
+        private float cellHeight = 0.5f;
         /// <summary>
         /// Height of the cell per object in the collection.
         /// </summary>
@@ -135,39 +111,35 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         {
             get { return cellHeight; }
             set { cellHeight = value; }
-
         }
+
+        private Mesh sphereMesh;
 
         /// <summary>
         /// Reference mesh to use for rendering the sphere layout
         /// </summary>
         public Mesh SphereMesh
         {
-            get { return sphereMesh; }
-            set { sphereMesh = value; }
-
+            get;
+            set;
         }
+        private Mesh cylinderMesh;
 
         /// <summary>
         /// Reference mesh to use for rendering the cylinder layout
         /// </summary>
         public Mesh CylinderMesh
         {
-            get { return cylinderMesh; }
-            set { cylinderMesh = value; }
-        }
-
-        public float Width
-        {
-            get { return width; }
-        }
-
-        public float Height
-        {
-            get { return height; }
+            get;
+            set;
         }
         #endregion public accessors
 
+        #region private fields
+        private int columns;
+        private float circumference;
+        private Vector2 halfCell;
+        #endregion private fields
 
         /// <summary>
         /// Overriding base function function for laying out all the children when UpdateCollection is called.
@@ -261,7 +233,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     }
 
                     // Iterate [x] times
-                    // TODO move center, iterations and padding into a public field
                     for (int i = 0; i < 100; i++)
                     {
                         IterateScatterPacking(NodeList, Radius);
@@ -293,8 +264,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                 {
                     if (cellCounter < NodeList.Count)
                     {
-                        grid[cellCounter].Set(
-                            ((i * CellWidth) - offsetX + halfCell.x) + NodeList[cellCounter].Offset.x, (-(j * CellHeight) + offsetY - halfCell.y) + NodeList[cellCounter].Offset.y, 0.0f);
+                        grid[cellCounter].Set
+                            (
+                            ((i * CellWidth) - offsetX + halfCell.x) + NodeList[cellCounter].Offset.x,
+                            (-(j * CellHeight) + offsetY - halfCell.y) + NodeList[cellCounter].Offset.y,
+                            0.0f
+                            );
                     }
                     cellCounter++;
                 }
@@ -314,23 +289,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             switch (OrientType)
             {
                 case OrientationTypeEnum.FaceOrigin:
-                    node.transform.rotation = Quaternion.LookRotation(node.transform.position - this.transform.position, this.transform.up);
+                    node.transform.rotation = Quaternion.LookRotation(node.transform.position - transform.position, transform.up);
                     break;
 
                 case OrientationTypeEnum.FaceOriginReversed:
-                    node.transform.rotation = Quaternion.LookRotation(this.transform.position - node.transform.position, this.transform.up);
+                    node.transform.rotation = Quaternion.LookRotation(transform.position - node.transform.position, transform.up);
                     break;
 
                 case OrientationTypeEnum.FaceCenterAxis:
-                    centerAxis = Vector3.Project(node.transform.position - this.transform.position, this.transform.up);
-                    pointOnAxisNearestNode = this.transform.position + centerAxis;
-                    node.transform.rotation = Quaternion.LookRotation(node.transform.position - pointOnAxisNearestNode, this.transform.up);
+                    centerAxis = Vector3.Project(node.transform.position - transform.position, transform.up);
+                    pointOnAxisNearestNode = transform.position + centerAxis;
+                    node.transform.rotation = Quaternion.LookRotation(node.transform.position - pointOnAxisNearestNode, transform.up);
                     break;
 
                 case OrientationTypeEnum.FaceCenterAxisReversed:
-                    centerAxis = Vector3.Project(node.transform.position - this.transform.position, this.transform.up);
-                    pointOnAxisNearestNode = this.transform.position + centerAxis;
-                    node.transform.rotation = Quaternion.LookRotation(pointOnAxisNearestNode - node.transform.position, this.transform.up);
+                    centerAxis = Vector3.Project(node.transform.position - transform.position, transform.up);
+                    pointOnAxisNearestNode = transform.position + centerAxis;
+                    node.transform.rotation = Quaternion.LookRotation(pointOnAxisNearestNode - node.transform.position, transform.up);
                     break;
 
                 case OrientationTypeEnum.FaceFoward:

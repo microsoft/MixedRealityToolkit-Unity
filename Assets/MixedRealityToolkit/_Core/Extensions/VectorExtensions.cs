@@ -172,15 +172,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         {
             float circ = 2f * Mathf.PI * radius;
 
-            Vector3 newPos = new Vector3(0f, 0f, radius);
+            source.Set(0.0f, 0.0f, radius);
 
             float xAngle = (source.x / circ) * 360f;
             float yAngle = -(source.y / circ) * 360f;
 
             Quaternion rot = Quaternion.Euler(yAngle, xAngle, 0.0f);
-            newPos = rot * newPos;
+            source = rot * source;
 
-            return newPos;
+            return source;
         }
 
         /// <summary>
@@ -192,14 +192,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         public static Vector3 CylindricalMapping(Vector3 source, float radius)
         {
             float circ  = 2f * Mathf.PI * radius;
-            Vector3 newPos = new Vector3(0f, source.y, radius);
+
+            source.Set(0.0f, source.y, radius);
 
             float xAngle = (source.x / circ) * 360f;
 
             Quaternion rot = Quaternion.Euler(0.0f, xAngle, 0.0f);
-            newPos = rot * newPos;
+            source = rot * source;
 
-            return newPos;
+            return source;
         }
 
         /// <summary>

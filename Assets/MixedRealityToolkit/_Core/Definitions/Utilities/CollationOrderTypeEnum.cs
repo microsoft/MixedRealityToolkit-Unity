@@ -13,19 +13,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// </summary>
         None,
         /// <summary>
-        /// Sort by transform order
+        /// Sort by child order of parent
         /// </summary>
-        Transform,
+        ChildOrder,
         /// <summary>
         /// Sort by transform name
         /// </summary>
         Alphabetical,
         /// <summary>
-        /// Sort by transform order reversed
+        /// Sort by child order of parent, reversed
         /// </summary>
-        TransformReversed,
+        ChildOrderReversed,
         /// <summary>
-        /// Sort by transform name reversed
+        /// Sort by transform name, reversed
         /// </summary>
         AlphabeticalReversed
     }

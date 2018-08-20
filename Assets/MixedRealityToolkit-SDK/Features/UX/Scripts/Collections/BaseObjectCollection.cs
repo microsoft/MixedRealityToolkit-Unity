@@ -11,44 +11,60 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
     public abstract class BaseObjectCollection : MonoBehaviour
     {
         #region public members
+        protected Action<BaseObjectCollection> onCollectionUpdated;
+        
         /// <summary>
         /// Action called when collection is updated
         /// </summary>
-        public Action<BaseObjectCollection> OnCollectionUpdated;
+        public Action<BaseObjectCollection> OnCollectionUpdated
+        {
+            get { return onCollectionUpdated; }
+            set { onCollectionUpdated = value; }
+        }
+
+        protected List<ObjectCollectionNode> nodeList = new List<ObjectCollectionNode>();
 
         /// <summary>
         /// List of objects with generated data on the object.
         /// </summary>
-        [HideInInspector]
-        public List<ObjectCollectionNode> NodeList = new List<ObjectCollectionNode>();
-        #endregion
+        public List<ObjectCollectionNode> NodeList
+        {
+            get { return nodeList; }
+            set { nodeList = value; }
+        }
 
-        #region private fields
-        /// <summary>
-        /// Whether to treat inactive transforms as 'invisible'
-        /// </summary>
-        [Tooltip("Whether to treat inactive transforms as 'invisible'")]
+        [Tooltip("Whether to include space for inactive transforms in the layout")]
         [SerializeField]
         protected bool ignoreInactiveTransforms = true;
 
         /// <summary>
-        /// Type of sorting to use.
+        /// Whether to include space for inactive transforms in the layout
         /// </summary>
-        [Tooltip("Type of sorting to use")]
-        [SerializeField]
-        protected CollationOrderTypeEnum SortType = CollationOrderTypeEnum.None;
-        #endregion
-
-        #region public accessors
         public bool IgnoreInactiveTransforms
         {
             get { return ignoreInactiveTransforms; }
             set { ignoreInactiveTransforms = value; }
         }
 
-        #endregion
+        [Tooltip("Type of sorting to use")]
+        [SerializeField]
+        protected CollationOrderTypeEnum sortType = CollationOrderTypeEnum.None;
+
+        /// <summary>
+        /// Type of sorting to use.
+        /// </summary>
+        public CollationOrderTypeEnum SortType
+        {
+            get { return sortType; }
+            set { sortType = value; }
+        }
+        #endregion public members
 
 
+        /// <summary>
+        /// Rebuilds / updates the collection layout.
+        /// Update collection is called from the editor button on the inspector.
+        /// </summary>
         public virtual void UpdateCollection()
         {
             // Check for empty nodes and remove them
@@ -71,9 +87,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             emptyNodes.Clear();
 
             // Check when children change and adjust
-            for (int i = 0; i < this.transform.childCount; i++)
+            for (int i = 0; i < transform.childCount; i++)
             {
-                Transform child = this.transform.GetChild(i);
+                Transform child = transform.GetChild(i);
 
                 if (!ContainsNode(child) && (child.gameObject.activeSelf || !IgnoreInactiveTransforms))
                 {
@@ -88,9 +104,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             switch (SortType)
             {
                 case CollationOrderTypeEnum.None:
+                default:
                     break;
 
-                case CollationOrderTypeEnum.Transform:
+                case CollationOrderTypeEnum.ChildOrder:
                     NodeList.Sort(delegate (ObjectCollectionNode c1, ObjectCollectionNode c2) { return c1.transform.GetSiblingIndex().CompareTo(c2.transform.GetSiblingIndex()); });
                     break;
 
@@ -103,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     NodeList.Reverse();
                     break;
 
-                case CollationOrderTypeEnum.TransformReversed:
+                case CollationOrderTypeEnum.ChildOrderReversed:
                     NodeList.Sort(delegate (ObjectCollectionNode c1, ObjectCollectionNode c2) { return c1.transform.GetSiblingIndex().CompareTo(c2.transform.GetSiblingIndex()); });
                     NodeList.Reverse();
                     break;
@@ -136,8 +153,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         }
 
         /// <summary>
-        /// Protected Internal function for laying out all children when UpdateCollection is called.
+        /// Implement for laying out all children when UpdateCollection is called.
         /// </summary>
-        protected abstract void LayoutChildren()
+        protected abstract void LayoutChildren();
     }
 }
