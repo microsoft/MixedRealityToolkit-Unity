@@ -38,7 +38,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
             Enabled = true;
         }
 
-        public bool Enabled { get; set; }
+        /// <summary>
+        /// The default interactions for this controller.
+        /// </summary>
+        public virtual MixedRealityInteractionMapping[] DefaultInteractions { get; } = null;
+
+        /// <summary>
+        /// The Default Left Handed interactions for this controller.
+        /// </summary>
+        public virtual MixedRealityInteractionMapping[] DefaultLeftHandedInteractions { get; } = null;
+
+        /// <summary>
+        /// The Default Right Handed interactions for this controller.
+        /// </summary>
+        public virtual MixedRealityInteractionMapping[] DefaultRightHandedInteractions { get; } = null;
 
         /// <summary>
         /// Returns the current Input System if enabled, otherwise null.
@@ -57,6 +70,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         }
 
         private IMixedRealityInputSystem inputSystem;
+
+        #region IMixedRealityController Implementation
+
+        /// <inheritdoc />
+        public bool Enabled { get; set; }
 
         /// <inheritdoc />
         public TrackingState TrackingState { get; protected set; }
@@ -79,13 +97,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
         /// <inheritdoc />
         public MixedRealityInteractionMapping[] Interactions { get; private set; } = null;
 
+        #endregion IMixedRealityController Implementation
+
         /// <summary>
         /// Setups up the configuration based on the Mixed Reality Controller Mapping Profile.
         /// </summary>
         /// <param name="controllerType"></param>
-        public void SetupConfiguration(Type controllerType)
+        public bool SetupConfiguration(Type controllerType)
         {
-
             if (MixedRealityManager.Instance.ActiveProfile.IsControllerMappingEnabled)
             {
                 if (MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.RenderMotionControllers)
@@ -108,9 +127,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                     }
 
                     // Assign any known interaction mappings.
-                    if (!controllerMappings[i].UseCustomInteractionMappings &&
-                        controllerMappings[i].ControllerType.Type == controllerType &&
-                        controllerMappings[i].Handedness == ControllerHandedness)
+                    if (controllerMappings[i].ControllerType.Type == controllerType &&
+                        controllerMappings[i].Handedness == ControllerHandedness &&
+                        controllerMappings[i].Interactions.Length > 0)
                     {
                         AssignControllerMappings(controllerMappings[i].Interactions);
                         break;
@@ -124,17 +143,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                         // We still don't have controller mappings, so this may be a custom controller. 
                         if (Interactions == null || Interactions.Length < 1)
                         {
-                            Debug.LogWarning($"No Controller interaction mappings found for {controllerType} using the {ControllerHandedness} hand");
-                            Enabled = false;
+                            Debug.LogWarning($"No Controller interaction mappings found for {controllerMappings[i].Description}.");
+                            return false;
                         }
                     }
                 }
 
                 if (!profileFound)
                 {
-                    Debug.LogError($"No controller profile found for type {controllerType}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
+                    Debug.LogWarning($"No controller profile found for type {controllerType}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
+                    return false;
                 }
             }
+
+            return true;
         }
 
         /// <summary>

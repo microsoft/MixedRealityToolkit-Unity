@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
 {
-    // TODO - Implement
     public class GenericOpenXRController : BaseController
     {
         /// <summary>
@@ -23,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
         /// <inheritdoc />
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
-            throw new System.NotImplementedException();
+            // TODO - Implement
         }
     }
 }

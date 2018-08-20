@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
@@ -89,26 +88,20 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                 {
                     var pointerProfile = MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions[i];
 
-                    if (pointerProfile.ControllerType == null ||
-                        pointerProfile.ControllerType.Type == null ||
-                        pointerProfile.ControllerType == controllerType.Type)
+                    if ((pointerProfile.ControllerType.Type == null || pointerProfile.ControllerType == controllerType.Type) &&
+                        (pointerProfile.Handedness == Handedness.Any || pointerProfile.Handedness == Handedness.Both || pointerProfile.Handedness == controllingHand))
                     {
-                        if (pointerProfile.Handedness == Handedness.Any ||
-                            pointerProfile.Handedness == Handedness.Both ||
-                            pointerProfile.Handedness == controllingHand)
-                        {
-                            var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
-                            var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-                            pointerObject.transform.SetParent(CameraCache.Main.transform.parent);
+                        var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
+                        var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
+                        pointerObject.transform.SetParent(CameraCache.Main.transform.parent);
 
-                            if (pointer != null)
-                            {
-                                pointers.Add(pointer);
-                            }
-                            else
-                            {
-                                Debug.LogWarning($"Failed to attach {pointerProfile.PointerPrefab.name} to {controllerType.Type.Name}.");
-                            }
+                        if (pointer != null)
+                        {
+                            pointers.Add(pointer);
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"Failed to attach {pointerProfile.PointerPrefab.name} to {controllerType.Type.Name}.");
                         }
                     }
                 }
