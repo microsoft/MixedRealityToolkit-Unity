@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             var labelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 36f;
             EditorGUILayout.LabelField(ActionContent, GUILayout.ExpandWidth(true));
-            EditorGUILayout.LabelField(AxisConstraintContent, list.arraySize > 7 ? GUILayout.Width(112f) : GUILayout.Width(96f));
+            EditorGUILayout.LabelField(AxisConstraintContent, GUILayout.Width(96f));
             EditorGUILayout.LabelField(string.Empty, GUILayout.Width(24f));
             EditorGUIUtility.labelWidth = labelWidth;
             GUILayout.EndHorizontal();
