@@ -138,6 +138,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         /// <summary>
         /// Protected Internal function for laying out all children when UpdateCollection is called.
         /// </summary>
-        protected virtual void LayoutChildren() { }
+        protected abstract void LayoutChildren()
     }
 }
