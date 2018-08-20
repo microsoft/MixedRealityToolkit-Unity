@@ -6,7 +6,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
     /// <summary>
     /// Collection layout type enum
     /// </summary>
-    public enum LayoutType
+    public enum LayoutOrderTypeEnum
     {
         /// <summary>
         /// Sort by column, then by row

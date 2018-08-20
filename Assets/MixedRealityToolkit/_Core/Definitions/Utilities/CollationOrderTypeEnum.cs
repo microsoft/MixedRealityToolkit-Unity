@@ -4,29 +4,29 @@
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
 {
     /// <summary>
-    /// Orientation type enum for collections
+    /// Collation order type used for sorting
     /// </summary>
-    public enum OrientationType
+    public enum CollationOrderTypeEnum
     {
         /// <summary>
-        /// Don't rotate at all
+        /// Don't sort, just display in order received
         /// </summary>
         None,
         /// <summary>
-        /// Rotate towards the origin
+        /// Sort by transform order
         /// </summary>
-        FaceOrigin,
+        Transform,
         /// <summary>
-        /// Rotate towards the origin + 180 degrees
+        /// Sort by transform name
         /// </summary>
-        FaceOriginReversed,
+        Alphabetical,
         /// <summary>
-        /// Zero rotation
+        /// Sort by transform order reversed
         /// </summary>
-        FaceFoward,
+        TransformReversed,
         /// <summary>
-        /// Zero rotation + 180 degrees
+        /// Sort by transform name reversed
         /// </summary>
-        FaceForwardReversed,
+        AlphabeticalReversed
     }
 }

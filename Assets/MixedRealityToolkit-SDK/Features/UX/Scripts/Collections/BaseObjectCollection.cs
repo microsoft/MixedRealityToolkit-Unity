@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         /// </summary>
         [Tooltip("Type of sorting to use")]
         [SerializeField]
-        protected SortType SortType = SortType.None;
+        protected CollationOrderTypeEnum SortType = CollationOrderTypeEnum.None;
         #endregion
 
         #region public accessors
@@ -87,23 +87,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
             switch (SortType)
             {
-                case SortType.None:
+                case CollationOrderTypeEnum.None:
                     break;
 
-                case SortType.Transform:
+                case CollationOrderTypeEnum.Transform:
                     NodeList.Sort(delegate (ObjectCollectionNode c1, ObjectCollectionNode c2) { return c1.transform.GetSiblingIndex().CompareTo(c2.transform.GetSiblingIndex()); });
                     break;
 
-                case SortType.Alphabetical:
+                case CollationOrderTypeEnum.Alphabetical:
                     NodeList.Sort(delegate (ObjectCollectionNode c1, ObjectCollectionNode c2) { return c1.Name.CompareTo(c2.Name); });
                     break;
 
-                case SortType.AlphabeticalReversed:
+                case CollationOrderTypeEnum.AlphabeticalReversed:
                     NodeList.Sort(delegate (ObjectCollectionNode c1, ObjectCollectionNode c2) { return c1.Name.CompareTo(c2.Name); });
                     NodeList.Reverse();
                     break;
 
-                case SortType.TransformReversed:
+                case CollationOrderTypeEnum.TransformReversed:
                     NodeList.Sort(delegate (ObjectCollectionNode c1, ObjectCollectionNode c2) { return c1.transform.GetSiblingIndex().CompareTo(c2.transform.GetSiblingIndex()); });
                     NodeList.Reverse();
                     break;

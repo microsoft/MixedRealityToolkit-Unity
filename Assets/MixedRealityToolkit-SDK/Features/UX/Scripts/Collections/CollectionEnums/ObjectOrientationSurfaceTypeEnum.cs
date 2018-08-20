@@ -6,11 +6,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
     /// <summary>
     /// The type of surface to map the collect to.
     /// </summary>
-    public enum ObjectOrientationSurfaceType
+    public enum ObjectOrientationSurfaceTypeEnum
     {
         Cylinder,
         Plane,
         Sphere,
-        Scatter,
+        Radial,
+        Scatter
     }
 }
