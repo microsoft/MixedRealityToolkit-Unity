@@ -191,13 +191,13 @@ Returns the collection of surfaces identified by the surface finding subsystem.
 ## IMixedRealitySpatialAwarenessMeshHandler
 
 | Toolkit Layer | Namespace |
-| --- | --- | --- |
+| --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem.Handlers |
 
 ### OnMeshAdded()
 
 | Arguument | Data Type |
-| --- | --- | --- |
+| --- | --- |
 | eventData | [MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) |
 
 Called when a new surface mesh has been identified by the spatial awareness system.
@@ -205,7 +205,7 @@ Called when a new surface mesh has been identified by the spatial awareness syst
 ### OnMeshUpdated()
 
 | Arguument | Data Type |
-| --- | --- | --- |
+| --- | --- |
 | eventData | [MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) |
 
 Called when an existing surface mesh has been modified by the spatial awareness system.
@@ -213,7 +213,7 @@ Called when an existing surface mesh has been modified by the spatial awareness 
 ### OnMeshDeleted()
 
 | Arguument | Data Type |
-| --- | --- | --- |
+| --- | --- |
 | eventData | [MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) |
 
 Called when an existing surface mesh has been discarded by the spatial awareness system.
@@ -221,13 +221,13 @@ Called when an existing surface mesh has been discarded by the spatial awareness
 ## IMixedRealitySpatialAwarenessSurfaceFindingHandler
 
 | Toolkit Layer | Namespace |
-| --- | --- | --- |
+| --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem.Handlers |
 
 ### OnSurfaceAdded()
 
 | Arguument | Data Type |
-| --- | --- | --- |
+| --- | --- |
 | eventData | [MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata) |
 
 Called when a new planar surface has been identified by the spatial awareness system.
@@ -235,7 +235,7 @@ Called when a new planar surface has been identified by the spatial awareness sy
 ### OnSurfaceUpdated()
 
 | Arguument | Data Type |
-| --- | --- | --- |
+| --- | --- |
 | eventData | [MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata) |
 
 Called when an existing planar surface has been modified by the spatial awareness system.
@@ -243,7 +243,7 @@ Called when an existing planar surface has been modified by the spatial awarenes
 ### OnSurfaceDeleted()
 
 | Arguument | Data Type |
-| --- | --- | --- |
+| --- | --- |
 | eventData | [MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata) |
 
 Called when an existing planar surface has been discarded by the spatial awareness system.
@@ -253,7 +253,7 @@ Called when an existing planar surface has been discarded by the spatial awarene
 ## MixedRealitySpatialAwarenessSystem
 
 | Toolkit Layer | Namespace |
-| --- | --- | --- |
+| --- | --- |
 | SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
 
 The MixedRealitySpatialAwarenessSystem class provides the default implementation of the spatial awareness system. Implements the [IMixedRealitySpatialAwarenessSystem](#imixedrealityspatialawarenesssystem) interface.
@@ -261,7 +261,7 @@ The MixedRealitySpatialAwarenessSystem class provides the default implementation
 ## MixedRealitySpatialAwarenessMeshHandler
 
 | Toolkit Layer | Namespace |
-| --- | --- | --- |
+| --- | --- |
 | SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
 
 The MixedRealitySpatialAwarenessMeshHandler provides the default implementation of the spatial awareness system. Implements the default implementation of the [IMixedRealitySpatialAwarenessMeshHandler](#imixedrealityspatialawarenessmeshhandler) interface.
@@ -269,7 +269,7 @@ The MixedRealitySpatialAwarenessMeshHandler provides the default implementation 
 ## MixedRealitySpatialAwarenessSurfaceFindingHandler
 
 | Toolkit Layer | Namespace |
-| --- | --- | --- |
+| --- | --- |
 | SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
 
 The MixedRealitySpatialAwarenessSurfaceFindingHandler provides the default implementation of the [IMixedRealitySpatialAwarenessSurfaceFindingHandler](#imixedrealityspatialawarenesssurfacefindinghandler) interface.
@@ -279,7 +279,7 @@ The MixedRealitySpatialAwarenessSurfaceFindingHandler provides the default imple
 ## MixedRealitySpatialAwarenessProfile
 
 | Toolkit Layer | Namespace |
-| --- | --- | --- |
+| --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Definitions.SpatialAwarenessSystem |
 
 The MixedRealitySpatialAwarenessProfile derives from Unity’s ScriptableObject and enables the developer to configure the spatial awareness system.
@@ -431,7 +431,7 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 ## MixedRealitySpatialAwarenessProfileInspector
 
 | Toolkit Layer | Namespace |
-| --- | --- | --- |
+| --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Inspectors.Profiles |
 
 The MixedRealitySpatialAwarenessProfileInspector derives from MixedRealityBaseConfigurationProfileInspector to provide a visual means of modifying the spatial awareness profile using the Unity Inspector.
@@ -441,7 +441,7 @@ Each of the properties defined under [MixedRealitySpatialAwarenessProfile](#mixe
 ## MixedRealitySpatialAwarenessSurfaceTypes
 
 | Toolkit Layer | Namespace |
-| --- | --- | --- |
+| --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Defintitions.SpatialAwareness |
 
 ``` C#
@@ -481,7 +481,7 @@ public enum MixedRealitySpatialAwarenessSurfaceTypes
 ## MixedRealitySpatialAwarenessMeshLevelOfDetail
 
 | Toolkit Layer | Namespace |
-| --- | --- | --- |
+| --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Defintitions.SpatialAwareness |
 
 ``` C#
@@ -512,7 +512,7 @@ public enum MixedRealitySpatialAwarenessMeshLevelOfDetail
 ## MixedRealitySpatialMeshEventData
 
 | Toolkit Layer | Namespace |
-| --- | --- | --- |
+| --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwareness |
 
 The MixedRealitySpatialMeshEventData provides the information required for applications to understand changes that occur in the spatial awareness system’s mesh subsystem. 
@@ -554,7 +554,7 @@ For MeshAdded and MeshUpdated events, this will contain the mesh data. For MeshD
 ## MixedRealitySpatialSurfaceEventData
 
 | Toolkit Layer | Namespace |
-| --- | --- | --- |
+| --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwareness |
 
 The MixedRealitySpatialSurfaceEventData provides the information required for applications to understand changes that occur in the spatial awareness system’s surface finding subsystem. Note: Some events may not leverage all properties within this class, in those instances a neutral value will be set.
@@ -594,7 +594,7 @@ For SurfaceAdded and SurfaceUpdated events, this will contain the mesh data. For
 ## MixedRealitySpatialAwarenessEventType
 
 | Toolkit Layer | Namespace |
-| --- | --- | --- |
+| --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Definitions.SpatialAwareness |
 
 ``` C#
