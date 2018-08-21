@@ -17,7 +17,7 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 ## IMixedRealitySpatialAwarenessSystem
 
 | Toolkit Layer | Namespace |
-| --- | --- | --- |
+| --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem |
 
 The IMixedRealitySpatialAwarenessSystem is the interface that defines the requirements of the spatial awareness system. The interface is divided, logically into multiple sections. As new functionality is added, the appropriate settings section is to be defined.
