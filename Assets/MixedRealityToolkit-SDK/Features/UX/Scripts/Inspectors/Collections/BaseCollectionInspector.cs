@@ -8,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.SDK.UX.Collections;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Inspectors.Collections
 {
     [CustomEditor( typeof(BaseObjectCollection), true )]
-    public class CollectionEditor : Editor
+    public class BaseCollectionInspector : Editor
     {
         public override void OnInspectorGUI()
         {

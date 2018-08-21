@@ -165,35 +165,46 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                 case ObjectOrientationSurfaceTypeEnum.Plane:
                     for (int i = 0; i < NodeList.Count; i++)
                     {
+                        ObjectCollectionNode node = NodeList[i];
                         newPos = nodeGrid[i];
-                        NodeList[i].transform.localPosition = newPos;
-                        UpdateNodeFacing(NodeList[i], orientType, newPos);
+                        node.transform.localPosition = newPos;
+                        UpdateNodeFacing(node);
+                        NodeList[i] = node;
                     }
                     break;
+
                 case ObjectOrientationSurfaceTypeEnum.Cylinder:
                     for (int i = 0; i < NodeList.Count; i++)
                     {
+                        ObjectCollectionNode node = NodeList[i];
                         newPos = VectorExtensions.CylindricalMapping(nodeGrid[i], radius);
-                        NodeList[i].transform.localPosition = newPos;
-                        UpdateNodeFacing(NodeList[i], orientType, newPos);
+                        node.transform.localPosition = newPos;
+                        UpdateNodeFacing(node);
+                        NodeList[i] = node;
                     }
                     break;
+
                 case ObjectOrientationSurfaceTypeEnum.Sphere:
 
                     for (int i = 0; i < NodeList.Count; i++)
                     {
+                        ObjectCollectionNode node = NodeList[i];
                         newPos = VectorExtensions.SphericalMapping(nodeGrid[i], radius);
-                        NodeList[i].transform.localPosition = newPos;
-                        UpdateNodeFacing(NodeList[i], orientType, newPos);
+                        node.transform.localPosition = newPos;
+                        UpdateNodeFacing(node);
+                        NodeList[i] = node;
                     }
                     break;
+
                 case ObjectOrientationSurfaceTypeEnum.Radial:
                     int curColumn = 0;
                     int curRow = 1;
 
                     for (int i = 0; i < NodeList.Count; i++)
                     {
+                        ObjectCollectionNode node = NodeList[i];
                         newPos = VectorExtensions.RadialMapping(nodeGrid[i], radialRange, radius, curRow, rows, curColumn, columns);
+
                         if (curColumn == (columns - 1))
                         {
                             curColumn = 0;
@@ -204,32 +215,36 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                             ++curColumn;
                         }
 
-                        NodeList[i].transform.localPosition = newPos;
-                        UpdateNodeFacing(NodeList[i], orientType, newPos);
+                        node.transform.localPosition = newPos;
+                        UpdateNodeFacing(node);
+                        NodeList[i] = node;
                     }
                     break;
+
                 case ObjectOrientationSurfaceTypeEnum.Scatter:
                     // Get randomized planar mapping
                     // Calculate radius of each node while we're here
                     // Then use the packer function to shift them into place
                     for (int i = 0; i < NodeList.Count; i++)
                     {
+                        ObjectCollectionNode node = NodeList[i];
+
                         newPos = VectorExtensions.ScatterMapping(nodeGrid[i], Radius);
                         Collider nodeCollider = NodeList[i].transform.GetComponentInChildren<Collider>();
                         if (nodeCollider != null)
                         {
                             // Make the radius the largest of the object's dimensions to avoid overlap
                             Bounds bounds = nodeCollider.bounds;
-                            NodeList[i].Radius = Mathf.Max(Mathf.Max(bounds.size.x, bounds.size.y), bounds.size.z) * 0.5f;
+                            node.Radius = Mathf.Max(Mathf.Max(bounds.size.x, bounds.size.y), bounds.size.z) * 0.5f;
                         }
                         else
                         {
                             // Make the radius a default value
-                            // TODO move this into a public field ?
-                            NodeList[i].Radius = 1f;
+                            node.Radius = 1f;
                         }
-                        NodeList[i].transform.localPosition = newPos;
-                        UpdateNodeFacing(NodeList[i], orientType, newPos);
+                        node.transform.localPosition = newPos;
+                        UpdateNodeFacing(node);
+                        NodeList[i] = node;
                     }
 
                     // Iterate [x] times
@@ -282,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         /// <param name="node"></param>
         /// <param name="orientType"></param>
         /// <param name="newPos"></param>
-        private void UpdateNodeFacing(ObjectCollectionNode node, OrientationTypeEnum orientType, Vector3 newPos = default(Vector3))
+        private void UpdateNodeFacing(ObjectCollectionNode node)
         {
             Vector3 centerAxis;
             Vector3 pointOnAxisNearestNode;
@@ -332,23 +347,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             }
         }
 
-        /// <summary>
-        /// Check if a node exists in the NodeList.
-        /// </summary>
-        private bool ContainsNode(Transform node)
-        {
-            for (int i = 0; i < NodeList.Count; i++)
-            {
-                if (NodeList[i] != null)
-                {
-                    if (NodeList[i].transform == node)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
         /// <summary>
         /// Pack randomly spaced nodes so they don't overlap
         /// Usually requires about 25 iterations for decent packing

@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
     {
         #region public members
         protected Action<BaseObjectCollection> onCollectionUpdated;
-        
+
         /// <summary>
         /// Action called when collection is updated
         /// </summary>
@@ -108,20 +108,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     break;
 
                 case CollationOrderTypeEnum.ChildOrder:
-                    NodeList.Sort(delegate (ObjectCollectionNode c1, ObjectCollectionNode c2) { return c1.transform.GetSiblingIndex().CompareTo(c2.transform.GetSiblingIndex()); });
+                    NodeList.Sort((c1, c2) => (c1.transform.GetSiblingIndex().CompareTo(c2.transform.GetSiblingIndex())));
                     break;
 
                 case CollationOrderTypeEnum.Alphabetical:
-                    NodeList.Sort(delegate (ObjectCollectionNode c1, ObjectCollectionNode c2) { return c1.Name.CompareTo(c2.Name); });
+                    NodeList.Sort((c1, c2) => (String.CompareOrdinal(c1.Name, c2.Name)) );
                     break;
 
                 case CollationOrderTypeEnum.AlphabeticalReversed:
-                    NodeList.Sort(delegate (ObjectCollectionNode c1, ObjectCollectionNode c2) { return c1.Name.CompareTo(c2.Name); });
+                    NodeList.Sort((c1, c2) => (String.CompareOrdinal(c1.Name, c2.Name)));
                     NodeList.Reverse();
                     break;
 
                 case CollationOrderTypeEnum.ChildOrderReversed:
-                    NodeList.Sort(delegate (ObjectCollectionNode c1, ObjectCollectionNode c2) { return c1.transform.GetSiblingIndex().CompareTo(c2.transform.GetSiblingIndex()); });
+                    NodeList.Sort((c1, c2) => (c1.transform.GetSiblingIndex().CompareTo(c2.transform.GetSiblingIndex())));
                     NodeList.Reverse();
                     break;
             }
@@ -134,19 +134,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             }
         }
 
-        // Check if a node exists in the NodeList.
-        private bool ContainsNode(Transform node)
+        /// <summary>
+        /// Check if a node exists in the NodeList.
+        /// </summary>
+        protected bool ContainsNode(Transform node)
         {
             for (int i = 0; i < NodeList.Count; i++)
             {
-                if (NodeList[i] != null)
+                if (NodeList[i].transform == node)
                 {
-
-                    if (NodeList[i].transform == node)
-                    {
-                        return true;
-                    }
-
+                    return true;
                 }
             }
             return false;
