@@ -8,6 +8,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,7 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private static readonly GUIContent ControllerMinusButtonContent = new GUIContent("-", "Remove Controller Template");
         private static readonly GUIContent InteractionAddButtonContent = new GUIContent("+ Add a New Interaction Mapping");
         private static readonly GUIContent InteractionMinusButtonContent = new GUIContent("-", "Remove Interaction Mapping");
-        private static readonly GUIContent InteractionContent = new GUIContent("Interaction Mappings");
         private static readonly GUIContent InputDescription = new GUIContent("Description", "The input description");
         private static readonly GUIContent AxisTypeContent = new GUIContent("Axis Type", "The axis type of the button, e.g. Analogue, Digital, etc.");
         private static readonly GUIContent ControllerInputTypeContent = new GUIContent("Input Type", "The primary action of the input as defined by the controller SDK.");
@@ -359,11 +359,27 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                         EditorGUIUtility.labelWidth = previousLabelWidth;
 
-                        controllerInteractionFoldouts[i] = EditorGUILayout.Foldout(controllerInteractionFoldouts[i], InteractionContent, true);
-
-                        if (controllerInteractionFoldouts[i])
+                        if (GUILayout.Button("Edit Controller Actions"))
                         {
-                            RenderInteractionList(interactionsList, useCustomInteractionMappings.boolValue, i);
+                            var controllerType = thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type;
+
+                            if (controllerType == typeof(XboxController))
+                            {
+                                ControllerPopupWindow.Show(SupportedControllerType.XboxController);
+                            }
+                            else if (controllerType == typeof(WindowsMixedRealityController) ||
+                                     controllerType == typeof(WindowsMixedRealityOpenVRMotionController))
+                            {
+                                ControllerPopupWindow.Show(SupportedControllerType.WindowsMixedReality, (Handedness)controllerHandedness.intValue);
+                            }
+                            else if (controllerType == typeof(OculusTouchController))
+                            {
+                                ControllerPopupWindow.Show(SupportedControllerType.OculusTouch, (Handedness)controllerHandedness.intValue);
+                            }
+                            else if (controllerType == typeof(ViveWandController))
+                            {
+                                ControllerPopupWindow.Show(SupportedControllerType.ViveWand, (Handedness)controllerHandedness.intValue);
+                            }
                         }
 
                         GUILayout.Space(24f);
