@@ -44,9 +44,9 @@ Provide an easier to use SDK, to enable rapid prototyping and ease adoption for 
 
 Ensure an extensive framework for advanced integrators, with the ability to swap out core components with their own should they wish to, or simply extend the framework to add new capabilities.
 
-> Learn more about the architecture behind [Windows Mixed Reality - vNext](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/MRTK-Version-Next/MRTK-vNext.md) here.
+> Learn more about the architecture behind [Windows Mixed Reality - vNext](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/MRTK-vNext.md) here.
 
-> Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/MRTK-Version-Next/MRTK-SDK.md) here.
+> Learn more about the approach behind the [Windows Mixed Reality - vNext SDK](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/MRTK-SDK.md) here.
 
 ## Release cadence
 Following the Alpha release (June 2018), releases (beta and official) are planned to be released on a monthly cadence.
