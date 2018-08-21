@@ -112,6 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             #endregion Touch Controller
 
+            #region Vive Want Controller
+
             if (viveWandControllerLeftWhite == null)
             {
                 viveWandControllerLeftWhite = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/ViveWandController_left_white.png", typeof(Texture2D));
@@ -131,6 +133,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             {
                 viveWandControllerRightBlack = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/ViveWandController_right_black.png", typeof(Texture2D));
             }
+
+            #endregion Vive Want Controller
 
             switch (currentControllerType)
             {
