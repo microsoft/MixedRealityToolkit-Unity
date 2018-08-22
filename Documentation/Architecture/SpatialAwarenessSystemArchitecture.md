@@ -22,13 +22,77 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 
 The IMixedRealitySpatialAwarenessSystem is the interface that defines the requirements of the spatial awareness system. The interface is divided, logically into multiple sections. As new functionality is added, the appropriate settings section is to be defined.
 
+``` c#
+namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem
+{
+    public interface IMixedRealitySpatialAwarenessSystem : IMixedRealityEventSystem, IMixedRealityEventSource
+    {
+        bool StartObserverSuspended { get; set; }
+
+        Vector3 ObservationExtents { get; set; }
+        float UpdateInterval { get; set; }
+
+        bool IsObserverRunning { get; }
+
+        void ResumeObserver();
+        void SuspendObserver();
+
+        bool UseMeshSystem { get; set; }
+
+        int MeshPhysicsLayer { get; set; }
+        int MeshPhysicsLayerMask { get; }
+
+        MixedRealitySpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail { get; set; }
+        int MeshTrianglesPerCubicMeter { get; set; }
+
+        bool RecalculateNormals { get; set; }
+
+        bool RenderMeshes { get; set; }
+        Material MeshMaterial { get; set; }
+
+        void RaiseMeshAdded(uint meshId, Mesh meshData, GameObject meshObject = null);
+        void RaiseMeshUpdated(uint meshId, Mesh meshData, GameObject meshObject = null);
+        void RaiseMeshDeleted(uint meshId);
+
+        Mesh[] GetMeshes();
+        GameObject[] GetMeshObjects();
+
+        bool UseSurfaceFindingSystem { get; set; }
+
+        int SurfacePhysicsLayer { get; set; }
+        int SurfacePhysicsLayerMask { get; }
+
+        float SurfaceFindingMinimumArea { get; set; }
+
+        bool RenderFloorSurfaces { get; set; }
+        Material FloorSurfaceMaterial { get; set; }
+
+        bool RenderCeilingSurfaces { get; set; }
+        Material CeilingSurfaceMaterial { get; set; }
+
+        bool RenderWallSurfaces { get; set; }
+        Material WallSurfaceMaterial { get; set; }
+
+        bool RenderPlatformSurfaces { get; set; }
+        Material PlatformSurfaceMaterial { get; set; }
+
+        void RaiseSurfaceAdded(uint surfaceId, Bounds surfaceData, Vector3 normal, GameObject surfaceObject = null);
+        void RaiseSurfaceUpdated(uint surfaceId, Bounds surfaceData, Vector3 normal, GameObject surfaceObject = null);
+        void RaiseSurfaceDeleted(uint surfaceId);
+
+        MixedRealitySpatialAwarenessPlanarSurfaceDescription[] GetSurfaces();
+        GameObject[] GetSurfaceObjects();
+    }
+}
+```
+
 ### General System Controls
 
 The spatial awareness system contains data and methods that configure and control the overall spatial awareness system.
 
 #### StartObserverSuspended
 
-Indicates that the developer intends for the spatial observer to not return data until explicitly resumed. This allows the application to decide precisely when it wishes to begin receiving spatial data notifications. 
+Indicates that the developer intends for the spatial observer to not return data until explicitly resumed. This allows the application to decide precisely when it wishes to begin receiving spatial data notifications.
 
 #### ObservationExtents
 
@@ -44,11 +108,11 @@ Indicates the current running state of the spatial observer.
 
 *This is a read-only property, set by the spatial awareness system.*
 
-#### ResumeObserver()
+#### void ResumeObserver()
 
 Starts / restarts the spatial observer. This will cause spatial observation events (ex: MeshAddedEvent) to resume being sent.
 
-#### SuspendObserver()
+#### void SuspendObserver()
 
 Stops / pauses the spatial observer. This will cause spatial observation events to be suspended until ResumeObserver is called.
 
@@ -90,25 +154,33 @@ Gets or sets the value indicating if the spatial awareness system to generate no
 
 #### RenderMeshes
 
-Gets or sets a value indicating if the mesh subsystem is to automatically display surface meshes within the application.
+Gets or sets a value indicating if the mesh subsystem is to automatically display surface meshes within the application. When enabled, the meshes will be added to the scene and rendered using the configured MeshMaterial.
 
-When enabled, the meshes will be added to the scene and rendered using the configured MeshMaterial.
+Applications that wish to process the Meshes should set this value to false.
 
 #### MeshMaterial
 
 Gets or sets the material to be used when rendering spatial meshes.
 
-#### RaiseMeshAdded()
+#### void RaiseMeshAdded(uint meshId, Vector3 position, Mesh meshData, GameObject meshObject)
 
-The spatial awareness system will call the OnMeshAdded method of the appropriate [IMixedRealitySpatialAwarenessMeshHandler](#imixedrealityspatialawarenesshandler)(s) to alert them of the new mesh.
+The spatial awareness system will call the IMixedRealitySpatialAwarenessMeshHandler.OnMeshAdded method to indicate a new mesh has been added.
 
-#### RaiseMeshUpdated()
+#### void RaiseMeshUpdated(uint meshId, Vector3 position, Mesh meshData, GameObject meshObject)
 
-The spatial awareness system will call the OnMeshUpdated method of the appropriate [IMixedRealitySpatialAwarenessMeshHandler](#imixedrealityspatialawarenesshandler)(s) to alert them of the mesh changes.
+The spatial awareness system will call the IMixedRealitySpatialAwarenessMeshHandler.OnMeshAdded method to indicate an existing mesh has changed.
 
-#### RaiseMeshDeleted()
+#### void RaiseMeshDeleted(uint meshId)
 
-The spatial awareness system will call the OnMeshUpdated method of the appropriate [IMixedRealitySpatialAwarenessMeshHandler](#imixedrealityspatialawarenesshandler)(s) to alert them of the mesh removal.
+The spatial awareness system will call the IMixedRealitySpatialAwarenessMeshHandler.OnMeshAdded method to indicate an existing mesh has been removed.
+
+#### [MixedRealitySpatialAwarenessMeshDescription](#mixedrealityspatialawarenessmeshdescription)[] GetMeshes()
+
+Returns the collection of Meshes being managed by the spatial awareness mesh subsystem.
+
+#### GameObject[] GetMeshes()
+
+Returns the collection of GameObjects being managed by the spatial awareness mesh subsystem.
 
 ### Surface Finding Controls
 
@@ -134,9 +206,7 @@ Gets or sets the minimum surface area, in square meters, that must be satisfied 
 
 #### RenderFloorSurfaces
 
-Gets or sets a value indicating if the surface subsystem is to automatically display floor surfaces within the application.
-
-When enabled, the surfaces will be added to the scene and rendered using the configured material.
+Gets or sets a value indicating if the surface subsystem is to automatically display floor surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured FloorSurfaceMaterial.
 
 #### FloorSurfaceMaterial
 
@@ -144,9 +214,7 @@ Gets or sets the material to be used when rendering planar surface(s) identified
 
 #### RenderCeilingSurfaces
 
-Gets or sets a value indicating if the surface subsystem is to automatically display ceiling surfaces within the application.
-
-When enabled, the surfaces will be added to the scene and rendered using the configured material.
+Gets or sets a value indicating if the surface subsystem is to automatically display ceiling surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured CeilingSurfaceMaterial.
 
 #### CeilingSurfaceMaterial
 
@@ -154,9 +222,7 @@ Gets or sets the material to be used when rendering planar surface(s) identified
 
 #### RenderWallSurfaces
 
-Gets or sets a value indicating if the surface subsystem is to automatically display wall surfaces within the application.
-
-When enabled, the surfaces will be added to the scene and rendered using the configured material.
+Gets or sets a value indicating if the surface subsystem is to automatically display wall surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured WallSurfaceMaterial.
 
 #### WallSurfaceMaterial
 
@@ -164,29 +230,31 @@ Gets or sets the material to be used when rendering planar surface(s) identified
 
 #### RenderPlatformSurfaces
 
-Gets or sets a value indicating if the surface subsystem is to automatically display raised horizontal platform surfaces within the application.
-
-When enabled, the surfaces will be added to the scene and rendered using the configured material.
+Gets or sets a value indicating if the surface subsystem is to automatically display raised horizontal platform surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured PlatformSurfaceMaterial.
 
 #### PlatformSurfaceMaterial
 
 Gets or sets the material to be used when rendering planar surface(s) identified as a raised horizontal platform.
 
-#### RaiseSurfaceAdded()
+#### void RaiseSurfaceAdded(uint surfaceId, Vector3 position, Bounds surfaceData, Vector3 normal, GameObject surfaceObject)
 
-The spatial awareness system will call the OnSurfaceAdded event of the appropriate [IMixedRealitySpatialAwarenessSurfaceFindingHandler](#imixedrealityspatialawarenesssurfacefindinghandler)(s) to alert them of the new planar surface.
+The spatial awareness system will call the IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceAdded method to indicate a new planar surface has been added.
 
-#### RaiseSurfaceUpdated()
+#### void RaiseSurfaceUpdated(uint surfaceId, Vector3 position, Bounds surfaceData, Vector3 normal, GameObject surfaceObject)
 
-The spatial awareness system will call the OnSurfaceUpdated event of the appropriate [IMixedRealitySpatialAwarenessSurfaceFindingHandler](#imixedrealityspatialawarenesssurfacefindinghandler)(s) to alert them of the planar surface changes.
+The spatial awareness system will call the IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfacefsUpdated method to indicate an existing planar surface has changed.
 
-#### RaiseSurfaceDeleted()
+#### void RaiseSurfaceDeleted(uint surfaceId)
 
-The spatial awareness system will call the OnSurfaceUpdated event of the appropriate [IMixedRealitySpatialAwarenessSurfaceFindingHandler](#imixedrealityspatialawarenesssurfacefindinghandler)(s) to alert them of the planar surface removal.
+The spatial awareness system will call the IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceDeleted method to indicate an existing planar surface has been removed.
 
-#### GetSurfaces()
+#### [MixedRealitySpatialAwarenessPlanarSurfaceDescription](#mixedrealityspatialawarenessplanarsurfacedescription)[] GetSurfaces()
 
-Returns the collection of surfaces identified by the surface finding subsystem.
+Returns the collection of surface descriptions being tracked by the surface finding subsystem.
+
+#### GameObject[] GetSurfaceObjects()
+
+Returns the collection of GameObjects managed by the surface finding subsystem.
 
 ## IMixedRealitySpatialAwarenessMeshHandler
 
@@ -194,27 +262,15 @@ Returns the collection of surfaces identified by the surface finding subsystem.
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem.Handlers |
 
-### OnMeshAdded()
-
-| Arguument | Data Type |
-| --- | --- |
-| eventData | [MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) |
+### void OnMeshAdded([MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) eventData)
 
 Called when a new surface mesh has been identified by the spatial awareness system.
 
-### OnMeshUpdated()
-
-| Arguument | Data Type |
-| --- | --- |
-| eventData | [MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) |
+### void OnMeshUpdated([MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) eventData)
 
 Called when an existing surface mesh has been modified by the spatial awareness system.
 
-### OnMeshDeleted()
-
-| Arguument | Data Type |
-| --- | --- |
-| eventData | [MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) |
+### OnMeshDeleted([MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) eventData)
 
 Called when an existing surface mesh has been discarded by the spatial awareness system.
 
@@ -224,27 +280,15 @@ Called when an existing surface mesh has been discarded by the spatial awareness
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem.Handlers |
 
-### OnSurfaceAdded()
-
-| Arguument | Data Type |
-| --- | --- |
-| eventData | [MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata) |
+### OnSurfaceAdded([MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata))
 
 Called when a new planar surface has been identified by the spatial awareness system.
 
-### OnSurfaceUpdated()
-
-| Arguument | Data Type |
-| --- | --- |
-| eventData | [MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata) |
+### OnSurfaceUpdated([MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata))
 
 Called when an existing planar surface has been modified by the spatial awareness system.
 
-### OnSurfaceDeleted()
-
-| Arguument | Data Type |
-| --- | --- |
-| eventData | [MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata) |
+### OnSurfaceDeleted([MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata))
 
 Called when an existing planar surface has been discarded by the spatial awareness system.
 
@@ -273,6 +317,86 @@ The MixedRealitySpatialAwarenessMeshHandler provides the default implementation 
 | SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
 
 The MixedRealitySpatialAwarenessSurfaceFindingHandler provides the default implementation of the [IMixedRealitySpatialAwarenessSurfaceFindingHandler](#imixedrealityspatialawarenesssurfacefindinghandler) interface.
+
+## MixedRealitySpatialAwarenessMeshDescription
+
+| Toolkit Layer | Namespace |
+| --- | --- |
+| Core | Microsoft.MixedReality.Toolkit.Internal.Definitions.SpatialAwarenessSystem |
+
+The MixedRealitySpatialAwarenessMeshDescription describes the data required for an application to understand how to construct and place a mesh in the environment.
+
+``` C#
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.SpatialAwarenessSystem
+{
+    public class MixedRealitySpatialAwarenessMeshDescription
+    {
+        public Vector3 Position
+        { get; private set; }
+
+        public Mesh Mesh
+        { get; private set; }
+
+        public MixedRealitySpatialAwarenessMeshDescription(Vector3 position, Mesh mesh)
+        {
+            Position = position;
+            Mesh = mesh;
+        }
+    }
+}
+```
+
+### Position
+
+The position, in the environment, at which the spatial mesh should be placed.
+
+### Mesh
+
+The Unity Mesh object containing the mesh data.
+
+## MixedRealitySpatialAwarenessPlanarSurfaceDescription
+
+| Toolkit Layer | Namespace |
+| --- | --- |
+| Core | Microsoft.MixedReality.Toolkit.Internal.Definitions.SpatialAwarenessSystem |
+
+The MixedRealitySpatialAwarenessPlanarSurfaceDescription describes the data required for an application to understand how to construct and place a planar surface.
+
+``` C#
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.SpatialAwarenessSystem
+{
+    public class MixedRealitySpatialAwarenessPlanarSurfaceDescription
+    {
+        public Vector3 Position
+        { get; private set;}
+
+        public Bounds BoundingBox
+        { get; private set; }
+
+        public Vector3 Normal
+        { get; private set; }
+
+        public MixedRealitySpatialAwarenessPlanarSurfaceDescription(Vector3 position, Bounds boundingBox, Vector3 normal)
+        {
+            Position = position;
+            BoundingBox = boundingBox;
+            Normal = normal;
+        }
+    }
+}
+```
+
+### Position
+
+The position, in the environment, at which the planar surface should be placed.
+
+### BoundingBox
+
+The, axis aligned, bounding box that contains the surface being described.
+
+### Normal
+
+The normal of the described surface.
 
 # System Profile Management Classes and Types
 
@@ -509,15 +633,38 @@ public enum MixedRealitySpatialAwarenessMeshLevelOfDetail
 
 # Event Data Classes and Types
 
-## MixedRealitySpatialMeshEventData
+## MixedRealitySpatialAwarenessBaseEventData
 
 | Toolkit Layer | Namespace |
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwareness |
 
-The MixedRealitySpatialMeshEventData provides the information required for applications to understand changes that occur in the spatial awareness system’s mesh subsystem. 
+The MixedRealitySpatialAwarenessBaseEventData provides the data shared by all of the spatial awareness event types.
 
-*Some events may not leverage all properties within this class, in those instances a neutral value will be set.*
+``` C#
+namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwarenessSystem
+{
+    public class MixedRealitySpatialAwarenessBaseEventData : GenericBaseEventData
+    {
+        public DateTime EventTime { get; private set; }
+        public MixedRealitySpatialAwarenessEventType EventType { get; private set; }
+        public GameObject GameObject { get; private set; }
+
+        protected MixedRealitySpatialAwarenessBaseEventData(EventSystem eventSystem) : base(eventSystem) { }
+
+        protected void Initialize(
+            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
+            MixedRealitySpatialAwarenessEventType eventType,
+            GameObject gameObject)
+        {
+            base.BaseInitialize(spatialAwarenessSystem);
+            EventType = eventType;
+            EventTime = DateTime.Now;
+            GameObject = gameObject;
+        }
+    }
+}
+```
 
 ### EventTime
 
@@ -534,6 +681,51 @@ The time at which the event occurred.
 | [MixedRealitySpatialAwarenessEventType](#mixedrealityspatialawarenesseventtype) |
 
 The type of event that has occurred.
+
+### GameObject
+
+| Type |
+| --- |
+| [MixedRealitySpatialAwarenessEventType](#mixedrealityspatialawarenesseventtype) |
+
+Unity GameObject, managed by the spatial awareness system, representing the data in this event.
+
+## MixedRealitySpatialAwarenessMeshEventData
+
+| Toolkit Layer | Namespace |
+| --- | --- |
+| Core | Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwareness |
+
+The MixedRealitySpatialAwarenessMeshEventData derives from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityspatialawarenessbaseeventdata) and adds the information required for applications to understand changes that occur in the spatial awareness system’s mesh subsystem.
+
+*Some events may not leverage all properties within this class, in those instances a neutral value will be set.*
+
+``` C#
+namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwarenessSystem
+{
+    public class MixedRealitySpatialAwarenessMeshEventData : MixedRealitySpatialAwarenessBaseEventData
+    {
+        public uint MeshId { get; private set; }
+        public Mesh MeshData { get; private set; }
+
+        public MixedRealitySpatialAwarenessMeshEventData(EventSystem eventSystem) : base(eventSystem) { }
+
+        public void Intialize(
+            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
+            MixedRealitySpatialAwarenessEventType eventType,
+            uint meshId,
+            Mesh meshData,
+            GameObject meshObject)
+        {
+            base.Initialize(spatialAwarenessSystem, eventType, meshObject);
+        {
+            base.Initialize(spatialAwarenessSystem, eventType);
+            MeshId = meshId;
+            MeshData = meshData;
+        }
+    }
+}
+```
 
 ### MeshId
 
@@ -557,23 +749,7 @@ For MeshAdded and MeshUpdated events, this will contain the mesh data. For MeshD
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwareness |
 
-The MixedRealitySpatialSurfaceEventData provides the information required for applications to understand changes that occur in the spatial awareness system’s surface finding subsystem. Note: Some events may not leverage all properties within this class, in those instances a neutral value will be set.
-
-### EventTime
-
-| Type |
-| --- |
-| DateTime |
-
-The time at which the event occurred. The value will be in the device's configured time zone.
-
-### EventType
-
-| Type |
-| --- |
-| [MixedRealitySpatialAwarenessEventType](#mixedrealityspatialawarenesseventtype) |
-
-The type of event that has occurred. The value will be Added, Updated or Deleted.
+The MixedRealitySpatialSurfaceEventData derives from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityspatialawarenessbaseeventdata) and adds the information required for applications to understand changes that occur in the spatial awareness system’s surface finding subsystem. Note: Some events may not leverage all properties within this class, in those instances a neutral value will be set.
 
 ### SurfaceId
 
