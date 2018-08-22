@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices
                 {
                     var pointerProfile = MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions[i];
 
-                    if ((pointerProfile.ControllerType.Type == null || pointerProfile.ControllerType == controllerType.Type) &&
+                    if ((pointerProfile.ControllerType.Type == null || pointerProfile.ControllerType.Type == controllerType.Type) &&
                         (pointerProfile.Handedness == Handedness.Any || pointerProfile.Handedness == Handedness.Both || pointerProfile.Handedness == controllingHand))
                     {
                         var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
