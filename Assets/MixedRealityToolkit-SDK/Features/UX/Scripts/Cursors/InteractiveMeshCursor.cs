@@ -67,12 +67,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             base.OnCursorStateChange(state);
 
             // the cursor state has changed, reset the animation timer
-            if (hasHand != IsHandDetected || isDown != IsPointerDown || hasHover != (TargetedObject != null))
+            if (hasHand != IsSourceDetected || isDown != IsPointerDown || hasHover != (TargetedObject != null))
             {
                 timer = 0;
             }
 
-            hasHand = IsHandDetected;
+            hasHand = IsSourceDetected;
             isDown = IsPointerDown;
             hasHover = TargetedObject != null;
 
