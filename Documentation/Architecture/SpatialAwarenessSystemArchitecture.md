@@ -262,6 +262,17 @@ Returns the collection of GameObjects managed by the surface finding subsystem.
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem.Handlers |
 
+``` C#
+namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem.Handlers
+{
+    public interface IMixedRealitySpatialAwarenessMeshHandler : IEventSystemHandler
+    {
+        void OnMeshAdded(MixedRealitySpatialAwarenessMeshEventData eventData);
+        void OnMeshUpdated(MixedRealitySpatialAwarenessMeshEventData eventData);
+        void OnMeshDeleted(MixedRealitySpatialAwarenessMeshEventData eventData);
+    }
+}```
+
 ### void OnMeshAdded([MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) eventData)
 
 Called when a new surface mesh has been identified by the spatial awareness system.
@@ -279,6 +290,18 @@ Called when an existing surface mesh has been discarded by the spatial awareness
 | Toolkit Layer | Namespace |
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem.Handlers |
+
+``` C#
+namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem.Handlers
+{
+    public interface IMixedRealitySpatialAwarenessMeshSurfaceFindingHandler : IEventSystemHandler
+    {
+        void OnSurfaceAdded(MixedRealitySpatialAwarenessSurfaceFindingEventData eventData);
+        void OnSurfaceUpdated(MixedRealitySpatialAwarenessSurfaceFindingEventData eventData);
+        void OnSurfaceDeleted(MixedRealitySpatialAwarenessSurfaceFindingEventData eventData);
+    }
+}
+```
 
 ### OnSurfaceAdded([MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata))
 
@@ -648,6 +671,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwarenessSys
     {
         public DateTime EventTime { get; private set; }
         public MixedRealitySpatialAwarenessEventType EventType { get; private set; }
+        public Vector3 Position { get; private set; }
         public GameObject GameObject { get; private set; }
 
         protected MixedRealitySpatialAwarenessBaseEventData(EventSystem eventSystem) : base(eventSystem) { }
@@ -655,11 +679,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwarenessSys
         protected void Initialize(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             MixedRealitySpatialAwarenessEventType eventType,
+            Vector3 position,
             GameObject gameObject)
         {
             base.BaseInitialize(spatialAwarenessSystem);
-            EventType = eventType;
             EventTime = DateTime.Now;
+            EventType = eventType;
+            Position = position;
             GameObject = gameObject;
         }
     }
@@ -681,6 +707,10 @@ The time at which the event occurred.
 | [MixedRealitySpatialAwarenessEventType](#mixedrealityspatialawarenesseventtype) |
 
 The type of event that has occurred.
+
+### Position
+
+The position, in the environment, at which the data should be placed.
 
 ### GameObject
 
@@ -713,13 +743,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwarenessSys
         public void Intialize(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             MixedRealitySpatialAwarenessEventType eventType,
-            uint meshId,
+            Vector3 position,
             Mesh meshData,
             GameObject meshObject)
         {
-            base.Initialize(spatialAwarenessSystem, eventType, meshObject);
-        {
-            base.Initialize(spatialAwarenessSystem, eventType);
+            base.Initialize(spatialAwarenessSystem, eventType, position, meshObject);
             MeshId = meshId;
             MeshData = meshData;
         }
@@ -751,6 +779,40 @@ For MeshAdded and MeshUpdated events, this will contain the mesh data. For MeshD
 
 The MixedRealitySpatialSurfaceEventData derives from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityspatialawarenessbaseeventdata) and adds the information required for applications to understand changes that occur in the spatial awareness system’s surface finding subsystem. Note: Some events may not leverage all properties within this class, in those instances a neutral value will be set.
 
+``` C#
+namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwarenessSystem
+{
+
+    public class MixedRealitySpatialAwarenessSurfaceFindingEventData : MixedRealitySpatialAwarenessBaseEventData
+    {
+        public uint SurfaceId { get; private set; }
+        public Bounds BoundingBox { get; private set; }
+        public Vector3 Normal { get; private set; }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="eventSystem"></param>
+        public MixedRealitySpatialAwarenessSurfaceFindingEventData(EventSystem eventSystem) : base(eventSystem) { }
+
+        public void Intialize(
+            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
+            MixedRealitySpatialAwarenessEventType eventType,
+            uint surfaceId,
+            Vector3 position,
+            Bounds boundingBox,
+            Vector3 normal,
+            GameObject surfaceObject)
+        {
+            base.Initialize(spatialAwarenessSystem, eventType, position, surfaceObject);
+            SurfaceId = surfaceId;
+            BoundingBox = boundingBox;
+            Normal = normal;
+        }
+    }
+}
+```
+
 ### SurfaceId
 
 | Type |
@@ -759,13 +821,21 @@ The MixedRealitySpatialSurfaceEventData derives from [MixedRealitySpatialAwarene
 
 An identifier assigned to a specific planar surface in the spatial awareness system. 
 
-### SurfaceData
+### BoudndingBox
 
 | Type |
 | --- |
 | Bounds |
 
-For SurfaceAdded and SurfaceUpdated events, this will contain the mesh data. For SurfaceDeleted, the value will be null.
+For SurfaceAdded and SurfaceUpdated events, this will contain the axis aligned bounding box for the surface. For SurfaceDeleted, the value will be null.
+
+### Normal
+
+| Type |
+| --- |
+| Vector3 |
+
+The surface normal.
 
 ## MixedRealitySpatialAwarenessEventType
 
