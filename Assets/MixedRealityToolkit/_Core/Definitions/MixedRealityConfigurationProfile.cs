@@ -5,10 +5,12 @@ using Microsoft.MixedReality.Toolkit.Internal.Attributes;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
@@ -198,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         public bool IsBoundarySystemEnabled
         {
             get { return boundarySystemType != null && boundarySystemType.Type != null && enableBoundarySystem; }
-            private set { enableInputSystem = value; }
+            private set { enableBoundarySystem = value; }
         }
 
         [SerializeField]
@@ -232,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         private MixedRealityBoundaryVisualizationProfile boundaryVisualizationProfile;
 
         /// <summary>
-        /// Active profile for controller mapping configuration
+        /// Active profile for boundary visualization configuration
         /// </summary>
         public MixedRealityBoundaryVisualizationProfile BoundaryVisualizationProfile
         {
@@ -278,6 +280,46 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get { return teleportDuration; }
             set { teleportDuration = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable the Spatial Awareness System on Startup")]
+        private bool enableSpatialAwarenessSystem = false;
+
+        /// <summary>
+        /// Enable and configure the spatial awareness system.
+        /// </summary>
+        public bool IsSpatialAwarenessSystemEnabled
+        {
+            get { return spatialAwarenessSystemType != null && spatialAwarenessSystemType.Type != null && enableSpatialAwarenessSystem; }
+            private set { enableSpatialAwarenessSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Spatial Awareness System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealitySpatialAwarenessSystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType spatialAwarenessSystemType;
+
+        /// <summary>
+        /// Boundary System Script File to instantiate at runtime.
+        /// </summary>
+        public SystemType SpatialAwarenessSystemSystemType
+        {
+            get { return spatialAwarenessSystemType; }
+            private set { spatialAwarenessSystemType = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Profile for controlling spatial awareness settings.")]
+        private MixedRealitySpatialAwarenessProfile spatialAwarenessProfile;
+
+        /// <summary>
+        /// Active profile for the spatial awareness system
+        /// </summary>
+        public MixedRealitySpatialAwarenessProfile SpatialAwarenessProfile
+        {
+            get { return spatialAwarenessProfile; }
+            private set { spatialAwarenessProfile = value; }
         }
 
         #endregion Mixed Reality Manager configurable properties

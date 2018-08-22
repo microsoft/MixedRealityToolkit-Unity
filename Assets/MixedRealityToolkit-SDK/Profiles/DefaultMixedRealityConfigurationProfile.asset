@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityConfigurationProfile
   m_EditorClassIdentifier: 
   initialManagerTypes:
-  - reference: Microsoft.MixedReality.Toolkit.SDK.Input.MixedRealityInputManager,
-      Microsoft.MixedReality.Toolkit.SDK
   - reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,
+      Microsoft.MixedReality.Toolkit.SDK
+  - reference: Microsoft.MixedReality.Toolkit.SDK.Input.MixedRealityInputManager,
       Microsoft.MixedReality.Toolkit.SDK
   targetExperienceScale: 3
   enableCameraProfile: 1
@@ -44,3 +44,8 @@ MonoBehaviour:
     reference: Microsoft.MixedReality.Toolkit.SDK.Teleportation.MixedRealityTeleportManager,
       Microsoft.MixedReality.Toolkit.SDK
   teleportDuration: 0.25
+  enableSpatialAwarenessSystem: 1
+  spatialAwarenessSystemType:
+    reference: MixedRealitySpatialAwarenessSystem, Microsoft.MixedReality.Toolkit.SDK
+  spatialAwarenessProfile: {fileID: 11400000, guid: 181cf45975f792744bca61c7d9de23a1,
+    type: 2}
