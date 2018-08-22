@@ -271,7 +271,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSys
         void OnMeshUpdated(MixedRealitySpatialAwarenessMeshEventData eventData);
         void OnMeshDeleted(MixedRealitySpatialAwarenessMeshEventData eventData);
     }
-}```
+}
+```
 
 ### void OnMeshAdded([MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) eventData)
 
