@@ -848,16 +848,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             for (var i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
                 // Special unregistration for Gaze
-                if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
+                if (gazeProviderPointingData != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                 {
-                    Debug.Log("UnRegistering focus pointer");
-                    Debug.Assert(gazeProviderPointingData != null);
-
                     // If the source lost is the gaze input source, then reset it.
-                    if (eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
+                    if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
                     {
                         gazeProviderPointingData.ResetFocusedObjects();
                         gazeProviderPointingData = null;
+                    }
+                    // Otherwise, don't unregister the gaze pointer, since the gaze input source is still active.
+                    else
+                    {
+                        continue;
                     }
                 }
 
