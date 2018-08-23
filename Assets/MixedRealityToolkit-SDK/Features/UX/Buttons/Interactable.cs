@@ -1,4 +1,10 @@
-﻿using System;
+﻿using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -9,16 +15,19 @@ namespace HoloToolkit.Unity
 {
     [System.Serializable]
 
-    public class Interactable : MonoBehaviour// TEMP , IInputClickHandler, IFocusable, IInputHandler
+    public class Interactable : MonoBehaviour, IMixedRealityInputHandler, IMixedRealityFocusHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
     {
 
         // TODO: Has bug where the disabled state is getting set for all buttons!!!!!!!!!!!!
+        private static IMixedRealityInputSystem inputSystem = null;
+        protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
         public bool Enabled = true;
-        //public InteractableStates State;
         public States States;
         public InteractableStates StateManager;
-        public UnityEngine.Object ButtonPressFilter;// TEMP = InteractionSourcePressInfo.Select;
+        public MixedRealityInputAction InputAction;
+        [HideInInspector]
+        public int InputActionId;
         public bool IsGlobal = false;
         public int Dimensions = 1;
         public string VoiceCommand = "";
@@ -33,8 +42,24 @@ namespace HoloToolkit.Unity
         public bool HasPress { get; private set; }
         public bool IsDisabled { get; private set; }
 
+        public bool FocusEnabled
+        {
+            get
+            {
+                return !IsGlobal;
+            }
+
+            set
+            {
+                IsGlobal = !value;
+            }
+        }
+
+        public List<IMixedRealityPointer> Focusers => pointers;
+
         private State lastState;
         private bool wasDisabled = false;
+        private List<IMixedRealityPointer> pointers = new List<IMixedRealityPointer>();
 
         // these should get simplified and moved
         // create a ScriptableObject for managing states!!!!
@@ -48,7 +73,7 @@ namespace HoloToolkit.Unity
 
             //InteractableStates states = new InteractableStates(InteractableStates.Default);
             //return states.GetStates();
-
+            
             return new State[0];
         }
 
@@ -58,6 +83,16 @@ namespace HoloToolkit.Unity
             SetupEvents();
             SetupThemes();
             SetupStates();
+        }
+
+        private void OnEnable()
+        {
+            InputSystem.Register(gameObject);
+        }
+
+        private void OnDisable()
+        {
+            InputSystem.Unregister(gameObject);
         }
 
         protected virtual void SetupStates()
@@ -138,14 +173,77 @@ namespace HoloToolkit.Unity
             UpdateState();
         }
 
-        public virtual void OnFocusEnter()
+        private void AddPointer(IMixedRealityPointer pointer)
         {
-            SetFocus(true);
+            if (!pointers.Contains(pointer))
+            {
+                pointers.Add(pointer);
+            }
         }
 
-        public virtual void OnFocusExit()
+        private void RemovePointer(IMixedRealityPointer pointer)
         {
-            SetFocus(false);
+            pointers.Remove(pointer);
+        }
+
+        public void OnFocusEnter(FocusEventData eventData)
+        {
+            AddPointer(eventData.Pointer);
+            //print("Enter: " + pointers.Count);
+            SetFocus(pointers.Count > 0);
+        }
+
+        public void OnFocusExit(FocusEventData eventData)
+        {
+            RemovePointer(eventData.Pointer);
+            //print("Exit: " + pointers.Count);
+            SetFocus(pointers.Count > 0);
+        }
+
+        public void OnBeforeFocusChange(FocusEventData eventData)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void OnFocusChanged(FocusEventData eventData)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void OnInputUp(InputEventData eventData)
+        {
+            print("Up: " + pointers.Count);
+            if (ShouldListen(eventData.MixedRealityInputAction))
+            {
+                SetPress(false);
+            }
+        }
+
+        public void OnInputDown(InputEventData eventData)
+        {
+            print("Down: " + pointers.Count);
+            if(ShouldListen(eventData.MixedRealityInputAction))
+            {
+                SetPress(true);
+            }
+        }
+
+        public void OnInputPressed(InputEventData<float> eventData)
+        {
+            if (StateManager != null)
+            {
+                State[] states = StateManager.GetStates();
+                if (StateManager.CurrentState() != StateManager.GetState(InteractableStates.InteractableStateEnum.Disabled) && ShouldListen(eventData.MixedRealityInputAction))
+                {
+                    StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
+                    OnClick.Invoke();
+                }
+            }
+        }
+
+        public void OnPositionInputChanged(InputEventData<Vector2> eventData)
+        {
+            //throw new NotImplementedException();
         }
 
         public virtual void OnInputClicked(UnityEngine.Object eventData)// TEMP
@@ -161,14 +259,9 @@ namespace HoloToolkit.Unity
             }
         }
 
-        public virtual void OnInputDown(UnityEngine.Object eventData)// TEMP
+        protected virtual bool ShouldListen(MixedRealityInputAction action)
         {
-            SetPress(true);
-        }
-
-        public virtual void OnInputUp(UnityEngine.Object eventData)// TEMP
-        {
-            SetPress(false);
+            return action == InputAction;
         }
 
         protected virtual void UpdateState()
@@ -208,5 +301,12 @@ namespace HoloToolkit.Unity
             lastState = StateManager.CurrentState();
         }
 
+        public void OnSpeechKeywordRecognized(SpeechEventData eventData)
+        {
+            if (eventData.RecognizedText == VoiceCommand && (!RequiresGaze || HasFocus) && Enabled)
+            {
+                //OnInputClicked(null); 
+            }
+        }
     }
 }

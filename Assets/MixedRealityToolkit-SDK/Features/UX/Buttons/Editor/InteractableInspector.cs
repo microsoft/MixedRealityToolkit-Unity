@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +28,8 @@ namespace HoloToolkit.Unity
         protected Type[] themeTypes;
         protected string[] shaderOptions;
 
+        protected string[] actionOptions;
+
         protected static bool ProfilesSetup = false;
 
         protected virtual void OnEnable()
@@ -39,9 +44,11 @@ namespace HoloToolkit.Unity
             SetupEventOptions();
             SetupThemeOptions();
 
+            actionOptions = GetInputActions();
+
             enabled = true;
         }
-
+        
         public virtual void RenderCustomInspector()
         {
             // TODO: extend the preference array to handle multiple themes open and scroll values!!!
@@ -59,6 +66,8 @@ namespace HoloToolkit.Unity
             // TODO: events should target the state logic they support.
 
             // FIX: when deleting a theme property, the value resets or the item that's deleted is wrong
+
+            //base.DrawDefaultInspector();
 
             serializedObject.Update();
 
@@ -111,13 +120,20 @@ namespace HoloToolkit.Unity
                 serializedObject.ApplyModifiedProperties();
                 return;
             }
-
+            
             //standard Interactable Object UI
             SerializedProperty enabled = serializedObject.FindProperty("Enabled");
             enabled.boolValue = EditorGUILayout.Toggle(new GUIContent("Enabled", "Is this Interactable Enabled?"), enabled.boolValue);
 
-            SerializedProperty selected = serializedObject.FindProperty("ButtonPressFilter");
-            selected.enumValueIndex = 0;// TEMP (int)(InteractionSourcePressInfo)EditorGUILayout.EnumPopup(new GUIContent("Interact Filter", "Input source for this Interactable, Default: Select"), (InteractionSourcePressInfo)selected.enumValueIndex);
+            SerializedProperty actionId = serializedObject.FindProperty("InputActionId");
+            
+            int newActionId = EditorGUILayout.Popup("Input Actions", actionId.intValue, actionOptions);
+            if (newActionId != actionId.intValue)
+            {
+                actionId.intValue = newActionId;
+            }
+
+            //selected.enumValueIndex = (int)(MixedRealityInputAction)EditorGUILayout.EnumPopup(new GUIContent("Input Action", "Input source for this Interactable, Default: Select"), (MixedRealityInputAction)selected.enumValueIndex);
 
             // TODO: should IsGlobal only show up on specific press types and indent?
             // TODO: should we show handedness on certain press types?
@@ -1689,6 +1705,20 @@ namespace HoloToolkit.Unity
             return false;
         }
 
-        
+        protected static string[] GetInputActions()
+        {
+            MixedRealityInputAction[] actions = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions;
+
+            List<string> list = new List<string>();
+            for (int i = 0; i < actions.Length; i++)
+            {
+                list.Add(actions[i].Description);
+            }
+
+            return list.ToArray();
+        }
+
+
+
     }
 }
