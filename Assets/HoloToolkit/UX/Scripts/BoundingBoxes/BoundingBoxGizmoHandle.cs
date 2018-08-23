@@ -387,7 +387,7 @@ namespace HoloToolkit.Unity.UX
             initialScale            = transformToAffect.localScale;
             initialPosition         = transformToAffect.position;
             initialOrientation      = transformToAffect.rotation.eulerAngles;
-            initialRotation         = transformToAffect.rotation;
+            initialRotation         = transformToAffect.localRotation;
             initialHandOrientation  = GetHandOrientation(eventData.SourceId);
             initialScaleOrigin      = transformToAffect.position - this.transform.position;
 
