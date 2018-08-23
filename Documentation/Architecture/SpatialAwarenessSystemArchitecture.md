@@ -22,69 +22,7 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 
 The IMixedRealitySpatialAwarenessSystem is the interface that defines the requirements of the spatial awareness system. The interface is divided, logically into multiple sections. As new functionality is added, the appropriate settings section is to be defined.
 
-``` c#
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem
-{
-    public interface IMixedRealitySpatialAwarenessSystem : IMixedRealityEventSystem, IMixedRealityEventSource
-    {
-        bool StartObserverSuspended { get; set; }
-
-        Vector3 ObservationExtents { get; set; }
-        float UpdateInterval { get; set; }
-
-        bool IsObserverRunning { get; }
-
-        void ResumeObserver();
-        void SuspendObserver();
-
-        bool UseMeshSystem { get; set; }
-
-        int MeshPhysicsLayer { get; set; }
-        int MeshPhysicsLayerMask { get; }
-
-        MixedRealitySpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail { get; set; }
-        int MeshTrianglesPerCubicMeter { get; set; }
-
-        bool RecalculateNormals { get; set; }
-
-        bool RenderMeshes { get; set; }
-        Material MeshMaterial { get; set; }
-
-        void RaiseMeshAdded(uint meshId, Mesh meshData, GameObject meshObject = null);
-        void RaiseMeshUpdated(uint meshId, Mesh meshData, GameObject meshObject = null);
-        void RaiseMeshDeleted(uint meshId);
-
-        Mesh[] GetMeshes();
-        GameObject[] GetMeshObjects();
-
-        bool UseSurfaceFindingSystem { get; set; }
-
-        int SurfacePhysicsLayer { get; set; }
-        int SurfacePhysicsLayerMask { get; }
-
-        float SurfaceFindingMinimumArea { get; set; }
-
-        bool RenderFloorSurfaces { get; set; }
-        Material FloorSurfaceMaterial { get; set; }
-
-        bool RenderCeilingSurfaces { get; set; }
-        Material CeilingSurfaceMaterial { get; set; }
-
-        bool RenderWallSurfaces { get; set; }
-        Material WallSurfaceMaterial { get; set; }
-
-        bool RenderPlatformSurfaces { get; set; }
-        Material PlatformSurfaceMaterial { get; set; }
-
-        void RaiseSurfaceAdded(uint surfaceId, Bounds surfaceData, Vector3 normal, GameObject surfaceObject = null);
-        void RaiseSurfaceUpdated(uint surfaceId, Bounds surfaceData, Vector3 normal, GameObject surfaceObject = null);
-        void RaiseSurfaceDeleted(uint surfaceId);
-
-        MixedRealitySpatialAwarenessPlanarSurfaceDescription[] GetSurfaces();
-        GameObject[] GetSurfaceObjects();
-    }
-}
-```
+<img src="Images/IMixedRealitySpatialAwarenessSystem.png">
 
 ### General System Controls
 
@@ -92,7 +30,7 @@ The spatial awareness system contains data and methods that configure and contro
 
 #### StartObserverSuspended
 
-Indicates that the developer intends for the spatial observer to not return data until explicitly resumed. This allows the application to decide precisely when it wishes to begin receiving spatial data notifications.
+Gets or sets a value that indicates that the developer intends for the spatial observer to not return data until explicitly resumed. This allows the application to decide precisely when it wishes to begin receiving spatial data notifications.
 
 #### ObservationExtents
 
@@ -262,17 +200,7 @@ Returns the collection of GameObjects managed by the surface finding subsystem.
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem.Handlers |
 
-``` C#
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem.Handlers
-{
-    public interface IMixedRealitySpatialAwarenessMeshHandler : IEventSystemHandler
-    {
-        void OnMeshAdded(MixedRealitySpatialAwarenessMeshEventData eventData);
-        void OnMeshUpdated(MixedRealitySpatialAwarenessMeshEventData eventData);
-        void OnMeshDeleted(MixedRealitySpatialAwarenessMeshEventData eventData);
-    }
-}
-```
+<img src="Images/IMixedRealitySpatialAwarenessMeshHandler.png">
 
 ### void OnMeshAdded([MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) eventData)
 
@@ -292,17 +220,7 @@ Called when an existing surface mesh has been discarded by the spatial awareness
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem.Handlers |
 
-``` C#
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.SpatialAwarenessSystem.Handlers
-{
-    public interface IMixedRealitySpatialAwarenessMeshSurfaceFindingHandler : IEventSystemHandler
-    {
-        void OnSurfaceAdded(MixedRealitySpatialAwarenessSurfaceFindingEventData eventData);
-        void OnSurfaceUpdated(MixedRealitySpatialAwarenessSurfaceFindingEventData eventData);
-        void OnSurfaceDeleted(MixedRealitySpatialAwarenessSurfaceFindingEventData eventData);
-    }
-}
-```
+<img src="Images/IMixedRealitySpatialAwarenessSurfaceFindingHandler.png">
 
 ### OnSurfaceAdded([MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata))
 
@@ -340,7 +258,25 @@ The MixedRealitySpatialAwarenessMeshHandler provides the default implementation 
 | --- | --- |
 | SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
 
-The MixedRealitySpatialAwarenessSurfaceFindingHandler provides the default implementation of the [IMixedRealitySpatialAwarenessSurfaceFindingHandler](#imixedrealityspatialawarenesssurfacefindinghandler) interface.
+The MixedRealitySpatialAwarenessSurfaceFindingHandler class provides the default implementation of the [IMixedRealitySpatialAwarenessSurfaceFindingHandler](#imixedrealityspatialawarenesssurfacefindinghandler) interface.
+
+## MixedRealitySpatialAwarenessBaseDescription
+
+| Toolkit Layer | Namespace |
+| --- | --- |
+| Core | Microsoft.MixedReality.Toolkit.Internal.Definitions.SpatialAwarenessSystem |
+
+The MixedRealitySpatialAwarenessBaseDescription class describes the core data required for an application to understand a object in the environment.
+
+<img src="Images/MixedRealitySpatialAwarenessBaseDescription.png">
+
+### Position
+
+| Type |
+| --- |
+| Vector3 |
+
+The position, in the environment, at which the object should be placed.
 
 ## MixedRealitySpatialAwarenessMeshDescription
 
@@ -348,35 +284,27 @@ The MixedRealitySpatialAwarenessSurfaceFindingHandler provides the default imple
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Internal.Definitions.SpatialAwarenessSystem |
 
-The MixedRealitySpatialAwarenessMeshDescription describes the data required for an application to understand how to construct and place a mesh in the environment.
+The MixedRealitySpatialAwarenessMeshDescription class describes the data required for an application to understand how to construct and place a mesh in the environment.
 
-``` C#
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.SpatialAwarenessSystem
-{
-    public class MixedRealitySpatialAwarenessMeshDescription
-    {
-        public Vector3 Position
-        { get; private set; }
-
-        public Mesh Mesh
-        { get; private set; }
-
-        public MixedRealitySpatialAwarenessMeshDescription(Vector3 position, Mesh mesh)
-        {
-            Position = position;
-            Mesh = mesh;
-        }
-    }
-}
-```
+<img src="Images/MixedRealitySpatialAwarenessMeshDescription.png">]
 
 ### Position
+
+| Type |
+| --- |
+| Vector3 |
+
+*Inherited from [MixedRealitySpatialAwarenessBaseDescription](#mixedrealityawarenessbasedescription).*
 
 The position, in the environment, at which the spatial mesh should be placed.
 
 ### Mesh
 
-The Unity Mesh object containing the mesh data.
+| Type |
+| --- |
+| Mesh |
+
+The mesh data.
 
 ## MixedRealitySpatialAwarenessPlanarSurfaceDescription
 
@@ -386,41 +314,41 @@ The Unity Mesh object containing the mesh data.
 
 The MixedRealitySpatialAwarenessPlanarSurfaceDescription describes the data required for an application to understand how to construct and place a planar surface.
 
-``` C#
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.SpatialAwarenessSystem
-{
-    public class MixedRealitySpatialAwarenessPlanarSurfaceDescription
-    {
-        public Vector3 Position
-        { get; private set;}
-
-        public Bounds BoundingBox
-        { get; private set; }
-
-        public Vector3 Normal
-        { get; private set; }
-
-        public MixedRealitySpatialAwarenessPlanarSurfaceDescription(Vector3 position, Bounds boundingBox, Vector3 normal)
-        {
-            Position = position;
-            BoundingBox = boundingBox;
-            Normal = normal;
-        }
-    }
-}
-```
+<img src="Images/MixedRealitySpatialAwarenessPlanarSurfaceDescription.png">
 
 ### Position
+
+| Type |
+| --- |
+| Vector3 |
+
+*Inherited from [MixedRealitySpatialAwarenessBaseDescription](#mixedrealityawarenessbasedescription).*
 
 The position, in the environment, at which the planar surface should be placed.
 
 ### BoundingBox
 
-The, axis aligned, bounding box that contains the surface being described.
+| Type |
+| --- |
+| Bounds |
+
+The axis aligned bounding box that contains the surface being described.
 
 ### Normal
 
+| Type |
+| --- |
+| Vector3 |
+
 The normal of the described surface.
+
+### SurfaceType
+
+| Type |
+| --- |
+| [MixedRealitySpatialAwarenessSurfaceTypes]{#mixedrealityspatialawarenesssurfacetypes} |
+
+The semantic (ex: Floor) associated with the surface.
 
 # System Profile Management Classes and Types
 
@@ -665,33 +593,7 @@ public enum MixedRealitySpatialAwarenessMeshLevelOfDetail
 
 The MixedRealitySpatialAwarenessBaseEventData provides the data shared by all of the spatial awareness event types.
 
-``` C#
-namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwarenessSystem
-{
-    public class MixedRealitySpatialAwarenessBaseEventData : GenericBaseEventData
-    {
-        public DateTime EventTime { get; private set; }
-        public MixedRealitySpatialAwarenessEventType EventType { get; private set; }
-        public Vector3 Position { get; private set; }
-        public GameObject GameObject { get; private set; }
-
-        protected MixedRealitySpatialAwarenessBaseEventData(EventSystem eventSystem) : base(eventSystem) { }
-
-        protected void Initialize(
-            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
-            MixedRealitySpatialAwarenessEventType eventType,
-            Vector3 position,
-            GameObject gameObject)
-        {
-            base.BaseInitialize(spatialAwarenessSystem);
-            EventTime = DateTime.Now;
-            EventType = eventType;
-            Position = position;
-            GameObject = gameObject;
-        }
-    }
-}
-```
+<img src="Images/MixedRealitySpatialAwarenessBaseEventData.png">
 
 ### EventTime
 
@@ -710,6 +612,10 @@ The time at which the event occurred.
 The type of event that has occurred.
 
 ### Position
+
+| Type |
+| --- |
+| Vector3 |
 
 The position, in the environment, at which the data should be placed.
 
@@ -731,30 +637,48 @@ The MixedRealitySpatialAwarenessMeshEventData derives from [MixedRealitySpatialA
 
 *Some events may not leverage all properties within this class, in those instances a neutral value will be set.*
 
-``` C#
-namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwarenessSystem
-{
-    public class MixedRealitySpatialAwarenessMeshEventData : MixedRealitySpatialAwarenessBaseEventData
-    {
-        public uint MeshId { get; private set; }
-        public Mesh MeshData { get; private set; }
+<img src="Images/MixedRealitySpatialAwarenessMeshEventData.png">
 
-        public MixedRealitySpatialAwarenessMeshEventData(EventSystem eventSystem) : base(eventSystem) { }
+### EventTime)
 
-        public void Intialize(
-            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
-            MixedRealitySpatialAwarenessEventType eventType,
-            Vector3 position,
-            Mesh meshData,
-            GameObject meshObject)
-        {
-            base.Initialize(spatialAwarenessSystem, eventType, position, meshObject);
-            MeshId = meshId;
-            MeshData = meshData;
-        }
-    }
-}
-```
+*Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityawarenessbaseeventdata).*
+
+| Type |
+| --- |
+| DateTime |
+
+
+The time at which the event occurred.
+
+### EventType
+
+*Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityawarenessbaseeventdata).*
+
+| Type |
+| --- |
+| [MixedRealitySpatialAwarenessEventType](#mixedrealityspatialawarenesseventtype) |
+
+The type of event that has occurred.
+
+### Position
+
+*Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityawarenessbaseeventdata).*
+
+| Type |
+| --- |
+| Vector3 |
+
+The position, in the environment, at which the data should be placed.
+
+### GameObject
+
+*Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityawarenessbaseeventdata).*
+
+| Type |
+| --- |
+| [MixedRealitySpatialAwarenessEventType](#mixedrealityspatialawarenesseventtype) |
+
+Unity GameObject, managed by the spatial awareness system, representing the data in this event.
 
 ### MeshId
 
@@ -762,7 +686,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwarenessSys
 | --- |
 | UInt32 |
 
-An identifier assigned to a specific mesh in the spatial awareness system. 
+An identifier assigned to a specific mesh in the spatial awareness system.
 
 ### MeshData
 
@@ -780,39 +704,48 @@ For MeshAdded and MeshUpdated events, this will contain the mesh data. For MeshD
 
 The MixedRealitySpatialSurfaceEventData derives from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityspatialawarenessbaseeventdata) and adds the information required for applications to understand changes that occur in the spatial awareness system’s surface finding subsystem. Note: Some events may not leverage all properties within this class, in those instances a neutral value will be set.
 
-``` C#
-namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.SpatialAwarenessSystem
-{
+<img src="Images/MixedRealitySpatialAwarenessSurfaceFindingEventData.png">
 
-    public class MixedRealitySpatialAwarenessSurfaceFindingEventData : MixedRealitySpatialAwarenessBaseEventData
-    {
-        public uint SurfaceId { get; private set; }
-        public Bounds BoundingBox { get; private set; }
-        public Vector3 Normal { get; private set; }
+### EventTime)
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="eventSystem"></param>
-        public MixedRealitySpatialAwarenessSurfaceFindingEventData(EventSystem eventSystem) : base(eventSystem) { }
+*Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityawarenessbaseeventdata).*
 
-        public void Intialize(
-            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
-            MixedRealitySpatialAwarenessEventType eventType,
-            uint surfaceId,
-            Vector3 position,
-            Bounds boundingBox,
-            Vector3 normal,
-            GameObject surfaceObject)
-        {
-            base.Initialize(spatialAwarenessSystem, eventType, position, surfaceObject);
-            SurfaceId = surfaceId;
-            BoundingBox = boundingBox;
-            Normal = normal;
-        }
-    }
-}
-```
+| Type |
+| --- |
+| DateTime |
+
+
+The time at which the event occurred.
+
+### EventType
+
+*Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityawarenessbaseeventdata).*
+
+| Type |
+| --- |
+| [MixedRealitySpatialAwarenessEventType](#mixedrealityspatialawarenesseventtype) |
+
+The type of event that has occurred.
+
+### Position
+
+*Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityawarenessbaseeventdata).*
+
+| Type |
+| --- |
+| Vector3 |
+
+The position, in the environment, at which the data should be placed.
+
+### GameObject
+
+*Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityawarenessbaseeventdata).*
+
+| Type |
+| --- |
+| [MixedRealitySpatialAwarenessEventType](#mixedrealityspatialawarenesseventtype) |
+
+Unity GameObject, managed by the spatial awareness system, representing the data in this event.
 
 ### SurfaceId
 
@@ -837,6 +770,14 @@ For SurfaceAdded and SurfaceUpdated events, this will contain the axis aligned b
 | Vector3 |
 
 The surface normal.
+
+### SurfaceType
+
+| Type |
+| --- |
+| [MixedRealitySpatialAwarenessSurfaceTypes](#mixedrealityspatialawarenesssurfacetypes) |
+
+The semantic (ex: Floor) associated with the surface.
 
 ## MixedRealitySpatialAwarenessEventType
 
