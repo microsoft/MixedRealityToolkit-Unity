@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
@@ -28,7 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private static readonly GUIContent KeyCodeContent = new GUIContent("KeyCode", "Unity Input KeyCode id to listen for.");
         private static readonly GUIContent XAxisContent = new GUIContent("X Axis", "Horizontal Axis to listen for.");
         private static readonly GUIContent YAxisContent = new GUIContent("Y Axis", "Vertical Axis to listen for.");
-        private static readonly GUIContent InvertYAxisContent = new GUIContent("Invert Y Axis?");
+        private static readonly GUIContent InvertXAxis = new GUIContent("Invert X Axis?");
+        private static readonly GUIContent InvertAxes = new GUIContent("Invert", "What axes to invert?");
 
         private static MixedRealityControllerMappingProfile thisProfile;
 
@@ -481,6 +483,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                     EditorGUILayout.PropertyField(inputType, GUIContent.none, GUILayout.Width(customLabelWidth));
                     var axisType = interaction.FindPropertyRelative("axisType");
                     EditorGUILayout.PropertyField(axisType, GUIContent.none, GUILayout.Width(customLabelWidth));
+                    var invertXAxis = interaction.FindPropertyRelative("invertXAxis");
                     var invertYAxis = interaction.FindPropertyRelative("invertYAxis");
                     var interactionAxisConstraint = interaction.FindPropertyRelative("axisType");
 
@@ -546,12 +549,23 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                     }
                     else
                     {
-                        if ((AxisType)axisType.intValue == AxisType.DualAxis)
+                        if ((AxisType)axisType.intValue == AxisType.SingleAxis)
                         {
                             EditorGUIUtility.labelWidth = customLabelWidth - 14f;
                             EditorGUIUtility.fieldWidth = 8f;
 
-                            EditorGUILayout.PropertyField(invertYAxis, InvertYAxisContent, GUILayout.Width(customLabelWidth));
+                            EditorGUILayout.PropertyField(invertXAxis, InvertXAxis, GUILayout.Width(customLabelWidth));
+
+                            EditorGUIUtility.labelWidth = defaultLabelWidth;
+                            EditorGUIUtility.fieldWidth = defaultFieldWidth;
+                        } else if ((AxisType)axisType.intValue == AxisType.DualAxis)
+                        {
+                            EditorGUIUtility.labelWidth = customLabelWidth * 0.5f;
+                            EditorGUIUtility.fieldWidth = 8f;
+                            
+                            InvertAxesEnum invertAxesEnum = InvertAxesEnum.Nothing;
+
+                            var modifedValue = (InvertAxesEnum)EditorGUILayout.EnumFlagsField(InvertAxes, invertAxesEnum, GUILayout.Width(customLabelWidth));
 
                             EditorGUIUtility.labelWidth = defaultLabelWidth;
                             EditorGUIUtility.fieldWidth = defaultFieldWidth;
