@@ -102,5 +102,13 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
             return null;
         }
+
+        private void Awake()
+        {
+            for (int i = 0; i < mixedRealityControllerMappingProfiles.Length; i++)
+            {
+                mixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping();
+            }
+        }
     }
 }
