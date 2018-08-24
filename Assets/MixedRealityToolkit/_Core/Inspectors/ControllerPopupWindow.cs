@@ -738,11 +738,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     {
                         var rectPosition = currentControllerOption.InputLabelPositions[i];
 
-                        var rect = new Rect(rectPosition + (currentControllerOption.IsLabelFlipped[i] ? new Vector2(256f, 0f) : Vector2.zero), new Vector2(80f, 32f));
+                        var rect = new Rect(rectPosition + (currentControllerOption.IsLabelFlipped[i] ? new Vector2(256f, 0f) : Vector2.zero), new Vector2(80f, EditorGUIUtility.singleLineHeight));
 
                         actionId.intValue = EditorGUI.IntPopup(rect, actionId.intValue, labels, ids);
 
-                        rect = new Rect(rectPosition + (currentControllerOption.IsLabelFlipped[i] ? Vector2.zero : new Vector2(80f, 0f)), new Vector2(256f, 32f));
+                        rect = new Rect(rectPosition + (currentControllerOption.IsLabelFlipped[i] ? Vector2.zero : new Vector2(80f, 0f)), new Vector2(256f, EditorGUIUtility.singleLineHeight));
 
                         var labelStyle = EditorStyles.label;
                         if (currentControllerOption.IsLabelFlipped[i])
@@ -753,7 +753,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                         if (editInputActionPositions)
                         {
-                            var tRect = new Rect(rectPosition + (currentControllerOption.IsLabelFlipped[i] ? new Vector2(344f, 0f) : new Vector2(-24f, 0f)), new Vector2(24f, 24f));
+                            var tRect = new Rect(rectPosition + (currentControllerOption.IsLabelFlipped[i] ? new Vector2(344f, 0f) : new Vector2(-24f, 0f)), new Vector2(24f, EditorGUIUtility.singleLineHeight));
 
                             EditorGUI.BeginChangeCheck();
                             currentControllerOption.IsLabelFlipped[i] = EditorGUI.Toggle(tRect, currentControllerOption.IsLabelFlipped[i]);
