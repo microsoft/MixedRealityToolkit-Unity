@@ -227,7 +227,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             #endregion IMixedRealityPointer Implementation
 
             /// <summary>
-            /// 
+            /// Press this pointer. This sends a pointer down event across the input system.
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the pressed button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that pressed the pointer.</param>
@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
 
             /// <summary>
-            /// 
+            /// Release this pointer. This sends pointer clicked and pointer up events across the input system.
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the released button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that released the pointer.</param>
