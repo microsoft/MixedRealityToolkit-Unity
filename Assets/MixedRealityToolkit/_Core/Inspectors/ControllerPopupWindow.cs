@@ -464,9 +464,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             {
                 RenderInteractionList(currentInteractionList, isCustomController);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.LogError(e);
                 Window.Close();
             }
         }
