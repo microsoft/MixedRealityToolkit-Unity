@@ -27,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         public SupportedControllerType Controller;
         public Handedness Handedness;
         public Vector2[] InputLabelPositions;
+        public bool[] IsLabelFlipped;
     }
 
     public class ControllerPopupWindow : EditorWindow
@@ -122,6 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static Vector2 horizontalScrollPosition;
         private ControllerInputActionOption currentControllerOption;
         private static bool[] isMouseInRects;
+        private Vector2 mouseDragOffset;
 
         private void OnFocus()
         {
@@ -392,7 +394,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         {
                             Controller = SupportedControllerType.None,
                             Handedness = Handedness.None,
-                            InputLabelPositions = new[] {new Vector2(0, 0)}
+                            InputLabelPositions = new[] {new Vector2(0, 0)},
+                            IsLabelFlipped = new []{false}
                         }
                     }
                 };
@@ -407,6 +410,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 if (controllerInputActionOptions.Controllers.Any(option => option.Controller == controllerType && option.Handedness == handedness))
                 {
                     window.currentControllerOption = controllerInputActionOptions.Controllers.First(option => option.Controller == controllerType && option.Handedness == handedness);
+                    if (window.currentControllerOption != null && window.currentControllerOption.IsLabelFlipped == null)
+                    {
+                        window.currentControllerOption.IsLabelFlipped = new bool[interactionsList.arraySize];
+                    }
                 }
             }
 
@@ -449,6 +456,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             if (list == null) { throw new Exception(); }
 
             bool noInteractions = list.arraySize == 0;
+
+            if (currentControllerOption != null && (currentControllerOption.IsLabelFlipped == null || currentControllerOption.IsLabelFlipped.Length != list.arraySize))
+            {
+                currentControllerOption.IsLabelFlipped = new bool[list.arraySize];
+            }
 
             GUILayout.BeginVertical();
 
@@ -495,24 +507,26 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     }
                     else
                     {
-                        if (controllerInputActionOptions.Controllers.Any(option => option.Controller == currentControllerType && option.Handedness == currentHandedness))
+                        if (!controllerInputActionOptions.Controllers.Any(option => option.Controller == currentControllerType && option.Handedness == currentHandedness))
                         {
-
-                        }
-                        else
-                        {
-                            controllerInputActionOptions.Controllers.Add(new ControllerInputActionOption
+                            currentControllerOption = new ControllerInputActionOption
                             {
                                 Controller = currentControllerType,
                                 Handedness = currentHandedness,
-                                InputLabelPositions = new Vector2[currentInteractionList.arraySize]
-                            });
+                                InputLabelPositions = new Vector2[currentInteractionList.arraySize],
+                                IsLabelFlipped = new bool[currentInteractionList.arraySize]
+                            };
+
+                            controllerInputActionOptions.Controllers.Add(currentControllerOption);
 
                             isMouseInRects = new bool[currentInteractionList.arraySize];
 
-                            if (controllerInputActionOptions.Controllers.Any(option => option.Controller == SupportedControllerType.None))
+                            if (controllerInputActionOptions.Controllers.Any(option =>
+                                option.Controller == SupportedControllerType.None))
                             {
-                                controllerInputActionOptions.Controllers.Remove(controllerInputActionOptions.Controllers.Find(option => option.Controller == SupportedControllerType.None));
+                                controllerInputActionOptions.Controllers.Remove(
+                                    controllerInputActionOptions.Controllers.Find(option =>
+                                        option.Controller == SupportedControllerType.None));
                             }
 
                             File.WriteAllText($"{Application.dataPath}{EditorWindowOptionsPath}", JsonUtility.ToJson(controllerInputActionOptions));
@@ -722,28 +736,60 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     }
                     else
                     {
-                        actionId.intValue = EditorGUI.IntPopup(new Rect(currentControllerOption.InputLabelPositions[i], new Vector2(80f, 32f)), actionId.intValue, labels, ids);
-                        var rect = new Rect(currentControllerOption.InputLabelPositions[i] + new Vector2(80f, 0f), new Vector2(128f, 32f));
-                        EditorGUI.LabelField(rect, interactionDescription.stringValue);
+                        var rectPosition = currentControllerOption.InputLabelPositions[i];
 
-                        if (!isMouseInRects.Any(value => value) || isMouseInRects[i])
+                        var rect = new Rect(rectPosition + (currentControllerOption.IsLabelFlipped[i] ? new Vector2(256f, 0f) : Vector2.zero), new Vector2(80f, 32f));
+
+                        actionId.intValue = EditorGUI.IntPopup(rect, actionId.intValue, labels, ids);
+
+                        rect = new Rect(rectPosition + (currentControllerOption.IsLabelFlipped[i] ? Vector2.zero : new Vector2(80f, 0f)), new Vector2(256f, 32f));
+
+                        var labelStyle = EditorStyles.label;
+                        if (currentControllerOption.IsLabelFlipped[i])
                         {
-                            if (Event.current.type == EventType.MouseDrag && rect.Contains(Event.current.mousePosition))
+                            labelStyle = new GUIStyle("Label") { alignment = TextAnchor.UpperRight, stretchWidth = true };
+                        }
+                        EditorGUI.LabelField(rect, interactionDescription.stringValue, labelStyle);
+
+                        if (editInputActionPositions)
+                        {
+                            var tRect = new Rect(rectPosition + (currentControllerOption.IsLabelFlipped[i] ? new Vector2(344f, 0f) : new Vector2(-24f, 0f)), new Vector2(24f, 24f));
+
+                            EditorGUI.BeginChangeCheck();
+                            currentControllerOption.IsLabelFlipped[i] = EditorGUI.Toggle(tRect, currentControllerOption.IsLabelFlipped[i]);
+                            if (EditorGUI.EndChangeCheck())
                             {
-                                isMouseInRects[i] = true;
+                                if (currentControllerOption.IsLabelFlipped[i])
+                                {
+                                    currentControllerOption.InputLabelPositions[i] -= new Vector2(256f, 0f);
+                                }
+                                else
+                                {
+                                    currentControllerOption.InputLabelPositions[i] += new Vector2(256f, 0f);
+                                }
                             }
-                            else if (Event.current.type == EventType.Repaint && isMouseInRects[i])
+
+                            if (!isMouseInRects.Any(value => value) || isMouseInRects[i])
                             {
-                                currentControllerOption.InputLabelPositions[i] = Event.current.mousePosition;
-                            }
-                            else if (Event.current.type == EventType.DragUpdated && isMouseInRects[i])
-                            {
-                                currentControllerOption.InputLabelPositions[i] = Event.current.mousePosition;
-                            }
-                            else if (Event.current.type == EventType.MouseUp && isMouseInRects[i])
-                            {
-                                currentControllerOption.InputLabelPositions[i] = Event.current.mousePosition;
-                                isMouseInRects[i] = false;
+                                if (Event.current.type == EventType.MouseDrag && rect.Contains(Event.current.mousePosition) && !isMouseInRects[i])
+                                {
+                                    isMouseInRects[i] = true;
+                                    mouseDragOffset = Event.current.mousePosition - currentControllerOption.InputLabelPositions[i];
+                                }
+                                else if (Event.current.type == EventType.Repaint && isMouseInRects[i])
+                                {
+                                    currentControllerOption.InputLabelPositions[i] = Event.current.mousePosition - mouseDragOffset;
+                                }
+                                else if (Event.current.type == EventType.DragUpdated && isMouseInRects[i])
+                                {
+                                    currentControllerOption.InputLabelPositions[i] = Event.current.mousePosition - mouseDragOffset;
+                                }
+                                else if (Event.current.type == EventType.MouseUp && isMouseInRects[i])
+                                {
+                                    currentControllerOption.InputLabelPositions[i] = Event.current.mousePosition - mouseDragOffset;
+                                    mouseDragOffset = Vector2.zero;
+                                    isMouseInRects[i] = false;
+                                }
                             }
                         }
                     }
@@ -756,7 +802,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
                         list.serializedObject.ApplyModifiedProperties();
                     }
-
                 }
 
                 EditorGUILayout.EndHorizontal();
