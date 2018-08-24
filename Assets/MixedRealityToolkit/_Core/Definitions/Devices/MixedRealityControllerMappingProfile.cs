@@ -2,6 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput;
+using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
 using System;
 using UnityEngine;
 
@@ -64,7 +67,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         [SerializeField]
         [Tooltip("The list of controller templates your application can use.")]
-        private MixedRealityControllerMapping[] mixedRealityControllerMappingProfiles = new MixedRealityControllerMapping[0];
+        private MixedRealityControllerMapping[] mixedRealityControllerMappingProfiles =
+        {
+            new MixedRealityControllerMapping(0, "Xbox Controller", typeof(XboxController)),
+            new MixedRealityControllerMapping(1, "Windows Mixed Reality Motion Controller Right", typeof(WindowsMixedRealityController), Handedness.Right),
+            new MixedRealityControllerMapping(2, "Windows Mixed Reality Motion Controller Left", typeof(WindowsMixedRealityController), Handedness.Left),
+            new MixedRealityControllerMapping(3, "Open VR Motion Controller Right", typeof(WindowsMixedRealityOpenVRMotionController), Handedness.Right),
+            new MixedRealityControllerMapping(4, "Open VR Motion Controller Left", typeof(WindowsMixedRealityOpenVRMotionController), Handedness.Left),
+            new MixedRealityControllerMapping(5, "Vive Wand Controller Right", typeof(ViveWandController), Handedness.Right),
+            new MixedRealityControllerMapping(6, "Vive Wand Controller Left", typeof(ViveWandController), Handedness.Left),
+            new MixedRealityControllerMapping(5, "Oculus Touch Controller Right", typeof(OculusTouchController), Handedness.Right),
+            new MixedRealityControllerMapping(6, "Oculus Touch Controller Left", typeof(OculusTouchController), Handedness.Left),
+            new MixedRealityControllerMapping(7, "Oculus Remote Controller", typeof(OculusRemoteController)),
+        };
 
         public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappingProfiles;
 
