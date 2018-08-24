@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Inspectors.Data;
 using Microsoft.MixedReality.Toolkit.Inspectors.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
@@ -15,21 +16,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors
 {
-    [Serializable]
-    public class ControllerInputActionOptions
-    {
-        public List<ControllerInputActionOption> Controllers;
-    }
-
-    [Serializable]
-    public class ControllerInputActionOption
-    {
-        public SupportedControllerType Controller;
-        public Handedness Handedness;
-        public Vector2[] InputLabelPositions;
-        public bool[] IsLabelFlipped;
-    }
-
     public class ControllerPopupWindow : EditorWindow
     {
         private const string EditorWindowOptionsPath = "/MixedRealityToolkit/_Core/Inspectors/Data/EditorWindowOptions.json";
