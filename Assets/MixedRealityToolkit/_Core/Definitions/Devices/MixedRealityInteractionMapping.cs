@@ -24,8 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <param name="inputType">The physical input device / control</param>
         /// <param name="axisCodeX">Optional horizontal or single axis value to get axis data from Unity's old input system.</param>
         /// <param name="axisCodeY">Optional vertical axis value to get axis data from Unity's old input system.</param>
+        /// <param name="invertXAxis">Optional horizontal axis invert option.</param>
         /// <param name="invertYAxis">Optional vertical axis invert option.</param> 
-        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, string axisCodeX, string axisCodeY = "", bool invertYAxis = false)
+        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, string axisCodeX, string axisCodeY = "", bool invertXAxis = false, bool invertYAxis = false)
         {
             this.id = id;
             this.description = description;
@@ -35,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             keyCode = KeyCode.None;
             this.axisCodeX = axisCodeX;
             this.axisCodeY = axisCodeY;
+            this.invertXAxis = invertXAxis;
             this.invertYAxis = invertYAxis;
             rawData = null;
             boolData = false;
@@ -85,8 +87,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <param name="keyCode">Optional KeyCode value to get input from Unity's old input system</param>
         /// <param name="axisCodeX">Optional horizontal or single axis value to get axis data from Unity's old input system.</param>
         /// <param name="axisCodeY">Optional vertical axis value to get axis data from Unity's old input system.</param>
+        /// <param name="invertXAxis">Optional horizontal axis invert option.</param>
         /// <param name="invertYAxis">Optional vertical axis invert option.</param> 
-        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction, KeyCode keyCode = KeyCode.None, string axisCodeX = "", string axisCodeY = "", bool invertYAxis = false)
+        public MixedRealityInteractionMapping(uint id, string description, AxisType axisType, DeviceInputType inputType, MixedRealityInputAction inputAction, KeyCode keyCode = KeyCode.None, string axisCodeX = "", string axisCodeY = "", bool invertXAxis = false, bool invertYAxis = false)
         {
             this.id = id;
             this.description = description;
@@ -96,6 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             this.keyCode = keyCode;
             this.axisCodeX = axisCodeX;
             this.axisCodeY = axisCodeY;
+            this.invertXAxis = invertXAxis;
             this.invertYAxis = invertYAxis;
             rawData = null;
             boolData = false;
@@ -182,6 +186,31 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         public string AxisCodeY => axisCodeY;
 
         [SerializeField]
+        [Tooltip("Should the X axis be inverted?")]
+        private bool invertXAxis = false;
+
+        /// <summary>
+        /// Should the X axis be inverted?
+        /// </summary>
+        /// <remarks>
+        /// Only valid for <see cref="Utilities.AxisType.SingleAxis"/> and <see cref="Utilities.AxisType.DualAxis"/> inputs.
+        /// </remarks>
+        public bool InvertXAxis
+        {
+            get { return invertXAxis; }
+            set
+            {
+                if (axisType != AxisType.SingleAxis && axisType != AxisType.DualAxis)
+                {
+                    Debug.LogWarning("Inverted X axis only valid for Single or Dual Axis inputs.");
+                    return;
+                }
+
+                invertXAxis = value;
+            }
+        }
+
+        [SerializeField]
         [Tooltip("Should the Y axis be inverted?")]
         private bool invertYAxis = false;
 
@@ -198,7 +227,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             {
                 if (axisType != AxisType.DualAxis)
                 {
-                    Debug.LogWarning("inverted Y axis only valid for Dual Axis inputs.");
+                    Debug.LogWarning("Inverted Y axis only valid for Dual Axis inputs.");
                     return;
                 }
 
@@ -316,8 +345,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
                     Debug.LogError($"SetFloatValue is only valid for AxisType.SingleAxis InteractionMappings\nPlease check the {inputType} mapping for the current controller");
                 }
 
-                Changed = !floatData.Equals(value);
-                floatData = value;
+                if (invertXAxis)
+                {
+                    Changed = !floatData.Equals(value * -1f);
+                    floatData = value * -1f;
+                }
+                else
+                {
+                    Changed = !floatData.Equals(value);
+                    floatData = value;
+                }
             }
         }
 
@@ -339,13 +376,16 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
                     Debug.LogError($"SetVector2Value is only valid for AxisType.DualAxis InteractionMappings\nPlease check the {inputType} mapping for the current controller");
                 }
 
-                if (invertYAxis)
+                if (invertXAxis || invertYAxis)
                 {
-                    Changed = !vector2Data.x.Equals(value.x) &&
-                              !vector2Data.y.Equals(value.y * -1f);
+                    float invertXAxisFactor = invertXAxis ? -1f : 1f;
+                    float invertYAxisFactor = invertYAxis ? -1f : 1f;
 
-                    vector2Data.x = value.x;
-                    vector2Data.y = value.y * -1f;
+                    Changed = !vector2Data.x.Equals(value.x * invertXAxisFactor) &&
+                              !vector2Data.y.Equals(value.y * invertYAxisFactor);
+
+                    vector2Data.x = value.x * invertXAxisFactor;
+                    vector2Data.y = value.y * invertYAxisFactor;
                 }
                 else
                 {
