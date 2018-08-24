@@ -124,6 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private ControllerInputActionOption currentControllerOption;
         private static bool[] isMouseInRects;
         private Vector2 mouseDragOffset;
+        private GUIStyle flippedLabelStyle;
 
         private void OnFocus()
         {
@@ -228,6 +229,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             #endregion Oculus Remote Controller
 
             isCustomController = false;
+
+            flippedLabelStyle = new GUIStyle("Label") { alignment = TextAnchor.UpperRight, stretchWidth = true };
 
             switch (currentControllerType)
             {
@@ -744,12 +747,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                         rect = new Rect(rectPosition + (currentControllerOption.IsLabelFlipped[i] ? Vector2.zero : new Vector2(80f, 0f)), new Vector2(256f, EditorGUIUtility.singleLineHeight));
 
-                        var labelStyle = EditorStyles.label;
-                        if (currentControllerOption.IsLabelFlipped[i])
-                        {
-                            labelStyle = new GUIStyle("Label") { alignment = TextAnchor.UpperRight, stretchWidth = true };
-                        }
-                        EditorGUI.LabelField(rect, interactionDescription.stringValue, labelStyle);
+                        EditorGUI.LabelField(rect, interactionDescription.stringValue, currentControllerOption.IsLabelFlipped[i] ? flippedLabelStyle : EditorStyles.label);
 
                         if (editInputActionPositions)
                         {
