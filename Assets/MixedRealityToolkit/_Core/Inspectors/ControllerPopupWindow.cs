@@ -123,21 +123,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         [SerializeField]
         private Texture2D viveWandControllerRightBlack;
 
-        private SupportedControllerType currentControllerType;
-        private Handedness currentHandedness;
-
-        private Texture2D currentControllerTexture;
-
         [SerializeField]
         private SerializedProperty currentInteractionList;
 
         [SerializeField]
         private bool isCustomController;
 
-        private ControllerPopupWindow Window;
-        private ControllerInputActionOption currentControllerOption;
+        private ControllerPopupWindow thisWindow;
+
+        private Handedness currentHandedness;
+        private SupportedControllerType currentControllerType;
+
         private Vector2 mouseDragOffset;
         private GUIStyle flippedLabelStyle;
+        private Texture2D currentControllerTexture;
+        private ControllerInputActionOption currentControllerOption;
 
         private void OnFocus()
         {
@@ -392,7 +392,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             window = (ControllerPopupWindow)GetWindow(typeof(ControllerPopupWindow));
             window.Close();
             window = (ControllerPopupWindow)CreateInstance(typeof(ControllerPopupWindow));
-            window.Window = window;
+            window.thisWindow = window;
             var handednessTitleText = handedness != Handedness.None ? $"{handedness} Hand " : string.Empty;
             window.titleContent = new GUIContent($"{controllerType} {handednessTitleText}Input Action Assignment");
             window.currentControllerType = controllerType;
@@ -466,7 +466,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
             catch (Exception)
             {
-                Window.Close();
+                thisWindow.Close();
             }
         }
 
