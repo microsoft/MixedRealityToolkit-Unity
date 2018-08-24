@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         [SerializeField]
         private bool isCustomController;
 
-        public ControllerPopupWindow Window;
+        private ControllerPopupWindow Window;
         private ControllerInputActionOption currentControllerOption;
         private Vector2 mouseDragOffset;
         private GUIStyle flippedLabelStyle;
