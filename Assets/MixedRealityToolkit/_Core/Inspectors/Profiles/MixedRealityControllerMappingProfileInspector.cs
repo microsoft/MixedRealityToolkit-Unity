@@ -66,7 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty globalRightHandModel;
         private Vector2[] horizontalScrollPositions;
 
-
         private void OnEnable()
         {
             if (!CheckMixedRealityManager(false))
@@ -558,14 +557,31 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                             EditorGUIUtility.labelWidth = defaultLabelWidth;
                             EditorGUIUtility.fieldWidth = defaultFieldWidth;
-                        } else if ((AxisType)axisType.intValue == AxisType.DualAxis)
+                        }
+                        else if ((AxisType)axisType.intValue == AxisType.DualAxis)
                         {
                             EditorGUIUtility.labelWidth = customLabelWidth * 0.5f;
                             EditorGUIUtility.fieldWidth = 8f;
-                            
+
                             InvertAxesEnum invertAxesEnum = InvertAxesEnum.Nothing;
 
+                            if (invertXAxis.boolValue && invertYAxis.boolValue)
+                            {
+                                invertAxesEnum = InvertAxesEnum.Both;
+                            }
+                            else if (invertXAxis.boolValue)
+                            {
+                                invertAxesEnum = InvertAxesEnum.X;
+                            }
+                            else if (invertYAxis.boolValue)
+                            {
+                                invertAxesEnum = InvertAxesEnum.Y;
+                            }
+
                             var modifedValue = (InvertAxesEnum)EditorGUILayout.EnumFlagsField(InvertAxes, invertAxesEnum, GUILayout.Width(customLabelWidth));
+
+                            invertXAxis.boolValue = (modifedValue & InvertAxesEnum.X) > 0;
+                            invertYAxis.boolValue = (modifedValue & InvertAxesEnum.Y) > 0;
 
                             EditorGUIUtility.labelWidth = defaultLabelWidth;
                             EditorGUIUtility.fieldWidth = defaultFieldWidth;
