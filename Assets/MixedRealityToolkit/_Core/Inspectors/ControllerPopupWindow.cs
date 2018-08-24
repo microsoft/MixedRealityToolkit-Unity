@@ -33,6 +33,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
     public class ControllerPopupWindow : EditorWindow
     {
         private const string EditorWindowOptionsPath = "/MixedRealityToolkit/_Core/Inspectors/Data/EditorWindowOptions.json";
+        private const float InputActionLabelWidth = 128f;
+
+        /// <summary>
+        /// Used to enable editing the input axis label positions on controllers
+        /// </summary>
+        private static readonly bool EnableWysiwyg = false;
+
         private static readonly GUIContent InteractionAddButtonContent = new GUIContent("+ Add a New Interaction Mapping");
         private static readonly GUIContent InteractionMinusButtonContent = new GUIContent("-", "Remove Interaction Mapping");
         private static readonly GUIContent AxisTypeContent = new GUIContent("Axis Type", "The axis type of the button, e.g. Analogue, Digital, etc.");
@@ -42,6 +49,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static readonly GUIContent XAxisContent = new GUIContent("X Axis", "Horizontal Axis to listen for.");
         private static readonly GUIContent YAxisContent = new GUIContent("Y Axis", "Vertical Axis to listen for.");
         private static readonly GUIContent InvertYAxisContent = new GUIContent("Invert Y Axis?");
+
+        private static readonly Vector2 InputActionLabelPosition = new Vector2(256f, 0f);
+        private static readonly Vector2 InputActionDropdownPosition = new Vector2(88f, 0f);
+        private static readonly Vector2 InputActionFlipTogglePosition = new Vector2(-24f, 0f);
+        private static readonly Vector2 HorizontalSpace = new Vector2(8f, 0f);
+
+        private static readonly Rect ControllerRectPosition = new Rect(new Vector2(128f, 0f), new Vector2(512f, 512f));
+
+        private static ControllerPopupWindow window;
+        private static ControllerInputActionOptions controllerInputActionOptions;
 
         private static GUIContent[] axisLabels;
         private static int[] actionIds;
@@ -60,12 +77,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static GUIContent[] threeDofRotationActionLabels;
         private static int[] sixDofActionIds;
         private static GUIContent[] sixDofActionLabels;
+        private static bool[] isMouseInRects;
 
         private static bool editInputActionPositions;
-        private static ControllerInputActionOptions controllerInputActionOptions;
 
         private static float defaultLabelWidth;
         private static float defaultFieldWidth;
+
+        private static Vector2 horizontalScrollPosition;
 
         [SerializeField]
         private Texture2D xboxControllerWhite;
@@ -109,20 +128,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private Texture2D currentControllerTexture;
 
-        private static readonly Rect ControllerRectPosition = new Rect(new Vector2(128f, 0f), new Vector2(512f, 512f));
-
         [SerializeField]
         private SerializedProperty currentInteractionList;
 
         [SerializeField]
         private bool isCustomController;
 
-        private static ControllerPopupWindow window;
-
         public ControllerPopupWindow Window;
-        private static Vector2 horizontalScrollPosition;
         private ControllerInputActionOption currentControllerOption;
-        private static bool[] isMouseInRects;
         private Vector2 mouseDragOffset;
         private GUIStyle flippedLabelStyle;
 
@@ -413,6 +426,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 if (controllerInputActionOptions.Controllers.Any(option => option.Controller == controllerType && option.Handedness == handedness))
                 {
                     window.currentControllerOption = controllerInputActionOptions.Controllers.First(option => option.Controller == controllerType && option.Handedness == handedness);
+
                     if (window.currentControllerOption != null && window.currentControllerOption.IsLabelFlipped == null)
                     {
                         window.currentControllerOption.IsLabelFlipped = new bool[interactionsList.arraySize];
@@ -431,7 +445,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private void Update()
         {
-            Repaint();
+            if (editInputActionPositions)
+            {
+                Repaint();
+            }
         }
 
         private void OnGUI()
@@ -497,7 +514,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     return;
                 }
             }
-            else
+            else if (EnableWysiwyg)
             {
                 EditorGUI.BeginChangeCheck();
                 editInputActionPositions = EditorGUILayout.Toggle("Edit Input Action Positions", editInputActionPositions);
@@ -521,11 +538,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                             };
 
                             controllerInputActionOptions.Controllers.Add(currentControllerOption);
-
                             isMouseInRects = new bool[currentInteractionList.arraySize];
 
-                            if (controllerInputActionOptions.Controllers.Any(option =>
-                                option.Controller == SupportedControllerType.None))
+                            if (controllerInputActionOptions.Controllers.Any(option => option.Controller == SupportedControllerType.None))
                             {
                                 controllerInputActionOptions.Controllers.Remove(
                                     controllerInputActionOptions.Controllers.Find(option =>
@@ -540,19 +555,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             GUILayout.BeginHorizontal();
 
-            var customLabelWidth = 128f;
-
             if (useCustomInteractionMapping)
             {
                 EditorGUILayout.LabelField("Id", GUILayout.Width(32f));
                 EditorGUIUtility.labelWidth = 24f;
                 EditorGUIUtility.fieldWidth = 24f;
-                EditorGUILayout.LabelField(ControllerInputTypeContent, GUILayout.Width(customLabelWidth));
-                EditorGUILayout.LabelField(AxisTypeContent, GUILayout.Width(customLabelWidth));
-                EditorGUILayout.LabelField(ActionContent, GUILayout.Width(customLabelWidth));
-                EditorGUILayout.LabelField(KeyCodeContent, GUILayout.Width(customLabelWidth));
-                EditorGUILayout.LabelField(XAxisContent, GUILayout.Width(customLabelWidth));
-                EditorGUILayout.LabelField(YAxisContent, GUILayout.Width(customLabelWidth));
+                EditorGUILayout.LabelField(ControllerInputTypeContent, GUILayout.Width(InputActionLabelWidth));
+                EditorGUILayout.LabelField(AxisTypeContent, GUILayout.Width(InputActionLabelWidth));
+                EditorGUILayout.LabelField(ActionContent, GUILayout.Width(InputActionLabelWidth));
+                EditorGUILayout.LabelField(KeyCodeContent, GUILayout.Width(InputActionLabelWidth));
+                EditorGUILayout.LabelField(XAxisContent, GUILayout.Width(InputActionLabelWidth));
+                EditorGUILayout.LabelField(YAxisContent, GUILayout.Width(InputActionLabelWidth));
                 GUILayout.FlexibleSpace();
                 EditorGUILayout.LabelField(string.Empty, GUILayout.Width(24f));
 
@@ -571,9 +584,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 {
                     EditorGUILayout.LabelField($"{i + 1}", GUILayout.Width(32f));
                     var inputType = interaction.FindPropertyRelative("inputType");
-                    EditorGUILayout.PropertyField(inputType, GUIContent.none, GUILayout.Width(customLabelWidth));
+                    EditorGUILayout.PropertyField(inputType, GUIContent.none, GUILayout.Width(InputActionLabelWidth));
                     var axisType = interaction.FindPropertyRelative("axisType");
-                    EditorGUILayout.PropertyField(axisType, GUIContent.none, GUILayout.Width(customLabelWidth));
+                    EditorGUILayout.PropertyField(axisType, GUIContent.none, GUILayout.Width(InputActionLabelWidth));
                     var invertYAxis = interaction.FindPropertyRelative("invertYAxis");
                     var interactionAxisConstraint = interaction.FindPropertyRelative("axisType");
 
@@ -623,7 +636,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     }
 
                     EditorGUI.BeginChangeCheck();
-                    actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, labels, ids, GUILayout.Width(customLabelWidth));
+                    actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, labels, ids, GUILayout.Width(InputActionLabelWidth));
 
                     if (EditorGUI.EndChangeCheck())
                     {
@@ -635,23 +648,23 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     if ((AxisType)axisType.intValue == AxisType.Digital)
                     {
                         var keyCode = interaction.FindPropertyRelative("keyCode");
-                        EditorGUILayout.PropertyField(keyCode, GUIContent.none, GUILayout.Width(customLabelWidth));
+                        EditorGUILayout.PropertyField(keyCode, GUIContent.none, GUILayout.Width(InputActionLabelWidth));
                     }
                     else
                     {
                         if ((AxisType)axisType.intValue == AxisType.DualAxis)
                         {
-                            EditorGUIUtility.labelWidth = customLabelWidth - 14f;
+                            EditorGUIUtility.labelWidth = InputActionLabelWidth - 14f;
                             EditorGUIUtility.fieldWidth = 8f;
 
-                            EditorGUILayout.PropertyField(invertYAxis, InvertYAxisContent, GUILayout.Width(customLabelWidth));
+                            EditorGUILayout.PropertyField(invertYAxis, InvertYAxisContent, GUILayout.Width(InputActionLabelWidth));
 
                             EditorGUIUtility.labelWidth = defaultLabelWidth;
                             EditorGUIUtility.fieldWidth = defaultFieldWidth;
                         }
                         else
                         {
-                            EditorGUILayout.LabelField(GUIContent.none, GUILayout.Width(customLabelWidth));
+                            EditorGUILayout.LabelField(GUIContent.none, GUILayout.Width(InputActionLabelWidth));
                         }
                     }
 
@@ -659,21 +672,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         (AxisType)axisType.intValue == AxisType.DualAxis)
                     {
                         var axisCodeX = interaction.FindPropertyRelative("axisCodeX");
-                        RenderAxisPopup(axisCodeX, customLabelWidth);
+                        RenderAxisPopup(axisCodeX, InputActionLabelWidth);
                     }
                     else
                     {
-                        EditorGUILayout.LabelField(GUIContent.none, GUILayout.Width(customLabelWidth));
+                        EditorGUILayout.LabelField(GUIContent.none, GUILayout.Width(InputActionLabelWidth));
                     }
 
                     if ((AxisType)axisType.intValue == AxisType.DualAxis)
                     {
                         var axisCodeY = interaction.FindPropertyRelative("axisCodeY");
-                        RenderAxisPopup(axisCodeY, customLabelWidth);
+                        RenderAxisPopup(axisCodeY, InputActionLabelWidth);
                     }
                     else
                     {
-                        EditorGUILayout.LabelField(GUIContent.none, GUILayout.Width(customLabelWidth));
+                        EditorGUILayout.LabelField(GUIContent.none, GUILayout.Width(InputActionLabelWidth));
                     }
 
                     if (GUILayout.Button(InteractionMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.ExpandWidth(true)))
@@ -740,36 +753,37 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     else
                     {
                         var rectPosition = currentControllerOption.InputLabelPositions[i];
+                        var offset = currentControllerOption.IsLabelFlipped[i] ? InputActionLabelPosition : Vector2.zero;
+                        var popupRect = new Rect(rectPosition + offset, new Vector2(InputActionDropdownPosition.x, EditorGUIUtility.singleLineHeight));
 
-                        var rect = new Rect(rectPosition + (currentControllerOption.IsLabelFlipped[i] ? new Vector2(256f, 0f) : Vector2.zero), new Vector2(80f, EditorGUIUtility.singleLineHeight));
-
-                        actionId.intValue = EditorGUI.IntPopup(rect, actionId.intValue, labels, ids);
-
-                        rect = new Rect(rectPosition + (currentControllerOption.IsLabelFlipped[i] ? Vector2.zero : new Vector2(80f, 0f)), new Vector2(256f, EditorGUIUtility.singleLineHeight));
-
-                        EditorGUI.LabelField(rect, interactionDescription.stringValue, currentControllerOption.IsLabelFlipped[i] ? flippedLabelStyle : EditorStyles.label);
+                        actionId.intValue = EditorGUI.IntPopup(popupRect, actionId.intValue, labels, ids);
+                        offset = currentControllerOption.IsLabelFlipped[i] ? Vector2.zero : InputActionDropdownPosition;
+                        var labelRect = new Rect(rectPosition + offset, new Vector2(InputActionLabelPosition.x, EditorGUIUtility.singleLineHeight));
+                        EditorGUI.LabelField(labelRect, interactionDescription.stringValue, currentControllerOption.IsLabelFlipped[i] ? flippedLabelStyle : EditorStyles.label);
 
                         if (editInputActionPositions)
                         {
-                            var tRect = new Rect(rectPosition + (currentControllerOption.IsLabelFlipped[i] ? new Vector2(344f, 0f) : new Vector2(-24f, 0f)), new Vector2(24f, EditorGUIUtility.singleLineHeight));
+                            offset = currentControllerOption.IsLabelFlipped[i] ? InputActionLabelPosition + InputActionDropdownPosition + HorizontalSpace : InputActionFlipTogglePosition;
+                            var toggleRect = new Rect(rectPosition + offset, new Vector2(-InputActionFlipTogglePosition.x, EditorGUIUtility.singleLineHeight));
 
                             EditorGUI.BeginChangeCheck();
-                            currentControllerOption.IsLabelFlipped[i] = EditorGUI.Toggle(tRect, currentControllerOption.IsLabelFlipped[i]);
+                            currentControllerOption.IsLabelFlipped[i] = EditorGUI.Toggle(toggleRect, currentControllerOption.IsLabelFlipped[i]);
+
                             if (EditorGUI.EndChangeCheck())
                             {
                                 if (currentControllerOption.IsLabelFlipped[i])
                                 {
-                                    currentControllerOption.InputLabelPositions[i] -= new Vector2(256f, 0f);
+                                    currentControllerOption.InputLabelPositions[i] -= InputActionLabelPosition;
                                 }
                                 else
                                 {
-                                    currentControllerOption.InputLabelPositions[i] += new Vector2(256f, 0f);
+                                    currentControllerOption.InputLabelPositions[i] += InputActionLabelPosition;
                                 }
                             }
 
                             if (!isMouseInRects.Any(value => value) || isMouseInRects[i])
                             {
-                                if (Event.current.type == EventType.MouseDrag && rect.Contains(Event.current.mousePosition) && !isMouseInRects[i])
+                                if (Event.current.type == EventType.MouseDrag && labelRect.Contains(Event.current.mousePosition) && !isMouseInRects[i])
                                 {
                                     isMouseInRects[i] = true;
                                     mouseDragOffset = Event.current.mousePosition - currentControllerOption.InputLabelPositions[i];
@@ -794,7 +808,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                     if (EditorGUI.EndChangeCheck())
                     {
-                        MixedRealityInputAction inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
+                        MixedRealityInputAction inputAction = actionId.intValue == 0 ?
+                            MixedRealityInputAction.None :
+                            MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
                         actionId.intValue = (int)inputAction.Id;
                         actionDescription.stringValue = inputAction.Description;
                         actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
