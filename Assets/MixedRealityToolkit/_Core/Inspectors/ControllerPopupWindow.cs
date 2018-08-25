@@ -77,10 +77,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         [SerializeField]
         private Texture2D xboxControllerBlack;
 
-        //[SerializeField]
-        //private Texture2D oculusRemoteControllerWhite;
-        //[SerializeField]
-        //private Texture2D oculusRemoteControllerBlack;
+        [SerializeField]
+        private Texture2D oculusRemoteControllerWhite;
+        [SerializeField]
+        private Texture2D oculusRemoteControllerBlack;
 
         [SerializeField]
         private Texture2D wmrControllerLeftWhite;
@@ -215,15 +215,15 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             #region Oculus Remote Controller
 
-            //if (oculusRemoteControllerWhite == null)
-            //{
-            //    oculusRemoteControllerWhite = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/        .png", typeof(Texture2D));
-            //}
+            if (oculusRemoteControllerWhite == null)
+            {
+                oculusRemoteControllerWhite = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/OculusRemoteController_white.png", typeof(Texture2D));
+            }
 
-            //if (oculusRemoteControllerBlack == null)
-            //{
-            //    oculusRemoteControllerBlack = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/        .png", typeof(Texture2D));
-            //}
+            if (oculusRemoteControllerBlack == null)
+            {
+                oculusRemoteControllerBlack = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/OculusRemoteController_black.png", typeof(Texture2D));
+            }
 
             #endregion Oculus Remote Controller
 
@@ -261,7 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     }
                     break;
                 case SupportedControllerType.OculusRemote:
-                    //currentControllerTexture = EditorGUIUtility.isProSkin ? oculusRemoteControllerWhite : oculusRemoteControllerBlack;
+                    currentControllerTexture = EditorGUIUtility.isProSkin ? oculusRemoteControllerWhite : oculusRemoteControllerBlack;
                     break;
                 case SupportedControllerType.WindowsMixedReality:
                     if (currentHandedness == Handedness.Left)

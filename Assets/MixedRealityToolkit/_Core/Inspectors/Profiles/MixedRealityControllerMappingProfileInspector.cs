@@ -218,6 +218,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                     {
                         ControllerPopupWindow.Show(SupportedControllerType.OculusTouch, interactionsList, (Handedness)controllerHandedness.intValue);
                     }
+                    else if (controllerType == typeof(OculusRemoteController))
+                    {
+                        ControllerPopupWindow.Show(SupportedControllerType.OculusRemote, interactionsList);
+                    }
                     else if (controllerType == typeof(ViveWandController))
                     {
                         ControllerPopupWindow.Show(SupportedControllerType.ViveWand, interactionsList, (Handedness)controllerHandedness.intValue);
