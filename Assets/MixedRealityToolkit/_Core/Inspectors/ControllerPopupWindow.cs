@@ -229,8 +229,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             isCustomController = false;
 
-            flippedLabelStyle = new GUIStyle("Label") { alignment = TextAnchor.UpperRight, stretchWidth = true };
-
             switch (currentControllerType)
             {
                 case SupportedControllerType.None:
@@ -439,6 +437,15 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private void OnGUI()
         {
+            if (flippedLabelStyle == null)
+            {
+                flippedLabelStyle = new GUIStyle("Label")
+                {
+                    alignment = TextAnchor.UpperRight,
+                    stretchWidth = true
+                };
+            }
+
             if (!isCustomController)
             {
                 GUILayout.BeginHorizontal();
@@ -738,6 +745,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     else
                     {
                         var rectPosition = currentControllerOption.InputLabelPositions[i];
+                        var rectSize = InputActionLabelPosition + InputActionDropdownPosition + new Vector2(currentControllerOption.IsLabelFlipped[i] ? 0f : 8f, EditorGUIUtility.singleLineHeight);
+                        GUI.Box(new Rect(rectPosition, rectSize), GUIContent.none, "ObjectPickerBackground");
                         var offset = currentControllerOption.IsLabelFlipped[i] ? InputActionLabelPosition : Vector2.zero;
                         var popupRect = new Rect(rectPosition + offset, new Vector2(InputActionDropdownPosition.x, EditorGUIUtility.singleLineHeight));
 
