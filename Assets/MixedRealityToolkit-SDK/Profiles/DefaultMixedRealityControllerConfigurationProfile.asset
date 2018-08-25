@@ -1121,7 +1121,7 @@ MonoBehaviour:
       axisCodeY: 
       invertYAxis: 0
   - id: 8
-    description: WMR Source Unknown Handedness
+    description: WMR Hand No Handedness
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit

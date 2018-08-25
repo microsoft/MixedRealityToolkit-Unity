@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the pressed button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that pressed the pointer.</param>
-            public void PressPointer(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None)
+            public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None)
             {
                 InputSystem.RaisePointerDown(this, handedness, mixedRealityInputAction);
             }
@@ -241,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the released button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that released the pointer.</param>
-            public void ReleasePointer(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None)
+            public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None)
             {
                 InputSystem.RaisePointerClicked(this, handedness, mixedRealityInputAction, 0);
                 InputSystem.RaisePointerUp(this, handedness, mixedRealityInputAction);
@@ -348,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             {
                 if (eventData.InputSource.Pointers[i].PointerId == GazePointer.PointerId)
                 {
-                    gazePointer.ReleasePointer(eventData.MixedRealityInputAction, eventData.Handedness);
+                    gazePointer.RaisePointerUp(eventData.MixedRealityInputAction, eventData.Handedness);
                     return;
                 }
             }
@@ -360,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             {
                 if (eventData.InputSource.Pointers[i].PointerId == GazePointer.PointerId)
                 {
-                    gazePointer.PressPointer(eventData.MixedRealityInputAction, eventData.Handedness);
+                    gazePointer.RaisePointerDown(eventData.MixedRealityInputAction, eventData.Handedness);
                     return;
                 }
             }
