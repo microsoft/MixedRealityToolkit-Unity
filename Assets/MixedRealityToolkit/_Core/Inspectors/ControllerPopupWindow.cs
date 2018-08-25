@@ -316,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 };
             }
 
-            if (!isCustomController)
+            if (!isCustomController && currentControllerTexture != null)
             {
                 GUILayout.BeginHorizontal();
                 GUI.DrawTexture(ControllerRectPosition, currentControllerTexture);
