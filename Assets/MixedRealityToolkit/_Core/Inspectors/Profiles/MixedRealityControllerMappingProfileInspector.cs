@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                                                              controllerType == typeof(GenericOpenVRController);
                     interactionsList.ClearArray();
                     serializedObject.ApplyModifiedProperties();
-                    thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping();
+                    thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping(true);
                     serializedObject.ApplyModifiedProperties();
                 }
 
@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                     {
                         interactionsList.ClearArray();
                         serializedObject.ApplyModifiedProperties();
-                        thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping();
+                        thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping(true);
                         serializedObject.ApplyModifiedProperties();
                     }
                 }

@@ -1081,9 +1081,9 @@ MonoBehaviour:
       axisType: 7
       inputType: 3
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -1094,9 +1094,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 6
+        description: Trigger
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: AXIS_10
       axisCodeY: 
@@ -1107,9 +1107,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 13
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 345
       axisCodeX: 
       axisCodeY: 
@@ -1133,9 +1133,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: AXIS_12
       axisCodeY: 
@@ -1185,9 +1185,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 7
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 2
+        description: Menu
+        axisConstraint: 2
       keyCode: 330
       axisCodeX: 
       axisCodeY: 
@@ -1208,9 +1208,9 @@ MonoBehaviour:
       axisType: 7
       inputType: 3
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -1221,9 +1221,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 6
+        description: Trigger
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: AXIS_9
       axisCodeY: 
@@ -1234,9 +1234,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 13
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 344
       axisCodeX: 
       axisCodeY: 
@@ -1260,9 +1260,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: AXIS_11
       axisCodeY: 
@@ -1312,9 +1312,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 7
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 2
+        description: Menu
+        axisConstraint: 2
       keyCode: 332
       axisCodeX: 
       axisCodeY: 
@@ -1335,9 +1335,9 @@ MonoBehaviour:
       axisType: 7
       inputType: 3
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -1348,9 +1348,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 6
+        description: Trigger
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: AXIS_10
       axisCodeY: 
@@ -1387,9 +1387,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 13
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 0
       axisCodeX: AXIS_10
       axisCodeY: 
@@ -1400,9 +1400,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: AXIS_12
       axisCodeY: 
@@ -1413,9 +1413,9 @@ MonoBehaviour:
       axisType: 4
       inputType: 17
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 0
       axisCodeX: AXIS_4
       axisCodeY: AXIS_5
@@ -1553,9 +1553,9 @@ MonoBehaviour:
       axisType: 7
       inputType: 3
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -1566,9 +1566,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 6
+        description: Trigger
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: AXIS_9
       axisCodeY: 
@@ -1605,9 +1605,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 13
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 0
       axisCodeX: AXIS_9
       axisCodeY: 
@@ -1618,9 +1618,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 10
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: AXIS_11
       axisCodeY: 
@@ -1631,9 +1631,9 @@ MonoBehaviour:
       axisType: 4
       inputType: 17
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 0
       axisCodeX: AXIS_1
       axisCodeY: AXIS_2

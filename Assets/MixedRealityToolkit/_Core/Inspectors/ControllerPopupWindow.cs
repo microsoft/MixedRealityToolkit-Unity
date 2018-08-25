@@ -81,10 +81,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private static Vector2 horizontalScrollPosition;
 
-        [SerializeField]
         private SerializedProperty currentInteractionList;
 
-        [SerializeField]
         private bool isCustomController;
 
         private ControllerPopupWindow thisWindow;

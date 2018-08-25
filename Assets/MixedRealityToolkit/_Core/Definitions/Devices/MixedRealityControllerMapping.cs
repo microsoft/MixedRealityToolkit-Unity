@@ -106,11 +106,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Sets the default interaction mapping based on the current controller type.
         /// </summary>
-        public void SetDefaultInteractionMapping()
+        public void SetDefaultInteractionMapping(bool overwrite = false)
         {
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, handedness, null, null) as BaseController;
 
-            if (detectedController != null)
+            if (detectedController != null && (interactions == null || interactions.Length == 0 || overwrite))
             {
                 switch (handedness)
                 {
