@@ -72,42 +72,22 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private static Vector2 horizontalScrollPosition;
 
-        [SerializeField]
-        private Texture2D xboxControllerWhite;
-        [SerializeField]
-        private Texture2D xboxControllerBlack;
-
-        [SerializeField]
-        private Texture2D oculusRemoteControllerWhite;
-        [SerializeField]
-        private Texture2D oculusRemoteControllerBlack;
-
-        [SerializeField]
-        private Texture2D wmrControllerLeftWhite;
-        [SerializeField]
-        private Texture2D wmrControllerLeftBlack;
-        [SerializeField]
-        private Texture2D wmrControllerRightWhite;
-        [SerializeField]
-        private Texture2D wmrControllerRightBlack;
-
-        [SerializeField]
-        private Texture2D touchControllerLeftWhite;
-        [SerializeField]
-        private Texture2D touchControllerLeftBlack;
-        [SerializeField]
-        private Texture2D touchControllerRightWhite;
-        [SerializeField]
-        private Texture2D touchControllerRightBlack;
-
-        [SerializeField]
-        private Texture2D viveWandControllerLeftWhite;
-        [SerializeField]
-        private Texture2D viveWandControllerLeftBlack;
-        [SerializeField]
-        private Texture2D viveWandControllerRightWhite;
-        [SerializeField]
-        private Texture2D viveWandControllerRightBlack;
+        private static Texture2D xboxControllerWhite;
+        private static Texture2D xboxControllerBlack;
+        private static Texture2D oculusRemoteControllerWhite;
+        private static Texture2D oculusRemoteControllerBlack;
+        private static Texture2D wmrControllerLeftWhite;
+        private static Texture2D wmrControllerLeftBlack;
+        private static Texture2D wmrControllerRightWhite;
+        private static Texture2D wmrControllerRightBlack;
+        private static Texture2D touchControllerLeftWhite;
+        private static Texture2D touchControllerLeftBlack;
+        private static Texture2D touchControllerRightWhite;
+        private static Texture2D touchControllerRightBlack;
+        private static Texture2D viveWandControllerLeftWhite;
+        private static Texture2D viveWandControllerLeftBlack;
+        private static Texture2D viveWandControllerRightWhite;
+        private static Texture2D viveWandControllerRightBlack;
 
         [SerializeField]
         private SerializedProperty currentInteractionList;
@@ -746,7 +726,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     {
                         var rectPosition = currentControllerOption.InputLabelPositions[i];
                         var rectSize = InputActionLabelPosition + InputActionDropdownPosition + new Vector2(currentControllerOption.IsLabelFlipped[i] ? 0f : 8f, EditorGUIUtility.singleLineHeight);
-                        GUI.Box(new Rect(rectPosition, rectSize), GUIContent.none, "ObjectPickerBackground");
+                        GUI.Box(new Rect(rectPosition, rectSize), GUIContent.none, EditorGUIUtility.isProSkin ? "ObjectPickerBackground" : "ObjectPickerResultsEven");
                         var offset = currentControllerOption.IsLabelFlipped[i] ? InputActionLabelPosition : Vector2.zero;
                         var popupRect = new Rect(rectPosition + offset, new Vector2(InputActionDropdownPosition.x, EditorGUIUtility.singleLineHeight));
 
