@@ -34,7 +34,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static readonly GUIContent KeyCodeContent = new GUIContent("KeyCode", "Unity Input KeyCode id to listen for.");
         private static readonly GUIContent XAxisContent = new GUIContent("X Axis", "Horizontal Axis to listen for.");
         private static readonly GUIContent YAxisContent = new GUIContent("Y Axis", "Vertical Axis to listen for.");
-        private static readonly GUIContent InvertYAxisContent = new GUIContent("Invert Y Axis?");
+        private static readonly GUIContent InvertContent = new GUIContent("Invert", "Should an Axis be inverted?");
+        private static readonly GUIContent[] InvertAxisContent =
+        {
+            new GUIContent("None"),
+            new GUIContent("Invert X"),
+            new GUIContent("Invert Y"),
+            new GUIContent("Both")
+        };
+
+        private static readonly int[] InvertAxisValues = { 0, 1, 2, 3 };
 
         private static readonly Vector2 InputActionLabelPosition = new Vector2(256f, 0f);
         private static readonly Vector2 InputActionDropdownPosition = new Vector2(88f, 0f);
@@ -559,6 +568,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     EditorGUILayout.PropertyField(inputType, GUIContent.none, GUILayout.Width(InputActionLabelWidth));
                     var axisType = interaction.FindPropertyRelative("axisType");
                     EditorGUILayout.PropertyField(axisType, GUIContent.none, GUILayout.Width(InputActionLabelWidth));
+                    var invertXAxis = interaction.FindPropertyRelative("invertXAxis");
                     var invertYAxis = interaction.FindPropertyRelative("invertYAxis");
                     var interactionAxisConstraint = interaction.FindPropertyRelative("axisType");
 
@@ -626,10 +636,46 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     {
                         if ((AxisType)axisType.intValue == AxisType.DualAxis)
                         {
-                            EditorGUIUtility.labelWidth = InputActionLabelWidth - 14f;
-                            EditorGUIUtility.fieldWidth = 8f;
+                            EditorGUIUtility.labelWidth = InputActionLabelWidth * 0.5f;
+                            EditorGUIUtility.fieldWidth = InputActionLabelWidth * 0.5f;
 
-                            EditorGUILayout.PropertyField(invertYAxis, InvertYAxisContent, GUILayout.Width(InputActionLabelWidth));
+                            int currentAxisSetting = 0;
+
+                            if (invertXAxis.boolValue)
+                            {
+                                currentAxisSetting += 1;
+                            }
+
+                            if (invertYAxis.boolValue)
+                            {
+                                currentAxisSetting += 2;
+                            }
+
+                            EditorGUI.BeginChangeCheck();
+                            currentAxisSetting = EditorGUILayout.IntPopup(InvertContent, currentAxisSetting, InvertAxisContent, InvertAxisValues, GUILayout.Width(InputActionLabelWidth));
+
+                            if (EditorGUI.EndChangeCheck())
+                            {
+                                switch (currentAxisSetting)
+                                {
+                                    case 0:
+                                        invertXAxis.boolValue = false;
+                                        invertYAxis.boolValue = false;
+                                        break;
+                                    case 1:
+                                        invertXAxis.boolValue = true;
+                                        invertYAxis.boolValue = false;
+                                        break;
+                                    case 2:
+                                        invertXAxis.boolValue = false;
+                                        invertYAxis.boolValue = true;
+                                        break;
+                                    case 3:
+                                        invertXAxis.boolValue = true;
+                                        invertYAxis.boolValue = true;
+                                        break;
+                                }
+                            }
 
                             EditorGUIUtility.labelWidth = defaultLabelWidth;
                             EditorGUIUtility.fieldWidth = defaultFieldWidth;
