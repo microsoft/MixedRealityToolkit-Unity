@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace UnityGLTF
 {
+
     /// <summary>
     /// Component to load a GLTF scene with
     /// </summary>
@@ -21,27 +22,17 @@ namespace UnityGLTF
 
         public bool addColliders = false;
 
-        public Stream GLTFStream = null;
-
-        public bool IsLoaded { get; set; }
-
         IEnumerator Start()
         {
             GLTFSceneImporter loader = null;
-
+            FileStream gltfStream = null;
             if (UseStream)
             {
-                string fullPath = "";
-
-                if (GLTFStream == null)
-                {
-                    fullPath = Path.Combine(Application.streamingAssetsPath, Url);
-                    GLTFStream = File.OpenRead(fullPath);
-                }
-
+                var fullPath = Path.Combine(Application.streamingAssetsPath, Url);
+                gltfStream = File.OpenRead(fullPath);
                 loader = new GLTFSceneImporter(
                     fullPath,
-                    GLTFStream,
+                    gltfStream,
                     gameObject.transform,
                     addColliders
                     );
@@ -60,26 +51,13 @@ namespace UnityGLTF
             loader.SetShaderForMaterialType(GLTFSceneImporter.MaterialType.CommonConstant, GLTFConstant);
             loader.MaximumLod = MaximumLod;
             yield return loader.Load(-1, Multithreaded);
-
-            if (GLTFStream != null)
+            if (gltfStream != null)
             {
 #if WINDOWS_UWP
-                GLTFStream.Dispose();
+                gltfStream.Dispose();
 #else
-                GLTFStream.Close();
+                gltfStream.Close();
 #endif
-
-                GLTFStream = null;
-            }
-            
-            IsLoaded = true;
-        }
-
-        public IEnumerator WaitForModelLoad()
-        {
-            while (!IsLoaded)
-            {
-                yield return null;
             }
         }
     }
