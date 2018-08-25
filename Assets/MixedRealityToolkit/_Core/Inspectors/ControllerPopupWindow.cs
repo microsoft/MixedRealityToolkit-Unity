@@ -81,23 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private static Vector2 horizontalScrollPosition;
 
-        private static Texture2D xboxControllerWhite;
-        private static Texture2D xboxControllerBlack;
-        private static Texture2D oculusRemoteControllerWhite;
-        private static Texture2D oculusRemoteControllerBlack;
-        private static Texture2D wmrControllerLeftWhite;
-        private static Texture2D wmrControllerLeftBlack;
-        private static Texture2D wmrControllerRightWhite;
-        private static Texture2D wmrControllerRightBlack;
-        private static Texture2D touchControllerLeftWhite;
-        private static Texture2D touchControllerLeftBlack;
-        private static Texture2D touchControllerRightWhite;
-        private static Texture2D touchControllerRightBlack;
-        private static Texture2D viveWandControllerLeftWhite;
-        private static Texture2D viveWandControllerLeftBlack;
-        private static Texture2D viveWandControllerRightWhite;
-        private static Texture2D viveWandControllerRightBlack;
-
         [SerializeField]
         private SerializedProperty currentInteractionList;
 
@@ -116,106 +99,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private void OnFocus()
         {
-            #region Xbox Controller
-
-            if (xboxControllerWhite == null)
-            {
-                xboxControllerWhite = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/XboxController_white.png", typeof(Texture2D));
-            }
-
-            if (xboxControllerBlack == null)
-            {
-                xboxControllerBlack = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/XboxController_black.png", typeof(Texture2D));
-            }
-
-            #endregion Xbox Controller
-
-            #region Windows Mixed Reality Controller
-
-            if (wmrControllerLeftWhite == null)
-            {
-                wmrControllerLeftWhite = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/MotionController_left_white.png", typeof(Texture2D));
-            }
-
-            if (wmrControllerLeftBlack == null)
-            {
-                wmrControllerLeftBlack = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/MotionController_left_black.png", typeof(Texture2D));
-            }
-
-            if (wmrControllerRightWhite == null)
-            {
-                wmrControllerRightWhite = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/MotionController_right_white.png", typeof(Texture2D));
-            }
-
-            if (wmrControllerRightBlack == null)
-            {
-                wmrControllerRightBlack = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/MotionController_right_black.png", typeof(Texture2D));
-            }
-
-            #endregion Windows Mixed Reality Controller
-
-            #region Touch Controller
-
-            if (touchControllerLeftWhite == null)
-            {
-                touchControllerLeftWhite = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/OculusControllersTouch_left_white.png", typeof(Texture2D));
-            }
-
-            if (touchControllerLeftBlack == null)
-            {
-                touchControllerLeftBlack = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/OculusControllersTouch_left_black.png", typeof(Texture2D));
-            }
-
-            if (touchControllerRightWhite == null)
-            {
-                touchControllerRightWhite = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/OculusControllersTouch_right_white.png", typeof(Texture2D));
-            }
-
-            if (touchControllerRightBlack == null)
-            {
-                touchControllerRightBlack = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/OculusControllersTouch_right_black.png", typeof(Texture2D));
-            }
-
-            #endregion Touch Controller
-
-            #region Vive Want Controller
-
-            if (viveWandControllerLeftWhite == null)
-            {
-                viveWandControllerLeftWhite = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/ViveWandController_left_white.png", typeof(Texture2D));
-            }
-
-            if (viveWandControllerLeftBlack == null)
-            {
-                viveWandControllerLeftBlack = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/ViveWandController_left_black.png", typeof(Texture2D));
-            }
-
-            if (viveWandControllerRightWhite == null)
-            {
-                viveWandControllerRightWhite = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/ViveWandController_right_white.png", typeof(Texture2D));
-            }
-
-            if (viveWandControllerRightBlack == null)
-            {
-                viveWandControllerRightBlack = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/ViveWandController_right_black.png", typeof(Texture2D));
-            }
-
-            #endregion Vive Want Controller
-
-            #region Oculus Remote Controller
-
-            if (oculusRemoteControllerWhite == null)
-            {
-                oculusRemoteControllerWhite = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/OculusRemoteController_white.png", typeof(Texture2D));
-            }
-
-            if (oculusRemoteControllerBlack == null)
-            {
-                oculusRemoteControllerBlack = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/OculusRemoteController_black.png", typeof(Texture2D));
-            }
-
-            #endregion Oculus Remote Controller
-
             isCustomController = false;
 
             switch (currentControllerType)
@@ -228,11 +111,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 case SupportedControllerType.ViveWand:
                     if (currentHandedness == Handedness.Left)
                     {
-                        currentControllerTexture = EditorGUIUtility.isProSkin ? viveWandControllerLeftWhite : viveWandControllerLeftBlack;
+                        currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.ViveWandControllerLeftWhite : ControllerMappingLibrary.ViveWandControllerLeftBlack;
                     }
                     else if (currentHandedness == Handedness.Right)
                     {
-                        currentControllerTexture = EditorGUIUtility.isProSkin ? viveWandControllerRightWhite : viveWandControllerRightBlack;
+                        currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.ViveWandControllerRightWhite : ControllerMappingLibrary.ViveWandControllerRightBlack;
                     }
                     break;
                 case SupportedControllerType.ViveKnuckles:
@@ -240,31 +123,31 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 case SupportedControllerType.OculusTouch:
                     if (currentHandedness == Handedness.Left)
                     {
-                        currentControllerTexture = EditorGUIUtility.isProSkin ? touchControllerLeftWhite : touchControllerLeftBlack;
+                        currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.TouchControllerLeftWhite : ControllerMappingLibrary.TouchControllerLeftBlack;
                     }
                     else if (currentHandedness == Handedness.Right)
                     {
-                        currentControllerTexture = EditorGUIUtility.isProSkin ? touchControllerRightWhite : touchControllerRightBlack;
+                        currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.TouchControllerRightWhite : ControllerMappingLibrary.TouchControllerRightBlack;
                     }
                     break;
                 case SupportedControllerType.OculusRemote:
-                    currentControllerTexture = EditorGUIUtility.isProSkin ? oculusRemoteControllerWhite : oculusRemoteControllerBlack;
+                    currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.OculusRemoteControllerWhite : ControllerMappingLibrary.OculusRemoteControllerBlack;
                     break;
                 case SupportedControllerType.WindowsMixedReality:
                     if (currentHandedness == Handedness.Left)
                     {
-                        currentControllerTexture = EditorGUIUtility.isProSkin ? wmrControllerLeftWhite : wmrControllerLeftBlack;
+                        currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.WmrControllerLeftWhite : ControllerMappingLibrary.WmrControllerLeftBlack;
                     }
                     else if (currentHandedness == Handedness.Right)
                     {
-                        currentControllerTexture = EditorGUIUtility.isProSkin ? wmrControllerRightWhite : wmrControllerRightBlack;
+                        currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.WmrControllerRightWhite : ControllerMappingLibrary.WmrControllerRightBlack;
                     }
                     break;
                 case SupportedControllerType.GenericUnityDevice:
                     isCustomController = true;
                     break;
                 case SupportedControllerType.XboxController:
-                    currentControllerTexture = EditorGUIUtility.isProSkin ? xboxControllerWhite : xboxControllerBlack;
+                    currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.XboxControllerWhite : ControllerMappingLibrary.XboxControllerBlack;
                     break;
             }
 
