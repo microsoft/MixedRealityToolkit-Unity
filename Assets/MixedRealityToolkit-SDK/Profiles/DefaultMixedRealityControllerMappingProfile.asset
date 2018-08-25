@@ -1784,9 +1784,9 @@ MonoBehaviour:
       axisType: 4
       inputType: 49
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
       keyCode: 0
       axisCodeX: AXIS_5
       axisCodeY: AXIS_6
@@ -1797,9 +1797,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 7
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 1
+        description: Select
+        axisConstraint: 2
       keyCode: 330
       axisCodeX: 
       axisCodeY: 
@@ -1810,9 +1810,9 @@ MonoBehaviour:
       axisType: 2
       inputType: 7
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 2
+        description: Menu
+        axisConstraint: 2
       keyCode: 331
       axisCodeX: 
       axisCodeY: 
