@@ -411,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                 if (controllerInputActionOptions.Controllers.Any(option => option.Controller == controllerType && option.Handedness == handedness))
                 {
-                    window.currentControllerOption = controllerInputActionOptions.Controllers.First(option => option.Controller == controllerType && option.Handedness == handedness);
+                    window.currentControllerOption = controllerInputActionOptions.Controllers.FirstOrDefault(option => option.Controller == controllerType && option.Handedness == handedness);
 
                     if (window.currentControllerOption != null && window.currentControllerOption.IsLabelFlipped == null)
                     {
@@ -456,15 +456,15 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
         }
 
-        private void RenderInteractionList(SerializedProperty list, bool useCustomInteractionMapping)
+        private void RenderInteractionList(SerializedProperty interactionList, bool useCustomInteractionMapping)
         {
-            if (list == null) { throw new Exception(); }
+            if (interactionList == null) { throw new Exception(); }
 
-            bool noInteractions = list.arraySize == 0;
+            bool noInteractions = interactionList.arraySize == 0;
 
-            if (currentControllerOption != null && (currentControllerOption.IsLabelFlipped == null || currentControllerOption.IsLabelFlipped.Length != list.arraySize))
+            if (currentControllerOption != null && (currentControllerOption.IsLabelFlipped == null || currentControllerOption.IsLabelFlipped.Length != interactionList.arraySize))
             {
-                currentControllerOption.IsLabelFlipped = new bool[list.arraySize];
+                currentControllerOption.IsLabelFlipped = new bool[interactionList.arraySize];
             }
 
             GUILayout.BeginVertical();
@@ -478,8 +478,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             {
                 if (GUILayout.Button(InteractionAddButtonContent))
                 {
-                    list.arraySize += 1;
-                    var interaction = list.GetArrayElementAtIndex(list.arraySize - 1);
+                    interactionList.arraySize += 1;
+                    var interaction = interactionList.GetArrayElementAtIndex(interactionList.arraySize - 1);
                     var axisType = interaction.FindPropertyRelative("axisType");
                     axisType.enumValueIndex = 0;
                     var inputType = interaction.FindPropertyRelative("inputType");
@@ -560,10 +560,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             GUILayout.EndHorizontal();
 
-            for (int i = 0; i < list.arraySize; i++)
+            for (int i = 0; i < interactionList.arraySize; i++)
             {
                 EditorGUILayout.BeginHorizontal();
-                SerializedProperty interaction = list.GetArrayElementAtIndex(i);
+                SerializedProperty interaction = interactionList.GetArrayElementAtIndex(i);
 
                 if (useCustomInteractionMapping)
                 {
@@ -676,7 +676,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                     if (GUILayout.Button(InteractionMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.ExpandWidth(true)))
                     {
-                        list.DeleteArrayElementAtIndex(i);
+                        interactionList.DeleteArrayElementAtIndex(i);
                     }
                 }
                 else
@@ -799,7 +799,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         actionId.intValue = (int)inputAction.Id;
                         actionDescription.stringValue = inputAction.Description;
                         actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
-                        list.serializedObject.ApplyModifiedProperties();
+                        interactionList.serializedObject.ApplyModifiedProperties();
                     }
                 }
 
@@ -809,7 +809,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             if (useCustomInteractionMapping)
             {
                 EditorGUILayout.EndScrollView();
-                list.serializedObject.ApplyModifiedProperties();
+                interactionList.serializedObject.ApplyModifiedProperties();
             }
 
             GUILayout.EndVertical();

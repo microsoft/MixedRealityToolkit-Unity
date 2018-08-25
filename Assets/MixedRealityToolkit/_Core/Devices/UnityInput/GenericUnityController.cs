@@ -129,6 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
                     // Update the interaction data source
                     interactionMapping.BoolData = singleAxisValue.Equals(1);
                     break;
+                case DeviceInputType.TriggerTouch:
                 case DeviceInputType.TriggerNearTouch:
                 case DeviceInputType.ThumbNearTouch:
                 case DeviceInputType.IndexFingerNearTouch:
