@@ -241,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             #endregion  Interaction Constraint Setup
         }
 
-        public static void Show(SupportedControllerType controllerType, SerializedProperty controllerList, SerializedProperty interactionsList, Handedness handedness = Handedness.None)
+        public static void Show(SupportedControllerType controllerType, SerializedProperty interactionsList, Handedness handedness = Handedness.None)
         {
             window = (ControllerPopupWindow)GetWindow(typeof(ControllerPopupWindow));
             window.Close();

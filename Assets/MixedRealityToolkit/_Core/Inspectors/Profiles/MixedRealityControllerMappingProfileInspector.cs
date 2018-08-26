@@ -308,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                 if (GUILayout.Button("Edit Input Action Map"))
                 {
-                    ControllerPopupWindow.Show(supportedControllerType, controllerList, interactionsList, (Handedness)controllerHandedness.intValue);
+                    ControllerPopupWindow.Show(supportedControllerType, interactionsList, (Handedness)controllerHandedness.intValue);
                 }
 
                 if (useCustomInteractionMappings.boolValue)
