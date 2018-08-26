@@ -117,7 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         UpdateTriggerData(interactionSourceState, Interactions[i]);
                         break;
                     case DeviceInputType.SpatialGrip:
-                    case DeviceInputType.ButtonPress:
                         UpdateGripData(interactionSourceState, Interactions[i]);
                         break;
                     case DeviceInputType.ThumbStick:
@@ -266,26 +265,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
                         }
                     }
                     break;
-                case AxisType.Digital:
-                    {
-                        //Update the interaction data source
-                        interactionMapping.BoolData = interactionSourceState.grasped;
-
-                        // If our value changed raise it.
-                        if (interactionMapping.Changed)
-                        {
-                            // Raise input system Event if it enabled
-                            if (interactionSourceState.grasped)
-                            {
-                                InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
-                            else
-                            {
-                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                            }
-                        }
-                    }
-                    break;
             }
         }
 
@@ -409,6 +388,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.TriggerPress:
+                    //Update the interaction data source
+                    interactionMapping.BoolData = interactionSourceState.grasped;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system Event if it enabled
+                        if (interactionSourceState.grasped)
+                        {
+                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                        else
+                        {
+                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
+
+                    break;
                 case DeviceInputType.Select:
                     {
                         // Update the interaction data source
