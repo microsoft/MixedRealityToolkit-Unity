@@ -211,32 +211,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Enable Gesture Input for your application.")]
-        private bool enableGestureInput = false;
-
-        /// <summary>
-        /// Enable and configure the speech commands for your application.
-        /// </summary>
-        public bool IsGestureInputEnabled
-        {
-            get { return gestureInputSourceProfile != null && enableGestureInput && enableInputSystem; }
-            private set { enableGestureInput = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Gesture Input Source profile for wiring up actions.")]
-        private MixedRealityGestureInputProfile gestureInputSourceProfile;
-
-        /// <summary>
-        /// Gesture Input Source profile for wiring up actions.
-        /// </summary>
-        public MixedRealityGestureInputProfile GestureInputSourceProfile
-        {
-            get { return gestureInputSourceProfile; }
-            private set { gestureInputSourceProfile = value; }
-        }
-
-        [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]
         private bool enableControllerMapping = false;
 
