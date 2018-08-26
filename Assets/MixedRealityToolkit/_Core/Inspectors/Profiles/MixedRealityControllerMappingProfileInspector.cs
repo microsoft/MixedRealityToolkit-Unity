@@ -57,6 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private float defaultLabelWidth;
         private float defaultFieldWidth;
         private GUIStyle ControllerButtonStyle;
+        private bool flipHorizontal = false;
 
         private List<ControllerRenderProfile> controllerRenderList = new List<ControllerRenderProfile>();
 
@@ -115,8 +116,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 {
                     wordWrap = true,
                     imagePosition = ImagePosition.ImageAbove,
-                    stretchHeight = true,
-                    stretchWidth = true
+                    fixedHeight = 150f,
+                    fixedWidth = 150f,
+                    fontSize = 10,
+                    fontStyle = FontStyle.Bold
                 };
             }
 
@@ -242,12 +245,20 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                 if (useCustomInteractionMappings.boolValue)
                 {
+                    //If there are an odd number of controllers, finish the last controller image section.
+                    if (flipHorizontal)
+                    {
+                        GUILayout.EndHorizontal();
+                        flipHorizontal = false;
+                        GUILayout.Space(24f);
+                    }
+
                     EditorGUILayout.BeginVertical();
                     EditorGUILayout.BeginHorizontal();
 
                     EditorGUIUtility.labelWidth = 64f;
                     EditorGUIUtility.fieldWidth = 64f;
-                    EditorGUILayout.LabelField(handednessTitleText);
+                    EditorGUILayout.LabelField(controllerTitle);
                     EditorGUIUtility.fieldWidth = defaultFieldWidth;
                     EditorGUIUtility.labelWidth = defaultLabelWidth;
 
@@ -347,10 +358,26 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                         controllerTitle = "HoloLens Gestures";
                     }
 
+                    //Bool flip for placing controller images side by side
+                    if(!flipHorizontal)
+                    {
+                        GUILayout.BeginHorizontal();
+                        flipHorizontal = true;
+                    }
+                    else
+                    {
+                        flipHorizontal = false;
+                    }
 
-                    if (GUILayout.Button(new GUIContent(controllerTitle, ControllerMappingLibrary.GetControllerTexture(supportedControllerType, handedness)), ControllerButtonStyle, GUILayout.Height(256f), GUILayout.Width(256f), GUILayout.ExpandWidth(true)))
+                    if (GUILayout.Button(new GUIContent(controllerTitle, ControllerMappingLibrary.GetControllerTexture(supportedControllerType, handedness)), ControllerButtonStyle))
                     {
                         ControllerPopupWindow.Show(supportedControllerType, interactionsList, (Handedness)controllerHandedness.intValue);
+                    }
+
+                    //If this is the end of the Row, flip the horizontal back to vertical
+                    if (!flipHorizontal)
+                    {
+                        GUILayout.EndHorizontal();
                     }
                 }
 
