@@ -69,19 +69,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         [Tooltip("The list of controller templates your application can use.")]
         private MixedRealityControllerMapping[] mixedRealityControllerMappingProfiles =
         {
-            new MixedRealityControllerMapping(0, "Xbox Controller", typeof(XboxController)),
+            new MixedRealityControllerMapping(0, "Windows Mixed Reality Motion Controller Left", typeof(WindowsMixedRealityController), Handedness.Left),
             new MixedRealityControllerMapping(1, "Windows Mixed Reality Motion Controller Right", typeof(WindowsMixedRealityController), Handedness.Right),
-            new MixedRealityControllerMapping(2, "Windows Mixed Reality Motion Controller Left", typeof(WindowsMixedRealityController), Handedness.Left),
-            new MixedRealityControllerMapping(2, "Windows Mixed Reality Hand Gestures", typeof(WindowsMixedRealityController)),
+            new MixedRealityControllerMapping(2, "Open VR Motion Controller Left", typeof(WindowsMixedRealityOpenVRMotionController), Handedness.Left),
             new MixedRealityControllerMapping(3, "Open VR Motion Controller Right", typeof(WindowsMixedRealityOpenVRMotionController), Handedness.Right),
-            new MixedRealityControllerMapping(4, "Open VR Motion Controller Left", typeof(WindowsMixedRealityOpenVRMotionController), Handedness.Left),
+            new MixedRealityControllerMapping(4, "Vive Wand Controller Left", typeof(ViveWandController), Handedness.Left),
             new MixedRealityControllerMapping(5, "Vive Wand Controller Right", typeof(ViveWandController), Handedness.Right),
-            new MixedRealityControllerMapping(6, "Vive Wand Controller Left", typeof(ViveWandController), Handedness.Left),
+            new MixedRealityControllerMapping(6, "Oculus Touch Controller Left", typeof(OculusTouchController), Handedness.Left),
             new MixedRealityControllerMapping(7, "Oculus Touch Controller Right", typeof(OculusTouchController), Handedness.Right),
-            new MixedRealityControllerMapping(8, "Oculus Touch Controller Left", typeof(OculusTouchController), Handedness.Left),
-            new MixedRealityControllerMapping(9, "Oculus Remote Controller", typeof(OculusRemoteController)),
-            new MixedRealityControllerMapping(10, "Generic OpenVR Controller Right", typeof(GenericOpenVRController), Handedness.Right, true),
-            new MixedRealityControllerMapping(11, "Generic OpenVR Controller Left", typeof(GenericOpenVRController), Handedness.Left, true),
+            new MixedRealityControllerMapping(8, "Xbox Controller", typeof(XboxController)),
+            new MixedRealityControllerMapping(9, "Windows Mixed Reality Hand Gestures", typeof(WindowsMixedRealityController)),
+            new MixedRealityControllerMapping(10, "Oculus Remote Controller", typeof(OculusRemoteController)),
+            new MixedRealityControllerMapping(11, "Generic OpenVR Controller Right", typeof(GenericOpenVRController), Handedness.Right, true),
+            new MixedRealityControllerMapping(12, "Generic OpenVR Controller Left", typeof(GenericOpenVRController), Handedness.Left, true),
         };
 
         public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappingProfiles;
