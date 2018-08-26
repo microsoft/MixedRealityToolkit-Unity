@@ -164,9 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 useCustomInteractionMappings.boolValue = true;
                 mixedRealityControllerInteractions.ClearArray();
                 serializedObject.ApplyModifiedProperties();
-
                 thisProfile.MixedRealityControllerMappingProfiles[controllerList.arraySize - 1].ControllerType.Type = typeof(GenericUnityController);
-                serializedObject.ApplyModifiedProperties();
                 return;
             }
 
