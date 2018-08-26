@@ -512,6 +512,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                             EditorGUIUtility.labelWidth = defaultLabelWidth;
                             EditorGUIUtility.fieldWidth = defaultFieldWidth;
                         }
+                        else if ((AxisType)axisType.intValue == AxisType.SingleAxis)
+                        {
+                            invertXAxis.boolValue = EditorGUILayout.ToggleLeft("Invert X", invertXAxis.boolValue, GUILayout.Width(InputActionLabelWidth));
+                            EditorGUIUtility.labelWidth = defaultLabelWidth;
+                        }
                         else
                         {
                             EditorGUILayout.LabelField(GUIContent.none, GUILayout.Width(InputActionLabelWidth));

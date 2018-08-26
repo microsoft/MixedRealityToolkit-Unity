@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty globalRightHandModel;
         private float defaultLabelWidth;
         private float defaultFieldWidth;
-        private GUIStyle ControllerButtonStyle;
+        private GUIStyle controllerButtonStyle;
 
         private List<ControllerRenderProfile> controllerRenderList = new List<ControllerRenderProfile>();
 
@@ -110,9 +110,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 return;
             }
 
-            if (ControllerButtonStyle == null)
+            if (controllerButtonStyle == null)
             {
-                ControllerButtonStyle = new GUIStyle("LargeButton")
+                controllerButtonStyle = new GUIStyle("LargeButton")
                 {
                     imagePosition = ImagePosition.ImageAbove,
                     fontStyle = FontStyle.Bold,
@@ -348,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                     var buttonContent = new GUIContent(controllerTitle, ControllerMappingLibrary.GetControllerTextureScaled(supportedControllerType, handedness));
 
-                    if (GUILayout.Button(buttonContent, ControllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32f), GUILayout.ExpandWidth(true)))
+                    if (GUILayout.Button(buttonContent, controllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32f), GUILayout.ExpandWidth(true)))
                     {
                         ControllerPopupWindow.Show(supportedControllerType, interactionsList, (Handedness)controllerHandedness.intValue);
                     }
