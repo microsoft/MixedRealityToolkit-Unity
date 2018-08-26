@@ -57,7 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private float defaultLabelWidth;
         private float defaultFieldWidth;
         private GUIStyle ControllerButtonStyle;
-        private bool flipHorizontal = false;
 
         private List<ControllerRenderProfile> controllerRenderList = new List<ControllerRenderProfile>();
 
@@ -104,6 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
                 return;
             }
+
             if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null)
             {
                 EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
@@ -114,12 +114,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             {
                 ControllerButtonStyle = new GUIStyle("LargeButton")
                 {
-                    wordWrap = true,
                     imagePosition = ImagePosition.ImageAbove,
-                    fixedHeight = 150f,
-                    fixedWidth = 150f,
+                    fontStyle = FontStyle.Bold,
+                    stretchHeight = true,
+                    stretchWidth = true,
+                    wordWrap = true,
                     fontSize = 10,
-                    fontStyle = FontStyle.Bold
                 };
             }
 
@@ -238,6 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 }
 
                 if (skip) { continue; }
+
                 controllerRenderList.Add(new ControllerRenderProfile(supportedControllerType, handedness, thisProfile.MixedRealityControllerMappingProfiles[i].Interactions, useDefaultModel.boolValue, controllerModel.objectReferenceValue));
 
                 var handednessTitleText = handedness != Handedness.None ? $"{handedness} Hand " : string.Empty;
@@ -245,13 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                 if (useCustomInteractionMappings.boolValue)
                 {
-                    //If there are an odd number of controllers, finish the last controller image section.
-                    if (flipHorizontal)
-                    {
-                        GUILayout.EndHorizontal();
-                        flipHorizontal = false;
-                        GUILayout.Space(24f);
-                    }
+                    GUILayout.Space(24f);
 
                     EditorGUILayout.BeginVertical();
                     EditorGUILayout.BeginHorizontal();
@@ -358,30 +353,25 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                         controllerTitle = "HoloLens Gestures";
                     }
 
-                    //Bool flip for placing controller images side by side
-                    if(!flipHorizontal)
+                    if (handedness != Handedness.Right)
                     {
                         GUILayout.BeginHorizontal();
-                        flipHorizontal = true;
-                    }
-                    else
-                    {
-                        flipHorizontal = false;
                     }
 
-                    if (GUILayout.Button(new GUIContent(controllerTitle, ControllerMappingLibrary.GetControllerTexture(supportedControllerType, handedness)), ControllerButtonStyle))
+                    var buttonContent = new GUIContent(controllerTitle, ControllerMappingLibrary.GetControllerTextureScaled(supportedControllerType, handedness));
+
+                    if (GUILayout.Button(buttonContent, ControllerButtonStyle, GUILayout.Height(128f), GUILayout.MinWidth(32f), GUILayout.ExpandWidth(true)))
                     {
                         ControllerPopupWindow.Show(supportedControllerType, interactionsList, (Handedness)controllerHandedness.intValue);
                     }
 
-                    //If this is the end of the Row, flip the horizontal back to vertical
-                    if (!flipHorizontal)
+                    if (handedness != Handedness.Left)
                     {
                         GUILayout.EndHorizontal();
                     }
                 }
 
-                GUILayout.Space(24f);
+                GUILayout.Space(8f);
             }
 
             GUILayout.EndVertical();
