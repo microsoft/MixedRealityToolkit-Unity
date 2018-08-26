@@ -187,6 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         #endregion Constants
 
 #if UNITY_EDITOR
+
         #region InputAxisConfig
 
         /// <summary>
@@ -223,6 +224,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             new InputManagerAxis { Name = AXIS_26, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 26 },
             new InputManagerAxis { Name = AXIS_27, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 27 }
         };
+
+        #endregion InputAxisConfig
 
         #region Controller Image Resources
 
@@ -706,8 +709,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         }
 
         #endregion Controller Image Resources
-
-        #endregion InputAxisConfig
 
         public static Texture2D GetControllerTexture(SupportedControllerType currentControllerType, Handedness handedness)
         {
