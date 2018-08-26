@@ -273,32 +273,49 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                     EditorGUI.BeginChangeCheck();
 
-                    int currentGenericType = 0;
+                    int currentGenericType = -1;
+
+                    if (controllerType == typeof(GenericUnityController))
+                    {
+                        currentGenericType = 0;
+                    }
 
                     if (controllerType == typeof(GenericOpenVRController))
                     {
                         currentGenericType = 1;
                     }
 
+                    Debug.Assert(currentGenericType != -1);
+
                     currentGenericType = EditorGUILayout.IntPopup(GenericTypeContent, currentGenericType, GenericTypeListContent, GenericTypeIds);
-                    EditorGUILayout.PropertyField(controllerHandedness);
+
+                    if (controllerType != typeof(GenericUnityController))
+                    {
+                        EditorGUILayout.PropertyField(controllerHandedness);
+                    }
 
                     if (EditorGUI.EndChangeCheck())
                     {
                         switch (currentGenericType)
                         {
                             case 0:
-                                thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type = typeof(GenericUnityController);
+                                controllerType = typeof(GenericUnityController);
                                 controllerHandedness.intValue = 0;
                                 break;
                             case 1:
-                                thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type = typeof(GenericOpenVRController);
+                                controllerType = typeof(GenericOpenVRController);
                                 break;
                         }
 
-                        serializedObject.ApplyModifiedProperties();
                         interactionsList.ClearArray();
                         serializedObject.ApplyModifiedProperties();
+                        thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type = controllerType;
+                        GUILayout.EndVertical();
+                        return;
+                    }
+
+                    if (interactionsList.arraySize == 0 && controllerType == typeof(GenericOpenVRController))
+                    {
                         thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping(true);
                         serializedObject.ApplyModifiedProperties();
                     }
