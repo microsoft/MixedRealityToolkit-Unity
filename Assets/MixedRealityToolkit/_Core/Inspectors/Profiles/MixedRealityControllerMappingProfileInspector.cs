@@ -148,6 +148,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
         private void RenderControllerProfilesList(SerializedProperty controllerList, bool renderControllerModels)
         {
+            if (thisProfile.MixedRealityControllerMappingProfiles.Length != controllerList.arraySize) { return; }
+
             EditorGUILayout.Space();
 
             if (GUILayout.Button(ControllerAddButtonContent, EditorStyles.miniButton))
