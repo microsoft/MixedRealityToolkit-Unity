@@ -2,9 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
+
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
@@ -474,5 +476,54 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         #endregion
 
         #endregion Controller axis mapping configuration
+
+        public static Texture2D GetControllerTexture(SupportedControllerType currentControllerType, Handedness handedness)
+        {
+            switch (currentControllerType)
+            {
+                case SupportedControllerType.ViveWand:
+                    if (handedness == Handedness.Left)
+                    {
+                        return EditorGUIUtility.isProSkin ? ViveWandControllerLeftWhite : ViveWandControllerLeftBlack;
+                    }
+                    else if (handedness == Handedness.Right)
+                    {
+                        return EditorGUIUtility.isProSkin ? ViveWandControllerRightWhite : ViveWandControllerRightBlack;
+                    }
+
+                    break;
+                case SupportedControllerType.OculusTouch:
+                    if (handedness == Handedness.Left)
+                    {
+                        return EditorGUIUtility.isProSkin ? TouchControllerLeftWhite : TouchControllerLeftBlack;
+                    }
+                    else if (handedness == Handedness.Right)
+                    {
+                        return EditorGUIUtility.isProSkin ? TouchControllerRightWhite : TouchControllerRightBlack;
+                    }
+
+                    break;
+                case SupportedControllerType.OculusRemote:
+                    return EditorGUIUtility.isProSkin ? OculusRemoteControllerWhite : OculusRemoteControllerBlack;
+                case SupportedControllerType.WindowsMixedReality:
+                    if (handedness == Handedness.Left)
+                    {
+                        return EditorGUIUtility.isProSkin ? WmrControllerLeftWhite : WmrControllerLeftBlack;
+                    }
+                    else if (handedness == Handedness.Right)
+                    {
+                        return EditorGUIUtility.isProSkin ? WmrControllerRightWhite : WmrControllerRightBlack;
+                    }
+                    else
+                    {
+                        // TODO Add HoloLens Image
+                        return null;
+                    }
+                case SupportedControllerType.Xbox:
+                    return EditorGUIUtility.isProSkin ? XboxControllerWhite : XboxControllerBlack;
+            }
+
+            return null;
+        }
     }
 }

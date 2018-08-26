@@ -83,8 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private SerializedProperty currentInteractionList;
 
-        private bool isCustomController;
-
         private ControllerPopupWindow thisWindow;
 
         private Handedness currentHandedness;
@@ -95,59 +93,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private Texture2D currentControllerTexture;
         private ControllerInputActionOption currentControllerOption;
 
+        private bool IsCustomController => currentControllerType == SupportedControllerType.GenericOpenVR ||
+                                           currentControllerType == SupportedControllerType.GenericUnity;
+
         private void OnFocus()
         {
-            isCustomController = false;
-
-            switch (currentControllerType)
-            {
-                case SupportedControllerType.None:
-                    break;
-                case SupportedControllerType.GenericOpenVR:
-                    isCustomController = true;
-                    break;
-                case SupportedControllerType.ViveWand:
-                    if (currentHandedness == Handedness.Left)
-                    {
-                        currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.ViveWandControllerLeftWhite : ControllerMappingLibrary.ViveWandControllerLeftBlack;
-                    }
-                    else if (currentHandedness == Handedness.Right)
-                    {
-                        currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.ViveWandControllerRightWhite : ControllerMappingLibrary.ViveWandControllerRightBlack;
-                    }
-                    break;
-                case SupportedControllerType.ViveKnuckles:
-                    break;
-                case SupportedControllerType.OculusTouch:
-                    if (currentHandedness == Handedness.Left)
-                    {
-                        currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.TouchControllerLeftWhite : ControllerMappingLibrary.TouchControllerLeftBlack;
-                    }
-                    else if (currentHandedness == Handedness.Right)
-                    {
-                        currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.TouchControllerRightWhite : ControllerMappingLibrary.TouchControllerRightBlack;
-                    }
-                    break;
-                case SupportedControllerType.OculusRemote:
-                    currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.OculusRemoteControllerWhite : ControllerMappingLibrary.OculusRemoteControllerBlack;
-                    break;
-                case SupportedControllerType.WindowsMixedReality:
-                    if (currentHandedness == Handedness.Left)
-                    {
-                        currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.WmrControllerLeftWhite : ControllerMappingLibrary.WmrControllerLeftBlack;
-                    }
-                    else if (currentHandedness == Handedness.Right)
-                    {
-                        currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.WmrControllerRightWhite : ControllerMappingLibrary.WmrControllerRightBlack;
-                    }
-                    break;
-                case SupportedControllerType.GenericUnity:
-                    isCustomController = true;
-                    break;
-                case SupportedControllerType.Xbox:
-                    currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.XboxControllerWhite : ControllerMappingLibrary.XboxControllerBlack;
-                    break;
-            }
+            currentControllerTexture = ControllerMappingLibrary.GetControllerTexture(currentControllerType, currentHandedness);
 
             #region Interaction Constraint Setup
 
@@ -316,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 };
             }
 
-            if (!isCustomController && currentControllerTexture != null)
+            if (!IsCustomController && currentControllerTexture != null)
             {
                 GUILayout.BeginHorizontal();
                 GUI.DrawTexture(ControllerRectPosition, currentControllerTexture);
@@ -325,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
             try
             {
-                RenderInteractionList(currentInteractionList, isCustomController);
+                RenderInteractionList(currentInteractionList, IsCustomController);
             }
             catch (Exception)
             {
