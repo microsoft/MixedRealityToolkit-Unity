@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities.Editor;
 using UnityEditor;
@@ -226,7 +225,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
             new InputManagerAxis { Name = AXIS_26, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 26 },
             new InputManagerAxis { Name = AXIS_27, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 27 }
         };
-
 
         #region Controller Image Resources
 

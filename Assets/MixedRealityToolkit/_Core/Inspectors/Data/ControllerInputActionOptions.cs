@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors.Data
 {
+    /// <summary>
+    /// Used to aid in layout of Controller Input Actions.
+    /// </summary>
     [Serializable]
     public class ControllerInputActionOptions
     {
