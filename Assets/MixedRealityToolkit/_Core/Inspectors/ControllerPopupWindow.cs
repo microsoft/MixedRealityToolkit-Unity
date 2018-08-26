@@ -38,8 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private static readonly GUIContent[] InvertAxisContent =
         {
             new GUIContent("None"),
-            new GUIContent("Invert X"),
-            new GUIContent("Invert Y"),
+            new GUIContent("X"),
+            new GUIContent("Y"),
             new GUIContent("Both")
         };
 
