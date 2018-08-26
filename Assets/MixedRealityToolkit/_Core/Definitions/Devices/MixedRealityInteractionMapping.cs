@@ -156,7 +156,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Action to be raised to the Input Manager when the input data has changed.
         /// </summary>
-        public MixedRealityInputAction MixedRealityInputAction => inputAction;
+        public MixedRealityInputAction MixedRealityInputAction
+        {
+            get { return inputAction; }
+            internal set { inputAction = value; }
+        }
 
         [SerializeField]
         [Tooltip("Optional KeyCode value to get input from Unity's old input system.")]

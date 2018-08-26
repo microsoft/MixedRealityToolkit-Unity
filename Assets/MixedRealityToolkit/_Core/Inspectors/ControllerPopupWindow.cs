@@ -141,10 +141,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.WmrControllerRightWhite : ControllerMappingLibrary.WmrControllerRightBlack;
                     }
                     break;
-                case SupportedControllerType.GenericUnityDevice:
+                case SupportedControllerType.GenericUnity:
                     isCustomController = true;
                     break;
-                case SupportedControllerType.XboxController:
+                case SupportedControllerType.Xbox:
                     currentControllerTexture = EditorGUIUtility.isProSkin ? ControllerMappingLibrary.XboxControllerWhite : ControllerMappingLibrary.XboxControllerBlack;
                     break;
             }
@@ -241,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             #endregion  Interaction Constraint Setup
         }
 
-        public static void Show(SupportedControllerType controllerType, SerializedProperty interactionsList, Handedness handedness = Handedness.None)
+        public static void Show(SupportedControllerType controllerType, SerializedProperty controllerList, SerializedProperty interactionsList, Handedness handedness = Handedness.None)
         {
             window = (ControllerPopupWindow)GetWindow(typeof(ControllerPopupWindow));
             window.Close();
@@ -289,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
 
             window.ShowUtility();
-            var windowSize = new Vector2(controllerType == SupportedControllerType.GenericOpenVR || controllerType == SupportedControllerType.GenericUnityDevice ? 896f : 768f, 512f);
+            var windowSize = new Vector2(controllerType == SupportedControllerType.GenericOpenVR || controllerType == SupportedControllerType.GenericUnity ? 896f : 768f, 512f);
             window.maxSize = windowSize;
             window.minSize = windowSize;
             window.CenterOnMainWin();
