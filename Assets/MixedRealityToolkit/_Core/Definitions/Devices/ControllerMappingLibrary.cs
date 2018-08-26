@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
-
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
@@ -16,8 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     /// </summary>
     public static class ControllerMappingLibrary
     {
-        #region Controller axis mapping configuration
-
         #region Constants
 
         /// <summary>
@@ -189,9 +186,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         #endregion Constants
 
-        #region InputAxisConfig
-
 #if UNITY_EDITOR
+        #region InputAxisConfig
 
         /// <summary>
         /// Get the InputManagerAxis data needed to configure the Input Mappings for a controller
@@ -710,11 +706,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         }
 
         #endregion Controller Image Resources
-#endif
 
-        #endregion
-
-        #endregion Controller axis mapping configuration
+        #endregion InputAxisConfig
 
         public static Texture2D GetControllerTexture(SupportedControllerType currentControllerType, Handedness handedness)
         {
@@ -813,5 +806,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
             return null;
         }
+#endif // UNITY_EDITOR
     }
 }
