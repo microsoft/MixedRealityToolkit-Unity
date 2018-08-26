@@ -160,6 +160,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 var mixedRealityControllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
                 mixedRealityControllerHandedness.intValue = 0;
                 var mixedRealityControllerInteractions = mixedRealityControllerMapping.FindPropertyRelative("interactions");
+                var useCustomInteractionMappings = mixedRealityControllerMapping.FindPropertyRelative("useCustomInteractionMappings");
+                useCustomInteractionMappings.boolValue = true;
                 mixedRealityControllerInteractions.ClearArray();
                 serializedObject.ApplyModifiedProperties();
 
@@ -275,40 +277,28 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                     int currentGenericType = 0;
 
-                    if (useCustomInteractionMappings.boolValue)
+                    if (controllerType == typeof(GenericOpenVRController))
                     {
-                        if (controllerType == typeof(GenericOpenVRController))
-                        {
-                            currentGenericType = 1;
-                        }
-
-                        currentGenericType = EditorGUILayout.IntPopup(GenericTypeContent, currentGenericType, GenericTypeListContent, GenericTypeIds);
-                        EditorGUILayout.PropertyField(controllerHandedness);
+                        currentGenericType = 1;
                     }
+
+                    currentGenericType = EditorGUILayout.IntPopup(GenericTypeContent, currentGenericType, GenericTypeListContent, GenericTypeIds);
+                    EditorGUILayout.PropertyField(controllerHandedness);
 
                     if (EditorGUI.EndChangeCheck())
                     {
-                        serializedObject.ApplyModifiedProperties();
-
-                        if (thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type == null)
-                        {
-                            controllerHandedness.intValue = 0;
-                        }
-
                         switch (currentGenericType)
                         {
                             case 0:
-                                thisProfile.MixedRealityControllerMappingProfiles[controllerList.arraySize - 1].ControllerType.Type = typeof(GenericUnityController);
+                                thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type = typeof(GenericUnityController);
+                                controllerHandedness.intValue = 0;
                                 break;
                             case 1:
-                                thisProfile.MixedRealityControllerMappingProfiles[controllerList.arraySize - 1].ControllerType.Type = typeof(GenericOpenVRController);
+                                thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type = typeof(GenericOpenVRController);
                                 break;
                         }
 
-                        // Only allow custom interaction mappings on generic controller types
-                        controllerType = thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type;
-                        useCustomInteractionMappings.boolValue = controllerType == typeof(GenericUnityController) ||
-                                                                 controllerType == typeof(GenericOpenVRController);
+                        serializedObject.ApplyModifiedProperties();
                         interactionsList.ClearArray();
                         serializedObject.ApplyModifiedProperties();
                         thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping(true);

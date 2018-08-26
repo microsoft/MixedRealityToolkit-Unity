@@ -2137,7 +2137,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-    - id: 12
+    - id: 11
       description: WMR Touchpad Position
       axisType: 4
       inputType: 21
