@@ -163,6 +163,54 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
+        [Tooltip("Enable dictation input for your application.")]
+        private bool enableDictation = false;
+
+        /// <summary>
+        /// Enable dictation input for your application.
+        /// </summary>
+        public bool IsDictationEnabled
+        {
+            get { return enableDictation && enableInputSystem; }
+            private set { enableDictation = value; }
+        }
+
+        [SerializeField]
+        private int recognitionConfidenceLevel = 1;
+
+        /// <summary>
+        /// The speech recognizer's minimum confidence level setting that will raise the action.<para/>
+        /// 0 == High, 1 == Medium, 2 == Low, 3 == Unknown
+        /// </summary>
+        public int SpeechRecognitionConfidenceLevel => recognitionConfidenceLevel;
+
+        [SerializeField]
+        [Tooltip("Enable Touch Screen Input for your application.")]
+        private bool enableTouchScreenInput = false;
+
+        /// <summary>
+        /// Enable Touch Screen Input for your application.
+        /// </summary>
+        public bool IsTouchScreenInputEnabled
+        {
+            get { return touchScreenInputProfile != null && enableTouchScreenInput && enableInputSystem; }
+            private set { enableTouchScreenInput = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Touch Screen Input Source profile for wiring up Actions.")]
+        private MixedRealityTouchInputProfile touchScreenInputProfile;
+
+        /// <summary>
+        /// Touch Screen Input Source profile for wiring up Actions.
+        /// </summary>
+        public MixedRealityTouchInputProfile TouchScreenInputProfile
+        {
+            get { return touchScreenInputProfile; }
+            private set { touchScreenInputProfile = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]
         private bool enableControllerMapping = false;
 

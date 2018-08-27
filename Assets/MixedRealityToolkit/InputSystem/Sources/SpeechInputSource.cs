@@ -17,13 +17,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// SpeechInputSource allows you to specify keywords for use in your application.
     /// This also includes a setting to either automatically start the
     /// keyword recognizer or allow your code to start it.
+    /// </summary>
     /// <remarks>
     /// IMPORTANT:
     /// If you're targeting the UWP platform, please make sure to add the microphone capability in your app,
     /// in Unity under Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities
     /// or in your Visual Studio Package.appxmanifest capabilities.
     /// </remarks>
-    /// </summary>
     public class SpeechInputSource : BaseGenericInputSource
     {
         /// <summary>
@@ -33,18 +33,36 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// </summary>
         private enum RecognizerStartBehavior { AutoStart, ManualStart }
 
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         /// <summary>
         /// Constructor.
         /// </summary>
-        public SpeechInputSource() : base("SpeechInput")
+        public SpeechInputSource(SpeechCommands[] commands, ConfidenceLevel recognitionConfidenceLevel = ConfidenceLevel.Medium) : base("SpeechInput")
         {
-            if (commands.Length == 0) { return; }
+            Commands = commands;
+            RecognitionConfidenceLevel = recognitionConfidenceLevel;
+            Initialize();
+        }
+#else
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public SpeechInputSource(SpeechCommands[] commands) : base("SpeechInput")
+        {
+            this.commands = commands;
+            Initialize();
+        }
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-            var newKeywords = new string[commands.Length];
+        private void Initialize()
+        {
+            if (!Application.isPlaying || Commands.Length == 0) { return; }
 
-            for (int i = 0; i < commands.Length; i++)
+            var newKeywords = new string[Commands.Length];
+
+            for (int i = 0; i < Commands.Length; i++)
             {
-                newKeywords[i] = commands[i].Keyword;
+                newKeywords[i] = Commands[i].Keyword;
             }
 
             Setup(newKeywords);
@@ -57,10 +75,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             Run();
         }
 
-        /// <summary>
-        /// Destructor.
-        /// </summary>
-        ~SpeechInputSource()
+        /// <inheritdoc />
+        public override void Dispose()
         {
             if (keywordRecognizer == null) { return; }
             StopRecognition();
@@ -71,14 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         [Tooltip("Whether the recognizer should be activated on start.")]
         private RecognizerStartBehavior recognizerStart = RecognizerStartBehavior.AutoStart;
 
-        [SerializeField]
-        [Tooltip("The speech commands to be recognized and optional keyboard shortcuts.")]
-        private SpeechCommands[] commands = null;
-
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
         /// </summary>
-        public SpeechCommands[] Commands => commands;
+        public SpeechCommands[] Commands { get; }
 
         private readonly WaitForUpdate waitForUpdate = new WaitForUpdate();
 
@@ -86,11 +98,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         {
             while (keywordRecognizer != null && keywordRecognizer.IsRunning)
             {
-                for (int i = 0; i < commands.Length; i++)
+                for (int i = 0; i < Commands.Length; i++)
                 {
-                    if (Input.GetKeyDown(commands[i].KeyCode))
+                    if (Input.GetKeyDown(Commands[i].KeyCode))
                     {
-                        RaiseKeywordAction(commands[i].Keyword);
+                        RaiseKeywordAction(Commands[i].Keyword);
                     }
                 }
 
@@ -105,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             WindowsSetup(newKeywords);
 #else
-            throw new NotImplementedException();
+            // TODO: Implement on other platforms
 #endif
         }
 
@@ -116,9 +128,9 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         private void RaiseKeywordAction(string keyword)
         {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-            OnPhraseRecognized(recognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, null, keyword);
+            OnPhraseRecognized(RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, null, keyword);
 #else
-            throw new NotImplementedException();
+            // TODO: Implement on other platforms
 #endif
         }
 
@@ -127,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             WindowsCleanup();
 #else
-            throw new NotImplementedException();
+            // TODO: Implement on other platforms
 #endif
         }
 
@@ -140,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             WindowsStartRecognition();
 #else
-            throw new NotImplementedException();
+            // TODO: Implement on other platforms
 #endif
         }
 
@@ -153,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             WindowsStopRecognition();
 #else
-            throw new NotImplementedException();
+            // TODO: Implement on other platforms
 #endif
         }
 
@@ -164,14 +176,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         private KeywordRecognizer keywordRecognizer;
 
-        [SerializeField]
-        [Tooltip("The confidence level for the keyword recognizer.")]
-        // NOTE: The serialized data of this field will be lost when switching between platforms and re-serializing this class.
-        private ConfidenceLevel recognitionConfidenceLevel = ConfidenceLevel.Medium;
+        public ConfidenceLevel RecognitionConfidenceLevel { get; set; }
 
         private void WindowsSetup(string[] newKeywords)
         {
-            keywordRecognizer = new KeywordRecognizer(newKeywords, recognitionConfidenceLevel);
+            keywordRecognizer = new KeywordRecognizer(newKeywords, RecognitionConfidenceLevel);
             keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
         }
 
@@ -212,8 +221,6 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                     break;
                 }
             }
-
-            Debug.LogWarning($"No action found for keyword: {text}");
         }
 
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN

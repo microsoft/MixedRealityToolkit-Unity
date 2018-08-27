@@ -70,6 +70,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
+        /// <summary>
+        /// Current Speech Input Source.
+        /// </summary>
+        public SpeechInputSource SpeechInputSource { get; private set; }
+
+        /// <summary>
+        /// Current Dictation Input Source.
+        /// </summary>
+        public DictationInputSource DictationInputSource { get; private set; }
+
+        /// <summary>
+        /// Current Touch Screen Input Source.
+        /// </summary>
+        public TouchscreenInputSource TouchscreenInputSource { get; private set; }
+
         #region IMixedRealityManager Implementation
 
         /// <summary>
@@ -188,6 +203,26 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             dictationEventData = new DictationEventData(EventSystem.current);
 
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+
+            if (MixedRealityManager.Instance.ActiveProfile.IsSpeechCommandsEnabled)
+            {
+                SpeechInputSource = new SpeechInputSource(
+                    MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+                    , (UnityEngine.Windows.Speech.ConfidenceLevel)MixedRealityManager.Instance.ActiveProfile.SpeechRecognitionConfidenceLevel
+#endif
+                );
+            }
+
+            if (MixedRealityManager.Instance.ActiveProfile.IsDictationEnabled)
+            {
+                DictationInputSource = new DictationInputSource();
+            }
+
+            if (MixedRealityManager.Instance.ActiveProfile.IsTouchScreenInputEnabled)
+            {
+                TouchscreenInputSource = new TouchscreenInputSource();
+            }
         }
 
         /// <inheritdoc />
@@ -246,6 +281,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 UnityEngine.Object.Destroy(gazeProvider);
             }
 
+            SpeechInputSource?.Dispose();
+            DictationInputSource?.Dispose();
+            TouchscreenInputSource?.Dispose();
             base.Destroy();
         }
 
@@ -1444,10 +1482,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             };
 
         /// <inheritdoc />
-        public void RaiseDictationHypothesis(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationHypothesis, AudioClip dictationAudioClip = null)
+        public void RaiseDictationHypothesis(IMixedRealityInputSource source, string dictationHypothesis, AudioClip dictationAudioClip = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, inputAction, dictationHypothesis, dictationAudioClip);
+            dictationEventData.Initialize(source, dictationHypothesis, dictationAudioClip);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationHypothesisEventHandler);
@@ -1461,10 +1499,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             };
 
         /// <inheritdoc />
-        public void RaiseDictationResult(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip = null)
+        public void RaiseDictationResult(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, inputAction, dictationResult, dictationAudioClip);
+            dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationResultEventHandler);
@@ -1478,10 +1516,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             };
 
         /// <inheritdoc />
-        public void RaiseDictationComplete(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip)
+        public void RaiseDictationComplete(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip)
         {
             // Create input event
-            dictationEventData.Initialize(source, inputAction, dictationResult, dictationAudioClip);
+            dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationCompleteEventHandler);
@@ -1495,10 +1533,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             };
 
         /// <inheritdoc />
-        public void RaiseDictationError(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip = null)
+        public void RaiseDictationError(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null)
         {
             // Create input event
-            dictationEventData.Initialize(source, inputAction, dictationResult, dictationAudioClip);
+            dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(dictationEventData, OnDictationErrorEventHandler);
@@ -1509,6 +1547,5 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         #endregion Input Events
-
     }
 }
