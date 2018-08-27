@@ -602,8 +602,35 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                     if (currentControllerOption == null)
                     {
-                        actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, labels, ids, GUILayout.Width(80f));
-                        EditorGUILayout.LabelField(interactionDescription.stringValue, GUILayout.ExpandWidth(true));
+                        bool skip = false;
+                        var description = interactionDescription.stringValue;
+                        if (currentControllerType == SupportedControllerType.WindowsMixedReality && currentHandedness == Handedness.None)
+                        {
+                            if (description == "Grip Press" ||
+                                description == "Trigger Position" ||
+                                description == "Trigger Touched" ||
+                                description == "Touchpad Position" ||
+                                description == "Touchpad Touch" ||
+                                description == "Touchpad Press" ||
+                                description == "Menu Press" ||
+                                description == "Thumbstick Position" ||
+                                description == "Thumbstick Press"
+                                )
+                            {
+                                skip = true;
+                            }
+
+                            if (description == "Trigger Press (Select)")
+                            {
+                                description = "Air Tap (Select)";
+                            }
+                        }
+
+                        if (!skip)
+                        {
+                            actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, labels, ids, GUILayout.Width(80f));
+                            EditorGUILayout.LabelField(description, GUILayout.ExpandWidth(true));
+                        }
                     }
                     else
                     {
