@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
     {
         [SerializeField]
         [Tooltip("Action to use for pointer events.")]
-        private MixedRealityInputAction pointerAction;
+        private MixedRealityInputAction pointerAction = MixedRealityInputAction.None;
 
         /// <summary>
         /// Action to use for pointer events.
@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem
 
         [SerializeField]
         [Tooltip("Action to use for hold events.")]
-        private MixedRealityInputAction holdAction;
+        private MixedRealityInputAction holdAction = MixedRealityInputAction.None;
 
         /// <summary>
         /// Action to use for hold events.
