@@ -11,3 +11,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76606fa160e04c018d09c679f16c94c8, type: 3}
   m_Name: DefaultMixedRealityTouchInputProfile
   m_EditorClassIdentifier: 
+  pointerAction:
+    id: 1
+    description: Select
+    axisConstraint: 2
+  holdAction:
+    id: 0
+    description: 
+    axisConstraint: 0
