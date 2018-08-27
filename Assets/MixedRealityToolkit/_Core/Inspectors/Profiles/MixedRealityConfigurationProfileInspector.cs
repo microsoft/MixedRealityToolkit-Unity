@@ -89,7 +89,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 return;
             }
 
-            Debug.Assert(MixedRealityManager.HasActiveProfile);
+            if (!MixedRealityManager.HasActiveProfile)
+            {
+                return;
+            }
 
             // Experience configuration
             targetExperienceScale = serializedObject.FindProperty("targetExperienceScale");

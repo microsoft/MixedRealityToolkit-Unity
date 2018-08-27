@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         OculusTouch,
         OculusRemote,
         WindowsMixedReality,
-        GenericUnityDevice,
-        XboxController
+        GenericUnity,
+        Xbox
     }
 }

@@ -6,8 +6,10 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Internal.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Internal.Inspectors")]
 namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 {
     /// <summary>
@@ -16,14 +18,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
     [Serializable]
     public struct MixedRealityControllerMapping
     {
-        public MixedRealityControllerMapping(uint id, string description, IMixedRealityController controllerType, Handedness handedness, GameObject overrideModel) : this()
+        public MixedRealityControllerMapping(uint id, string description, Type controllerType, Handedness handedness = Handedness.None, bool useCustomInteractionMappings = false, GameObject overrideModel = null) : this()
         {
             this.id = id;
             this.description = description;
-            this.controllerType = new SystemType(controllerType.GetType());
+            this.controllerType = new SystemType(controllerType);
             this.handedness = handedness;
             this.overrideModel = overrideModel;
-            useCustomInteractionMappings = false;
+            this.useCustomInteractionMappings = useCustomInteractionMappings;
             interactions = null;
             useDefaultModel = false;
         }
@@ -70,11 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// User the controller model loader provided by the SDK, or provide override models.
         /// </summary>
-        public bool UseDefaultModel
-        {
-            get { return useDefaultModel; }
-            private set { useDefaultModel = value; }
-        }
+        public bool UseDefaultModel => useDefaultModel;
 
         /// <summary>
         /// The controller model prefab to be rendered.
@@ -92,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Is this controller mapping using custom interactions?
         /// </summary>
-        public bool UseCustomInteractionMappings => useCustomInteractionMappings;
+        public bool HasCustomInteractionMappings => useCustomInteractionMappings;
 
         /// <summary>
         /// Details the list of available buttons / interactions available from the device.
@@ -106,11 +104,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
         /// <summary>
         /// Sets the default interaction mapping based on the current controller type.
         /// </summary>
-        public void SetDefaultInteractionMapping()
+        internal void SetDefaultInteractionMapping(bool overwrite = false)
         {
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, handedness, null, null) as BaseController;
 
-            if (detectedController != null)
+            if (detectedController != null && (interactions == null || interactions.Length == 0 || overwrite))
             {
                 switch (handedness)
                 {
@@ -124,6 +122,24 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
                         interactions = detectedController.DefaultInteractions;
                         break;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Synchronizes the Input Actions of the same physical controller of a different concrete type.
+        /// </summary>
+        /// <param name="otherControllerMapping"></param>
+        internal void SynchronizeInputActions(MixedRealityInteractionMapping[] otherControllerMapping)
+        {
+            if (otherControllerMapping.Length != interactions.Length)
+            {
+                Debug.LogError("Controller Input Actions must be the same length!");
+                return;
+            }
+
+            for (int i = 0; i < interactions.Length; i++)
+            {
+                interactions[i].MixedRealityInputAction = otherControllerMapping[i].MixedRealityInputAction;
             }
         }
     }
