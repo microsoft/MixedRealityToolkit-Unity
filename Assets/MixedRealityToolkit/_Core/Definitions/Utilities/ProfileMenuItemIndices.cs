@@ -17,6 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         Speech,
         BoundaryVisualization,
         SpatialAwareness,
+        Gestures,
+        TouchInput,
 
         Assembly = 99
     }

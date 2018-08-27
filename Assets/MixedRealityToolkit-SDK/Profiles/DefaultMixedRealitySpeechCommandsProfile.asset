@@ -12,15 +12,9 @@ MonoBehaviour:
   m_Name: DefaultMixedRealitySpeechCommandsProfile
   m_EditorClassIdentifier: 
   speechCommands:
-  - keyword: Select
-    keyCode: 32
-    action:
-      id: 1
-      description: Menu
-      axisConstraint: 2
   - keyword: Menu
     keyCode: 9
     action:
       id: 2
-      description: Grip
-      axisConstraint: 7
+      description: Menu
+      axisConstraint: 2

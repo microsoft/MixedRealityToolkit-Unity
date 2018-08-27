@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Managers;
 using System.Collections;
@@ -12,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
     /// <remarks>This base class does not support adding or removing pointers, because many will never
     /// pass pointers in their constructors and will fall back to either the Gaze or Mouse Pointer.</remarks>
     /// </summary>
-    public class BaseGenericInputSource : IMixedRealityInputSource
+    public class BaseGenericInputSource : IMixedRealityInputSource, IDisposable
     {
         /// <summary>
         /// The Current Input System for this Input Source.
@@ -86,6 +87,11 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 return hashCode;
             }
         }
+
+        /// <summary>
+        /// Dispose.
+        /// </summary>
+        public virtual void Dispose() { }
 
         #endregion IEquality Implementation
     }
