@@ -1,1 +1,1 @@
-Mixed Reality Toolkit Tests 2018.7.0.0-ALPHA
+Mixed Reality Toolkit Tests 2018.8.0.0-MR.DEV.SUMMIT
