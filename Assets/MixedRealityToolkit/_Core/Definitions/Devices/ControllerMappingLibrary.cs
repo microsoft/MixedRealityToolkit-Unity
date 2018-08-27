@@ -229,6 +229,36 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         #region Controller Image Resources
 
+        private static Texture2D genericControllerWhiteScaled;
+
+        public static Texture2D GenericControllerWhiteScaled
+        {
+            get
+            {
+                if (genericControllerWhiteScaled == null)
+                {
+                    genericControllerWhiteScaled = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/Generic_controller_white_scaled.png", typeof(Texture2D));
+                }
+
+                return genericControllerWhiteScaled;
+            }
+        }
+
+        private static Texture2D genericControllerBlackScaled;
+
+        public static Texture2D GenericControllerBlackScaled
+        {
+            get
+            {
+                if (genericControllerBlackScaled == null)
+                {
+                    genericControllerBlackScaled = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit/_Core/Resources/Textures/Generic_controller_black_scaled.png", typeof(Texture2D));
+                }
+
+                return genericControllerBlackScaled;
+            }
+        }
+
         private static Texture2D xboxControllerWhite;
 
         public static Texture2D XboxControllerWhite
@@ -243,6 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
                 return xboxControllerWhite;
             }
         }
+
         private static Texture2D xboxControllerWhiteScaled;
 
         public static Texture2D XboxControllerWhiteScaled
@@ -761,51 +792,61 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
 
         public static Texture2D GetControllerTextureScaled(SupportedControllerType currentControllerType, Handedness handedness)
         {
+            Texture2D texture = null;
             switch (currentControllerType)
             {
                 case SupportedControllerType.ViveWand:
                     if (handedness == Handedness.Left)
                     {
-                        return EditorGUIUtility.isProSkin ? ViveWandControllerLeftWhiteScaled : ViveWandControllerLeftBlackScaled;
+                        texture = EditorGUIUtility.isProSkin ? ViveWandControllerLeftWhiteScaled : ViveWandControllerLeftBlackScaled;
                     }
                     else if (handedness == Handedness.Right)
                     {
-                        return EditorGUIUtility.isProSkin ? ViveWandControllerRightWhiteScaled : ViveWandControllerRightBlackScaled;
+                        texture = EditorGUIUtility.isProSkin ? ViveWandControllerRightWhiteScaled : ViveWandControllerRightBlackScaled;
                     }
 
                     break;
                 case SupportedControllerType.OculusTouch:
                     if (handedness == Handedness.Left)
                     {
-                        return EditorGUIUtility.isProSkin ? TouchControllerLeftWhiteScaled : TouchControllerLeftBlackScaled;
+                        texture = EditorGUIUtility.isProSkin ? TouchControllerLeftWhiteScaled : TouchControllerLeftBlackScaled;
                     }
                     else if (handedness == Handedness.Right)
                     {
-                        return EditorGUIUtility.isProSkin ? TouchControllerRightWhiteScaled : TouchControllerRightBlackScaled;
+                        texture = EditorGUIUtility.isProSkin ? TouchControllerRightWhiteScaled : TouchControllerRightBlackScaled;
                     }
 
                     break;
                 case SupportedControllerType.OculusRemote:
-                    return EditorGUIUtility.isProSkin ? OculusRemoteControllerWhiteScaled : OculusRemoteControllerBlackScaled;
+                    texture = EditorGUIUtility.isProSkin ? OculusRemoteControllerWhiteScaled : OculusRemoteControllerBlackScaled;
+                    break;
                 case SupportedControllerType.WindowsMixedReality:
                     if (handedness == Handedness.Left)
                     {
-                        return EditorGUIUtility.isProSkin ? WmrControllerLeftWhiteScaled : WmrControllerLeftBlackScaled;
+                        texture = EditorGUIUtility.isProSkin ? WmrControllerLeftWhiteScaled : WmrControllerLeftBlackScaled;
                     }
                     else if (handedness == Handedness.Right)
                     {
-                        return EditorGUIUtility.isProSkin ? WmrControllerRightWhiteScaled : WmrControllerRightBlackScaled;
+                        texture = EditorGUIUtility.isProSkin ? WmrControllerRightWhiteScaled : WmrControllerRightBlackScaled;
                     }
                     else
                     {
                         // TODO Add HoloLens Image
-                        return null;
+                        texture = null;
                     }
+
+                    break;
                 case SupportedControllerType.Xbox:
-                    return EditorGUIUtility.isProSkin ? XboxControllerWhiteScaled : XboxControllerBlackScaled;
+                    texture = EditorGUIUtility.isProSkin ? XboxControllerWhiteScaled : XboxControllerBlackScaled;
+                    break;
             }
 
-            return null;
+            if (texture == null)
+            {
+                texture = EditorGUIUtility.isProSkin ? GenericControllerWhiteScaled : GenericControllerBlackScaled;
+            }
+
+            return texture;
         }
 #endif // UNITY_EDITOR
     }
