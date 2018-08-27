@@ -832,7 +832,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
                     else
                     {
                         // TODO Add HoloLens Image
-                        texture = null;
                     }
 
                     break;

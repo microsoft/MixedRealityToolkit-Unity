@@ -600,7 +600,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                     EditorGUI.BeginChangeCheck();
 
-                    if (currentControllerOption == null)
+                    if (currentControllerOption == null || currentControllerTexture == null)
                     {
                         bool skip = false;
                         var description = interactionDescription.stringValue;
