@@ -134,10 +134,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
             {
                 default:
                     return null;
-                case SupportedControllerType.GenericUnityDevice:
+                case SupportedControllerType.GenericUnity:
                     controllerType = typeof(GenericUnityController);
                     break;
-                case SupportedControllerType.XboxController:
+                case SupportedControllerType.Xbox:
                     controllerType = typeof(XboxController);
                     break;
             }
@@ -181,11 +181,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput
                 joystickName.Contains("Xbox Bluetooth Gamepad") ||
                 joystickName.Contains("Xbox Wireless Controller"))
             {
-                return SupportedControllerType.XboxController;
+                return SupportedControllerType.Xbox;
             }
 
             Debug.Log($"{joystickName} does not have a defined controller type, falling back to generic controller type");
-            return SupportedControllerType.GenericUnityDevice;
+            return SupportedControllerType.GenericUnity;
         }
     }
 }
