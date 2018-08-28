@@ -41,5 +41,16 @@ obj/
 *.idb
 *.opendb
 
+# ============================ #
+# Visual Studio Code Generated #
+# ============================ #
+.vscode/
+
+# ===================== #
+# Project Specific List #
+# ===================== #
+artifacts/
 Assets/ThirdParty/
 Assets/ThirdParty.meta
+Assets/TextMesh Pro.meta
+Assets/TextMesh Pro/
