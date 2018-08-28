@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using System;
 using UnityEngine.EventSystems;
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input
         /// <inheritdoc />
         public SpeechEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-#if UNITY_WSA  || UNITY_STANDALONE_WIN
+#if UNITY_WSA  || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
 
         /// <summary>
         /// A measure of correct recognition certainty.
