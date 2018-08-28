@@ -1,7 +1,6 @@
 ---
 name: "\U0001F195 Feature Request"
-about: Suggest an idea for this project
-
+about: Suggest an idea for this project. Please label your issue with HoloToolkit or MRTK vNext, depending on which project this affects.
 ---
 
 **Is your feature request related to a problem? Please describe.**

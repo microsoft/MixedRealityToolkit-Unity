@@ -1,7 +1,6 @@
 ---
 name: "\U0001F41B Bug Report"
-about: Create a report to help us improve
-
+about: Create a report to help us improve. Please label your issue with HoloToolkit or MRTK vNext, depending on which project this affects.
 ---
 
 **Describe the bug**

@@ -1,7 +1,6 @@
 ---
-name: "\U0001F4DD vNext Task"
-about: File an outstanding task for vNext.
-
+name: "\U0001F4DD Mixed Reality Toolkit Task"
+about: File an outstanding task for MRTK vNext.
 ---
 
 **Overview**
