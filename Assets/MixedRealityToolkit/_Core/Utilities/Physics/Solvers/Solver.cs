@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Solvers
 {
     /// <summary>
     /// The base abstract class for all Solvers to derive from.  It provides state tracking, smoothing parameters

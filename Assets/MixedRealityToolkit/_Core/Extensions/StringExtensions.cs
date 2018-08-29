@@ -4,7 +4,7 @@
 using System;
 using System.Text;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
+namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 {
     /// <summary>
     /// <see cref="String"/> Extensions.

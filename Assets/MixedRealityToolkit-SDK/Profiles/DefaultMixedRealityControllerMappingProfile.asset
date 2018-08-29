@@ -21,7 +21,7 @@ MonoBehaviour:
   - id: 0
     description: Xbox Controller
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput.XboxController,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.XboxController,
         Microsoft.MixedReality.Toolkit
     handedness: 0
     useDefaultModel: 0
@@ -239,7 +239,7 @@ MonoBehaviour:
   - id: 1
     description: Windows Mixed Reality Motion Controller Left
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
     useDefaultModel: 0
@@ -405,7 +405,7 @@ MonoBehaviour:
   - id: 2
     description: Windows Mixed Reality Motion Controller Right
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
     useDefaultModel: 0
@@ -571,7 +571,7 @@ MonoBehaviour:
   - id: 3
     description: Windows Mixed Reality Hand Gestures
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality.WindowsMixedRealityController,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityController,
         Microsoft.MixedReality.Toolkit
     handedness: 0
     useDefaultModel: 0
@@ -737,7 +737,7 @@ MonoBehaviour:
   - id: 4
     description: Open VR Motion Controller Left
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.WindowsMixedRealityOpenVRMotionController,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.WindowsMixedRealityOpenVRMotionController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
     useDefaultModel: 0
@@ -903,7 +903,7 @@ MonoBehaviour:
   - id: 5
     description: Open VR Motion Controller Right
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.WindowsMixedRealityOpenVRMotionController,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.WindowsMixedRealityOpenVRMotionController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
     useDefaultModel: 0
@@ -1069,7 +1069,7 @@ MonoBehaviour:
   - id: 6
     description: Vive Wand Controller Left
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.ViveWandController,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.ViveWandController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
     useDefaultModel: 0
@@ -1196,7 +1196,7 @@ MonoBehaviour:
   - id: 7
     description: Vive Wand Controller Right
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.ViveWandController,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.ViveWandController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
     useDefaultModel: 0
@@ -1323,7 +1323,7 @@ MonoBehaviour:
   - id: 8
     description: Oculus Touch Controller Left
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.OculusTouchController,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.OculusTouchController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
     useDefaultModel: 0
@@ -1554,7 +1554,7 @@ MonoBehaviour:
   - id: 9
     description: Oculus Touch Controller Right
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.OculusTouchController,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.OculusTouchController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
     useDefaultModel: 0
@@ -1772,7 +1772,7 @@ MonoBehaviour:
   - id: 10
     description: Oculus Remote Controller
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.OculusRemoteController,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.OculusRemoteController,
         Microsoft.MixedReality.Toolkit
     handedness: 0
     useDefaultModel: 0
@@ -1821,7 +1821,7 @@ MonoBehaviour:
   - id: 11
     description: Generic OpenVR Controller Left
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.GenericOpenVRController,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit
     handedness: 1
     useDefaultModel: 0
@@ -1987,7 +1987,7 @@ MonoBehaviour:
   - id: 11
     description: Generic OpenVR Controller Right
     controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR.GenericOpenVRController,
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.GenericOpenVRController,
         Microsoft.MixedReality.Toolkit
     handedness: 2
     useDefaultModel: 0

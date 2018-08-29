@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Build.Usb;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.WebRequestRest;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal.DataStructures;
+using Microsoft.MixedReality.Toolkit.Core.Build.Usb;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.WebRequestRest;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal.DataStructures;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,7 +18,7 @@ using UnityEngine;
 using Debug = UnityEngine.Debug;
 using FileInfo = System.IO.FileInfo;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Build
+namespace Microsoft.MixedReality.Toolkit.Core.Build
 {
     /// <summary>
     /// Build window - supports SLN creation, APPX from SLN, Deploy on device, and misc helper utilities associated with the build/deploy/test iteration loop

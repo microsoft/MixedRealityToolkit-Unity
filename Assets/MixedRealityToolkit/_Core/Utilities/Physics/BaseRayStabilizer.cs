@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Physics;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
 {
     /// <summary>
     /// A base class for a stabilizer that takes an input position and rotation,

@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
 {
     /// <summary>
     /// The InscribedRectangle class defines the largest rectangle within an

@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Attributes;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Internal.Inspectors")]
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Core.Inspectors")]
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 {
     /// <summary>
     /// Used to define a controller or other input device's physical buttons, and other attributes.

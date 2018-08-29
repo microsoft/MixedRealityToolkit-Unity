@@ -1,19 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using System.Collections.Generic;
 using System.Linq;
 #if UNITY_WSA
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using System;
 using UnityEngine.XR.WSA.Input;
 using UnityEngine;
 #endif // UNITY_WSA
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality
+namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 {
     public class WindowsMixedRealityDeviceManager : BaseDeviceManager
     {
