@@ -149,10 +149,7 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             if (oldController.Handedness == handedness)
             {
-                OnControllerLost();
-
-                ControllerInfo = null;
-                ElementTransform = null;
+                ResetControllerTransform();
             }
 #endif
         }
@@ -162,7 +159,7 @@ namespace HoloToolkit.Unity.InputModule
 #if UNITY_WSA && UNITY_2017_2_OR_NEWER
             if (ControllerInfo != null)
             {
-                RemoveControllerTransform(ControllerInfo);
+                ResetControllerTransform();
             }
 
             TryAndAddControllerTransform();
@@ -182,5 +179,17 @@ namespace HoloToolkit.Unity.InputModule
         /// without the overhead of needing to check that handedness matches.
         /// </summary>
         protected virtual void OnControllerLost() { }
+
+        /// <summary>
+        /// Lets all listeners know that the controller was lost, then resets the cached info
+        /// and transform, potentially in preparation of a new controller.
+        /// </summary>
+        private void ResetControllerTransform()
+        {
+            OnControllerLost();
+
+            ControllerInfo = null;
+            ElementTransform = null;
+        }
     }
 }
