@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal.DataStructures
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal.DataStructures
 {
     [Serializable]
     public class ApplicationInfo

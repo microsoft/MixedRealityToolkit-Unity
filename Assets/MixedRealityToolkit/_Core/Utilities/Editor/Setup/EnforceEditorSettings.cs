@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 {
     /// <summary>
     /// Sets Force Text Serialization and visible meta files in all projects that use the Mixed Reality Toolkit.

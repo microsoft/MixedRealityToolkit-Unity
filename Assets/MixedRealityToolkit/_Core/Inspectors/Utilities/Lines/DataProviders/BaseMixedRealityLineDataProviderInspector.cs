@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.DataProviders;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Lines.Renderers;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Distorters;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;

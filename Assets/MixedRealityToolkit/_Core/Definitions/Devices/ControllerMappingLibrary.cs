@@ -2,13 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_EDITOR
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 {
     /// <summary>
     /// Helper utility to manage all the required Axis configuration for platforms, where required

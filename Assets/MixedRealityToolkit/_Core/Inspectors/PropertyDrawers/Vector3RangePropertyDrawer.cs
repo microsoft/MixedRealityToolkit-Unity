@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Attributes;
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
 {
     /// <summary>
     /// Custom property drawer for <see cref="Vector3RangeAttribute"/> decorated <see cref="Vector3"/> values rendered in the inspector.
