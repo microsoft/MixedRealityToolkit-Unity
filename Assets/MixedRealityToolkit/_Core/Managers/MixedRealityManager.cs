@@ -5,11 +5,13 @@ using Microsoft.MixedReality.Toolkit.Internal.Definitions;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput;
 using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
+using Microsoft.MixedReality.Toolkit.Internal.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Internal.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -149,6 +151,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             if (ActiveProfile.IsCameraProfileEnabled)
             {
+                if (ActiveProfile.CameraProfile.IsCameraPersistent)
+                {
+                    CameraCache.Main.transform.root.DontDestroyOnLoad();
+                }
+
                 if (MixedRealityCameraProfile.IsOpaque)
                 {
                     ActiveProfile.CameraProfile.ApplySettingsForOpaqueDisplay();
