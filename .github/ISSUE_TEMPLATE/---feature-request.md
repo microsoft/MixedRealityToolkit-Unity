@@ -1,7 +1,10 @@
 ---
 name: "\U0001F195 Feature Request"
-about: Suggest an idea for this project. Please label your issue with HoloToolkit or MRTK vNext, depending on which project this affects.
+about: Suggest an idea for this project.
 ---
+
+**Does this affect the legacy HoloToolkit (master) or the Mixed Reality Toolkit (mrtk_release)?**
+HoloToolkit | Mixed Reality Toolkit
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]

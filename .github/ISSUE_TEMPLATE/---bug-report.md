@@ -1,7 +1,10 @@
 ---
 name: "\U0001F41B Bug Report"
-about: Create a report to help us improve. Please label your issue with HoloToolkit or MRTK vNext, depending on which project this affects.
+about: Create a report to help us improve.
 ---
+
+**Does this affect the legacy HoloToolkit (master) or the Mixed Reality Toolkit (mrtk_release)?**
+HoloToolkit | Mixed Reality Toolkit
 
 **Describe the bug**
 A clear and concise description of what the bug is.
