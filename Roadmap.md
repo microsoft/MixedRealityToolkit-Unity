@@ -41,11 +41,11 @@ Please see [Branch management plan](#branch-management-plan) for more details.
 
 ## MRTK Version Next
 
-MixedRealityToolkit Version Next aims to further extend the capabilities of the toolkit and also introduce new features, including the capability to support more VR / AR / XR platforms beyond Microsoft's own Windows Mixed Reality platform.
+MixedRealityToolkit Version Next aims to further extend the capabilities of the toolkit and also introduce new features, including the capability to support more AR / XR / VR platforms beyond Microsoft's own Windows Mixed Reality platform.
 
 The vNext branch is taking all the best lessons learned from the original Mixed Reality Toolkit and refactoring / restructuring it to both:
 
-Support a wider audience, allowing solutions to be built that will run on multiple VR / AR / XR platforms such as Windows Mixed Reality, Steam/Open VR and OpenXR (initially)
+Support a wider audience, allowing solutions to be built that will run on multiple AR / XR / VR platforms such as Windows Mixed Reality, Steam/Open VR and OpenXR (initially)
 
 Provide an easier to use SDK, to enable rapid prototyping and ease adoption for new users (or users of previous frameworks)
 
