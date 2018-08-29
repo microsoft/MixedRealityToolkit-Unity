@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
 {
     /// <summary>
     /// Interface defining a pointer result.

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
 {
     /// <summary>
     /// Static class containing interpolation-related utility functions.

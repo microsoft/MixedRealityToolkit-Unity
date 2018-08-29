@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.WebRequestRest
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WebRequestRest
 {
 
     /// <summary>

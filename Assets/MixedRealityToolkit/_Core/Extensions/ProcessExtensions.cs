@@ -5,10 +5,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Debug = UnityEngine.Debug;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
+namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 {
     /// <summary>
     /// Process Extension class.
