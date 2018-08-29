@@ -22,6 +22,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         }
 
         [SerializeField]
+        [Tooltip("Should the camera be reused in each scene?\nIf so, then the camera's root will be flagged so it is not destroyed when the scene is unloaded.")]
+        private bool isCameraPersistent = false;
+
+        /// <summary>
+        /// Should the camera be reused in each scene?
+        /// If so, then the camera's root will be flagged so it is not destroyed when the scene is unloaded.
+        /// </summary>
+        public bool IsCameraPersistent => isCameraPersistent;
+
+        [SerializeField]
         [Tooltip("The near clipping plane distance for an opaque display.")]
         private float nearClipPlaneOpaqueDisplay = 0.1f;
 
