@@ -63,12 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private InputEventData<Quaternion> rotationInputEventData;
         private InputEventData<MixedRealityPose> poseInputEventData;
 
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-
         private SpeechEventData speechEventData;
         private DictationEventData dictationEventData;
-
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         /// <summary>
         /// Current Speech Input Source.
@@ -197,12 +193,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             rotationInputEventData = new InputEventData<Quaternion>(EventSystem.current);
             poseInputEventData = new InputEventData<MixedRealityPose>(EventSystem.current);
 
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
-
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
             if (MixedRealityManager.Instance.ActiveProfile.IsSpeechCommandsEnabled)
             {
@@ -1449,8 +1441,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #endregion Gestures
 
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-
         #region Speech Keyword Events
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySpeechHandler> OnSpeechKeywordRecognizedEventHandler =
@@ -1543,8 +1533,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         }
 
         #endregion Dictation Events
-
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         #endregion Input Events
     }
