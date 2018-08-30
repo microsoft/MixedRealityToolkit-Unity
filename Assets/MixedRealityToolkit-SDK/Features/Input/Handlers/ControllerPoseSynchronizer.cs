@@ -119,7 +119,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         }
 
         /// <inheritdoc />
-        public virtual void OnSourcePoseChanged(SourcePoseEventData<TrackingState> eventData) { }
+        public virtual void OnSourcePoseChanged(SourcePoseEventData<TrackingState> eventData)
+        {
+            if (eventData.SourceData != TrackingState)
+            {
+                IsTracked = eventData.SourceData == TrackingState.Tracked;
+                TrackingState = eventData.SourceData;
+            }
+        }
 
         /// <inheritdoc />
         public virtual void OnSourcePoseChanged(SourcePoseEventData<Vector2> eventData) { }
@@ -138,12 +145,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                 eventData.Controller.InputSource.SourceId != Controller.InputSource.SourceId)
             {
                 return;
-            }
-
-            if (eventData.TrackingState != TrackingState)
-            {
-                IsTracked = eventData.TrackingState == TrackingState.Tracked;
-                TrackingState = eventData.TrackingState;
             }
 
             if (UseSourcePoseData && TrackingState == TrackingState.Tracked)
