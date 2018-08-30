@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         /// </summary>
         public TouchscreenInputSource() : base("Touch Screen Input Source")
         {
-            if (Application.isPlaying)
+            if (Application.isPlaying && Input.touchSupported)
             {
                 Run();
             }
@@ -109,13 +109,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                         case TouchPhase.Canceled:
                             RemoveTouch(touch);
                             break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
                     }
                 }
 
                 await NextUpdate;
             }
+
+            // ReSharper disable once FunctionNeverReturns
         }
 
         #region Input Touch Events
