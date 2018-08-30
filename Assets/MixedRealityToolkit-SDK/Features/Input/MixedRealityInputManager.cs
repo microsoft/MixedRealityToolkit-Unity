@@ -50,7 +50,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private int disabledRefCount;
 
         private SourceStateEventData sourceStateEventData;
-        private SourcePoseEventData sourcePoseEventData;
+        private SourcePoseEventData<TrackingState> sourceTrackingEventData;
+        private SourcePoseEventData<Vector2> sourceVector2EventData;
+        private SourcePoseEventData<Vector3> sourcePositionEventData;
+        private SourcePoseEventData<Quaternion> sourceRotationEventData;
+        private SourcePoseEventData<MixedRealityPose> sourcePoseEventData;
 
         private FocusEventData focusEventData;
 
@@ -184,7 +188,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
 
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
-            sourcePoseEventData = new SourcePoseEventData(EventSystem.current);
+
+            sourceTrackingEventData = new SourcePoseEventData<TrackingState>(EventSystem.current);
+            sourceVector2EventData = new SourcePoseEventData<Vector2>(EventSystem.current);
+            sourcePositionEventData = new SourcePoseEventData<Vector3>(EventSystem.current);
+            sourceRotationEventData = new SourcePoseEventData<Quaternion>(EventSystem.current);
+            sourcePoseEventData = new SourcePoseEventData<MixedRealityPose>(EventSystem.current);
 
             focusEventData = new FocusEventData(EventSystem.current);
 
@@ -578,41 +587,69 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public void RaiseSourceTrackingStateChanged(IMixedRealityInputSource source, IMixedRealityController controller, TrackingState state)
         {
             // Create input event
-            sourcePoseEventData.Initialize(source, controller, state);
+            sourceTrackingEventData.Initialize(source, controller, state);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourcePoseEventData, OnSourcePoseChangedEventHandler);
+            HandleEvent(sourceTrackingEventData, OnSourceTrackingChangedEventHandler);
         }
+
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySourcePoseHandler> OnSourceTrackingChangedEventHandler =
+                delegate (IMixedRealitySourcePoseHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<SourcePoseEventData<TrackingState>>(eventData);
+                    handler.OnSourcePoseChanged(casted);
+                };
 
         /// <inheritdoc />
         public void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, Vector2 position)
         {
             // Create input event
-            sourcePoseEventData.Initialize(source, controller, position);
+            sourceVector2EventData.Initialize(source, controller, position);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourcePoseEventData, OnSourcePoseChangedEventHandler);
+            HandleEvent(sourceVector2EventData, OnSourcePoseVector2ChangedEventHandler);
         }
+
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySourcePoseHandler> OnSourcePoseVector2ChangedEventHandler =
+                delegate (IMixedRealitySourcePoseHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<SourcePoseEventData<Vector2>>(eventData);
+                    handler.OnSourcePoseChanged(casted);
+                };
 
         /// <inheritdoc />
         public void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, Vector3 position)
         {
             // Create input event
-            sourcePoseEventData.Initialize(source, controller, position);
+            sourcePositionEventData.Initialize(source, controller, position);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourcePoseEventData, OnSourcePoseChangedEventHandler);
+            HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
         }
+
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySourcePoseHandler> OnSourcePositionChangedEventHandler =
+                delegate (IMixedRealitySourcePoseHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<SourcePoseEventData<Vector3>>(eventData);
+                    handler.OnSourcePoseChanged(casted);
+                };
 
         /// <inheritdoc />
         public void RaiseSourceRotationChanged(IMixedRealityInputSource source, IMixedRealityController controller, Quaternion rotation)
         {
             // Create input event
-            sourcePoseEventData.Initialize(source, controller, rotation);
+            sourceRotationEventData.Initialize(source, controller, rotation);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourcePoseEventData, OnSourcePoseChangedEventHandler);
+            HandleEvent(sourceRotationEventData, OnSourceRotationChangedEventHandler);
         }
+
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySourcePoseHandler> OnSourceRotationChangedEventHandler =
+                delegate (IMixedRealitySourcePoseHandler handler, BaseEventData eventData)
+                {
+                    var casted = ExecuteEvents.ValidateEventData<SourcePoseEventData<Quaternion>>(eventData);
+                    handler.OnSourcePoseChanged(casted);
+                };
 
         /// <inheritdoc />
         public void RaiseSourcePoseChanged(IMixedRealityInputSource source, IMixedRealityController controller, MixedRealityPose position)
@@ -627,7 +664,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourcePoseHandler> OnSourcePoseChangedEventHandler =
                 delegate (IMixedRealitySourcePoseHandler handler, BaseEventData eventData)
                 {
-                    var casted = ExecuteEvents.ValidateEventData<SourcePoseEventData>(eventData);
+                    var casted = ExecuteEvents.ValidateEventData<SourcePoseEventData<MixedRealityPose>>(eventData);
                     handler.OnSourcePoseChanged(casted);
                 };
 

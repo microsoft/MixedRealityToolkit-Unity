@@ -119,7 +119,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         }
 
         /// <inheritdoc />
-        public virtual void OnSourcePoseChanged(SourcePoseEventData eventData)
+        public virtual void OnSourcePoseChanged(SourcePoseEventData<TrackingState> eventData) { }
+
+        /// <inheritdoc />
+        public virtual void OnSourcePoseChanged(SourcePoseEventData<Vector2> eventData) { }
+
+        /// <inheritdoc />
+        public virtual void OnSourcePoseChanged(SourcePoseEventData<Vector3> eventData) { }
+
+        /// <inheritdoc />
+        public virtual void OnSourcePoseChanged(SourcePoseEventData<Quaternion> eventData) { }
+
+        /// <inheritdoc />
+        public virtual void OnSourcePoseChanged(SourcePoseEventData<MixedRealityPose> eventData)
         {
             if (Controller == null ||
                 eventData.Controller == null ||
@@ -136,8 +148,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
             if (UseSourcePoseData && TrackingState == TrackingState.Tracked)
             {
-                transform.localPosition = eventData.MixedRealityPose.Position;
-                transform.localRotation = eventData.MixedRealityPose.Rotation;
+                transform.localPosition = eventData.SourceData.Position;
+                transform.localRotation = eventData.SourceData.Rotation;
             }
         }
 
