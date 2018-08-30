@@ -639,7 +639,7 @@ namespace HoloToolkit.Unity.InputModule
             {
                 newUiRaycastPosition.x = uiRaycastResult.screenPosition.x;
                 newUiRaycastPosition.y = uiRaycastResult.screenPosition.y;
-                newUiRaycastPosition.z = uiRaycastResult.distance;
+                newUiRaycastPosition.z = uiRaycastResult.distance + 0.1f;
 
                 Vector3 worldPos = UIRaycastCamera.ScreenToWorldPoint(newUiRaycastPosition);
 
