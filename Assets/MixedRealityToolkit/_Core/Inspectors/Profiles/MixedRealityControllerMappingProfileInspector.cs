@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
 using Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using System.Collections.Generic;
 using UnityEditor;
@@ -35,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             }
         }
 
+        private const string ModelWarningText = "The Controller model you've specified is missing a IMixedRealityControllerPoseSynchronizer component. Without it the model will not synchronize it's pose with the controller data. Would you like to add one now?";
         private static readonly GUIContent ControllerAddButtonContent = new GUIContent("+ Add a New Controller Definition");
         private static readonly GUIContent ControllerMinusButtonContent = new GUIContent("-", "Remove Controller Template");
         private static readonly GUIContent GenericTypeContent = new GUIContent("Generic Type");
@@ -134,8 +136,15 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                 if (!useDefaultModels.boolValue)
                 {
+                    EditorGUI.BeginChangeCheck();
                     EditorGUILayout.PropertyField(globalLeftHandModel);
                     EditorGUILayout.PropertyField(globalRightHandModel);
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        CheckSynchronizer((GameObject)globalLeftHandModel.objectReferenceValue);
+                        CheckSynchronizer((GameObject)globalRightHandModel.objectReferenceValue);
+                    }
                 }
             }
 
@@ -144,6 +153,22 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             RenderControllerProfilesList(mixedRealityControllerMappingProfiles, renderMotionControllers.boolValue);
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private static void CheckSynchronizer(GameObject modelPrefab)
+        {
+            if (modelPrefab == null) { return; }
+
+            var list = modelPrefab.GetComponentsInChildren<IMixedRealityControllerPoseSynchronizer>();
+
+            if (list == null || list.Length == 0)
+            {
+                if (EditorUtility.DisplayDialog("Warning!", ModelWarningText, "Add Component", "I'll do it Later"))
+                {
+                    EditorGUIUtility.PingObject(modelPrefab);
+                    Selection.activeObject = modelPrefab;
+                }
+            }
         }
 
         private void RenderControllerProfilesList(SerializedProperty controllerList, bool renderControllerModels)
@@ -328,7 +353,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                         if (!useDefaultModel.boolValue)
                         {
+                            EditorGUI.BeginChangeCheck();
                             EditorGUILayout.PropertyField(controllerModel);
+
+                            if (EditorGUI.EndChangeCheck())
+                            {
+                                CheckSynchronizer((GameObject)controllerModel.objectReferenceValue);
+                            }
                         }
                     }
 
