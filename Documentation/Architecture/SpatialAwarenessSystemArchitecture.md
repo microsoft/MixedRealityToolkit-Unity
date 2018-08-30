@@ -234,41 +234,15 @@ Called when an existing planar surface has been modified by the spatial awarenes
 
 Called when an existing planar surface has been discarded by the spatial awareness system.
 
-# Classes
-
-## MixedRealitySpatialAwarenessSystem
-
-| Toolkit Layer | Namespace |
-| --- | --- |
-| SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
-
-The MixedRealitySpatialAwarenessSystem class provides the default implementation of the spatial awareness system. Implements the [IMixedRealitySpatialAwarenessSystem](#imixedrealityspatialawarenesssystem) interface.
-
-## MixedRealitySpatialAwarenessMeshHandler
-
-| Toolkit Layer | Namespace |
-| --- | --- |
-| SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
-
-The MixedRealitySpatialAwarenessMeshHandler provides the default implementation of the spatial awareness system. Implements the default implementation of the [IMixedRealitySpatialAwarenessMeshHandler](#imixedrealityspatialawarenessmeshhandler) interface.
-
-## MixedRealitySpatialAwarenessSurfaceFindingHandler
-
-| Toolkit Layer | Namespace |
-| --- | --- |
-| SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
-
-The MixedRealitySpatialAwarenessSurfaceFindingHandler class provides the default implementation of the [IMixedRealitySpatialAwarenessSurfaceFindingHandler](#imixedrealityspatialawarenesssurfacefindinghandler) interface.
-
-## MixedRealitySpatialAwarenessBaseDescription
+## IMixedRealitySpatialAwarenessBaseDescription
 
 | Toolkit Layer | Namespace |
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem |
 
-The MixedRealitySpatialAwarenessBaseDescription class describes the core data required for an application to understand a object in the environment.
+The IMixedRealitySpatialAwarenessBaseDescription interface describes the core data required for an application to understand a object in the environment.
 
-<img src="Images/MixedRealitySpatialAwarenessBaseDescription.png">
+<img src="Images/IMixedRealitySpatialAwarenessBaseDescription.png">
 
 ### Position
 
@@ -278,19 +252,19 @@ The MixedRealitySpatialAwarenessBaseDescription class describes the core data re
 
 The position, in the environment, at which the object should be placed.
 
-## MixedRealitySpatialAwarenessMeshDescription
+## IMixedRealitySpatialAwarenessMeshDescription
 
 | Toolkit Layer | Namespace |
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem |
 
-The MixedRealitySpatialAwarenessMeshDescription class describes the data required for an application to understand how to construct and place a mesh in the environment.
+The IMixedRealitySpatialAwarenessMeshDescription interface describes the data required for an application to understand how to construct and place a mesh in the environment.
 
-<img src="Images/MixedRealitySpatialAwarenessMeshDescription.png">]
+<img src="Images/IMixedRealitySpatialAwarenessMeshDescription.png">
 
 ### Position
 
-*Inherited from [MixedRealitySpatialAwarenessBaseDescription](#mixedrealityspatialawarenessbasedescription).*
+*Inherited from [IMixedRealitySpatialAwarenessBaseDescription](#imixedrealityspatialawarenessbasedescription).*
 
 ### Mesh
 
@@ -300,19 +274,19 @@ The MixedRealitySpatialAwarenessMeshDescription class describes the data require
 
 The mesh data.
 
-## MixedRealitySpatialAwarenessPlanarSurfaceDescription
+## IMixedRealitySpatialAwarenessPlanarSurfaceDescription
 
 | Toolkit Layer | Namespace |
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem |
 
-The MixedRealitySpatialAwarenessPlanarSurfaceDescription describes the data required for an application to understand how to construct and place a planar surface.
+The IMixedRealitySpatialAwarenessPlanarSurfaceDescription interface describes the data required for an application to understand how to construct and place a planar surface.
 
-<img src="Images/MixedRealitySpatialAwarenessPlanarSurfaceDescription.png">
+<img src="Images/IMixedRealitySpatialAwarenessPlanarSurfaceDescription.png">
 
 ### Position
 
-*Inherited from [MixedRealitySpatialAwarenessBaseDescription](#mixedrealityspatialawarenessbasedescription).*
+*Inherited from [IMixedRealitySpatialAwarenessBaseDescription](#imixedrealityspatialawarenessbasedescription).*
 
 ### BoundingBox
 
@@ -334,9 +308,59 @@ The normal of the described surface.
 
 | Type |
 | --- |
-| [MixedRealitySpatialAwarenessSurfaceTypes]{#mixedrealityspatialawarenesssurfacetypes} |
+| [MixedRealitySpatialAwarenessSurfaceTypes](#mixedrealityspatialawarenesssurfacetypes) |
 
 The semantic (ex: Floor) associated with the surface.
+
+# Classes
+
+## MixedRealitySpatialAwarenessSystem
+
+| Toolkit Layer | Namespace |
+| --- | --- |
+| SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
+
+The MixedRealitySpatialAwarenessSystem class provides the default implementation of the spatial awareness system. Implements the [IMixedRealitySpatialAwarenessSystem](#imixedrealityspatialawarenesssystem) interface.
+
+## MixedRealitySpatialAwarenessMeshHandler
+
+| Toolkit Layer | Namespace |
+| --- | --- |
+| SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
+
+The MixedRealitySpatialAwarenessMeshHandler class provides the default implementation of the [IMixedRealitySpatialAwarenessMeshHandler](#imixedrealityspatialawarenessmeshhandler) interface.
+
+## MixedRealitySpatialAwarenessSurfaceFindingHandler
+
+| Toolkit Layer | Namespace |
+| --- | --- |
+| SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
+
+The MixedRealitySpatialAwarenessSurfaceFindingHandler class provides the default implementation of the [IMixedRealitySpatialAwarenessSurfaceFindingHandler](#imixedrealityspatialawarenesssurfacefindinghandler) interface.
+
+## MixedRealitySpatialAwarenessBaseDescription
+
+| Toolkit Layer | Namespace |
+| --- | --- |
+| SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
+
+The MixedRealitySpatialAwarenessBaseDescription class provides the default implementation of the [IMixedRealitySpatialAwarenessBaseDescription](#imixedrealityspatialawarenessbasedescription) interface.
+
+## MixedRealitySpatialAwarenessMeshDescription
+
+| Toolkit Layer | Namespace |
+| --- | --- |
+| SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
+
+The MixedRealitySpatialAwarenessMeshDescription class provides the default implementation of the [MixedRealitySpatialAwarenessMeshDescription](#imixedrealityspatialawarenessmeshdescription) interface.
+
+## MixedRealitySpatialAwarenessPlanarSurfaceDescription
+
+| Toolkit Layer | Namespace |
+| --- | --- |
+| SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
+
+The MixedRealitySpatialAwarenessPlanarSurfaceDescription class provides the default implementation of the [MixedRealitySpatialAwarenessPlanarSurfaceDescription](#imixedrealityspatialawarenessplanarsurfacedescription) interface.
 
 # System Profile Management Classes and Types
 
