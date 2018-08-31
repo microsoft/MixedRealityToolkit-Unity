@@ -194,13 +194,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// Gets the collection of <see cref="IMixedRealitySpatialAwarenessPlanarSurfaceDescription"/>s being tracked by the spatial awareness surface finding subsystem.
         /// </summary>
         /// <returns>Dictionary of <see cref="IMixedRealitySpatialAwarenessPlanarSurfaceDescription"/>s, indexed by the surface id.</returns>
-        Dictionary<int, IMixedRealitySpatialAwarenessPlanarSurfaceDescription> GetSurfaces();
+        Dictionary<uint, IMixedRealitySpatialAwarenessPlanarSurfaceDescription> GetSurfaces();
 
         /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness surface finding subsystem.
         /// </summary>
         /// <returns>Dictionary of <see cref="GameObject"/>s, indexed by the surface id.</returns>
-        Dictionary<int, GameObject> GetSurfaceObjects();
+        Dictionary<uint, GameObject> GetSurfaceObjects();
 
         #endregion Surface Finding Handling
     }

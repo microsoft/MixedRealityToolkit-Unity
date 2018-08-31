@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using System.Collections;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
@@ -19,5 +20,47 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         {
             Mesh = mesh;
         }
+
+        #region IEqualityComparer implementation
+
+        public static bool Equals(IMixedRealitySpatialAwarenessMeshDescription left, IMixedRealitySpatialAwarenessMeshDescription right)
+        {
+            return left.Equals(right);
+        }
+
+        bool IEqualityComparer.Equals(object left, object right)
+        {
+            return left.Equals(right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) { return false; }
+            if (ReferenceEquals(this, obj)) { return true; }
+            if (obj.GetType() != GetType()) { return false; }
+
+            return Equals((IMixedRealitySpatialAwarenessMeshDescription)obj);
+        }
+
+        private bool Equals(IMixedRealitySpatialAwarenessMeshDescription other)
+        {
+            if (other == null) { return false; }
+            if (!base.Equals(other)) { return false; }
+
+            return Mesh.Equals(other.Mesh);
+        }
+
+        int IEqualityComparer.GetHashCode(object obj)
+        {
+            return obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            string s = $"Position({Position.x},{Position.y},{Position.z}):MeshHash({Mesh.GetHashCode()}";
+            return s.GetHashCode();
+        }
+
+        #endregion IEqualityComparer implementation
     }
 }
