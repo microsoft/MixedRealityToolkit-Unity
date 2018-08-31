@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
 {
+    /// <summary>
+    /// Class poviding the default implementation of the <see cref="IMixedRealitySpatialAwarenessBaseDescription"/> interface.
+    /// </summary>
     public class MixedRealitySpatialAwarenessBaseDescription : IMixedRealitySpatialAwarenessBaseDescription
     {
         /// <inheritdoc />

@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// <summary>
         /// The surface description associated with <see cref="MixedRealitySpatialAwarenessBaseEventData.Id"/>.
         /// </summary>
-        public IMixedRealitySpatialAwarenessPlanarSurfaceDescription Description { get; private set; }
+        public IMixedRealitySpatialAwarenessPlanarSurfaceDescription SurfaceDescription { get; private set; }
 
         /// <summary>
         /// Constructor.
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
             GameObject surfaceObject)
         {
             base.Initialize(spatialAwarenessSystem, surfaceId, eventType, surfaceObject);
-            Description = description;
+            SurfaceDescription = description;
         }
     }
 }

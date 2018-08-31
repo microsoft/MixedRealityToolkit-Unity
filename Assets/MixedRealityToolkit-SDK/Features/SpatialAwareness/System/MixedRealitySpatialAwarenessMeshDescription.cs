@@ -1,16 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using UnityEngine;
 
-public class MixedRealituySpatialAwarenessMeshDescription : MonoBehaviour {
+namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
+{
+    /// <summary>
+    /// Class poviding the default implementation of the <see cref="IMixedRealitySpatialAwarenessMeshDescription"/> interface.
+    /// </summary>
+    public class MixedRealitySpatialAwarenessMeshDescription : MixedRealitySpatialAwarenessBaseDescription, IMixedRealitySpatialAwarenessMeshDescription
+    {
+        /// <inheritdoc />
+        public Mesh Mesh
+        {get; private set;}
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        public MixedRealitySpatialAwarenessMeshDescription(Vector3 position, Mesh mesh) : base(position)
+        {
+            Mesh = mesh;
+        }
+    }
 }

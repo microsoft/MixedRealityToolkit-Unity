@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// <summary>
         /// The mesh description associated with <see cref="MixedRealitySpatialAwarenessBaseEventData.Id"/>.
         /// </summary>
-        public IMixedRealitySpatialAwarenessMeshDescription Description { get; private set; }
+        public IMixedRealitySpatialAwarenessMeshDescription MeshDescription { get; private set; }
 
         /// <summary>
         /// Constructor.
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
             GameObject meshObject)
         {
             base.Initialize(spatialAwarenessSystem, meshId, eventType, meshObject);
-            Description = description;
+            MeshDescription = description;
         }
     }
 }

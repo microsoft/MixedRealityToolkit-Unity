@@ -106,13 +106,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// Gets the collection of <see cref="IMixedRealitySpatialAwarenessMeshDescription"/>s being tracked by the spatial awareness mesh subsystem.
         /// </summary>
         /// <returns>Dictionary of <see cref="IMixedRealitySpatialAwarenessMeshDescription"/>s, indexed by the mesh id.</returns>
-        Dictionary<int, IMixedRealitySpatialAwarenessMeshDescription> GetMeshes();
+        Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription> GetMeshes();
 
         /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness mesh subsystem.
         /// </summary>
         /// <returns>Dictionary of <see cref="GameObject"/>s, indexed by the mesh id.</returns>
-        Dictionary<int, GameObject> GetMeshObjects();
+        Dictionary<uint, GameObject> GetMeshObjects();
 
         #endregion Mesh Handling
 
