@@ -100,18 +100,6 @@ Applications that wish to process the Meshes should set this value to false.
 
 Gets or sets the material to be used when rendering spatial meshes.
 
-#### void RaiseMeshAdded(uint meshId, Vector3 position, Mesh meshData, GameObject meshObject)
-
-The spatial awareness system will call the IMixedRealitySpatialAwarenessMeshHandler.OnMeshAdded method to indicate a new mesh has been added.
-
-#### void RaiseMeshUpdated(uint meshId, Vector3 position, Mesh meshData, GameObject meshObject)
-
-The spatial awareness system will call the IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated method to indicate an existing mesh has changed.
-
-#### void RaiseMeshRemoved(uint meshId)
-
-The spatial awareness system will call the IMixedRealitySpatialAwarenessMeshHandler.OnMeshRemoved method to indicate an existing mesh has been removed.
-
 #### [MixedRealitySpatialAwarenessMeshDescription](#mixedrealityspatialawarenessmeshdescription)[] GetMeshes()
 
 Returns the collection of Meshes being managed by the spatial awareness mesh subsystem.
@@ -173,18 +161,6 @@ Gets or sets a value indicating if the surface subsystem is to automatically dis
 #### PlatformSurfaceMaterial
 
 Gets or sets the material to be used when rendering planar surface(s) identified as a raised horizontal platform.
-
-#### void RaiseSurfaceAdded(uint surfaceId, Vector3 position, Bounds surfaceData, Vector3 normal, GameObject surfaceObject)
-
-The spatial awareness system will call the IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceAdded method to indicate a new planar surface has been added.
-
-#### void RaiseSurfaceUpdated(uint surfaceId, Vector3 position, Bounds surfaceData, Vector3 normal, GameObject surfaceObject)
-
-The spatial awareness system will call the IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceUpdated method to indicate an existing planar surface has changed.
-
-#### void RaiseSurfaceRemoved(uint surfaceId)
-
-The spatial awareness system will call the IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceRemoved method to indicate an existing planar surface has been removed.
 
 #### [MixedRealitySpatialAwarenessPlanarSurfaceDescription](#mixedrealityspatialawarenessplanarsurfacedescription)[] GetSurfaces()
 
@@ -559,7 +535,7 @@ public enum MixedRealitySpatialAwarenessSurfaceTypes
     /// A raised, horizontal surface such as a shelf.
     /// </summary>
     /// <remarks>
-    Platforms, like floors, that can be used for placing objects 
+    /// Platforms, like floors, can be used for placing objects 
     /// requiring a horizontal surface.
     /// </remarks>
     Platform
@@ -581,7 +557,7 @@ public enum MixedRealitySpatialAwarenessMeshLevelOfDetail
     /// </summary>
     Custom = -1,
 
-   /// <summary>
+    /// <summary>
     /// The coarse level of detail is well suited for identifying large
     /// environmental features, such as floors and walls.
     /// </summary>
@@ -667,7 +643,7 @@ The MixedRealitySpatialAwarenessMeshEventData derives from [MixedRealitySpatialA
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityspatialawarenessbaseeventdata).*
 
-### Description
+### MeshDescription
 
 | Type |
 | --- |
@@ -675,7 +651,7 @@ The MixedRealitySpatialAwarenessMeshEventData derives from [MixedRealitySpatialA
 
 For MeshAdded and MeshUpdated events, this will contain the mesh description. For MeshRemoved, the value will be null.
 
-## MixedRealitySpatialSurfaceEventData
+## MixedRealitySpatialAwarenessSurfaceEventData
 
 | Toolkit Layer | Namespace |
 | --- | --- |
@@ -701,7 +677,7 @@ The MixedRealitySpatialSurfaceEventData derives from [MixedRealitySpatialAwarene
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityspatialawarenessbaseeventdata).*
 
-### Description
+### SurfaceDescription
 
 | Type |
 | --- |
