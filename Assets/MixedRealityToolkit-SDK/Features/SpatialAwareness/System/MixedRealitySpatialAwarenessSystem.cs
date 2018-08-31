@@ -488,17 +488,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public Material MeshMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public Dictionary<int, IMixedRealitySpatialAwarenessMeshDescription> GetMeshes()
+        public Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription> GetMeshes()
         {
             // todo
-            return new Dictionary<int, IMixedRealitySpatialAwarenessMeshDescription>(0);
+            return new Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription>(0);
         }
 
         /// <inheritdoc />
-        public Dictionary<int, GameObject> GetMeshObjects()
+        public Dictionary<uint, GameObject> GetMeshObjects()
         {
             // todo
-            return new Dictionary<int, GameObject>(0);
+            return new Dictionary<uint, GameObject>(0);
         }
 
         #endregion Mesh Handling implementation
@@ -542,17 +542,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public Material PlatformSurfaceMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public Dictionary<int, IMixedRealitySpatialAwarenessPlanarSurfaceDescription> GetSurfaces()
+        public Dictionary<uint, IMixedRealitySpatialAwarenessPlanarSurfaceDescription> GetSurfaces()
         {
             // todo
-            return new Dictionary<int, IMixedRealitySpatialAwarenessPlanarSurfaceDescription>(0);
+            return new Dictionary<uint, IMixedRealitySpatialAwarenessPlanarSurfaceDescription>(0);
         }
 
         /// <inheritdoc />
-        public Dictionary<int, GameObject> GetSurfaceObjects()
+        public Dictionary<uint, GameObject> GetSurfaceObjects()
         {
             // todo
-            return new Dictionary<int, GameObject>(0);
+            return new Dictionary<uint, GameObject>(0);
         }
 
         #endregion Surface Finding Handling implementation
