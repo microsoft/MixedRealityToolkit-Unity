@@ -106,11 +106,11 @@ The spatial awareness system will call the IMixedRealitySpatialAwarenessMeshHand
 
 #### void RaiseMeshUpdated(uint meshId, Vector3 position, Mesh meshData, GameObject meshObject)
 
-The spatial awareness system will call the IMixedRealitySpatialAwarenessMeshHandler.OnMeshAdded method to indicate an existing mesh has changed.
+The spatial awareness system will call the IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated method to indicate an existing mesh has changed.
 
-#### void RaiseMeshDeleted(uint meshId)
+#### void RaiseMeshRemoved(uint meshId)
 
-The spatial awareness system will call the IMixedRealitySpatialAwarenessMeshHandler.OnMeshAdded method to indicate an existing mesh has been removed.
+The spatial awareness system will call the IMixedRealitySpatialAwarenessMeshHandler.OnMeshRemoved method to indicate an existing mesh has been removed.
 
 #### [MixedRealitySpatialAwarenessMeshDescription](#mixedrealityspatialawarenessmeshdescription)[] GetMeshes()
 
@@ -180,11 +180,11 @@ The spatial awareness system will call the IMixedRealitySpatialAwarenessSurfaceF
 
 #### void RaiseSurfaceUpdated(uint surfaceId, Vector3 position, Bounds surfaceData, Vector3 normal, GameObject surfaceObject)
 
-The spatial awareness system will call the IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfacefsUpdated method to indicate an existing planar surface has changed.
+The spatial awareness system will call the IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceUpdated method to indicate an existing planar surface has changed.
 
-#### void RaiseSurfaceDeleted(uint surfaceId)
+#### void RaiseSurfaceRemoved(uint surfaceId)
 
-The spatial awareness system will call the IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceDeleted method to indicate an existing planar surface has been removed.
+The spatial awareness system will call the IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceRemoved method to indicate an existing planar surface has been removed.
 
 #### [MixedRealitySpatialAwarenessPlanarSurfaceDescription](#mixedrealityspatialawarenessplanarsurfacedescription)[] GetSurfaces()
 
@@ -202,15 +202,15 @@ Returns the collection of GameObjects managed by the surface finding subsystem.
 
 <img src="Images/IMixedRealitySpatialAwarenessMeshHandler.png">
 
-### void OnMeshAdded([MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) eventData)
+### void OnMeshAdded([MixedRealitySpatialMeshEventData](#mixedrealityspatialawarenessmesheventdata) eventData)
 
 Called when a new surface mesh has been identified by the spatial awareness system.
 
-### void OnMeshUpdated([MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) eventData)
+### void OnMeshUpdated([MixedRealitySpatialMeshEventData](#mixedrealityspatialawarenessmesheventdata) eventData)
 
 Called when an existing surface mesh has been modified by the spatial awareness system.
 
-### OnMeshDeleted([MixedRealitySpatialMeshEventData](#mixedrealityspatialmesheventdata) eventData)
+### OnMeshDeleted([MixedRealitySpatialMeshEventData](#mixedrealityspatialawarenessmesheventdata) eventData)
 
 Called when an existing surface mesh has been discarded by the spatial awareness system.
 
@@ -222,15 +222,15 @@ Called when an existing surface mesh has been discarded by the spatial awareness
 
 <img src="Images/IMixedRealitySpatialAwarenessSurfaceFindingHandler.png">
 
-### OnSurfaceAdded([MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata))
+### OnSurfaceAdded([MixedRealitySpatialSurfaceEventData](#mixedrealityspatialawarenesssurfaceeventdata))
 
 Called when a new planar surface has been identified by the spatial awareness system.
 
-### OnSurfaceUpdated([MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata))
+### OnSurfaceUpdated([MixedRealitySpatialSurfaceEventData](#mixedrealityspatialawarenesssurfaceeventdata))
 
 Called when an existing planar surface has been modified by the spatial awareness system.
 
-### OnSurfaceDeleted([MixedRealitySpatialSurfaceEventData](#mixedrealityspatialsurfaceeventdata))
+### OnSurfaceDeleted([MixedRealitySpatialSurfaceEventData](#mixedrealityspatialawarenesssurfaceeventdata))
 
 Called when an existing planar surface has been discarded by the spatial awareness system.
 
@@ -631,14 +631,6 @@ The type of event that has occurred.
 
 An identifier assigned to a specific object in the spatial awareness system.
 
-### Position
-
-| Type |
-| --- |
-| Vector3 |
-
-The position, in the environment, at which the data should be placed.
-
 ### GameObject
 
 | Type |
@@ -671,21 +663,17 @@ The MixedRealitySpatialAwarenessMeshEventData derives from [MixedRealitySpatialA
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityspatialawarenessbaseeventdata).*
 
-### Position
-
-*Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityspatialawarenessbaseeventdata).*
-
 ### GameObject
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityspatialawarenessbaseeventdata).*
 
-### MeshData
+### Description
 
 | Type |
 | --- |
-| Mesh |
+| [MixedRealitySpatialAwarenessMeshDescription](#mixedrealityspatialawarenessmeshdescription) |
 
-For MeshAdded and MeshUpdated events, this will contain the mesh data. For MeshDeleted, the value will be null.
+For MeshAdded and MeshUpdated events, this will contain the mesh description. For MeshRemoved, the value will be null.
 
 ## MixedRealitySpatialSurfaceEventData
 
@@ -709,37 +697,17 @@ The MixedRealitySpatialSurfaceEventData derives from [MixedRealitySpatialAwarene
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityspatialawarenessbaseeventdata).*
 
-### Position
-
-*Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityspatialawarenessbaseeventdata).*
-
 ### GameObject
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityspatialawarenessbaseeventdata).*
 
-### BoundingBox
+### Description
 
 | Type |
 | --- |
-| Bounds |
+| [MixedRealitySpatialAwarenessPlanarSurfaceDescription](#mixedrealityspatialawarenessplanarsurfacedescription) |
 
-For SurfaceAdded and SurfaceUpdated events, this will contain the axis aligned bounding box for the surface. For SurfaceDeleted, the value will be null.
-
-### Normal
-
-| Type |
-| --- |
-| Vector3 |
-
-The surface normal.
-
-### SurfaceType
-
-| Type |
-| --- |
-| [MixedRealitySpatialAwarenessSurfaceTypes](#mixedrealityspatialawarenesssurfacetypes) |
-
-The semantic (ex: Floor) associated with the surface.
+For SurfaceAdded and SurfaceUpdated events, this will contain the description of the planar surface. For SurfaceRemoved, the value will be null.
 
 ## MixedRealitySpatialAwarenessEventType
 
