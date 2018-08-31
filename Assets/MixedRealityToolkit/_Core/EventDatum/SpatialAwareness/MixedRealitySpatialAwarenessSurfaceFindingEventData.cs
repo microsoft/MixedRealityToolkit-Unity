@@ -14,21 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
     public class MixedRealitySpatialAwarenessSurfaceFindingEventData : MixedRealitySpatialAwarenessBaseEventData
     {
         /// <summary>
-        /// Axis aligned bounding box containing the surface.
+        /// The surface description associated with <see cref="MixedRealitySpatialAwarenessBaseEventData.Id"/>.
         /// </summary>
-        /// <remarks>For SurfaceDeleted events, the value will be null.</remarks>
-        public Bounds BoundingBox { get; private set; }
-
-        /// <summary>
-        /// The normal of the surface.
-        /// </summary>
-        /// <remarks>For SurfaceDeleted events, the value will be Vector3.zero.</remarks>
-        public Vector3 Normal { get; private set; }
-
-        /// <summary>
-        /// The semantic (ex: Floor) associated with the surface.
-        /// </summary>
-        public MixedRealitySpatialAwarenessSurfaceTypes SurfaceType { get; private set; }
+        public IMixedRealitySpatialAwarenessPlanarSurfaceDescription Description { get; private set; }
 
         /// <summary>
         /// Constructor.
@@ -40,16 +28,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             MixedRealitySpatialAwarenessEventType eventType,
             uint surfaceId,
-            Vector3 position,
-            Bounds boundingBox,
-            Vector3 normal,
-            MixedRealitySpatialAwarenessSurfaceTypes surfaceType,
+            IMixedRealitySpatialAwarenessPlanarSurfaceDescription description,
             GameObject surfaceObject)
         {
-            base.Initialize(spatialAwarenessSystem, surfaceId, eventType, position, surfaceObject);
-            BoundingBox = boundingBox;
-            Normal = normal;
-            SurfaceType = surfaceType;
+            base.Initialize(spatialAwarenessSystem, surfaceId, eventType, surfaceObject);
+            Description = description;
         }
     }
 }

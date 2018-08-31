@@ -14,10 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
     public class MixedRealitySpatialAwarenessMeshEventData : MixedRealitySpatialAwarenessBaseEventData
     {
         /// <summary>
-        /// The mesh data associated with <see cref="MeshId"/>.
+        /// The mesh description associated with <see cref="MixedRealitySpatialAwarenessBaseEventData.Id"/>.
         /// </summary>
-        /// <remarks>For MeshDeleted events, the value will be null.</remarks>
-        public Mesh MeshData { get; private set; }
+        public IMixedRealitySpatialAwarenessMeshDescription Description { get; private set; }
 
         /// <summary>
         /// Constructor.
@@ -29,12 +28,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             MixedRealitySpatialAwarenessEventType eventType,
             uint meshId,
-            Vector3 position,
-            Mesh meshData,
+            IMixedRealitySpatialAwarenessMeshDescription description,
             GameObject meshObject)
         {
-            base.Initialize(spatialAwarenessSystem, meshId, eventType, position, meshObject);
-            MeshData = meshData;
+            base.Initialize(spatialAwarenessSystem, meshId, eventType, meshObject);
+            Description = description;
         }
     }
 }

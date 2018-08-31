@@ -33,11 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         public MixedRealitySpatialAwarenessEventType EventType { get; private set; }
 
         /// <summary>
-        /// The position, in the environment, at which the data should be placed.
-        /// </summary>
-        public Vector3 Position { get; private set; }
-
-        /// <summary>
         /// <see cref="GameObject"/>, managed by the spatial awareness system, representing the data in this event.
         /// </summary>
         public GameObject GameObject { get; private set; }
@@ -52,14 +47,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             uint id,
             MixedRealitySpatialAwarenessEventType eventType,
-            Vector3 position,
             GameObject gameObject)
         {
             base.BaseInitialize(spatialAwarenessSystem);
             Id = id;
             EventTime = DateTime.Now;
             EventType = eventType;
-            Position = position;
             GameObject = gameObject;
         }
     }
