@@ -76,11 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// </summary>
         public DictationInputSource DictationInputSource { get; private set; }
 
-        /// <summary>
-        /// Current Touch Screen Input Source.
-        /// </summary>
-        public TouchscreenInputSource TouchscreenInputSource { get; private set; }
-
         #region IMixedRealityManager Implementation
 
         /// <summary>
@@ -210,11 +205,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             {
                 DictationInputSource = new DictationInputSource();
             }
-
-            if (MixedRealityManager.Instance.ActiveProfile.IsTouchScreenInputEnabled)
-            {
-                TouchscreenInputSource = new TouchscreenInputSource();
-            }
         }
 
         /// <inheritdoc />
@@ -275,7 +265,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             SpeechInputSource?.Dispose();
             DictationInputSource?.Dispose();
-            TouchscreenInputSource?.Dispose();
             base.Destroy();
         }
 

@@ -1819,6 +1819,68 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
   - id: 11
+    description: UnityTouchController
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityTouchController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    useDefaultModel: 0
+    overrideModel: {fileID: 0}
+    useCustomInteractionMappings: 0
+    interactions:
+    - id: 0
+      description: Touch Pointer Position
+      axisType: 4
+      inputType: 4
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Touch Press
+      axisType: 2
+      inputType: 6
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Touch Hold
+      axisType: 2
+      inputType: 24
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Touch Manipulation
+      axisType: 4
+      inputType: 21
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - id: 12
     description: Generic OpenVR Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.GenericOpenVRController,
@@ -1984,7 +2046,7 @@ MonoBehaviour:
       axisCodeY: AXIS_18
       invertXAxis: 0
       invertYAxis: 0
-  - id: 11
+  - id: 13
     description: Generic OpenVR Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.GenericOpenVRController,

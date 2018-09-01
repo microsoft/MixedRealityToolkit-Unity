@@ -185,32 +185,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         public int SpeechRecognitionConfidenceLevel => recognitionConfidenceLevel;
 
         [SerializeField]
-        [Tooltip("Enable Touch Screen Input for your application.")]
-        private bool enableTouchScreenInput = false;
-
-        /// <summary>
-        /// Enable Touch Screen Input for your application.
-        /// </summary>
-        public bool IsTouchScreenInputEnabled
-        {
-            get { return touchScreenInputProfile != null && enableTouchScreenInput && enableInputSystem; }
-            private set { enableTouchScreenInput = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Touch Screen Input Source profile for wiring up Actions.")]
-        private MixedRealityTouchInputProfile touchScreenInputProfile;
-
-        /// <summary>
-        /// Touch Screen Input Source profile for wiring up Actions.
-        /// </summary>
-        public MixedRealityTouchInputProfile TouchScreenInputProfile
-        {
-            get { return touchScreenInputProfile; }
-            private set { touchScreenInputProfile = value; }
-        }
-
-        [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]
         private bool enableControllerMapping = false;
 

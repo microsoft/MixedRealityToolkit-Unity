@@ -40,8 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty speechCommandsProfile;
         private SerializedProperty recognitionConfidenceLevel;
         private SerializedProperty enableDictation;
-        private SerializedProperty enableTouchScreenInput;
-        private SerializedProperty touchScreenInputProfile;
         private SerializedProperty enableControllerMapping;
         private SerializedProperty controllerMappingProfile;
         // Boundary system properties
@@ -108,8 +106,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
             recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
             enableDictation = serializedObject.FindProperty("enableDictation");
-            enableTouchScreenInput = serializedObject.FindProperty("enableTouchScreenInput");
-            touchScreenInputProfile = serializedObject.FindProperty("touchScreenInputProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
             controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
             // Boundary system configuration
@@ -203,13 +199,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 }
 
                 EditorGUILayout.PropertyField(enableDictation);
-
-                EditorGUILayout.PropertyField(enableTouchScreenInput);
-
-                if (enableTouchScreenInput.boolValue)
-                {
-                    RenderProfile(touchScreenInputProfile);
-                }
 
                 EditorGUILayout.PropertyField(enableControllerMapping);
 
