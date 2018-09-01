@@ -186,10 +186,26 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 return;
             }
 
-            GUILayout.Space(12f);
+            bool reset = false;
+            if (controllerRenderList.Count > 0)
+            {
+                for (var type = 1; type <= (int)SupportedControllerType.TouchScreen; type++)
+                {
+                    if (controllerRenderList.All(profile => profile.ControllerType != (SupportedControllerType)type))
+                    {
+                        if ((SupportedControllerType)type == SupportedControllerType.TouchScreen)
+                        {
+                            AddController(controllerList, typeof(UnityTouchController));
+                            reset = true;
+                        }
+                    }
+                }
+            }
 
             controllerRenderList.Clear();
+            if (reset) { return; }
 
+            GUILayout.Space(12f);
             GUILayout.BeginVertical();
 
             for (int i = 0; i < controllerList.arraySize; i++)
@@ -408,17 +424,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             }
 
             GUILayout.EndVertical();
-
-            for (var type = 1; type <= (int)SupportedControllerType.TouchScreen; type++)
-            {
-                if (controllerRenderList.All(profile => profile.ControllerType != (SupportedControllerType)type))
-                {
-                    if ((SupportedControllerType)type == SupportedControllerType.TouchScreen)
-                    {
-                        AddController(controllerList, typeof(UnityTouchController));
-                    }
-                }
-            }
         }
 
         private void AddController(SerializedProperty controllerList, Type controllerType)
