@@ -18,8 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         private static BuildTargetGroup currentBuildTargetGroup = BuildTargetGroup.Unknown;
 
-        private static bool lastTheme;
-
         static EnforceEditorSettings()
         {
             SetIconTheme();
