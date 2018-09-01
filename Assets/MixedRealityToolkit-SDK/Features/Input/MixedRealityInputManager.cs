@@ -196,22 +196,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
 
-            if (MixedRealityManager.Instance.ActiveProfile.IsSpeechCommandsEnabled)
+            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsSpeechCommandsEnabled)
             {
                 SpeechInputSource = new SpeechInputSource(
-                    MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands
+                    MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-                    , (UnityEngine.Windows.Speech.ConfidenceLevel)MixedRealityManager.Instance.ActiveProfile.SpeechRecognitionConfidenceLevel
+                    , (UnityEngine.Windows.Speech.ConfidenceLevel)MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechRecognitionConfidenceLevel
 #endif
                 );
             }
 
-            if (MixedRealityManager.Instance.ActiveProfile.IsDictationEnabled)
+            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsDictationEnabled)
             {
                 DictationInputSource = new DictationInputSource();
             }
 
-            if (MixedRealityManager.Instance.ActiveProfile.IsTouchScreenInputEnabled)
+            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsTouchScreenInputEnabled)
             {
                 TouchscreenInputSource = new TouchscreenInputSource();
             }

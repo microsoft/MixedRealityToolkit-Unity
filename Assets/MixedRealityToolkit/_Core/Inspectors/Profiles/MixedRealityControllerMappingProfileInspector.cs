@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             mixedRealityControllerMappingProfiles = serializedObject.FindProperty("mixedRealityControllerMappingProfiles");
 
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
-                 MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null)
+                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 return;
             }
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 return;
             }
 
-            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null)
+            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
                 return;

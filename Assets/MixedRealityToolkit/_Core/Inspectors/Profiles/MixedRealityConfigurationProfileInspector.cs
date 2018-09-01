@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
 using UnityEngine;
@@ -13,18 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityConfigurationProfile))]
     public class MixedRealityConfigurationProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
-        private static readonly GUIContent SpeechConfidenceContent = new GUIContent("Recognition Confidence Level", "The speech recognizer's minimum confidence level setting that will raise the action.");
-        private static readonly GUIContent[] SpeechConfidenceOptionContent =
-        {
-            new GUIContent("High"),
-            new GUIContent("Medium"),
-            new GUIContent("Low"),
-            new GUIContent("Unrecognized")
-        };
-
-        private static readonly int[] SpeechConfidenceOptions = { 0, 1, 2, 3 };
 
         // Experience properties
         private SerializedProperty targetExperienceScale;
@@ -34,16 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         // Input system properties
         private SerializedProperty enableInputSystem;
         private SerializedProperty inputSystemType;
-        private SerializedProperty inputActionsProfile;
-        private SerializedProperty pointerProfile;
-        private SerializedProperty enableSpeechCommands;
-        private SerializedProperty speechCommandsProfile;
-        private SerializedProperty recognitionConfidenceLevel;
-        private SerializedProperty enableDictation;
-        private SerializedProperty enableTouchScreenInput;
-        private SerializedProperty touchScreenInputProfile;
-        private SerializedProperty enableControllerMapping;
-        private SerializedProperty controllerMappingProfile;
+        private SerializedProperty inputSystemProfile;
         // Boundary system properties
         private SerializedProperty enableBoundarySystem;
         private SerializedProperty boundarySystemType;
@@ -102,16 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             // Input system configuration
             enableInputSystem = serializedObject.FindProperty("enableInputSystem");
             inputSystemType = serializedObject.FindProperty("inputSystemType");
-            inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
-            pointerProfile = serializedObject.FindProperty("pointerProfile");
-            enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
-            speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
-            recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
-            enableDictation = serializedObject.FindProperty("enableDictation");
-            enableTouchScreenInput = serializedObject.FindProperty("enableTouchScreenInput");
-            touchScreenInputProfile = serializedObject.FindProperty("touchScreenInputProfile");
-            enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
-            controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
+            inputSystemProfile = serializedObject.FindProperty("inputSystemProfile");
             // Boundary system configuration
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
             boundarySystemType = serializedObject.FindProperty("boundarySystemType");
@@ -191,32 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             if (enableInputSystem.boolValue)
             {
                 EditorGUILayout.PropertyField(inputSystemType);
-                RenderProfile(inputActionsProfile);
-                RenderProfile(pointerProfile);
-
-                EditorGUILayout.PropertyField(enableSpeechCommands);
-
-                if (enableSpeechCommands.boolValue)
-                {
-                    RenderProfile(speechCommandsProfile);
-                    recognitionConfidenceLevel.intValue = EditorGUILayout.IntPopup(SpeechConfidenceContent, recognitionConfidenceLevel.intValue, SpeechConfidenceOptionContent, SpeechConfidenceOptions);
-                }
-
-                EditorGUILayout.PropertyField(enableDictation);
-
-                EditorGUILayout.PropertyField(enableTouchScreenInput);
-
-                if (enableTouchScreenInput.boolValue)
-                {
-                    RenderProfile(touchScreenInputProfile);
-                }
-
-                EditorGUILayout.PropertyField(enableControllerMapping);
-
-                if (enableControllerMapping.boolValue)
-                {
-                    RenderProfile(controllerMappingProfile);
-                }
+                RenderProfile(inputSystemProfile);
             }
 
             // Boundary System configuration
@@ -259,26 +204,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             {
                 EditorApplication.delayCall += () => MixedRealityManager.Instance.ResetConfiguration(configurationProfile);
             }
-        }
-
-        private static void RenderProfile(SerializedProperty property)
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PropertyField(property);
-
-            if (property.objectReferenceValue == null)
-            {
-                if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton))
-                {
-                    var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
-                    Debug.Assert(profileTypeName != null, "No Type Found");
-                    ScriptableObject profile = CreateInstance(profileTypeName);
-                    profile.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject));
-                    property.objectReferenceValue = profile;
-                }
-            }
-
-            EditorGUILayout.EndHorizontal();
         }
     }
 }
