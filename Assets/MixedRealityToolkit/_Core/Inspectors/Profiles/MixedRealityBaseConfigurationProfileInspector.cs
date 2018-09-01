@@ -79,8 +79,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             return true;
         }
 
-        protected static void RenderProfile(SerializedProperty property)
+        protected static bool RenderProfile(SerializedProperty property)
         {
+            bool changed = false;
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(property);
 
@@ -93,10 +94,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                     ScriptableObject profile = CreateInstance(profileTypeName);
                     profile.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject));
                     property.objectReferenceValue = profile;
+                    changed = true;
                 }
             }
 
             EditorGUILayout.EndHorizontal();
+            return changed;
         }
     }
 }

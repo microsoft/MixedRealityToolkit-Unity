@@ -107,6 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             var previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 160f;
             EditorGUI.BeginChangeCheck();
+            bool changed = false;
 
             // Experience configuration
             EditorGUILayout.LabelField("Experience Settings", EditorStyles.boldLabel);
@@ -150,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             if (enableCameraProfile.boolValue)
             {
-                RenderProfile(cameraProfile);
+                changed |= RenderProfile(cameraProfile);
             }
 
             // Input System configuration
@@ -161,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             if (enableInputSystem.boolValue)
             {
                 EditorGUILayout.PropertyField(inputSystemType);
-                RenderProfile(inputSystemProfile);
+                changed |= RenderProfile(inputSystemProfile);
             }
 
             // Boundary System configuration
@@ -177,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 if (scale == ExperienceScale.Room)
                 {
                     EditorGUILayout.PropertyField(boundaryHeight);
-                    RenderProfile(boundaryVisualizationProfile);
+                    changed |= RenderProfile(boundaryVisualizationProfile);
                 }
                 else
                 {
@@ -197,10 +198,15 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 EditorGUILayout.PropertyField(teleportDuration);
             }
 
+            if (!changed)
+            {
+                changed = EditorGUI.EndChangeCheck();
+            }
+
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
 
-            if (EditorGUI.EndChangeCheck())
+            if (changed)
             {
                 EditorApplication.delayCall += () => MixedRealityManager.Instance.ResetConfiguration(configurationProfile);
             }

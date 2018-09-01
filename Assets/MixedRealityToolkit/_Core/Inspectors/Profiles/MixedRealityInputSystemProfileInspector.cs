@@ -73,15 +73,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             serializedObject.Update();
             EditorGUI.BeginChangeCheck();
+            bool changed = false;
 
-            RenderProfile(inputActionsProfile);
-            RenderProfile(pointerProfile);
+            changed |= RenderProfile(inputActionsProfile);
+            changed |= RenderProfile(pointerProfile);
 
             EditorGUILayout.PropertyField(enableSpeechCommands);
 
             if (enableSpeechCommands.boolValue)
             {
-                RenderProfile(speechCommandsProfile);
+                changed |= RenderProfile(speechCommandsProfile);
                 recognitionConfidenceLevel.intValue = EditorGUILayout.IntPopup(SpeechConfidenceContent, recognitionConfidenceLevel.intValue, SpeechConfidenceOptionContent, SpeechConfidenceOptions);
             }
 
@@ -91,20 +92,25 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             if (enableTouchScreenInput.boolValue)
             {
-                RenderProfile(touchScreenInputProfile);
+                changed |= RenderProfile(touchScreenInputProfile);
             }
 
             EditorGUILayout.PropertyField(enableControllerMapping);
 
             if (enableControllerMapping.boolValue)
             {
-                RenderProfile(controllerMappingProfile);
+                changed |= RenderProfile(controllerMappingProfile);
+            }
+
+            if (!changed)
+            {
+                changed = EditorGUI.EndChangeCheck();
             }
 
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
 
-            if (EditorGUI.EndChangeCheck())
+            if (changed)
             {
                 EditorApplication.delayCall += () => MixedRealityManager.Instance.ResetConfiguration(MixedRealityManager.Instance.ActiveProfile);
             }
