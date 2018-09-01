@@ -161,8 +161,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
                 icons[i] = icons[i].Replace("/", "\\");
                 if (icons[i].Contains("mixed_reality_icon") || icons[i].Contains(".meta")) { continue; }
 
-                Debug.Log(icons[i]);
-
                 var imageData = File.ReadAllBytes(icons[i]);
                 icon.LoadImage(imageData, false);
 
