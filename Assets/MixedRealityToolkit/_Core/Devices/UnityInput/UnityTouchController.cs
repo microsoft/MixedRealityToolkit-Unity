@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             AssignControllerMappings(DefaultInteractions);
         }
 
-        public void AddTouch()
+        public void StartTouch()
         {
             InputSystem.RaisePointerDown(InputSource.Pointers[0], Interactions[1].MixedRealityInputAction);
             InputSystem.RaiseHoldStarted(InputSource, Interactions[2].MixedRealityInputAction);
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             isHolding = true;
         }
 
-        public void UpdateTouch()
+        public void Update()
         {
             if (!isTouched) { return; }
 

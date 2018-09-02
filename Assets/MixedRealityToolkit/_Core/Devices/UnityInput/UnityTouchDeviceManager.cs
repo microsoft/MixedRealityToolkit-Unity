@@ -209,28 +209,29 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             for (var i = 0; i < Input.touches.Length; i++)
             {
                 Touch touch = Input.touches[i];
+
                 // Construct a ray from the current touch coordinates
                 Ray ray = CameraCache.Main.ScreenPointToRay(touch.position);
 
                 switch (touch.phase)
                 {
                     case TouchPhase.Began:
-                        AddTouch(touch, ray);
+                        AddTouchController(touch, ray);
                         break;
                     case TouchPhase.Moved:
                     case TouchPhase.Stationary:
-                        UpdateTouch(touch, ray);
+                        UpdateTouchData(touch, ray);
                         break;
                     case TouchPhase.Ended:
                     case TouchPhase.Canceled:
-                        RemoveTouch(touch);
+                        RemoveTouchController(touch);
                         break;
                 }
             }
 
             foreach (var controller in ActiveTouches)
             {
-                controller.Value?.UpdateTouch();
+                controller.Value?.Update();
             }
         }
 
@@ -253,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             ActiveTouches.Clear();
         }
 
-        private void AddTouch(Touch touch, Ray ray)
+        private void AddTouchController(Touch touch, Ray ray)
         {
             UnityTouchController controller;
             if (!ActiveTouches.TryGetValue(touch.fingerId, out controller))
@@ -268,11 +269,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             }
 
             InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
-            controller.AddTouch();
-            UpdateTouch(touch, ray);
+            controller.StartTouch();
+            UpdateTouchData(touch, ray);
         }
 
-        private void UpdateTouch(Touch touch, Ray ray)
+        private void UpdateTouchData(Touch touch, Ray ray)
         {
             UnityTouchController controller;
 
@@ -283,10 +284,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 
             controller.TouchData = touch;
             controller.ScreenPointRay = ray;
-            controller.UpdateTouch();
+            controller.Update();
         }
 
-        private void RemoveTouch(Touch touch)
+        private void RemoveTouchController(Touch touch)
         {
             UnityTouchController controller;
 
