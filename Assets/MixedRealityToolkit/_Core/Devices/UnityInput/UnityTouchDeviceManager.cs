@@ -240,13 +240,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         {
             foreach (var controller in ActiveTouches)
             {
-                if (controller.Value == null) { continue; }
+                if (controller.Value == null || InputSystem == null) { continue; }
 
                 foreach (var inputSource in InputSystem.DetectedInputSources)
                 {
                     if (inputSource.SourceId == controller.Value.InputSource.SourceId)
                     {
-                        InputSystem?.RaiseSourceLost(controller.Value.InputSource, controller.Value);
+                        InputSystem.RaiseSourceLost(controller.Value.InputSource, controller.Value);
                     }
                 }
             }
@@ -259,9 +259,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             UnityTouchController controller;
             if (!ActiveTouches.TryGetValue(touch.fingerId, out controller))
             {
-                var touchPointer = new TouchPointer($"Touch Pointer {touch.fingerId}");
-                var inputSource = InputSystem?.RequestNewGenericInputSource($"Touch {touch.fingerId}", new IMixedRealityPointer[] { touchPointer });
-                touchPointer.InputSourceParent = inputSource;
+                IMixedRealityInputSource inputSource = null;
+
+                if (InputSystem != null)
+                {
+                    var touchPointer = new TouchPointer($"Touch Pointer {touch.fingerId}");
+                    inputSource = InputSystem?.RequestNewGenericInputSource($"Touch {touch.fingerId}", new IMixedRealityPointer[] { touchPointer });
+                    touchPointer.InputSourceParent = inputSource;
+                }
 
                 controller = new UnityTouchController(TrackingState.NotApplicable, Handedness.Any, inputSource);
                 controller.SetupConfiguration(typeof(UnityTouchController));
