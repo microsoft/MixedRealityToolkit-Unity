@@ -12,7 +12,7 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions
 using System;
 using UnityEngine;
 
-#if UNITY_WSA
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 using UnityEngine.Windows.Speech;
 #endif
 
