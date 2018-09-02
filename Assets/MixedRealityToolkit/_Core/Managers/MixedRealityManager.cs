@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
+using Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput;
 using Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
@@ -176,14 +177,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
-                //Enable Input (example initializer)
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
-                //Enable Boundary (example initializer)
                 AddManager(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem);
             }
 
@@ -193,11 +192,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 AddManager(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
             }
 
-            #region ActiveSDK Discovery
-
-            // TODO Microsoft.MixedReality.Toolkit - Active SDK Discovery
-
-            #endregion ActiveSDK Discovery
+            // Enable the Voice Manager, ensures voice controllers can be automatically started if the profile is enabled and register voice controllers later if need be.
+            AddManager(typeof(VoiceInputDeviceManager), new VoiceInputDeviceManager("VoiceInput", 10));
 
             #endregion Managers Registration
 

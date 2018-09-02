@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using System.Linq;
 using UnityEditor;
@@ -19,6 +18,19 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private static readonly GUIContent KeyCodeContent = new GUIContent("KeyCode", "The keyboard key that will trigger the action.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The action to trigger when a keyboard key is pressed or keyword is recognized.");
 
+        private static readonly GUIContent SpeechConfidenceContent = new GUIContent("Confidence Level", "The speech recognizer's minimum confidence level setting that will raise the action.");
+        private static readonly GUIContent[] SpeechConfidenceOptionContent =
+        {
+            new GUIContent("High"),
+            new GUIContent("Medium"),
+            new GUIContent("Low"),
+            new GUIContent("Unrecognized")
+        };
+        private static readonly int[] SpeechConfidenceOptions = { 0, 1, 2, 3 };
+
+        private SerializedProperty speechSystemType;
+        private SerializedProperty recognizerStart;
+        private SerializedProperty recognitionConfidenceLevel;
         private SerializedProperty speechCommands;
         private static GUIContent[] actionLabels;
         private static int[] actionIds;
@@ -34,6 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
                 MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null) { return; }
 
+            speechSystemType = serializedObject.FindProperty("speechSystemType");
+            recognizerStart = serializedObject.FindProperty("recognizerStartBehavior");
+            recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
             speechCommands = serializedObject.FindProperty("speechCommands");
             actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
             actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
@@ -64,6 +79,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             }
 
             serializedObject.Update();
+
+            EditorGUILayout.PropertyField(speechSystemType);
+            EditorGUILayout.PropertyField(recognizerStart, new GUIContent("Start Behavior"));
+            recognitionConfidenceLevel.intValue = EditorGUILayout.IntPopup(SpeechConfidenceContent, recognitionConfidenceLevel.intValue, SpeechConfidenceOptionContent, SpeechConfidenceOptions);
+
             RenderList(speechCommands);
             serializedObject.ApplyModifiedProperties();
         }

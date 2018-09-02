@@ -67,11 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private DictationEventData dictationEventData;
 
         /// <summary>
-        /// Current Speech Input Source.
-        /// </summary>
-        public SpeechInputSource SpeechInputSource { get; private set; }
-
-        /// <summary>
         /// Current Dictation Input Source.
         /// </summary>
         public DictationInputSource DictationInputSource { get; private set; }
@@ -196,16 +191,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
 
-            if (MixedRealityManager.Instance.ActiveProfile.IsSpeechCommandsEnabled)
-            {
-                SpeechInputSource = new SpeechInputSource(
-                    MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-                    , (UnityEngine.Windows.Speech.ConfidenceLevel)MixedRealityManager.Instance.ActiveProfile.SpeechRecognitionConfidenceLevel
-#endif
-                );
-            }
-
             if (MixedRealityManager.Instance.ActiveProfile.IsDictationEnabled)
             {
                 DictationInputSource = new DictationInputSource();
@@ -273,7 +258,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 UnityEngine.Object.Destroy(gazeProvider);
             }
 
-            SpeechInputSource?.Dispose();
             DictationInputSource?.Dispose();
             TouchscreenInputSource?.Dispose();
             base.Destroy();

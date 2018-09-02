@@ -1,60 +1,56 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions;
 using System;
 using UnityEngine;
 
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+#if UNITY_WSA
 using UnityEngine.Windows.Speech;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
+namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 {
     /// <summary>
-    /// SpeechInputSource allows you to specify keywords for use in your application.
-    /// This also includes a setting to either automatically start the
-    /// keyword recognizer or allow your code to start it.
+    /// A Windows Mixed Reality Controller Instance.
     /// </summary>
-    /// <remarks>
-    /// IMPORTANT:
-    /// If you're targeting the UWP platform, please make sure to add the microphone capability in your app,
-    /// in Unity under Edit -> Project Settings -> Player -> Settings for Windows Store -> Publishing Settings -> Capabilities
-    /// or in your Visual Studio Package.appxmanifest capabilities.
-    /// </remarks>
-    public class SpeechInputSource : BaseGenericInputSource
+    public class SpeechInputController : BaseController, IMixedRealitySpeechController
     {
-        /// <summary>
-        /// This enumeration gives the manager two different ways to handle the recognizer. Both will
-        /// set up the recognizer and add all keywords. The first causes the recognizer to start
-        /// immediately. The second allows the recognizer to be manually started at a later time.
-        /// </summary>
-        private enum RecognizerStartBehavior { AutoStart, ManualStart }
+        private readonly WaitForUpdate waitForUpdate = new WaitForUpdate();
 
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+        /// <summary>
+        /// The keywords to be recognized and optional keyboard shortcuts.
+        /// </summary>
+        private SpeechCommands[] Commands { get { return MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands; } }
+
         /// <summary>
         /// Constructor.
         /// </summary>
-        public SpeechInputSource(SpeechCommands[] commands, ConfidenceLevel recognitionConfidenceLevel = ConfidenceLevel.Medium) : base("SpeechInput")
+        /// <param name="trackingState"></param>
+        /// <param name="controllerHandedness"></param>
+        /// <param name="inputSource"></param>
+        /// <param name="interactions"></param>
+        public SpeechInputController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+                : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-            Commands = commands;
-            RecognitionConfidenceLevel = recognitionConfidenceLevel;
-            Initialize();
         }
-#else
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public SpeechInputSource(SpeechCommands[] commands) : base("SpeechInput")
-        {
-            this.commands = commands;
-            Initialize();
-        }
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-        private void Initialize()
+        /// <inheritdoc />
+        public override void SetupDefaultInteractions(Handedness controllerHandedness)
+        {
+            //throw new System.NotImplementedException();
+        }
+
+        #region IMixedRealitySpeechController interface
+
+        public void Initialize()
         {
             if (!Application.isPlaying || Commands.Length == 0) { return; }
 
@@ -67,32 +63,13 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
             Setup(newKeywords);
 
-            if (recognizerStart == RecognizerStartBehavior.AutoStart)
+            if (MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
             {
                 StartRecognition();
             }
 
             Run();
         }
-
-        /// <inheritdoc />
-        public override void Dispose()
-        {
-            if (keywordRecognizer == null) { return; }
-            StopRecognition();
-            Cleanup();
-        }
-
-        [SerializeField]
-        [Tooltip("Whether the recognizer should be activated on start.")]
-        private RecognizerStartBehavior recognizerStart = RecognizerStartBehavior.AutoStart;
-
-        /// <summary>
-        /// The keywords to be recognized and optional keyboard shortcuts.
-        /// </summary>
-        public SpeechCommands[] Commands { get; }
-
-        private readonly WaitForUpdate waitForUpdate = new WaitForUpdate();
 
         private async void Run()
         {
@@ -109,6 +86,15 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
                 await waitForUpdate;
             }
         }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            if (keywordRecognizer == null) { return; }
+            StopRecognition();
+            Cleanup();
+        }
+        #endregion // IMixedRealitySpeechController interface
 
         #region Platform Routing
 
@@ -180,6 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         private void WindowsSetup(string[] newKeywords)
         {
+            RecognitionConfidenceLevel = (ConfidenceLevel)MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
             keywordRecognizer = new KeywordRecognizer(newKeywords, RecognitionConfidenceLevel);
             keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
         }
@@ -217,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             {
                 if (Commands[i].Keyword == text)
                 {
-                    InputSystem.RaiseSpeechCommandRecognized(this, Commands[i].Action, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
+                    InputSystem.RaiseSpeechCommandRecognized(InputSource, Commands[i].Action, confidence, phraseDuration, phraseStartTime, semanticMeanings, text);
                     break;
                 }
             }
