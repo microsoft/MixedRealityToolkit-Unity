@@ -952,13 +952,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 case RuntimePlatform.WindowsEditor:
                 case RuntimePlatform.OSXPlayer:
                 case RuntimePlatform.OSXEditor:
-                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
-                    break;
-                case RuntimePlatform.IPhonePlayer:
-                    break;
                 case RuntimePlatform.Android:
-                    break;
                 case RuntimePlatform.WebGLPlayer:
+                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
                     break;
                 case RuntimePlatform.WSAPlayerX86:
                 case RuntimePlatform.WSAPlayerX64:
@@ -980,13 +976,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 case UnityEditor.BuildTarget.StandaloneWindows:
                 case UnityEditor.BuildTarget.StandaloneWindows64:
                 case UnityEditor.BuildTarget.StandaloneOSX:
-                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
-                    break;
-                case UnityEditor.BuildTarget.iOS:
-                    break;
                 case UnityEditor.BuildTarget.Android:
-                    break;
                 case UnityEditor.BuildTarget.WebGL:
+                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
                     break;
                 case UnityEditor.BuildTarget.WSAPlayer:
                     AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
