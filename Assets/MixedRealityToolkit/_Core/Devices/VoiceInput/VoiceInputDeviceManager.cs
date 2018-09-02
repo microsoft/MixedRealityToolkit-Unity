@@ -16,9 +16,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         public VoiceInputDeviceManager(string name, uint priority) : base(name, priority) { }
 
         /// <summary>
-        /// Current Speech Input Source.
+        /// Current Speech input controller
         /// </summary>
         public IMixedRealitySpeechController SpeechInputController { get; private set; }
+
+        /// <summary>
+        /// Current Dictation input controller
+        /// </summary>
+        public IMixedRealityDictationController DictationInputController { get; private set; }
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         /// <inheritdoc />
@@ -30,7 +35,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                 var inputSource = InputSystem?.RequestNewGenericInputSource($"Speech Recognizer", null);
                 SpeechInputController = Activator.CreateInstance(MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechSystemType, TrackingState.NotTracked, Handedness.None, inputSource, null) as IMixedRealitySpeechController;
 
-                SpeechInputController.Initialize();
+                SpeechInputController?.Initialize();
+            }
+
+            if (MixedRealityManager.Instance.ActiveProfile.IsDictationEnabled)
+            {
+                // TODO - add new profile type
+                var inputSource = InputSystem?.RequestNewGenericInputSource($"Dictation Recognizer", null);
+                DictationInputController = Activator.CreateInstance(MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.DictationSystemType, TrackingState.NotTracked, Handedness.None, inputSource, null) as IMixedRealityDictationController;
+
+                DictationInputController?.Initialize();
             }
         }
 #else

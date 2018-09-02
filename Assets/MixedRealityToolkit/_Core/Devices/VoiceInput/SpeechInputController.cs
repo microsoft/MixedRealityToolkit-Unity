@@ -50,6 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 
         #region IMixedRealitySpeechController interface
 
+        /// <inheritdoc />
         public void Initialize()
         {
             if (!Application.isPlaying || Commands.Length == 0) { return; }

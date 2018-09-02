@@ -186,10 +186,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                 if (enableSpeechCommands.boolValue)
                 {
+                    EditorGUILayout.PropertyField(enableDictation);
                     RenderProfile(speechCommandsProfile);
                 }
-
-                EditorGUILayout.PropertyField(enableDictation);
 
                 EditorGUILayout.PropertyField(enableTouchScreenInput);
 
