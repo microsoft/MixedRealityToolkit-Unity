@@ -206,8 +206,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
-            //Debug.Log($"Current Touch Count:{Input.touchCount}");
-
             for (var i = 0; i < Input.touches.Length; i++)
             {
                 Touch touch = Input.touches[i];
@@ -267,7 +265,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 controller = new UnityTouchController(TrackingState.NotApplicable, Handedness.Any, inputSource);
                 controller.SetupConfiguration(typeof(UnityTouchController));
                 ActiveTouches.Add(touch.fingerId, controller);
-                Debug.LogWarning("Created new touch controller");
             }
 
             InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
