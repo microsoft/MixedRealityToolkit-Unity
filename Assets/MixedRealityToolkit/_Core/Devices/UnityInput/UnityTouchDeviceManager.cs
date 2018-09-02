@@ -264,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 if (InputSystem != null)
                 {
                     var touchPointer = new TouchPointer($"Touch Pointer {touch.fingerId}");
-                    inputSource = InputSystem?.RequestNewGenericInputSource($"Touch {touch.fingerId}", new IMixedRealityPointer[] { touchPointer });
+                    inputSource = InputSystem.RequestNewGenericInputSource($"Touch {touch.fingerId}", new IMixedRealityPointer[] { touchPointer });
                     touchPointer.InputSourceParent = inputSource;
                 }
 
