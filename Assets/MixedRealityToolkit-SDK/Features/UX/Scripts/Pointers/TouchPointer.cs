@@ -1,0 +1,56 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using UnityEngine;
+
+namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
+{
+    /// <summary>
+    /// Touch Pointer Implementation.
+    /// </summary>
+    public class TouchPointer : BaseControllerPointer, IMixedRealityTouchPointer
+    {
+        private int fingerId = -1;
+
+        /// <inheritdoc />
+        public int FingerId
+        {
+            get { return fingerId; }
+            set
+            {
+                if (fingerId < 0)
+                {
+                    fingerId = value;
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public Ray TouchRay { get; set; } = default(Ray);
+
+        /// <inheritdoc />
+        public override bool TryGetPointerPosition(out Vector3 position)
+        {
+            position = Vector3.zero;
+            if (fingerId < 0) { return false; }
+            position = Result?.Details.Point ?? CameraCache.Main.ScreenPointToRay(UnityEngine.Input.GetTouch(FingerId).position).GetPoint(PointerExtent); ;
+            return true;
+        }
+
+        /// <inheritdoc />
+        public override bool TryGetPointingRay(out Ray pointingRay)
+        {
+            pointingRay = TouchRay;
+            return true;
+        }
+
+        /// <inheritdoc />
+        public override bool TryGetPointerRotation(out Quaternion rotation)
+        {
+            rotation = Quaternion.identity;
+            return false;
+        }
+    }
+}
