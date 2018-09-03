@@ -11,6 +11,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f18fec9b55c4f818e284af454161962, type: 3}
   m_Name: DefaultMixedRealitySpeechCommandsProfile
   m_EditorClassIdentifier: 
+  dictationSystemType:
+    reference: Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput.DictationInputController,
+      Microsoft.MixedReality.Toolkit
+  speechSystemType:
+    reference: Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput.SpeechInputController,
+      Microsoft.MixedReality.Toolkit
+  recognizerStartBehavior: 0
+  recognitionConfidenceLevel: 1
   speechCommands:
   - keyword: Menu
     keyCode: 9

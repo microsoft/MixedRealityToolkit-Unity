@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
     {
         [SerializeField]
         [Tooltip("Dictation System Class to instantiate at runtime.")]
-        [Implements(typeof(IMixedRealityDictationController), TypeGrouping.ByNamespaceFlat)]
+        [Implements(typeof(IMixedRealityDictationSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType dictationSystemType;
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
 
         [SerializeField]
         [Tooltip("Speech System Class to instantiate at runtime.")]
-        [Implements(typeof(IMixedRealitySpeechController), TypeGrouping.ByNamespaceFlat)]
+        [Implements(typeof(IMixedRealitySpeechSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType speechSystemType;
 
         /// <summary>

@@ -4,9 +4,9 @@
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 {
     /// <summary>
-    /// This enumeration gives the manager two different ways to handle the recognizer. Both will
-    /// set up the recognizer and add all keywords. The first causes the recognizer to start
-    /// immediately. The second allows the recognizer to be manually started at a later time.
+    /// This enumeration identifies two different ways to handle the startup behavior for a feature. 
+    /// Both will warm up the component, ready for it's use (e.g. connecting backend services or registering for events. 
+    /// The first causes the feature to start immediately. The second allows the feature to be manually started at a later time.
     /// </summary>
     public enum AutoStartBehavior
     {

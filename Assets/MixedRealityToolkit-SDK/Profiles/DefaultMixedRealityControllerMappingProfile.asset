@@ -1875,7 +1875,7 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-      keyCode: 42
+      keyCode: 0
       axisCodeX: AXIS_9
       axisCodeY: 
       invertXAxis: 0

@@ -180,6 +180,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
             }
 
+            // If the Speech system has been selected for initialization in the Active speech profile, enable it in the project
+            if (MixedRealityManager.Instance.ActiveProfile.IsSpeechCommandsEnabled && ActiveProfile.SpeechCommandsProfile.SpeechSystemType.Type != null)
+            {
+                AddManager(typeof(IMixedRealitySpeechSystem), Activator.CreateInstance(ActiveProfile.SpeechCommandsProfile.SpeechSystemType, "Speech Manager", (uint)10) as IMixedRealitySpeechSystem);
+            }
+
+            // If the Dictation system has been selected for initialization in the Active speech profile, enable it in the project
+            if (MixedRealityManager.Instance.ActiveProfile.IsDictationEnabled && ActiveProfile.SpeechCommandsProfile.DictationSystemType.Type != null)
+            {
+                AddManager(typeof(IMixedRealityDictationSystem), Activator.CreateInstance(ActiveProfile.SpeechCommandsProfile.DictationSystemType, "Dictation Manager", (uint)10) as IMixedRealityDictationSystem);
+            }
+
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
@@ -191,9 +203,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             {
                 AddManager(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
             }
-
-            // Enable the Voice Manager, ensures voice controllers can be automatically started if the profile is enabled and register voice controllers later if need be.
-            AddManager(typeof(VoiceInputDeviceManager), new VoiceInputDeviceManager("VoiceInput", 10));
 
             #endregion Managers Registration
 

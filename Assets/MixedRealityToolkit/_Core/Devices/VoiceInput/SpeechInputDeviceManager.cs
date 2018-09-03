@@ -14,14 +14,12 @@ using UnityEngine;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 using UnityEngine.Windows.Speech;
-#endif
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 {
-    /// <summary>
-    /// A Windows Mixed Reality Controller Instance.
-    /// </summary>
-    public class SpeechInputController : BaseController, IMixedRealitySpeechController
+    // TODO - Implement
+    public class SpeechInputDeviceManager : BaseDeviceManager, IMixedRealitySpeechSystem
     {
         private readonly WaitForUpdate waitForUpdate = new WaitForUpdate();
 
@@ -30,30 +28,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// </summary>
         private SpeechCommands[] Commands { get { return MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands; } }
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="trackingState"></param>
-        /// <param name="controllerHandedness"></param>
-        /// <param name="inputSource"></param>
-        /// <param name="interactions"></param>
-        public SpeechInputController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
-        {
-        }
+        public IMixedRealityInputSource InputSource = null;
 
+        public SpeechInputDeviceManager(string name, uint priority) : base(name, priority) { }
+
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         /// <inheritdoc />
-        public override void SetupDefaultInteractions(Handedness controllerHandedness)
+        public override void Initialize()
         {
-            //throw new System.NotImplementedException();
-        }
+            base.Initialize();
 
-        #region IMixedRealitySpeechController interface
-
-        /// <inheritdoc />
-        public void Initialize()
-        {
             if (!Application.isPlaying || Commands.Length == 0) { return; }
+
+            InputSource = InputSystem?.RequestNewGenericInputSource($"Speech Recognizer", null);
 
             var newKeywords = new string[Commands.Length];
 
@@ -71,6 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 
             Run();
         }
+#else
+            // TODO: Implement on other platforms
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         private async void Run()
         {
@@ -89,13 +79,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         }
 
         /// <inheritdoc />
-        public void Dispose()
+        public override void Destroy()
         {
-            if (keywordRecognizer == null) { return; }
-            StopRecognition();
-            Cleanup();
+            if (keywordRecognizer != null)
+            {
+                StopRecognition();
+                Cleanup();
+            }
+
+            base.Destroy();
         }
-        #endregion // IMixedRealitySpeechController interface
+
 
         #region Platform Routing
 
