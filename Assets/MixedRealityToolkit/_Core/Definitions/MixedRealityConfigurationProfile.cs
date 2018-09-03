@@ -8,6 +8,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using System;
@@ -145,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// </summary>
         public bool IsSpeechCommandsEnabled
         {
-            get { return speechCommandsProfile != null && enableSpeechCommands && enableInputSystem; }
+            get { return speechCommandsProfile != null && speechCommandsProfile.SpeechSystemType != null && speechCommandsProfile.SpeechSystemType.Type != null && enableSpeechCommands && enableInputSystem; }
             private set { enableSpeechCommands = value; }
         }
 
@@ -171,9 +172,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// </summary>
         public bool IsDictationEnabled
         {
-            get { return enableDictation && enableInputSystem; }
+            get { return dictationSystemType != null && dictationSystemType.Type != null && enableDictation && enableInputSystem; }
             private set { enableDictation = value; }
         }
+
+        [SerializeField]
+        [Tooltip("Dictation System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealityDictationSystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType dictationSystemType = null;
+
+        /// <summary>
+        /// Speech System Script File to instantiate at runtime.
+        /// </summary>
+        public SystemType DictationSystemType => dictationSystemType;
 
         [SerializeField]
         [Tooltip("Enable Touch Screen Input for your application.")]

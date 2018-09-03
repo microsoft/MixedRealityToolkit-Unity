@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Name: DefaultMixedRealitySpeechCommandsProfile
   m_EditorClassIdentifier: 
   dictationSystemType:
-    reference: Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput.DictationInputController,
+    reference: Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput.DictationInputDeviceManager,
       Microsoft.MixedReality.Toolkit
   speechSystemType:
-    reference: Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput.SpeechInputController,
+    reference: Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput.SpeechInputDeviceManager,
       Microsoft.MixedReality.Toolkit
-  recognizerStartBehavior: 0
+  startBehavior: 0
   recognitionConfidenceLevel: 1
   speechCommands:
   - keyword: Menu

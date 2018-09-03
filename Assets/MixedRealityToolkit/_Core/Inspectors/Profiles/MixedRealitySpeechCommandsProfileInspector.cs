@@ -28,7 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         };
         private static readonly int[] SpeechConfidenceOptions = { 0, 1, 2, 3 };
 
-        private SerializedProperty dictationSystemType;
         private SerializedProperty speechSystemType;
         private SerializedProperty recognizerStartBehaviour;
         private SerializedProperty recognitionConfidenceLevel;
@@ -47,7 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
                 MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null) { return; }
 
-            dictationSystemType = serializedObject.FindProperty("dictationSystemType");
             speechSystemType = serializedObject.FindProperty("speechSystemType");
             recognizerStartBehaviour = serializedObject.FindProperty("startBehavior");
             recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
@@ -82,7 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(dictationSystemType);
             EditorGUILayout.PropertyField(speechSystemType);
             EditorGUILayout.PropertyField(recognizerStartBehaviour);
             recognitionConfidenceLevel.intValue = EditorGUILayout.IntPopup(SpeechConfidenceContent, recognitionConfidenceLevel.intValue, SpeechConfidenceOptionContent, SpeechConfidenceOptions);

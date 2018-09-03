@@ -181,15 +181,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             }
 
             // If the Speech system has been selected for initialization in the Active speech profile, enable it in the project
-            if (MixedRealityManager.Instance.ActiveProfile.IsSpeechCommandsEnabled && ActiveProfile.SpeechCommandsProfile.SpeechSystemType.Type != null)
+            if (MixedRealityManager.Instance.ActiveProfile.IsSpeechCommandsEnabled)
             {
                 AddManager(typeof(IMixedRealitySpeechSystem), Activator.CreateInstance(ActiveProfile.SpeechCommandsProfile.SpeechSystemType, "Speech Manager", (uint)10) as IMixedRealitySpeechSystem);
             }
 
             // If the Dictation system has been selected for initialization in the Active speech profile, enable it in the project
-            if (MixedRealityManager.Instance.ActiveProfile.IsDictationEnabled && ActiveProfile.SpeechCommandsProfile.DictationSystemType.Type != null)
+            if (MixedRealityManager.Instance.ActiveProfile.IsDictationEnabled)
             {
-                AddManager(typeof(IMixedRealityDictationSystem), Activator.CreateInstance(ActiveProfile.SpeechCommandsProfile.DictationSystemType, "Dictation Manager", (uint)10) as IMixedRealityDictationSystem);
+                AddManager(typeof(IMixedRealityDictationSystem), Activator.CreateInstance(ActiveProfile.DictationSystemType, "Dictation Manager", (uint)10) as IMixedRealityDictationSystem);
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project

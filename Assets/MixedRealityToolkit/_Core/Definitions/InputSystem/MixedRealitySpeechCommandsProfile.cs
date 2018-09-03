@@ -15,16 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
     public class MixedRealitySpeechCommandsProfile : ScriptableObject
     {
         [SerializeField]
-        [Tooltip("Dictation System Class to instantiate at runtime.")]
-        [Implements(typeof(IMixedRealityDictationSystem), TypeGrouping.ByNamespaceFlat)]
-        private SystemType dictationSystemType = null;
-
-        /// <summary>
-        /// Speech System Script File to instantiate at runtime.
-        /// </summary>
-        public SystemType DictationSystemType => dictationSystemType;
-
-        [SerializeField]
         [Tooltip("Speech System Class to instantiate at runtime.")]
         [Implements(typeof(IMixedRealitySpeechSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType speechSystemType = null;
