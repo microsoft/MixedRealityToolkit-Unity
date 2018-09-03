@@ -11,6 +11,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.Physics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,12 +39,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             /// Constructor.
             /// </summary>
             /// <param name="pointerName"></param>
-            public TouchPointer(string pointerName)
+            /// <param name="fingerId"></param>
+            /// <param name="touchRay"></param>
+            public TouchPointer(string pointerName, int fingerId, Ray touchRay)
             {
                 InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
                 PointerId = InputSystem.FocusProvider.GenerateNewPointerId();
                 PointerName = pointerName;
+                FingerId = fingerId;
+                TouchRay = touchRay;
             }
+
+            /// <summary>
+            /// Touch Finger Id.
+            /// </summary>
+            public int FingerId { get; }
+
+            /// <summary>
+            /// Current Touch Ray.
+            /// </summary>
+            public Ray TouchRay { get; internal set; }
 
             /// <inheritdoc />
             public IMixedRealityInputSystem InputSystem { get; }
@@ -121,6 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             public virtual void OnPreRaycast()
             {
                 Ray pointingRay;
+
                 if (TryGetPointingRay(out pointingRay))
                 {
                     Rays[0].CopyRay(pointingRay, PointerExtent);
@@ -130,6 +146,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 {
                     RayStabilizer.UpdateStability(Rays[0].Origin, Rays[0].Direction);
                     Rays[0].CopyRay(RayStabilizer.StableRay, PointerExtent);
+
+                    if (MixedRealityRaycaster.DebugEnabled)
+                    {
+                        Debug.DrawRay(RayStabilizer.StableRay.origin, RayStabilizer.StableRay.direction * PointerExtent, Color.green);
+                    }
+                }
+                else
+                {
+                    Debug.DrawRay(pointingRay.origin, pointingRay.direction * PointerExtent, Color.yellow);
                 }
             }
 
@@ -139,15 +164,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             /// <inheritdoc />
             public virtual bool TryGetPointerPosition(out Vector3 position)
             {
-                position = Vector3.zero;
-                return false;
+                position = Result?.Details.Point ?? CameraCache.Main.ScreenPointToRay(Input.GetTouch(FingerId).position).GetPoint(PointerExtent); ;
+                return true;
             }
 
             /// <inheritdoc />
             public virtual bool TryGetPointingRay(out Ray pointingRay)
             {
-                pointingRay = default(Ray);
-                return false;
+                pointingRay = TouchRay;
+                return true;
             }
 
             /// <inheritdoc />
@@ -263,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 
                 if (InputSystem != null)
                 {
-                    var touchPointer = new TouchPointer($"Touch Pointer {touch.fingerId}");
+                    var touchPointer = new TouchPointer($"Touch Pointer {touch.fingerId}", touch.fingerId, ray);
                     inputSource = InputSystem.RequestNewGenericInputSource($"Touch {touch.fingerId}", new IMixedRealityPointer[] { touchPointer });
                     touchPointer.InputSourceParent = inputSource;
                 }
@@ -288,7 +313,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             }
 
             controller.TouchData = touch;
-            controller.ScreenPointRay = ray;
+            var pointer = (TouchPointer)controller.InputSource.Pointers[0];
+            controller.ScreenPointRay = pointer.TouchRay = ray;
             controller.Update();
         }
 
