@@ -192,11 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 }
 
                 EditorGUILayout.PropertyField(enableDictation);
-
-                if (enableDictation.boolValue)
-                {
-                    EditorGUILayout.PropertyField(dictationSystemType);
-                }
+                EditorGUILayout.PropertyField(dictationSystemType);
 
                 EditorGUILayout.PropertyField(enableTouchScreenInput);
 
