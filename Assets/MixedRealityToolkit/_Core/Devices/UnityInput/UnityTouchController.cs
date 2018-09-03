@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         /// </summary>
         public float Lifetime { get; private set; } = 0.0f;
 
-
+        /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultInteractions { get; } =
         {
             new MixedRealityInteractionMapping(0, "Touch Pointer Position", AxisType.DualAxis, DeviceInputType.PointerPosition, MixedRealityInputAction.None),
@@ -53,11 +53,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 
         private bool isManipulating;
 
+        /// <inheritdoc />
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
             AssignControllerMappings(DefaultInteractions);
         }
 
+        /// <summary>
+        /// Start the touch.
+        /// </summary>
         public void StartTouch()
         {
             InputSystem?.RaisePointerDown(InputSource.Pointers[0], Interactions[1].MixedRealityInputAction);
@@ -66,6 +70,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             isHolding = true;
         }
 
+        /// <summary>
+        /// Update the touch data.
+        /// </summary>
         public void Update()
         {
             if (!isTouched) { return; }
@@ -94,6 +101,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             }
         }
 
+        /// <summary>
+        /// End the touch.
+        /// </summary>
         public void EndTouch()
         {
             if (TouchData.phase == TouchPhase.Ended)
