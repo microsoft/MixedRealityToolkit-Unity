@@ -4,7 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using HoloToolkit.Unity;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 
 namespace Interact
 {

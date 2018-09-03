@@ -1,8 +1,8 @@
-﻿using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
+﻿using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System;
 using System.Collections;
@@ -17,8 +17,18 @@ namespace HoloToolkit.Unity
 
     public class Interactable : MonoBehaviour, IMixedRealityInputHandler, IMixedRealityFocusHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
     {
+        // BUG: The disabled state is getting set for all buttons
+        // BUG: on load, if disabled, resets to enabled state
+        // TODO: Get Toggle working
+            // add toggle logic if dimenions greater than 1
+        // TODO: Get toggle events working
+        // TODO: Get Animations working
+        // TODO: How to handle cycle buttons
+        // TODO: plumb for gestures
+        // BUG: Adding dimensions resets all themes to use default them
+        // BUG: Asigning a theme to one dimension sets the same theme for all dimensions
+        // TODO: cleanup inspector user prefs to be more generic, based on component type.
 
-        // TODO: Has bug where the disabled state is getting set for all buttons!!!!!!!!!!!!
         private static IMixedRealityInputSystem inputSystem = null;
         protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
@@ -30,6 +40,8 @@ namespace HoloToolkit.Unity
         public int InputActionId;
         public bool IsGlobal = false;
         public int Dimensions = 1;
+        public bool CanSelect;
+        public bool CanDeselect;
         public string VoiceCommand = "";
         public bool RequiresGaze = true;
         public List<ProfileItem> Profiles = new List<ProfileItem>();
@@ -57,9 +69,11 @@ namespace HoloToolkit.Unity
 
         public List<IMixedRealityPointer> Focusers => pointers;
 
-        private State lastState;
-        private bool wasDisabled = false;
-        private List<IMixedRealityPointer> pointers = new List<IMixedRealityPointer>();
+        protected State lastState;
+        protected bool wasDisabled = false;
+        protected List<IMixedRealityPointer> pointers = new List<IMixedRealityPointer>();
+
+        protected int dimensionIndex;
 
         // these should get simplified and moved
         // create a ScriptableObject for managing states!!!!
@@ -118,27 +132,25 @@ namespace HoloToolkit.Unity
 
             for (int i = 0; i < Profiles.Count; i++)
             {
-                for (int j = 0; j < Profiles[i].Themes.Count; j++)
+                Theme theme = Profiles[i].Themes[dimensionIndex];
+                if (Profiles[i].Target != null)
                 {
-                    Theme theme = Profiles[i].Themes[j];
-                    if (Profiles[i].Target != null) {
-                        for (int n = 0; n < theme.Settings.Count; n++)
-                        {
-                            ThemePropertySettings settings = theme.Settings[n];
+                    for (int n = 0; n < theme.Settings.Count; n++)
+                    {
+                        ThemePropertySettings settings = theme.Settings[n];
 
-                            settings.Theme = ProfileItem.GetTheme(settings, Profiles[i].Target, lists);
+                        settings.Theme = ProfileItem.GetTheme(settings, Profiles[i].Target, lists);
 
-                            theme.Settings[n] = settings;
-                            if (theme != null)
-                            {
-                                runningThemesList.Add(settings.Theme);
-                            }
-                        }
-
+                        theme.Settings[n] = settings;
                         if (theme != null)
                         {
-                            Profiles[i].Themes[j] = theme;
+                            runningThemesList.Add(settings.Theme);
                         }
+                    }
+
+                    if (theme != null)
+                    {
+                        Profiles[i].Themes[dimensionIndex] = theme;
                     }
                 }
             }
@@ -154,6 +166,7 @@ namespace HoloToolkit.Unity
         // state management
         public virtual void SetFocus(bool focus)
         {
+
             HasFocus = focus;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Focus, focus ? 1 : 0);
             UpdateState();
@@ -169,6 +182,7 @@ namespace HoloToolkit.Unity
         public virtual void SetDisabled(bool disabled)
         {
             IsDisabled = disabled;
+            Enabled = !disabled;
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Disabled, disabled ? 1 : 0);
             UpdateState();
         }
@@ -188,6 +202,11 @@ namespace HoloToolkit.Unity
 
         public void OnFocusEnter(FocusEventData eventData)
         {
+            if (!CanInteract())
+            {
+                return;
+            }
+
             AddPointer(eventData.Pointer);
             //print("Enter: " + pointers.Count);
             SetFocus(pointers.Count > 0);
@@ -195,6 +214,11 @@ namespace HoloToolkit.Unity
 
         public void OnFocusExit(FocusEventData eventData)
         {
+            if (!CanInteract() && !HasFocus)
+            {
+                return;
+            }
+
             RemovePointer(eventData.Pointer);
             //print("Exit: " + pointers.Count);
             SetFocus(pointers.Count > 0);
@@ -212,6 +236,11 @@ namespace HoloToolkit.Unity
 
         public void OnInputUp(InputEventData eventData)
         {
+            if (!CanInteract() && !HasPress)
+            {
+                return;
+            }
+
             print("Up: " + pointers.Count);
             if (ShouldListen(eventData.MixedRealityInputAction))
             {
@@ -221,6 +250,11 @@ namespace HoloToolkit.Unity
 
         public void OnInputDown(InputEventData eventData)
         {
+            if (!CanInteract())
+            {
+                return;
+            }
+
             print("Down: " + pointers.Count);
             if(ShouldListen(eventData.MixedRealityInputAction))
             {
@@ -230,12 +264,18 @@ namespace HoloToolkit.Unity
 
         public void OnInputPressed(InputEventData<float> eventData)
         {
+            if (!CanInteract())
+            {
+                return;
+            }
+
             if (StateManager != null)
             {
                 State[] states = StateManager.GetStates();
-                if (StateManager.CurrentState() != StateManager.GetState(InteractableStates.InteractableStateEnum.Disabled) && ShouldListen(eventData.MixedRealityInputAction))
+                if (ShouldListen(eventData.MixedRealityInputAction))
                 {
                     StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
+                    IncreaseDimensionIndex();
                     OnClick.Invoke();
                 }
             }
@@ -248,20 +288,61 @@ namespace HoloToolkit.Unity
 
         public virtual void OnInputClicked(UnityEngine.Object eventData)// TEMP
         {
+            if (!CanInteract())
+            {
+                return;
+            }
+
             if (StateManager != null)
             {
                 State[] states = StateManager.GetStates();
-                if (true)// TEMP StateManager.CurrentState() != StateManager.GetState(InteractableStates.InteractableStateEnum.Disabled) && eventData.PressType == ButtonPressFilter)
+                if (true)//eventData.PressType == ButtonPressFilter)
                 {
                     StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
+                    IncreaseDimensionIndex();
+
                     OnClick.Invoke();
                 }
+            }
+        }
+
+        protected void IncreaseDimensionIndex()
+        {
+            int currentIndex = dimensionIndex;
+
+            if (dimensionIndex < Dimensions - 1)
+            {
+                dimensionIndex++;
+            }
+            else
+            {
+                dimensionIndex = 0;
+            }
+
+            if(currentIndex != dimensionIndex)
+            {
+                SetupThemes();
             }
         }
 
         protected virtual bool ShouldListen(MixedRealityInputAction action)
         {
             return action == InputAction;
+        }
+
+        protected virtual bool CanInteract()
+        {
+            if (!Enabled)
+            {
+                return false;
+            }
+
+            if (Dimensions > 1 && ((dimensionIndex != Dimensions -1 & !CanSelect) || (dimensionIndex == Dimensions - 1 & !CanDeselect)) )
+            {
+                return false;
+            }
+
+            return true;
         }
 
         protected virtual void UpdateState()

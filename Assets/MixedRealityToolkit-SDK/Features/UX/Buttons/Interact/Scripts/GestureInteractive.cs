@@ -3,7 +3,7 @@
 
 using System.Collections;
 using HoloToolkit.Unity;
-using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using UnityEngine;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN

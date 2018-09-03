@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 386272945}
   - component: {fileID: 386272944}
   - component: {fileID: 386272943}
+  - component: {fileID: 386272946}
   m_Layer: 0
   m_Name: Finger
   m_TagString: Untagged
@@ -238,7 +239,7 @@ Transform:
   m_GameObject: {fileID: 386272941}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 1}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
   m_Father: {fileID: 1229001242}
   m_RootOrder: 0
@@ -297,6 +298,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 386272941}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &386272946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 386272941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb3d203ea3ffed4dba2fddd2771cc64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Button: {fileID: 712471527}
+  Focus: 0
+  Down: 0
+  Disabled: 0
 --- !u!1001 &712471521
 Prefab:
   m_ObjectHideFlags: 0
@@ -314,7 +330,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4899954742063566, guid: 02c524b22137b5449904f5395141cc73, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.5
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4899954742063566, guid: 02c524b22137b5449904f5395141cc73, type: 2}
       propertyPath: m_LocalRotation.x
@@ -336,21 +352,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114818926546564510, guid: 02c524b22137b5449904f5395141cc73,
-        type: 2}
-      propertyPath: InputAction.id
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114818926546564510, guid: 02c524b22137b5449904f5395141cc73,
-        type: 2}
-      propertyPath: InputAction.description
-      value: Select
-      objectReference: {fileID: 0}
-    - target: {fileID: 114818926546564510, guid: 02c524b22137b5449904f5395141cc73,
-        type: 2}
-      propertyPath: InputAction.axisConstraint
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 02c524b22137b5449904f5395141cc73, type: 2}
   m_IsPrefabParent: 0
@@ -359,6 +360,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4899954742063566, guid: 02c524b22137b5449904f5395141cc73,
     type: 2}
   m_PrefabInternal: {fileID: 712471521}
+--- !u!114 &712471527 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114818926546564510, guid: 02c524b22137b5449904f5395141cc73,
+    type: 2}
+  m_PrefabInternal: {fileID: 712471521}
+  m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
 --- !u!1 &1229001241
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,7 +388,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1229001241}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.129, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 386272942}
