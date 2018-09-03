@@ -242,16 +242,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                     RegisterPointer(inputSource.Pointers[i]);
 
                     // Special Registration for Gaze
-                    if (inputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
+                    if (inputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
                     {
-                        Debug.Assert(gazeProviderPointingData == null, "Gaze Provider Pointer Data was already registered!");
-
-                        if (gazeProviderPointingData == null)
-                        {
-                            gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
-                        }
-
-                        Debug.Assert(gazeProviderPointingData != null);
+                        gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
                     }
                 }
             }
@@ -850,16 +843,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 RegisterPointer(eventData.InputSource.Pointers[i]);
 
                 // Special Registration for Gaze
-                if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
+                if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
                 {
-                    Debug.Assert(gazeProviderPointingData == null, "Gaze Provider Pointer Data was already registered!");
-
-                    if (gazeProviderPointingData == null)
-                    {
-                        gazeProviderPointingData = new PointerData(eventData.InputSource.Pointers[i]);
-                    }
-
-                    Debug.Assert(gazeProviderPointingData != null);
+                    gazeProviderPointingData = new PointerData(eventData.InputSource.Pointers[i]);
                 }
             }
         }
