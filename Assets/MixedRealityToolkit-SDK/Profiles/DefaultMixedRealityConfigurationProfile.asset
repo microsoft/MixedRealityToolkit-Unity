@@ -31,9 +31,6 @@ MonoBehaviour:
     type: 2}
   enableDictation: 1
   recognitionConfidenceLevel: 1
-  enableTouchScreenInput: 1
-  touchScreenInputProfile: {fileID: 11400000, guid: efe3718cb67cffa46a5f6361a522baba,
-    type: 2}
   enableControllerMapping: 1
   controllerMappingProfile: {fileID: 11400000, guid: 39ded1fd0711a0c448413d0e1ec4f7f3,
     type: 2}
