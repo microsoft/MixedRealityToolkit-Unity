@@ -65,9 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         public void StartTouch()
         {
             InputSystem?.RaisePointerDown(InputSource.Pointers[0], Interactions[1].MixedRealityInputAction);
+            isTouched = Interactions[1].BoolData = true;
             InputSystem?.RaiseHoldStarted(InputSource, Interactions[2].MixedRealityInputAction);
-            isTouched = true;
-            isHolding = true;
+            isHolding = Interactions[2].BoolData = true;
         }
 
         /// <summary>
@@ -81,21 +81,28 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 
             if (TouchData.phase == TouchPhase.Moved)
             {
-                InputSystem?.RaisePositionInputChanged(InputSource, Interactions[0].MixedRealityInputAction, TouchData.position);
+                Interactions[0].Vector2Data = TouchData.position;
+
+                if (Interactions[0].Changed)
+                {
+                    InputSystem?.RaisePositionInputChanged(InputSource, Interactions[0].MixedRealityInputAction, TouchData.position);
+                }
 
                 if (isHolding)
                 {
                     InputSystem?.RaiseHoldCanceled(InputSource, Interactions[2].MixedRealityInputAction);
-                    isHolding = false;
+                    isHolding = Interactions[2].BoolData = false;
                 }
 
                 if (!isManipulating)
                 {
                     InputSystem?.RaiseManipulationStarted(InputSource, Interactions[3].MixedRealityInputAction);
-                    isManipulating = true;
+                    isManipulating = Interactions[3].BoolData = true;
                 }
                 else
                 {
+                    // We don't check if this input source has changed because it's cumulative. Raise it anyway.
+                    Interactions[3].Vector2Data = TouchData.deltaPosition;
                     InputSystem?.RaiseManipulationUpdated(InputSource, Interactions[3].MixedRealityInputAction, TouchData.deltaPosition);
                 }
             }
@@ -155,9 +162,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             InputSystem?.RaisePointerUp(InputSource.Pointers[0], Interactions[1].MixedRealityInputAction);
 
             Lifetime = 0.0f;
-            isHolding = false;
-            isManipulating = false;
-            isTouched = false;
+            isManipulating = Interactions[3].BoolData = false;
+            Interactions[3].Vector2Data = Vector2.zero;
+            isHolding = Interactions[2].BoolData = false;
+            isTouched = Interactions[1].BoolData = false;
+            Interactions[0].Vector2Data = Vector2.zero;
         }
     }
 }
