@@ -231,6 +231,30 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                                  "To create a UIRaycastCamera in your scene, find this Focus Provider GameObject and add one there.");
                 CreateUiRaycastCamera();
             }
+
+            foreach (var inputSource in InputSystem.DetectedInputSources)
+            {
+                // If our input source does not have any pointers, then skip.
+                if (inputSource.Pointers == null) { return; }
+
+                for (var i = 0; i < inputSource.Pointers.Length; i++)
+                {
+                    RegisterPointer(inputSource.Pointers[i]);
+
+                    // Special Registration for Gaze
+                    if (inputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
+                    {
+                        Debug.Assert(gazeProviderPointingData == null, "Gaze Provider Pointer Data was already registered!");
+
+                        if (gazeProviderPointingData == null)
+                        {
+                            gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
+                        }
+
+                        Debug.Assert(gazeProviderPointingData != null);
+                    }
+                }
+            }
         }
 
         private void Update()
