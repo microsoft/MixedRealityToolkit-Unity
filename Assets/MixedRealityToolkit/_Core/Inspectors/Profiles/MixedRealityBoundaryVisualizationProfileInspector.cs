@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
 using UnityEditor;
 using UnityEngine;
 
@@ -71,43 +71,28 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Floor Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(showFloor, showContent);
-            if (showFloor.boolValue)
-            {
-                EditorGUILayout.PropertyField(floorMaterial, materialContent);
-                EditorGUILayout.PropertyField(floorScale, scaleContent);
-            }
+            EditorGUILayout.PropertyField(floorMaterial, materialContent);
+            EditorGUILayout.PropertyField(floorScale, scaleContent);
 
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Play Area Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(showPlayArea, showContent);
-            if (showPlayArea.boolValue)
-            {
-                EditorGUILayout.PropertyField(playAreaMaterial, materialContent);
-            }
+            EditorGUILayout.PropertyField(playAreaMaterial, materialContent);
 
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Tracked Area Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(showTrackedArea, showContent);
-            if (showTrackedArea.boolValue)
-            {
-                EditorGUILayout.PropertyField(trackedAreaMaterial, materialContent);
-            }
+            EditorGUILayout.PropertyField(trackedAreaMaterial, materialContent);
 
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Boundary Wall Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(showBoundaryWalls, showContent);
-            if (showBoundaryWalls.boolValue)
-            {
-                EditorGUILayout.PropertyField(boundaryWallMaterial, materialContent);
-            }
+            EditorGUILayout.PropertyField(boundaryWallMaterial, materialContent);
 
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Boundary Ceiling Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(showBoundaryCeiling, showContent);
-            if (showBoundaryCeiling.boolValue)
-            {
-                EditorGUILayout.PropertyField(boundaryCeilingMaterial, materialContent);
-            }
+            EditorGUILayout.PropertyField(boundaryCeilingMaterial, materialContent);
 
             serializedObject.ApplyModifiedProperties();
         }

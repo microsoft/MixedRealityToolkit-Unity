@@ -1,20 +1,23 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR;
+using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
+using Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Managers
+namespace Microsoft.MixedReality.Toolkit.Core.Managers
 {
     /// <summary>
     /// The Mixed Reality manager is responsible for coordinating the operation of the Mixed Reality Toolkit.
@@ -148,6 +151,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             if (ActiveProfile.IsCameraProfileEnabled)
             {
+                if (ActiveProfile.CameraProfile.IsCameraPersistent)
+                {
+                    CameraCache.Main.transform.root.DontDestroyOnLoad();
+                }
+
                 if (MixedRealityCameraProfile.IsOpaque)
                 {
                     ActiveProfile.CameraProfile.ApplySettingsForOpaqueDisplay();
@@ -163,6 +171,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             // If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsInputSystemEnabled)
             {
+#if UNITY_EDITOR
+                // Make sure unity axis mappings are set.
+                Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
+#endif
+
                 //Enable Input (example initializer)
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
             }
@@ -808,7 +821,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
         }
 
-
         private void DisableAllManagers()
         {
             //If the Mixed Reality Manager is not configured, stop.
@@ -935,10 +947,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
                 case RuntimePlatform.WindowsPlayer:
                 case RuntimePlatform.WindowsEditor:
-                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("OpenVR Device Manager", 10));
-                    break;
                 case RuntimePlatform.OSXPlayer:
                 case RuntimePlatform.OSXEditor:
+                    AddManager(typeof(IMixedRealityDeviceManager), new UnityDeviceManager("Unity Device Manager", 10));
+                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
+                    break;
                 case RuntimePlatform.IPhonePlayer:
                     break;
                 case RuntimePlatform.Android:
@@ -949,8 +962,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 case RuntimePlatform.WSAPlayerX64:
                 case RuntimePlatform.WSAPlayerARM:
                     AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
-                    break;
-                default:
                     break;
             }
         }
@@ -963,9 +974,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             {
                 case UnityEditor.BuildTarget.StandaloneWindows:
                 case UnityEditor.BuildTarget.StandaloneWindows64:
-                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("OpenVR Device Manager", 10));
-                    break;
                 case UnityEditor.BuildTarget.StandaloneOSX:
+                    AddManager(typeof(IMixedRealityDeviceManager), new UnityDeviceManager("Unity Device Manager", 10));
+                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
+                    break;
                 case UnityEditor.BuildTarget.iOS:
                     break;
                 case UnityEditor.BuildTarget.Android:
@@ -974,8 +986,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                     break;
                 case UnityEditor.BuildTarget.WSAPlayer:
                     AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
-                    break;
-                default:
                     break;
             }
         }

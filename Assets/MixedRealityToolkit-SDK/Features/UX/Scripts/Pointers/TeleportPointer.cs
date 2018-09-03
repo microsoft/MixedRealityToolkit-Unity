@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using System;
 using UnityEngine;
 
@@ -180,6 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 // If we hit something
                 if (Result.CurrentPointerTarget != null)
                 {
+                    BaseCursor?.SetVisibility(true);
                     // Check if it's in our valid layers
                     if (((1 << Result.CurrentPointerTarget.layer) & ValidLayers.value) != 0)
                     {
@@ -195,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                         {
                             // If it's NOT a hotspot, check if the hit normal is too steep 
                             // (Hotspots override dot requirements)
-                            TeleportSurfaceResult = Vector3.Dot(Result.StartPoint, Vector3.up) < upDirectionThreshold
+                            TeleportSurfaceResult = Vector3.Dot(Result.Details.LastRaycastHit.normal, Vector3.up) > upDirectionThreshold
                                 ? TeleportSurfaceResult.Valid
                                 : TeleportSurfaceResult.Invalid;
                         }
@@ -224,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                             }
 
                             // Only add the distance between the start point and the hit
-                            clearWorldLength += Vector3.Distance(Result.StartPoint, Result.StartPoint);
+                            clearWorldLength += Vector3.Distance(Result.StartPoint, Result.Details.Point);
                         }
                         else if (i < Result.RayStepIndex)
                         {
@@ -238,6 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 }
                 else
                 {
+                    BaseCursor?.SetVisibility(false);
                     LineBase.LineEndClamp = 1f;
                 }
 
@@ -350,7 +352,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     canTeleport = false;
                     teleportEnabled = false;
-                    TeleportSystem.RaiseTeleportStarted(this, TeleportHotSpot);
+
+                    if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
+                        TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
+                    {
+                        TeleportSystem.RaiseTeleportStarted(this, TeleportHotSpot);
+                    }
                 }
 
                 if (teleportEnabled)

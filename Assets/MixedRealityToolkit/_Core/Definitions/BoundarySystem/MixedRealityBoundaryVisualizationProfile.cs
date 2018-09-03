@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
 {
     /// <summary>
     /// Configuration profile settings for setting up boundary visualizations.
@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         #region Floor settings
 
         [SerializeField]
+        [Tooltip("Should the floor be displayed in the scene?")]
         private bool showFloor = true;
 
         /// <summary>
@@ -25,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         // todo: consider allowing optional custom prefab
 
         [SerializeField]
+        [Tooltip("The material to use when displaying the floor.")]
         private Material floorMaterial = null;
 
         /// <summary>
@@ -33,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         public Material FloorMaterial => floorMaterial;
 
         [SerializeField]
+        [Tooltip("The dimensions of the floor, in meters.")]
         private Vector2 floorScale = new Vector2(10f, 10f);
 
         /// <summary>
@@ -45,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         #region Play area settings
 
         [SerializeField]
+        [Tooltip("Should the play area be displayed in the scene?")]
         private bool showPlayArea = true;
 
         /// <summary>
@@ -52,9 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         /// </summary>
         public bool ShowPlayArea => showPlayArea;
 
-        // todo: consider allowing outline vs polygon
-
         [SerializeField]
+        [Tooltip("The material to use when displaying the play area.")]
         private Material playAreaMaterial = null;
 
         /// <summary>
@@ -67,6 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         #region Tracked area settings
 
         [SerializeField]
+        [Tooltip("Should the tracked area be displayed in the scene?")]
         private bool showTrackedArea = true;
 
         /// <summary>
@@ -74,9 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         /// </summary>
         public bool ShowTrackedArea => showTrackedArea;
 
-        // todo: consider allowing polygon vs outline
-
         [SerializeField]
+        [Tooltip("The material to use when displaying the tracked area.")]
         private Material trackedAreaMaterial = null;
 
         /// <summary>
@@ -89,6 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         #region Boundary wall settings
 
         [SerializeField]
+        [Tooltip("Should the boundary walls be displayed in the scene?")]
         private bool showBoundaryWalls = false;
 
         /// <summary>
@@ -97,6 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         public bool ShowBoundaryWalls => showBoundaryWalls;
 
         [SerializeField]
+        [Tooltip("The material to use when displaying the boundary walls.")]
         private Material boundaryWallMaterial = null;
 
         /// <summary>
@@ -109,6 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         #region Boundary ceiling settings
 
         [SerializeField]
+        [Tooltip("Should the boundary ceiling be displayed in the scene?")]
         private bool showBoundaryCeiling = false;
 
         /// <summary>
@@ -117,6 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem
         public bool ShowBoundaryCeiling => showBoundaryCeiling;
 
         [SerializeField]
+        [Tooltip("The material to use when displaying the boundary ceiling.")]
         private Material boundaryCeilingMaterial = null;
 
         /// <summary>

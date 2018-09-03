@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
 {
     /// <summary>
     /// Manager interface for a Input system in the Mixed Reality Toolkit
@@ -610,9 +610,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
 
         #endregion Manipulation Events
 
-        #region Windows Speech
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-
         #region Speech Keyword Events
 
         /// <summary>
@@ -635,42 +632,35 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// 
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="inputAction"></param>
         /// <param name="dictationHypothesis"></param>
         /// <param name="dictationAudioClip"></param>
-        void RaiseDictationHypothesis(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationHypothesis, AudioClip dictationAudioClip = null);
+        void RaiseDictationHypothesis(IMixedRealityInputSource source, string dictationHypothesis, AudioClip dictationAudioClip = null);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="inputAction"></param>
         /// <param name="dictationResult"></param>
         /// <param name="dictationAudioClip"></param>
-        void RaiseDictationResult(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip = null);
+        void RaiseDictationResult(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="inputAction"></param>
         /// <param name="dictationResult"></param>
         /// <param name="dictationAudioClip"></param>
-        void RaiseDictationComplete(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip);
+        void RaiseDictationComplete(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="inputAction"></param>
         /// <param name="dictationResult"></param>
         /// <param name="dictationAudioClip"></param>
-        void RaiseDictationError(IMixedRealityInputSource source, MixedRealityInputAction inputAction, string dictationResult, AudioClip dictationAudioClip = null);
+        void RaiseDictationError(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null);
 
         #endregion Dictation Events
-
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-        #endregion Windows Speech
 
         #endregion Input Events
     }

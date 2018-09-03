@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Solvers
 {
     /// <summary>
     ///   ConstantViewSize solver scales to maintain a constant size relative to the view (currently tied to the Camera)

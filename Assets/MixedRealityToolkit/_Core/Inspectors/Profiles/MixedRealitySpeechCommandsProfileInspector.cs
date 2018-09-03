@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -35,10 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null) { return; }
 
             speechCommands = serializedObject.FindProperty("speechCommands");
-            actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(
-                action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
-            actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(
-                action => (int)action.Id).Prepend(0).ToArray();
+            actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
+            actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
         }
 
         public override void OnInspectorGUI()
@@ -123,11 +121,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 var actionConstraint = action.FindPropertyRelative("axisConstraint");
 
                 EditorGUI.BeginChangeCheck();
-                actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue.ResetIfGreaterThan(actionIds.Length), actionLabels, actionIds, GUILayout.Width(64f));
+                actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, actionLabels, actionIds, GUILayout.Width(64f));
 
                 if (EditorGUI.EndChangeCheck())
                 {
-                    MixedRealityInputAction inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue];
+                    MixedRealityInputAction inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
                     actionDescription.stringValue = inputAction.Description;
                     actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
                 }

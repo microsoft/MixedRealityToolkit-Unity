@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal.DataStructures;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal.DataStructures;
 using System;
 using System.IO;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Build
+namespace Microsoft.MixedReality.Toolkit.Core.Build
 {
     /// <summary>
     /// Build and Deploy Specific Editor Preferences for the Build and Deploy Window.

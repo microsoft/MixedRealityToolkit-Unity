@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -848,16 +848,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             for (var i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
                 // Special unregistration for Gaze
-                if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
+                if (gazeProviderPointingData != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                 {
-                    Debug.Log("UnRegistering focus pointer");
-                    Debug.Assert(gazeProviderPointingData != null);
-
                     // If the source lost is the gaze input source, then reset it.
-                    if (eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
+                    if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
                     {
                         gazeProviderPointingData.ResetFocusedObjects();
                         gazeProviderPointingData = null;
+                    }
+                    // Otherwise, don't unregister the gaze pointer, since the gaze input source is still active.
+                    else
+                    {
+                        continue;
                     }
                 }
 

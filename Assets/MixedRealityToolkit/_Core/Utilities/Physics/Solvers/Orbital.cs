@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics.Solvers
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Solvers
 {
     /// <summary>
     /// Provides a solver that follows the TrackedObject/TargetTransform in an orbital motion.

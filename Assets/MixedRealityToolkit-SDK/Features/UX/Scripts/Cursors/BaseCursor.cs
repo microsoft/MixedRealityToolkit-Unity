@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
 using UnityEngine;
 
@@ -53,13 +51,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         [Tooltip("Visual that is displayed when cursor is active normally")]
         protected Transform PrimaryCursorVisual = null;
 
-        protected bool IsHandDetected = false;
+        protected bool IsSourceDetected => visibleSourcesCount > 0;
 
         protected bool IsPointerDown = false;
 
         protected GameObject TargetedObject = null;
 
-        private uint visibleHandsCount = 0;
+        private uint visibleSourcesCount = 0;
         private bool isVisible = true;
 
         private Vector3 targetPosition;
@@ -134,28 +132,38 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// <inheritdoc />
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
-            if (eventData.Controller != null && eventData.Controller.Interactions.SupportsInputType(DeviceInputType.Hand))
+            if (eventData.Controller != null)
             {
-                visibleHandsCount++;
-            }
-
-            if (visibleHandsCount > 0)
-            {
-                IsHandDetected = true;
+                for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
+                {
+                    // If a source is detected that's using this cursor's pointer, we increment the count to set the cursor state properly.
+                    if (eventData.InputSource.Pointers[i].PointerId == Pointer.PointerId)
+                    {
+                        visibleSourcesCount++;
+                        return;
+                    }
+                }
             }
         }
 
         /// <inheritdoc />
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.Controller != null && eventData.Controller.Interactions.SupportsInputType(DeviceInputType.Hand))
+            if (eventData.Controller != null)
             {
-                visibleHandsCount--;
+                for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
+                {
+                    // If a source is lost that's using this cursor's pointer, we decrement the count to set the cursor state properly.
+                    if (eventData.InputSource.Pointers[i].PointerId == Pointer.PointerId)
+                    {
+                        visibleSourcesCount--;
+                        return;
+                    }
+                }
             }
 
-            if (visibleHandsCount == 0)
+            if (visibleSourcesCount == 0)
             {
-                IsHandDetected = false;
                 IsPointerDown = false;
             }
 
@@ -240,8 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         {
             // We don't call base.OnDisable because we handle unregistering the global listener a bit differently.
             TargetedObject = null;
-            visibleHandsCount = 0;
-            IsHandDetected = false;
+            visibleSourcesCount = 0;
             OnCursorStateChange(CursorStateEnum.Contextual);
         }
 
@@ -359,8 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         public virtual void OnInputDisabled()
         {
             // Reset visible hands on disable
-            visibleHandsCount = 0;
-            IsHandDetected = false;
+            visibleSourcesCount = 0;
 
             OnCursorStateChange(CursorStateEnum.Contextual);
         }
@@ -403,7 +409,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                     return CursorStateEnum.Release;
                 }
 
-                if (IsHandDetected)
+                if (IsSourceDetected)
                 {
                     return TargetedObject != null ? CursorStateEnum.InteractHover : CursorStateEnum.Interact;
                 }
