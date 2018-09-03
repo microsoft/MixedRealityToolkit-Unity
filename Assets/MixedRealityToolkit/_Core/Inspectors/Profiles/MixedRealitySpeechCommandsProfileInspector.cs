@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
         private SerializedProperty dictationSystemType;
         private SerializedProperty speechSystemType;
-        private SerializedProperty recognizerStart;
+        private SerializedProperty recognizerStartBehaviour;
         private SerializedProperty recognitionConfidenceLevel;
         private SerializedProperty speechCommands;
         private static GUIContent[] actionLabels;
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             dictationSystemType = serializedObject.FindProperty("dictationSystemType");
             speechSystemType = serializedObject.FindProperty("speechSystemType");
-            recognizerStart = serializedObject.FindProperty("recognizerStartBehavior");
+            recognizerStartBehaviour = serializedObject.FindProperty("startBehavior");
             recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
             speechCommands = serializedObject.FindProperty("speechCommands");
             actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             EditorGUILayout.PropertyField(dictationSystemType);
             EditorGUILayout.PropertyField(speechSystemType);
-            EditorGUILayout.PropertyField(recognizerStart, new GUIContent("Start Behavior"));
+            EditorGUILayout.PropertyField(recognizerStartBehaviour);
             recognitionConfidenceLevel.intValue = EditorGUILayout.IntPopup(SpeechConfidenceContent, recognitionConfidenceLevel.intValue, SpeechConfidenceOptionContent, SpeechConfidenceOptions);
 
             RenderList(speechCommands);

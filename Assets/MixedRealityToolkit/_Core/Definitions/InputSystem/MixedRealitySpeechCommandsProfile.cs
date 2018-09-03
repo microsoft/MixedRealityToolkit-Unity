@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         [SerializeField]
         [Tooltip("Dictation System Class to instantiate at runtime.")]
         [Implements(typeof(IMixedRealityDictationSystem), TypeGrouping.ByNamespaceFlat)]
-        private SystemType dictationSystemType;
+        private SystemType dictationSystemType = null;
 
         /// <summary>
         /// Speech System Script File to instantiate at runtime.
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         [SerializeField]
         [Tooltip("Speech System Class to instantiate at runtime.")]
         [Implements(typeof(IMixedRealitySpeechSystem), TypeGrouping.ByNamespaceFlat)]
-        private SystemType speechSystemType;
+        private SystemType speechSystemType = null;
 
         /// <summary>
         /// Speech System Script File to instantiate at runtime.
@@ -36,12 +36,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
 
         [SerializeField]
         [Tooltip("Whether the recognizer should be activated on start.")]
-        private AutoStartBehavior recognizerStartBehavior = AutoStartBehavior.AutoStart;
+        private AutoStartBehavior startBehavior = AutoStartBehavior.AutoStart;
 
         /// <summary>
         /// The list of Speech Commands users use in your application.
         /// </summary>
-        public AutoStartBehavior SpeechRecognizerStartBehavior => recognizerStartBehavior;
+        public AutoStartBehavior SpeechRecognizerStartBehavior => startBehavior;
 
         [SerializeField]
         [Tooltip("0 == High, 1 == Medium, 2 == Low, 3 == Unknown")]
