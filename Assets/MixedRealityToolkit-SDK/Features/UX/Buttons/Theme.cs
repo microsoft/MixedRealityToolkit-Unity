@@ -17,6 +17,16 @@ namespace HoloToolkit.Unity
         public bool IsValid;
     }
 
+    public struct ProfileSettings
+    {
+        public List<ThemeSettings> ThemeSettings;
+    }
+
+    public struct ThemeSettings
+    {
+        public List<ThemePropertySettings> Settings;
+    }
+
     [CreateAssetMenu(fileName = "Theme", menuName = "Interactable/Theme", order = 1)]
     public class Theme : ScriptableObject
     {

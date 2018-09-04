@@ -28,6 +28,11 @@ public class InteractableFinger : MonoBehaviour
 
     private void Update()
     {
+        if (Button == null)
+        {
+            return;
+        }
+
         if(hasFocus != Focus)
         {
             Button.SetFocus(Focus);

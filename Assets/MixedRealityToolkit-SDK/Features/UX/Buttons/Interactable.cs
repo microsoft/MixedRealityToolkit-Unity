@@ -40,8 +40,8 @@ namespace HoloToolkit.Unity
         public int InputActionId;
         public bool IsGlobal = false;
         public int Dimensions = 1;
-        public bool CanSelect;
-        public bool CanDeselect;
+        public bool CanSelect = true;
+        public bool CanDeselect = true;
         public string VoiceCommand = "";
         public bool RequiresGaze = true;
         public List<ProfileItem> Profiles = new List<ProfileItem>();
@@ -49,6 +49,8 @@ namespace HoloToolkit.Unity
         public List<InteractableEvent> Events = new List<InteractableEvent>();
         
         public List<ThemeBase> runningThemesList = new List<ThemeBase>();
+        protected List<ProfileSettings> runningProfileSettings = new List<ProfileSettings>();
+        protected bool forceUpdate = false;
 
         public bool HasFocus { get; private set; }
         public bool HasPress { get; private set; }
@@ -129,31 +131,59 @@ namespace HoloToolkit.Unity
         {
             ProfileItem.ThemeLists lists = ProfileItem.GetThemeTypes();
             runningThemesList = new List<ThemeBase>();
-
+            runningProfileSettings = new List<ProfileSettings>();
             for (int i = 0; i < Profiles.Count; i++)
             {
-                Theme theme = Profiles[i].Themes[dimensionIndex];
-                if (Profiles[i].Target != null)
+                ProfileSettings profileSettings = new ProfileSettings();
+                List<ThemeSettings> themeSettingsList = new List<ThemeSettings>();
+                for (int j = 0; j < Profiles[i].Themes.Count; j++)
                 {
-                    for (int n = 0; n < theme.Settings.Count; n++)
+                    Theme theme = Profiles[i].Themes[j];
+                    ThemeSettings themeSettings = new ThemeSettings();
+                    if (Profiles[i].Target != null && theme != null)
                     {
-                        ThemePropertySettings settings = theme.Settings[n];
-
-                        settings.Theme = ProfileItem.GetTheme(settings, Profiles[i].Target, lists);
-
-                        theme.Settings[n] = settings;
-                        if (theme != null)
+                        List<ThemePropertySettings> tempSettings = new List<ThemePropertySettings>();
+                        for (int n = 0; n < theme.Settings.Count; n++)
                         {
-                            runningThemesList.Add(settings.Theme);
-                        }
-                    }
+                            ThemePropertySettings settings = theme.Settings[n];
 
-                    if (theme != null)
-                    {
-                        Profiles[i].Themes[dimensionIndex] = theme;
+                            settings.Theme = ProfileItem.GetTheme(settings, Profiles[i].Target, lists);
+
+                            //theme.Settings[n] = settings;
+                            // add themes to theme list based on dimension
+                            if (j == dimensionIndex)
+                            {
+                                runningThemesList.Add(settings.Theme);
+                            }
+
+                            tempSettings.Add(settings);
+                        }
+
+                        //Profiles[i].Themes[j] = theme;
+                        themeSettings.Settings = tempSettings;
+                        themeSettingsList.Add(themeSettings);
                     }
+                    
+                }
+                profileSettings.ThemeSettings = themeSettingsList;
+                runningProfileSettings.Add(profileSettings);
+            }
+        }
+
+        protected void FilterThemesByDimensions()
+        {
+            runningThemesList = new List<ThemeBase>();
+            
+            for (int i = 0; i < runningProfileSettings.Count; i++)
+            {
+                ProfileSettings settings = runningProfileSettings[i];
+                ThemeSettings themeSettings = settings.ThemeSettings[dimensionIndex];
+                for (int j = 0; j < themeSettings.Settings.Count; j++)
+                {
+                    runningThemesList.Add(themeSettings.Settings[j].Theme);
                 }
             }
+            
         }
 
         //collider checks and other alerts
@@ -318,10 +348,11 @@ namespace HoloToolkit.Unity
             {
                 dimensionIndex = 0;
             }
-
+            
             if(currentIndex != dimensionIndex)
             {
-                SetupThemes();
+                FilterThemesByDimensions();
+                forceUpdate = true;
             }
         }
 
@@ -360,21 +391,26 @@ namespace HoloToolkit.Unity
                     ReceiverBase reciever = Events[i].Receiver;
                 }
             }
-
+            
             for (int i = 0; i < runningThemesList.Count; i++)
             {
                 if (runningThemesList[i].Loaded)
                 {
-                    runningThemesList[i].OnUpdate(StateManager.CurrentState().ActiveIndex);
+                    runningThemesList[i].OnUpdate(StateManager.CurrentState().ActiveIndex, forceUpdate);
                 }
             }
-
+            
             if (lastState != StateManager.CurrentState())
             {
-
+                print("State Change: " + StateManager.CurrentState());
             }
 
-            if(IsDisabled == Enabled)
+            if (forceUpdate)
+            {
+                forceUpdate = false;
+            }
+
+            if (IsDisabled == Enabled)
             {
                 SetDisabled(!Enabled);
             }

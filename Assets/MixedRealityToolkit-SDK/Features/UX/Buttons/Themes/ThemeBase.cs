@@ -212,9 +212,9 @@ namespace HoloToolkit.Unity
             return newEase;
         }
 
-        public virtual void OnUpdate(int state)
+        public virtual void OnUpdate(int state, bool force = false)
         {
-            if(state != lastState)
+            if(state != lastState || force)
             {
                 for (int i = 0; i < ThemeProperties.Count; i++)
                 {
@@ -235,6 +235,8 @@ namespace HoloToolkit.Unity
                     }
                     ThemeProperties[i] = current;
                 }
+
+                lastState = state;
             }
             else if(Ease.EaseValues && Ease.IsPlaying())
             {

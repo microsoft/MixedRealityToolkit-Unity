@@ -157,6 +157,19 @@ namespace HoloToolkit.Unity
             SerializedProperty dimensions = serializedObject.FindProperty("Dimensions");
             dimensions.intValue = EditorGUILayout.IntField(new GUIContent("Dimensions", "Toggle or squence button levels"), dimensions.intValue);
 
+            if (dimensions.intValue > 1)
+            {
+                EditorGUI.indentLevel = indentOnSectionStart + 1;
+
+                SerializedProperty canSelect = serializedObject.FindProperty("CanSelect");
+                SerializedProperty canDeselect = serializedObject.FindProperty("CanDeselect");
+
+                canSelect.boolValue = EditorGUILayout.Toggle(new GUIContent("Can Select", "The user can toggle this button"), canSelect.boolValue);
+                canDeselect.boolValue = EditorGUILayout.Toggle(new GUIContent("Can Deselect", "The user can untoggle this button, set false for a radial interaction."), canDeselect.boolValue);
+
+                EditorGUI.indentLevel = indentOnSectionStart;
+            }
+
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space();
             DrawDivider();
@@ -219,12 +232,18 @@ namespace HoloToolkit.Unity
                     // get themes
                     SerializedProperty themes = sItem.FindPropertyRelative("Themes");
 
-                    // TODO: make sure there are enough themes as dimensions
+                    // make sure there are enough themes as dimensions
                     if (themes.arraySize > dimensions.intValue)
                     {
-                        // TODO: make sure there are not more themes than dimensions
+                        // make sure there are not more themes than dimensions
+                        int cnt = themes.arraySize - 1;
+                        for (int j = cnt; j > dimensions.intValue - 1; j--)
+                        {
+                            themes.DeleteArrayElementAtIndex(j);
+                        }
                     }
 
+                    // add themes when increading dimensions
                     if (themes.arraySize < dimensions.intValue)
                     {
                         int cnt = themes.arraySize;
@@ -241,12 +260,14 @@ namespace HoloToolkit.Unity
                                 Theme defaultTheme = (Theme)AssetDatabase.LoadAssetAtPath(path, typeof(Theme));
                                 theme.objectReferenceValue = defaultTheme;
                             }
+
+                            Debug.Log("Adding themes: " + j + " / " + dimensions.intValue);
                         }
                     }
 
                     for (int t = 0; t < themes.arraySize; t++)
                     {
-                        SerializedProperty themeItem = themes.GetArrayElementAtIndex(themes.arraySize - 1);
+                        SerializedProperty themeItem = themes.GetArrayElementAtIndex(t);
                         EditorGUILayout.PropertyField(themeItem, new GUIContent("Theme", "Theme properties for interation feedback"));
 
                         // TODO: we need the theme and target in order to figure out what properties to expose in the list

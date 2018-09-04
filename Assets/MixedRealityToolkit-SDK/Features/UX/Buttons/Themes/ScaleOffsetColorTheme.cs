@@ -15,7 +15,6 @@ namespace HoloToolkit.Unity
             base.Init(host, settings);
             startPosition = Host.transform.localPosition;
             startScale = Host.transform.localScale;
-
         }
 
         public ScaleOffsetColorTheme()
