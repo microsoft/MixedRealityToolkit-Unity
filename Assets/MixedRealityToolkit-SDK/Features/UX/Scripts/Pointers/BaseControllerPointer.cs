@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         /// <inheritdoc />
-        public RayStep[] Rays { get; protected set; }
+        public RayStep[] Rays { get; protected set; } = { new RayStep(Vector3.zero, Vector3.forward) };
 
         /// <inheritdoc />
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }

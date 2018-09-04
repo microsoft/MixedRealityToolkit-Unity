@@ -31,6 +31,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         public Ray TouchRay { get; set; } = default(Ray);
 
         /// <inheritdoc />
+        public override void OnPreRaycast()
+        {
+            Ray pointingRay;
+            if (TryGetPointingRay(out pointingRay))
+            {
+                Rays[0].CopyRay(pointingRay, PointerExtent);
+            }
+
+            if (RayStabilizer != null)
+            {
+                RayStabilizer.UpdateStability(Rays[0].Origin, Rays[0].Direction);
+                Rays[0].CopyRay(RayStabilizer.StableRay, PointerExtent);
+            }
+        }
+
+        /// <inheritdoc />
         public override bool TryGetPointerPosition(out Vector3 position)
         {
             position = Vector3.zero;
