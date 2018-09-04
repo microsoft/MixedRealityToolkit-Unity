@@ -167,10 +167,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                             Destroy(gameObject);
                             return;
                         }
-                        else
-                        {
-                            visibleSourcesCount--;
-                        }
+
+                        visibleSourcesCount--;
                     }
                 }
             }
