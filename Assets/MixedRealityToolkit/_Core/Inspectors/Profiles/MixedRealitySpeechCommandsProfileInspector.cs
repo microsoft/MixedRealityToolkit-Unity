@@ -42,13 +42,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);
-
             if (!CheckMixedRealityManager())
             {
                 return;
             }
 
+            if (GUILayout.Button("Back to Configuration Profile"))
+            {
+                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+            }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Speech Commands are any/all spoken keywords your users will be able say to raise an Input Action in your application.", MessageType.Info);
 
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
