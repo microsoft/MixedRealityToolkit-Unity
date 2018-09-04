@@ -18,8 +18,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
     public class GridObjectCollection : BaseObjectCollection
     {
         #region public accessors
+
         [Tooltip("Type of surface to map the collection to")]
         private ObjectOrientationSurfaceTypeEnum surfaceType = ObjectOrientationSurfaceTypeEnum.Plane;
+
         /// <summary>
         /// Type of surface to map the collection to.
         /// </summary>
@@ -31,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
         [Tooltip("Should the objects in the collection be rotated / how should they be rotated")]
         private OrientationTypeEnum orientType = OrientationTypeEnum.FaceOrigin;
+
         /// <summary>
         /// Should the objects in the collection face the origin of the collection
         /// </summary>
@@ -42,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
         [Tooltip("Whether to sort objects by row first or by column first")]
         private LayoutOrderTypeEnum layout = LayoutOrderTypeEnum.ColumnThenRow;
+
         /// <summary>
         /// Whether to sort objects by row first or by column first
         /// </summary>
@@ -55,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         [Tooltip("Radius for the sphere or cylinder")]
         [SerializeField]
         private float radius = 2f;
+
         /// <summary>
         /// This is the radius of either the Cylinder or Sphere mapping and is ignored when using the plane mapping.
         /// </summary>
@@ -68,6 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         [Tooltip("Radial range for radial layout")]
         [Range(5f, 360f)]
         private float radialRange = 180f;
+
         /// <summary>
         /// This is the radial range for creating a radial fan layout.
         /// </summary>
@@ -80,6 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         [Tooltip("Number of rows per column")]
         [SerializeField]
         private int rows = 3;
+
         /// <summary>
         /// Number of rows per column, column number is automatically determined
         /// </summary>
@@ -92,6 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         [Tooltip("Width of cell per object")]
         [SerializeField]
         private float cellWidth = 0.5f;
+
         /// <summary>
         /// Width of the cell per object in the collection.
         /// </summary>
@@ -104,6 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         [Tooltip("Height of cell per object")]
         [SerializeField]
         private float cellHeight = 0.5f;
+
         /// <summary>
         /// Height of the cell per object in the collection.
         /// </summary>
@@ -123,6 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             get;
             set;
         }
+
         private Mesh cylinderMesh;
 
         /// <summary>
@@ -133,12 +143,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             get;
             set;
         }
+
         #endregion public accessors
 
         #region private fields
+
         private int columns;
+
         private float circumference;
+
         private Vector2 halfCell;
+
         #endregion private fields
 
         /// <summary>
@@ -343,7 +358,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    Debug.LogWarning("OrientationTypeEnum out of range");
+                    break;
             }
         }
 

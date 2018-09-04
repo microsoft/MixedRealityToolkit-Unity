@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <summary>
         /// Don't rotate at all
         /// </summary>
-        None,
+        None = 0,
         /// <summary>
         /// Rotate towards the origin
         /// </summary>

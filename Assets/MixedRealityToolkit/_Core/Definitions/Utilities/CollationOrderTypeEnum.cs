@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <summary>
         /// Don't sort, just display in order received
         /// </summary>
-        None,
+        None = 0,
         /// <summary>
         /// Sort by child order of parent
         /// </summary>

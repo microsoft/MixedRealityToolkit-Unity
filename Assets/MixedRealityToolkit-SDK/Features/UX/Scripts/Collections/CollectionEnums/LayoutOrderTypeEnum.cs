@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         /// <summary>
         /// Sort by column, then by row
         /// </summary>
-        ColumnThenRow,
+        ColumnThenRow = 0,
         /// <summary>
         /// Sort by row, then by column
         /// </summary>

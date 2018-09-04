@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
     /// </summary>
     public enum ObjectOrientationSurfaceTypeEnum
     {
-        Cylinder,
+        Cylinder = 0,
         Plane,
         Sphere,
         Radial,
