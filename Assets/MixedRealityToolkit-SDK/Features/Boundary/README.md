@@ -1,3 +1,3 @@
-# Mixed Reality Toolkit - SDK - Boundary - System
+# Mixed Reality Toolkit - SDK - Boundary
 
 Default implementation of the Mixed Reality Toolkit boundary system.
