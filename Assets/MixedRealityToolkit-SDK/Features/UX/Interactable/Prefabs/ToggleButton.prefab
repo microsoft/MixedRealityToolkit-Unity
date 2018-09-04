@@ -110,7 +110,6 @@ GameObject:
   - component: {fileID: 4005860411493842}
   - component: {fileID: 23330477163696640}
   - component: {fileID: 102259220518201266}
-  - component: {fileID: 114798315565198988}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -306,7 +305,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1485861505866614}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0701, z: 0.3}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4992977087399218}
@@ -859,29 +858,6 @@ MonoBehaviour:
   PositionOffset: {x: 0, y: 0, z: -5}
   AddCorner: 1
   OnlyInEditMode: 0
---- !u!114 &114798315565198988
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1642940997627278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b724abaf06803946892fe40a37e6fb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InteractiveHost: {fileID: 0}
-  State: 0
-  IsInited: 0
-  Label: {fileID: 0}
-  ToolTip: 
-  Interrupt: 1
-  SpeakLabelOnly: 0
-  DefaultStateWord: Off
-  SelectedStateWord: On
-  mSpeechManager: {fileID: 0}
-  mButtonLostFocus: 1
-  LastFocusedState: 0
 --- !u!114 &114904061678891138
 MonoBehaviour:
   m_ObjectHideFlags: 1
