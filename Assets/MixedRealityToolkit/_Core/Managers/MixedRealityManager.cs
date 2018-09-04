@@ -178,6 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
                 //Enable Input (example initializer)
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
+                AddManager(typeof(IMixedRealityDeviceManager), new MouseDeviceManager("Mouse Device Manager", 10));
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
