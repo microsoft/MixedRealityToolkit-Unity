@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                     // If a source is lost that's using this cursor's pointer, we decrement the count to set the cursor state properly.
                     if (eventData.InputSource.Pointers[i].PointerId == Pointer.PointerId)
                     {
-                        var basePointer = (BaseControllerPointer)eventData.InputSource.Pointers[i];
+                        var basePointer = eventData.InputSource.Pointers[i] as BaseControllerPointer;
 
                         if (basePointer != null &&
                             basePointer.DestroyOnSourceLost)

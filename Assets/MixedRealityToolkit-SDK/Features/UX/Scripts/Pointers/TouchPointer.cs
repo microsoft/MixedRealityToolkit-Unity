@@ -96,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
+        /// <inheritdoc />
         public override void OnSourceLost(SourceStateEventData eventData)
         {
             base.OnSourceLost(eventData);
