@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
@@ -13,6 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     /// </summary>
     public class TouchPointer : BaseControllerPointer, IMixedRealityTouchPointer
     {
+        private bool isInteractionEnabled = false;
+
+        /// <inheritdoc />
+        public override bool IsInteractionEnabled => isInteractionEnabled;
+
         private int fingerId = -1;
 
         /// <inheritdoc />
@@ -77,6 +83,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             rotation = Quaternion.identity;
             return false;
+        }
+
+        /// <inheritdoc />
+        public override void OnSourceDetected(SourceStateEventData eventData)
+        {
+            base.OnSourceDetected(eventData);
+
+            if (eventData.InputSource.SourceId == Controller.InputSource.SourceId)
+            {
+                isInteractionEnabled = true;
+            }
+        }
+
+        public override void OnSourceLost(SourceStateEventData eventData)
+        {
+            base.OnSourceLost(eventData);
+
+            if (Controller != null &&
+                eventData.Controller != null &&
+                eventData.Controller.InputSource.SourceId == Controller.InputSource.SourceId)
+            {
+                isInteractionEnabled = false;
+            }
         }
     }
 }

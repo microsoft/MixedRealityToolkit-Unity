@@ -73,7 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             get { return isVisible; }
             set
             {
-                isVisible = value;
                 SetVisibility(isVisible);
             }
         }
@@ -120,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             if (PrimaryCursorVisual != null)
             {
                 PrimaryCursorVisual.gameObject.SetActive(visible);
+                isVisible = visible;
             }
         }
 
