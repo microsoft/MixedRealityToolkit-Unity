@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             var newTouch = new TouchPointer($"Touch {touch.fingerId}", touch, ray, this);
             activeTouches.Add(newTouch);
             InputSystem.RaisePointerDown(newTouch, PointerAction);
-            InputSystem.RaiseHoldStarted(this, HoldAction);
+            InputSystem.RaiseHoldStarted(this);
         }
 
         private void RemoveTouch(Touch touch)
@@ -161,21 +161,21 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
             {
                 if (touchPointer.Lifetime < K_CONTACT_EPSILON)
                 {
-                    InputSystem.RaiseHoldCanceled(this, HoldAction);
+                    InputSystem.RaiseHoldCanceled(this);
                 }
                 else if (touchPointer.Lifetime < MaxTapContactTime)
                 {
-                    InputSystem.RaiseHoldCanceled(this, HoldAction);
+                    InputSystem.RaiseHoldCanceled(this);
                     InputSystem.RaisePointerClicked(touchPointer, PointerAction, touchPointer.TouchData.tapCount);
                 }
                 else
                 {
-                    InputSystem.RaiseHoldCompleted(this, HoldAction);
+                    InputSystem.RaiseHoldCompleted(this);
                 }
             }
             else
             {
-                InputSystem.RaiseHoldCanceled(this, HoldAction);
+                InputSystem.RaiseHoldCanceled(this);
             }
 
             InputSystem.RaisePointerUp(touchPointer, PointerAction);

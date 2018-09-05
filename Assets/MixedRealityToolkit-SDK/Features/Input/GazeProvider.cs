@@ -1,16 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
@@ -19,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
     /// This class provides Gaze as an Input Source so users can interact with objects using their head.
     /// </summary>
     [DisallowMultipleComponent]
-    public class GazeProvider : InputSystemGlobalListener, IMixedRealityGazeProvider, IMixedRealityInputHandler
+    public class GazeProvider : InputSystemGlobalListener, IMixedRealityGazeProvider
     {
         private const float VelocityThreshold = 0.1f;
 
@@ -339,38 +337,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         }
 
         #endregion MonoBehaviour Implementation
-
-        #region IMixedRealityInputHandler Implementation
-
-        public void OnInputUp(InputEventData eventData)
-        {
-            for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
-            {
-                if (eventData.InputSource.Pointers[i].PointerId == GazePointer.PointerId)
-                {
-                    gazePointer.RaisePointerUp(eventData.MixedRealityInputAction, eventData.Handedness);
-                    return;
-                }
-            }
-        }
-
-        public void OnInputDown(InputEventData eventData)
-        {
-            for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
-            {
-                if (eventData.InputSource.Pointers[i].PointerId == GazePointer.PointerId)
-                {
-                    gazePointer.RaisePointerDown(eventData.MixedRealityInputAction, eventData.Handedness);
-                    return;
-                }
-            }
-        }
-
-        public void OnInputPressed(InputEventData<float> eventData) { }
-
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData) { }
-
-        #endregion IMixedRealityInputHandler Implementation
 
         #region Utilities
 

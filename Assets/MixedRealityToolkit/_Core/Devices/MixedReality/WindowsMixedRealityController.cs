@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                         UpdateMenuData(interactionSourceState, Interactions[i]);
                         break;
                     default:
-                        Debug.LogError($"Input [{Interactions[i].InputType}] is not handled for this controller [WindowsMixedRealityController]");
+                        Debug.LogError($"Input [{Interactions[i].InputType}] is not handled for this controller [WindowsMixedRealityController] with Action [{Interactions[i].Description}]");
                         Enabled = false;
                         break;
                 }
@@ -421,6 +421,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                             }
                             else
                             {
+                                for (int i = 0; i < InputSource.Pointers.Length; i++)
+                                {
+                                    InputSystem?.RaisePointerClicked(InputSource.Pointers[i], ControllerHandedness, interactionMapping.MixedRealityInputAction, 1);
+                                }
+
                                 InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                             }
                         }
