@@ -12,20 +12,20 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 {
     /// <summary>
-    /// Manages devices using unity input system.
+    /// Manages joysticks using unity input system.
     /// </summary>
-    public class UnityDeviceManager : BaseDeviceManager
+    public class UnityJoystickManager : BaseDeviceManager
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="priority"></param>
-        public UnityDeviceManager(string name, uint priority) : base(name, priority) { }
+        public UnityJoystickManager(string name, uint priority) : base(name, priority) { }
 
         private const float DeviceRefreshInterval = 3.0f;
 
-        protected static readonly Dictionary<string, GenericUnityController> ActiveControllers = new Dictionary<string, GenericUnityController>();
+        protected static readonly Dictionary<string, GenericJoystickController> ActiveControllers = new Dictionary<string, GenericJoystickController>();
 
         private float deviceRefreshTimer;
         private string[] lastDeviceList;
@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         /// </summary>
         /// <param name="joystickName">The name of they joystick from Unity's <see cref="Input.GetJoystickNames"/></param>
         /// <returns>A new controller reference.</returns>
-        protected virtual GenericUnityController GetOrAddController(string joystickName)
+        protected virtual GenericJoystickController GetOrAddController(string joystickName)
         {
             if (ActiveControllers.ContainsKey(joystickName))
             {
@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 default:
                     return null;
                 case SupportedControllerType.GenericUnity:
-                    controllerType = typeof(GenericUnityController);
+                    controllerType = typeof(GenericJoystickController);
                     break;
                 case SupportedControllerType.Xbox:
                     controllerType = typeof(XboxController);
@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             }
 
             var inputSource = InputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller");
-            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericUnityController;
+            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericJoystickController;
 
             if (detectedController == null)
             {
