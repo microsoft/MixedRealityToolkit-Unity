@@ -1,0 +1,163 @@
+# IMixedRealitySpatialAwarenessSystem Interface
+
+| Toolkit Layer | Namespace |
+| --- | --- |
+| Core | Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem |
+
+The IMixedRealitySpatialAwarenessSystem is the interface that defines the requirements of the spatial awareness system. The interface is divided, logically into multiple sections. As new functionality is added, the appropriate settings section is to be defined.
+
+<img src="Images/IMixedRealitySpatialAwarenessSystem.png">
+
+## General System Controls
+
+The spatial awareness system contains data and methods that configure and control the overall spatial awareness system.
+
+### StartObserverSuspended
+
+Gets or sets a value that indicates that the developer intends for the spatial observer to not return data until explicitly resumed. This allows the application to decide precisely when it wishes to begin receiving spatial data notifications.
+
+### ObservationExtents
+
+Gets or sets the size of the volume from which individual observations will be made. This is not the total size of the observable space.
+
+### UpdateInterval
+
+Gets or sets the frequency, in seconds, at which the spatial observer updates.
+
+### IsObserverRunning
+
+Indicates the current running state of the spatial observer. 
+
+*This is a read-only property, set by the spatial awareness system.*
+
+### void ResumeObserver()
+
+Starts / restarts the spatial observer. This will cause spatial observation events (ex: MeshAddedEvent) to resume being sent.
+
+### void SuspendObserver()
+
+Stops / pauses the spatial observer. This will cause spatial observation events to be suspended until ResumeObserver is called.
+
+## Mesh Handling Controls
+
+The mesh handling section contains the data and methods that configure and control the representation of data as a collection of meshes.
+
+For platforms that do not natively support returning observation data as a mesh, implementations can optionally process the native data before providing it to the caller.
+
+### Use Mesh System
+
+Gets or sets a value that indicates if the spatial mesh subsystem is in use by the application. Turning this off will suspend all mesh events and cause the subsystem to return an empty collection when the GetMeshes method is called.
+
+### MeshPhysicsLayer
+
+Get or sets the desired Unity Physics Layer on which to set the spatial mesh.
+
+### MeshPhysicsLayerMask
+
+Gets the bit mask that corresponds to the value specified in MeshPhysicsLayer.
+
+*This is a read-only property set by the spatial awareness system.*
+
+### MeshLevelOfDetail
+
+Gets or sets the level of detail, as a [MixedRealitySpatialAwarenessMeshLevelOfDetail](./MixedRealitySpatialAwarenessMeshLevelOfDetail.md) value, for the returned spatial mesh. Setting this value to Custom, implies that the developer is specifying a custom value for TrianglesPerCubicMeter.
+
+Specifying any other value will cause TrianglesPerCubicMeter to be overwritten.
+
+### TrianglesPerCubicMeter
+
+Gets or sets the level of detail, in triangles per cubic meter, for the returned spatial mesh. 
+
+When specifying Coarse or Fine for the MeshLevelOfDetail, this value will be automatically overwritten.
+
+### RecalculateNormals
+
+Gets or sets the value indicating if the spatial awareness system to generate normal for the returned meshes as some platforms may not support returning normal along with the spatial mesh. 
+
+### RenderMeshes
+
+Gets or sets a value indicating if the mesh subsystem is to automatically display surface meshes within the application. When enabled, the meshes will be added to the scene and rendered using the configured MeshMaterial.
+
+Applications that wish to process the Meshes should set this value to false.
+
+### MeshMaterial
+
+Gets or sets the material to be used when rendering spatial meshes.
+
+### [IMixedRealitySpatialAwarenessMeshDescription](./IMixedRealitySpatialAwarenessMeshDescription.md)[] GetMeshes()
+
+Returns the collection of Meshes being managed by the spatial awareness mesh subsystem.
+
+### GameObject[] GetMeshes()
+
+Returns the collection of GameObjects being managed by the spatial awareness mesh subsystem.
+
+## Surface Finding Controls
+
+The surface finding section contains the data and methods that configure and control the representation of data as a collection of planar surfaces.
+
+### UseSurfaceFindingSystem
+
+Indicates if the surface finding subsystem is in use by the application. Turning this off will suspend all surface events.
+
+### SurfacePhysicsLayer
+
+Get or sets the desired Unity Physics Layer on which to set spatial surfaces.
+
+### SurfacePhysicsLayerMask
+
+Gets the bit mask that corresponds to the value specified in SurfacePhysicsLayer. 
+
+*This is a read-only property set by the spatial awareness system.*
+
+### SurfaceFindingMinimumArea
+
+Gets or sets the minimum surface area, in square meters, that must be satisfied before a surface is identified.
+
+### RenderFloorSurfaces
+
+Gets or sets a value indicating if the surface subsystem is to automatically display floor surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured FloorSurfaceMaterial.
+
+### FloorSurfaceMaterial
+
+Gets or sets the material to be used when rendering planar surface(s) identified as a floor.
+
+### RenderCeilingSurfaces
+
+Gets or sets a value indicating if the surface subsystem is to automatically display ceiling surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured CeilingSurfaceMaterial.
+
+### CeilingSurfaceMaterial
+
+Gets or sets the material to be used when rendering planar surface(s) identified as a ceiling.
+
+### RenderWallSurfaces
+
+Gets or sets a value indicating if the surface subsystem is to automatically display wall surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured WallSurfaceMaterial.
+
+### WallSurfaceMaterial
+
+Gets or sets the material to be used when rendering planar surface(s) identified as a wall.
+
+### RenderPlatformSurfaces
+
+Gets or sets a value indicating if the surface subsystem is to automatically display raised horizontal platform surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured PlatformSurfaceMaterial.
+
+### PlatformSurfaceMaterial
+
+Gets or sets the material to be used when rendering planar surface(s) identified as a raised horizontal platform.
+
+### [IMixedRealitySpatialAwarenessPlanarSurfaceDescription](./IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)[] GetSurfaces()
+
+Returns the collection of surface descriptions being tracked by the surface finding subsystem.
+
+### GameObject[] GetSurfaceObjects()
+
+Returns the collection of GameObjects managed by the surface finding subsystem.
+
+## See Also
+
+- [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
+- [MixedRealitySpatialAwarenessSystem Class](./MixedRealitySpatialAwarenessSystem.md)
+- [IMixedRealitySpatialAwarenessMeshDescription Interface](./IMixedRealitySpatialAwarenessMeshDescription.md)
+- [IMixedRealitySpatialAwarenessPlanarSurfaceDescription Interface](./IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)
+- [MixedRealitySpatialAwarenessMeshLevelOfDetail Enumeration](./MixedRealitySpatialAwarenessMeshLevelOfDetail.md)
