@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         /// </summary>
         AutoStart = 0,
         /// <summary>
-        /// Delay the start of the feature until the user requests recognition to begin
+        /// Delay the start of the feature until the user requests it to begin
         /// </summary>
         ManualStart
     }
