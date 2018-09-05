@@ -610,9 +610,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
 
         #endregion Manipulation Events
 
-        #region Windows Speech
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-
         #region Speech Keyword Events
 
         /// <summary>
@@ -664,9 +661,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         void RaiseDictationError(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null);
 
         #endregion Dictation Events
-
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-        #endregion Windows Speech
 
         #endregion Input Events
     }

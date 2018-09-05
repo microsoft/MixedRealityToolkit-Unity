@@ -74,6 +74,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
             return !left.Equals(right);
         }
 
+        public override string ToString()
+        {
+            return $"{position} | {rotation}";
+        }
+
         #region IEqualityComparer Implementation
 
         bool IEqualityComparer.Equals(object left, object right)

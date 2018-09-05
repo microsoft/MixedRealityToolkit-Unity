@@ -5,11 +5,13 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
 using Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -149,6 +151,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             if (ActiveProfile.IsCameraProfileEnabled)
             {
+                if (ActiveProfile.CameraProfile.IsCameraPersistent)
+                {
+                    CameraCache.Main.transform.root.DontDestroyOnLoad();
+                }
+
                 if (MixedRealityCameraProfile.IsOpaque)
                 {
                     ActiveProfile.CameraProfile.ApplySettingsForOpaqueDisplay();
@@ -942,7 +949,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 case RuntimePlatform.WindowsEditor:
                 case RuntimePlatform.OSXPlayer:
                 case RuntimePlatform.OSXEditor:
-                    AddManager(typeof(IMixedRealityDeviceManager), new UnityDeviceManager("Unity Device Manager", 10));
+                    AddManager(typeof(IMixedRealityDeviceManager), new UnityJoystickManager("Unity Joystick Manager", 10));
                     AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
                     break;
                 case RuntimePlatform.IPhonePlayer:
@@ -968,7 +975,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 case UnityEditor.BuildTarget.StandaloneWindows:
                 case UnityEditor.BuildTarget.StandaloneWindows64:
                 case UnityEditor.BuildTarget.StandaloneOSX:
-                    AddManager(typeof(IMixedRealityDeviceManager), new UnityDeviceManager("Unity Device Manager", 10));
+                    AddManager(typeof(IMixedRealityDeviceManager), new UnityJoystickManager("Unity Joystick Manager", 10));
                     AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
                     break;
                 case UnityEditor.BuildTarget.iOS:
