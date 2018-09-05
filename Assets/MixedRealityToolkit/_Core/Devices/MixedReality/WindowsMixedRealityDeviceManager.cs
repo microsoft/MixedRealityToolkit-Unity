@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             // NOTE: We update the source state data, in case an app wants to query it on source detected.
             for (var i = 0; i < states.Length; i++)
             {
-                var controller = GetOrAddController(states[i].source);
+                var controller = GetController(states[i].source);
 
                 if (controller != null)
                 {
@@ -275,8 +275,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// Retrieve the source controller from the Active Store, or create a new device and register it
         /// </summary>
         /// <param name="interactionSourceState">Source State provided by the SDK</param>
+        /// <param name="addController">Should the Source be added as a controller if it isn't found?</param>
         /// <returns>New or Existing Controller Input Source</returns>
-        private WindowsMixedRealityController GetOrAddController(InteractionSource interactionSourceState)
+        private WindowsMixedRealityController GetController(InteractionSource interactionSourceState, bool addController = true)
         {
             //If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(interactionSourceState.id))
@@ -285,6 +286,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                 Debug.Assert(controller != null);
                 return controller;
             }
+
+            if (!addController) { return null; }
 
             Handedness controllingHand;
             switch (interactionSourceState.handedness)
@@ -327,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
         private void RemoveController(InteractionSourceState interactionSourceState)
         {
-            var controller = GetOrAddController(interactionSourceState.source);
+            var controller = GetController(interactionSourceState.source);
 
             if (controller != null)
             {
@@ -347,7 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <param name="args">SDK source detected event arguments</param>
         private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
         {
-            var controller = GetOrAddController(args.state.source);
+            var controller = GetController(args.state.source);
 
             if (controller != null)
             {
@@ -363,7 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <param name="args">SDK source updated event arguments</param>
         private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs args)
         {
-            GetOrAddController(args.state.source)?.UpdateController(args.state);
+            GetController(args.state.source)?.UpdateController(args.state);
         }
 
         /// <summary>
@@ -372,7 +375,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <param name="args">SDK source pressed event arguments</param>
         private void InteractionManager_InteractionSourcePressed(InteractionSourcePressedEventArgs args)
         {
-            GetOrAddController(args.state.source)?.UpdateController(args.state);
+            GetController(args.state.source)?.UpdateController(args.state);
         }
 
         /// <summary>
@@ -381,7 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <param name="args">SDK source released event arguments</param>
         private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs args)
         {
-            GetOrAddController(args.state.source)?.UpdateController(args.state);
+            GetController(args.state.source)?.UpdateController(args.state);
         }
 
         /// <summary>
@@ -395,11 +398,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
         #endregion Unity InteractionManager Events
 
-        #region Unity Gesture Recognizer Events
+        #region Gesture Recognizer Events
 
         private void GestureRecognizer_Tapped(TappedEventArgs args)
         {
-            var controller = GetOrAddController(args.source);
+            var controller = GetController(args.source, false);
             if (controller != null)
             {
                 for (int i = 0; i < controller.InputSource.Pointers.Length; i++)
@@ -411,7 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
         private void GestureRecognizer_HoldStarted(HoldStartedEventArgs args)
         {
-            var controller = GetOrAddController(args.source);
+            var controller = GetController(args.source, false);
             if (controller != null)
             {
                 InputSystem.RaiseHoldStarted(controller.InputSource, (Handedness)args.source.handedness);
@@ -420,7 +423,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
         private void GestureRecognizer_HoldCanceled(HoldCanceledEventArgs args)
         {
-            var controller = GetOrAddController(args.source);
+            var controller = GetController(args.source, false);
             if (controller != null)
             {
                 InputSystem.RaiseHoldCanceled(controller.InputSource, (Handedness)args.source.handedness);
@@ -429,7 +432,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
         private void GestureRecognizer_HoldCompleted(HoldCompletedEventArgs args)
         {
-            var controller = GetOrAddController(args.source);
+            var controller = GetController(args.source, false);
             if (controller != null)
             {
                 InputSystem.RaiseHoldCompleted(controller.InputSource, (Handedness)args.source.handedness);
@@ -438,7 +441,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
         private void GestureRecognizer_ManipulationStarted(ManipulationStartedEventArgs args)
         {
-            var controller = GetOrAddController(args.source);
+            var controller = GetController(args.source, false);
             if (controller != null)
             {
                 InputSystem.RaiseManipulationStarted(controller.InputSource, (Handedness)args.source.handedness);
@@ -447,7 +450,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
         private void GestureRecognizer_ManipulationUpdated(ManipulationUpdatedEventArgs args)
         {
-            var controller = GetOrAddController(args.source);
+            var controller = GetController(args.source, false);
             if (controller != null)
             {
                 InputSystem.RaiseManipulationUpdated(controller.InputSource, (Handedness)args.source.handedness, args.cumulativeDelta);
@@ -456,7 +459,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
         private void GestureRecognizer_ManipulationCompleted(ManipulationCompletedEventArgs args)
         {
-            var controller = GetOrAddController(args.source);
+            var controller = GetController(args.source, false);
             if (controller != null)
             {
                 InputSystem.RaiseManipulationCompleted(controller.InputSource, (Handedness)args.source.handedness, args.cumulativeDelta);
@@ -465,20 +468,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
         private void GestureRecognizer_ManipulationCanceled(ManipulationCanceledEventArgs args)
         {
-            var controller = GetOrAddController(args.source);
+            var controller = GetController(args.source, false);
             if (controller != null)
             {
                 InputSystem.RaiseManipulationCanceled(controller.InputSource, (Handedness)args.source.handedness);
             }
         }
 
-        #endregion Unity Gesture Recognizer Events
+        #endregion Gesture Recognizer Events
 
-        #region Gesture Navigation Events
+        #region Navigation Recognizer Events
 
         private void NavigationGestureRecognizer_NavigationStarted(NavigationStartedEventArgs args)
         {
-            var controller = GetOrAddController(args.source);
+            var controller = GetController(args.source, false);
             if (controller != null)
             {
                 InputSystem.RaiseNavigationStarted(controller.InputSource, (Handedness)args.source.handedness);
@@ -487,7 +490,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
         private void NavigationGestureRecognizer_NavigationUpdated(NavigationUpdatedEventArgs args)
         {
-            var controller = GetOrAddController(args.source);
+            var controller = GetController(args.source, false);
             if (controller != null)
             {
                 InputSystem.RaiseNavigationUpdated(controller.InputSource, (Handedness)args.source.handedness, args.normalizedOffset);
@@ -496,7 +499,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
         private void NavigationGestureRecognizer_NavigationCompleted(NavigationCompletedEventArgs args)
         {
-            var controller = GetOrAddController(args.source);
+            var controller = GetController(args.source, false);
             if (controller != null)
             {
                 InputSystem.RaiseNavigationCompleted(controller.InputSource, (Handedness)args.source.handedness, args.normalizedOffset);
@@ -505,14 +508,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
         private void NavigationGestureRecognizer_NavigationCanceled(NavigationCanceledEventArgs args)
         {
-            var controller = GetOrAddController(args.source);
+            var controller = GetController(args.source, false);
             if (controller != null)
             {
                 InputSystem.RaiseNavigationCanceled(controller.InputSource, (Handedness)args.source.handedness);
             }
         }
 
-        #endregion Gesture Navigation Events
+        #endregion Navigation Recognizer Events
 
 #endif // UNITY_WSA
 
