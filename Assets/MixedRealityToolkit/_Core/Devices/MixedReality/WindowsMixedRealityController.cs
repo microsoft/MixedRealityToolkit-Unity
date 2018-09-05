@@ -418,6 +418,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                             if (interactionSourceState.selectPressed)
                             {
                                 InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+
+                                for (int i = 0; i < InputSource.Pointers.Length; i++)
+                                {
+                                    InputSystem?.RaisePointerDown(InputSource.Pointers[i], ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
                             }
                             else
                             {
@@ -427,6 +432,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                                 }
 
                                 InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+
+                                for (int i = 0; i < InputSource.Pointers.Length; i++)
+                                {
+                                    InputSystem?.RaisePointerUp(InputSource.Pointers[i], ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
                             }
                         }
                         break;
