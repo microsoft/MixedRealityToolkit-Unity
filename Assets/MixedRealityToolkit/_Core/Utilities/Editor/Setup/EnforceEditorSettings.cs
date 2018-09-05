@@ -20,6 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         static EnforceEditorSettings()
         {
+            SetIconTheme();
+
             if (!IsNewSession())
             {
                 return;
@@ -144,6 +146,35 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             }
 
             return false;
+        }
+
+        private static void SetIconTheme()
+        {
+            var icons = Directory.GetFiles($"{Application.dataPath}/MixedRealityToolkit/_Core/Resources/Icons");
+            var icon = new Texture2D(2, 2);
+
+            for (int i = 0; i < icons.Length; i++)
+            {
+                icons[i] = icons[i].Replace("/", "\\");
+                if (icons[i].Contains("mixed_reality_icon") || icons[i].Contains(".meta")) { continue; }
+
+                var imageData = File.ReadAllBytes(icons[i]);
+                icon.LoadImage(imageData, false);
+
+                var pixels = icon.GetPixels();
+                for (int j = 0; j < pixels.Length; j++)
+                {
+                    pixels[j].r = EditorGUIUtility.isProSkin ? 1f : 0f;
+                    pixels[j].g = EditorGUIUtility.isProSkin ? 1f : 0f;
+                    pixels[j].b = EditorGUIUtility.isProSkin ? 1f : 0f;
+                }
+
+                icon.SetPixels(pixels);
+                File.WriteAllBytes(icons[i], icon.EncodeToPNG());
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }
     }
 }
