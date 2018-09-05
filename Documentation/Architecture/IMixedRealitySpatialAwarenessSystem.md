@@ -80,7 +80,7 @@ Get or sets the desired Unity Physics Layer on which to set the spatial mesh.
 
 | Type |
 | --- |
-| uint |
+| int |
 
 Gets the bit mask that corresponds to the value specified in MeshPhysicsLayer.
 
@@ -164,7 +164,7 @@ Get or sets the desired Unity Physics Layer on which to set spatial surfaces.
 
 | Type |
 | --- |
-| uint |
+| int |
 
 Gets the bit mask that corresponds to the value specified in SurfacePhysicsLayer. 
 

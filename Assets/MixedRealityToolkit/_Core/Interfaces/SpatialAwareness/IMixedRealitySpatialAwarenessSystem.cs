@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// Gets or sets a value indicating if the spatial awareness system to generate normal for the returned meshes
         /// as some platforms may not support returning normal along with the spatial mesh. 
         /// </summary>
-        bool RecalculateNormals { get; set; }
+        bool MeshRecalculateNormals { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating if the mesh subsystem is to automatically display surface meshes within the application.
@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <remarks>
         /// Applications that wish to process the <see cref="Mesh"/>es should set this value to false.
         /// </remarks>
-        bool RenderMeshes { get; set; }
+        bool DisplayMeshes { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Material"/> to be used when rendering <see cref="Mesh"/>es.

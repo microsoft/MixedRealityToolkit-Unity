@@ -479,10 +479,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         }
 
         /// <inheritdoc />
-        public bool RecalculateNormals { get; set; } = true;
+        public bool MeshRecalculateNormals { get; set; } = true;
 
         /// <inheritdoc />
-        public bool RenderMeshes { get; set; } = false;
+        public bool DisplayMeshes { get; set; } = false;
 
         /// <inheritdoc />
         public Material MeshMaterial { get; set; } = null;

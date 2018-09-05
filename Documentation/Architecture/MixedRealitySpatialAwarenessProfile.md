@@ -12,11 +12,11 @@ The data types, default values and the supported range of values, if appropriate
 
 ## General Configuration Settings
 
-### StartObserverSuspended
+### StartupBehavior
 
 | Type | Default Value | Range |
 | --- | --- | --- |
-| Boolean | False | n/a |
+| AutoStartBehavior | AutoStart | AutoStart, Manual |
 
 ### ObservationExtents
 
@@ -58,7 +58,7 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 | --- | --- | --- |
 | Int32 | 0 | 0 - Int32.MaxValue |
 
-### RecalculateNormals
+### MeshRecalculateNormals
 
 | Type | Default Value | Range |
 | --- | --- | --- |

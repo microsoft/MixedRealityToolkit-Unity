@@ -17,10 +17,22 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty updateInterval;
 
         // Mesh settings
-        // todo
+        private SerializedProperty useMeshSystem;
+        private SerializedProperty meshPhysicsLayer;
+        private SerializedProperty meshLevelOfDetail;
+        private SerializedProperty meshTrianglesPerCubicMeter;
+        private SerializedProperty meshRecalculateNormals;
+        private SerializedProperty displayMeshes;
+        private SerializedProperty meshMaterial;
 
         // Surface Finding settings
         // todo
+
+        private readonly GUIContent useSystemContent = new GUIContent("Use System");
+        private readonly GUIContent physicsLayerContent = new GUIContent("Physics Layer");
+        private readonly GUIContent lodContent = new GUIContent("Level of Detail");
+        private readonly GUIContent trianglesPerCubicMeterContent = new GUIContent("Triangles/Cubic Meter");
+        private readonly GUIContent materialContent = new GUIContent("Material");
 
         private void OnEnable()
         {
@@ -35,7 +47,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             updateInterval = serializedObject.FindProperty("updateInterval");
 
             // Mesh settings
-            // todo
+            useMeshSystem = serializedObject.FindProperty("useMeshSystem");
+            meshPhysicsLayer = serializedObject.FindProperty("meshPhysicsLayer");
+            meshLevelOfDetail = serializedObject.FindProperty("meshLevelOfDetail");
+            meshTrianglesPerCubicMeter = serializedObject.FindProperty("meshTrianglesPerCubicMeter");
+            meshRecalculateNormals = serializedObject.FindProperty("meshRecalculateNormals");
+            displayMeshes = serializedObject.FindProperty("displayMeshes");
+            meshMaterial = serializedObject.FindProperty("meshMaterial");
 
             // Surface Finding settings
             // todo
@@ -64,6 +82,20 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.PropertyField(startupBehavior);
             EditorGUILayout.PropertyField(observationExtents);
             EditorGUILayout.PropertyField(updateInterval);
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Mesh Settings:", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(useMeshSystem, useSystemContent);
+            EditorGUILayout.PropertyField(meshPhysicsLayer, physicsLayerContent);
+            EditorGUILayout.PropertyField(meshLevelOfDetail, lodContent);
+            EditorGUILayout.PropertyField(meshTrianglesPerCubicMeter, trianglesPerCubicMeterContent);
+            EditorGUILayout.PropertyField(meshRecalculateNormals);
+            EditorGUILayout.PropertyField(displayMeshes);
+            EditorGUILayout.PropertyField(meshMaterial, materialContent);
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Surface Finding Settings:", EditorStyles.boldLabel);
+
 
             serializedObject.ApplyModifiedProperties();
         }
