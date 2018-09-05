@@ -266,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
         }
 
-        private void Start()
+        protected void Start()
         {
             if (cursorPrefab != null)
             {
