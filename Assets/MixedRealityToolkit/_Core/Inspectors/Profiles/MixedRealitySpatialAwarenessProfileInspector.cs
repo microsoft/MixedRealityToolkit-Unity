@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
     public class MixedRealitySpatialAwarenessProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
         // General settings
-        private SerializedProperty startObserverSuspended;
+        private SerializedProperty startupBehavior;
         private SerializedProperty observationExtents;
         private SerializedProperty updateInterval;
 
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             }
 
             // General settings
-            startObserverSuspended = serializedObject.FindProperty("startObserverSuspended");
+            startupBehavior = serializedObject.FindProperty("startupBehavior");
             observationExtents = serializedObject.FindProperty("observationExtents");
             updateInterval = serializedObject.FindProperty("updateInterval");
 
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             serializedObject.Update();
 
             EditorGUILayout.LabelField("General Settings:", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(startObserverSuspended);
+            EditorGUILayout.PropertyField(startupBehavior);
             EditorGUILayout.PropertyField(observationExtents);
             EditorGUILayout.PropertyField(updateInterval);
 

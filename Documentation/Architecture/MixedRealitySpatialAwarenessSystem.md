@@ -10,9 +10,9 @@ The MixedRealitySpatialAwarenessSystem class provides the default implementation
 
 The spatial awareness system contains data and methods that configure and control the overall spatial awareness system.
 
-### StartObserverSuspended
+### StartupBehavior
 
-Gets or sets a value that indicates that the developer intends for the spatial observer to not return data until explicitly resumed. This allows the application to decide precisely when it wishes to begin receiving spatial data notifications.
+Gets or sets a value that indicates that the developer intends for the spatial observer to start automatically or wait until explicitly resumed. This allows the application to decide precisely when it wishes to begin receiving spatial data notifications.
 
 ### ObservationExtents
 

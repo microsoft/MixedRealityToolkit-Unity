@@ -15,13 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         #region General settings
 
         [SerializeField]
-        [Tooltip("Should the spatial awareness observer be suspended at startup?")]
-        private bool startObserverSuspended = true;
+        [Tooltip("How should the spatial awareness observer behave at startup?")]
+        private AutoStartBehavior startupBehavior = AutoStartBehavior.AutoStart;
 
         /// <summary>
-        /// Indicates if the developer intends for the spatial awareness observer to not return data until explicitly resumed.
+        /// Indicates if the developer intends for the spatial awareness observer start immediately or wait for manual startup.
         /// </summary>
-        public bool StartObserverSuspended => startObserverSuspended;
+        public AutoStartBehavior StartObserverSuspended => startupBehavior;
 
         [SerializeField]
         [Tooltip("The dimensions of the spatial observer volume, in meters.")]
