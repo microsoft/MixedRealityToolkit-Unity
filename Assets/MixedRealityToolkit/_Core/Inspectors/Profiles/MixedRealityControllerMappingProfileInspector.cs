@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             if (GUILayout.Button(ControllerAddButtonContent, EditorStyles.miniButton))
             {
-                AddController(controllerList, typeof(GenericUnityController));
+                AddController(controllerList, typeof(GenericJoystickController));
                 return;
             }
 
@@ -250,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 {
                     supportedControllerType = SupportedControllerType.GenericOpenVR;
                 }
-                else if (controllerType == typeof(GenericUnityController))
+                else if (controllerType == typeof(GenericJoystickController))
                 {
                     supportedControllerType = SupportedControllerType.GenericUnity;
                 }
@@ -318,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                     int currentGenericType = -1;
 
-                    if (controllerType == typeof(GenericUnityController))
+                    if (controllerType == typeof(GenericJoystickController))
                     {
                         currentGenericType = 0;
                     }
@@ -332,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                     currentGenericType = EditorGUILayout.IntPopup(GenericTypeContent, currentGenericType, GenericTypeListContent, GenericTypeIds);
 
-                    if (controllerType != typeof(GenericUnityController))
+                    if (controllerType != typeof(GenericJoystickController))
                     {
                         EditorGUILayout.PropertyField(controllerHandedness);
                     }
@@ -342,7 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                         switch (currentGenericType)
                         {
                             case 0:
-                                controllerType = typeof(GenericUnityController);
+                                controllerType = typeof(GenericJoystickController);
                                 controllerHandedness.intValue = 0;
                                 break;
                             case 1:
@@ -444,7 +444,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             mixedRealityControllerHandedness.intValue = 0;
             var mixedRealityControllerInteractions = mixedRealityControllerMapping.FindPropertyRelative("interactions");
             var useCustomInteractionMappings = mixedRealityControllerMapping.FindPropertyRelative("useCustomInteractionMappings");
-            useCustomInteractionMappings.boolValue = controllerType == typeof(GenericOpenVRController) || controllerType == typeof(GenericUnityController);
+            useCustomInteractionMappings.boolValue = controllerType == typeof(GenericOpenVRController) || controllerType == typeof(GenericJoystickController);
             mixedRealityControllerInteractions.ClearArray();
             serializedObject.ApplyModifiedProperties();
             thisProfile.MixedRealityControllerMappingProfiles[index].ControllerType.Type = controllerType;

@@ -943,7 +943,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
         private void AddManagersForTheCurrentPlatform()
         {
-            AddManager(typeof(IMixedRealityDeviceManager), new UnityDeviceManager("Unity Device Manager", 10));
+            AddManager(typeof(IMixedRealityDeviceManager), new UnityJoystickManager("Unity Joystick Manager", 10));
             AddManager(typeof(IMixedRealityDeviceManager), new UnityTouchDeviceManager("Unity Touch Device Manager", 10));
 
             switch (Application.platform)
@@ -968,7 +968,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
         private void AddManagersForTheCurrentPlatformEditor()
         {
-            AddManager(typeof(IMixedRealityDeviceManager), new UnityDeviceManager("Unity Device Manager", 10));
+            AddManager(typeof(IMixedRealityDeviceManager), new UnityJoystickManager("Unity Joystick Manager", 10));
             AddManager(typeof(IMixedRealityDeviceManager), new UnityTouchDeviceManager("Unity Touch Device Manager", 10));
 
             switch (UnityEditor.EditorUserBuildSettings.activeBuildTarget)

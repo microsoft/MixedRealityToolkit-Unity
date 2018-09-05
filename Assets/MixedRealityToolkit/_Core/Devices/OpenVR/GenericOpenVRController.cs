@@ -12,7 +12,7 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
 {
-    public class GenericOpenVRController : GenericUnityController
+    public class GenericOpenVRController : GenericJoystickController
     {
         public GenericOpenVRController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
