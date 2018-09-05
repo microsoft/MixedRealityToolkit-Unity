@@ -11,11 +11,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
     public enum AutoStartBehavior
     {
         /// <summary>
-        /// Automatically start the speech recognizer
+        /// Automatically start the feature
         /// </summary>
         AutoStart = 0,
         /// <summary>
-        /// Delay the start of the speech recognizer until the user requests recognition to begin
+        /// Delay the start of the feature until the user requests recognition to begin
         /// </summary>
         ManualStart
     }

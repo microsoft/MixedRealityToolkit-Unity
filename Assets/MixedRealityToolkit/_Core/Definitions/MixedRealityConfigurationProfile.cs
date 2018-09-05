@@ -146,9 +146,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// </summary>
         public bool IsSpeechCommandsEnabled
         {
-            get { return speechCommandsProfile != null && speechCommandsProfile.SpeechSystemType != null && speechCommandsProfile.SpeechSystemType.Type != null && enableSpeechCommands && enableInputSystem; }
+            get { return speechCommandsProfile != null && SpeechSystemType != null && SpeechSystemType.Type != null && enableSpeechCommands && enableInputSystem; }
             private set { enableSpeechCommands = value; }
         }
+
+        [SerializeField]
+        [Tooltip("Speech System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealitySpeechSystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType speechSystemType = null;
+
+        /// <summary>
+        /// Speech System Script File to instantiate at runtime.
+        /// </summary>
+        public SystemType SpeechSystemType => speechSystemType;
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]

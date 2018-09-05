@@ -18,17 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private static readonly GUIContent KeyCodeContent = new GUIContent("KeyCode", "The keyboard key that will trigger the action.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The action to trigger when a keyboard key is pressed or keyword is recognized.");
 
-        private static readonly GUIContent SpeechConfidenceContent = new GUIContent("Confidence Level", "The speech recognizer's minimum confidence level setting that will raise the action.");
-        private static readonly GUIContent[] SpeechConfidenceOptionContent =
-        {
-            new GUIContent("High"),
-            new GUIContent("Medium"),
-            new GUIContent("Low"),
-            new GUIContent("Unrecognized")
-        };
-        private static readonly int[] SpeechConfidenceOptions = { 0, 1, 2, 3 };
-
-        private SerializedProperty speechSystemType;
         private SerializedProperty recognizerStartBehaviour;
         private SerializedProperty recognitionConfidenceLevel;
         private SerializedProperty speechCommands;
@@ -46,7 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
                 MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null) { return; }
 
-            speechSystemType = serializedObject.FindProperty("speechSystemType");
             recognizerStartBehaviour = serializedObject.FindProperty("startBehavior");
             recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
             speechCommands = serializedObject.FindProperty("speechCommands");
@@ -80,9 +68,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(speechSystemType);
             EditorGUILayout.PropertyField(recognizerStartBehaviour);
-            recognitionConfidenceLevel.intValue = EditorGUILayout.IntPopup(SpeechConfidenceContent, recognitionConfidenceLevel.intValue, SpeechConfidenceOptionContent, SpeechConfidenceOptions);
+            EditorGUILayout.PropertyField(recognitionConfidenceLevel);
 
             RenderList(speechCommands);
             serializedObject.ApplyModifiedProperties();

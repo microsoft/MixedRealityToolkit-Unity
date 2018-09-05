@@ -15,16 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
     public class MixedRealitySpeechCommandsProfile : ScriptableObject
     {
         [SerializeField]
-        [Tooltip("Speech System Class to instantiate at runtime.")]
-        [Implements(typeof(IMixedRealitySpeechSystem), TypeGrouping.ByNamespaceFlat)]
-        private SystemType speechSystemType = null;
-
-        /// <summary>
-        /// Speech System Script File to instantiate at runtime.
-        /// </summary>
-        public SystemType SpeechSystemType => speechSystemType;
-
-        [SerializeField]
         [Tooltip("Whether the recognizer should be activated on start.")]
         private AutoStartBehavior startBehavior = AutoStartBehavior.AutoStart;
 
@@ -34,14 +24,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         public AutoStartBehavior SpeechRecognizerStartBehavior => startBehavior;
 
         [SerializeField]
-        [Tooltip("0 == High, 1 == Medium, 2 == Low, 3 == Unknown")]
-        private int recognitionConfidenceLevel = 1;
+        [Tooltip("Select the minimum confidence level for recognized words")]
+        private RecognitionConfidenceLevel recognitionConfidenceLevel = RecognitionConfidenceLevel.Medium;
 
         /// <summary>
         /// The speech recognizer's minimum confidence level setting that will raise the action.<para/>
         /// 0 == High, 1 == Medium, 2 == Low, 3 == Unknown
         /// </summary>
-        public int SpeechRecognitionConfidenceLevel => recognitionConfidenceLevel;
+        public RecognitionConfidenceLevel SpeechRecognitionConfidenceLevel => recognitionConfidenceLevel;
 
         [SerializeField]
         [Tooltip("The list of Speech Commands users use in your application.")]

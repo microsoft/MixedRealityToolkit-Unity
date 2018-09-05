@@ -1,14 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions;
 using System;
 using UnityEngine;
 
@@ -21,8 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
     // TODO - Implement
     public class SpeechInputDeviceManager : BaseDeviceManager, IMixedRealitySpeechSystem
     {
-        private readonly WaitForUpdate waitForUpdate = new WaitForUpdate();
-
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
         /// </summary>
@@ -55,16 +50,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             {
                 StartRecognition();
             }
-
-            Run();
         }
 #else
             // TODO: Implement on other platforms
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-        private async void Run()
+        public override void Update()
         {
-            while (keywordRecognizer != null && keywordRecognizer.IsRunning)
+            base.Update();
+
+            if (keywordRecognizer != null && keywordRecognizer.IsRunning)
             {
                 for (int i = 0; i < Commands.Length; i++)
                 {
@@ -73,8 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                         RaiseKeywordAction(Commands[i].Keyword);
                     }
                 }
-
-                await waitForUpdate;
             }
         }
 

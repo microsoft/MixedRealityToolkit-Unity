@@ -27,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty inputActionsProfile;
         private SerializedProperty pointerProfile;
         private SerializedProperty enableSpeechCommands;
+        private SerializedProperty speechSystemType;
         private SerializedProperty speechCommandsProfile;
         private SerializedProperty enableDictation;
         private SerializedProperty dictationSystemType;
@@ -95,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
             enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
+            speechSystemType = serializedObject.FindProperty("speechSystemType");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
             enableDictation = serializedObject.FindProperty("enableDictation");
             dictationSystemType = serializedObject.FindProperty("dictationSystemType");
@@ -185,11 +187,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 RenderProfile(pointerProfile);
 
                 EditorGUILayout.PropertyField(enableSpeechCommands);
-
-                if (enableSpeechCommands.boolValue)
-                {
-                    RenderProfile(speechCommandsProfile);
-                }
+                EditorGUILayout.PropertyField(speechSystemType);
+                RenderProfile(speechCommandsProfile);
 
                 EditorGUILayout.PropertyField(enableDictation);
                 EditorGUILayout.PropertyField(dictationSystemType);
