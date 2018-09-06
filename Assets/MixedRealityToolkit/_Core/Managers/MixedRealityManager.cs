@@ -952,7 +952,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                     // If the Dictation system has been selected for initialization in the Active speech profile, enable it in the project
                     if (ActiveProfile.IsDictationEnabled)
                     {
-                        AddManager(typeof(IMixedRealityDictationSystem), new WindowsDictationInputDeviceManager("Windows Dictation Manager", 10));
+                        AddManager(typeof(IMixedRealityDictationManager), new WindowsDictationInputDeviceManager("Windows Dictation Manager", 10));
                     }
                     break;
                 case RuntimePlatform.WSAPlayerX86:
@@ -967,7 +967,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                     // If the Dictation system has been selected for initialization in the Active speech profile, enable it in the project
                     if (ActiveProfile.IsDictationEnabled)
                     {
-                        AddManager(typeof(IMixedRealityDictationSystem), new WindowsDictationInputDeviceManager("Windows Dictation Manager", 10));
+                        AddManager(typeof(IMixedRealityDictationManager), new WindowsDictationInputDeviceManager("Windows Dictation Manager", 10));
                     }
 
                     AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
@@ -995,7 +995,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                     // If the Dictation system has been selected for initialization in the Active speech profile, enable it in the project
                     if (ActiveProfile.IsDictationEnabled)
                     {
-                        AddManager(typeof(IMixedRealityDictationSystem), new WindowsDictationInputDeviceManager("Windows Dictation Manager", 10));
+                        AddManager(typeof(IMixedRealityDictationManager), new WindowsDictationInputDeviceManager("Windows Dictation Manager", 10));
                     }
 
                     break;
@@ -1009,7 +1009,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                     // If the Dictation system has been selected for initialization in the Active speech profile, enable it in the project
                     if (ActiveProfile.IsDictationEnabled)
                     {
-                        AddManager(typeof(IMixedRealityDictationSystem), new WindowsDictationInputDeviceManager("Windows Dictation Manager", 10));
+                        AddManager(typeof(IMixedRealityDictationManager), new WindowsDictationInputDeviceManager("Windows Dictation Manager", 10));
                     }
 
                     AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
