@@ -3,7 +3,9 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
@@ -12,58 +14,63 @@ using UnityEngine.Windows.Speech;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 {
-    // TODO - Implement
-    public class DictationInputDeviceManager : BaseDeviceManager, IMixedRealityDictationSystem
+    public class WindowsDictationInputDeviceManager : BaseDeviceManager, IMixedRealityDictationSystem
     {
-        public IMixedRealityInputSource InputSource = null;
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="priority"></param>
+        public WindowsDictationInputDeviceManager(string name, uint priority) : base(name, priority) { }
 
         /// <summary>
         /// Is the Dictation Manager currently running?
         /// </summary>
-        public static bool IsListening { get; private set; } = false;
+        public bool IsListening { get; private set; } = false;
 
-        private static DictationRecognizer dictationRecognizer;
+        private DictationRecognizer dictationRecognizer;
 
-        private static bool hasFailed;
-        private static bool hasListener;
-        private static bool isTransitioning;
+        private bool hasFailed;
+        private bool hasListener;
+        private bool isTransitioning;
+
+        private IMixedRealityInputSource inputSource = null;
 
         /// <summary>
         /// Caches the text currently being displayed in dictation display text.
         /// </summary>
-        private static StringBuilder textSoFar;
+        private StringBuilder textSoFar;
 
-        /// <summary>
-        /// <remarks>Using an empty string specifies the default microphone.</remarks>
-        /// </summary>
-        private static readonly string DeviceName = string.Empty;
+        private string deviceName = string.Empty;
 
         /// <summary>
         /// The device audio sampling rate.
         /// <remarks>Set by UnityEngine.Microphone.<see cref="Microphone.GetDeviceCaps"/></remarks>
         /// </summary>
-        private static int samplingRate;
+        private int samplingRate;
 
         /// <summary>
         /// String result of the current dictation.
         /// </summary>
-        private static string dictationResult;
+        private string dictationResult;
 
         /// <summary>
         /// Audio clip of the last dictation session.
         /// </summary>
-        private static AudioClip dictationAudioClip;
-
-        public DictationInputDeviceManager(string name, uint priority) : base(name, priority) { }
-
+        private AudioClip dictationAudioClip;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-        /// <inheritdoc />
-        public override void Initialize()
-        {
-            base.Initialize();
 
-            InputSource = InputSystem?.RequestNewGenericInputSource($"Dictation Recognizer", null);
+        /// <inheritdoc />
+        public override void Enable()
+        {
+            if (InputSystem == null)
+            {
+                Debug.LogWarning("Unable to start Windows Dictation Device Manager. An Input System is required for this feature.");
+                return;
+            }
+
+            inputSource = InputSystem.RequestNewGenericInputSource("Dictation Recognizer");
             dictationResult = string.Empty;
 
             dictationRecognizer = new DictationRecognizer();
@@ -71,18 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
             dictationRecognizer.DictationComplete += DictationRecognizer_DictationComplete;
             dictationRecognizer.DictationError += DictationRecognizer_DictationError;
-
-            // Query the maximum frequency of the default microphone.
-            int minSamplingRate; // Not used.
-            Microphone.GetDeviceCaps(DeviceName, out minSamplingRate, out samplingRate);
-
         }
-#else
-            // TODO: Implement on other platforms
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
         /// <inheritdoc />
-        public override void Destroy()
+        public override void Disable()
         {
             if (dictationRecognizer != null)
             {
@@ -90,19 +89,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                 dictationRecognizer.DictationResult -= DictationRecognizer_DictationResult;
                 dictationRecognizer.DictationComplete -= DictationRecognizer_DictationComplete;
                 dictationRecognizer.DictationError -= DictationRecognizer_DictationError;
-                dictationRecognizer?.Dispose();
+                dictationRecognizer.Dispose();
             }
-
-            base.Destroy();
         }
 
-        #region UWP and Windows Standalone Implementations
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+        /// <inheritdoc />
         public override void Update()
         {
-            base.Update();
+            if (InputSystem == null) { return; }
 
-            if (IsListening && !Microphone.IsRecording(DeviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
+            if (IsListening && !Microphone.IsRecording(deviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
                 // If the microphone stops as a result of timing out, make sure to manually stop the dictation recognizer.
                 StopRecording();
@@ -111,22 +107,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             if (!hasFailed && dictationRecognizer.Status == SpeechSystemStatus.Failed)
             {
                 hasFailed = true;
-                InputSystem.RaiseDictationError(InputSource, "Dictation recognizer has failed!");
+                InputSystem.RaiseDictationError(inputSource, "Dictation recognizer has failed!");
             }
         }
 
-        /// <summary>
-        /// Turns on the dictation recognizer and begins recording audio from the default microphone.
-        /// </summary>
-        /// <param name="listener">GameObject listening for the dictation input.</param>
-        /// <param name="initialSilenceTimeout">The time length in seconds before dictation recognizer session ends due to lack of audio input in case there was no audio heard in the current session.</param>
-        /// <param name="autoSilenceTimeout">The time length in seconds before dictation recognizer session ends due to lack of audio input.</param>
-        /// <param name="recordingTime">Length in seconds for the manager to listen.</param>
-        /// <returns></returns>
-        public void StartRecording(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
+        /// <inheritdoc />
+        public async Task StartRecordingAsync(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10, string micDeviceName = "")
         {
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-            if (IsListening || isTransitioning)
+            if (IsListening || isTransitioning || InputSystem == null)
             {
                 Debug.LogWarning("Unable to start recording");
                 return;
@@ -147,35 +135,44 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                 PhraseRecognitionSystem.Shutdown();
             }
 
+            await new WaitUntil(() => PhraseRecognitionSystem.Status != SpeechSystemStatus.Running);
+
+            // Query the maximum frequency of the default microphone.
+            int minSamplingRate; // Not used.
+            deviceName = micDeviceName;
+            Microphone.GetDeviceCaps(deviceName, out minSamplingRate, out samplingRate);
+
             dictationRecognizer.InitialSilenceTimeoutSeconds = initialSilenceTimeout;
             dictationRecognizer.AutoSilenceTimeoutSeconds = autoSilenceTimeout;
             dictationRecognizer.Start();
 
+            await new WaitUntil(() => dictationRecognizer.Status != SpeechSystemStatus.Stopped);
+
             if (dictationRecognizer.Status == SpeechSystemStatus.Failed)
             {
-                InputSystem.RaiseDictationError(InputSource, "Dictation recognizer failed to start!");
+                InputSystem.RaiseDictationError(inputSource, "Dictation recognizer failed to start!");
                 return;
             }
 
             // Start recording from the microphone.
-            dictationAudioClip = Microphone.Start(DeviceName, false, recordingTime, samplingRate);
+            dictationAudioClip = Microphone.Start(deviceName, false, recordingTime, samplingRate);
             textSoFar = new StringBuilder();
             isTransitioning = false;
-#else
-
-            Debug.LogError("Unable to start recording!  Dictation is unsupported for this platform.");
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         }
 
-        /// <summary>
-        /// Ends the recording session.
-        /// </summary>
-        public void StopRecording()
+        /// <inheritdoc />
+        public async void StopRecording()
+        {
+            await StopRecordingAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task<AudioClip> StopRecordingAsync()
         {
             if (!IsListening || isTransitioning)
             {
                 Debug.LogWarning("Unable to stop recording");
-                return;
+                return null;
             }
 
             IsListening = false;
@@ -187,19 +184,23 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                 hasListener = false;
             }
 
-            Microphone.End(DeviceName);
+            Microphone.End(deviceName);
 
             if (dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
                 dictationRecognizer.Stop();
             }
 
+            await new WaitUntil(() => PhraseRecognitionSystem.Status != SpeechSystemStatus.Running);
+
             PhraseRecognitionSystem.Restart();
 
-            isTransitioning = false;
-        }
+            await new WaitUntil(() => PhraseRecognitionSystem.Status == SpeechSystemStatus.Running);
 
-        #region Dictation Recognizer Callbacks
+            isTransitioning = false;
+
+            return dictationAudioClip;
+        }
 
         /// <summary>
         /// This event is fired while the user is talking. As the recognizer listens, it provides text of what it's heard so far.
@@ -210,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             // We don't want to append to textSoFar yet, because the hypothesis may have changed on the next event.
             dictationResult = $"{textSoFar} {text}...";
 
-            InputSystem.RaiseDictationHypothesis(InputSource, dictationResult);
+            InputSystem.RaiseDictationHypothesis(inputSource, dictationResult);
         }
 
         /// <summary>
@@ -224,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 
             dictationResult = textSoFar.ToString();
 
-            InputSystem.RaiseDictationResult(InputSource, dictationResult);
+            InputSystem.RaiseDictationResult(inputSource, dictationResult);
         }
 
         /// <summary>
@@ -237,12 +238,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             // If Timeout occurs, the user has been silent for too long.
             if (cause == DictationCompletionCause.TimeoutExceeded)
             {
-                Microphone.End(DeviceName);
+                Microphone.End(deviceName);
 
                 dictationResult = "Dictation has timed out. Please try again.";
             }
 
-            InputSystem.RaiseDictationComplete(InputSource, dictationResult, dictationAudioClip);
+            InputSystem.RaiseDictationComplete(inputSource, dictationResult, dictationAudioClip);
             textSoFar = null;
             dictationResult = string.Empty;
         }
@@ -256,14 +257,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         {
             dictationResult = $"{error}\nHRESULT: {hresult}";
 
-            InputSystem.RaiseDictationError(InputSource, dictationResult);
+            InputSystem.RaiseDictationError(inputSource, dictationResult);
             textSoFar = null;
             dictationResult = string.Empty;
         }
 
-        #endregion Dictation Recognizer Callbacks
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-        #endregion UWP and Windows Standalone Implementations
-
     }
 }
