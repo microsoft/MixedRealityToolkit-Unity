@@ -4,7 +4,7 @@
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 {
     /// <summary>
-    /// Indicates how selectable classes should be collated in drop-down menu.
+    /// Indicates the confidence level of a recognized event.
     /// </summary>
     public enum RecognitionConfidenceLevel
     {
