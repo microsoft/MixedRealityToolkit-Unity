@@ -46,6 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         /// <summary>
         /// The handler reference for this solver that's attached to this <see cref="GameObject"/>
         /// </summary>
+        [SerializeField]
+        [HideInInspector]
         protected SolverHandler SolverHandler;
 
         /// <summary>
@@ -133,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         #region MonoBehaviour Implementation
 
-        private void OnValidate()
+        protected virtual void OnValidate()
         {
             if (SolverHandler == null)
             {

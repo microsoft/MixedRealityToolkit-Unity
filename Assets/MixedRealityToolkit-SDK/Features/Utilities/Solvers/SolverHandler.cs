@@ -73,7 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             set { transformTarget = value; }
         }
 
-
         [SerializeField]
         [Tooltip("Whether or not this SolverHandler calls SolverUpdate() every frame. Only one SolverHandler should manage SolverUpdate(). This setting does not affect whether the Target Transform of this SolverHandler gets updated or not.")]
         private bool updateSolvers = true;
@@ -120,17 +119,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         #region MonoBehaviour Implementation
 
-        private void OnValidate()
-        {
-            solvers.Clear();
-            solvers.AddRange(GetComponents<Solver>());
-        }
-
         private void Awake()
         {
             GoalScale = Vector3.one;
             AltScale = new Vector3Smoothed(Vector3.one, 0.1f);
             DeltaTime = 0.0f;
+
+            solvers.AddRange(GetComponents<Solver>());
 
             // TransformTarget overrides TrackedObjectToReference
             if (!TransformTarget)

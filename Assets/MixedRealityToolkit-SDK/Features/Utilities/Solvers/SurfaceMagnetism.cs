@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using UnityEngine;
 
@@ -159,11 +158,32 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         /// </summary>
         private float ScaleOverride => useLinkedAltScaleOverride ? SolverHandler.AltScale.Current.magnitude : volumeCastSizeOverride;
 
-        private void OnValidate()
+        protected override void OnValidate()
         {
+            base.OnValidate();
+
             if (raycastMode == RaycastModeType.Box)
             {
-                boxCollider = gameObject.EnsureComponent<BoxCollider>();
+                boxCollider = gameObject.GetComponent<BoxCollider>();
+
+                if (boxCollider == null)
+                {
+                    Debug.LogError($"Box raycast mode requires a BoxCollider, but none was found on {name}! Please add one.");
+                }
+            }
+        }
+
+        private void Start()
+        {
+            if (raycastMode == RaycastModeType.Box && boxCollider == null)
+            {
+                boxCollider = gameObject.GetComponent<BoxCollider>();
+
+                if (boxCollider == null)
+                {
+                    Debug.LogError($"Box raycast mode requires a BoxCollider, but none was found on {name}! Defaulting to Simple raycast mode.");
+                    raycastMode = RaycastModeType.Simple;
+                }
             }
         }
 

@@ -53,8 +53,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         private SolverHandler secondSolverHandler;
 
-        private void OnValidate()
+        protected override void OnValidate()
         {
+            base.OnValidate();
+
             UpdateSecondSolverHandler();
         }
 
