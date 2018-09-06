@@ -2107,7 +2107,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1537659093898892}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.435753, y: 0.8596, z: -1.1347291}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4719212773538510}
@@ -2352,6 +2352,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2386,6 +2387,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2420,6 +2422,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2454,6 +2457,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2488,6 +2492,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2522,6 +2527,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2556,6 +2562,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2590,6 +2597,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2624,6 +2632,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2658,6 +2667,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2692,6 +2702,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2726,6 +2737,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2760,6 +2772,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2794,6 +2807,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2828,6 +2842,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2862,6 +2877,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2896,6 +2912,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2930,6 +2947,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2964,6 +2982,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -2998,6 +3017,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -3032,6 +3052,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -3066,6 +3087,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -3100,6 +3122,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -3134,6 +3157,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: d7d199e3713db844294fce3e2db4705a, type: 2}
   m_StaticBatchInfo:
@@ -3168,6 +3192,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
   m_StaticBatchInfo:
@@ -3375,12 +3400,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4185695180826104}
+  updateSolvers: 1
 --- !u!114 &114046080384103152
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3392,12 +3417,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4327171221280566}
+  updateSolvers: 1
 --- !u!114 &114064114941653030
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3409,12 +3434,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4140713928120628}
+  updateSolvers: 1
 --- !u!114 &114108703684830358
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3426,25 +3451,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114281982501778886}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114119291258026634
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3456,12 +3479,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4258958419874150}
+  updateSolvers: 1
 --- !u!114 &114132324726589930
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3473,12 +3496,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4898539984711342}
+  updateSolvers: 1
 --- !u!114 &114136454512939010
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3490,25 +3513,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114746239015755110}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114152252500292652
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3520,25 +3541,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114119291258026634}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114201054482223226
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3550,12 +3569,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4111068035723752}
+  updateSolvers: 1
 --- !u!114 &114205176821015716
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3567,25 +3586,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114248129699884224}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114248129699884224
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3597,12 +3614,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4431618215408844}
+  updateSolvers: 1
 --- !u!114 &114277052358527924
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3614,25 +3631,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114628465954635856}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114277565321777378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3644,25 +3659,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114358157115147804}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114281982501778886
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3674,12 +3687,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4498157154113050}
+  updateSolvers: 1
 --- !u!114 &114300180824295488
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3691,12 +3704,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4251603451237924}
+  updateSolvers: 1
 --- !u!114 &114305931542313040
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3708,12 +3721,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4558240402017934}
+  updateSolvers: 1
 --- !u!114 &114332239823627908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3725,25 +3738,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114046080384103152}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114358157115147804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3755,12 +3766,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4916380402450456}
+  updateSolvers: 1
 --- !u!114 &114360504785967414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3772,12 +3783,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 2
   trackedObjectToReference: 2
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 0}
+  updateSolvers: 1
 --- !u!114 &114365353813304710
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3789,25 +3800,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114416462971053782}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114370076487579544
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3819,12 +3828,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4444320502920110}
+  updateSolvers: 1
 --- !u!114 &114388365418611060
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3836,25 +3845,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114769301346886932}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114390035804951434
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3866,25 +3873,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: 0, y: 0, z: 0}
-  GoalRotation: {x: 0, y: 0, z: 0, w: 0}
-  GoalScale: {x: 0, y: 0, z: 0}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 15
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114360504785967414}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114413585074026818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3896,25 +3901,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114692419140163664}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114416443727872154
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3926,25 +3929,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114300180824295488}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114416462971053782
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3956,12 +3957,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4728947691468408}
+  updateSolvers: 1
 --- !u!114 &114453212149398538
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3973,25 +3974,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114743017698380238}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114460081049169556
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4003,25 +4002,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114370076487579544}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114475831971905602
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4033,25 +4030,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114016962962148144}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114492834070681342
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4063,25 +4058,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114604330468239596}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114528452368200674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4093,25 +4086,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114201054482223226}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114535203513868254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4123,25 +4114,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114305931542313040}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114577296065692308
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4153,25 +4142,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114132324726589930}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114604330468239596
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4183,12 +4170,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4342435378354722}
+  updateSolvers: 1
 --- !u!114 &114628465954635856
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4200,12 +4187,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4751210799837254}
+  updateSolvers: 1
 --- !u!114 &114692419140163664
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4217,12 +4204,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4069800357527082}
+  updateSolvers: 1
 --- !u!114 &114704109522201332
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4234,12 +4221,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4353978069942568}
+  updateSolvers: 1
 --- !u!114 &114725866772511870
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4251,25 +4238,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114704109522201332}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114726790890798954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4281,12 +4266,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4433731170516538}
+  updateSolvers: 1
 --- !u!114 &114743017698380238
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4298,12 +4283,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4864709762178270}
+  updateSolvers: 1
 --- !u!114 &114746239015755110
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4315,12 +4300,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 2
   trackedObjectToReference: 2
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4578417716933416}
+  updateSolvers: 1
 --- !u!114 &114762079056890250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4332,12 +4317,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4681176189152816}
+  updateSolvers: 1
 --- !u!114 &114769301346886932
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4349,12 +4334,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4838369436807876}
+  updateSolvers: 1
 --- !u!114 &114784443225875358
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4366,25 +4351,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114762079056890250}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114802977075492880
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4396,25 +4379,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114831910598433390}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114831910598433390
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4426,12 +4407,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4147729547069426}
+  updateSolvers: 1
 --- !u!114 &114892725816305384
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4443,25 +4424,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114999463940681146}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114919855469449968
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4473,25 +4452,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114064114941653030}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114936381653534936
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4503,25 +4480,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateLinkedTransform: 0
-  MoveLerpTime: 0.01
-  RotateLerpTime: 0.01
-  ScaleLerpTime: 0
-  MaintainScale: 1
-  GoalPosition: {x: -0.23076731, y: 1.5623932, z: -0.12509447}
-  GoalRotation: {x: 0.58770555, y: -0.06718384, z: 0.049061842, w: 0.8047866}
-  GoalScale: {x: 1, y: 1, z: 1}
-  Smoothing: 1
-  Lifetime: 0
-  ReferenceDirection: 1
-  MinDistance: 0.1
-  MaxDistance: 0.1
-  MinViewDegrees: 0
-  MaxViewDegrees: 30
-  AspectV: 1
-  IgnoreAngleClamp: 0
-  IgnoreDistanceClamp: 0
-  OrientToRefDir: 0
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 114726790890798954}
+  referenceDirection: 1
+  minDistance: 1
+  maxDistance: 2
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  orientToReferenceDirection: 0
 --- !u!114 &114999463940681146
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4533,12 +4508,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: 6
   handedness: 1
   trackedObjectToReference: 1
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   transformTarget: {fileID: 4283467299023566}
+  updateSolvers: 1
 --- !u!136 &136018744819662638
 CapsuleCollider:
   m_ObjectHideFlags: 1

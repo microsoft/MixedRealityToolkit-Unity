@@ -176,6 +176,7 @@ MonoBehaviour:
   maintainScale: 1
   smoothing: 1
   lifetime: 0
+  SolverHandler: {fileID: 114911825043747796}
   referenceDirection: 1
   minDistance: 1
   maxDistance: 2

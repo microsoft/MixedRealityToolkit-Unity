@@ -120,6 +120,7 @@ MonoBehaviour:
   maintainScale: 1
   smoothing: 1
   lifetime: 0
+  SolverHandler: {fileID: 114709813557731528}
   partwayOffset: 0.5
   trackedObjectForSecondTransform: 1
   secondTransformOverride: {fileID: 0}

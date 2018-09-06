@@ -120,6 +120,7 @@ MonoBehaviour:
   maintainScale: 1
   smoothing: 1
   lifetime: 0
+  SolverHandler: {fileID: 114229151188300204}
   referenceDirection: 1
   minDistance: 1
   maxDistance: 2

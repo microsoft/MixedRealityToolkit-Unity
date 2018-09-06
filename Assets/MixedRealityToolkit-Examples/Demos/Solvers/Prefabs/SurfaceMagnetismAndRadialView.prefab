@@ -104,6 +104,7 @@ MonoBehaviour:
   maintainScale: 1
   smoothing: 1
   lifetime: 0
+  SolverHandler: {fileID: 114855406103909200}
   referenceDirection: 1
   minDistance: 1
   maxDistance: 2
@@ -131,6 +132,7 @@ MonoBehaviour:
   maintainScale: 1
   smoothing: 1
   lifetime: 0
+  SolverHandler: {fileID: 114855406103909200}
   magneticSurfaces:
   - serializedVersion: 2
     m_Bits: 4294967291
