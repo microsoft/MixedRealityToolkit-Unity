@@ -27,10 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty inputActionsProfile;
         private SerializedProperty pointerProfile;
         private SerializedProperty enableSpeechCommands;
-        private SerializedProperty speechSystemType;
         private SerializedProperty speechCommandsProfile;
         private SerializedProperty enableDictation;
-        private SerializedProperty dictationSystemType;
         private SerializedProperty enableTouchScreenInput;
         private SerializedProperty touchScreenInputProfile;
         private SerializedProperty enableControllerMapping;
@@ -96,10 +94,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
             enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
-            speechSystemType = serializedObject.FindProperty("speechSystemType");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
             enableDictation = serializedObject.FindProperty("enableDictation");
-            dictationSystemType = serializedObject.FindProperty("dictationSystemType");
             enableTouchScreenInput = serializedObject.FindProperty("enableTouchScreenInput");
             touchScreenInputProfile = serializedObject.FindProperty("touchScreenInputProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
@@ -187,11 +183,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 RenderProfile(pointerProfile);
 
                 EditorGUILayout.PropertyField(enableSpeechCommands);
-                EditorGUILayout.PropertyField(speechSystemType);
                 RenderProfile(speechCommandsProfile);
 
                 EditorGUILayout.PropertyField(enableDictation);
-                EditorGUILayout.PropertyField(dictationSystemType);
 
                 EditorGUILayout.PropertyField(enableTouchScreenInput);
 
