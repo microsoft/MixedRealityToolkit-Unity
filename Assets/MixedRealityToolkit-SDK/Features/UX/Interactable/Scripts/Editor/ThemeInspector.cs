@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 namespace HoloToolkit.Unity
 {
+#if UNITY_EDITOR
     [CustomEditor(typeof(Theme))]
     public class ThemeInspector : InspectorBase
     {
@@ -1364,4 +1365,5 @@ namespace HoloToolkit.Unity
             return false;
         }
     }
+#endif
 }

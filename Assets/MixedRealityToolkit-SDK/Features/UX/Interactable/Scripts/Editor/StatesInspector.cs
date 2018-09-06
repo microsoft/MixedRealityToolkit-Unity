@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+#if UNITY_EDITOR
     [CustomEditor(typeof(States))]
     public class StatesInspector : InspectorBase
     {
@@ -120,4 +121,5 @@ namespace HoloToolkit.Unity
             return Enum.GetNames(typeof(InteractableStates.InteractableStateEnum));
         }
     }
+#endif
 }

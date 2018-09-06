@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace HoloToolkit.Unity
 {
+#if UNITY_EDITOR
     public abstract class InspectorBase : Editor
     {
         public struct ListSettings
@@ -344,4 +345,5 @@ namespace HoloToolkit.Unity
             return list.ToArray();
         }
     }
+#endif
 }

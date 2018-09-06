@@ -12,6 +12,7 @@ using UnityEngine.UI;
 
 namespace HoloToolkit.Unity
 {
+#if UNITY_EDITOR
     [CustomEditor(typeof(Interactable))]
     public class InteractableInspector : InspectorBase
     {
@@ -1740,6 +1741,6 @@ namespace HoloToolkit.Unity
         }
 
 
-
     }
+#endif
 }
