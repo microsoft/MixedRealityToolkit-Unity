@@ -124,15 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 
         public override string ToString()
         {
-            if (Type.FullName != null)
-            {
-                if (Type != null)
-                {
-                    return Type.FullName;
-                }
-            }
-
-            return "(None)";
+            return Type?.FullName ?? "(None)";
         }
     }
 }

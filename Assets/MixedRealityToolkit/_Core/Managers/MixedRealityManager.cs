@@ -193,23 +193,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 AddManager(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
             }
 
-            #region ActiveSDK Discovery
-
-            // TODO Microsoft.MixedReality.Toolkit - Active SDK Discovery
-
-            #endregion ActiveSDK Discovery
-
-            #endregion Managers Registration
-
-            #region SDK Initialization
-
+            if (ActiveProfile.RegisteredComponentsProfile != null)
+            {
+                for (int i = 0; i < ActiveProfile.RegisteredComponentsProfile.Configurations?.Length; i++)
+                {
+                    var configuration = ActiveProfile.RegisteredComponentsProfile.Configurations[i];
 #if UNITY_EDITOR
-            AddManagersForTheCurrentPlatformEditor();
+                    if ((UnityEditor.EditorUserBuildSettings.activeBuildTarget & configuration.EditorPlatform) != 0)
+                    {
+                        AddManager(typeof(IMixedRealityManager), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityManager);
+                    }
 #else
-            AddManagersForTheCurrentPlatform();
+                    if ((Application.platform & configuration.RuntimePlatform) != 0)
+                    {
+                        AddManager(typeof(IMixedRealityManager), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityManager);
+                    }
 #endif
+                }
+            }
 
-            #endregion SDK Initialization
+            #endregion Manager Registration
 
             #region Managers Initialization
 
@@ -936,62 +939,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         }
 
         #endregion Manager Utilities
-
         #endregion Manager Container Management
-
-        #region Platform Selectors
-
-        private void AddManagersForTheCurrentPlatform()
-        {
-            switch (Application.platform)
-            {
-                case RuntimePlatform.WindowsPlayer:
-                case RuntimePlatform.WindowsEditor:
-                case RuntimePlatform.OSXPlayer:
-                case RuntimePlatform.OSXEditor:
-                    AddManager(typeof(IMixedRealityDeviceManager), new UnityJoystickManager("Unity Joystick Manager", 10));
-                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
-                    break;
-                case RuntimePlatform.IPhonePlayer:
-                    break;
-                case RuntimePlatform.Android:
-                    break;
-                case RuntimePlatform.WebGLPlayer:
-                    break;
-                case RuntimePlatform.WSAPlayerX86:
-                case RuntimePlatform.WSAPlayerX64:
-                case RuntimePlatform.WSAPlayerARM:
-                    AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
-                    break;
-            }
-        }
-
-#if UNITY_EDITOR
-
-        private void AddManagersForTheCurrentPlatformEditor()
-        {
-            switch (UnityEditor.EditorUserBuildSettings.activeBuildTarget)
-            {
-                case UnityEditor.BuildTarget.StandaloneWindows:
-                case UnityEditor.BuildTarget.StandaloneWindows64:
-                case UnityEditor.BuildTarget.StandaloneOSX:
-                    AddManager(typeof(IMixedRealityDeviceManager), new UnityJoystickManager("Unity Joystick Manager", 10));
-                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
-                    break;
-                case UnityEditor.BuildTarget.iOS:
-                    break;
-                case UnityEditor.BuildTarget.Android:
-                    break;
-                case UnityEditor.BuildTarget.WebGL:
-                    break;
-                case UnityEditor.BuildTarget.WSAPlayer:
-                    AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
-                    break;
-            }
-        }
-
-#endif
-
-        #endregion Platform Selectors
     }
 }
