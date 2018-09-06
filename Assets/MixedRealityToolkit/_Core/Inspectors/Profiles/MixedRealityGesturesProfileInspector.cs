@@ -26,7 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
         private void OnEnable()
         {
-            CheckMixedRealityManager(false);
+            if (!CheckMixedRealityManager(false)) { return; }
+
             gestures = serializedObject.FindProperty("gestures");
             actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
             actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
@@ -36,10 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         {
             RenderMixedRealityToolkitLogo();
 
-            if (!CheckMixedRealityManager())
-            {
-                return;
-            }
+            if (!CheckMixedRealityManager()) { return; }
 
             if (GUILayout.Button("Back to Configuration Profile"))
             {
