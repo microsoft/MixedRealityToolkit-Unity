@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
 using UnityEngine;
 
@@ -32,16 +33,22 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-
-            EditorGUILayout.LabelField("Input Actions", EditorStyles.boldLabel);
-
             if (!CheckMixedRealityManager())
             {
                 return;
             }
 
+            if (GUILayout.Button("Back to Configuration Profile"))
+            {
+                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+            }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Input Actions", EditorStyles.boldLabel);
+
             EditorGUILayout.HelpBox("Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +
                                     "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.", MessageType.Info);
+
 
             serializedObject.Update();
             RenderList(inputActionList);

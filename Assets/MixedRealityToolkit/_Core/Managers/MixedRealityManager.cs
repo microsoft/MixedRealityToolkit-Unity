@@ -954,7 +954,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 case RuntimePlatform.WindowsEditor:
                 case RuntimePlatform.OSXPlayer:
                 case RuntimePlatform.OSXEditor:
-                    AddManager(typeof(IMixedRealityDeviceManager), new UnityDeviceManager("Unity Device Manager", 10));
+                    AddManager(typeof(IMixedRealityDeviceManager), new UnityJoystickManager("Unity Joystick Manager", 10));
                     AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
                     break;
                 case RuntimePlatform.IPhonePlayer:
@@ -980,7 +980,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 case UnityEditor.BuildTarget.StandaloneWindows:
                 case UnityEditor.BuildTarget.StandaloneWindows64:
                 case UnityEditor.BuildTarget.StandaloneOSX:
-                    AddManager(typeof(IMixedRealityDeviceManager), new UnityDeviceManager("Unity Device Manager", 10));
+                    AddManager(typeof(IMixedRealityDeviceManager), new UnityJoystickManager("Unity Joystick Manager", 10));
                     AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
                     break;
                 case UnityEditor.BuildTarget.iOS:
