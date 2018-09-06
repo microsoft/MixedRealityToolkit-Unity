@@ -81,6 +81,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <inheritdoc />
         public MixedRealityInteractionMapping[] Interactions { get; private set; } = null;
 
+        /// <inheritdoc />
+        public Transform Transform { get; protected set; }
+
         #endregion IMixedRealityController Implementation
 
         /// <summary>
@@ -201,6 +204,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
                 {
                     Debug.LogError($"{controllerObject.name} is missing a IMixedRealityControllerVisualizer component!");
                 }
+
+                Transform = controllerObject.transform;
             }
         }
     }

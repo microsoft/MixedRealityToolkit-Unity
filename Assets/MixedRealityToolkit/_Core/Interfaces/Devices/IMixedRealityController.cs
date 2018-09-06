@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
 {
@@ -64,5 +65,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
         /// Mapping definition for this controller, linking the Physical inputs to logical Input System Actions
         /// </summary>
         MixedRealityInteractionMapping[] Interactions { get; }
+
+        /// <summary>
+        /// The transform of this controller, used for tracking and observing the controller if it's tracked.
+        /// </summary>
+        Transform Transform { get; }
     }
 }
