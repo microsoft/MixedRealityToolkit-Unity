@@ -198,14 +198,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                     if ((UnityEditor.EditorUserBuildSettings.activeBuildTarget & configuration.EditorPlatform) != 0 &&
                         configuration.ComponentType.Type != null)
                     {
-                        AddManager(typeof(IMixedRealityManager), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityManager);
+                        AddManager(typeof(IMixedRealityComponent), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityComponent);
                     }
 #else
                     if ((Application.platform & configuration.RuntimePlatform) != 0)
                     {
                         if (configuration.ComponentType.Type != null)
                         {
-                            AddManager(typeof(IMixedRealityManager), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityManager);
+                            AddManager(typeof(IMixedRealityComponent), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityComponent);
                         }
                     }
 #endif
