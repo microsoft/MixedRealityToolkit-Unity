@@ -14,7 +14,7 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Build
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 {
     public class UwpAppxBuildTools
     {

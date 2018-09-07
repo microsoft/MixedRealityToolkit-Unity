@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Build
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 {
     /// <summary>
     /// This class is designed to post process the UWP Assembly-CSharp projects to ensure that the defaults and defines are set correctly.
