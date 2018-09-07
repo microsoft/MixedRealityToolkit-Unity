@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 {
@@ -46,13 +47,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            EditorGUILayout.LabelField("Input System Profile", EditorStyles.boldLabel);
-
             if (!CheckMixedRealityManager())
             {
                 return;
             }
 
+            if (GUILayout.Button("Back to Configuration Profile"))
+            {
+                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+            }
+
+            EditorGUILayout.LabelField("Input System Profile", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("The Input System Profile helps developers configure input no matter what platform you're building for.", MessageType.Info);
 
             var previousLabelWidth = EditorGUIUtility.labelWidth;
