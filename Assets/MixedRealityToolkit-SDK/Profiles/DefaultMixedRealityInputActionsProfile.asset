@@ -33,3 +33,6 @@ MonoBehaviour:
   - id: 7
     description: Grip Press
     axisConstraint: 3
+  - id: 8
+    description: Scroll
+    axisConstraint: 4
