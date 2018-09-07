@@ -28,8 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         private RecognitionConfidenceLevel recognitionConfidenceLevel = RecognitionConfidenceLevel.Medium;
 
         /// <summary>
-        /// The speech recognizer's minimum confidence level setting that will raise the action.<para/>
-        /// 0 == High, 1 == Medium, 2 == Low, 3 == Unknown
+        /// The speech recognizer's minimum confidence level setting that will raise the action.
         /// </summary>
         public RecognitionConfidenceLevel SpeechRecognitionConfidenceLevel => recognitionConfidenceLevel;
 
