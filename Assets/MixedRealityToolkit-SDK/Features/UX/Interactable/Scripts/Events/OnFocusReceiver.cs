@@ -1,0 +1,43 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
+{
+    public class OnFocusReceiver : ReceiverBase
+    {
+        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Focus Off", Tooltip = "Focus has left the object")]
+        public UnityEvent OnFocusOff = new UnityEvent();
+
+        private bool hadFocus;
+        private State lastState;
+
+        public OnFocusReceiver(UnityEvent ev) : base(ev)
+        {
+            Name = "OnFocus";
+        }
+
+        public override void OnUpdate(InteractableStates state, Interactable source)
+        {
+            bool changed = state.CurrentState() != lastState;
+
+            bool hasFocus = state.GetState(InteractableStates.InteractableStateEnum.Focus).Value > 0;
+
+            if (hadFocus != hasFocus && changed)
+            {
+                if (hasFocus)
+                {
+                    uEvent.Invoke();
+                }
+                else
+                {
+                    OnFocusOff.Invoke();
+                }
+            }
+
+            hadFocus = hasFocus;
+            lastState = state.CurrentState();
+        }
+    }
+}

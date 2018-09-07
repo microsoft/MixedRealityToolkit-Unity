@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 
 
-namespace HoloToolkit.Unity
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
 #if UNITY_EDITOR
     [CustomEditor(typeof(States))]
@@ -31,20 +31,15 @@ namespace HoloToolkit.Unity
             //base.OnInspectorGUI();
             serializedObject.Update();
             
-            GUIStyle smallButton = new GUIStyle(EditorStyles.miniButton);
-            float minusButtonWidth = GUI.skin.button.CalcSize(new GUIContent(minus)).x;
-            
             DrawTitle("States");
             DrawNotice("Manage state configurations to drive Interactables or Tansitions");
 
             // get the list of options
-            SerializedProperty options = serializedObject.FindProperty("StateOptions");
             stateOptions = instance.StateOptions;// SerializedPropertyToOptions(options);
 
             stateTypes = instance.StateTypes;// serializedObject.FindProperty("StateTypes");
             
             SerializedProperty stateLogicName = serializedObject.FindProperty("StateLogicName");
-            SerializedProperty stateType = serializedObject.FindProperty("StateType");
 
             int option = States.ReverseLookup(stateLogicName.stringValue, stateOptions);
 
@@ -72,7 +67,6 @@ namespace HoloToolkit.Unity
                 SerializedProperty name = stateItem.FindPropertyRelative("Name");
                 SerializedProperty index = stateItem.FindPropertyRelative("ActiveIndex");
                 SerializedProperty bit = stateItem.FindPropertyRelative("Bit");
-                SerializedProperty value = stateItem.FindPropertyRelative("Value");
 
                 index.intValue = i;
 

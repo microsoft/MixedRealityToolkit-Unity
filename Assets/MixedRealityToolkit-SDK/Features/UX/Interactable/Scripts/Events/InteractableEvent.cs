@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace HoloToolkit.Unity
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     [System.Serializable]
     public class InteractableEvent
@@ -28,6 +28,7 @@ namespace HoloToolkit.Unity
         {
             public InspectorField.FieldTypes Type;
             public string Label;
+            public string Name;
             public string Tooltip;
             public int IntValue;
             public string StringValue;
@@ -45,6 +46,7 @@ namespace HoloToolkit.Unity
             public AnimationCurve CurveValue;
             public AudioClip AudioClipValue;
             public Quaternion QuaternionValue;
+            public UnityEvent EventValue;
             public string[] Options;
         }
 
@@ -143,6 +145,7 @@ namespace HoloToolkit.Unity
             setting.Tooltip = attributes.Tooltip;
             setting.Label = attributes.Label;
             setting.Options = attributes.Options;
+            setting.Name = fieldName;
 
             UpdatePropertySetting(setting, fieldValue);
 
@@ -207,6 +210,9 @@ namespace HoloToolkit.Unity
                 case InspectorField.FieldTypes.AudioClip:
                     setting.AudioClipValue = (AudioClip)update;
                     break;
+                case InspectorField.FieldTypes.Event:
+                    setting.EventValue = (UnityEvent)update;
+                    break;
                 default:
                     break;
             }
@@ -219,7 +225,141 @@ namespace HoloToolkit.Unity
             int index = ReverseLookup(iEvent.ClassName, lists.EventNames.ToArray());
             Type eventType = lists.EventTypes[index];
             // apply the settings?
-            return (ReceiverBase)Activator.CreateInstance(eventType, iEvent.Event);
+            ReceiverBase newEvent = (ReceiverBase)Activator.CreateInstance(eventType, iEvent.Event);
+            LoadSettings(newEvent, iEvent.Settings);
+
+            return newEvent;
+        }
+
+        public static void LoadSettings(ReceiverBase receiver, List<PropertySetting> settings)
+        {
+            Type myType = receiver.GetType();
+
+            foreach (PropertyInfo prop in myType.GetProperties())
+            {
+                var attrs = (InspectorField[])prop.GetCustomAttributes(typeof(InspectorField), false);
+                foreach (var attr in attrs)
+                {
+                    object value = GetSettingValue(settings, prop.Name);
+                    prop.SetValue(receiver, value);
+                }
+            }
+
+            foreach (FieldInfo field in myType.GetFields())
+            {
+                var attrs = (InspectorField[])field.GetCustomAttributes(typeof(InspectorField), false);
+                foreach (var attr in attrs)
+                {
+                    object value = GetSettingValue(settings, field.Name);
+                    field.SetValue(receiver, value);
+                }
+            }
+        }
+
+        protected static object GetSettingValue(List<PropertySetting> settings, string name)
+        {
+            PropertySetting setting = new PropertySetting();
+            for (int i = 0; i < settings.Count; i++)
+            {
+                if(settings[i].Name == name)
+                {
+                    setting = settings[i];
+                    break;
+                }
+            }
+
+            object value = null;
+
+            switch (setting.Type)
+            {
+                case InspectorField.FieldTypes.Float:
+                    value = setting.FloatValue;
+                    break;
+                case InspectorField.FieldTypes.Int:
+                    value = setting.IntValue;
+                    break;
+                case InspectorField.FieldTypes.String:
+                    value = setting.StringValue;
+                    break;
+                case InspectorField.FieldTypes.Bool:
+                    value = setting.BoolValue;
+                    break;
+                case InspectorField.FieldTypes.Color:
+                    value = setting.ColorValue;
+                    break;
+                case InspectorField.FieldTypes.DropdownInt:
+                    value = setting.IntValue;
+                    break;
+                case InspectorField.FieldTypes.DropdownString:
+                    value = setting.StringValue;
+                    break;
+                case InspectorField.FieldTypes.GameObject:
+                    value = setting.GameObjectValue;
+                    break;
+                case InspectorField.FieldTypes.ScriptableObject:
+                    value = setting.ScriptableObjectValue;
+                    break;
+                case InspectorField.FieldTypes.Object:
+                    value = setting.ObjectValue;
+                    break;
+                case InspectorField.FieldTypes.Material:
+                    value = setting.MaterialValue;
+                    break;
+                case InspectorField.FieldTypes.Texture:
+                    value = setting.TextureValue;
+                    break;
+                case InspectorField.FieldTypes.Vector2:
+                    value = setting.Vector2Value;
+                    break;
+                case InspectorField.FieldTypes.Vector3:
+                    value = setting.Vector3Value;
+                    break;
+                case InspectorField.FieldTypes.Vector4:
+                    value = setting.Vector4Value;
+                    break;
+                case InspectorField.FieldTypes.Curve:
+                    value = setting.CurveValue;
+                    break;
+                case InspectorField.FieldTypes.Quaternion:
+                    value = setting.QuaternionValue;
+                    break;
+                case InspectorField.FieldTypes.AudioClip:
+                    value = setting.AudioClipValue;
+                    break;
+                case InspectorField.FieldTypes.Event:
+                    value = setting.EventValue;
+                    break;
+                default:
+                    break;
+            }
+
+            return value;
+        }
+
+        public static List<PropertySetting> GetSettings(ReceiverBase receiver)
+        {
+            Type myType = receiver.GetType();
+            List<PropertySetting> settings = new List<PropertySetting>();
+            
+            foreach (PropertyInfo prop in myType.GetProperties())
+            {
+                var attrs = (InspectorField[])prop.GetCustomAttributes(typeof(InspectorField), false);
+                foreach (var attr in attrs)
+                {
+                    settings.Add(FieldToProperty(attr, prop.GetValue(receiver, null), prop.Name));
+                }
+            }
+
+            foreach (FieldInfo field in myType.GetFields())
+            {
+                var attrs = (InspectorField[])field.GetCustomAttributes(typeof(InspectorField), false);
+                foreach (var attr in attrs)
+                {
+                    settings.Add(FieldToProperty(attr, field.GetValue(receiver), field.Name));
+                }
+            }
+
+            return settings;
         }
 
         // put somewhere it makes sense!!!!

@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
 #if UNITY_EDITOR
     public abstract class InspectorBase : Editor

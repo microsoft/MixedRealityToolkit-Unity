@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace HoloToolkit.Unity
+
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     [System.Serializable]
     public class ProfileItem

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     public class InteractableStates : StateModel
     {

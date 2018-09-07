@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     [ExecuteInEditMode]
     public class ButtonSize : MonoBehaviour

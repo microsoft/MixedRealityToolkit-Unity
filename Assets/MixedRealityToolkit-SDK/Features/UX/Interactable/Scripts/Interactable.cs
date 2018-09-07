@@ -11,7 +11,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace HoloToolkit.Unity
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     [System.Serializable]
 
@@ -55,7 +55,7 @@ namespace HoloToolkit.Unity
         public bool HasFocus { get; private set; }
         public bool HasPress { get; private set; }
         public bool IsDisabled { get; private set; }
-
+        
         public bool FocusEnabled
         {
             get
@@ -77,9 +77,12 @@ namespace HoloToolkit.Unity
 
         protected int dimensionIndex;
 
+        protected float rollOffTime = 0.25f;
+        protected float rollOffTimer = 0.25f;
+
         // these should get simplified and moved
         // create a ScriptableObject for managing states!!!!
-        
+
         public State[] GetStates()
         {
             if (States != null)
@@ -91,6 +94,11 @@ namespace HoloToolkit.Unity
             //return states.GetStates();
             
             return new State[0];
+        }
+
+        public int GetDimensionIndex()
+        {
+            return dimensionIndex;
         }
 
         protected virtual void Awake()
@@ -123,6 +131,7 @@ namespace HoloToolkit.Unity
             for (int i = 0; i < Events.Count; i++)
             {
                 Events[i].Receiver = InteractableEvent.GetReceiver(Events[i], lists);
+                //Events[i].Settings = InteractableEvent.GetSettings(Events[i].Receiver);
                 // apply settings
             }
         }
@@ -198,6 +207,15 @@ namespace HoloToolkit.Unity
         {
 
             HasFocus = focus;
+            if(!focus && HasPress)
+            {
+                rollOffTimer = 0;
+            }
+            else
+            {
+                rollOffTimer = rollOffTime;
+            }
+
             StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Focus, focus ? 1 : 0);
             UpdateState();
         }
@@ -280,7 +298,7 @@ namespace HoloToolkit.Unity
 
         public void OnInputDown(InputEventData eventData)
         {
-            if (!CanInteract())
+            if (!CanInteract() || !HasFocus)
             {
                 return;
             }
@@ -301,7 +319,6 @@ namespace HoloToolkit.Unity
 
             if (StateManager != null)
             {
-                State[] states = StateManager.GetStates();
                 if (ShouldListen(eventData.MixedRealityInputAction))
                 {
                     StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
@@ -383,12 +400,21 @@ namespace HoloToolkit.Unity
 
         protected virtual void Update()
         {
+            if(rollOffTimer < rollOffTime && HasPress)
+            {
+                rollOffTimer += Time.deltaTime;
+
+                if (rollOffTimer >= rollOffTime)
+                {
+                    SetPress(false);
+                }
+            }
+
             for (int i = 0; i < Events.Count; i++)
             {
                 if (Events[i].Receiver != null)
                 {
-                    Events[i].Receiver.OnUpdate(StateManager);
-                    ReceiverBase reciever = Events[i].Receiver;
+                    Events[i].Receiver.OnUpdate(StateManager, this);
                 }
             }
             

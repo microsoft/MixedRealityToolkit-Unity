@@ -5,12 +5,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace HoloToolkit.Unity
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
 #if UNITY_EDITOR
     [CustomEditor(typeof(Interactable))]
@@ -484,9 +485,6 @@ namespace HoloToolkit.Unity
         {
             int profile = arr[0];
             int theme = arr[1];
-            int index = arr[2];
-            
-            SerializedProperty dimensions = serializedObject.FindProperty("Dimensions");
 
             SerializedProperty sItem = profileList.GetArrayElementAtIndex(profile);
             SerializedProperty themes = sItem.FindPropertyRelative("Themes");
@@ -739,7 +737,6 @@ namespace HoloToolkit.Unity
                     SerializedProperty item = oldProperties.GetArrayElementAtIndex(i);
                     SerializedProperty name = item.FindPropertyRelative("Name");
                     SerializedProperty type = item.FindPropertyRelative("Type");
-                    SerializedProperty values = item.FindPropertyRelative("Values");
 
                     bool hasProperty = false;
                     for (int j = 0; j < history.arraySize; j++)
@@ -1074,8 +1071,7 @@ namespace HoloToolkit.Unity
                     SerializedProperty item = sProps.GetArrayElementAtIndex(p);
                     SerializedProperty propId = item.FindPropertyRelative("PropId");
                     SerializedProperty name = item.FindPropertyRelative("Name");
-
-                    SerializedProperty shaderList = item.FindPropertyRelative("ShaderOptions");
+                    
                     SerializedProperty shaderNames = item.FindPropertyRelative("ShaderOptionNames");
                     SerializedProperty shaderName = item.FindPropertyRelative("ShaderName");
                     SerializedProperty propType = item.FindPropertyRelative("Type");
@@ -1216,7 +1212,6 @@ namespace HoloToolkit.Unity
                 for (int j = 0; j < settings.arraySize; j++)
                 {
                     SerializedProperty settingsItem = settings.GetArrayElementAtIndex(j);
-                    SerializedProperty className = settingsItem.FindPropertyRelative("Name");
                     
                     SerializedProperty properties = settingsItem.FindPropertyRelative("Properties");
 
@@ -1226,10 +1221,6 @@ namespace HoloToolkit.Unity
                         SerializedProperty name = propertyItem.FindPropertyRelative("Name");
                         SerializedProperty type = propertyItem.FindPropertyRelative("Type");
                         SerializedProperty values = propertyItem.FindPropertyRelative("Values");
-                        SerializedProperty propId = propertyItem.FindPropertyRelative("PropId");
-                        SerializedProperty options = propertyItem.FindPropertyRelative("ShaderOptions");
-                        SerializedProperty names = propertyItem.FindPropertyRelative("ShaderOptionNames");
-                        SerializedProperty shaderName = propertyItem.FindPropertyRelative("ShaderName");
 
                         if (n >= values.arraySize)
                         {
@@ -1333,10 +1324,13 @@ namespace HoloToolkit.Unity
                 SerializedProperty tooltip = settingItem.FindPropertyRelative("Tooltip");
                 SerializedProperty label = settingItem.FindPropertyRelative("Label");
                 SerializedProperty options = settingItem.FindPropertyRelative("Options");
+                SerializedProperty name = settingItem.FindPropertyRelative("Name");
 
                 type.enumValueIndex = (int)data[i].Attributes.Type;
                 tooltip.stringValue = data[i].Attributes.Tooltip;
                 label.stringValue = data[i].Attributes.Label;
+                name.stringValue = data[i].Name;
+
                 options.ClearArray();
 
                 if (data[i].Attributes.Options != null)
@@ -1346,6 +1340,7 @@ namespace HoloToolkit.Unity
                         options.InsertArrayElementAtIndex(j);
                         SerializedProperty item = options.GetArrayElementAtIndex(j);
                         item.stringValue = data[i].Attributes.Options[j];
+
                     }
                 }
             }
@@ -1427,6 +1422,10 @@ namespace HoloToolkit.Unity
                     SerializedProperty audioClip = prop.FindPropertyRelative("AudioClipValue");
                     audioClip.objectReferenceValue = (AudioClip)update;
                     break;
+                case InspectorField.FieldTypes.Event:
+                    //SerializedProperty uEvent = prop.FindPropertyRelative("EventValue");
+                    //uEvent.objectReferenceValue = update as UnityEngine.Object;
+                    break;
                 default:
                     break;
             }
@@ -1441,19 +1440,6 @@ namespace HoloToolkit.Unity
             }
 
             return list.ToArray();
-        }
-
-        protected static int GetOptionsIndex(SerializedProperty options, string selection)
-        {
-            for (int i = 0; i < options.arraySize; i++)
-            {
-                if (options.GetArrayElementAtIndex(i).stringValue == selection)
-                {
-                    return i;
-                }
-            }
-
-            return 0;
         }
 
         public static void DisplayPropertyField(SerializedProperty prop)
@@ -1544,6 +1530,14 @@ namespace HoloToolkit.Unity
                     SerializedProperty audioClip = prop.FindPropertyRelative("AudioClipValue");
                     EditorGUILayout.PropertyField(audioClip, new GUIContent(label.stringValue, tooltip.stringValue), false);
                     break;
+                case InspectorField.FieldTypes.Event:
+                    SerializedProperty uEvent = prop.FindPropertyRelative("EventValue");
+                    if (uEvent != null)
+                    {
+                        //Debug.Log("update? " + uEvent);
+                    }
+                    EditorGUILayout.PropertyField(uEvent, new GUIContent(label.stringValue, tooltip.stringValue));
+                    break;
                 default:
                     break;
             }
@@ -1562,7 +1556,6 @@ namespace HoloToolkit.Unity
         {
             SerializedProperty events = serializedObject.FindProperty("Events");
             events.InsertArrayElementAtIndex(events.arraySize);
-            SerializedProperty eventItem = events.GetArrayElementAtIndex(events.arraySize - 1);
 
         }
 
@@ -1579,6 +1572,7 @@ namespace HoloToolkit.Unity
                 int receiverIndex = ReverseLookup(className.stringValue, eventOptions);
                 InteractableEvent.ReceiverData data = eventList[index].AddReceiver(eventTypes[receiverIndex]);
                 name.stringValue = data.Name;
+
                 PropertySettingsList(settings, data.Fields);
             }
         }
@@ -1702,16 +1696,6 @@ namespace HoloToolkit.Unity
                     break;
             }
             return shaderType;
-        }
-
-        public static string[] SerializedPropertyToOptions(SerializedProperty arr)
-        {
-            List<string> list = new List<string>();
-            for (int i = 0; i < arr.arraySize; i++)
-            {
-                list.Add(arr.GetArrayElementAtIndex(i).stringValue);
-            }
-            return list.ToArray();
         }
 
         public static bool HasShaderPropertyType(ShaderPropertyType[] filter, ShaderPropertyType type)

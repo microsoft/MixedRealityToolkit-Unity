@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace HoloToolkit.Unity
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     public abstract class ReceiverBase
     {
         public string Name;
-
         protected UnityEvent uEvent;
 
         public ReceiverBase(UnityEvent ev)
@@ -16,6 +15,6 @@ namespace HoloToolkit.Unity
             uEvent = ev;
         }
 
-        public abstract void OnUpdate(InteractableStates state);
+        public abstract void OnUpdate(InteractableStates state, Interactable source);
     }
 }

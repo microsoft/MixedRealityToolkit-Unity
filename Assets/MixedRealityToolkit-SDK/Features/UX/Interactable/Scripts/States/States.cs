@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     [CreateAssetMenu(fileName = "States", menuName = "Interactable/State", order = 1)]
     public class States : ScriptableObject

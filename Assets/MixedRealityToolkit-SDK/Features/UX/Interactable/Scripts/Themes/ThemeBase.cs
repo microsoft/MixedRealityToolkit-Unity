@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.Unity
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     public enum ThemePropertyValueTypes { Float, Int, Color, ShaderFloat, shaderRange, Vector2, Vector3, Vector4, Quaternion, Texture, Material, AudioClip, Animaiton, GameObject, String, Bool }
 

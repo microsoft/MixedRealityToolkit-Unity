@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace HoloToolkit.Unity
+namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     public class OnClickReceiver : ReceiverBase
     {
@@ -20,10 +20,8 @@ namespace HoloToolkit.Unity
             Name = "OnClick";
         }
 
-        public override void OnUpdate(InteractableStates state)
+        public override void OnUpdate(InteractableStates state, Interactable source)
         {
-            bool changed = state.CurrentState() != lastState;
-            
             bool hadDown = hasDown;
             hasDown = state.GetState(InteractableStates.InteractableStateEnum.Pressed).Value > 0;
 

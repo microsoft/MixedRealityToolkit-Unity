@@ -9,29 +9,39 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c33e3b76d6c5c0e48bb3b6ee686c7fd6, type: 3}
-  m_Name: DefaultInteractableStates
+  m_Name: HoloLensInteractableStates
   m_EditorClassIdentifier: 
   StateList:
-  - Name: Default
+  - Name: Interactive
     Index: 0
     Bit: 1
     Value: 0
     ActiveIndex: 0
-  - Name: Focus
+  - Name: Observation
     Index: 1
     Bit: 2
     Value: 0
     ActiveIndex: 1
-  - Name: Pressed
+  - Name: Targeted
     Index: 2
     Bit: 4
     Value: 0
     ActiveIndex: 2
-  - Name: Disabled
+  - Name: ObservationTargeted
     Index: 7
     Bit: 8
     Value: 0
     ActiveIndex: 3
+  - Name: Pressed
+    Index: 7
+    Bit: 16
+    Value: 0
+    ActiveIndex: 4
+  - Name: Disabled
+    Index: 7
+    Bit: 32
+    Value: 0
+    ActiveIndex: 5
   DefaultIndex: 0
   StateOptions:
   - InteractableStates
