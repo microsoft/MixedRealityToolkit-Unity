@@ -107,7 +107,7 @@ Material:
     - _InstancedColor: 0
     - _LightProbeAmount: 1
     - _Metallic: 0
-    - _Mode: 1
+    - _Mode: 5
     - _NearPlaneFade: 0
     - _NormalAlphaAsEmissive: 0
     - _NormalAlphaAsSpecular: 0
@@ -131,7 +131,7 @@ Material:
     - _StencilReference: 0
     - _VertColorScale: 1
     - _ZTEST: 8
-    - _ZTest: 4
+    - _ZTest: 8
     - _ZWRITE: 1
     - _ZWrite: 1
     m_Colors:
