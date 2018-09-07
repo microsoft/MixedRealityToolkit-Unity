@@ -4,29 +4,16 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityInputSystemProfile))]
     public class MixedRealityInputSystemProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private static readonly GUIContent SpeechConfidenceContent = new GUIContent("Recognition Confidence Level", "The speech recognizer's minimum confidence level setting that will raise the action.");
-        private static readonly GUIContent[] SpeechConfidenceOptionContent =
-        {
-            new GUIContent("High"),
-            new GUIContent("Medium"),
-            new GUIContent("Low"),
-            new GUIContent("Unrecognized")
-        };
-
-        private static readonly int[] SpeechConfidenceOptions = { 0, 1, 2, 3 };
-
         private SerializedProperty inputActionsProfile;
         private SerializedProperty pointerProfile;
         private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
-        private SerializedProperty recognitionConfidenceLevel;
         private SerializedProperty enableDictation;
         private SerializedProperty enableTouchScreenInput;
         private SerializedProperty touchScreenInputProfile;
@@ -44,11 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             {
                 return;
             }
+
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
             enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
-            recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
             enableDictation = serializedObject.FindProperty("enableDictation");
             enableTouchScreenInput = serializedObject.FindProperty("enableTouchScreenInput");
             touchScreenInputProfile = serializedObject.FindProperty("touchScreenInputProfile");
@@ -80,7 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             EditorGUILayout.PropertyField(enableSpeechCommands);
             changed |= RenderProfile(speechCommandsProfile);
-            recognitionConfidenceLevel.intValue = EditorGUILayout.IntPopup(SpeechConfidenceContent, recognitionConfidenceLevel.intValue, SpeechConfidenceOptionContent, SpeechConfidenceOptions);
 
             EditorGUILayout.PropertyField(enableDictation);
 

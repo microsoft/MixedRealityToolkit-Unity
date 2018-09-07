@@ -79,15 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         }
 
         [SerializeField]
-        private int recognitionConfidenceLevel = 1;
-
-        /// <summary>
-        /// The speech recognizer's minimum confidence level setting that will raise the action.<para/>
-        /// 0 == High, 1 == Medium, 2 == Low, 3 == Unknown
-        /// </summary>
-        public int SpeechRecognitionConfidenceLevel => recognitionConfidenceLevel;
-
-        [SerializeField]
         [Tooltip("Enable Touch Screen Input for your application.")]
         private bool enableTouchScreenInput = false;
 

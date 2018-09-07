@@ -71,16 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private DictationEventData dictationEventData;
 
         /// <summary>
-        /// Current Speech Input Source.
-        /// </summary>
-        public SpeechInputSource SpeechInputSource { get; private set; }
-
-        /// <summary>
-        /// Current Dictation Input Source.
-        /// </summary>
-        public DictationInputSource DictationInputSource { get; private set; }
-
-        /// <summary>
         /// Current Touch Screen Input Source.
         /// </summary>
         public TouchscreenInputSource TouchscreenInputSource { get; private set; }
@@ -205,21 +195,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
 
-            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsSpeechCommandsEnabled)
-            {
-                SpeechInputSource = new SpeechInputSource(
-                    MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-                    , (UnityEngine.Windows.Speech.ConfidenceLevel)MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechRecognitionConfidenceLevel
-#endif
-                );
-            }
-
-            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsDictationEnabled)
-            {
-                DictationInputSource = new DictationInputSource();
-            }
-
             if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsTouchScreenInputEnabled)
             {
                 TouchscreenInputSource = new TouchscreenInputSource();
@@ -282,8 +257,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 UnityEngine.Object.Destroy(gazeProvider);
             }
 
-            SpeechInputSource?.Dispose();
-            DictationInputSource?.Dispose();
             TouchscreenInputSource?.Dispose();
             base.Destroy();
         }

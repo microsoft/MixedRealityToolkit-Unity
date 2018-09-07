@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
+using Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput;
 using Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
@@ -176,14 +177,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
-                //Enable Input (example initializer)
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
-                //Enable Boundary (example initializer)
                 AddManager(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem);
             }
 
@@ -192,12 +191,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             {
                 AddManager(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
             }
-
-            #region ActiveSDK Discovery
-
-            // TODO Microsoft.MixedReality.Toolkit - Active SDK Discovery
-
-            #endregion ActiveSDK Discovery
 
             #endregion Managers Registration
 
@@ -943,24 +936,40 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
         private void AddManagersForTheCurrentPlatform()
         {
+            AddManager(typeof(IMixedRealityDeviceManager), new UnityJoystickManager("Unity Joystick Manager", 10));
+            AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
+
             switch (Application.platform)
             {
                 case RuntimePlatform.WindowsPlayer:
                 case RuntimePlatform.WindowsEditor:
-                case RuntimePlatform.OSXPlayer:
-                case RuntimePlatform.OSXEditor:
-                    AddManager(typeof(IMixedRealityDeviceManager), new UnityJoystickManager("Unity Joystick Manager", 10));
-                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
-                    break;
-                case RuntimePlatform.IPhonePlayer:
-                    break;
-                case RuntimePlatform.Android:
-                    break;
-                case RuntimePlatform.WebGLPlayer:
+                    // If the Speech system has been selected for initialization in the Active speech profile, enable it in the project
+                    if (ActiveProfile.InputSystemProfile.IsSpeechCommandsEnabled)
+                    {
+                        AddManager(typeof(IMixedRealitySpeechSystem), new WindowsSpeechInputDeviceManager("Windows Speech Manager", 10));
+                    }
+
+                    // If the Dictation system has been selected for initialization in the Active speech profile, enable it in the project
+                    if (ActiveProfile.InputSystemProfile.IsDictationEnabled)
+                    {
+                        AddManager(typeof(IMixedRealityDictationManager), new WindowsDictationInputDeviceManager("Windows Dictation Manager", 10));
+                    }
                     break;
                 case RuntimePlatform.WSAPlayerX86:
                 case RuntimePlatform.WSAPlayerX64:
                 case RuntimePlatform.WSAPlayerARM:
+                    // If the Speech system has been selected for initialization in the Active speech profile, enable it in the project
+                    if (ActiveProfile.InputSystemProfile.IsSpeechCommandsEnabled)
+                    {
+                        AddManager(typeof(IMixedRealitySpeechSystem), new WindowsSpeechInputDeviceManager("Windows Speech Manager", 10));
+                    }
+
+                    // If the Dictation system has been selected for initialization in the Active speech profile, enable it in the project
+                    if (ActiveProfile.InputSystemProfile.IsDictationEnabled)
+                    {
+                        AddManager(typeof(IMixedRealityDictationManager), new WindowsDictationInputDeviceManager("Windows Dictation Manager", 10));
+                    }
+
                     AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
                     break;
             }
@@ -970,27 +979,45 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
         private void AddManagersForTheCurrentPlatformEditor()
         {
+            AddManager(typeof(IMixedRealityDeviceManager), new UnityJoystickManager("Unity Joystick Manager", 10));
+            AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
+
             switch (UnityEditor.EditorUserBuildSettings.activeBuildTarget)
             {
                 case UnityEditor.BuildTarget.StandaloneWindows:
                 case UnityEditor.BuildTarget.StandaloneWindows64:
-                case UnityEditor.BuildTarget.StandaloneOSX:
-                    AddManager(typeof(IMixedRealityDeviceManager), new UnityJoystickManager("Unity Joystick Manager", 10));
-                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("Unity OpenVR Device Manager", 10));
-                    break;
-                case UnityEditor.BuildTarget.iOS:
-                    break;
-                case UnityEditor.BuildTarget.Android:
-                    break;
-                case UnityEditor.BuildTarget.WebGL:
+                    // If the Speech system has been selected for initialization in the Active speech profile, enable it in the project
+                    if (ActiveProfile.InputSystemProfile.IsSpeechCommandsEnabled)
+                    {
+                        AddManager(typeof(IMixedRealitySpeechSystem), new WindowsSpeechInputDeviceManager("Windows Speech Manager", 10));
+                    }
+
+                    // If the Dictation system has been selected for initialization in the Active speech profile, enable it in the project
+                    if (ActiveProfile.InputSystemProfile.IsDictationEnabled)
+                    {
+                        AddManager(typeof(IMixedRealityDictationManager), new WindowsDictationInputDeviceManager("Windows Dictation Manager", 10));
+                    }
+
                     break;
                 case UnityEditor.BuildTarget.WSAPlayer:
+                    // If the Speech system has been selected for initialization in the Active speech profile, enable it in the project
+                    if (ActiveProfile.InputSystemProfile.IsSpeechCommandsEnabled)
+                    {
+                        AddManager(typeof(IMixedRealitySpeechSystem), new WindowsSpeechInputDeviceManager("Windows Speech Manager", 10));
+                    }
+
+                    // If the Dictation system has been selected for initialization in the Active speech profile, enable it in the project
+                    if (ActiveProfile.InputSystemProfile.IsDictationEnabled)
+                    {
+                        AddManager(typeof(IMixedRealityDictationManager), new WindowsDictationInputDeviceManager("Windows Dictation Manager", 10));
+                    }
+
                     AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
                     break;
             }
         }
 
-#endif
+#endif // UNITY_EDITOR
 
         #endregion Platform Selectors
     }
