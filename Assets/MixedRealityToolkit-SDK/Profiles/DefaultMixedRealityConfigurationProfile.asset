@@ -11,11 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7612acbc1a4a4ed0afa5f4ccbe42bee4, type: 3}
   m_Name: DefaultMixedRealityConfigurationProfile
   m_EditorClassIdentifier: 
-  initialManagerTypes:
-  - reference: Microsoft.MixedReality.Toolkit.SDK.Input.MixedRealityInputManager,
-      Microsoft.MixedReality.Toolkit.SDK
-  - reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,
-      Microsoft.MixedReality.Toolkit.SDK
+  initialManagerTypes: []
   targetExperienceScale: 3
   enableCameraProfile: 1
   cameraProfile: {fileID: 11400000, guid: 8089ccfdd4494cd38f676f9fc1f46a04, type: 2}
@@ -53,5 +49,5 @@ MonoBehaviour:
   spatialAwarenessSystemType:
     reference: Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.MixedRealitySpatialAwarenessSystem,
       Microsoft.MixedReality.Toolkit.SDK
-  spatialAwarenessProfile: {fileID: 11400000, guid: fe3d98567cf77744ba16af55bdec08ed,
+  spatialAwarenessProfile: {fileID: 11400000, guid: 2a33d8426496c874ab1550069b7ccef8,
     type: 2}

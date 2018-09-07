@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         private float updateInterval = 3.5f;
 
         /// <summary>
-        /// Rhe frequency, in seconds, at which the spatial observer updates.
+        /// The frequency, in seconds, at which the spatial observer updates.
         /// </summary>
         public float UpdateInterval => updateInterval;
 
@@ -93,13 +93,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         public bool MeshRecalculateNormals => meshRecalculateNormals;
 
         [SerializeField]
-        [Tooltip("Automatically display spatial meshes?")]
-        private bool displayMeshes = false;
+        [Tooltip("How should spatial meshes be displayed?")]
+        private SpatialMeshDisplayOptions meshDisplayOption = SpatialMeshDisplayOptions.None;
 
         /// <summary>
-        /// Indicates if the mesh subsystem is to automatically display surface meshes within the application.
+        /// Indicates how the mesh subsystem is to display surface meshes within the application.
         /// </summary>
-        public bool DisplayMeshes => displayMeshes;
+        public SpatialMeshDisplayOptions MeshDisplayOption => meshDisplayOption;
 
         [SerializeField]
         [Tooltip("Material to use when displaying meshes")]
@@ -110,11 +110,117 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// </summary>
         public Material MeshMaterial => meshMaterial;
 
+        [SerializeField]
+        [Tooltip("Material to use when spatial meshes should occlude other objects")]
+        private Material meshOcclusionMaterial = null;
+
+        /// <summary>
+        /// The material to be used when spatial meshes should occlude other objects.
+        /// </summary>
+        public Material MeshOcclusionMaterial => meshOcclusionMaterial;
+
         #endregion Mesh settings
 
         #region Surface Finding settings
 
-        // todo
+        [SerializeField]
+        [Tooltip("Is the surface finding subsystem in use?")]
+        private bool useSurfaceFindingSystem = true;
+
+        /// <summary>
+        /// Indicates if the surface finding subsystem is in use by the application.
+        /// </summary>
+        public bool UseSurfaceFindingSystem => useSurfaceFindingSystem;
+
+        [SerializeField]
+        [Tooltip("Physics layer on which to set the planar surfaces")]
+        private int surfaceFindingPhysicsLayer = 31;
+
+        /// <summary>
+        /// The desired Unity Physics Layer on which to set the planar surfaces.
+        /// </summary>
+        public int SurfaceFindingPhysicsLayer => surfaceFindingPhysicsLayer;
+
+        [SerializeField]
+        [Tooltip("The minimum area, in square meters, of the planar surfaces")]
+        private float surfaceFindingMinimumArea = 0.025f;
+
+        /// <summary>
+        /// The minimum area, in square meters, of the planar surfaces.
+        /// </summary>
+        public float SurfaceFindingMinimumArea => surfaceFindingMinimumArea;
+
+        [SerializeField]
+        [Tooltip("Automatically display floor surfaces?")]
+        private bool displayFloorSurfaces = false;
+
+        /// <summary>
+        /// Indicates if the surface finding subsystem is to automatically display floor surfaces within the application.
+        /// </summary>
+        public bool DisplayFloorSurfaces => displayFloorSurfaces;
+
+        [SerializeField]
+        [Tooltip("Material to use when displaying floor surfaces")]
+        private Material floorSurfaceMaterial = null;
+
+        /// <summary>
+        /// The material to be used when automatically displaying floor surfaces.
+        /// </summary>
+        public Material FloorSurfaceMaterial => floorSurfaceMaterial;
+
+        [SerializeField]
+        [Tooltip("Automatically display ceiling surfaces?")]
+        private bool displayCeilingSurfaces = false;
+
+        /// <summary>
+        /// Indicates if the surface finding subsystem is to automatically display ceiling surfaces within the application.
+        /// </summary>
+        public bool DisplayCeilingSurface => displayCeilingSurfaces;
+
+        [SerializeField]
+        [Tooltip("Material to use when displaying ceiling surfaces")]
+        private Material ceilingSurfaceMaterial = null;
+
+        /// <summary>
+        /// The material to be used when automatically displaying ceiling surfaces.
+        /// </summary>
+        public Material CeilingSurfaceMaterial => ceilingSurfaceMaterial;
+
+        [SerializeField]
+        [Tooltip("Automatically display wall surfaces?")]
+        private bool displayWallSurfaces = false;
+
+        /// <summary>
+        /// Indicates if the surface finding subsystem is to automatically display wall surfaces within the application.
+        /// </summary>
+        public bool DisplayWallSurface => displayWallSurfaces;
+
+        [SerializeField]
+        [Tooltip("Material to use when displaying wall surfaces")]
+        private Material wallSurfaceMaterial = null;
+
+        /// <summary>
+        /// The material to be used when automatically displaying wall surfaces.
+        /// </summary>
+        public Material WallSurfaceMaterial => wallSurfaceMaterial;
+
+        [SerializeField]
+        [Tooltip("Automatically display platform surfaces?")]
+        private bool displayPlatformSurfaces = false;
+
+        /// <summary>
+        /// Indicates if the surface finding subsystem is to automatically display platform surfaces within the application.
+        /// </summary>
+        public bool DisplayPlatformSurfaces => displayPlatformSurfaces;
+
+        [SerializeField]
+        [Tooltip("Material to use when displaying platform surfaces")]
+        private Material platformSurfaceMaterial = null;
+
+        /// <summary>
+        /// The material to be used when automatically displaying platform surfaces.
+        /// </summary>
+        public Material PlatformSurfaceMaterial => platformSurfaceMaterial;
 
         #endregion Surface Finding settings
     }

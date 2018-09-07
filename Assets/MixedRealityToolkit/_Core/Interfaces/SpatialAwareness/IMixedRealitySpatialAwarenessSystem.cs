@@ -89,18 +89,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         bool MeshRecalculateNormals { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating if the mesh subsystem is to automatically display surface meshes within the application.
-        /// When enabled, the meshes will be added to the scene and rendered using the configured <see cref="MeshMaterial"/>.
+        /// Gets or sets a value indicating how the mesh subsystem is to display surface meshes within the application.
         /// </summary>
         /// <remarks>
-        /// Applications that wish to process the <see cref="Mesh"/>es should set this value to false.
+        /// Applications that wish to process the <see cref="Mesh"/>es should set this value to None.
         /// </remarks>
-        bool DisplayMeshes { get; set; }
+        SpatialMeshDisplayOptions MeshDisplayOption { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Material"/> to be used when rendering <see cref="Mesh"/>es.
+        /// Gets or sets the <see cref="Material"/> to be used when displaying <see cref="Mesh"/>es.
         /// </summary>
-        Material MeshMaterial { get; set; }
+        Material MeshVisibleMaterial { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Material"/> to be used when spatial <see cref="Mesh"/>es should occlude other objects.
+        /// </summary>
+        Material MeshOcclusionMaterial { get; set; }
 
         /// <summary>
         /// Gets the collection of <see cref="IMixedRealitySpatialAwarenessMeshDescription"/>s being tracked by the spatial awareness mesh subsystem.

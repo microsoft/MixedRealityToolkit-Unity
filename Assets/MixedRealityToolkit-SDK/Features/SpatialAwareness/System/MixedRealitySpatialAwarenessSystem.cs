@@ -482,10 +482,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public bool MeshRecalculateNormals { get; set; } = true;
 
         /// <inheritdoc />
-        public bool DisplayMeshes { get; set; } = false;
+        public SpatialMeshDisplayOptions MeshDisplayOption { get; set; } = SpatialMeshDisplayOptions.None;
 
         /// <inheritdoc />
-        public Material MeshMaterial { get; set; } = null;
+        public Material MeshVisibleMaterial { get; set; } = null;
+
+        /// <inheritdoc />
+        public Material MeshOcclusionMaterial { get; set; } = null;
 
         /// <inheritdoc />
         public Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription> GetMeshes()

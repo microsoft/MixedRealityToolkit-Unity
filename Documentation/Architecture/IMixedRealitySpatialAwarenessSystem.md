@@ -92,11 +92,11 @@ Gets the bit mask that corresponds to the value specified in MeshPhysicsLayer.
 | --- |
 | [MixedRealitySpatialAwarenessMeshLevelOfDetail](./MixedRealitySpatialAwarenessMeshLevelOfDetail.md) |
 
-Gets or sets the level of detail for the returned spatial mesh. Setting this value to Custom, implies that the developer is specifying a custom value for TrianglesPerCubicMeter.
+Gets or sets the level of detail for the returned spatial mesh. Setting this value to Custom, implies that the developer is specifying a custom value for MeshTrianglesPerCubicMeter.
 
-Specifying any other value will cause TrianglesPerCubicMeter to be overwritten.
+Specifying any other value will cause MeshTrianglesPerCubicMeter to be overwritten.
 
-### TrianglesPerCubicMeter
+### MeshTrianglesPerCubicMeter
 
 | Type |
 | --- |
@@ -106,37 +106,45 @@ Gets or sets the level of detail, in triangles per cubic meter, for the returned
 
 When specifying Coarse or Fine for the MeshLevelOfDetail, this value will be automatically overwritten.
 
-### RecalculateNormals
+### MeshRecalculateNormals
 
 | Type |
 | --- |
 | bool |
 
-Gets or sets the value indicating if the spatial awareness system to generate normal for the returned meshes as some platforms may not support returning normal along with the spatial mesh. 
+Gets or sets the value indicating if the spatial awareness system to generate normal for the returned meshes as some platforms may not support returning normal along with the spatial mesh.
 
-### RenderMeshes
+### MeshDisplayOption
 
 | Type |
 | --- |
-| bool |
+| [SpatialMeshDisplayOptions](./SpatialMeshDisplayOptions.md) |
 
-Gets or sets a value indicating if the mesh subsystem is to automatically display surface meshes within the application. When enabled, the meshes will be added to the scene and rendered using the configured MeshMaterial.
+Gets or sets a value indicating how the mesh subsystem is to display surface meshes within the application.
 
-Applications that wish to process the Meshes should set this value to false.
+Applications that wish to process the Meshes should set this value to None.
 
-### MeshMaterial
+### MeshVisibleMaterial
 
 | Type |
 | --- |
 | Material |
 
-Gets or sets the material to be used when rendering spatial meshes.
+Gets or sets the material to be used when displaying spatial meshes.
 
-### [IMixedRealitySpatialAwarenessMeshDescription](./IMixedRealitySpatialAwarenessMeshDescription.md)[] GetMeshes()
+### MeshOcclusionMaterial
+
+| Type |
+| --- |
+| Material |
+
+Gets or sets the material to be used when spatial meshes should occlude other object.
+
+### Dictionary<uint, [IMixedRealitySpatialAwarenessMeshDescription](./IMixedRealitySpatialAwarenessMeshDescription.md)> GetMeshes()
 
 Returns the collection of Meshes being managed by the spatial awareness mesh subsystem.
 
-### GameObject[] GetMeshes()
+### Dictionary<uint, GameObject> GetMeshes()
 
 Returns the collection of GameObjects being managed by the spatial awareness mesh subsystem.
 
@@ -178,13 +186,13 @@ Gets the bit mask that corresponds to the value specified in SurfacePhysicsLayer
 
 Gets or sets the minimum surface area, in square meters, that must be satisfied before a surface is identified.
 
-### RenderFloorSurfaces
+### DisplayFloorSurfaces
 
 | Type |
 | --- |
 | bool |
 
-Gets or sets a value indicating if the surface subsystem is to automatically display floor surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured FloorSurfaceMaterial.
+Gets or sets a value indicating if the surface subsystem is to automatically display floor surfaces within the application. When enabled, the surfaces will be added to the scene and displayed using the configured FloorSurfaceMaterial.
 
 ### FloorSurfaceMaterial
 
@@ -192,15 +200,15 @@ Gets or sets a value indicating if the surface subsystem is to automatically dis
 | --- |
 | Material |
 
-Gets or sets the material to be used when rendering planar surface(s) identified as a floor.
+Gets or sets the material to be used when displaying planar surface(s) identified as a floor.
 
-### RenderCeilingSurfaces
+### DisplayCeilingSurfaces
 
 | Type |
 | --- |
 | bool |
 
-Gets or sets a value indicating if the surface subsystem is to automatically display ceiling surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured CeilingSurfaceMaterial.
+Gets or sets a value indicating if the surface subsystem is to automatically display ceiling surfaces within the application. When enabled, the surfaces will be added to the scene and displayed using the configured CeilingSurfaceMaterial.
 
 ### CeilingSurfaceMaterial
 
@@ -208,15 +216,15 @@ Gets or sets a value indicating if the surface subsystem is to automatically dis
 | --- |
 | Material |
 
-Gets or sets the material to be used when rendering planar surface(s) identified as a ceiling.
+Gets or sets the material to be used when displaying planar surface(s) identified as a ceiling.
 
-### RenderWallSurfaces
+### DisplayWallSurfaces
 
 | Type |
 | --- |
 | bool |
 
-Gets or sets a value indicating if the surface subsystem is to automatically display wall surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured WallSurfaceMaterial.
+Gets or sets a value indicating if the surface subsystem is to automatically display wall surfaces within the application. When enabled, the surfaces will be added to the scene and displayed using the configured WallSurfaceMaterial.
 
 ### WallSurfaceMaterial
 
@@ -224,15 +232,15 @@ Gets or sets a value indicating if the surface subsystem is to automatically dis
 | --- |
 | Material |
 
-Gets or sets the material to be used when rendering planar surface(s) identified as a wall.
+Gets or sets the material to be used when displaying planar surface(s) identified as a wall.
 
-### RenderPlatformSurfaces
+### DisplayPlatformSurfaces
 
 | Type |
 | --- |
 | bool |
 
-Gets or sets a value indicating if the surface subsystem is to automatically display raised horizontal platform surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured PlatformSurfaceMaterial.
+Gets or sets a value indicating if the surface subsystem is to automatically display raised horizontal platform surfaces within the application. When enabled, the surfaces will be added to the scene and displayed using the configured PlatformSurfaceMaterial.
 
 ### PlatformSurfaceMaterial
 
@@ -240,7 +248,7 @@ Gets or sets a value indicating if the surface subsystem is to automatically dis
 | --- |
 | Material |
 
-Gets or sets the material to be used when rendering planar surface(s) identified as a raised horizontal platform.
+Gets or sets the material to be used when displaying planar surface(s) identified as a raised horizontal platform.
 
 ### [IMixedRealitySpatialAwarenessPlanarSurfaceDescription](./IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)[] GetSurfaces()
 
