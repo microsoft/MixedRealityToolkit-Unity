@@ -1,4 +1,7 @@
-﻿using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System;
@@ -1221,7 +1224,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         SerializedProperty name = propertyItem.FindPropertyRelative("Name");
                         SerializedProperty type = propertyItem.FindPropertyRelative("Type");
                         SerializedProperty values = propertyItem.FindPropertyRelative("Values");
+                        SerializedProperty shaderNames = propertyItem.FindPropertyRelative("ShaderOptionNames");
+                        SerializedProperty propId = propertyItem.FindPropertyRelative("PropId");
 
+                        string shaderPropName = "Shader";
+
+                        if (shaderNames.arraySize > propId.intValue)
+                        {
+                            SerializedProperty propName = shaderNames.GetArrayElementAtIndex(propId.intValue);
+                            shaderPropName = propName.stringValue;
+                        }
+                        
                         if (n >= values.arraySize)
                         {
                             continue;
@@ -1242,13 +1255,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                                 break;
                             case ThemePropertyValueTypes.Color:
                                 SerializedProperty colorValue = item.FindPropertyRelative("Color");
-                                colorValue.colorValue = EditorGUILayout.ColorField(new GUIContent(name.stringValue, ""), colorValue.colorValue);
+                                colorValue.colorValue = EditorGUILayout.ColorField(new GUIContent(shaderPropName, ""), colorValue.colorValue);
                                 break;
                             case ThemePropertyValueTypes.ShaderFloat:
-                                floatValue.floatValue = EditorGUILayout.FloatField(new GUIContent(name.stringValue, ""), floatValue.floatValue);
+                                floatValue.floatValue = EditorGUILayout.FloatField(new GUIContent(shaderPropName, ""), floatValue.floatValue);
                                 break;
                             case ThemePropertyValueTypes.shaderRange:
-                                vector2Value.vector2Value = EditorGUILayout.Vector2Field(new GUIContent(name.stringValue, ""), vector2Value.vector2Value);
+                                vector2Value.vector2Value = EditorGUILayout.Vector2Field(new GUIContent(shaderPropName, ""), vector2Value.vector2Value);
                                 break;
                             case ThemePropertyValueTypes.Vector2:
                                 vector2Value.vector2Value = EditorGUILayout.Vector2Field(new GUIContent(name.stringValue, ""), vector2Value.vector2Value);
