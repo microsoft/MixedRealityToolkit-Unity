@@ -13,16 +13,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
     public class MixedRealitySpatialAwarenessPlanarSurfaceDescription : MixedRealitySpatialAwarenessBaseDescription, IMixedRealitySpatialAwarenessPlanarSurfaceDescription
     {
         /// <inheritdoc />
-        public Bounds BoundingBox
-        { get; private set; }
+        public Bounds BoundingBox { get; private set; }
 
         /// <inheritdoc />
-        public Vector3 Normal
-        { get; private set; }
+        public Vector3 Normal { get; private set; }
 
         /// <inheritdoc />
-        public SpatialAwarenessSurfaceTypes SurfaceType
-        { get; private set; }
+        public SpatialAwarenessSurfaceTypes SurfaceType { get; private set; }
 
         public MixedRealitySpatialAwarenessPlanarSurfaceDescription(
             Vector3 position,
@@ -80,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
 
         public override int GetHashCode()
         {
-            string s = $"Position({Position.x},{Position.y},{Position.z}):{SurfaceType.ToString()}:Bounds({BoundingBox.min},{BoundingBox.max}):Normal({Normal.x},{Normal.y},{Normal.z}";
+            string s = $"Position({Position}):{SurfaceType.ToString()}:Bounds({BoundingBox.min},{BoundingBox.max}):Normal({Normal.x},{Normal.y},{Normal.z}";
             return s.GetHashCode();
         }
 

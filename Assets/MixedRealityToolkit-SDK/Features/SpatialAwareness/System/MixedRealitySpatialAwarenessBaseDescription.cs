@@ -13,8 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
     public class MixedRealitySpatialAwarenessBaseDescription : IMixedRealitySpatialAwarenessBaseDescription
     {
         /// <inheritdoc />
-        public Vector3 Position
-        { get; private set; }
+        public Vector3 Position { get; private set; }
 
         public MixedRealitySpatialAwarenessBaseDescription(Vector3 position)
         {
@@ -56,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
 
         public override int GetHashCode()
         {
-            string s = $"Position({Position.x},{Position.y},{Position.z})";
+            string s = $"Position({Position})";
             return s.GetHashCode();
         }
 
