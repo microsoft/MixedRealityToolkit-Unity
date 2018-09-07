@@ -36,3 +36,19 @@ MonoBehaviour:
     runtimePlatform: 2752512
     configurationProfile: {fileID: 0}
     editorPlatform: 131204
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput.WindowsSpeechInputDeviceManager,
+        Microsoft.MixedReality.Toolkit
+    componentName: Windows Speech Input Manager
+    priority: 10
+    runtimePlatform: 2752580
+    configurationProfile: {fileID: 0}
+    editorPlatform: 131200
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput.WindowsDictationInputDeviceManager,
+        Microsoft.MixedReality.Toolkit
+    componentName: Windows Dictation Input Manager
+    priority: 10
+    runtimePlatform: 2752580
+    configurationProfile: {fileID: 0}
+    editorPlatform: 131200
