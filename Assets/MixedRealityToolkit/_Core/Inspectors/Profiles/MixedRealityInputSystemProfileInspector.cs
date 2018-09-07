@@ -79,28 +79,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             changed |= RenderProfile(pointerProfile);
 
             EditorGUILayout.PropertyField(enableSpeechCommands);
-
-            if (enableSpeechCommands.boolValue)
-            {
-                changed |= RenderProfile(speechCommandsProfile);
-                recognitionConfidenceLevel.intValue = EditorGUILayout.IntPopup(SpeechConfidenceContent, recognitionConfidenceLevel.intValue, SpeechConfidenceOptionContent, SpeechConfidenceOptions);
-            }
+            changed |= RenderProfile(speechCommandsProfile);
+            recognitionConfidenceLevel.intValue = EditorGUILayout.IntPopup(SpeechConfidenceContent, recognitionConfidenceLevel.intValue, SpeechConfidenceOptionContent, SpeechConfidenceOptions);
 
             EditorGUILayout.PropertyField(enableDictation);
 
             EditorGUILayout.PropertyField(enableTouchScreenInput);
-
-            if (enableTouchScreenInput.boolValue)
-            {
-                changed |= RenderProfile(touchScreenInputProfile);
-            }
+            changed |= RenderProfile(touchScreenInputProfile);
 
             EditorGUILayout.PropertyField(enableControllerMapping);
-
-            if (enableControllerMapping.boolValue)
-            {
-                changed |= RenderProfile(controllerMappingProfile);
-            }
+            changed |= RenderProfile(controllerMappingProfile);
 
             if (!changed)
             {

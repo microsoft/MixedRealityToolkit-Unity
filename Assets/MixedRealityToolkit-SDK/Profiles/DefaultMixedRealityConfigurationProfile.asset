@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityConfigurationProfile
   m_EditorClassIdentifier: 
   initialManagerTypes:
-  - reference: Microsoft.MixedReality.Toolkit.SDK.Input.MixedRealityInputManager,
-      Microsoft.MixedReality.Toolkit.SDK
   - reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,
+      Microsoft.MixedReality.Toolkit.SDK
+  - reference: Microsoft.MixedReality.Toolkit.SDK.Input.MixedRealityInputManager,
       Microsoft.MixedReality.Toolkit.SDK
   targetExperienceScale: 3
   enableCameraProfile: 1

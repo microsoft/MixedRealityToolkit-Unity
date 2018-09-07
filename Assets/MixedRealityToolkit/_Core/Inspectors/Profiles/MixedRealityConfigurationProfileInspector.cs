@@ -148,55 +148,39 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Camera Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableCameraProfile);
-
-            if (enableCameraProfile.boolValue)
-            {
-                changed |= RenderProfile(cameraProfile);
-            }
+            changed |= RenderProfile(cameraProfile);
 
             // Input System configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Input System Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableInputSystem);
-
-            if (enableInputSystem.boolValue)
-            {
-                EditorGUILayout.PropertyField(inputSystemType);
-                changed |= RenderProfile(inputSystemProfile);
-            }
+            EditorGUILayout.PropertyField(inputSystemType);
+            changed |= RenderProfile(inputSystemProfile);
 
             // Boundary System configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Boundary System Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableBoundarySystem);
+            EditorGUILayout.PropertyField(boundarySystemType);
 
-            if (enableBoundarySystem.boolValue)
+            // Boundary settings depend on the experience scale
+            if (scale == ExperienceScale.Room)
             {
-                EditorGUILayout.PropertyField(boundarySystemType);
-
-                // Boundary settings depend on the experience scale
-                if (scale == ExperienceScale.Room)
-                {
-                    EditorGUILayout.PropertyField(boundaryHeight);
-                    changed |= RenderProfile(boundaryVisualizationProfile);
-                }
-                else
-                {
-                    GUILayout.Space(6f);
-                    EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Info);
-                }
+                EditorGUILayout.PropertyField(boundaryHeight);
+                changed |= RenderProfile(boundaryVisualizationProfile);
+            }
+            else
+            {
+                GUILayout.Space(6f);
+                EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Info);
             }
 
             // Teleport System configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Teleport System Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableTeleportSystem);
-
-            if (enableTeleportSystem.boolValue)
-            {
-                EditorGUILayout.PropertyField(teleportSystemType);
-                EditorGUILayout.PropertyField(teleportDuration);
-            }
+            EditorGUILayout.PropertyField(teleportSystemType);
+            EditorGUILayout.PropertyField(teleportDuration);
 
             if (!changed)
             {
