@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
@@ -14,17 +16,34 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     /// </summary>
     public class MousePointer : BaseControllerPointer, IMixedRealityMousePointer
     {
-        /// <inheritdoc />
-        public Vector3 ScreenPosition { get; private set; }
+        private Vector3 newRotation = Vector3.zero;
 
         private bool isInteractionEnabled = false;
 
         /// <inheritdoc />
         public override bool IsInteractionEnabled => isInteractionEnabled;
 
+        private IMixedRealityController controller;
+
+        /// <inheritdoc />
+        public override IMixedRealityController Controller
+        {
+            get { return controller; }
+            set
+            {
+                controller = value;
+                InputSourceParent = value.InputSource;
+                Handedness = value.ControllerHandedness;
+                gameObject.name = "Spatial Mouse Pointer";
+                TrackingState = TrackingState.NotApplicable;
+            }
+        }
+
         /// <inheritdoc />
         public override void OnPreRaycast()
         {
+            transform.position = CameraCache.Main.transform.position;
+
             Ray pointingRay;
             if (TryGetPointingRay(out pointingRay))
             {
@@ -37,42 +56,41 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        /// <inheritdoc />
-        public override bool TryGetPointerPosition(out Vector3 position)
+        public override void OnSourcePoseChanged(SourcePoseEventData<Vector2> eventData)
         {
-            position = Vector3.zero;
-            if (UnityEngine.Input.mousePosition.x > Screen.width || UnityEngine.Input.mousePosition.x < 0 ||
-                UnityEngine.Input.mousePosition.y > Screen.height || UnityEngine.Input.mousePosition.y < 0)
+            if (Controller == null ||
+                eventData.Controller == null ||
+                eventData.Controller.InputSource.SourceId != Controller.InputSource.SourceId)
             {
-                ScreenPosition = Vector3.zero;
-                return false;
+                return;
             }
 
-            ScreenPosition = UnityEngine.Input.mousePosition;
-            position = Result?.Details.Point ?? CameraCache.Main.ScreenPointToRay(UnityEngine.Input.mousePosition).GetPoint(PointerExtent);
-            return true;
+            if (UseSourcePoseData)
+            {
+                newRotation = transform.rotation.eulerAngles;
+                newRotation.x += eventData.SourceData.y;
+                newRotation.y += eventData.SourceData.x;
+                transform.rotation = Quaternion.Euler(newRotation);
+            }
         }
 
         /// <inheritdoc />
-        public override bool TryGetPointingRay(out Ray pointingRay)
+        public override void OnPositionInputChanged(InputEventData<Vector2> eventData)
         {
-            Vector3 pointerPosition;
 
-            if (TryGetPointerPosition(out pointerPosition))
+            if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
-                pointingRay = CameraCache.Main.ScreenPointToRay(UnityEngine.Input.mousePosition);
-                return true;
+                if (!UseSourcePoseData &&
+                    PoseAction == eventData.MixedRealityInputAction)
+                {
+                    IsTracked = true;
+                    TrackingState = TrackingState.Tracked;
+                    newRotation = transform.rotation.eulerAngles;
+                    newRotation.x += eventData.InputData.x;
+                    newRotation.y += eventData.InputData.y;
+                    transform.rotation = Quaternion.Euler(newRotation);
+                }
             }
-
-            pointingRay = default(Ray);
-            return false;
-        }
-
-        /// <inheritdoc />
-        public override bool TryGetPointerRotation(out Quaternion rotation)
-        {
-            rotation = Quaternion.identity;
-            return false;
         }
 
         /// <inheritdoc />

@@ -26,16 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         {
         }
 
-        private Vector2 screenPosition = Vector2.zero;
-
-        /// <summary>
-        /// Current screen position.
-        /// </summary>
-        public Vector2 ScreenPosition => screenPosition;
-
         public override MixedRealityInteractionMapping[] DefaultInteractions { get; } =
         {
-            new MixedRealityInteractionMapping(0, "Pointer Screen Position", AxisType.DualAxis, DeviceInputType.PointerPosition, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(0, "Mouse Delta Position", AxisType.DualAxis, DeviceInputType.PointerPosition, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(1, "Spatial Mouse Position", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(2, "Left Mouse Button", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
             new MixedRealityInteractionMapping(3, "Right Mouse Button", AxisType.Digital, DeviceInputType.ButtonPress, MixedRealityInputAction.None),
@@ -50,15 +43,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         }
 
         private Vector3 pointerPosition;
+        private Vector2 mouseDelta;
 
         /// <summary>
         /// Update controller.
         /// </summary>
         public void Update()
         {
-            screenPosition.x = Input.mousePosition.x;
-            screenPosition.y = Input.mousePosition.y;
-            InputSystem?.RaiseSourcePositionChanged(InputSource, this, screenPosition);
+            // Don't ask me why it's mapped weird. Bc Unity...
+            mouseDelta.x = Input.GetAxis("Mouse X");
+            mouseDelta.y = -Input.GetAxis("Mouse Y");
+            InputSystem?.RaiseSourcePositionChanged(InputSource, this, mouseDelta);
             InputSource.Pointers[0].TryGetPointerPosition(out pointerPosition);
             InputSystem?.RaiseSourcePositionChanged(InputSource, this, pointerPosition);
         }

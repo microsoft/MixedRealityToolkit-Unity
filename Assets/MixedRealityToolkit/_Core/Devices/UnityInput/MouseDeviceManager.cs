@@ -21,9 +21,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!Input.mousePresent) { return; }
+            if (!Input.mousePresent)
+            {
+                Disable();
+                return;
+            }
 
             Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
             IMixedRealityInputSource mouseInputSource = null;
 
             MixedRealityRaycaster.DebugEnabled = true;
