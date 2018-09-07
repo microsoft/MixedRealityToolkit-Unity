@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
 
         public void Intialize(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
-            MixedRealitySpatialAwarenessEventType eventType,
+            SpatialAwarenessEventType eventType,
             uint surfaceId,
             IMixedRealitySpatialAwarenessPlanarSurfaceDescription description,
             GameObject surfaceObject)

@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// Setting this value to Custom, implies that the developer is specifying a custom value for MeshTrianglesPerCubicMeter. 
         /// </summary>
         /// <remarks>Specifying any other value will cause <see cref="MeshTrianglesPerCubicMeter"/> to be overwritten.</remarks>
-        MixedRealitySpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail { get; set; }
+        SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail { get; set; }
 
         /// <summary>
         /// Gets or sets the level of detail, in triangles per cubic meter, for the returned spatial mesh.

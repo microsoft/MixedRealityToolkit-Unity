@@ -1,11 +1,11 @@
-# MixedRealitySpatialAwarenessEventType Enumeration
+# SpatialAwarenessEventType Enumeration
 
 | Toolkit Layer | Namespace |
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwareness |
 
 ``` C#
-public enum MixedRealitySpatialAwarenessEventType
+public enum SpatialAwarenessEventType
 {
     /// <summary>
     /// A spatial awareness subsystem is reporting that a new spatial element 

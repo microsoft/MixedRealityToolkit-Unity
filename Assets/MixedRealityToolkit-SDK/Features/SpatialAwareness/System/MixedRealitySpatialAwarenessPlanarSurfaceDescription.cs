@@ -21,14 +21,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         { get; private set; }
 
         /// <inheritdoc />
-        public MixedRealitySpatialAwarenessSurfaceTypes SurfaceType
+        public SpatialAwarenessSurfaceTypes SurfaceType
         { get; private set; }
 
         public MixedRealitySpatialAwarenessPlanarSurfaceDescription(
             Vector3 position,
             Bounds boundingBox,
             Vector3 normal,
-            MixedRealitySpatialAwarenessSurfaceTypes surfaceType) : base(position)
+            SpatialAwarenessSurfaceTypes surfaceType) : base(position)
         {
             BoundingBox = boundingBox;
             Normal = normal;

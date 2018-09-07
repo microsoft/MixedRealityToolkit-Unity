@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// <summary>
         /// The type of event that has occurred.
         /// </summary>
-        public MixedRealitySpatialAwarenessEventType EventType { get; private set; }
+        public SpatialAwarenessEventType EventType { get; private set; }
 
         /// <summary>
         /// <see cref="GameObject"/>, managed by the spatial awareness system, representing the data in this event.
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         protected void Initialize(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             uint id,
-            MixedRealitySpatialAwarenessEventType eventType,
+            SpatialAwarenessEventType eventType,
             GameObject gameObject)
         {
             base.BaseInitialize(spatialAwarenessSystem);

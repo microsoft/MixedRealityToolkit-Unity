@@ -30,7 +30,7 @@ The normal of the described surface.
 
 | Type |
 | --- |
-| [MixedRealitySpatialAwarenessSurfaceTypes](./MixedRealitySpatialAwarenessSurfaceTypes.md)
+| [SpatialAwarenessSurfaceTypes](./SpatialAwarenessSurfaceTypes.md)
 
 The semantic (ex: Floor) associated with the surface.
 
@@ -38,3 +38,4 @@ The semantic (ex: Floor) associated with the surface.
 
 - [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
 - [MixedRealitySpatialAwarenessPlanarSurfaceDescription Class](./MixedRealitySpatialAwarenessPlanarSurfaceDescription.md)
+- [SpatialAwarenessSurfaceTypes Enumeration](./SpatialAwarenessSurfaceTypes.md)

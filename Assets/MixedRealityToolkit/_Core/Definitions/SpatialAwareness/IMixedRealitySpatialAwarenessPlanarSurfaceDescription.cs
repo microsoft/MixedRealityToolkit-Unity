@@ -23,6 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <summary>
         /// The semantic (ex: Floor) associated with the surface.
         /// </summary>
-        MixedRealitySpatialAwarenessSurfaceTypes SurfaceType { get; }
+        SpatialAwarenessSurfaceTypes SurfaceType { get; }
     }
 }

@@ -6,7 +6,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     /// <summary>
     /// Enumeration defining the types of events that spatial awareness subsystems will send.
     /// </summary>
-    public enum MixedRealitySpatialAwarenessEventType
+    public enum SpatialAwarenessEventType
     {
         /// <summary>
         /// A spatial awareness subsystem is reporting that a new spatial element 

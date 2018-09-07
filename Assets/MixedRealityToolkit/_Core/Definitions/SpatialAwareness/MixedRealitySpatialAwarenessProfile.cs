@@ -65,12 +65,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
 
         [SerializeField]
         [Tooltip("Level of detail for the mesh")]
-        private MixedRealitySpatialAwarenessMeshLevelOfDetail meshLevelOfDetail = MixedRealitySpatialAwarenessMeshLevelOfDetail.Coarse;
+        private SpatialAwarenessMeshLevelOfDetail meshLevelOfDetail = SpatialAwarenessMeshLevelOfDetail.Coarse;
 
         /// <summary>
         /// The desired Unity Physics Layer on which to set the spatial mesh.
         /// </summary>
-        public MixedRealitySpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail => meshLevelOfDetail;
+        public SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail => meshLevelOfDetail;
 
         [SerializeField]
         [Tooltip("Level of detail, in triangles per cubic meter.\nIgnored unless MeshLevelOfDetail is set to Custom.")]

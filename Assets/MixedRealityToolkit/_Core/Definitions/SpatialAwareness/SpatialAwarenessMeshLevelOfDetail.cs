@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     /// <remarks>
     /// The integral values for these levels of detail generally map to triangle density, in triangles per cubic meter.
     /// /remarks>
-    public enum MixedRealitySpatialAwarenessMeshLevelOfDetail
+    public enum SpatialAwarenessMeshLevelOfDetail
     {
         /// <summary>
         /// The custom level of detail allows specifying a custom value for

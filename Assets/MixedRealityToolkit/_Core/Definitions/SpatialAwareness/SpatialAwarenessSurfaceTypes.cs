@@ -6,27 +6,28 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     /// <summary>
     /// Enumeration defining the types of planar surfaces that are supported by the spatial awareness surface finding subsystem.
     /// </summary>
-    public enum MixedRealitySpatialAwarenessSurfaceTypes
+    [System.Flags]
+    public enum SpatialAwarenessSurfaceTypes
     {
         /// <summary>
         /// An unknown / unsupported type of surface.
         /// </summary>
-        Unknown = 0,
+        Unknown = 1 << 0,
 
         /// <summary>
         /// The environment’s floor.
         /// </summary>
-        Floor,
+        Floor = 1 << 1,
 
         /// <summary>
         /// The environment’s ceiling.
         /// </summary>
-        Ceiling,
+        Ceiling = 1 << 2,
 
         /// <summary>
         /// A wall within the user’s space.
         /// </summary>
-        Wall,
+        Wall = 1 << 3,
 
         /// <summary>
         /// A raised, horizontal surface such as a shelf.
@@ -35,6 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// Platforms, like floors, that can be used for placing objects
         /// requiring a horizontal surface.
         /// </remarks>
-        Platform
+        Platform = 1 << 4
     }
 }

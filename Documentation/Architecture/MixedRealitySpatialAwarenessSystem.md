@@ -58,7 +58,7 @@ Gets the bit mask that corresponds to the value specified in MeshPhysicsLayer.
 
 ### MeshLevelOfDetail
 
-Gets or sets the level of detail, as a [MixedRealitySpatialAwarenessMeshLevelOfDetail](./MixedRealitySpatialAwarenessMeshLevelOfDetail.md) value, for the returned spatial mesh. Setting this value to Custom, implies that the developer is specifying a custom value for MeshTrianglesPerCubicMeter.
+Gets or sets the level of detail, as a [SpatialAwarenessMeshLevelOfDetail](./SpatialAwarenessMeshLevelOfDetail.md) value, for the returned spatial mesh. Setting this value to Custom, implies that the developer is specifying a custom value for MeshTrianglesPerCubicMeter.
 
 Specifying any other value will cause MeshTrianglesPerCubicMeter to be overwritten.
 
@@ -169,4 +169,5 @@ The spatial awareness system raises events on the following handler types to ind
 - [IMixedRealitySpatialAwarenessSystem Interface](./IMixedRealitySpatialAwarenessSystem.md)
 - [IMixedRealitySpatialAwarenessMeshDescription Interface](./IMixedRealitySpatialAwarenessMeshDescription.md)
 - [IMixedRealitySpatialAwarenessPlanarSurfaceDescription Interface](./IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)
-- [MixedRealitySpatialAwarenessMeshLevelOfDetail Enumeration](./MixedRealitySpatialAwarenessMeshLevelOfDetail.md)
+- [SpatialAwarenessMeshDisplayOptions Enumeration](./SpatialAwarenessMeshDisplayOptions.md)
+- [SpatialAwarenessMeshLevelOfDetail Enumeration](./SpatialAwarenessMeshLevelOfDetail.md)

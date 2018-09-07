@@ -90,7 +90,7 @@ Gets the bit mask that corresponds to the value specified in MeshPhysicsLayer.
 
 | Type |
 | --- |
-| [MixedRealitySpatialAwarenessMeshLevelOfDetail](./MixedRealitySpatialAwarenessMeshLevelOfDetail.md) |
+| [SpatialAwarenessMeshLevelOfDetail](./SpatialAwarenessMeshLevelOfDetail.md) |
 
 Gets or sets the level of detail for the returned spatial mesh. Setting this value to Custom, implies that the developer is specifying a custom value for MeshTrianglesPerCubicMeter.
 
@@ -264,4 +264,5 @@ Returns the collection of GameObjects managed by the surface finding subsystem.
 - [MixedRealitySpatialAwarenessSystem Class](./MixedRealitySpatialAwarenessSystem.md)
 - [IMixedRealitySpatialAwarenessMeshDescription Interface](./IMixedRealitySpatialAwarenessMeshDescription.md)
 - [IMixedRealitySpatialAwarenessPlanarSurfaceDescription Interface](./IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)
-- [MixedRealitySpatialAwarenessMeshLevelOfDetail Enumeration](./MixedRealitySpatialAwarenessMeshLevelOfDetail.md)
+- [SpatialAwarenessMeshDisplayOptions Enumeration](./SpatialAwarenessMeshDisplayOptions.md)
+- [SpatialAwarenessMeshLevelOfDetail Enumeration](./SpatialAwarenessMeshLevelOfDetail.md)

@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -245,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             Vector3 position,
             Bounds boundingBox,
             Vector3 normal,
-            MixedRealitySpatialAwarenessSurfaceTypes surfaceType,
+            SpatialAwarenessSurfaceTypes surfaceType,
             GameObject surfaceObject = null)
         {
             // todo
@@ -276,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             Vector3 position,
             Bounds boundingBox,
             Vector3 normal,
-            MixedRealitySpatialAwarenessSurfaceTypes surfaceType,
+            SpatialAwarenessSurfaceTypes surfaceType,
             GameObject surfaceObject = null)
         {
             // todo
@@ -405,7 +404,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         {
             if (IsObserverRunning) { return; }
 
+#if UNITY_WSA
             // todo
+#endif // UNITY_WSA
+
+            IsObserverRunning = true;
         }
 
         /// <inheritdoc />
@@ -413,10 +416,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         {
             if (!IsObserverRunning) { return; }
 
+#if UNITY_WSA
             // todo
+#endif // UNITY_WSA
+
+            IsObserverRunning = false;
         }
 
-        #region Mesh Handling implementation
+#region Mesh Handling implementation
 
         /// <inheritdoc />
         public bool UseMeshSystem { get; set; } = true;
@@ -427,10 +434,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         /// <inheritdoc />
         public int MeshPhysicsLayerMask => 1 << MeshPhysicsLayer;
 
-        private MixedRealitySpatialAwarenessMeshLevelOfDetail meshLevelOfDetail = MixedRealitySpatialAwarenessMeshLevelOfDetail.Coarse;
+        private SpatialAwarenessMeshLevelOfDetail meshLevelOfDetail = SpatialAwarenessMeshLevelOfDetail.Coarse;
 
         /// <inheritdoc />
-        public MixedRealitySpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail
+        public SpatialAwarenessMeshLevelOfDetail MeshLevelOfDetail
         {
             get
             { 
@@ -447,7 +454,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
                 if (meshLevelOfDetail != value)
                 {
                     // Non-custom values automatically modify MeshTrianglesPerCubicMeter
-                    if (value != MixedRealitySpatialAwarenessMeshLevelOfDetail.Custom)
+                    if (value != SpatialAwarenessMeshLevelOfDetail.Custom)
                     {
                         meshTrianglesPerCubicMeter = (int)value;
                     }
@@ -457,7 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             }
         }
 
-        private int meshTrianglesPerCubicMeter = (int)MixedRealitySpatialAwarenessMeshLevelOfDetail.Coarse;
+        private int meshTrianglesPerCubicMeter = (int)SpatialAwarenessMeshLevelOfDetail.Coarse;
 
         /// <inheritdoc />
         public int MeshTrianglesPerCubicMeter
@@ -504,9 +511,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             return new Dictionary<uint, GameObject>(0);
         }
 
-        #endregion Mesh Handling implementation
+#endregion Mesh Handling implementation
 
-        #region Surface Finding Handling implementation
+#region Surface Finding Handling implementation
 
         /// <inheritdoc />
         public bool UseSurfaceFindingSystem { get; set; } = false;
@@ -558,8 +565,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             return new Dictionary<uint, GameObject>(0);
         }
 
-        #endregion Surface Finding Handling implementation
+#endregion Surface Finding Handling implementation
 
-        #endregion IMixedRealitySpatialAwarenessSystem Implementation
+#endregion IMixedRealitySpatialAwarenessSystem Implementation
     }
 }

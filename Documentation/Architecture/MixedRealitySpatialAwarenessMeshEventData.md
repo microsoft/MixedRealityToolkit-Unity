@@ -10,23 +10,23 @@ The MixedRealitySpatialAwarenessMeshEventData derives from [MixedRealitySpatialA
 
 <img src="Images/MixedRealitySpatialAwarenessMeshEventData.png">
 
-### EventTime
+## EventTime
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](./MixedRealitySpatialAwarenessBaseEventData.md).*
 
-### EventType
+## EventType
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](./MixedRealitySpatialAwarenessBaseEventData.md).*
 
-### Id
+## Id
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](./MixedRealitySpatialAwarenessBaseEventData.md).*
 
-### GameObject
+## GameObject
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](#mixedrealityspatialawarenessbaseeventdata).*
 
-### MeshDescription
+## MeshDescription
 
 | Type |
 | --- |

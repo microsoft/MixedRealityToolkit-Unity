@@ -8,23 +8,23 @@ The MixedRealitySpatialSurfaceEventData derives from [MixedRealitySpatialAwarene
 
 <img src="Images/MixedRealitySpatialAwarenessSurfaceFindingEventData.png">
 
-### EventTime
+## EventTime
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](./MixedRealitySpatialAwarenessBaseEventData.md).*
 
-### EventType
+## EventType
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](./MixedRealitySpatialAwarenessBaseEventData.md).*
 
-### Id
+## Id
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](./MixedRealitySpatialAwarenessBaseEventData.md).*
 
-### GameObject
+## GameObject
 
 *Inherited from [MixedRealitySpatialAwarenessBaseEventData](./MixedRealitySpatialAwarenessBaseEventData.md).*
 
-### SurfaceDescription
+## SurfaceDescription
 
 | Type |
 | --- |

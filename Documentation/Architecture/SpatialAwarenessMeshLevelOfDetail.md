@@ -1,11 +1,11 @@
-# MixedRealitySpatialAwarenessMeshLevelOfDetail Enumeration
+# SpatialAwarenessMeshLevelOfDetail Enumeration
 
 | Toolkit Layer | Namespace |
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Core.Defintitions.SpatialAwareness |
 
 ``` C#
-public enum MixedRealitySpatialAwarenessMeshLevelOfDetail
+public enum SpatialAwarenessMeshLevelOfDetail
 {
     /// <summary>
     /// The custom level of detail allows specifying a custom value for
