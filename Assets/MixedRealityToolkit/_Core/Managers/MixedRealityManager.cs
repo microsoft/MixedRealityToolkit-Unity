@@ -2,13 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR;
-using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
-using Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
@@ -199,14 +195,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 {
                     var configuration = ActiveProfile.RegisteredComponentsProfile.Configurations[i];
 #if UNITY_EDITOR
-                    if ((UnityEditor.EditorUserBuildSettings.activeBuildTarget & configuration.EditorPlatform) != 0)
+                    if ((UnityEditor.EditorUserBuildSettings.activeBuildTarget & configuration.EditorPlatform) != 0 &&
+                        configuration.ComponentType.Type != null)
                     {
                         AddManager(typeof(IMixedRealityManager), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityManager);
                     }
 #else
                     if ((Application.platform & configuration.RuntimePlatform) != 0)
                     {
-                        AddManager(typeof(IMixedRealityManager), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityManager);
+                        if (configuration.ComponentType.Type != null)
+                        {
+                            AddManager(typeof(IMixedRealityManager), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityManager);
+                        }
                     }
 #endif
                 }
