@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
     public class MixedRealitySpatialAwarenessPlanarSurfaceDescription : MixedRealitySpatialAwarenessBaseDescription, IMixedRealitySpatialAwarenessPlanarSurfaceDescription
     {
         /// <inheritdoc />
-        public Bounds BoundingBox { get; private set; }
+        public Bounds Bounds { get; private set; }
 
         /// <inheritdoc />
         public Vector3 Normal { get; private set; }
@@ -23,11 +23,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
 
         public MixedRealitySpatialAwarenessPlanarSurfaceDescription(
             Vector3 position,
-            Bounds boundingBox,
+            Bounds bounds,
             Vector3 normal,
             SpatialAwarenessSurfaceTypes surfaceType) : base(position)
         {
-            BoundingBox = boundingBox;
+            Bounds = bounds;
             Normal = normal;
             SurfaceType = surfaceType;
         }
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
 
         public override string ToString()
         {
-            return $"{base.ToString()}:{SurfaceType.ToString()}:Bounds({BoundingBox.min},{BoundingBox.max}):Normal({Normal.x},{Normal.y},{Normal.z}";
+            return $"{base.ToString()}:{SurfaceType.ToString()}:Bounds({Bounds.min},{Bounds.max}):Normal({Normal.x},{Normal.y},{Normal.z}";
         }
 
         public static bool Equals(IMixedRealitySpatialAwarenessPlanarSurfaceDescription left, IMixedRealitySpatialAwarenessPlanarSurfaceDescription right)
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             if (other == null) { return false; }
             if (!base.Equals(other)) { return false; }
 
-            if (!BoundingBox.Equals(other.BoundingBox)) { return false; }
+            if (!Bounds.Equals(other.Bounds)) { return false; }
             if (!Normal.Equals(other.Normal)) { return false; }
             if (SurfaceType != other.SurfaceType) { return false; }
 
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
 
         public override int GetHashCode()
         {
-            string s = $"Position({Position}):{SurfaceType.ToString()}:Bounds({BoundingBox.min},{BoundingBox.max}):Normal({Normal.x},{Normal.y},{Normal.z}";
+            string s = $"Position({Position}):{SurfaceType.ToString()}:Bounds({Bounds.min},{Bounds.max}):Normal({Normal.x},{Normal.y},{Normal.z}";
             return s.GetHashCode();
         }
 

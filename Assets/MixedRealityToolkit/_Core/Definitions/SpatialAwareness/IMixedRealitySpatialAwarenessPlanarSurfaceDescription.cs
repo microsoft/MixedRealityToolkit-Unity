@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <summary>
         /// The axis aligned bounding box that contains the surface being described.
         /// </summary>
-        Bounds BoundingBox { get; }
+        Bounds Bounds { get; }
 
         /// <summary>
         /// The normal of the described surface.
