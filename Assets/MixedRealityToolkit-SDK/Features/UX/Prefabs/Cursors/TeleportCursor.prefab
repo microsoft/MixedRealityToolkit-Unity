@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4831552014908524}
   - component: {fileID: 33165240590171636}
   - component: {fileID: 23495989623814882}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TeleportArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4243005549109458}
   - component: {fileID: 33382737216306974}
   - component: {fileID: 23087410097422824}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TeleportMid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 33280264951525114}
   - component: {fileID: 23246995948268934}
   - component: {fileID: 95503996994707058}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TeleportBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4492646588632774}
   - component: {fileID: 114535584400613712}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TeleportCursor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
