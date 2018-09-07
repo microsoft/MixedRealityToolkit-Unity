@@ -24,9 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty inputSystemType;
         private SerializedProperty inputActionsProfile;
         private SerializedProperty pointerProfile;
-        private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
-        private SerializedProperty enableDictation;
         private SerializedProperty enableTouchScreenInput;
         private SerializedProperty touchScreenInputProfile;
         private SerializedProperty enableControllerMapping;
@@ -93,9 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             inputSystemType = serializedObject.FindProperty("inputSystemType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
-            enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
-            enableDictation = serializedObject.FindProperty("enableDictation");
             enableTouchScreenInput = serializedObject.FindProperty("enableTouchScreenInput");
             touchScreenInputProfile = serializedObject.FindProperty("touchScreenInputProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
@@ -181,10 +177,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 changed |= RenderProfile(inputActionsProfile);
                 changed |= RenderProfile(pointerProfile);
 
-                EditorGUILayout.PropertyField(enableSpeechCommands);
                 changed |= RenderProfile(speechCommandsProfile);
 
-                EditorGUILayout.PropertyField(enableDictation);
                 EditorGUILayout.PropertyField(enableTouchScreenInput);
 
                 if (enableTouchScreenInput.boolValue)
