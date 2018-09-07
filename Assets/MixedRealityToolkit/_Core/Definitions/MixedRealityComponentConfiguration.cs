@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
     public struct MixedRealityComponentConfiguration
     {
         [SerializeField]
-        [Implements(typeof(IMixedRealityManager), TypeGrouping.ByNamespaceFlat)]
+        [Implements(typeof(IMixedRealityComponent), TypeGrouping.ByNamespaceFlat)]
         private SystemType componentType;
 
         /// <summary>
