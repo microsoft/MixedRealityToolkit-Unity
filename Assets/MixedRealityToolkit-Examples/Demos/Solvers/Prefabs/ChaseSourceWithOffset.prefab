@@ -177,11 +177,11 @@ MonoBehaviour:
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114911825043747796}
-  referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  referenceDirection: 0
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
-  maxViewDegrees: 30
+  maxViewDegrees: 0
   aspectV: 1
   ignoreAngleClamp: 0
   ignoreDistanceClamp: 0

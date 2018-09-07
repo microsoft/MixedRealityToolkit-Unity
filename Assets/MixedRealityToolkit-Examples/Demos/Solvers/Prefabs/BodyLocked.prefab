@@ -121,8 +121,8 @@ MonoBehaviour:
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114474594170136286}
-  orientationType: 4
-  localOffset: {x: 0, y: -0.6, z: 1}
-  worldOffset: {x: 0, y: 0, z: 0}
-  useAngleSteppingForWorldOffset: 0
-  tetherAngleSteps: 6
+  orientationType: 2
+  localOffset: {x: 0, y: 0, z: 0}
+  worldOffset: {x: 0, y: -0.6, z: 1}
+  useAngleSteppingForWorldOffset: 1
+  tetherAngleSteps: 10

@@ -3452,16 +3452,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114281982501778886}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -3514,16 +3514,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114746239015755110}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -3542,16 +3542,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114119291258026634}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -3587,16 +3587,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114248129699884224}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -3632,16 +3632,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114628465954635856}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -3660,16 +3660,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114358157115147804}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -3739,16 +3739,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114046080384103152}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -3801,16 +3801,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114416462971053782}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -3846,16 +3846,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114769301346886932}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -3882,10 +3882,10 @@ MonoBehaviour:
   lifetime: 0
   SolverHandler: {fileID: 114360504785967414}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
-  maxViewDegrees: 30
+  maxViewDegrees: 15
   aspectV: 1
   ignoreAngleClamp: 0
   ignoreDistanceClamp: 0
@@ -3902,16 +3902,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114692419140163664}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -3930,16 +3930,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114300180824295488}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -3975,16 +3975,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114743017698380238}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -4003,16 +4003,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114370076487579544}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -4031,16 +4031,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114016962962148144}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -4059,16 +4059,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114604330468239596}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -4087,16 +4087,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114201054482223226}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -4115,16 +4115,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114305931542313040}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -4143,16 +4143,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114132324726589930}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -4239,16 +4239,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114704109522201332}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -4352,16 +4352,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114762079056890250}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -4380,16 +4380,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114831910598433390}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -4425,16 +4425,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114999463940681146}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -4453,16 +4453,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114064114941653030}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
@@ -4481,16 +4481,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.01
+  rotateLerpTime: 0.01
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114726790890798954}
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1

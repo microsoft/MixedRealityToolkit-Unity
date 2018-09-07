@@ -74,7 +74,7 @@ Transform:
   m_GameObject: {fileID: 1555762991523294}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0.001}
+  m_LocalScale: {x: 2, y: 2, z: 0.001}
   m_Children: []
   m_Father: {fileID: 4678300638060350}
   m_RootOrder: 0
@@ -252,11 +252,11 @@ MonoBehaviour:
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114577281956123938}
-  referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  referenceDirection: 0
+  minDistance: 0.1
+  maxDistance: 0.1
   minViewDegrees: 0
-  maxViewDegrees: 30
+  maxViewDegrees: 0
   aspectV: 1
   ignoreAngleClamp: 0
   ignoreDistanceClamp: 0
@@ -314,12 +314,12 @@ MonoBehaviour:
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114578645221470212}
-  referenceDirection: 1
-  minDistance: 1
-  maxDistance: 2
+  referenceDirection: 0
+  minDistance: 0
+  maxDistance: 0
   minViewDegrees: 0
   maxViewDegrees: 30
   aspectV: 1
-  ignoreAngleClamp: 0
-  ignoreDistanceClamp: 0
+  ignoreAngleClamp: 1
+  ignoreDistanceClamp: 1
   orientToReferenceDirection: 0

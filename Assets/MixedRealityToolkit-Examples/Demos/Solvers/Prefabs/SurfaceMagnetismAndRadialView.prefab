@@ -105,11 +105,11 @@ MonoBehaviour:
   smoothing: 1
   lifetime: 0
   SolverHandler: {fileID: 114855406103909200}
-  referenceDirection: 1
+  referenceDirection: 0
   minDistance: 1
-  maxDistance: 2
+  maxDistance: 30
   minViewDegrees: 0
-  maxViewDegrees: 30
+  maxViewDegrees: 0
   aspectV: 1
   ignoreAngleClamp: 0
   ignoreDistanceClamp: 0
@@ -136,7 +136,7 @@ MonoBehaviour:
   magneticSurfaces:
   - serializedVersion: 2
     m_Bits: 4294967291
-  maxDistance: 3
+  maxDistance: 30
   closeDistance: 0.5
   surfaceNormalOffset: 0.5
   surfaceRayOffset: 0

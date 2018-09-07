@@ -157,7 +157,7 @@ MonoBehaviour:
   magneticSurfaces:
   - serializedVersion: 2
     m_Bits: 4294967291
-  maxDistance: 3
+  maxDistance: 30
   closeDistance: 0.5
   surfaceNormalOffset: 0.5
   surfaceRayOffset: 0
@@ -170,7 +170,7 @@ MonoBehaviour:
   useLinkedAltScaleOverride: 0
   raycastDirection: 0
   orientationMode: 2
-  orientationBlend: 0.65
+  orientationBlend: 1
   debugEnabled: 0
 --- !u!114 &114842819766563628
 MonoBehaviour:
