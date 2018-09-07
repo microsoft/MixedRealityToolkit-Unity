@@ -389,7 +389,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             {
                 if (IsObserverRunning)
                 {
-                    throw new System.InvalidOperationException("UpdateInterval cannot be modified while the observer is running.");
+                    Debug.LogError("UpdateInterval cannot be modified while the observer is running.");
+                    return;
                 }
 
                 updateInterval = value;
@@ -448,7 +449,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             {
                 if (IsObserverRunning)
                 {
-                    throw new System.InvalidOperationException("MeshLevelOfDetail cannot be modified while the observer is running.");
+                    Debug.LogError("MeshLevelOfDetail cannot be modified while the observer is running.");
+                    return;
                 }
 
                 if (meshLevelOfDetail != value)
@@ -478,7 +480,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             {
                 if (IsObserverRunning)
                 {
-                    throw new System.InvalidOperationException("MeshTrianglesPerCubicMeter cannot be modified while the observer is running.");
+                    Debug.LogError("MeshTrianglesPerCubicMeter cannot be modified while the observer is running.");
+                    return;
                 }
 
                 meshTrianglesPerCubicMeter = value;

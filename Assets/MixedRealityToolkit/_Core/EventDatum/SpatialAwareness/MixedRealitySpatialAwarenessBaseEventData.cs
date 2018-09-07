@@ -43,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// <param name="eventSystem"></param>
         protected MixedRealitySpatialAwarenessBaseEventData(EventSystem eventSystem) : base(eventSystem) { }
 
+        /// <inheritdoc />
         protected void Initialize(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             uint id,
