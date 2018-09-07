@@ -15,15 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
     /// </summary>
     public abstract class ControllerFinder : MonoBehaviour, IMixedRealitySourceStateHandler
     {
-        //[SerializeField]
-        //private ControllerElement trackedControllerElement = ControllerElement.PointingPose;
-
-        //public ControllerElement TrackedControllerElement
-        //{
-        //    get { return trackedControllerElement; }
-        //    set { trackedControllerElement = value; }
-        //}
-
         [SerializeField]
         private Handedness handedness = Handedness.None;
 
@@ -40,8 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 }
             }
         }
-
-        //public Transform ElementTransform { get; private set; }
 
         protected Transform ControllerTransform;
 
@@ -111,19 +100,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         protected virtual void AddControllerTransform(IMixedRealityController newController)
         {
-            if (newController.ControllerHandedness == handedness && !newController.Transform.Equals(ControllerTransform))
+            if (newController.ControllerHandedness == handedness && newController.Transform != null && !newController.Transform.Equals(ControllerTransform))
             {
-                //Transform elementTransform;
-                //if (!newController.TryGetElement(trackedControllerElement, out elementTransform))
-                //{
-                //    Debug.LogError("Unable to find element of type " + trackedControllerElement + " under controller " + newController.ControllerParent.name + "; not attaching.");
-                //    return;
-                //}
-
                 ControllerTransform = newController.Transform;
-
-                //// Update ElementTransform for consumption
-                //ElementTransform = elementTransform;
 
                 OnControllerFound();
             }
@@ -131,10 +110,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         protected virtual void RemoveControllerTransform()
         {
-            OnControllerLost();
+            if (ControllerTransform != null)
+            {
+                OnControllerLost();
 
-            ControllerTransform = null;
-            //ElementTransform = null;
+                ControllerTransform = null;
+            }
         }
 
         protected virtual void RefreshControllerTransform()
