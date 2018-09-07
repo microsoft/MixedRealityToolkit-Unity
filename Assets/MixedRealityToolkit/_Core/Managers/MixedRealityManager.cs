@@ -172,14 +172,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
-                //Enable Input (example initializer)
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
-                //Enable Boundary (example initializer)
                 AddManager(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem);
             }
 
@@ -902,10 +900,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
-                if (MixedRealityComponents[i].Item1.Name == type.Name || MixedRealityComponents[i].Item2.GetType().Name == type.Name)
+                if (MixedRealityComponents[i].Item1.Name == type.Name ||
+                    MixedRealityComponents[i].Item2.GetType().Name == type.Name)
                 {
                     manager = MixedRealityComponents[i].Item2;
                     break;
+                }
+
+                var interfaces = MixedRealityComponents[i].Item2.GetType().GetInterfaces();
+                for (int j = 0; j < interfaces.Length; j++)
+                {
+                    if (interfaces[j].Name == type.Name)
+                    {
+                        manager = MixedRealityComponents[i].Item2;
+                        break;
+                    }
                 }
             }
 
@@ -930,7 +939,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
-                if (MixedRealityComponents[i].Item1.Name == type.Name && MixedRealityComponents[i].Item2.Name == managerName)
+                if (MixedRealityComponents[i].Item1.Name == type.Name &&
+                    MixedRealityComponents[i].Item2.Name == managerName)
                 {
                     manager = MixedRealityComponents[i].Item2;
                     break;
