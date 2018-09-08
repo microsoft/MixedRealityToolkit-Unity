@@ -57,7 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
         private bool isHolding;
         private MixedRealityInputAction manipulationAction;
         private bool isManipulating;
-        private Vector2 lastInputPosition = Vector2.zero;
         private MixedRealityPose lastPose = MixedRealityPose.ZeroIdentity;
 
         /// <inheritdoc />
