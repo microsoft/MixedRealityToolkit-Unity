@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
     public class MixedRealityInputSystemProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
         private SerializedProperty inputActionsProfile;
+        private SerializedProperty gesturesProfile;
         private SerializedProperty pointerProfile;
         private SerializedProperty speechCommandsProfile;
         private SerializedProperty enableControllerMapping;
@@ -30,6 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             }
 
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
+            gesturesProfile = serializedObject.FindProperty("gesturesProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
@@ -60,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             bool changed = false;
 
             changed |= RenderProfile(inputActionsProfile);
+            changed |= RenderProfile(gesturesProfile);
             changed |= RenderProfile(pointerProfile);
             changed |= RenderProfile(speechCommandsProfile);
 
