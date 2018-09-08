@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
 using UnityEngine;
@@ -13,7 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityConfigurationProfile))]
     public class MixedRealityConfigurationProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
 
         // Experience properties
@@ -26,9 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty inputSystemType;
         private SerializedProperty inputActionsProfile;
         private SerializedProperty pointerProfile;
-        private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
-        private SerializedProperty enableDictation;
         private SerializedProperty enableTouchScreenInput;
         private SerializedProperty touchScreenInputProfile;
         private SerializedProperty enableControllerMapping;
@@ -42,6 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty teleportSystemType;
         private SerializedProperty teleportDuration;
         private SerializedProperty boundaryVisualizationProfile;
+
+        private SerializedProperty registeredComponentsProfile;
 
         private MixedRealityConfigurationProfile configurationProfile;
 
@@ -93,9 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             inputSystemType = serializedObject.FindProperty("inputSystemType");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
-            enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
-            enableDictation = serializedObject.FindProperty("enableDictation");
             enableTouchScreenInput = serializedObject.FindProperty("enableTouchScreenInput");
             touchScreenInputProfile = serializedObject.FindProperty("touchScreenInputProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
@@ -109,6 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             teleportSystemType = serializedObject.FindProperty("teleportSystemType");
             teleportDuration = serializedObject.FindProperty("teleportDuration");
             boundaryVisualizationProfile = serializedObject.FindProperty("boundaryVisualizationProfile");
+            registeredComponentsProfile = serializedObject.FindProperty("registeredComponentsProfile");
         }
 
         public override void OnInspectorGUI()
@@ -125,6 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             var previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 160f;
             EditorGUI.BeginChangeCheck();
+            bool changed = false;
 
             // Experience configuration
             EditorGUILayout.LabelField("Experience Settings", EditorStyles.boldLabel);
@@ -166,10 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.LabelField("Camera Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableCameraProfile);
 
-            if (enableCameraProfile.boolValue)
-            {
-                RenderProfile(cameraProfile);
-            }
+            changed |= RenderProfile(cameraProfile);
 
             // Input System configuration
             GUILayout.Space(12f);
@@ -179,26 +174,23 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             if (enableInputSystem.boolValue)
             {
                 EditorGUILayout.PropertyField(inputSystemType);
-                RenderProfile(inputActionsProfile);
-                RenderProfile(pointerProfile);
+                changed |= RenderProfile(inputActionsProfile);
+                changed |= RenderProfile(pointerProfile);
 
-                EditorGUILayout.PropertyField(enableSpeechCommands);
-                RenderProfile(speechCommandsProfile);
-
-                EditorGUILayout.PropertyField(enableDictation);
+                changed |= RenderProfile(speechCommandsProfile);
 
                 EditorGUILayout.PropertyField(enableTouchScreenInput);
 
                 if (enableTouchScreenInput.boolValue)
                 {
-                    RenderProfile(touchScreenInputProfile);
+                    changed |= RenderProfile(touchScreenInputProfile);
                 }
 
                 EditorGUILayout.PropertyField(enableControllerMapping);
 
                 if (enableControllerMapping.boolValue)
                 {
-                    RenderProfile(controllerMappingProfile);
+                    changed |= RenderProfile(controllerMappingProfile);
                 }
             }
 
@@ -210,14 +202,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             if (enableBoundarySystem.boolValue)
             {
                 EditorGUILayout.PropertyField(boundarySystemType);
+                EditorGUILayout.PropertyField(boundaryHeight);
+                changed |= RenderProfile(boundaryVisualizationProfile);
 
                 // Boundary settings depend on the experience scale
-                if (scale == ExperienceScale.Room)
-                {
-                    EditorGUILayout.PropertyField(boundaryHeight);
-                    RenderProfile(boundaryVisualizationProfile);
-                }
-                else
+                if (scale != ExperienceScale.Room)
                 {
                     GUILayout.Space(6f);
                     EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Info);
@@ -235,33 +224,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 EditorGUILayout.PropertyField(teleportDuration);
             }
 
+            GUILayout.Space(12f);
+            changed |= RenderProfile(registeredComponentsProfile);
+
+            if (!changed)
+            {
+                changed = EditorGUI.EndChangeCheck();
+            }
+
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
 
-            if (EditorGUI.EndChangeCheck())
+            if (changed)
             {
                 EditorApplication.delayCall += () => MixedRealityManager.Instance.ResetConfiguration(configurationProfile);
             }
-        }
-
-        private static void RenderProfile(SerializedProperty property)
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PropertyField(property);
-
-            if (property.objectReferenceValue == null)
-            {
-                if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton))
-                {
-                    var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
-                    Debug.Assert(profileTypeName != null, "No Type Found");
-                    ScriptableObject profile = CreateInstance(profileTypeName);
-                    profile.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject));
-                    property.objectReferenceValue = profile;
-                }
-            }
-
-            EditorGUILayout.EndHorizontal();
         }
     }
 }
