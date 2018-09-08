@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -19,6 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private static readonly GUIContent KeyCodeContent = new GUIContent("KeyCode", "The keyboard key that will trigger the action.");
         private static readonly GUIContent ActionContent = new GUIContent("Action", "The action to trigger when a keyboard key is pressed or keyword is recognized.");
 
+        private SerializedProperty recognizerStartBehaviour;
+        private SerializedProperty recognitionConfidenceLevel;
         private SerializedProperty speechCommands;
         private static GUIContent[] actionLabels;
         private static int[] actionIds;
@@ -34,6 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
                 MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null) { return; }
 
+            recognizerStartBehaviour = serializedObject.FindProperty("startBehavior");
+            recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
             speechCommands = serializedObject.FindProperty("speechCommands");
             actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
             actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
@@ -42,13 +45,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);
-
             if (!CheckMixedRealityManager())
             {
                 return;
             }
 
+            if (GUILayout.Button("Back to Configuration Profile"))
+            {
+                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+            }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Speech Commands are any/all spoken keywords your users will be able say to raise an Input Action in your application.", MessageType.Info);
 
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
@@ -64,6 +72,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             }
 
             serializedObject.Update();
+
+            EditorGUILayout.PropertyField(recognizerStartBehaviour);
+            EditorGUILayout.PropertyField(recognitionConfidenceLevel);
+
             RenderList(speechCommands);
             serializedObject.ApplyModifiedProperties();
         }

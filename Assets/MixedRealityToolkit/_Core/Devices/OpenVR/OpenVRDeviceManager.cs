@@ -1,18 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.UnityInput;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
+namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
 {
     /// <summary>
     /// Manages Open VR Devices using unity's input system.
     /// </summary>
-    public class OpenVRDeviceManager : UnityDeviceManager
+    public class OpenVRDeviceManager : UnityJoystickManager
     {
         /// <summary>
         /// Constructor.
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR
         #region Controller Utilities
 
         /// <inheritdoc />
-        protected override GenericUnityController GetOrAddController(string joystickName)
+        protected override GenericJoystickController GetOrAddController(string joystickName)
         {
             // If a device is already registered with the ID provided, just return it.
             if (ActiveControllers.ContainsKey(joystickName))

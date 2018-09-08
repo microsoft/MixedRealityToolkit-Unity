@@ -2,12 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async.AwaitYieldInstructions;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -144,39 +144,46 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
 
         private void RemoveTouch(Touch touch)
         {
+            TouchPointer touchPointer = null;
+
             foreach (var knownTouch in activeTouches)
             {
                 if (knownTouch.TouchData.fingerId == touch.fingerId)
                 {
-                    if (touch.phase == TouchPhase.Ended)
-                    {
-                        if (knownTouch.Lifetime < K_CONTACT_EPSILON)
-                        {
-                            InputSystem.RaiseHoldCanceled(this, HoldAction);
-                        }
-                        else if (knownTouch.Lifetime < MaxTapContactTime)
-                        {
-                            InputSystem.RaiseHoldCanceled(this, HoldAction);
-                            InputSystem.RaisePointerClicked(knownTouch, PointerAction, knownTouch.TouchData.tapCount);
-                        }
-                        else
-                        {
-                            InputSystem.RaiseHoldCompleted(this, HoldAction);
-                        }
-                    }
-                    else
-                    {
-                        InputSystem.RaiseHoldCanceled(this, HoldAction);
-                    }
-
-                    InputSystem.RaisePointerUp(knownTouch, PointerAction);
-                    activeTouches.Remove(knownTouch);
-
-                    if (activeTouches.Count == 0)
-                    {
-                        InputSystem.RaiseSourceLost(this);
-                    }
+                    touchPointer = knownTouch;
+                    break;
                 }
+            }
+
+            if (touchPointer == null) { return; }
+
+            if (touch.phase == TouchPhase.Ended)
+            {
+                if (touchPointer.Lifetime < K_CONTACT_EPSILON)
+                {
+                    InputSystem.RaiseHoldCanceled(this, HoldAction);
+                }
+                else if (touchPointer.Lifetime < MaxTapContactTime)
+                {
+                    InputSystem.RaiseHoldCanceled(this, HoldAction);
+                    InputSystem.RaisePointerClicked(touchPointer, PointerAction, touchPointer.TouchData.tapCount);
+                }
+                else
+                {
+                    InputSystem.RaiseHoldCompleted(this, HoldAction);
+                }
+            }
+            else
+            {
+                InputSystem.RaiseHoldCanceled(this, HoldAction);
+            }
+
+            InputSystem.RaisePointerUp(touchPointer, PointerAction);
+            activeTouches.Remove(touchPointer);
+
+            if (activeTouches.Count == 0)
+            {
+                InputSystem.RaiseSourceLost(this);
             }
         }
 

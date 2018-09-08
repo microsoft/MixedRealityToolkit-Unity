@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities
 {
     /// <summary>
     /// A conglomeration of open-source simplex libraries in C# with an emphasis on performance

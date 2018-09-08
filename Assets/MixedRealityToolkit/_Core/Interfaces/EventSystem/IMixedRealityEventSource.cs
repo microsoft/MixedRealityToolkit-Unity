@@ -3,7 +3,7 @@
 
 using System.Collections;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Events
 {
     /// <summary>
     /// Interface to implement an event source.

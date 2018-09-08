@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 {
     /// <summary>
     /// A copy of the <see cref="AnimatorControllerParameter"/> because that class is not Serializable and cannot be modified in the editor.

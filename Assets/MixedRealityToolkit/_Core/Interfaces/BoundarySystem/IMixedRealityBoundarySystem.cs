@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
 {
     /// <summary>
     /// Manager interface for a Boundary system in the Mixed Reality Toolkit

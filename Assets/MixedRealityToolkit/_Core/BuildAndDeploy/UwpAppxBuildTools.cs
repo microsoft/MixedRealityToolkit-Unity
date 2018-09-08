@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -14,7 +14,7 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Build
+namespace Microsoft.MixedReality.Toolkit.Core.Build
 {
     public class UwpAppxBuildTools
     {

@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -231,6 +231,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                                  "To create a UIRaycastCamera in your scene, find this Focus Provider GameObject and add one there.");
                 CreateUiRaycastCamera();
             }
+
+            foreach (var inputSource in InputSystem.DetectedInputSources)
+            {
+                RegisterPointers(inputSource);
+            }
         }
 
         private void Update()
@@ -430,6 +435,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             pointers.Add(new PointerData(pointer));
             return true;
+        }
+
+        private void RegisterPointers(IMixedRealityInputSource inputSource)
+        {
+            // If our input source does not have any pointers, then skip.
+            if (inputSource.Pointers == null) { return; }
+
+            for (int i = 0; i < inputSource.Pointers.Length; i++)
+            {
+                RegisterPointer(inputSource.Pointers[i]);
+
+                // Special Registration for Gaze
+                if (inputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
+                {
+                    gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -816,30 +838,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #region ISourceState Implementation
 
+        /// <inheritdoc />
         public void OnSourceDetected(SourceStateEventData eventData)
         {
-            // If our input source does not have any pointers, then skip.
-            if (eventData.InputSource.Pointers == null) { return; }
-
-            for (var i = 0; i < eventData.InputSource.Pointers.Length; i++)
-            {
-                RegisterPointer(eventData.InputSource.Pointers[i]);
-
-                // Special Registration for Gaze
-                if (eventData.InputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId)
-                {
-                    Debug.Assert(gazeProviderPointingData == null, "Gaze Provider Pointer Data was already registered!");
-
-                    if (gazeProviderPointingData == null)
-                    {
-                        gazeProviderPointingData = new PointerData(eventData.InputSource.Pointers[i]);
-                    }
-
-                    Debug.Assert(gazeProviderPointingData != null);
-                }
-            }
+            RegisterPointers(eventData.InputSource);
         }
 
+        /// <inheritdoc />
         public void OnSourceLost(SourceStateEventData eventData)
         {
             // If the input source does not have pointers, then skip.

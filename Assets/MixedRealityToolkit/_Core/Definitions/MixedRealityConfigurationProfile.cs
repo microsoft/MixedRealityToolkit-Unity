@@ -1,20 +1,20 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Attributes;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 {
     /// <summary>
     /// Configuration profile settings for the Mixed Reality Toolkit.
@@ -174,15 +174,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
             get { return enableDictation && enableInputSystem; }
             private set { enableDictation = value; }
         }
-
-        [SerializeField]
-        private int recognitionConfidenceLevel = 1;
-
-        /// <summary>
-        /// The speech recognizer's minimum confidence level setting that will raise the action.<para/>
-        /// 0 == High, 1 == Medium, 2 == Low, 3 == Unknown
-        /// </summary>
-        public int SpeechRecognitionConfidenceLevel => recognitionConfidenceLevel;
 
         [SerializeField]
         [Tooltip("Enable Touch Screen Input for your application.")]

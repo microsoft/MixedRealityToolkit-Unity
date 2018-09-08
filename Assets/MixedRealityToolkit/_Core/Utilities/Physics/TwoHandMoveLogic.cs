@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
 {
     /// <summary>
     /// Implements a movement logic that uses the model of angular rotations along a sphere whose 

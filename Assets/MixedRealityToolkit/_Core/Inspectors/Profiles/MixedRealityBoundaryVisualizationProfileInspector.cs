@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
 using UnityEngine;
 
@@ -57,22 +58,28 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            EditorGUILayout.LabelField("Boundary Visualization Options", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Boundary visualizations can help users stay oriented and comfortable in the experience.", MessageType.Info);
-            EditorGUILayout.Space();
-
             if (!CheckMixedRealityManager())
             {
                 return;
             }
 
-            serializedObject.Update();
+            if (GUILayout.Button("Back to Configuration Profile"))
+            {
+                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+            }
 
-            GUILayout.Space(12f);
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Boundary Visualization Options", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Boundary visualizations can help users stay oriented and comfortable in the experience.", MessageType.Info);
+            EditorGUILayout.Space();
+            serializedObject.Update();
             EditorGUILayout.LabelField("Floor Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(showFloor, showContent);
             EditorGUILayout.PropertyField(floorMaterial, materialContent);
-            EditorGUILayout.PropertyField(floorScale, scaleContent);
+            var prevWideMode = EditorGUIUtility.wideMode;
+            EditorGUIUtility.wideMode = true;
+            EditorGUILayout.PropertyField(floorScale, scaleContent, GUILayout.ExpandWidth(true));
+            EditorGUIUtility.wideMode = prevWideMode;
 
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Play Area Settings:", EditorStyles.boldLabel);
