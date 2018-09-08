@@ -606,8 +606,8 @@ MonoBehaviour:
       invertYAxis: 0
     - id: 2
       description: Grip Press
-      axisType: 2
-      inputType: 7
+      axisType: 3
+      inputType: 13
       inputAction:
         id: 0
         description: None
