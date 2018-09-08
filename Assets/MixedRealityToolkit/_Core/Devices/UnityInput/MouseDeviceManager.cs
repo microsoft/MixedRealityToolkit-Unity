@@ -3,13 +3,14 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 {
-    public class MouseDeviceManager : BaseDeviceManager
+    public class MouseDeviceManager : BaseDeviceManager, IMixedRealityComponent
     {
         public MouseDeviceManager(string name, uint priority) : base(name, priority) { }
 
