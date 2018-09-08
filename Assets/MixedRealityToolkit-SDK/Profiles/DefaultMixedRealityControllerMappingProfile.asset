@@ -1829,7 +1829,7 @@ MonoBehaviour:
     useCustomInteractionMappings: 0
     interactions:
     - id: 0
-      description: Touch Pointer Position
+      description: Touch Pointer Delta
       axisType: 4
       inputType: 4
       inputAction:
@@ -1842,6 +1842,19 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
     - id: 1
+      description: Touch Pointer Position
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
       description: Touch Press
       axisType: 2
       inputType: 6
@@ -1849,32 +1862,6 @@ MonoBehaviour:
         id: 1
         description: Select
         axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 2
-      description: Touch Hold
-      axisType: 2
-      inputType: 24
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 3
-      description: Touch Manipulation
-      axisType: 4
-      inputType: 21
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
       keyCode: 0
       axisCodeX: 
       axisCodeY: 

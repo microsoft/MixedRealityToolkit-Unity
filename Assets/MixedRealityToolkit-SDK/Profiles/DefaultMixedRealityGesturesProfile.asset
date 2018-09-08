@@ -15,8 +15,8 @@ MonoBehaviour:
   - description: Hold
     gestureType: 1
     action:
-      id: 0
-      description: None
+      id: 8
+      description: Hold Action
       axisConstraint: 0
   - description: Navigation
     gestureType: 2
@@ -27,6 +27,6 @@ MonoBehaviour:
   - description: Manipulation
     gestureType: 3
     action:
-      id: 0
-      description: None
+      id: 9
+      description: Manipulate Action
       axisConstraint: 0
