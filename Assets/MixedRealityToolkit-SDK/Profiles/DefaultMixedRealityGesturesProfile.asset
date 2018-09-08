@@ -21,8 +21,8 @@ MonoBehaviour:
   - description: Navigation
     gestureType: 2
     action:
-      id: 0
-      description: None
+      id: 10
+      description: Navigation Action
       axisConstraint: 0
   - description: Manipulation
     gestureType: 3
