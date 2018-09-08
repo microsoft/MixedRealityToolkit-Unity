@@ -12,12 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
     public class MixedRealityInputSystemProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
         private SerializedProperty inputActionsProfile;
+        private SerializedProperty gesturesProfile;
         private SerializedProperty pointerProfile;
-        private SerializedProperty enableSpeechCommands;
         private SerializedProperty speechCommandsProfile;
-        private SerializedProperty enableDictation;
-        private SerializedProperty enableTouchScreenInput;
-        private SerializedProperty touchScreenInputProfile;
         private SerializedProperty enableControllerMapping;
         private SerializedProperty controllerMappingProfile;
 
@@ -34,12 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             }
 
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
+            gesturesProfile = serializedObject.FindProperty("gesturesProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
-            enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
-            enableDictation = serializedObject.FindProperty("enableDictation");
-            enableTouchScreenInput = serializedObject.FindProperty("enableTouchScreenInput");
-            touchScreenInputProfile = serializedObject.FindProperty("touchScreenInputProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
             controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
         }
@@ -68,15 +62,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             bool changed = false;
 
             changed |= RenderProfile(inputActionsProfile);
+            changed |= RenderProfile(gesturesProfile);
             changed |= RenderProfile(pointerProfile);
-
-            EditorGUILayout.PropertyField(enableSpeechCommands);
             changed |= RenderProfile(speechCommandsProfile);
-
-            EditorGUILayout.PropertyField(enableDictation);
-
-            EditorGUILayout.PropertyField(enableTouchScreenInput);
-            changed |= RenderProfile(touchScreenInputProfile);
 
             EditorGUILayout.PropertyField(enableControllerMapping);
             changed |= RenderProfile(controllerMappingProfile);

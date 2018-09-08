@@ -33,6 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty teleportDuration;
         private SerializedProperty boundaryVisualizationProfile;
 
+        private SerializedProperty registeredComponentsProfile;
+
         private MixedRealityConfigurationProfile configurationProfile;
 
         private void OnEnable()
@@ -91,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             teleportSystemType = serializedObject.FindProperty("teleportSystemType");
             teleportDuration = serializedObject.FindProperty("teleportDuration");
             boundaryVisualizationProfile = serializedObject.FindProperty("boundaryVisualizationProfile");
+            registeredComponentsProfile = serializedObject.FindProperty("registeredComponentsProfile");
         }
 
         public override void OnInspectorGUI()
@@ -148,6 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Camera Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableCameraProfile);
+
             changed |= RenderProfile(cameraProfile);
 
             // Input System configuration
@@ -181,6 +185,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.PropertyField(enableTeleportSystem);
             EditorGUILayout.PropertyField(teleportSystemType);
             EditorGUILayout.PropertyField(teleportDuration);
+
+            GUILayout.Space(12f);
+            changed |= RenderProfile(registeredComponentsProfile);
 
             if (!changed)
             {

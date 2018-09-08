@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         /// <inheritdoc />
-        public RayStep[] Rays { get; protected set; }
+        public RayStep[] Rays { get; protected set; } = { new RayStep(Vector3.zero, Vector3.forward) };
 
         /// <inheritdoc />
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
@@ -277,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         /// <inheritdoc />
-        public bool TryGetPointingRay(out Ray pointingRay)
+        public virtual bool TryGetPointingRay(out Ray pointingRay)
         {
             Vector3 pointerPosition;
             TryGetPointerPosition(out pointerPosition);
@@ -286,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         /// <inheritdoc />
-        public bool TryGetPointerRotation(out Quaternion rotation)
+        public virtual bool TryGetPointerRotation(out Quaternion rotation)
         {
             Vector3 pointerRotation = raycastOrigin != null ? raycastOrigin.eulerAngles : transform.eulerAngles;
             rotation = Quaternion.Euler(pointerRotation.x, PointerOrientation, pointerRotation.z);

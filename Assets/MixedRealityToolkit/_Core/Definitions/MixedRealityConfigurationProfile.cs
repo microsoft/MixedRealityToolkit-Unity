@@ -214,6 +214,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
             set { teleportDuration = value; }
         }
 
+        [SerializeField]
+        [Tooltip("All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.")]
+        private MixedRealityRegisteredComponentsProfile registeredComponentsProfile;
+
+        /// <summary>
+        /// All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.
+        /// </summary>
+        public MixedRealityRegisteredComponentsProfile RegisteredComponentsProfile => registeredComponentsProfile;
+
         #endregion Mixed Reality Manager configurable properties
 
         #region ISerializationCallbackReceiver Implementation

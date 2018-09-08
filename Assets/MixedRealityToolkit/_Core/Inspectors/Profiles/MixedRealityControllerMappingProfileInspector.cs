@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using System;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR;
@@ -10,8 +11,10 @@ using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 {
@@ -60,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private float defaultFieldWidth;
         private GUIStyle controllerButtonStyle;
 
-        private List<ControllerRenderProfile> controllerRenderList = new List<ControllerRenderProfile>();
+        private readonly List<ControllerRenderProfile> controllerRenderList = new List<ControllerRenderProfile>();
 
         private void OnEnable()
         {
@@ -184,26 +187,30 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             if (GUILayout.Button(ControllerAddButtonContent, EditorStyles.miniButton))
             {
-                controllerList.InsertArrayElementAtIndex(controllerList.arraySize);
-                var mixedRealityControllerMapping = controllerList.GetArrayElementAtIndex(controllerList.arraySize - 1);
-                var mixedRealityControllerMappingId = mixedRealityControllerMapping.FindPropertyRelative("id");
-                var mixedRealityControllerMappingDescription = mixedRealityControllerMapping.FindPropertyRelative("description");
-                mixedRealityControllerMappingDescription.stringValue = $"Generic Unity Controller {mixedRealityControllerMappingId.intValue = controllerList.arraySize}";
-                var mixedRealityControllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
-                mixedRealityControllerHandedness.intValue = 0;
-                var mixedRealityControllerInteractions = mixedRealityControllerMapping.FindPropertyRelative("interactions");
-                var useCustomInteractionMappings = mixedRealityControllerMapping.FindPropertyRelative("useCustomInteractionMappings");
-                useCustomInteractionMappings.boolValue = true;
-                mixedRealityControllerInteractions.ClearArray();
-                serializedObject.ApplyModifiedProperties();
-                thisProfile.MixedRealityControllerMappingProfiles[controllerList.arraySize - 1].ControllerType.Type = typeof(GenericJoystickController);
+                AddController(controllerList, typeof(GenericJoystickController));
                 return;
             }
 
-            GUILayout.Space(12f);
+            bool reset = false;
+            if (controllerRenderList.Count > 0)
+            {
+                for (var type = 1; type <= (int)SupportedControllerType.TouchScreen; type++)
+                {
+                    if (controllerRenderList.All(profile => profile.ControllerType != (SupportedControllerType)type))
+                    {
+                        if ((SupportedControllerType)type == SupportedControllerType.TouchScreen)
+                        {
+                            AddController(controllerList, typeof(UnityTouchController));
+                            reset = true;
+                        }
+                    }
+                }
+            }
 
             controllerRenderList.Clear();
+            if (reset) { return; }
 
+            GUILayout.Space(12f);
             GUILayout.BeginVertical();
 
             for (int i = 0; i < controllerList.arraySize; i++)
@@ -246,6 +253,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 else if (controllerType == typeof(GenericJoystickController))
                 {
                     supportedControllerType = SupportedControllerType.GenericUnity;
+                }
+                else if (controllerType == typeof(UnityTouchController))
+                {
+                    supportedControllerType = SupportedControllerType.TouchScreen;
                 }
 
                 bool skip = false;
@@ -418,6 +429,26 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             }
 
             GUILayout.EndVertical();
+        }
+
+        private void AddController(SerializedProperty controllerList, Type controllerType)
+        {
+            controllerList.InsertArrayElementAtIndex(controllerList.arraySize);
+            var index = controllerList.arraySize - 1;
+            var mixedRealityControllerMapping = controllerList.GetArrayElementAtIndex(index);
+            var mixedRealityControllerMappingId = mixedRealityControllerMapping.FindPropertyRelative("id");
+            mixedRealityControllerMappingId.intValue = index;
+            var mixedRealityControllerMappingDescription = mixedRealityControllerMapping.FindPropertyRelative("description");
+            mixedRealityControllerMappingDescription.stringValue = controllerType.Name;
+            var mixedRealityControllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
+            mixedRealityControllerHandedness.intValue = 0;
+            var mixedRealityControllerInteractions = mixedRealityControllerMapping.FindPropertyRelative("interactions");
+            var useCustomInteractionMappings = mixedRealityControllerMapping.FindPropertyRelative("useCustomInteractionMappings");
+            useCustomInteractionMappings.boolValue = controllerType == typeof(GenericOpenVRController) || controllerType == typeof(GenericJoystickController);
+            mixedRealityControllerInteractions.ClearArray();
+            serializedObject.ApplyModifiedProperties();
+            thisProfile.MixedRealityControllerMappingProfiles[index].ControllerType.Type = controllerType;
+            thisProfile.MixedRealityControllerMappingProfiles[index].SetDefaultInteractionMapping(true);
         }
     }
 }
