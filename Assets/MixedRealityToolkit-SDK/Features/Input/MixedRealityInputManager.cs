@@ -195,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             speechEventData = new SpeechEventData(EventSystem.current);
             dictationEventData = new DictationEventData(EventSystem.current);
 
-            if (MixedRealityManager.Instance.ActiveProfile.IsTouchScreenInputEnabled)
+            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsTouchScreenInputEnabled)
             {
                 TouchscreenInputSource = new TouchscreenInputSource();
             }
