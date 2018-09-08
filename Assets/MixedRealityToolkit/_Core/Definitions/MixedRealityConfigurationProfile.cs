@@ -12,6 +12,8 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions
@@ -136,18 +138,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
             private set { pointerProfile = value; }
         }
 
-        [SerializeField]
-        [Tooltip("Enable Speech Commands on startup.")]
-        private bool enableSpeechCommands = false;
+        private IMixedRealitySpeechSystem speechSystem;
 
         /// <summary>
-        /// Enable and configure the speech commands for your application.
+        /// Current Registered Speech System.
         /// </summary>
-        public bool IsSpeechCommandsEnabled
-        {
-            get { return speechCommandsProfile != null && enableSpeechCommands && enableInputSystem; }
-            private set { enableSpeechCommands = value; }
-        }
+        public IMixedRealitySpeechSystem SpeechSystem => speechSystem ?? (speechSystem = MixedRealityManager.Instance.GetManager<IMixedRealitySpeechSystem>());
+
+        /// <summary>
+        /// Is the speech Commands Enabled?
+        /// </summary>
+        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && enableInputSystem && SpeechSystem != null;
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
@@ -162,18 +163,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
             private set { speechCommandsProfile = value; }
         }
 
-        [SerializeField]
-        [Tooltip("Enable dictation input for your application.")]
-        private bool enableDictation = false;
+        private IMixedRealityDictationManager dictationManager;
 
         /// <summary>
-        /// Enable dictation input for your application.
+        /// Current Registered Dictation Manager.
         /// </summary>
-        public bool IsDictationEnabled
-        {
-            get { return enableDictation && enableInputSystem; }
-            private set { enableDictation = value; }
-        }
+        public IMixedRealityDictationManager DictationManager => dictationManager ?? (dictationManager = MixedRealityManager.Instance.GetManager<IMixedRealityDictationManager>());
+
+        /// <summary>
+        /// Is Dictation Enabled?
+        /// </summary>
+        public bool IsDictationEnabled => enableInputSystem && DictationManager != null;
 
         [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]
@@ -292,6 +292,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
             get { return teleportDuration; }
             set { teleportDuration = value; }
         }
+
+        [SerializeField]
+        [Tooltip("All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.")]
+        private MixedRealityRegisteredComponentsProfile registeredComponentsProfile;
+
+        /// <summary>
+        /// All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.
+        /// </summary>
+        public MixedRealityRegisteredComponentsProfile RegisteredComponentsProfile => registeredComponentsProfile;
 
         #endregion Mixed Reality Manager configurable properties
 
