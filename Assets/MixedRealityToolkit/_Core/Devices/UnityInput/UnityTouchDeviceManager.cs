@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
     /// <summary>
     /// Manages Touch devices using unity input system.
     /// </summary>
-    public class UnityTouchDeviceManager : BaseDeviceManager
+    public class UnityTouchDeviceManager : BaseDeviceManager, IMixedRealityComponent
     {
         /// <summary>
         /// Constructor.
