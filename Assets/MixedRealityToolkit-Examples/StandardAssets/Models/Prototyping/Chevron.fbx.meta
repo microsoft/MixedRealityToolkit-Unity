@@ -1,30 +1,20 @@
 fileFormatVersion: 2
-guid: 1104611d051d4e42a68391888b61b32e
+guid: dc6c0266b7f350f40b24b8ddfae317b4
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
+    2100000: cheveronMaterial
     2300000: //RootNode
     3300000: //RootNode
-    4300000: ShaderBall
-    4300002: Object003
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shaderBall
-    second: {fileID: 2100000, guid: e422124f1183b9f42af13a837f1cb706, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: shader_ball
-    second: {fileID: 2100000, guid: 3b60d35429b8406b82b7863df5a08351, type: 2}
+    4300000: cheveron
+  externalObjects: {}
   materials:
     importMaterials: 0
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -75,7 +65,7 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
