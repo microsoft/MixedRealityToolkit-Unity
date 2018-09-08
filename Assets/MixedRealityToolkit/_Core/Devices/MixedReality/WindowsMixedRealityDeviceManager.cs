@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using MixedRealityGestureSettings = Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem.GestureSettings;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
+using MixedRealityGestureSettings = Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem.GestureSettings;
+
 #if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
