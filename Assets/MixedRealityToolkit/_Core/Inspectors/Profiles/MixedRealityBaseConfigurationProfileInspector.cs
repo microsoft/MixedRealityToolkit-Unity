@@ -96,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                     changed = true;
                 }
             }
+
             EditorGUILayout.EndHorizontal();
             return changed;
         }

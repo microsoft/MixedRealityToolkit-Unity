@@ -22,13 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         // Input system properties
         private SerializedProperty enableInputSystem;
         private SerializedProperty inputSystemType;
-        private SerializedProperty inputActionsProfile;
-        private SerializedProperty pointerProfile;
-        private SerializedProperty speechCommandsProfile;
-        private SerializedProperty enableTouchScreenInput;
-        private SerializedProperty touchScreenInputProfile;
-        private SerializedProperty enableControllerMapping;
-        private SerializedProperty controllerMappingProfile;
+        private SerializedProperty inputSystemProfile;
         // Boundary system properties
         private SerializedProperty enableBoundarySystem;
         private SerializedProperty boundarySystemType;
@@ -89,13 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             // Input system configuration
             enableInputSystem = serializedObject.FindProperty("enableInputSystem");
             inputSystemType = serializedObject.FindProperty("inputSystemType");
-            inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
-            pointerProfile = serializedObject.FindProperty("pointerProfile");
-            speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
-            enableTouchScreenInput = serializedObject.FindProperty("enableTouchScreenInput");
-            touchScreenInputProfile = serializedObject.FindProperty("touchScreenInputProfile");
-            enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
-            controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
+            inputSystemProfile = serializedObject.FindProperty("inputSystemProfile");
             // Boundary system configuration
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
             boundarySystemType = serializedObject.FindProperty("boundarySystemType");
@@ -170,59 +158,33 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Input System Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableInputSystem);
-
-            if (enableInputSystem.boolValue)
-            {
-                EditorGUILayout.PropertyField(inputSystemType);
-                changed |= RenderProfile(inputActionsProfile);
-                changed |= RenderProfile(pointerProfile);
-
-                changed |= RenderProfile(speechCommandsProfile);
-
-                EditorGUILayout.PropertyField(enableTouchScreenInput);
-
-                if (enableTouchScreenInput.boolValue)
-                {
-                    changed |= RenderProfile(touchScreenInputProfile);
-                }
-
-                EditorGUILayout.PropertyField(enableControllerMapping);
-
-                if (enableControllerMapping.boolValue)
-                {
-                    changed |= RenderProfile(controllerMappingProfile);
-                }
-            }
+            EditorGUILayout.PropertyField(inputSystemType);
+            changed |= RenderProfile(inputSystemProfile);
 
             // Boundary System configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Boundary System Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableBoundarySystem);
+            EditorGUILayout.PropertyField(boundarySystemType);
 
-            if (enableBoundarySystem.boolValue)
+            // Boundary settings depend on the experience scale
+            if (scale == ExperienceScale.Room)
             {
-                EditorGUILayout.PropertyField(boundarySystemType);
                 EditorGUILayout.PropertyField(boundaryHeight);
                 changed |= RenderProfile(boundaryVisualizationProfile);
-
-                // Boundary settings depend on the experience scale
-                if (scale != ExperienceScale.Room)
-                {
-                    GUILayout.Space(6f);
-                    EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Info);
-                }
+            }
+            else
+            {
+                GUILayout.Space(6f);
+                EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Info);
             }
 
             // Teleport System configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Teleport System Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableTeleportSystem);
-
-            if (enableTeleportSystem.boolValue)
-            {
-                EditorGUILayout.PropertyField(teleportSystemType);
-                EditorGUILayout.PropertyField(teleportDuration);
-            }
+            EditorGUILayout.PropertyField(teleportSystemType);
+            EditorGUILayout.PropertyField(teleportDuration);
 
             GUILayout.Space(12f);
             changed |= RenderProfile(registeredComponentsProfile);

@@ -83,11 +83,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
 
             if (MixedRealityManager.HasActiveProfile &&
                 MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
-                MixedRealityManager.Instance.ActiveProfile.PointerProfile != null)
+                MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
             {
-                for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions.Length; i++)
+                for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions.Length; i++)
                 {
-                    var pointerProfile = MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions[i];
+                    var pointerProfile = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions[i];
 
                     if (!useSpecificType)
                     {
