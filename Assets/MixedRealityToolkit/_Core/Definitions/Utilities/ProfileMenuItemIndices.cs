@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         SpatialAwareness,
         Gestures,
         TouchInput,
+        Diagnostics,
 
         Assembly = 99
     }
