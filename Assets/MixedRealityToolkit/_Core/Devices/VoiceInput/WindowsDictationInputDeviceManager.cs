@@ -196,8 +196,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                 return null;
             }
 
-            isTransitioning = true;
             IsListening = false;
+            isTransitioning = true;
 
             if (hasListener)
             {
