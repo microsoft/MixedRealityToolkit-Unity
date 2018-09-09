@@ -15,6 +15,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
     [Serializable]
     public struct MixedRealityComponentConfiguration
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="componentType">The concrete type for the system, feature or manager.</param>
+        /// <param name="componentName">The simple, human readable name for the system, feature, or manager.</param>
+        /// <param name="priority">The priority this system, feature, or manager will be initialized in.</param>
+        /// <param name="runtimePlatform">The runtime platform(s) to run this system, feature, or manager on.</param>
+        /// <param name="configurationProfile">The configuration profile for the system, feature, or manager.</param>
+        /// <param name="editorPlatform">The editor platform(s) to run this system, feature, or manager on.</param>
+        public MixedRealityComponentConfiguration(SystemType componentType, string componentName, uint priority, RuntimePlatform runtimePlatform, ScriptableObject configurationProfile
+#if UNITY_EDITOR
+            , UnityEditor.BuildTarget editorPlatform
+#endif
+        )
+        {
+            this.componentType = componentType;
+            this.componentName = componentName;
+            this.priority = priority;
+            this.runtimePlatform = runtimePlatform;
+            this.configurationProfile = configurationProfile;
+#if UNITY_EDITOR
+            this.editorPlatform = editorPlatform;
+#endif
+        }
+
         [SerializeField]
         [Implements(typeof(IMixedRealityComponent), TypeGrouping.ByNamespaceFlat)]
         private SystemType componentType;
