@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 
         [SerializeField]
         [Tooltip("All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.")]
-        private MixedRealityRegisteredComponentsProfile registeredComponentsProfile;
+        private MixedRealityRegisteredComponentsProfile registeredComponentsProfile = null;
 
         /// <summary>
         /// All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.
