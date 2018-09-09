@@ -53,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             get { return pointerProfile; }
             private set { pointerProfile = value; }
         }
+
         private IMixedRealitySpeechSystem speechSystem;
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// <summary>
         /// Is the speech Commands Enabled?
         /// </summary>
-        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && SpeechSystem != null;
+        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && SpeechSystem != null && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled;
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
@@ -115,6 +116,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             get { return controllerMappingProfile; }
             private set { controllerMappingProfile = value; }
         }
-
     }
 }
