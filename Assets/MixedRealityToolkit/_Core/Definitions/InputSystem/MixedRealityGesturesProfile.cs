@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
 
         [SerializeField]
         [Tooltip("Should the Navigation use Rails on start?\nNote: This can be changed at runtime to switch between the two Navigation settings.")]
-        private bool useRailsNavigation;
+        private bool useRailsNavigation = false;
 
         public bool UseRailsNavigation => useRailsNavigation;
 
