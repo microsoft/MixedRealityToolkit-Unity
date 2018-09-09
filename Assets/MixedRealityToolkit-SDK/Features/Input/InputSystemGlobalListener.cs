@@ -16,15 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private static IMixedRealityInputSystem inputSystem = null;
         protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
-        private readonly WaitUntil waitUntilInputSystemValid = new WaitUntil(() => InputSystem != null);
+        private readonly WaitUntil waitUntilInputSystemValid = new WaitUntil(() => MixedRealityManager.Instance != null && InputSystem != null);
 
         protected virtual async void OnEnable()
         {
-            Debug.Assert(MixedRealityManager.IsInitialized, "No Mixed Reality Manager found in the scene.  Be sure to run the Mixed Reality Configuration.");
-            Debug.Assert(InputSystem != null, "No Input System found, Did you set it up in your configuration profile?");
-            Debug.Log("Waiting for Input System Registration...");
             await waitUntilInputSystemValid;
-            Debug.Log("Found Input System!");
             InputSystem.Register(gameObject);
         }
 
