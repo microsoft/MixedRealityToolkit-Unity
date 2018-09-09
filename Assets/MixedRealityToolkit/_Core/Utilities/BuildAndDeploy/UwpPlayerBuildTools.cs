@@ -10,7 +10,7 @@ using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Build
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 {
     /// <summary>
     /// Class containing various utility methods to build a WSA solution from a Unity project.
