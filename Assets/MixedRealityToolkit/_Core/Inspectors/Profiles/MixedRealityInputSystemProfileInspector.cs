@@ -15,6 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty gesturesProfile;
         private SerializedProperty pointerProfile;
         private SerializedProperty speechCommandsProfile;
+        private SerializedProperty enableTouchScreenInput;
+        private SerializedProperty touchScreenInputProfile;
         private SerializedProperty enableControllerMapping;
         private SerializedProperty controllerMappingProfile;
 
@@ -34,6 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             gesturesProfile = serializedObject.FindProperty("gesturesProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
             speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
+            enableTouchScreenInput = serializedObject.FindProperty("enableTouchScreenInput");
+            touchScreenInputProfile = serializedObject.FindProperty("touchScreenInputProfile");
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
             controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
         }
@@ -66,6 +70,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             changed |= RenderProfile(gesturesProfile);
             changed |= RenderProfile(pointerProfile);
             changed |= RenderProfile(speechCommandsProfile);
+
+            EditorGUILayout.PropertyField(enableTouchScreenInput);
+            changed |= RenderProfile(touchScreenInputProfile);
 
             EditorGUILayout.PropertyField(enableControllerMapping);
             changed |= RenderProfile(controllerMappingProfile);

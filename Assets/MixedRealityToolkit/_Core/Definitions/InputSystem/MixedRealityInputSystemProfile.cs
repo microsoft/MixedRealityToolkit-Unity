@@ -53,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             get { return pointerProfile; }
             private set { pointerProfile = value; }
         }
+
         private IMixedRealitySpeechSystem speechSystem;
 
         /// <summary>
@@ -89,6 +90,32 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// Is Dictation Enabled?
         /// </summary>
         public bool IsDictationEnabled => MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && DictationManager != null;
+
+        [SerializeField]
+        [Tooltip("Enable Touch Screen Input for your application.")]
+        private bool enableTouchScreenInput = false;
+
+        /// <summary>
+        /// Enable Touch Screen Input for your application.
+        /// </summary>
+        public bool IsTouchScreenInputEnabled
+        {
+            get { return touchScreenInputProfile != null && enableTouchScreenInput && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled; }
+            private set { enableTouchScreenInput = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Touch Screen Input Source profile for wiring up Actions.")]
+        private MixedRealityTouchInputProfile touchScreenInputProfile;
+
+        /// <summary>
+        /// Touch Screen Input Source profile for wiring up Actions.
+        /// </summary>
+        public MixedRealityTouchInputProfile TouchScreenInputProfile
+        {
+            get { return touchScreenInputProfile; }
+            private set { touchScreenInputProfile = value; }
+        }
 
         [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]
