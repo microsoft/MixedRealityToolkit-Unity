@@ -3,6 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
@@ -27,6 +29,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         }
 
         [SerializeField]
+        [Tooltip("Gesture Mapping Profile for recognizing gestures across all platforms.")]
+        private MixedRealityGesturesProfile gesturesProfile;
+
+        /// <summary>
+        /// Gesture Mapping Profile for recognizing gestures across all platforms.
+        /// </summary>
+        public MixedRealityGesturesProfile GesturesProfile
+        {
+            get { return gesturesProfile; }
+            private set { gesturesProfile = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Pointer Configuration options")]
         private MixedRealityPointerProfile pointerProfile;
 
@@ -38,19 +53,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             get { return pointerProfile; }
             private set { pointerProfile = value; }
         }
-
-        [SerializeField]
-        [Tooltip("Enable Speech Commands on startup.")]
-        private bool enableSpeechCommands = false;
+        private IMixedRealitySpeechSystem speechSystem;
 
         /// <summary>
-        /// Enable and configure the speech commands for your application.
+        /// Current Registered Speech System.
         /// </summary>
-        public bool IsSpeechCommandsEnabled
-        {
-            get { return speechCommandsProfile != null && enableSpeechCommands; }
-            private set { enableSpeechCommands = value; }
-        }
+        public IMixedRealitySpeechSystem SpeechSystem => speechSystem ?? (speechSystem = MixedRealityManager.Instance.GetManager<IMixedRealitySpeechSystem>());
+
+        /// <summary>
+        /// Is the speech Commands Enabled?
+        /// </summary>
+        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && SpeechSystem != null;
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
@@ -65,44 +78,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             private set { speechCommandsProfile = value; }
         }
 
-        [SerializeField]
-        [Tooltip("Enable dictation input for your application.")]
-        private bool enableDictation = false;
+        private IMixedRealityDictationManager dictationManager;
 
         /// <summary>
-        /// Enable dictation input for your application.
+        /// Current Registered Dictation Manager.
         /// </summary>
-        public bool IsDictationEnabled
-        {
-            get { return enableDictation; }
-            private set { enableDictation = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Enable Touch Screen Input for your application.")]
-        private bool enableTouchScreenInput = false;
+        public IMixedRealityDictationManager DictationManager => dictationManager ?? (dictationManager = MixedRealityManager.Instance.GetManager<IMixedRealityDictationManager>());
 
         /// <summary>
-        /// Enable Touch Screen Input for your application.
+        /// Is Dictation Enabled?
         /// </summary>
-        public bool IsTouchScreenInputEnabled
-        {
-            get { return touchScreenInputProfile != null && enableTouchScreenInput; }
-            private set { enableTouchScreenInput = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Touch Screen Input Source profile for wiring up Actions.")]
-        private MixedRealityTouchInputProfile touchScreenInputProfile;
-
-        /// <summary>
-        /// Touch Screen Input Source profile for wiring up Actions.
-        /// </summary>
-        public MixedRealityTouchInputProfile TouchScreenInputProfile
-        {
-            get { return touchScreenInputProfile; }
-            private set { touchScreenInputProfile = value; }
-        }
+        public bool IsDictationEnabled => MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && DictationManager != null;
 
         [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]

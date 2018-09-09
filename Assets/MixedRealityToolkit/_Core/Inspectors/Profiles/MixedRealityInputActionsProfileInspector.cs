@@ -38,10 +38,24 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 return;
             }
 
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+
+                if (GUILayout.Button("Back to Configuration Profile"))
+                {
+                    Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                }
+
+                return;
+            }
+
             if (GUILayout.Button("Back to Input Profile"))
             {
                 Selection.activeObject = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile;
             }
+
+            EditorGUILayout.Space();
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Input Actions", EditorStyles.boldLabel);

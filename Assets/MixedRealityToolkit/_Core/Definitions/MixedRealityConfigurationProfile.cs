@@ -11,6 +11,8 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions
@@ -96,11 +98,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
+        [Tooltip("Input System profile for setting wiring up events and actions to input devices.")]
         private MixedRealityInputSystemProfile inputSystemProfile;
 
         /// <summary>
-        /// Input System Action Mapping profile for wiring up Controller input to Actions.
+        /// Input System profile for setting wiring up events and actions to input devices.
         /// </summary>
         public MixedRealityInputSystemProfile InputSystemProfile
         {
@@ -213,6 +215,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
             get { return teleportDuration; }
             set { teleportDuration = value; }
         }
+
+        [SerializeField]
+        [Tooltip("All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.")]
+        private MixedRealityRegisteredComponentsProfile registeredComponentsProfile;
+
+        /// <summary>
+        /// All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.
+        /// </summary>
+        public MixedRealityRegisteredComponentsProfile RegisteredComponentsProfile => registeredComponentsProfile;
 
         #endregion Mixed Reality Manager configurable properties
 
