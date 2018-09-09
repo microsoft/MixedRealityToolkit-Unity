@@ -52,3 +52,11 @@ MonoBehaviour:
     runtimePlatform: 2752580
     configurationProfile: {fileID: 0}
     editorPlatform: 131204
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityTouchDeviceManager,
+        Microsoft.MixedReality.Toolkit
+    componentName: Unity Touch Input Manger
+    priority: 10
+    runtimePlatform: -1
+    configurationProfile: {fileID: 0}
+    editorPlatform: -1

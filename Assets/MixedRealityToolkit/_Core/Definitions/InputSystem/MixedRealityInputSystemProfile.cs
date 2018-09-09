@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// <summary>
         /// Is the speech Commands Enabled?
         /// </summary>
-        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && SpeechSystem != null;
+        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && SpeechSystem != null && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled;
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
@@ -92,32 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         public bool IsDictationEnabled => MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && DictationManager != null;
 
         [SerializeField]
-        [Tooltip("Enable Touch Screen Input for your application.")]
-        private bool enableTouchScreenInput = false;
-
-        /// <summary>
-        /// Enable Touch Screen Input for your application.
-        /// </summary>
-        public bool IsTouchScreenInputEnabled
-        {
-            get { return touchScreenInputProfile != null && enableTouchScreenInput && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled; }
-            private set { enableTouchScreenInput = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Touch Screen Input Source profile for wiring up Actions.")]
-        private MixedRealityTouchInputProfile touchScreenInputProfile;
-
-        /// <summary>
-        /// Touch Screen Input Source profile for wiring up Actions.
-        /// </summary>
-        public MixedRealityTouchInputProfile TouchScreenInputProfile
-        {
-            get { return touchScreenInputProfile; }
-            private set { touchScreenInputProfile = value; }
-        }
-
-        [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]
         private bool enableControllerMapping = false;
 
@@ -142,6 +116,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             get { return controllerMappingProfile; }
             private set { controllerMappingProfile = value; }
         }
-
     }
 }

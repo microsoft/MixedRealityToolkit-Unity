@@ -56,8 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             }
 
             EditorGUILayout.Space();
-
-            EditorGUILayout.Space();
             EditorGUILayout.LabelField("Input Actions", EditorStyles.boldLabel);
 
             EditorGUILayout.HelpBox("Input Actions are any/all actions your users will be able to make when interacting with your application.\n\n" +

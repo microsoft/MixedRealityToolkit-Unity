@@ -80,8 +80,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
             new MixedRealityControllerMapping(8, "Oculus Touch Controller Left", typeof(OculusTouchController), Handedness.Left),
             new MixedRealityControllerMapping(9, "Oculus Touch Controller Right", typeof(OculusTouchController), Handedness.Right),
             new MixedRealityControllerMapping(10, "Oculus Remote Controller", typeof(OculusRemoteController)),
-            new MixedRealityControllerMapping(11, "Generic OpenVR Controller Left", typeof(GenericOpenVRController), Handedness.Left, true),
-            new MixedRealityControllerMapping(12, "Generic OpenVR Controller Right", typeof(GenericOpenVRController), Handedness.Right, true),
+            new MixedRealityControllerMapping(11, "Touch Screen Input", typeof(UnityTouchController), Handedness.Any),
+            new MixedRealityControllerMapping(12, "Generic OpenVR Controller Left", typeof(GenericOpenVRController), Handedness.Left, true),
+            new MixedRealityControllerMapping(13, "Generic OpenVR Controller Right", typeof(GenericOpenVRController), Handedness.Right, true),
         };
 
         public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappingProfiles;
