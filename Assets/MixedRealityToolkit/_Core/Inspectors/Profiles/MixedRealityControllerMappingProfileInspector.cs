@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             mixedRealityControllerMappingProfiles = serializedObject.FindProperty("mixedRealityControllerMappingProfiles");
 
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
-                 MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null)
+                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 return;
             }
@@ -95,9 +95,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 return;
             }
 
-            if (GUILayout.Button("Back to Configuration Profile"))
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+
+                if (GUILayout.Button("Back to Configuration Profile"))
+                {
+                    Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                }
+
+                return;
+            }
+
+            if (GUILayout.Button("Back to Input Profile"))
+            {
+                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile;
             }
 
             EditorGUILayout.Space();
@@ -105,13 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.HelpBox("Controller templates define all the controllers your users will be able to use in your application.\n\n" +
                                     "After defining all your Input Actions, you can then wire them up to hardware sensors, controllers, and other input devices.", MessageType.Info);
 
-            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
-            {
-                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-                return;
-            }
-
-            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null)
+            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
                 return;
