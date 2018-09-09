@@ -84,6 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             bool changed = false;
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(property);
+
             if (property.objectReferenceValue == null)
             {
                 if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton))

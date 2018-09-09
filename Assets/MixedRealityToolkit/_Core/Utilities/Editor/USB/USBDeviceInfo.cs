@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Build.Usb
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Usb
 {
     [Serializable]
     public class USBDeviceInfo
