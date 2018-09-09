@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using System.Collections.Generic;
 using System.Linq;
-using MixedRealityGestureSettings = Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem.GestureSettings;
 
 #if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
@@ -64,6 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 #endif // UNITY_WSA
                 gestureRecognizerEnabled = value;
 #if UNITY_WSA
+                if (!Application.isPlaying) { return; }
+
                 if (!gestureRecognizer.IsCapturingGestures() && gestureRecognizerEnabled)
                 {
                     NavigationRecognizerEnabled = false;
@@ -103,6 +104,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 #endif // UNITY_WSA
                 navigationRecognizerEnabled = value;
 #if UNITY_WSA
+                if (!Application.isPlaying) { return; }
+
                 if (!navigationGestureRecognizer.IsCapturingGestures() && navigationRecognizerEnabled)
                 {
                     GestureRecognizerEnabled = false;
@@ -117,29 +120,71 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             }
         }
 
-        private static MixedRealityGestureSettings gestureSettings = MixedRealityGestureSettings.Tap | MixedRealityGestureSettings.ManipulationTranslate | MixedRealityGestureSettings.Hold;
+        private static WindowsGestureSettings gestureSettings = WindowsGestureSettings.Tap | WindowsGestureSettings.ManipulationTranslate | WindowsGestureSettings.Hold;
 
         /// <summary>
         /// Current Gesture Settings for the GestureRecognizer
         /// </summary>
-        public static MixedRealityGestureSettings GestureSettings
+        public static WindowsGestureSettings GestureSettings
         {
             get { return gestureSettings; }
             set
             {
                 gestureSettings = value;
 #if UNITY_WSA
-                gestureRecognizer.SetRecognizableGestures(WSAGestureSettings);
+                if (Application.isPlaying)
+                {
+                    gestureRecognizer.SetRecognizableGestures(WSAGestureSettings);
+                }
 #endif
             }
         }
 
-        public static MixedRealityGestureSettings NavigationSettings { get; set; } = MixedRealityGestureSettings.NavigationX | MixedRealityGestureSettings.NavigationY | MixedRealityGestureSettings.NavigationZ;
+        private static WindowsGestureSettings navigationSettings = WindowsGestureSettings.NavigationX | WindowsGestureSettings.NavigationY | WindowsGestureSettings.NavigationZ;
 
-        public static MixedRealityGestureSettings RailsNavigationSettings { get; set; } = MixedRealityGestureSettings.NavigationRailsX | MixedRealityGestureSettings.NavigationRailsY | MixedRealityGestureSettings.NavigationRailsZ;
+        /// <summary>
+        /// Current Navigation Gesture Recognizer Settings.
+        /// </summary>
+        public static WindowsGestureSettings NavigationSettings
+        {
+            get { return navigationSettings; }
+            set
+            {
+                navigationSettings = value;
+#if UNITY_WSA
+                if (Application.isPlaying)
+                {
+                    navigationGestureRecognizer.SetRecognizableGestures(WSANavigationSettings);
+                }
+#endif
+            }
+        }
+
+        private static WindowsGestureSettings railsNavigationSettings = WindowsGestureSettings.NavigationRailsX | WindowsGestureSettings.NavigationRailsY | WindowsGestureSettings.NavigationRailsZ;
+
+        /// <summary>
+        /// Current Navigation Gesture Recognizer Rails Settings.
+        /// </summary>
+        public static WindowsGestureSettings RailsNavigationSettings
+        {
+            get { return railsNavigationSettings; }
+            set
+            {
+                railsNavigationSettings = value;
+#if UNITY_WSA
+                if (Application.isPlaying)
+                {
+                    navigationGestureRecognizer.SetRecognizableGestures(WSARailsNavigationSettings);
+                }
+#endif
+            }
+        }
 
         private static bool useRailsNavigation = true;
 
+        /// <summary>
+        /// Should the Navigation Gesture Recognizer use Rails?
+        /// </summary>
         public static bool UseRailsNavigation
         {
             get { return useRailsNavigation; }
@@ -147,7 +192,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             {
                 useRailsNavigation = value;
 #if UNITY_WSA
-                navigationGestureRecognizer?.SetRecognizableGestures(useRailsNavigation ? WSANavigationSettings : WSARailsNavigationSettings);
+
+                if (Application.isPlaying)
+                {
+                    navigationGestureRecognizer?.SetRecognizableGestures(useRailsNavigation ? WSANavigationSettings : WSARailsNavigationSettings);
+                }
 #endif
             }
         }
@@ -157,8 +206,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         private MixedRealityInputAction manipulationAction = MixedRealityInputAction.None;
 
 #if UNITY_WSA
+
         private static GestureRecognizer gestureRecognizer;
         private static WsaGestureSettings WSAGestureSettings => (WsaGestureSettings)gestureSettings;
+
         private static GestureRecognizer navigationGestureRecognizer;
         private static WsaGestureSettings WSANavigationSettings => (WsaGestureSettings)NavigationSettings;
         private static WsaGestureSettings WSARailsNavigationSettings => (WsaGestureSettings)RailsNavigationSettings;
@@ -173,6 +224,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile != null)
             {
+                gestureSettings = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.ManipulationGestures;
+                navigationSettings = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.NavigationGestures;
+                useRailsNavigation = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.UseRailsNavigation;
+                railsNavigationSettings = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.RailsNavigationGestures;
+
                 for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.Gestures.Length; i++)
                 {
                     var gesture = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.Gestures[i];

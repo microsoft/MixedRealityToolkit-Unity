@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine;
@@ -13,6 +14,42 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Gestures Profile", fileName = "MixedRealityGesturesProfile", order = (int)CreateProfileMenuItemIndices.Gestures)]
     public class MixedRealityGesturesProfile : ScriptableObject
     {
+        [EnumFlags]
+        [SerializeField]
+        [Tooltip("The recognizable Manipulation Gestures.")]
+        private WindowsGestureSettings manipulationGestures;
+
+        /// <summary>
+        /// The recognizable Manipulation Gestures.
+        /// </summary>
+        public WindowsGestureSettings ManipulationGestures => manipulationGestures;
+
+        [EnumFlags]
+        [SerializeField]
+        [Tooltip("The recognizable Navigation Gestures.")]
+        private WindowsGestureSettings navigationGestures;
+
+        /// <summary>
+        /// The recognizable Navigation Gestures.
+        /// </summary>
+        public WindowsGestureSettings NavigationGestures => navigationGestures;
+
+        [SerializeField]
+        [Tooltip("Should the Navigation use Rails on start?\nNote: This can be changed at runtime to switch between the two Navigation settings.")]
+        private bool useRailsNavigation;
+
+        public bool UseRailsNavigation => useRailsNavigation;
+
+        [EnumFlags]
+        [SerializeField]
+        [Tooltip("The recognizable Rails Navigation Gestures.")]
+        private WindowsGestureSettings railsNavigationGestures;
+
+        /// <summary>
+        /// The recognizable Navigation Gestures.
+        /// </summary>
+        public WindowsGestureSettings RailsNavigationGestures => railsNavigationGestures;
+
         [SerializeField]
         private MixedRealityGestureMapping[] gestures =
         {
