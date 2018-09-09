@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         [EnumFlags]
         [SerializeField]
         [Tooltip("The recognizable Manipulation Gestures.")]
-        private WindowsGestureSettings manipulationGestures;
+        private WindowsGestureSettings manipulationGestures = 0;
 
         /// <summary>
         /// The recognizable Manipulation Gestures.
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         [EnumFlags]
         [SerializeField]
         [Tooltip("The recognizable Navigation Gestures.")]
-        private WindowsGestureSettings navigationGestures;
+        private WindowsGestureSettings navigationGestures = 0;
 
         /// <summary>
         /// The recognizable Navigation Gestures.
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         [EnumFlags]
         [SerializeField]
         [Tooltip("The recognizable Rails Navigation Gestures.")]
-        private WindowsGestureSettings railsNavigationGestures;
+        private WindowsGestureSettings railsNavigationGestures = 0;
 
         /// <summary>
         /// The recognizable Navigation Gestures.
