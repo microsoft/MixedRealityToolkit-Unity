@@ -7,7 +7,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Build
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Build
 {
     /// <summary>
     /// Build and Deploy Specific Editor Preferences for the Build and Deploy Window.

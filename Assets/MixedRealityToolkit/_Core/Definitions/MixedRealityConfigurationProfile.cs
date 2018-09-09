@@ -96,11 +96,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
+        [Tooltip("Input System profile for setting wiring up events and actions to input devices.")]
         private MixedRealityInputSystemProfile inputSystemProfile;
 
         /// <summary>
-        /// Input System Action Mapping profile for wiring up Controller input to Actions.
+        /// Input System profile for setting wiring up events and actions to input devices.
         /// </summary>
         public MixedRealityInputSystemProfile InputSystemProfile
         {
