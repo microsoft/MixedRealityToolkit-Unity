@@ -93,6 +93,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
+        protected override void Start()
+        {
+            base.Start();
+
+            if (RayStabilizer != null)
+            {
+                RayStabilizer = null;
+            }
+
+            foreach (var inputSource in InputSystem.DetectedInputSources)
+            {
+                if (inputSource.SourceId == Controller.InputSource.SourceId)
+                {
+                    isInteractionEnabled = true;
+                    break;
+                }
+            }
+        }
+
         /// <inheritdoc />
         public override void OnSourceDetected(SourceStateEventData eventData)
         {
@@ -105,6 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (eventData.InputSource.SourceId == Controller.InputSource.SourceId)
             {
+                Debug.Log("Pointer detected");
                 isInteractionEnabled = true;
             }
         }
