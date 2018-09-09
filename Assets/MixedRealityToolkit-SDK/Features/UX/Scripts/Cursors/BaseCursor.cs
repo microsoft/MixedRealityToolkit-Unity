@@ -316,6 +316,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                 {
                     Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
                 }
+                else
+                {
+                    Debug.LogWarning($"{pointer.GetType().Name} not registered!");
+                }
 
                 return;
             }

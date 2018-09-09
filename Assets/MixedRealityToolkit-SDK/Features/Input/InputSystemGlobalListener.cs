@@ -15,16 +15,40 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private static IMixedRealityInputSystem inputSystem = null;
         protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
 
+        private bool lateInitialize = true;
+
         protected virtual void OnEnable()
         {
-            Debug.Assert(MixedRealityManager.IsInitialized, "No Mixed Reality Manager found in the scene.  Be sure to run the Mixed Reality Configuration.");
-            Debug.Assert(InputSystem != null, "No Input System found, Did you set it up in your configuration profile?");
-            InputSystem.Register(gameObject);
+            if (!MixedRealityManager.IsInitialized)
+            {
+                Debug.LogError("Missing Mixed Reality Manager!");
+                return;
+            }
+
+            if (InputSystem != null && !lateInitialize)
+            {
+                InputSystem.Register(gameObject);
+            }
+        }
+
+        protected virtual void Start()
+        {
+            if (lateInitialize)
+            {
+                if (InputSystem == null)
+                {
+                    Debug.LogError("Unable to find Input System!");
+                    return;
+                }
+
+                lateInitialize = false;
+                InputSystem.Register(gameObject);
+            }
         }
 
         protected virtual void OnDisable()
         {
-            InputSystem.Unregister(gameObject);
+            InputSystem?.Unregister(gameObject);
         }
     }
 }

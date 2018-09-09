@@ -268,8 +268,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
         }
 
-        protected virtual void Start()
+        protected override void Start()
         {
+            base.Start();
+
             if (cursorPrefab != null)
             {
                 var cursorObj = Instantiate(cursorPrefab, transform.parent);
