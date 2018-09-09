@@ -120,7 +120,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 
         public override void Destroy()
         {
-            dictationRecognizer?.Dispose();
+            if (Application.isPlaying)
+            {
+                dictationRecognizer?.Dispose();
+            }
         }
 
         /// <inheritdoc />
