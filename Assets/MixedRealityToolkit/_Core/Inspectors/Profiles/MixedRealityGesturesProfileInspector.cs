@@ -26,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty useRailsNavigation;
         private SerializedProperty windowsNavigationGestureSettings;
         private SerializedProperty windowsRailsNavigationGestures;
+        private SerializedProperty windowsGestureAutoStart;
 
         private void OnEnable()
         {
@@ -36,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             useRailsNavigation = serializedObject.FindProperty("useRailsNavigation");
             windowsNavigationGestureSettings = serializedObject.FindProperty("navigationGestures");
             windowsRailsNavigationGestures = serializedObject.FindProperty("railsNavigationGestures");
+            windowsGestureAutoStart = serializedObject.FindProperty("windowsGestureAutoStart");
 
             if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile != null)
@@ -85,6 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.PropertyField(windowsNavigationGestureSettings);
             EditorGUILayout.PropertyField(useRailsNavigation);
             EditorGUILayout.PropertyField(windowsRailsNavigationGestures);
+            EditorGUILayout.PropertyField(windowsGestureAutoStart);
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Defined Recognizable Gestures", EditorStyles.boldLabel);

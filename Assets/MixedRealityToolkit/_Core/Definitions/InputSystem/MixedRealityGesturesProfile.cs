@@ -51,6 +51,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         public WindowsGestureSettings RailsNavigationGestures => railsNavigationGestures;
 
         [SerializeField]
+        private AutoStartBehavior windowsGestureAutoStart = AutoStartBehavior.AutoStart;
+
+        public AutoStartBehavior WindowsGestureAutoStart => windowsGestureAutoStart;
+
+        [SerializeField]
         private MixedRealityGestureMapping[] gestures =
         {
             new MixedRealityGestureMapping("Hold", GestureInputType.Hold, MixedRealityInputAction.None),
