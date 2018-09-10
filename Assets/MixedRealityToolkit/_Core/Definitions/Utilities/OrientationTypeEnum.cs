@@ -44,7 +44,5 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// Lay flat on the surface, facing out
         /// </summary>
         FaceCenterAxisReversed,
-
-
     }
 }

@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         #region public accessors
 
         [Tooltip("Type of surface to map the collection to")]
+        [SerializeField]
         private ObjectOrientationSurfaceTypeEnum surfaceType = ObjectOrientationSurfaceTypeEnum.Plane;
 
         /// <summary>
@@ -32,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         }
 
         [Tooltip("Should the objects in the collection be rotated / how should they be rotated")]
+        [SerializeField]
         private OrientationTypeEnum orientType = OrientationTypeEnum.FaceOrigin;
 
         /// <summary>
@@ -44,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         }
 
         [Tooltip("Whether to sort objects by row first or by column first")]
+        [SerializeField]
         private LayoutOrderTypeEnum layout = LayoutOrderTypeEnum.ColumnThenRow;
 
         /// <summary>
@@ -55,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             set { layout = value; }
         }
 
-        [Range(0.05f, 5.0f)]
+        [Range(0.05f, 100.0f)]
         [Tooltip("Radius for the sphere or cylinder")]
         [SerializeField]
         private float radius = 2f;
@@ -122,6 +125,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             set { cellHeight = value; }
         }
 
+        /// <summary>
+        /// Total Width of collection
+        /// </summary>
+        public float Width
+        {
+            get
+            {
+                return columns * CellWidth;
+            }
+        }
+
+        /// <summary>
+        /// Total Height of collection
+        /// </summary>
+        public float Height
+        {
+            get
+            {
+                return rows * CellHeight;
+            }
+        }
+
+
         private Mesh sphereMesh;
 
         /// <summary>
@@ -149,8 +175,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         #region private fields
 
         private int columns;
-
-        private float circumference;
+        
+        //private float circumference;
 
         private Vector2 halfCell;
 
@@ -168,6 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             Vector3 newPos = Vector3.zero;
 
             // Now lets lay out the grid
+            columns = Mathf.CeilToInt((float)NodeList.Count / rows);
             startOffsetX = (columns * 0.5f) * CellWidth;
             startOffsetY = (rows * 0.5f) * CellHeight;
             halfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
@@ -182,6 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     {
                         ObjectCollectionNode node = NodeList[i];
                         newPos = nodeGrid[i];
+                        //Debug.Log(newPos);
                         node.transform.localPosition = newPos;
                         UpdateNodeFacing(node);
                         NodeList[i] = node;
@@ -416,18 +444,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         // Gizmos to draw when the Collection is selected.
         protected virtual void OnDrawGizmosSelected()
         {
-            Vector3 scale = (2f * Radius) * Vector3.one;
+            Vector3 scale = (2f * radius) * Vector3.one;
             switch (surfaceType)
             {
                 case ObjectOrientationSurfaceTypeEnum.Plane:
                     break;
                 case ObjectOrientationSurfaceTypeEnum.Cylinder:
                     Gizmos.color = Color.green;
-                    Gizmos.DrawWireMesh(CylinderMesh, transform.position, transform.rotation, scale);
+                    Gizmos.DrawWireMesh(cylinderMesh, transform.position, transform.rotation, scale);
                     break;
                 case ObjectOrientationSurfaceTypeEnum.Sphere:
                     Gizmos.color = Color.green;
-                    Gizmos.DrawWireMesh(SphereMesh, transform.position, transform.rotation, scale);
+                    Gizmos.DrawWireMesh(sphereMesh, transform.position, transform.rotation, scale);
                     break;
             }
         }

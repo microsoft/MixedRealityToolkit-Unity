@@ -172,10 +172,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         {
             float circ = 2f * Mathf.PI * radius;
 
-            source.Set(0.0f, 0.0f, radius);
-
             float xAngle = (source.x / circ) * 360f;
             float yAngle = -(source.y / circ) * 360f;
+
+            source.Set(0.0f, 0.0f, radius);
 
             Quaternion rot = Quaternion.Euler(yAngle, xAngle, 0.0f);
             source = rot * source;
@@ -193,9 +193,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         {
             float circ  = 2f * Mathf.PI * radius;
 
-            source.Set(0.0f, source.y, radius);
-
             float xAngle = (source.x / circ) * 360f;
+
+            source.Set(0.0f, source.y, radius);
 
             Quaternion rot = Quaternion.Euler(0.0f, xAngle, 0.0f);
             source = rot * source;
