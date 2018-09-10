@@ -1,9 +1,10 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using System;
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine.EventSystems;
 
@@ -42,11 +43,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         public RecognitionConfidenceLevel Confidence { get; private set; }
 
         
-#if UNITY_WSA  || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         /// <summary>
         /// A semantic meaning of recognized phrase.
         /// </summary>
-        public SemanticMeaning[] SemanticMeanings { get; private set; }
+        public KeyValuePair<string, string[]>[] SemanticMeanings { get; private set; }
 
         /// <summary>
         /// Populates the event with data.
@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <param name="phraseStartTime"></param>
         /// <param name="semanticMeanings"></param>
         /// <param name="recognizedText"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText)
+        public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, KeyValuePair<string, string[]>[] semanticMeanings, string recognizedText)
         {
             BaseInitialize(inputSource, inputAction);
             Confidence = confidence;
@@ -67,6 +67,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
             SemanticMeanings = semanticMeanings;
             RecognizedText = recognizedText;
         }
-#endif
     }
 }

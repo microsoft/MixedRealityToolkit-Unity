@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
@@ -116,10 +117,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args) {
-            OnPhraseRecognized((RecognitionConfidenceLevel) args.confidence, args.phraseDuration, args.phraseStartTime, args.semanticMeanings, args.text);
+            List<KeyValuePair<string, string[]>> semanticMeanings = new List<KeyValuePair<string, string[]>>(args.semanticMeanings.Length);
+            foreach (var semanticMeaning in args.semanticMeanings) {
+                semanticMeanings.Add(new KeyValuePair<string, string[]>(semanticMeaning.key, semanticMeaning.values));
+            }
+            OnPhraseRecognized((RecognitionConfidenceLevel) args.confidence, args.phraseDuration, args.phraseStartTime, semanticMeanings.ToArray(), args.text);
         }
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 
-        private void OnPhraseRecognized(RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
+        private void OnPhraseRecognized(RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, KeyValuePair<string,string[]>[] semanticMeanings, string text)
         {
             for (int i = 0; i < Commands?.Length; i++)
             {
@@ -131,6 +137,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             }
         }
 
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
     }
 }
