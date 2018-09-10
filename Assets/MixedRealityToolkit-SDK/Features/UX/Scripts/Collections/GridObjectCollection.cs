@@ -21,12 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
         [Tooltip("Type of surface to map the collection to")]
         [SerializeField]
-        private ObjectOrientationSurfaceTypeEnum surfaceType = ObjectOrientationSurfaceTypeEnum.Plane;
+        private ObjectOrientationSurfaceEnum surfaceType = ObjectOrientationSurfaceEnum.Plane;
 
         /// <summary>
         /// Type of surface to map the collection to.
         /// </summary>
-        public ObjectOrientationSurfaceTypeEnum SurfaceType
+        public ObjectOrientationSurfaceEnum SurfaceType
         {
             get { return surfaceType; }
             set { surfaceType = value; }
@@ -34,12 +34,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
         [Tooltip("Should the objects in the collection be rotated / how should they be rotated")]
         [SerializeField]
-        private OrientationTypeEnum orientType = OrientationTypeEnum.FaceOrigin;
+        private OrientationEnum orientType = OrientationEnum.FaceOrigin;
 
         /// <summary>
         /// Should the objects in the collection face the origin of the collection
         /// </summary>
-        public OrientationTypeEnum OrientType
+        public OrientationEnum OrientType
         {
             get { return orientType; }
             set { orientType = value; }
@@ -47,12 +47,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
         [Tooltip("Whether to sort objects by row first or by column first")]
         [SerializeField]
-        private LayoutOrderTypeEnum layout = LayoutOrderTypeEnum.ColumnThenRow;
+        private LayoutOrderEnum layout = LayoutOrderEnum.ColumnThenRow;
 
         /// <summary>
         /// Whether to sort objects by row first or by column first
         /// </summary>
-        public LayoutOrderTypeEnum Layout
+        public LayoutOrderEnum Layout
         {
             get { return layout; }
             set { layout = value; }
@@ -174,22 +174,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
         #region private fields
 
-        private int columns;
+        protected int columns;
         
-        //private float circumference;
-
-        private Vector2 halfCell;
+        protected Vector2 halfCell;
 
         #endregion private fields
 
         /// <summary>
-        /// Overriding base function function for laying out all the children when UpdateCollection is called.
+        /// Overriding base function for laying out all the children when UpdateCollection is called.
         /// </summary>
         protected override void LayoutChildren()
         {
             float startOffsetX;
             float startOffsetY;
-
             Vector3[] nodeGrid = new Vector3[NodeList.Count];
             Vector3 newPos = Vector3.zero;
 
@@ -204,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
             switch (SurfaceType)
             {
-                case ObjectOrientationSurfaceTypeEnum.Plane:
+                case ObjectOrientationSurfaceEnum.Plane:
                     for (int i = 0; i < NodeList.Count; i++)
                     {
                         ObjectCollectionNode node = NodeList[i];
@@ -216,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     }
                     break;
 
-                case ObjectOrientationSurfaceTypeEnum.Cylinder:
+                case ObjectOrientationSurfaceEnum.Cylinder:
                     for (int i = 0; i < NodeList.Count; i++)
                     {
                         ObjectCollectionNode node = NodeList[i];
@@ -227,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     }
                     break;
 
-                case ObjectOrientationSurfaceTypeEnum.Sphere:
+                case ObjectOrientationSurfaceEnum.Sphere:
 
                     for (int i = 0; i < NodeList.Count; i++)
                     {
@@ -239,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     }
                     break;
 
-                case ObjectOrientationSurfaceTypeEnum.Radial:
+                case ObjectOrientationSurfaceEnum.Radial:
                     int curColumn = 0;
                     int curRow = 1;
 
@@ -263,49 +260,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                         NodeList[i] = node;
                     }
                     break;
-
-                case ObjectOrientationSurfaceTypeEnum.Scatter:
-                    // Get randomized planar mapping
-                    // Calculate radius of each node while we're here
-                    // Then use the packer function to shift them into place
-                    for (int i = 0; i < NodeList.Count; i++)
-                    {
-                        ObjectCollectionNode node = NodeList[i];
-
-                        newPos = VectorExtensions.ScatterMapping(nodeGrid[i], Radius);
-                        Collider nodeCollider = NodeList[i].transform.GetComponentInChildren<Collider>();
-                        if (nodeCollider != null)
-                        {
-                            // Make the radius the largest of the object's dimensions to avoid overlap
-                            Bounds bounds = nodeCollider.bounds;
-                            node.Radius = Mathf.Max(Mathf.Max(bounds.size.x, bounds.size.y), bounds.size.z) * 0.5f;
-                        }
-                        else
-                        {
-                            // Make the radius a default value
-                            node.Radius = 1f;
-                        }
-                        node.transform.localPosition = newPos;
-                        UpdateNodeFacing(node);
-                        NodeList[i] = node;
-                    }
-
-                    // Iterate [x] times
-                    for (int i = 0; i < 100; i++)
-                    {
-                        IterateScatterPacking(NodeList, Radius);
-                    }
-                    break;
             }
         }
 
-        private void ResolveGridLayout(Vector3[] grid, float offsetX, float offsetY, LayoutOrderTypeEnum order)
+        protected void ResolveGridLayout(Vector3[] grid, float offsetX, float offsetY, LayoutOrderEnum order)
         {
             int cellCounter = 0;
             float iMax;
             float jMax;
 
-            if (order == LayoutOrderTypeEnum.RowThenColumn)
+            if (order == LayoutOrderEnum.RowThenColumn)
             {
                 iMax = Rows;
                 jMax = columns;
@@ -340,49 +304,49 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         /// <param name="node"></param>
         /// <param name="orientType"></param>
         /// <param name="newPos"></param>
-        private void UpdateNodeFacing(ObjectCollectionNode node)
+        protected void UpdateNodeFacing(ObjectCollectionNode node)
         {
             Vector3 centerAxis;
             Vector3 pointOnAxisNearestNode;
             switch (OrientType)
             {
-                case OrientationTypeEnum.FaceOrigin:
+                case OrientationEnum.FaceOrigin:
                     node.transform.rotation = Quaternion.LookRotation(node.transform.position - transform.position, transform.up);
                     break;
 
-                case OrientationTypeEnum.FaceOriginReversed:
+                case OrientationEnum.FaceOriginReversed:
                     node.transform.rotation = Quaternion.LookRotation(transform.position - node.transform.position, transform.up);
                     break;
 
-                case OrientationTypeEnum.FaceCenterAxis:
+                case OrientationEnum.FaceCenterAxis:
                     centerAxis = Vector3.Project(node.transform.position - transform.position, transform.up);
                     pointOnAxisNearestNode = transform.position + centerAxis;
                     node.transform.rotation = Quaternion.LookRotation(node.transform.position - pointOnAxisNearestNode, transform.up);
                     break;
 
-                case OrientationTypeEnum.FaceCenterAxisReversed:
+                case OrientationEnum.FaceCenterAxisReversed:
                     centerAxis = Vector3.Project(node.transform.position - transform.position, transform.up);
                     pointOnAxisNearestNode = transform.position + centerAxis;
                     node.transform.rotation = Quaternion.LookRotation(pointOnAxisNearestNode - node.transform.position, transform.up);
                     break;
 
-                case OrientationTypeEnum.FaceFoward:
+                case OrientationEnum.FaceParentFoward:
                     node.transform.forward = transform.rotation * Vector3.forward;
                     break;
 
-                case OrientationTypeEnum.FaceForwardReversed:
+                case OrientationEnum.FaceParentForwardReversed:
                     node.transform.forward = transform.rotation * Vector3.back;
                     break;
 
-                case OrientationTypeEnum.FaceParentUp:
+                case OrientationEnum.FaceParentUp:
                     node.transform.forward = transform.rotation * Vector3.up;
                     break;
 
-                case OrientationTypeEnum.FaceParentDown:
+                case OrientationEnum.FaceParentDown:
                     node.transform.forward = transform.rotation * Vector3.down;
                     break;
 
-                case OrientationTypeEnum.None:
+                case OrientationEnum.None:
                     break;
 
                 default:
@@ -391,69 +355,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             }
         }
 
-        /// <summary>
-        /// Pack randomly spaced nodes so they don't overlap
-        /// Usually requires about 25 iterations for decent packing
-        /// </summary>
-        private void IterateScatterPacking(List<ObjectCollectionNode> nodes, float radiusPadding)
-        {
-            // Sort by closest to center (don't worry about z axis)
-            // Use the position of the collection as the packing center
-            nodes.Sort(ScatterSort);
-
-            Vector3 difference;
-            Vector2 difference2D;
-
-            // Move them closer together
-            float radiusPaddingSquared = Mathf.Pow(radiusPadding, 2f);
-
-            for (int i = 0; i < nodes.Count - 1; i++)
-            {
-                for (int j = i + 1; j < nodes.Count; j++)
-                {
-                    if (i != j)
-                    {
-                        difference = nodes[j].transform.localPosition - nodes[i].transform.localPosition;
-                        // Ignore Z axis
-                        difference2D.x = difference.x;
-                        difference2D.y = difference.y;
-                        float combinedRadius = nodes[i].Radius + nodes[j].Radius;
-                        float distance = difference2D.SqrMagnitude() - radiusPaddingSquared;
-                        float minSeparation = Mathf.Min(distance, radiusPaddingSquared);
-                        distance -= minSeparation;
-
-                        if (distance < (Mathf.Pow(combinedRadius, 2)))
-                        {
-                            difference2D.Normalize();
-                            difference *= ((combinedRadius - Mathf.Sqrt(distance)) * 0.5f);
-                            nodes[j].transform.localPosition += difference;
-                            nodes[i].transform.localPosition -= difference;
-                        }
-                    }
-                }
-            }
-        }
-
-        private int ScatterSort(ObjectCollectionNode circle1, ObjectCollectionNode circle2)
-        {
-            float distance1 = (circle1.transform.localPosition).sqrMagnitude;
-            float distance2 = (circle2.transform.localPosition).sqrMagnitude;
-            return distance1.CompareTo(distance2);
-        }
-
         // Gizmos to draw when the Collection is selected.
         protected virtual void OnDrawGizmosSelected()
         {
             Vector3 scale = (2f * radius) * Vector3.one;
             switch (surfaceType)
             {
-                case ObjectOrientationSurfaceTypeEnum.Plane:
+                case ObjectOrientationSurfaceEnum.Plane:
                     break;
-                case ObjectOrientationSurfaceTypeEnum.Cylinder:
+                case ObjectOrientationSurfaceEnum.Cylinder:
                     Gizmos.color = Color.green;
                     Gizmos.DrawWireMesh(cylinderMesh, transform.position, transform.rotation, scale);
                     break;
-                case ObjectOrientationSurfaceTypeEnum.Sphere:
+                case ObjectOrientationSurfaceEnum.Sphere:
                     Gizmos.color = Color.green;
                     Gizmos.DrawWireMesh(sphereMesh, transform.position, transform.rotation, scale);
                     break;

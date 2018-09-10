@@ -6,7 +6,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
     /// <summary>
     /// Orientation type enum
     /// </summary>
-    public enum OrientationTypeEnum
+    public enum OrientationEnum
     {
         /// <summary>
         /// Don't rotate at all
@@ -43,6 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <summary>
         /// Lay flat on the surface, facing out
         /// </summary>
-        FaceCenterAxisReversed,
+        FaceCenterAxisReversed
     }
 }

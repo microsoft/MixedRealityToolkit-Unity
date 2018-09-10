@@ -48,12 +48,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
         [Tooltip("Type of sorting to use")]
         [SerializeField]
-        protected CollationOrderTypeEnum sortType = CollationOrderTypeEnum.None;
+        protected CollationOrderEnum sortType = CollationOrderEnum.None;
 
         /// <summary>
         /// Type of sorting to use.
         /// </summary>
-        public CollationOrderTypeEnum SortType
+        public CollationOrderEnum SortType
         {
             get { return sortType; }
             set { sortType = value; }
@@ -103,24 +103,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
             switch (SortType)
             {
-                case CollationOrderTypeEnum.None:
+                case CollationOrderEnum.None:
                 default:
                     break;
 
-                case CollationOrderTypeEnum.ChildOrder:
+                case CollationOrderEnum.ChildOrder:
                     NodeList.Sort((c1, c2) => (c1.transform.GetSiblingIndex().CompareTo(c2.transform.GetSiblingIndex())));
                     break;
 
-                case CollationOrderTypeEnum.Alphabetical:
+                case CollationOrderEnum.Alphabetical:
                     NodeList.Sort((c1, c2) => (String.CompareOrdinal(c1.Name, c2.Name)) );
                     break;
 
-                case CollationOrderTypeEnum.AlphabeticalReversed:
+                case CollationOrderEnum.AlphabeticalReversed:
                     NodeList.Sort((c1, c2) => (String.CompareOrdinal(c1.Name, c2.Name)));
                     NodeList.Reverse();
                     break;
 
-                case CollationOrderTypeEnum.ChildOrderReversed:
+                case CollationOrderEnum.ChildOrderReversed:
                     NodeList.Sort((c1, c2) => (c1.transform.GetSiblingIndex().CompareTo(c2.transform.GetSiblingIndex())));
                     NodeList.Reverse();
                     break;
