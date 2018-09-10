@@ -141,7 +141,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                     if (eventData.InputSource.Pointers[i].PointerId == Pointer.PointerId)
                     {
                         visibleSourcesCount++;
-                        SetVisibility(true);
+
+                        if (visibleSourcesCount == 1 &&
+                            InputSystem.GazeProvider.GazePointer.PointerId != Pointer.PointerId)
+                        {
+                            SetVisibility(true);
+                        }
+
                         return;
                     }
                 }
@@ -173,10 +179,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                 }
             }
 
-            if (visibleSourcesCount == 0)
+            if (!IsSourceDetected)
             {
                 IsPointerDown = false;
-                SetVisibility(false);
+
+                if (InputSystem.GazeProvider.GazePointer.PointerId != Pointer.PointerId)
+                {
+                    SetVisibility(false);
+                }
             }
         }
 
