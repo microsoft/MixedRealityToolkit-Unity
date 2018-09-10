@@ -609,9 +609,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 13
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
