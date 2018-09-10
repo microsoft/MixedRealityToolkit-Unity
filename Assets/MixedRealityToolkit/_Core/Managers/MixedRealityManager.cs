@@ -721,14 +721,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             }
             else
             {
-                //If no name provided, return all components of the same type. Else return the type/name combination.
+                // If no name provided, return all components of the same type. Else return the type/name combination.
                 if (string.IsNullOrWhiteSpace(managerName))
                 {
                     for (int i = 0; i < mixedRealityComponentsCount; i++)
                     {
-                        if (MixedRealityComponents[i].Item1.Name == type.Name)
+                        if (MixedRealityComponents[i].Item1.Name == type.Name ||
+                            MixedRealityComponents[i].Item2.GetType().Name == type.Name)
                         {
                             managers.Add(MixedRealityComponents[i].Item2);
+                            continue;
+                        }
+
+                        var interfaces = MixedRealityComponents[i].Item2.GetType().GetInterfaces();
+                        for (int j = 0; j < interfaces.Length; j++)
+                        {
+                            if (interfaces[j].Name == type.Name)
+                            {
+                                managers.Add(MixedRealityComponents[i].Item2);
+                                break;
+                            }
                         }
                     }
                 }
@@ -736,9 +748,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 {
                     for (int i = 0; i < mixedRealityComponentsCount; i++)
                     {
-                        if (MixedRealityComponents[i].Item1.Name == type.Name && MixedRealityComponents[i].Item2.Name == managerName)
+                        if (MixedRealityComponents[i].Item1.Name == type.Name &&
+                            MixedRealityComponents[i].Item2.Name == managerName)
                         {
                             managers.Add(MixedRealityComponents[i].Item2);
+                            continue;
+                        }
+
+                        var interfaces = MixedRealityComponents[i].Item2.GetType().GetInterfaces();
+                        for (int j = 0; j < interfaces.Length; j++)
+                        {
+                            if (interfaces[j].Name == type.Name &&
+                                MixedRealityComponents[i].Item2.Name == managerName)
+                            {
+                                managers.Add(MixedRealityComponents[i].Item2);
+                                break;
+                            }
                         }
                     }
                 }
@@ -941,6 +966,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 {
                     manager = MixedRealityComponents[i].Item2;
                     break;
+                }
+
+                var interfaces = MixedRealityComponents[i].Item2.GetType().GetInterfaces();
+                for (int j = 0; j < interfaces.Length; j++)
+                {
+                    if (interfaces[j].Name == type.Name &&
+                        MixedRealityComponents[i].Item2.Name == managerName)
+                    {
+                        manager = MixedRealityComponents[i].Item2;
+                        break;
+                    }
                 }
             }
         }
