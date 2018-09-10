@@ -396,7 +396,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             var inputSource = InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {nameModifier}", pointers);
             var detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
 
-
             if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityController)))
             {
                 // Controller failed to be setup correctly.
@@ -406,7 +405,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
             for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
             {
-                Debug.Log(detectedController.InputSource.Pointers[i].PointerName);
                 detectedController.InputSource.Pointers[i].Controller = detectedController;
             }
 
@@ -420,18 +418,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <param name="interactionSourceState">Source State provided by the SDK to remove</param>
         private void RemoveController(InteractionSourceState interactionSourceState)
         {
-            var controller = GetController(interactionSourceState.source);
+            var controller = GetController(interactionSourceState.source, false);
 
             if (controller != null)
             {
                 InputSystem?.RaiseSourceLost(controller.InputSource, controller);
-
-                if (controller.ControllerHandedness == Handedness.None)
-                {
-                    // Bail early so we don't remove the hand from the active controller list.
-                    // This prevents extra allocations every time a hand is found or lost. (Which may happen a lot).
-                    return;
-                }
             }
 
             activeControllers.Remove(interactionSourceState.source.id);
