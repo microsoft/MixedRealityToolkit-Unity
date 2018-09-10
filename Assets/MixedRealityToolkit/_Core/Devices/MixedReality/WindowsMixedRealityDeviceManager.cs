@@ -426,6 +426,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             if (controller != null)
             {
                 InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+
+                if (controller.ControllerHandedness == Handedness.None)
+                {
+                    // Bail early so we don't remove the hand from the active controller list.
+                    // This prevents extra allocations every time a hand is found or lost. (Which may happen a lot).
+                    return;
+                }
             }
 
             activeControllers.Remove(interactionSourceState.source.id);
@@ -498,7 +505,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             {
                 for (int i = 0; i < controller.InputSource.Pointers.Length; i++)
                 {
-                    InputSystem.RaisePointerClicked(controller.InputSource.Pointers[i], (Handedness)args.source.handedness, controller.Interactions[5].MixedRealityInputAction, args.tapCount);
+                    var selectAction = MixedRealityInputAction.None;
+
+                    for (int j = 0; j < controller.Interactions.Length; j++)
+                    {
+                        if (controller.Interactions[i].InputType == DeviceInputType.Select)
+                        {
+                            selectAction = controller.Interactions[i].MixedRealityInputAction;
+                            break;
+                        }
+                    }
+
+                    InputSystem.RaisePointerClicked(controller.InputSource.Pointers[i], (Handedness)args.source.handedness, selectAction, args.tapCount);
                 }
             }
         }
