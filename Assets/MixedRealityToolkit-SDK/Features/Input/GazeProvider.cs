@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
@@ -10,7 +8,10 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.InputSystem.Pointers;
+using Microsoft.MixedReality.Toolkit.InputSystem.Sources;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
@@ -268,8 +269,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
         }
 
-        protected virtual void Start()
+        protected override void Start()
         {
+            base.Start();
+
             if (cursorPrefab != null)
             {
                 var cursorObj = Instantiate(cursorPrefab, transform.parent);
@@ -335,7 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             base.OnDisable();
             GazePointer.BaseCursor?.SetVisibility(false);
-            InputSystem.RaiseSourceLost(GazeInputSource);
+            InputSystem?.RaiseSourceLost(GazeInputSource);
         }
 
         #endregion MonoBehaviour Implementation
@@ -385,8 +388,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             return gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
         }
 
-        private void RaiseSourceDetected()
+        private async void RaiseSourceDetected()
         {
+            await WaitUntilInputSystemValid;
             InputSystem.RaiseSourceDetected(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(true);
         }
