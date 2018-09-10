@@ -23,11 +23,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         /// <summary>
         /// Zero rotation
         /// </summary>
-        FaceFoward,
+        FaceParentFoward,
         /// <summary>
         /// Zero rotation + 180 degrees
         /// </summary>
-        FaceForwardReversed,
+        FaceParentForwardReversed,
         /// <summary>
         /// Parent Relative Up
         /// </summary>

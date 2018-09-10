@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         Cylinder = 0,
         Plane,
         Sphere,
-        Radial,
         Scatter
+        Radial,
     }
 }
