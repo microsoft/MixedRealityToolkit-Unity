@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Attributes;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -10,7 +10,7 @@ using UnityEditor.Compilation;
 using UnityEngine;
 using Assembly = System.Reflection.Assembly;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Inspectors.PropertyDrawers
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
 {
     /// <summary>
     /// Custom property drawer for <see cref="SystemType"/> properties.

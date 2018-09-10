@@ -23,7 +23,7 @@
 using System.Threading;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Async.Internal
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async.Internal
 {
     /// <summary>
     /// Utility class to assist in thread and context synchronization.

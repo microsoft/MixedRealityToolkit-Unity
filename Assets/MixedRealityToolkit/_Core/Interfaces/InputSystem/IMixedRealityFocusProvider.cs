@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
 {
     /// <summary>
     /// Implements the Focus Provider for handling focus of pointers.
@@ -72,9 +72,10 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
         /// <summary>
         /// Get the Graphic Event Data for the specified pointing source.
         /// </summary>
-        /// <param name="pointer"></param>
-        /// <returns></returns>
-        GraphicInputEventData GetSpecificPointerGraphicEventData(IMixedRealityPointer pointer);
+        /// <param name="pointer">The pointer who's graphic event data we're looking for.</param>
+        /// <param name="graphicInputEventData">The graphihc event data for the specified pointer</param>
+        /// <returns>True, if graphic event data exists.</returns>
+        bool TryGetSpecificPointerGraphicEventData(IMixedRealityPointer pointer, out GraphicInputEventData graphicInputEventData);
 
         /// <summary>
         /// Generate a new unique pointer id.

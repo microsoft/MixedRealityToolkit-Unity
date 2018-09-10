@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 {
     [Serializable]
     public struct MixedRealityPose : IEqualityComparer
@@ -72,6 +72,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
         public static bool operator !=(MixedRealityPose left, MixedRealityPose right)
         {
             return !left.Equals(right);
+        }
+
+        public override string ToString()
+        {
+            return $"{position} | {rotation}";
         }
 
         #region IEqualityComparer Implementation

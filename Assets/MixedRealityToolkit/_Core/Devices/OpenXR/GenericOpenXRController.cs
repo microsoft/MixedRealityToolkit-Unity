@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
+namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenXR
 {
-    // TODO - Implement
     public class GenericOpenXRController : BaseController
     {
         /// <summary>
@@ -23,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Devices.OpenXR
         /// <inheritdoc />
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
-            throw new System.NotImplementedException();
+            // TODO - Implement
         }
     }
 }

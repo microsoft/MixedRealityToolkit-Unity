@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Attributes
+namespace Microsoft.MixedReality.Toolkit.Core.Attributes
 {
     /// <summary>
     /// Attribute used to make a float or int variable in a script be restricted to a specific range.

@@ -1,25 +1,24 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Attributes;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 {
     /// <summary>
     /// Configuration profile settings for the Mixed Reality Toolkit.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Configuration Profile", fileName = "MixedRealityConfigurationProfile", order = 0)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Configuration Profile", fileName = "MixedRealityConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
     public class MixedRealityConfigurationProfile : ScriptableObject, ISerializationCallbackReceiver
     {
         #region Manager Registry properties
@@ -91,9 +90,22 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         {
             get
             {
-                return inputActionsProfile != null && inputSystemType.Type != null && enableInputSystem;
+                return inputSystemProfile != null && inputSystemType != null && inputSystemType.Type != null && enableInputSystem;
             }
             private set { enableInputSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Input System profile for setting wiring up events and actions to input devices.")]
+        private MixedRealityInputSystemProfile inputSystemProfile;
+
+        /// <summary>
+        /// Input System profile for setting wiring up events and actions to input devices.
+        /// </summary>
+        public MixedRealityInputSystemProfile InputSystemProfile
+        {
+            get { return inputSystemProfile; }
+            private set { inputSystemProfile = value; }
         }
 
         [SerializeField]
@@ -111,84 +123,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         }
 
         [SerializeField]
-        [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
-        private MixedRealityInputActionsProfile inputActionsProfile;
-
-        /// <summary>
-        /// Input System Action Mapping profile for wiring up Controller input to Actions.
-        /// </summary>
-        public MixedRealityInputActionsProfile InputActionsProfile
-        {
-            get { return inputActionsProfile; }
-            private set { inputActionsProfile = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Pointer Configuration options")]
-        private MixedRealityPointerProfile pointerProfile;
-
-        /// <summary>
-        /// Pointer configuration options
-        /// </summary>
-        public MixedRealityPointerProfile PointerProfile
-        {
-            get { return pointerProfile; }
-            private set { pointerProfile = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Enable Speech Commands on startup.")]
-        private bool enableSpeechCommands = false;
-
-        /// <summary>
-        /// Enable and configure the speech commands for your application.
-        /// </summary>
-        public bool IsSpeechCommandsEnabled
-        {
-            get { return speechCommandsProfile != null && enableSpeechCommands && enableInputSystem; }
-            private set { enableSpeechCommands = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
-        private MixedRealitySpeechCommandsProfile speechCommandsProfile;
-
-        /// <summary>
-        /// Speech commands profile for configured speech commands, for use by the speech recognition system
-        /// </summary>
-        public MixedRealitySpeechCommandsProfile SpeechCommandsProfile
-        {
-            get { return speechCommandsProfile; }
-            private set { speechCommandsProfile = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Enable and configure the devices for your application.")]
-        private bool enableControllerMapping = false;
-
-        /// <summary>
-        /// Enable and configure the devices for your application.
-        /// </summary>
-        public bool IsControllerMappingEnabled
-        {
-            get { return controllerMappingProfile != null && enableControllerMapping && enableInputSystem; }
-            private set { enableControllerMapping = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("Device profile for wiring up physical inputs to Actions.")]
-        private MixedRealityControllerMappingProfile controllerMappingProfile;
-
-        /// <summary>
-        /// Active profile for controller mapping configuration
-        /// </summary>
-        public MixedRealityControllerMappingProfile ControllerMappingProfile
-        {
-            get { return controllerMappingProfile; }
-            private set { controllerMappingProfile = value; }
-        }
-
-        [SerializeField]
         [Tooltip("Enable the Boundary on Startup")]
         private bool enableBoundarySystem = false;
 
@@ -197,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool IsBoundarySystemEnabled
         {
-            get { return boundarySystemType.Type != null && enableBoundarySystem; }
+            get { return boundarySystemType != null && boundarySystemType.Type != null && enableBoundarySystem; }
             private set { enableInputSystem = value; }
         }
 
@@ -249,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
         /// </summary>
         public bool IsTeleportSystemEnabled
         {
-            get { return teleportSystemType.Type != null && enableTeleportSystem; }
+            get { return teleportSystemType != null && teleportSystemType.Type != null && enableTeleportSystem; }
             private set { enableTeleportSystem = value; }
         }
 
@@ -279,6 +213,15 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
             get { return teleportDuration; }
             set { teleportDuration = value; }
         }
+
+        [SerializeField]
+        [Tooltip("All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.")]
+        private MixedRealityRegisteredComponentsProfile registeredComponentsProfile = null;
+
+        /// <summary>
+        /// All the additional non-required systems, features, and managers registered with the Mixed Reality Manager.
+        /// </summary>
+        public MixedRealityRegisteredComponentsProfile RegisteredComponentsProfile => registeredComponentsProfile;
 
         #endregion Mixed Reality Manager configurable properties
 

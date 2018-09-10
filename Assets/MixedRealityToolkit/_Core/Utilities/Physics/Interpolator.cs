@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Physics
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
 {
     /// <summary>
     /// A MonoBehaviour that interpolates a transform's position, rotation or scale.

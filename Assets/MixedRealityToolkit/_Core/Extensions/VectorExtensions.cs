@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
+namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 {
     /// <summary>
     /// Extension methods for Unity's Vector struct

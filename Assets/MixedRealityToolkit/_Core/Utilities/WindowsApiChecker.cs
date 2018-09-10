@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities
 {
     /// <summary>
     /// Helper class for determining if a Windows API contract is available.

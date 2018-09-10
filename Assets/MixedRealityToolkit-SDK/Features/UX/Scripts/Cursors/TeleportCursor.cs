@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.EventDatum.Teleport;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.SDK.UX.Pointers;
 using System;
 using UnityEngine;
@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
     {
         [SerializeField]
         [Tooltip("Arrow Transform to point in the Teleporting direction.")]
-        private Transform arrowTransform;
+        private Transform arrowTransform = null;
 
         private Vector3 cursorOrientation = Vector3.zero;
 
@@ -80,7 +80,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// <inheritdoc />
         protected override void UpdateCursorTransform()
         {
-            Debug.Assert(Pointer != null, "No Pointer has been assigned!");
+            if (Pointer == null)
+            {
+                Debug.LogError($"[TeleportCursor.{name}] No Pointer has been assigned!");
+                return;
+            }
 
             FocusDetails focusDetails;
 
