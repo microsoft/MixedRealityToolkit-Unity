@@ -31,7 +31,7 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
 
             if (Visible)
             {
-                GetDiagnosticVisualization();
+                DiagnosticVisualization.SetActive(Visible);
             }
 
             RaiseDiagnosticsChanged();
@@ -73,35 +73,6 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
             }
         }
 
-        public GameObject GetDiagnosticVisualization()
-        {
-            if (diagnosticVisualization != null)
-            {
-                return diagnosticVisualization;
-            }
-
-            if (!Visible)
-            {
-                // Don't create a gameobject if it's not needed
-                return null;
-            }
-
-            diagnosticVisualization = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            diagnosticVisualization.name = "Diagnostics";
-            diagnosticVisualization.layer = 2; // magic? 
-
-            // Todo: position and size
-            // Todo: add text elements
-            diagnosticVisualization.AddComponent<DiagnosticBehavior>();
-
-            var component = diagnosticVisualization.GetComponent<DiagnosticBehavior>();
-            component.ShowCpu = ShowCpu;
-            component.ShowFps = ShowFps;
-            component.ShowMemory = ShowMemory;
-
-            return diagnosticVisualization;
-        }
-
         private void RaiseDiagnosticsChanged()
         {
             eventData.Initialize(this,
@@ -124,7 +95,7 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
                 handler.OnDiagnosticSettingsChanged(diagnosticsEventsData);
             };
 
-        #endregion
+        #endregion IMixedRealityManager
 
         #region IMixedRealityDiagnosticsManager
         private bool visible;
@@ -142,7 +113,7 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
                 if (value != visible)
                 {
                     visible = value;
-                    GetDiagnosticVisualization()?.SetActive(value);
+                    DiagnosticVisualization?.SetActive(value);
 
                     RaiseDiagnosticsChanged();
                 }
@@ -164,12 +135,6 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
                 if (value != showCpu)
                 {
                     showCpu = value;
-                    var component = GetDiagnosticVisualization()?.GetComponent<DiagnosticBehavior>();
-                    if (component != null)
-                    {
-                        component.ShowCpu = value;
-                    }
-
                     RaiseDiagnosticsChanged();
                 }
             }
@@ -189,12 +154,6 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
                 if (value != showFps)
                 {
                     showFps = value;
-                    var component = GetDiagnosticVisualization()?.GetComponent<DiagnosticBehavior>();
-                    if (component != null)
-                    {
-                        component.ShowFps = value;
-                    }
-
                     RaiseDiagnosticsChanged();
                 }
             }
@@ -214,17 +173,43 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
                 if (value != showMemory)
                 {
                     showMemory = value;
-                    var component = GetDiagnosticVisualization()?.GetComponent<DiagnosticBehavior>();
-                    if (component != null)
-                    {
-                        component.ShowMemory = value;
-                    }
-
                     RaiseDiagnosticsChanged();
                 }
             }
         }
-        #endregion
+
+        public GameObject DiagnosticVisualization
+        {
+            get
+            {
+                if (diagnosticVisualization != null)
+                {
+                    return diagnosticVisualization;
+                }
+
+                if (!Visible)
+                {
+                    // Don't create a gameobject if it's not needed
+                    return null;
+                }
+
+                diagnosticVisualization = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                diagnosticVisualization.name = "Diagnostics";
+                diagnosticVisualization.layer = Physics.IgnoreRaycastLayer;
+
+                // Todo: position and size
+                // Todo: add text elements
+                diagnosticVisualization.AddComponent<DiagnosticBehavior>();
+
+                var component = diagnosticVisualization.GetComponent<DiagnosticBehavior>();
+                component.ShowCpu = ShowCpu;
+                component.ShowFps = ShowFps;
+                component.ShowMemory = ShowMemory;
+
+                return diagnosticVisualization;
+            }
+        }
+        #endregion IMixedRealityDiagnosticsManager
 
         #region IMixedRealityEventSource
         /// <inheritdoc />
@@ -238,6 +223,6 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
 
         /// <inheritdoc />
         public int GetHashCode(object obj) => SourceName.GetHashCode();
-        #endregion
+        #endregion IMixedRealityEventSource
     }
 }
