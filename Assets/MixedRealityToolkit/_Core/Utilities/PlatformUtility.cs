@@ -10,11 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
     {
         public static bool IsPlatformSupported(this RuntimePlatform runtimePlatform, SupportedPlatforms platform)
         {
-            if (platform == (SupportedPlatforms)(-1))
-            {
-                return true;
-            }
-
             if (platform == 0)
             {
                 return false;
@@ -37,18 +32,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
                 case RuntimePlatform.LinuxEditor:
                     return (platform & SupportedPlatforms.LinuxStandalone) != 0;
                 default:
-                    return false;
+                    return true;
             }
         }
 
 #if UNITY_EDITOR
         public static bool IsPlatformSupported(this UnityEditor.BuildTarget editorBuildTarget, SupportedPlatforms platform)
         {
-            if (platform == (SupportedPlatforms)(-1))
-            {
-                return true;
-            }
-
             if (platform == 0)
             {
                 return false;
@@ -69,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
                 case UnityEditor.BuildTarget.StandaloneLinuxUniversal:
                     return (platform & SupportedPlatforms.LinuxStandalone) != 0;
                 default:
-                    return false;
+                    return true;
             }
         }
 #endif
