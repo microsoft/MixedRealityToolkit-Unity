@@ -20,7 +20,7 @@ The time at which the event occurred.
 
 | Type |
 | --- |
-| [MixedRealitySpatialAwarenessEventType](./MixedRealitySpatialAwarenessEventType.md) |
+| [SpatialAwarenessEventType](./SpatialAwarenessEventType.md) |
 
 The type of event that has occurred.
 
@@ -43,4 +43,4 @@ Unity GameObject, managed by the spatial awareness system, representing the data
 ## See Also
 
 - [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
-- [MixedRealitySpatialAwarenessEventType Enumeration](./MixedRealitySpatialAwarenessEventType.md)
+- [SpatialAwarenessEventType Enumeration](./SpatialAwarenessEventType.md)

@@ -10,9 +10,9 @@ The MixedRealitySpatialAwarenessSystem class provides the default implementation
 
 The spatial awareness system contains data and methods that configure and control the overall spatial awareness system.
 
-### StartObserverSuspended
+### StartupBehavior
 
-Gets or sets a value that indicates that the developer intends for the spatial observer to not return data until explicitly resumed. This allows the application to decide precisely when it wishes to begin receiving spatial data notifications.
+Gets or sets a value that indicates that the developer intends for the spatial observer to start automatically or wait until explicitly resumed. This allows the application to decide precisely when it wishes to begin receiving spatial data notifications.
 
 ### ObservationExtents
 
@@ -58,35 +58,39 @@ Gets the bit mask that corresponds to the value specified in MeshPhysicsLayer.
 
 ### MeshLevelOfDetail
 
-Gets or sets the level of detail, as a [MixedRealitySpatialAwarenessMeshLevelOfDetail](./MixedRealitySpatialAwarenessMeshLevelOfDetail.md) value, for the returned spatial mesh. Setting this value to Custom, implies that the developer is specifying a custom value for TrianglesPerCubicMeter.
+Gets or sets the level of detail, as a [SpatialAwarenessMeshLevelOfDetail](./SpatialAwarenessMeshLevelOfDetail.md) value, for the returned spatial mesh. Setting this value to Custom, implies that the developer is specifying a custom value for MeshTrianglesPerCubicMeter.
 
-Specifying any other value will cause TrianglesPerCubicMeter to be overwritten.
+Specifying any other value will cause MeshTrianglesPerCubicMeter to be overwritten.
 
-### TrianglesPerCubicMeter
+### MeshTrianglesPerCubicMeter
 
-Gets or sets the level of detail, in triangles per cubic meter, for the returned spatial mesh. 
+Gets or sets the level of detail, in triangles per cubic meter, for the returned spatial mesh.
 
 When specifying Coarse or Fine for the MeshLevelOfDetail, this value will be automatically overwritten.
 
-### RecalculateNormals
+### MeshRecalculateNormals
 
-Gets or sets the value indicating if the spatial awareness system to generate normal for the returned meshes as some platforms may not support returning normal along with the spatial mesh. 
+Gets or sets the value indicating if the spatial awareness system to generate normal for the returned meshes as some platforms may not support returning normal along with the spatial mesh.
 
-### RenderMeshes
+### MeshDisplayOption
 
-Gets or sets a value indicating if the mesh subsystem is to automatically display surface meshes within the application. When enabled, the meshes will be added to the scene and rendered using the configured MeshMaterial.
+Gets or sets a value indicating how the mesh subsystem is to display surface meshes within the application.
 
-Applications that wish to process the Meshes should set this value to false.
+Applications that wish to process the Meshes should set this value to None.
 
-### MeshMaterial
+### MeshVisibleMaterial
 
-Gets or sets the material to be used when rendering spatial meshes.
+Gets or sets the material to be used when displaying spatial meshes.
 
-### [IMixedRealitySpatialAwarenessMeshDescription](./IMixedRealitySpatialAwarenessMeshDescription.md)[] GetMeshes()
+### MeshOcclusionMaterial
+
+Gets or sets the material to be used when spatial meshes should occlude other objects.
+
+### Dictionary<uint, [IMixedRealitySpatialAwarenessMeshDescription](./IMixedRealitySpatialAwarenessMeshDescription.md)> GetMeshes()
 
 Returns the collection of Meshes being managed by the spatial awareness mesh subsystem.
 
-### GameObject[] GetMeshes()
+### Dictionary<uint, GameObject> GetMeshes()
 
 Returns the collection of GameObjects being managed by the spatial awareness mesh subsystem.
 
@@ -112,43 +116,43 @@ Gets the bit mask that corresponds to the value specified in SurfacePhysicsLayer
 
 Gets or sets the minimum surface area, in square meters, that must be satisfied before a surface is identified.
 
-### RenderFloorSurfaces
+### DisplayFloorSurfaces
 
-Gets or sets a value indicating if the surface subsystem is to automatically display floor surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured FloorSurfaceMaterial.
+Gets or sets a value indicating if the surface subsystem is to automatically display floor surfaces within the application. When enabled, the surfaces will be added to the scene and displayed using the configured FloorSurfaceMaterial.
 
 ### FloorSurfaceMaterial
 
-Gets or sets the material to be used when rendering planar surface(s) identified as a floor.
+Gets or sets the material to be used when displaying planar surface(s) identified as a floor.
 
-### RenderCeilingSurfaces
+### DisplayCeilingSurfaces
 
-Gets or sets a value indicating if the surface subsystem is to automatically display ceiling surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured CeilingSurfaceMaterial.
+Gets or sets a value indicating if the surface subsystem is to automatically display ceiling surfaces within the application. When enabled, the surfaces will be added to the scene and displayed using the configured CeilingSurfaceMaterial.
 
 ### CeilingSurfaceMaterial
 
-Gets or sets the material to be used when rendering planar surface(s) identified as a ceiling.
+Gets or sets the material to be used when displaying planar surface(s) identified as a ceiling.
 
-### RenderWallSurfaces
+### DisplayWallSurfaces
 
-Gets or sets a value indicating if the surface subsystem is to automatically display wall surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured WallSurfaceMaterial.
+Gets or sets a value indicating if the surface subsystem is to automatically display wall surfaces within the application. When enabled, the surfaces will be added to the scene and displayed using the configured WallSurfaceMaterial.
 
 ### WallSurfaceMaterial
 
-Gets or sets the material to be used when rendering planar surface(s) identified as a wall.
+Gets or sets the material to be used when displaying planar surface(s) identified as a wall.
 
-### RenderPlatformSurfaces
+### DisplayPlatformSurfaces
 
-Gets or sets a value indicating if the surface subsystem is to automatically display raised horizontal platform surfaces within the application. When enabled, the surfaces will be added to the scene and rendered using the configured PlatformSurfaceMaterial.
+Gets or sets a value indicating if the surface subsystem is to automatically display raised horizontal platform surfaces within the application. When enabled, the surfaces will be added to the scene and displayed using the configured PlatformSurfaceMaterial.
 
 ### PlatformSurfaceMaterial
 
-Gets or sets the material to be used when rendering planar surface(s) identified as a raised horizontal platform.
+Gets or sets the material to be used when displaying planar surface(s) identified as a raised horizontal platform.
 
-### [IMixedRealitySpatialAwarenessPlanarSurfaceDescription](./IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)[] GetSurfaces()
+### Dictionary<uint, [IMixedRealitySpatialAwarenessPlanarSurfaceDescription](./IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)> GetSurfaces()
 
 Returns the collection of surface descriptions being tracked by the surface finding subsystem.
 
-### GameObject[] GetSurfaceObjects()
+### Dictionary<uint, GameObject> GetSurfaceObjects()
 
 Returns the collection of GameObjects managed by the surface finding subsystem.
 
@@ -165,4 +169,5 @@ The spatial awareness system raises events on the following handler types to ind
 - [IMixedRealitySpatialAwarenessSystem Interface](./IMixedRealitySpatialAwarenessSystem.md)
 - [IMixedRealitySpatialAwarenessMeshDescription Interface](./IMixedRealitySpatialAwarenessMeshDescription.md)
 - [IMixedRealitySpatialAwarenessPlanarSurfaceDescription Interface](./IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)
-- [MixedRealitySpatialAwarenessMeshLevelOfDetail Enumeration](./MixedRealitySpatialAwarenessMeshLevelOfDetail.md)
+- [SpatialAwarenessMeshDisplayOptions Enumeration](./SpatialAwarenessMeshDisplayOptions.md)
+- [SpatialAwarenessMeshLevelOfDetail Enumeration](./SpatialAwarenessMeshLevelOfDetail.md)

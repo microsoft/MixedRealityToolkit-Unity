@@ -12,11 +12,11 @@ The data types, default values and the supported range of values, if appropriate
 
 ## General Configuration Settings
 
-### StartObserverSuspended
+### StartupBehavior
 
 | Type | Default Value | Range |
 | --- | --- | --- |
-| Boolean | False | n/a |
+| AutoStartBehavior | AutoStart | AutoStart, Manual |
 
 ### ObservationExtents
 
@@ -50,7 +50,7 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 
 | Type | Default Value | Range |
 | --- | --- | --- |
-| [MixedRealitySpatialAwarenessLevelOfDetail](./MixedRealitySpatialAwarenessLevelOfDetail.md) | Coarse | Custom, Coarse, Fine |
+| [SpatialAwarenessLevelOfDetail](./SpatialAwarenessLevelOfDetail.md) | Coarse | Custom, Coarse, Fine |
 
 ### MeshTrianglesPerCubicMeter
 
@@ -58,23 +58,29 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 | --- | --- | --- |
 | Int32 | 0 | 0 - Int32.MaxValue |
 
-### RecalculateNormals
+### MeshRecalculateNormals
 
 | Type | Default Value | Range |
 | --- | --- | --- |
 | Boolean | True | n/a |
 
-### DisplayMeshes
+### MeshDisplayOption
 
 | Type | Default Value | Range |
 | --- | --- | --- |
-| Boolean | True | n/a |
+| [SpatialMeshDisplayOptions](./SpatialMeshDisplayOptions.md) | None | None, Visible, Occlusion |
 
-### MeshMaterial
+### MeshVisibleMaterial
 
 | Type | Default Value | Range |
 | --- | --- | --- |
-| Material | MRTK_Wireframe | n/a |
+| Material | n/a | n/a |
+
+### MeshOcclusionMaterial
+
+| Type | Default Value | Range |
+| --- | --- | --- |
+| Material | n/a | n/a |
 
 ## Surface Finding Handler Configuration Settings
 
@@ -90,19 +96,13 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 | --- | --- | --- |
 | Int32 | 31 | 0 - 31 |
 
-### SurfaceFindingUpdateInterval
-
-| Type | Default Value | Range |
-| --- | --- | --- |
-| Single | TBD (seconds) | 0.0 - TBD (seconds) |
-
 ### SurfaceFindingMinimumArea
 
 | Type | Default Value | Range |
 | --- | --- | --- |
 | Single | 0.025 (square meters) | TBD (square meters) |
 
-### RenderFloorSurfaces
+### DisplayFloorSurfaces
 
 | Type | Default Value | Range |
 | --- | --- | --- |
@@ -114,7 +114,7 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 | --- | --- | --- |
 | Material | TBD | n/a |
 
-### RenderCeilingSurfaces
+### DisplayCeilingSurfaces
 
 | Type | Default Value | Range |
 | --- | --- | --- |
@@ -126,7 +126,7 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 | --- | --- | --- |
 | Material | TBD | n/a |
 
-### RenderWallSurfaces
+### DisplayWallSurfaces
 
 | Type | Default Value | Range |
 | --- | --- | --- |
@@ -138,7 +138,7 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 | --- | --- | --- |
 | Material | TBD | n/a |
 
-### RenderPlatformSurfaces
+### DisplayPlatformSurfaces
 
 | Type | Default Value | Range |
 | --- | --- | --- |
@@ -154,5 +154,6 @@ Setting 0.0 indicates that the data should be updated at the platform's highest 
 
 - [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
 - [IMixedRealitySpatialAwarenessSystem Interface](./IMixedRealitySpatialAwarenessSystem.md)
-- [MixedRealitySpatialAwarenessProfileInspector](./MixedRealitySpatialAwarenessProfileInspector.md)
-- [MixedRealitySpatialAwarenessMeshLevelOfDetail](./MixedRealitySpatialAwarenessMeshLevelOfDetail.md)
+- [MixedRealitySpatialAwarenessProfileInspector Class](./MixedRealitySpatialAwarenessProfileInspector.md)
+- [SpatialAwarenessMeshDisplayOptions Enumeration](./SpatialAwarenessMeshDisplayOptions.md)
+- [SpatialAwarenessMeshLevelOfDetail Enumeration](./SpatialAwarenessMeshLevelOfDetail.md)

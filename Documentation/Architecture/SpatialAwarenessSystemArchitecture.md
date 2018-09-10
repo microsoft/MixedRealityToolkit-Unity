@@ -30,9 +30,10 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 
 ## Enumerations
 
-- [MixedRealitySpatialAwarenessMeshLevelOfDetail](./MixedRealitySpatialAwarenessMeshLevelOfDetail.md)
-- [MixedRealitySpatialAwarenessEventType](./MixedRealitySpatialAwarenessEventType.md)
-- [MixedRealitySpatialAwarenessSurfaceTypes](./MixedRealitySpatialAwarenessSurfaceTypes.md)
+- [SpatialAwarenessEventType](./SpatialAwarenessEventType.md)
+- [SpatialAwarenessMeshDisplayOptions](./SpatialAwarenessMeshDisplayOptions.md)
+- [SpatialAwarenessMeshLevelOfDetail](./SpatialAwarenessMeshLevelOfDetail.md)
+- [SpatialAwarenessSurfaceTypes](./SpatialAwarenessSurfaceTypes.md)
 
 ## Event Data Types
 
