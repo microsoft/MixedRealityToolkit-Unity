@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using System;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine.EventSystems;
 
 #if UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
@@ -35,13 +36,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <inheritdoc />
         public SpeechEventData(EventSystem eventSystem) : base(eventSystem) { }
 
-#if UNITY_WSA  || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-
         /// <summary>
         /// A measure of correct recognition certainty.
         /// </summary>
-        public ConfidenceLevel Confidence { get; private set; }
+        public RecognitionConfidenceLevel Confidence { get; private set; }
 
+        
+#if UNITY_WSA  || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         /// <summary>
         /// A semantic meaning of recognized phrase.
         /// </summary>
@@ -57,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <param name="phraseStartTime"></param>
         /// <param name="semanticMeanings"></param>
         /// <param name="recognizedText"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText)
+        public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string recognizedText)
         {
             BaseInitialize(inputSource, inputAction);
             Confidence = confidence;

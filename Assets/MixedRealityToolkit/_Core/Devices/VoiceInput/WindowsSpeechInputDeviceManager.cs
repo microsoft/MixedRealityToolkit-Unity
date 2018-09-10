@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 
         private KeywordRecognizer keywordRecognizer;
 
-        public ConfidenceLevel RecognitionConfidenceLevel { get; set; }
+        public RecognitionConfidenceLevel RecognitionConfidenceLevel { get; set; }
 
         /// <inheritdoc />
         public override void Enable()
@@ -49,8 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                 newKeywords[i] = Commands[i].Keyword;
             }
 
-            RecognitionConfidenceLevel = (ConfidenceLevel)MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
-            keywordRecognizer = new KeywordRecognizer(newKeywords, RecognitionConfidenceLevel);
+            RecognitionConfidenceLevel = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
+            keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel) RecognitionConfidenceLevel);
             keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
 
             if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
@@ -84,6 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                 keywordRecognizer.Dispose();
             }
         }
+#endif
 
         /// <summary>
         /// Make sure the keyword recognizer is off, then start it.
@@ -91,10 +92,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// </summary>
         public void StartRecognition()
         {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             if (keywordRecognizer != null && !keywordRecognizer.IsRunning)
             {
                 keywordRecognizer.Start();
             }
+#endif
         }
 
         /// <summary>
@@ -103,18 +106,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// </summary>
         public void StopRecognition()
         {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             if (keywordRecognizer != null && keywordRecognizer.IsRunning)
             {
                 keywordRecognizer.Stop();
             }
+#endif
         }
 
-        private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
-        {
-            OnPhraseRecognized(args.confidence, args.phraseDuration, args.phraseStartTime, args.semanticMeanings, args.text);
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+        private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args) {
+            OnPhraseRecognized((RecognitionConfidenceLevel) args.confidence, args.phraseDuration, args.phraseStartTime, args.semanticMeanings, args.text);
         }
 
-        private void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
+        private void OnPhraseRecognized(RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SemanticMeaning[] semanticMeanings, string text)
         {
             for (int i = 0; i < Commands?.Length; i++)
             {
