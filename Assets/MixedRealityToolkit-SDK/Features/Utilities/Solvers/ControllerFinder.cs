@@ -3,9 +3,11 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
@@ -34,14 +36,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         protected Transform ControllerTransform;
 
-        private IMixedRealityDeviceManager BaseDeviceManager => baseDeviceManager ?? (baseDeviceManager = MixedRealityManager.Instance.GetManager<IMixedRealityDeviceManager>());
-        private IMixedRealityDeviceManager baseDeviceManager = null;
+        private IEnumerable<IMixedRealityManager> BaseDeviceManagers => baseDeviceManagers ?? (baseDeviceManagers = MixedRealityManager.Instance.GetManagers(typeof(IMixedRealityDeviceManager)));
+        private IEnumerable<IMixedRealityManager> baseDeviceManagers = null;
 
         #region MonoBehaviour Implementation
 
         protected virtual void OnEnable()
         {
-            if (BaseDeviceManager == null)
+            if (BaseDeviceManagers == null)
             {
                 // The base device manager has not been set up yet.
                 return;
@@ -80,20 +82,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         {
             // Look if the controller was already loaded. This could happen if the
             // GameObject was instantiated at runtime and the model loaded event has already fired.
-            if (BaseDeviceManager == null)
+            if (BaseDeviceManagers == null)
             {
                 // The BaseDeviceManager could not be found.
                 return;
             }
 
-            IMixedRealityController[] controllers = BaseDeviceManager.GetActiveControllers();
-
-            for (int i = 0; i < controllers.Length; i++)
+            foreach (IMixedRealityDeviceManager manager in BaseDeviceManagers)
             {
-                if (controllers[i].ControllerHandedness == handedness)
+                IMixedRealityController[] controllers = manager.GetActiveControllers();
+
+                for (int i = 0; i < controllers.Length; i++)
                 {
-                    AddControllerTransform(controllers[i]);
-                    return;
+                    if (controllers[i].ControllerHandedness == handedness)
+                    {
+                        AddControllerTransform(controllers[i]);
+                        return;
+                    }
+ 
                 }
             }
         }
