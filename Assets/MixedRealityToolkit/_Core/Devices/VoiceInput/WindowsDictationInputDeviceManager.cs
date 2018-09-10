@@ -14,6 +14,7 @@ using UnityEngine.Windows.Speech;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
     public class WindowsDictationInputDeviceManager : BaseDeviceManager, IMixedRealityDictationManager
     {
         /// <summary>
@@ -27,8 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// Is the Dictation Manager currently running?
         /// </summary>
         public bool IsListening { get; private set; } = false;
-
-        private DictationRecognizer dictationRecognizer;
 
         private bool hasFailed;
         private bool hasListener;
@@ -59,11 +58,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// </summary>
         private AudioClip dictationAudioClip;
 
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-
+        private DictationRecognizer dictationRecognizer;
+        
         /// <inheritdoc />
         public override void Enable()
         {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             if (!Application.isPlaying) { return; }
 
             if (InputSystem == null)
@@ -84,11 +84,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
             dictationRecognizer.DictationComplete += DictationRecognizer_DictationComplete;
             dictationRecognizer.DictationError += DictationRecognizer_DictationError;
+#endif
         }
 
         /// <inheritdoc />
         public override void Update()
         {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             if (!Application.isPlaying || InputSystem == null) { return; }
 
             if (!isTransitioning && IsListening && !Microphone.IsRecording(deviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
@@ -102,11 +104,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                 hasFailed = true;
                 InputSystem.RaiseDictationError(inputSource, "Dictation recognizer has failed!");
             }
+#endif
         }
 
         /// <inheritdoc />
         public override async void Disable()
         {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             if (Application.isPlaying && dictationRecognizer != null)
             {
                 if (!isTransitioning && IsListening) { await StopRecordingAsync(); }
@@ -116,14 +120,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                 dictationRecognizer.DictationComplete -= DictationRecognizer_DictationComplete;
                 dictationRecognizer.DictationError -= DictationRecognizer_DictationError;
             }
+#endif
         }
 
         public override void Destroy()
         {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             if (Application.isPlaying)
             {
                 dictationRecognizer?.Dispose();
             }
+#endif
         }
 
         /// <inheritdoc />
@@ -135,6 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// <inheritdoc />
         public async Task StartRecordingAsync(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10, string micDeviceName = "")
         {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             if (IsListening || isTransitioning || InputSystem == null)
             {
                 Debug.LogWarning("Unable to start recording");
@@ -179,6 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             dictationAudioClip = Microphone.Start(deviceName, false, recordingTime, samplingRate);
             textSoFar = new StringBuilder();
             isTransitioning = false;
+#endif
         }
 
         /// <inheritdoc />
@@ -190,6 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// <inheritdoc />
         public async Task<AudioClip> StopRecordingAsync()
         {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
             if (!IsListening || isTransitioning)
             {
                 Debug.LogWarning("Unable to stop recording");
@@ -219,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             await new WaitUntil(() => PhraseRecognitionSystem.Status == SpeechSystemStatus.Running);
 
             isTransitioning = false;
-
+#endif
             return dictationAudioClip;
         }
 
@@ -235,6 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             InputSystem.RaiseDictationHypothesis(inputSource, dictationResult);
         }
 
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         /// <summary>
         /// This event is fired after the user pauses, typically at the end of a sentence. The full recognized string is returned here.
         /// </summary>
@@ -282,7 +293,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             textSoFar = null;
             dictationResult = string.Empty;
         }
-
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
     }
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 }

@@ -21,6 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Sources
         public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
         private static IMixedRealityInputSystem inputSystem = null;
 
+        protected BaseGenericInputSource() { }
+
         /// <summary>
         /// Constructor.
         /// </summary>
