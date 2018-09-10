@@ -12,17 +12,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         {
             if (platform < 0)
             {
-                Debug.Log("All platforms supported!");
                 return true;
             }
 
             if (platform == 0)
             {
-                Debug.Log("No platforms supported");
                 return false;
             }
-
-            Debug.Log($"Supported {platform}");
 
             switch (runtimePlatform)
             {
@@ -41,7 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
                 case RuntimePlatform.LinuxEditor:
                     return (platform & SupportedPlatforms.LinuxStandalone) != 0;
                 default:
-                    Debug.Log("No platforms supported");
                     return false;
             }
         }
@@ -51,17 +46,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
         {
             if (platform < 0)
             {
-                Debug.Log("All platforms supported!");
                 return true;
             }
 
             if (platform == 0)
             {
-                Debug.Log("No platforms supported");
                 return false;
             }
-
-            Debug.Log($"Supported {platform}");
 
             switch (editorBuildTarget)
             {
@@ -78,7 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
                 case UnityEditor.BuildTarget.StandaloneLinuxUniversal:
                     return (platform & SupportedPlatforms.LinuxStandalone) != 0;
                 default:
-                    Debug.Log("No platforms supported");
                     return false;
             }
         }
