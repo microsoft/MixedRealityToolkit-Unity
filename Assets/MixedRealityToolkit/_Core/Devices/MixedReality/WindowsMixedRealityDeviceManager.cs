@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             }
         }
 
-        private static WindowsGestureSettings gestureSettings = WindowsGestureSettings.Tap | WindowsGestureSettings.ManipulationTranslate | WindowsGestureSettings.Hold;
+        private static WindowsGestureSettings gestureSettings = WindowsGestureSettings.Hold | WindowsGestureSettings.ManipulationTranslate;
 
         /// <summary>
         /// Current Gesture Settings for the GestureRecognizer
@@ -224,14 +224,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile != null)
             {
-                gestureSettings = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.ManipulationGestures;
-                navigationSettings = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.NavigationGestures;
-                useRailsNavigation = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.UseRailsNavigation;
-                railsNavigationSettings = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.RailsNavigationGestures;
+                var gestureProfile = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile;
+                gestureSettings = gestureProfile.ManipulationGestures;
+                navigationSettings = gestureProfile.NavigationGestures;
+                useRailsNavigation = gestureProfile.UseRailsNavigation;
+                railsNavigationSettings = gestureProfile.RailsNavigationGestures;
 
-                for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.Gestures.Length; i++)
+                for (int i = 0; i < gestureProfile.Gestures.Length; i++)
                 {
-                    var gesture = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile.Gestures[i];
+                    var gesture = gestureProfile.Gestures[i];
 
                     switch (gesture.GestureType)
                     {
@@ -286,8 +287,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                 gestureRecognizer = new GestureRecognizer();
             }
 
-            gestureRecognizer.Tapped += GestureRecognizer_Tapped;
-
             gestureRecognizer.HoldStarted += GestureRecognizer_HoldStarted;
             gestureRecognizer.HoldCompleted += GestureRecognizer_HoldCompleted;
             gestureRecognizer.HoldCanceled += GestureRecognizer_HoldCanceled;
@@ -301,8 +300,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         private void UnregisterGestureEvents()
         {
             if (gestureRecognizer == null) { return; }
-
-            gestureRecognizer.Tapped -= GestureRecognizer_Tapped;
 
             gestureRecognizer.HoldStarted -= GestureRecognizer_HoldStarted;
             gestureRecognizer.HoldCompleted -= GestureRecognizer_HoldCompleted;
@@ -399,6 +396,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             var inputSource = InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {nameModifier}", pointers);
             var detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
 
+
             if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityController)))
             {
                 // Controller failed to be setup correctly.
@@ -408,6 +406,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
             for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
             {
+                Debug.Log(detectedController.InputSource.Pointers[i].PointerName);
                 detectedController.InputSource.Pointers[i].Controller = detectedController;
             }
 
@@ -498,29 +497,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 
         #region Gesture Recognizer Events
 
-        private void GestureRecognizer_Tapped(TappedEventArgs args)
-        {
-            var controller = GetController(args.source, false);
-            if (controller != null)
-            {
-                for (int i = 0; i < controller.InputSource.Pointers.Length; i++)
-                {
-                    var selectAction = MixedRealityInputAction.None;
-
-                    for (int j = 0; j < controller.Interactions.Length; j++)
-                    {
-                        if (controller.Interactions[i].InputType == DeviceInputType.Select)
-                        {
-                            selectAction = controller.Interactions[i].MixedRealityInputAction;
-                            break;
-                        }
-                    }
-
-                    InputSystem.RaisePointerClicked(controller.InputSource.Pointers[i], (Handedness)args.source.handedness, selectAction, args.tapCount);
-                }
-            }
-        }
-
         private void GestureRecognizer_HoldStarted(HoldStartedEventArgs args)
         {
             var controller = GetController(args.source, false);
@@ -530,21 +506,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             }
         }
 
-        private void GestureRecognizer_HoldCanceled(HoldCanceledEventArgs args)
-        {
-            var controller = GetController(args.source, false);
-            if (controller != null)
-            {
-                InputSystem.RaiseGestureCanceled(controller, holdAction);
-            }
-        }
-
         private void GestureRecognizer_HoldCompleted(HoldCompletedEventArgs args)
         {
             var controller = GetController(args.source, false);
             if (controller != null)
             {
                 InputSystem.RaiseGestureCompleted(controller, holdAction);
+            }
+        }
+
+        private void GestureRecognizer_HoldCanceled(HoldCanceledEventArgs args)
+        {
+            var controller = GetController(args.source, false);
+            if (controller != null)
+            {
+                InputSystem.RaiseGestureCanceled(controller, holdAction);
             }
         }
 

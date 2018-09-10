@@ -431,12 +431,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                                     InputSystem?.RaisePointerClicked(InputSource.Pointers[i], ControllerHandedness, interactionMapping.MixedRealityInputAction, 1);
                                 }
 
-                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-
                                 for (int i = 0; i < InputSource.Pointers.Length; i++)
                                 {
                                     InputSystem?.RaisePointerUp(InputSource.Pointers[i], ControllerHandedness, interactionMapping.MixedRealityInputAction);
                                 }
+
+                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                             }
                         }
                         break;

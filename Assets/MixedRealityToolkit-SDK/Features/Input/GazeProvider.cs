@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
@@ -224,27 +222,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
 
             #endregion IMixedRealityPointer Implementation
-
-            /// <summary>
-            /// Press this pointer. This sends a pointer down event across the input system.
-            /// </summary>
-            /// <param name="mixedRealityInputAction">The input action that corresponds to the pressed button or axis.</param>
-            /// <param name="handedness">Optional handedness of the source that pressed the pointer.</param>
-            public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None)
-            {
-                InputSystem.RaisePointerDown(this, handedness, mixedRealityInputAction);
-            }
-
-            /// <summary>
-            /// Release this pointer. This sends pointer clicked and pointer up events across the input system.
-            /// </summary>
-            /// <param name="mixedRealityInputAction">The input action that corresponds to the released button or axis.</param>
-            /// <param name="handedness">Optional handedness of the source that released the pointer.</param>
-            public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None)
-            {
-                InputSystem.RaisePointerClicked(this, handedness, mixedRealityInputAction, 0);
-                InputSystem.RaisePointerUp(this, handedness, mixedRealityInputAction);
-            }
         }
 
         #endregion InternalGazePointer Class
