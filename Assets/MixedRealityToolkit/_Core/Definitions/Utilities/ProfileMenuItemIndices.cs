@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         Gestures,
         TouchInput,
         Diagnostics,
+        RegisteredComponents,
 
         Assembly = 99
     }
