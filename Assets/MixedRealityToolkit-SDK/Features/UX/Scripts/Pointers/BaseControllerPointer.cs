@@ -13,6 +13,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System.Collections;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
@@ -61,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         protected bool IsTeleportRequestActive = false;
 
-        private bool lateRegisterTeleport = false;
+        private bool lateRegisterTeleport = true;
 
         /// <summary>
         /// The forward direction of the targeting ray
@@ -119,31 +120,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             SetCursor();
             BaseCursor?.SetVisibility(true);
 
-            if (TeleportSystem == null)
-            {
-                lateRegisterTeleport = true;
-            }
-            else if (!lateRegisterTeleport)
+            if (MixedRealityManager.IsInitialized && TeleportSystem != null && !lateRegisterTeleport)
             {
                 TeleportSystem.Register(gameObject);
             }
         }
 
-        protected override void Start()
+        protected override async void Start()
         {
             base.Start();
 
             if (lateRegisterTeleport)
             {
-                if (TeleportSystem == null)
-                {
-                    Debug.LogError("Failed to find the Teleport System!");
-                }
-                else
-                {
-                    lateRegisterTeleport = false;
-                    TeleportSystem.Register(gameObject);
-                }
+                await new WaitUntil(() => TeleportSystem != null);
+                lateRegisterTeleport = false;
+                TeleportSystem.Register(gameObject);
             }
         }
 
