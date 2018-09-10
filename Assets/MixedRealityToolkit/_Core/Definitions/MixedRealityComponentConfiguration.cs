@@ -23,21 +23,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// <param name="priority">The priority this system, feature, or manager will be initialized in.</param>
         /// <param name="runtimePlatform">The runtime platform(s) to run this system, feature, or manager on.</param>
         /// <param name="configurationProfile">The configuration profile for the system, feature, or manager.</param>
-        /// <param name="editorPlatform">The editor platform(s) to run this system, feature, or manager on.</param>
-        public MixedRealityComponentConfiguration(SystemType componentType, string componentName, uint priority, RuntimePlatform runtimePlatform, ScriptableObject configurationProfile
-#if UNITY_EDITOR
-            , UnityEditor.BuildTarget editorPlatform
-#endif
-        )
+        public MixedRealityComponentConfiguration(SystemType componentType, string componentName, uint priority, SupportedPlatforms runtimePlatform, ScriptableObject configurationProfile)
         {
             this.componentType = componentType;
             this.componentName = componentName;
             this.priority = priority;
             this.runtimePlatform = runtimePlatform;
             this.configurationProfile = configurationProfile;
-#if UNITY_EDITOR
-            this.editorPlatform = editorPlatform;
-#endif
         }
 
         [SerializeField]
@@ -67,12 +59,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 
         [EnumFlags]
         [SerializeField]
-        private RuntimePlatform runtimePlatform;
+        private SupportedPlatforms runtimePlatform;
 
         /// <summary>
         /// The runtime platform(s) to run this system, feature, or manager on.
         /// </summary>
-        public RuntimePlatform RuntimePlatform => runtimePlatform;
+        public SupportedPlatforms RuntimePlatform => runtimePlatform;
 
         [SerializeField]
         private ScriptableObject configurationProfile;
@@ -81,16 +73,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         /// The configuration profile for the system, feature, or manager.
         /// </summary>
         public ScriptableObject ConfigurationProfile => configurationProfile;
-
-#if UNITY_EDITOR
-        [EnumFlags]
-        [SerializeField]
-        private UnityEditor.BuildTarget editorPlatform;
-
-        /// <summary>
-        /// The editor platform(s) to run this system, feature, or manager on.
-        /// </summary>
-        public UnityEditor.BuildTarget EditorPlatform => editorPlatform;
-#endif
     }
 }
