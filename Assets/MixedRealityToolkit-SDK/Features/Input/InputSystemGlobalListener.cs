@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
@@ -17,30 +18,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private bool lateInitialize = true;
 
+        protected readonly WaitUntil WaitUntilInputSystemValid = new WaitUntil(() => InputSystem != null);
+
         protected virtual void OnEnable()
         {
-            if (!MixedRealityManager.IsInitialized)
-            {
-                Debug.LogError("Missing Mixed Reality Manager!");
-                return;
-            }
-
-            if (InputSystem != null && !lateInitialize)
+            if (MixedRealityManager.IsInitialized && InputSystem != null && !lateInitialize)
             {
                 InputSystem.Register(gameObject);
             }
         }
 
-        protected virtual void Start()
+        protected virtual async void Start()
         {
             if (lateInitialize)
             {
-                if (InputSystem == null)
-                {
-                    Debug.LogError("Unable to find Input System!");
-                    return;
-                }
-
+                await WaitUntilInputSystemValid;
                 lateInitialize = false;
                 InputSystem.Register(gameObject);
             }
