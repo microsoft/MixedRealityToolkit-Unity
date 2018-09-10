@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
     public class BaseControllerPointerInspector : ControllerPoseSynchronizerInspector
     {
         private SerializedProperty cursorPrefab;
+        private SerializedProperty disableCursorOnStart;
         private SerializedProperty raycastOrigin;
         private SerializedProperty pointerExtent;
         private SerializedProperty activeHoldAction;
@@ -27,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
             base.OnEnable();
 
             cursorPrefab = serializedObject.FindProperty("cursorPrefab");
+            disableCursorOnStart = serializedObject.FindProperty("disableCursorOnStart");
             raycastOrigin = serializedObject.FindProperty("raycastOrigin");
             pointerExtent = serializedObject.FindProperty("pointerExtent");
             activeHoldAction = serializedObject.FindProperty("activeHoldAction");
@@ -48,6 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
             if (basePointerFoldout)
             {
                 EditorGUILayout.PropertyField(cursorPrefab);
+                EditorGUILayout.PropertyField(disableCursorOnStart);
                 EditorGUILayout.PropertyField(raycastOrigin);
                 EditorGUILayout.PropertyField(pointerExtent);
                 EditorGUILayout.PropertyField(pointerOrientation);

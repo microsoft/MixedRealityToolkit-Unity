@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                         if (visibleSourcesCount == 1 &&
                             InputSystem.GazeProvider.GazePointer.PointerId != Pointer.PointerId)
                         {
-                            SetVisibility(true);
+                            SetVisibility(isVisible);
                         }
 
                         return;
@@ -240,13 +240,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         #endregion IMixedRealityPointerHandler Implementation
 
         #region MonoBehaviour Implementation
-
-        private void Awake()
-        {
-            // Use the setter to update visibility of the cursor at startup based on user preferences
-            IsVisible = isVisible;
-            SetVisibility(isVisible);
-        }
 
         private void Update()
         {
