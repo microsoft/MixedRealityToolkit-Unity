@@ -59,7 +59,7 @@ MonoBehaviour:
       axisType: 4
       inputType: 50
       inputAction:
-        id: 8
+        id: 10
         description: Scroll
         axisConstraint: 4
       keyCode: 0
