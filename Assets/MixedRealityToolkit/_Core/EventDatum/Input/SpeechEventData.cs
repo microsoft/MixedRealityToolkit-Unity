@@ -2,15 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using System;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine.EventSystems;
-
-#if UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-using UnityEngine.Windows.Speech;
-#endif
 
 namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
 {
@@ -34,19 +31,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// </summary>
         public string RecognizedText { get; private set; }
 
-        /// <inheritdoc />
-        public SpeechEventData(EventSystem eventSystem) : base(eventSystem) { }
-
         /// <summary>
         /// A measure of correct recognition certainty.
         /// </summary>
         public RecognitionConfidenceLevel Confidence { get; private set; }
 
-        
-        /// <summary>
-        /// A semantic meaning of recognized phrase.
-        /// </summary>
-        public KeyValuePair<string, string[]>[] SemanticMeanings { get; private set; }
+        /// <inheritdoc />
+        public SpeechEventData(EventSystem eventSystem) : base(eventSystem) { }
+
 
         /// <summary>
         /// Populates the event with data.
@@ -56,15 +48,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <param name="confidence"></param>
         /// <param name="phraseDuration"></param>
         /// <param name="phraseStartTime"></param>
-        /// <param name="semanticMeanings"></param>
         /// <param name="recognizedText"></param>
-        public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, KeyValuePair<string, string[]>[] semanticMeanings, string recognizedText)
+        public void Initialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, string recognizedText)
         {
             BaseInitialize(inputSource, inputAction);
             Confidence = confidence;
             PhraseDuration = phraseDuration;
             PhraseStartTime = phraseStartTime;
-            SemanticMeanings = semanticMeanings;
             RecognizedText = recognizedText;
         }
     }
