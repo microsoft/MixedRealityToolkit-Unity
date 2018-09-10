@@ -75,20 +75,26 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// </summary>
         /// <param name="controllerType">The controller type making the request for pointers.</param>
         /// <param name="controllingHand">The handedness of the controller making the request.</param>
+        /// <param name="useSpecificType">Only register pointers with a specific type.</param>
         /// <returns></returns>
-        protected virtual IMixedRealityPointer[] RequestPointers(SystemType controllerType, Handedness controllingHand)
+        protected virtual IMixedRealityPointer[] RequestPointers(SystemType controllerType, Handedness controllingHand, bool useSpecificType = false)
         {
             var pointers = new List<IMixedRealityPointer>();
 
             if (MixedRealityManager.HasActiveProfile &&
                 MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
-                MixedRealityManager.Instance.ActiveProfile.PointerProfile != null)
+                MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile != null)
             {
-                for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions.Length; i++)
+                for (int i = 0; i < MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions.Length; i++)
                 {
-                    var pointerProfile = MixedRealityManager.Instance.ActiveProfile.PointerProfile.PointerOptions[i];
+                    var pointerProfile = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.PointerProfile.PointerOptions[i];
 
-                    if ((pointerProfile.ControllerType.Type == null || pointerProfile.ControllerType.Type == controllerType.Type) &&
+                    if (!useSpecificType)
+                    {
+                        useSpecificType = pointerProfile.ControllerType.Type != null;
+                    }
+
+                    if ((!useSpecificType || pointerProfile.ControllerType.Type == controllerType.Type) &&
                         (pointerProfile.Handedness == Handedness.Any || pointerProfile.Handedness == Handedness.Both || pointerProfile.Handedness == controllingHand))
                     {
                         var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);

@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
     /// <summary>
     /// Manages joysticks using unity input system.
     /// </summary>
-    public class UnityJoystickManager : BaseDeviceManager
+    public class UnityJoystickManager : BaseDeviceManager, IMixedRealityComponent
     {
         /// <summary>
         /// Constructor.

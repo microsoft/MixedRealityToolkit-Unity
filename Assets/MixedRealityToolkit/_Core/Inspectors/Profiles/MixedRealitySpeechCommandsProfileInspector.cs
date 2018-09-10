@@ -33,13 +33,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             }
 
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
-                MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null) { return; }
+                MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null) { return; }
 
             recognizerStartBehaviour = serializedObject.FindProperty("startBehavior");
             recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
             speechCommands = serializedObject.FindProperty("speechCommands");
-            actionLabels = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
-            actionIds = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
+            actionLabels = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Select(action => new GUIContent(action.Description)).Prepend(new GUIContent("None")).ToArray();
+            actionIds = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Select(action => (int)action.Id).Prepend(0).ToArray();
         }
 
         public override void OnInspectorGUI()
@@ -50,22 +50,30 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 return;
             }
 
-            if (GUILayout.Button("Back to Configuration Profile"))
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+
+                if (GUILayout.Button("Back to Configuration Profile"))
+                {
+                    Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                }
+
+                return;
             }
+
+            if (GUILayout.Button("Back to Input Profile"))
+            {
+                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile;
+            }
+
+            EditorGUILayout.Space();
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Speech Commands are any/all spoken keywords your users will be able say to raise an Input Action in your application.", MessageType.Info);
 
-            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
-            {
-                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-                return;
-            }
-
-            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null)
+            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
                 return;
@@ -137,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                 if (EditorGUI.EndChangeCheck())
                 {
-                    MixedRealityInputAction inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
+                    MixedRealityInputAction inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
                     actionDescription.stringValue = inputAction.Description;
                     actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
                 }

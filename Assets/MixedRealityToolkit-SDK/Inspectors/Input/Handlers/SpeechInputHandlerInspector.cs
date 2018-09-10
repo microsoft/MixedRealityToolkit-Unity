@@ -137,15 +137,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
         private static IEnumerable<string> RegisteredKeywords()
         {
             if (!MixedRealityManager.HasActiveProfile ||
-                !MixedRealityManager.Instance.ActiveProfile.IsSpeechCommandsEnabled ||
-                 MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
+                !MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
+                !MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsSpeechCommandsEnabled ||
+                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
             {
                 yield break;
             }
 
-            for (var i = 0; i < MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands.Length; i++)
+            for (var i = 0; i < MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length; i++)
             {
-                yield return MixedRealityManager.Instance.ActiveProfile.SpeechCommandsProfile.SpeechCommands[i].Keyword;
+                yield return MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands[i].Keyword;
             }
         }
     }
