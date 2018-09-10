@@ -1,10 +1,12 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using System;
+using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
@@ -36,6 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
 
         /// <inheritdoc />
         public SpeechEventData(EventSystem eventSystem) : base(eventSystem) { }
+
 
         /// <summary>
         /// Populates the event with data.

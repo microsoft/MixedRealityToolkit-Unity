@@ -1620,11 +1620,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, MixedRealityInputAction inputAction, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, string text)
         {
+#if UNITY_WSA  || UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             // Create input event
             speechEventData.Initialize(source, inputAction, confidence, phraseDuration, phraseStartTime, text);
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
+#endif
         }
 
         #endregion Speech Keyword Events
