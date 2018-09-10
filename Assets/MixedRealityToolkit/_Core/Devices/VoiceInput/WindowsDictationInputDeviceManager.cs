@@ -229,7 +229,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             await new WaitUntil(() => PhraseRecognitionSystem.Status == SpeechSystemStatus.Running);
 
             isTransitioning = false;
-#endif
             return dictationAudioClip;
         }
 
