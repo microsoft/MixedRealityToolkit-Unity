@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
                 {
                     if (Input.GetKeyDown(Commands[i].KeyCode))
                     {
-                        OnPhraseRecognized(RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, Commands[i].Keyword);
+                        OnPhraseRecognized((ConfidenceLevel) RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.Now, Commands[i].Keyword);
                     }
                 }
             }
