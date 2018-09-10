@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
     {
         public static bool IsPlatformSupported(this RuntimePlatform runtimePlatform, SupportedPlatforms platform)
         {
-            if (platform < 0)
+            if (platform == (SupportedPlatforms)(-1))
             {
                 return true;
             }
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
 #if UNITY_EDITOR
         public static bool IsPlatformSupported(this UnityEditor.BuildTarget editorBuildTarget, SupportedPlatforms platform)
         {
-            if (platform < 0)
+            if (platform == (SupportedPlatforms)(-1))
             {
                 return true;
             }
