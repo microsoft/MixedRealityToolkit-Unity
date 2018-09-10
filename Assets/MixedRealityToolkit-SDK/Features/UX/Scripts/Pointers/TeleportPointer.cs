@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     {
                         teleportEnabled = true;
 
-                        TeleportSystem.RaiseTeleportRequest(this, TeleportHotSpot);
+                        TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
                     }
                     else if (canMove)
                     {
@@ -356,7 +356,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                         TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                     {
-                        TeleportSystem.RaiseTeleportStarted(this, TeleportHotSpot);
+                        TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
                     }
                 }
 
@@ -364,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     canTeleport = false;
                     teleportEnabled = false;
-                    TeleportSystem.RaiseTeleportCanceled(this, TeleportHotSpot);
+                    TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
                 }
             }
 
