@@ -253,6 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                 var cursorObj = Instantiate(cursorPrefab, transform.parent);
                 GazePointer.BaseCursor = cursorObj.GetComponent<IMixedRealityCursor>();
                 Debug.Assert(GazePointer.BaseCursor != null, "Failed to load cursor");
+                GazePointer.BaseCursor.SetVisibilityOnSourceDetected = false;
                 GazePointer.BaseCursor.Pointer = GazePointer;
             }
 

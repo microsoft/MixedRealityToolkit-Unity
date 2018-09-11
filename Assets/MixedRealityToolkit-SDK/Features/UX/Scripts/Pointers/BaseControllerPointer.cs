@@ -33,6 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         [SerializeField]
         private bool disableCursorOnStart = false;
 
+        [SerializeField]
+        private bool setCursorVisibilityOnSourceDetected = false;
+
         private GameObject cursorInstance = null;
 
         [SerializeField]
@@ -107,6 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     BaseCursor.DefaultCursorDistance = PointerExtent;
                     BaseCursor.Pointer = this;
+                    BaseCursor.SetVisibilityOnSourceDetected = setCursorVisibilityOnSourceDetected;
 
                     if (disableCursorOnStart)
                     {
@@ -386,6 +390,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 if (eventData.MixedRealityInputAction == pointerAction)
                 {
                     IsSelectPressed = false;
+                    InputSystem.RaisePointerClicked(this, Handedness, pointerAction, 0);
+                    InputSystem.RaisePointerUp(this, Handedness, pointerAction);
                 }
             }
         }
@@ -406,6 +412,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     IsSelectPressed = true;
                     HasSelectPressedOnce = true;
+                    InputSystem.RaisePointerDown(this, Handedness, pointerAction);
                 }
             }
         }
