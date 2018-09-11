@@ -869,6 +869,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
             return type == typeof(IMixedRealityInputSystem) ||
+                   type == typeof(IMixedRealityTeleportSystem) ||
                    type == typeof(IMixedRealityBoundarySystem);
         }
 
@@ -926,26 +927,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             }
         }
 
-        private bool CheckComponentMatch(Type type, string managerName, Tuple<Type, IMixedRealityManager> managerTuple)
+        private static bool CheckComponentMatch(Type type, string managerName, Tuple<Type, IMixedRealityManager> managerTuple)
         {
             if ((managerTuple.Item1.Name == type.Name ||
                 managerTuple.Item2.GetType().Name == type.Name) &&
-                (string.IsNullOrEmpty(managerName) ? true :
-                managerTuple.Item2.Name == managerName))
+                (string.IsNullOrEmpty(managerName) || managerTuple.Item2.Name == managerName))
             {
                 return true;
             }
-            else
+
+            var interfaces = managerTuple.Item2.GetType().GetInterfaces();
+            for (int i = 0; i < interfaces.Length; i++)
             {
-                var interfaces = managerTuple.Item2.GetType().GetInterfaces();
-                for (int j = 0; j < interfaces.Length; j++)
+                if (interfaces[i].Name == type.Name &&
+                    (string.IsNullOrEmpty(managerName) || managerTuple.Item2.Name == managerName))
                 {
-                    if (interfaces[j].Name == type.Name &&
-                        (string.IsNullOrEmpty(managerName) ? true :
-                        managerTuple.Item2.Name == managerName))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 
