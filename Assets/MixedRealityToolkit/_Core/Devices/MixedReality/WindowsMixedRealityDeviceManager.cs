@@ -1,18 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
+
+#if UNITY_WSA
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
-#if UNITY_WSA
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using UnityEngine.XR.WSA.Input;
 using UnityEngine;
+using UnityEngine.XR.WSA.Input;
 using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 #endif // UNITY_WSA
 
@@ -26,6 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <param name="name"></param>
         /// <param name="priority"></param>
         public WindowsMixedRealityDeviceManager(string name, uint priority) : base(name, priority) { }
+
+#if UNITY_WSA
 
         /// <summary>
         /// Dictionary to capture all active controllers detected
@@ -54,15 +57,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             }
             set
             {
-#if UNITY_WSA
                 if (gestureRecognizer == null)
                 {
                     gestureRecognizerEnabled = false;
                     return;
                 }
-#endif // UNITY_WSA
                 gestureRecognizerEnabled = value;
-#if UNITY_WSA
                 if (!Application.isPlaying) { return; }
 
                 if (!gestureRecognizer.IsCapturingGestures() && gestureRecognizerEnabled)
@@ -75,7 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                 {
                     gestureRecognizer.CancelGestures();
                 }
-#endif // UNITY_WSA
             }
         }
 
@@ -95,15 +94,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             }
             set
             {
-#if UNITY_WSA
                 if (navigationGestureRecognizer == null)
                 {
                     navigationRecognizerEnabled = false;
                     return;
                 }
-#endif // UNITY_WSA
+
                 navigationRecognizerEnabled = value;
-#if UNITY_WSA
+
                 if (!Application.isPlaying) { return; }
 
                 if (!navigationGestureRecognizer.IsCapturingGestures() && navigationRecognizerEnabled)
@@ -116,7 +114,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                 {
                     navigationGestureRecognizer.CancelGestures();
                 }
-#endif // UNITY_WSA
             }
         }
 
@@ -131,12 +128,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             set
             {
                 gestureSettings = value;
-#if UNITY_WSA
+
                 if (Application.isPlaying)
                 {
                     gestureRecognizer?.UpdateAndResetGestures(WSAGestureSettings);
                 }
-#endif
             }
         }
 
@@ -151,12 +147,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             set
             {
                 navigationSettings = value;
-#if UNITY_WSA
+
                 if (Application.isPlaying)
                 {
                     navigationGestureRecognizer?.UpdateAndResetGestures(WSANavigationSettings);
                 }
-#endif
             }
         }
 
@@ -171,12 +166,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             set
             {
                 railsNavigationSettings = value;
-#if UNITY_WSA
+
                 if (Application.isPlaying)
                 {
                     navigationGestureRecognizer?.UpdateAndResetGestures(WSARailsNavigationSettings);
                 }
-#endif
             }
         }
 
@@ -191,21 +185,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             set
             {
                 useRailsNavigation = value;
-#if UNITY_WSA
 
                 if (Application.isPlaying)
                 {
                     navigationGestureRecognizer?.UpdateAndResetGestures(useRailsNavigation ? WSANavigationSettings : WSARailsNavigationSettings);
                 }
-#endif
             }
         }
 
         private MixedRealityInputAction holdAction = MixedRealityInputAction.None;
         private MixedRealityInputAction navigationAction = MixedRealityInputAction.None;
         private MixedRealityInputAction manipulationAction = MixedRealityInputAction.None;
-
-#if UNITY_WSA
 
         private static GestureRecognizer gestureRecognizer;
         private static WsaGestureSettings WSAGestureSettings => (WsaGestureSettings)gestureSettings;
