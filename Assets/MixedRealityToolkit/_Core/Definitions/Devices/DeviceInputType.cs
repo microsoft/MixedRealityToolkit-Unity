@@ -78,5 +78,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         PinkyFingerNearTouch,
         PinkyFingerPress,
         DirectionalPad,
+        Scroll,
     }
 }
