@@ -97,19 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             }
         }
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-            BaseCursor?.SetVisibility(false);
-        }
-
-        /// <inheritdoc />
-        public override void SetCursor(GameObject newCursor = null)
-        {
-            base.SetCursor(newCursor);
-            BaseCursor?.SetVisibility(false);
-        }
-
         #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
@@ -180,7 +167,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 // If we hit something
                 if (Result.CurrentPointerTarget != null)
                 {
-                    BaseCursor?.SetVisibility(true);
                     // Check if it's in our valid layers
                     if (((1 << Result.CurrentPointerTarget.layer) & ValidLayers.value) != 0)
                     {
@@ -236,6 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
                     // Clamp the end of the parabola to the result hit's point
                     LineBase.LineEndClamp = LineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, LineCastResolution);
+                    BaseCursor?.SetVisibility(TeleportSurfaceResult == TeleportSurfaceResult.Valid || TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
                 }
                 else
                 {
