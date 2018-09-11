@@ -201,8 +201,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         private static WsaGestureSettings WSAGestureSettings => (WsaGestureSettings)gestureSettings;
 
         private static GestureRecognizer navigationGestureRecognizer;
-        private static WsaGestureSettings WSANavigationSettings => (WsaGestureSettings)NavigationSettings;
-        private static WsaGestureSettings WSARailsNavigationSettings => (WsaGestureSettings)RailsNavigationSettings;
+        private static WsaGestureSettings WSANavigationSettings => (WsaGestureSettings)navigationSettings;
+        private static WsaGestureSettings WSARailsNavigationSettings => (WsaGestureSettings)railsNavigationSettings;
 
         #region IMixedRealityDeviceManager Interface
 
@@ -211,14 +211,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         {
             if (!Application.isPlaying) { return; }
 
+            RegisterGestureEvents();
+            RegisterNavigationEvents();
+
             if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile != null)
             {
                 var gestureProfile = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.GesturesProfile;
-                gestureSettings = gestureProfile.ManipulationGestures;
-                navigationSettings = gestureProfile.NavigationGestures;
-                useRailsNavigation = gestureProfile.UseRailsNavigation;
-                railsNavigationSettings = gestureProfile.RailsNavigationGestures;
+                GestureSettings = gestureProfile.ManipulationGestures;
+                NavigationSettings = gestureProfile.NavigationGestures;
+                RailsNavigationSettings = gestureProfile.RailsNavigationGestures;
+                UseRailsNavigation = gestureProfile.UseRailsNavigation;
 
                 for (int i = 0; i < gestureProfile.Gestures.Length; i++)
                 {
@@ -238,9 +241,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                     }
                 }
             }
-
-            RegisterGestureEvents();
-            RegisterNavigationEvents();
 
             InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
             InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
