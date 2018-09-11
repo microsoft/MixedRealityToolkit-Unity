@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using System;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
     /// <summary>
     /// Manages Open VR Devices using unity's input system.
     /// </summary>
-    public class OpenVRDeviceManager : UnityDeviceManager
+    public class OpenVRDeviceManager : UnityJoystickManager, IMixedRealityComponent
     {
         /// <summary>
         /// Constructor.
@@ -24,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR
         #region Controller Utilities
 
         /// <inheritdoc />
-        protected override GenericUnityController GetOrAddController(string joystickName)
+        protected override GenericJoystickController GetOrAddController(string joystickName)
         {
             // If a device is already registered with the ID provided, just return it.
             if (ActiveControllers.ContainsKey(joystickName))

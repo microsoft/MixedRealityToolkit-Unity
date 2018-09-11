@@ -425,6 +425,102 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
 
         #endregion Generic Input Events
 
+        #region Generic Gesture Events
+
+        /// <summary>
+        /// Raise the Gesture Started Event.
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        void RaiseGestureStarted(IMixedRealityController controller, MixedRealityInputAction action);
+
+        /// <summary>
+        /// Raise the Gesture Updated Event.
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action);
+
+        /// <summary>
+        /// Raise the Gesture Updated Event.
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Vector2 inputData);
+
+        /// <summary>
+        /// Raise the Gesture Updated Event.
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Vector3 inputData);
+
+        /// <summary>
+        /// Raise the Gesture Updated Event.
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Quaternion inputData);
+
+        /// <summary>
+        /// Raise the Gesture Updated Event.
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, MixedRealityPose inputData);
+
+        /// <summary>
+        /// Raise the Gesture Completed Event.
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action);
+
+        /// <summary>
+        /// Raise the Gesture Completed Event.
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Vector2 inputData);
+
+        /// <summary>
+        /// Raise the Gesture Completed Event.
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Vector3 inputData);
+
+        /// <summary>
+        /// Raise the Gesture Completed Event.
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Quaternion inputData);
+
+        /// <summary>
+        /// Raise the Gesture Completed Event.
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <param name="inputData"></param>
+        void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, MixedRealityPose inputData);
+
+        /// <summary>
+        /// Raise the Gesture Canceled Event.
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        void RaiseGestureCanceled(IMixedRealityController controller, MixedRealityInputAction action);
+
+        #endregion
+
         #region Hold Events
 
         /// <summary>

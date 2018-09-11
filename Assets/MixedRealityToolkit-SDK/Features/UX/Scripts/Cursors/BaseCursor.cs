@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.SDK.Input;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Pointers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
@@ -72,7 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             get { return isVisible; }
             set
             {
-                isVisible = value;
                 SetVisibility(isVisible);
             }
         }
@@ -119,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             if (PrimaryCursorVisual != null)
             {
                 PrimaryCursorVisual.gameObject.SetActive(visible);
+                isVisible = visible;
             }
         }
 
@@ -140,6 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                     if (eventData.InputSource.Pointers[i].PointerId == Pointer.PointerId)
                     {
                         visibleSourcesCount++;
+                        SetVisibility(true);
                         return;
                     }
                 }
@@ -156,8 +158,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                     // If a source is lost that's using this cursor's pointer, we decrement the count to set the cursor state properly.
                     if (eventData.InputSource.Pointers[i].PointerId == Pointer.PointerId)
                     {
+                        var basePointer = eventData.InputSource.Pointers[i] as BaseControllerPointer;
+
+                        if (basePointer != null &&
+                            basePointer.DestroyOnSourceLost)
+                        {
+                            IsPointerDown = false;
+                            Destroy(gameObject);
+                            return;
+                        }
+
                         visibleSourcesCount--;
-                        return;
                     }
                 }
             }
@@ -165,12 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             if (visibleSourcesCount == 0)
             {
                 IsPointerDown = false;
-            }
-
-            // If our input source pointer is lost then clean ourselves up.
-            if (eventData.InputSource.SourceId == Pointer.InputSourceParent.SourceId)
-            {
-                Destroy(gameObject);
+                SetVisibility(false);
             }
         }
 
@@ -306,9 +312,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
 
             if (!Pointer.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
             {
-                Debug.LogError(Pointer.InputSystem.FocusProvider.IsPointerRegistered(Pointer)
-                    ? $"{name}: Unable to get focus details for {pointer.GetType().Name}!"
-                    : $"{pointer.GetType().Name} has not been registered!");
+                if (Pointer.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
+                {
+                    Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
+                }
 
                 return;
             }

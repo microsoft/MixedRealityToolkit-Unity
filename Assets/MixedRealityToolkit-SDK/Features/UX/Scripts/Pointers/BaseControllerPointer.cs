@@ -13,6 +13,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System.Collections;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
@@ -60,6 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected bool IsHoldPressed = false;
 
         protected bool IsTeleportRequestActive = false;
+
+        private bool lateRegisterTeleport = true;
 
         /// <summary>
         /// The forward direction of the targeting ray
@@ -116,7 +119,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             base.OnEnable();
             SetCursor();
             BaseCursor?.SetVisibility(true);
-            TeleportSystem?.Register(gameObject);
+
+            if (MixedRealityManager.IsInitialized && TeleportSystem != null && !lateRegisterTeleport)
+            {
+                TeleportSystem.Register(gameObject);
+            }
+        }
+
+        protected override async void Start()
+        {
+            base.Start();
+
+            if (lateRegisterTeleport)
+            {
+                await new WaitUntil(() => TeleportSystem != null);
+                lateRegisterTeleport = false;
+                TeleportSystem.Register(gameObject);
+            }
         }
 
         protected override void OnDisable()
@@ -171,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         /// <inheritdoc />
-        public IMixedRealityInputSource InputSourceParent { get; private set; }
+        public IMixedRealityInputSource InputSourceParent { get; protected set; }
 
         /// <inheritdoc />
         public IMixedRealityCursor BaseCursor { get; set; }
@@ -223,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         /// <inheritdoc />
-        public RayStep[] Rays { get; protected set; }
+        public RayStep[] Rays { get; protected set; } = { new RayStep(Vector3.zero, Vector3.forward) };
 
         /// <inheritdoc />
         public LayerMask[] PrioritizedLayerMasksOverride { get; set; }
@@ -277,7 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         /// <inheritdoc />
-        public bool TryGetPointingRay(out Ray pointingRay)
+        public virtual bool TryGetPointingRay(out Ray pointingRay)
         {
             Vector3 pointerPosition;
             TryGetPointerPosition(out pointerPosition);
@@ -286,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         /// <inheritdoc />
-        public bool TryGetPointerRotation(out Quaternion rotation)
+        public virtual bool TryGetPointerRotation(out Quaternion rotation)
         {
             Vector3 pointerRotation = raycastOrigin != null ? raycastOrigin.eulerAngles : transform.eulerAngles;
             rotation = Quaternion.Euler(pointerRotation.x, PointerOrientation, pointerRotation.z);
