@@ -61,7 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         protected GameObject TargetedObject = null;
 
         private uint visibleSourcesCount = 0;
-        private bool isVisible = true;
 
         private Vector3 targetPosition;
         private Vector3 targetScale;
@@ -109,7 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                 PrimaryCursorVisual.gameObject.activeInHierarchy != visible)
             {
                 PrimaryCursorVisual.gameObject.SetActive(visible);
-                isVisible = visible;
             }
         }
 
