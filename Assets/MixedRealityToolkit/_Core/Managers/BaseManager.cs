@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// <summary>
         /// Optional Priority to reorder registered managers based on their respective priority, reduces the risk of race conditions by prioritizing the order in which managers are evaluated.
         /// </summary>
-        public virtual uint Priority { get; set; }
+        public virtual uint Priority { get; set; } = 5;
 
         /// <summary>
         /// The initialize function is used to setup the manager once created.
