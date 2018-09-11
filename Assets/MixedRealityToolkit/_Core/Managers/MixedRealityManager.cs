@@ -140,6 +140,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 }
                 else
                 {
+                    mixedRealityComponentsCount = 0;
+                    MixedRealityComponents.Clear();
                     ActiveProfile.ActiveManagers.Clear();
                 }
             }
@@ -192,7 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 for (int i = 0; i < ActiveProfile.RegisteredComponentsProfile.Configurations?.Length; i++)
                 {
                     var configuration = ActiveProfile.RegisteredComponentsProfile.Configurations[i];
-
 #if UNITY_EDITOR
                     if (UnityEditor.EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(configuration.RuntimePlatform))
 #else
@@ -485,6 +486,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 throw new ArgumentNullException($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile.");
             }
 
+            if (!IsInitialized)
+            {
+                throw new ArgumentNullException($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has not been initialized!");
+            }
+
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
             IMixedRealityManager manager;
@@ -558,7 +564,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             }
             else
             {
-                MixedRealityComponents.RemoveAll(tuple => tuple.Item1.Name == type.Name);
+                IMixedRealityManager manager;
+                GetComponentByType(type, out manager);
+                if (manager != null)
+                {
+                    MixedRealityComponents.Remove(new Tuple<Type, IMixedRealityManager>(type, manager));
+                }
             }
         }
 
@@ -584,7 +595,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             }
             else
             {
-                MixedRealityComponents.RemoveAll(tuple => tuple.Item1.Name == type.Name && tuple.Item2.Name == managerName);
+                IMixedRealityManager manager;
+                GetComponentByTypeAndName(type, managerName, out manager);
+                if (manager != null)
+                {
+                    MixedRealityComponents.Remove(new Tuple<Type, IMixedRealityManager>(type, manager));
+                }
             }
         }
 
@@ -896,6 +912,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
             manager = null;
+
+            if (isMixedRealityManagerInitializing)
+            {
+                Debug.LogWarning("Unable to get manager a manager while initializing!");
+                return;
+            }
+
+            if (mixedRealityComponentsCount != MixedRealityComponents.Count)
+            {
+                Initialize();
+            }
 
             for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
