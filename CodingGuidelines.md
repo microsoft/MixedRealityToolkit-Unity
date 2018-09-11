@@ -249,7 +249,7 @@ To ensure all Enum's are initialized correctly starting at 0, .NET gives you a t
 ### Don't:
 
 ```c#
-public enum MyEnum
+public enum Value
 {
     Value1, // <- no initializer
     Value2,
@@ -260,7 +260,7 @@ public enum MyEnum
 ### Do:
 
 ```c#
-public enum MyEnum
+public enum ValueType
 {
     Value1 = 0,
     Value2,
@@ -291,7 +291,7 @@ public enum AudioFormat
 /// <summary>
 /// AudioFormat lists the supported / known formats of audio data
 /// </summary>
-public enum AudioFormat
+public enum AudioFormatType
 {
     /// <summary>
     /// No specified format
@@ -315,6 +315,36 @@ public enum AudioFormat
     Ogg
 }
 ```
+## End Enum names with "Type"
+Enum names should clearly indicate their nature by using the Type suffix.
+### Don't:
+```c#
+public enum Ordering
+{
+    First,
+    Second,
+    Third
+}
+```
+```c#
+public enum OrderingEnum
+{
+    First,
+    Second,
+    Third
+}
+```
+### Do:
+```c#
+[Flags]
+public enum OrderingType
+{
+    First = 0,
+    Second,
+    Third
+}
+```
+
 
 ## Review Enum use for Bitfields
 
@@ -337,7 +367,7 @@ public enum MyEnum
 
 ```c#
 [Flags]
-public enum MyEnum
+public enum MyEnumType
 {
     None = 1  << 0,
     Left = 1  << 1,
