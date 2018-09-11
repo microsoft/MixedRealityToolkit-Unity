@@ -24,7 +24,7 @@ MonoBehaviour:
         Microsoft.MixedReality.Toolkit
     componentName: Unity Open VR Device Manager
     priority: 10
-    runtimePlatform: -1
+    runtimePlatform: 7
     configurationProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityDeviceManager,
@@ -51,6 +51,13 @@ MonoBehaviour:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityTouchDeviceManager,
         Microsoft.MixedReality.Toolkit
     componentName: Unity Touch Input Manger
+    priority: 10
+    runtimePlatform: -1
+    configurationProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.MouseDeviceManager,
+        Microsoft.MixedReality.Toolkit
+    componentName: Unity Spatial Mouse Input
     priority: 10
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
