@@ -29,11 +29,6 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
             ShowFps = MixedRealityManager.Instance.ActiveProfile.DiagnosticsProfile.ShowFps;
             ShowMemory = MixedRealityManager.Instance.ActiveProfile.DiagnosticsProfile.ShowMemory;
 
-            if (Visible)
-            {
-                DiagnosticVisualization.SetActive(Visible);
-            }
-
             RaiseDiagnosticsChanged();
         }
 
@@ -113,7 +108,7 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
                 if (value != visible)
                 {
                     visible = value;
-                    DiagnosticVisualization?.SetActive(value);
+                    DiagnosticVisualization.SetActive(value);
 
                     RaiseDiagnosticsChanged();
                 }
@@ -200,11 +195,6 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
                 // Todo: position and size
                 // Todo: add text elements
                 diagnosticVisualization.AddComponent<DiagnosticBehavior>();
-
-                var component = diagnosticVisualization.GetComponent<DiagnosticBehavior>();
-                component.ShowCpu = ShowCpu;
-                component.ShowFps = ShowFps;
-                component.ShowMemory = ShowMemory;
 
                 return diagnosticVisualization;
             }

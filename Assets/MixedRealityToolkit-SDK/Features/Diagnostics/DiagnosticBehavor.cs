@@ -9,9 +9,9 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
 {
     public class DiagnosticBehavior : MonoBehaviour, IMixedRealityDiagnosticsHandler
     {
-        public bool ShowCpu { get; set; }
-        public bool ShowFps { get; set; }
-        public bool ShowMemory { get; set; }
+        private bool ShowCpu { get; set; }
+        private bool ShowFps { get; set; }
+        private bool ShowMemory { get; set; }
 
         public void OnDiagnosticSettingsChanged(DiagnosticsEventData eventData)
         {
