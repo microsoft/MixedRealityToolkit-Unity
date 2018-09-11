@@ -21,12 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
         [Tooltip("Type of surface to map the collection to")]
         [SerializeField]
-        private ObjectOrientationSurfaceEnum surfaceType = ObjectOrientationSurfaceEnum.Plane;
+        private ObjectOrientationSurfaceType surfaceType = ObjectOrientationSurfaceType.Plane;
 
         /// <summary>
         /// Type of surface to map the collection to.
         /// </summary>
-        public ObjectOrientationSurfaceEnum SurfaceType
+        public ObjectOrientationSurfaceType SurfaceType
         {
             get { return surfaceType; }
             set { surfaceType = value; }
@@ -34,12 +34,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
         [Tooltip("Should the objects in the collection be rotated / how should they be rotated")]
         [SerializeField]
-        private OrientationEnum orientType = OrientationEnum.FaceOrigin;
+        private OrientationType orientType = OrientationType.FaceOrigin;
 
         /// <summary>
         /// Should the objects in the collection face the origin of the collection
         /// </summary>
-        public OrientationEnum OrientType
+        public OrientationType OrientType
         {
             get { return orientType; }
             set { orientType = value; }
@@ -47,12 +47,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
         [Tooltip("Whether to sort objects by row first or by column first")]
         [SerializeField]
-        private LayoutOrderEnum layout = LayoutOrderEnum.ColumnThenRow;
+        private LayoutOrderType layout = LayoutOrderType.ColumnThenRow;
 
         /// <summary>
         /// Whether to sort objects by row first or by column first
         /// </summary>
-        public LayoutOrderEnum Layout
+        public LayoutOrderType Layout
         {
             get { return layout; }
             set { layout = value; }
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
             switch (SurfaceType)
             {
-                case ObjectOrientationSurfaceEnum.Plane:
+                case ObjectOrientationSurfaceType.Plane:
                     for (int i = 0; i < NodeList.Count; i++)
                     {
                         ObjectCollectionNode node = NodeList[i];
@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     }
                     break;
 
-                case ObjectOrientationSurfaceEnum.Cylinder:
+                case ObjectOrientationSurfaceType.Cylinder:
                     for (int i = 0; i < NodeList.Count; i++)
                     {
                         ObjectCollectionNode node = NodeList[i];
@@ -224,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     }
                     break;
 
-                case ObjectOrientationSurfaceEnum.Sphere:
+                case ObjectOrientationSurfaceType.Sphere:
 
                     for (int i = 0; i < NodeList.Count; i++)
                     {
@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     }
                     break;
 
-                case ObjectOrientationSurfaceEnum.Radial:
+                case ObjectOrientationSurfaceType.Radial:
                     int curColumn = 0;
                     int curRow = 1;
 
@@ -263,13 +263,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             }
         }
 
-        protected void ResolveGridLayout(Vector3[] grid, float offsetX, float offsetY, LayoutOrderEnum order)
+        protected void ResolveGridLayout(Vector3[] grid, float offsetX, float offsetY, LayoutOrderType order)
         {
             int cellCounter = 0;
             float iMax;
             float jMax;
 
-            if (order == LayoutOrderEnum.RowThenColumn)
+            if (order == LayoutOrderType.RowThenColumn)
             {
                 iMax = Rows;
                 jMax = columns;
@@ -310,47 +310,47 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             Vector3 pointOnAxisNearestNode;
             switch (OrientType)
             {
-                case OrientationEnum.FaceOrigin:
+                case OrientationType.FaceOrigin:
                     node.transform.rotation = Quaternion.LookRotation(node.transform.position - transform.position, transform.up);
                     break;
 
-                case OrientationEnum.FaceOriginReversed:
+                case OrientationType.FaceOriginReversed:
                     node.transform.rotation = Quaternion.LookRotation(transform.position - node.transform.position, transform.up);
                     break;
 
-                case OrientationEnum.FaceCenterAxis:
+                case OrientationType.FaceCenterAxis:
                     centerAxis = Vector3.Project(node.transform.position - transform.position, transform.up);
                     pointOnAxisNearestNode = transform.position + centerAxis;
                     node.transform.rotation = Quaternion.LookRotation(node.transform.position - pointOnAxisNearestNode, transform.up);
                     break;
 
-                case OrientationEnum.FaceCenterAxisReversed:
+                case OrientationType.FaceCenterAxisReversed:
                     centerAxis = Vector3.Project(node.transform.position - transform.position, transform.up);
                     pointOnAxisNearestNode = transform.position + centerAxis;
                     node.transform.rotation = Quaternion.LookRotation(pointOnAxisNearestNode - node.transform.position, transform.up);
                     break;
 
-                case OrientationEnum.FaceParentFoward:
+                case OrientationType.FaceParentFoward:
                     node.transform.forward = transform.rotation * Vector3.forward;
                     break;
 
-                case OrientationEnum.FaceParentForwardReversed:
+                case OrientationType.FaceParentForwardReversed:
                     node.transform.forward = transform.rotation * Vector3.back;
                     break;
 
-                case OrientationEnum.FaceParentUp:
+                case OrientationType.FaceParentUp:
                     node.transform.forward = transform.rotation * Vector3.up;
                     break;
 
-                case OrientationEnum.FaceParentDown:
+                case OrientationType.FaceParentDown:
                     node.transform.forward = transform.rotation * Vector3.down;
                     break;
 
-                case OrientationEnum.None:
+                case OrientationType.None:
                     break;
 
                 default:
-                    Debug.LogWarning("OrientationTypeEnum out of range");
+                    Debug.LogWarning("OrientationType out of range");
                     break;
             }
         }
@@ -361,13 +361,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             Vector3 scale = (2f * radius) * Vector3.one;
             switch (surfaceType)
             {
-                case ObjectOrientationSurfaceEnum.Plane:
+                case ObjectOrientationSurfaceType.Plane:
                     break;
-                case ObjectOrientationSurfaceEnum.Cylinder:
+                case ObjectOrientationSurfaceType.Cylinder:
                     Gizmos.color = Color.green;
                     Gizmos.DrawWireMesh(cylinderMesh, transform.position, transform.rotation, scale);
                     break;
-                case ObjectOrientationSurfaceEnum.Sphere:
+                case ObjectOrientationSurfaceType.Sphere:
                     Gizmos.color = Color.green;
                     Gizmos.DrawWireMesh(sphereMesh, transform.position, transform.rotation, scale);
                     break;

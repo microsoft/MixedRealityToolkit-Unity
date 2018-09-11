@@ -6,7 +6,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
     /// <summary>
     /// Orientation type enum
     /// </summary>
-    public enum OrientationEnum
+    public enum OrientationType
     {
         /// <summary>
         /// Don't rotate at all
