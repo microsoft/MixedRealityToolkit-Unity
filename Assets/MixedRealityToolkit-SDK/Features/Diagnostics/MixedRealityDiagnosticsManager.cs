@@ -47,6 +47,8 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
             {
                 if (diagnosticVisualization != null)
                 {
+                    Unregister(diagnosticVisualization);
+
                     if (Application.isEditor)
                     {
                         Object.DestroyImmediate(diagnosticVisualization);
@@ -195,6 +197,7 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
                 // Todo: position and size
                 // Todo: add text elements
                 diagnosticVisualization.AddComponent<DiagnosticBehavior>();
+                Register(diagnosticVisualization);
 
                 return diagnosticVisualization;
             }
