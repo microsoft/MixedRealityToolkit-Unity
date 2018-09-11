@@ -18,6 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
     {
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
+        public bool SetVisibilityOnSourceDetected { get; set; } = false;
+
         /// <summary>
         /// Surface distance to place the cursor off of the surface at
         /// </summary>
@@ -130,10 +132,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                     {
                         visibleSourcesCount++;
 
-                        if (visibleSourcesCount == 1 &&
-                            InputSystem.GazeProvider.GazePointer.PointerId != Pointer.PointerId)
+                        if (SetVisibilityOnSourceDetected && visibleSourcesCount == 1)
                         {
-                            SetVisibility(isVisible);
+                            SetVisibility(true);
                         }
 
                         return;
@@ -171,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             {
                 IsPointerDown = false;
 
-                if (InputSystem.GazeProvider.GazePointer.PointerId != Pointer.PointerId)
+                if (SetVisibilityOnSourceDetected)
                 {
                     SetVisibility(false);
                 }

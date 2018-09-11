@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
     {
         private SerializedProperty cursorPrefab;
         private SerializedProperty disableCursorOnStart;
+        private SerializedProperty setCursorVisibilityOnSourceDetected;
         private SerializedProperty raycastOrigin;
         private SerializedProperty pointerExtent;
         private SerializedProperty activeHoldAction;
@@ -29,6 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
 
             cursorPrefab = serializedObject.FindProperty("cursorPrefab");
             disableCursorOnStart = serializedObject.FindProperty("disableCursorOnStart");
+            setCursorVisibilityOnSourceDetected = serializedObject.FindProperty("setCursorVisibilityOnSourceDetected");
             raycastOrigin = serializedObject.FindProperty("raycastOrigin");
             pointerExtent = serializedObject.FindProperty("pointerExtent");
             activeHoldAction = serializedObject.FindProperty("activeHoldAction");
@@ -51,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
             {
                 EditorGUILayout.PropertyField(cursorPrefab);
                 EditorGUILayout.PropertyField(disableCursorOnStart);
+                EditorGUILayout.PropertyField(setCursorVisibilityOnSourceDetected);
                 EditorGUILayout.PropertyField(raycastOrigin);
                 EditorGUILayout.PropertyField(pointerExtent);
                 EditorGUILayout.PropertyField(pointerOrientation);
