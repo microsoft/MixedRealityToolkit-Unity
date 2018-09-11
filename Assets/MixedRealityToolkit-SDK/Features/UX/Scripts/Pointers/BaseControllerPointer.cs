@@ -30,6 +30,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         [SerializeField]
         private GameObject cursorPrefab = null;
 
+        [SerializeField]
+        private bool disableCursorOnStart = false;
+
+        [SerializeField]
+        private bool setCursorVisibilityOnSourceDetected = false;
+
         private GameObject cursorInstance = null;
 
         [SerializeField]
@@ -73,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// Set a new cursor for this <see cref="IMixedRealityPointer"/>
         /// </summary>
         /// <remarks>This <see cref="GameObject"/> must have a <see cref="IMixedRealityCursor"/> attached to it.</remarks>
-        /// <param name="newCursor"></param>
+        /// <param name="newCursor">The new cursor</param>
         public virtual void SetCursor(GameObject newCursor = null)
         {
             if (cursorInstance != null)
@@ -104,6 +110,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     BaseCursor.DefaultCursorDistance = PointerExtent;
                     BaseCursor.Pointer = this;
+                    BaseCursor.SetVisibilityOnSourceDetected = setCursorVisibilityOnSourceDetected;
+
+                    if (disableCursorOnStart)
+                    {
+                        BaseCursor.SetVisibility(false);
+                    }
                 }
                 else
                 {
@@ -118,7 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             base.OnEnable();
             SetCursor();
-            BaseCursor?.SetVisibility(true);
 
             if (MixedRealityManager.IsInitialized && TeleportSystem != null && !lateRegisterTeleport)
             {

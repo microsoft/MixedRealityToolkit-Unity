@@ -23,7 +23,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         private Handedness handedness = Handedness.Left;
 
         /// <inheritdoc />
-        public Handedness Handedness => handedness;
+        public Handedness Handedness
+        {
+            get { return handedness; }
+            set { handedness = value; }
+        }
 
         [SerializeField]
         [Tooltip("Should this GameObject clean itself up when it's controller is lost?")]
