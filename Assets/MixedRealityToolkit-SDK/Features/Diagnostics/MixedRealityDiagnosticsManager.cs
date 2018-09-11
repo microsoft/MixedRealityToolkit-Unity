@@ -203,7 +203,7 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
 
         #region IMixedRealityEventSource
         /// <inheritdoc />
-        public uint SourceId => 0;
+        public uint SourceId => (uint)SourceName.GetHashCode();
 
         /// <inheritdoc />
         public string SourceName => "Mixed Reality Diagnostics System";
