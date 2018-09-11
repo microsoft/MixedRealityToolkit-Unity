@@ -14,6 +14,7 @@ using UnityEngine.Windows.Speech;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
 {
+#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
     public class WindowsDictationInputDeviceManager : BaseDeviceManager, IMixedRealityDictationManager
     {
         /// <summary>
@@ -27,8 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// Is the Dictation Manager currently running?
         /// </summary>
         public bool IsListening { get; private set; } = false;
-
-        private DictationRecognizer dictationRecognizer;
 
         private bool hasFailed;
         private bool hasListener;
@@ -59,8 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
         /// </summary>
         private AudioClip dictationAudioClip;
 
-#if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-
+        private DictationRecognizer dictationRecognizer;
+        
         /// <inheritdoc />
         public override void Enable()
         {
@@ -219,7 +218,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             await new WaitUntil(() => PhraseRecognitionSystem.Status == SpeechSystemStatus.Running);
 
             isTransitioning = false;
-
             return dictationAudioClip;
         }
 
@@ -282,7 +280,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.VoiceInput
             textSoFar = null;
             dictationResult = string.Empty;
         }
-
-#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
     }
+#endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 }
