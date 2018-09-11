@@ -29,9 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
             if (profile == null ||
                 (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
                  profile.InputActions != null &&
-                 profile.InputActions != MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions))
+                 profile.InputActions != MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions))
             {
-                profile = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile;
+                profile = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile;
 
                 if (profile != null)
                 {
