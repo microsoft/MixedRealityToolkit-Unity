@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.EventDatum.Boundary;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using UnityEngine;
 
-namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
+namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
     public class DiagnosticBehavior : MonoBehaviour, IMixedRealityDiagnosticsHandler
     {

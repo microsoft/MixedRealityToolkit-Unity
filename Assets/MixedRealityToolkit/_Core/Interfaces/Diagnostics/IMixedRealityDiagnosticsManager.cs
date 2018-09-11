@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics
         /// <summary>
         /// Enable / disable fps profiling when the diagnostic panel is visible. 
         /// </summary>
-        bool ShowFps { get; }
+        bool ShowFps { get; } 
 
         /// <summary>
         /// Enable / disable memory profiling when the diagnostic panel is visible. 

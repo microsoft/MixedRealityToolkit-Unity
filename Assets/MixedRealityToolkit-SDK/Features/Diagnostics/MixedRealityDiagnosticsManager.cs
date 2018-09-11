@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
+namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
     public class MixedRealityDiagnosticsManager : MixedRealityEventManager, IMixedRealityDiagnosticsManager
     {
@@ -24,10 +24,10 @@ namespace Assets.MixedRealityToolkit_SDK.Features.Diagnostics
         {
             eventData = new DiagnosticsEventData(EventSystem.current);
 
-            Visible = MixedRealityManager.Instance.ActiveProfile.DiagnosticsProfile.Visible;
-            ShowCpu = MixedRealityManager.Instance.ActiveProfile.DiagnosticsProfile.ShowCpu;
-            ShowFps = MixedRealityManager.Instance.ActiveProfile.DiagnosticsProfile.ShowFps;
-            ShowMemory = MixedRealityManager.Instance.ActiveProfile.DiagnosticsProfile.ShowMemory;
+            Visible = MixedRealityManager.Instance.ActiveProfile.DiagnosticsSystemProfile.Visible;
+            ShowCpu = MixedRealityManager.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowCpu;
+            ShowFps = MixedRealityManager.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowFps;
+            ShowMemory = MixedRealityManager.Instance.ActiveProfile.DiagnosticsSystemProfile.ShowMemory;
 
             RaiseDiagnosticsChanged();
         }
