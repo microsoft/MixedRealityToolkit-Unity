@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
 using UnityEngine;
@@ -13,18 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
     [CustomEditor(typeof(MixedRealityConfigurationProfile))]
     public class MixedRealityConfigurationProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
-        private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
         private static readonly GUIContent TargetScaleContent = new GUIContent("Target Scale:");
-        private static readonly GUIContent SpeechConfidenceContent = new GUIContent("Recognition Confidence Level", "The speech recognizer's minimum confidence level setting that will raise the action.");
-        private static readonly GUIContent[] SpeechConfidenceOptionContent =
-        {
-            new GUIContent("High"),
-            new GUIContent("Medium"),
-            new GUIContent("Low"),
-            new GUIContent("Unrecognized")
-        };
-
-        private static readonly int[] SpeechConfidenceOptions = { 0, 1, 2, 3 };
 
         // Experience properties
         private SerializedProperty targetExperienceScale;
@@ -34,16 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         // Input system properties
         private SerializedProperty enableInputSystem;
         private SerializedProperty inputSystemType;
-        private SerializedProperty inputActionsProfile;
-        private SerializedProperty pointerProfile;
-        private SerializedProperty enableSpeechCommands;
-        private SerializedProperty speechCommandsProfile;
-        private SerializedProperty recognitionConfidenceLevel;
-        private SerializedProperty enableDictation;
-        private SerializedProperty enableTouchScreenInput;
-        private SerializedProperty touchScreenInputProfile;
-        private SerializedProperty enableControllerMapping;
-        private SerializedProperty controllerMappingProfile;
+        private SerializedProperty inputSystemProfile;
         // Boundary system properties
         private SerializedProperty enableBoundarySystem;
         private SerializedProperty boundarySystemType;
@@ -57,6 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty enableSpatialAwarenessSystem;
         private SerializedProperty spatialAwarenessSystemType;
         private SerializedProperty spatialAwarenessProfile;
+
+        private SerializedProperty registeredComponentsProfile;
 
         private MixedRealityConfigurationProfile configurationProfile;
 
@@ -106,16 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             // Input system configuration
             enableInputSystem = serializedObject.FindProperty("enableInputSystem");
             inputSystemType = serializedObject.FindProperty("inputSystemType");
-            inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
-            pointerProfile = serializedObject.FindProperty("pointerProfile");
-            enableSpeechCommands = serializedObject.FindProperty("enableSpeechCommands");
-            speechCommandsProfile = serializedObject.FindProperty("speechCommandsProfile");
-            recognitionConfidenceLevel = serializedObject.FindProperty("recognitionConfidenceLevel");
-            enableDictation = serializedObject.FindProperty("enableDictation");
-            enableTouchScreenInput = serializedObject.FindProperty("enableTouchScreenInput");
-            touchScreenInputProfile = serializedObject.FindProperty("touchScreenInputProfile");
-            enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
-            controllerMappingProfile = serializedObject.FindProperty("controllerMappingProfile");
+            inputSystemProfile = serializedObject.FindProperty("inputSystemProfile");
             // Boundary system configuration
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
             boundarySystemType = serializedObject.FindProperty("boundarySystemType");
@@ -129,6 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             enableSpatialAwarenessSystem = serializedObject.FindProperty("enableSpatialAwarenessSystem");
             spatialAwarenessSystemType = serializedObject.FindProperty("spatialAwarenessSystemType");
             spatialAwarenessProfile = serializedObject.FindProperty("spatialAwarenessProfile");
+
+            registeredComponentsProfile = serializedObject.FindProperty("registeredComponentsProfile");
         }
 
         public override void OnInspectorGUI()
@@ -145,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             var previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 160f;
             EditorGUI.BeginChangeCheck();
+            bool changed = false;
 
             // Experience configuration
             EditorGUILayout.LabelField("Experience Settings", EditorStyles.boldLabel);
@@ -186,118 +161,64 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.LabelField("Camera Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableCameraProfile);
 
-            if (enableCameraProfile.boolValue)
-            {
-                RenderProfile(cameraProfile);
-            }
+            changed |= RenderProfile(cameraProfile);
 
             // Input System configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Input System Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableInputSystem);
-
-            if (enableInputSystem.boolValue)
-            {
-                EditorGUILayout.PropertyField(inputSystemType);
-                RenderProfile(inputActionsProfile);
-                RenderProfile(pointerProfile);
-
-                EditorGUILayout.PropertyField(enableSpeechCommands);
-
-                if (enableSpeechCommands.boolValue)
-                {
-                    RenderProfile(speechCommandsProfile);
-                    recognitionConfidenceLevel.intValue = EditorGUILayout.IntPopup(SpeechConfidenceContent, recognitionConfidenceLevel.intValue, SpeechConfidenceOptionContent, SpeechConfidenceOptions);
-                }
-
-                EditorGUILayout.PropertyField(enableDictation);
-
-                EditorGUILayout.PropertyField(enableTouchScreenInput);
-
-                if (enableTouchScreenInput.boolValue)
-                {
-                    RenderProfile(touchScreenInputProfile);
-                }
-
-                EditorGUILayout.PropertyField(enableControllerMapping);
-
-                if (enableControllerMapping.boolValue)
-                {
-                    RenderProfile(controllerMappingProfile);
-                }
-            }
+            EditorGUILayout.PropertyField(inputSystemType);
+            changed |= RenderProfile(inputSystemProfile);
 
             // Boundary System configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Boundary System Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableBoundarySystem);
+            EditorGUILayout.PropertyField(boundarySystemType);
 
-            if (enableBoundarySystem.boolValue)
+            // Boundary settings depend on the experience scale
+            if (scale == ExperienceScale.Room)
             {
-                EditorGUILayout.PropertyField(boundarySystemType);
-
-                // Boundary settings depend on the experience scale
-                if (scale == ExperienceScale.Room)
-                {
-                    EditorGUILayout.PropertyField(boundaryHeight);
-                    RenderProfile(boundaryVisualizationProfile);
-                }
-                else
-                {
-                    GUILayout.Space(6f);
-                    EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Info);
-                }
+                EditorGUILayout.PropertyField(boundaryHeight);
+                changed |= RenderProfile(boundaryVisualizationProfile);
+            }
+            else
+            {
+                GUILayout.Space(6f);
+                EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Info);
             }
 
             // Teleport System configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Teleport System Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableTeleportSystem);
-
-            if (enableTeleportSystem.boolValue)
-            {
-                EditorGUILayout.PropertyField(teleportSystemType);
-                EditorGUILayout.PropertyField(teleportDuration);
-            }
+            EditorGUILayout.PropertyField(teleportSystemType);
+            EditorGUILayout.PropertyField(teleportDuration);
 
             // Spatial Awareness System configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Spatial Awareness System Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
 
-            if (enableSpatialAwarenessSystem.boolValue)
+            EditorGUILayout.PropertyField(spatialAwarenessSystemType);
+            changed |= RenderProfile(spatialAwarenessProfile);
+
+            GUILayout.Space(12f);
+            EditorGUILayout.LabelField("Optional Components", EditorStyles.boldLabel);
+            changed |= RenderProfile(registeredComponentsProfile);
+
+            if (!changed)
             {
-                EditorGUILayout.PropertyField(spatialAwarenessSystemType);
-                RenderProfile(spatialAwarenessProfile);
+                changed = EditorGUI.EndChangeCheck();
             }
 
             EditorGUIUtility.labelWidth = previousLabelWidth;
             serializedObject.ApplyModifiedProperties();
 
-            if (EditorGUI.EndChangeCheck())
+            if (changed)
             {
                 EditorApplication.delayCall += () => MixedRealityManager.Instance.ResetConfiguration(configurationProfile);
             }
-        }
-
-        private static void RenderProfile(SerializedProperty property)
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PropertyField(property);
-
-            if (property.objectReferenceValue == null)
-            {
-                if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton))
-                {
-                    var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
-                    Debug.Assert(profileTypeName != null, "No Type Found");
-                    ScriptableObject profile = CreateInstance(profileTypeName);
-                    profile.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject));
-                    property.objectReferenceValue = profile;
-                }
-            }
-
-            EditorGUILayout.EndHorizontal();
         }
     }
 }
