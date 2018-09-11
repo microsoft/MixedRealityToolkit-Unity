@@ -260,7 +260,7 @@ public enum MyEnum
 ### Do:
 
 ```c#
-public enum MyEnum
+public enum MyEnumType
 {
     Value1 = 0,
     Value2,
@@ -291,7 +291,7 @@ public enum AudioFormat
 /// <summary>
 /// AudioFormat lists the supported / known formats of audio data
 /// </summary>
-public enum AudioFormat
+public enum AudioFormatType
 {
     /// <summary>
     /// No specified format
@@ -337,7 +337,7 @@ public enum MyEnum
 
 ```c#
 [Flags]
-public enum MyEnum
+public enum MyEnumType
 {
     None = 1  << 0,
     Left = 1  << 1,
@@ -345,6 +345,42 @@ public enum MyEnum
     Both = Left | Right
 }
 ```
+
+## End Enum names with "Type"
+
+Enum names should clearly indicate their nature by using the Type suffix.
+
+### Don't:
+
+```c#
+public enum Ordering
+{
+    First,
+    Second,
+    Third
+}
+```
+```c#
+public enum OrderingEnum
+{
+    First,
+    Second,
+    Third
+}
+```
+
+### Do:
+
+```c#
+[Flags]
+public enum OrderingType
+{
+    First = 0,
+    Second,
+    Third
+}
+```
+
 
 ## Best Practices, including Unity recommendations
 
