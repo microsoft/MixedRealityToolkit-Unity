@@ -65,18 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         private Vector3 targetScale;
         private Quaternion targetRotation;
 
-        /// <summary>
-        /// Indicates if the cursor should be visible
-        /// </summary>
-        public bool IsVisible
-        {
-            get { return isVisible; }
-            set
-            {
-                SetVisibility(isVisible);
-            }
-        }
-
         #region IMixedRealityCursor Implementation
 
         /// <inheritdoc />
@@ -113,11 +101,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// <inheritdoc />
         public virtual Vector3 LocalScale => transform.localScale;
 
-        /// <inheritdoc />
         public virtual void SetVisibility(bool visible)
         {
             if (PrimaryCursorVisual != null &&
-                PrimaryCursorVisual.gameObject.activeInHierarchy)
+                PrimaryCursorVisual.gameObject.activeInHierarchy != visible)
             {
                 PrimaryCursorVisual.gameObject.SetActive(visible);
                 isVisible = visible;
