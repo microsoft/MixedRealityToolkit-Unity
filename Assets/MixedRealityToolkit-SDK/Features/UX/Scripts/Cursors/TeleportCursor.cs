@@ -83,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             if (Pointer == null)
             {
                 Debug.LogError($"[TeleportCursor.{name}] No Pointer has been assigned!");
+                SetVisibility(false);
                 return;
             }
 
@@ -93,6 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                 Debug.LogError(InputSystem.FocusProvider.IsPointerRegistered(Pointer)
                     ? $"{gameObject.name}: Unable to get focus details for {pointer.GetType().Name}!"
                     : $"{pointer.GetType().Name} has not been registered!");
+                SetVisibility(false);
                 return;
             }
 

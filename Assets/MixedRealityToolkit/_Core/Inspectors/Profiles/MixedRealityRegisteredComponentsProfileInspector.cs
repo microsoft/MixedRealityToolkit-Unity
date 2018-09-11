@@ -63,11 +63,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 var priority = managerConfig.FindPropertyRelative("priority");
                 priority.intValue = 10;
                 var runtimePlatform = managerConfig.FindPropertyRelative("runtimePlatform");
-                runtimePlatform.intValue = (int)Application.platform;
+                runtimePlatform.intValue = -1;
                 var configurationProfile = managerConfig.FindPropertyRelative("configurationProfile");
                 configurationProfile.objectReferenceValue = null;
-                var editorPlatform = managerConfig.FindPropertyRelative("editorPlatform");
-                editorPlatform.intValue = (int)EditorUserBuildSettings.activeBuildTarget;
                 serializedObject.ApplyModifiedProperties();
                 var componentType = ((MixedRealityRegisteredComponentsProfile)serializedObject.targetObject).Configurations[list.arraySize - 1].ComponentType;
                 componentType.Type = null;
@@ -98,7 +96,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 var componentType = managerConfig.FindPropertyRelative("componentType");
                 var priority = managerConfig.FindPropertyRelative("priority");
                 var runtimePlatform = managerConfig.FindPropertyRelative("runtimePlatform");
-                var editorPlatform = managerConfig.FindPropertyRelative("editorPlatform");
                 var configurationProfile = managerConfig.FindPropertyRelative("configurationProfile");
 
                 GUILayout.BeginVertical();
@@ -125,11 +122,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                     EditorGUILayout.PropertyField(componentType);
                     EditorGUILayout.PropertyField(priority);
                     EditorGUILayout.PropertyField(runtimePlatform);
-                    EditorGUILayout.PropertyField(editorPlatform);
                     EditorGUILayout.PropertyField(configurationProfile);
 
                     if (EditorGUI.EndChangeCheck())
                     {
+                        serializedObject.ApplyModifiedProperties();
                         MixedRealityManager.Instance.ResetConfiguration(MixedRealityManager.Instance.ActiveProfile);
                     }
 
