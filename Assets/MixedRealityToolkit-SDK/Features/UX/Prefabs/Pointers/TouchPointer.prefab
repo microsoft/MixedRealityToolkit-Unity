@@ -104,6 +104,8 @@ MonoBehaviour:
     axisConstraint: 0
   cursorPrefab: {fileID: 1000012072213228, guid: 5b3e2856904e43c680f84f326861032a,
     type: 2}
+  disableCursorOnStart: 1
+  setCursorVisibilityOnSourceDetected: 1
   raycastOrigin: {fileID: 0}
   activeHoldAction:
     id: 0

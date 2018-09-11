@@ -200,13 +200,19 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             bool reset = false;
             if (controllerRenderList.Count > 0)
             {
-                for (var type = 1; type <= (int)SupportedControllerType.TouchScreen; type++)
+                for (var type = 1; type <= (int)SupportedControllerType.Mouse; type++)
                 {
                     if (controllerRenderList.All(profile => profile.ControllerType != (SupportedControllerType)type))
                     {
                         if ((SupportedControllerType)type == SupportedControllerType.TouchScreen)
                         {
                             AddController(controllerList, typeof(UnityTouchController));
+                            reset = true;
+                        }
+
+                        if ((SupportedControllerType)type == SupportedControllerType.Mouse)
+                        {
+                            AddController(controllerList, typeof(MouseController));
                             reset = true;
                         }
                     }
@@ -263,6 +269,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 else if (controllerType == typeof(UnityTouchController))
                 {
                     supportedControllerType = SupportedControllerType.TouchScreen;
+                }
+                else if (controllerType == typeof(MouseController))
+                {
+                    supportedControllerType = SupportedControllerType.Mouse;
                 }
 
                 bool skip = false;
