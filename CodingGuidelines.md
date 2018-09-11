@@ -249,7 +249,7 @@ To ensure all Enum's are initialized correctly starting at 0, .NET gives you a t
 ### Don't:
 
 ```
-public enum MyEnum
+public enum Value
 {
     Value1, <- no initializer
     Value2,
@@ -260,7 +260,7 @@ public enum MyEnum
 ### Do:
 
  ```
-public enum MyEnum
+public enum ValueType
 {
     Value1 = 0,
     Value2,
@@ -317,6 +317,36 @@ public enum SDKType
     }
 ```
 
+## End Enum names with "Type"
+Enum names should clearly indicate their nature by using the Type suffix.
+### Don't:
+```c#
+public enum Ordering
+{
+    First,
+    Second,
+    Third
+}
+```
+```c#
+public enum OrderingEnum
+{
+    First,
+    Second,
+    Third
+}
+```
+### Do:
+```c#
+public enum OrderingType
+{
+    First = 0,
+    Second,
+    Third
+}
+```
+
+
 ## Review Enum use for Bitfields.
 
 If there is a possibility for an enum to require multiple states as a value, e.g. Handedness = Left & Right. Then the Enum needs to be decorated correctly with BitFlags to enable it to be used correctly
@@ -326,7 +356,7 @@ If there is a possibility for an enum to require multiple states as a value, e.g
 ### Don't:
 
 ```
-public enum MyEnum
+public enum Handedness
 {
     None,
     Left,
@@ -338,7 +368,7 @@ public enum MyEnum
 
  ```
  [flags]
-public enum MyEnum
+public enum HandednessType
 {
     None = 0 << 0,
     Left = 1 << 0,
