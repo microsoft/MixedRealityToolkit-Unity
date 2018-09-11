@@ -915,7 +915,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             if (isMixedRealityManagerInitializing)
             {
-                Debug.LogWarning("Unable to get manager a manager while initializing!");
+                Debug.LogWarning("Unable to get a manager while initializing!");
                 return;
             }
 
