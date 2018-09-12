@@ -3,10 +3,13 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using System;
@@ -193,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         private SystemType teleportSystemType;
 
         /// <summary>
-        /// Boundary System Script File to instantiate at runtime.
+        /// Teleport System Script File to instantiate at runtime.
         /// </summary>
         public SystemType TeleportSystemSystemType
         {
@@ -212,6 +215,43 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         {
             get { return teleportDuration; }
             set { teleportDuration = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Profile for wiring up diagnostic assets.")]
+        private MixedRealityDiagnosticsProfile diagnosticsSystemProfile;
+
+        /// <summary>
+        /// Active profile for diagnostic configuration
+        /// </summary>
+        public MixedRealityDiagnosticsProfile DiagnosticsSystemProfile
+        {
+            get { return diagnosticsSystemProfile; }
+            private set { diagnosticsSystemProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable diagnostic system")]
+        private bool enableDiagnosticsSystem = false;
+
+        public bool IsDiagnosticsSystemEnabled
+        {
+            get { return enableDiagnosticsSystem && DiagnosticsSystemSystemType?.Type != null; }
+            private set { enableDiagnosticsSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Diagnostics System Class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealityDiagnosticsManager), TypeGrouping.ByNamespaceFlat)]
+        private SystemType diagnosticsSystemType;
+
+        /// <summary>
+        /// Diagnostics Manager Script File to instantiate at runtime
+        /// </summary>
+        public SystemType DiagnosticsSystemSystemType
+        {
+            get { return diagnosticsSystemType; }
+            private set { diagnosticsSystemType = value; }
         }
 
         [SerializeField]

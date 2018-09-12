@@ -32,6 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private SerializedProperty teleportSystemType;
         private SerializedProperty teleportDuration;
         private SerializedProperty boundaryVisualizationProfile;
+        // Diagnostic system properties
+        private SerializedProperty enableDiagnosticsSystem;
+        private SerializedProperty diagnosticsSystemType;
+        private SerializedProperty diagnosticsSystemProfile;
 
         private SerializedProperty registeredComponentsProfile;
 
@@ -93,6 +97,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             teleportSystemType = serializedObject.FindProperty("teleportSystemType");
             teleportDuration = serializedObject.FindProperty("teleportDuration");
             boundaryVisualizationProfile = serializedObject.FindProperty("boundaryVisualizationProfile");
+            // Diagnostics system configuration
+            enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
+            diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
+            diagnosticsSystemProfile = serializedObject.FindProperty("diagnosticsSystemProfile");
+
             registeredComponentsProfile = serializedObject.FindProperty("registeredComponentsProfile");
         }
 
@@ -185,6 +194,13 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.PropertyField(enableTeleportSystem);
             EditorGUILayout.PropertyField(teleportSystemType);
             EditorGUILayout.PropertyField(teleportDuration);
+
+            // Teleport System configuration
+            GUILayout.Space(12f);
+            EditorGUILayout.LabelField("Diagnostics System Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(enableDiagnosticsSystem);
+            EditorGUILayout.PropertyField(diagnosticsSystemType);
+            changed |= RenderProfile(diagnosticsSystemProfile);
 
             GUILayout.Space(12f);
             changed |= RenderProfile(registeredComponentsProfile);

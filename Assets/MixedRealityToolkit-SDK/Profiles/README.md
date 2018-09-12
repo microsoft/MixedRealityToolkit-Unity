@@ -26,3 +26,7 @@ Camera profile options for the project, including clipping and skybox settings.
 ## [MixedRealitySpeechCommandsProfile]()
 
 Similar to the Input Actions, allows you to define a set of recognised keywords and assign them to logical Input actions in your project.
+
+## [MixedRealityDiagnosticsProfile]()
+
+Configuration for showing diagnostic data while using your project.
