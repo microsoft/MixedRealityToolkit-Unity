@@ -111,6 +111,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         /// </summary>
         public float DeltaTime { get; set; }
 
+        private bool RequiresOffset { get { return AdditionalOffset.sqrMagnitude != 0 || AdditionalRotation.sqrMagnitude != 0; } }
+
         private float lastUpdateTime;
 
         protected readonly List<Solver> solvers = new List<Solver>();
@@ -179,12 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         private void TrackTransform(Transform newTrackedTransform)
         {
-            TransformTarget = RequiresOffset() ? MakeOffsetTransform(newTrackedTransform) : newTrackedTransform;
-        }
-
-        private bool RequiresOffset()
-        {
-            return AdditionalOffset.sqrMagnitude != 0 || AdditionalRotation.sqrMagnitude != 0;
+            TransformTarget = RequiresOffset ? MakeOffsetTransform(newTrackedTransform) : newTrackedTransform;
         }
 
         private Transform MakeOffsetTransform(Transform parentTransform)
