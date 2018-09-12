@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
@@ -40,16 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
 
         private void InitializeInternal()
         {
-            if (CameraCache.Main.transform.parent == null)
-            {
-                var cameraParent = new GameObject("Body");
-                CameraCache.Main.transform.SetParent(cameraParent.transform);
-            }
-
-            // Make sure the camera is at the scene origin.
-            CameraCache.Main.transform.parent.transform.position = Vector3.zero;
-            CameraCache.Main.transform.localPosition = Vector3.zero;
-
 #if UNITY_EDITOR
             if (!UnityEditor.EditorApplication.isPlaying)
             {
@@ -248,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         {
             isProcessingTeleportRequest = true;
 
-            var cameraParent = CameraCache.Main.transform.parent;
+            var cameraParent = MixedRealityManager.Instance.MixedRealityPlayspace.transform;
 
             targetRotation = Vector3.zero;
             targetRotation.y = eventData.Pointer.PointerOrientation;

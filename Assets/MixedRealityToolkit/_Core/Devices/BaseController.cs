@@ -203,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             // If we've got a controller model prefab, then place it in the scene.
             if (controllerModel != null)
             {
-                var controllerObject = UnityEngine.Object.Instantiate(controllerModel, CameraCache.Main.transform.parent);
+                var controllerObject = UnityEngine.Object.Instantiate(controllerModel, MixedRealityManager.Instance.MixedRealityPlayspace.transform);
                 controllerObject.name = $"{ControllerHandedness}_{controllerObject.name}";
                 var poseSynchronizer = controllerObject.GetComponent<IMixedRealityControllerPoseSynchronizer>();
 

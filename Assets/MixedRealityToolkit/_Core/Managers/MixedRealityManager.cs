@@ -341,6 +341,36 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             }
         }
 
+        private GameObject mixedRealityPlayspace;
+
+        /// <summary>
+        /// Returns the MixedRealityPlayspace for the local player
+        /// </summary>
+        public GameObject MixedRealityPlayspace
+        {
+            get {
+                AssertIsInitialized();
+                if (mixedRealityPlayspace)
+                {
+                    return mixedRealityPlayspace;
+                }
+                else
+                {
+                    mixedRealityPlayspace = new GameObject("MixedRealityPlayspace");
+                    CameraCache.Main.transform.SetParent(mixedRealityPlayspace.transform);
+
+                    // It's very important that the MixedRealityPlayspace align with the tracked space,
+                    // otherwise reality-locked things like playspace boundaries won't be aligned properly.
+                    // For now, we'll just assume that when the playspace is first initialized, the
+                    // tracked space origin overlaps with the world space origin. If a platform ever does
+                    // something else (i.e, placing the lower left hand corner of the tracked space at world 
+                    // space 0,0,0), we should compensate for that here.
+
+                    return mixedRealityPlayspace;
+                }
+            }
+        }
+
         private void ApplicationOnQuitting()
         {
             DisableAllManagers();

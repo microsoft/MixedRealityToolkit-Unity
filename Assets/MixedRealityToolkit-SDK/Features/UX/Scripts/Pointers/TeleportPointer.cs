@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using System;
@@ -302,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                             {
                                 canMove = false;
                                 // Rotate the camera by the rotation amount.  If our angle is positive then rotate in the positive direction, otherwise in the opposite direction.
-                                CameraCache.Main.transform.parent.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
+                                MixedRealityManager.Instance.MixedRealityPlayspace.transform.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
                             }
                             else // We may be trying to strafe backwards.
                             {
@@ -316,10 +317,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                                 if (offsetStrafeAngle > 0 && offsetStrafeAngle < backStrafeActivationAngle)
                                 {
                                     canMove = false;
-                                    var height = CameraCache.Main.transform.parent.position.y;
-                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + CameraCache.Main.transform.parent.position;
+                                    var height = MixedRealityManager.Instance.MixedRealityPlayspace.transform.position.y;
+                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityManager.Instance.MixedRealityPlayspace.transform.position;
                                     newPosition.y = height;
-                                    CameraCache.Main.transform.parent.position = newPosition;
+                                    MixedRealityManager.Instance.MixedRealityPlayspace.transform.position = newPosition;
                                 }
                             }
                         }
