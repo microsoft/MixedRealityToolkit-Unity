@@ -7,8 +7,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 {
-
-
+    /// <summary>
+    /// A Scatter Object Collection is simply a set of child objects randomly laid out within a radius.
+    /// Pressing "update collection" will run the randomization, feel free to run as many times until you get the desired result.
+    /// </summary>
     public class ScatterObjectCollection : GridObjectCollection
     {
         /// <summary>
@@ -29,7 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
             // First start with a grid then project onto surface
             ResolveGridLayout( nodeGrid, startOffsetX, startOffsetY, Layout );
-
 
             // Get randomized planar mapping
             // Calculate radius of each node while we're here

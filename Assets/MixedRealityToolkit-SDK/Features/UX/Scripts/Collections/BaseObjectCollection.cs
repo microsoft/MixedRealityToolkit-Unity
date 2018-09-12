@@ -60,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         }
         #endregion public members
 
-
         /// <summary>
         /// Rebuilds / updates the collection layout.
         /// Update collection is called from the editor button on the inspector.

@@ -18,4 +18,3 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         public Transform transform;
     }
 }
-

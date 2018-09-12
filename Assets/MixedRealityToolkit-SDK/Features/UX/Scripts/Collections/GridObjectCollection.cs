@@ -286,12 +286,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                 {
                     if (cellCounter < NodeList.Count)
                     {
-                        grid[cellCounter].Set
-                            (
-                            ((i * CellWidth) - offsetX + halfCell.x) + NodeList[cellCounter].Offset.x,
-                            (-(j * CellHeight) + offsetY - halfCell.y) + NodeList[cellCounter].Offset.y,
-                            0.0f
-                            );
+                        grid[cellCounter].Set(((i * CellWidth) - offsetX + halfCell.x) + NodeList[cellCounter].Offset.x,
+                                             (-(j * CellHeight) + offsetY - halfCell.y) + NodeList[cellCounter].Offset.y,
+                                             0.0f
+                                             );
                     }
                     cellCounter++;
                 }
