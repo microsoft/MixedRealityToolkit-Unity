@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
         {
             isProcessingTeleportRequest = true;
 
-            var cameraParent = MixedRealityManager.Instance.MixedRealityPlayspace.transform;
+            var cameraParent = MixedRealityManager.Instance.MixedRealityPlayspace;
 
             targetRotation = Vector3.zero;
             targetRotation.y = eventData.Pointer.PointerOrientation;

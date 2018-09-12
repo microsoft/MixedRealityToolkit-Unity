@@ -243,10 +243,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                         interactionSourceState.sourcePose.TryGetPosition(out currentGripPosition, InteractionSourceNode.Grip);
                         interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
 
-                        if (MixedRealityManager.Instance.MixedRealityPlayspace.transform != null)
+                        if (MixedRealityManager.Instance.MixedRealityPlayspace != null)
                         {
-                            currentGripPose.Position = MixedRealityManager.Instance.MixedRealityPlayspace.transform.TransformPoint(currentGripPosition);
-                            currentGripPose.Rotation = Quaternion.Euler(MixedRealityManager.Instance.MixedRealityPlayspace.transform.TransformDirection(currentGripRotation.eulerAngles));
+                            currentGripPose.Position = MixedRealityManager.Instance.MixedRealityPlayspace.TransformPoint(currentGripPosition);
+                            currentGripPose.Rotation = Quaternion.Euler(MixedRealityManager.Instance.MixedRealityPlayspace.TransformDirection(currentGripRotation.eulerAngles));
                         }
                         else
                         {

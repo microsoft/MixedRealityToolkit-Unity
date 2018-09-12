@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
                     {
                         var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
                         var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-                        pointerObject.transform.SetParent(MixedRealityManager.Instance.MixedRealityPlayspace.transform);
+                        pointerObject.transform.SetParent(MixedRealityManager.Instance.MixedRealityPlayspace);
 
                         if (pointer != null)
                         {

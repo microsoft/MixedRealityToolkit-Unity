@@ -341,12 +341,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             }
         }
 
-        private GameObject mixedRealityPlayspace;
+        private Transform mixedRealityPlayspace;
 
         /// <summary>
         /// Returns the MixedRealityPlayspace for the local player
         /// </summary>
-        public GameObject MixedRealityPlayspace
+        public Transform MixedRealityPlayspace
         {
             get {
                 AssertIsInitialized();
@@ -356,8 +356,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 }
                 else
                 {
-                    mixedRealityPlayspace = new GameObject("MixedRealityPlayspace");
-                    CameraCache.Main.transform.SetParent(mixedRealityPlayspace.transform);
+                    mixedRealityPlayspace = new GameObject("MixedRealityPlayspace").transform;
+                    CameraCache.Main.transform.SetParent(mixedRealityPlayspace);
 
                     // It's very important that the MixedRealityPlayspace align with the tracked space,
                     // otherwise reality-locked things like playspace boundaries won't be aligned properly.
