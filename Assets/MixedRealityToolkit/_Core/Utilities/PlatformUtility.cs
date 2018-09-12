@@ -8,59 +8,78 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
 {
     public static class PlatformUtility
     {
-        public static bool IsPlatformSupported(this RuntimePlatform runtimePlatform, SupportedPlatforms platform)
+        public static bool IsPlatformSupported(this RuntimePlatform runtimePlatform, SupportedPlatforms platforms)
         {
-            if (platform == (SupportedPlatforms)(-1))
-            {
-                return true;
-            }
+            SupportedPlatforms target = GetSupportedPlatformMask(runtimePlatform);
+            return IsPlatformSupported(target, platforms);
+        }
+
+        private static SupportedPlatforms GetSupportedPlatformMask(RuntimePlatform runtimePlatform)
+        {
+            SupportedPlatforms supportedPlatforms = 0;
 
             switch (runtimePlatform)
             {
                 case RuntimePlatform.WindowsPlayer:
                 case RuntimePlatform.WindowsEditor:
-                    return (platform & SupportedPlatforms.WindowsStandalone) != 0;
+                    supportedPlatforms |= SupportedPlatforms.WindowsStandalone;
+                    break;
                 case RuntimePlatform.WSAPlayerARM:
                 case RuntimePlatform.WSAPlayerX86:
                 case RuntimePlatform.WSAPlayerX64:
                 case RuntimePlatform.XboxOne:
-                    return (platform & SupportedPlatforms.WindowsUniversal) != 0;
-                case RuntimePlatform.OSXEditor:
+                    supportedPlatforms |= SupportedPlatforms.WindowsUniversal;
+                    break;
                 case RuntimePlatform.OSXPlayer:
-                    return (platform & SupportedPlatforms.MacStandalone) != 0;
+                case RuntimePlatform.OSXEditor:
+                    supportedPlatforms |= SupportedPlatforms.MacStandalone;
+                    break;
                 case RuntimePlatform.LinuxPlayer:
                 case RuntimePlatform.LinuxEditor:
-                    return (platform & SupportedPlatforms.LinuxStandalone) != 0;
-                default:
-                    return false;
+                    supportedPlatforms |= SupportedPlatforms.LinuxStandalone;
+                    break;
             }
+
+            return supportedPlatforms;
+        }
+
+        private static bool IsPlatformSupported(SupportedPlatforms target, SupportedPlatforms supported)
+        {
+            return ((target & supported) == target);
         }
 
 #if UNITY_EDITOR
-        public static bool IsPlatformSupported(this UnityEditor.BuildTarget editorBuildTarget, SupportedPlatforms platform)
+        public static bool IsPlatformSupported(this UnityEditor.BuildTarget editorBuildTarget, SupportedPlatforms platforms)
         {
-            if (platform == (SupportedPlatforms)(-1))
-            {
-                return true;
-            }
+            SupportedPlatforms target = GetSupportedPlatformMask(editorBuildTarget);
+            return IsPlatformSupported(target, platforms);
+        }
+
+        private static SupportedPlatforms GetSupportedPlatformMask(UnityEditor.BuildTarget editorBuildTarget)
+        {
+            SupportedPlatforms supportedPlatforms = 0;
 
             switch (editorBuildTarget)
             {
                 case UnityEditor.BuildTarget.StandaloneWindows:
                 case UnityEditor.BuildTarget.StandaloneWindows64:
-                    return (platform & SupportedPlatforms.WindowsStandalone) != 0;
+                    supportedPlatforms |= SupportedPlatforms.WindowsStandalone;
+                    break;
                 case UnityEditor.BuildTarget.WSAPlayer:
                 case UnityEditor.BuildTarget.XboxOne:
-                    return (platform & SupportedPlatforms.WindowsUniversal) != 0;
+                    supportedPlatforms |= SupportedPlatforms.WindowsUniversal;
+                    break;
                 case UnityEditor.BuildTarget.StandaloneOSX:
-                    return (platform & SupportedPlatforms.MacStandalone) != 0;
+                    supportedPlatforms |= SupportedPlatforms.MacStandalone;
+                    break;
                 case UnityEditor.BuildTarget.StandaloneLinux:
                 case UnityEditor.BuildTarget.StandaloneLinux64:
                 case UnityEditor.BuildTarget.StandaloneLinuxUniversal:
-                    return (platform & SupportedPlatforms.LinuxStandalone) != 0;
-                default:
-                    return false;
+                    supportedPlatforms |= SupportedPlatforms.LinuxStandalone;
+                    break;
             }
+
+            return supportedPlatforms;
         }
 #endif
     }

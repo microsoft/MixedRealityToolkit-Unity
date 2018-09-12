@@ -18,6 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
     {
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
+        public bool SetVisibilityOnSourceDetected { get; set; } = false;
+
         /// <summary>
         /// Surface distance to place the cursor off of the surface at
         /// </summary>
@@ -59,23 +61,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         protected GameObject TargetedObject = null;
 
         private uint visibleSourcesCount = 0;
-        private bool isVisible = true;
 
         private Vector3 targetPosition;
         private Vector3 targetScale;
         private Quaternion targetRotation;
-
-        /// <summary>
-        /// Indicates if the cursor should be visible
-        /// </summary>
-        public bool IsVisible
-        {
-            get { return isVisible; }
-            set
-            {
-                SetVisibility(isVisible);
-            }
-        }
 
         #region IMixedRealityCursor Implementation
 
@@ -113,13 +102,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// <inheritdoc />
         public virtual Vector3 LocalScale => transform.localScale;
 
-        /// <inheritdoc />
         public virtual void SetVisibility(bool visible)
         {
-            if (PrimaryCursorVisual != null)
+            if (PrimaryCursorVisual != null &&
+                PrimaryCursorVisual.gameObject.activeInHierarchy != visible)
             {
                 PrimaryCursorVisual.gameObject.SetActive(visible);
-                isVisible = visible;
             }
         }
 
@@ -141,7 +129,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                     if (eventData.InputSource.Pointers[i].PointerId == Pointer.PointerId)
                     {
                         visibleSourcesCount++;
-                        SetVisibility(true);
+
+                        if (SetVisibilityOnSourceDetected && visibleSourcesCount == 1)
+                        {
+                            SetVisibility(true);
+                        }
+
                         return;
                     }
                 }
@@ -173,10 +166,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                 }
             }
 
-            if (visibleSourcesCount == 0)
+            if (!IsSourceDetected)
             {
                 IsPointerDown = false;
-                SetVisibility(false);
+
+                if (SetVisibilityOnSourceDetected)
+                {
+                    SetVisibility(false);
+                }
             }
         }
 
@@ -230,13 +227,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         #endregion IMixedRealityPointerHandler Implementation
 
         #region MonoBehaviour Implementation
-
-        private void Awake()
-        {
-            // Use the setter to update visibility of the cursor at startup based on user preferences
-            IsVisible = isVisible;
-            SetVisibility(isVisible);
-        }
 
         private void Update()
         {

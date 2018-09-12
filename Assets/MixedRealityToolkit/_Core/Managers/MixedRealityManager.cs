@@ -140,6 +140,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 }
                 else
                 {
+                    mixedRealityComponentsCount = 0;
+                    MixedRealityComponents.Clear();
                     ActiveProfile.ActiveManagers.Clear();
                 }
             }
@@ -192,7 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 for (int i = 0; i < ActiveProfile.RegisteredComponentsProfile.Configurations?.Length; i++)
                 {
                     var configuration = ActiveProfile.RegisteredComponentsProfile.Configurations[i];
-
 #if UNITY_EDITOR
                     if (UnityEditor.EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(configuration.RuntimePlatform))
 #else
@@ -485,6 +486,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 throw new ArgumentNullException($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile.");
             }
 
+            if (!IsInitialized)
+            {
+                throw new ArgumentNullException($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has not been initialized!");
+            }
+
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
             IMixedRealityManager manager;
@@ -558,7 +564,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             }
             else
             {
-                MixedRealityComponents.RemoveAll(tuple => tuple.Item1.Name == type.Name);
+                IMixedRealityManager manager;
+                GetComponentByType(type, out manager);
+                if (manager != null)
+                {
+                    MixedRealityComponents.Remove(new Tuple<Type, IMixedRealityManager>(type, manager));
+                }
             }
         }
 
@@ -584,7 +595,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             }
             else
             {
-                MixedRealityComponents.RemoveAll(tuple => tuple.Item1.Name == type.Name && tuple.Item2.Name == managerName);
+                IMixedRealityManager manager;
+                GetComponentByTypeAndName(type, managerName, out manager);
+                if (manager != null)
+                {
+                    MixedRealityComponents.Remove(new Tuple<Type, IMixedRealityManager>(type, manager));
+                }
             }
         }
 
@@ -721,26 +737,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             }
             else
             {
-                //If no name provided, return all components of the same type. Else return the type/name combination.
+                // If no name provided, return all components of the same type. Else return the type/name combination.
                 if (string.IsNullOrWhiteSpace(managerName))
                 {
-                    for (int i = 0; i < mixedRealityComponentsCount; i++)
-                    {
-                        if (MixedRealityComponents[i].Item1.Name == type.Name)
-                        {
-                            managers.Add(MixedRealityComponents[i].Item2);
-                        }
-                    }
+                    GetComponentsByType(type, ref managers);
                 }
                 else
                 {
-                    for (int i = 0; i < mixedRealityComponentsCount; i++)
-                    {
-                        if (MixedRealityComponents[i].Item1.Name == type.Name && MixedRealityComponents[i].Item2.Name == managerName)
-                        {
-                            managers.Add(MixedRealityComponents[i].Item2);
-                        }
-                    }
+                    GetComponentsByTypeAndName(type, managerName, ref managers);
                 }
             }
 
@@ -881,6 +885,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
             return type == typeof(IMixedRealityInputSystem) ||
+                   type == typeof(IMixedRealityTeleportSystem) ||
                    type == typeof(IMixedRealityBoundarySystem);
         }
 
@@ -893,32 +898,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         {
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
-            manager = null;
-
-            for (int i = 0; i < mixedRealityComponentsCount; i++)
-            {
-                if (MixedRealityComponents[i].Item1.Name == type.Name ||
-                    MixedRealityComponents[i].Item2.GetType().Name == type.Name)
-                {
-                    manager = MixedRealityComponents[i].Item2;
-                    break;
-                }
-
-                var interfaces = MixedRealityComponents[i].Item2.GetType().GetInterfaces();
-                for (int j = 0; j < interfaces.Length; j++)
-                {
-                    if (interfaces[j].Name == type.Name)
-                    {
-                        manager = MixedRealityComponents[i].Item2;
-                        break;
-                    }
-                }
-            }
-
-            if (manager == null)
-            {
-                throw new NullReferenceException($"Unable to find {type.Name} Manager.");
-            }
+            GetComponentByTypeAndName(type, string.Empty, out manager);
         }
 
         /// <summary>
@@ -930,14 +910,23 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         private void GetComponentByTypeAndName(Type type, string managerName, out IMixedRealityManager manager)
         {
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            if (string.IsNullOrEmpty(managerName)) { throw new ArgumentNullException(nameof(managerName)); }
 
             manager = null;
 
+            if (isMixedRealityManagerInitializing)
+            {
+                Debug.LogWarning("Unable to get a manager while initializing!");
+                return;
+            }
+
+            if (mixedRealityComponentsCount != MixedRealityComponents.Count)
+            {
+                Initialize();
+            }
+
             for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
-                if (MixedRealityComponents[i].Item1.Name == type.Name &&
-                    MixedRealityComponents[i].Item2.Name == managerName)
+                if (CheckComponentMatch(type, managerName, MixedRealityComponents[i]))
                 {
                     manager = MixedRealityComponents[i].Item2;
                     break;
@@ -945,7 +934,50 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             }
         }
 
+        private void GetComponentsByType(Type type, ref List<IMixedRealityManager> managers)
+        {
+            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+
+            GetComponentsByTypeAndName(type, string.Empty, ref managers);
+        }
+
+        private void GetComponentsByTypeAndName(Type type, string managerName, ref List<IMixedRealityManager> managers)
+        {
+            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+
+            for (int i = 0; i < mixedRealityComponentsCount; i++)
+            {
+                if (CheckComponentMatch(type, managerName, MixedRealityComponents[i]))
+                {
+                    managers.Add(MixedRealityComponents[i].Item2);
+                }
+            }
+        }
+
+        private static bool CheckComponentMatch(Type type, string managerName, Tuple<Type, IMixedRealityManager> managerTuple)
+        {
+            if ((managerTuple.Item1.Name == type.Name ||
+                managerTuple.Item2.GetType().Name == type.Name) &&
+                (string.IsNullOrEmpty(managerName) || managerTuple.Item2.Name == managerName))
+            {
+                return true;
+            }
+
+            var interfaces = managerTuple.Item2.GetType().GetInterfaces();
+            for (int i = 0; i < interfaces.Length; i++)
+            {
+                if (interfaces[i].Name == type.Name &&
+                    (string.IsNullOrEmpty(managerName) || managerTuple.Item2.Name == managerName))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         #endregion Manager Utilities
+
         #endregion Manager Container Management
     }
 }
