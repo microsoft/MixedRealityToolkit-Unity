@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                         UpdatePoseData(Interactions[i]);
                         break;
                     default:
-                        Debug.LogError($"Input [{Interactions[i].InputType}] is not handled for this controller [{GetType().Name}]");
+                        Debug.LogError($"Input [{Interactions[i].InputType}] for [{Interactions[i].Description}] is not handled for this controller [{GetType().Name}]");
                         break;
                 }
             }
@@ -94,9 +94,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 if (interactionMapping.BoolData)
                 {
                     InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+
+                    if (interactionMapping.InputType == DeviceInputType.TriggerPress)
+                    {
+                        for (int i = 0; i < InputSource.Pointers.Length; i++)
+                        {
+                            InputSystem?.RaisePointerDown(InputSource.Pointers[i], ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
                 }
                 else
                 {
+
+                    if (interactionMapping.InputType == DeviceInputType.TriggerPress)
+                    {
+                        for (int i = 0; i < InputSource.Pointers.Length; i++)
+                        {
+                            InputSystem?.RaisePointerClicked(InputSource.Pointers[i], ControllerHandedness, interactionMapping.MixedRealityInputAction, 1);
+                        }
+
+                        for (int i = 0; i < InputSource.Pointers.Length; i++)
+                        {
+                            InputSystem?.RaisePointerUp(InputSource.Pointers[i], ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
+
                     InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
             }
@@ -151,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                     }
                     return;
                 default:
-                    Debug.LogWarning("Unhandled Interaction");
+                    Debug.LogWarning($"Unhandled Interaction [{interactionMapping.InputType}] for [{interactionMapping.Description}]");
                     return;
             }
 
@@ -222,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             }
             else
             {
-                Debug.LogWarning("Unhandled Interaction");
+                Debug.LogWarning($"Unhandled Interaction [{interactionMapping.InputType}] for [{interactionMapping.Description}]");
                 return;
             }
 
