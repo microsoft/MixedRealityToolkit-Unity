@@ -887,7 +887,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
             return type == typeof(IMixedRealityInputSystem) ||
-                   type == typeof(IMixedRealityBoundarySystem);
+                   type == typeof(IMixedRealityBoundarySystem) ||
+                   type == typeof(IMixedRealityDiagnosticsManager);
         }
 
         /// <summary>
