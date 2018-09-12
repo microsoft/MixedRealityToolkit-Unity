@@ -70,6 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         private SpeechEventData speechEventData;
         private DictationEventData dictationEventData;
 
+        public MixedRealityInputActionRulesProfile CurrentInputActionRulesProfile { get; set; }
+
         #region IMixedRealityManager Implementation
 
         // Input system is critical, so should be processed before all other managers
@@ -79,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public override void Initialize()
         {
             base.Initialize();
+            CurrentInputActionRulesProfile = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
             InitializeInternal();
             InputEnabled?.Invoke();
         }
@@ -898,6 +901,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseOnInputDown(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
+            inputAction = ProcessRules(inputAction, true);
+
             // Create input event
             inputEventData.Initialize(source, inputAction);
 
@@ -908,6 +913,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
+            inputAction = ProcessRules(inputAction, true);
+
             // Create input event
             inputEventData.Initialize(source, handedness, inputAction);
 
@@ -929,6 +936,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseOnInputPressed(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
+            inputAction = ProcessRules(inputAction, true);
+
             // Create input event
             floatInputEventData.Initialize(source, inputAction);
 
@@ -939,6 +948,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
+            inputAction = ProcessRules(inputAction, true);
+
             // Create input event
             floatInputEventData.Initialize(source, handedness, inputAction);
 
@@ -949,6 +960,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseOnInputPressed(IMixedRealityInputSource source, MixedRealityInputAction inputAction, float pressAmount)
         {
+            inputAction = ProcessRules(inputAction, pressAmount);
+
             // Create input event
             floatInputEventData.Initialize(source, inputAction, pressAmount);
 
@@ -959,6 +972,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseOnInputPressed(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, float pressAmount)
         {
+            inputAction = ProcessRules(inputAction, pressAmount);
+
             // Create input event
             floatInputEventData.Initialize(source, handedness, inputAction, pressAmount);
 
@@ -980,6 +995,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseOnInputUp(IMixedRealityInputSource source, MixedRealityInputAction inputAction)
         {
+            inputAction = ProcessRules(inputAction, false);
+
             // Create input event
             inputEventData.Initialize(source, inputAction);
 
@@ -990,6 +1007,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
+            inputAction = ProcessRules(inputAction, false);
+
             // Create input event
             inputEventData.Initialize(source, handedness, inputAction);
 
@@ -1011,6 +1030,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaisePositionInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector2 inputPosition)
         {
+            inputAction = ProcessRules(inputAction, inputPosition);
+
             // Create input event
             vector2InputEventData.Initialize(source, inputAction, inputPosition);
 
@@ -1021,6 +1042,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaisePositionInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector2 inputPosition)
         {
+            inputAction = ProcessRules(inputAction, inputPosition);
+
             // Create input event
             vector2InputEventData.Initialize(source, handedness, inputAction, inputPosition);
 
@@ -1038,6 +1061,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaisePositionInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Vector3 position)
         {
+            inputAction = ProcessRules(inputAction, position);
+
             // Create input event
             positionInputEventData.Initialize(source, inputAction, position);
 
@@ -1048,6 +1073,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaisePositionInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 position)
         {
+            inputAction = ProcessRules(inputAction, position);
+
             // Create input event
             positionInputEventData.Initialize(source, handedness, inputAction, position);
 
@@ -1069,6 +1096,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseRotationInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, Quaternion rotation)
         {
+            inputAction = ProcessRules(inputAction, rotation);
+
             // Create input event
             rotationInputEventData.Initialize(source, inputAction, rotation);
 
@@ -1079,6 +1108,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseRotationInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Quaternion rotation)
         {
+            inputAction = ProcessRules(inputAction, rotation);
+
             // Create input event
             rotationInputEventData.Initialize(source, handedness, inputAction, rotation);
 
@@ -1100,6 +1131,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaisePoseInputChanged(IMixedRealityInputSource source, MixedRealityInputAction inputAction, MixedRealityPose inputData)
         {
+            inputAction = ProcessRules(inputAction, inputData);
+
             // Create input event
             poseInputEventData.Initialize(source, inputAction, inputData);
 
@@ -1110,6 +1143,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaisePoseInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, MixedRealityPose inputData)
         {
+            inputAction = ProcessRules(inputAction, inputData);
+
             // Create input event
             poseInputEventData.Initialize(source, handedness, inputAction, inputData);
 
@@ -1133,6 +1168,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseGestureStarted(IMixedRealityController controller, MixedRealityInputAction action)
         {
+            action = ProcessRules(action, true);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
             HandleEvent(inputEventData, OnGestureStarted);
         }
@@ -1147,6 +1183,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action)
         {
+            action = ProcessRules(action, true);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
             HandleEvent(inputEventData, OnGestureUpdated);
         }
@@ -1161,6 +1198,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Vector2 inputData)
         {
+            action = ProcessRules(action, inputData);
             vector2InputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(vector2InputEventData, OnGestureVector2PositionUpdated);
         }
@@ -1175,6 +1213,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Vector3 inputData)
         {
+            action = ProcessRules(action, inputData);
             positionInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(inputEventData, OnGesturePositionUpdated);
         }
@@ -1189,6 +1228,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Quaternion inputData)
         {
+            action = ProcessRules(action, inputData);
             rotationInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(inputEventData, OnGestureRotationUpdated);
         }
@@ -1203,6 +1243,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, MixedRealityPose inputData)
         {
+            action = ProcessRules(action, inputData);
             poseInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(inputEventData, OnGesturePoseUpdated);
         }
@@ -1217,6 +1258,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action)
         {
+            action = ProcessRules(action, false);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
             HandleEvent(inputEventData, OnGestureCompleted);
         }
@@ -1231,6 +1273,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Vector2 inputData)
         {
+            action = ProcessRules(action, inputData);
             vector2InputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(vector2InputEventData, OnGestureVector2PositionCompleted);
         }
@@ -1245,6 +1288,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Vector3 inputData)
         {
+            action = ProcessRules(action, inputData);
             positionInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(inputEventData, OnGesturePositionCompleted);
         }
@@ -1259,6 +1303,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Quaternion inputData)
         {
+            action = ProcessRules(action, inputData);
             rotationInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(inputEventData, OnGestureRotationCompleted);
         }
@@ -1273,6 +1318,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, MixedRealityPose inputData)
         {
+            action = ProcessRules(action, inputData);
             poseInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(inputEventData, OnGesturePoseCompleted);
         }
@@ -1287,6 +1333,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <inheritdoc />
         public void RaiseGestureCanceled(IMixedRealityController controller, MixedRealityInputAction action)
         {
+            action = ProcessRules(action, false);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
             HandleEvent(inputEventData, OnGestureCanceled);
         }
@@ -1696,5 +1743,156 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         #endregion Dictation Events
 
         #endregion Input Events
+
+        #region Rules
+
+        private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, bool criteria)
+        {
+            if (CurrentInputActionRulesProfile != null)
+            {
+                var digitalRules = CurrentInputActionRulesProfile.InputActionRulesDigital;
+
+                for (int i = 0; i < digitalRules.Length; i++)
+                {
+                    if (digitalRules[i].BaseAction == inputAction && digitalRules[i].Criteria == criteria)
+                    {
+                        if (digitalRules[i].RuleAction == inputAction)
+                        {
+                            Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
+                            return inputAction;
+                        }
+
+                        return digitalRules[i].RuleAction;
+                    }
+                }
+            }
+
+            return inputAction;
+        }
+
+        private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, float criteria)
+        {
+            if (CurrentInputActionRulesProfile != null)
+            {
+                var digitalRules = CurrentInputActionRulesProfile.InputActionRulesSingleAxis;
+
+                for (int i = 0; i < digitalRules.Length; i++)
+                {
+                    if (digitalRules[i].BaseAction == inputAction && digitalRules[i].Criteria.Equals(criteria))
+                    {
+                        if (digitalRules[i].RuleAction == inputAction)
+                        {
+                            Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
+                            return inputAction;
+                        }
+
+                        return digitalRules[i].RuleAction;
+                    }
+                }
+            }
+
+            return inputAction;
+        }
+
+        private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, Vector2 criteria)
+        {
+            if (CurrentInputActionRulesProfile != null)
+            {
+                var digitalRules = CurrentInputActionRulesProfile.InputActionRulesDualAxis;
+
+                for (int i = 0; i < digitalRules.Length; i++)
+                {
+                    if (digitalRules[i].BaseAction == inputAction)
+                    {
+                        if (digitalRules[i].Criteria == criteria)
+                        {
+                            if (digitalRules[i].RuleAction == inputAction)
+                            {
+                                Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
+                                return inputAction;
+                            }
+
+                            return digitalRules[i].RuleAction;
+                        }
+                    }
+                }
+            }
+
+            return inputAction;
+        }
+
+        private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, Vector3 criteria)
+        {
+            if (CurrentInputActionRulesProfile != null)
+            {
+                var digitalRules = CurrentInputActionRulesProfile.InputActionRulesVectorAxis;
+
+                for (int i = 0; i < digitalRules.Length; i++)
+                {
+                    if (digitalRules[i].BaseAction == inputAction && digitalRules[i].Criteria == criteria)
+                    {
+                        if (digitalRules[i].RuleAction == inputAction)
+                        {
+                            Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
+                            return inputAction;
+                        }
+
+                        return digitalRules[i].RuleAction;
+                    }
+                }
+            }
+
+            return inputAction;
+        }
+
+        private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, Quaternion criteria)
+        {
+            if (CurrentInputActionRulesProfile != null)
+            {
+                var digitalRules = CurrentInputActionRulesProfile.InputActionRulesQuaternionAxis;
+
+                for (int i = 0; i < digitalRules.Length; i++)
+                {
+                    if (digitalRules[i].BaseAction == inputAction && digitalRules[i].Criteria == criteria)
+                    {
+                        if (digitalRules[i].RuleAction == inputAction)
+                        {
+                            Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
+                            return inputAction;
+                        }
+
+                        return digitalRules[i].RuleAction;
+                    }
+                }
+            }
+
+            return inputAction;
+        }
+
+        private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, MixedRealityPose criteria)
+        {
+            if (CurrentInputActionRulesProfile != null)
+            {
+                var digitalRules = CurrentInputActionRulesProfile.InputActionRulesPoseAxis;
+
+                for (int i = 0; i < digitalRules.Length; i++)
+                {
+                    if (digitalRules[i].BaseAction == inputAction && digitalRules[i].Criteria == criteria)
+                    {
+                        if (digitalRules[i].RuleAction == inputAction)
+                        {
+                            Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
+                            return inputAction;
+                        }
+
+                        return digitalRules[i].RuleAction;
+                    }
+                }
+            }
+
+            return inputAction;
+        }
+
+        #endregion Rules
     }
 }

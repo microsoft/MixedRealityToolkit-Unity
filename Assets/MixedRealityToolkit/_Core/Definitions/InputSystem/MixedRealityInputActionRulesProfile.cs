@@ -10,12 +10,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
     public class MixedRealityInputActionRulesProfile : ScriptableObject
     {
         [SerializeField]
-        private InputActionRuleDigital[] genericInputActionRulesDigital;
+        private InputActionRuleDigital[] inputActionRulesDigital;
 
         /// <summary>
         /// All the Input Action Rules for <see cref="bool"/> based <see cref="MixedRealityInputAction"/>s
         /// </summary>
-        public InputActionRuleDigital[] GenericInputActionRulesDigital => genericInputActionRulesDigital;
+        public InputActionRuleDigital[] InputActionRulesDigital => inputActionRulesDigital;
 
         [SerializeField]
         private InputActionRuleSingleAxis[] inputActionRulesSingleAxis;

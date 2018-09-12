@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 return;
             }
 
-            inputActionRulesDigital = serializedObject.FindProperty("genericInputActionRulesDigital");
+            inputActionRulesDigital = serializedObject.FindProperty("inputActionRulesDigital");
             inputActionRulesSingleAxis = serializedObject.FindProperty("inputActionRulesSingleAxis");
             inputActionRulesDualAxis = serializedObject.FindProperty("inputActionRulesDualAxis");
             inputActionRulesVectorAxis = serializedObject.FindProperty("inputActionRulesVectorAxis");
@@ -55,12 +55,14 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.LabelField("Input Action Rules Profile", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("The Input Action Rules...", MessageType.Info);
 
+            serializedObject.Update();
             EditorGUILayout.PropertyField(inputActionRulesDigital, true);
             EditorGUILayout.PropertyField(inputActionRulesSingleAxis, true);
             EditorGUILayout.PropertyField(inputActionRulesDualAxis, true);
             EditorGUILayout.PropertyField(inputActionRulesVectorAxis, true);
             EditorGUILayout.PropertyField(inputActionRulesQuaternionAxis, true);
             EditorGUILayout.PropertyField(inputActionRulesPoseAxis, true);
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
