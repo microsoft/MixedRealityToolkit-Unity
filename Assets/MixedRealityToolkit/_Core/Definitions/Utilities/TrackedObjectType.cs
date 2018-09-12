@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         /// <summary>
         /// Calculates position and orientation from the main camera.
         /// </summary>
-        Head,
+        Head = 0,
         /// <summary>
         /// Calculates position and orientation from the left motion-tracked controller.
         /// </summary>

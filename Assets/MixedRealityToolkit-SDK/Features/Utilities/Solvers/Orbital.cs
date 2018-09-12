@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
     {
         [SerializeField]
         [Tooltip("The desired orientation of this object. Default sets the object to face the TrackedObject/TargetTransform. CameraFacing sets the object to always face the user.")]
-        private SolverOrientation orientationType = SolverOrientation.FollowTrackedObject;
+        private SolverOrientationType orientationType = SolverOrientationType.FollowTrackedObject;
 
         /// <summary>
         /// The desired orientation of this object.
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         /// <remarks>
         /// Default sets the object to face the TrackedObject/TargetTransform. CameraFacing sets the object to always face the user.
         /// </remarks>
-        public SolverOrientation OrientationType
+        public SolverOrientationType OrientationType
         {
             get { return orientationType; }
             set { orientationType = value; }
@@ -130,23 +130,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
             switch (orientationType)
             {
-                case SolverOrientation.YawOnly:
+                case SolverOrientationType.YawOnly:
                     float targetYRotation = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.eulerAngles.y : 1;
                     desiredRot = Quaternion.Euler(0f, targetYRotation, 0f);
                     break;
-                case SolverOrientation.Unmodified:
+                case SolverOrientationType.Unmodified:
                     desiredRot = transform.rotation;
                     break;
-                case SolverOrientation.CameraAligned:
+                case SolverOrientationType.CameraAligned:
                     desiredRot = CameraCache.Main.transform.rotation;
                     break;
-                case SolverOrientation.FaceTrackedObject:
+                case SolverOrientationType.FaceTrackedObject:
                     desiredRot = Quaternion.LookRotation(SolverHandler.TransformTarget.position - desiredPos);
                     break;
-                case SolverOrientation.CameraFacing:
+                case SolverOrientationType.CameraFacing:
                     desiredRot = Quaternion.LookRotation(CameraCache.Main.transform.position - desiredPos);
                     break;
-                case SolverOrientation.FollowTrackedObject:
+                case SolverOrientationType.FollowTrackedObject:
                     desiredRot = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.rotation : Quaternion.identity;
                     break;
                 default:

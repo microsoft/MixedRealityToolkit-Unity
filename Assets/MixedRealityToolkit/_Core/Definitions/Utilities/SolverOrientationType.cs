@@ -3,12 +3,12 @@
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 {
-    public enum SolverOrientation
+    public enum SolverOrientationType
     {
         /// <summary>
         /// Use the tracked object's pitch, yaw, and roll
         /// </summary>
-        FollowTrackedObject,
+        FollowTrackedObject = 0,
         /// <summary>
         /// Face toward the tracked object
         /// </summary>
