@@ -38,7 +38,7 @@ This ensures documentation is properly generated and disseminated for all all cl
 
 ## MRTK namespace rules
 
-The vNext structure adheres to a strict namespace culture of mapping the namespace 1-1 with the folder structure of the project.  This ensures that classes are easy to discover and maintain.  It also ensures the dependencies of any class are laid out in the beginning usings of the file.
+The vNext structure adheres to a strict namespace culture of mapping the namespace 1-1 with the folder structure of the project.  This ensures that classes are easy to discover and maintain.  It also ensures the dependencies of any class are laid out in the beginning using definitions of the file.
 
 ![](/External/ReadMeImages/MRTK-NameSpaceExample.png)
 
@@ -47,7 +47,7 @@ The vNext structure adheres to a strict namespace culture of mapping the namespa
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitons
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
     /// The ButtonAction defines the set of actions exposed by a controller.
@@ -277,9 +277,9 @@ public class MyClass
 }
  ```
 
-## Initilize Enums.
+## Initialize Enums.
 
-To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initilize the enum by just adding the first (starter) value.
+To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value.
 
 > E.G. Value 1 = 0  (Remaining values are not required)
 
@@ -340,7 +340,7 @@ public enum SDKType
         /// </summary>
         Other,
         /// <summary>
-        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and Hololens. 
+        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens. 
         /// </summary>
         WindowsMR,
         /// <summary>
