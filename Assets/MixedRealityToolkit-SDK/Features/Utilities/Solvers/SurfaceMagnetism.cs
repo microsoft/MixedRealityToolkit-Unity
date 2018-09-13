@@ -90,8 +90,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         private float orientationBlend = 0.65f;
 
         [SerializeField]
+        [Tooltip("If enabled, the debug lines will be drawn in the editor")]
         private bool debugEnabled = false;
 
+        /// <summary>
+        /// Whether or not the object is currently magnetized to a surface.
+        /// </summary>
         public bool OnSurface { get; private set; }
 
         private BoxCollider boxCollider;
@@ -109,6 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             {
                 Vector3 origin = RaycastOrigin;
                 Vector3 endPoint = Vector3.forward;
+
                 switch (raycastDirection)
                 {
                     case RaycastDirectionEnum.CameraFacing:
@@ -199,6 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         {
             // Calculate the surface rotation
             Vector3 newDirection = -surfaceNormal;
+
             if (IsNormalVertical(newDirection))
             {
                 newDirection = direction;
@@ -573,6 +579,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             if (!useClosestDistance && closestPoint >= 0)
             {
                 float centerPlaneDistance;
+
                 if (plane.Raycast(new Ray(origin, originalDirection), out centerPlaneDistance) || !centerPlaneDistance.Equals(0.0f))
                 {
                     // When the plane is nearly parallel to the user, we need to clamp the distance to where the raycasts hit.

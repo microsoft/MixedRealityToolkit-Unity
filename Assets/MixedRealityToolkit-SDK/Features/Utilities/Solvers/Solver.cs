@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         public abstract void SolverUpdate();
 
         /// <summary>
-        ///  Tracks lifetime of the solver, disabling it when expired, and finally runs the orientation update logic
+        /// Tracks lifetime of the solver, disabling it when expired, and finally runs the orientation update logic
         /// </summary>
         public void SolverUpdateEntry()
         {

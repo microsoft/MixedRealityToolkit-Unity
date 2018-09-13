@@ -18,6 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         [Tooltip("Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.")]
         private TrackedObjectType trackedObjectToReference = TrackedObjectType.Head;
 
+        /// <summary>
+        /// Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.
+        /// </summary>
         public TrackedObjectType TrackedObjectToReference
         {
             get { return trackedObjectToReference; }
@@ -36,6 +39,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         [Tooltip("Add an additional offset of the tracked object to base the solver on. Useful for tracking something like a halo position above your head or off the side of a controller.")]
         private Vector3 additionalOffset;
 
+        /// <summary>
+        /// Add an additional offset of the tracked object to base the solver on. Useful for tracking something like a halo position above your head or off the side of a controller.
+        /// </summary>
         public Vector3 AdditionalOffset
         {
             get { return additionalOffset; }
@@ -50,6 +56,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         [Tooltip("Add an additional rotation on top of the tracked object. Useful for tracking what is essentially the up or right/left vectors.")]
         private Vector3 additionalRotation;
 
+        /// <summary>
+        /// Add an additional rotation on top of the tracked object. Useful for tracking what is essentially the up or right/left vectors.
+        /// </summary>
         public Vector3 AdditionalRotation
         {
             get { return additionalRotation; }
@@ -111,12 +120,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         /// </summary>
         public float DeltaTime { get; set; }
 
-        private bool RequiresOffset { get { return AdditionalOffset.sqrMagnitude != 0 || AdditionalRotation.sqrMagnitude != 0; } }
-
-        private float lastUpdateTime;
+        private bool RequiresOffset => AdditionalOffset.sqrMagnitude != 0 || AdditionalRotation.sqrMagnitude != 0;
 
         protected readonly List<Solver> solvers = new List<Solver>();
 
+        private float lastUpdateTime;
         private GameObject transformWithOffset;
 
         #region MonoBehaviour Implementation
@@ -168,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         #endregion MonoBehaviour Implementation
 
-        public virtual void AttachToNewTrackedObject()
+        protected virtual void AttachToNewTrackedObject()
         {
             switch (TrackedObjectToReference)
             {
