@@ -473,8 +473,13 @@ public float MyValue;
 
  ```
  // Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
- [SerializeField] 
- private float myValue; // <- Notice we co-located the backing field above our corrisponding property.
+ [SerializeField]
+ [ToolTip("If using a tooltip, the text should match the public property's summary documentation, if appropriate.")]
+ private float myValue; // <- Notice we co-located the backing field above our corresponding property.
+
+ /// <summary>
+ /// If using a tooltip, the text should match the public property's summary documentation, if appropriate.
+ /// </summary>
  public float MyValue
  {
      get{ return myValue; }
