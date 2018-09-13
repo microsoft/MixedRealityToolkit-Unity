@@ -33,6 +33,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
             }
         }
 
+        protected override void Start()
+        {
+            if (!isFocusRequired)
+            {
+                base.Start();
+            }
+        }
+
         protected override void OnDisable()
         {
             if (!isFocusRequired)
