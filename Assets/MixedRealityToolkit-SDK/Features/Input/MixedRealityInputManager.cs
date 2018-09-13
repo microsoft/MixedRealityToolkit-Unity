@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
@@ -1746,25 +1746,30 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #region Rules
 
+        private MixedRealityInputAction ProcessRules_Internal<T1, T2>(MixedRealityInputAction inputAction, T1[] inputActionRules, T2 criteria) where T1 : struct, IInputActionRule<T2>
+        {
+            for (int i = 0; i < inputActionRules.Length; i++)
+            {
+                if (inputActionRules[i].BaseAction == inputAction && inputActionRules[i].Criteria.Equals(criteria))
+                {
+                    if (inputActionRules[i].RuleAction == inputAction)
+                    {
+                        Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
+                        return inputAction;
+                    }
+
+                    return inputActionRules[i].RuleAction;
+                }
+            }
+
+            return inputAction;
+        }
+
         private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, bool criteria)
         {
             if (CurrentInputActionRulesProfile != null)
             {
-                var digitalRules = CurrentInputActionRulesProfile.InputActionRulesDigital;
-
-                for (int i = 0; i < digitalRules.Length; i++)
-                {
-                    if (digitalRules[i].BaseAction == inputAction && digitalRules[i].Criteria == criteria)
-                    {
-                        if (digitalRules[i].RuleAction == inputAction)
-                        {
-                            Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
-                            return inputAction;
-                        }
-
-                        return digitalRules[i].RuleAction;
-                    }
-                }
+                ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesDigital, criteria);
             }
 
             return inputAction;
@@ -1774,21 +1779,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             if (CurrentInputActionRulesProfile != null)
             {
-                var digitalRules = CurrentInputActionRulesProfile.InputActionRulesSingleAxis;
-
-                for (int i = 0; i < digitalRules.Length; i++)
-                {
-                    if (digitalRules[i].BaseAction == inputAction && digitalRules[i].Criteria.Equals(criteria))
-                    {
-                        if (digitalRules[i].RuleAction == inputAction)
-                        {
-                            Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
-                            return inputAction;
-                        }
-
-                        return digitalRules[i].RuleAction;
-                    }
-                }
+                ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesSingleAxis, criteria);
             }
 
             return inputAction;
@@ -1798,24 +1789,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             if (CurrentInputActionRulesProfile != null)
             {
-                var digitalRules = CurrentInputActionRulesProfile.InputActionRulesDualAxis;
-
-                for (int i = 0; i < digitalRules.Length; i++)
-                {
-                    if (digitalRules[i].BaseAction == inputAction)
-                    {
-                        if (digitalRules[i].Criteria == criteria)
-                        {
-                            if (digitalRules[i].RuleAction == inputAction)
-                            {
-                                Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
-                                return inputAction;
-                            }
-
-                            return digitalRules[i].RuleAction;
-                        }
-                    }
-                }
+                ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesDualAxis, criteria);
             }
 
             return inputAction;
@@ -1825,21 +1799,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             if (CurrentInputActionRulesProfile != null)
             {
-                var digitalRules = CurrentInputActionRulesProfile.InputActionRulesVectorAxis;
-
-                for (int i = 0; i < digitalRules.Length; i++)
-                {
-                    if (digitalRules[i].BaseAction == inputAction && digitalRules[i].Criteria == criteria)
-                    {
-                        if (digitalRules[i].RuleAction == inputAction)
-                        {
-                            Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
-                            return inputAction;
-                        }
-
-                        return digitalRules[i].RuleAction;
-                    }
-                }
+                ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesVectorAxis, criteria);
             }
 
             return inputAction;
@@ -1849,21 +1809,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             if (CurrentInputActionRulesProfile != null)
             {
-                var digitalRules = CurrentInputActionRulesProfile.InputActionRulesQuaternionAxis;
-
-                for (int i = 0; i < digitalRules.Length; i++)
-                {
-                    if (digitalRules[i].BaseAction == inputAction && digitalRules[i].Criteria == criteria)
-                    {
-                        if (digitalRules[i].RuleAction == inputAction)
-                        {
-                            Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
-                            return inputAction;
-                        }
-
-                        return digitalRules[i].RuleAction;
-                    }
-                }
+                ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesQuaternionAxis, criteria);
             }
 
             return inputAction;
@@ -1873,21 +1819,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         {
             if (CurrentInputActionRulesProfile != null)
             {
-                var digitalRules = CurrentInputActionRulesProfile.InputActionRulesPoseAxis;
-
-                for (int i = 0; i < digitalRules.Length; i++)
-                {
-                    if (digitalRules[i].BaseAction == inputAction && digitalRules[i].Criteria == criteria)
-                    {
-                        if (digitalRules[i].RuleAction == inputAction)
-                        {
-                            Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
-                            return inputAction;
-                        }
-
-                        return digitalRules[i].RuleAction;
-                    }
-                }
+                ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesPoseAxis, criteria);
             }
 
             return inputAction;
