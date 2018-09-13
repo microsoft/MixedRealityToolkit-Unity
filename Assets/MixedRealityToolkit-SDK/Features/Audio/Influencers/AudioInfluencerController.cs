@@ -142,13 +142,46 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         private List<IAudioInfluencer> previousInfluencers = new List<IAudioInfluencer>();
 
         /// <summary>
-        /// Potential effects manipulated by an audio influencer and their key
-        /// properties.
+        /// Potential effects manipulated by an audio influencer.
         /// <summary>
         private AudioLowPassFilter lowPassFilter;
-        private float nativeLowPassCutoffFrequency;
         private AudioHighPassFilter highPassFilter;
+
+        private float nativeLowPassCutoffFrequency;
+
+        /// <summary>
+        /// Gets or sets the native low pass cutoff frequency for the
+        /// sound emitter.
+        /// </summary>
+        public float NativeLowPassCutoffFrequency
+        {
+            get { return nativeLowPassCutoffFrequency; }
+            set
+            {
+                if (nativeLowPassCutoffFrequency != value)
+                {
+                    value = nativeLowPassCutoffFrequency;
+                }
+            }
+        }
+
         private float nativeHighPassCutoffFrequency;
+
+        /// <summary>
+        /// Gets or sets the native high pass cutoff frequency for the
+        /// sound emitter.
+        /// </summary>
+        public float NativeHighPassCutoffFrequency
+        {
+            get { return nativeHighPassCutoffFrequency; }
+            set
+            {
+                if (nativeHighPassCutoffFrequency != value)
+                {
+                    value = nativeHighPassCutoffFrequency;
+                }
+            }
+        }
 
         private void Awake() 
         {           
@@ -250,29 +283,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             return influencers;
         }
 
-        /// <summary>
-        /// Gets the native cutoff frequency of the attached low pass filter.
-        /// </summary>
-        /// <returns>
-        /// The native cutoff frequency, or a neutral frequency if there is no low pass filter attached.
-        /// </returns>
-        public float GetNativeLowPassCutoffFrequency()
-        {
-            return nativeLowPassCutoffFrequency;
-        }
-
-        /// <summary>
-        /// Sets the cached native cutoff frequency of the attached low pass filter.
-        /// </summary>
-        /// <param name="frequency">The new low pass filter cutoff frequency.</param>
-        /// <remarks>This method may be called by an attached effect to change the native behavior
-        /// of the low pass filter for scenarios such as simulating a dynamic sound source quality change.</remarks>
-        public void SetNativeLowPassCutoffFrequency(float frequency)
-        {
-            nativeLowPassCutoffFrequency = frequency;
-        }
-
-        /// <summary>
         /// Gets the native cutoff frequency of the attached high pass filter.
         /// </summary>
         /// <returns>

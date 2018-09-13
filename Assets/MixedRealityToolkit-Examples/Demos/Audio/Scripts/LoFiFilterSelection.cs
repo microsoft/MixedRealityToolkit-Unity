@@ -6,112 +6,117 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers;
 using UnityEngine;
 
-public class LoFiFilterSelection : MonoBehaviour, IMixedRealityPointerHandler
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    [Tooltip("Material used when the emitter is set to Narrow Band Telephony")]
-    [SerializeField]
-    private Material NarrowBandTelephony = null;
-
-    [Tooltip("Material used when the emitter is set to AM Radio")]
-    [SerializeField]
-    private Material AmRadio = null;
-
-    [Tooltip("Material used when the emitter is set to Full Range")]
-    [SerializeField]
-    private Material FullRange = null;
-
-    [Tooltip("Material used when the emitter is set to an unknown quality")]
-    [SerializeField]
-    private Material UnknownQuality = null;
-
-    private AudioLoFiEffect loFiEffect;
-
-    void Start()
+    [RequireComponent(typeof(AudioLoFiEffect))]
+    public class LoFiFilterSelection : MonoBehaviour, IMixedRealityPointerHandler
     {
-        // Get the attached AudioLoFiEffect script.
-        loFiEffect = gameObject.GetComponent<AudioLoFiEffect>();
-        if (loFiEffect == null)
+        [Tooltip("Material used when the emitter is set to Narrow Band Telephony")]
+        [SerializeField]
+        private Material NarrowBandTelephony = null;
+
+        [Tooltip("Material used when the emitter is set to AM Radio")]
+        [SerializeField]
+        private Material AmRadio = null;
+
+        [Tooltip("Material used when the emitter is set to Full Range")]
+        [SerializeField]
+        private Material FullRange = null;
+
+        [Tooltip("Material used when the emitter is set to an unknown quality")]
+        [SerializeField]
+        private Material UnknownQuality = null;
+
+        private AudioLoFiEffect loFiEffect = null;
+        // Component.renderer has been deprecated. It is safe to hide it and reuse the name.
+        private new Renderer renderer = null;
+
+        private void Start()
         {
-            Debug.LogError("LoFiFilterSelection requires an AudioLoFiEffect to be attached to the game object.");
+            // Get the attached AudioLoFiEffect script.
+            loFiEffect = gameObject.GetComponent<AudioLoFiEffect>();
+
+            // Get the renderer.
+            renderer = gameObject.GetComponent<Renderer>();
+
+            // Set the material of the emitter object to match that of the
+            // initial AudioLoFiEffect.SourceQuality value.
+            SetEmitterMaterial(loFiEffect.SourceQuality);
         }
 
-        // Set the material of the emitter object to match that of the
-        // initial AudioLoFiEffect.SourceQuality value.
-        SetEmitterMaterial(loFiEffect.SourceQuality);
-    }
-
-    /// <summary>
-    /// When the user clicks the pointer (select button) or air-taps on the object, 
-    /// change the filter setting and the material.
-    /// </summary>
-    public void OnPointerClicked(MixedRealityPointerEventData eventData)
-    {
-        // Only proceed if the effect script is attached.
-        if (loFiEffect == null) { return; }
-
-        // Get the current source quality setting.
-        AudioLoFiSourceQualityType sourceQuality = loFiEffect.SourceQuality;
-
-        // Select a new source quality setting.
-        switch (sourceQuality)
+        /// <summary>
+        /// When the user clicks the pointer (select button) or air-taps on the object, 
+        /// change the filter setting and the material.
+        /// </summary>
+        public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
-            case AudioLoFiSourceQualityType.NarrowBandTelephony:
-                sourceQuality = AudioLoFiSourceQualityType.AmRadio;
-                break;
+            // Only proceed if the effect script is attached.
+            if (loFiEffect == null) { return; }
 
-            case AudioLoFiSourceQualityType.AmRadio:
-                sourceQuality = AudioLoFiSourceQualityType.FullRange;
-                break;
+            // Get the current source quality setting.
+            AudioLoFiSourceQualityType sourceQuality = loFiEffect.SourceQuality;
 
-            case AudioLoFiSourceQualityType.FullRange:
-                sourceQuality = AudioLoFiSourceQualityType.NarrowBandTelephony;
-                break;
+            // Select a new source quality setting.
+            switch (sourceQuality)
+            {
+                case AudioLoFiSourceQualityType.NarrowBandTelephony:
+                    sourceQuality = AudioLoFiSourceQualityType.AmRadio;
+                    break;
+
+                case AudioLoFiSourceQualityType.AmRadio:
+                    sourceQuality = AudioLoFiSourceQualityType.FullRange;
+                    break;
+
+                case AudioLoFiSourceQualityType.FullRange:
+                    sourceQuality = AudioLoFiSourceQualityType.NarrowBandTelephony;
+                    break;
+            }
+
+            // Update the material to match the new source quality.
+            SetEmitterMaterial(sourceQuality);
+
+            // Update the source quality.
+            loFiEffect.SourceQuality = sourceQuality;
         }
 
-        // Update the material to match the new source quality.
-        SetEmitterMaterial(sourceQuality);
+        /// <summary>
+        /// This script does not handle pointer down events.
+        /// </summary>
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
+        { }
 
-        // Update the source quality.
-        loFiEffect.SourceQuality = sourceQuality;
-    }
+        /// <summary>
+        /// This script does not handle pointer up events.
+        /// </summary>
+        public void OnPointerUp(MixedRealityPointerEventData eventData)
+        { }
 
-    /// <summary>
-    /// This script does not handle pointer down events.
-    /// </summary>
-    public void OnPointerDown(MixedRealityPointerEventData eventData)
-    { }
-
-    /// <summary>
-    /// This script does not handle pointer up events.
-    /// </summary>
-    public void OnPointerUp(MixedRealityPointerEventData eventData)
-    { }
-
-    /// <summary>
-    /// Sets the appropriate material based on the source quality setting.
-    /// </summary>
-    /// <param name="sourceQuality">The source quality used to determine the appropriate material.</param>
-    private void SetEmitterMaterial(AudioLoFiSourceQualityType sourceQuality)
-    {
-        Material emitterMaterial = UnknownQuality;
-
-        // Determine the material for the emitter based on the source quality.
-        switch (sourceQuality)
+        /// <summary>
+        /// Sets the appropriate material based on the source quality setting.
+        /// </summary>
+        /// <param name="sourceQuality">The source quality used to determine the appropriate material.</param>
+        private void SetEmitterMaterial(AudioLoFiSourceQualityType sourceQuality)
         {
-            case AudioLoFiSourceQualityType.NarrowBandTelephony:
-                emitterMaterial = NarrowBandTelephony;
-                break;
+            Material emitterMaterial = UnknownQuality;
 
-            case AudioLoFiSourceQualityType.AmRadio:
-                emitterMaterial = AmRadio;
-                break;
+            // Determine the material for the emitter based on the source quality.
+            switch (sourceQuality)
+            {
+                case AudioLoFiSourceQualityType.NarrowBandTelephony:
+                    emitterMaterial = NarrowBandTelephony;
+                    break;
 
-            case AudioLoFiSourceQualityType.FullRange:
-                emitterMaterial = FullRange;
-                break;
+                case AudioLoFiSourceQualityType.AmRadio:
+                    emitterMaterial = AmRadio;
+                    break;
+
+                case AudioLoFiSourceQualityType.FullRange:
+                    emitterMaterial = FullRange;
+                    break;
+            }
+
+            // Set the material on the emitter.
+            renderer.sharedMaterial = emitterMaterial;
         }
-
-        // Set the material on the emitter.
-        gameObject.GetComponent<Renderer>().sharedMaterial = emitterMaterial;
     }
 }

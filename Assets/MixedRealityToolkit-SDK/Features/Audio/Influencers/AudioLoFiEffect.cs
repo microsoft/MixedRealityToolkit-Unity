@@ -34,6 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         }
 
         /// <summary>
+        /// The audio influencer controller that will be updated when filter settings are changed.
+        /// </summary>
+        private AudioInfluencerController influencerController = null;
+
+        /// <summary>
         /// The audio filter settings that match the selected source quality.
         /// </summary>
         private AudioLoFiFilterSettings filterSettings;
@@ -53,8 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
 
         private void Awake()
         {
-            LoadQualityFilterSettings();
+            influencerController = gameObject.GetComponent<AudioInfluencerController>();
 
+            LoadQualityFilterSettings();
             filterSettings = sourceQualityFilterSettings[SourceQuality];
 
             lowPassFilter = gameObject.GetComponent<AudioLowPassFilter>();
@@ -72,11 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
                 // If we have an attached AudioInfluencerController, we must let it know
                 // about our filter settings change, otherwise other effects may not behave
                 // as expected.
-                AudioInfluencerController influencerController = gameObject.GetComponent<AudioInfluencerController>();
                 if (influencerController != null)
                 {
-                    influencerController.SetNativeLowPassCutoffFrequency(newSettings.LowPassCutoff);
-                    influencerController.SetNativeHighPassCutoffFrequency(newSettings.HighPassCutoff);
+                    influencerController.NativeLowPassCutoffFrequency = newSettings.LowPassCutoff;
+                    influencerController.NativeHighPassCutoffFrequency = newSettings.HighPassCutoff;
                 }
 
                 filterSettings = newSettings;
@@ -94,19 +99,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
 
             sourceQualityFilterSettings.Add(
                 AudioLoFiSourceQualityType.FullRange,
-                new AudioLoFiFilterSettings(10, 22000));
+                new AudioLoFiFilterSettings(10, 22000));    // Frequency range: 10 Hz - 22 kHz
             sourceQualityFilterSettings.Add(
                 AudioLoFiSourceQualityType.NarrowBandTelephony,
-                new AudioLoFiFilterSettings(300, 3400));
+                new AudioLoFiFilterSettings(300, 3400));    // Frequency range: 300 Hz - 3.4 kHz
             sourceQualityFilterSettings.Add(
                 AudioLoFiSourceQualityType.WideBandTelephony,
-                new AudioLoFiFilterSettings(50, 7000));
+                new AudioLoFiFilterSettings(50, 7000));     // Frequency range: 50 Hz - 7 kHz
             sourceQualityFilterSettings.Add(
                 AudioLoFiSourceQualityType.AmRadio,
-                new AudioLoFiFilterSettings(40, 5000));
+                new AudioLoFiFilterSettings(40, 5000));     // Frequency range: 40 Hz - 5 kHz
             sourceQualityFilterSettings.Add(
                 AudioLoFiSourceQualityType.FmRadio,
-                new AudioLoFiFilterSettings(30, 15000));
+                new AudioLoFiFilterSettings(30, 15000));    // Frequency range: 30 Hz - 15 kHz
         }
 
         /// <summary>

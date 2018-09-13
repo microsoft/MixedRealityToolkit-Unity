@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             AudioInfluencerController influencerController = soundEmittingObject.GetComponent<AudioInfluencerController>();
             if (influencerController != null)
             {
-                neutralFrequency = influencerController.GetNativeLowPassCutoffFrequency();
+                neutralFrequency = influencerController.NativeLowPassCutoffFrequency;
             }
 
             lowPass.cutoffFrequency = neutralFrequency;
