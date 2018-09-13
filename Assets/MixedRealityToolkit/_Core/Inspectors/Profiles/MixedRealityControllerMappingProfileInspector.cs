@@ -9,9 +9,12 @@ using Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 {
@@ -60,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
         private float defaultFieldWidth;
         private GUIStyle controllerButtonStyle;
 
-        private List<ControllerRenderProfile> controllerRenderList = new List<ControllerRenderProfile>();
+        private readonly List<ControllerRenderProfile> controllerRenderList = new List<ControllerRenderProfile>();
 
         private void OnEnable()
         {
@@ -72,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             mixedRealityControllerMappingProfiles = serializedObject.FindProperty("mixedRealityControllerMappingProfiles");
 
             if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
-                 MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null)
+                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 return;
             }
@@ -95,9 +98,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 return;
             }
 
-            if (GUILayout.Button("Back to Configuration Profile"))
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+
+                if (GUILayout.Button("Back to Configuration Profile"))
+                {
+                    Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                }
+
+                return;
+            }
+
+            if (GUILayout.Button("Back to Input Profile"))
+            {
+                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile;
             }
 
             EditorGUILayout.Space();
@@ -105,13 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.HelpBox("Controller templates define all the controllers your users will be able to use in your application.\n\n" +
                                     "After defining all your Input Actions, you can then wire them up to hardware sensors, controllers, and other input devices.", MessageType.Info);
 
-            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
-            {
-                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-                return;
-            }
-
-            if (MixedRealityManager.Instance.ActiveProfile.InputActionsProfile == null)
+            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
                 return;
@@ -184,26 +193,36 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
             if (GUILayout.Button(ControllerAddButtonContent, EditorStyles.miniButton))
             {
-                controllerList.InsertArrayElementAtIndex(controllerList.arraySize);
-                var mixedRealityControllerMapping = controllerList.GetArrayElementAtIndex(controllerList.arraySize - 1);
-                var mixedRealityControllerMappingId = mixedRealityControllerMapping.FindPropertyRelative("id");
-                var mixedRealityControllerMappingDescription = mixedRealityControllerMapping.FindPropertyRelative("description");
-                mixedRealityControllerMappingDescription.stringValue = $"Generic Unity Controller {mixedRealityControllerMappingId.intValue = controllerList.arraySize}";
-                var mixedRealityControllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
-                mixedRealityControllerHandedness.intValue = 0;
-                var mixedRealityControllerInteractions = mixedRealityControllerMapping.FindPropertyRelative("interactions");
-                var useCustomInteractionMappings = mixedRealityControllerMapping.FindPropertyRelative("useCustomInteractionMappings");
-                useCustomInteractionMappings.boolValue = true;
-                mixedRealityControllerInteractions.ClearArray();
-                serializedObject.ApplyModifiedProperties();
-                thisProfile.MixedRealityControllerMappingProfiles[controllerList.arraySize - 1].ControllerType.Type = typeof(GenericUnityController);
+                AddController(controllerList, typeof(GenericJoystickController));
                 return;
             }
 
-            GUILayout.Space(12f);
+            bool reset = false;
+            if (controllerRenderList.Count > 0)
+            {
+                for (var type = 1; type <= (int)SupportedControllerType.Mouse; type++)
+                {
+                    if (controllerRenderList.All(profile => profile.ControllerType != (SupportedControllerType)type))
+                    {
+                        if ((SupportedControllerType)type == SupportedControllerType.TouchScreen)
+                        {
+                            AddController(controllerList, typeof(UnityTouchController));
+                            reset = true;
+                        }
+
+                        if ((SupportedControllerType)type == SupportedControllerType.Mouse)
+                        {
+                            AddController(controllerList, typeof(MouseController));
+                            reset = true;
+                        }
+                    }
+                }
+            }
 
             controllerRenderList.Clear();
+            if (reset) { return; }
 
+            GUILayout.Space(12f);
             GUILayout.BeginVertical();
 
             for (int i = 0; i < controllerList.arraySize; i++)
@@ -243,9 +262,17 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 {
                     supportedControllerType = SupportedControllerType.GenericOpenVR;
                 }
-                else if (controllerType == typeof(GenericUnityController))
+                else if (controllerType == typeof(GenericJoystickController))
                 {
                     supportedControllerType = SupportedControllerType.GenericUnity;
+                }
+                else if (controllerType == typeof(UnityTouchController))
+                {
+                    supportedControllerType = SupportedControllerType.TouchScreen;
+                }
+                else if (controllerType == typeof(MouseController))
+                {
+                    supportedControllerType = SupportedControllerType.Mouse;
                 }
 
                 bool skip = false;
@@ -307,7 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                     int currentGenericType = -1;
 
-                    if (controllerType == typeof(GenericUnityController))
+                    if (controllerType == typeof(GenericJoystickController))
                     {
                         currentGenericType = 0;
                     }
@@ -321,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
 
                     currentGenericType = EditorGUILayout.IntPopup(GenericTypeContent, currentGenericType, GenericTypeListContent, GenericTypeIds);
 
-                    if (controllerType != typeof(GenericUnityController))
+                    if (controllerType != typeof(GenericJoystickController))
                     {
                         EditorGUILayout.PropertyField(controllerHandedness);
                     }
@@ -331,7 +358,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                         switch (currentGenericType)
                         {
                             case 0:
-                                controllerType = typeof(GenericUnityController);
+                                controllerType = typeof(GenericJoystickController);
                                 controllerHandedness.intValue = 0;
                                 break;
                             case 1:
@@ -418,6 +445,26 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             }
 
             GUILayout.EndVertical();
+        }
+
+        private void AddController(SerializedProperty controllerList, Type controllerType)
+        {
+            controllerList.InsertArrayElementAtIndex(controllerList.arraySize);
+            var index = controllerList.arraySize - 1;
+            var mixedRealityControllerMapping = controllerList.GetArrayElementAtIndex(index);
+            var mixedRealityControllerMappingId = mixedRealityControllerMapping.FindPropertyRelative("id");
+            mixedRealityControllerMappingId.intValue = index;
+            var mixedRealityControllerMappingDescription = mixedRealityControllerMapping.FindPropertyRelative("description");
+            mixedRealityControllerMappingDescription.stringValue = controllerType.Name;
+            var mixedRealityControllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
+            mixedRealityControllerHandedness.intValue = 0;
+            var mixedRealityControllerInteractions = mixedRealityControllerMapping.FindPropertyRelative("interactions");
+            var useCustomInteractionMappings = mixedRealityControllerMapping.FindPropertyRelative("useCustomInteractionMappings");
+            useCustomInteractionMappings.boolValue = controllerType == typeof(GenericOpenVRController) || controllerType == typeof(GenericJoystickController);
+            mixedRealityControllerInteractions.ClearArray();
+            serializedObject.ApplyModifiedProperties();
+            thisProfile.MixedRealityControllerMappingProfiles[index].ControllerType.Type = controllerType;
+            thisProfile.MixedRealityControllerMappingProfiles[index].SetDefaultInteractionMapping(true);
         }
     }
 }

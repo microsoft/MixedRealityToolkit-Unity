@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
     /// <summary>
     /// Xbox Controller using Unity Input System
     /// </summary>
-    public class XboxController : GenericUnityController
+    public class XboxController : GenericJoystickController
     {
         /// <summary>
         /// Constructor.

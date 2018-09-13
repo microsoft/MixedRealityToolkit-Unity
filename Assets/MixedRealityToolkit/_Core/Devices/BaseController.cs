@@ -105,15 +105,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <param name="controllerType"></param>
         public bool SetupConfiguration(Type controllerType)
         {
-            if (MixedRealityManager.Instance.ActiveProfile.IsControllerMappingEnabled)
+            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsControllerMappingEnabled)
             {
-                if (MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.RenderMotionControllers)
+                if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.RenderMotionControllers)
                 {
                     TryRenderControllerModel(controllerType);
                 }
 
                 // We can only enable controller profiles if mappings exist.
-                var controllerMappings = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
+                var controllerMappings = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
 
                 // Have to test that a controller type has been registered in the profiles,
                 // else it's Unity Input manager mappings will not have been setup by the inspector
@@ -178,25 +178,25 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         {
             GameObject controllerModel = null;
 
-            if (!MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.RenderMotionControllers) { return; }
+            if (!MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.RenderMotionControllers) { return; }
 
             // If a specific controller template wants to override the global model, assign that instead.
-            if (MixedRealityManager.Instance.ActiveProfile.IsControllerMappingEnabled &&
-                !MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.UseDefaultModels)
+            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsControllerMappingEnabled &&
+                !MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.UseDefaultModels)
             {
-                controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
+                controllerModel = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
             }
 
             // Get the global controller model for each hand.
             if (controllerModel == null)
             {
-                if (ControllerHandedness == Handedness.Left && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalLeftHandModel != null)
+                if (ControllerHandedness == Handedness.Left && MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.GlobalLeftHandModel != null)
                 {
-                    controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalLeftHandModel;
+                    controllerModel = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.GlobalLeftHandModel;
                 }
-                else if (ControllerHandedness == Handedness.Right && MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalRightHandModel != null)
+                else if (ControllerHandedness == Handedness.Right && MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.GlobalRightHandModel != null)
                 {
-                    controllerModel = MixedRealityManager.Instance.ActiveProfile.ControllerMappingProfile.GlobalRightHandModel;
+                    controllerModel = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.GlobalRightHandModel;
                 }
             }
 

@@ -267,6 +267,7 @@ MonoBehaviour:
     axisConstraint: 7
   cursorPrefab: {fileID: 1554777696564956, guid: ae2b3fffb00f464287cda86f49109b47,
     type: 2}
+  disableCursorOnStart: 1
   raycastOrigin: {fileID: 0}
   activeHoldAction:
     id: 0

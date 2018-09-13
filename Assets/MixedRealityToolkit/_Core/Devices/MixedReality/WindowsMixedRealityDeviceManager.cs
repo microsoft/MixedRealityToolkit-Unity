@@ -2,20 +2,20 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
+
 #if UNITY_WSA
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using System;
 using UnityEngine.XR.WSA.Input;
 using UnityEngine;
 #endif // UNITY_WSA
 
 namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
 {
-    public class WindowsMixedRealityDeviceManager : BaseDeviceManager
+    public class WindowsMixedRealityDeviceManager : BaseDeviceManager, IMixedRealityComponent
     {
         /// <summary>
         /// Constructor.
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                     break;
             }
 
-            IMixedRealityPointer[] pointers = interactionSourceState.source.supportsPointing ? RequestPointers(typeof(WindowsMixedRealityController), controllingHand) : null;
+            var pointers = interactionSourceState.source.supportsPointing ? RequestPointers(typeof(WindowsMixedRealityController), controllingHand) : null;
             var inputSource = InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {controllingHand}", pointers);
             var detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
 
