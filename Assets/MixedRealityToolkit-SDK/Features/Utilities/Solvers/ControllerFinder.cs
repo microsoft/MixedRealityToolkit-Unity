@@ -18,8 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
     public abstract class ControllerFinder : MonoBehaviour, IMixedRealitySourceStateHandler
     {
         [SerializeField]
+        [Tooltip("The handedness of the controller that should be found.")]
         private Handedness handedness = Handedness.None;
 
+        /// <summary>
+        /// The handedness of the controller that should be found.
+        /// </summary>
         public Handedness Handedness
         {
             get { return handedness; }
@@ -34,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             }
         }
 
+        /// <summary>
+        /// The Transform of the currently found controller.
+        /// </summary>
         protected Transform ControllerTransform;
 
         private IEnumerable<IMixedRealityManager> BaseDeviceManagers => baseDeviceManagers ?? (baseDeviceManagers = MixedRealityManager.Instance.GetManagers(typeof(IMixedRealityDeviceManager)));
@@ -104,6 +111,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             }
         }
 
+        /// <summary>
+        /// Starts to track the passed in controller's transform, assuming it meets the previously set handedness criteria.
+        /// </summary>
+        /// <param name="newController">The new controller to be tracked.</param>
         protected virtual void AddControllerTransform(IMixedRealityController newController)
         {
             if (newController.ControllerHandedness == handedness && newController.Transform != null && !newController.Transform.Equals(ControllerTransform))
@@ -114,6 +125,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             }
         }
 
+        /// <summary>
+        /// Remove whichever controller is currently tracked, if any.
+        /// </summary>
         protected virtual void RemoveControllerTransform()
         {
             if (ControllerTransform != null)
@@ -124,6 +138,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             }
         }
 
+        /// <summary>
+        /// Remove whichever controller is currently tracked, if any, and try to add a new one based on existing sources.
+        /// </summary>
         protected virtual void RefreshControllerTransform()
         {
             if (ControllerTransform != null)
