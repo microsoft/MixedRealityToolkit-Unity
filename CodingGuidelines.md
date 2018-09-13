@@ -38,7 +38,7 @@ This ensures documentation is properly generated and disseminated for all all cl
 
 ## MRTK namespace rules
 
-The vNext structure adheres to a strict namespace culture of mapping the namespace 1-1 with the folder structure of the project.  This ensures that classes are easy to discover and maintain.  It also ensures the dependencies of any class are laid out in the beginning usings of the file.
+The vNext structure adheres to a strict namespace culture of mapping the namespace 1-1 with the folder structure of the project.  This ensures that classes are easy to discover and maintain.  It also ensures the dependencies of any class are laid out in the beginning using definitions of the file.
 
 ![](/External/ReadMeImages/MRTK-NameSpaceExample.png)
 
@@ -47,7 +47,7 @@ The vNext structure adheres to a strict namespace culture of mapping the namespa
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitons
+namespace Microsoft.MixedReality.Toolkit.Internal.Definitions
 {
     /// <summary>
     /// The ButtonAction defines the set of actions exposed by a controller.
@@ -69,7 +69,7 @@ Additionally, ensure that spaces are added for conditional / loop functions like
 ### Don't:
 
 ```
-private Foo()
+private Foo () // < - space between Foo and ()
 {
     if(Bar==null) // <- no space between if and ()
     {
@@ -100,6 +100,31 @@ private Foo()
 }
  ```
 
+## Spacing
+
+Please be sure not to add additional spaces between square brackets and parenthesis:
+
+### Don't:
+
+```
+private Foo()
+{
+    int[ ] var = new int [ 9 ];
+    Vector2 vector = new Vector2 ( 0f, 10f );
+}
+
+```
+
+### Do:
+
+```
+private Foo()
+{
+    int[] var = new int[9];
+    Vector2 vector = new Vector2(0f, 10f);
+}
+```
+
 ## Naming Conventions
 
 Always use `PascalCase` for public / protected / virtual properties, and `camelCase` for private properties and fields.
@@ -126,9 +151,19 @@ Always declare an access modifier for all fields, properties and methods.
 
 >All Unity API Methods should be `private` by default, unless you need to override them in a derived class. In this case `protected` should be used.
 
+>Fields should always be `private`, with `public` or `protected` property accessors.
+
+>Use [expression-bodied members](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#expression-bodied-function-members) and [auto properties](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#auto-property-enhancements) where possible
+
 ### Don't:
 
 ```
+// protected field should be private
+protected int myVariable = 0;
+
+// property should have protected setter
+public int MyVariable { get { return myVariable; } }
+
 // No public / private access modifiers
 void Foo() { }
 void Bar() { }
@@ -137,6 +172,8 @@ void Bar() { }
 ### Do:
 
  ```
+public int MyVariable { get; protected set; } = 0;
+
 private void Foo() { }
 public void Bar() { }
 protected virtual void FooBar() { }
@@ -240,9 +277,9 @@ public class MyClass
 }
  ```
 
-## Initilize Enums.
+## Initialize Enums.
 
-To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initilize the enum by just adding the first (starter) value.
+To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value.
 
 > E.G. Value 1 = 0  (Remaining values are not required)
 
@@ -303,7 +340,7 @@ public enum SDKType
         /// </summary>
         Other,
         /// <summary>
-        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and Hololens. 
+        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens. 
         /// </summary>
         WindowsMR,
         /// <summary>
