@@ -156,10 +156,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
             return count == 0 ? Vector3.zero : vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
         }
 
-        public static bool IsValidPosition(this Vector3 position)
+        public static bool IsValidVector(this Vector3 vector)
         {
-            return !float.IsNaN(position.x) && !float.IsNaN(position.y) && !float.IsNaN(position.z) &&
-                   !float.IsInfinity(position.x) && !float.IsInfinity(position.y) && !float.IsInfinity(position.z);
+            return !float.IsNaN(vector.x) && !float.IsNaN(vector.y) && !float.IsNaN(vector.z) &&
+                   !float.IsInfinity(vector.x) && !float.IsInfinity(vector.y) && !float.IsInfinity(vector.z);
         }
 
         /// <summary>
