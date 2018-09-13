@@ -1,41 +1,28 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 {
     public abstract class BaseObjectCollection : MonoBehaviour
     {
-        #region public members
-        protected Action<BaseObjectCollection> onCollectionUpdated;
-
         /// <summary>
         /// Action called when collection is updated
         /// </summary>
-        public Action<BaseObjectCollection> OnCollectionUpdated
-        {
-            get { return onCollectionUpdated; }
-            set { onCollectionUpdated = value; }
-        }
-
-        protected List<ObjectCollectionNode> nodeList = new List<ObjectCollectionNode>();
+        public Action<BaseObjectCollection> OnCollectionUpdated { get; set; }
 
         /// <summary>
         /// List of objects with generated data on the object.
         /// </summary>
-        public List<ObjectCollectionNode> NodeList
-        {
-            get { return nodeList; }
-            set { nodeList = value; }
-        }
+        protected List<ObjectCollectionNode> NodeList { get; } = new List<ObjectCollectionNode>();
 
         [Tooltip("Whether to include space for inactive transforms in the layout")]
         [SerializeField]
-        protected bool ignoreInactiveTransforms = true;
+        private bool ignoreInactiveTransforms = true;
 
         /// <summary>
         /// Whether to include space for inactive transforms in the layout
@@ -48,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
         [Tooltip("Type of sorting to use")]
         [SerializeField]
-        protected CollationOrderType sortType = CollationOrderType.None;
+        private CollationOrderType sortType = CollationOrderType.None;
 
         /// <summary>
         /// Type of sorting to use.
@@ -58,7 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             get { return sortType; }
             set { sortType = value; }
         }
-        #endregion public members
 
         /// <summary>
         /// Rebuilds / updates the collection layout.
@@ -67,11 +53,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         public virtual void UpdateCollection()
         {
             // Check for empty nodes and remove them
-            List<ObjectCollectionNode> emptyNodes = new List<ObjectCollectionNode>();
+            var emptyNodes = new List<ObjectCollectionNode>();
 
             for (int i = 0; i < NodeList.Count; i++)
             {
-                if (NodeList[i].transform == null || (IgnoreInactiveTransforms && !NodeList[i].transform.gameObject.activeSelf) || NodeList[i].transform.parent == null || !(NodeList[i].transform.parent.gameObject == gameObject))
+                if (NodeList[i].Transform == null || (IgnoreInactiveTransforms && !NodeList[i].Transform.gameObject.activeSelf) || NodeList[i].Transform.parent == null || !(NodeList[i].Transform.parent.gameObject == gameObject))
                 {
                     emptyNodes.Add(NodeList[i]);
                 }
@@ -92,45 +78,34 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 
                 if (!ContainsNode(child) && (child.gameObject.activeSelf || !IgnoreInactiveTransforms))
                 {
-                    ObjectCollectionNode node = new ObjectCollectionNode();
-
-                    node.Name = child.name;
-                    node.transform = child;
-                    NodeList.Add(node);
+                    NodeList.Add(new ObjectCollectionNode { Name = child.name, Transform = child });
                 }
             }
 
             switch (SortType)
             {
-                case CollationOrderType.None:
-                default:
-                    break;
-
                 case CollationOrderType.ChildOrder:
-                    NodeList.Sort((c1, c2) => (c1.transform.GetSiblingIndex().CompareTo(c2.transform.GetSiblingIndex())));
+                    NodeList.Sort((c1, c2) => (c1.Transform.GetSiblingIndex().CompareTo(c2.Transform.GetSiblingIndex())));
                     break;
 
                 case CollationOrderType.Alphabetical:
-                    NodeList.Sort((c1, c2) => (String.CompareOrdinal(c1.Name, c2.Name)) );
+                    NodeList.Sort((c1, c2) => (string.CompareOrdinal(c1.Name, c2.Name)));
                     break;
 
                 case CollationOrderType.AlphabeticalReversed:
-                    NodeList.Sort((c1, c2) => (String.CompareOrdinal(c1.Name, c2.Name)));
+                    NodeList.Sort((c1, c2) => (string.CompareOrdinal(c1.Name, c2.Name)));
                     NodeList.Reverse();
                     break;
 
                 case CollationOrderType.ChildOrderReversed:
-                    NodeList.Sort((c1, c2) => (c1.transform.GetSiblingIndex().CompareTo(c2.transform.GetSiblingIndex())));
+                    NodeList.Sort((c1, c2) => (c1.Transform.GetSiblingIndex().CompareTo(c2.Transform.GetSiblingIndex())));
                     NodeList.Reverse();
                     break;
             }
 
             LayoutChildren();
 
-            if (OnCollectionUpdated != null)
-            {
-                OnCollectionUpdated.Invoke(this);
-            }
+            OnCollectionUpdated?.Invoke(this);
         }
 
         /// <summary>
@@ -140,11 +115,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         {
             for (int i = 0; i < NodeList.Count; i++)
             {
-                if (NodeList[i].transform == node)
+                if (NodeList[i].Transform == node)
                 {
                     return true;
                 }
             }
+
             return false;
         }
 
