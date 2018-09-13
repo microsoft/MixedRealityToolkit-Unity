@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 {
     [CustomEditor(typeof(MixedRealityManager))]
     public class MixedRealityManagerInspector : Editor

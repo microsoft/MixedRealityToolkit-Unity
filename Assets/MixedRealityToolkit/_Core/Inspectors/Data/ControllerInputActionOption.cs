@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Data
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Data
 {
     /// <summary>
     /// Used to aid in layout of Controller Input Actions.

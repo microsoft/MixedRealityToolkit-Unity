@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataProviders
 {
     [CustomEditor(typeof(BaseMixedRealityLineDataProvider))]
     public class BaseMixedRealityLineDataProviderInspector : Editor
