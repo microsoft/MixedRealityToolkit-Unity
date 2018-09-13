@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
 {
@@ -17,8 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
     /// </summary>
     public class GridObjectCollection : BaseObjectCollection
     {
-        #region public accessors
-
         [Tooltip("Type of surface to map the collection to")]
         [SerializeField]
         private ObjectOrientationSurfaceType surfaceType = ObjectOrientationSurfaceType.Plane;
@@ -128,57 +123,26 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         /// <summary>
         /// Total Width of collection
         /// </summary>
-        public float Width
-        {
-            get
-            {
-                return columns * CellWidth;
-            }
-        }
+        public float Width => Columns * CellWidth;
 
         /// <summary>
         /// Total Height of collection
         /// </summary>
-        public float Height
-        {
-            get
-            {
-                return rows * CellHeight;
-            }
-        }
-
-
-        private Mesh sphereMesh;
+        public float Height => rows * CellHeight;
 
         /// <summary>
         /// Reference mesh to use for rendering the sphere layout
         /// </summary>
-        public Mesh SphereMesh
-        {
-            get;
-            set;
-        }
-
-        private Mesh cylinderMesh;
+        public Mesh SphereMesh { get; set; }
 
         /// <summary>
         /// Reference mesh to use for rendering the cylinder layout
         /// </summary>
-        public Mesh CylinderMesh
-        {
-            get;
-            set;
-        }
+        public Mesh CylinderMesh { get; set; }
 
-        #endregion public accessors
+        protected int Columns;
 
-        #region private fields
-
-        protected int columns;
-        
-        protected Vector2 halfCell;
-
-        #endregion private fields
+        protected Vector2 HalfCell;
 
         /// <summary>
         /// Overriding base function for laying out all the children when UpdateCollection is called.
@@ -187,14 +151,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         {
             float startOffsetX;
             float startOffsetY;
-            Vector3[] nodeGrid = new Vector3[NodeList.Count];
-            Vector3 newPos = Vector3.zero;
+            var nodeGrid = new Vector3[NodeList.Count];
+            Vector3 newPos;
 
             // Now lets lay out the grid
-            columns = Mathf.CeilToInt((float)NodeList.Count / rows);
-            startOffsetX = (columns * 0.5f) * CellWidth;
+            Columns = Mathf.CeilToInt((float)NodeList.Count / rows);
+            startOffsetX = (Columns * 0.5f) * CellWidth;
             startOffsetY = (rows * 0.5f) * CellHeight;
-            halfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
+            HalfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
 
             // First start with a grid then project onto surface
             ResolveGridLayout(nodeGrid, startOffsetX, startOffsetY, layout);
@@ -207,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                         ObjectCollectionNode node = NodeList[i];
                         newPos = nodeGrid[i];
                         //Debug.Log(newPos);
-                        node.transform.localPosition = newPos;
+                        node.Transform.localPosition = newPos;
                         UpdateNodeFacing(node);
                         NodeList[i] = node;
                     }
@@ -218,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     {
                         ObjectCollectionNode node = NodeList[i];
                         newPos = VectorExtensions.CylindricalMapping(nodeGrid[i], radius);
-                        node.transform.localPosition = newPos;
+                        node.Transform.localPosition = newPos;
                         UpdateNodeFacing(node);
                         NodeList[i] = node;
                     }
@@ -230,7 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     {
                         ObjectCollectionNode node = NodeList[i];
                         newPos = VectorExtensions.SphericalMapping(nodeGrid[i], radius);
-                        node.transform.localPosition = newPos;
+                        node.Transform.localPosition = newPos;
                         UpdateNodeFacing(node);
                         NodeList[i] = node;
                     }
@@ -243,9 +207,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     for (int i = 0; i < NodeList.Count; i++)
                     {
                         ObjectCollectionNode node = NodeList[i];
-                        newPos = VectorExtensions.RadialMapping(nodeGrid[i], radialRange, radius, curRow, rows, curColumn, columns);
+                        newPos = VectorExtensions.RadialMapping(nodeGrid[i], radialRange, radius, curRow, rows, curColumn, Columns);
 
-                        if (curColumn == (columns - 1))
+                        if (curColumn == (Columns - 1))
                         {
                             curColumn = 0;
                             ++curRow;
@@ -255,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                             ++curColumn;
                         }
 
-                        node.transform.localPosition = newPos;
+                        node.Transform.localPosition = newPos;
                         UpdateNodeFacing(node);
                         NodeList[i] = node;
                     }
@@ -272,11 +236,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             if (order == LayoutOrderType.RowThenColumn)
             {
                 iMax = Rows;
-                jMax = columns;
+                jMax = Columns;
             }
             else
             {
-                iMax = columns;
+                iMax = Columns;
                 jMax = Rows;
             }
 
@@ -286,10 +250,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                 {
                     if (cellCounter < NodeList.Count)
                     {
-                        grid[cellCounter].Set(((i * CellWidth) - offsetX + halfCell.x) + NodeList[cellCounter].Offset.x,
-                                             (-(j * CellHeight) + offsetY - halfCell.y) + NodeList[cellCounter].Offset.y,
-                                             0.0f
-                                             );
+                        grid[cellCounter].Set(((i * CellWidth) - offsetX + HalfCell.x) + NodeList[cellCounter].Offset.x,
+                                             (-(j * CellHeight) + offsetY - HalfCell.y) + NodeList[cellCounter].Offset.y,
+                                             0.0f);
                     }
                     cellCounter++;
                 }
@@ -300,8 +263,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         /// Update the facing of a node given the nodes new position for facing orign with node and orientation type
         /// </summary>
         /// <param name="node"></param>
-        /// <param name="orientType"></param>
-        /// <param name="newPos"></param>
         protected void UpdateNodeFacing(ObjectCollectionNode node)
         {
             Vector3 centerAxis;
@@ -309,39 +270,39 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             switch (OrientType)
             {
                 case OrientationType.FaceOrigin:
-                    node.transform.rotation = Quaternion.LookRotation(node.transform.position - transform.position, transform.up);
+                    node.Transform.rotation = Quaternion.LookRotation(node.Transform.position - transform.position, transform.up);
                     break;
 
                 case OrientationType.FaceOriginReversed:
-                    node.transform.rotation = Quaternion.LookRotation(transform.position - node.transform.position, transform.up);
+                    node.Transform.rotation = Quaternion.LookRotation(transform.position - node.Transform.position, transform.up);
                     break;
 
                 case OrientationType.FaceCenterAxis:
-                    centerAxis = Vector3.Project(node.transform.position - transform.position, transform.up);
+                    centerAxis = Vector3.Project(node.Transform.position - transform.position, transform.up);
                     pointOnAxisNearestNode = transform.position + centerAxis;
-                    node.transform.rotation = Quaternion.LookRotation(node.transform.position - pointOnAxisNearestNode, transform.up);
+                    node.Transform.rotation = Quaternion.LookRotation(node.Transform.position - pointOnAxisNearestNode, transform.up);
                     break;
 
                 case OrientationType.FaceCenterAxisReversed:
-                    centerAxis = Vector3.Project(node.transform.position - transform.position, transform.up);
+                    centerAxis = Vector3.Project(node.Transform.position - transform.position, transform.up);
                     pointOnAxisNearestNode = transform.position + centerAxis;
-                    node.transform.rotation = Quaternion.LookRotation(pointOnAxisNearestNode - node.transform.position, transform.up);
+                    node.Transform.rotation = Quaternion.LookRotation(pointOnAxisNearestNode - node.Transform.position, transform.up);
                     break;
 
                 case OrientationType.FaceParentFoward:
-                    node.transform.forward = transform.rotation * Vector3.forward;
+                    node.Transform.forward = transform.rotation * Vector3.forward;
                     break;
 
                 case OrientationType.FaceParentForwardReversed:
-                    node.transform.forward = transform.rotation * Vector3.back;
+                    node.Transform.forward = transform.rotation * Vector3.back;
                     break;
 
                 case OrientationType.FaceParentUp:
-                    node.transform.forward = transform.rotation * Vector3.up;
+                    node.Transform.forward = transform.rotation * Vector3.up;
                     break;
 
                 case OrientationType.FaceParentDown:
-                    node.transform.forward = transform.rotation * Vector3.down;
+                    node.Transform.forward = transform.rotation * Vector3.down;
                     break;
 
                 case OrientationType.None:
@@ -363,11 +324,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
                     break;
                 case ObjectOrientationSurfaceType.Cylinder:
                     Gizmos.color = Color.green;
-                    Gizmos.DrawWireMesh(cylinderMesh, transform.position, transform.rotation, scale);
+                    Gizmos.DrawWireMesh(CylinderMesh, transform.position, transform.rotation, scale);
                     break;
                 case ObjectOrientationSurfaceType.Sphere:
                     Gizmos.color = Color.green;
-                    Gizmos.DrawWireMesh(sphereMesh, transform.position, transform.rotation, scale);
+                    Gizmos.DrawWireMesh(SphereMesh, transform.position, transform.rotation, scale);
                     break;
             }
         }
