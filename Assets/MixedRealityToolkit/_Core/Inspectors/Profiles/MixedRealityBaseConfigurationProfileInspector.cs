@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     public abstract class MixedRealityBaseConfigurationProfileInspector : Editor
     {
