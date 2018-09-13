@@ -352,15 +352,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
         /// <summary>
         /// Retrieve the source controller from the Active Store, or create a new device and register it
         /// </summary>
-        /// <param name="interactionSourceState">Source State provided by the SDK</param>
+        /// <param name="interactionSource">Source State provided by the SDK</param>
         /// <param name="addController">Should the Source be added as a controller if it isn't found?</param>
         /// <returns>New or Existing Controller Input Source</returns>
-        private WindowsMixedRealityController GetController(InteractionSource interactionSourceState, bool addController = true)
+        private WindowsMixedRealityController GetController(InteractionSource interactionSource, bool addController = true)
         {
             //If a device is already registered with the ID provided, just return it.
-            if (activeControllers.ContainsKey(interactionSourceState.id))
+            if (activeControllers.ContainsKey(interactionSource.id))
             {
-                var controller = activeControllers[interactionSourceState.id] as WindowsMixedRealityController;
+                var controller = activeControllers[interactionSource.id] as WindowsMixedRealityController;
                 Debug.Assert(controller != null);
                 return controller;
             }
@@ -368,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
             if (!addController) { return null; }
 
             Handedness controllingHand;
-            switch (interactionSourceState.handedness)
+            switch (interactionSource.handedness)
             {
                 default:
                     controllingHand = Handedness.None;
@@ -381,7 +381,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                     break;
             }
 
-            var pointers = interactionSourceState.supportsPointing ? RequestPointers(typeof(WindowsMixedRealityController), controllingHand) : null;
+            var pointers = interactionSource.supportsPointing ? RequestPointers(typeof(WindowsMixedRealityController), controllingHand) : null;
             string nameModifier = controllingHand == Handedness.None ? "Hand" : controllingHand.ToString();
             var inputSource = InputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {nameModifier}", pointers);
             var detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
@@ -398,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality
                 detectedController.InputSource.Pointers[i].Controller = detectedController;
             }
 
-            activeControllers.Add(interactionSourceState.id, detectedController);
+            activeControllers.Add(interactionSource.id, detectedController);
             return detectedController;
         }
 
