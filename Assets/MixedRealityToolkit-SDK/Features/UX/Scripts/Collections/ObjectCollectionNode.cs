@@ -15,6 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         public string Name;
         public Vector2 Offset;
         public float Radius;
-        public Transform transform;
+        public Transform Transform;
     }
 }
