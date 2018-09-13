@@ -124,6 +124,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         /// <summary>
         /// The source of the audio.
         /// </summary>
+        [SerializeField]
+        [HideInInspector]   // The inspector will already have a reference to the object, this avoids duplication.
         private AudioSource audioSource;
 
         /// <summary>
@@ -185,7 +187,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
 
         private void Awake() 
         {           
-            audioSource = gameObject.GetComponent<AudioSource>();
             initialAudioSourceVolume = audioSource.volume;
 
             // Get optional filters (and initial values) that the sound designer / developer 
@@ -198,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             // Preallocate the array that will be used to collect RaycastHit structures.
             hits = new RaycastHit[MaxObjects];
         }
-    
+
         private void Update() 
         {
             DateTime now = DateTime.Now;
@@ -236,6 +237,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
                 previousInfluencers = influencers;
                 lastUpdate = now;
             }
+        }
+
+        private void OnValidate()
+        {
+            audioSource = gameObject.GetComponent<AudioSource>();
         }
 
         /// <summary>

@@ -36,6 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         /// <summary>
         /// The audio influencer controller that will be updated when filter settings are changed.
         /// </summary>
+        [SerializeField]
+        [HideInInspector]   // The inspector will already have a reference to the object, this avoids duplication.
         private AudioInfluencerController influencerController = null;
 
         /// <summary>
@@ -58,8 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
 
         private void Awake()
         {
-            influencerController = gameObject.GetComponent<AudioInfluencerController>();
-
             LoadQualityFilterSettings();
             filterSettings = sourceQualityFilterSettings[SourceQuality];
 
@@ -88,6 +88,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
                 lowPassFilter.cutoffFrequency = filterSettings.LowPassCutoff;
                 highPassFilter.cutoffFrequency = filterSettings.HighPassCutoff;
             }
+        }
+
+        private void OnValidate()
+        {
+            influencerController = gameObject.GetComponent<AudioInfluencerController>();
         }
 
         /// <summary>
