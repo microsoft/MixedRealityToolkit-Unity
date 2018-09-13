@@ -1767,9 +1767,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, bool criteria)
         {
-            if (CurrentInputActionRulesProfile != null)
+            if (CurrentInputActionRulesProfile != null && CurrentInputActionRulesProfile.InputActionRulesDigital?.Length > 0)
             {
-                ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesDigital, criteria);
+                return ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesDigital, criteria);
             }
 
             return inputAction;
@@ -1777,9 +1777,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, float criteria)
         {
-            if (CurrentInputActionRulesProfile != null)
+            if (CurrentInputActionRulesProfile != null && CurrentInputActionRulesProfile.InputActionRulesSingleAxis?.Length > 0)
             {
-                ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesSingleAxis, criteria);
+                return ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesSingleAxis, criteria);
             }
 
             return inputAction;
@@ -1787,9 +1787,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, Vector2 criteria)
         {
-            if (CurrentInputActionRulesProfile != null)
+            if (CurrentInputActionRulesProfile != null && CurrentInputActionRulesProfile.InputActionRulesDualAxis?.Length > 0)
             {
-                ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesDualAxis, criteria);
+                return ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesDualAxis, criteria);
             }
 
             return inputAction;
@@ -1797,9 +1797,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, Vector3 criteria)
         {
-            if (CurrentInputActionRulesProfile != null)
+            if (CurrentInputActionRulesProfile != null && CurrentInputActionRulesProfile.InputActionRulesVectorAxis?.Length > 0)
             {
-                ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesVectorAxis, criteria);
+                return ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesVectorAxis, criteria);
             }
 
             return inputAction;
@@ -1807,9 +1807,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, Quaternion criteria)
         {
-            if (CurrentInputActionRulesProfile != null)
+            if (CurrentInputActionRulesProfile != null && CurrentInputActionRulesProfile.InputActionRulesQuaternionAxis?.Length > 0)
             {
-                ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesQuaternionAxis, criteria);
+                return ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesQuaternionAxis, criteria);
             }
 
             return inputAction;
@@ -1817,9 +1817,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, MixedRealityPose criteria)
         {
-            if (CurrentInputActionRulesProfile != null)
+            if (CurrentInputActionRulesProfile != null && CurrentInputActionRulesProfile.InputActionRulesPoseAxis?.Length > 0)
             {
-                ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesPoseAxis, criteria);
+                return ProcessRules_Internal(inputAction, CurrentInputActionRulesProfile.InputActionRulesPoseAxis, criteria);
             }
 
             return inputAction;
