@@ -69,7 +69,7 @@ Additionally, ensure that spaces are added for conditional / loop functions like
 ### Don't:
 
 ```
-private Foo()
+private Foo () // < - space between Foo and ()
 {
     if(Bar==null) // <- no space between if and ()
     {
@@ -100,6 +100,31 @@ private Foo()
 }
  ```
 
+## Spacing
+
+Please be sure not to add additional spaces between square brackets and parenthesis:
+
+### Don't:
+
+```
+private Foo()
+{
+    int[ ] var = new int [ 9 ];
+    Vector2 vector = new Vector2 ( 0f, 10f );
+}
+
+```
+
+### Do:
+
+```
+private Foo()
+{
+    int[] var = new int[9];
+    Vector2 vector = new Vector2(0f, 10f);
+}
+```
+
 ## Naming Conventions
 
 Always use `PascalCase` for public / protected / virtual properties, and `camelCase` for private properties and fields.
@@ -126,9 +151,19 @@ Always declare an access modifier for all fields, properties and methods.
 
 >All Unity API Methods should be `private` by default, unless you need to override them in a derived class. In this case `protected` should be used.
 
+>Fields should always be `private`, with `public` or `protected` property accessors.
+
+>Use [expression-bodied members](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#expression-bodied-function-members) and [auto properties](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#auto-property-enhancements) where possible
+
 ### Don't:
 
 ```
+// protected field should be private
+protected int myVariable = 0;
+
+// property should have protected setter
+public int MyVariable { get { return myVariable; } }
+
 // No public / private access modifiers
 void Foo() { }
 void Bar() { }
@@ -137,6 +172,8 @@ void Bar() { }
 ### Do:
 
  ```
+public int MyVariable { get; protected set; } = 0;
+
 private void Foo() { }
 public void Bar() { }
 protected virtual void FooBar() { }
