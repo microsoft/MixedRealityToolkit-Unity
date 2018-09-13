@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityGesturesProfile))]
     public class MixedRealityGesturesProfileInspector : MixedRealityBaseConfigurationProfileInspector
