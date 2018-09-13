@@ -194,8 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
                 diagnosticVisualization.name = "Diagnostics";
                 diagnosticVisualization.layer = Physics.IgnoreRaycastLayer;
 
-                // Todo: position and size
-                // Todo: add text elements
                 diagnosticVisualization.AddComponent<DiagnosticBehavior>();
                 Register(diagnosticVisualization);
 
