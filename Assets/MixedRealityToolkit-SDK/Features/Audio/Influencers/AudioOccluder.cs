@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
@@ -79,11 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             }
 
             // Audio occlusion is performed using a low pass filter.                
-            AudioLowPassFilter lowPass = soundEmittingObject.GetComponent<AudioLowPassFilter>();
-            if (lowPass == null)
-            { 
-                lowPass = soundEmittingObject.AddComponent<AudioLowPassFilter>();
-            }
+            AudioLowPassFilter lowPass = soundEmittingObject.EnsureComponent<AudioLowPassFilter>();
             lowPass.enabled = true;
 
             // In the real world, chaining multiple low-pass filters will result in the 
