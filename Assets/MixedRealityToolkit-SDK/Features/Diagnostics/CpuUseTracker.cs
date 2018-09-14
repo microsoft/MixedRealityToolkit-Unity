@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,33 +11,30 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
     {
         private TimeSpan? processorTime;
         private Process currentProcess = Process.GetCurrentProcess();
+        private TimeSpan[] readings = new TimeSpan[20];
+        int index = 0;
 
         public void Reset()
         {
             processorTime = null;
         }
 
-        public CpuReading GetReading()
+        public double GetReadingInMs()
         {
             if (!processorTime.HasValue)
             {
                 processorTime = currentProcess.TotalProcessorTime;
-                return new CpuReading();
+                return 0;
             }
 
             var currentTime = currentProcess.TotalProcessorTime;
             var diff = currentTime - processorTime.Value;
             processorTime = currentTime;
 
-            return new CpuReading()
-            {
-                CpuTime = diff
-            };
-        }
+            readings[index] = diff;
+            index = (index + 1) % readings.Length;
 
-        public struct CpuReading
-        {
-            public TimeSpan CpuTime { get; set; }
+            return Math.Round(readings.Average(t => t.TotalMilliseconds), 2);
         }
     }
 }

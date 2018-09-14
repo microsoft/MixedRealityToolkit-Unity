@@ -37,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
         private CpuUseTracker cpuUseTracker = new CpuUseTracker();
         private MemoryUseTracker memoryUseTracker = new MemoryUseTracker();
+        private FpsUseTracker fpsUseTracker = new FpsUseTracker();
 
         public void OnDiagnosticSettingsChanged(DiagnosticsEventData eventData)
         {
@@ -55,8 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
         void Update()
         {
-            Debug.Log("DiagnosticBehavior update");
-
             UpdateIsShowingInformation();
 
             if (!isShowingInformation)
@@ -67,23 +66,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
             StringBuilder sb = new StringBuilder();
             numberOfLines = 0;
 
-            if (ShowCpu)
+            if (ShowFps)
             {
-                var reading = cpuUseTracker.GetReading();
-                sb.AppendLine($"CPU Time: {reading.CpuTime.TotalMilliseconds} ms");
+                var timeInSeconds = fpsUseTracker.GetFpsInSeconds();
+                sb.AppendLine($"Fps: {Math.Round(1.0f / timeInSeconds, 2)}");
+                sb.AppendLine($"Frame Time: {Math.Round(timeInSeconds * 1000, 2)} ms");
                 numberOfLines++;
             }
 
-            if (ShowFps)
+            if (ShowCpu)
             {
-                sb.AppendLine($"Frame: {Time.unscaledDeltaTime * 1000} ms ({1.0f / Time.unscaledDeltaTime} fps)");
+                var reading = cpuUseTracker.GetReadingInMs();
+                sb.AppendLine($"CPU Time: {reading} ms");
                 numberOfLines++;
             }
 
             if (ShowMemory)
             {
                 var reading = memoryUseTracker.GetReading();
-                sb.AppendLine($"Memory: {BytesToMB(reading.GCMemory)} MB");
+                sb.AppendLine($"Memory: {Math.Round(BytesToMB(reading.GCMemoryInBytes), 2)} MB");
                 numberOfLines++;
             }
 
@@ -99,17 +100,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
         void OnGUI()
         {
-            if (displayText == null || !isShowingInformation)
+            if (!isShowingInformation || displayText == null)
             {
                 return;
             }
 
-            Debug.Log(displayText);
+            var style = new GUIStyle();
+
+            int w = Screen.width, h = Screen.height;
+
+            Rect rect = new Rect(0, 0, w, h * 2 / 100);
+            style.alignment = TextAnchor.UpperLeft;
+            style.fontSize = h * 2 / 100;
+            style.normal.textColor = new Color(0, 0, 0.5f, 1);
+            GUI.Label(rect, displayText, style);
         }
 
         private static float BytesToMB(long bytes)
         {
-            return bytes / 1000000;
+            return bytes / (float)(1024 * 1024);
         }
     }
 }
