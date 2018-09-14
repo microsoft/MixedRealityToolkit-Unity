@@ -13,11 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
     public class MixedRealitySpatialAwarenessMeshDescription : MixedRealitySpatialAwarenessBaseDescription, IMixedRealitySpatialAwarenessMeshDescription
     {
         /// <inheritdoc />
-        public Mesh Mesh {get; private set;}
+        public MeshFilter MeshData {get; private set;}
 
-        public MixedRealitySpatialAwarenessMeshDescription(Vector3 position, Mesh mesh) : base(position)
+        public MixedRealitySpatialAwarenessMeshDescription(Vector3 position, MeshFilter meshData) : base(position)
         {
-            Mesh = mesh;
+            MeshData = meshData;
         }
 
         #region IEqualityComparer implementation
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             if (other == null) { return false; }
             if (!base.Equals(other)) { return false; }
 
-            return Mesh.Equals(other.Mesh);
+            return MeshData.Equals(other.MeshData);
         }
 
         int IEqualityComparer.GetHashCode(object obj)
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
 
         public override int GetHashCode()
         {
-            string s = $"Position({Position}):MeshHash({Mesh.GetHashCode()}";
+            string s = $"Position({Position}):MeshHash({MeshData.GetHashCode()}";
             return s.GetHashCode();
         }
 

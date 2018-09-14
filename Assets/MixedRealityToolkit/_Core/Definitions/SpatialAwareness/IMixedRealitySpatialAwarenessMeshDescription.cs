@@ -11,8 +11,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     public interface IMixedRealitySpatialAwarenessMeshDescription : IMixedRealitySpatialAwarenessBaseDescription
     {
         /// <summary>
-        /// The <see cref="Mesh"/> being described.
+        /// The <see cref="MeshFilter"/> being described.
         /// </summary>
-        Mesh Mesh { get; }
+        MeshFilter MeshData { get; }
+
+        // todo: world location (aka anchor)
     }
 }

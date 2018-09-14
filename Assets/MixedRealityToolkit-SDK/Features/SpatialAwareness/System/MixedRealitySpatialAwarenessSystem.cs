@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
@@ -71,6 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
 
         private MixedRealitySpatialAwarenessMeshEventData meshEventData = null;
         private MixedRealitySpatialAwarenessSurfaceFindingEventData surfaceFindingEventData = null;
+        private IMixedRealitySpatialAwarenessObserver spatialAwarenessObserver = null;
 
         /// <inheritdoc/>
         public override void Initialize()
@@ -87,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             meshEventData = new MixedRealitySpatialAwarenessMeshEventData(EventSystem.current);
             surfaceFindingEventData = new MixedRealitySpatialAwarenessSurfaceFindingEventData(EventSystem.current);
 
-            // todo - initialize the class based on the profile settings
+            // todo - get the appropriate IMixedRealitySpatialAwarenessObserver and ask if it is running
         }
 
         /// <inheritdoc/>
@@ -370,7 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         #region IMixedRealitySpatialAwarenessSystem Implementation
 
         /// <inheritdoc />
-        public bool StartObserverSuspended { get; set; } = false;
+        public AutoStartBehavior StartupBehavior { get; set; } = AutoStartBehavior.AutoStart;
 
         /// <inheritdoc />
         public Vector3 ObservationExtents { get; set; } = Vector3.one * 10;
@@ -398,33 +400,30 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         }
 
         /// <inheritdoc />
-        public bool IsObserverRunning { get; private set; } = false;
+        public bool IsObserverRunning
+        {
+            get
+            {
+                if (spatialAwarenessObserver == null) { return false; }
+                return spatialAwarenessObserver.IsRunning;
+            }
+        }
 
         /// <inheritdoc />
         public void ResumeObserver()
         {
             if (IsObserverRunning) { return; }
-
-#if UNITY_WSA
-            // todo
-#endif // UNITY_WSA
-
-            IsObserverRunning = true;
+            spatialAwarenessObserver.StartObserving();
         }
 
         /// <inheritdoc />
         public void SuspendObserver()
         {
             if (!IsObserverRunning) { return; }
-
-#if UNITY_WSA
-            // todo
-#endif // UNITY_WSA
-
-            IsObserverRunning = false;
+            spatialAwarenessObserver.StopObserving();
         }
 
-#region Mesh Handling implementation
+        #region Mesh Handling implementation
 
         /// <inheritdoc />
         public bool UseMeshSystem { get; set; } = true;
@@ -501,22 +500,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public Material MeshOcclusionMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription> GetMeshes()
+        public Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription> MeshDescriptions
         {
-            // todo
-            return new Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription>(0);
+            get
+            {
+                // Mesh descriptions are managed by the spatial awareness observer.
+                return spatialAwarenessObserver.MeshDescriptions;
+            }
         }
 
         /// <inheritdoc />
-        public Dictionary<uint, GameObject> GetMeshObjects()
+        public Dictionary<uint, GameObject> MeshObjects
         {
-            // todo
-            return new Dictionary<uint, GameObject>(0);
+            get
+            {
+                // This implementation of the spatial awareness system manages game objects.
+                // todo
+                return new Dictionary<uint, GameObject>(0);
+            }
         }
 
 #endregion Mesh Handling implementation
 
-#region Surface Finding Handling implementation
+        #region Surface Finding Handling implementation
 
         /// <inheritdoc />
         public bool UseSurfaceFindingSystem { get; set; } = false;
@@ -555,21 +561,28 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public Material PlatformSurfaceMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public Dictionary<uint, IMixedRealitySpatialAwarenessPlanarSurfaceDescription> GetSurfaces()
+        public Dictionary<uint, IMixedRealitySpatialAwarenessPlanarSurfaceDescription> SurfaceDescriptions
         {
-            // todo
-            return new Dictionary<uint, IMixedRealitySpatialAwarenessPlanarSurfaceDescription>(0);
+            get
+            {
+                // surface descriptions are managed by the spatial awareness observer.
+                return spatialAwarenessObserver.SurfaceDescriptions;
+            }
         }
 
         /// <inheritdoc />
-        public Dictionary<uint, GameObject> GetSurfaceObjects()
+        public Dictionary<uint, GameObject> SurfaceObjects
         {
-            // todo
-            return new Dictionary<uint, GameObject>(0);
+            get
+            {
+                // This implementation of the spatial awareness system manages game objects.
+                // todo
+                return new Dictionary<uint, GameObject>(0);
+            }
         }
 
-#endregion Surface Finding Handling implementation
+        #endregion Surface Finding Handling implementation
 
-#endregion IMixedRealitySpatialAwarenessSystem Implementation
+        #endregion IMixedRealitySpatialAwarenessSystem Implementation
     }
 }

@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     public interface IMixedRealitySpatialAwarenessPlanarSurfaceDescription : IMixedRealitySpatialAwarenessBaseDescription
     {
         /// <summary>
-        /// The axis aligned bounding box that contains the surface being described.
+        /// The object aligned bounding box that contains the surface being described.
         /// </summary>
         Bounds Bounds { get; }
 
