@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         {
             if (transformWithOffset == null)
             {
-                transformWithOffset = new GameObject();
+                transformWithOffset = new GameObject($"{gameObject.name}_Solver_Offset");
                 transformWithOffset.transform.parent = parentTransform;
             }
 
