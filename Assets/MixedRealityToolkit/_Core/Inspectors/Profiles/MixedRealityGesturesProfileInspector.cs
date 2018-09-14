@@ -20,15 +20,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
         private static GUIContent[] actionLabels;
         private static int[] actionIds;
-        private static int screenWidth;
 
         private SerializedProperty gestures;
+        private SerializedProperty windowsManipulationGestureSettings;
+        private SerializedProperty useRailsNavigation;
+        private SerializedProperty windowsNavigationGestureSettings;
+        private SerializedProperty windowsRailsNavigationGestures;
+        private SerializedProperty windowsGestureAutoStart;
 
         private void OnEnable()
         {
             if (!CheckMixedRealityManager(false)) { return; }
 
             gestures = serializedObject.FindProperty("gestures");
+            windowsManipulationGestureSettings = serializedObject.FindProperty("manipulationGestures");
+            useRailsNavigation = serializedObject.FindProperty("useRailsNavigation");
+            windowsNavigationGestureSettings = serializedObject.FindProperty("navigationGestures");
+            windowsRailsNavigationGestures = serializedObject.FindProperty("railsNavigationGestures");
+            windowsGestureAutoStart = serializedObject.FindProperty("windowsGestureAutoStart");
 
             if (MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
                 MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile != null)
@@ -72,6 +81,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             serializedObject.Update();
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Windows Gesture Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(windowsManipulationGestureSettings);
+            EditorGUILayout.PropertyField(windowsNavigationGestureSettings);
+            EditorGUILayout.PropertyField(useRailsNavigation);
+            EditorGUILayout.PropertyField(windowsRailsNavigationGestures);
+            EditorGUILayout.PropertyField(windowsGestureAutoStart);
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Defined Recognizable Gestures", EditorStyles.boldLabel);
             RenderList(gestures);
             serializedObject.ApplyModifiedProperties();
         }
