@@ -103,7 +103,7 @@ private Foo()
 
 ## Spacing
 
-Please be sure not to add additional spaces between square brackets and parenthesis:
+Do not to add additional spaces between square brackets and parenthesis:
 
 ### Don't:
 
