@@ -25,26 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             set { partwayOffset = Mathf.Clamp(value, 0.0f, 1.0f); }
         }
 
-        [SerializeField]
-        [Tooltip("Tracked object to calculate position and orientation for the second object. If you want to manually override and use a scene object, use the TransformTarget field.")]
-        [HideInInspector]
-        private TrackedObjectType trackedObjectForSecondTransform = TrackedObjectType.Head;
-
         /// <summary>
         /// Tracked object to calculate position and orientation for the second object. If you want to manually override and use a scene object, use the TransformTarget field.
         /// </summary>
-        public TrackedObjectType TrackedObjectForSecondTransform
-        {
-            get { return trackedObjectForSecondTransform; }
-            set
-            {
-                trackedObjectForSecondTransform = value;
-                if (secondSolverHandler != null)
-                {
-                    secondSolverHandler.TrackedObjectToReference = value;
-                }
-            }
-        }
+        public TrackedObjectType TrackedObjectForSecondTransform => secondSolverHandler.TrackedObjectType;
 
         [SerializeField]
         [Tooltip("This transform overrides any Tracked Object as the second point in the In Between.")]
@@ -96,10 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 if (secondTransformOverride != null)
                 {
                     secondSolverHandler.TransformTarget = secondTransformOverride;
-                }
-                else
-                {
-                    secondSolverHandler.TrackedObjectToReference = trackedObjectForSecondTransform;
                 }
             }
         }

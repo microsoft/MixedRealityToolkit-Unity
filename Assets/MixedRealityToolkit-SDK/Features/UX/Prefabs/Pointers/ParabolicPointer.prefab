@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114102700686190618}
   - component: {fileID: 114225980339285346}
   - component: {fileID: 114917070612713698}
+  - component: {fileID: 114415285162591776}
   m_Layer: 0
   m_Name: ParabolicPointer
   m_TagString: Untagged
@@ -247,6 +248,21 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &114415285162591776
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1196247974088106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
+  transformTarget: {fileID: 0}
+  updateSolvers: 1
 --- !u!114 &114917070612713698
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -268,6 +284,7 @@ MonoBehaviour:
   cursorPrefab: {fileID: 1554777696564956, guid: ae2b3fffb00f464287cda86f49109b47,
     type: 2}
   disableCursorOnStart: 1
+  setCursorVisibilityOnSourceDetected: 0
   raycastOrigin: {fileID: 0}
   activeHoldAction:
     id: 0
