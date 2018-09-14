@@ -172,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             /// </summary>
             /// <returns>True if equivalent, false otherwise.</returns>
             public override bool Equals(object obj)
-            {
+            {               
                 if (obj == null)
                 {
                     return false;

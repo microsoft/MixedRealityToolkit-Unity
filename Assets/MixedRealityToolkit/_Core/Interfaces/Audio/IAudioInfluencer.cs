@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Audio
 {
     /// <summary>
     /// Interface that should be implemented by any class that wishes to influence how an audio source sounds.
