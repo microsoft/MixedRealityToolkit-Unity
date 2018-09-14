@@ -409,6 +409,7 @@ GameObject:
   m_Component:
   - component: {fileID: 353698135}
   - component: {fileID: 353698136}
+  - component: {fileID: 353698137}
   m_Layer: 0
   m_Name: BoundaryVisualizer
   m_TagString: Untagged
@@ -445,6 +446,21 @@ MonoBehaviour:
   showTrackedArea: 1
   showBoundaryWalls: 1
   showBoundaryCeiling: 1
+--- !u!114 &353698137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 353698134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
+  transformTarget: {fileID: 0}
+  updateSolvers: 1
 --- !u!1 &1027556596
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,6 +547,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1229001242}
+  - component: {fileID: 1229001244}
+  - component: {fileID: 1229001243}
   m_Layer: 0
   m_Name: SceneContent
   m_TagString: Untagged
@@ -553,6 +571,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1229001243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1229001241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de9b118fbc66f114cac64e9b05576a1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  SolverHandler: {fileID: 1229001244}
+  partwayOffset: 0.5
+  secondTransformOverride: {fileID: 0}
+--- !u!114 &1229001244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1229001241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
+  transformTarget: {fileID: 0}
+  updateSolvers: 1
 --- !u!1 &1275815548
 GameObject:
   m_ObjectHideFlags: 0

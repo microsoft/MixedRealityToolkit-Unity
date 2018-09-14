@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
@@ -14,24 +15,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
     [DisallowMultipleComponent]
     public class SolverHandler : MonoBehaviour
     {
-        [SerializeField]
-        [Tooltip("Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.")]
-        private TrackedObjectType trackedObjectToReference = TrackedObjectType.Head;
+        private IMixedRealityControllerPoseSynchronizer poseSynchronizer;
 
         /// <summary>
         /// Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.
         /// </summary>
-        public TrackedObjectType TrackedObjectToReference
+        public TrackedObjectType TrackedObjectType
         {
-            get { return trackedObjectToReference; }
-            set
+            get
             {
-                if (trackedObjectToReference != value)
+                if (poseSynchronizer == null)
                 {
-                    trackedObjectToReference = value;
-                    TransformTarget = null;
-                    AttachToNewTrackedObject();
+                    return transformTarget == CameraCache.Main.transform
+                        ? TrackedObjectType.Head
+                        : TrackedObjectType.Other;
                 }
+
+                return poseSynchronizer.Handedness == Handedness.Left
+                    ? TrackedObjectType.MotionControllerLeft
+                    : TrackedObjectType.MotionControllerRight;
             }
         }
 
@@ -48,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             set
             {
                 additionalOffset = value;
-                TransformTarget = MakeOffsetTransform(TransformTarget);
+                transformTarget = MakeOffsetTransform(transformTarget);
             }
         }
 
@@ -65,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             set
             {
                 additionalRotation = value;
-                TransformTarget = MakeOffsetTransform(TransformTarget);
+                transformTarget = MakeOffsetTransform(transformTarget);
             }
         }
 
@@ -79,7 +81,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         public Transform TransformTarget
         {
             get { return transformTarget; }
-            set { transformTarget = value; }
+            set
+            {
+                transformTarget = value;
+                TrackTransform(transformTarget != null ? transformTarget : transform);
+            }
         }
 
         [SerializeField]
@@ -120,9 +126,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         /// </summary>
         public float DeltaTime { get; set; }
 
-        private bool RequiresOffset => AdditionalOffset.sqrMagnitude != 0 || AdditionalRotation.sqrMagnitude != 0;
+        private bool RequiresOffset => !AdditionalOffset.sqrMagnitude.Equals(0) || AdditionalRotation.sqrMagnitude.Equals(0);
 
-        protected readonly List<Solver> solvers = new List<Solver>();
+        protected readonly List<Solver> Solvers = new List<Solver>();
 
         private float lastUpdateTime;
         private GameObject transformWithOffset;
@@ -135,12 +141,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             AltScale = new Vector3Smoothed(Vector3.one, 0.1f);
             DeltaTime = 0.0f;
 
-            solvers.AddRange(GetComponents<Solver>());
+            Solvers.AddRange(GetComponents<Solver>());
 
-            // TransformTarget overrides TrackedObjectToReference
-            if (!TransformTarget)
+            poseSynchronizer = GetComponent<IMixedRealityControllerPoseSynchronizer>();
+
+            if (poseSynchronizer != null)
             {
-                AttachToNewTrackedObject();
+                TransformTarget = transform;
             }
         }
 
@@ -154,9 +161,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         {
             if (UpdateSolvers)
             {
-                for (int i = 0; i < solvers.Count; ++i)
+                for (int i = 0; i < Solvers.Count; ++i)
                 {
-                    Solver solver = solvers[i];
+                    Solver solver = Solvers[i];
 
                     if (solver.enabled)
                     {
@@ -176,17 +183,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         #endregion MonoBehaviour Implementation
 
-        protected virtual void AttachToNewTrackedObject()
-        {
-            switch (TrackedObjectToReference)
-            {
-                case TrackedObjectType.Head:
-                    TrackTransform(CameraCache.Main.transform);
-                    break;
-                // Other cases will come online as ControllerFinder is ported appropriately.
-            }
-        }
-
         private void TrackTransform(Transform newTrackedTransform)
         {
             TransformTarget = RequiresOffset ? MakeOffsetTransform(newTrackedTransform) : newTrackedTransform;
@@ -202,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
             transformWithOffset.transform.localPosition = AdditionalOffset;
             transformWithOffset.transform.localRotation = Quaternion.Euler(AdditionalRotation);
-            transformWithOffset.name = string.Format("{0} on {1} with offset {2}, {3}", gameObject.name, TrackedObjectToReference.ToString(), AdditionalOffset, AdditionalRotation);
+            transformWithOffset.name = $"{gameObject.name} on {TrackedObjectType.ToString()} with offset {AdditionalOffset}, {AdditionalRotation}";
             return transformWithOffset.transform;
         }
     }

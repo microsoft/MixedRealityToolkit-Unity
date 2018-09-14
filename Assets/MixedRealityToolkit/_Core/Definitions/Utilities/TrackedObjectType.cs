@@ -6,9 +6,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
     public enum TrackedObjectType
     {
         /// <summary>
+        /// Calculates position and orientation from a custom transform.
+        /// </summary>
+        Other = 0,
+        /// <summary>
         /// Calculates position and orientation from the main camera.
         /// </summary>
-        Head = 0,
+        Head,
         /// <summary>
         /// Calculates position and orientation from the left motion-tracked controller.
         /// </summary>
