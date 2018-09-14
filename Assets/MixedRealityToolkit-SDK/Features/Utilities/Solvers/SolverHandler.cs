@@ -29,8 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 if (trackedObjectToReference != value)
                 {
                     trackedObjectToReference = value;
-                    TransformTarget = null;
-                    AttachToNewTrackedObject();
+                    RefreshTrackedObject();
                 }
             }
         }
@@ -48,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             set
             {
                 additionalOffset = value;
-                TransformTarget = MakeOffsetTransform(TransformTarget);
+                transformTarget = MakeOffsetTransform(transformTarget);
             }
         }
 
@@ -65,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             set
             {
                 additionalRotation = value;
-                TransformTarget = MakeOffsetTransform(TransformTarget);
+                transformTarget = MakeOffsetTransform(transformTarget);
             }
         }
 
@@ -120,9 +119,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         /// </summary>
         public float DeltaTime { get; set; }
 
-        private bool RequiresOffset => AdditionalOffset.sqrMagnitude != 0 || AdditionalRotation.sqrMagnitude != 0;
+        private bool RequiresOffset => !AdditionalOffset.sqrMagnitude.Equals(0) || !AdditionalRotation.sqrMagnitude.Equals(0);
 
-        protected readonly List<Solver> solvers = new List<Solver>();
+        protected readonly List<Solver> Solvers = new List<Solver>();
 
         private float lastUpdateTime;
         private GameObject transformWithOffset;
@@ -135,10 +134,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             AltScale = new Vector3Smoothed(Vector3.one, 0.1f);
             DeltaTime = 0.0f;
 
-            solvers.AddRange(GetComponents<Solver>());
+            Solvers.AddRange(GetComponents<Solver>());
 
             // TransformTarget overrides TrackedObjectToReference
-            if (!TransformTarget)
+            if (!transformTarget)
             {
                 AttachToNewTrackedObject();
             }
@@ -154,9 +153,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         {
             if (UpdateSolvers)
             {
-                for (int i = 0; i < solvers.Count; ++i)
+                for (int i = 0; i < Solvers.Count; ++i)
                 {
-                    Solver solver = solvers[i];
+                    Solver solver = Solvers[i];
 
                     if (solver.enabled)
                     {
@@ -176,20 +175,38 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         #endregion MonoBehaviour Implementation
 
+        /// <summary>
+        /// Clears the transform target and attaches to the current <see cref="TrackedObjectToReference"/>.
+        /// </summary>
+        public void RefreshTrackedObject()
+        {
+            transformTarget = null;
+            AttachToNewTrackedObject();
+        }
+
         protected virtual void AttachToNewTrackedObject()
         {
             switch (TrackedObjectToReference)
             {
                 case TrackedObjectType.Head:
+                    // No need to search for a controller if we've already attached to the head.
                     TrackTransform(CameraCache.Main.transform);
                     break;
-                // Other cases will come online as ControllerFinder is ported appropriately.
+                case TrackedObjectType.MotionControllerLeft:
+                    break;
+                case TrackedObjectType.MotionControllerRight:
+                    break;
             }
         }
 
         private void TrackTransform(Transform newTrackedTransform)
         {
-            TransformTarget = RequiresOffset ? MakeOffsetTransform(newTrackedTransform) : newTrackedTransform;
+            transformTarget = RequiresOffset ? MakeOffsetTransform(newTrackedTransform) : newTrackedTransform;
+        }
+
+        private void UpdateOffsetTransform()
+        {
+            transformTarget = MakeOffsetTransform(transformTarget);
         }
 
         private Transform MakeOffsetTransform(Transform parentTransform)
@@ -200,9 +217,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 transformWithOffset.transform.parent = parentTransform;
             }
 
-            transformWithOffset.transform.localPosition = AdditionalOffset;
+            transformWithOffset.transform.localPosition = Vector3.Scale(AdditionalOffset, transformWithOffset.transform.localScale);
             transformWithOffset.transform.localRotation = Quaternion.Euler(AdditionalRotation);
-            transformWithOffset.name = string.Format("{0} on {1} with offset {2}, {3}", gameObject.name, TrackedObjectToReference.ToString(), AdditionalOffset, AdditionalRotation);
+            transformWithOffset.name = $"{gameObject.name} on {TrackedObjectToReference.ToString()} with offset {AdditionalOffset}, {AdditionalRotation}";
             return transformWithOffset.transform;
         }
     }
