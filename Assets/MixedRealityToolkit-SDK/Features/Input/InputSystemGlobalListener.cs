@@ -18,8 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private bool lateInitialize = true;
 
-//        protected readonly WaitUntil WaitUntilInputSystemValid = new WaitUntil(() => InputSystem != null);
-
         protected virtual void OnEnable()
         {
             if (MixedRealityManager.IsInitialized && InputSystem != null && !lateInitialize)
