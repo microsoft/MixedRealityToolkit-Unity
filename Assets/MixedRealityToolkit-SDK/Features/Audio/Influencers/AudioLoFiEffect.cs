@@ -21,12 +21,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
     [DisallowMultipleComponent]
     public class AudioLoFiEffect : MonoBehaviour
     {
-        /// <summary>
-        /// The quality level of the simulated audio source (ex: AM radio).
-        /// </summary>
         [Tooltip("The quality level of the simulated audio source.")]
         [SerializeField]
         private AudioLoFiSourceQualityType sourceQuality;
+
+        /// <summary>
+        /// The quality level of the simulated audio source (ex: AM radio).
+        /// </summary>
         public AudioLoFiSourceQualityType SourceQuality
         {
             get { return sourceQuality; }
@@ -123,21 +124,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         /// Settings for the filters used to simulate a low fidelity sound source.
         /// </summary>
         /// <remarks>
-        /// This struct is soley for the private use of the AudioLoFiEffect class.
+        /// This struct is solely for the private use of the AudioLoFiEffect class.
         /// </remarks>
         private struct AudioLoFiFilterSettings
         {
             /// <summary>
             /// The frequency below which sound will be heard.
             /// </summary>
-            public float LowPassCutoff
-            { get; private set; }
+            public float LowPassCutoff { get; }
 
             /// <summary>
             /// The frequency above which sound will be heard.
             /// </summary>
-            public float HighPassCutoff
-            { get; private set; }
+            public float HighPassCutoff { get; }
 
             /// <summary>
             /// FilterSettings constructor.
@@ -169,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             }
 
             /// <summary>
-            /// Checks to see if a object is equivalent to this FilterSettings.
+            /// Checks to see if a object is equivalent to this AudioLoFiFilterSettings.
             /// </summary>
             /// <returns>True if equivalent, false otherwise.</returns>
             public override bool Equals(object obj)
@@ -185,8 +184,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
                 }
 
                 AudioLoFiFilterSettings other = (AudioLoFiFilterSettings)obj;
-                if ((other.LowPassCutoff != LowPassCutoff) ||
-                    (other.HighPassCutoff != HighPassCutoff))
+                return Equals(other);
+            }
+
+            /// <summary>
+            /// Checks to see if a object is equivalent to this AudioLoFiFilterSettings.
+            /// </summary>
+            /// <returns>True if equivalent, false otherwise.</returns>
+            public bool Equals(AudioLoFiFilterSettings other)
+            {
+                if ((!other.LowPassCutoff.Equals(LowPassCutoff)) ||
+                    (!other.HighPassCutoff.Equals(HighPassCutoff)))
                 {
                     return false;
                 }

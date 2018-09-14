@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         /// Time, in seconds, between audio influence updates.
         /// </summary>
         /// <remarks>
-        /// The UpdateInterval range is betweel 0.0 and 1.0, inclusive.
+        /// The UpdateInterval range is between 0.0 and 1.0, inclusive.
         /// The default value is 0.25.
         /// A value of 0.0f indicates that updates occur every frame.
         /// </remarks>
@@ -54,19 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             get { return updateInterval; }
             set
             {
-                // set updateInterval and enforce the specified range
-                if (value < 0.0f)
-                {
-                    updateInterval = 0.0f;
-                }
-                else if (value > 1.0f)
-                {
-                    updateInterval = 1.0f;
-                }
-                else
-                {
-                    updateInterval = value;
-                }
+                updateInterval = Mathf.Clamp(value, 0.0f, 1.0f);
             }
         }
 
@@ -86,19 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             get { return maxDistance; }
             set
             {
-                // set maxDistance and enforce the specified range
-                if (value < 1.0f)
-                {
-                    maxDistance = 1.0f;
-                }
-                else if (value > 50.0f)
-                {
-                    maxDistance = 50.0f;
-                }
-                else
-                {
-                    maxDistance = value;
-                }
+                maxDistance = Mathf.Clamp(value, 1.0f, 50.0f);
             }
         }
 
@@ -114,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         [Tooltip("Maximum number of objects that will be considered when looking for influencers.")]
         [Range(1, 25)]
         [SerializeField]
-        private int MaxObjects = 10;
+        private int maxObjects = 10;
 
         /// <summary>
         /// Time of last audio processing update. 
@@ -145,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
 
         /// <summary>
         /// Potential effects manipulated by an audio influencer.
-        /// <summary>
+        /// </summary>
         private AudioLowPassFilter lowPassFilter;
         private AudioHighPassFilter highPassFilter;
 
@@ -158,13 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         public float NativeLowPassCutoffFrequency
         {
             get { return nativeLowPassCutoffFrequency; }
-            set
-            {
-                if (nativeLowPassCutoffFrequency != value)
-                {
-                    value = nativeLowPassCutoffFrequency;
-                }
-            }
+            set { value = nativeLowPassCutoffFrequency; }
         }
 
         private float nativeHighPassCutoffFrequency;
@@ -176,16 +146,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         public float NativeHighPassCutoffFrequency
         {
             get { return nativeHighPassCutoffFrequency; }
-            set
-            {
-                if (nativeHighPassCutoffFrequency != value)
-                {
-                    value = nativeHighPassCutoffFrequency;
-                }
-            }
+            set { value = nativeHighPassCutoffFrequency; }
         }
 
-        private void Awake() 
+        private void Awake()
         {           
             initialAudioSourceVolume = audioSource.volume;
 
@@ -197,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             nativeHighPassCutoffFrequency = (highPassFilter != null) ? highPassFilter.cutoffFrequency : NeutralLowFrequency;
 
             // Preallocate the array that will be used to collect RaycastHit structures.
-            hits = new RaycastHit[MaxObjects];
+            hits = new RaycastHit[maxObjects];
         }
 
         private void Update() 
@@ -211,25 +175,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
 
                 // Get the audio influencers that should apply to the audio source.
                 List<IAudioInfluencer> influencers = GetInfluencers();
-                foreach (IAudioInfluencer influencer in influencers)
+                for (int i = 0; i < influencers.Count; i++)
                 {
                     // Apply the influencer's effect.
-                    influencer.ApplyEffect(gameObject);
+                    influencers[i].ApplyEffect(gameObject);
                 }
 
                 // Find and remove the audio influencers that are to be removed from the audio source.
                 List<IAudioInfluencer> influencersToRemove = new List<IAudioInfluencer>();
-                foreach (IAudioInfluencer prev in previousInfluencers)
+                for (int i = 0; i < previousInfluencers.Count; i++)
                 {
-                    MonoBehaviour mbPrev = prev as MonoBehaviour;
+                    MonoBehaviour mbPrev = previousInfluencers[i] as MonoBehaviour;
 
                     // Remove influencers that are no longer in line of sight
                     // OR
                     // Have been disabled
-                    if (!influencers.Contains(prev) ||
+                    if (!influencers.Contains(previousInfluencers[i]) ||
                         ((mbPrev != null) && !mbPrev.isActiveAndEnabled))
                     {
-                        influencersToRemove.Add(prev);
+                        influencersToRemove.Add(previousInfluencers[i]);
                     }
                 }
                 RemoveInfluencers(influencersToRemove);
@@ -250,9 +214,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         /// <param name="influencers">Collection of IAudioInfluencer objects on which to remove the effect.</param>
         private void RemoveInfluencers(List<IAudioInfluencer> influencers)
         {
-            foreach (IAudioInfluencer influencer in influencers)
+            for (int i = 0; i < influencers.Count; i++)
             {
-                influencer.RemoveEffect(gameObject);
+                influencers[i].RemoveEffect(gameObject);
             }
         }
 
@@ -287,27 +251,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             }
 
             return influencers;
-        }
-
-        /// Gets the native cutoff frequency of the attached high pass filter.
-        /// </summary>
-        /// <returns>
-        /// The native cutoff frequency, or a neutral frequency if there is no high pass filter attached.
-        /// </returns>
-        public float GetNativeHighPassCutoffFrequency()
-        {
-            return nativeHighPassCutoffFrequency;
-        }
-
-        /// <summary>
-        /// Sets the cached native cutoff frequency of the attached high pass filter.
-        /// </summary>
-        /// <param name="frequency">The new high pass filter cutoff frequency.</param>
-        /// <remarks>This method may be called by an attached effect to change the native behavior
-        /// of the high pass filter for scenarios such as simulating a dynamic sound source quality change.</remarks>
-        public void SetNativeHighPassCutoffFrequency(float frequency)
-        {
-            nativeHighPassCutoffFrequency = frequency;
         }
     }
 }

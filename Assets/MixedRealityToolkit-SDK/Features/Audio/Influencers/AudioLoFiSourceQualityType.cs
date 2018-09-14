@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         /// <summary>
         /// Narrow frequency range telephony.
         /// </summary>
-        NarrowBandTelephony,
+        NarrowBandTelephony = 0,
 
         /// <summary>
         /// Wide frequency range telephony.

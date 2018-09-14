@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private AudioLoFiEffect loFiEffect = null;
         // Component.renderer has been deprecated. It is safe to hide it and reuse the name.
-        private new Renderer renderer = null;
+        private Renderer objectRenderer = null;
 
         private void Start()
         {
@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             loFiEffect = gameObject.GetComponent<AudioLoFiEffect>();
 
             // Get the renderer.
-            renderer = gameObject.GetComponent<Renderer>();
+            objectRenderer = gameObject.GetComponent<Renderer>();
 
             // Set the material of the emitter object to match that of the
             // initial AudioLoFiEffect.SourceQuality value.
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
 
             // Set the material on the emitter.
-            renderer.sharedMaterial = emitterMaterial;
+            objectRenderer.sharedMaterial = emitterMaterial;
         }
     }
 }

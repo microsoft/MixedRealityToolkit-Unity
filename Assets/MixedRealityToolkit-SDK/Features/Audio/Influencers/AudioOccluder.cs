@@ -16,6 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
     [DisallowMultipleComponent]
     public class AudioOccluder : MonoBehaviour, IAudioInfluencer
     {
+        [Tooltip("Frequency above which sound will not be heard after applying occlusion.")]
+        [Range(10.0f, 22000.0f)]
+        [SerializeField]
+        private float cutoffFrequency = 5000.0f;
+
         /// <summary>
         /// Frequency above which sound will not be heard after applying occlusion.
         /// Setting this value to 22000.0 effectively disables the effect.
@@ -25,30 +30,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         /// The CutoffFrequency range is 0.0 - 22000.0 (0 - 22kHz), inclusive.
         /// The default value is 5000.0 (5kHz).
         /// </remarks>
-        [Tooltip("Frequency above which sound will not be heard after applying occlusion.")]
-        [Range(10.0f, 22000.0f)]
-        [SerializeField]
-        private float cutoffFrequency = 5000.0f;
         public float CutoffFrequency
         {
             get { return cutoffFrequency; }
             set
             {
-                // set cutoffFrequency and enforce the specified range
-                if (value < 10.0f)
-                {
-                    cutoffFrequency = 10.0f;
-                }
-                else if (value > 22000.0f)
-                {
-                    cutoffFrequency = 22000.0f;
-                }
-                else
-                {
-                    cutoffFrequency = value;
-                }
+                cutoffFrequency = Mathf.Clamp(value, 10.0f, 22000.0f);
             }
         }
+
+        [Tooltip("Percentage of the audio source volume that will be heard after applying occlusion.")]
+        [Range(0.0f, 1.0f)]
+        [SerializeField]
+        private float volumePassThrough = 1.0f;
 
         /// <summary>
         /// Percentage of the audio source volume that will be heard after applying occlusion.
@@ -59,38 +53,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
         /// The VolumePassThrough range is from 0.0 - 1.0 (0-100%), inclusive.
         /// The default value is 1.0.
         /// </remarks>
-        [Tooltip("Percentage of the audio source volume that will be heard after applying occlusion.")]
-        [Range(0.0f, 1.0f)]
-        [SerializeField]
-        private float volumePassThrough = 1.0f;
         public float VolumePassThrough
         {
             get { return volumePassThrough; }
             set
             {
-                // set cutoffFrequency and enforce the specified range
-                if (value < 10.0f)
-                {
-                    volumePassThrough = 10.0f;
-                }
-                else if (value > 22000.0f)
-                {
-                    volumePassThrough = 22000.0f;
-                }
-                else
-                {
-                    volumePassThrough = value;
-                }
+                cutoffFrequency = Mathf.Clamp(value, 0.0f, 1.0f);
             }
         }
 
         // Update is not used, but is kept so that this component can be enabled/disabled.
         private void Update() { }
 
-        /// <summary>
-        /// Applies the audio effect.
-        /// </summary>
-        /// <param name="soundEmittingObject">The GameObject on which the effect is to be applied.</param>
+        /// <inheritdoc />
         public void ApplyEffect(GameObject soundEmittingObject)
         {
             if (!isActiveAndEnabled)
@@ -119,10 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             audioSource.volume *= VolumePassThrough;
         }
 
-        /// <summary>
-        /// Removes the previously applied audio effect.
-        /// </summary>
-        /// <param name="soundEmittingObject">The GameObject from which the effect is to be removed.</param>
+        /// <inheritdoc />
         public void RemoveEffect(GameObject soundEmittingObject)
         {
             // Audio occlusion is performed using a low pass filter.                
