@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.Input
@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private bool lateInitialize = true;
 
-        protected readonly WaitUntil WaitUntilInputSystemValid = new WaitUntil(() => InputSystem != null);
+//        protected readonly WaitUntil WaitUntilInputSystemValid = new WaitUntil(() => InputSystem != null);
 
         protected virtual void OnEnable()
         {
@@ -28,19 +28,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
         }
 
-        protected virtual async void Start()
-        {
-            if (lateInitialize)
-            {
-                await WaitUntilInputSystemValid;
-                lateInitialize = false;
-                InputSystem.Register(gameObject);
-            }
-        }
-
         protected virtual void OnDisable()
         {
             InputSystem?.Unregister(gameObject);
+        }
+        
+        protected virtual void Start()
+        {
+            if (lateInitialize)
+            {
+                StartCoroutine(Register());
+            }
+        }
+
+        private IEnumerator Register() 
+        {
+            while (InputSystem == null) yield return null;
+            lateInitialize = false;
+            InputSystem.Register(gameObject);
         }
     }
 }
