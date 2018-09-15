@@ -28,8 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 if (trackedObjectToReference != value)
                 {
                     trackedObjectToReference = value;
-                    TransformTarget = null;
-                    AttachToNewTrackedObject();
+                    RefreshTrackedObject();
                 }
             }
         }
@@ -174,6 +173,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         }
 
         #endregion MonoBehaviour Implementation
+
+        /// <summary>
+        /// Clears the transform target and attaches to the current <see cref="TrackedObjectToReference"/>.
+        /// </summary>
+        public void RefreshTrackedObject()
+        {
+            transformTarget = null;
+            AttachToNewTrackedObject();
+        }
 
         protected virtual void AttachToNewTrackedObject()
         {
