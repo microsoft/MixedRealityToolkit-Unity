@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 transformWithOffset.transform.parent = parentTransform;
             }
 
-            transformWithOffset.transform.localPosition = AdditionalOffset;
+            transformWithOffset.transform.localPosition = Vector3.Scale(AdditionalOffset, transformWithOffset.transform.localScale);
             transformWithOffset.transform.localRotation = Quaternion.Euler(AdditionalRotation);
             transformWithOffset.name = string.Format("{0} on {1} with offset {2}, {3}", gameObject.name, TrackedObjectToReference.ToString(), AdditionalOffset, AdditionalRotation);
             return transformWithOffset.transform;
