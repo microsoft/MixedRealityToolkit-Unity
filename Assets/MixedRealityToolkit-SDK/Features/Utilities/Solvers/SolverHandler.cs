@@ -11,7 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
     /// <summary>
     /// This class handles the solver components that are attached to this <see cref="GameObject"/>
     /// </summary>
-    [DisallowMultipleComponent]
     public class SolverHandler : MonoBehaviour
     {
         [SerializeField]
