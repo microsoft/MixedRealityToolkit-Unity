@@ -128,6 +128,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         protected readonly List<Solver> solvers = new List<Solver>();
 
+        /// <inheritdoc />
+        public override bool IsFocusRequired => false;
+
         private float lastUpdateTime;
         private GameObject transformWithOffset;
 
