@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         #endregion Mixed Reality runtime component registry
 
         #region Mixed Reality scene object registry
-        public List<IMixedRealitySceneObject> MixedRealitySceneObjects { get; set; } = new List<IMixedRealitySceneObject>();
+        public List<IMixedRealitySceneObject> MixedRealitySceneObjects { get; } = new List<IMixedRealitySceneObject>();
         #endregion Mixed Reality scene object registry
 
         /// <summary>
