@@ -11,7 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
     /// <summary>
     /// This class handles the solver components that are attached to this <see cref="GameObject"/>
     /// </summary>
-    [DisallowMultipleComponent]
     public class SolverHandler : MonoBehaviour
     {
         [SerializeField]
@@ -29,8 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 if (trackedObjectToReference != value)
                 {
                     trackedObjectToReference = value;
-                    TransformTarget = null;
-                    AttachToNewTrackedObject();
+                    RefreshTrackedObject();
                 }
             }
         }
@@ -176,6 +174,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         #endregion MonoBehaviour Implementation
 
+        /// <summary>
+        /// Clears the transform target and attaches to the current <see cref="TrackedObjectToReference"/>.
+        /// </summary>
+        public void RefreshTrackedObject()
+        {
+            transformTarget = null;
+            AttachToNewTrackedObject();
+        }
+
         protected virtual void AttachToNewTrackedObject()
         {
             switch (TrackedObjectToReference)
@@ -200,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 transformWithOffset.transform.parent = parentTransform;
             }
 
-            transformWithOffset.transform.localPosition = AdditionalOffset;
+            transformWithOffset.transform.localPosition = Vector3.Scale(AdditionalOffset, transformWithOffset.transform.localScale);
             transformWithOffset.transform.localRotation = Quaternion.Euler(AdditionalRotation);
             transformWithOffset.name = string.Format("{0} on {1} with offset {2}, {3}", gameObject.name, TrackedObjectToReference.ToString(), AdditionalOffset, AdditionalRotation);
             return transformWithOffset.transform;
