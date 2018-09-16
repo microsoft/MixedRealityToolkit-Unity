@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
     /// The Mixed Reality Visualization component is primarily responsible for synchronizing the user's current input with controller models.
     /// </summary>
     /// <seealso cref="Core.Definitions.Devices.MixedRealityControllerMappingProfile"/>
-    public class MixedRealityControllerVisualizer : ControllerPoseSynchronizer
+    public class MixedRealityControllerVisualizer : ControllerPoseSynchronizer, IMixedRealitySceneObject
     {
         // TODO wire up input actions to controller transform nodes / animations
 
@@ -70,5 +71,36 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         }
 
         #endregion IMixedRealityInputHandler Implementation
+
+        #region IMixedRealitySceneObject Implementation 
+
+        /// <inheritdoc />
+        public void RegisterSceneObject()
+        {
+            Core.Managers.MixedRealityManager.Instance.MixedRealitySceneObjects.Add(this);
+        }
+
+        /// <inheritdoc />
+        public void UnregisterSceneObject()
+        {
+            Core.Managers.MixedRealityManager.Instance.MixedRealitySceneObjects.Remove(this);
+        }
+
+        #endregion IMixedRealitySceneObject Implementation 
+
+        #region MonoBehaviour Implementation
+
+        protected override void OnEnable()
+        {
+            RegisterSceneObject();
+            base.OnEnable();
+        }
+        protected override void OnDisable()
+        {
+            UnregisterSceneObject();
+            base.OnDisable();
+        }
+
+        #endregion MonoBehaviour Implementation
     }
 }

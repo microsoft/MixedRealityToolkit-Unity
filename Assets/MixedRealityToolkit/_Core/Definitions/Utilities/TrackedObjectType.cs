@@ -3,19 +3,26 @@
 
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 {
+    /// <summary>
+    /// Defines the types of automatic objects that can be tracked
+    /// </summary>
     public enum TrackedObjectType
     {
         /// <summary>
+        /// Do not automatically track an object, use the manual reference instead.
+        /// </summary>
+        None = 0,
+        /// <summary>
         /// Calculates position and orientation from the main camera.
         /// </summary>
-        Head = 0,
+        Head,
         /// <summary>
-        /// Calculates position and orientation from the left motion-tracked controller.
+        /// Calculates position and orientation from the left tracked controller.
         /// </summary>
-        MotionControllerLeft,
+        LeftController,
         /// <summary>
-        /// Calculates position and orientation from the right motion-tracked controller.
+        /// Calculates position and orientation from the right tracked controller.
         /// </summary>
-        MotionControllerRight
+        RightController
     }
 }
