@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Create Test Configuration
             Assert.AreEqual(0, MixedRealityManager.Instance.ActiveProfile.ActiveManagers.Count);
-            Assert.AreEqual(1, MixedRealityManager.Instance.MixedRealityComponents.Count);
+            Assert.AreEqual(3, MixedRealityManager.Instance.MixedRealityComponents.Count);
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(MixedRealityManager.Instance.ActiveProfile);
             Assert.IsNotEmpty(MixedRealityManager.Instance.ActiveProfile.ActiveManagers);
             Assert.AreEqual(1, MixedRealityManager.Instance.ActiveProfile.ActiveManagers.Count);
-            Assert.AreEqual(1, MixedRealityManager.Instance.MixedRealityComponents.Count);
+            Assert.AreEqual(3, MixedRealityManager.Instance.MixedRealityComponents.Count);
         }
 
         [Test]
@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityManager.Instance.AddManager(typeof(ITestComponentManager1), component);
 
             // Tests
-            Assert.AreEqual(2, MixedRealityManager.Instance.MixedRealityComponents.Count);
+            Assert.AreEqual(4, MixedRealityManager.Instance.MixedRealityComponents.Count);
         }
 
         [Test]
@@ -229,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(MixedRealityManager.Instance.ActiveProfile);
             Assert.IsNotEmpty(MixedRealityManager.Instance.ActiveProfile.ActiveManagers);
             Assert.AreEqual(1, MixedRealityManager.Instance.ActiveProfile.ActiveManagers.Count);
-            Assert.AreEqual(3, MixedRealityManager.Instance.MixedRealityComponents.Count);
+            Assert.AreEqual(5, MixedRealityManager.Instance.MixedRealityComponents.Count);
         }
 
         [Test]
@@ -303,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var allComponents = MixedRealityManager.Instance.MixedRealityComponents;
 
             // Tests
-            Assert.AreEqual(5, allComponents.Count);
+            Assert.AreEqual(7, allComponents.Count);
         }
 
         [Test]

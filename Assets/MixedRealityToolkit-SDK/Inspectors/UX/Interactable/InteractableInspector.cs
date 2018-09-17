@@ -1726,7 +1726,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         protected static string[] GetInputActions()
         {
-            MixedRealityInputAction[] actions = MixedRealityManager.Instance.ActiveProfile.InputActionsProfile.InputActions;
+            MixedRealityInputAction[] actions = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
 
             List<string> list = new List<string>();
             for (int i = 0; i < actions.Length; i++)

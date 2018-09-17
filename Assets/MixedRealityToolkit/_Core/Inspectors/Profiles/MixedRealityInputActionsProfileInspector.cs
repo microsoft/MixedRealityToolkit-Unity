@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityInputActionsProfile))]
     public class MixedRealityInputActionsProfileInspector : MixedRealityBaseConfigurationProfileInspector
@@ -38,9 +38,21 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 return;
             }
 
-            if (GUILayout.Button("Back to Configuration Profile"))
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
             {
-                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+
+                if (GUILayout.Button("Back to Configuration Profile"))
+                {
+                    Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+                }
+
+                return;
+            }
+
+            if (GUILayout.Button("Back to Input Profile"))
+            {
+                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile;
             }
 
             EditorGUILayout.Space();

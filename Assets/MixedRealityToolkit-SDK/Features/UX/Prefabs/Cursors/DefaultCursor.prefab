@@ -616,7 +616,7 @@ MonoBehaviour:
   scaleLerpTime: 0.01
   rotationLerpTime: 0.01
   lookRotationBlend: 0
-  PrimaryCursorVisual: {fileID: 4000013316072862}
+  PrimaryCursorVisual: {fileID: 4000014090385390}
   defaultCursorDistance: 2
   cursorStateData:
   - name: Observe

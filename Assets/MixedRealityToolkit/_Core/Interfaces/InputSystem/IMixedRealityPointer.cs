@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
 {
     /// <summary>
-    /// Cursor Interface for handling pointers.
+    /// Interface for handling pointers.
     /// </summary>
     public interface IMixedRealityPointer : IEqualityComparer
     {
