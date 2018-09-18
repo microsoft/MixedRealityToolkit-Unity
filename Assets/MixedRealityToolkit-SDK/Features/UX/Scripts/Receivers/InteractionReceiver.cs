@@ -78,7 +78,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         protected override void OnEnable()
         {
             IsFocusRequired = false;
-            InputSystem.D
             base.OnEnable();
         }
 
