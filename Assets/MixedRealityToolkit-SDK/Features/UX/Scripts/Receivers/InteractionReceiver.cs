@@ -79,12 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         {
             IsFocusRequired = false;
             base.OnEnable();
-
-            //Still need to register since focus isn't required
-            if(InputSystem != null && InputSystem.IsInputEnabled)
-            {
-                InputSystem.Register( gameObject );
-            }
         }
 
         /// <summary>
@@ -92,12 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         /// </summary>
         protected override void OnDisable()
         {
-            //Clean up our event subscription
-            if ( InputSystem != null && InputSystem.IsInputEnabled )
-            {
-                InputSystem.Unregister( gameObject );
-            }
-
             base.OnDisable();
         }
 
