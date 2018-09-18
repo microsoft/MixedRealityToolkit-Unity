@@ -385,6 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         #endregion
 
         #region Protected Virtual Callback Functions
+
         protected virtual void FocusEnter(GameObject obj, FocusEventData eventData ) { }
         protected virtual void FocusExit(GameObject obj, FocusEventData eventData ) { }
 
