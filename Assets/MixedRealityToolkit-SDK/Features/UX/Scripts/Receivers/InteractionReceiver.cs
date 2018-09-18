@@ -41,6 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             set { value = interactables; }
         }
 
+        /// <summary>
+        /// Is Focus required to receive input events on this GameObject?
+        /// InteractionReceivers handle events for objects indirectly, in order for this class work properly, keep this set to false.
+        /// </summary>
         public override bool IsFocusRequired
         {
             get
