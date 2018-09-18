@@ -41,10 +41,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             set { value = interactables; }
         }
 
+        public override bool IsFocusRequired
+        {
+            get
+            {
+                return base.IsFocusRequired;
+            }
+
+            protected set
+            {
+                base.IsFocusRequired = value;
+            }
+        }
+
         /// <summary>
         /// List of linked targets that the receiver affects
         /// </summary>
-        [Tooltip("Targets for the receiver to ")]
+        [Tooltip("Targets for the receiver to affect")]
         private List<GameObject> targets = new List<GameObject>();
 
         public List<GameObject> Targets
@@ -53,35 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             set { value = targets; }
         }
 
-        [Tooltip( "If true, this object will remain the prime focus while select is held" )]
-        [SerializeField]
-        private bool lockFocus = false;
-
-        /// <summary>
-        /// Flag for locking focus while selected
-        /// </summary>
-        public bool LockFocus
-        {
-            get
-            {
-                return lockFocus;
-            }
-            set
-            {
-                lockFocus = value;
-                CheckLockFocus(_selectingFocuser);
-            }
-        }
-        
-        #endregion
-
-        #region Private and Protected Members
-
-        /// <summary>
-        /// Protected focuser for the current selecting focuser
-        /// </summary>
-        protected IMixedRealityPointer _selectingFocuser;
-        
         #endregion
 
         /// <summary>
@@ -89,7 +73,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         /// </summary>
         protected override void OnEnable()
         {
+            IsFocusRequired = false;
             base.OnEnable();
+
             //Still need to register since focus isn't required
             if(InputSystem != null && InputSystem.IsInputEnabled)
             {
@@ -107,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             {
                 InputSystem.Unregister( gameObject );
             }
+
             base.OnDisable();
         }
 
@@ -120,6 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             {
                 return;
             }
+
             interactables.Add(interactable);
         }
 
@@ -192,45 +180,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             return (interactables != null && interactables.Contains(interactable));
         }
 
-        private void CheckLockFocus( IMixedRealityPointer focuser )
-        {
-            // If our previous selecting focuser isn't the same
-            if (_selectingFocuser != null && _selectingFocuser != focuser)
-            {
-                // If our focus is currently locked, unlock it before moving on
-                if (LockFocus)
-                {
-                    _selectingFocuser.IsFocusLocked = false;
-                }
-            }
-
-            // Set to the new focuser
-            _selectingFocuser = focuser;
-            if (_selectingFocuser != null)
-            {
-                _selectingFocuser.IsFocusLocked = LockFocus;
-            }
-        }
-
-        private void LockFocuser( IMixedRealityPointer focuser )
-        {
-            if (focuser != null)
-            {
-                ReleaseFocuser();
-                _selectingFocuser = focuser;
-                _selectingFocuser.IsFocusLocked = true;
-            }
-        }
-
-        private void ReleaseFocuser()
-        {
-            if (_selectingFocuser != null)
-            {
-                _selectingFocuser.IsFocusLocked = false;
-                _selectingFocuser = null;
-            }
-        }
-
         public void OnBeforeFocusChange( FocusEventData eventData ) { /*Unused*/ }
 
         public void OnFocusChanged( FocusEventData eventData )
@@ -244,8 +193,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             {
                 FocusExit( eventData.OldFocusedObject, eventData );
             }
-
-            CheckLockFocus( eventData.Pointer );
         }
 
         #region Global Listener Callbacks
