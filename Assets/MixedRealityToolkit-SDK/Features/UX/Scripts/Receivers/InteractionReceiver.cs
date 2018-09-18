@@ -123,7 +123,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             interactables.Add(interactable);
         }
 
-#if UNITY_EDITOR
         /// <summary>
         /// When selected draw lines to all linked interactables
         /// </summary>
@@ -157,7 +156,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
                 }
             }
         }
-#endif
 
         /// <summary>
         /// Function to remove an interactable from the linked list.
@@ -237,17 +235,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
 
         public void OnFocusChanged( FocusEventData eventData )
         {
-            FocusEventData newData = new FocusEventData( EventSystem.current );
-            newData.Initialize( eventData.Pointer );
-
             if ( eventData.NewFocusedObject != null && IsInteractable( eventData.NewFocusedObject ) )
             {
-                FocusEnter( eventData.NewFocusedObject, newData );
+                FocusEnter( eventData.NewFocusedObject, eventData );
             }
 
             if ( eventData.OldFocusedObject != null && IsInteractable( eventData.OldFocusedObject ) )
             {
-                FocusExit( eventData.OldFocusedObject, newData );
+                FocusExit( eventData.OldFocusedObject, eventData );
             }
 
             CheckLockFocus( eventData.Pointer );
