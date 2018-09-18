@@ -116,5 +116,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             get { return controllerMappingProfile; }
             private set { controllerMappingProfile = value; }
         }
+
+        [SerializeField]
+        [Tooltip("Device profile for rendering spatial controllers.")]
+        private MixedRealityControllerVisualizationProfile controllerVisualizationProfile;
+
+        /// <summary>
+        /// Device profile for rendering spatial controllers.
+        /// </summary>
+        public MixedRealityControllerVisualizationProfile ControllerVisualizationProfile
+        {
+            get { return controllerVisualizationProfile; }
+            private set { controllerVisualizationProfile = value; }
+        }
     }
 }
