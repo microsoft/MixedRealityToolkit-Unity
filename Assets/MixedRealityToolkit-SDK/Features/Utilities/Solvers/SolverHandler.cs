@@ -3,10 +3,11 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
+using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using Microsoft.MixedReality.Toolkit.SDK.UX.Controllers;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
     /// <summary>
     /// This class handles the solver components that are attached to this <see cref="GameObject"/>
     /// </summary>
-    public class SolverHandler : MonoBehaviour, IMixedRealitySourceStateHandler
+    public class SolverHandler : BaseInputHandler, IMixedRealitySourceStateHandler
     {
         [SerializeField]
         [Tooltip("Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.")]
@@ -127,21 +128,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         protected readonly List<Solver> solvers = new List<Solver>();
 
+        /// <inheritdoc />
+        public override bool IsFocusRequired => false;
+
         private float lastUpdateTime;
         private GameObject transformWithOffset;
 
         #region MonoBehaviour Implementation
 
-        private void Awake()
+        private async void Awake()
         {
-            //Register this GameObject to receive Input System Events.
-            MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>()?.Register(this.gameObject);
-
             GoalScale = Vector3.one;
             AltScale = new Vector3Smoothed(Vector3.one, 0.1f);
             DeltaTime = 0.0f;
 
             solvers.AddRange(GetComponents<Solver>());
+
+            await WaitUntilInputSystemValid;
 
             // TransformTarget overrides TrackedObjectToReference
             if (trackedObjectToReference != TrackedObjectType.None)
@@ -219,13 +222,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         private MixedRealityControllerVisualizer GetVisualizerForHand(Handedness hand)
         {
-            foreach (MixedRealityControllerVisualizer controller in MixedRealityManager.Instance.MixedRealitySceneObjects)
+            for (var i = 0; i < MixedRealityManager.Instance.MixedRealitySceneObjects.Count; i++)
             {
-                if (controller.Handedness == hand)
+                var controller = MixedRealityManager.Instance.MixedRealitySceneObjects[i] as MixedRealityControllerVisualizer;
+
+                if (controller != null && controller.Handedness == hand)
                 {
                     return controller;
                 }
             }
+
             return null;
         }
 

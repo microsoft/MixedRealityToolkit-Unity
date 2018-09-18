@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         /// <summary>
         /// Is Focus required to receive input events on this GameObject?
         /// </summary>
-        public bool IsFocusRequired
+        public virtual bool IsFocusRequired
         {
             get { return isFocusRequired; }
             set { isFocusRequired = value; }
