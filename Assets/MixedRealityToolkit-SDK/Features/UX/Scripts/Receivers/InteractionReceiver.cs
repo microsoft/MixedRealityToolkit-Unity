@@ -73,27 +73,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         #endregion
 
         /// <summary>
-        /// On start subscribe to all interaction events on elements in the interactables list.
+        /// On enable, set the BaseInputHandler's IsFocusRequired to false to receive all events.
         /// </summary>
         protected override void OnEnable()
         {
             IsFocusRequired = false;
+            InputSystem.D
             base.OnEnable();
-        }
-
-        /// <summary>
-        /// On disable remove all linked interactables from the delegate functions
-        /// </summary>
-        protected override void OnDisable()
-        {
-            base.OnDisable();
         }
 
         /// <summary>
         /// Register an interactable with this receiver.
         /// </summary>
         /// <param name="interactable">takes a GameObject as the interactable to register.</param>
-        public virtual void Registerinteractable(GameObject interactable)
+        public virtual void RegisterInteractable(GameObject interactable)
         {
             if (interactable == null || interactables.Contains(interactable))
             {
@@ -141,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         /// Function to remove an interactable from the linked list.
         /// </summary>
         /// <param name="interactable"></param>
-        public virtual void Removeinteractable(GameObject interactable)
+        public virtual void RemoveInteractable(GameObject interactable)
         {
             if (interactable != null && interactables.Contains(interactable))
             {
@@ -158,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
 
             for (int i = 0; i < _intList.Length; i++)
             {
-                this.Removeinteractable(_intList[i]);
+                this.RemoveInteractable(_intList[i]);
             }
         }
 
