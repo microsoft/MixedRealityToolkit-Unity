@@ -26,8 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         }
 
         [SerializeField]
+        [Tooltip("The direction of the apex of the parabola.")]
         [Vector3Range(-1f, 1f)]
-        private Vector3 upDirection = Vector3.up;
+		private Vector3 upDirection = Vector3.up;
 
         public Vector3 UpDirection
         {
@@ -41,8 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         }
 
         [SerializeField]
+        [Tooltip("Controls the extent to which the parabola's apex can be away from the end points.")]
         [Range(0.01f, 10f)]
-        private float height = 1f;
+		private float height = 1f;
 
         public float Height
         {
@@ -79,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
                 case 1:
                     return endPoint.Position;
                 default:
-                    Debug.LogError("Invalid point index!");
+                    Debug.LogError("Invalid point index: " + pointIndex, this);
                     return Vector3.zero;
             }
         }
@@ -92,9 +94,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
                 endPoint.Position = point;
             }
             else
-            {
-                Debug.LogError("Invalid point index!");
-            }
+			{
+				Debug.LogError("Invalid point index: " + pointIndex, this);
+			}
         }
 
         /// <inheritdoc />

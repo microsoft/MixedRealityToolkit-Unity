@@ -431,9 +431,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         public Vector3 GetPoint(int pointIndex)
         {
             if (pointIndex < 0 || pointIndex >= PointCount)
-            {
-                Debug.LogError("Invalid point index");
-                return Vector3.zero;
+			{
+				Debug.LogError("Invalid point index: " + pointIndex, this);
+				return Vector3.zero;
             }
 
             return LineTransform.TransformPoint(GetPointInternal(pointIndex));
@@ -449,7 +449,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         {
             if (pointIndex < 0 || pointIndex >= PointCount)
             {
-                Debug.LogError("Invalid point index");
+                Debug.LogError("Invalid point index: " + pointIndex, this);
                 return;
             }
 
