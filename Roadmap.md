@@ -4,7 +4,6 @@
 
 | Release | Development branch | Timeline | Project board |
 | --- | --- | --- | --- |
-| 2017.4.2.0 | htk_development | September 2018 | [2017.4.2.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/15) |
 | [MRTK vNext](#mrtk-version-next) | mrtk_development | October 2018 | [MRTK vNext](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/5) |
 | 2017.4.3.0 | htk_development | Q1 2019 | [2017.4.3.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/17) |
 
@@ -12,12 +11,12 @@
 
 | Release | Branch | Tag | Project board | Tested Unity Versions |
 | --- | --- | --- | --- | --- |
-| [2017.4.1.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/2017.4.1.0) | master | 2017.4.1.0 | [2017.4.1.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/9) | 2017.1 - 2017.4 |
+| [2017.4.2.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/2017.4.2.0) | master | 2017.4.2.0 | [2017.4.2.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects/15) | 2017.1 - 2017.4 |
 | [2018.8.0.0_Alpha2.1](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/2018.8.0.0_Alpha2.1) | mrtk_release | 2018.8.0.0_Alpha2.1 | N/A | 2018.1 |
 
 ## Master branch
 
-Releases from [master](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/master) are targeted, primarily at the 2017 LTS release from Unity and support Windows Mixed Reality ([Microsoft HoloLens](https://www.microsoft.com/en-us/hololens) and [Immersive](https://docs.microsoft.com/en-us/windows/mixed-reality/immersive-headset-hardware-details)) devices. The MRTK team strives to maintain compatibility for older versions of Unity (2017.1 and newer). It is expected that newer releases (2018.1 and newer) will continue to work.
+Releases from [master](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/master) are targeted, primarily at the 2017.4 LTS release from Unity and support Windows Mixed Reality ([Microsoft HoloLens](https://www.microsoft.com/en-us/hololens) and [Immersive](https://docs.microsoft.com/en-us/windows/mixed-reality/immersive-headset-hardware-details)) devices. The MRTK team strives to maintain compatibility for older versions of Unity (2017.1 and newer). It is expected that newer releases (2018.1 and newer) will continue to work.
 
 Please file [issues](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) if you encounter issues with specific versions of Unity.
 
