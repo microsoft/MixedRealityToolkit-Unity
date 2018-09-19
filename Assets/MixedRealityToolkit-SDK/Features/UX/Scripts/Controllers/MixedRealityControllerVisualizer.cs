@@ -16,6 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
     {
         // TODO wire up input actions to controller transform nodes / animations
 
+        /// <inheritdoc />
+        public GameObject ControllerGameObjectReference => gameObject;
+
         #region IMixedRealityInputHandler Implementation
 
         /// <summary>
@@ -71,8 +74,5 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         }
 
         #endregion IMixedRealityInputHandler Implementation
-
-        /// <inheritdoc />
-        public GameObject ControllerGameObjectReference => gameObject;
     }
 }
