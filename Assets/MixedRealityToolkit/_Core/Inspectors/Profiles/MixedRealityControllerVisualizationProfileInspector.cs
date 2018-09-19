@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 var leftHandModelPrefab = globalLeftHandModel.objectReferenceValue as GameObject;
                 leftHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalLeftHandModel.displayName, "Note: If the default model is not found, the fallback is the global left hand model."), leftHandModelPrefab, typeof(GameObject), false) as GameObject;
 
-                if (EditorGUI.EndChangeCheck() && CheckSynchronizer(leftHandModelPrefab))
+                if (EditorGUI.EndChangeCheck() && CheckVisualizer(leftHandModelPrefab))
                 {
                     globalLeftHandModel.objectReferenceValue = leftHandModelPrefab;
                 }
@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 EditorGUI.BeginChangeCheck();
                 rightHandModelPrefab = EditorGUILayout.ObjectField(new GUIContent(globalRightHandModel.displayName, "Note: If the default model is not found, the fallback is the global right hand model."), rightHandModelPrefab, typeof(GameObject), false) as GameObject;
 
-                if (EditorGUI.EndChangeCheck() && CheckSynchronizer(rightHandModelPrefab))
+                if (EditorGUI.EndChangeCheck() && CheckVisualizer(rightHandModelPrefab))
                 {
                     globalRightHandModel.objectReferenceValue = rightHandModelPrefab;
                 }
@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 EditorGUI.BeginChangeCheck();
                 overrideModelPrefab = EditorGUILayout.ObjectField(new GUIContent(overrideModel.displayName, "If no override model is set, the global model is used."), overrideModelPrefab, typeof(GameObject), false) as GameObject;
 
-                if (EditorGUI.EndChangeCheck() && CheckSynchronizer(overrideModelPrefab))
+                if (EditorGUI.EndChangeCheck() && CheckVisualizer(overrideModelPrefab))
                 {
                     overrideModel.objectReferenceValue = overrideModelPrefab;
                 }
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
         }
 
-        private bool CheckSynchronizer(GameObject modelPrefab)
+        private bool CheckVisualizer(GameObject modelPrefab)
         {
             if (modelPrefab == null) { return true; }
 
