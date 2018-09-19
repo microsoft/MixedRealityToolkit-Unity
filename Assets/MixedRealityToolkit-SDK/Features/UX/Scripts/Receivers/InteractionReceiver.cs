@@ -60,15 +60,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
 
         #endregion
 
-        #region private variables
         /// <summary>
         /// When true, this interaction receiver will draw connections in the editor to Interactables and Targets
         /// </summary>
         [Tooltip( "When true, this interaction receiver will draw connections in the editor to Interactables and Targets" )]
         [SerializeField]
         private bool drawEditorConnections = true;
-        
-        #endregion
+
+        #region MonoBehaviour implementation
 
         /// <summary>
         /// On enable, set the BaseInputHandler's IsFocusRequired to false to receive all events.
@@ -77,20 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         {
             IsFocusRequired = false;
             base.OnEnable();
-        }
-
-        /// <summary>
-        /// Register an interactable with this receiver.
-        /// </summary>
-        /// <param name="interactable">takes a GameObject as the interactable to register.</param>
-        public virtual void RegisterInteractable( GameObject interactable )
-        {
-            if ( interactable == null || interactables.Contains( interactable ) )
-            {
-                return;
-            }
-
-            interactables.Add( interactable );
         }
 
         /// <summary>
@@ -130,6 +115,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
+        #endregion
+
+        /// <summary>
+        /// Register an interactable with this receiver.
+        /// </summary>
+        /// <param name="interactable">takes a GameObject as the interactable to register.</param>
+        public virtual void RegisterInteractable( GameObject interactable )
+        {
+            if ( interactable == null || interactables.Contains( interactable ) )
+            {
+                return;
+            }
+
+            interactables.Add( interactable );
+        }
 
         /// <summary>
         /// Function to remove an interactable from the linked list.
@@ -166,6 +166,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             return ( interactables != null && interactables.Contains( interactable ) );
         }
 
+        #region Global Listener Callbacks
+
         public void OnBeforeFocusChange( FocusEventData eventData ) { /*Unused*/ }
 
         public void OnFocusChanged( FocusEventData eventData )
@@ -180,8 +182,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
                 FocusExit( eventData.OldFocusedObject, eventData );
             }
         }
-
-        #region Global Listener Callbacks
 
         public void OnGestureStarted( InputEventData eventData )
         {
@@ -244,6 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
 
         }
+
         public void OnGestureCompleted( InputEventData<Vector2> eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -270,7 +271,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
 
         }
-
         public void OnGestureCanceled( InputEventData eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -278,6 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
                 GestureCanceled( eventData.selectedObject, eventData );
             }
         }
+
         public void OnInputUp( InputEventData eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
