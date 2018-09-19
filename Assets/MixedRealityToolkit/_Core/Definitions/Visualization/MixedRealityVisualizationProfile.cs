@@ -28,11 +28,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Visualization
 
         [SerializeField]
         [Implements(typeof(IMixedRealityVisualizationSystem), TypeGrouping.ByNamespaceFlat)]
-        [Tooltip("The concrete Visualizer component to use on the rendered controller model.")]
+        [Tooltip("The concrete Visualizer Manager to use for maintaining active visualizers in the scene.")]
         private SystemType visualizationManager;
 
         /// <summary>
-        /// The concrete Controller Visualizer component to use on the rendered controller model
+        /// The concrete Visualizer Manager to use for maintaining active visualizers in the scene
         /// </summary>
         public SystemType VisualizationManager
         {

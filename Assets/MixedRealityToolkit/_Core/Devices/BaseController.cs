@@ -86,8 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <inheritdoc />
         public IMixedRealityInputSource InputSource { get; }
 
-        public IMixedRealityVisualizer ControllerVisualizer { get; private set; }
-
         /// <inheritdoc />
         public bool IsPositionAvailable { get; protected set; }
 

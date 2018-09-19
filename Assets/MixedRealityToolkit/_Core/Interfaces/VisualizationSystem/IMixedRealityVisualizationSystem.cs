@@ -24,6 +24,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.VisualizationSystem
         /// </remarks>
         HashSet<IMixedRealityVisualizer> DetectedVisualizers { get; }
 
+        /// <summary>
+        /// Manager registration function for controllers, to add a new controller to present in the scene.
+        /// </summary>
+        /// <param name="controller">Tracked controller to visualize</param>
         void RegisterVisualizerForController(IMixedRealityController controller);
     }
 }
