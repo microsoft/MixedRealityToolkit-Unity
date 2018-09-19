@@ -58,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public List<string> ShaderOptionNames;
         public ThemePropertyValue Default;
         public string ShaderName;
+        public bool NoEasing;
 
         public string GetShaderPropId()
         {

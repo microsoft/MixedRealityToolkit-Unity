@@ -31,6 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         // BUG: Adding dimensions resets all themes to use default them
         // BUG: Asigning a theme to one dimension sets the same theme for all dimensions
         // TODO: cleanup inspector user prefs to be more generic, based on component type.
+        // TODO: Add way to protect the defaultTheme from being edited and encourage users to create a new theme, maybe include a create/duplicate button
 
         private static IMixedRealityInputSystem inputSystem = null;
         protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
