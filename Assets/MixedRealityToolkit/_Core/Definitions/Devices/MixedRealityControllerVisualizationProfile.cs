@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using System;
 using UnityEngine;
 
@@ -24,6 +26,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         }
 
         [SerializeField]
+        [Implements(typeof(IMixedRealityControllerVisualizer), TypeGrouping.ByNamespaceFlat)]
+        [Tooltip("")]
+        private SystemType controllerVisualizationType;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public SystemType ControllerVisualizationType
+        {
+            get { return controllerVisualizationType; }
+            private set { controllerVisualizationType = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Use the platform SDK to load the default controller models.")]
         private bool useDefaultModels = false;
 
@@ -43,6 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// <summary>
         /// The Default controller model when there is no specific controller model for the Left hand or when no hand is specified (Handedness = none)
         /// </summary>
+        /// <remarks>
+        /// If the default model for the left hand controller can not be found, the controller will fall back and use this for visualization.
+        /// </remarks>
         public GameObject GlobalLeftHandModel
         {
             get { return globalLeftHandModel; }
@@ -50,12 +69,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         }
 
         [SerializeField]
-        [Tooltip("Override Right Controller Model.")]
+        [Tooltip("Override Right Controller Model.\nNote: If the default model is not found, the fallback is the global right hand model.")]
         private GameObject globalRightHandModel;
 
         /// <summary>
-        /// The Default controller model when there is no specific controller model for the Right hand
+        /// The Default controller model when there is no specific controller model for the Right hand.
         /// </summary>
+        /// <remarks>
+        /// If the default model for the right hand controller can not be found, the controller will fall back and use this for visualization.
+        /// </remarks>
         public GameObject GlobalRightHandModel
         {
             get { return globalRightHandModel; }

@@ -18,28 +18,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="id">The ID assigned to the Device.</param>
         /// <param name="description">Description of the Device.</param>
         /// <param name="controllerType">Controller Type to instantiate at runtime.</param>
         /// <param name="handedness">The designated hand that the device is managing.</param>
         /// <param name="overrideModel">The controller model prefab to be rendered.</param>
-        public MixedRealityControllerVisualizationSetting(uint id, string description, Type controllerType, Handedness handedness = Handedness.None, GameObject overrideModel = null) : this()
+        public MixedRealityControllerVisualizationSetting(string description, Type controllerType, Handedness handedness = Handedness.None, GameObject overrideModel = null) : this()
         {
-            this.id = id;
             this.description = description;
             this.controllerType = new SystemType(controllerType);
             this.handedness = handedness;
             this.overrideModel = overrideModel;
             useDefaultModel = false;
         }
-
-        [SerializeField]
-        private uint id;
-
-        /// <summary>
-        /// The ID assigned to the Device.
-        /// </summary>
-        public uint Id => id;
 
         [SerializeField]
         private string description;

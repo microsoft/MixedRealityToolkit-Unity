@@ -21,28 +21,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="id">The ID assigned to the Device.</param>
         /// <param name="description">Description of the Device.</param>
         /// <param name="controllerType">Controller Type to instantiate at runtime.</param>
         /// <param name="handedness">The designated hand that the device is managing.</param>
         /// <param name="useCustomInteractionMappings">Details the list of available buttons / interactions available from the device.</param>
-        public MixedRealityControllerMapping(uint id, string description, Type controllerType, Handedness handedness = Handedness.None, bool useCustomInteractionMappings = false) : this()
+        public MixedRealityControllerMapping(string description, Type controllerType, Handedness handedness = Handedness.None, bool useCustomInteractionMappings = false) : this()
         {
-            this.id = id;
             this.description = description;
             this.controllerType = new SystemType(controllerType);
             this.handedness = handedness;
             this.useCustomInteractionMappings = useCustomInteractionMappings;
             interactions = null;
         }
-
-        [SerializeField]
-        private uint id;
-
-        /// <summary>
-        /// The ID assigned to the Device.
-        /// </summary>
-        public uint Id => id;
 
         [SerializeField]
         private string description;

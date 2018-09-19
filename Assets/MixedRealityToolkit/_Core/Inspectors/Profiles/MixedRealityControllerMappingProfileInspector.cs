@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         }
 
         private static readonly GUIContent ControllerAddButtonContent = new GUIContent("+ Add a New Controller Definition");
-        private static readonly GUIContent ControllerMinusButtonContent = new GUIContent("-", "Remove Controller Template");
+        private static readonly GUIContent ControllerMinusButtonContent = new GUIContent("-", "Remove Controller Definition");
         private static readonly GUIContent GenericTypeContent = new GUIContent("Generic Type");
 
         private static readonly GUIContent[] GenericTypeListContent =
@@ -100,9 +100,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Controller Templates", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Controller templates define all the controllers your users will be able to use in your application.\n\n" +
-                                    "After defining all your Input Actions, you can then wire them up to hardware sensors, controllers, and other input devices.", MessageType.Info);
+            EditorGUILayout.LabelField("Controller Input Mapping", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Use this profile to define all the controllers and their inputs your users will be able to use in your application.\n\n" +
+                                    "You'll want to define all your Input Actions first, then you can then wire them up to hardware sensors, controllers, gestures, and other input devices.", MessageType.Info);
 
             if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
@@ -125,12 +125,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             serializedObject.Update();
 
-            RenderControllerProfilesList(mixedRealityControllerMappingProfiles);
+            RenderControllerList(mixedRealityControllerMappingProfiles);
 
             serializedObject.ApplyModifiedProperties();
         }
 
-        private void RenderControllerProfilesList(SerializedProperty controllerList)
+        private void RenderControllerList(SerializedProperty controllerList)
         {
             if (thisProfile.MixedRealityControllerMappingProfiles.Length != controllerList.arraySize) { return; }
 
@@ -377,8 +377,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             controllerList.InsertArrayElementAtIndex(controllerList.arraySize);
             var index = controllerList.arraySize - 1;
             var mixedRealityControllerMapping = controllerList.GetArrayElementAtIndex(index);
-            var mixedRealityControllerMappingId = mixedRealityControllerMapping.FindPropertyRelative("id");
-            mixedRealityControllerMappingId.intValue = index;
             var mixedRealityControllerMappingDescription = mixedRealityControllerMapping.FindPropertyRelative("description");
             mixedRealityControllerMappingDescription.stringValue = controllerType.Name;
             var mixedRealityControllerHandedness = mixedRealityControllerMapping.FindPropertyRelative("handedness");
