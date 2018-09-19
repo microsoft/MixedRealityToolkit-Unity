@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             // If the Visualization system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.InputSystemProfile != null && ActiveProfile.InputSystemProfile.IsVisualizationEnabled)
             {
-                AddManager(typeof(IMixedRealityVisualizationSystem), Activator.CreateInstance(ActiveProfile.InputSystemProfile.VisualizationProfile.VisualizationType) as IMixedRealityVisualizationSystem);
+                AddManager(typeof(IMixedRealityVisualizationSystem), Activator.CreateInstance(ActiveProfile.InputSystemProfile.VisualizationProfile.VisualizationManager) as IMixedRealityVisualizationSystem);
             }
 
             if (ActiveProfile.RegisteredComponentsProfile != null)

@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityVisualizationProfile
   m_EditorClassIdentifier: 
   renderMotionControllers: 1
-  visualizationType:
+  visualizationManager:
+    reference: Microsoft.MixedReality.Toolkit.SDK.VisualizationSystem.MixedRealityVisualizationManager,
+      Microsoft.MixedReality.Toolkit.SDK
+  visualizerType:
     reference: Microsoft.MixedReality.Toolkit.SDK.VisualizationSystem.MixedRealityVisualizer,
       Microsoft.MixedReality.Toolkit.SDK
   useDefaultModels: 0

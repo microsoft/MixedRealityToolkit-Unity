@@ -121,7 +121,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         /// <summary>
         /// Is Dictation Enabled?
         /// </summary>
-        public bool IsVisualizationEnabled => MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && visualizationProfile != null && visualizationProfile.VisualizationSettings != null && visualizationProfile.RenderMotionControllers;
+        public bool IsVisualizationEnabled => MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled &&
+                                              visualizationProfile.RenderMotionControllers &&
+                                              visualizationProfile != null &&
+                                              visualizationProfile.VisualizationManager.Type != null &&
+                                              visualizationProfile.VisualizerType.Type != null;
 
         [SerializeField]
         [Tooltip("Device profile for rendering spatial controllers.")]

@@ -25,7 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         };
 
         private SerializedProperty renderMotionControllers;
-        private SerializedProperty visualizationType;
+        private SerializedProperty visualizationManager;
+        private SerializedProperty visualizerType;
         private SerializedProperty useDefaultModels;
         private SerializedProperty globalLeftHandModel;
         private SerializedProperty globalRightHandModel;
@@ -49,7 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             thisProfile = target as MixedRealityVisualizationProfile;
 
             renderMotionControllers = serializedObject.FindProperty("renderMotionControllers");
-            visualizationType = serializedObject.FindProperty("visualizationType");
+            visualizationManager = serializedObject.FindProperty("visualizationManager");
+            visualizerType = serializedObject.FindProperty("visualizerType");
             useDefaultModels = serializedObject.FindProperty("useDefaultModels");
             globalLeftHandModel = serializedObject.FindProperty("globalLeftHandModel");
             globalRightHandModel = serializedObject.FindProperty("globalRightHandModel");
@@ -91,7 +93,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (renderMotionControllers.boolValue)
             {
-                EditorGUILayout.PropertyField(visualizationType);
+                EditorGUILayout.PropertyField(visualizationManager);
+                EditorGUILayout.PropertyField(visualizerType);
                 EditorGUILayout.PropertyField(useDefaultModels);
 
                 EditorGUI.BeginChangeCheck();
@@ -215,10 +218,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (componentList == null || componentList.Length == 0)
             {
-                if (thisProfile.VisualizationType != null &&
-                    thisProfile.VisualizationType.Type != null)
+                if (thisProfile.VisualizerType != null &&
+                    thisProfile.VisualizerType.Type != null)
                 {
-                    modelPrefab.AddComponent(thisProfile.VisualizationType.Type);
+                    modelPrefab.AddComponent(thisProfile.VisualizerType.Type);
                 }
             }
             else if (componentList.Length == 1)

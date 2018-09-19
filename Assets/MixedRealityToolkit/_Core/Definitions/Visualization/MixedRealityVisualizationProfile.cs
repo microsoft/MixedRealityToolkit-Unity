@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.VisualizationSystem;
 using System;
 using UnityEngine;
 
@@ -26,17 +27,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Visualization
         }
 
         [SerializeField]
-        [Implements(typeof(IMixedRealityVisualizer), TypeGrouping.ByNamespaceFlat)]
+        [Implements(typeof(IMixedRealityVisualizationSystem), TypeGrouping.ByNamespaceFlat)]
         [Tooltip("The concrete Visualizer component to use on the rendered controller model.")]
-        private SystemType visualizationType;
+        private SystemType visualizationManager;
 
         /// <summary>
         /// The concrete Controller Visualizer component to use on the rendered controller model
         /// </summary>
-        public SystemType VisualizationType
+        public SystemType VisualizationManager
         {
-            get { return visualizationType; }
-            private set { visualizationType = value; }
+            get { return visualizationManager; }
+            private set { visualizationManager = value; }
+        }
+
+        [SerializeField]
+        [Implements(typeof(IMixedRealityVisualizer), TypeGrouping.ByNamespaceFlat)]
+        [Tooltip("The concrete Visualizer component to use on the rendered controller model.")]
+        private SystemType visualizerType;
+
+        /// <summary>
+        /// The concrete Controller Visualizer component to use on the rendered controller model
+        /// </summary>
+        public SystemType VisualizerType
+        {
+            get { return visualizerType; }
+            private set { visualizerType = value; }
         }
 
         [SerializeField]
