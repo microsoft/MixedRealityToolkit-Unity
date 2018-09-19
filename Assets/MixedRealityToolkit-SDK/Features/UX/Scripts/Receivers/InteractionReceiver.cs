@@ -1,22 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
-using Microsoft.MixedReality.Toolkit.SDK.Input;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
 {
     /// <summary>
     /// An interaction receiver is simply a component that attached to a list of interactable objects and does something
-    /// based on events from those interactable objects.  This is the base abstract class to extend from.
+    /// based on events from those interactable objects. This is the base abstract class to extend from.
     /// </summary>
     public abstract class InteractionReceiver : BaseInputHandler,
         IMixedRealityFocusChangedHandler,
@@ -32,13 +27,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         /// List of linked interactable objects to receive events for
         /// </summary>
         [SerializeField]
-        [ Tooltip("Target interactable Object to receive events for")]
+        [Tooltip( "Target interactable Object to receive events for" )]
         private List<GameObject> interactables = new List<GameObject>();
 
         public List<GameObject> Interactables
         {
             get { return interactables; }
-            set { value = interactables; }
+            private set { value = interactables; }
         }
 
         /// <summary>
@@ -47,29 +42,32 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         /// </summary>
         public override bool IsFocusRequired
         {
-            get
-            {
-                return base.IsFocusRequired;
-            }
-
-            protected set
-            {
-                base.IsFocusRequired = value;
-            }
+            get { return base.IsFocusRequired; }
+            protected set { base.IsFocusRequired = value; }
         }
 
         /// <summary>
         /// List of linked targets that the receiver affects
         /// </summary>
-        [Tooltip("Targets for the receiver to affect")]
+        [Tooltip( "Targets for the receiver to affect" )]
         private List<GameObject> targets = new List<GameObject>();
 
         public List<GameObject> Targets
         {
             get { return targets; }
-            set { value = targets; }
+            private set { value = targets; }
         }
 
+        #endregion
+
+        #region private variables
+        /// <summary>
+        /// When true, this interaction receiver will draw connections in the editor to Interactables and Targets
+        /// </summary>
+        [Tooltip( "When true, this interaction receiver will draw connections in the editor to Interactables and Targets" )]
+        [SerializeField]
+        private bool drawEditorConnections = true;
+        
         #endregion
 
         /// <summary>
@@ -85,14 +83,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         /// Register an interactable with this receiver.
         /// </summary>
         /// <param name="interactable">takes a GameObject as the interactable to register.</param>
-        public virtual void RegisterInteractable(GameObject interactable)
+        public virtual void RegisterInteractable( GameObject interactable )
         {
-            if (interactable == null || interactables.Contains(interactable))
+            if ( interactable == null || interactables.Contains( interactable ) )
             {
                 return;
             }
 
-            interactables.Add(interactable);
+            interactables.Add( interactable );
         }
 
         /// <summary>
@@ -100,44 +98,48 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         /// </summary>
         protected virtual void OnDrawGizmosSelected()
         {
-            if (this.interactables.Count > 0)
+            if ( drawEditorConnections )
             {
-                GameObject[] bioList = this.interactables.ToArray();
-
-                for (int i = 0; i < bioList.Length; i++)
+                if ( interactables.Count > 0 )
                 {
-                    if (bioList[i] != null)
+                    GameObject[] interactableList = interactables.ToArray();
+
+                    for ( int i = 0; i < interactableList.Length; i++ )
                     {
-                        Gizmos.color = Color.green;
-                        Gizmos.DrawLine(this.transform.position, bioList[i].transform.position);
+                        if ( interactableList[ i ] != null )
+                        {
+                            Gizmos.color = Color.green;
+                            Gizmos.DrawLine( transform.position, interactableList[ i ].transform.position );
+                        }
                     }
                 }
-            }
 
-            if (this.Targets.Count > 0)
-            {
-                GameObject[] targetList = this.Targets.ToArray();
-
-                for (int i = 0; i < targetList.Length; i++)
+                if ( Targets.Count > 0 )
                 {
-                    if (targetList[i] != null)
+                    GameObject[] targetList = Targets.ToArray();
+
+                    for ( int i = 0; i < targetList.Length; i++ )
                     {
-                        Gizmos.color = Color.red;
-                        Gizmos.DrawLine(this.transform.position, targetList[i].transform.position);
+                        if ( targetList[ i ] != null )
+                        {
+                            Gizmos.color = Color.red;
+                            Gizmos.DrawLine( transform.position, targetList[ i ].transform.position );
+                        }
                     }
                 }
             }
         }
 
+
         /// <summary>
         /// Function to remove an interactable from the linked list.
         /// </summary>
         /// <param name="interactable"></param>
-        public virtual void RemoveInteractable(GameObject interactable)
+        public virtual void RemoveInteractable( GameObject interactable )
         {
-            if (interactable != null && interactables.Contains(interactable))
+            if ( interactable != null && interactables.Contains( interactable ) )
             {
-                interactables.Remove(interactable);
+                interactables.Remove( interactable );
             }
         }
 
@@ -148,9 +150,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         {
             GameObject[] _intList = interactables.ToArray();
 
-            for (int i = 0; i < _intList.Length; i++)
+            for ( int i = 0; i < _intList.Length; i++ )
             {
-                this.RemoveInteractable(_intList[i]);
+                RemoveInteractable( _intList[ i ] );
             }
         }
 
@@ -159,9 +161,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         /// </summary>
         /// <param name="interactable"></param>
         /// <returns></returns>
-        protected bool IsInteractable(GameObject interactable)
+        protected bool IsInteractable( GameObject interactable )
         {
-            return (interactables != null && interactables.Contains(interactable));
+            return ( interactables != null && interactables.Contains( interactable ) );
         }
 
         public void OnBeforeFocusChange( FocusEventData eventData ) { /*Unused*/ }
@@ -268,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
 
         }
-        
+
         public void OnGestureCanceled( InputEventData eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -312,12 +314,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
 
         #region Protected Virtual Callback Functions
 
-        protected virtual void FocusEnter(GameObject obj, FocusEventData eventData ) { }
-        protected virtual void FocusExit(GameObject obj, FocusEventData eventData ) { }
+        protected virtual void FocusEnter( GameObject obj, FocusEventData eventData ) { }
+        protected virtual void FocusExit( GameObject obj, FocusEventData eventData ) { }
 
-        protected virtual void InputDown(GameObject obj, InputEventData eventData) { }
-        protected virtual void InputUp(GameObject obj, InputEventData eventData) { }
-        protected virtual void InputClicked(GameObject obj, InputEventData eventData ) { }
+        protected virtual void InputDown( GameObject obj, InputEventData eventData ) { }
+        protected virtual void InputUp( GameObject obj, InputEventData eventData ) { }
+        protected virtual void InputClicked( GameObject obj, InputEventData eventData ) { }
         protected virtual void InputPressed( GameObject obj, InputEventData<float> eventData ) { }
         protected virtual void PositionInputChanged( GameObject obj, InputEventData<Vector2> eventData ) { }
 
