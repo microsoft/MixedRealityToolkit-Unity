@@ -27,11 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 
         [SerializeField]
         [Implements(typeof(IMixedRealityControllerVisualizer), TypeGrouping.ByNamespaceFlat)]
-        [Tooltip("")]
+        [Tooltip("The concrete Controller Visualizer component to use on the rendered controller model.")]
         private SystemType controllerVisualizationType;
 
         /// <summary>
-        /// 
+        /// The concrete Controller Visualizer component to use on the rendered controller model
         /// </summary>
         public SystemType ControllerVisualizationType
         {
