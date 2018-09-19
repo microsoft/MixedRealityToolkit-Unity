@@ -140,7 +140,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
-
             for (int i = 0; i < controllerList.arraySize; i++)
             {
                 EditorGUILayout.Space();
@@ -175,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 var handednessValue = mixedRealityControllerHandedness.intValue - 1;
 
                 // Reset in case it was set to something other than left or right.
-                if (handednessValue > 1) { handednessValue = 0; }
+                if (handednessValue < 0 || handednessValue > 1) { handednessValue = 0; }
 
                 EditorGUI.BeginChangeCheck();
                 handednessValue = EditorGUILayout.IntPopup(new GUIContent(mixedRealityControllerHandedness.displayName, mixedRealityControllerHandedness.tooltip), handednessValue, HandednessSelections, null);
