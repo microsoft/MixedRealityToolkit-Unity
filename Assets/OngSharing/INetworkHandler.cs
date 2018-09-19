@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public interface INetworkHandler : IEventSystemHandler
 {
+    /// <param name="eventData"></param>
     void OnDataReceived();
 
     //Not necissarily possible

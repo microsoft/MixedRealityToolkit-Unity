@@ -32,10 +32,7 @@ public class ClickSharer : BaseFocusHandler, IMixedRealityInputHandler, IMixedRe
     public List<IMixedRealityPointer> Focusers (){ throw new System.NotImplementedException();}
 
     // Use this for initialization
-    void Start () {
-
-        
-
+    void Start () {   
     }
 
     void OnEnable()
