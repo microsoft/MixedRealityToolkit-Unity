@@ -184,18 +184,33 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
 		public void OnInputPressed(InputEventData<float> eventData)
 		{
-			if (toolTip == null || !toolTip.gameObject.activeSelf)
+			Debug.Log("OnInputPressed Input Data: " + eventData.InputData, this);
+			if (eventData.InputData > .95f)
 			{
-				switch (appearType)
-				{
-					case AppearType.AppearOnTap:
-						ShowToolTip();
-						break;
-
-					default:
-						break;
-				}
+				Debug.Log("OnInputPressed HIT  =================================== ", this);
+				//tappedTime = Time.unscaledTime;
 			}
+			//if (toolTip == null || !toolTip.gameObject.activeSelf)
+			//{
+			//	switch (vanishType)
+			//	{
+			//		case VanishType.VanishOnTap:
+			//			toolTip.gameObject.SetActive(false);
+			//			break;
+
+			//		default:
+			//			break;
+			//	}
+			//	switch (appearType)
+			//	{
+			//		case AppearType.AppearOnTap:
+			//			ShowToolTip();
+			//			break;
+
+			//		default:
+			//			break;
+			//	}
+			//}
 		}
 
 		public void OnPositionInputChanged(InputEventData<Vector2> eventData)
@@ -206,6 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
 		public void OnInputDown(InputEventData eventData)
 		{
+			Debug.Log("InInputDown: " + eventData.currentInputModule.ToString() + "   selName: " + eventData.selectedObject.name + "   Handedness: " + eventData.Handedness + "  InputSrc: " + eventData.InputSource.SourceName + "\n  MRInputAction.Desc: " + eventData.MixedRealityInputAction.Description + "    MRInputAction.ID " + eventData.MixedRealityInputAction.Id + "   used: " + eventData.used, this);
 			tappedTime = Time.unscaledTime;
 			if (toolTip == null || !toolTip.gameObject.activeSelf)
 			{
@@ -220,7 +236,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 		/// this Handler intentionally empty
 		/// </summary>
 		/// <param name="eventData"></param>
-		public void OnInputUp(InputEventData eventData) { }
+		public void OnInputUp(InputEventData eventData)
+		{
+		}
 
 		private void ShowToolTip()
 		{
@@ -289,17 +307,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 							yield break;
 						}
 					}
-
 				}
 				//check whether we're suppose to disappear
 				switch (vanishType)
 				{
 					case VanishType.VanishOnFocusExit:
+						if (!hasFocus)
+						{
+							toolTip.gameObject.SetActive(false);
+						}
 						break;
 
 					case VanishType.VanishOnTap:
 						if (tappedTime != tappedTimeOnStart)
 						{
+							Debug.Log("Vanish from Tap ==" + tappedTime.ToString() + "  " + tappedTimeOnStart, this);
+
 							toolTip.gameObject.SetActive(false);
 						}
 						break;
