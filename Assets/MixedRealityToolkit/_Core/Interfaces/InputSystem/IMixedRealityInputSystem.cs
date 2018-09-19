@@ -34,14 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         HashSet<IMixedRealityInputSource> DetectedInputSources { get; }
 
         /// <summary>
-        /// List of <see cref="IMixedRealityController"/>s currently detected by the input manager.
-        /// </summary>
-        /// <remarks>
-        /// This property is similar to <see cref="DetectedInputSources"/>, as this is a subset of those <see cref="IMixedRealityInputSource"/>s in that list.
-        /// </remarks>
-        HashSet<IMixedRealityController> DetectedControllers { get; }
-
-        /// <summary>
         /// The current Focus Provider that's been implemented by this Input System.
         /// </summary>
         IMixedRealityFocusProvider FocusProvider { get; }

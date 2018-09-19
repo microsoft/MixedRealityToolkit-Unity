@@ -54,3 +54,9 @@ MonoBehaviour:
     priority: 10
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
+  - componentType:
+      reference: 
+    componentName: New Configuration 6
+    priority: 10
+    runtimePlatform: -1
+    configurationProfile: {fileID: 0}

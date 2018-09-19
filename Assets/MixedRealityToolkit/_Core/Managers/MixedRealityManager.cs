@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.VisualizationSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System;
 using System.Collections.Generic;
@@ -187,6 +188,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
                 AddManager(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
+            }
+
+            // If the Visualization system has been selected for initialization in the Active profile, enable it in the project
+            if (ActiveProfile.InputSystemProfile != null && ActiveProfile.InputSystemProfile.IsVisualizationEnabled)
+            {
+                AddManager(typeof(IMixedRealityVisualizationSystem), Activator.CreateInstance(ActiveProfile.InputSystemProfile.VisualizationProfile.VisualizationType) as IMixedRealityVisualizationSystem);
             }
 
             if (ActiveProfile.RegisteredComponentsProfile != null)

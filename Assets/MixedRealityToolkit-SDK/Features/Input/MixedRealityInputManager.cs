@@ -34,9 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public HashSet<IMixedRealityInputSource> DetectedInputSources { get; } = new HashSet<IMixedRealityInputSource>();
 
         /// <inheritdoc />
-        public HashSet<IMixedRealityController> DetectedControllers { get; } = new HashSet<IMixedRealityController>();
-
-        /// <inheritdoc />
         public IMixedRealityFocusProvider FocusProvider => focusProvider;
         private FocusProvider focusProvider;
 
@@ -504,11 +501,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
             DetectedInputSources.Add(source);
 
-            if (controller != null)
-            {
-                DetectedControllers.Add(controller);
-            }
-
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceDetectedEventHandler);
         }
@@ -529,11 +521,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             Debug.Assert(DetectedInputSources.Contains(source), $"{source.SourceName} was never registered with the Input Manager!");
 
             DetectedInputSources.Remove(source);
-
-            if (controller != null)
-            {
-                DetectedControllers.Remove(controller);
-            }
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceLostEventHandler);

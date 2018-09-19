@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Visualization;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEngine;
@@ -117,17 +118,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             private set { controllerMappingProfile = value; }
         }
 
+        /// <summary>
+        /// Is Dictation Enabled?
+        /// </summary>
+        public bool IsVisualizationEnabled => MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled && visualizationProfile != null && visualizationProfile.VisualizationSettings != null && visualizationProfile.RenderMotionControllers;
+
         [SerializeField]
         [Tooltip("Device profile for rendering spatial controllers.")]
-        private MixedRealityControllerVisualizationProfile controllerVisualizationProfile;
+        private MixedRealityVisualizationProfile visualizationProfile;
 
         /// <summary>
         /// Device profile for rendering spatial controllers.
         /// </summary>
-        public MixedRealityControllerVisualizationProfile ControllerVisualizationProfile
+        public MixedRealityVisualizationProfile VisualizationProfile
         {
-            get { return controllerVisualizationProfile; }
-            private set { controllerVisualizationProfile = value; }
+            get { return visualizationProfile; }
+            private set { visualizationProfile = value; }
         }
     }
 }

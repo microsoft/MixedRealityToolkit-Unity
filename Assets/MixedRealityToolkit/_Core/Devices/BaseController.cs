@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.VisualizationSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System;
@@ -85,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <inheritdoc />
         public IMixedRealityInputSource InputSource { get; }
 
-        public IMixedRealityControllerVisualizer ControllerVisualizer { get; private set; }
+        public IMixedRealityVisualizer ControllerVisualizer { get; private set; }
 
         /// <inheritdoc />
         public bool IsPositionAvailable { get; protected set; }
@@ -107,13 +108,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <param name="controllerType"></param>
         public bool SetupConfiguration(Type controllerType)
         {
+            // Registers this controller to be visualized, if controller rendering is enabled.
+            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile != null && MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsVisualizationEnabled)
+            {
+                MixedRealityManager.Instance.GetManager<IMixedRealityVisualizationSystem>().RegisterVisualizerForController(this);
+            }
+
+            // Checks if Input Action mapping is enabled for a controller and reads its current configuration
             if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsControllerMappingEnabled)
             {
-                if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.RenderMotionControllers)
-                {
-                    TryRenderControllerModel(controllerType);
-                }
-
                 // We can only enable controller profiles if mappings exist.
                 var controllerMappings = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
 
@@ -174,50 +177,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         public void AssignControllerMappings(MixedRealityInteractionMapping[] mappings)
         {
             Interactions = mappings;
-        }
-
-        private void TryRenderControllerModel(Type controllerType)
-        {
-            GameObject controllerModel = null;
-
-            if (!MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.RenderMotionControllers) { return; }
-
-            // If a specific controller template wants to override the global model, assign that instead.
-            if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsControllerMappingEnabled &&
-                !MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.UseDefaultModels)
-            {
-                controllerModel = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GetControllerModelOverride(controllerType, ControllerHandedness);
-            }
-
-            // Get the global controller model for each hand.
-            if (controllerModel == null)
-            {
-                if (ControllerHandedness == Handedness.Left && MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalLeftHandModel != null)
-                {
-                    controllerModel = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalLeftHandModel;
-                }
-                else if (ControllerHandedness == Handedness.Right && MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalRightHandModel != null)
-                {
-                    controllerModel = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.ControllerVisualizationProfile.GlobalRightHandModel;
-                }
-            }
-
-            // If we've got a controller model prefab, then place it in the scene.
-            if (controllerModel != null)
-            {
-                var controllerObject = UnityEngine.Object.Instantiate(controllerModel, CameraCache.Main.transform.parent);
-                controllerObject.name = $"{ControllerHandedness}_{controllerObject.name}";
-                ControllerVisualizer = controllerObject.GetComponent<IMixedRealityControllerVisualizer>();
-
-                if (ControllerVisualizer != null)
-                {
-                    ControllerVisualizer.Controller = this;
-                }
-                else
-                {
-                    Debug.LogError($"{controllerObject.name} is missing a IMixedRealityControllerVisualizer component!");
-                }
-            }
         }
     }
 }

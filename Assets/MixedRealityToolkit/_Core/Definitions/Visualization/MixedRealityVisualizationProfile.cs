@@ -7,10 +7,10 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Visualization
 {
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Controller Visualization Profile", fileName = "MixedRealityControllerVisualizationProfile", order = (int)CreateProfileMenuItemIndices.ControllerVisualization)]
-    public class MixedRealityControllerVisualizationProfile : ScriptableObject
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Visualization Profile", fileName = "MixedRealityVisualizationProfile", order = (int)CreateProfileMenuItemIndices.ControllerVisualization)]
+    public class MixedRealityVisualizationProfile : ScriptableObject
     {
         [SerializeField]
         [Tooltip("Enable and configure the controller rendering of the Motion Controllers on Startup.")]
@@ -26,17 +26,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         }
 
         [SerializeField]
-        [Implements(typeof(IMixedRealityControllerVisualizer), TypeGrouping.ByNamespaceFlat)]
-        [Tooltip("The concrete Controller Visualizer component to use on the rendered controller model.")]
-        private SystemType controllerVisualizationType;
+        [Implements(typeof(IMixedRealityVisualizer), TypeGrouping.ByNamespaceFlat)]
+        [Tooltip("The concrete Visualizer component to use on the rendered controller model.")]
+        private SystemType visualizationType;
 
         /// <summary>
         /// The concrete Controller Visualizer component to use on the rendered controller model
         /// </summary>
-        public SystemType ControllerVisualizationType
+        public SystemType VisualizationType
         {
-            get { return controllerVisualizationType; }
-            private set { controllerVisualizationType = value; }
+            get { return visualizationType; }
+            private set { visualizationType = value; }
         }
 
         [SerializeField]
@@ -85,12 +85,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         }
 
         [SerializeField]
-        private MixedRealityControllerVisualizationSetting[] controllerVisualizationSettings = new MixedRealityControllerVisualizationSetting[0];
+        private MixedRealityVisualizationSetting[] visualizationSettings = new MixedRealityVisualizationSetting[0];
 
         /// <summary>
         /// The current list of controller visualization settings.
         /// </summary>
-        public MixedRealityControllerVisualizationSetting[] ControllerVisualizationSettings => controllerVisualizationSettings;
+        public MixedRealityVisualizationSetting[] VisualizationSettings => visualizationSettings;
 
         /// <summary>
         /// Gets the override model for a specific controller type and hand
@@ -99,13 +99,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// <param name="hand">The specific hand assigned to the controller</param>
         public GameObject GetControllerModelOverride(Type controllerType, Handedness hand)
         {
-            for (int i = 0; i < controllerVisualizationSettings.Length; i++)
+            for (int i = 0; i < visualizationSettings.Length; i++)
             {
-                if (controllerVisualizationSettings[i].ControllerType != null &&
-                    controllerVisualizationSettings[i].ControllerType.Type == controllerType &&
-                   (controllerVisualizationSettings[i].Handedness == hand || controllerVisualizationSettings[i].Handedness == Handedness.Both))
+                if (visualizationSettings[i].ControllerType != null &&
+                    visualizationSettings[i].ControllerType.Type == controllerType &&
+                   (visualizationSettings[i].Handedness == hand || visualizationSettings[i].Handedness == Handedness.Both))
                 {
-                    return controllerVisualizationSettings[i].OverrideControllerModel;
+                    return visualizationSettings[i].OverrideControllerModel;
                 }
             }
 
