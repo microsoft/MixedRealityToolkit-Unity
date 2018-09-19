@@ -33,6 +33,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
         IMixedRealityInputSource InputSource { get; }
 
         /// <summary>
+        /// The controller's "Visual" presence in the scene.
+        /// </summary>
+        IMixedRealityControllerVisualizer ControllerVisualizer { get; }
+
+        /// <summary>
         /// Indicates that this controller is currently providing position data.
         /// </summary>
         /// <remarks>

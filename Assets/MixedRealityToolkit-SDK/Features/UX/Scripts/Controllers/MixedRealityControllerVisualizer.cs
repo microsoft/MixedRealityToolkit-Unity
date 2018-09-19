@@ -71,5 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         }
 
         #endregion IMixedRealityInputHandler Implementation
+
+        /// <inheritdoc />
+        public GameObject ControllerGameObjectReference => gameObject;
     }
 }
