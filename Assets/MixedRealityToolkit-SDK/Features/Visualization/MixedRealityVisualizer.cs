@@ -17,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.VisualizationSystem
     {
         // TODO wire up input actions to controller transform nodes / animations
 
-
         [HideInInspector]
         private IMixedRealityVisualizationSystem visualizationManager;
 
@@ -31,15 +30,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.VisualizationSystem
         /// <inheritdoc />
         public GameObject VisualizerGameObjectReference => gameObject;
 
+        #region IMixedRealitySourcePoseHandler Implementation
+
         public override void OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.Controller?.ControllerHandedness == Handedness)
+            if (eventData.Controller == Controller && eventData.Controller.ControllerHandedness == Controller.ControllerHandedness)
             {
                 visualizationManager?.DetectedVisualizers.Remove(this);
             }
 
             base.OnSourceLost(eventData);
         }
+
+        #endregion IMixedRealitySourcePoseHandler Implementation
 
         #region IMixedRealityInputHandler Implementation
 
