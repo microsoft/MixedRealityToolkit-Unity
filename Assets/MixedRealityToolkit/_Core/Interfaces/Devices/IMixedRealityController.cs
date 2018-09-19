@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
         IMixedRealityInputSource InputSource { get; }
 
         /// <summary>
-        /// The controller's "Visual" presence in the scene.
+        /// The controller's "Visual" <see cref="UnityEngine.Component"/> in the scene.
         /// </summary>
         IMixedRealityControllerVisualizer ControllerVisualizer { get; }
 
