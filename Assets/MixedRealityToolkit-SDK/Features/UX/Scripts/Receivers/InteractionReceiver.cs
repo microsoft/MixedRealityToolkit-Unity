@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             private set { value = targets; }
         }
 
-        #endregion
+        #endregion Public Members
 
         /// <summary>
         /// When true, this interaction receiver will draw connections in the editor to Interactables and Targets
@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
-        #endregion
+        #endregion MonoBehaviour implementation
 
         /// <summary>
         /// Register an interactable with this receiver.
@@ -168,8 +168,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
 
         #region Global Listener Callbacks
 
+        /// <Ineritdoc/>
         public void OnBeforeFocusChange( FocusEventData eventData ) { /*Unused*/ }
 
+        /// <Ineritdoc/>
         public void OnFocusChanged( FocusEventData eventData )
         {
             if ( eventData.NewFocusedObject != null && IsInteractable( eventData.NewFocusedObject ) )
@@ -183,6 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
+        /// <Ineritdoc/>
         public void OnGestureStarted( InputEventData eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -191,6 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
+        /// <Ineritdoc/>
         public void OnGestureUpdated( InputEventData eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -199,6 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
+        /// <Ineritdoc/>
         public void OnGestureUpdated( InputEventData<float> eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -206,6 +211,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
                 GestureUpdated( eventData.selectedObject, eventData );
             }
         }
+
+        /// <Ineritdoc/>
         public void OnGestureUpdated( InputEventData<Vector2> eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -213,6 +220,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
                 GestureUpdated( eventData.selectedObject, eventData );
             }
         }
+
+        /// <Ineritdoc/>
         public void OnGestureUpdated( InputEventData<Vector3> eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -220,6 +229,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
                 GestureUpdated( eventData.selectedObject, eventData );
             }
         }
+
+        /// <Ineritdoc/>
         public void OnGestureUpdated( InputEventData<Quaternion> eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -228,49 +239,52 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
+        /// <Ineritdoc/>
         public void OnGestureCompleted( InputEventData eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
             {
                 GestureCompleted( eventData.selectedObject, eventData );
             }
-
         }
+
+        /// <Ineritdoc/>
         public void OnGestureCompleted( InputEventData<float> eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
             {
                 GestureCompleted( eventData.selectedObject, eventData );
             }
-
         }
 
+        /// <Ineritdoc/>
         public void OnGestureCompleted( InputEventData<Vector2> eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
             {
                 GestureCompleted( eventData.selectedObject, eventData );
             }
-
         }
 
+        /// <Ineritdoc/>
         public void OnGestureCompleted( InputEventData<Vector3> eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
             {
                 GestureCompleted( eventData.selectedObject, eventData );
             }
-
         }
 
+        /// <Ineritdoc/>
         public void OnGestureCompleted( InputEventData<Quaternion> eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
             {
                 GestureCompleted( eventData.selectedObject, eventData );
             }
-
         }
+
+        /// <Ineritdoc/>
         public void OnGestureCanceled( InputEventData eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -279,6 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
+        /// <Ineritdoc/>
         public void OnInputUp( InputEventData eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -287,6 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
+        /// <Ineritdoc/>
         public void OnInputDown( InputEventData eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -295,6 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
+        /// <Ineritdoc/>
         public void OnInputPressed( InputEventData<float> eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -303,6 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
+        /// <Ineritdoc/>
         public void OnPositionInputChanged( InputEventData<Vector2> eventData )
         {
             if ( IsInteractable( eventData.selectedObject ) )
@@ -311,7 +329,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             }
         }
 
-        #endregion
+        #endregion Global Listener Callbacks
 
         #region Protected Virtual Callback Functions
 
@@ -339,6 +357,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         protected virtual void GestureCompleted( GameObject obj, InputEventData<Vector3> eventData ) { }
         protected virtual void GestureCompleted( GameObject obj, InputEventData<Quaternion> eventData ) { }
 
-        #endregion
+        #endregion Protected Virtual Callback Functions
     }
 }
