@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
-    public class DiagnosticBehavior : MonoBehaviour, IMixedRealityDiagnosticsHandler
+    public class DiagnosticsHandler : MonoBehaviour, IMixedRealityDiagnosticsHandler
     {
         private bool showCpu;
         private bool ShowCpu
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
                                    ShowFps ||
                                    ShowMemory;
         }
-
+        
         void Update()
         {
             UpdateIsShowingInformation();

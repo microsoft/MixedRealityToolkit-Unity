@@ -4,16 +4,19 @@
 using System.Linq;
 using UnityEngine;
 
-public class FpsUseTracker
+namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
-    private int index = 0;
-    private float[] timings = new float[10];
-
-    public float GetFpsInSeconds()
+    internal class FpsUseTracker
     {
-        timings[index] = Time.unscaledDeltaTime;
-        index = (index + 1) % timings.Length;
+        private int index = 0;
+        private float[] timings = new float[10];
 
-        return timings.Average();
+        public float GetFpsInSeconds()
+        {
+            timings[index] = Time.unscaledDeltaTime;
+            index = (index + 1) % timings.Length;
+
+            return timings.Average();
+        }
     }
 }
