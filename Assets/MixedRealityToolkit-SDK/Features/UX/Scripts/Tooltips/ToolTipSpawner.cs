@@ -3,11 +3,11 @@
 //
 using System.Collections;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.InputSystem;
 //using HoloToolkit.Unity.InputModule;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
@@ -56,6 +56,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 
 		[SerializeField]
 		private RemainType remainType = RemainType.Timeout;
+
+		[SerializeField]
+		[Tooltip("The action that will be used for when to spawn or toggle the tooltip.")]
+		private MixedRealityInputAction tooltipToggleAction = MixedRealityInputAction.None;
 
 		[SerializeField]
 		[Range(0f, 5f)]
@@ -173,21 +177,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 		}
 
 		public void OnBeforeFocusChange(FocusEventData eventData)
-		{
-			//throw new System.NotImplementedException();
-		}
+		{ }
 
 		public void OnFocusChanged(FocusEventData eventData)
-		{
-			//throw new System.NotImplementedException();
-		}
+		{ }
 
 		public void OnInputPressed(InputEventData<float> eventData)
 		{
-			Debug.Log("OnInputPressed Input Data: " + eventData.InputData, this);
 			if (eventData.InputData > .95f)
 			{
-				Debug.Log("OnInputPressed HIT  =================================== ", this);
 				//tappedTime = Time.unscaledTime;
 			}
 			//if (toolTip == null || !toolTip.gameObject.activeSelf)
@@ -214,26 +212,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 		}
 
 		public void OnPositionInputChanged(InputEventData<Vector2> eventData)
-		{
-			//We do nothing with this.
-			//Could drive the position of the tooltip? But that's ridiculous.
-		}
+		{ }
 
 		public void OnInputDown(InputEventData eventData)
 		{
-			Debug.Log("InInputDown: " + eventData.currentInputModule.ToString() + "   selName: " + eventData.selectedObject.name + "   Handedness: " + eventData.Handedness + "  InputSrc: " + eventData.InputSource.SourceName + "\n  MRInputAction.Desc: " + eventData.MixedRealityInputAction.Description + "    MRInputAction.ID " + eventData.MixedRealityInputAction.Id + "   used: " + eventData.used, this);
-			tappedTime = Time.unscaledTime;
-			if (toolTip == null || !toolTip.gameObject.activeSelf)
+			if (tooltipToggleAction.Id == eventData.MixedRealityInputAction.Id)
 			{
-				if (appearType == AppearType.AppearOnTap)
+				tappedTime = Time.unscaledTime;
+				if (toolTip == null || !toolTip.gameObject.activeSelf)
 				{
-					ShowToolTip();
+					if (appearType == AppearType.AppearOnTap)
+					{
+						ShowToolTip();
+					}
 				}
 			}
 		}
 
 		/// <summary>
-		/// this Handler intentionally empty
+		/// This Handler intentionally empty
 		/// </summary>
 		/// <param name="eventData"></param>
 		public void OnInputUp(InputEventData eventData)
