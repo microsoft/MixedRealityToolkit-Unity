@@ -30,14 +30,14 @@ Most features can be generally broken down into 3 main parts:
 * Events that can be raised with the system should be defined in the interface, with all the required parameters for initializing the event data.
 
 ## Event Data Implementation Requirements
-The EventData defines exactly what data the handler is expected to receive from the event.
+The Event Data defines exactly what data the handler is expected to receive from the event.
 
 * All Event Datum for the feature should be defined in `MixedRealityToolkit/_Core/EventDatum/<FeatureName>`.
 * All new Event Data classes should inherit from `GenericBaseEventData`
 
 ## Handler Implementation Requirements
 
-The HandLer Interface defines each event a component should be listening for and the types of data passed. End users will implement the interface to execute logic based on the event data received.
+The Handler Interface defines each event a component should be listening for and the types of data passed. End users will implement the interface to execute logic based on the event data received.
 
 * Handler interfaces should be defined in `MixedRealityToolkit/_Core/Interfaces/<FeatureName>System/Handlers`.
 * Handler interfaces should inherit from `UnityEngine.EventSystems.IEventSystemHandler`
