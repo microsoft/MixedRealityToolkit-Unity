@@ -32,7 +32,7 @@ Most features can be generally broken down into 3 main parts:
 ## Event Data Implementation Requirements
 The EventData defines exactly what data the handler is expected to receive from the event.
 
-* All EventDatum for the feature should be defined in `MixedRealityToolkit/_Core/EventDatum/<FeatureName>`.
+* All Event Datum for the feature should be defined in `MixedRealityToolkit/_Core/EventDatum/<FeatureName>`.
 * All new Event Data classes should inherit from `GenericBaseEventData`
 
 ## Handler Implementation Requirements
