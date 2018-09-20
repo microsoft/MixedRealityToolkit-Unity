@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.SDK.UX.Collections;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Inspectors.Collections
+namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Collections
 {
     [CustomEditor( typeof(BaseObjectCollection), true )]
     public class BaseCollectionInspector : Editor
