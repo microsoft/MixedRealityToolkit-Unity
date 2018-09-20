@@ -1,25 +1,28 @@
 # Contributing
 
-The Mixed Reality Toolkit welcomes contributions from the community. 
-If you have any questions, please reach out on the [HoloLens forums](https://forums.hololens.com/).
+The Mixed Reality Toolkit welcomes contributions from the community. For things like fixing typos and small bug fixes, please follow the following contribution guidelines.
+
+>For feature branch contribution guidelines see the [Feature Contribution Process](./Feature_Contribution_Process.md).
+
+If you have any questions, please reach out on the [HoloLens forums](https://forums.hololens.com/) or the [HoloDevelopers slack](https://holodevelopers.slack.com/).
 
 # Process
 
-1. [Make a proposal](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues)
+1. [Open an issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose)
     - If you are implementing something from our backlog, you do not need to file a new proposal.
 2. Implement the change, including any needed demo scenes and/or unit tests.
-3. Start a pull request & address comments.
+3. Start a pull request & address any questions or change requests.
 4. Merge.
 
-# Proposal
+# Proposals
 
-For things like fixing typos and small bug fixes, you can skip this step.
+If your change is more than a simple fix or a substantial change, please don't just create a big pull request.
 
-If your change is more than a simple fix, please don't just create a big pull request. 
-Instead, start by [opening an issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) describing the problem you want to solve and how you plan to approach the problem. 
-This will let us have a brief discussion about the problem and, hopefully, identify some potential pitfalls before too much time is spent.
+Instead, start by [opening a proposal](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues?q=is%3Aopen+is%3Aissue+label%3AProposal) describing the problem you want to solve and how you plan to approach the problem. This will let us have a brief discussion about the problem and, hopefully, identify some potential pitfalls before any work is started.
 
-Note:  If you wish to work on something that already exists on our backlog, you can use that work item as your proposal.
+If you're proposing a completely new feature (or a new platform support) please follow the [Feature Contribution Process](./Feature_Contribution_Process.md).
+
+>Note:  If you wish to work on something that already exists on our backlog, you can use that work item as your proposal. Be sure to also comment on the task notifying maintainers that you're working towards completing it.
 
 # Implementation
 
@@ -38,21 +41,27 @@ Note:  If you wish to work on something that already exists on our backlog, you 
 
 The Mixed Reality Toolkit provides the following forms of documentation.
 
-- API
+### APIs
+
 This documentation is generated from the product code and is reviewed as part of **all** pull requests.
-- Conceptual
+
+### Conceptual
+
 Conceptual documentation is hosted on https://docs.microsoft.com/en-us/windows/mixed-reality. Please submit our changes via Pull Request at https://github.com/MicrosoftDocs/mixed-reality.
-- Readme.md files
-As part of your pull request, please update (or create) the Readme.md file in the appropriate feature folder. This will allow GitHub users to gain a high-level understanding of your new feature.
+
+### Readme files
+
+As part of your pull request, please update (or create) the Readme markdown file in the appropriate feature folder. This will allow GitHub users to gain a high-level understanding of your new feature.
 
 ## Supported Platforms
 
-The Mixed Reality Toolkit supports the following mixed reality (AR/VR/XR) platforms.
+The Mixed Reality Toolkit supports the following mixed reality (AR/VR/XR) platforms:
 
+- Windows Standalone
+    - OpenVR
 - Windows Mixed Reality
     - Immersive devices
     - Microsoft HoloLens
-- OpenVR
 
 # Pull request
 
