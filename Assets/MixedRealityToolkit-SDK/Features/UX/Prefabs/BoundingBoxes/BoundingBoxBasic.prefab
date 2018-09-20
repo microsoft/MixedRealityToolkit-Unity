@@ -114,8 +114,9 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: e7baa8ff231a0d54aa60430714b6ac83, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -150,11 +151,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 160298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d946fff9ec509c9468425c0aa57433a8, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b90e2c99d8c52f45adea2dbc76dd879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  scaleTransform: {fileID: 4696603081318228}
+  scaleTransform: {fileID: 0}
   flattenPreference: 4
   flattenAxisThreshold: 0.025
   flattenedAxisThickness: 0.01
@@ -172,7 +173,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 160298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8afaaf647e592574d8a56bc26e61f82d, type: 3}
+  m_Script: {fileID: 11500000, guid: e8b1f99d7dc38794ca93db855e843624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundingBox: {fileID: 114030465538688920}
+  boundingBox: {fileID: 0}

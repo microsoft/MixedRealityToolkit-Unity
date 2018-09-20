@@ -12,6 +12,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// </summary>
     public class BoundingBoxRig : MonoBehaviour
     {
+
+        [SerializeField]
+        [Tooltip("Enter adjust mode and show handles in default.")]
+        private bool activateInDefault = false;
+
         [Header("Flattening")]
         [SerializeField]
         [Tooltip("Choose this option if Rig is to be applied to a 2D object.")]
@@ -188,6 +193,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
            // appBarInstance.HoverOffsetZ = appBarHoverOffsetZ;
 
             boxInstance.IsVisible = false;
+
+            if(activateInDefault == true)
+            {
+                Activate();
+            }
         }
 
         private void Update()
