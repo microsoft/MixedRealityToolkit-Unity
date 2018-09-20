@@ -4,10 +4,17 @@ Adding features to the Mixed Reality Toolkit is split up into a few iteration st
 
 # Feature Requirements
 
-Features must have the following:
+Most features can be generally broken down into 3 main parts:
+
+1. [The Feature Manager](#manager-implementation-requirements)
+2. [The Event Data](#event-data-implementation-requirements) (Optional)
+3. [The Feature Handler](#handler-implementation-requirements) (Optional)
+
+## Manager Implementation Requirements
 
 * Assembly Definitions for code outside of the `MixedRealityToolkit/_Core` folder.
     * This ensures features are self-contained and have no dependencies to other features.
+    * This only applies to `MixedRealityToolkit` folder.
 * Be defined using an interface found in `MixedRealityToolkit/_Core/definitions/<FeatureName>System`.
 * A feature's concrete manager implementation should inherit directly from `BaseManager` or `MixedRealityEventManager` if they will raise events.
 * A feature's concrete manager implementation should setup and verify scene is ready for that system to use in `Initialize`.
@@ -20,6 +27,21 @@ Features must have the following:
         * A default configuration profile located in `MixedRealityToolkit-SDK/Profiles` and be assigned in the default configuration profile for the Mixed Reality Manager
     * If this feature is **not** a core feature, then it must be registered using the component configuration profile and implement `IMixedRealityComponent`.
 * Have a default implementation located in `MixedRealityToolkit-SDK/Features/<FeatureName>`
+* Events that can be raised with the system should be defined in the interface, with all the required parameters for initializing the event data.
+
+## Event Data Implementation Requirements
+The EventData defines exactly what data the handler is expected to receive from the event.
+
+* All EventDatum for the feature should be defined in `MixedRealityToolkit/_Core/EventDatum/<FeatureName>`.
+* All new Event Data classes should inherit from `GenericBaseEventData`
+
+## Handler Implementation Requirements
+
+The HandLer Interface defines each event a component should be listening for and the types of data passed. End users will implement the interface to execute logic based on the event data received.
+
+* Handler interfaces should be defined in `MixedRealityToolkit/_Core/Interfaces/<FeatureName>System/Handlers`.
+* Handler interfaces should inherit from `UnityEngine.EventSystems.IEventSystemHandler`
+* Opt-in by default. To receive events from the system, the handler will need to register itself with the system to receive those events.
 
 # Process
 
