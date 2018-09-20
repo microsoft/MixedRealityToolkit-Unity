@@ -19,11 +19,10 @@ Most features can be generally broken down into 3 main parts:
 * A feature's concrete manager implementation should inherit directly from `BaseManager` or `MixedRealityEventManager` if they will raise events.
 * A feature's concrete manager implementation should setup and verify scene is ready for that system to use in `Initialize`.
 * A feature's concrete manager should also clean up after themselves removing anything created in the scene in `Destroy`.
-* Features should have a configuration profile that derives from a scriptable object.
-    * If the feature is proposed to be a core feature of the Mixed Reality Toolkit, the profile must be accessible in the Main Configuration Profile.
 * Be registered with the Mixed Reality Manager.
     * If the feature is a core feature, this should be hard coded into the `MixedRealityManager` and added to the `MixedRealityConfigurationProfile`.
         * This includes being able to specify a concrete implementation via dropdown using `SystemType`.
+        * Features should have a configuration profile that derives from a scriptable object.
         * A default configuration profile located in `MixedRealityToolkit-SDK/Profiles` and be assigned in the default configuration profile for the Mixed Reality Manager
     * If this feature is **not** a core feature, then it must be registered using the component configuration profile and implement `IMixedRealityComponent`.
 * Have a default implementation located in `MixedRealityToolkit-SDK/Features/<FeatureName>`
