@@ -42,6 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
         /// <param name="visible">True if cursor should be visible, false if not.</param>
         void SetVisibility(bool visible);
 
+        /// <summary>
+        /// Sets the visibility of the <see cref="IMixedRealityCursor"/> when the source is detected.
+        /// </summary>
         bool SetVisibilityOnSourceDetected { get; set; }
 
         /// <summary>

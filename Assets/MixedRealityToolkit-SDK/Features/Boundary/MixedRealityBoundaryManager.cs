@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.BoundarySystem
             boundaryEventData = new BoundaryEventData(EventSystem.current);
 
             Scale = MixedRealityManager.Instance.ActiveProfile.TargetExperienceScale;
-            BoundaryHeight = MixedRealityManager.Instance.ActiveProfile.BoundaryHeight;
+            BoundaryHeight = MixedRealityManager.Instance.ActiveProfile.BoundaryVisualizationProfile.BoundaryHeight;
 
             SetTrackingSpace();
             CalculateBoundaryBounds();
