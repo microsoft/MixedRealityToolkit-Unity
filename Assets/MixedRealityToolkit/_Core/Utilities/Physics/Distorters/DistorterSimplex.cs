@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters
         private readonly FastSimplexNoise noise = new FastSimplexNoise();
 
         [SerializeField]
-        private float scaleMultiplier = 10f;
+        private float scaleMultiplier = 2f;
 
         public float ScaleMultiplier
         {
@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters
         }
 
         [SerializeField]
-        private float strengthMultiplier = 0.5f;
+        private float strengthMultiplier = 0.25f;
 
         public float StrengthMultiplier
         {
@@ -75,9 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters
         protected override Vector3 DistortPointInternal(Vector3 point, float strength)
         {
             Vector3 scaledPoint = (point * scaleMultiplier) + axisOffset;
-            point.x = (float)(point.x + (noise.Evaluate(scaledPoint.x, scaledPoint.y, scaledPoint.z, Time.unscaledTime * axisSpeed.x)) * axisStrength.x * strengthMultiplier);
-            point.y = (float)(point.y + (noise.Evaluate(scaledPoint.x, scaledPoint.y, scaledPoint.z, Time.unscaledTime * axisSpeed.y)) * axisStrength.y * strengthMultiplier);
-            point.z = (float)(point.z + (noise.Evaluate(scaledPoint.x, scaledPoint.y, scaledPoint.z, Time.unscaledTime * axisSpeed.z)) * axisStrength.z * strengthMultiplier);
+            point.x += (float)((noise.Evaluate(scaledPoint.x, Time.unscaledTime * axisSpeed.x)) * axisStrength.x * strengthMultiplier * strength);
+            point.y += (float)((noise.Evaluate(scaledPoint.x + scaledPoint.y, Time.unscaledTime * axisSpeed.y)) * axisStrength.y * strengthMultiplier * strength);
+            point.z += (float)((noise.Evaluate(scaledPoint.x + scaledPoint.y + scaledPoint.z, Time.unscaledTime * axisSpeed.z)) * axisStrength.z * strengthMultiplier * strength);
             return point;
         }
 
