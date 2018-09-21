@@ -1,7 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
 {
@@ -11,14 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
     /// </summary>
     public abstract class InteractionReceiver : BaseInputHandler,
         IMixedRealityFocusChangedHandler,
-        IMixedRealityGestureHandler,
         IMixedRealityInputHandler,
         IMixedRealityGestureHandler<Vector2>,
         IMixedRealityGestureHandler<Vector3>,
         IMixedRealityGestureHandler<Quaternion>
-
     {
         #region Public Members
+
         /// <summary>
         /// List of linked interactable objects to receive events for
         /// </summary>
@@ -30,16 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         {
             get { return interactables; }
             private set { value = interactables; }
-        }
-
-        /// <summary>
-        /// Is Focus required to receive input events on this GameObject?
-        /// InteractionReceivers handle events for objects indirectly, in order for this class work properly, keep this set to false.
-        /// </summary>
-        public override bool IsFocusRequired
-        {
-            get { return base.IsFocusRequired; }
-            protected set { base.IsFocusRequired = value; }
         }
 
         /// <summary>
@@ -79,15 +72,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         /// </summary>
         protected virtual void OnDrawGizmosSelected()
         {
-            if(drawEditorConnections)
+            if (drawEditorConnections)
             {
-                if(interactables.Count > 0)
+                if (interactables.Count > 0)
                 {
                     GameObject[] interactableList = interactables.ToArray();
 
-                    for(int i = 0; i < interactableList.Length; i++)
+                    for (int i = 0; i < interactableList.Length; i++)
                     {
-                        if(interactableList[i] != null)
+                        if (interactableList[i] != null)
                         {
                             Gizmos.color = Color.green;
                             Gizmos.DrawLine(transform.position, interactableList[i].transform.position);
@@ -95,13 +88,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
                     }
                 }
 
-                if(Targets.Count > 0)
+                if (Targets.Count > 0)
                 {
                     GameObject[] targetList = Targets.ToArray();
 
-                    for(int i = 0; i < targetList.Length; i++)
+                    for (int i = 0; i < targetList.Length; i++)
                     {
-                        if(targetList[i] != null)
+                        if (targetList[i] != null)
                         {
                             Gizmos.color = Color.red;
                             Gizmos.DrawLine(transform.position, targetList[i].transform.position);
@@ -119,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         /// <param name="interactable">takes a GameObject as the interactable to register.</param>
         public virtual void RegisterInteractable(GameObject interactable)
         {
-            if(interactable == null || interactables.Contains(interactable))
+            if (interactable == null || interactables.Contains(interactable))
             {
                 return;
             }
@@ -133,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         /// <param name="interactable"></param>
         public virtual void RemoveInteractable(GameObject interactable)
         {
-            if(interactable != null && interactables.Contains(interactable))
+            if (interactable != null && interactables.Contains(interactable))
             {
                 interactables.Remove(interactable);
             }
@@ -146,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         {
             GameObject[] _intList = interactables.ToArray();
 
-            for(int i = 0; i < _intList.Length; i++)
+            for (int i = 0; i < _intList.Length; i++)
             {
                 RemoveInteractable(_intList[i]);
             }
@@ -162,196 +155,274 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
             return (interactables != null && interactables.Contains(interactable));
         }
 
-        #region Global Listener Callbacks
+        #region IMixedRealityFocusChangedHandler Implementation
 
-        /// <ineritdoc />
-        public void OnBeforeFocusChange(FocusEventData eventData) { /*Unused*/ }
+        /// <inheritdoc />
+        void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { /*Unused*/ }
 
-        /// <ineritdoc />
-        public void OnFocusChanged(FocusEventData eventData)
+        /// <inheritdoc />
+        void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
         {
-            if(eventData.NewFocusedObject != null && IsInteractable(eventData.NewFocusedObject))
+            if (eventData.NewFocusedObject != null && IsInteractable(eventData.NewFocusedObject))
             {
                 FocusEnter(eventData.NewFocusedObject, eventData);
             }
 
-            if(eventData.OldFocusedObject != null && IsInteractable(eventData.OldFocusedObject))
+            if (eventData.OldFocusedObject != null && IsInteractable(eventData.OldFocusedObject))
             {
                 FocusExit(eventData.OldFocusedObject, eventData);
             }
         }
 
-        /// <ineritdoc />
-        public void OnGestureStarted(InputEventData eventData)
-        {
-            if(IsInteractable(eventData.selectedObject))
-            {
-                GestureStarted(eventData.selectedObject, eventData);
-            }
-        }
+        #endregion IMixedRealityFocusChangedHandler Implementation
 
-        /// <ineritdoc />
-        public void OnGestureUpdated(InputEventData eventData)
-        {
-            if(IsInteractable(eventData.selectedObject))
-            {
-                GestureUpdated(eventData.selectedObject, eventData);
-            }
-        }
+        #region IMixedRealityInputHandler Impmentations
 
-        /// <ineritdoc />
-        public void OnGestureUpdated(InputEventData<float> eventData)
+        /// <inheritdoc />
+        void IMixedRealityInputHandler.OnInputUp(InputEventData eventData)
         {
-            if(IsInteractable(eventData.selectedObject))
-            {
-                GestureUpdated(eventData.selectedObject, eventData);
-            }
-        }
-
-        /// <ineritdoc />
-        public void OnGestureUpdated(InputEventData<Vector2> eventData)
-        {
-            if(IsInteractable(eventData.selectedObject))
-            {
-                GestureUpdated(eventData.selectedObject, eventData);
-            }
-        }
-
-        /// <ineritdoc />
-        public void OnGestureUpdated(InputEventData<Vector3> eventData)
-        {
-            if(IsInteractable(eventData.selectedObject))
-            {
-                GestureUpdated(eventData.selectedObject, eventData);
-            }
-        }
-
-        /// <ineritdoc />
-        public void OnGestureUpdated(InputEventData<Quaternion> eventData)
-        {
-            if(IsInteractable(eventData.selectedObject))
-            {
-                GestureUpdated(eventData.selectedObject, eventData);
-            }
-        }
-
-        /// <ineritdoc />
-        public void OnGestureCompleted(InputEventData eventData)
-        {
-            if(IsInteractable(eventData.selectedObject))
-            {
-                GestureCompleted(eventData.selectedObject, eventData);
-            }
-        }
-
-        /// <ineritdoc />
-        public void OnGestureCompleted(InputEventData<float> eventData)
-        {
-            if(IsInteractable(eventData.selectedObject))
-            {
-                GestureCompleted(eventData.selectedObject, eventData);
-            }
-        }
-
-        /// <ineritdoc />
-        public void OnGestureCompleted(InputEventData<Vector2> eventData)
-        {
-            if(IsInteractable(eventData.selectedObject))
-            {
-                GestureCompleted(eventData.selectedObject, eventData);
-            }
-        }
-
-        /// <ineritdoc />
-        public void OnGestureCompleted(InputEventData<Vector3> eventData)
-        {
-            if(IsInteractable(eventData.selectedObject))
-            {
-                GestureCompleted(eventData.selectedObject, eventData);
-            }
-        }
-
-        /// <ineritdoc />
-        public void OnGestureCompleted(InputEventData<Quaternion> eventData)
-        {
-            if(IsInteractable(eventData.selectedObject))
-            {
-                GestureCompleted(eventData.selectedObject, eventData);
-            }
-        }
-
-        /// <ineritdoc />
-        public void OnGestureCanceled(InputEventData eventData)
-        {
-            if(IsInteractable(eventData.selectedObject))
-            {
-                GestureCanceled(eventData.selectedObject, eventData);
-            }
-        }
-
-        /// <ineritdoc />
-        public void OnInputUp(InputEventData eventData)
-        {
-            if(IsInteractable(eventData.selectedObject))
+            if (IsInteractable(eventData.selectedObject))
             {
                 InputUp(eventData.selectedObject, eventData);
             }
         }
 
-        /// <ineritdoc />
-        public void OnInputDown(InputEventData eventData)
+        /// <inheritdoc />
+        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData)
         {
-            if(IsInteractable(eventData.selectedObject))
+            if (IsInteractable(eventData.selectedObject))
             {
                 InputDown(eventData.selectedObject, eventData);
             }
         }
 
-        /// <ineritdoc />
-        public void OnInputPressed(InputEventData<float> eventData)
+        /// <inheritdoc />
+        void IMixedRealityInputHandler.OnInputPressed(InputEventData<float> eventData)
         {
-            if(IsInteractable(eventData.selectedObject))
+            if (IsInteractable(eventData.selectedObject))
             {
                 InputPressed(eventData.selectedObject, eventData);
             }
         }
 
-        /// <ineritdoc />
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData)
+        /// <inheritdoc />
+        void IMixedRealityInputHandler.OnPositionInputChanged(InputEventData<Vector2> eventData)
         {
-            if(IsInteractable(eventData.selectedObject))
+            if (IsInteractable(eventData.selectedObject))
             {
                 PositionInputChanged(eventData.selectedObject, eventData);
             }
         }
 
-        #endregion Global Listener Callbacks
+        #endregion IMixedRealityInputHandler Impmentations
+
+        #region IMixedRealityGestureHandler Impmentations
+
+        /// <inheritdoc />
+        void IMixedRealityGestureHandler.OnGestureStarted(InputEventData eventData)
+        {
+            if (IsInteractable(eventData.selectedObject))
+            {
+                GestureStarted(eventData.selectedObject, eventData);
+            }
+        }
+
+        /// <inheritdoc />
+        void IMixedRealityGestureHandler.OnGestureUpdated(InputEventData eventData)
+        {
+            if (IsInteractable(eventData.selectedObject))
+            {
+                GestureUpdated(eventData.selectedObject, eventData);
+            }
+        }
+
+        /// <inheritdoc />
+        void IMixedRealityGestureHandler<Vector2>.OnGestureUpdated(InputEventData<Vector2> eventData)
+        {
+            if (IsInteractable(eventData.selectedObject))
+            {
+                GestureUpdated(eventData.selectedObject, eventData);
+            }
+        }
+
+        /// <inheritdoc />
+        void IMixedRealityGestureHandler<Vector3>.OnGestureUpdated(InputEventData<Vector3> eventData)
+        {
+            if (IsInteractable(eventData.selectedObject))
+            {
+                GestureUpdated(eventData.selectedObject, eventData);
+            }
+        }
+
+        /// <inheritdoc />
+        void IMixedRealityGestureHandler<Quaternion>.OnGestureUpdated(InputEventData<Quaternion> eventData)
+        {
+            if (IsInteractable(eventData.selectedObject))
+            {
+                GestureUpdated(eventData.selectedObject, eventData);
+            }
+        }
+
+        /// <inheritdoc />
+        void IMixedRealityGestureHandler.OnGestureCompleted(InputEventData eventData)
+        {
+            if (IsInteractable(eventData.selectedObject))
+            {
+                GestureCompleted(eventData.selectedObject, eventData);
+            }
+        }
+
+        /// <inheritdoc />
+        void IMixedRealityGestureHandler<Vector2>.OnGestureCompleted(InputEventData<Vector2> eventData)
+        {
+            if (IsInteractable(eventData.selectedObject))
+            {
+                GestureCompleted(eventData.selectedObject, eventData);
+            }
+        }
+
+        /// <inheritdoc />
+        void IMixedRealityGestureHandler<Vector3>.OnGestureCompleted(InputEventData<Vector3> eventData)
+        {
+            if (IsInteractable(eventData.selectedObject))
+            {
+                GestureCompleted(eventData.selectedObject, eventData);
+            }
+        }
+
+        /// <inheritdoc />
+        void IMixedRealityGestureHandler<Quaternion>.OnGestureCompleted(InputEventData<Quaternion> eventData)
+        {
+            if (IsInteractable(eventData.selectedObject))
+            {
+                GestureCompleted(eventData.selectedObject, eventData);
+            }
+        }
+
+        /// <inheritdoc />
+        void IMixedRealityGestureHandler.OnGestureCanceled(InputEventData eventData)
+        {
+            if (IsInteractable(eventData.selectedObject))
+            {
+                GestureCanceled(eventData.selectedObject, eventData);
+            }
+        }
+
+        #endregion IMixedRealityGestureHandler Impmentations
 
         #region Protected Virtual Callback Functions
 
-        protected virtual void FocusEnter(GameObject obj, FocusEventData eventData) { }
-        protected virtual void FocusExit(GameObject obj, FocusEventData eventData) { }
+        /// <summary>
+        /// Raised when the target interactable object is focused.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void FocusEnter(GameObject targetObject, FocusEventData eventData) { }
 
-        protected virtual void InputDown(GameObject obj, InputEventData eventData) { }
-        protected virtual void InputUp(GameObject obj, InputEventData eventData) { }
-        protected virtual void InputClicked(GameObject obj, InputEventData eventData) { }
-        protected virtual void InputPressed(GameObject obj, InputEventData<float> eventData) { }
-        protected virtual void PositionInputChanged(GameObject obj, InputEventData<Vector2> eventData) { }
+        /// <summary>
+        /// Raised when the target interactable object has lost focus.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void FocusExit(GameObject targetObject, FocusEventData eventData) { }
 
-        protected virtual void GestureStarted(GameObject obj, InputEventData eventData) { }
-        protected virtual void GestureCanceled(GameObject obj, InputEventData eventData) { }
+        /// <summary>
+        /// Raised when the target interactable object receives an input down event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void InputDown(GameObject targetObject, InputEventData eventData) { }
 
-        protected virtual void GestureUpdated(GameObject obj, InputEventData eventData) { }
-        protected virtual void GestureUpdated(GameObject obj, InputEventData<float> eventData) { }
-        protected virtual void GestureUpdated(GameObject obj, InputEventData<Vector2> eventData) { }
-        protected virtual void GestureUpdated(GameObject obj, InputEventData<Vector3> eventData) { }
-        protected virtual void GestureUpdated(GameObject obj, InputEventData<Quaternion> eventData) { }
+        /// <summary>
+        /// Raised when the target interactable object receives an input up event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void InputUp(GameObject targetObject, InputEventData eventData) { }
 
-        protected virtual void GestureCompleted(GameObject obj, InputEventData eventData) { }
-        protected virtual void GestureCompleted(GameObject obj, InputEventData<float> eventData) { }
-        protected virtual void GestureCompleted(GameObject obj, InputEventData<Vector2> eventData) { }
-        protected virtual void GestureCompleted(GameObject obj, InputEventData<Vector3> eventData) { }
-        protected virtual void GestureCompleted(GameObject obj, InputEventData<Quaternion> eventData) { }
+        /// <summary>
+        /// Raised when the target interactable object receives an input pressed event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void InputPressed(GameObject targetObject, InputEventData<float> eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives an input changed event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void PositionInputChanged(GameObject targetObject, InputEventData<Vector2> eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives an gesture started event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void GestureStarted(GameObject targetObject, InputEventData eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives an gesture updated event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void GestureUpdated(GameObject targetObject, InputEventData eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives an gesture updated event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void GestureUpdated(GameObject targetObject, InputEventData<Vector2> eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives an gesture updated event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void GestureUpdated(GameObject targetObject, InputEventData<Vector3> eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives an gesture updated event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void GestureUpdated(GameObject targetObject, InputEventData<Quaternion> eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives an gesture completed event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void GestureCompleted(GameObject targetObject, InputEventData eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives an gesture completed event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void GestureCompleted(GameObject targetObject, InputEventData<Vector2> eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives an gesture completed event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void GestureCompleted(GameObject targetObject, InputEventData<Vector3> eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives an gesture completed event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void GestureCompleted(GameObject targetObject, InputEventData<Quaternion> eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives an gesture canceled event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void GestureCanceled(GameObject targetObject, InputEventData eventData) { }
 
         #endregion Protected Virtual Callback Functions
     }
