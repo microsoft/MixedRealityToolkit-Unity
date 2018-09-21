@@ -147,11 +147,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 TeleportSystem.Register(gameObject);
             }
 
-            if (InputSystem == null)
+            if (InputSystem == null) 
             {
-                await WaitUntilInputSystemValid;
-                SetCursor();
+                StartCoroutine(WaitForInputSystem());
             }
+        }
+
+        private IEnumerator WaitForInputSystem() 
+        {
+            if (InputSystem == null) yield return null;
+            SetCursor();
         }
 
         protected override void OnDisable()
