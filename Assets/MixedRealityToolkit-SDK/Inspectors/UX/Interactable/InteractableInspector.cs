@@ -1224,7 +1224,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     GameObject host = gameObject.objectReferenceValue as GameObject;
                     Animator animator = host?.GetComponent<Animator>();
 
-                    if(animator == null)
+                    if(animator == null && host != null)
                     {
                         FlexButton(new GUIContent("Create Animations", "Create and add an Animator with AnimationClips"), listIndex, AddAnimator);
                     }
@@ -1240,7 +1240,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         protected void AddAnimator(int[] arr)
         {
+            SerializedProperty sItem = profileList.GetArrayElementAtIndex(arr[0]);
+            SerializedProperty gameObject = sItem.FindPropertyRelative("Target");
 
+            GameObject host = gameObject.objectReferenceValue as GameObject;
+
+            /*
+            var controller = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath("Assets/Mecanim/StateMachineTransitions.controller");
+
+            Animator animator = new Animator();
+            animator.name = host.name + "Animator";
+            string path = "Assets/Animations/";
+
+            AssetDatabase.CreateAsset(animator, path + animator.name + ".controller"); //"anim";
+
+            host.AddComponent<Animator>();
+            */
         }
 
         public static void RenderThemeStates(SerializedProperty settings, State[] states, int margin)
