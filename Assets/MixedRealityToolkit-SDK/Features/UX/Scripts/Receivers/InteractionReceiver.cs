@@ -362,13 +362,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         protected virtual void GestureStarted(GameObject targetObject, InputEventData eventData) { }
 
         /// <summary>
-        /// Raised when the target interactable object receives an gesture canceled event.
-        /// </summary>
-        /// <param name="targetObject"></param>
-        /// <param name="eventData"></param>
-        protected virtual void GestureCanceled(GameObject targetObject, InputEventData eventData) { }
-
-        /// <summary>
         /// Raised when the target interactable object receives an gesture updated event.
         /// </summary>
         /// <param name="targetObject"></param>
@@ -423,6 +416,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Receivers
         /// <param name="targetObject"></param>
         /// <param name="eventData"></param>
         protected virtual void GestureCompleted(GameObject targetObject, InputEventData<Quaternion> eventData) { }
+
+        /// <summary>
+        /// Raised when the target interactable object receives an gesture canceled event.
+        /// </summary>
+        /// <param name="targetObject"></param>
+        /// <param name="eventData"></param>
+        protected virtual void GestureCanceled(GameObject targetObject, InputEventData eventData) { }
 
         #endregion Protected Virtual Callback Functions
     }
