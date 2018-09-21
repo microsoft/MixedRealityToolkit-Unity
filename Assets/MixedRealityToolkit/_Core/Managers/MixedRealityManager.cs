@@ -175,6 +175,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 #endif
 
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
+
+                if (InputSystem == null)
+                {
+                    Debug.LogError("Failed to start the Input System!");
+                }
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
@@ -183,10 +188,20 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 AddManager(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem);
             }
 
+            if (BoundarySystem == null)
+            {
+                Debug.LogError("Failed to start the Boundary System!");
+            }
+
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
                 AddManager(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
+            }
+
+            if (TeleportSystem == null)
+            {
+                Debug.LogError("Failed to start the Teleport System!");
             }
 
             if (ActiveProfile.RegisteredComponentsProfile != null)
