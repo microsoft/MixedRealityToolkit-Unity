@@ -113,61 +113,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &94184980
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100002, guid: 044508a2faa638349b37dba86c771c30, type: 3}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 94184981}
-  - component: {fileID: 94184982}
-  m_Layer: 0
-  m_Name: Model_Icosa
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &94184981
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400002, guid: 044508a2faa638349b37dba86c771c30, type: 3}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 94184980}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.035000086, y: 1.196, z: 1.2}
-  m_LocalScale: {x: 0.28887495, y: 0.28887486, z: 0.28887486}
-  m_Children:
-  - {fileID: 1798027474}
-  m_Father: {fileID: 607581649}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &94184982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 94184980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f2ddf37145d66449b3bb268eb25d7ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  activateInDefault: 1
-  flattenedAxis: 0
-  scaleHandleMaterial: {fileID: 2100000, guid: 4e67b503a60a7a54aac09d9893103f30, type: 2}
-  rotateHandleMaterial: {fileID: 2100000, guid: 4e67b503a60a7a54aac09d9893103f30,
-    type: 2}
-  interactingMaterial: {fileID: 2100000, guid: c50250a068a08904ebfbb262059daa53, type: 2}
-  scaleRate: 1
-  appBarHoverOffsetZ: 0.05
-  maxScale: 2
-  rotationType: 0
-  handMotionToRotate: 0
-  rotateAroundPivot: 0
-  boundingBoxPrefab: {fileID: 114030465538688920, guid: 8084c41e44c5cfa4da76e4aa1200186d,
-    type: 2}
 --- !u!1001 &396372432
 Prefab:
   m_ObjectHideFlags: 0
@@ -488,10 +433,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 396372433}
-  - {fileID: 94184981}
-  - {fileID: 1184199441}
   - {fileID: 1565234134}
   - {fileID: 2011264725}
+  - {fileID: 1798027474}
+  - {fileID: 643040969}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -506,8 +451,9 @@ GameObject:
   - component: {fileID: 643040971}
   - component: {fileID: 643040970}
   - component: {fileID: 643040972}
+  - component: {fileID: 643040973}
   m_Layer: 0
-  m_Name: Platonic
+  m_Name: Bucky
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -519,12 +465,12 @@ Transform:
   m_PrefabParentObject: {fileID: 400004, guid: d90ea0021518aa441aa41b5a912aca0e, type: 3}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 643040968}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.796, y: 1.35, z: 2.15}
-  m_LocalScale: {x: 0.20653248, y: 0.20653252, z: 0.20653252}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.484, y: 1.1776876, z: 1.4777246}
+  m_LocalScale: {x: 0.26385483, y: 0.26385486, z: 0.26385486}
   m_Children: []
-  m_Father: {fileID: 1184199441}
-  m_RootOrder: 0
+  m_Father: {fileID: 607581649}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &643040970
 MeshRenderer:
@@ -584,6 +530,30 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: d90ea0021518aa441aa41b5a912aca0e, type: 3}
+--- !u!114 &643040973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 643040968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f2ddf37145d66449b3bb268eb25d7ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activateInDefault: 1
+  flattenedAxis: 0
+  scaleHandleMaterial: {fileID: 2100000, guid: 4e67b503a60a7a54aac09d9893103f30, type: 2}
+  rotateHandleMaterial: {fileID: 2100000, guid: 4e67b503a60a7a54aac09d9893103f30,
+    type: 2}
+  interactingMaterial: {fileID: 2100000, guid: c50250a068a08904ebfbb262059daa53, type: 2}
+  scaleRate: 1
+  maxScale: 2
+  rotationType: 0
+  handMotionToRotate: 1
+  rotateAroundPivot: 0
+  boundingBoxPrefab: {fileID: 114030465538688920, guid: 8084c41e44c5cfa4da76e4aa1200186d,
+    type: 2}
 --- !u!1 &924422056
 GameObject:
   m_ObjectHideFlags: 0
@@ -662,61 +632,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 924422056}
---- !u!1 &1184199440
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100002, guid: d90ea0021518aa441aa41b5a912aca0e, type: 3}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1184199441}
-  - component: {fileID: 1184199442}
-  m_Layer: 0
-  m_Name: Model_Bucky
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1184199441
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400002, guid: d90ea0021518aa441aa41b5a912aca0e, type: 3}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1184199440}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.385, y: -0.547, z: -1.269}
-  m_LocalScale: {x: 1.2775464, y: 1.2775463, z: 1.2775463}
-  m_Children:
-  - {fileID: 643040969}
-  m_Father: {fileID: 607581649}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1184199442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1184199440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f2ddf37145d66449b3bb268eb25d7ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  activateInDefault: 1
-  flattenedAxis: 0
-  scaleHandleMaterial: {fileID: 2100000, guid: 4e67b503a60a7a54aac09d9893103f30, type: 2}
-  rotateHandleMaterial: {fileID: 2100000, guid: 4e67b503a60a7a54aac09d9893103f30,
-    type: 2}
-  interactingMaterial: {fileID: 2100000, guid: c50250a068a08904ebfbb262059daa53, type: 2}
-  scaleRate: 1
-  appBarHoverOffsetZ: 0.05
-  maxScale: 2
-  rotationType: 0
-  handMotionToRotate: 0
-  rotateAroundPivot: 0
-  boundingBoxPrefab: {fileID: 114030465538688920, guid: 8084c41e44c5cfa4da76e4aa1200186d,
-    type: 2}
 --- !u!1 &1210157473
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,7 +788,6 @@ MonoBehaviour:
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: c50250a068a08904ebfbb262059daa53, type: 2}
   scaleRate: 1
-  appBarHoverOffsetZ: 0.05
   maxScale: 2
   rotationType: 0
   handMotionToRotate: 0
@@ -946,7 +860,7 @@ Transform:
   m_Children:
   - {fileID: 549044536}
   m_Father: {fileID: 607581649}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1582941459
 GameObject:
@@ -1191,8 +1105,9 @@ GameObject:
   - component: {fileID: 1798027476}
   - component: {fileID: 1798027475}
   - component: {fileID: 1798027477}
+  - component: {fileID: 1798027478}
   m_Layer: 0
-  m_Name: Platonic
+  m_Name: Icosa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1204,12 +1119,12 @@ Transform:
   m_PrefabParentObject: {fileID: 400004, guid: 044508a2faa638349b37dba86c771c30, type: 3}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1798027473}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.21, y: 0, z: 0.9}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.3845388, y: 1.196, z: 1.4599874}
+  m_LocalScale: {x: 0.28887495, y: 0.28887486, z: 0.28887486}
   m_Children: []
-  m_Father: {fileID: 94184981}
-  m_RootOrder: 0
+  m_Father: {fileID: 607581649}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1798027475
 MeshRenderer:
@@ -1269,6 +1184,30 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 044508a2faa638349b37dba86c771c30, type: 3}
+--- !u!114 &1798027478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1798027473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f2ddf37145d66449b3bb268eb25d7ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activateInDefault: 1
+  flattenedAxis: 0
+  scaleHandleMaterial: {fileID: 2100000, guid: 4e67b503a60a7a54aac09d9893103f30, type: 2}
+  rotateHandleMaterial: {fileID: 2100000, guid: 4e67b503a60a7a54aac09d9893103f30,
+    type: 2}
+  interactingMaterial: {fileID: 2100000, guid: c50250a068a08904ebfbb262059daa53, type: 2}
+  scaleRate: 1
+  maxScale: 2
+  rotationType: 0
+  handMotionToRotate: 1
+  rotateAroundPivot: 0
+  boundingBoxPrefab: {fileID: 114030465538688920, guid: 8084c41e44c5cfa4da76e4aa1200186d,
+    type: 2}
 --- !u!1001 &2011264724
 Prefab:
   m_ObjectHideFlags: 0
@@ -1278,7 +1217,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400002, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.127
+      value: -1.298
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1306,7 +1245,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: aa39033344b08ce4bab10cc11dc6d6b8, type: 3}
       propertyPath: m_LocalScale.x
@@ -1357,9 +1296,8 @@ MonoBehaviour:
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: c50250a068a08904ebfbb262059daa53, type: 2}
   scaleRate: 1
-  appBarHoverOffsetZ: 0.05
   maxScale: 2
-  rotationType: 0
+  rotationType: 1
   handMotionToRotate: 0
   rotateAroundPivot: 0
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 8084c41e44c5cfa4da76e4aa1200186d,

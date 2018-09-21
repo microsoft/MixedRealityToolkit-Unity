@@ -36,8 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [SerializeField]
         private float scaleRate = 1.0f;
 
-        [SerializeField]
-        private float appBarHoverOffsetZ = 0.05f;
+       // [SerializeField]
+       // private float appBarHoverOffsetZ = 0.05f;
 
         [SerializeField]
         [Tooltip("This is the maximum scale that one grab can accomplish.")]
@@ -45,12 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         [SerializeField]
         private BoundingBoxGizmoHandleRotationType rotationType = BoundingBoxGizmoHandleRotationType.objectCoordinates;
-
-        [SerializeField]
-        private BoundingBoxGizmoHandleHandMotionType handMotionToRotate = BoundingBoxGizmoHandleHandMotionType.handRotatesToRotateObject;
-
-        [SerializeField]
-        private bool rotateAroundPivot = false;
 
         [Header("Preset Components")]
         [SerializeField]
@@ -177,6 +171,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        public Vector3 RigCentroid
+        {
+            get
+            {
+                if (handleCentroids.Count > 0)
+                {
+                    Vector3 centroid = Vector3.zero;
+                    for (int i = 0; i < handleCentroids.Count; ++i)
+                    {
+                        centroid += handleCentroids[i];
+                    }
+                    centroid *= 1.0f / (float)handleCentroids.Count;
+                    return centroid;
+                }
+                return Vector3.zero;
+            }
+        }
 
         private void Start()
         {
@@ -282,9 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     rotateHandles[i].transform.localScale = rotateHandleSize;
                     rotateHandles[i].name = "Middle " + i.ToString();
                     rigRotateGizmoHandles[i] = rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
-                    rigRotateGizmoHandles[i].RotateAroundPivot = rotateAroundPivot;
                     rigRotateGizmoHandles[i].Rig = this;
-                    rigRotateGizmoHandles[i].HandMotionForRotation = handMotionToRotate;
                     rigRotateGizmoHandles[i].RotationCoordinateSystem = rotationType;
                     rigRotateGizmoHandles[i].TransformToAffect = objectToBound.transform;
                     rigRotateGizmoHandles[i].AffineType = BoundingBoxGizmoHandleTransformType.Rotation;
