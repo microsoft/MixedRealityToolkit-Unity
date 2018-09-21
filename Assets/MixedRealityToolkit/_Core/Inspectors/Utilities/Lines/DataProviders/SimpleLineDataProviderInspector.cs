@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataPro
                 if (EditorGUI.EndChangeCheck())
                 {
                     Undo.RecordObject(LineData, "Change Simple Point Position");
-                    LineData.SetPoint(1, CameraCache.Main.transform.InverseTransformPoint(newTargetPosition));
+                    LineData.SetPoint(1, newTargetPosition);
                 }
             }
             else if (Tools.current == Tool.Rotate)
