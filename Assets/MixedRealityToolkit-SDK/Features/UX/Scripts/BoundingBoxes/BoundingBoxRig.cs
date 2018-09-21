@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// </summary>
     public class BoundingBoxRig : MonoBehaviour
     {
-
         [SerializeField]
         [Tooltip("Enter adjust mode and show handles in default.")]
         private bool activateInDefault = false;
@@ -25,41 +23,80 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [Header("Customization Settings")]
         [SerializeField]
         private Material scaleHandleMaterial;
+        public Material ScaleHandleMaterial
+        {
+            get
+            {
+                return scaleHandleMaterial;
+            }
+
+            set
+            {
+                scaleHandleMaterial = value;
+            }
+        }
 
         [SerializeField]
         private Material rotateHandleMaterial;
+        public Material RotateHandleMaterial
+        {
+            get
+            {
+                return rotateHandleMaterial;
+            }
+
+            set
+            {
+                rotateHandleMaterial = value;
+            }
+        }
 
         [SerializeField]
         private Material interactingMaterial;
+        public Material InteractingMaterial
+        {
+            get
+            {
+                return interactingMaterial;
+            }
 
-        [Header("Behavior")]
-        [SerializeField]
-        private float scaleRate = 1.0f;
-
-       // [SerializeField]
-       // private float appBarHoverOffsetZ = 0.05f;
+            set
+            {
+                interactingMaterial = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("This is the maximum scale that one grab can accomplish.")]
         private float maxScale = 2.0f;
-
-        [SerializeField]
-        private BoundingBoxGizmoHandleRotationType rotationType = BoundingBoxGizmoHandleRotationType.objectCoordinates;
 
         [Header("Preset Components")]
         [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
         private BoundingBox boundingBoxPrefab;
 
-      //  [SerializeField]
-      //  [Tooltip("AppBar prefab.")]
-       // private AppBar appBarPrefab = null;
+        public BoundingBox BoundingBoxPrefab
+        {
+            get
+            {
+                return boundingBoxPrefab;
+            }
+
+            set
+            {
+                boundingBoxPrefab = value;
+            }
+        }
+
+        //  [SerializeField]
+        //  [Tooltip("AppBar prefab.")]
+        // private AppBar appBarPrefab = null;
+
+        //private AppBar appBarInstance;
 
         private BoundingBox boxInstance;
 
         private GameObject objectToBound;
-
-      //  private AppBar appBarInstance;
 
         private GameObject[] rotateHandles;
 
@@ -80,114 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private Vector3 rotateHandleSize = new Vector3(0.04f, 0.04f, 0.04f);
 
         private bool destroying = false;
-
-        public BoundingBox BoundingBoxPrefab
-        {
-            get
-            {
-                return boundingBoxPrefab;
-            }
-
-            set
-            {
-                boundingBoxPrefab = value;
-            }
-        }
-
-        public Material ScaleHandleMaterial
-        {
-            get
-            {
-                return scaleHandleMaterial;
-            }
-
-            set
-            {
-                scaleHandleMaterial = value;
-            }
-        }
-
-        public Material RotateHandleMaterial
-        {
-            get
-            {
-                return rotateHandleMaterial;
-            }
-
-            set
-            {
-                rotateHandleMaterial = value;
-            }
-        }
-
-        public Material InteractingMaterial
-        {
-            get
-            {
-                return interactingMaterial;
-            }
-
-            set
-            {
-                interactingMaterial = value;
-            }
-        }
-
-        public void Activate()
-        {
-            //InputManager.Instance.RaiseBoundingBoxRigActivated(gameObject);
-            ShowRig = true;
-        }
-
-        public void Deactivate()
-        {
-            //InputManager.Instance.RaiseBoundingBoxRigDeactivated(gameObject);
-            ShowRig = false;
-        }
-
-        public void FocusOnHandle(GameObject handle)
-        {
-            if (handle != null)
-            {
-                for (int i = 0; i < rotateHandles.Length; ++i)
-                {
-                    rotateHandles[i].SetActive(rotateHandles[i].gameObject == handle);
-                }
-                for (int i = 0; i < cornerHandles.Length; ++i)
-                {
-                    cornerHandles[i].SetActive(cornerHandles[i].gameObject == handle);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < rotateHandles.Length; ++i)
-                {
-                    rotateHandles[i].SetActive(true);
-                }
-                for (int i = 0; i < cornerHandles.Length; ++i)
-                {
-                    cornerHandles[i].SetActive(true);
-                }
-            }
-        }
-
-        public Vector3 RigCentroid
-        {
-            get
-            {
-                if (handleCentroids.Count > 0)
-                {
-                    Vector3 centroid = Vector3.zero;
-                    for (int i = 0; i < handleCentroids.Count; ++i)
-                    {
-                        centroid += handleCentroids[i];
-                    }
-                    centroid *= 1.0f / (float)handleCentroids.Count;
-                    return centroid;
-                }
-                return Vector3.zero;
-            }
-        }
 
         private void Start()
         {
@@ -260,7 +189,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     cornerHandles[i].name = "Corner " + i.ToString();
                     rigScaleGizmoHandles[i] = cornerHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                     rigScaleGizmoHandles[i].Rig = this;
-                    rigScaleGizmoHandles[i].ScaleRate = scaleRate;
                     rigScaleGizmoHandles[i].MaxScale = maxScale;
                     rigScaleGizmoHandles[i].TransformToAffect = objectToBound.transform;
                     rigScaleGizmoHandles[i].Axis = BoundingBoxGizmoHandleAxisToAffect.Y;
@@ -294,7 +222,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     rotateHandles[i].name = "Middle " + i.ToString();
                     rigRotateGizmoHandles[i] = rotateHandles[i].AddComponent<BoundingBoxGizmoHandle>();
                     rigRotateGizmoHandles[i].Rig = this;
-                    rigRotateGizmoHandles[i].RotationCoordinateSystem = rotationType;
                     rigRotateGizmoHandles[i].TransformToAffect = objectToBound.transform;
                     rigRotateGizmoHandles[i].AffineType = BoundingBoxGizmoHandleTransformType.Rotation;
                    
@@ -315,22 +242,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 rigRotateGizmoHandles[9].Axis  = BoundingBoxGizmoHandleAxisToAffect.X;
                 rigRotateGizmoHandles[10].Axis = BoundingBoxGizmoHandleAxisToAffect.X;
                 rigRotateGizmoHandles[11].Axis = BoundingBoxGizmoHandleAxisToAffect.X;
-
-                //set lefthandedness
-                rigRotateGizmoHandles[0].IsLeftHandedRotation = false;
-                rigRotateGizmoHandles[1].IsLeftHandedRotation = false;
-                rigRotateGizmoHandles[2].IsLeftHandedRotation = false;
-                rigRotateGizmoHandles[3].IsLeftHandedRotation = false;
-
-                rigRotateGizmoHandles[4].IsLeftHandedRotation = false;
-                rigRotateGizmoHandles[5].IsLeftHandedRotation = false;
-                rigRotateGizmoHandles[6].IsLeftHandedRotation = true;
-                rigRotateGizmoHandles[7].IsLeftHandedRotation = true;
-
-                rigRotateGizmoHandles[8].IsLeftHandedRotation = false;
-                rigRotateGizmoHandles[9].IsLeftHandedRotation = true;
-                rigRotateGizmoHandles[10].IsLeftHandedRotation = false;
-                rigRotateGizmoHandles[11].IsLeftHandedRotation = true;
             }
 
             rotateHandles[0].transform.localPosition = (handleCentroids[2] + handleCentroids[0]) * 0.5f;
@@ -465,6 +376,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return rig;
         }
 
+        private BoundingBox.FlattenModeEnum GetBestAxisToFlatten()
+        {
+            int index = handleCentroids.Count - 8;
+            float width = (handleCentroids[index + 0] - handleCentroids[index + 4]).magnitude;
+            float height = (handleCentroids[index + 0] - handleCentroids[index + 2]).magnitude;
+            float depth = (handleCentroids[index + 0] - handleCentroids[index + 1]).magnitude;
+
+            if (width < height && width < depth)
+            {
+                return BoundingBox.FlattenModeEnum.FlattenX;
+            }
+            else if (height < width && height < depth)
+            {
+                return BoundingBox.FlattenModeEnum.FlattenY;
+            }
+            else if (depth < height && depth < width)
+            {
+                return BoundingBox.FlattenModeEnum.FlattenZ;
+            }
+
+            return BoundingBox.FlattenModeEnum.DoNotFlatten;
+        }
+
         private bool ShowRig
         {
             get
@@ -503,6 +437,78 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        #region Public Methods
+
+        /// <summary>
+        /// This function turns on BoundingBox Rig
+        /// </summary>
+        public void Activate()
+        {
+            //InputManager.Instance.RaiseBoundingBoxRigActivated(gameObject);
+            ShowRig = true;
+        }
+
+        /// <summary>
+        /// This function turns off BoundingBox Rig
+        /// </summary>
+        public void Deactivate()
+        {
+            //InputManager.Instance.RaiseBoundingBoxRigDeactivated(gameObject);
+            ShowRig = false;
+        }
+
+        /// <summary>
+        /// calculates the centroid of the rig corner points
+        /// </summary>
+        public Vector3 RigCentroid
+        {
+            get
+            {
+                if (handleCentroids.Count > 0)
+                {
+                    Vector3 centroid = Vector3.zero;
+                    for (int i = 0; i < handleCentroids.Count; ++i)
+                    {
+                        centroid += handleCentroids[i];
+                    }
+                    centroid *= 1.0f / (float)handleCentroids.Count;
+                    return centroid;
+                }
+                return Vector3.zero;
+            }
+        }
+
+        /// <summary>
+        /// This function tells the rig that a handle has focus
+        /// </summary>
+        /// <param name="handle"></param>
+        public void FocusOnHandle(GameObject handle)
+        {
+            if (handle != null)
+            {
+                for (int i = 0; i < rotateHandles.Length; ++i)
+                {
+                    rotateHandles[i].SetActive(rotateHandles[i].gameObject == handle);
+                }
+                for (int i = 0; i < cornerHandles.Length; ++i)
+                {
+                    cornerHandles[i].SetActive(cornerHandles[i].gameObject == handle);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < rotateHandles.Length; ++i)
+                {
+                    rotateHandles[i].SetActive(true);
+                }
+                for (int i = 0; i < cornerHandles.Length; ++i)
+                {
+                    cornerHandles[i].SetActive(true);
+                }
+            }
+        }
+
+        //this function retrieves the boundingbox bounds as a set of 3D points
         public List<Vector3> GetBounds()
         {
             if (objectToBound != null)
@@ -530,27 +536,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return null;
         }
 
-        private BoundingBox.FlattenModeEnum GetBestAxisToFlatten()
+        /// <summary>
+        /// This function gets the rig transform position
+        /// </summary>
+        /// <returns></returns>
+        public Vector3 GetRigPosition()
         {
-            int index = handleCentroids.Count - 8;
-            float width = (handleCentroids[index + 0] - handleCentroids[index + 4]).magnitude;
-            float height = (handleCentroids[index + 0] - handleCentroids[index + 2]).magnitude;
-            float depth = (handleCentroids[index + 0] - handleCentroids[index + 1]).magnitude;
-
-            if (width < height && width < depth)
+            if (boxInstance != null)
             {
-                return BoundingBox.FlattenModeEnum.FlattenX;
+                return boxInstance.transform.position;
             }
-            else if (height < width && height < depth)
-            {
-                return BoundingBox.FlattenModeEnum.FlattenY;
-            }
-            else if (depth < height && depth < width)
-            {
-                return BoundingBox.FlattenModeEnum.FlattenZ;
-            }
-
-            return BoundingBox.FlattenModeEnum.DoNotFlatten;
+            return Vector3.zero;
         }
+        #endregion
     }
 }

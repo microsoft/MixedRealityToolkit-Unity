@@ -1,16 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Assertions;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
-using Microsoft.MixedReality.Toolkit.InputSystem.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
@@ -20,120 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     public class BoundingBoxGizmoHandle : MonoBehaviour, IMixedRealityInputHandler, IMixedRealitySourceStateHandler
     {
         private BoundingBoxRig rig;
-        private Transform transformToAffect;
-        private BoundingBoxGizmoHandleTransformType affineType;
-        private BoundingBoxGizmoHandleAxisToAffect axis;
-        private Vector3 initialHandPosition;
-        private Vector3 initialScale;
-        private Vector3 initialPosition;
-        private Vector3 initialScaleOrigin;
-        private Quaternion initialRotation;
-        private InputEventData inputDownEventData;
-        private bool isHandRotationAvailable;
-        private bool isLeftHandedRotation = false;
-        private Vector3 rotationFromPositionScale = new Vector3(-300.0f, -300.0f, -300.0f);
-        private float minimumScaleNav = 0.001f;
-        private float scaleRate = 1.0f;
-        private float maxScale = 10.0f;
-        private BoundingBoxGizmoHandleRotationType rotationCoordinateSystem;
-        private BoundingBoxGizmoHandleHandMotionType handMotionForRotation;
-        private Vector3 lastHandWorldPos = Vector3.zero;
-
-        private static IMixedRealityInputSystem inputSystem = null;
-        protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
-
-        public BoundingBoxGizmoHandleTransformType AffineType
-        {
-            get
-            {
-                return affineType;
-            }
-
-            set
-            {
-                affineType = value;
-            }
-        }
-        public BoundingBoxGizmoHandleAxisToAffect Axis
-        {
-            get
-            {
-                return axis;
-            }
-
-            set
-            {
-                axis = value;
-            }
-        }
-        public bool IsLeftHandedRotation
-        {
-            get
-            {
-                return isLeftHandedRotation;
-            }
-
-            set
-            {
-                isLeftHandedRotation = value;
-            }
-        }
-        public Transform TransformToAffect
-        {
-            get
-            {
-                return transformToAffect;
-            }
-
-            set
-            {
-                transformToAffect = value;
-            }
-        }
-        public BoundingBoxGizmoHandleRotationType RotationCoordinateSystem
-        {
-            get
-            {
-                return rotationCoordinateSystem;
-            }
-            set
-            {
-                rotationCoordinateSystem = value;
-            }
-        }
-        public BoundingBoxGizmoHandleHandMotionType HandMotionForRotation
-        {
-            get
-            {
-                return handMotionForRotation;
-            }
-            set
-            {
-                handMotionForRotation = value;
-            }
-        }
-        public float ScaleRate
-        {
-            get
-            {
-                return scaleRate;
-            }
-            set
-            {
-                scaleRate = value;
-            }
-        }
-        public float MaxScale
-        {
-            get
-            {
-                return maxScale;
-            }
-            set
-            {
-                maxScale = value;
-            }
-        }
         public BoundingBoxRig Rig
         {
             get
@@ -146,26 +27,85 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 rig = value;
             }
         }
-        public bool RotateAroundPivot { get; set; }
+
+        private Transform transformToAffect;
+        public Transform TransformToAffect
+        {
+            get
+            {
+                return transformToAffect;
+            }
+
+            set
+            {
+                transformToAffect = value;
+            }
+        }
+
+        private BoundingBoxGizmoHandleTransformType affineType;
+        public BoundingBoxGizmoHandleTransformType AffineType
+        {
+            get
+            {
+                return affineType;
+            }
+
+            set
+            {
+                affineType = value;
+            }
+        }
+
+        private BoundingBoxGizmoHandleAxisToAffect axis;
+        public BoundingBoxGizmoHandleAxisToAffect Axis
+        {
+            get
+            {
+                return axis;
+            }
+
+            set
+            {
+                axis = value;
+            }
+        }
+
+        private float maxScale = 10.0f;
+        public float MaxScale
+        {
+            get
+            {
+                return maxScale;
+            }
+            set
+            {
+                maxScale = value;
+            }
+        }
+
+        private Vector3 initialScale;
+
+        private Vector3 initialHandPosition;
+
+        private InputEventData inputDownEventData;
+
+        private Renderer cachedRenderer;
+
+        private static IMixedRealityInputSystem inputSystem = null;
+        protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+
 
         private void Start()
         {
-            isHandRotationAvailable = true;
-
-            if (MixedReality.Toolkit.Core.Utilities.CameraCache.Main.clearFlags != CameraClearFlags.Skybox)
-            {
-                isHandRotationAvailable = false;
-            }
-
             cachedRenderer = gameObject.GetComponent<Renderer>();
         }
+
         private void Update()
         {
             if (inputDownEventData != null)
             {
                 Vector3 currentHandPosition = GetHandPosition(inputDownEventData.SourceId);
              
-                //calculate affines
                 if (this.AffineType == BoundingBoxGizmoHandleTransformType.Scale)
                 {
                     ApplyScale(currentHandPosition);
@@ -174,8 +114,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 {
                    ApplyRotation(currentHandPosition);
                 }
-
-                lastHandWorldPos = currentHandPosition;
             }
         }
 
@@ -197,23 +135,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private void ApplyScale(Vector3 currentHandPosition)
         {
             Vector3 rigCentroid = rig.RigCentroid;
-            Vector3 cornerFrom = this.transform.position - rigCentroid;
-            float startMag = (initialHandPosition - rigCentroid).magnitude;
-            float newMag = (currentHandPosition - rigCentroid).magnitude;
-            float ratio = newMag / startMag;
-
-            Vector3 deltaScale = Vector3.one * ratio;
+            float startMag = (initialHandPosition - rigCentroid).magnitude * 1.0f;
+            float newMag = (currentHandPosition - rigCentroid).magnitude * 1.0f;
+            float ratio = (newMag / startMag);
             Vector3 newScale = initialScale * ratio;
             newScale = GetBoundedScaleChange(newScale);
 
-            //scale from object center
             transformToAffect.localScale = newScale;
-
-            ////now handle offset
-            //translate so that scale is effectively from opposite corner
-           // Vector3 cornerTo = cornerFrom;
-            //cornerTo *= ratio;
-            //transformToAffect.position = initialPosition + (currentHandPosition - initialHandPosition);
         }
 
         private void ApplyRotation(Vector3 currentHandPosition)
@@ -256,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return doubleCross + planePosition;
         }
 
-        public Vector3 GetWorldAxisFromRig(BoundingBoxGizmoHandleAxisToAffect fromAxisDesc)
+        private Vector3 GetWorldAxisFromRig(BoundingBoxGizmoHandleAxisToAffect fromAxisDesc)
         {
             if (fromAxisDesc == BoundingBoxGizmoHandleAxisToAffect.X)
             {
@@ -273,8 +201,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             return new Vector3(1, 0, 0);
         }
-
-        private Renderer cachedRenderer;
 
         private void ResetRigHandles()
         {
@@ -293,16 +219,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             Rig.FocusOnHandle(null);
         }
 
+        #region Event Handlers
         public void OnInputDown(InputEventData eventData)
         {
             inputDownEventData = eventData;
 
             initialHandPosition     = GetHandPosition(eventData.SourceId);
-            lastHandWorldPos        = initialHandPosition;
             initialScale            = transformToAffect.localScale;
-            initialPosition         = transformToAffect.position;
-            initialRotation         = transformToAffect.rotation;
-            initialScaleOrigin      = initialPosition - this.transform.position;
 
             InputSystem.PushModalInputHandler(gameObject);
 
@@ -310,6 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             Rig.FocusOnHandle(this.gameObject);
             eventData.Use();
         }
+
         public void OnInputUp(InputEventData eventData)
         {
             inputDownEventData = null;
@@ -320,6 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 eventData.Use();
             }
         }
+
         public void OnSourceDetected(SourceStateEventData eventData)
         {
         }
@@ -342,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnPositionInputChanged(InputEventData<Vector2> eventData)
         {
-
         }
+        #endregion
     }
 }

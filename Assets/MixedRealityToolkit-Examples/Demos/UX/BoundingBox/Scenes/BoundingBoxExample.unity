@@ -549,9 +549,7 @@ MonoBehaviour:
   interactingMaterial: {fileID: 2100000, guid: c50250a068a08904ebfbb262059daa53, type: 2}
   scaleRate: 1
   maxScale: 2
-  rotationType: 0
-  handMotionToRotate: 1
-  rotateAroundPivot: 0
+  rotationType: 1
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 8084c41e44c5cfa4da76e4aa1200186d,
     type: 2}
 --- !u!1 &924422056
@@ -790,8 +788,6 @@ MonoBehaviour:
   scaleRate: 1
   maxScale: 2
   rotationType: 0
-  handMotionToRotate: 0
-  rotateAroundPivot: 0
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 8084c41e44c5cfa4da76e4aa1200186d,
     type: 2}
 --- !u!65 &1565234131
@@ -1202,10 +1198,8 @@ MonoBehaviour:
     type: 2}
   interactingMaterial: {fileID: 2100000, guid: c50250a068a08904ebfbb262059daa53, type: 2}
   scaleRate: 1
-  maxScale: 2
+  maxScale: 1.3
   rotationType: 0
-  handMotionToRotate: 1
-  rotateAroundPivot: 0
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 8084c41e44c5cfa4da76e4aa1200186d,
     type: 2}
 --- !u!1001 &2011264724
@@ -1298,8 +1292,6 @@ MonoBehaviour:
   scaleRate: 1
   maxScale: 2
   rotationType: 1
-  handMotionToRotate: 0
-  rotateAroundPivot: 0
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 8084c41e44c5cfa4da76e4aa1200186d,
     type: 2}
 --- !u!1 &2121517732
