@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using System.Collections.Generic;
 using UnityEditor;
