@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
             {
                 if (genericOpenVRController.Value != null)
                 {
-                    InputSystem?.RaiseSourceLost(genericOpenVRController.Value.InputSource, genericOpenVRController.Value);
+                    MixedRealityManager.InputSystem?.RaiseSourceLost(genericOpenVRController.Value.InputSource, genericOpenVRController.Value);
                 }
             }
 
@@ -86,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 
                         if (controller != null)
                         {
-                            InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                            MixedRealityManager.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
                         }
 
                         ActiveControllers.Remove(lastDeviceList[i]);
@@ -107,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
 
                     if (controller != null)
                     {
-                        InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                        MixedRealityManager.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
                     }
                 }
             }
@@ -143,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                     break;
             }
 
-            var inputSource = InputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller");
+            var inputSource = MixedRealityManager.InputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller");
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericJoystickController;
 
             if (detectedController == null)

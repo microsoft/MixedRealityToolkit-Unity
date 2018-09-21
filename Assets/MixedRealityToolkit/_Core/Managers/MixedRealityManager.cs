@@ -979,5 +979,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         #endregion Manager Utilities
 
         #endregion Manager Container Management
+
+        #region Manager Accessors
+
+        private static IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The current Input System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = Instance.GetManager<IMixedRealityInputSystem>());
+
+        private static IMixedRealityBoundarySystem boundarySystem = null;
+
+        /// <summary>
+        /// The current Boundary System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityBoundarySystem BoundarySystem => boundarySystem ?? (boundarySystem = Instance.GetManager<IMixedRealityBoundarySystem>());
+
+        private static IMixedRealityTeleportSystem teleportSystem = null;
+
+        /// <summary>
+        /// The current Teleport System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = Instance.GetManager<IMixedRealityTeleportSystem>());
+
+        #endregion Manager Accessors
     }
 }
