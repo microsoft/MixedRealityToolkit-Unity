@@ -438,13 +438,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
 
         #region Public Methods
-
         /// <summary>
         /// This function turns on BoundingBox Rig
         /// </summary>
         public void Activate()
         {
-            //InputManager.Instance.RaiseBoundingBoxRigActivated(gameObject);
             ShowRig = true;
         }
 
@@ -453,7 +451,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// </summary>
         public void Deactivate()
         {
-            //InputManager.Instance.RaiseBoundingBoxRigDeactivated(gameObject);
             ShowRig = false;
         }
 
