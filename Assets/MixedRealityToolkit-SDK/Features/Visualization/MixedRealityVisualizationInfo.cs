@@ -4,13 +4,13 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
+namespace Microsoft.MixedReality.Toolkit.SDK.VisualizationSystem
 {
     /// <summary>
     /// This script keeps track of the GameObjects representations for each button on the Mixed Reality Controllers.
     /// It also keeps track of the animation Transforms in order to properly animate according to user input.
     /// </summary>
-    public class MixedRealityControllerInfo
+    public class MixedRealityVisualizationInfo
     {
         public readonly GameObject ControllerParent;
         public readonly Handedness Handedness;
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         private Vector2 lastTouchpadPosition;
         private double lastSelectPressedAmount;
 
-        public MixedRealityControllerInfo(GameObject controllerParent, Handedness handedness)
+        public MixedRealityVisualizationInfo(GameObject controllerParent, Handedness handedness)
         {
             ControllerParent = controllerParent;
             Handedness = handedness;
@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         /// </summary>
         /// <param name="childTransforms">The transforms of the glTF model.</param>
         /// <param name="motionControllerVisualizer"></param>
-        public void LoadInfo(Transform[] childTransforms, MixedRealityControllerVisualizer motionControllerVisualizer)
+        public void LoadInfo(Transform[] childTransforms, MixedRealityVisualizer motionControllerVisualizer)
         {
             foreach (Transform child in childTransforms)
             {

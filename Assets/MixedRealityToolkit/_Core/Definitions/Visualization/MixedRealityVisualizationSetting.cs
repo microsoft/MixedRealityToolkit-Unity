@@ -7,13 +7,13 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Visualization
 {
     /// <summary>
     /// Used to define a controller's visualization settings.
     /// </summary>
     [Serializable]
-    public struct MixedRealityControllerVisualizationSetting
+    public struct MixedRealityVisualizationSetting
     {
         /// <summary>
         /// Constructor.
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// <param name="controllerType">Controller Type to instantiate at runtime.</param>
         /// <param name="handedness">The designated hand that the device is managing.</param>
         /// <param name="overrideModel">The controller model prefab to be rendered.</param>
-        public MixedRealityControllerVisualizationSetting(string description, Type controllerType, Handedness handedness = Handedness.None, GameObject overrideModel = null) : this()
+        public MixedRealityVisualizationSetting(string description, Type controllerType, Handedness handedness = Handedness.None, GameObject overrideModel = null) : this()
         {
             this.description = description;
             this.controllerType = new SystemType(controllerType);
