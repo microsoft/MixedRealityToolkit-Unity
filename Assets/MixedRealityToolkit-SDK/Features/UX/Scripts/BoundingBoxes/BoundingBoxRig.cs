@@ -88,12 +88,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
-        //  [SerializeField]
-        //  [Tooltip("AppBar prefab.")]
-        // private AppBar appBarPrefab = null;
-
-        //private AppBar appBarInstance;
-
         private BoundingBox boxInstance;
 
         private GameObject objectToBound;
@@ -127,10 +121,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             boxInstance.FlattenPreference = flattenedAxis;
 
             BuildRig();
-
-           // appBarInstance = Instantiate(appBarPrefab) as AppBar;
-           // appBarInstance.BoundingBox = boxInstance;
-           // appBarInstance.HoverOffsetZ = appBarHoverOffsetZ;
 
             boxInstance.IsVisible = false;
 
