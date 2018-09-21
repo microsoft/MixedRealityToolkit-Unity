@@ -69,6 +69,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        private bool manualUpdateActive = false;
+
+        /// <summary>
+        ///setting this to true reduces computation by only recomputed when requested
+        /// </summary>
+        public bool ManualUpdateActive
+        {
+            get
+            {
+                return manualUpdateActive;
+            }
+
+            set
+            {
+                manualUpdateActive = value;
+            }
+        }
+
         /// <summary>
         /// The relative % size of an axis must meet before being auto-flattened.
         /// </summary>
@@ -286,8 +304,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         protected virtual void Update()
         {
             CreateTransforms();
-            RefreshTargetBounds();
-            UpdateScaleTransform();
+
+            if (manualUpdateActive == false)
+            {
+                RefreshTargetBounds();
+                UpdateScaleTransform();
+            }
         }
 
         /// <summary>
@@ -484,6 +506,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
         #endregion
 
+        public void ManualUpdate()
+        {
+            RefreshTargetBounds();
+            UpdateScaleTransform();
+        }
+
         #region static utility functions
         /// <summary>
         /// Method to get bounding box points using Collider method.
@@ -633,6 +661,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        
         private static Vector3[] corners = null;
         private static Vector3[] rectTransformCorners = new Vector3[4];
         #endregion

@@ -104,6 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             if (inputDownEventData != null)
             {
+                rig.RecalculateCount = 1;
                 Vector3 currentHandPosition = GetHandPosition(inputDownEventData.SourceId);
              
                 if (this.AffineType == BoundingBoxGizmoHandleTransformType.Scale)

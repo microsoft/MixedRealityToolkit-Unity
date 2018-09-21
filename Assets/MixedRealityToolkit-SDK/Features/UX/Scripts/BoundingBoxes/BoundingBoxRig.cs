@@ -70,6 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [Tooltip("This is the maximum scale that one grab can accomplish.")]
         private float maxScale = 2.0f;
 
+        public int RecalculateCount = 0;
+
         [Header("Preset Components")]
         [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
@@ -119,6 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             boxInstance = Instantiate(BoundingBoxPrefab) as BoundingBox;
             boxInstance.Target = objectToBound;
             boxInstance.FlattenPreference = flattenedAxis;
+            boxInstance.ManualUpdateActive = true;
 
             BuildRig();
 
@@ -134,8 +137,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             if (destroying == false && ShowRig)
             {
-                UpdateBoundsPoints();
-                UpdateHandles();
+                if (RecalculateCount > 0)
+                {
+                    boxInstance.ManualUpdate();
+                    UpdateBoundsPoints();
+                    UpdateHandles();
+                    RecalculateCount--;
+                }
             }
         }
 
@@ -154,8 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private void CreateHandles()
         {
             ClearHandles();
-            UpdateCornerHandles();
-            UpdateRotateHandles();
+            UpdateHandles();
             ParentHandles();
             UpdateHandles();
         }
@@ -434,6 +441,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public void Activate()
         {
             ShowRig = true;
+            boxInstance.ManualUpdate();
+            RecalculateCount = 3;
         }
 
         /// <summary>
@@ -442,6 +451,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public void Deactivate()
         {
             ShowRig = false;
+            RecalculateCount = 0;
         }
 
         /// <summary>
