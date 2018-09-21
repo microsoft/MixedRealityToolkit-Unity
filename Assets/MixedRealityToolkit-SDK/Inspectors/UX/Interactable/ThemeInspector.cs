@@ -565,6 +565,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             SerializedProperty floatTo;
             SerializedProperty vector2From;
             SerializedProperty vector2To;
+            SerializedProperty stringFrom;
+            SerializedProperty stringTo;
 
             switch ((ThemePropertyValueTypes)type)
             {
@@ -639,14 +641,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     gameObjectTo.objectReferenceValue = gameObjectFrom.objectReferenceValue;
                     break;
                 case ThemePropertyValueTypes.String:
-                    SerializedProperty stringFrom = copyFrom.FindPropertyRelative("String");
-                    SerializedProperty stringTo = copyTo.FindPropertyRelative("String");
+                    stringFrom = copyFrom.FindPropertyRelative("String");
+                    stringTo = copyTo.FindPropertyRelative("String");
                     stringTo.stringValue = stringFrom.stringValue;
                     break;
                 case ThemePropertyValueTypes.Bool:
                     SerializedProperty boolFrom = copyFrom.FindPropertyRelative("Bool");
                     SerializedProperty boolTo = copyTo.FindPropertyRelative("Bool");
                     boolTo.boolValue = boolFrom.boolValue;
+                    break;
+                case ThemePropertyValueTypes.AnimatorTrigger:
+                    stringFrom = copyFrom.FindPropertyRelative("String");
+                    stringTo = copyTo.FindPropertyRelative("String");
+                    stringTo.stringValue = stringFrom.stringValue;
                     break;
                 default:
                     break;
@@ -659,6 +666,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             SerializedProperty floatTo;
             SerializedProperty vector2To;
+            SerializedProperty stringTo;
 
             switch ((ThemePropertyValueTypes)type)
             {
@@ -719,12 +727,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     gameObjectTo.objectReferenceValue = copyFrom.GameObject;
                     break;
                 case ThemePropertyValueTypes.String:
-                    SerializedProperty stringTo = copyTo.FindPropertyRelative("String");
+                    stringTo = copyTo.FindPropertyRelative("String");
                     stringTo.stringValue = copyFrom.String;
                     break;
                 case ThemePropertyValueTypes.Bool:
                     SerializedProperty boolTo = copyTo.FindPropertyRelative("Bool");
                     boolTo.boolValue = copyFrom.Bool;
+                    break;
+                case ThemePropertyValueTypes.AnimatorTrigger:
+                    stringTo = copyTo.FindPropertyRelative("String");
+                    stringTo.stringValue = copyFrom.String;
                     break;
                 default:
                     break;
@@ -942,6 +954,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         SerializedProperty item = values.GetArrayElementAtIndex(n);
                         SerializedProperty floatValue = item.FindPropertyRelative("Float");
                         SerializedProperty vector2Value = item.FindPropertyRelative("Vector2");
+                        SerializedProperty stringValue = item.FindPropertyRelative("String");
 
                         switch ((ThemePropertyValueTypes)type.intValue)
                         {
@@ -1000,12 +1013,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                                 EditorGUILayout.PropertyField(gameObjectValue, new GUIContent(name.stringValue, ""), false);
                                 break;
                             case ThemePropertyValueTypes.String:
-                                SerializedProperty stringValue = item.FindPropertyRelative("String");
                                 stringValue.stringValue = EditorGUILayout.TextField(new GUIContent(name.stringValue, ""), stringValue.stringValue);
                                 break;
                             case ThemePropertyValueTypes.Bool:
                                 SerializedProperty boolValue = item.FindPropertyRelative("Bool");
                                 boolValue.boolValue = EditorGUILayout.Toggle(new GUIContent(name.stringValue, ""), boolValue.boolValue);
+                                break;
+                            case ThemePropertyValueTypes.AnimatorTrigger:
+                                stringValue.stringValue = EditorGUILayout.TextField(new GUIContent(name.stringValue, ""), stringValue.stringValue);
                                 break;
                             default:
                                 break;

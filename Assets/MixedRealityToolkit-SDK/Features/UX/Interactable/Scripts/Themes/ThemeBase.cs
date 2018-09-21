@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    public enum ThemePropertyValueTypes { Float, Int, Color, ShaderFloat, shaderRange, Vector2, Vector3, Vector4, Quaternion, Texture, Material, AudioClip, Animaiton, GameObject, String, Bool }
+    public enum ThemePropertyValueTypes { Float, Int, Color, ShaderFloat, shaderRange, Vector2, Vector3, Vector4, Quaternion, Texture, Material, AudioClip, Animaiton, GameObject, String, Bool, AnimatorTrigger }
 
     [System.Serializable]
     public class ThemePropertyValue
@@ -58,7 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public List<string> ShaderOptionNames;
         public ThemePropertyValue Default;
         public string ShaderName;
-        public bool NoEasing;
 
         public string GetShaderPropId()
         {
@@ -163,6 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public GameObject Host;
         public EaseSettings Ease;
         public bool Loaded;
+
         private bool hasFirstState = false;
 
         private int lastState = -1;

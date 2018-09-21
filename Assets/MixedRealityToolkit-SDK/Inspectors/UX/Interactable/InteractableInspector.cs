@@ -853,6 +853,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             SerializedProperty floatTo;
             SerializedProperty vector2From;
             SerializedProperty vector2To;
+            SerializedProperty stringFrom;
+            SerializedProperty stringTo;
 
             switch ((ThemePropertyValueTypes)type)
             {
@@ -927,14 +929,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     gameObjectTo.objectReferenceValue = gameObjectFrom.objectReferenceValue;
                     break;
                 case ThemePropertyValueTypes.String:
-                    SerializedProperty stringFrom = copyFrom.FindPropertyRelative("String");
-                    SerializedProperty stringTo = copyTo.FindPropertyRelative("String");
+                    stringFrom = copyFrom.FindPropertyRelative("String");
+                    stringTo = copyTo.FindPropertyRelative("String");
                     stringTo.stringValue = stringFrom.stringValue;
                     break;
                 case ThemePropertyValueTypes.Bool:
                     SerializedProperty boolFrom = copyFrom.FindPropertyRelative("Bool");
                     SerializedProperty boolTo = copyTo.FindPropertyRelative("Bool");
                     boolTo.boolValue = boolFrom.boolValue;
+                    break;
+                case ThemePropertyValueTypes.AnimatorTrigger:
+                    stringFrom = copyFrom.FindPropertyRelative("String");
+                    stringTo = copyTo.FindPropertyRelative("String");
+                    stringTo.stringValue = stringFrom.stringValue;
                     break;
                 default:
                     break;
@@ -947,6 +954,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             SerializedProperty floatTo;
             SerializedProperty vector2To;
+            SerializedProperty stringTo;
 
             switch ((ThemePropertyValueTypes)type)
             {
@@ -1007,12 +1015,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     gameObjectTo.objectReferenceValue = copyFrom.GameObject;
                     break;
                 case ThemePropertyValueTypes.String:
-                    SerializedProperty stringTo = copyTo.FindPropertyRelative("String");
+                    stringTo = copyTo.FindPropertyRelative("String");
                     stringTo.stringValue = copyFrom.String;
                     break;
                 case ThemePropertyValueTypes.Bool:
                     SerializedProperty boolTo = copyTo.FindPropertyRelative("Bool");
                     boolTo.boolValue = copyFrom.Bool;
+                    break;
+                case ThemePropertyValueTypes.AnimatorTrigger:
+                    stringTo = copyTo.FindPropertyRelative("String");
+                    stringTo.stringValue = copyFrom.String;
                     break;
                 default:
                     break;
@@ -1043,7 +1055,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                 if (n > 0)
                 {
-                    if(listIndex[1] < 0)
+                    if(listIndex[1] < 1)
                     {
                         listIndex[2] = n;
                     }
@@ -1067,6 +1079,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                 SerializedProperty sProps = settingsItem.FindPropertyRelative("Properties");
                 EditorGUI.indentLevel = indentOnSectionStart + 1;
+
+                int animatorCount = 0;
                 int idCount = 0;
                 for (int p = 0; p < sProps.arraySize; p++)
                 {
@@ -1079,6 +1093,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     SerializedProperty shaderName = item.FindPropertyRelative("ShaderName");
                     SerializedProperty propType = item.FindPropertyRelative("Type");
 
+                    ThemePropertyValueTypes type = (ThemePropertyValueTypes)propType.intValue;
+
+                    if (type == ThemePropertyValueTypes.AnimatorTrigger)
+                    {
+                        animatorCount++;
+                    }
+
                     bool hasTextComp = false;
                     if (shaderNames.arraySize > 0)
                     {
@@ -1087,7 +1108,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         {
                             GUILayout.Space(5);
                         }
-
+                        
                         string[] shaderOptionNames = SerializedPropertyToOptions(shaderNames);
                         string propName = shaderOptionNames[propId.intValue];
                         bool hasShaderProperty = true;
@@ -1107,7 +1128,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                                 hasTextComp = text != null || mesh != null;
                                 if(renderer != null && !hasTextComp)
                                 {
-                                    ThemePropertyValueTypes type = (ThemePropertyValueTypes)propType.intValue;
+                                    
                                     ShaderPropertyType[] filter = new ShaderPropertyType[0];
                                     switch (type)
                                     {
@@ -1172,25 +1193,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                 EditorGUI.indentLevel = indentOnSectionStart;
                 GUILayout.Space(5);
-                DrawDivider();
 
-                // show theme properties
-                SerializedProperty easing = settingsItem.FindPropertyRelative("Easing");
-                SerializedProperty ease = easing.FindPropertyRelative("EaseValues");
-
-                ease.boolValue = EditorGUILayout.Toggle(new GUIContent("Easing", "should the theme animate state values"), ease.boolValue);
-                if (ease.boolValue)
+                if (animatorCount < sProps.arraySize)
                 {
-                    EditorGUI.indentLevel = indentOnSectionStart + 1;
-                    SerializedProperty time = easing.FindPropertyRelative("LerpTime");
-                    //time.floatValue = 0.5f;
-                    SerializedProperty curve = easing.FindPropertyRelative("Curve");
-                    //curve.animationCurveValue = AnimationCurve.Linear(0, 1, 1, 1);
+                    DrawDivider();
 
-                    time.floatValue = EditorGUILayout.FloatField(new GUIContent("Duration", "animation duration"), time.floatValue);
-                    EditorGUILayout.PropertyField(curve, new GUIContent("Animation Curve"));
+                    // show theme properties
+                    SerializedProperty easing = settingsItem.FindPropertyRelative("Easing");
+                    SerializedProperty ease = easing.FindPropertyRelative("EaseValues");
 
-                    EditorGUI.indentLevel = indentOnSectionStart;
+                    ease.boolValue = EditorGUILayout.Toggle(new GUIContent("Easing", "should the theme animate state values"), ease.boolValue);
+                    if (ease.boolValue)
+                    {
+                        EditorGUI.indentLevel = indentOnSectionStart + 1;
+                        SerializedProperty time = easing.FindPropertyRelative("LerpTime");
+                        //time.floatValue = 0.5f;
+                        SerializedProperty curve = easing.FindPropertyRelative("Curve");
+                        //curve.animationCurveValue = AnimationCurve.Linear(0, 1, 1, 1);
+
+                        time.floatValue = EditorGUILayout.FloatField(new GUIContent("Duration", "animation duration"), time.floatValue);
+                        EditorGUILayout.PropertyField(curve, new GUIContent("Animation Curve"));
+
+                        EditorGUI.indentLevel = indentOnSectionStart;
+                    }
                 }
 
                 if (n > 0)
@@ -1243,6 +1268,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         SerializedProperty item = values.GetArrayElementAtIndex(n);
                         SerializedProperty floatValue = item.FindPropertyRelative("Float");
                         SerializedProperty vector2Value = item.FindPropertyRelative("Vector2");
+                        SerializedProperty stringValue = item.FindPropertyRelative("String");
 
                         switch ((ThemePropertyValueTypes)type.intValue)
                         {
@@ -1301,12 +1327,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                                 EditorGUILayout.PropertyField(gameObjectValue, new GUIContent(name.stringValue, ""), false);
                                 break;
                             case ThemePropertyValueTypes.String:
-                                SerializedProperty stringValue = item.FindPropertyRelative("String");
                                 stringValue.stringValue = EditorGUILayout.TextField(new GUIContent(name.stringValue, ""), stringValue.stringValue);
                                 break;
                             case ThemePropertyValueTypes.Bool:
                                 SerializedProperty boolValue = item.FindPropertyRelative("Bool");
                                 boolValue.boolValue = EditorGUILayout.Toggle(new GUIContent(name.stringValue, ""), boolValue.boolValue);
+                                break;
+                            case ThemePropertyValueTypes.AnimatorTrigger:
+                                stringValue.stringValue = EditorGUILayout.TextField(new GUIContent(name.stringValue, ""), stringValue.stringValue);
                                 break;
                             default:
                                 break;

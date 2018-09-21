@@ -15,8 +15,8 @@ MonoBehaviour:
   Settings:
   - Name: AnimatorTheme
     Properties:
-    - Name: Animator
-      Type: 14
+    - Name: Animator Trigger
+      Type: 16
       Values:
       - Name: Default
         String: Default
@@ -114,7 +114,6 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
-      NoEasing: 0
     History:
     - Name: Color
       Type: 2
@@ -215,7 +214,6 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
-      NoEasing: 0
     - Name: Offset
       Type: 6
       Values:
@@ -315,7 +313,6 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
-      NoEasing: 0
     - Name: Scale
       Type: 6
       Values:
@@ -415,7 +412,6 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
-      NoEasing: 0
     - Name: Animation
       Type: 12
       Values:
@@ -515,7 +511,6 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
-      NoEasing: 0
     - Name: Animation
       Type: 14
       Values:
@@ -615,7 +610,105 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
-      NoEasing: 0
+    - Name: Animator
+      Type: 14
+      Values:
+      - Name: 
+        String: Default
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: Focus
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: Pressed
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      - Name: 
+        String: Disabled
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      StartValue:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      PropId: 0
+      ShaderOptions: []
+      ShaderOptionNames: []
+      Default:
+        Name: 
+        String: 
+        Bool: 0
+        Int: 0
+        Float: 0
+        Texture: {fileID: 0}
+        Material: {fileID: 0}
+        GameObject: {fileID: 0}
+        Vector2: {x: 0, y: 0}
+        Vector3: {x: 0, y: 0, z: 0}
+        Vector4: {x: 0, y: 0, z: 0, w: 0}
+        Color: {r: 0, g: 0, b: 0, a: 0}
+        Quaternion: {x: 0, y: 0, z: 0, w: 0}
+        AudioClip: {fileID: 0}
+        Animation: {fileID: 0}
+      ShaderName: 
     Easing:
       EaseValues: 1
       Curve:
@@ -643,6 +736,7 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 0
       LerpTime: 0.3
+    NoEasing: 0
     IsValid: 1
   CustomSettings: []
   States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}

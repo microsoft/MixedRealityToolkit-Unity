@@ -13,21 +13,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         // if no animator exist, show create button
         // if noEasing, hide blends
         // how to inject special inspector instructions?
+        // A way to load default values
+        // a way to create animator control
 
         private int lastIndex = 0;
 
         public AnimatorTheme()
         {
             Types = new Type[] { typeof(Transform) };
-            Name = "Animator Theme";
+            Name = "AnimatorTheme";
             ThemeProperties.Add(
                 new ThemeProperty()
                 {
                     Name = "Animator Trigger",
-                    Type = ThemePropertyValueTypes.String,
+                    Type = ThemePropertyValueTypes.AnimatorTrigger,
                     Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { String = "Default" },
-                    NoEasing = true
+                    Default = new ThemePropertyValue() { String = "Default" }
                 });
         }
 
