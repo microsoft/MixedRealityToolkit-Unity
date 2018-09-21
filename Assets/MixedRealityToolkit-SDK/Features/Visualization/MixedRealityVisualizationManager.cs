@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.VisualizationSystem
                 var controllerVisualizer = controllerObject.GetComponent<IMixedRealityVisualizer>();
 
                 //if the prefab does not have a Visualizer script attached, add the configured componentS
-                if (controllerVisualizer == null && MixedRealityManager.Instance.ActiveProfile.InputSystemProfile?.VisualizationProfile?.VisualizerType != null)
+                if (controllerVisualizer == null && MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.VisualizationProfile.VisualizerType != null)
                 {
                     controllerVisualizer = controllerObject.AddComponent(MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.VisualizationProfile.VisualizerType.Type) as IMixedRealityVisualizer;
                 }
