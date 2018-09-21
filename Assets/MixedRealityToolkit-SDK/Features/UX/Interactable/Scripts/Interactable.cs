@@ -87,6 +87,27 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         // these should get simplified and moved
         // create a ScriptableObject for managing states!!!!
 
+        public static string[] GetInputActions()
+        {
+            MixedRealityInputAction[] actions = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
+
+            List<string> list = new List<string>();
+            for (int i = 0; i < actions.Length; i++)
+            {
+                list.Add(actions[i].Description);
+            }
+
+            return list.ToArray();
+        }
+
+        public static MixedRealityInputAction ResolveInputAction(int index)
+        {
+            MixedRealityInputAction[] actions = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
+            index = Mathf.Clamp(index, 0, actions.Length - 1);
+            return actions[index];
+
+        }
+
         public State[] GetStates()
         {
             if (States != null)
@@ -108,6 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         protected virtual void Awake()
         {
             //State = new InteractableStates(InteractableStates.Default);
+            InputAction = ResolveInputAction(InputActionId);
             SetupEvents();
             SetupThemes();
             SetupStates();
@@ -293,7 +315,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 return;
             }
 
-            print("Up: " + pointers.Count);
+            print("Up: " + pointers.Count + " / " + name + " / " + HasFocus);
             if (ShouldListen(eventData.MixedRealityInputAction))
             {
                 SetPress(false);
@@ -302,12 +324,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnInputDown(InputEventData eventData)
         {
-            if (!CanInteract() || !HasFocus)
+            if (!CanInteract())
             {
                 return;
             }
 
-            print("Down: " + pointers.Count);
+            print("Down: " + pointers.Count + " / " + name + " / " + HasFocus);
             if(ShouldListen(eventData.MixedRealityInputAction))
             {
                 SetPress(true);
@@ -321,9 +343,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 return;
             }
 
+            print("PRESSED!!!!!" + " / " + name + " / " + HasFocus);
+
             if (StateManager != null)
             {
                 if (ShouldListen(eventData.MixedRealityInputAction))
+                {
+                    StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
+                    IncreaseDimensionIndex();
+                    OnClick.Invoke();
+                }
+                else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
                 {
                     StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
                     IncreaseDimensionIndex();
@@ -335,26 +365,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public void OnPositionInputChanged(InputEventData<Vector2> eventData)
         {
             //throw new NotImplementedException();
-        }
-
-        public virtual void OnInputClicked(UnityEngine.Object eventData)// TEMP
-        {
-            if (!CanInteract())
-            {
-                return;
-            }
-
-            if (StateManager != null)
-            {
-                State[] states = StateManager.GetStates();
-                if (true)//eventData.PressType == ButtonPressFilter)
-                {
-                    StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
-                    IncreaseDimensionIndex();
-
-                    OnClick.Invoke();
-                }
-            }
         }
 
         protected void IncreaseDimensionIndex()
@@ -379,7 +389,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         protected virtual bool ShouldListen(MixedRealityInputAction action)
         {
-            return action == InputAction;
+            print(action + " / " + InputAction + " / " + (action == InputAction));
+            print(action.Description + " / " + InputAction.Description + " / " + action.Id + " / " + InputAction.Id + " / " + name + " / " + HasFocus);
+
+            bool isListening = HasFocus || IsGlobal;
+            return action == InputAction && isListening;
         }
 
         protected virtual bool CanInteract()

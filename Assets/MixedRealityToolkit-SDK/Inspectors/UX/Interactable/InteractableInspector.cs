@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             SetupEventOptions();
             SetupThemeOptions();
 
-            actionOptions = GetInputActions();
+            actionOptions = Interactable.GetInputActions();
 
             enabled = true;
         }
@@ -136,6 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             if (newActionId != actionId.intValue)
             {
                 actionId.intValue = newActionId;
+                Debug.Log(actionId.intValue);
             }
 
             //selected.enumValueIndex = (int)(MixedRealityInputAction)EditorGUILayout.EnumPopup(new GUIContent("Input Action", "Input source for this Interactable, Default: Select"), (MixedRealityInputAction)selected.enumValueIndex);
@@ -1244,10 +1245,40 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             SerializedProperty gameObject = sItem.FindPropertyRelative("Target");
 
             GameObject host = gameObject.objectReferenceValue as GameObject;
+            string path = "Assets/Animations";
+
+            if (host != null)
+            {
+                string controllerName = host.name + "Controller.controller";
+
+                 path = EditorUtility.SaveFilePanel(
+                    "Save Animator Controller and Animation Location",
+                    "",
+                    controllerName,
+                    "controller");
+            }
+            else
+            {
+
+            }
+            
+
+            if (path.Length != 0)
+            {
+                // we have a location
+                var controller = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath(path);
+                host.AddComponent<Animator>();
+
+                /*
+                var pngData = texture.EncodeToPNG();
+                if (pngData != null)
+                    File.WriteAllBytes(path, pngData);
+                    */
+            }
+
 
             /*
-            var controller = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath("Assets/Mecanim/StateMachineTransitions.controller");
-
+            
             Animator animator = new Animator();
             animator.name = host.name + "Animator";
             string path = "Assets/Animations/";
@@ -1783,21 +1814,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             return false;
         }
-
-        protected static string[] GetInputActions()
-        {
-            MixedRealityInputAction[] actions = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
-
-            List<string> list = new List<string>();
-            for (int i = 0; i < actions.Length; i++)
-            {
-                list.Add(actions[i].Description);
-            }
-
-            return list.ToArray();
-        }
-
-
+        
     }
 #endif
 }

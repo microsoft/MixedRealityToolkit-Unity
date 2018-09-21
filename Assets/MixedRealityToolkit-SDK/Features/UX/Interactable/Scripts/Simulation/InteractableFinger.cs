@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (isClicked != Clicked)
             {
-                Button.OnInputClicked(null);
+                Button.OnInputPressed(null);
                 Clicked = isClicked;
             }
         }
