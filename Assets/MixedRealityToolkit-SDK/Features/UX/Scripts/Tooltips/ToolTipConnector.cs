@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 {
@@ -208,8 +209,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                             switch (PivotDirectionOrient)
                             {
                                 case ConnectorOrientType.OrientToCamera:
-                                    relativeTo = Camera.main.transform;//Veil.Instance.HeadTransform;
-                                    break;
+									relativeTo = CameraCache.Main.transform;
+									break;
 
                                 case ConnectorOrientType.OrientToObject:
                                     relativeTo = Target.transform;

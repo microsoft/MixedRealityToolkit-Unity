@@ -318,8 +318,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 					case VanishType.VanishOnTap:
 						if (tappedTime != tappedTimeOnStart)
 						{
-							Debug.Log("Vanish from Tap ==" + tappedTime.ToString() + "  " + tappedTimeOnStart, this);
-
 							toolTip.gameObject.SetActive(false);
 						}
 						break;
