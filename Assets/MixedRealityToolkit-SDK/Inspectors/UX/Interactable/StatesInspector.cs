@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 EditorGUILayout.EndVertical();
             }
 
-            RemoveButton(new GUIContent("+", "Add Theme Property"), 0, AddState);
+            FlexButton(new GUIContent("+", "Add Theme Property"), 0, AddState);
 
             serializedObject.ApplyModifiedProperties();
         }

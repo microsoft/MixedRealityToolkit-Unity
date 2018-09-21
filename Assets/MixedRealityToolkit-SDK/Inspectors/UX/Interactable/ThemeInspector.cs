@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             
             RenderThemeSettings(settings, themeOptions, null, new int[] { 0, -1, 0 });
 
-            RemoveButton(new GUIContent("+", "Add Theme Property"), new int[] { 0 }, AddThemeProperty);
+            FlexButton(new GUIContent("+", "Add Theme Property"), new int[] { 0 }, AddThemeProperty);
             // get list of all the properties from the themes
 
             RenderThemeStates(settings, GetStates(), 0);

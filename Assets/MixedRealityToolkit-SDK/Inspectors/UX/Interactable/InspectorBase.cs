@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return box;
         }
 
-        protected virtual bool RemoveButton(GUIContent label, int index, ListButtonEvent callback)
+        protected virtual bool FlexButton(GUIContent label, int index, ListButtonEvent callback)
         {
             // delete button
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
-        protected virtual bool RemoveButton(GUIContent label, int[] arr, MultiListButtonEvent callback)
+        protected virtual bool FlexButton(GUIContent label, int[] arr, MultiListButtonEvent callback)
         {
             // delete button
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
-        protected virtual bool AddButton(GUIContent label, float padding, int index, ListButtonEvent callback)
+        protected virtual bool FullWidthButton(GUIContent label, float padding, int index, ListButtonEvent callback)
         {
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
             addStyle.fixedHeight = 25;
@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
-        protected virtual bool AddButton(GUIContent label, float padding, int[] arr, MultiListButtonEvent callback)
+        protected virtual bool FullWidthButton(GUIContent label, float padding, int[] arr, MultiListButtonEvent callback)
         {
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
             addStyle.fixedHeight = 25;

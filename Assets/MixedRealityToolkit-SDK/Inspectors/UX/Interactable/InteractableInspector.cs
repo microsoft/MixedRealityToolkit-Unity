@@ -312,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                                 RenderThemeSettings(themeObjSettings, themeObj, themeOptions, gameObject, location);
 
-                                RemoveButton(new GUIContent("+", "Add Theme Property"), location, AddThemeProperty);
+                                FlexButton(new GUIContent("+", "Add Theme Property"), location, AddThemeProperty);
 
                                 RenderThemeStates(themeObjSettings, GetStates(), 30);
 
@@ -1218,12 +1218,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     }
                 }
 
+                // check to see if an animatorControll exists
+                if(animatorCount > 0)
+                {
+                    GameObject host = gameObject.objectReferenceValue as GameObject;
+                    Animator animator = host?.GetComponent<Animator>();
+
+                    if(animator == null)
+                    {
+                        FlexButton(new GUIContent("Create Animations", "Create and add an Animator with AnimationClips"), listIndex, AddAnimator);
+                    }
+                }
+
                 if (n > 0)
                 {
                     //RemoveButton("Remove Property", new int[] {i,t,n}, RemoveThemeProperty);
                 }
                 EditorGUILayout.EndVertical();
             }
+        }
+
+        protected void AddAnimator(int[] arr)
+        {
+
         }
 
         public static void RenderThemeStates(SerializedProperty settings, State[] states, int margin)
@@ -1648,7 +1665,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             EditorGUILayout.Space();
 
-            RemoveButton(new GUIContent("Remove Event"), index, RemoveEvent);
+            FlexButton(new GUIContent("Remove Event"), index, RemoveEvent);
 
             EditorGUILayout.EndVertical();
         }
