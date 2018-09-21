@@ -1,6 +1,6 @@
 # Feature Contribution Process
 
-Adding features to the Mixed Reality Toolkit (MRTK) is split up into a few iteration steps, so maintainers can have time to review and and ensure the process goes smoothly.
+Adding features to the Mixed Reality Toolkit (MRTK) is split up into a few iteration steps, so maintainers can have time to review and and ensure the process goes smoothly. Please be sure to review the list of [feature requirements](#new-feature-requirements) before you get started.
 
 # Process
 The following process has been drafted to ensure all new work complies to the updated standards and architecture defined for the MRTK, this has been defined as:
