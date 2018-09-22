@@ -37,7 +37,7 @@ namespace HoloToolkit.Unity
         public int TetherAngleSteps = 6;
         #endregion
 
-        Quaternion desiredRot = Quaternion.identity;
+        private Quaternion desiredRot = Quaternion.identity;
 
         public override void SolverUpdate()
         {
