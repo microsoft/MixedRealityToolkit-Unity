@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
     /// </summary>
     public class TwoHandMoveLogic
     {
-        private static readonly Vector3 offsetPosition = new Vector3(0, -0.2f, 0);
+        private static readonly Vector3 OffsetPosition = new Vector3(0, -0.2f, 0);
         private float handRefDistance;
         private float objRefDistance;
 
@@ -27,12 +27,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
 
         private const float DistanceScale = 2f;
 
+        /// <summary>
+        /// Get the hand pivot position located a bit lower and behind the camera.
+        /// </summary>
+        /// <returns>A point that is below and just in front of the head.</returns>
+        public static Vector3 HandPivotPosition => CameraCache.Main.transform.position + OffsetPosition - CameraCache.Main.transform.forward * 0.2f;
+
         public void Setup(Vector3 startHandPositionMeters, Transform manipulationRoot)
         {
             var newHandPosition = startHandPositionMeters;
 
             // The pivot is just below and in front of the head.
-            var pivotPosition = GetHandPivotPosition();
+            var pivotPosition = HandPivotPosition;
 
             objRefDistance = Vector3.Distance(manipulationRoot.position, pivotPosition);
             handRefDistance = Vector3.Distance(newHandPosition, pivotPosition);
@@ -49,10 +55,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
             gazeAngularOffset = Quaternion.FromToRotation(handDirection, objDirection);
         }
 
-        public Vector3 Update(Vector3 centroid, Vector3 manipulationObjectPosition)
+        /// <summary>
+        /// Update the movement.
+        /// </summary>
+        /// <param name="centroid"></param>
+        /// <returns>The new position</returns>
+        public Vector3 Update(Vector3 centroid)
         {
             var newHandPosition = centroid;
-            var pivotPosition = GetHandPivotPosition();
+            var pivotPosition = HandPivotPosition;
 
             // Compute the pivot -> hand vector in camera space
             var newHandDirection = Vector3.Normalize(newHandPosition - pivotPosition);
@@ -76,16 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
             }
 
             return newPosition;
-        }
-
-        /// <summary>
-        /// Get the hand pivot position located a bit lower and behind the camera.
-        /// </summary>
-        /// <returns>A point that is below and just in front of the head.</returns>
-        public static Vector3 GetHandPivotPosition()
-        {
-            Vector3 pivot = CameraCache.Main.transform.position + offsetPosition - CameraCache.Main.transform.forward * 0.2f; // a bit lower and behind
-            return pivot;
         }
     }
 }

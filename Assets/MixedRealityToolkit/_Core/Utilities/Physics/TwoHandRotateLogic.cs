@@ -21,8 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
     {
         private const float RotationMultiplier = 2f;
         private readonly AxisConstraintType initialRotationConstraint;
-
-        private AxisConstraintType currentRotationConstraint;
         private Vector3 previousHandlebarRotation;
 
         /// <summary>
@@ -39,10 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// XOrYBasedOnInitialHandPosition might change the current rotation constraint based on the 
         /// initial hand positions at the start
         /// </summary>
-        public AxisConstraintType GetCurrentRotationConstraint()
-        {
-            return currentRotationConstraint;
-        }
+        public AxisConstraintType CurrentRotationConstraint { get; private set; }
 
         /// <summary>
         /// Setup the rotation logic.
@@ -50,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// <param name="handsPressedMap"></param>
         public void Setup(Dictionary<uint, Vector3> handsPressedMap)
         {
-            currentRotationConstraint = initialRotationConstraint;
+            CurrentRotationConstraint = initialRotationConstraint;
             previousHandlebarRotation = GetHandlebarDirection(handsPressedMap);
         }
 
@@ -63,8 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         public Quaternion Update(Dictionary<uint, Vector3> handsPressedMap, Quaternion currentRotation)
         {
             var handlebarDirection = GetHandlebarDirection(handsPressedMap);
-            var handlebarDirectionProjected = ProjectHandlebarGivenConstraint(currentRotationConstraint, handlebarDirection);
-            var prevHandlebarDirectionProjected = ProjectHandlebarGivenConstraint(currentRotationConstraint, previousHandlebarRotation);
+            var handlebarDirectionProjected = ProjectHandlebarGivenConstraint(CurrentRotationConstraint, handlebarDirection);
+            var prevHandlebarDirectionProjected = ProjectHandlebarGivenConstraint(CurrentRotationConstraint, previousHandlebarRotation);
 
             previousHandlebarRotation = handlebarDirection;
 
@@ -75,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
             rotationDelta.ToAngleAxis(out angle, out axis);
             angle *= RotationMultiplier;
 
-            if (currentRotationConstraint == AxisConstraintType.YAxis)
+            if (CurrentRotationConstraint == AxisConstraintType.YAxis)
             {
                 // If we are rotating about Y axis, then make sure we rotate about global Y axis.
                 // Since the angle is obtained from a quaternion, we need to properly orient it (up or down) based
