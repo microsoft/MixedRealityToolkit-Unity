@@ -1,6 +1,6 @@
 # Contributing
 
-The Mixed Reality Toolkit (MRTK) welcomes contributions from the community.  Whether is is for a minor change to fix things like fixing typos and small bug fixes, or a new feature or component.
+The Mixed Reality Toolkit (MRTK) welcomes contributions from the community. Whether it is for a minor change like fixing typos and small bug fixes, or a new feature or component.
 
 For larger submissions, we have drafted contribution guidelines to ensure a smooth process and a good quality of code and documentation, so please be sure to review the  [Feature Contribution guidelines / Process](./Feature_Contribution_Process.md).
 
@@ -34,7 +34,7 @@ If you're proposing a completely new feature (or a new platform support) please 
 >Note:  If you wish to work on something that already exists on our backlog, you can use that work item as your proposal. Be sure to also comment on the task notifying maintainers that you're working towards completing it.
 
 # Beginning development
-Working with GIT, the contribution process is quite simply (provided you have installed a good Git Client such as TortoiseGit or SourceTree)
+Working with Git, the contribution process is quite simply (provided you have installed a good Git Client such as TortoiseGit or SourceTree)
 
 > If you are new to to the Git workflow, [check out this tutorial on Pluralsight](https://www.pluralsight.com/blog/software-development/github-tutorial)
 
@@ -55,7 +55,7 @@ To get started, simply follow these steps
 
 
 # Pull request
-Once you have created your change, it's time to submit a Pull Request (PR) back to the project.  Please ensure all PR's a small and concise, DO NOT include other files / changes not related to the subject of the PR 
+Once you have created your change, it's time to submit a Pull Request (PR) back to the project.  Please ensure all PR's are small and concise, DO NOT include other files / changes not related to the subject of the PR 
 > e.g. Don't update the *projectversion.txt* when you are making changes or adding a button
 
 If you haven't contributed to a Microsoft project before, you may be asked to sign a [contribution license agreement](https://cla.microsoft.com/). 
