@@ -1,20 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine.EventSystems;
 
-public interface INetworkHandler : IEventSystemHandler
+public interface INetworkHandler<T> : IEventSystemHandler
 {
     /// <param name="eventData"></param>
-    void OnDataReceived();
+    void OnDataReceived(NetworkEventData<T> eventData);
 
     //Not necissarily possible
-    void OnDataSendComplete();	
+    //void OnDataSendComplete();	
 
     //Not necissarily possible
-    void OnRecievedCancelled();
+    //void OnRecievedCancelled();
 
     //Not necissarily possible
-    void OnSendCancelled();	
-
+    //void OnSendCancelled();	
 }

@@ -1,16 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine.EventSystems;
 
-public abstract class NetworkEventData : BaseEventData
+public class NetworkEventData<T> : BaseEventData
 {
 
     public uint SourceId { get; private set; }
+
+    public T value;
+
+    //public <T> value;
+
+    /// <summary>
+    /// Used to initialize/reset the event and populate the data.
+    /// </summary>
+    /// <param name="transferData"></param>
+    public void Initialize(T transferData)
+    {
+        Reset();
+        value = transferData;
+    }
 
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="eventSystem">Typically will be <see cref="EventSystem.current"/></param>
-    protected NetworkEventData(EventSystem eventSystem) : base(eventSystem) { }
+    public NetworkEventData(EventSystem eventSystem) : base(eventSystem) { }
 }

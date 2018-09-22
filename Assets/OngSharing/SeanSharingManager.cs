@@ -40,9 +40,14 @@ public class SeanSharingManager : Singleton<SeanSharingManager> {
 
     private void Awake()
     {
-        if (FED == null || IED == null)
+        if (IED == null)
         {
+            IED = new MixedRealityPointerEventData(EventSystem.current);            
+        }
 
+        if (FED == null)
+        {
+            FED = new FocusEventData(EventSystem.current);
         }
     }
 
