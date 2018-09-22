@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     [System.Serializable]
 
-    public class Interactable : MonoBehaviour, IMixedRealityInputHandler, IMixedRealityFocusHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
+    public class Interactable : MonoBehaviour, IMixedRealityInputHandler, IMixedRealityFocusHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler // TEMP , IInputClickHandler, IFocusable, IInputHandler
     {
         // BUG: The disabled state is getting set for all buttons
         // BUG: on load, if disabled, resets to enabled state
@@ -310,12 +310,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnInputUp(InputEventData eventData)
         {
+            //ignore for now
+            return;
             if (!CanInteract() && !HasPress)
             {
                 return;
             }
 
             print("Up: " + pointers.Count + " / " + name + " / " + HasFocus);
+            
             if (ShouldListen(eventData.MixedRealityInputAction))
             {
                 SetPress(false);
@@ -324,6 +327,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnInputDown(InputEventData eventData)
         {
+            //ignore for now
+            return;
             if (!CanInteract())
             {
                 return;
@@ -338,13 +343,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnInputPressed(InputEventData<float> eventData)
         {
+            
+
             if (!CanInteract())
             {
                 return;
             }
 
-            print("PRESSED!!!!!" + " / " + name + " / " + HasFocus);
+            
+            print("PRESSED!!!!!" + " / " + name + " / " + HasFocus + " / " + eventData.InputData);
 
+            //ignore for now
+            return;
             if (StateManager != null)
             {
                 if (ShouldListen(eventData.MixedRealityInputAction))
@@ -364,7 +374,62 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnPositionInputChanged(InputEventData<Vector2> eventData)
         {
-            //throw new NotImplementedException();
+            //not yet
+        }
+
+        public void OnPointerUp(MixedRealityPointerEventData eventData)
+        {
+            if (!CanInteract() && !HasPress)
+            {
+                return;
+            }
+
+            print("Up: " + pointers.Count + " / " + name + " / " + HasFocus);
+
+            if (ShouldListen(eventData.MixedRealityInputAction))
+            {
+                SetPress(false);
+            }
+        }
+
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
+        {
+            if (!CanInteract())
+            {
+                return;
+            }
+
+            print("Down: " + pointers.Count + " / " + name + " / " + HasFocus);
+            if (ShouldListen(eventData.MixedRealityInputAction))
+            {
+                SetPress(true);
+            }
+        }
+
+        public void OnPointerClicked(MixedRealityPointerEventData eventData)
+        {
+            if (!CanInteract())
+            {
+                return;
+            }
+            
+            print("CLICKED!!!!!" + " / " + name + " / " + HasFocus);
+
+            if (StateManager != null)
+            {
+                if (ShouldListen(eventData.MixedRealityInputAction))
+                {
+                    StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
+                    IncreaseDimensionIndex();
+                    OnClick.Invoke();
+                }
+                else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
+                {
+                    StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
+                    IncreaseDimensionIndex();
+                    OnClick.Invoke();
+                }
+            }
         }
 
         protected void IncreaseDimensionIndex()

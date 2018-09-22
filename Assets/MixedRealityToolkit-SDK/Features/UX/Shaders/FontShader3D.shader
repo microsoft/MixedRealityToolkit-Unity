@@ -7,7 +7,7 @@
 /// Basic 3D Text shader with proper z-shorting and culling options.
 /// this shader is based on the HoloToolkit/3DTextShader
 ///
-Shader "MixedRealityToolkit/FontShader3D"
+Shader "Mixed Reality Toolkit/FontShader3D"
 {
 	Properties
 	{
