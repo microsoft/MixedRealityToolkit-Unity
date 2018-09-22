@@ -2,7 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
+using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
+using Microsoft.MixedReality.Toolkit.SDK.UX.Controllers;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,11 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
     /// <summary>
     /// This class handles the solver components that are attached to this <see cref="GameObject"/>
     /// </summary>
-    public class SolverHandler : MonoBehaviour
+    public class SolverHandler : BaseInputHandler, IMixedRealitySourceStateHandler
     {
         [SerializeField]
         [Tooltip("Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.")]
-        private TrackedObjectType trackedObjectToReference = TrackedObjectType.Head;
+        private TrackedObjectType trackedObjectToReference = TrackedObjectType.None;
 
         /// <summary>
         /// Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.
@@ -122,12 +128,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         protected readonly List<Solver> solvers = new List<Solver>();
 
+        /// <inheritdoc />
+        public override bool IsFocusRequired => false;
+
         private float lastUpdateTime;
         private GameObject transformWithOffset;
 
         #region MonoBehaviour Implementation
 
-        private void Awake()
+        private async void Awake()
         {
             GoalScale = Vector3.one;
             AltScale = new Vector3Smoothed(Vector3.one, 0.1f);
@@ -135,8 +144,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
             solvers.AddRange(GetComponents<Solver>());
 
+            await WaitUntilInputSystemValid;
+
             // TransformTarget overrides TrackedObjectToReference
-            if (!TransformTarget)
+            if (trackedObjectToReference != TrackedObjectType.None)
             {
                 AttachToNewTrackedObject();
             }
@@ -190,8 +201,38 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 case TrackedObjectType.Head:
                     TrackTransform(CameraCache.Main.transform);
                     break;
-                // Other cases will come online as ControllerFinder is ported appropriately.
+                case TrackedObjectType.LeftController:
+                    var leftController = GetVisualizerForHand(Handedness.Left);
+                    if (leftController != null)
+                    {
+                        TrackTransform(leftController.gameObject.transform);
+                    }
+                    break;
+                case TrackedObjectType.RightController:
+                    var rightController = GetVisualizerForHand(Handedness.Right);
+                    if (rightController != null)
+                    {
+                        TrackTransform(rightController.gameObject.transform);
+                    }
+                    break;
+
+                    // Other cases will come online as ControllerFinder is ported appropriately.
             }
+        }
+
+        private MixedRealityControllerVisualizer GetVisualizerForHand(Handedness hand)
+        {
+            for (var i = 0; i < MixedRealityManager.Instance.MixedRealitySceneObjects.Count; i++)
+            {
+                var controller = MixedRealityManager.Instance.MixedRealitySceneObjects[i] as MixedRealityControllerVisualizer;
+
+                if (controller != null && controller.Handedness == hand)
+                {
+                    return controller;
+                }
+            }
+
+            return null;
         }
 
         private void TrackTransform(Transform newTrackedTransform)
@@ -212,5 +253,29 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             transformWithOffset.name = string.Format("{0} on {1} with offset {2}, {3}", gameObject.name, TrackedObjectToReference.ToString(), AdditionalOffset, AdditionalRotation);
             return transformWithOffset.transform;
         }
+
+        #region IMixedRealitySourceStateHandler implementation
+
+        public void OnSourceDetected(SourceStateEventData eventData)
+        {
+            if (trackedObjectToReference != TrackedObjectType.None)
+            {
+                AttachToNewTrackedObject();
+            }
+        }
+
+        public void OnSourceLost(SourceStateEventData eventData)
+        {
+            if (transformWithOffset != null)
+            {
+                Destroy(transformWithOffset);
+            }
+            if (trackedObjectToReference != TrackedObjectType.None)
+            {
+                TransformTarget = null;
+            }
+        }
+
+        #endregion IMixedRealitySourceStateHandler implementation
     }
 }

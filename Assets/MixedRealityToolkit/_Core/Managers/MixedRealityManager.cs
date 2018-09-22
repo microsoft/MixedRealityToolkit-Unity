@@ -114,6 +114,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
         #endregion Mixed Reality runtime component registry
 
+        #region Mixed Reality scene object registry
+        public List<IMixedRealitySceneObject> MixedRealitySceneObjects { get; } = new List<IMixedRealitySceneObject>();
+        #endregion Mixed Reality scene object registry
+
         /// <summary>
         /// Function called when the instance is assigned.
         /// Once all managers are registered and properties updated, the Mixed Reality Manager will initialize all active managers.
