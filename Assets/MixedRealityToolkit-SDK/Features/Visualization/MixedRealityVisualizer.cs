@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.VisualizationSystem
         }
 
         /// <inheritdoc />
-        public GameObject VisualizerGameObjectReference => gameObject;
+        public GameObject GameObjectReference => gameObject;
 
         #region IMixedRealitySourcePoseHandler Implementation
 

@@ -14,12 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
         IMixedRealityVisualizationSystem VisualizationManager { get; set; }
 
         /// <summary>
-        /// The <see cref="GameObject"/> reference for this controller.
+        /// The <see cref="UnityEngine.GameObject"/> reference for this controller.
         /// </summary>
         /// <remarks>
         /// This reference may not always be available when called.
         /// </remarks>
-        GameObject VisualizerGameObjectReference { get; }
+        GameObject GameObjectReference { get; }
 
         // TODO add defined elements or transforms?
     }
