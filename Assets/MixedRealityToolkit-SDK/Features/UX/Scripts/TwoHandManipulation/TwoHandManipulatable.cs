@@ -345,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if ((currentState & ManipulationMode.Move) > 0)
             {
-                targetPosition = moveLogic.Update(GetHandsCentroid(), targetPosition);
+                targetPosition = moveLogic.Update(GetHandsCentroid());
             }
 
             if ((currentState & ManipulationMode.Rotate) > 0)
@@ -366,7 +366,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         private void OnOneHandMoveUpdated()
         {
-            var targetPosition = moveLogic.Update(handsPressedLocationsMap.Values.First(), hostTransform.position);
+            var targetPosition = moveLogic.Update(handsPressedLocationsMap.Values.First());
 
             hostTransform.position = targetPosition;
         }
