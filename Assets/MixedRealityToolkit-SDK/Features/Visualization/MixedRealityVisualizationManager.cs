@@ -17,19 +17,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.VisualizationSystem
     public class MixedRealityVisualizationManager : MixedRealityEventManager, IMixedRealityVisualizationSystem
     {
         #region IMixedRealityVisualizationSystem Implementation
+
         /// <inheritdoc />
         public HashSet<IMixedRealityVisualizer> DetectedVisualizers { get; } = new HashSet<IMixedRealityVisualizer>();
 
         /// <inheritdoc />
-        public void RegisterVisualizerForController(IMixedRealityController controller)
+        public IMixedRealityVisualizer RegisterVisualizerForController(IMixedRealityController controller)
         {
             GameObject controllerModel = null;
 
-            if (!MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.VisualizationProfile.RenderMotionControllers) { return; }
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
+                MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.VisualizationProfile == null ||
+                !MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.VisualizationProfile.RenderMotionControllers) { return null; }
 
             // If a specific controller template wants to override the global model, assign that instead.
             if (MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsControllerMappingEnabled &&
-                !MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.VisualizationProfile.UseDefaultModels)
+               !MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.VisualizationProfile.UseDefaultModels)
             {
                 // TODO: Test type passes correctly.
                 controllerModel = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.VisualizationProfile.GetControllerModelOverride(controller.GetType(), controller.ControllerHandedness);
@@ -51,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.VisualizationSystem
             // If we've got a controller model prefab, then place it in the scene.
             if (controllerModel != null)
             {
-                var controllerObject = UnityEngine.Object.Instantiate(controllerModel, CameraCache.Main.transform.parent);
+                var controllerObject = Object.Instantiate(controllerModel, CameraCache.Main.transform.parent);
                 controllerObject.name = $"{controller.ControllerHandedness}_{controllerObject.name}";
                 var controllerVisualizer = controllerObject.GetComponent<IMixedRealityVisualizer>();
 
@@ -66,12 +69,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.VisualizationSystem
                     controllerVisualizer.Controller = controller;
                     controllerVisualizer.VisualizationManager = this;
                     DetectedVisualizers.Add(controllerVisualizer);
+                    return controllerVisualizer;
                 }
-                else
-                {
-                    Debug.LogError($"{controllerObject.name} is missing a IMixedRealityControllerVisualizer component!");
-                }
+
+                Debug.LogError($"{controllerObject.name} is missing a IMixedRealityControllerVisualizer component!");
             }
+
+            return null;
         }
 
         #endregion IMixedRealityVisualizationSystem Implementation

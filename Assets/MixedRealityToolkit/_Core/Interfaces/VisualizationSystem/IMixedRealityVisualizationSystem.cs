@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
-using System;
 using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.VisualizationSystem
@@ -20,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.VisualizationSystem
         /// List of <see cref="IMixedRealityController"/>s currently detected by the input manager.
         /// </summary>
         /// <remarks>
-        /// This property is similar to <see cref="DetectedInputSources"/>, as this is a subset of those <see cref="IMixedRealityInputSource"/>s in that list.
+        /// This property is similar to <see cref="InputSystem.IMixedRealityInputSystem.DetectedInputSources"/>, as this is a subset of those <see cref="InputSystem.IMixedRealityInputSource"/>s in that list.
         /// </remarks>
         HashSet<IMixedRealityVisualizer> DetectedVisualizers { get; }
 
@@ -28,6 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.VisualizationSystem
         /// Manager registration function for controllers, to add a new controller to present in the scene.
         /// </summary>
         /// <param name="controller">Tracked controller to visualize</param>
-        void RegisterVisualizerForController(IMixedRealityController controller);
+        IMixedRealityVisualizer RegisterVisualizerForController(IMixedRealityController controller);
     }
 }

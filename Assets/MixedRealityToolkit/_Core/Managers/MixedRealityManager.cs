@@ -987,5 +987,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         #endregion Manager Utilities
 
         #endregion Manager Container Management
+
+        private static IMixedRealityVisualizationSystem visualizationSystem;
+
+        /// <summary>
+        /// Current Registered Dictation Manager.
+        /// </summary>
+        public static IMixedRealityVisualizationSystem VisualizationSystem => visualizationSystem ?? (visualizationSystem = Instance.GetManager<IMixedRealityVisualizationSystem>());
     }
 }

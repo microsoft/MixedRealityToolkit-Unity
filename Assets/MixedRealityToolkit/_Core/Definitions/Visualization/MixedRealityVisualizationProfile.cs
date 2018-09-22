@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Visualization
         /// </summary>
         public bool RenderMotionControllers
         {
-            get { return renderMotionControllers; }
+            get { return renderMotionControllers && visualizerType != null && visualizerType.Type != null; }
             private set { renderMotionControllers = value; }
         }
 
