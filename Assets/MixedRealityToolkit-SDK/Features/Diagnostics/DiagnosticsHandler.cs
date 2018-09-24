@@ -9,6 +9,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
+    /// <summary>
+    /// Behavior class for showing Diagnostic information. Implements <see cref="IMixedRealityDiagnosticsHandler"/>
+    /// to manage setting updates. 
+    /// </summary>
     public class DiagnosticsHandler : MonoBehaviour, IMixedRealityDiagnosticsHandler
     {
         private bool showCpu;
@@ -50,6 +54,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
         private Rect rect = new Rect();
 
+        /// <summary>
+        /// Updates the diagnostic settings
+        /// </summary>
+        /// <param name="eventData"><see cref="DiagnosticsEventData"/> coming in</param>
         public void OnDiagnosticSettingsChanged(DiagnosticsEventData eventData)
         {
             this.ShowCpu = eventData.ShowCpu;
