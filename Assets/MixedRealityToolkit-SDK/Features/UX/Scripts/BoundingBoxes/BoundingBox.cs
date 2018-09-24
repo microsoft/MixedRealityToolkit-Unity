@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 
+
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     /// <summary>
@@ -255,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
-        #region
+        #region Protected Virtual Functions
         /// <summary>
         /// Override so we're not overwhelmed by button gizmos
         /// </summary>
@@ -625,7 +626,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 boundsPoints.AddRange(rectTransformCorners);
             }
         }
-
+        
+        /// <summary>
+        /// Get Corners of boundingbox Non-axis aligned (aligned to object)
+        /// </summary>
+        /// <param name="target">gameObject that boundingbox bounds</param>
+        /// <param name="boundsPoints">array reference that gets filled with points</param>
         public static void GetNonAxisAlignedBB_Corners(GameObject target, List<Vector3> boundsPoints)
         {
             LayerMask mask = new LayerMask();
@@ -643,8 +649,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 boundsPoints[i] = target.transform.localToWorldMatrix.MultiplyPoint(boundsPoints[i]);
             }
         }
+        #endregion
 
-        
+        #region Private Static Methods
         private static Vector3[] corners = null;
         private static Vector3[] rectTransformCorners = new Vector3[4];
         #endregion

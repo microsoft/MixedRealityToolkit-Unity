@@ -3,9 +3,12 @@
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    public enum BoundingBoxGizmoHandleRotationType
+    /// <summary>
+    /// Enum to describe the type of transform a BoundingBoxRigGizmo handle performs.
+    /// </summary>
+    public enum BoundingBoxGizmoHandleTransformType
     {
-        objectCoordinates,
-        globalCoordinates
+        Rotation = 0,
+        Scale
     }
 }

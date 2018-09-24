@@ -3,9 +3,12 @@
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// Which axis does a BoundingBoxRigGizmoHandle rotate around?
+    /// </summary>
     public enum BoundingBoxGizmoHandleAxisToAffect
     {
-        X,
+        X = 0,
         Y,
         Z
     }

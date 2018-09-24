@@ -14,7 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// </summary>
     public class BoundingBoxGizmoHandle : MonoBehaviour, IMixedRealityInputHandler, IMixedRealitySourceStateHandler
     {
+        #region Serialized Fields
         private BoundingBoxRig rig;
+        /// <summary>
+        /// reference to Rig of which this object is a handle/
+        /// </summary>
         public BoundingBoxRig Rig
         {
             get
@@ -29,6 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
 
         private Transform transformToAffect;
+        /// <summary>
+        /// Reference to the Transform of the object that has had the Rig attached.
+        /// </summary>
         public Transform TransformToAffect
         {
             get
@@ -43,6 +50,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
 
         private BoundingBoxGizmoHandleTransformType affineType;
+        /// <summary>
+        /// Reports whether this handle is a rotation handle or scale handle.
+        /// </summary>
         public BoundingBoxGizmoHandleTransformType AffineType
         {
             get
@@ -57,6 +67,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
 
         private BoundingBoxGizmoHandleAxisToAffect axis;
+        /// <summary>
+        /// Reports whether this handle rotates about the x, y or z axis.
+        /// </summary>
         public BoundingBoxGizmoHandleAxisToAffect Axis
         {
             get
@@ -71,6 +84,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
 
         private float maxScale = 10.0f;
+        /// <summary>
+        /// sets a maximum scale so that the object cant become uncontrollably large.
+        /// </summary>
         public float MaxScale
         {
             get
@@ -82,7 +98,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 maxScale = value;
             }
         }
+        #endregion
 
+        #region private variables
         private Vector3 initialScale;
 
         private Vector3 initialHandPosition;
@@ -90,11 +108,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private InputEventData inputDownEventData;
 
         private Renderer cachedRenderer;
+        #endregion
 
+        #region reference to InputSystem
         private static IMixedRealityInputSystem inputSystem = null;
         protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
+        #endregion
 
-
+        #region MonoBehaviour Methods
         private void Start()
         {
             cachedRenderer = gameObject.GetComponent<Renderer>();
@@ -118,6 +139,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        #endregion
+
+        #region Private Methods
         private Vector3 GetHandPosition(uint sourceId)
         {
             Vector3 handPosition = this.transform.position;
@@ -219,8 +243,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             InputSystem.PopModalInputHandler();
             Rig.FocusOnHandle(null);
         }
+        #endregion
 
         #region Event Handlers
+
+        /// <inheritdoc/>
         public void OnInputDown(InputEventData eventData)
         {
             inputDownEventData = eventData;
@@ -235,6 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             eventData.Use();
         }
 
+        /// <inheritdoc/>
         public void OnInputUp(InputEventData eventData)
         {
             inputDownEventData = null;
@@ -246,10 +274,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        /// <inheritdoc/>
         public void OnSourceDetected(SourceStateEventData eventData)
         {
         }
 
+        /// <inheritdoc/>
         public void OnSourceLost(SourceStateEventData eventData)
         {
             if ((inputDownEventData != null) &&
@@ -262,10 +292,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        /// <inheritdoc/>
         public void OnInputPressed(InputEventData<float> eventData)
         {
         }
 
+        /// <inheritdoc/>
         public void OnPositionInputChanged(InputEventData<Vector2> eventData)
         {
         }
