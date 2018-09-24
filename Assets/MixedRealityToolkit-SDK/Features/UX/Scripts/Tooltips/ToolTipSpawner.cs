@@ -80,10 +80,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 		private ConnectorFollowType followType = ConnectorFollowType.AnchorOnly;
 
 		[SerializeField]
-		private ConnnectorPivotMode pivotMode = ConnnectorPivotMode.Manual;
+		private ConnnectorPivotModeType pivotMode = ConnnectorPivotModeType.Manual;
 
 		[SerializeField]
-		private ConnectorPivotDirection pivotDirection = ConnectorPivotDirection.North;
+		private ConnectorPivotDirectionType pivotDirection = ConnectorPivotDirectionType.North;
 
 		[SerializeField]
 		private ConnectorOrientType pivotDirectionOrient = ConnectorOrientType.OrientToObject;
@@ -279,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 			connector.FollowingType = followType;
 			connector.PivotingMode = pivotMode;
 
-			if (pivotMode == ConnnectorPivotMode.Manual)
+			if (pivotMode == ConnnectorPivotModeType.Manual)
 			{
 				toolTip.PivotPosition = transform.TransformPoint(manualPivotLocalPosition);
 			}
@@ -357,7 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
 						relativeTo = (Anchor != null) ? Anchor.transform : transform;
 						break;
 				}
-				if (pivotMode == ConnnectorPivotMode.Automatic)
+				if (pivotMode == ConnnectorPivotModeType.Automatic)
 				{
 					Vector3 targetPosition = (Anchor != null) ? Anchor.transform.position : transform.position;
 					Vector3 toolTipPosition = targetPosition + ToolTipConnector.GetDirectionFromPivotDirection(

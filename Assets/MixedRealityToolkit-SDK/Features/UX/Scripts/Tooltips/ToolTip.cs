@@ -81,11 +81,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         }
 
         [SerializeField]
-        protected TipDisplayModeEnum tipState;
+        protected DisplayModeType tipState;
         /// <summary>
         /// getter/setter for the display state of a tooltip
         /// </summary>
-        public TipDisplayModeEnum TipState
+        public DisplayModeType TipState
         {
             get
             {
@@ -98,11 +98,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         }
 
         [SerializeField]
-        protected TipDisplayModeEnum groupTipState;
+        protected DisplayModeType groupTipState;
         /// <summary>
         /// getter/setter for display state of group of tooltips
         /// </summary>
-        public TipDisplayModeEnum GroupTipState
+        public DisplayModeType GroupTipState
         {
             set
             {
@@ -115,11 +115,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         }
 
         [SerializeField]
-        protected TipDisplayModeEnum masterTipState;
+        protected DisplayModeType masterTipState;
         /// <summary>
         /// getter/setter for display state of master tooltip
         /// </summary>
-        public TipDisplayModeEnum MasterTipState
+        public DisplayModeType MasterTipState
         {
             set
             {
@@ -341,45 +341,45 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             {
                 switch (masterTipState)
                 {
-                    case TipDisplayModeEnum.None:
+                    case DisplayModeType.None:
                     default:
                         // Use our group state
                         switch (groupTipState)
                         {
-                            case TipDisplayModeEnum.None:
+                            case DisplayModeType.None:
                             default:
                                 // Use our local State
                                 switch (tipState)
                                 {
-                                    case TipDisplayModeEnum.None:
-                                    case TipDisplayModeEnum.Off:
+                                    case DisplayModeType.None:
+                                    case DisplayModeType.Off:
                                     default:
                                         return false;
 
-                                    case TipDisplayModeEnum.On:
+                                    case DisplayModeType.On:
                                         return true;
 
-                                    case TipDisplayModeEnum.OnFocus:
+                                    case DisplayModeType.OnFocus:
                                         return HasFocus;
                                 }
 
-                            case TipDisplayModeEnum.On:
+                            case DisplayModeType.On:
                                 return true;
 
-                            case TipDisplayModeEnum.Off:
+                            case DisplayModeType.Off:
                                 return false;
 
-                            case TipDisplayModeEnum.OnFocus:
+                            case DisplayModeType.OnFocus:
                                 return HasFocus;
                         }
 
-                    case TipDisplayModeEnum.On:
+                    case DisplayModeType.On:
                         return true;
 
-                    case TipDisplayModeEnum.Off:
+                    case DisplayModeType.Off:
                         return false;
 
-                    case TipDisplayModeEnum.OnFocus:
+                    case DisplayModeType.OnFocus:
                         return HasFocus;
                 }
             }

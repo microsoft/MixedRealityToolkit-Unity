@@ -55,11 +55,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         }
 
         [SerializeField]
-        private ConnnectorPivotMode pivotMode = ConnnectorPivotMode.Manual;
+        private ConnnectorPivotModeType pivotMode = ConnnectorPivotModeType.Manual;
         /// <summary>
         /// is the connector pivot set manually or automatically
         /// </summary>
-        public ConnnectorPivotMode PivotingMode
+        public ConnnectorPivotModeType PivotingMode
         {
             get
             {
@@ -73,11 +73,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         }
 
         [SerializeField]
-        private ConnectorPivotDirection pivotDirection = ConnectorPivotDirection.North;
+        private ConnectorPivotDirectionType pivotDirection = ConnectorPivotDirectionType.North;
         /// <summary>
         /// getter/setter for the direction of the connector
         /// </summary>
-        public ConnectorPivotDirection PivotDirection
+        public ConnectorPivotDirectionType PivotDirection
         {
             get
             {
@@ -204,13 +204,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                     toolTip.transform.position = Target.transform.position;
                     switch (PivotingMode)
                     {
-                        case ConnnectorPivotMode.Automatic:
+                        case ConnnectorPivotModeType.Automatic:
                             Transform relativeTo = null;
                             switch (PivotDirectionOrient)
                             {
                                 case ConnectorOrientType.OrientToCamera:
-									relativeTo = CameraCache.Main.transform;
-									break;
+                                    relativeTo = CameraCache.Main.transform;
+                                    break;
 
                                 case ConnectorOrientType.OrientToObject:
                                     relativeTo = Target.transform;
@@ -222,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                                 relativeTo) * PivotDistance;
                             break;
 
-                        case ConnnectorPivotMode.Manual:
+                        case ConnnectorPivotModeType.Manual:
                             // Do nothing
                             break;
                     }
@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                     toolTip.transform.eulerAngles = eulerAngles;
                     switch (PivotingMode)
                     {
-                        case ConnnectorPivotMode.Automatic:
+                        case ConnnectorPivotModeType.Automatic:
                             Transform relativeTo = null;
                             switch (PivotDirectionOrient)
                             {
@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                             toolTip.PivotPosition = Target.transform.position + localPosition;
                             break;
 
-                        case ConnnectorPivotMode.Manual:
+                        case ConnnectorPivotModeType.Manual:
                             // Do nothing
                             break;
                     }
@@ -267,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                     toolTip.transform.rotation = Target.transform.rotation;
                     switch (PivotingMode)
                     {
-                        case ConnnectorPivotMode.Automatic:
+                        case ConnnectorPivotModeType.Automatic:
                             Transform relativeTo = null;
                             switch (PivotDirectionOrient)
                             {
@@ -285,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
                                 relativeTo) * PivotDistance;
                             break;
 
-                        case ConnnectorPivotMode.Manual:
+                        case ConnnectorPivotModeType.Manual:
                             // Do nothing
                             break;
                     }
@@ -315,48 +315,48 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// <param name="manualPivotDirection">is the pivot set manually</param>
         /// <param name="relativeTo">Transform that describes the frame of reference of the pivot</param>
         /// <returns>a vector describing the pivot direction in world space</returns>
-        public static Vector3 GetDirectionFromPivotDirection (ConnectorPivotDirection pivotDirection, Vector3 manualPivotDirection, Transform relativeTo)
+        public static Vector3 GetDirectionFromPivotDirection (ConnectorPivotDirectionType pivotDirection, Vector3 manualPivotDirection, Transform relativeTo)
         {
             Vector3 dir = Vector3.zero;
             switch (pivotDirection)
             {
-                case ConnectorPivotDirection.North:
+                case ConnectorPivotDirectionType.North:
                     dir = Vector3.up;
                     break;
 
-                case ConnectorPivotDirection.NorthEast:
+                case ConnectorPivotDirectionType.NorthEast:
                     dir = Vector3.Lerp(Vector3.up, Vector3.right, 0.5f).normalized;
                     break;
 
-                case ConnectorPivotDirection.East:
+                case ConnectorPivotDirectionType.East:
                     dir = Vector3.right;
                     break;
 
-                case ConnectorPivotDirection.SouthEast:
+                case ConnectorPivotDirectionType.SouthEast:
                     dir = Vector3.Lerp(Vector3.down, Vector3.right, 0.5f).normalized;
                     break;
 
-                case ConnectorPivotDirection.South:
+                case ConnectorPivotDirectionType.South:
                     dir = Vector3.down;
                     break;
 
-                case ConnectorPivotDirection.SouthWest:
+                case ConnectorPivotDirectionType.SouthWest:
                     dir = Vector3.Lerp(Vector3.down, Vector3.left, 0.5f).normalized;
                     break;
 
-                case ConnectorPivotDirection.West:
+                case ConnectorPivotDirectionType.West:
                     dir = Vector3.left;
                     break;
 
-                case ConnectorPivotDirection.NorthWest:
+                case ConnectorPivotDirectionType.NorthWest:
                     dir = Vector3.Lerp(Vector3.up, Vector3.left, 0.5f).normalized;
                     break;
 
-                case ConnectorPivotDirection.InFront:
+                case ConnectorPivotDirectionType.InFront:
                     dir = Vector3.forward;
                     break;
 
-                case ConnectorPivotDirection.Manual:
+                case ConnectorPivotDirectionType.Manual:
                     dir = manualPivotDirection.normalized;
                     break;
             }
