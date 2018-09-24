@@ -31,13 +31,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
         private bool ShowFps { get; set; }
         private bool ShowMemory { get; set; }
 
-        private string displayText;
         private int numberOfLines = 0;
         private bool isShowingInformation;
 
         private CpuUseTracker cpuUseTracker = new CpuUseTracker();
         private MemoryUseTracker memoryUseTracker = new MemoryUseTracker();
         private FpsUseTracker fpsUseTracker = new FpsUseTracker();
+        StringBuilder displayText = new StringBuilder();
 
         private GUIStyle style = new GUIStyle()
         {
@@ -74,44 +74,31 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
                 return;
             }
 
-            StringBuilder sb = new StringBuilder();
-            numberOfLines = 0;
+            displayText.Clear();
 
             if (ShowFps)
             {
                 var timeInSeconds = fpsUseTracker.GetFpsInSeconds();
-                sb.AppendLine($"Fps: {Math.Round(1.0f / timeInSeconds, 2)}");
-                sb.AppendLine($"Frame Time: {Math.Round(timeInSeconds * 1000, 2)} ms");
-                numberOfLines++;
+                displayText.AppendLine($"Fps: {Math.Round(1.0f / timeInSeconds, 2)}");
+                displayText.AppendLine($"Frame Time: {Math.Round(timeInSeconds * 1000, 2)} ms");
             }
 
             if (ShowCpu)
             {
                 var reading = cpuUseTracker.GetReadingInMs();
-                sb.AppendLine($"CPU Time: {reading} ms");
-                numberOfLines++;
+                displayText.AppendLine($"CPU Time: {reading} ms");
             }
 
             if (ShowMemory)
             {
                 var reading = memoryUseTracker.GetReading();
-                sb.AppendLine($"Memory: {Math.Round(BytesToMB(reading.GCMemoryInBytes), 2)} MB");
-                numberOfLines++;
-            }
-
-            if (numberOfLines > 0)
-            {
-                displayText = sb.ToString();
-            }
-            else
-            {
-                displayText = null;
+                displayText.AppendLine($"Memory: {Math.Round(BytesToMB(reading.GCMemoryInBytes), 2)} MB");
             }
         }
 
         private void OnGUI()
         {
-            if (!isShowingInformation || displayText == null)
+            if (!isShowingInformation || displayText.Length == 0)
             {
                 return;
             }
@@ -121,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
             rect.Set(0, 0, w, h * 2 / 100);
 
             style.fontSize = h * 2 / 100;
-            GUI.Label(rect, displayText, style); 
+            GUI.Label(rect, displayText.ToString(), style); 
         }
 
         private static float BytesToMB(long bytes)
