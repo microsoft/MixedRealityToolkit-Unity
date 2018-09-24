@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         [SerializeField]
         [Tooltip("The direction of the apex of the parabola.")]
         [Vector3Range(-1f, 1f)]
-		private Vector3 upDirection = Vector3.up;
+        private Vector3 upDirection = Vector3.up;
 
         public Vector3 UpDirection
         {

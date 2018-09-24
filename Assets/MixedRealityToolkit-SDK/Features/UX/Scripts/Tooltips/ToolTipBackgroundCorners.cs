@@ -13,8 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     {
         private enum ScaleModeEnum
         {
-            World,  // Always keep the corners the same size, regardless of tooltip size
-            Local,  // Make the corners scale to the tooltip content parent's lossy scale
+            /// <summary>
+            /// Always keep the corners the same size, regardless of tooltip size
+            /// </summary>
+            World,
+            /// <summary>
+            /// Make the corners scale to the tooltip content parent's lossy scale
+            /// </summary>
+            Local,
         }
 
         [SerializeField]

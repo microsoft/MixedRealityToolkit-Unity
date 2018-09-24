@@ -9,7 +9,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     /// </summary>
     public enum ConnnectorPivotModeType
     {
-        Manual = 0,     // Tooltip pivot will be set manually
-        Automatic,      // Tooltip pivot will be set relative to object/camera based on specified direction and line length
+        /// <summary>
+        /// Tooltip pivot will be set manually
+        /// </summary>
+        Manual = 0,
+        /// <summary>
+        /// Tooltip pivot will be set relative to object/camera based on specified direction and line length
+        /// </summary>
+        Automatic,
     }
 }
