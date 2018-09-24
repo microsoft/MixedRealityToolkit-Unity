@@ -14,23 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// </summary>
     public class BoundingBox : MonoBehaviour
     {
-        public enum BoundsCalculationMethodEnum
-        {
-            MeshFilterBounds,   // Better for flattened objects - this mode also treats RectTransforms as quad meshes
-            RendererBounds,     // Better for objects with non-mesh renderers
-            Colliders,          // Better if you want precise control
-            Default,            // Use the default method (RendererBounds)
-        }
-
-        public enum FlattenModeEnum
-        {
-            DoNotFlatten,   // Always use XYZ axis
-            FlattenX,       // Flatten the X axis
-            FlattenY,       // Flatten the Y axis
-            FlattenZ,       // Flatten the Z axis
-            FlattenAuto,    // Flatten the smallest relative axis if it falls below threshold
-        }
-
         /// <summary>
         /// The target object. GameObject that the BoundingBox surrounds.
         /// </summary>
@@ -475,26 +458,26 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             switch (flattenedAxis)
             {
-                case BoundingBox.FlattenModeEnum.DoNotFlatten:
+                case FlattenModeEnum.DoNotFlatten:
                 default:
                     scale.x += (largestDimension * scalePadding);
                     scale.y += (largestDimension * scalePadding);
                     scale.z += (largestDimension * scalePadding);
                     break;
 
-                case BoundingBox.FlattenModeEnum.FlattenX:
+                case FlattenModeEnum.FlattenX:
                     scale.x += (largestDimension * flattenedScalePadding);
                     scale.y += (largestDimension * scalePadding);
                     scale.z += (largestDimension * scalePadding);
                     break;
 
-                case BoundingBox.FlattenModeEnum.FlattenY:
+                case FlattenModeEnum.FlattenY:
                     scale.x += (largestDimension * scalePadding);
                     scale.y += (largestDimension * flattenedScalePadding);
                     scale.z += (largestDimension * scalePadding);
                     break;
 
-                case BoundingBox.FlattenModeEnum.FlattenZ:
+                case FlattenModeEnum.FlattenZ:
                     scale.x += (largestDimension * scalePadding);
                     scale.y += (largestDimension * scalePadding);
                     scale.z += (largestDimension * flattenedScalePadding);

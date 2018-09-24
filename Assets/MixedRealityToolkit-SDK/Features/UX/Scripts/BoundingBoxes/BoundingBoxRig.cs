@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [Header("Flattening")]
         [SerializeField]
         [Tooltip("Choose this option if Rig is to be applied to a 2D object.")]
-        private BoundingBox.FlattenModeEnum flattenedAxis = default(BoundingBox.FlattenModeEnum);
+        private FlattenModeEnum flattenedAxis = default(FlattenModeEnum);
 
         [Header("Customization Settings")]
         [SerializeField]
@@ -373,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return rig;
         }
 
-        private BoundingBox.FlattenModeEnum GetBestAxisToFlatten()
+        private FlattenModeEnum GetBestAxisToFlatten()
         {
             int index = handleCentroids.Count - 8;
             float width = (handleCentroids[index + 0] - handleCentroids[index + 4]).magnitude;
@@ -382,18 +382,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (width < height && width < depth)
             {
-                return BoundingBox.FlattenModeEnum.FlattenX;
+                return FlattenModeEnum.FlattenX;
             }
             else if (height < width && height < depth)
             {
-                return BoundingBox.FlattenModeEnum.FlattenY;
+                return FlattenModeEnum.FlattenY;
             }
             else if (depth < height && depth < width)
             {
-                return BoundingBox.FlattenModeEnum.FlattenZ;
+                return FlattenModeEnum.FlattenZ;
             }
 
-            return BoundingBox.FlattenModeEnum.DoNotFlatten;
+            return FlattenModeEnum.DoNotFlatten;
         }
 
         private bool ShowRig
