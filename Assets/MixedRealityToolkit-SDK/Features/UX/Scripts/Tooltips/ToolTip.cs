@@ -256,14 +256,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             }
         }
 
-		[Header("Best left unassigned")] 
+		[Header("Looked up at Runtime")] 
         [Tooltip("The line connecting the anchor to the pivot. If present, this component will be updated automatically.")]
         [SerializeField]
         protected BaseMixedRealityLineDataProvider toolTipLine;
-		[SerializeField]
-		//protected BaseMixedRealityLineDataProvider newTooltipLine;
 
-        protected Vector2 localContentSize;
+		protected Vector2 localContentSize;
         /// <summary>
         /// getter/setter for size of tooltip.
         /// </summary>
