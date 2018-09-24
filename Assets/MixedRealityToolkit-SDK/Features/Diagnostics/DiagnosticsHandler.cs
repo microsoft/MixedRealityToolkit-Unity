@@ -39,6 +39,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
         private MemoryUseTracker memoryUseTracker = new MemoryUseTracker();
         private FpsUseTracker fpsUseTracker = new FpsUseTracker();
 
+        private GUIStyle style = new GUIStyle()
+        {
+            alignment = TextAnchor.UpperLeft,
+            normal = new GUIStyleState()
+            {
+                textColor = new Color(0, 0, 0.5f, 1)
+            }
+        };
+
+        private Rect rect = new Rect();
+
         public void OnDiagnosticSettingsChanged(DiagnosticsEventData eventData)
         {
             this.ShowCpu = eventData.ShowCpu;
@@ -47,14 +58,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
             this.enabled = eventData.Visible;
         }
 
-        void UpdateIsShowingInformation()
+        private void UpdateIsShowingInformation()
         {
             isShowingInformation = ShowCpu ||
                                    ShowFps ||
                                    ShowMemory;
         }
         
-        void Update()
+        private void Update()
         {
             UpdateIsShowingInformation();
 
@@ -98,22 +109,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
             }
         }
 
-        void OnGUI()
+        private void OnGUI()
         {
             if (!isShowingInformation || displayText == null)
             {
                 return;
             }
 
-            var style = new GUIStyle();
-
             int w = Screen.width, h = Screen.height;
 
-            Rect rect = new Rect(0, 0, w, h * 2 / 100);
-            style.alignment = TextAnchor.UpperLeft;
+            rect.Set(0, 0, w, h * 2 / 100);
+
             style.fontSize = h * 2 / 100;
-            style.normal.textColor = new Color(0, 0, 0.5f, 1);
-            GUI.Label(rect, displayText, style);
+            GUI.Label(rect, displayText, style); 
         }
 
         private static float BytesToMB(long bytes)
