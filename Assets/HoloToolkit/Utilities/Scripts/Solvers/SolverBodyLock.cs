@@ -39,9 +39,10 @@ namespace HoloToolkit.Unity
         public int TetherAngleSteps = 6;
         #endregion
 
+        private Quaternion desiredRot = Quaternion.identity;
+
         public override void SolverUpdate()
         {
-            Quaternion desiredRot = Quaternion.identity;
 
             if (RotationTether)
             {
@@ -54,9 +55,9 @@ namespace HoloToolkit.Unity
                 {
                     int numSteps = Mathf.RoundToInt(targetYRotation / tetherAngleLimit);
                     tetherYRotation = numSteps * tetherAngleLimit;
+                    desiredRot = Quaternion.Euler(0f, tetherYRotation, 0f);
                 }
 
-                desiredRot = Quaternion.Euler(0f, tetherYRotation, 0f);
             }
 
             Vector3 desiredPos = solverHandler.TransformTarget != null ? solverHandler.TransformTarget.position + (desiredRot * offset) : Vector3.zero;
