@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
     /// Creates a floating tooltip that is attached to an object and moves to stay in view as object rotates with respect to the view.
     /// </summary>
     public class ToolTip : MonoBehaviour//, IMixedRealityInputHandler
-	{
+    {
         [SerializeField]
         private bool showBackground = true;
         /// <summary>
@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             {
                 showOutline = value;
                 GameObject TipBackground = contentParent.transform.GetChild(1).gameObject;
-				RectangleLineDataProvider rectangle = TipBackground.GetComponent<RectangleLineDataProvider>();
+                RectangleLineDataProvider rectangle = TipBackground.GetComponent<RectangleLineDataProvider>();
                 rectangle.enabled = value;
             }
         }
@@ -73,9 +73,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             set
             {
                 showConnector = value;
-				//todo fix this
+                //todo fix this
 
-				BaseMixedRealityLineDataProvider lineScript = GetComponent<BaseMixedRealityLineDataProvider>();
+                BaseMixedRealityLineDataProvider lineScript = GetComponent<BaseMixedRealityLineDataProvider>();
                 lineScript.enabled = value;
             }
         }
@@ -256,12 +256,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
             }
         }
 
-		[Header("Looked up at Runtime")] 
-        [Tooltip("The line connecting the anchor to the pivot. If present, this component will be updated automatically.")]
+        [Tooltip("The line connecting the anchor to the pivot. If present, this component will be updated automatically.\n\nRecommended: SimpleLine, Spline, and ParabolaConstrainted")]
         [SerializeField]
         protected BaseMixedRealityLineDataProvider toolTipLine;
 
-		protected Vector2 localContentSize;
+        protected Vector2 localContentSize;
         /// <summary>
         /// getter/setter for size of tooltip.
         /// </summary>
@@ -392,7 +391,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         {
             get
             {
-				return false;
+                return false;
                 //switch (ButtonState)
                 //{
                 //    case ButtonStateEnum.Targeted:
@@ -416,11 +415,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         /// </summary>
         protected virtual void OnEnable() {
 
-			//if (toolTipLine != null && toolTipLine.gameObject != gameObject)
-			//	toolTipLine = gameObject.GetComponent<BaseMixedRealityLineDataProvider>();
+            //if (toolTipLine != null && toolTipLine.gameObject != gameObject)
+            //  toolTipLine = gameObject.GetComponent<BaseMixedRealityLineDataProvider>();
 
-			// Get our line if it exists
-			if (toolTipLine == null)
+            // Get our line if it exists
+            if (toolTipLine == null)
                 toolTipLine = gameObject.GetComponent<BaseMixedRealityLineDataProvider>();
 
             //EnforceHeirarchy();
@@ -432,23 +431,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
         }
 
         protected virtual void Update() {
-			// Enable / disable our line if it exists
-			if (toolTipLine != null)
-			{
-				if (toolTipLine is ParabolaConstrainedLineDataProvider)
-				{
-					//Debug.Log("Parabola, not doing anything", this);
-				}
-				else
-				{
-					toolTipLine.enabled = IsOn;
-					toolTipLine.FirstPoint = AnchorPosition;
-				}
-				toolTipLine.LastPoint = AttachPointPosition;
-			}
+            // Enable / disable our line if it exists
+            if (toolTipLine != null)
+            {
+                if (toolTipLine is ParabolaConstrainedLineDataProvider)
+                {
+                    //Debug.Log("Parabola, not doing anything", this);
+                }
+                else
+                {
+                    toolTipLine.enabled = IsOn;
+                    toolTipLine.FirstPoint = AnchorPosition;
+                }
+                toolTipLine.LastPoint = AttachPointPosition;
+            }
 
-			if (IsOn) {
-				contentParent.SetActive(true);
+            if (IsOn) {
+                contentParent.SetActive(true);
                 localAttachPoint = ToolTipUtility.FindClosestAttachPointToAnchor(anchor.transform, contentParent.transform, localAttachPointPositions, attachPointType);
             } else {
                 contentParent.SetActive(false);
