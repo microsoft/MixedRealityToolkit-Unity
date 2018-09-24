@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -1268,8 +1269,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     // now create the animation clips
                     AnimationClip clip = new AnimationClip();
                     clip.name = "Default";
-
                     /*
+                    State[] states = GetStates();
+
+                    controller.AddParameter("Default", AnimatorControllerParameterType.Trigger);
+                    AnimatorStateMachine stateMachine = controller.layers[0].stateMachine;
+                    AnimatorStateMachine newMachine = stateMachine.AddStateMachine("DefaultMachine");
+                    AnimatorState newState = newMachine.AddState("Default");
+                    AnimatorStateTransition t1 = stateMachine.AddAnyStateTransition(newState);
+                    t1.AddCondition(AnimatorConditionMode.If, 0, "Default");
+                    t1.duration = 1;
+
+                    for (int i = 0; i < states.Length; i++)
+                    {
+
+                    }
+
+                    
                      * // Creates the controller
                         var controller = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath("Assets/Mecanim/StateMachineTransitions.controller");
 
