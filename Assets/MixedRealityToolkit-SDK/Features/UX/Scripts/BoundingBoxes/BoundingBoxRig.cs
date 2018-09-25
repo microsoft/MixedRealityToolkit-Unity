@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -188,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     rigScaleGizmoHandles[i].Rig = this;
                     rigScaleGizmoHandles[i].MaxScale = maxScale;
                     rigScaleGizmoHandles[i].TransformToAffect = objectToBound.transform;
-                    rigScaleGizmoHandles[i].Axis = BoundingBoxGizmoHandleAxisToAffect.Y;
+                    rigScaleGizmoHandles[i].Axis = CardinalAxisType.Y;
                     rigScaleGizmoHandles[i].AffineType = BoundingBoxGizmoHandleTransformType.Scale;
                 }
             }
@@ -225,20 +226,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 }
 
                 //set axis to affect
-                rigRotateGizmoHandles[0].Axis = BoundingBoxGizmoHandleAxisToAffect.Y;
-                rigRotateGizmoHandles[1].Axis = BoundingBoxGizmoHandleAxisToAffect.Y;
-                rigRotateGizmoHandles[2].Axis = BoundingBoxGizmoHandleAxisToAffect.Y;
-                rigRotateGizmoHandles[3].Axis = BoundingBoxGizmoHandleAxisToAffect.Y;
+                rigRotateGizmoHandles[0].Axis = CardinalAxisType.Y;
+                rigRotateGizmoHandles[1].Axis = CardinalAxisType.Y;
+                rigRotateGizmoHandles[2].Axis = CardinalAxisType.Y;
+                rigRotateGizmoHandles[3].Axis = CardinalAxisType.Y;
 
-                rigRotateGizmoHandles[4].Axis = BoundingBoxGizmoHandleAxisToAffect.Z;
-                rigRotateGizmoHandles[5].Axis = BoundingBoxGizmoHandleAxisToAffect.Z;
-                rigRotateGizmoHandles[6].Axis = BoundingBoxGizmoHandleAxisToAffect.Z;
-                rigRotateGizmoHandles[7].Axis = BoundingBoxGizmoHandleAxisToAffect.Z;
+                rigRotateGizmoHandles[4].Axis = CardinalAxisType.Z;
+                rigRotateGizmoHandles[5].Axis = CardinalAxisType.Z;
+                rigRotateGizmoHandles[6].Axis = CardinalAxisType.Z;
+                rigRotateGizmoHandles[7].Axis = CardinalAxisType.Z;
 
-                rigRotateGizmoHandles[8].Axis  = BoundingBoxGizmoHandleAxisToAffect.X;
-                rigRotateGizmoHandles[9].Axis  = BoundingBoxGizmoHandleAxisToAffect.X;
-                rigRotateGizmoHandles[10].Axis = BoundingBoxGizmoHandleAxisToAffect.X;
-                rigRotateGizmoHandles[11].Axis = BoundingBoxGizmoHandleAxisToAffect.X;
+                rigRotateGizmoHandles[8].Axis  = CardinalAxisType.X;
+                rigRotateGizmoHandles[9].Axis  = CardinalAxisType.X;
+                rigRotateGizmoHandles[10].Axis = CardinalAxisType.X;
+                rigRotateGizmoHandles[11].Axis = CardinalAxisType.X;
             }
 
             rotateHandles[0].transform.localPosition = (handleCentroids[2] + handleCentroids[0]) * 0.5f;

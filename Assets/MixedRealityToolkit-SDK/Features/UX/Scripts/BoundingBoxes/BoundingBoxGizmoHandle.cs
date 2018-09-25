@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEngine;
 
@@ -66,11 +67,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
-        private BoundingBoxGizmoHandleAxisToAffect axis;
+        private CardinalAxisType axis;
         /// <summary>
         /// Reports whether this handle rotates about the x, y or z axis.
         /// </summary>
-        public BoundingBoxGizmoHandleAxisToAffect Axis
+        public CardinalAxisType Axis
         {
             get
             {
@@ -209,17 +210,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return doubleCross + planePosition;
         }
 
-        private Vector3 GetWorldAxisFromRig(BoundingBoxGizmoHandleAxisToAffect fromAxisDesc)
+        private Vector3 GetWorldAxisFromRig(CardinalAxisType fromAxisDesc)
         {
-            if (fromAxisDesc == BoundingBoxGizmoHandleAxisToAffect.X)
+            if (fromAxisDesc == CardinalAxisType.X)
             {
                 return rig.transform.right;
             }
-            else if (fromAxisDesc == BoundingBoxGizmoHandleAxisToAffect.Y)
+            else if (fromAxisDesc == CardinalAxisType.Y)
             {
                 return rig.transform.up;
             }
-            else if (fromAxisDesc == BoundingBoxGizmoHandleAxisToAffect.Z)
+            else if (fromAxisDesc == CardinalAxisType.Z)
             {
                 return rig.transform.forward;
             }

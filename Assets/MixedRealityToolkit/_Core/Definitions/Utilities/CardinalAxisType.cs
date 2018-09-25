@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 {
     /// <summary>
-    /// Which axis does a BoundingBoxRigGizmoHandle rotate around?
+    /// When a cardinal axis is needed.
     /// </summary>
-    public enum BoundingBoxGizmoHandleAxisToAffect
+    public enum CardinalAxisType
     {
         X = 0,
         Y,
