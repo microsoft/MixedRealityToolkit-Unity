@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Controller Configuration Profile", fileName = "MixedRealityControllerConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Controller)]
-    public class MixedRealityControllerMappingProfile : ScriptableObject
+    public class MixedRealityControllerMappingProfile : BaseMixedRealityProfile
     {
         [SerializeField]
         [Tooltip("Enable and configure the controller rendering of the Motion Controllers on Startup.")]

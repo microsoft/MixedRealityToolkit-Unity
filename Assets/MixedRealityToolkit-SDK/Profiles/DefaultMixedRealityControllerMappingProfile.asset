@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a1cf5fd47e548e6a23bdd3ddcc00cf6, type: 3}
   m_Name: DefaultMixedRealityControllerMappingProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
   renderMotionControllers: 1
   useDefaultModels: 0
   globalLeftHandModel: {fileID: 1370450866519632, guid: 626257b1a6cd47c2a32a18cf75b2fb23,

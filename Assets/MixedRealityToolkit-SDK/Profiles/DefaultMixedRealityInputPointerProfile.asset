@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db393d206eab4604ab74278cb6cda355, type: 3}
   m_Name: DefaultMixedRealityInputPointerProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
   pointerOptions:
   - controllerType:
       reference: 

@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.HelpBox("The Camera Profile helps tweak camera settings no matter what platform you're building for.", MessageType.Info);
 
 
-            if (MixedRealityPreferences.LockProfiles)
+            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
             {
                 GUI.enabled = false;
             }
