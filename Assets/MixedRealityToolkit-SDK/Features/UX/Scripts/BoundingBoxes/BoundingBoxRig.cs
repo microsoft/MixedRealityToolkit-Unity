@@ -77,7 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [SerializeField]
         [Tooltip("To visualize the object bounding box, drop the MixedRealityToolkit/UX/Prefabs/BoundingBoxes/BoundingBoxBasic.prefab here.")]
         private BoundingBox boundingBoxPrefab;
-
         public BoundingBox BoundingBoxPrefab
         {
             get
@@ -546,6 +545,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
             return Vector3.zero;
         }
-        #endregion
+        #endregion Public Methods
     }
 }

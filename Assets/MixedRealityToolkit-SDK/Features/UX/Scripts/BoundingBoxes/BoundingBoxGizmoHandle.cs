@@ -99,9 +99,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 maxScale = value;
             }
         }
-        #endregion
+        #endregion Serialized Fields
 
-        #region private variables
+        #region Private Variables
         private Vector3 initialScale;
 
         private Vector3 initialHandPosition;
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private InputEventData inputDownEventData;
 
         private Renderer cachedRenderer;
-        #endregion
+        #endregion Private Variables
 
         #region reference to InputSystem
         private static IMixedRealityInputSystem inputSystem = null;
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
-        #endregion
+        #endregion MonoBehaviour Methods
 
         #region Private Methods
         private Vector3 GetHandPosition(uint sourceId)
@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             InputSystem.PopModalInputHandler();
             Rig.FocusOnHandle(null);
         }
-        #endregion
+        #endregion Private Methods
 
         #region Event Handlers
 
@@ -302,6 +302,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public void OnPositionInputChanged(InputEventData<Vector2> eventData)
         {
         }
-        #endregion
+        #endregion Event Handlers
     }
 }
