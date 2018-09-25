@@ -174,7 +174,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
             for (int i = 0; i < directories.Length; i++)
             {
-                if (directories[i].Contains(directoryName))
+                var name = Path.GetFileName(directories[i]);
+
+                if (name != null && name.Equals(directoryName))
                 {
                     path = directories[i];
                     return true;
