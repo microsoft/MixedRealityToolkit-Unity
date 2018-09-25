@@ -113,9 +113,34 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         #region IMixedRealitySpatialAwarenessObserver implementation
 
         /// <summary>
-        /// Collection of meshes observed.
+        /// A queue of SurfaceData objects. SurfaceData objects are sent to the
+        /// SurfaceObserver to generate meshes of the environment.
         /// </summary>
-        Dictionary<uint, Mesh> meshes = new Dictionary<uint, Mesh>();
+        private Queue<SurfaceData> meshWorkQueue = new Queue<SurfaceData>();
+
+        /// <summary>
+        /// A queue of clean mesh GameObjects ready to be reused.
+        /// </summary>
+        private Queue<GameObject> availableMeshObjects = new Queue<GameObject>();
+
+        /// <summary>
+        /// A dictionary of mesh GameObjects which need to be cleaned up and readded for reuse.
+        /// Key: ID of the surface currently updating
+        /// Value: GameObject encapsulating Visual and Collider components to be cleaned up
+        /// </summary>
+        private Dictionary<int, GameObject> meshesPendingCleanup = new Dictionary<int, GameObject>();
+
+        /// <summary>
+        /// To prevent too many meshes from being generated at the same time, we will
+        /// only request one mesh to be created at a time.  This variable will track
+        /// if a mesh creation request is in flight.
+        /// </summary>
+        private bool meshWorkOutstanding = false;
+
+        /// <summary>
+        /// Collection of mesh <see cref="GameObject"/>s observed.
+        /// </summary>
+        Dictionary<int, GameObject> meshes = new Dictionary<int, GameObject>();
 
 #if UNITY_WSA
         /// <summary>
@@ -208,15 +233,31 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// </summary>
         private void UpdateObserver()
         {
-            if (IsRunning &&
-                (Time.time - lastUpdated >= MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.UpdateInterval))
+            // Only update the observer if it is running.
+            if (IsRunning)
             {
-                // The application can update the observation extents at any time.
-                ApplyObservationExtents();
-                
-                // todo
+                // If we don't have mesh creation in flight...
+                if (!meshWorkOutstanding)
+                {
+                    // If we have a mesh to work on...
+                    if (meshWorkQueue.Count > 0)
+                    {
+                        // Pop the SurfaceData off the workl queue.
+                        SurfaceData surfaceData = meshWorkQueue.Dequeue();
 
-                lastUpdated = Time.time;
+                        // If RequestMeshAsync succeeds, then we have successfully scheduled mesh creation.
+                        meshWorkOutstanding = observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady);
+                    }
+                    // If enough time has passed since the previous observer update...
+                    else if (Time.time - lastUpdated >= MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.UpdateInterval)
+                    {
+                        // The application can update the observation extents at any time.
+                        ApplyObservationExtents();
+
+                        observer.Update(SurfaceObserver_OnSurfaceChanged);
+                        lastUpdated = Time.time;
+                    }
+                }
             }
         }
 
@@ -236,17 +277,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// </summary>
         /// <param name="id">Identifier of the SurfaceData object to update.</param>
         /// <param name="surface">The SurfaceData object to update.</param>
-        private void QueueSpatialMeshDataRequest(SurfaceId id, IMixedRealitySpatialAwarenessMeshDescription meshDescription)
+        private void QueueMeshDataRequest(SurfaceId id, GameObject mesh)
         {
-            // todo
-            //SurfaceData surfaceData = new SurfaceData(id,
-            //                                            surface.GetComponent<MeshFilter>(),
-            //                                            surface.GetComponent<WorldAnchor>(),
-            //                                            surface.GetComponent<MeshCollider>(),
-            //                                            TrianglesPerCubicMeter,
-            //                                            true);
+            SurfaceData surfaceData = new SurfaceData(id,
+                                                    mesh.GetComponent<MeshFilter>(),
+                                                    mesh.GetComponent<WorldAnchor>(),
+                                                    mesh.GetComponent<MeshCollider>(),
+                                                    MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshTrianglesPerCubicMeter,
+                                                    true);
 
-            //surfaceWorkQueue.Enqueue(surfaceData);
+            meshWorkQueue.Enqueue(surfaceData);
         }
 
         /// <summary>
@@ -276,19 +316,34 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
             switch (changeType)
             {
+                // Adding and updating are nearly identical.
+                // The only difference is if a new mesh description needs to be created.
                 case SurfaceChange.Added:
                 case SurfaceChange.Updated:
-                    // Adding and updating are nearly identical.
-                    // The only difference is if a new mesh description needs to be created.
                     // NOTE: Added and Updated notification to the spatial awareness system is deferred until baking is complete.
-                    // todo
+                    // todo - is the above comment correct?
+                    if (meshes.TryGetValue(id.handle, out mesh))
+                    {
+                        // todo
+                        //meshesPendingCleanup.Add(id.handle, mesh);
+                        //meshes.Remove(id.handle);
+                    }
+
+                    // Get an available mesh GameObject ready to be used
+                    // todo mesh = GetMeshObject(id.handle);
+
+                    // Add the mesh to our dictionary of known meshes so we can interact with it later.
+                    meshes.Add(id.handle, mesh);
+
+                    // Add the request to create the mesh to our work queue.
+                    QueueMeshDataRequest(id, mesh);
                     break;
 
                 case SurfaceChange.Removed:
                     // If the mesh is tracked, remove it and inform the spatial awareness system immediately.
                     if (meshes.TryGetValue(id.handle, out mesh))
                     {
-                        surfaces.Remove(id.handle);
+                        meshes.Remove(id.handle);
                         // todo: use "cached" spatial system and call the RemoveMesh method
                     }
                     break;
