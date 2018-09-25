@@ -26,11 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         // Boundary system properties
         private SerializedProperty enableBoundarySystem;
         private SerializedProperty boundarySystemType;
+        private SerializedProperty boundaryVisualizationProfile;
         // Teleport system properties
         private SerializedProperty enableTeleportSystem;
         private SerializedProperty teleportSystemType;
-        private SerializedProperty boundaryVisualizationProfile;
-
+        // Additional registered components profile
         private SerializedProperty registeredComponentsProfile;
 
         private MixedRealityConfigurationProfile configurationProfile;
@@ -85,10 +85,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             // Boundary system configuration
             enableBoundarySystem = serializedObject.FindProperty("enableBoundarySystem");
             boundarySystemType = serializedObject.FindProperty("boundarySystemType");
+            boundaryVisualizationProfile = serializedObject.FindProperty("boundaryVisualizationProfile");
             // Teleport system configuration
             enableTeleportSystem = serializedObject.FindProperty("enableTeleportSystem");
             teleportSystemType = serializedObject.FindProperty("teleportSystemType");
-            boundaryVisualizationProfile = serializedObject.FindProperty("boundaryVisualizationProfile");
+            // Additional registered components configuration
             registeredComponentsProfile = serializedObject.FindProperty("registeredComponentsProfile");
         }
 
@@ -140,6 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             if (scaleDescription != string.Empty)
             {
+                GUILayout.Space(6f);
                 EditorGUILayout.HelpBox(scaleDescription, MessageType.Info);
             }
 
@@ -160,16 +162,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             // Boundary System configuration
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Boundary System Settings", EditorStyles.boldLabel);
+            if (scale != ExperienceScale.Room)
+            {
+                // Alert the user if the experience scale does not support boundary features.
+                GUILayout.Space(6f);
+                EditorGUILayout.HelpBox("Boundaries are only supported in Room scale experiences.", MessageType.Warning);
+                GUILayout.Space(6f);
+            }
             EditorGUILayout.PropertyField(enableBoundarySystem);
             EditorGUILayout.PropertyField(boundarySystemType);
             changed |= RenderProfile(boundaryVisualizationProfile);
-
-            // Boundary settings depend on the experience scale
-            if (scale != ExperienceScale.Room)
-            {
-                GUILayout.Space(6f);
-                EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Warning);
-            }
 
             // Teleport System configuration
             GUILayout.Space(12f);
@@ -178,6 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(teleportSystemType);
 
             GUILayout.Space(12f);
+            EditorGUILayout.LabelField("Additional Components", EditorStyles.boldLabel);
             changed |= RenderProfile(registeredComponentsProfile);
 
             if (!changed)
