@@ -35,7 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
         private bool ShowFps { get; set; }
         private bool ShowMemory { get; set; }
 
-        private int numberOfLines = 0;
         private bool isShowingInformation;
 
         private CpuUseTracker cpuUseTracker = new CpuUseTracker();
