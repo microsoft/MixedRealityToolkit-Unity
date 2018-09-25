@@ -80,6 +80,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
+            if (MixedRealityPreferences.LockProfiles)
+            {
+                GUI.enabled = false;
+            }
+
             serializedObject.Update();
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Windows Gesture Settings", EditorStyles.boldLabel);

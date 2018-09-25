@@ -67,7 +67,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 Selection.activeObject = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile;
             }
 
-            EditorGUILayout.Space();
+            if (MixedRealityPreferences.LockProfiles)
+            {
+                GUI.enabled = false;
+            }
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Speech Commands", EditorStyles.boldLabel);

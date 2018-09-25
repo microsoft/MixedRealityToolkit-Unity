@@ -82,6 +82,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 EditorGUILayout.HelpBox("Boundary visualization is only supported in Room scale experiences.", MessageType.Warning);
             }
             EditorGUILayout.Space();
+
+            if (MixedRealityPreferences.LockProfiles)
+            {
+                GUI.enabled = false;
+            }
+
             serializedObject.Update();
             EditorGUILayout.PropertyField(boundaryHeight);
             EditorGUILayout.Space();

@@ -56,6 +56,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.HelpBox("Pointers attach themselves onto controllers as they are initialized.", MessageType.Info);
             EditorGUILayout.Space();
 
+            if (MixedRealityPreferences.LockProfiles)
+            {
+                GUI.enabled = false;
+            }
+
             serializedObject.Update();
             currentlySelectedPointerOption = -1;
             pointerOptionList.DoLayoutList();

@@ -62,6 +62,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                                     "After defining all your actions, you can then wire up these actions to hardware sensors, controllers, and other input devices.", MessageType.Info);
 
 
+            if (MixedRealityPreferences.LockProfiles)
+            {
+                GUI.enabled = false;
+            }
+
             serializedObject.Update();
             RenderList(inputActionList);
             serializedObject.ApplyModifiedProperties();

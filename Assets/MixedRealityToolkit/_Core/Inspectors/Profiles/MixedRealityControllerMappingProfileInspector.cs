@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 Selection.activeObject = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile;
             }
-
+            
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Controller Templates", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Controller templates define all the controllers your users will be able to use in your application.\n\n" +
@@ -124,6 +124,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
                 return;
+            }
+
+            if (MixedRealityPreferences.LockProfiles)
+            {
+                GUI.enabled = false;
             }
 
             if (controllerButtonStyle == null)

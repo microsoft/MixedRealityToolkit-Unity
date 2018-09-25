@@ -103,6 +103,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 return;
             }
 
+            if (MixedRealityPreferences.LockProfiles)
+            {
+                EditorGUILayout.HelpBox("The Mixed Reality Toolkit's core SDK profiles can be used to get up and running quickly.\n\nYou can use the default profiles provided or create your own in the context menu:\n'Create/Mixed Reality Toolkit/...'", MessageType.Warning);
+                GUI.enabled = false;
+            }
+
             var previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = 160f;
             EditorGUI.BeginChangeCheck();
