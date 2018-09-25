@@ -12,18 +12,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// Called when the spatial awareness mesh subsystem adds a new mesh.
         /// </summary>
         /// <param name="eventData">Data describing the event.</param>
-        void OnMeshAdded(MixedRealitySpatialAwarenessMeshEventData eventData);
+        void OnMeshAdded(MixedRealitySpatialAwarenessEventData eventData);
 
         /// <summary>
         /// Called when the spatial awareness mesh subsystem updates and existing mesh.
         /// </summary>
         /// <param name="eventData">Data describing the event.</param>
-        void OnMeshUpdated(MixedRealitySpatialAwarenessMeshEventData eventData);
+        void OnMeshUpdated(MixedRealitySpatialAwarenessEventData eventData);
 
         /// <summary>
         /// Called when the spatial awareness mesh subsystem removes an existing mesh.
         /// </summary>
         /// <param name="eventData">Data describing the event.</param>
-        void OnMeshRemoved(MixedRealitySpatialAwarenessMeshEventData eventData);
+        void OnMeshRemoved(MixedRealitySpatialAwarenessEventData eventData);
     }
 }

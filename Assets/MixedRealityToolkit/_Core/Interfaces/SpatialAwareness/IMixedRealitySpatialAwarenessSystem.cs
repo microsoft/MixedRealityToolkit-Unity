@@ -105,14 +105,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         Material MeshOcclusionMaterial { get; set; }
 
         /// <summary>
-        /// Gets the collection of <see cref="IMixedRealitySpatialAwarenessMeshDescription"/>s being tracked by the spatial awareness mesh subsystem.
-        /// </summary>
-        Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription> MeshDescriptions { get; }
-
-        /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness mesh subsystem.
         /// </summary>
-        Dictionary<uint, GameObject> MeshObjects { get; }
+        Dictionary<int, GameObject> MeshObjects { get; }
 
         #endregion Mesh Handling
 
@@ -191,14 +186,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         Material PlatformSurfaceMaterial { get; set; }
 
         /// <summary>
-        /// Gets the collection of <see cref="IMixedRealitySpatialAwarenessPlanarSurfaceDescription"/>s being tracked by the spatial awareness surface finding subsystem.
-        /// </summary>
-        Dictionary<uint, IMixedRealitySpatialAwarenessPlanarSurfaceDescription> SurfaceDescriptions { get; }
-
-        /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness surface finding subsystem.
         /// </summary>
-        Dictionary<uint, GameObject> SurfaceObjects { get; }
+        Dictionary<int, GameObject> SurfaceObjects { get; }
 
         #endregion Surface Finding Handling
     }

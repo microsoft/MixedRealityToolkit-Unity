@@ -4,9 +4,9 @@
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
 {
     /// <summary>
-    /// Enumeration defining the types of events that spatial awareness subsystems will send.
-    /// </summary>[System.Flags]
-    public enum SpatialAwarenessDataTypes
+    /// Enumeration defining the types of data that spatial awareness subsystems will send.
+    /// </summary>
+    public enum SpatialAwarenessDataType
     {
         /// <summary>
         /// No spatial awareness data is desired.
@@ -16,11 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <summary>
         /// Spatial awareness mesh data is desired.
         /// </summary>
-        Mesh = 1 << 0,              // HEX: 0x00000001, Decimal: 1
+        Mesh,
 
         /// <summary>
         /// Spatial awareness planar surface data is desired.
         /// </summary>
-        PlanarSurfaces = 1 << 1     // HEX: 0x00000002, Decimal: 2 
+        PlanarSurface
     }
 }

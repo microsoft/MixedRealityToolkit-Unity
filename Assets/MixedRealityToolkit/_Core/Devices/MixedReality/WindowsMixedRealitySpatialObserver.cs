@@ -59,7 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         public void Reset()
         {
             // todo: cleanup created objects?
+#if UNITY_WSA
             CleanupObserver();
+#endif // UNITY_WSA
             InitializeInternal();
         }
 
@@ -110,6 +112,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 
+        /// <summary>
+        /// Collection of meshes observed.
+        /// </summary>
+        Dictionary<uint, Mesh> meshes = new Dictionary<uint, Mesh>();
+
 #if UNITY_WSA
         /// <summary>
         /// The surface observer providing the spatial data.
@@ -131,27 +138,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         public bool IsRunning { get; private set; }
 
         private Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription> meshDescriptions = new Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription>();
-
-        /// <inheritdoc/>
-        public Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription> MeshDescriptions
-        {
-            get
-            {
-                // todo: should this return a clone? we do NOT want callers to modify this collection
-                return meshDescriptions;
-            }
-        }
-
-        private Dictionary<uint, IMixedRealitySpatialAwarenessPlanarSurfaceDescription> surfaceDescriptions = new Dictionary<uint, IMixedRealitySpatialAwarenessPlanarSurfaceDescription>();
-
-        public Dictionary<uint, IMixedRealitySpatialAwarenessPlanarSurfaceDescription> SurfaceDescriptions
-        {
-            get
-            {
-                // todo: should this return a clone? we do NOT want callers to modify this collection
-                return surfaceDescriptions;
-            }
-        }
 
         /// <inheritdoc/>
         public void StartObserving()
@@ -227,7 +213,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             {
                 // The application can update the observation extents at any time.
                 ApplyObservationExtents();
-
                 
                 // todo
 
@@ -287,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             // Verify that the client of the Surface Observer is expecting updates.
             if (!IsRunning) { return; }
 
-            IMixedRealitySpatialAwarenessMeshDescription meshDescription;
+            GameObject mesh;
 
             switch (changeType)
             {
@@ -295,28 +280,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 case SurfaceChange.Updated:
                     // Adding and updating are nearly identical.
                     // The only difference is if a new mesh description needs to be created.
-                    if (meshDescriptions.TryGetValue((uint)id.handle, out meshDescription))
-                    {
-                        // todo pendingCleanup.Add((uint)id.handle, meshDescription);
-                        meshDescriptions.Remove((uint)id.handle);
-
-                    }
-
-                    // Get an available mesh description ready to be used.
-                    // todo surface = GetSurfaceObject(id.handle, transform);
-
-                    // Add the mesh to our dictionary so we can interact with it later.
-                    meshDescriptions.Add((uint)id.handle, meshDescription);
-
-                    // Add the request to create the mesh our work queue.
-                    QueueSpatialMeshDataRequest(id, meshDescription);
+                    // NOTE: Added and Updated notification to the spatial awareness system is deferred until baking is complete.
+                    // todo
                     break;
 
                 case SurfaceChange.Removed:
-                    if (meshDescriptions.TryGetValue((uint)id.handle, out meshDescription))
+                    // If the mesh is tracked, remove it and inform the spatial awareness system immediately.
+                    if (meshes.TryGetValue(id.handle, out mesh))
                     {
-                        meshDescriptions.Remove((uint)id.handle);
-                        // todo: send meshremoved event.
+                        surfaces.Remove(id.handle);
+                        // todo: use "cached" spatial system and call the RemoveMesh method
                     }
                     break;
             }
@@ -325,4 +298,4 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }
-    }
+}

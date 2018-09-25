@@ -12,18 +12,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// Called when the spatial awareness surface finding subsystem adds a new planar surface.
         /// </summary>
         /// <param name="eventData">Data describing the event.</param>
-        void OnSurfaceAdded(MixedRealitySpatialAwarenessSurfaceFindingEventData eventData);
+        void OnSurfaceAdded(MixedRealitySpatialAwarenessEventData eventData);
 
         /// <summary>
         /// Called when the spatial awareness surface finding subsystem updates an existing planar surface.
         /// </summary>
         /// <param name="eventData">Data describing the event.</param>
-        void OnSurfaceUpdated(MixedRealitySpatialAwarenessSurfaceFindingEventData eventData);
+        void OnSurfaceUpdated(MixedRealitySpatialAwarenessEventData eventData);
 
         /// <summary>
         /// Called when the spatial awareness surface finding subsystem removes an existing planar surface.
         /// </summary>
         /// <param name="eventData">Data describing the event.</param>
-        void OnSurfaceRemoved(MixedRealitySpatialAwarenessSurfaceFindingEventData eventData);
+        void OnSurfaceRemoved(MixedRealitySpatialAwarenessEventData eventData);
     }
 }
