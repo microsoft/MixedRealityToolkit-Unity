@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -516,7 +517,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 GameObject clone = GameObject.Instantiate(boxInstance.gameObject);
                 clone.transform.localRotation = Quaternion.identity;
                 clone.transform.position = Vector3.zero;
-                BoundingBox.GetMeshFilterBoundsPoints(clone, bounds, mask);
+                BoundsExtensions.GetMeshFilterBoundsPoints(clone, bounds, mask);
                 Vector3 centroid = boxInstance.TargetBoundsCenter;
                 GameObject.Destroy(clone);
 #if UNITY_2017_1_OR_NEWER
