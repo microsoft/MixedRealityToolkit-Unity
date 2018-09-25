@@ -269,9 +269,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
             }
         }
 
-        protected override void Start()
+        protected override async void Start()
         {
             base.Start();
+
+            await WaitUntilInputSystemValid;
 
             if (cursorPrefab != null)
             {
