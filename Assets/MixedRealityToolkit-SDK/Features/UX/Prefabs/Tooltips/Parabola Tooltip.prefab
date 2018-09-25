@@ -508,8 +508,7 @@ MonoBehaviour:
   contentScale: 0.2
   fontSize: 30
   attachPointType: 9
-  toolTipLine: {fileID: 0}
-  localContentSize: {x: 0, y: 0}
+  toolTipLine: {fileID: 114158392181191990}
 --- !u!114 &114938061459231866
 MonoBehaviour:
   m_ObjectHideFlags: 1
