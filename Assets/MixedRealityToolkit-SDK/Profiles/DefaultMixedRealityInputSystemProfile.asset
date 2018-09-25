@@ -20,3 +20,5 @@ MonoBehaviour:
   enableControllerMapping: 1
   controllerMappingProfile: {fileID: 11400000, guid: 39ded1fd0711a0c448413d0e1ec4f7f3,
     type: 2}
+  visualizationProfile: {fileID: 11400000, guid: 345c06fdf3732db46b96299bd3cba653,
+    type: 2}

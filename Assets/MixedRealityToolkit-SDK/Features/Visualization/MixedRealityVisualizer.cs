@@ -2,18 +2,47 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.VisualizationSystem;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
+namespace Microsoft.MixedReality.Toolkit.SDK.VisualizationSystem
 {
     /// <summary>
     /// The Mixed Reality Visualization component is primarily responsible for synchronizing the user's current input with controller models.
     /// </summary>
     /// <seealso cref="Core.Definitions.Devices.MixedRealityControllerMappingProfile"/>
-    public class MixedRealityControllerVisualizer : ControllerPoseSynchronizer
+    public class MixedRealityVisualizer : ControllerPoseSynchronizer, IMixedRealityVisualizer
     {
         // TODO wire up input actions to controller transform nodes / animations
+
+        [HideInInspector]
+        private IMixedRealityVisualizationSystem visualizationManager;
+
+        /// <inheritdoc />
+        public IMixedRealityVisualizationSystem VisualizationManager
+        {
+            get { return visualizationManager; }
+            set { visualizationManager = value; }
+        }
+
+        /// <inheritdoc />
+        public GameObject GameObjectReference => gameObject;
+
+        #region IMixedRealitySourcePoseHandler Implementation
+
+        public override void OnSourceLost(SourceStateEventData eventData)
+        {
+            if (eventData.Controller == Controller && eventData.Controller.ControllerHandedness == Controller.ControllerHandedness)
+            {
+                visualizationManager?.DetectedVisualizers.Remove(this);
+            }
+
+            base.OnSourceLost(eventData);
+        }
+
+        #endregion IMixedRealitySourcePoseHandler Implementation
 
         #region IMixedRealityInputHandler Implementation
 
