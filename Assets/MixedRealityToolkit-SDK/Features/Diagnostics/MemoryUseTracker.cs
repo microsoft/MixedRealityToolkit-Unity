@@ -17,10 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
         public MemoryUseTracker()
         {
-            this.memoryReadings = new MemoryReading[10];
-            for (int i = 0; i < this.memoryReadings.Length; i++)
+            memoryReadings = new MemoryReading[10];
+
+            for (int i = 0; i < memoryReadings.Length; i++)
             {
-                this.memoryReadings[i] = new MemoryReading();
+                memoryReadings[i] = new MemoryReading();
             }
         }
 
@@ -33,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
             reading.WorkingSetMemoryInBytes = currentProcess.WorkingSet64;
             reading.GCMemoryInBytes = GC.GetTotalMemory(false);
 
-            memoryReadings[index] = reading;
             index = (index + 1) % memoryReadings.Length;
 
             return memoryReadings.Aggregate(sumReading.Reset(), (a, b) => a + b) / memoryReadings.Length;
@@ -47,9 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 
             public MemoryReading Reset()
             {
-                this.VirtualMemoryInBytes = 0;
-                this.WorkingSetMemoryInBytes = 0;
-                this.GCMemoryInBytes = 0;
+                VirtualMemoryInBytes = 0;
+                WorkingSetMemoryInBytes = 0;
+                GCMemoryInBytes = 0;
 
                 return this;
             }
