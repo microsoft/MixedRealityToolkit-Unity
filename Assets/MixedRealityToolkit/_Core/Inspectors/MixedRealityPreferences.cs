@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 {
-    public static class MixedRealityPreferences
+    internal static class MixedRealityPreferences
     {
         private static readonly GUIContent LockContent = new GUIContent("Lock SDK Profiles", "Locks the SDK profiles from being edited.");
 
