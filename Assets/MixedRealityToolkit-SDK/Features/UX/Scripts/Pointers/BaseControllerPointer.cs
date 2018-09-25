@@ -147,11 +147,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 TeleportSystem.Register(gameObject);
             }
 
-            if (InputSystem == null)
-            {
-                await WaitUntilInputSystemValid;
-                SetCursor();
-            }
+            await WaitUntilInputSystemValid;
+            SetCursor();
         }
 
         protected override void OnDisable()
@@ -316,9 +313,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             Vector3 pointerPosition;
             TryGetPointerPosition(out pointerPosition);
-            pointingRay = new Ray(pointerPosition, PointerDirection);
+            pointingRay = pointerRay;
+            pointingRay.origin = pointerPosition;
+            pointingRay.direction = PointerDirection;
             return true;
         }
+
+        private readonly Ray pointerRay = new Ray();
 
         /// <inheritdoc />
         public virtual bool TryGetPointerRotation(out Quaternion rotation)

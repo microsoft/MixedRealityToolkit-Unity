@@ -77,7 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public override void OnPositionInputChanged(InputEventData<Vector2> eventData)
         {
-
             if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
                 if (!UseSourcePoseData &&
