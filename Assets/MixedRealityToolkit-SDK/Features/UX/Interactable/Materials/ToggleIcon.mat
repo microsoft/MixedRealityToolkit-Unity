@@ -6,11 +6,11 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: RadialDot
+  m_Name: ToggleIcon
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
   m_ShaderKeywords: _BORDER_LIGHT_USES_HOVER_COLOR _DIRECTIONAL_LIGHT _DISABLE_ALBEDO_MAP
-    _FORCEPERPIXEL_ON _HOVER_LIGHT _SHADE4_ON _SPECULARHIGHLIGHTS_ON _USEAMBIENT_ON
-    _USEDIFFUSE_ON _USEMAINCOLOR_ON
+    _HOVER_LIGHT _SPECULARHIGHLIGHTS_ON _SPECULAR_HIGHLIGHTS _USEAMBIENT_ON _USEDIFFUSE_ON
+    _USEMAINCOLOR_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -109,7 +109,7 @@ Material:
     - _EnvironmentColoring: 0
     - _FadeBeginDistance: 0.85
     - _FadeCompleteDistance: 0.5
-    - _ForcePerPixel: 1
+    - _ForcePerPixel: 0
     - _Gloss: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -133,11 +133,11 @@ Material:
     - _RoundCornerMargin: 0
     - _RoundCornerRadius: 0.25
     - _RoundCorners: 0
-    - _Shade4: 1
+    - _Shade4: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _Specular: 10
-    - _SpecularHighlights: 0
+    - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Stencil: 0
     - _StencilComparison: 0

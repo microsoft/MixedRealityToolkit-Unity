@@ -141,7 +141,7 @@ MonoBehaviour:
         Material: {fileID: 0}
         GameObject: {fileID: 0}
         Vector2: {x: 0, y: 0}
-        Vector3: {x: 0, y: 0, z: -0.005}
+        Vector3: {x: 0, y: 0, z: -0.003}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
         Color: {r: 0, g: 0, b: 0, a: 0}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
@@ -156,7 +156,7 @@ MonoBehaviour:
         Material: {fileID: 0}
         GameObject: {fileID: 0}
         Vector2: {x: 0, y: 0}
-        Vector3: {x: 0, y: 0, z: 0.004}
+        Vector3: {x: 0, y: 0, z: 0.003}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
         Color: {r: 0, g: 0, b: 0, a: 0}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
@@ -227,7 +227,7 @@ MonoBehaviour:
         Vector2: {x: 0, y: 0}
         Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}
+        Color: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
@@ -242,7 +242,7 @@ MonoBehaviour:
         Vector2: {x: 0, y: 0}
         Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.18382353, g: 0.18382353, b: 0.18382353, a: 1}
+        Color: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
@@ -257,7 +257,7 @@ MonoBehaviour:
         Vector2: {x: 0, y: 0}
         Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}
+        Color: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}

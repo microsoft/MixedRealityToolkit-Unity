@@ -9,7 +9,8 @@ Material:
   m_Name: ToggleButton
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
   m_ShaderKeywords: _BORDER_LIGHT_USES_HOVER_COLOR _DIRECTIONAL_LIGHT _DISABLE_ALBEDO_MAP
-    _HOVER_LIGHT _SPECULARHIGHLIGHTS_ON _USEAMBIENT_ON _USEDIFFUSE_ON _USEMAINCOLOR_ON
+    _HOVER_LIGHT _SPECULARHIGHLIGHTS_ON _SPECULAR_HIGHLIGHTS _USEAMBIENT_ON _USEDIFFUSE_ON
+    _USEMAINCOLOR_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -136,7 +137,7 @@ Material:
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _Specular: 10
-    - _SpecularHighlights: 0
+    - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Stencil: 0
     - _StencilComparison: 0

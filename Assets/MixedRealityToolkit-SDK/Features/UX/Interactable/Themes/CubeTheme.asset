@@ -9,116 +9,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7e7db9a2688ed540af9819c456ba2e2, type: 3}
-  m_Name: ToggleIcon
+  m_Name: CubeTheme
   m_EditorClassIdentifier: 
   Name: 
   Settings:
-  - Name: ScaleOffsetColorTheme
+  - Name: AnimatorTheme
     Properties:
-    - Name: Scale
-      Type: 6
+    - Name: Animator Trigger
+      Type: 16
       Values:
       - Name: Default
-        String: 
-        Bool: 0
-        Int: 0
-        Float: 0
-        Texture: {fileID: 0}
-        Material: {fileID: 0}
-        GameObject: {fileID: 0}
-        Vector2: {x: 0, y: 0}
-        Vector3: {x: 1, y: 1, z: 1}
-        Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0, g: 0, b: 0, a: 0}
-        Quaternion: {x: 0, y: 0, z: 0, w: 0}
-        AudioClip: {fileID: 0}
-        Animation: {fileID: 0}
-      - Name: Focus
-        String: 
-        Bool: 0
-        Int: 0
-        Float: 0
-        Texture: {fileID: 0}
-        Material: {fileID: 0}
-        GameObject: {fileID: 0}
-        Vector2: {x: 0, y: 0}
-        Vector3: {x: 1, y: 1, z: 1}
-        Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0, g: 0, b: 0, a: 0}
-        Quaternion: {x: 0, y: 0, z: 0, w: 0}
-        AudioClip: {fileID: 0}
-        Animation: {fileID: 0}
-      - Name: Press
-        String: 
-        Bool: 0
-        Int: 0
-        Float: 0
-        Texture: {fileID: 0}
-        Material: {fileID: 0}
-        GameObject: {fileID: 0}
-        Vector2: {x: 0, y: 0}
-        Vector3: {x: 1, y: 1, z: 1}
-        Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0, g: 0, b: 0, a: 0}
-        Quaternion: {x: 0, y: 0, z: 0, w: 0}
-        AudioClip: {fileID: 0}
-        Animation: {fileID: 0}
-      - Name: Disabled
-        String: 
-        Bool: 0
-        Int: 0
-        Float: 0
-        Texture: {fileID: 0}
-        Material: {fileID: 0}
-        GameObject: {fileID: 0}
-        Vector2: {x: 0, y: 0}
-        Vector3: {x: 1, y: 1, z: 1}
-        Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0, g: 0, b: 0, a: 0}
-        Quaternion: {x: 0, y: 0, z: 0, w: 0}
-        AudioClip: {fileID: 0}
-        Animation: {fileID: 0}
-      StartValue:
-        Name: 
-        String: 
-        Bool: 0
-        Int: 0
-        Float: 0
-        Texture: {fileID: 0}
-        Material: {fileID: 0}
-        GameObject: {fileID: 0}
-        Vector2: {x: 0, y: 0}
-        Vector3: {x: 0, y: 0, z: 0}
-        Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0, g: 0, b: 0, a: 0}
-        Quaternion: {x: 0, y: 0, z: 0, w: 0}
-        AudioClip: {fileID: 0}
-        Animation: {fileID: 0}
-      PropId: 0
-      ShaderOptions: []
-      ShaderOptionNames: []
-      Default:
-        Name: 
-        String: 
-        Bool: 0
-        Int: 0
-        Float: 0
-        Texture: {fileID: 0}
-        Material: {fileID: 0}
-        GameObject: {fileID: 0}
-        Vector2: {x: 0, y: 0}
-        Vector3: {x: 0, y: 0, z: 0}
-        Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0, g: 0, b: 0, a: 0}
-        Quaternion: {x: 0, y: 0, z: 0, w: 0}
-        AudioClip: {fileID: 0}
-        Animation: {fileID: 0}
-      ShaderName: 
-    - Name: Offset
-      Type: 6
-      Values:
-      - Name: Default
-        String: 
+        String: Default
         Bool: 0
         Int: 0
         Float: 0
@@ -133,7 +34,7 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       - Name: Focus
-        String: 
+        String: Focus
         Bool: 0
         Int: 0
         Float: 0
@@ -141,14 +42,14 @@ MonoBehaviour:
         Material: {fileID: 0}
         GameObject: {fileID: 0}
         Vector2: {x: 0, y: 0}
-        Vector3: {x: 0, y: 0, z: -0.004}
+        Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
         Color: {r: 0, g: 0, b: 0, a: 0}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
-      - Name: Press
-        String: 
+      - Name: Pressed
+        String: Pressed
         Bool: 0
         Int: 0
         Float: 0
@@ -156,14 +57,14 @@ MonoBehaviour:
         Material: {fileID: 0}
         GameObject: {fileID: 0}
         Vector2: {x: 0, y: 0}
-        Vector3: {x: 0, y: 0, z: 0.002}
+        Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
         Color: {r: 0, g: 0, b: 0, a: 0}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       - Name: Disabled
-        String: 
+        String: Disabled
         Bool: 0
         Int: 0
         Float: 0
@@ -213,109 +114,6 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
-    - Name: Color
-      Type: 2
-      Values:
-      - Name: Default
-        String: 
-        Bool: 0
-        Int: 0
-        Float: 0
-        Texture: {fileID: 0}
-        Material: {fileID: 0}
-        GameObject: {fileID: 0}
-        Vector2: {x: 0, y: 0}
-        Vector3: {x: 0, y: 0, z: 0}
-        Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-        Quaternion: {x: 0, y: 0, z: 0, w: 0}
-        AudioClip: {fileID: 0}
-        Animation: {fileID: 0}
-      - Name: Focus
-        String: 
-        Bool: 0
-        Int: 0
-        Float: 0
-        Texture: {fileID: 0}
-        Material: {fileID: 0}
-        GameObject: {fileID: 0}
-        Vector2: {x: 0, y: 0}
-        Vector3: {x: 0, y: 0, z: 0}
-        Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.9019608, g: 0.9019608, b: 0.9019608, a: 1}
-        Quaternion: {x: 0, y: 0, z: 0, w: 0}
-        AudioClip: {fileID: 0}
-        Animation: {fileID: 0}
-      - Name: Press
-        String: 
-        Bool: 0
-        Int: 0
-        Float: 0
-        Texture: {fileID: 0}
-        Material: {fileID: 0}
-        GameObject: {fileID: 0}
-        Vector2: {x: 0, y: 0}
-        Vector3: {x: 0, y: 0, z: 0}
-        Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
-        Quaternion: {x: 0, y: 0, z: 0, w: 0}
-        AudioClip: {fileID: 0}
-        Animation: {fileID: 0}
-      - Name: Disabled
-        String: 
-        Bool: 0
-        Int: 0
-        Float: 0
-        Texture: {fileID: 0}
-        Material: {fileID: 0}
-        GameObject: {fileID: 0}
-        Vector2: {x: 0, y: 0}
-        Vector3: {x: 0, y: 0, z: 0}
-        Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
-        Quaternion: {x: 0, y: 0, z: 0, w: 0}
-        AudioClip: {fileID: 0}
-        Animation: {fileID: 0}
-      StartValue:
-        Name: 
-        String: 
-        Bool: 0
-        Int: 0
-        Float: 0
-        Texture: {fileID: 0}
-        Material: {fileID: 0}
-        GameObject: {fileID: 0}
-        Vector2: {x: 0, y: 0}
-        Vector3: {x: 0, y: 0, z: 0}
-        Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0, g: 0, b: 0, a: 0}
-        Quaternion: {x: 0, y: 0, z: 0, w: 0}
-        AudioClip: {fileID: 0}
-        Animation: {fileID: 0}
-      PropId: 0
-      ShaderOptions:
-      - Name: _Color
-        Type: 0
-        Range: {x: 1, y: 1}
-      ShaderOptionNames:
-      - _Color
-      Default:
-        Name: 
-        String: 
-        Bool: 0
-        Int: 0
-        Float: 0
-        Texture: {fileID: 0}
-        Material: {fileID: 0}
-        GameObject: {fileID: 0}
-        Vector2: {x: 0, y: 0}
-        Vector3: {x: 0, y: 0, z: 0}
-        Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0, g: 0, b: 0, a: 0}
-        Quaternion: {x: 0, y: 0, z: 0, w: 0}
-        AudioClip: {fileID: 0}
-        Animation: {fileID: 0}
-      ShaderName: MixedRealityToolkit/Examples/UnlitTriplanar
     History:
     - Name: Color
       Type: 2
@@ -615,19 +413,19 @@ MonoBehaviour:
         Animation: {fileID: 0}
       ShaderName: 
     Easing:
-      EaseValues: 1
+      EaseValues: 0
       Curve:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0
-          inSlope: 2
-          outSlope: 2
+          value: 1
+          inSlope: 0
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
+          inWeight: 0
+          outWeight: 0
         - serializedVersion: 3
           time: 1
           value: 1
@@ -635,13 +433,13 @@ MonoBehaviour:
           outSlope: 0
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
+          inWeight: 0
+          outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
-        m_RotationOrder: 0
-      LerpTime: 0.3
+        m_RotationOrder: 4
+      LerpTime: 0.5
     NoEasing: 0
     IsValid: 1
   CustomSettings: []
-  States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
+  States: {fileID: 0}

@@ -100,12 +100,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
             else
             {
-                string[] stateLocations = AssetDatabase.FindAssets("DefaultInteractableStates t:States");
+                AssetDatabase.Refresh();
+                string[] stateLocations = AssetDatabase.FindAssets("DefaultInteractableStates");
                 if (stateLocations.Length > 0)
                 {
-                    string path = AssetDatabase.GUIDToAssetPath(stateLocations[0]);
-                    States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
-                    states.objectReferenceValue = defaultStates;
+                    for (int i = 0; i < stateLocations.Length; i++)
+                    {
+                        string path = AssetDatabase.GUIDToAssetPath(stateLocations[i]);
+                        States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
+                        if(defaultStates != null)
+                        {
+                            states.objectReferenceValue = defaultStates;
+                            break;
+                        }
+                    }
                 }
                 else
                 {
@@ -260,12 +268,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                             SerializedProperty theme = themes.GetArrayElementAtIndex(themes.arraySize - 1);
 
                             // TODO: make sure there is only one or make unique
-                            string[] themeLocations = AssetDatabase.FindAssets("DefaultTheme t:Theme");
+                            string[] themeLocations = AssetDatabase.FindAssets("DefaultTheme");
                             if (themeLocations.Length > 0)
                             {
-                                string path = AssetDatabase.GUIDToAssetPath(themeLocations[0]);
-                                Theme defaultTheme = (Theme)AssetDatabase.LoadAssetAtPath(path, typeof(Theme));
-                                theme.objectReferenceValue = defaultTheme;
+                                for (int k = 0; k < themeLocations.Length; k++)
+                                {
+                                    string path = AssetDatabase.GUIDToAssetPath(themeLocations[k]);
+                                    Theme defaultTheme = (Theme)AssetDatabase.LoadAssetAtPath(path, typeof(Theme));
+                                    if(defaultTheme != null)
+                                    {
+                                        theme.objectReferenceValue = defaultTheme;
+                                        break;
+                                    }
+                                }
                             }
 
                             Debug.Log("Adding themes: " + j + " / " + dimensions.intValue);
@@ -276,11 +291,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     {
                         SerializedProperty themeItem = themes.GetArrayElementAtIndex(t);
                         EditorGUILayout.PropertyField(themeItem, new GUIContent("Theme", "Theme properties for interation feedback"));
-
+                        
                         // TODO: we need the theme and target in order to figure out what properties to expose in the list
                         // TODO: or do we show them all and show alerts when a theme property is not compatable
                         if (themeItem.objectReferenceValue != null && gameObject.objectReferenceValue)
                         {
+                            if (themeItem.objectReferenceValue.name == "DefaultTheme")
+                            {
+                                EditorGUILayout.BeginHorizontal();
+                                DrawWarning("DefaultTheme should not be edited.  ");
+                                bool newTheme = FlexButton(new GUIContent("Create Theme", "Create a new theme"), new int[] { i, t, 0}, CreateTheme);
+                                if (newTheme)
+                                {
+                                    continue;
+                                }
+                                EditorGUILayout.EndHorizontal();
+                            }
+
                             SerializedProperty hadDefault = sItem.FindPropertyRelative("HadDefaultTheme");
                             hadDefault.boolValue = true;
                             EditorGUI.indentLevel = indentOnSectionStart + 2;
@@ -347,15 +374,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                             themeMsg += "above to add visual effects";
 
                             SerializedProperty hadDefault = sItem.FindPropertyRelative("HadDefaultTheme");
+                            
                             if (!hadDefault.boolValue && t == 0)
                             {
-                                string[] themeLocations = AssetDatabase.FindAssets("t:Theme, DefaultTheme");
+                                string[] themeLocations = AssetDatabase.FindAssets("DefaultTheme");
 
                                 if (themeLocations.Length > 0)
                                 {
-                                    string path = AssetDatabase.GUIDToAssetPath(themeLocations[0]);
-                                    Theme defaultTheme = (Theme)AssetDatabase.LoadAssetAtPath(path, typeof(Theme));
-                                    themeItem.objectReferenceValue = defaultTheme;
+                                    for (int j = 0; j < themeLocations.Length; j++)
+                                    {
+                                        string path = AssetDatabase.GUIDToAssetPath(themeLocations[0]);
+                                        Theme defaultTheme = (Theme)AssetDatabase.LoadAssetAtPath(path, typeof(Theme));
+                                        if(defaultTheme != null)
+                                        {
+                                            themeItem.objectReferenceValue = defaultTheme;
+                                            break;
+                                        }
+                                    }
+                                    
                                     if (themeItem.objectReferenceValue != null)
                                     {
                                         hadDefault.boolValue = true;
@@ -650,8 +686,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                         if (newItem && properties[i].Default != null)
                         {
-                            // assign default values if new item
-                            SerializeThemeValues(properties[i].Default, valueItem, type.intValue);
+                            if ((ThemePropertyValueTypes)type.intValue == ThemePropertyValueTypes.AnimatorTrigger)
+                            {
+                                ThemePropertyValue propValue = new ThemePropertyValue();
+                                propValue.Name = valueName.stringValue;
+                                propValue.String = states[j].Name;
+
+                                SerializeThemeValues(propValue, valueItem, type.intValue);
+                            }
+                            else
+                            {
+                                // assign default values if new item
+                                SerializeThemeValues(properties[i].Default, valueItem, type.intValue);
+                            }
                         }
                     }
 
@@ -1240,6 +1287,36 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        protected void CreateTheme(int[] arr)
+        {
+            SerializedProperty sItem = profileList.GetArrayElementAtIndex(arr[0]);
+            SerializedProperty themes = sItem.FindPropertyRelative("Themes");
+            SerializedProperty themeItem = themes.GetArrayElementAtIndex(arr[1]);
+
+            SerializedProperty gameObject = sItem.FindPropertyRelative("Target");
+
+            GameObject host = gameObject.objectReferenceValue as GameObject;
+            string path = "Assets/Themes";
+
+            if (host != null)
+            {
+                string themeName = host.name + "Theme.asset";
+
+                path = EditorUtility.SaveFilePanelInProject(
+                   "Save New Theme",
+                   themeName,
+                   "asset",
+                   "Create a name and select a location for this theme");
+
+                if (path.Length != 0)
+                {
+                    Theme newTheme = ScriptableObject.CreateInstance<Theme>();
+                    AssetDatabase.CreateAsset(newTheme, path);
+                    themeItem.objectReferenceValue = newTheme;
+                }
+            }
+        }
+
         protected void AddAnimator(int[] arr)
         {
             SerializedProperty sItem = profileList.GetArrayElementAtIndex(arr[0]);
@@ -1252,109 +1329,49 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 string controllerName = host.name + "Controller.controller";
 
-                 path = EditorUtility.SaveFilePanel(
-                    "Save Animator Controller and Animation Location",
-                    "",
+                 path = EditorUtility.SaveFilePanelInProject(
+                    "Save Animator Controller",
                     controllerName,
-                    "controller");
+                    "controller",
+                    "Create a name and select a location for the new Animator Controller");
 
                 if (path.Length != 0)
                 {
                     // we have a location
                     UnityEditor.Animations.AnimatorController controller = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath(path);
+                    AnimatorStateMachine stateMachine = controller.layers[0].stateMachine;
+
+                    // now create the animation clips
+                    //AnimationClip clip = new AnimationClip();
+                    //clip.name = "Default";
+
+                    State[] states = GetStates();
+                    
+                    for (int i = 0; i < states.Length; i++)
+                    {
+                        string name = states[i].Name;
+
+                        controller.AddParameter(name, AnimatorControllerParameterType.Trigger);
+                        AnimationClip clip = AnimatorController.AllocateAnimatorClip(name);
+
+                        AnimationClipSettings settings = AnimationUtility.GetAnimationClipSettings(clip);
+                        settings.loopTime = false;
+                        AnimationUtility.SetAnimationClipSettings(clip, settings);
+
+                        AssetDatabase.AddObjectToAsset(clip, controller);
+                        AnimatorState newState = controller.AddMotion(clip);
+                        
+                        //AnimatorState newState = stateMachine.AddState(name);
+                        AnimatorStateTransition transition = stateMachine.AddAnyStateTransition(newState);
+                        transition.AddCondition(AnimatorConditionMode.If, 0, name);
+                        transition.duration = 1;
+                    }
+
                     Animator animator = host.AddComponent<Animator>();
                     animator.runtimeAnimatorController = controller;
 
-
-                    // now create the animation clips
-                    AnimationClip clip = new AnimationClip();
-                    clip.name = "Default";
-                    /*
-                    State[] states = GetStates();
-
-                    controller.AddParameter("Default", AnimatorControllerParameterType.Trigger);
-                    AnimatorStateMachine stateMachine = controller.layers[0].stateMachine;
-                    AnimatorStateMachine newMachine = stateMachine.AddStateMachine("DefaultMachine");
-                    AnimatorState newState = newMachine.AddState("Default");
-                    AnimatorStateTransition t1 = stateMachine.AddAnyStateTransition(newState);
-                    t1.AddCondition(AnimatorConditionMode.If, 0, "Default");
-                    t1.duration = 1;
-
-                    for (int i = 0; i < states.Length; i++)
-                    {
-
-                    }
-
-                    
-                     * // Creates the controller
-                        var controller = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath("Assets/Mecanim/StateMachineTransitions.controller");
-
-                        // Add parameters
-                        controller.AddParameter("TransitionNow", AnimatorControllerParameterType.Trigger);
-                        controller.AddParameter("Reset", AnimatorControllerParameterType.Trigger);
-                        controller.AddParameter("GotoB1", AnimatorControllerParameterType.Trigger);
-                        controller.AddParameter("GotoC", AnimatorControllerParameterType.Trigger);
-
-                        // Add StateMachines
-                        var rootStateMachine = controller.layers[0].stateMachine;
-                        var stateMachineA = rootStateMachine.AddStateMachine("smA");
-                        var stateMachineB = rootStateMachine.AddStateMachine("smB");
-                        var stateMachineC = stateMachineB.AddStateMachine("smC");
-
-                        // Add States
-                        var stateA1 = stateMachineA.AddState("stateA1");
-                        var stateB1 = stateMachineB.AddState("stateB1");
-                        var stateB2 = stateMachineB.AddState("stateB2");
-                        stateMachineC.AddState("stateC1");
-                        var stateC2 = stateMachineC.AddState("stateC2"); // don’t add an entry transition, should entry to state by default
-
-                        // Add Transitions
-                        var exitTransition = stateA1.AddExitTransition();
-                        exitTransition.AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 0, "TransitionNow");
-                        exitTransition.duration = 0;
-
-                        var resetTransition = rootStateMachine.AddAnyStateTransition(stateA1);
-                        resetTransition.AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 0, "Reset");
-                        resetTransition.duration = 0;
-
-                        var transitionB1 = stateMachineB.AddEntryTransition(stateB1);
-                        transitionB1.AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 0, "GotoB1");
-                        stateMachineB.AddEntryTransition(stateB2);
-                        stateMachineC.defaultState = stateC2;
-                        var exitTransitionC2 = stateC2.AddExitTransition();
-                        exitTransitionC2.AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 0, "TransitionNow");
-                        exitTransitionC2.duration = 0;
-
-                        var stateMachineTransition = rootStateMachine.AddStateMachineTransition(stateMachineA, stateMachineC);
-                        stateMachineTransition.AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 0, "GotoC");
-                        rootStateMachine.AddStateMachineTransition(stateMachineA, stateMachineB);*/
-
-                    /*
-                    var pngData = texture.EncodeToPNG();
-                    if (pngData != null)
-                        File.WriteAllBytes(path, pngData);
-                        */
                 }
             }
-            else
-            {
-
-            }
-            
-
-            
-
-
-            /*
-            
-            Animator animator = new Animator();
-            animator.name = host.name + "Animator";
-            string path = "Assets/Animations/";
-
-            AssetDatabase.CreateAsset(animator, path + animator.name + ".controller"); //"anim";
-
-            host.AddComponent<Animator>();
-            */
         }
 
         public static void RenderThemeStates(SerializedProperty settings, State[] states, int margin)

@@ -349,21 +349,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 return;
             }
-
             
-            print("PRESSED!!!!!" + " / " + name + " / " + HasFocus + " / " + eventData.InputData);
-
-            //ignore for now
-            return;
+            print("PRESSED!!!!!" + " / " + name + " / " + HasFocus + " / " + eventData);
+            
             if (StateManager != null)
             {
-                if (ShouldListen(eventData.MixedRealityInputAction))
+                if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
                 {
                     StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
                     IncreaseDimensionIndex();
                     OnClick.Invoke();
                 }
-                else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
+                else if (eventData != null && ShouldListen(eventData.MixedRealityInputAction))
                 {
                     StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
                     IncreaseDimensionIndex();
