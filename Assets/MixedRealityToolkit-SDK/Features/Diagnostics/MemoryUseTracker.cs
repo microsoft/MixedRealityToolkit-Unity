@@ -10,23 +10,33 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
     internal class MemoryUseTracker
     {
         private Process currentProcess = Process.GetCurrentProcess();
-        private MemoryReading[] memoryReadings = new MemoryReading[10];
+        private readonly MemoryReading[] memoryReadings;
         private int index = 0;
+
+        private MemoryReading sumReading = new MemoryReading();
+
+        public MemoryUseTracker()
+        {
+            this.memoryReadings = new MemoryReading[10];
+            for (int i = 0; i < this.memoryReadings.Length; i++)
+            {
+                this.memoryReadings[i] = new MemoryReading();
+            }
+        }
+
 
         public MemoryReading GetReading()
         {
-            var reading = new MemoryReading()
-            {
-                VirtualMemoryInBytes = currentProcess.VirtualMemorySize64,
-                WorkingSetMemoryInBytes = currentProcess.WorkingSet64,
-                GCMemoryInBytes = GC.GetTotalMemory(false)
-            };
+            var reading = memoryReadings[index];
+
+            reading.VirtualMemoryInBytes = currentProcess.VirtualMemorySize64;
+            reading.WorkingSetMemoryInBytes = currentProcess.WorkingSet64;
+            reading.GCMemoryInBytes = GC.GetTotalMemory(false);
 
             memoryReadings[index] = reading;
             index = (index + 1) % memoryReadings.Length;
 
-            var sum = memoryReadings.Aggregate(new MemoryReading(), (a, b) => a + b);
-            return sum / memoryReadings.Length;
+            return memoryReadings.Aggregate(sumReading.Reset(), (a, b) => a + b) / memoryReadings.Length;
         }
 
         public struct MemoryReading
@@ -35,24 +45,31 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
             public long WorkingSetMemoryInBytes { get; set; }
             public long GCMemoryInBytes { get; set; }
 
+            public MemoryReading Reset()
+            {
+                this.VirtualMemoryInBytes = 0;
+                this.WorkingSetMemoryInBytes = 0;
+                this.GCMemoryInBytes = 0;
+
+                return this;
+            }
+
             public static MemoryReading operator +(MemoryReading a, MemoryReading b)
             {
-                return new MemoryReading()
-                {
-                    VirtualMemoryInBytes = a.VirtualMemoryInBytes + b.VirtualMemoryInBytes,
-                    WorkingSetMemoryInBytes = a.WorkingSetMemoryInBytes + b.WorkingSetMemoryInBytes,
-                    GCMemoryInBytes = a.GCMemoryInBytes + b.GCMemoryInBytes
-                };
+                a.VirtualMemoryInBytes += b.VirtualMemoryInBytes;
+                a.WorkingSetMemoryInBytes += b.WorkingSetMemoryInBytes;
+                a.GCMemoryInBytes += b.GCMemoryInBytes;
+
+                return a;
             }
 
             public static MemoryReading operator /(MemoryReading a, int b)
             {
-                return new MemoryReading()
-                {
-                    VirtualMemoryInBytes = a.VirtualMemoryInBytes / b,
-                    WorkingSetMemoryInBytes = a.WorkingSetMemoryInBytes / b,
-                    GCMemoryInBytes = a.GCMemoryInBytes / b
-                };
+                a.VirtualMemoryInBytes /= b;
+                a.WorkingSetMemoryInBytes /= b;
+                a.GCMemoryInBytes /= b;
+
+                return a;
             }
         }
     }
