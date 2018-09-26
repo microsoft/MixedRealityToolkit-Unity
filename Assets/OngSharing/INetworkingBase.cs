@@ -8,7 +8,7 @@
 
     public static NetworkingType NetworkingMode = NetworkingType.Photon;
 
-    public static void Send( T data)
+    public static void Send(T data)
     {
         Send(0, data, 1);
     }

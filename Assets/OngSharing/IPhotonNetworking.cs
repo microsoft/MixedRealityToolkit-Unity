@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class IPhotonNetworking<T> : Singleton<IPhotonNetworking<T>> {
 
+
     int Identity;
     TypeCode typeCode;
     T dataStream;
@@ -16,8 +17,7 @@ public class IPhotonNetworking<T> : Singleton<IPhotonNetworking<T>> {
         PhotonView photonView = GetComponent<PhotonView>();
         typeCode = Type.GetTypeCode(data.GetType());
         Identity = ID;
-        dataStream = data;
-        
+        dataStream = data;        
     }
 
     public static GameObject getObjectById(int id)
