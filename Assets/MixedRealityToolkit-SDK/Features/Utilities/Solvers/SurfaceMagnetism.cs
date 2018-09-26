@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using UnityEngine;
 
@@ -79,26 +78,32 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         private bool useLinkedAltScaleOverride = false;
 
         [SerializeField]
-        [Tooltip("Raycast direction.  Can cast from head in facing direction, or cast from head to object position")]
+        [Tooltip("Raycast direction. Can cast from head in facing direction, or cast from head to object position")]
         private RaycastDirectionEnum raycastDirection = RaycastDirectionEnum.ToLinkedPosition;
 
         [SerializeField]
-        [Tooltip("Orientation mode.  None = no orienting, Vertical = Face head, but always oriented up/down, Full = Aligned to surface normal completely")]
+        [Tooltip("Orientation mode. None = no orienting, Vertical = Face head, but always oriented up/down, Full = Aligned to surface normal completely")]
         private OrientModeEnum orientationMode = OrientModeEnum.Vertical;
 
         [SerializeField]
         [Tooltip("Orientation Blend Value 0.0 = All head 1.0 = All surface")]
-        private float orientBlend = 0.65f;
+        private float orientationBlend = 0.65f;
 
         [SerializeField]
+        [Tooltip("If enabled, the debug lines will be drawn in the editor")]
         private bool debugEnabled = false;
+
+        /// <summary>
+        /// Whether or not the object is currently magnetized to a surface.
+        /// </summary>
+        public bool OnSurface { get; private set; }
 
         private BoxCollider boxCollider;
 
         private Vector3 RaycastOrigin => SolverHandler.TransformTarget == null ? Vector3.zero : SolverHandler.TransformTarget.position;
 
         /// <summary>
-        /// Which point should the ray cast toward?  Not really the 'end' of the ray.  The ray may be cast along
+        /// Which point should the ray cast toward? Not really the 'end' of the ray. The ray may be cast along
         /// the head facing direction, from the eye to the object, or to the solver's linked position (working from
         /// the previous solvers)
         /// </summary>
@@ -106,6 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         {
             get
             {
+                Vector3 origin = RaycastOrigin;
                 Vector3 endPoint = Vector3.forward;
 
                 switch (raycastDirection)
@@ -155,13 +161,34 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         /// <summary>
         /// A constant scale override may be specified for volumetric raycasts, otherwise uses the current value of the solver link's alt scale
         /// </summary>
-        private float ScaleOverride => useLinkedAltScaleOverride ? SolverHandler.AltScale.magnitude : volumeCastSizeOverride;
+        private float ScaleOverride => useLinkedAltScaleOverride ? SolverHandler.AltScale.Current.magnitude : volumeCastSizeOverride;
 
-        private void OnValidate()
+        protected override void OnValidate()
         {
+            base.OnValidate();
+
             if (raycastMode == RaycastModeType.Box)
             {
-                boxCollider = gameObject.EnsureComponent<BoxCollider>();
+                boxCollider = gameObject.GetComponent<BoxCollider>();
+
+                if (boxCollider == null)
+                {
+                    Debug.LogError($"Box raycast mode requires a BoxCollider, but none was found on {name}! Please add one.");
+                }
+            }
+        }
+
+        private void Start()
+        {
+            if (raycastMode == RaycastModeType.Box && boxCollider == null)
+            {
+                boxCollider = gameObject.GetComponent<BoxCollider>();
+
+                if (boxCollider == null)
+                {
+                    Debug.LogError($"Box raycast mode requires a BoxCollider, but none was found on {name}! Defaulting to Simple raycast mode.");
+                    raycastMode = RaycastModeType.Simple;
+                }
             }
         }
 
@@ -191,12 +218,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             {
                 case OrientModeEnum.None:
                     return SolverHandler.GoalRotation;
+
                 case OrientModeEnum.Vertical:
                     return surfaceRot;
+
                 case OrientModeEnum.Full:
                     return Quaternion.LookRotation(-surfaceNormal, Vector3.up);
+
                 case OrientModeEnum.Blended:
-                    return Quaternion.Slerp(SolverHandler.GoalRotation, surfaceRot, orientBlend);
+                    return Quaternion.Slerp(SolverHandler.GoalRotation, surfaceRot, orientationBlend);
                 default:
                     return Quaternion.identity;
             }
@@ -248,7 +278,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             RaycastHit result;
 
             // Do the cast!
-            isHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(rayStep, magneticSurfaces, out result);
+            isHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(rayStep, maxDistance, magneticSurfaces, out result);
+
+            OnSurface = isHit;
 
             // Enforce CloseDistance
             Vector3 hitDelta = result.point - rayStep.Origin;
@@ -275,7 +307,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
             // Do the cast!
             float size = scaleOverride > 0 ? scaleOverride : transform.lossyScale.x * sphereSize;
-            isHit = MixedRealityRaycaster.RaycastSpherePhysicsStep(rayStep, size, magneticSurfaces, out result);
+            isHit = MixedRealityRaycaster.RaycastSpherePhysicsStep(rayStep, size, maxDistance, magneticSurfaces, out result);
+
+            OnSurface = isHit;
 
             // Enforce CloseDistance
             Vector3 hitDelta = result.point - rayStep.Origin;
@@ -328,16 +362,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 Plane plane;
                 float distance;
 
-                // place an unconstrained plane down the ray.  Never use vertical constrain.
-                FindPlacementPlane(rayStep.Origin, rayStep.Direction, positions, normals, hits, boxCollider.size.x, maximumNormalVariance, orientationMode == OrientModeEnum.None, out plane, out distance);
+                // Place an unconstrained plane down the ray. Don't use vertical constrain.
+                FindPlacementPlane(rayStep.Origin, rayStep.Direction, positions, normals, hits, boxCollider.size.x, maximumNormalVariance, false, orientationMode == OrientModeEnum.None, out plane, out distance);
 
                 // If placing on a horizontal surface, need to adjust the calculated distance by half the app height
                 float verticalCorrectionOffset = 0;
                 if (IsNormalVertical(plane.normal) && !Mathf.Approximately(rayStep.Direction.y, 0))
                 {
                     float boxSurfaceVerticalOffset = targetMatrix.MultiplyVector(new Vector3(0, extents.y * 0.5f, 0)).magnitude;
-                    Vector3 correctionVec = boxSurfaceVerticalOffset * (rayStep.Direction / rayStep.Direction.y);
-                    verticalCorrectionOffset = -correctionVec.magnitude;
+                    Vector3 correctionVector = boxSurfaceVerticalOffset * (rayStep.Direction / rayStep.Direction.y);
+                    verticalCorrectionOffset = -correctionVector.magnitude;
                 }
 
                 float boxSurfaceOffset = targetMatrix.MultiplyVector(new Vector3(0, 0, extents.z * 0.5f)).magnitude;
@@ -345,6 +379,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 // Apply boxSurfaceOffset to ray direction and not surface normal direction to reduce sliding
                 GoalPosition = rayStep.Origin + rayStep.Direction * Mathf.Max(closeDistance, distance + surfaceRayOffset + boxSurfaceOffset + verticalCorrectionOffset) + plane.normal * (0 * boxSurfaceOffset + surfaceNormalOffset);
                 GoalRotation = CalculateMagnetismOrientation(rayStep.Direction, plane.normal);
+                OnSurface = true;
+            }
+            else
+            {
+                OnSurface = false;
             }
         }
 
@@ -358,20 +397,28 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         /// <param name="hits"></param>
         /// <param name="assetWidth"></param>
         /// <param name="maxNormalVariance"></param>
+        /// <param name="constrainVertical"></param>
         /// <param name="useClosestDistance"></param>
         /// <param name="plane"></param>
         /// <param name="closestDistance"></param>
-        private void FindPlacementPlane(Vector3 origin, Vector3 direction, Vector3[] positions, Vector3[] normals, bool[] hits, float assetWidth, float maxNormalVariance, bool useClosestDistance, out Plane plane, out float closestDistance)
+        private void FindPlacementPlane(Vector3 origin, Vector3 direction, Vector3[] positions, Vector3[] normals, bool[] hits, float assetWidth, float maxNormalVariance, bool constrainVertical, bool useClosestDistance, out Plane plane, out float closestDistance)
         {
             int rayCount = positions.Length;
+
             Vector3 originalDirection = direction;
 
-            // go through all the points and find the closest distance
+            if (constrainVertical)
+            {
+                direction.y = 0.0f;
+                direction = direction.normalized;
+            }
+
+            // Go through all the points and find the closest distance
             closestDistance = float.PositiveInfinity;
 
-            var numHits = 0;
+            int numHits = 0;
             int closestPoint = -1;
-            var farthestDistance = 0f;
+            float farthestDistance = 0f;
             var averageNormal = Vector3.zero;
 
             for (int hitIndex = 0; hitIndex < rayCount; hitIndex++)
@@ -433,6 +480,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 }
 
                 Vector3 difference = positions[hitIndex] - positions[closestPoint];
+
+                if (constrainVertical)
+                {
+                    difference.y = 0.0f;
+                    difference.Normalize();
+
+                    if (difference == Vector3.zero)
+                    {
+                        continue;
+                    }
+                }
+
                 difference.Normalize();
 
                 float angle = Vector3.Dot(direction, difference);
@@ -444,7 +503,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 }
             }
 
-            if (lowIndex != -1)
+            if (!constrainVertical && lowIndex != -1)
             {
                 for (int hitIndex = 0; hitIndex < rayCount; hitIndex++)
                 {
@@ -491,7 +550,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 else
                 {
                     Vector3 planeUp = Vector3.Cross(positions[lowIndex] - positions[closestPoint], direction);
-                    placementNormal = Vector3.Cross(positions[lowIndex] - positions[closestPoint], planeUp).normalized;
+                    placementNormal = Vector3.Cross(positions[lowIndex] - positions[closestPoint], constrainVertical ? Vector3.up : planeUp).normalized;
                 }
 
                 if (debugEnabled)
@@ -517,7 +576,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             }
 
             // Figure out how far the plane should be.
-            if (!useClosestDistance && closestPoint >= 0.0f)
+            if (!useClosestDistance && closestPoint >= 0)
             {
                 float centerPlaneDistance;
 

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 {
     /// <summary>
     /// A custom shader inspector for the "Mixed Reality Toolkit/Standard" shader.

@@ -18,8 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
     {
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
-        public bool SetVisibilityOnSourceDetected { get; set; } = false;
-
         /// <summary>
         /// Surface distance to place the cursor off of the surface at
         /// </summary>
@@ -61,7 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         protected GameObject TargetedObject = null;
 
         private uint visibleSourcesCount = 0;
-        private bool isVisible = true;
 
         private Vector3 targetPosition;
         private Vector3 targetScale;
@@ -109,9 +106,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                 PrimaryCursorVisual.gameObject.activeInHierarchy != visible)
             {
                 PrimaryCursorVisual.gameObject.SetActive(visible);
-                isVisible = visible;
             }
         }
+
+        /// <inheritdoc />
+        public bool SetVisibilityOnSourceDetected { get; set; } = false;
 
         /// <inheritdoc />
         public GameObject GameObjectReference => gameObject;

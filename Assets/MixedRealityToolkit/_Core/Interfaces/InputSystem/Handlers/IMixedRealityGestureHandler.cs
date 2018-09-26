@@ -2,13 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
 {
     /// <summary>
     /// Interface to implement for generic gesture input.
     /// </summary>
-    public interface IMixedRealityGestureHandler : IMixedRealityInputHandler
+    public interface IMixedRealityGestureHandler : IEventSystemHandler
     {
         /// <summary>
         /// Gesture Started Event.
@@ -39,14 +40,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
     /// Interface to implement for generic gesture input.
     /// </summary>
     /// <typeparam name="T">The type of data you want to listen for.</typeparam>
-    public interface IMixedRealityGestureHandler<T> : IMixedRealityInputHandler
+    public interface IMixedRealityGestureHandler<T> : IMixedRealityGestureHandler
     {
-        /// <summary>
-        /// Gesture Started Event.
-        /// </summary>
-        /// <param name="eventData"></param>
-        void OnGestureStarted(InputEventData eventData);
-
         /// <summary>
         /// Gesture Updated Event.
         /// </summary>
@@ -64,11 +59,5 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers
         /// </remarks>
         /// <param name="eventData"></param>
         void OnGestureCompleted(InputEventData<T> eventData);
-
-        /// <summary>
-        /// Gesture Canceled Event.
-        /// </summary>
-        /// <param name="eventData"></param>
-        void OnGestureCanceled(InputEventData eventData);
     }
 }

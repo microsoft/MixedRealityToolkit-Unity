@@ -156,10 +156,92 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
             return count == 0 ? Vector3.zero : vectors.OrderBy(v => v.sqrMagnitude).ElementAt(count / 2);
         }
 
-        public static bool IsValidPosition(this Vector3 position)
+        public static bool IsValidVector(this Vector3 vector)
         {
-            return !float.IsNaN(position.x) && !float.IsNaN(position.y) && !float.IsNaN(position.z) &&
-                   !float.IsInfinity(position.x) && !float.IsInfinity(position.y) && !float.IsInfinity(position.z);
+            return !float.IsNaN(vector.x) && !float.IsNaN(vector.y) && !float.IsNaN(vector.z) &&
+                   !float.IsInfinity(vector.x) && !float.IsInfinity(vector.y) && !float.IsInfinity(vector.z);
         }
+
+        /// <summary>
+        /// Get the relative mapping based on a source Vec3 and a radius for spherical mapping.
+        /// </summary>
+        /// <param name="source">The source <see cref="Vector3"/> to be mapped to sphere</param>
+        /// <param name="radius">This is a <see cref="float"/> for the radius of the sphere</param>
+        /// <returns></returns>
+        public static Vector3 SphericalMapping(Vector3 source, float radius)
+        {
+            float circ = 2f * Mathf.PI * radius;
+
+            float xAngle = (source.x / circ) * 360f;
+            float yAngle = -(source.y / circ) * 360f;
+
+            source.Set(0.0f, 0.0f, radius);
+
+            Quaternion rot = Quaternion.Euler(yAngle, xAngle, 0.0f);
+            source = rot * source;
+
+            return source;
+        }
+
+        /// <summary>
+        /// Get the relative mapping based on a source Vec3 and a radius for cylinder mapping.
+        /// </summary>
+        /// <param name="source">The source <see cref="Vector3"/> to be mapped to cylinder</param>
+        /// <param name="radius">This is a <see cref="float"/> for the radius of the cylinder</param>
+        /// <returns></returns>
+        public static Vector3 CylindricalMapping(Vector3 source, float radius)
+        {
+            float circ  = 2f * Mathf.PI * radius;
+
+            float xAngle = (source.x / circ) * 360f;
+
+            source.Set(0.0f, source.y, radius);
+
+            Quaternion rot = Quaternion.Euler(0.0f, xAngle, 0.0f);
+            source = rot * source;
+
+            return source;
+        }
+
+        /// <summary>
+        /// Get the relative mapping based on a source Vec3 and a radius for radial mapping.
+        /// </summary>
+        /// <param name="source">The source <see cref="Vector3"/> to be mapped to cylinder</param>
+        /// <param name="radialRange">The total range of the radial in degrees as a <see cref="float"/></param>
+        /// <param name="radius">This is a <see cref="float"/> for the radius of the radial</param>
+        /// <param name="row">The current row as a <see cref="int"/> for the radial calculation</param>
+        /// <param name="totalRow">The total rows as a <see cref="int"/> for the radial calculation</param>
+        /// <param name="column">The current column as a <see cref="int"/> for the radial calculation</param>
+        /// <param name="totalColumn">The total columns as a <see cref="int"/> for the radial calculation</param>
+        /// <returns></returns>
+        public static Vector3 RadialMapping(Vector3 source, float radialRange, float radius, int row, int totalRows, int column, int totalColumns)
+        {
+            float radialCellAngle = radialRange / totalColumns;
+
+            source.x = 0f;
+            source.y = 0f;
+            source.z = (radius / totalRows) * row;
+
+            float yAngle = radialCellAngle * (column - (totalColumns * 0.5f)) + (radialCellAngle * .5f);
+
+            Quaternion rot = Quaternion.Euler(0.0f, yAngle, 0.0f);
+            source = rot * source;
+
+            return source;
+        }
+
+        /// <summary>
+        /// Randomized mapping based on a source Vec3 and a radius for randomization distance.
+        /// </summary>
+        /// <param name="source">The source <see cref="Vector3"/> to be mapped to cylinder</param>
+        /// <param name="radius">This is a <see cref="float"/> for the radius of the cylinder</param>
+        /// <returns></returns>
+        public static Vector3 ScatterMapping(Vector3 source, float radius)
+        {
+            source.x = UnityEngine.Random.Range(-radius, radius);
+            source.y = UnityEngine.Random.Range(-radius, radius);
+            return source;
+        }
+
     }
 }

@@ -152,18 +152,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         }
 
         [SerializeField]
-        [Tooltip("The approximate height of the play space, in meters.")]
-        private float boundaryHeight = 3.0f;
-
-        /// <summary>
-        /// The developer defined height of the boundary, in meters.
-        /// </summary>
-        /// <remarks>
-        /// The BoundaryHeight property is used to create a three dimensional volume for the play space.
-        /// </remarks>
-        public float BoundaryHeight => boundaryHeight;
-
-        [SerializeField]
         [Tooltip("Profile for wiring up boundary visualization assets.")]
         private MixedRealityBoundaryVisualizationProfile boundaryVisualizationProfile;
 
@@ -201,19 +189,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
         {
             get { return teleportSystemType; }
             private set { teleportSystemType = value; }
-        }
-
-        [SerializeField]
-        [Tooltip("The duration of the teleport in seconds.")]
-        private float teleportDuration = 0.25f;
-
-        /// <summary>
-        /// The duration of the teleport in seconds.
-        /// </summary>
-        public float TeleportDuration
-        {
-            get { return teleportDuration; }
-            set { teleportDuration = value; }
         }
 
         [SerializeField]

@@ -411,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal
             }
 
             // Query
-            string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={WWW.EscapeURL(fileName)}";
+            string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={UnityWebRequest.EscapeURL(fileName)}";
 
             var response = await Rest.PostAsync(query, form, targetDevice.Authorization);
 
@@ -497,7 +497,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal
                 return false;
             }
 
-            string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={WWW.EscapeURL(appInfo.PackageFullName)}";
+            string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={UnityWebRequest.EscapeURL(appInfo.PackageFullName)}";
             var response = await Rest.DeleteAsync(query, targetDevice.Authorization);
 
             if (response.Successful)
@@ -542,7 +542,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal
                 return false;
             }
 
-            string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?appid={WWW.EscapeURL(appInfo.PackageRelativeId.EncodeTo64())}&package={WWW.EscapeURL(appInfo.PackageFullName)}";
+            string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?appid={UnityWebRequest.EscapeURL(appInfo.PackageRelativeId.EncodeTo64())}&package={UnityWebRequest.EscapeURL(appInfo.PackageFullName)}";
             var response = await Rest.PostAsync(query, targetDevice.Authorization);
 
             if (!response.Successful)
@@ -586,7 +586,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal
                 return false;
             }
 
-            string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?package={WWW.EscapeURL(appInfo.PackageFullName.EncodeTo64())}";
+            string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?package={UnityWebRequest.EscapeURL(appInfo.PackageFullName.EncodeTo64())}";
             Response response = await Rest.DeleteAsync(query, targetDevice.Authorization);
 
             if (!response.Successful)
