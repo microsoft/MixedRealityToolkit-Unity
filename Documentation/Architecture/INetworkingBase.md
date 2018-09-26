@@ -5,8 +5,7 @@
 ### NetworkingMode
 
 This is the selected type of networking that will be used.
-It is selected from the following NetworkingType Enum:
-- [NetworkingType](./NetworkingType.md)
+It is selected from the following NetworkingType Enum: [NetworkingType](./NetworkingType.md)
 
 Is set to Photon by default.
 
