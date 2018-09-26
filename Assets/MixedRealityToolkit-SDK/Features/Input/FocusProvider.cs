@@ -654,7 +654,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         /// <param name="prioritizedLayerMasks"></param>
         private void RaycastGraphics(PointerData pointer, LayerMask[] prioritizedLayerMasks)
         {
-            Debug.Assert(pointer.Details.Point != Vector3.zero, "Invalid pointer source start point found to raycast from!");
             Debug.Assert(UIRaycastCamera != null, "You must assign a UIRaycastCamera on the FocusProvider before you can process uGUI raycasting.");
 
             RaycastResult raycastResult = default(RaycastResult);
