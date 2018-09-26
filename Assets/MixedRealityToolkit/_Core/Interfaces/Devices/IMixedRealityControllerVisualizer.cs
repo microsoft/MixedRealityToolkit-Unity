@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
         /// <remarks>
         /// This reference may not always be available when called.
         /// </remarks>
-        GameObject ControllerGameObjectReference { get; }
+        GameObject GameObjectProxy { get; }
 
         // TODO add defined elements or transforms?
     }

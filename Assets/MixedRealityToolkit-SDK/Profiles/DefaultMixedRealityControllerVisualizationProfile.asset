@@ -34,4 +34,5 @@ MonoBehaviour:
         Microsoft.MixedReality.Toolkit
     handedness: 2
     useDefaultModel: 0
-    overrideModel: {fileID: 0}
+    overrideModel: {fileID: 1329002528574780, guid: 088efeed31a081c419979a80a12c5b0f,
+      type: 2}

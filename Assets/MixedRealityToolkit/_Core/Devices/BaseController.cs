@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// <inheritdoc />
         public IMixedRealityInputSource InputSource { get; }
 
-        public IMixedRealityControllerVisualizer ControllerVisualizer { get; private set; }
+        public IMixedRealityControllerVisualizer Visualizer { get; private set; }
 
         /// <inheritdoc />
         public bool IsPositionAvailable { get; protected set; }
@@ -207,11 +207,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
             {
                 var controllerObject = UnityEngine.Object.Instantiate(controllerModel, CameraCache.Main.transform.parent);
                 controllerObject.name = $"{ControllerHandedness}_{controllerObject.name}";
-                ControllerVisualizer = controllerObject.GetComponent<IMixedRealityControllerVisualizer>();
+                Visualizer = controllerObject.GetComponent<IMixedRealityControllerVisualizer>();
 
-                if (ControllerVisualizer != null)
+                if (Visualizer != null)
                 {
-                    ControllerVisualizer.Controller = this;
+                    Visualizer.Controller = this;
                 }
                 else
                 {
