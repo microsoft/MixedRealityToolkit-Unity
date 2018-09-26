@@ -74,7 +74,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Teleportation
             }
 #endif // UNITY_EDITOR
 
-            TeleportDuration = MixedRealityManager.Instance.ActiveProfile.TeleportDuration;
             teleportEventData = new TeleportEventData(EventSystem.current);
         }
 

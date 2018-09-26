@@ -18,6 +18,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 
         private static BuildTargetGroup currentBuildTargetGroup = BuildTargetGroup.Unknown;
 
+        private static string mixedRealityToolkit_RelativeFolderPath = string.Empty;
+
+        public static string MixedRealityToolkit_RelativeFolderPath
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(mixedRealityToolkit_RelativeFolderPath))
+                {
+                    if (!FindDirectory(Application.dataPath, "MixedRealityToolkit", out mixedRealityToolkit_RelativeFolderPath))
+                    {
+                        Debug.LogError("Unable to find the Mixed Reality Toolkit's directory!");
+                    }
+                }
+
+                return mixedRealityToolkit_RelativeFolderPath;
+            }
+        }
+
         static EnforceEditorSettings()
         {
             SetIconTheme();
@@ -148,9 +166,40 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
             return false;
         }
 
+        private static bool FindDirectory(string directoryPathToSearch, string directoryName, out string path)
+        {
+            path = string.Empty;
+
+            var directories = Directory.GetDirectories(directoryPathToSearch);
+
+            for (int i = 0; i < directories.Length; i++)
+            {
+                var name = Path.GetFileName(directories[i]);
+
+                if (name != null && name.Equals(directoryName))
+                {
+                    path = directories[i];
+                    return true;
+                }
+
+                if (FindDirectory(directories[i], directoryName, out path))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private static void SetIconTheme()
         {
-            var icons = Directory.GetFiles($"{Application.dataPath}/MixedRealityToolkit/_Core/Resources/Icons");
+            if (string.IsNullOrEmpty(MixedRealityToolkit_RelativeFolderPath))
+            {
+                Debug.LogError("Unable to find the Mixed Reality Toolkit's directory!");
+                return;
+            }
+
+            var icons = Directory.GetFiles($"{MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Icons");
             var icon = new Texture2D(2, 2);
 
             for (int i = 0; i < icons.Length; i++)

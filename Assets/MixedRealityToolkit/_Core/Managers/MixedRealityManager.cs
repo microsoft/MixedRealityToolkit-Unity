@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                     CameraCache.Main.transform.root.DontDestroyOnLoad();
                 }
 
-                if (MixedRealityCameraProfile.IsOpaque)
+                if (ActiveProfile.CameraProfile.IsOpaque)
                 {
                     ActiveProfile.CameraProfile.ApplySettingsForOpaqueDisplay();
                 }
