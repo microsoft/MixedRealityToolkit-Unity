@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7612acbc1a4a4ed0afa5f4ccbe42bee4, type: 3}
   m_Name: DefaultMixedRealityConfigurationProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
   initialManagerTypes:
   - reference: Microsoft.MixedReality.Toolkit.SDK.Teleportation.MixedRealityTeleportManager,
       Microsoft.MixedReality.Toolkit.SDK
@@ -36,6 +37,5 @@ MonoBehaviour:
   teleportSystemType:
     reference: Microsoft.MixedReality.Toolkit.SDK.Teleportation.MixedRealityTeleportManager,
       Microsoft.MixedReality.Toolkit.SDK
-  teleportDuration: 0.25
   registeredComponentsProfile: {fileID: 11400000, guid: efbaf6ea540c69f4fb75415a5d145a53,
     type: 2}

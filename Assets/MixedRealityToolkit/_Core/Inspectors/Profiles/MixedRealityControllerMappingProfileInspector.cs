@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR;
@@ -98,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 Selection.activeObject = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile;
             }
-
+            
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Controller Input Mapping", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Use this profile to define all the controllers and their inputs your users will be able to use in your application.\n\n" +
@@ -108,6 +109,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 EditorGUILayout.HelpBox("No input actions found, please specify a input action profile in the main configuration.", MessageType.Error);
                 return;
+            }
+
+            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
+            {
+                GUI.enabled = false;
             }
 
             if (controllerButtonStyle == null)

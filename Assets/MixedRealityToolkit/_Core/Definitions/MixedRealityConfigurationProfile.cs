@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
     /// Configuration profile settings for the Mixed Reality Toolkit.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Configuration Profile", fileName = "MixedRealityConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
-    public class MixedRealityConfigurationProfile : ScriptableObject, ISerializationCallbackReceiver
+    public class MixedRealityConfigurationProfile : BaseMixedRealityProfile, ISerializationCallbackReceiver
     {
         #region Manager Registry properties
 

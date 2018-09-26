@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 514da61389c049c0bdaf31b7f6970d33, type: 3}
   m_Name: DefaultMixedRealityControllerVisualizationProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
   renderMotionControllers: 1
   controllerVisualizationType:
     reference: Microsoft.MixedReality.Toolkit.SDK.UX.Controllers.MixedRealityControllerVisualizer,

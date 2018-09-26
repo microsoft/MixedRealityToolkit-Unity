@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Controller Mapping Profile", fileName = "MixedRealityControllerMappingProfile", order = (int)CreateProfileMenuItemIndices.ControllerMapping)]
-    public class MixedRealityControllerMappingProfile : ScriptableObject
+    public class MixedRealityControllerMappingProfile : BaseMixedRealityProfile
     {
         [SerializeField]
         [Tooltip("The list of controller templates your application can use.")]
