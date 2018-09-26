@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         private bool? hasFocus;
         private bool? hasDown;
         private bool? isDisabled;
-        private bool isClicked;
+        private bool isClicked = false;
 
         private void Update()
         {

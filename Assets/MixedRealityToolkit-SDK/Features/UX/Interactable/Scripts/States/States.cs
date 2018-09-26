@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
@@ -55,6 +56,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             List<Type> stateTypes = new List<Type>();
             List<string> names = new List<string>();
 
+            Assembly assembly = typeof(InteractableStates).GetTypeInfo().Assembly;
+            foreach (Type type in assembly.GetTypes())
+            {
+                TypeInfo info = type.GetTypeInfo();
+                if (info.BaseType.Equals(typeof(InteractableStates)) || type.Equals(typeof(InteractableStates)))
+                {
+                    stateTypes.Add(type);
+                    names.Add(type.Name);
+                }
+            }
+
+            /* works with IL2CPP but not in .NET
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in assemblies)
             {
@@ -67,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         names.Add(type.Name);
                     }
                 }
-            }
+            }*/
 
             StateOptions = names.ToArray();
             StateTypes = stateTypes.ToArray();

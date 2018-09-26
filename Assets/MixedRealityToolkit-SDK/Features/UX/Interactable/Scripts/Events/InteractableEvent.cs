@@ -121,6 +121,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             List<Type> eventTypes = new List<Type>();
             List<string> names = new List<string>();
 
+            Assembly assembly = typeof(ReceiverBase).GetTypeInfo().Assembly;
+            foreach (Type type in assembly.GetTypes())
+            {
+                TypeInfo info = type.GetTypeInfo();
+                if (info.BaseType.Equals(typeof(ReceiverBase)))
+                {
+                    eventTypes.Add(type);
+                    names.Add(type.Name);
+                }
+            }
+
+            /* works with IL2CPP but not with .NET
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in assemblies)
             {
@@ -133,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         names.Add(type.Name);
                     }
                 }
-            }
+            }*/
 
             EventLists lists = new EventLists();
             lists.EventTypes = eventTypes;

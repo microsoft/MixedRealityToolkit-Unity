@@ -317,7 +317,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 return;
             }
 
-            print("Up: " + pointers.Count + " / " + name + " / " + HasFocus);
+            print("Input Up: " + pointers.Count + " / " + name + " / " + HasFocus);
             
             if (ShouldListen(eventData.MixedRealityInputAction))
             {
@@ -334,7 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 return;
             }
 
-            print("Down: " + pointers.Count + " / " + name + " / " + HasFocus);
+            print("Input Down: " + pointers.Count + " / " + name + " / " + HasFocus);
             if(ShouldListen(eventData.MixedRealityInputAction))
             {
                 SetPress(true);
@@ -343,9 +343,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnInputPressed(InputEventData<float> eventData)
         {
-            
 
-            if (!CanInteract())
+            if (!CanInteract() || true)
             {
                 return;
             }
@@ -376,12 +375,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
+            
+
             if (!CanInteract() && !HasPress)
             {
                 return;
             }
 
-            print("Up: " + pointers.Count + " / " + name + " / " + HasFocus);
+            print("Pointer Up: " + pointers.Count + " / " + name + " / " + HasFocus + " / " + CanInteract() + " / " + ShouldListen(eventData.MixedRealityInputAction));
 
             if (ShouldListen(eventData.MixedRealityInputAction))
             {
@@ -391,12 +392,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
+            
             if (!CanInteract())
             {
                 return;
             }
 
-            print("Down: " + pointers.Count + " / " + name + " / " + HasFocus);
+            print("Pointer Down: " + pointers.Count + " / " + name + " / " + HasFocus + " / " + CanInteract() + " / " + ShouldListen(eventData.MixedRealityInputAction));
+
+
             if (ShouldListen(eventData.MixedRealityInputAction))
             {
                 SetPress(true);
@@ -410,7 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 return;
             }
             
-            print("CLICKED!!!!!" + " / " + name + " / " + HasFocus);
+            print("Pointer CLICKED!!!!!" + " / " + name + " / " + HasFocus + " / " + ShouldListen(eventData.MixedRealityInputAction));
 
             if (StateManager != null)
             {
