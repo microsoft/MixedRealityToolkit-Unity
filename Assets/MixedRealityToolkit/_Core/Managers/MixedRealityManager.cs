@@ -893,7 +893,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             return type == typeof(IMixedRealityInputSystem) ||
                    type == typeof(IMixedRealityTeleportSystem) ||
-                   type == typeof(IMixedRealityBoundarySystem);
+                   type == typeof(IMixedRealityBoundarySystem) ||
+                   type == typeof(IMixedRealitySpatialAwarenessSystem);
         }
 
         /// <summary>

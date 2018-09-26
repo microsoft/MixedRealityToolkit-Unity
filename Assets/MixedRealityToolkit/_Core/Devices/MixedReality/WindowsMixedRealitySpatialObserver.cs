@@ -353,7 +353,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         private GameObject GetMeshObject(int meshId)
         {
             GameObject mesh = null;
-                
+            string meshObjectName = $"SpatialMesh-{meshId}";
+
             // If we have surfaces ready for reuse, use those first.
             if (availableMeshObjects.Count > 0)
             {
@@ -362,18 +363,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             else
             {
                 // We are adding a new mesh, construct a GameObject to represent it.
-                mesh = new GameObject();
+                // mesh = new CreateMeshObject(meshId, meshObectName, componentsRequiredForSurfaceMesh);
             }
-
-            mesh.name = string.Format("SpatialMesh-{0}", meshId);
-
-            // todo UpdateMeshObject(existingMesh, meshId);
-            mesh.AddComponent<WorldAnchor>();
 
             // todo mesh.SetActive(true);
             return mesh;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="meshId"></param>
+        /// <param name=""></param>
+        void ConfigureMeshObject(int meshId, GameObject mesh)
+        {
+            // todo: MeshFil
+            mesh.AddComponent<WorldAnchor>();
+
+        }
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }
 }
