@@ -40,5 +40,8 @@ MonoBehaviour:
     description: Manipulate Action
     axisConstraint: 0
   - id: 10
+    description: Navigation Action
+    axisConstraint: 0
+  - id: 11
     description: Scroll
     axisConstraint: 4

@@ -324,13 +324,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                     // todo - is the above comment correct?
                     if (meshes.TryGetValue(id.handle, out mesh))
                     {
-                        // todo
-                        //meshesPendingCleanup.Add(id.handle, mesh);
-                        //meshes.Remove(id.handle);
+                        meshesPendingCleanup.Add(id.handle, mesh);
+                        meshes.Remove(id.handle);
                     }
 
                     // Get an available mesh GameObject ready to be used
-                    // todo mesh = GetMeshObject(id.handle);
+                    mesh = GetMeshObject(id.handle);
 
                     // Add the mesh to our dictionary of known meshes so we can interact with it later.
                     meshes.Add(id.handle, mesh);
@@ -350,6 +349,30 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             }
         }
 #endif // UNITY_WSA
+
+        private GameObject GetMeshObject(int meshId)
+        {
+            GameObject mesh = null;
+                
+            // If we have surfaces ready for reuse, use those first.
+            if (availableMeshObjects.Count > 0)
+            {
+                mesh = availableMeshObjects.Dequeue();
+            }
+            else
+            {
+                // We are adding a new mesh, construct a GameObject to represent it.
+                mesh = new GameObject();
+            }
+
+            mesh.name = string.Format("SpatialMesh-{0}", meshId);
+
+            // todo UpdateMeshObject(existingMesh, meshId);
+            mesh.AddComponent<WorldAnchor>();
+
+            // todo mesh.SetActive(true);
+            return mesh;
+        }
 
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }

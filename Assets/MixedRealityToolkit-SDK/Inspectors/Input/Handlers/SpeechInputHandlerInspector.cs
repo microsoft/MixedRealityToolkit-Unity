@@ -36,9 +36,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
             base.OnInspectorGUI();
             serializedObject.Update();
 
+            if (!MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
+            {
+                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
+                return;
+            }
+
             if (registeredKeywords == null || registeredKeywords.Length == 0)
             {
-
+                registeredKeywords = RegisteredKeywords().Distinct().ToArray();
                 EditorGUILayout.HelpBox("No keywords registered.\n\nKeywords can be registered via Speech Commands Profile on the Mixed Reality Manager's Configuration Profile.", MessageType.Error);
                 return;
             }
@@ -136,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Input.Handlers
 
         private static IEnumerable<string> RegisteredKeywords()
         {
-            if (!MixedRealityManager.HasActiveProfile ||
+            if (!MixedRealityManager.ConfirmInitialized() ||
                 !MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled ||
                 !MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.IsSpeechCommandsEnabled ||
                  MixedRealityManager.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
