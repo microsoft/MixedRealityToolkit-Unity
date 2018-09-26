@@ -2,7 +2,6 @@
 
 public class NetworkEventData<T> : BaseEventData
 {
-
     public uint SourceId { get; private set; }
 
     public T value;

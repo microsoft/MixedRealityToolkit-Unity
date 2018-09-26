@@ -1,46 +1,29 @@
-# MixedRealitySpatialAwarenessBaseEventData Class
+# NetworkEventData<T> Class extends BaseEventData
 
-| Toolkit Layer | Namespace |
-| --- | --- |
-| Core | Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwareness |
+The NetworkEventData<T> provides the data shared by all of the spatial awareness event types.
 
-The MixedRealitySpatialAwarenessBaseEventData provides the data shared by all of the spatial awareness event types.
+## Properties
 
-<img src="Images/MixedRealitySpatialAwarenessBaseEventData.png">
-
-## EventTime
+### SourceID
 
 | Type |
 | --- |
-| DateTime |
+| uint |
 
-The time at which the event occurred.
-
-## EventType
+### value
 
 | Type |
 | --- |
-| [SpatialAwarenessEventType](./SpatialAwarenessEventType.md) |
+| Generic <T> |
 
-The type of event that has occurred.
+## Methods
 
-## Id
+### Initialize(T transferData)
 
-| Type |
-| --- |
-| UInt32 |
+Resets NetworkEventData and reinitializes it with value set to transferData.
 
-An identifier assigned to a specific object in the spatial awareness system.
+### NetworkEventData(EventSystem eventSystem) : base(eventSystem)
 
-## GameObject
+Constructor method allows for generation of NetworkEventData.
 
-| Type |
-| --- |
-| GameObject |
 
-Unity GameObject, managed by the spatial awareness system, representing the data in this event.
-
-## See Also
-
-- [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
-- [SpatialAwarenessEventType Enumeration](./SpatialAwarenessEventType.md)

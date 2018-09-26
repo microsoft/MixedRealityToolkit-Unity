@@ -1,9 +1,4 @@
-# SpatialAwarenessEventType Enumeration
-
-
-
-``` C#
-public enum NetworkingType
+﻿public enum NetworkingType
 {
     /// <summary>
     /// A very common networking method for unity which has been used as the default networking type.
@@ -15,4 +10,3 @@ public enum NetworkingType
     /// </summary>
     WebRTC
 }
-```

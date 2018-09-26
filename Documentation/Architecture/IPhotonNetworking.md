@@ -1,24 +1,49 @@
-# MixedRealitySpatialAwarenessMeshHandler Class
+# IPhotonNetworking<T> Class
 
-| Toolkit Layer | Namespace |
-| --- | --- |
-| SDK - Surface Awareness Package | Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem |
+## Properties
 
-The MixedRealitySpatialAwarenessMeshHandler class provides the default implementation of the [IMixedRealitySpatialAwarenessMeshHandler](./IMixedRealitySpatialAwarenessMeshHandler.md) interface.
+### Identity
 
-## void OnMeshAdded([MixedRealitySpatialMeshEventData](./MixedRealitySpatialMeshEventData.md) eventData)
+| Type |
+| --- |
+| int
 
-Called when a new surface mesh has been identified by the spatial awareness system.
+### typeCode
 
-## void OnMeshUpdated([MixedRealitySpatialMeshEventData](./MixedRealitySpatialMeshEventData.md) eventData)
+| Type |
+| --- |
+| TypeCode |
 
-Called when an existing surface mesh has been modified by the spatial awareness system.
+### dataStream
 
-## OnMeshDeleted([MixedRealitySpatialMeshEventData](./MixedRealitySpatialMeshEventData.md) eventData)
+| Type |
+| --- |
+| Generic <T> |
 
-Called when an existing surface mesh has been discarded by the spatial awareness system.
+### NED
 
-## See Also
+| Type |
+| --- |
+| [NetworkEventData<T>](./NetworkEventData.md) |
 
-- [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
-- [IMixedRealitySpatialAwarenessMeshHandler Interface](./IMixedRealitySpatialAwarenessMeshHandler.md)
+
+## Methods
+
+
+### Send(int ID, T data, float reliability)
+
+
+### getObjectById(int id)
+
+| Return Type |
+| --- |
+| GameObject |
+
+### OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+
+Photon function which synchronizes the Identity, typeCode, and dataStream in that order.
+
+When data is recieved this function generates a NetworkEventData with the dataStream as the value.
+
+
+

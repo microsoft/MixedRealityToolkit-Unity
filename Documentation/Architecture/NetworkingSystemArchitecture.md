@@ -8,12 +8,12 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 
 ## Interfaces
 
-- [INetworkHandler](./INetworkHandler.md)
+- [INetworkHandler<T>](./INetworkHandler.md)
 
 ## Classes
 
-- [INetworkingBase](./INetworkingBase.md)
-- [IPhotonNetworking](./IPhotonNetworking.md)
+- [INetworkingBase<T>](./INetworkingBase.md)
+- [IPhotonNetworking<T>](./IPhotonNetworking.md)
 
 ## Enumerations
 
@@ -21,35 +21,35 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 
 ## Event Data Types
 
-- [NetworkEventData](./NetworkEventData.md)
+- [NetworkEventData<T>](./NetworkEventData.md)
 
 
 ## Example Implementation
 
 The Mixed Reality Toolkit's default implementation of the spatial awareness system can be found in the Assets/MixedRealityToolkit/SDK/Features/SpatialAwarenessSystem folder. This implementation can be used as an example of how to build your own spatial awareness system. It is well documented and demonstrates each of the features described in this architecture specification.
 
-```
-	using UnityEngine;
+```C#
+using UnityEngine;
 
-	public class Test : MonoBehaviour, INetworkHandler<int>, INetworkHandler<Vector3>
-	{   
-		void Start () {
+public class Test : MonoBehaviour, INetworkHandler<int>, INetworkHandler<Vector3>
+{   
+	void Start () {
 
-			//one must specify the type of variable you're sending
+		//one must specify the type of variable you're sending
 
-			INetworkingBase<int>.Send(3);
+		INetworkingBase<int>.Send(3);
 
-			INetworkingBase<Vector3>.Send(GetInstanceID(), new Vector3(5, 20, -80), 1);
-		}
-
-		public void OnDataReceived(NetworkEventData<int> eventData)
-		{
-			print(eventData.value);
-		}
-
-		public void OnDataReceived(NetworkEventData<Vector3> eventData)
-		{
-			print(eventData.value);
-		}
+		INetworkingBase<Vector3>.Send(GetInstanceID(), new Vector3(5, 20, -80), 1);
 	}
+
+	public void OnDataReceived(NetworkEventData<int> eventData)
+	{
+		print(eventData.value);
+	}
+
+	public void OnDataReceived(NetworkEventData<Vector3> eventData)
+	{
+		print(eventData.value);
+	}
+}
 ```

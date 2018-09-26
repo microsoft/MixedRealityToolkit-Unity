@@ -1,21 +1,24 @@
-﻿public static class INetworkingBase<T> {
-
-    public enum NetworkingType
-    {
-        Photon, 
-        WebRTC
-    }
+﻿public static class INetworkingBase<T> {    
 
     public static NetworkingType NetworkingMode = NetworkingType.Photon;
 
+    public static int defualtID = 0;
+
+    public static int defaultReliability = 1;
+
     public static void Send(T data)
     {
-        Send(0, data, 1);
+        Send(defualtID, data, defaultReliability);
     }
 
     public static void Send(int ID, T data)
     {
-        Send(ID, data, 1);
+        Send(ID, data, defaultReliability);
+    }
+
+    public static void Send(T data, float reliability)
+    {
+        Send(defualtID, data, reliability);
     }
 
     public static void Send(int ID, T data, float reliability)
