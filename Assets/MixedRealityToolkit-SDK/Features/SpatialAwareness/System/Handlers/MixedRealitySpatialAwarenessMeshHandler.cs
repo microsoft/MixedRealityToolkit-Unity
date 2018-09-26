@@ -12,13 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.Handlers
     public class MixedRealitySpatialAwarehessMeshHandler : IMixedRealitySpatialAwarenessMeshHandler
     {
         /// <inheritdoc />
-        public void OnMeshAdded(MixedRealitySpatialAwarenessEventData eventData)
-        {
-            // todo
-        }
-
-        /// <inheritdoc />
-        public void OnMeshUpdated(MixedRealitySpatialAwarenessEventData eventData)
+        public void OnMeshAvailable(MixedRealitySpatialAwarenessEventData eventData)
         {
             // todo
         }

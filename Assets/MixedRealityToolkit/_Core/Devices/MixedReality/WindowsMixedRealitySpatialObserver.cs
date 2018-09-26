@@ -112,11 +112,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 
+#if UNITY_WSA
         /// <summary>
-        /// A queue of SurfaceData objects. SurfaceData objects are sent to the
+        /// A queue of <see cref="SurfaceData"/> objects. These objects are sent to the
         /// SurfaceObserver to generate meshes of the environment.
         /// </summary>
         private Queue<SurfaceData> meshWorkQueue = new Queue<SurfaceData>();
+#endif // UNITY_WSA
 
         /// <summary>
         /// A queue of clean mesh GameObjects ready to be reused.
@@ -148,6 +150,17 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// </summary>
         private SurfaceObserver observer = null;
 #endif // UNITY_WSA
+
+        /// <summary>
+        /// When a mesh is created we will need to create a game object with a minimum 
+        /// set of components to contain the mesh.  These are the required component types.
+        /// </summary>
+        private System.Type[] componentsRequiredForSurfaceMesh =
+        {
+            typeof(MeshFilter),
+            typeof(MeshRenderer),
+            typeof(MeshCollider)
+        };
 
         /// <summary>
         /// The observation extents that are currently in use by the surface observer.
@@ -243,10 +256,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                     if (meshWorkQueue.Count > 0)
                     {
                         // Pop the SurfaceData off the workl queue.
-                        SurfaceData surfaceData = meshWorkQueue.Dequeue();
+                        SurfaceData surfaceMeshData = meshWorkQueue.Dequeue();
 
                         // If RequestMeshAsync succeeds, then we have successfully scheduled mesh creation.
-                        meshWorkOutstanding = observer.RequestMeshAsync(surfaceData, SurfaceObserver_OnDataReady);
+                        meshWorkOutstanding = observer.RequestMeshAsync(surfaceMeshData, SurfaceObserver_OnDataReady);
                     }
                     // If enough time has passed since the previous observer update...
                     else if (Time.time - lastUpdated >= MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.UpdateInterval)
@@ -297,7 +310,25 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// <param name="elapsedCookTimeSeconds">Seconds between mesh cook request and propagation of this event.</param>
         private void SurfaceObserver_OnDataReady(SurfaceData cookedData, bool outputWritten, float elapsedCookTimeSeconds)
         {
-            // todo
+            // Cleanup existing mesh with the same id.
+            GameObject meshToCleanup = null;
+            if (meshesPendingCleanup.TryGetValue(cookedData.id.handle, out meshToCleanup))
+            {
+                CleanupMeshObject(meshToCleanup);
+                meshesPendingCleanup.Remove(cookedData.id.handle);
+            }
+
+            GameObject mesh = null;
+            if (meshes.TryGetValue(cookedData.id.handle, out mesh))
+            {
+                if (MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshRecalculateNormals)
+                {
+                    MeshFilter filter = mesh.GetComponent<MeshFilter>();
+                    filter?.sharedMesh?.RecalculateNormals();
+                }
+            }
+
+            meshWorkOutstanding = false;
         }
 
         /// <summary>
@@ -320,8 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 // The only difference is if a new mesh description needs to be created.
                 case SurfaceChange.Added:
                 case SurfaceChange.Updated:
-                    // NOTE: Added and Updated notification to the spatial awareness system is deferred until baking is complete.
-                    // todo - is the above comment correct?
+                    // NOTE: Notification to the spatial awareness system is deferred until baking is complete.
                     if (meshes.TryGetValue(id.handle, out mesh))
                     {
                         meshesPendingCleanup.Add(id.handle, mesh);
@@ -348,8 +378,25 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                     break;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="meshId"></param>
+        /// <param name=""></param>
+        void ConfigureMeshObject(int meshId, GameObject mesh)
+        {
+            // todo: MeshFil
+            mesh.AddComponent<WorldAnchor>();
+
+        }
 #endif // UNITY_WSA
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="meshId"></param>
+        /// <returns></returns>
         private GameObject GetMeshObject(int meshId)
         {
             GameObject mesh = null;
@@ -363,24 +410,49 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             else
             {
                 // We are adding a new mesh, construct a GameObject to represent it.
-                // mesh = new CreateMeshObject(meshId, meshObectName, componentsRequiredForSurfaceMesh);
+                mesh = new GameObject(meshObjectName, componentsRequiredForSurfaceMesh);
             }
 
-            // todo mesh.SetActive(true);
             return mesh;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="meshId"></param>
-        /// <param name=""></param>
-        void ConfigureMeshObject(int meshId, GameObject mesh)
+        /// <param name="mesh"></param>
+        private void CleanupMeshObject(GameObject mesh)
         {
-            // todo: MeshFil
-            mesh.AddComponent<WorldAnchor>();
+            if (mesh == null)
+            {
+                Debug.LogWarning("Cannot cleanup a null mesh object.");
+                return;
+            }
 
+            // Destroy the meshes, and add the surface back for reuse
+            CleanupMeshes(mesh.GetComponent<MeshFilter>()?.sharedMesh, mesh.GetComponent<MeshCollider>()?.sharedMesh);
+            availableMeshObjects.Enqueue(mesh);
+            mesh.name = "SpatialMesh-Unused";
+            mesh.SetActive(false);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="visualMesh"></param>
+        /// <param name="colliderMesh"></param>
+        private void CleanupMeshes(Mesh visualMesh, Mesh colliderMesh)
+        {
+            if (colliderMesh != null && colliderMesh != visualMesh)
+            {
+                Object.Destroy(colliderMesh);
+            }
+
+            if (visualMesh != null)
+            {
+                Object.Destroy(visualMesh);
+            }
+        }
+
         #endregion IMixedRealitySpatialAwarenessObserver implementation
     }
 }

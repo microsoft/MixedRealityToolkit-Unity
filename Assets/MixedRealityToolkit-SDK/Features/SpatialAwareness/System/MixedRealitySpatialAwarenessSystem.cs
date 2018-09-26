@@ -164,38 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         #region Mesh Events
 
         /// <summary>
-        /// Method called by the surface observer to inform the spatial awareness system of a new mesh.
-        /// </summary>
-        /// <param name="meshId">The id of the mesh</param>
-        /// <param name="meshObject">The mesh <see cref="GameObject"/></param>
-        public void AddMesh(int meshId, GameObject meshObject)
-        {
-            // todo: add the mesh to the collection
-
-            RaiseMeshAdded(meshId, meshObject);
-        }
-
-        /// <summary>
-        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshAdded"/> method to indicate a new mesh has been added.
-        /// </summary>
-        /// <param name="meshId">Value identifying the mesh.</param>
-        /// <param name="meshObject">The mesh <see cref="GameObject"/>.</param>
-        private void RaiseMeshAdded(int meshId, GameObject meshObject)
-        {
-            // todo
-        }
-
-        /// <summary>
-        /// Event sent whenever a mesh is added.
-        /// </summary>
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshAdded =
-            delegate (IMixedRealitySpatialAwarenessMeshHandler handler, BaseEventData eventData)
-            {
-                // todo
-                //BoundaryEventData boundaryEventData = ExecuteEvents.ValidateEventData<BoundaryEventData>(eventData);
-                //handler.OnBoundaryVisualizationChanged(boundaryEventData);
-            };
-
         /// <summary>
         /// Method called by the surface observer to inform the spatial awareness system that an existing mesh has been updated.
         /// </summary>
@@ -205,15 +173,15 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         {
             // todo: update the mesh in the collection
 
-            RaiseMeshUpdated(meshId, meshObject);
+            RaiseMeshAvailable(meshId, meshObject);
         }
 
         /// <summary>
-        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate an exising mesh has changed.
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate a mesh has been added or updated.
         /// </summary>
         /// <param name="meshId">Value identifying the mesh.</param>
         /// <param name="meshObject">The mesh <see cref="GameObject"/>.</param>
-        private void RaiseMeshUpdated(uint meshId, GameObject meshObject)
+        private void RaiseMeshAvailable(uint meshId, GameObject meshObject)
         {
             // todo
         }
@@ -221,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         /// <summary>
         /// Event sent whenever a mesh is updated.
         /// </summary>
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshUpdated =
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshAvailable =
             delegate (IMixedRealitySpatialAwarenessMeshHandler handler, BaseEventData eventData)
             {
                 // todo
