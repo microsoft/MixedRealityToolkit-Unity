@@ -12,6 +12,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Boundary Visualization Profile", fileName = "MixedRealityBoundaryVisualizationProfile", order = (int)CreateProfileMenuItemIndices.BoundaryVisualization)]
     public class MixedRealityBoundaryVisualizationProfile : ScriptableObject
     {
+        [SerializeField]
+        [Tooltip("The approximate height of the play space, in meters.")]
+        private float boundaryHeight = 3.0f;
+
+        /// <summary>
+        /// The developer defined height of the boundary, in meters.
+        /// </summary>
+        /// <remarks>
+        /// The BoundaryHeight property is used to create a three dimensional volume for the play space.
+        /// </remarks>
+        public float BoundaryHeight => boundaryHeight;
+
         #region Floor settings
 
         [SerializeField]

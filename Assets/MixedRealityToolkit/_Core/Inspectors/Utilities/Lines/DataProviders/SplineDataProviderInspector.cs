@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using System.Collections.Generic;
 using UnityEditor;
@@ -169,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataPro
                     if (EditorGUI.EndChangeCheck())
                     {
                         Undo.RecordObject(LineData, "Change Spline Point Position");
-                        LineData.SetPoint(i, CameraCache.Main.transform.InverseTransformPoint(newTargetPosition));
+                        LineData.SetPoint(i, newTargetPosition);
                     }
 
                     if (isLastPoint)
