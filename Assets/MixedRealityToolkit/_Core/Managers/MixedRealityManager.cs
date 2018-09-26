@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
@@ -187,6 +188,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
                 AddManager(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
+            }
+
+            if (ActiveProfile.IsDiagnosticsSystemEnabled)
+            {
+                AddManager(typeof(IMixedRealityDiagnosticsManager), Activator.CreateInstance(ActiveProfile.DiagnosticsSystemSystemType) as IMixedRealityDiagnosticsManager);
             }
 
             if (ActiveProfile.RegisteredComponentsProfile != null)
@@ -886,6 +892,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             return type == typeof(IMixedRealityInputSystem) ||
                    type == typeof(IMixedRealityTeleportSystem) ||
+                   type == typeof(IMixedRealityDiagnosticsManager) ||
                    type == typeof(IMixedRealityBoundarySystem);
         }
 
