@@ -28,28 +28,28 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 
 The Mixed Reality Toolkit's default implementation of the spatial awareness system can be found in the Assets/MixedRealityToolkit/SDK/Features/SpatialAwarenessSystem folder. This implementation can be used as an example of how to build your own spatial awareness system. It is well documented and demonstrates each of the features described in this architecture specification.
 
-`
-using UnityEngine;
+```
+	using UnityEngine;
 
-public class Test : MonoBehaviour, INetworkHandler<int>, INetworkHandler<Vector3>
-{   
-    void Start () {
+	public class Test : MonoBehaviour, INetworkHandler<int>, INetworkHandler<Vector3>
+	{   
+		void Start () {
 
-        //one must specify the type of variable you're sending
+			//one must specify the type of variable you're sending
 
-        INetworkingBase<int>.Send(3);
+			INetworkingBase<int>.Send(3);
 
-        INetworkingBase<Vector3>.Send(GetInstanceID(), new Vector3(5, 20, -80), 1);
+			INetworkingBase<Vector3>.Send(GetInstanceID(), new Vector3(5, 20, -80), 1);
+		}
+
+		public void OnDataReceived(NetworkEventData<int> eventData)
+		{
+			print(eventData.value);
+		}
+
+		public void OnDataReceived(NetworkEventData<Vector3> eventData)
+		{
+			print(eventData.value);
+		}
 	}
-
-    public void OnDataReceived(NetworkEventData<int> eventData)
-    {
-        print(eventData.value);
-    }
-
-    public void OnDataReceived(NetworkEventData<Vector3> eventData)
-    {
-        print(eventData.value);
-    }
-}
-`
+```
