@@ -146,6 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 }
             }
 #endif
+            EnsureMixedRealityRequirements();
 
             if (ActiveProfile.IsCameraProfileEnabled)
             {
@@ -227,6 +228,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             #endregion Managers Initialization
 
             isMixedRealityManagerInitializing = false;
+        }
+
+        private void EnsureMixedRealityRequirements()
+        {
+            // There's lots of documented cases that if the camera doesn't start at 0,0,0, things break with the WMR SDK specifically.
+            // We'll enforce that here, then tracking can update it to the appropriate position later.
+           CameraCache.Main.transform.position = Vector3.zero;
         }
 
         #region MonoBehaviour Implementation
