@@ -345,6 +345,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             // ignore for now - using pointer events,
             // but may need to come back to these events for menu and trigger filtering
+
+            //print("PRESSED: " + eventData.InputData + " / " + eventData.MixedRealityInputAction.Description + " / " + name);
+
             if (!CanInteract() || true)
             {
                 return;
@@ -406,6 +409,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 return;
             }
+
+            //print(eventData.MixedRealityInputAction.Id);
 
             if (StateManager != null)
             {
