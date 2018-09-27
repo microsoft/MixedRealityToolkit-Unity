@@ -24,16 +24,16 @@ In all cases, the framework should follow the 80/20 rule, providing core mechani
 
  * Device Abstraction Layer
 
-The DAL creates a bridge layer between an external provider SDK and confirming the outputs / inputs of those devices to conform to the MRTK construct definitions.
-Ideally, these interfaces should be at the script level consuming the vendor SDK direct rather than relying on vendor prefab definitions.
+The DAL creates a bridge layer between an external provider SDK and conforms the outputs / inputs of those devices to the MRTK construct definitions.
+Ideally, these interfaces should be at the script level consuming the vendor SDK directly rather than relying on vendor prefab definitions.
 
  * MRTK Constructs
 
-A coordinated set of specifications to coordinate an abstracted system for multiple VR.  The specifications detail the inner workings for the toolkit and define extendable contracts for the SDK to expose to both providers (devices) and consumers (SDK).
+A coordinated set of specifications that define a generalized system for describing and interacting with multiple VR/AR platforms.  The specifications detail the inner workings for the toolkit and define extendable contracts for the SDK to expose to both providers (devices) and consumers (SDK).
 
  * MRTK Interface Layer
 
-The interface layer provides an extensible bridge to map and coordinate inputs coming from VR devices and controllers as well as providing an abstracted mechanism to feedback to VR systems (e.g. Haptics).  It also defines preset interactions that can be composited for use by the SDK.
+The interface layer provides an extensible bridge to map and coordinate inputs coming from VR devices and controllers as well as providing an abstracted mechanism to output to VR systems (e.g. Haptics).  It also defines preset interactions that can be composited for use by the SDK.
 
  * MRTK User Abstraction layer
 
