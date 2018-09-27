@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityCameraProfile))]
     public class MixedRealityCameraProfileInspector : MixedRealityBaseConfigurationProfileInspector
@@ -60,6 +60,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Camera Profile", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("The Camera Profile helps tweak camera settings no matter what platform you're building for.", MessageType.Info);
+
+
+            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
+            {
+                GUI.enabled = false;
+            }
 
             serializedObject.Update();
 

@@ -8,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 {
     /// <summary>
     /// Helper class to assign the UIRaycastCamera when creating a new canvas object and assigning the world space render mode.

@@ -2,14 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines.DataProviders
 {
     [CustomEditor(typeof(SplineDataProvider))]
     public class SplineDataProviderInspector : BaseMixedRealityLineDataProviderInspector
@@ -169,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Utilities.Lines.DataProvider
                     if (EditorGUI.EndChangeCheck())
                     {
                         Undo.RecordObject(LineData, "Change Spline Point Position");
-                        LineData.SetPoint(i, CameraCache.Main.transform.InverseTransformPoint(newTargetPosition));
+                        LineData.SetPoint(i, newTargetPosition);
                     }
 
                     if (isLastPoint)

@@ -11,7 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7612acbc1a4a4ed0afa5f4ccbe42bee4, type: 3}
   m_Name: DefaultMixedRealityConfigurationProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
   initialManagerTypes:
+  - reference: Microsoft.MixedReality.Toolkit.SDK.Teleportation.MixedRealityTeleportManager,
+      Microsoft.MixedReality.Toolkit.SDK
   - reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,
       Microsoft.MixedReality.Toolkit.SDK
   - reference: Microsoft.MixedReality.Toolkit.SDK.Input.MixedRealityInputManager,
@@ -28,14 +31,12 @@ MonoBehaviour:
   boundarySystemType:
     reference: Microsoft.MixedReality.Toolkit.SDK.BoundarySystem.MixedRealityBoundaryManager,
       Microsoft.MixedReality.Toolkit.SDK
-  boundaryHeight: 3
   boundaryVisualizationProfile: {fileID: 11400000, guid: 6d28cce596b44bd3897ca86f8b24e076,
     type: 2}
   enableTeleportSystem: 1
   teleportSystemType:
     reference: Microsoft.MixedReality.Toolkit.SDK.Teleportation.MixedRealityTeleportManager,
       Microsoft.MixedReality.Toolkit.SDK
-  teleportDuration: 0.25
   diagnosticsSystemProfile: {fileID: 11400000, guid: 478436bd1083882479a52d067e98e537,
     type: 2}
   enableDiagnosticsSystem: 0

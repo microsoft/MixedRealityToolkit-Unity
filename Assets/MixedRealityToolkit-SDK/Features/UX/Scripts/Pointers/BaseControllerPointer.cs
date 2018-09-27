@@ -11,9 +11,9 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Physics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using System.Collections;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
@@ -29,6 +29,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         [SerializeField]
         private GameObject cursorPrefab = null;
+
+        [SerializeField]
+        private bool disableCursorOnStart = false;
+
+        [SerializeField]
+        private bool setCursorVisibilityOnSourceDetected = false;
 
         private GameObject cursorInstance = null;
 
@@ -73,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// Set a new cursor for this <see cref="IMixedRealityPointer"/>
         /// </summary>
         /// <remarks>This <see cref="GameObject"/> must have a <see cref="IMixedRealityCursor"/> attached to it.</remarks>
-        /// <param name="newCursor"></param>
+        /// <param name="newCursor">The new cursor</param>
         public virtual void SetCursor(GameObject newCursor = null)
         {
             if (cursorInstance != null)
@@ -104,6 +110,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     BaseCursor.DefaultCursorDistance = PointerExtent;
                     BaseCursor.Pointer = this;
+                    BaseCursor.SetVisibilityOnSourceDetected = setCursorVisibilityOnSourceDetected;
+
+                    if (disableCursorOnStart)
+                    {
+                        BaseCursor.SetVisibility(false);
+                    }
                 }
                 else
                 {
@@ -117,8 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected override void OnEnable()
         {
             base.OnEnable();
-            SetCursor();
-            BaseCursor?.SetVisibility(true);
 
             if (MixedRealityManager.IsInitialized && TeleportSystem != null && !lateRegisterTeleport)
             {
@@ -135,6 +145,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 await new WaitUntil(() => TeleportSystem != null);
                 lateRegisterTeleport = false;
                 TeleportSystem.Register(gameObject);
+            }
+
+            if (InputSystem == null)
+            {
+                await WaitUntilInputSystemValid;
+                SetCursor();
             }
         }
 

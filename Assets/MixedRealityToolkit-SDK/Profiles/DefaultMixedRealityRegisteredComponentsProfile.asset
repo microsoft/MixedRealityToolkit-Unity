@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eebbca41bb0b40d298ef201735d08616, type: 3}
   m_Name: DefaultMixedRealityRegisteredComponentsProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
   configurations:
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityJoystickManager,
@@ -24,7 +25,7 @@ MonoBehaviour:
         Microsoft.MixedReality.Toolkit
     componentName: Unity Open VR Device Manager
     priority: 10
-    runtimePlatform: -1
+    runtimePlatform: 7
     configurationProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityDeviceManager,

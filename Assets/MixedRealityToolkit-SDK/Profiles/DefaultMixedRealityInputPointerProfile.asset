@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db393d206eab4604ab74278cb6cda355, type: 3}
   m_Name: DefaultMixedRealityInputPointerProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
   pointerOptions:
   - controllerType:
       reference: 
@@ -27,4 +28,10 @@ MonoBehaviour:
         Microsoft.MixedReality.Toolkit
     handedness: 7
     pointerPrefab: {fileID: 1247086986094436, guid: 51e60b8742bc47640923ac9e75ea74e9,
+      type: 2}
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.MouseController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 7
+    pointerPrefab: {fileID: 1247086986094436, guid: 31d81f88cf3f71d4b8392ded50df3f05,
       type: 2}

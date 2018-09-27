@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a1cf5fd47e548e6a23bdd3ddcc00cf6, type: 3}
   m_Name: DefaultMixedRealityControllerMappingProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
   renderMotionControllers: 1
   useDefaultModels: 0
   globalLeftHandModel: {fileID: 1370450866519632, guid: 626257b1a6cd47c2a32a18cf75b2fb23,
@@ -19,6 +20,195 @@ MonoBehaviour:
     type: 2}
   mixedRealityControllerMappingProfiles:
   - id: 0
+    description: MouseController
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.MouseController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    useDefaultModel: 0
+    overrideModel: {fileID: 0}
+    useCustomInteractionMappings: 0
+    interactions:
+    - id: 0
+      description: Spatial Mouse Position
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Mouse Delta Position
+      axisType: 4
+      inputType: 4
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Mouse Scroll Position
+      axisType: 4
+      inputType: 50
+      inputAction:
+        id: 10
+        description: Scroll
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: AXIS_3
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Left Mouse Button
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 323
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Right Mouse Button
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 2
+        description: Menu
+        axisConstraint: 2
+      keyCode: 324
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Mouse Button 2
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 325
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 6
+      description: Mouse Button 3
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 326
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 7
+      description: Mouse Button 4
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 327
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 8
+      description: Mouse Button 5
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 328
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 9
+      description: Mouse Button 6
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 329
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - id: 1
+    description: UnityTouchController
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityTouchController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 0
+    useDefaultModel: 0
+    overrideModel: {fileID: 0}
+    useCustomInteractionMappings: 0
+    interactions:
+    - id: 0
+      description: Touch Pointer Delta
+      axisType: 4
+      inputType: 4
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Touch Pointer Position
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Touch Press
+      axisType: 2
+      inputType: 6
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - id: 2
     description: Xbox Controller
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.XboxController,
@@ -236,7 +426,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 1
+  - id: 3
     description: Windows Mixed Reality Motion Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityController,
@@ -402,7 +592,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 2
+  - id: 4
     description: Windows Mixed Reality Motion Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityController,
@@ -568,7 +758,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 3
+  - id: 5
     description: Windows Mixed Reality Hand Gestures
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityController,
@@ -609,9 +799,9 @@ MonoBehaviour:
       axisType: 3
       inputType: 13
       inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
       keyCode: 0
       axisCodeX: 
       axisCodeY: 
@@ -734,7 +924,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 4
+  - id: 6
     description: Open VR Motion Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.WindowsMixedRealityOpenVRMotionController,
@@ -900,7 +1090,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 5
+  - id: 7
     description: Open VR Motion Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.WindowsMixedRealityOpenVRMotionController,
@@ -1066,7 +1256,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 6
+  - id: 8
     description: Vive Wand Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.ViveWandController,
@@ -1193,7 +1383,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 7
+  - id: 9
     description: Vive Wand Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.ViveWandController,
@@ -1320,7 +1510,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 8
+  - id: 10
     description: Oculus Touch Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.OculusTouchController,
@@ -1551,7 +1741,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 9
+  - id: 11
     description: Oculus Touch Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.OculusTouchController,
@@ -1769,7 +1959,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 10
+  - id: 12
     description: Oculus Remote Controller
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.OculusRemoteController,
@@ -1818,56 +2008,7 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
-  - id: 11
-    description: UnityTouchController
-    controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput.UnityTouchController,
-        Microsoft.MixedReality.Toolkit
-    handedness: 0
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
-    useCustomInteractionMappings: 0
-    interactions:
-    - id: 0
-      description: Touch Pointer Delta
-      axisType: 4
-      inputType: 4
-      inputAction:
-        id: 0
-        description: None
-        axisConstraint: 0
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 1
-      description: Touch Pointer Position
-      axisType: 7
-      inputType: 3
-      inputAction:
-        id: 4
-        description: Pointer Pose
-        axisConstraint: 7
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-    - id: 2
-      description: Touch Press
-      axisType: 2
-      inputType: 6
-      inputAction:
-        id: 1
-        description: Select
-        axisConstraint: 2
-      keyCode: 0
-      axisCodeX: 
-      axisCodeY: 
-      invertXAxis: 0
-      invertYAxis: 0
-  - id: 12
+  - id: 13
     description: Generic OpenVR Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.GenericOpenVRController,
@@ -2033,7 +2174,7 @@ MonoBehaviour:
       axisCodeY: AXIS_18
       invertXAxis: 0
       invertYAxis: 0
-  - id: 13
+  - id: 14
     description: Generic OpenVR Controller Right
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.GenericOpenVRController,
