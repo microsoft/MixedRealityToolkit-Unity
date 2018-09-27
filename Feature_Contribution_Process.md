@@ -7,7 +7,7 @@ The following process has been drafted to ensure all new work complies to the up
 
 1. [Open a new Proposal and related Tasks](#new-proposal)
 2. [Submit an Architecture Draft or Outline](#architecture-draft)
-3. [Review and finalization Architecture documentation](#architecture-documentation)
+3. [Review and finalize the Architecture documentation](#architecture-documentation)
 4. [Submit a PR implementing the Core feature interfaces and event datum (if applicable)](#core-implementation)
 5. [Submit a PR Implementing any required SDK components](#sdk-implementation)
 6. [Submit a PR Implementing feature demos or full scale Examples](#example-implementation)
@@ -50,8 +50,6 @@ The initial work that should be submitted, is to implement:
 * Interfaces
 * Configuration profiles
 * Event data
-
-And other components required by the the Mixed Reality Toolkit's core framework.
 
 > If needed, the architectural document can be updated to align with any changes to the implementation.
 
