@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public EaseSettings Easing;
         public bool NoEasing;
         public bool IsValid;
+        public ThemeTarget ThemeTarget;
     }
 
     public struct ProfileSettings

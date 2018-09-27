@@ -47,8 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public const float DottedLineScreenSpace = 4.65f;
 
-        protected delegate void ListButtonEvent(int index);
-        protected delegate void MultiListButtonEvent(int[] arr);
+        public delegate void ListButtonEvent(int index, SerializedProperty prop = null);
+        public delegate void MultiListButtonEvent(int[] arr, SerializedProperty prop = null);
 
         protected List<ListSettings> listSettings;
 
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return box;
         }
 
-        protected virtual bool FlexButton(GUIContent label, int index, ListButtonEvent callback)
+        public static bool FlexButton(GUIContent label, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
             // delete button
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             bool triggered = false;
             if (GUILayout.Button(label, buttonStyle, GUILayout.Width(buttonWidth)))
             {
-                callback(index);
+                callback(index, prop);
                 triggered = true;
             }
 
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
-        protected virtual bool FlexButton(GUIContent label, int[] arr, MultiListButtonEvent callback)
+        public static bool FlexButton(GUIContent label, int[] arr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
             // delete button
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             bool triggered = false;
             if (GUILayout.Button(label, buttonStyle, GUILayout.Width(buttonWidth)))
             {
-                callback(arr);
+                callback(arr, prop);
                 triggered = true;
             }
 
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
-        protected virtual bool FullWidthButton(GUIContent label, float padding, int index, ListButtonEvent callback)
+        public static bool FullWidthButton(GUIContent label, float padding, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
             addStyle.fixedHeight = 25;
@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             bool triggered = false;
             if (GUILayout.Button(label, addStyle, GUILayout.Width(addButtonWidth)))
             {
-                callback(index);
+                callback(index, prop);
                 triggered = true;
             }
 
@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
-        protected virtual bool FullWidthButton(GUIContent label, float padding, int[] arr, MultiListButtonEvent callback)
+        public static bool FullWidthButton(GUIContent label, float padding, int[] arr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
             addStyle.fixedHeight = 25;
@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             bool triggered = false;
             if (GUILayout.Button(label, addStyle, GUILayout.Width(addButtonWidth)))
             {
-                callback(arr);
+                callback(arr, prop);
                 triggered = true;
             }
 
@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
-        protected virtual bool SmallButton(GUIContent label, int index, ListButtonEvent callback)
+        public static bool SmallButton(GUIContent label, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
 
             GUIStyle smallButton = new GUIStyle(EditorStyles.miniButton);
@@ -152,13 +152,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             bool triggered = false;
             if (GUILayout.Button(label, smallButton, GUILayout.Width(smallButtonWidth)))
             {
-                callback(index);
+                callback(index, prop);
                 triggered = true;
             }
             return triggered;
         }
 
-        protected virtual bool SmallButton(GUIContent label, int[] arr, MultiListButtonEvent callback)
+        public static bool SmallButton(GUIContent label, int[] arr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
             GUIStyle smallButton = new GUIStyle(EditorStyles.miniButton);
             float smallButtonWidth = GUI.skin.button.CalcSize(label).x;
@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             bool triggered = false;
             if (GUILayout.Button(label, smallButton, GUILayout.Width(smallButtonWidth)))
             {
-                callback(arr);
+                callback(arr, prop);
                 triggered = true;
             }
             return triggered;
@@ -324,8 +324,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 }
             }
         }
-        
-        protected static int GetOptionsIndex(SerializedProperty options, string selection)
+
+        public static string[] GetOptions(SerializedProperty options)
+        {
+            List<string> list = new List<string>();
+            for (int i = 0; i < options.arraySize; i++)
+            {
+                list.Add(options.GetArrayElementAtIndex(i).stringValue);
+            }
+
+            return list.ToArray();
+        }
+
+        public static int GetOptionsIndex(SerializedProperty options, string selection)
         {
             for (int i = 0; i < options.arraySize; i++)
             {
@@ -337,7 +348,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             return 0;
         }
-        
+
+        public static int ReverseLookup(string option, string[] options)
+        {
+            for (int i = 0; i < options.Length; i++)
+            {
+                if (options[i] == option)
+                {
+                    return i;
+                }
+            }
+
+            return 0;
+        }
+
         public static string[] SerializedPropertyToOptions(SerializedProperty arr)
         {
             List<string> list = new List<string>();
@@ -346,6 +370,228 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 list.Add(arr.GetArrayElementAtIndex(i).stringValue);
             }
             return list.ToArray();
+        }
+
+        protected static void PropertySettingsList(SerializedProperty settings, List<InteractableEvent.FieldData> data)
+        {
+            settings.ClearArray();
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                settings.InsertArrayElementAtIndex(settings.arraySize);
+                SerializedProperty settingItem = settings.GetArrayElementAtIndex(settings.arraySize - 1);
+
+                UpdatePropertySettings(settingItem, (int)data[i].Attributes.Type, data[i].Value);
+
+                SerializedProperty type = settingItem.FindPropertyRelative("Type");
+                SerializedProperty tooltip = settingItem.FindPropertyRelative("Tooltip");
+                SerializedProperty label = settingItem.FindPropertyRelative("Label");
+                SerializedProperty options = settingItem.FindPropertyRelative("Options");
+                SerializedProperty name = settingItem.FindPropertyRelative("Name");
+
+                type.enumValueIndex = (int)data[i].Attributes.Type;
+                tooltip.stringValue = data[i].Attributes.Tooltip;
+                label.stringValue = data[i].Attributes.Label;
+                name.stringValue = data[i].Name;
+
+                options.ClearArray();
+
+                if (data[i].Attributes.Options != null)
+                {
+                    for (int j = 0; j < data[i].Attributes.Options.Length; j++)
+                    {
+                        options.InsertArrayElementAtIndex(j);
+                        SerializedProperty item = options.GetArrayElementAtIndex(j);
+                        item.stringValue = data[i].Attributes.Options[j];
+                    }
+                }
+            }
+        }
+
+        public static void UpdatePropertySettings(SerializedProperty prop, int type, object update)
+        {
+            SerializedProperty intValue = prop.FindPropertyRelative("IntValue");
+            SerializedProperty stringValue = prop.FindPropertyRelative("StringValue");
+
+            switch ((InspectorField.FieldTypes)type)
+            {
+                case InspectorField.FieldTypes.Float:
+                    SerializedProperty floatValue = prop.FindPropertyRelative("FloatValue");
+                    floatValue.floatValue = (float)update;
+                    break;
+                case InspectorField.FieldTypes.Int:
+                    intValue.intValue = (int)update;
+                    break;
+                case InspectorField.FieldTypes.String:
+
+                    stringValue.stringValue = (string)update;
+                    break;
+                case InspectorField.FieldTypes.Bool:
+                    SerializedProperty boolValue = prop.FindPropertyRelative("BoolValue");
+                    boolValue.boolValue = (bool)update;
+                    break;
+                case InspectorField.FieldTypes.Color:
+                    SerializedProperty colorValue = prop.FindPropertyRelative("ColorValue");
+                    colorValue.colorValue = (Color)update;
+                    break;
+                case InspectorField.FieldTypes.DropdownInt:
+                    intValue.intValue = (int)update;
+                    break;
+                case InspectorField.FieldTypes.DropdownString:
+                    stringValue.stringValue = (string)update;
+                    break;
+                case InspectorField.FieldTypes.GameObject:
+                    SerializedProperty gameObjectValue = prop.FindPropertyRelative("GameObjectValue");
+                    gameObjectValue.objectReferenceValue = (GameObject)update;
+                    break;
+                case InspectorField.FieldTypes.ScriptableObject:
+                    SerializedProperty scriptableObjectValue = prop.FindPropertyRelative("ScriptableObjectValue");
+                    scriptableObjectValue.objectReferenceValue = (ScriptableObject)update;
+                    break;
+                case InspectorField.FieldTypes.Object:
+                    SerializedProperty objectValue = prop.FindPropertyRelative("ObjectValue");
+                    objectValue.objectReferenceValue = (UnityEngine.Object)update;
+                    break;
+                case InspectorField.FieldTypes.Material:
+                    SerializedProperty materialValue = prop.FindPropertyRelative("MaterialValue");
+                    materialValue.objectReferenceValue = (Material)update;
+                    break;
+                case InspectorField.FieldTypes.Texture:
+                    SerializedProperty textureValue = prop.FindPropertyRelative("TextureValue");
+                    textureValue.objectReferenceValue = (Texture)update;
+                    break;
+                case InspectorField.FieldTypes.Vector2:
+                    SerializedProperty vector2Value = prop.FindPropertyRelative("Vector2Value");
+                    vector2Value.vector2Value = (Vector2)update;
+                    break;
+                case InspectorField.FieldTypes.Vector3:
+                    SerializedProperty vector3Value = prop.FindPropertyRelative("Vector3Value");
+                    vector3Value.vector3Value = (Vector3)update;
+                    break;
+                case InspectorField.FieldTypes.Vector4:
+                    SerializedProperty vector4Value = prop.FindPropertyRelative("Vector4Value");
+                    vector4Value.vector4Value = (Vector4)update;
+                    break;
+                case InspectorField.FieldTypes.Curve:
+                    SerializedProperty curveValue = prop.FindPropertyRelative("CurveValue");
+                    curveValue.animationCurveValue = (AnimationCurve)update;
+                    break;
+                case InspectorField.FieldTypes.Quaternion:
+                    SerializedProperty quaternionValue = prop.FindPropertyRelative("QuaternionValue");
+                    quaternionValue.quaternionValue = (Quaternion)update;
+                    break;
+                case InspectorField.FieldTypes.AudioClip:
+                    SerializedProperty audioClip = prop.FindPropertyRelative("AudioClipValue");
+                    audioClip.objectReferenceValue = (AudioClip)update;
+                    break;
+                case InspectorField.FieldTypes.Event:
+                    //SerializedProperty uEvent = prop.FindPropertyRelative("EventValue");
+                    //uEvent.objectReferenceValue = update as UnityEngine.Object;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public static void DisplayPropertyField(SerializedProperty prop)
+        {
+            SerializedProperty type = prop.FindPropertyRelative("Type");
+            SerializedProperty label = prop.FindPropertyRelative("Label");
+            SerializedProperty tooltip = prop.FindPropertyRelative("Tooltip");
+            SerializedProperty options = prop.FindPropertyRelative("Options");
+
+            SerializedProperty intValue = prop.FindPropertyRelative("IntValue");
+            SerializedProperty stringValue = prop.FindPropertyRelative("StringValue");
+
+            switch ((InspectorField.FieldTypes)type.intValue)
+            {
+                case InspectorField.FieldTypes.Float:
+                    SerializedProperty floatValue = prop.FindPropertyRelative("FloatValue");
+                    floatValue.floatValue = EditorGUILayout.FloatField(new GUIContent(label.stringValue, tooltip.stringValue), floatValue.floatValue);
+                    break;
+                case InspectorField.FieldTypes.Int:
+                    intValue.intValue = EditorGUILayout.IntField(new GUIContent(label.stringValue, tooltip.stringValue), intValue.intValue);
+                    break;
+                case InspectorField.FieldTypes.String:
+                    stringValue.stringValue = EditorGUILayout.TextField(new GUIContent(label.stringValue, tooltip.stringValue), stringValue.stringValue);
+                    break;
+                case InspectorField.FieldTypes.Bool:
+                    SerializedProperty boolValue = prop.FindPropertyRelative("BoolValue");
+                    boolValue.boolValue = EditorGUILayout.Toggle(new GUIContent(label.stringValue, tooltip.stringValue), boolValue.boolValue);
+                    break;
+                case InspectorField.FieldTypes.Color:
+                    SerializedProperty colorValue = prop.FindPropertyRelative("ColorValue");
+                    colorValue.colorValue = EditorGUILayout.ColorField(new GUIContent(label.stringValue, tooltip.stringValue), colorValue.colorValue);
+                    break;
+                case InspectorField.FieldTypes.DropdownInt:
+                    intValue.intValue = EditorGUILayout.Popup(label.stringValue, intValue.intValue, GetOptions(options));
+                    break;
+                case InspectorField.FieldTypes.DropdownString:
+                    string[] stringOptions = GetOptions(options);
+                    int selection = GetOptionsIndex(options, stringValue.stringValue);
+                    int newIndex = EditorGUILayout.Popup(label.stringValue, intValue.intValue, stringOptions);
+                    if (selection != newIndex)
+                    {
+                        stringValue.stringValue = stringOptions[newIndex];
+                    }
+                    break;
+                case InspectorField.FieldTypes.GameObject:
+                    SerializedProperty gameObjectValue = prop.FindPropertyRelative("GameObjectValue");
+                    EditorGUILayout.PropertyField(gameObjectValue, new GUIContent(label.stringValue, tooltip.stringValue), false);
+                    break;
+                case InspectorField.FieldTypes.ScriptableObject:
+                    SerializedProperty scriptableObjectValue = prop.FindPropertyRelative("ScriptableObjectValue");
+                    EditorGUILayout.PropertyField(scriptableObjectValue, new GUIContent(label.stringValue, tooltip.stringValue), false);
+                    break;
+                case InspectorField.FieldTypes.Object:
+                    SerializedProperty objectValue = prop.FindPropertyRelative("ObjectValue");
+                    EditorGUILayout.PropertyField(objectValue, new GUIContent(label.stringValue, tooltip.stringValue), true);
+                    break;
+                case InspectorField.FieldTypes.Material:
+                    SerializedProperty materialValue = prop.FindPropertyRelative("MaterialValue");
+                    EditorGUILayout.PropertyField(materialValue, new GUIContent(label.stringValue, tooltip.stringValue), false);
+                    break;
+                case InspectorField.FieldTypes.Texture:
+                    SerializedProperty textureValue = prop.FindPropertyRelative("TextureValue");
+                    EditorGUILayout.PropertyField(textureValue, new GUIContent(label.stringValue, tooltip.stringValue), false);
+                    break;
+                case InspectorField.FieldTypes.Vector2:
+                    SerializedProperty vector2Value = prop.FindPropertyRelative("Vector2Value");
+                    vector2Value.vector2Value = EditorGUILayout.Vector2Field(new GUIContent(label.stringValue, tooltip.stringValue), vector2Value.vector2Value);
+                    break;
+                case InspectorField.FieldTypes.Vector3:
+                    SerializedProperty vector3Value = prop.FindPropertyRelative("Vector3Value");
+                    vector3Value.vector3Value = EditorGUILayout.Vector3Field(new GUIContent(label.stringValue, tooltip.stringValue), vector3Value.vector3Value);
+                    break;
+                case InspectorField.FieldTypes.Vector4:
+                    SerializedProperty vector4Value = prop.FindPropertyRelative("Vector4Value");
+                    vector4Value.vector4Value = EditorGUILayout.Vector4Field(new GUIContent(label.stringValue, tooltip.stringValue), vector4Value.vector4Value);
+                    break;
+                case InspectorField.FieldTypes.Curve:
+                    SerializedProperty curveValue = prop.FindPropertyRelative("CurveValue");
+                    curveValue.animationCurveValue = EditorGUILayout.CurveField(new GUIContent(label.stringValue, tooltip.stringValue), curveValue.animationCurveValue);
+                    break;
+                case InspectorField.FieldTypes.Quaternion:
+                    SerializedProperty quaternionValue = prop.FindPropertyRelative("QuaternionValue");
+                    Vector4 vect4 = new Vector4(quaternionValue.quaternionValue.x, quaternionValue.quaternionValue.y, quaternionValue.quaternionValue.z, quaternionValue.quaternionValue.w);
+                    vect4 = EditorGUILayout.Vector4Field(new GUIContent(label.stringValue, tooltip.stringValue), vect4);
+                    quaternionValue.quaternionValue = new Quaternion(vect4.x, vect4.y, vect4.z, vect4.w);
+                    break;
+                case InspectorField.FieldTypes.AudioClip:
+                    SerializedProperty audioClip = prop.FindPropertyRelative("AudioClipValue");
+                    EditorGUILayout.PropertyField(audioClip, new GUIContent(label.stringValue, tooltip.stringValue), false);
+                    break;
+                case InspectorField.FieldTypes.Event:
+                    SerializedProperty uEvent = prop.FindPropertyRelative("EventValue");
+                    if (uEvent != null)
+                    {
+                        //Debug.Log("update? " + uEvent);
+                    }
+                    EditorGUILayout.PropertyField(uEvent, new GUIContent(label.stringValue, tooltip.stringValue));
+                    break;
+                default:
+                    break;
+            }
         }
     }
 #endif

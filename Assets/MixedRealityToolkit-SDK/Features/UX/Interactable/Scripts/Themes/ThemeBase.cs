@@ -71,6 +71,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     }
 
     [System.Serializable]
+    public class ThemeTarget
+    {
+        public List<ThemeProperty> Properties;
+        public GameObject Target;
+        public State[] States;
+    }
+
+    [System.Serializable]
     public class EaseSettings
     {
         public enum BasicEaseCurves { Linear, EaseIn, EaseOut, EaseInOut }

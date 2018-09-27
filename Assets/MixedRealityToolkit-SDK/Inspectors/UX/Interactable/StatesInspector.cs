@@ -103,12 +103,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             serializedObject.ApplyModifiedProperties();
         }
 
-        protected void AddState(int index)
+        protected void AddState(int index, SerializedProperty prop = null)
         {
             stateList.InsertArrayElementAtIndex(stateList.arraySize);
         }
 
-        protected void RemoveState(int index)
+        protected void RemoveState(int index, SerializedProperty prop = null)
         {
             stateList.DeleteArrayElementAtIndex(index);
         }
