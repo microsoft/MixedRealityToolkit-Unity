@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
@@ -154,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                     CameraCache.Main.transform.root.DontDestroyOnLoad();
                 }
 
-                if (MixedRealityCameraProfile.IsOpaque)
+                if (ActiveProfile.CameraProfile.IsOpaque)
                 {
                     ActiveProfile.CameraProfile.ApplySettingsForOpaqueDisplay();
                 }
@@ -186,22 +187,33 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
                 AddManager(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem);
+
+                if (BoundarySystem == null)
+                {
+                    Debug.LogError("Failed to start the Boundary System!");
+                }
             }
 
-            if (BoundarySystem == null)
-            {
-                Debug.LogError("Failed to start the Boundary System!");
-            }
 
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
                 AddManager(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
+
+                if (TeleportSystem == null)
+                {
+                    Debug.LogError("Failed to start the Teleport System!");
+                }
             }
 
-            if (TeleportSystem == null)
+            if (ActiveProfile.IsDiagnosticsSystemEnabled)
             {
-                Debug.LogError("Failed to start the Teleport System!");
+                AddManager(typeof(IMixedRealityDiagnosticsManager), Activator.CreateInstance(ActiveProfile.DiagnosticsSystemSystemType) as IMixedRealityDiagnosticsManager);
+
+                if (DiagnosticsSystem == null)
+                {
+                    Debug.LogError("Failed to start the Diagnostics System!");
+                }
             }
 
             if (ActiveProfile.RegisteredComponentsProfile != null)
@@ -901,7 +913,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             return type == typeof(IMixedRealityInputSystem) ||
                    type == typeof(IMixedRealityTeleportSystem) ||
-                   type == typeof(IMixedRealityBoundarySystem);
+                   type == typeof(IMixedRealityBoundarySystem) ||
+                   type == typeof(IMixedRealityDiagnosticsManager);
         }
 
         /// <summary>
@@ -1017,6 +1030,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// The current Teleport System registered with the Mixed Reality Manager.
         /// </summary>
         public static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = Instance.GetManager<IMixedRealityTeleportSystem>());
+
+        private static IMixedRealityDiagnosticsManager diagnosticsSystem = null;
+
+        /// <summary>
+        /// The current Diagnostics System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityDiagnosticsManager DiagnosticsSystem => diagnosticsSystem ?? (diagnosticsSystem = Instance.GetManager<IMixedRealityDiagnosticsManager>());
 
         #endregion Manager Accessors
     }
