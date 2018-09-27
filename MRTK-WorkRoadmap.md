@@ -16,9 +16,9 @@ Has to be easy enough to enable single projects to handle both behaviors
  
 ## Proposed Tasks
 
-To ensure we have a smooth transition, we need several key tasks to be completed, to ensure a smooth transition and ensure we limit (as much as possible) any future breaking changes:
+To ensure we have a smooth transition, we need several key tasks to be completed and ensure we limit (as much as possible) any future breaking changes:
 
-1. Build the new frontend architecture, to enable both existing users and new to start building from, comprising of an Initial set interactable component prefabs / components:
+1. Build the new front-end architecture, enabling both new and existing users to start building from. Comprising of an initial set of interactable prefabs / components:
 
  * Grabbing
  * Touching
