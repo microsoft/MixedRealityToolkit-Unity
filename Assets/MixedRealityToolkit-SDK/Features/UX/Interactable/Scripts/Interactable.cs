@@ -282,7 +282,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
 
             AddPointer(eventData.Pointer);
-            //print("Enter: " + pointers.Count);
             SetFocus(pointers.Count > 0);
         }
 
@@ -294,7 +293,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
 
             RemovePointer(eventData.Pointer);
-            //print("Exit: " + pointers.Count);
             SetFocus(pointers.Count > 0);
         }
 
@@ -312,6 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             //ignore for now
             return;
+
             if (!CanInteract() && !HasPress)
             {
                 return;
@@ -329,6 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             //ignore for now
             return;
+
             if (!CanInteract())
             {
                 return;
@@ -343,14 +343,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnInputPressed(InputEventData<float> eventData)
         {
-
+            // ignore for now - using pointer events,
+            // but may need to come back to these events for menu and trigger filtering
             if (!CanInteract() || true)
             {
                 return;
             }
-            
-            print("PRESSED!!!!!" + " / " + name + " / " + HasFocus + " / " + eventData);
-            
+
             if (StateManager != null)
             {
                 if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
@@ -377,12 +376,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             
 
-            if (!CanInteract() && !HasPress)
+            if ((!CanInteract() && !HasPress))
             {
                 return;
             }
-
-            print("Pointer Up: " + pointers.Count + " / " + name + " / " + HasFocus + " / " + CanInteract() + " / " + ShouldListen(eventData.MixedRealityInputAction));
 
             if (ShouldListen(eventData.MixedRealityInputAction))
             {
@@ -392,14 +389,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            
             if (!CanInteract())
             {
                 return;
             }
-
-            print("Pointer Down: " + pointers.Count + " / " + name + " / " + HasFocus + " / " + CanInteract() + " / " + ShouldListen(eventData.MixedRealityInputAction));
-
 
             if (ShouldListen(eventData.MixedRealityInputAction))
             {
@@ -413,8 +406,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             {
                 return;
             }
-            
-            print("Pointer CLICKED!!!!!" + " / " + name + " / " + HasFocus + " / " + ShouldListen(eventData.MixedRealityInputAction));
 
             if (StateManager != null)
             {
@@ -422,6 +413,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 {
                     StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Visited, 1);
                     IncreaseDimensionIndex();
+                    print("CLICK invoked!");
                     OnClick.Invoke();
                 }
                 else if (eventData == null && (HasFocus || IsGlobal)) // handle brute force
@@ -455,9 +447,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         protected virtual bool ShouldListen(MixedRealityInputAction action)
         {
-            print(action + " / " + InputAction + " / " + (action == InputAction));
-            print(action.Description + " / " + InputAction.Description + " / " + action.Id + " / " + InputAction.Id + " / " + name + " / " + HasFocus);
-
             bool isListening = HasFocus || IsGlobal;
             return action == InputAction && isListening;
         }
@@ -512,7 +501,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             
             if (lastState != StateManager.CurrentState())
             {
-                print("State Change: " + StateManager.CurrentState());
+                print( name + " - State Change: " + StateManager.CurrentState());
             }
 
             if (forceUpdate)
