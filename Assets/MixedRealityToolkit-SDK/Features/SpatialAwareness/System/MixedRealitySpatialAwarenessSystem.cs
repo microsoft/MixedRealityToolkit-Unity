@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
@@ -65,12 +66,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
             return secondGeneration;
         }
 
-        // todo
+        private IMixedRealitySpatialAwarenessObserver spatialAwarenessObserver = null;
+
+        /// <summary>
+        /// The <see cref="IMixedRealitySpatialAwarenessObserver"/>, if any, that is active on the current platform.
+        /// </summary>
+        private IMixedRealitySpatialAwarenessObserver SpatialAwarenessObserver => spatialAwarenessObserver ?? (spatialAwarenessObserver = MixedRealityManager.Instance.GetManager<IMixedRealitySpatialAwarenessObserver>());
 
         #region IMixedRealityManager Implementation
 
-        private MixedRealitySpatialAwarenessMeshEventData meshEventData = null;
-        private MixedRealitySpatialAwarenessSurfaceFindingEventData surfaceFindingEventData = null;
+        private MixedRealitySpatialAwarenessEventData meshEventData = null;
+        private MixedRealitySpatialAwarenessEventData surfaceFindingEventData = null;
 
         /// <inheritdoc/>
         public override void Initialize()
@@ -80,14 +86,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         }
 
         /// <summary>
-        /// Performs initialization tasks for the BoundaryManager.
+        /// Performs initialization tasks for the spatial awareness system.
         /// </summary>
         private void InitializeInternal()
         {
-            meshEventData = new MixedRealitySpatialAwarenessMeshEventData(EventSystem.current);
-            surfaceFindingEventData = new MixedRealitySpatialAwarenessSurfaceFindingEventData(EventSystem.current);
+            meshEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
+            surfaceFindingEventData = new MixedRealitySpatialAwarenessEventData(EventSystem.current);
 
-            // todo - initialize the class based on the profile settings
+            // todo - get the appropriate IMixedRealitySpatialAwarenessObserver and ask if it is running
         }
 
         /// <inheritdoc/>
@@ -157,39 +163,25 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
 
         #region Mesh Events
 
-        /// <inheritdoc />
         /// <summary>
-        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshAdded"/> method to indicate a new mesh has been added.
+        /// <summary>
+        /// Method called by the surface observer to inform the spatial awareness system that an existing mesh has been updated.
         /// </summary>
-        /// <param name="meshId">Value identifying the mesh.</param>
-        /// <param name="position">The position, in the environment, where the mesh should be placed.</param>
-        /// <param name="meshData">The mesh data.</param>
-        /// <param name="meshObject">The mesh subsystem managed <see cref="GameObject"/> for the mesh.</param>
-        private void RaiseMeshAdded(uint meshId, Vector3 position, Mesh meshData, GameObject meshObject = null)
+        /// <param name="meshId">The id of the mesh</param>
+        /// <param name="meshObject">The mesh <see cref="GameObject"/></param>
+        public void UpdateMesh(uint meshId, GameObject meshObject)
         {
-            // todo
+            // todo: update the mesh in the collection
+
+            RaiseMeshAvailable(meshId, meshObject);
         }
 
         /// <summary>
-        /// Event sent whenever a mesh is added.
-        /// </summary>
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshAdded =
-            delegate (IMixedRealitySpatialAwarenessMeshHandler handler, BaseEventData eventData)
-            {
-                // todo
-                //BoundaryEventData boundaryEventData = ExecuteEvents.ValidateEventData<BoundaryEventData>(eventData);
-                //handler.OnBoundaryVisualizationChanged(boundaryEventData);
-            };
-
-        /// <inheritdoc />
-        /// <summary>
-        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate an exising mesh has changed.
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate a mesh has been added or updated.
         /// </summary>
         /// <param name="meshId">Value identifying the mesh.</param>
-        /// <param name="position">The position, in the environment, where the mesh should be placed.</param>
-        /// <param name="meshData">The mesh data.</param>
-        /// <param name="meshObject">The mesh subsystem managed <see cref="GameObject"/> for the mesh.</param>
-        private void RaiseMeshUpdated(uint meshId, Vector3 position, Mesh meshData, GameObject meshObject = null)
+        /// <param name="meshObject">The mesh <see cref="GameObject"/>.</param>
+        private void RaiseMeshAvailable(uint meshId, GameObject meshObject)
         {
             // todo
         }
@@ -197,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         /// <summary>
         /// Event sent whenever a mesh is updated.
         /// </summary>
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshUpdated =
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshAvailable =
             delegate (IMixedRealitySpatialAwarenessMeshHandler handler, BaseEventData eventData)
             {
                 // todo
@@ -205,12 +197,22 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
                 //handler.OnBoundaryVisualizationChanged(boundaryEventData);
             };
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Method called by the surface observer to inform the spatial awareness system that an existing mesh has been removed.
+        /// </summary>
+        /// <param name="meshId">The id of the mesh</param>
+        public void RemoveMesh(int meshId)
+        {
+            // todo: update the mesh in the collection
+
+            RaiseMeshRemoved(meshId);
+        }
+
         /// <summary>
         /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate an exising mesh has been removed.
         /// </summary>
         /// <param name="meshId">Value identifying the mesh.</param>
-        private void RaiseMeshDeleted(uint meshId)
+        private void RaiseMeshRemoved(int meshId)
         {
             // todo
         }
@@ -218,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         /// <summary>
         /// Event sent whenever a mesh is discarded.
         /// </summary>
-        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshDeleted =
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessMeshHandler> OnMeshRemoved =
             delegate (IMixedRealitySpatialAwarenessMeshHandler handler, BaseEventData eventData)
             {
                 // todo
@@ -370,7 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         #region IMixedRealitySpatialAwarenessSystem Implementation
 
         /// <inheritdoc />
-        public bool StartObserverSuspended { get; set; } = false;
+        public AutoStartBehavior StartupBehavior { get; set; } = AutoStartBehavior.AutoStart;
 
         /// <inheritdoc />
         public Vector3 ObservationExtents { get; set; } = Vector3.one * 10;
@@ -398,33 +400,30 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         }
 
         /// <inheritdoc />
-        public bool IsObserverRunning { get; private set; } = false;
+        public bool IsObserverRunning
+        {
+            get
+            {
+                if (SpatialAwarenessObserver == null) { return false; }
+                return SpatialAwarenessObserver.IsRunning;
+            }
+        }
 
         /// <inheritdoc />
         public void ResumeObserver()
         {
-            if (IsObserverRunning) { return; }
-
-#if UNITY_WSA
-            // todo
-#endif // UNITY_WSA
-
-            IsObserverRunning = true;
+            if (SpatialAwarenessObserver == null) { return; }
+            SpatialAwarenessObserver.StartObserving();
         }
 
         /// <inheritdoc />
         public void SuspendObserver()
         {
-            if (!IsObserverRunning) { return; }
-
-#if UNITY_WSA
-            // todo
-#endif // UNITY_WSA
-
-            IsObserverRunning = false;
+            if (SpatialAwarenessObserver == null) { return; }
+            SpatialAwarenessObserver.StopObserving();
         }
 
-#region Mesh Handling implementation
+        #region Mesh Handling implementation
 
         /// <inheritdoc />
         public bool UseMeshSystem { get; set; } = true;
@@ -501,22 +500,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public Material MeshOcclusionMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription> GetMeshes()
+        public Dictionary<int, GameObject> MeshObjects
         {
-            // todo
-            return new Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription>(0);
+            get
+            {
+                // This implementation of the spatial awareness system manages game objects.
+                // todo
+                return new Dictionary<int, GameObject>(0);
+            }
         }
 
-        /// <inheritdoc />
-        public Dictionary<uint, GameObject> GetMeshObjects()
-        {
-            // todo
-            return new Dictionary<uint, GameObject>(0);
-        }
+        #endregion Mesh Handling implementation
 
-#endregion Mesh Handling implementation
-
-#region Surface Finding Handling implementation
+        #region Surface Finding Handling implementation
 
         /// <inheritdoc />
         public bool UseSurfaceFindingSystem { get; set; } = false;
@@ -555,21 +551,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public Material PlatformSurfaceMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public Dictionary<uint, IMixedRealitySpatialAwarenessPlanarSurfaceDescription> GetSurfaces()
+        public Dictionary<int, GameObject> SurfaceObjects
         {
-            // todo
-            return new Dictionary<uint, IMixedRealitySpatialAwarenessPlanarSurfaceDescription>(0);
+            get
+            {
+                // This implementation of the spatial awareness system manages game objects.
+                // todo
+                return new Dictionary<int, GameObject>(0);
+            }
         }
 
-        /// <inheritdoc />
-        public Dictionary<uint, GameObject> GetSurfaceObjects()
-        {
-            // todo
-            return new Dictionary<uint, GameObject>(0);
-        }
+        #endregion Surface Finding Handling implementation
 
-#endregion Surface Finding Handling implementation
-
-#endregion IMixedRealitySpatialAwarenessSystem Implementation
+        #endregion IMixedRealitySpatialAwarenessSystem Implementation
     }
 }

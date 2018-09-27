@@ -12,19 +12,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.Handlers
     public class MixedRealitySpatialAwarenessSurfaceFindingHandler : IMixedRealitySpatialAwarenessSurfaceFindingHandler
     {
         /// <inheritdoc />
-        public void OnSurfaceAdded(MixedRealitySpatialAwarenessSurfaceFindingEventData eventData)
+        public void OnSurfaceAdded(MixedRealitySpatialAwarenessEventData eventData)
         {
             // todo
         }
 
         /// <inheritdoc />
-        public void OnSurfaceUpdated(MixedRealitySpatialAwarenessSurfaceFindingEventData eventData)
+        public void OnSurfaceUpdated(MixedRealitySpatialAwarenessEventData eventData)
         {
             // todo
         }
 
         /// <inheritdoc />
-        public void OnSurfaceRemoved(MixedRealitySpatialAwarenessSurfaceFindingEventData eventData)
+        public void OnSurfaceRemoved(MixedRealitySpatialAwarenessEventData eventData)
         {
             // todo
         }

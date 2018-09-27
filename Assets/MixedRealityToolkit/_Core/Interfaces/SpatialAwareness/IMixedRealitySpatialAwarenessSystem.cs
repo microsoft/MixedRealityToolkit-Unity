@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,12 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
     public interface IMixedRealitySpatialAwarenessSystem : IMixedRealityEventSystem, IMixedRealityEventSource
     {
         /// <summary>
-        /// Indicates if the developer intends for the spatial awareness observer to not return data until explicitly resumed.
+        /// Indicates the developer's intended startup behavior.
         /// </summary>
-        /// <remarks>
-        /// Setting this to true allows the application to decide precisely when it wishes to begin receiving spatial data notifications. 
-        /// </remarks>
-        bool StartObserverSuspended { get; set; }
+        AutoStartBehavior StartupBehavior { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the volume, in meters per axis, from which individual observations will be made.
@@ -107,16 +105,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         Material MeshOcclusionMaterial { get; set; }
 
         /// <summary>
-        /// Gets the collection of <see cref="IMixedRealitySpatialAwarenessMeshDescription"/>s being tracked by the spatial awareness mesh subsystem.
-        /// </summary>
-        /// <returns>Dictionary of <see cref="IMixedRealitySpatialAwarenessMeshDescription"/>s, indexed by the mesh id.</returns>
-        Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription> GetMeshes();
-
-        /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness mesh subsystem.
         /// </summary>
-        /// <returns>Dictionary of <see cref="GameObject"/>s, indexed by the mesh id.</returns>
-        Dictionary<uint, GameObject> GetMeshObjects();
+        Dictionary<int, GameObject> MeshObjects { get; }
 
         #endregion Mesh Handling
 
@@ -195,16 +186,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         Material PlatformSurfaceMaterial { get; set; }
 
         /// <summary>
-        /// Gets the collection of <see cref="IMixedRealitySpatialAwarenessPlanarSurfaceDescription"/>s being tracked by the spatial awareness surface finding subsystem.
-        /// </summary>
-        /// <returns>Dictionary of <see cref="IMixedRealitySpatialAwarenessPlanarSurfaceDescription"/>s, indexed by the surface id.</returns>
-        Dictionary<uint, IMixedRealitySpatialAwarenessPlanarSurfaceDescription> GetSurfaces();
-
-        /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness surface finding subsystem.
         /// </summary>
-        /// <returns>Dictionary of <see cref="GameObject"/>s, indexed by the surface id.</returns>
-        Dictionary<uint, GameObject> GetSurfaceObjects();
+        Dictionary<int, GameObject> SurfaceObjects { get; }
 
         #endregion Surface Finding Handling
     }

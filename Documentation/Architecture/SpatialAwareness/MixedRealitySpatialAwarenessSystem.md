@@ -86,10 +86,6 @@ Gets or sets the material to be used when displaying spatial meshes.
 
 Gets or sets the material to be used when spatial meshes should occlude other objects.
 
-### Dictionary<uint, [IMixedRealitySpatialAwarenessMeshDescription](./IMixedRealitySpatialAwarenessMeshDescription.md)> GetMeshes()
-
-Returns the collection of Meshes being managed by the spatial awareness mesh subsystem.
-
 ### Dictionary<uint, GameObject> GetMeshes()
 
 Returns the collection of GameObjects being managed by the spatial awareness mesh subsystem.
@@ -148,10 +144,6 @@ Gets or sets a value indicating if the surface subsystem is to automatically dis
 
 Gets or sets the material to be used when displaying planar surface(s) identified as a raised horizontal platform.
 
-### Dictionary<uint, [IMixedRealitySpatialAwarenessPlanarSurfaceDescription](./IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)> GetSurfaces()
-
-Returns the collection of surface descriptions being tracked by the surface finding subsystem.
-
 ### Dictionary<uint, GameObject> GetSurfaceObjects()
 
 Returns the collection of GameObjects managed by the surface finding subsystem.
@@ -167,7 +159,5 @@ The spatial awareness system raises events on the following handler types to ind
 
 - [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
 - [IMixedRealitySpatialAwarenessSystem Interface](./IMixedRealitySpatialAwarenessSystem.md)
-- [IMixedRealitySpatialAwarenessMeshDescription Interface](./IMixedRealitySpatialAwarenessMeshDescription.md)
-- [IMixedRealitySpatialAwarenessPlanarSurfaceDescription Interface](./IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)
 - [SpatialAwarenessMeshDisplayOptions Enumeration](./SpatialAwarenessMeshDisplayOptions.md)
 - [SpatialAwarenessMeshLevelOfDetail Enumeration](./SpatialAwarenessMeshLevelOfDetail.md)
