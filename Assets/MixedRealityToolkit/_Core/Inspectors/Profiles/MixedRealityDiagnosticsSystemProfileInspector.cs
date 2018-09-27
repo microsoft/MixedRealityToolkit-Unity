@@ -6,12 +6,11 @@ using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityDiagnosticsProfile))]
     public class MixedRealityDiagnosticsSystemProfileInspector : MixedRealityBaseConfigurationProfileInspector
     {
-
         private SerializedProperty showCpu;
         private SerializedProperty showFps;
         private SerializedProperty showMemory;
