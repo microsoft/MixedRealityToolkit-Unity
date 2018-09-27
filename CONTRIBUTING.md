@@ -34,7 +34,7 @@ If you're proposing a completely new feature (or a new platform support) please 
 >Note:  If you wish to work on something that already exists on our backlog, you can use that work item as your proposal. Be sure to also comment on the task notifying maintainers that you're working towards completing it.
 
 # Beginning development
-Working with Git, the contribution process is quite simply (provided you have installed a good Git Client such as TortoiseGit or SourceTree)
+Working with Git, the contribution process is quite simple (provided you have installed a good Git Client such as TortoiseGit or SourceTree)
 
 > If you are new to to the Git workflow, [check out this tutorial on Pluralsight](https://www.pluralsight.com/blog/software-development/github-tutorial)
 
@@ -88,7 +88,7 @@ This documentation is generated from the product code and is reviewed as part of
 
 ### Conceptual
 
-Conceptual documentation is hosted on https://docs.microsoft.com/en-us/windows/mixed-reality. Please submit our changes via Pull Request at https://github.com/MicrosoftDocs/mixed-reality.
+Conceptual documentation is hosted on https://docs.microsoft.com/en-us/windows/mixed-reality. Please submit your changes via Pull Request at https://github.com/MicrosoftDocs/mixed-reality.
 
 ### Readme files
 
@@ -100,6 +100,7 @@ The Mixed Reality Toolkit supports the following mixed reality (AR/VR/XR) platfo
 
 - Windows Standalone
     - OpenVR
-- Windows Mixed Reality
-    - Immersive devices
+- Universal Windows Platform
+    - Standalone PC
+    - Windows Mixed Reality Immersive devices
     - Microsoft HoloLens
