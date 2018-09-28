@@ -34,6 +34,26 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [SerializeField]
         private bool OnlyInEditMode;
 
+        public void SetScale(Vector3 scale)
+        {
+            Scale = scale;
+        }
+
+        public Vector3 GetScale()
+        {
+            return Scale;
+        }
+
+        public void SetOffset(Vector3 offset)
+        {
+            Offset = offset;
+        }
+
+        public Vector3 GetSOffset()
+        {
+            return Offset;
+        }
+
         /// <summary>
         /// Set the size based on the Achor's size and the buffers
         /// </summary>

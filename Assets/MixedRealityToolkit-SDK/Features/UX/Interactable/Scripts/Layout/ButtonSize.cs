@@ -22,6 +22,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [SerializeField]
         private bool OnlyInEditMode;
 
+        public void SetSize(Vector3 size)
+        {
+            ItemSize = size;
+        }
+
+        public Vector3 GetSize()
+        {
+            return ItemSize;
+        }
+
         /// <summary>
         /// Set the size
         /// </summary>

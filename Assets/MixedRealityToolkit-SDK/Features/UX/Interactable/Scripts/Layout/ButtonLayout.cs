@@ -33,6 +33,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         [SerializeField]
         private bool OnlyInEditMode;
 
+        public void SetAlignment(Vector3 alignment)
+        {
+            Alignment = alignment;
+        }
+
+        public Vector3 GetAlignment()
+        {
+            return Alignment;
+        }
+        
         /// <summary>
         /// A transform is required for alignment
         /// </summary>
