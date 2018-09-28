@@ -202,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (lastState != StateManager.CurrentState())
             {
-                print(name + " - State Change: " + StateManager.CurrentState());
+                //print(name + " - State Change: " + StateManager.CurrentState());
             }
 
             if (forceUpdate)

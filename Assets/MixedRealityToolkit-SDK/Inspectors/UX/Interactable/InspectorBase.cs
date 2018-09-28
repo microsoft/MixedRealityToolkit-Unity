@@ -420,7 +420,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return list.ToArray();
         }
 
-        protected static void PropertySettingsList(SerializedProperty settings, List<InteractableEvent.FieldData> data)
+        protected static void PropertySettingsList(SerializedProperty settings, List<FieldData> data)
         {
             settings.ClearArray();
 

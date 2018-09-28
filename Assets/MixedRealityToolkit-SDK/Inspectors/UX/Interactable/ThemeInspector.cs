@@ -166,17 +166,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return themeStates;
         }
 
-        protected virtual void RenderBaseInspector()
-        {
-            base.OnInspectorGUI();
-        }
-
-        public override void OnInspectorGUI()
-        {
-            //RenderBaseInspector()
-            RenderCustomInspector();
-        }
-
         protected void SetupThemeOptions()
         {
             ProfileItem.ThemeLists lists = ProfileItem.GetThemeTypes();
