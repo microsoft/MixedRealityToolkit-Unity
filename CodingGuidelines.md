@@ -246,7 +246,7 @@ Interfaces are designed to provide a public contract devoid of implementation. W
 
 ### Don't:
 ```
-public interface IFoo
+public interface IMixedRealityFoo
 {
     Dictionary<string, object> Objects { get; set; }
 }
@@ -254,7 +254,7 @@ public interface IFoo
 
 ### Do:
 ```
-public interface IFoo
+public interface IMixedRealityFoo
 {
     IDictionary<string, object> Objects { get; set; }
 }
