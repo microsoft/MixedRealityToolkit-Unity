@@ -32,6 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// </summary>
         public SpatialAwarenessEventType EventType { get; private set; }
 
+        /// <summary>
+        /// The type of data to which the event is associated.
+        /// </summary>
         public SpatialAwarenessDataType DataType { get; private set; }
 
         /// <summary>

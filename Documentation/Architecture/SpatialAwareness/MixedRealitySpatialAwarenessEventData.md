@@ -1,12 +1,12 @@
-# MixedRealitySpatialAwarenessBaseEventData Class
+# MixedRealitySpatialAwarenessEventData Class
 
 | Toolkit Layer | Namespace |
 | --- | --- |
 | Core | Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwareness |
 
-The MixedRealitySpatialAwarenessBaseEventData provides the data shared by all of the spatial awareness event types.
+The MixedRealitySpatialAwarenessEventData provides the data shared by all of the spatial awareness event types.
 
-<img src="Images/MixedRealitySpatialAwarenessBaseEventData.png">
+<img src="Images/MixedRealitySpatialAwarenessEventData.png">
 
 ## EventTime
 
@@ -32,6 +32,14 @@ The type of event that has occurred.
 
 An identifier assigned to a specific object in the spatial awareness system.
 
+## DataType
+
+| Type |
+| --- |
+| [SpatialAwarenessDataType](./SpatialAwarenessDataType.md) |
+
+The type of data to which the event is associated.
+
 ## GameObject
 
 | Type |
@@ -43,4 +51,5 @@ Unity GameObject, managed by the spatial awareness system, representing the data
 ## See Also
 
 - [Mixed Reality Spatial Awareness System Architecture](./SpatialAwarenessSystemArchitecture.md)
+- [SpatialAwarenessDataType Enumeration](./SpatialAwarenessDataType.md)
 - [SpatialAwarenessEventType Enumeration](./SpatialAwarenessEventType.md)

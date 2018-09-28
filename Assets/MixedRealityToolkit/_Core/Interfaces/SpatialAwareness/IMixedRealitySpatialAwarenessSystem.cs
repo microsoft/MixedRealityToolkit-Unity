@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness mesh subsystem.
         /// </summary>
-        Dictionary<int, GameObject> MeshObjects { get; }
+        IDictionary<int, GameObject> MeshObjects { get; }
 
         #endregion Mesh Handling
 
@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// <summary>
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness surface finding subsystem.
         /// </summary>
-        Dictionary<int, GameObject> SurfaceObjects { get; }
+        IDictionary<int, GameObject> SurfaceObjects { get; }
 
         #endregion Surface Finding Handling
     }

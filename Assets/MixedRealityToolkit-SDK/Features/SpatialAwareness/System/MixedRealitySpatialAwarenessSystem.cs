@@ -500,7 +500,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public Material MeshOcclusionMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public Dictionary<int, GameObject> MeshObjects
+        public IDictionary<int, GameObject> MeshObjects
         {
             get
             {
@@ -551,7 +551,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem
         public Material PlatformSurfaceMaterial { get; set; } = null;
 
         /// <inheritdoc />
-        public Dictionary<int, GameObject> SurfaceObjects
+        public IDictionary<int, GameObject> SurfaceObjects
         {
             get
             {

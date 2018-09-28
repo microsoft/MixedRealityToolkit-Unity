@@ -9,10 +9,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
     public interface IMixedRealitySpatialAwarenessMeshHandler : IEventSystemHandler
     {
         /// <summary>
-        /// Called when the spatial awareness mesh subsystem adds or updates a mesh.
+        /// Called when the spatial awareness mesh subsystem adds a mesh.
         /// </summary>
         /// <param name="eventData">Data describing the event.</param>
-        void OnMeshAvailable(MixedRealitySpatialAwarenessEventData eventData);
+        void OnMeshAdded(MixedRealitySpatialAwarenessEventData eventData);
+
+        /// <summary>
+        /// Called when the spatial awareness mesh subsystem updates an existing mesh.
+        /// </summary>
+        /// <param name="eventData">Data describing the event.</param>
+        void OnMeshUpdated(MixedRealitySpatialAwarenessEventData eventData);
 
         /// <summary>
         /// Called when the spatial awareness mesh subsystem removes an existing mesh.

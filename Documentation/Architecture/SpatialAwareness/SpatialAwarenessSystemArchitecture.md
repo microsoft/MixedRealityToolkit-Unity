@@ -15,21 +15,17 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 - [IMixedRealitySpatialAwarenessSystem](./IMixedRealitySpatialAwarenessSystem.md)
 - [IMixedRealitySpatialAwarenessMeshHandler](./IMixedRealitySpatialAwarenessMeshHandler.md)
 - [IMixedRealitySpatialAwarenessSurfaceFindingHandler](./IMixedRealitySpatialAwarenessSurfaceFindingHandler.md)
-- [IMixedRealitySpatialAwarenessBaseDescription](./IMixedRealitySpatialAwarenessBaseDescription.md)
-- [IMixedRealitySpatialAwarenessMeshDescription](./IMixedRealitySpatialAwarenessMeshDescription.md)
-- [IMixedRealitySpatialAwarenessPlanarSurfaceDescription](./IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)
+- [IMixedRealitySpatialObserver](./IMixedRealitySpatialObserver.md)
 
 ## Classes
 
 - [MixedRealitySpatialAwarenessSystem](./MixedRealitySpatialAwarenessSystem.md)
 - [MixedRealitySpatialAwarenessMeshHandler](./MixedRealitySpatialAwarenessMeshHandler.md)
 - [MixedRealitySpatialAwarenessSurfaceFindingHandler](./MixedRealitySpatialAwarenessSurfaceFindingHandler.md)
-- [MixedRealitySpatialAwarenessBaseDescription](./MixedRealitySpatialAwarenessBaseDescription.md)
-- [MixedRealitySpatialAwarenessMeshDescription](./MixedRealitySpatialAwarenessMeshDescription.md)
-- [MixedRealitySpatialAwarenessPlanarSurfaceDescription](./MixedRealitySpatialAwarenessPlanarSurfaceDescription.md)
 
 ## Enumerations
 
+- [SpatialAwarenessDataType](./SpatialAwarenessDataType.md)
 - [SpatialAwarenessEventType](./SpatialAwarenessEventType.md)
 - [SpatialAwarenessMeshDisplayOptions](./SpatialAwarenessMeshDisplayOptions.md)
 - [SpatialAwarenessMeshLevelOfDetail](./SpatialAwarenessMeshLevelOfDetail.md)
@@ -37,9 +33,7 @@ Each interface defined will implement one or more Properties, Methods and/or Eve
 
 ## Event Data Types
 
-- [MixedRealitySpatialAwarenessBaseEventData](./MixedRealitySpatialAwarenessBaseEventData.md)
-- [MixedRealitySpatialAwarenessMeshEventData](./MixedRealitySpatialAwarenessMeshEventData.md)
-- [MixedRealitySpatialAwarenessSurfaceFindingEventData](./MixedRealitySpatialAwarenessSurfaceFindingEventData.md)
+- [MixedRealitySpatialAwarenessEventData](./MixedRealitySpatialAwarenessEventData.md)
 
 ## Configuration Profile
 
