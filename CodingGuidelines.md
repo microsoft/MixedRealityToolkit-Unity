@@ -240,6 +240,26 @@ public class MyClass
 }
  ```
 
+## Public Interface Definitions Should Avoid Concrete Types Where Possible.
+
+Interfaces are designed to provide a public contract devoid of implementation. Where possible, avoid assuming a non-primitive type. 
+
+### Don't:
+```
+public interface IFoo
+{
+    Dictionary<string, object> Objects { get; set; }
+}
+```
+
+### Do:
+```
+public interface IFoo
+{
+    IDictionary<string, object> Objects { get; set; }
+}
+```
+
 ## Initilize Enums.
 
 To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initilize the enum by just adding the first (starter) value.
