@@ -30,8 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
                 if (eventData.Pointer.IsInteractionEnabled)
                 {
-                    MixedRealityManager.TeleportSystem.RaiseTeleportCanceled(eventData.Pointer, this);
-                    MixedRealityManager.TeleportSystem.RaiseTeleportRequest(eventData.Pointer, this);
+                    MixedRealityManager.TeleportSystem?.RaiseTeleportCanceled(eventData.Pointer, this);
+                    MixedRealityManager.TeleportSystem?.RaiseTeleportRequest(eventData.Pointer, this);
                 }
             }
             else if (eventData.OldFocusedObject == gameObject)
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
 
                 if (eventData.Pointer.IsInteractionEnabled)
                 {
-                    MixedRealityManager.TeleportSystem.RaiseTeleportCanceled(eventData.Pointer, this);
+                    MixedRealityManager.TeleportSystem?.RaiseTeleportCanceled(eventData.Pointer, this);
                 }
             }
         }

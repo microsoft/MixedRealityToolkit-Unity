@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 
@@ -68,14 +69,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
         }
 
-        private void OnEnable()
+        private async void OnEnable()
         {
+            await new WaitUntil(() => MixedRealityManager.BoundarySystem != null);
             MixedRealityManager.BoundarySystem.Register(gameObject);
         }
 
         private void OnDisable()
         {
-            MixedRealityManager.BoundarySystem.Unregister(gameObject);
+            MixedRealityManager.BoundarySystem?.Unregister(gameObject);
         }
 
         #endregion MonoBehaviour Implementation

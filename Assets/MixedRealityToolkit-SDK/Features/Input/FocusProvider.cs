@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using System;
 using System.Collections.Generic;
@@ -224,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         #region MonoBehaviour Implementation
 
-        private void Awake()
+        private async void Awake()
         {
             if (uiRaycastCamera == null)
             {
@@ -232,6 +233,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
                                  "To create a UIRaycastCamera in your scene, find this Focus Provider GameObject and add one there.");
                 CreateUiRaycastCamera();
             }
+
+            await WaitUntilInputSystemValid;
 
             foreach (var inputSource in MixedRealityManager.InputSystem.DetectedInputSources)
             {
@@ -241,6 +244,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void Update()
         {
+            if (MixedRealityManager.InputSystem == null) { return; }
+
             UpdatePointers();
             UpdateFocusedObjects();
         }

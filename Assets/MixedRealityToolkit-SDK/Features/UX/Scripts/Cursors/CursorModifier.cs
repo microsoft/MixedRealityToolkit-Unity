@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             }
 
             FocusDetails focusDetails;
-            if (MixedRealityManager.InputSystem.FocusProvider.TryGetFocusDetails(cursor.Pointer, out focusDetails))
+            if (MixedRealityManager.InputSystem != null && MixedRealityManager.InputSystem.FocusProvider.TryGetFocusDetails(cursor.Pointer, out focusDetails))
             {
                 // Else, consider the modifiers on the cursor modifier, but don't snap
                 return focusDetails.Point + HostTransform.TransformVector(CursorPositionOffset);
