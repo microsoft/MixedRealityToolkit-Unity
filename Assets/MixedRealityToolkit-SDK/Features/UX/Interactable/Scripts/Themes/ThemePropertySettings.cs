@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public ThemeBase Theme;
         public List<ThemeProperty> Properties;
         public List<ThemeProperty> History;
-        public EaseSettings Easing;
+        public ThemeEaseSettings Easing;
         public bool NoEasing;
         public bool IsValid;
     }

@@ -9,12 +9,11 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     /// <summary>
-    /// Base class for themes
+    /// Ease settings and cunctionality for themes
     /// </summary>
-
-
+    
     [System.Serializable]
-    public class EaseSettings
+    public class ThemeEaseSettings
     {
         public enum BasicEaseCurves { Linear, EaseIn, EaseOut, EaseInOut }
         public bool EaseValues = false;
@@ -22,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public float LerpTime = 0.5f;
         private float timer = 0.5f;
 
-        public EaseSettings()
+        public ThemeEaseSettings()
         {
             Stop();
         }

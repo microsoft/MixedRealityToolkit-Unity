@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public List<ThemeProperty> ThemeProperties = new List<ThemeProperty>();
         public List<ThemePropertyValue> CustomSettings = new List<ThemePropertyValue>();
         public GameObject Host;
-        public EaseSettings Ease;
+        public ThemeEaseSettings Ease;
         public bool Loaded;
 
         private bool hasFirstState = false;
@@ -65,9 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return Mathf.RoundToInt((e - s) * t) + s;
         }
 
-        protected EaseSettings CopyEase(EaseSettings ease)
+        protected ThemeEaseSettings CopyEase(ThemeEaseSettings ease)
         {
-            EaseSettings newEase = new EaseSettings();
+            ThemeEaseSettings newEase = new ThemeEaseSettings();
             newEase.Curve = ease.Curve;
             newEase.EaseValues = ease.EaseValues;
             newEase.LerpTime = ease.LerpTime;
