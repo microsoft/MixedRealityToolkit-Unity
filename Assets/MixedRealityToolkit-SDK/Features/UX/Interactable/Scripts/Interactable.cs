@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// </summary>
         private static IMixedRealityInputSystem inputSystem = null;
         protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
-
+        
         // list of pointers
         protected List<IMixedRealityPointer> pointers = new List<IMixedRealityPointer>();
         public List<IMixedRealityPointer> Focusers => pointers;
@@ -164,12 +164,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         private void OnEnable()
         {
-            InputSystem.Register(gameObject);
+            if (IsGlobal)
+            {
+                InputSystem.Register(gameObject);
+            }
         }
 
         private void OnDisable()
         {
-            InputSystem.Unregister(gameObject);
+            if (IsGlobal)
+            {
+                InputSystem.Unregister(gameObject);
+            }
         }
         
         protected virtual void Update()
