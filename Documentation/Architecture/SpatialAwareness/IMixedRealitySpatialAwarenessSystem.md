@@ -140,11 +140,7 @@ Gets or sets the material to be used when displaying spatial meshes.
 
 Gets or sets the material to be used when spatial meshes should occlude other object.
 
-### Dictionary<uint, [IMixedRealitySpatialAwarenessMeshDescription](./IMixedRealitySpatialAwarenessMeshDescription.md)> GetMeshes()
-
-Returns the collection of Meshes being managed by the spatial awareness mesh subsystem.
-
-### Dictionary<uint, GameObject> GetMeshes()
+### IDictionary<uint, GameObject> GetMeshes()
 
 Returns the collection of GameObjects being managed by the spatial awareness mesh subsystem.
 
@@ -250,11 +246,7 @@ Gets or sets a value indicating if the surface subsystem is to automatically dis
 
 Gets or sets the material to be used when displaying planar surface(s) identified as a raised horizontal platform.
 
-### [IMixedRealitySpatialAwarenessPlanarSurfaceDescription](./IMixedRealitySpatialAwarenessPlanarSurfaceDescription.md)[] GetSurfaces()
-
-Returns the collection of surface descriptions being tracked by the surface finding subsystem.
-
-### GameObject[] GetSurfaceObjects()
+### IDictionary<int, GameObject> GetSurfaceObjects()
 
 Returns the collection of GameObjects managed by the surface finding subsystem.
 
