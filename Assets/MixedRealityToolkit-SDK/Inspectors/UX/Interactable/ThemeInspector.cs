@@ -10,11 +10,28 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// Inspector for themes, and used by Interactable
+    /// </summary>
+    
+    // TODO: !!!!! need to make sure we refresh the shader list when the target changes
+
+    // FIX : when adding a new setting, the rendered values is a dupe of the previous values in the list, but the dropdown is default.
+    
 #if UNITY_EDITOR
     [CustomEditor(typeof(Theme))]
     public class ThemeInspector : InspectorBase
     {
-        private SerializedProperty settings;
+        protected SerializedProperty settings;
+
+        // list of theme type names
+        protected string[] themeOptions;
+
+        // list of theme types
+        protected Type[] themeTypes;
+
+        // list of shader option names
+        protected string[] shaderOptions;
 
         protected virtual void OnEnable()
         {
@@ -22,89 +39,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             AdjustListSettings(settings.arraySize);
             SetupThemeOptions();
         }
-
-        /*
-
-        protected override State[] GetStates()
+        
+        public override void OnInspectorGUI()
         {
-            // TODO: make sure we are getting current states that were saved and not overwrite states
-            InteractableStates states = new InteractableStates(InteractableStates.Default);
-            return states.GetStates();
+            //RenderBaseInspector()
+            RenderCustomInspector();
         }
-
-        protected override void AddThemeProperty(int[] arr)
+        
+        protected virtual void RenderBaseInspector()
         {
-            //base.AddThemeProperty(arr);
-            int index = arr[0];
-            
-            SerializedProperty themeObjSettings = serializedObject.FindProperty("Settings");
-            themeObjSettings.InsertArrayElementAtIndex(index);
-
-            SerializedProperty settingsItem = themeObjSettings.GetArrayElementAtIndex(themeObjSettings.arraySize - 1);
-            SerializedProperty className = settingsItem.FindPropertyRelative("Name");
-            if (themeObjSettings.arraySize == 1)
-            {
-
-                className.stringValue = "ScaleOffsetColorTheme";
-            }
-            else
-            {
-                className.stringValue = themeOptions[0];
-            }
-
-            SerializedProperty easing = settingsItem.FindPropertyRelative("Easing");
-
-            SerializedProperty time = easing.FindPropertyRelative("LerpTime");
-            SerializedProperty curve = easing.FindPropertyRelative("Curve");
-            time.floatValue = 0.5f;
-            curve.animationCurveValue = AnimationCurve.Linear(0, 1, 1, 1);
+            base.OnInspectorGUI();
         }
-
-        protected override void RemoveThemeProperty(int[] arr)
-        {
-            int index = arr[2];
-            
-            SerializedProperty themeObjSettings = serializedObject.FindProperty("Settings");
-            themeObjSettings.DeleteArrayElementAtIndex(index);
-            serializedObject.ApplyModifiedProperties();
-            serializedObject.Update();
-        }
-        */
-
-        protected bool enabled = false;
-
-        protected string[] themeOptions;
-        protected Type[] themeTypes;
-        protected string[] shaderOptions;
-
-        /*
-        protected virtual void OnEnable()
-        {
-            instance = (Interactable)target;
-            eventList = instance.Events;
-
-            listSettings = new List<ListSettings>();
-
-            profileList = serializedObject.FindProperty("Profiles");
-            AdjustListSettings(profileList.arraySize);
-            showProfiles = EditorPrefs.GetBool(prefKey, showProfiles);
-
-            SetupEventOptions();
-            SetupThemeOptions();
-
-            enabled = true;
-        }*/
 
         public virtual void RenderCustomInspector()
         {
-            // TODO: !!!!! need access to a game object to get shader info
-            // TODO: !!!!! need access to states to get state info
-            // TODO: !!!!! need to make sure we refresh the shader list when the target changes
-            // TODO: !!!!! neet to get shader props, use default if one has not been set.
-
-            // FIX : when adding a new setting, the rendered values is a dupe of the previous values in the list, but the dropdown is default.
-
-            
             //base.OnInspectorGUI();
             serializedObject.Update();
 
@@ -121,21 +69,33 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 return;
             }
 
+
+            if (GetStates().Length < 1)
+            {
+                serializedObject.ApplyModifiedProperties();
+                return;
+            }
+
             if (settings.arraySize < 1)
             {
                 AddThemeProperty(new int[] { 0 });
             }
-            
+
             RenderThemeSettings(settings, themeOptions, null, new int[] { 0, -1, 0 });
 
             FlexButton(new GUIContent("+", "Add Theme Property"), new int[] { 0 }, AddThemeProperty);
-            // get list of all the properties from the themes
 
+            // render a list of all the properties from the theme based on state
             RenderThemeStates(settings, GetStates(), 0);
 
             serializedObject.ApplyModifiedProperties();
         }
 
+        /// <summary>
+        /// draw the states property field for assigning states
+        /// Set the default state if one does not exist
+        /// </summary>
+        /// <returns></returns>
         protected bool RenderStates()
         {
             // States
@@ -156,12 +116,19 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
             else
             {
-                string[] stateLocations = AssetDatabase.FindAssets("DefaultInteractableStates t:States");
+                string[] stateLocations = AssetDatabase.FindAssets("DefaultInteractableStates");
                 if (stateLocations.Length > 0)
                 {
-                    string path = AssetDatabase.GUIDToAssetPath(stateLocations[0]);
-                    States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
-                    states.objectReferenceValue = defaultStates;
+                    for (int k = 0; k < stateLocations.Length; k++)
+                    {
+                        string path = AssetDatabase.GUIDToAssetPath(stateLocations[0]);
+                        States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
+                        if (defaultStates != null)
+                        {
+                            states.objectReferenceValue = defaultStates;
+                            break;
+                        }
+                    }
                 }
                 else
                 {
@@ -171,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (showStates)
             {
-                EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
+                EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"), true);
             }
 
             if (sectionStarted)
@@ -181,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (states.objectReferenceValue == null)
             {
-                DrawError("Please assign a States object!");
+                DrawError("Please assign a States object! Ex: DefaultInteractableStates");
                 serializedObject.ApplyModifiedProperties();
                 return false;
             }
@@ -189,24 +156,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return true;
         }
 
+        /// <summary>
+        /// Get the list of states from the theme
+        /// </summary>
+        /// <returns></returns>
         protected virtual State[] GetStates()
         {
             Theme theme = (Theme)target;
             return theme.GetStates();
         }
-
-        protected virtual void RenderBaseInspector()
-        {
-            base.OnInspectorGUI();
-        }
-
-        public override void OnInspectorGUI()
-        {
-            //RenderBaseInspector()
-            RenderCustomInspector();
-        }
-
-       
+        
+        /// <summary>
+        /// Add a new theme property to the theme
+        /// </summary>
+        /// <param name="arr"></param>
         protected virtual void AddThemeProperty(int[] arr)
         {
             int index = arr[0];
@@ -218,6 +181,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             ChangeThemeProperty(themeObjSettings.arraySize - 1, themeObjSettings, null, true);
         }
 
+        /// <summary>
+        /// set up the theme properties when a theme property is added
+        /// </summary>
+        /// <param name="themeSettings"></param>
         protected virtual void AddThemePropertySettings(SerializedProperty themeSettings)
         {
             SerializedProperty settingsItem = themeSettings.GetArrayElementAtIndex(themeSettings.arraySize - 1);
@@ -239,6 +206,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             curve.animationCurveValue = AnimationCurve.Linear(0, 1, 1, 1);
         }
 
+        /// <summary>
+        /// remove the theme property from a theme
+        /// </summary>
+        /// <param name="arr"></param>
         protected virtual void RemoveThemeProperty(int[] arr)
         {
             int index = arr[0];
@@ -247,11 +218,24 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             RemoveThemePropertySettings(themeObjSettings, index);
         }
 
+        /// <summary>
+        /// clear the theme property settings when a theme property is deleted
+        /// </summary>
+        /// <param name="themeSettings"></param>
+        /// <param name="index"></param>
         protected virtual void RemoveThemePropertySettings(SerializedProperty themeSettings, int index)
         {
             themeSettings.DeleteArrayElementAtIndex(index);
         }
 
+        /// <summary>
+        /// Handle when a theme property changes theme type
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="themeSettings"></param>
+        /// <param name="target"></param>
+        /// <param name="isNew"></param>
+        /// <returns></returns>
         protected virtual SerializedProperty ChangeThemeProperty(int index, SerializedProperty themeSettings, SerializedProperty target, bool isNew = false)
         {
             SerializedProperty settingsItem = themeSettings.GetArrayElementAtIndex(index);
@@ -315,8 +299,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 }
                 else
                 {
-                    //sProps.ClearArray();
-                    //isNew = true;
                     // stick the copy in the new format into sProps.
                     sProps = CopyPropertiesFromHistory(sProps, properties, history, out history);
                 }
@@ -442,6 +424,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return themeSettings;
         }
 
+        /// <summary>
+        /// When changing theme property types, see if there are some cached values to load
+        /// </summary>
+        /// <param name="oldProperties"></param>
+        /// <param name="newProperties"></param>
+        /// <param name="history"></param>
+        /// <param name="historyOut"></param>
+        /// <returns></returns>
         protected SerializedProperty CopyPropertiesFromHistory(SerializedProperty oldProperties, List<ThemeProperty> newProperties, SerializedProperty history, out SerializedProperty historyOut)
         {
             int oldCount = oldProperties.arraySize;
@@ -530,6 +520,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return oldProperties;
         }
 
+        /// <summary>
+        /// copy some theme property values from serialized properties
+        /// </summary>
+        /// <param name="copyFrom"></param>
+        /// <param name="copyTo"></param>
+        /// <returns></returns>
         public static SerializedProperty CopyThemeProperties(SerializedProperty copyFrom, SerializedProperty copyTo)
         {
             SerializedProperty newName = copyTo.FindPropertyRelative("Name");
@@ -559,6 +555,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return copyTo;
         }
 
+        /// <summary>
+        /// copy theme values from serialized properties
+        /// </summary>
+        /// <param name="copyFrom"></param>
+        /// <param name="copyTo"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static SerializedProperty CopyThemeValues(SerializedProperty copyFrom, SerializedProperty copyTo, int type)
         {
             SerializedProperty floatFrom;
@@ -662,6 +665,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return copyTo;
         }
 
+        /// <summary>
+        /// load theme property values into a serialized property
+        /// </summary>
+        /// <param name="copyFrom"></param>
+        /// <param name="copyTo"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static SerializedProperty SerializeThemeValues(ThemePropertyValue copyFrom, SerializedProperty copyTo, int type)
         {
             SerializedProperty floatTo;
@@ -745,6 +755,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return copyTo;
         }
 
+        /// <summary>
+        /// Render the theme settings
+        /// </summary>
+        /// <param name="themeSettings"></param>
+        /// <param name="themeOptions"></param>
+        /// <param name="gameObject"></param>
+        /// <param name="listIndex"></param>
         protected void RenderThemeSettings(SerializedProperty themeSettings, string[] themeOptions, SerializedProperty gameObject, int[] listIndex)
         {
             for (int n = 0; n < themeSettings.arraySize; n++)
@@ -859,7 +876,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                                                 break;
                                             }
                                         }
-
                                     }
 
                                 }
@@ -922,6 +938,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        /// <summary>
+        /// Render the theme states, from theme properties and state list
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="states"></param>
+        /// <param name="margin"></param>
         public static void RenderThemeStates(SerializedProperty settings, State[] states, int margin)
         {
             GUIStyle box = Box(margin);
@@ -945,12 +967,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         SerializedProperty name = propertyItem.FindPropertyRelative("Name");
                         SerializedProperty type = propertyItem.FindPropertyRelative("Type");
                         SerializedProperty values = propertyItem.FindPropertyRelative("Values");
-
+                        
                         if (n >= values.arraySize)
                         {
+                            // the state values for this theme were not created yet
                             continue;
                         }
-
+                        
                         SerializedProperty item = values.GetArrayElementAtIndex(n);
                         SerializedProperty floatValue = item.FindPropertyRelative("Float");
                         SerializedProperty vector2Value = item.FindPropertyRelative("Vector2");
@@ -1036,7 +1059,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             GUILayout.Space(5);
         }
 
-        protected static void PropertySettingsList(SerializedProperty settings, List<InteractableEvent.FieldData> data)
+        /// <summary>
+        /// Update the theme settings list
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="data"></param>
+        protected static void PropertySettingsList(SerializedProperty settings, List<FieldData> data)
         {
             settings.ClearArray();
 
@@ -1069,6 +1097,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        /// <summary>
+        /// update the theme property settings
+        /// </summary>
+        /// <param name="prop"></param>
+        /// <param name="type"></param>
+        /// <param name="update"></param>
         protected static void UpdatePropertySettings(SerializedProperty prop, int type, object update)
         {
             SerializedProperty intValue = prop.FindPropertyRelative("IntValue");
@@ -1283,7 +1317,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (renderer != null)
             {
-                material = ThemeBase.GetValidMaterial(renderer);
+                material = ThemeShaderUtils.GetValidMaterial(renderer);
             }
             else
             {

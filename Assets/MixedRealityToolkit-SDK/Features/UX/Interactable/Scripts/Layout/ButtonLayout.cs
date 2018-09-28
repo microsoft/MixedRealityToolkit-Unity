@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// Place an object in space relative to another object's scale
+    /// Good for responsive buttons that can stretch and object realign
+    /// </summary>
     [ExecuteInEditMode]
     public class ButtonLayout : MonoBehaviour
     {
@@ -56,16 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             if (Anchor != null)
             {
-#if UNITY_EDITOR
                 if ((Application.isPlaying && !OnlyInEditMode) || (!Application.isPlaying))
                 {
                     UpdatePosition();
                 }
-#else
-                UpdatePosition();
-#endif
-
-
             }
         }
     }

@@ -8,29 +8,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-    [System.Serializable]
-    public struct ThemePropertySettings
-    {
-        public string Name;
-        public Type Type;
-        public ThemeBase Theme;
-        public List<ThemeProperty> Properties;
-        public List<ThemeProperty> History;
-        public EaseSettings Easing;
-        public bool NoEasing;
-        public bool IsValid;
-    }
-
-    public struct ProfileSettings
-    {
-        public List<ThemeSettings> ThemeSettings;
-    }
-
-    public struct ThemeSettings
-    {
-        public List<ThemePropertySettings> Settings;
-    }
-
+    /// <summary>
+    /// Theme scriptableObject for loading theme settings
+    /// </summary>
+    
     [CreateAssetMenu(fileName = "Theme", menuName = "Interactable/Theme", order = 1)]
     public class Theme : ScriptableObject
     {

@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// list of Interactable states and basic comparison
+    /// </summary>
     public class InteractableStates : StateModel
     {
         public enum InteractableStateEnum {
@@ -61,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             /// <summary>
             /// There is a collision
             /// </summary>
-            Collition,
+            Collision,
             /// <summary>
             /// Custom placeholder for anything
             /// </summary>
@@ -82,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             new State(){ Index = 9, Name = "Toggled", ActiveIndex = -1, Bit = 0, Value = 0},
             new State(){ Index = 10, Name = "Gesture", ActiveIndex = -1, Bit = 0, Value = 0},
             new State(){ Index = 11, Name = "GestureMax", ActiveIndex = -1, Bit = 0, Value = 0},
-            new State(){ Index = 12, Name = "Collition", ActiveIndex = -1, Bit = 0, Value = 0},
+            new State(){ Index = 12, Name = "Collision", ActiveIndex = -1, Bit = 0, Value = 0},
             new State(){ Index = 13, Name = "Custom", ActiveIndex = -1, Bit = 0, Value = 0}
         };
 
@@ -111,6 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return GetState((int)state);
         }
 
+        // compares all the state values and returns a state based on bitwise comparison
         public override State CompareStates()
         {
             int bit = GetBit();
@@ -123,7 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 {
                     currentState = stateList[i];
                     break;
-                    //return currentState;
                 }
             }
 

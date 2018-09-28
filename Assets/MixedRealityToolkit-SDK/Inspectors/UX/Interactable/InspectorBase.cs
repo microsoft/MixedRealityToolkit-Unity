@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// A colleciton of helper functions to make consistent looking Inspectors easier
+    /// </summary>
+    
 #if UNITY_EDITOR
     public abstract class InspectorBase : Editor
     {
@@ -28,9 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         protected readonly static Color titleColor = new Color(0.5f, 0.5f, 0.5f);
         protected readonly static Color sectionColor = new Color(0.85f, 0.9f, 1f);
 
+        // default text sizes
         protected const int titleFontSize = 14;
         protected const int defaultFontSize = 10;
 
+        // special characters
         protected readonly static string minus = "\u2212";
         protected readonly static string plus = "\u002B";
         protected readonly static string astrisk = "\u2217";
@@ -44,9 +50,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         protected readonly static string emoji = "\u263A";
 
         protected static int indentOnSectionStart = 0;
-
         public const float DottedLineScreenSpace = 4.65f;
 
+        // button callbacks
         protected delegate void ListButtonEvent(int index);
         protected delegate void MultiListButtonEvent(int[] arr);
 
@@ -54,6 +60,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
         protected GUIStyle boxStyle;
 
+        /// <summary>
+        /// Box style with left margin
+        /// </summary>
+        /// <param name="margin"></param>
+        /// <returns></returns>
         public static GUIStyle Box(int margin)
         {
             GUIStyle box = new GUIStyle(GUI.skin.box);
@@ -61,6 +72,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return box;
         }
 
+        /// <summary>
+        /// A button who's width and based on the label's width
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="index"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
         protected virtual bool FlexButton(GUIContent label, int index, ListButtonEvent callback)
         {
             // delete button
@@ -82,6 +100,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
+        /// <summary>
+        /// A button who's width and based on the label's width
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="index"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
         protected virtual bool FlexButton(GUIContent label, int[] arr, MultiListButtonEvent callback)
         {
             // delete button
@@ -103,6 +128,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
+        /// <summary>
+        /// A button who's width stretches all the way across the negative space
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="index"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
         protected virtual bool FullWidthButton(GUIContent label, float padding, int index, ListButtonEvent callback)
         {
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
@@ -123,6 +155,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
+        /// <summary>
+        /// A button who's width stretches all the way across the negative space
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="index"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
         protected virtual bool FullWidthButton(GUIContent label, float padding, int[] arr, MultiListButtonEvent callback)
         {
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
@@ -143,6 +182,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
+        /// <summary>
+        /// A small button perfect for a single icon, like a minus or plus
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="index"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
         protected virtual bool SmallButton(GUIContent label, int index, ListButtonEvent callback)
         {
 
@@ -158,6 +204,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
+        /// <summary>
+        /// A small button perfect for a single icon, like a minus or plus
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="index"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
         protected virtual bool SmallButton(GUIContent label, int[] arr, MultiListButtonEvent callback)
         {
             GUIStyle smallButton = new GUIStyle(EditorStyles.miniButton);
@@ -172,6 +225,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
+        /// <summary>
+        /// Large title format
+        /// </summary>
+        /// <param name="title"></param>
         public static void DrawTitle(string title)
         {
             GUIStyle labelStyle = GetLableStyle(titleFontSize, titleColor);
@@ -179,6 +236,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             GUILayout.Space(titleFontSize * 0.5f);
         }
 
+        /// <summary>
+        /// Draw a basic lable
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="size"></param>
+        /// <param name="color"></param>
         public static void DrawLabel(string title, int size, Color color)
         {
             GUIStyle labelStyle = GetLableStyle(size, color);
@@ -186,6 +249,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             GUILayout.Space(titleFontSize * 0.5f);
         }
 
+        /// <summary>
+        /// Create a custom label style based on color and size
+        /// </summary>
+        /// <param name="size"></param>
+        /// <param name="color"></param>
+        /// <returns></returns>
         public static GUIStyle GetLableStyle(int size, Color color)
         {
             GUIStyle labelStyle = new GUIStyle(EditorStyles.boldLabel);
@@ -196,6 +265,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return labelStyle;
         }
 
+        /// <summary>
+        /// draw a label with a yellow coloring
+        /// </summary>
+        /// <param name="warning"></param>
         public static void DrawWarning(string warning)
         {
             Color prevColor = GUI.color;
@@ -208,6 +281,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             GUI.color = prevColor;
         }
 
+        /// <summary>
+        /// draw a notice area, normal coloring
+        /// </summary>
+        /// <param name="notice"></param>
         public static void DrawNotice(string notice)
         {
             Color prevColor = GUI.color;
@@ -220,6 +297,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             GUI.color = prevColor;
         }
 
+        /// <summary>
+        /// draw a notice with green coloring
+        /// </summary>
+        /// <param name="notice"></param>
         public static void DrawSuccess(string notice)
         {
             Color prevColor = GUI.color;
@@ -232,6 +313,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             GUI.color = prevColor;
         }
 
+        /// <summary>
+        /// draw a notice with red coloring
+        /// </summary>
+        /// <param name="error"></param>
         public static void DrawError(string error)
         {
             Color prevColor = GUI.color;
@@ -244,6 +329,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             GUI.color = prevColor;
         }
 
+        /// <summary>
+        /// Create a line across the negative space
+        /// </summary>
         public static void DrawDivider()
         {
             GUIStyle styleHR = new GUIStyle(GUI.skin.box);
@@ -295,7 +383,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             EditorGUI.indentLevel = indent;
         }
 
-        // move this to a base class and target the local settings
+        /// <summary>
+        /// adjust list settings as things change
+        /// </summary>
+        /// <param name="count"></param>
         protected void AdjustListSettings(int count)
         {
             if(listSettings == null)
@@ -325,6 +416,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
         
+        /// <summary>
+        /// Get an int value based on string comparisons
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="selection"></param>
+        /// <returns></returns>
         protected static int GetOptionsIndex(SerializedProperty options, string selection)
         {
             for (int i = 0; i < options.arraySize; i++)
@@ -338,6 +435,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return 0;
         }
         
+        /// <summary>
+        /// Create a string array from a serialized string array
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <returns></returns>
         public static string[] SerializedPropertyToOptions(SerializedProperty arr)
         {
             List<string> list = new List<string>();

@@ -8,14 +8,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// Uses Animator to control Interacable feedback based on state changes.
+    /// </summary>
     public class AnimatorTheme : ThemeBase
     {
-        // if no animator exist, show create button
-        // if noEasing, hide blends
-        // how to inject special inspector instructions?
-        // A way to load default values
-        // a way to create animator control
-
         private int lastIndex = 0;
 
         public AnimatorTheme()

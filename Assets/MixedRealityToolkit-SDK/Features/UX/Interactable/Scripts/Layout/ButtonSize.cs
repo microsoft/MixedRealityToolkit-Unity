@@ -31,14 +31,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         // Update is called once per frame
         void Update()
         {
-#if UNITY_EDITOR
             if ((Application.isPlaying && !OnlyInEditMode) || (!Application.isPlaying))
             {
                 UpdateSize();
             }
-#else
-                UpdateSize();
-#endif
         }
     }
 }

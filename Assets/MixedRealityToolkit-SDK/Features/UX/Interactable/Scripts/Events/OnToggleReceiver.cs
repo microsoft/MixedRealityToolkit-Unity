@@ -8,6 +8,9 @@ using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// a receiver that listens to toggle events
+    /// </summary>
     public class OnToggleReceiver : ReceiverBase
     {
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Deselect", Tooltip = "The toggle is deselected")]

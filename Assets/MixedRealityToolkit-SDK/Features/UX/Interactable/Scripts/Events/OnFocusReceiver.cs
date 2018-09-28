@@ -8,6 +8,9 @@ using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// A basic focus event receiver
+    /// </summary>
     public class OnFocusReceiver : ReceiverBase
     {
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Focus Off", Tooltip = "Focus has left the object")]

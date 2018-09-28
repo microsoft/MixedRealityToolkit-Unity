@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             Renderer[] list = host.GetComponentsInChildren<Renderer>();
             for (int i = 0; i < list.Length; i++)
             {
-                MaterialPropertyBlock block = GetMaterialPropertyBlock(list[i].gameObject, shaderProperties.ToArray());
+                MaterialPropertyBlock block = ThemeShaderUtils.GetMaterialPropertyBlock(list[i].gameObject, shaderProperties.ToArray());
                 BlocksAndRenderer bAndR = new BlocksAndRenderer();
                 bAndR.Renderer = list[i];
                 bAndR.Block = block;

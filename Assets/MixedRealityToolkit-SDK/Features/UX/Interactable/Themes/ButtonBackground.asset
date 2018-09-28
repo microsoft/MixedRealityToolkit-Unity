@@ -227,7 +227,7 @@ MonoBehaviour:
         Vector2: {x: 0, y: 0}
         Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+        Color: {r: 0.7058824, g: 0.7058824, b: 0.7058824, a: 1}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
@@ -257,7 +257,7 @@ MonoBehaviour:
         Vector2: {x: 0, y: 0}
         Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
+        Color: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
@@ -272,7 +272,7 @@ MonoBehaviour:
         Vector2: {x: 0, y: 0}
         Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
+        Color: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
@@ -641,6 +641,7 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 0
       LerpTime: 0.3
+    NoEasing: 0
     IsValid: 1
   CustomSettings: []
   States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}

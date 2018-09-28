@@ -8,6 +8,9 @@ using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// A basic receiver for detecting clicks
+    /// </summary>
     public class OnClickReceiver : ReceiverBase
     {
         [InspectorField(Type = InspectorField.FieldTypes.Float, Label = "Click Time", Tooltip = "The press and release should happen within this time")]

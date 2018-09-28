@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// A way to test button state feedback while in the editor
+    /// </summary>
+    
     public class InteractableFinger : MonoBehaviour
     {
         public Interactable Button;
@@ -45,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
             if (isClicked != Clicked)
             {
-                Button.OnInputPressed(null);
+                Button.OnPointerClicked(null);
                 Clicked = isClicked;
             }
         }

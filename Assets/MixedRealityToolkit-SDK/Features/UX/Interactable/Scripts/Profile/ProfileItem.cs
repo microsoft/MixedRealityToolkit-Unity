@@ -9,6 +9,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// The foundation of profiles that exist on an Interactable
+    /// Profiles pair themes with the objects they manipulate, based on state changes
+    /// </summary>
+    
     [System.Serializable]
     public class ProfileItem
     {
@@ -22,12 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public GameObject Target;
         public List<Theme> Themes;
         public bool HadDefaultTheme;
-
-        public void OnUpdate()
-        {
-
-        }
-
+        
+        /// <summary>
+        /// Get a list of themes
+        /// </summary>
+        /// <returns></returns>
         public static ThemeLists GetThemeTypes()
         {
             List<Type> themeTypes = new List<Type>();
@@ -65,9 +69,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return lists;
         }
 
+        /// <summary>
+        /// Get a new theme instance and load it with settings
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="host"></param>
+        /// <param name="lists"></param>
+        /// <returns></returns>
         public static ThemeBase GetTheme(ThemePropertySettings settings, GameObject host, ThemeLists lists)
         {
-            int index = InteractableEvent.ReverseLookup(settings.Name, lists.Names.ToArray());
+            int index = InspectorField.ReverseLookup(settings.Name, lists.Names.ToArray());
             Type themeType = lists.Types[index];
             ThemeBase theme = (ThemeBase)Activator.CreateInstance(themeType, host);
             theme.Init(host ,settings);

@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 }
             }
 
-            propertyBlock = GetMaterialPropertyBlock(host, shaderProperties.ToArray());
+            propertyBlock = ThemeShaderUtils.GetMaterialPropertyBlock(host, shaderProperties.ToArray());
         }
 
         public override void SetValue(ThemeProperty property, int index, float percentage)
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             if (host == null)
                 return 0;
 
-            MaterialPropertyBlock block = GetPropertyBlock(host);
+            MaterialPropertyBlock block = ThemeShaderUtils.GetPropertyBlock(host);
             return block.GetFloat(propId);
         }
 
@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             if (host == null)
                 return Color.white;
 
-            MaterialPropertyBlock block = GetPropertyBlock(host);
+            MaterialPropertyBlock block = ThemeShaderUtils.GetPropertyBlock(host);
             return block.GetVector(propId);
         }
 

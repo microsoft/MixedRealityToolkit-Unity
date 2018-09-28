@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// Scales the collider on one object relative to the transform's scale of another object
+    /// </summary>
     [ExecuteInEditMode]
     public class ButtonCollider : MonoBehaviour
     {
@@ -52,14 +55,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         // Update is called once per frame
         void Update()
         {
-#if UNITY_EDITOR
             if ((Application.isPlaying && !OnlyInEditMode) || (!Application.isPlaying))
             {
                 SetScale();
             }
-#else
-                SetScale();
-#endif
         }
     }
 }

@@ -8,6 +8,9 @@ using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// The base class for all receivers that attach to Interactables
+    /// </summary>
     public abstract class ReceiverBase
     {
         public string Name;

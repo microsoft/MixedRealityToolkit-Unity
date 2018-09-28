@@ -17,7 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         protected States instance;
         protected SerializedProperty stateList;
 
+        // list of InteractableStates
         protected Type[] stateTypes;
+
+        // list of State names
         protected string[] stateOptions;
         
         protected virtual void OnEnable()
@@ -37,13 +40,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             DrawTitle("States");
             DrawNotice("Manage state configurations to drive Interactables or Tansitions");
 
-            // get the list of options
-            stateOptions = instance.StateOptions;// SerializedPropertyToOptions(options);
-
-            stateTypes = instance.StateTypes;// serializedObject.FindProperty("StateTypes");
+            // get the list of options and InteractableStates
+            stateOptions = instance.StateOptions;
+            stateTypes = instance.StateTypes;
             
             SerializedProperty stateLogicName = serializedObject.FindProperty("StateLogicName");
-
             int option = States.ReverseLookup(stateLogicName.stringValue, stateOptions);
 
             int newLogic = EditorGUILayout.Popup("State Model", option, stateOptions);
@@ -77,23 +78,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 string[] stateEnums = GetStateOptions();
                 int enumIndex = States.ReverseLookup(name.stringValue, stateEnums);
 
-                int newEnumIndex = EditorGUILayout.Popup("State: " + name.stringValue, enumIndex, stateEnums);
+                int newEnumIndex = EditorGUILayout.Popup(name.stringValue + " (" + bitCount + ")", enumIndex, stateEnums);
                 if (enumIndex != newEnumIndex)
                 {
                     name.stringValue = stateEnums[newEnumIndex];
                 }
 
-                //name.stringValue = EditorGUILayout.TextField(new GUIContent("Name", "Display name for the state"), name.stringValue);
                 SmallButton(new GUIContent(minus, "Remove State"), i, RemoveState);
-
-                /*
-                if (GUILayout.Button(new GUIContent(minus, "Remove State"), smallButton, GUILayout.Width(minusButtonWidth)))
-                {
-                    RemoveState(i);
-                }*/
+                
                 EditorGUILayout.EndHorizontal();
 
-                bit.intValue = bitCount;// EditorGUILayout.IntField(new GUIContent("Bit", "Bitwise value of the state, used for comparing state combinations"), bit.intValue);
+                // assign the bitcount based on location in the list
+                bit.intValue = bitCount;
                 
                 EditorGUILayout.EndVertical();
             }
@@ -103,16 +99,28 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             serializedObject.ApplyModifiedProperties();
         }
 
+        /// <summary>
+        /// Add a state to the list
+        /// </summary>
+        /// <param name="index"></param>
         protected void AddState(int index)
         {
             stateList.InsertArrayElementAtIndex(stateList.arraySize);
         }
 
+        /// <summary>
+        /// Remove a state from the list
+        /// </summary>
+        /// <param name="index"></param>
         protected void RemoveState(int index)
         {
             stateList.DeleteArrayElementAtIndex(index);
         }
 
+        /// <summary>
+        /// Get a list of state names
+        /// </summary>
+        /// <returns></returns>
         protected string[] GetStateOptions()
         {
             return Enum.GetNames(typeof(InteractableStates.InteractableStateEnum));

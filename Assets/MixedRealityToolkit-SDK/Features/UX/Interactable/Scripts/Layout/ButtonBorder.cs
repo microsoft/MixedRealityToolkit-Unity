@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// Use a Cube 3D object as a border segment relative to the scale of the AnchorTransform
+    /// </summary>
     [ExecuteInEditMode]
     public class ButtonBorder : MonoBehaviour
     {
@@ -67,14 +70,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         // Update is called once per frame
         void Update()
         {
-#if UNITY_EDITOR
             if ((Application.isPlaying && !OnlyInEditMode) || (!Application.isPlaying))
             {
                 UpdateSize();
             }
-#else
-                UpdateSize();
-#endif
         }
     }
 }

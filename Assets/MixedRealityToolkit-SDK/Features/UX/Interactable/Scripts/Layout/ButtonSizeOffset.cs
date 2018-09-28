@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// Scales an object relative the scale of the AnchorTransform
+    /// </summary>
     [ExecuteInEditMode]
     public class ButtonSizeOffset : MonoBehaviour
     {
@@ -40,14 +43,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             if (AnchorTransform != null)
             {
-#if UNITY_EDITOR
                 if ((Application.isPlaying && !OnlyInEditMode) || (!Application.isPlaying))
                 {
                     UpdateSize();
                 }
-#else
-                UpdateSize();
-#endif
             }
         }
     }

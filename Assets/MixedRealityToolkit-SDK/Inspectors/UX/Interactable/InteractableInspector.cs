@@ -55,6 +55,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             enabled = true;
         }
         
+        protected virtual void RenderBaseInspector()
+        {
+            base.OnInspectorGUI();
+        }
+
+        public override void OnInspectorGUI()
+        {
+            //RenderBaseInspector()
+            RenderCustomInspector();
+        }
+
         public virtual void RenderCustomInspector()
         {
             // TODO: extend the preference array to handle multiple themes open and scroll values!!!
@@ -88,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             SerializedProperty states = serializedObject.FindProperty("States");
             if (states.objectReferenceValue != null)
             {
-                string statesPrefKey = target.name + "Settings_States";
+                string statesPrefKey = "Settings_States";
                 bool prefsShowStates = EditorPrefs.GetBool(statesPrefKey);
                 EditorGUI.indentLevel = indentOnSectionStart + 1;
                 showStates = DrawSectionStart(states.objectReferenceValue.name + " (Click to edit)", indentOnSectionStart + 2, prefsShowStates, FontStyle.Normal, false);
@@ -282,8 +293,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                                     }
                                 }
                             }
-
-                            Debug.Log("Adding themes: " + j + " / " + dimensions.intValue);
                         }
                     }
 
@@ -312,7 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                             hadDefault.boolValue = true;
                             EditorGUI.indentLevel = indentOnSectionStart + 2;
 
-                            string prefKey = target.name + "Profiles" + i + "_Theme" + t + "_Edit";
+                            string prefKey = themeItem.objectReferenceValue.name + "Profiles" + i + "_Theme" + t + "_Edit";
                             bool showSettings = EditorPrefs.GetBool(prefKey);
 
                             ListSettings settings = listSettings[i];
@@ -450,7 +459,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
 
             ProfilesSetup = validProfileCnt == profileList.arraySize + themeCnt;
-
+            
             DrawSectionEnd(indentOnSectionStart);
             EditorGUILayout.Space();
             DrawDivider();
@@ -484,17 +493,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         protected virtual State[] GetStates()
         {
             return instance.GetStates();
-        }
-
-        protected virtual void RenderBaseInspector()
-        {
-            base.OnInspectorGUI();
-        }
-
-        public override void OnInspectorGUI()
-        {
-            //RenderBaseInspector()
-            RenderCustomInspector();
         }
 
         protected string[] GetEventList()
@@ -1361,10 +1359,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                         AssetDatabase.AddObjectToAsset(clip, controller);
                         AnimatorState newState = controller.AddMotion(clip);
                         
-                        //AnimatorState newState = stateMachine.AddState(name);
                         AnimatorStateTransition transition = stateMachine.AddAnyStateTransition(newState);
                         transition.AddCondition(AnimatorConditionMode.If, 0, name);
-                        transition.duration = 1;
+                        transition.duration = 0.25f;
                     }
 
                     Animator animator = host.AddComponent<Animator>();
@@ -1498,7 +1495,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             GUILayout.Space(5);
         }
 
-        protected static void PropertySettingsList(SerializedProperty settings, List<InteractableEvent.FieldData> data)
+        protected static void PropertySettingsList(SerializedProperty settings, List<FieldData> data)
         {
             settings.ClearArray();
 
@@ -1835,7 +1832,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             List<ShaderProperties> properties = new List<ShaderProperties>();
             if (renderer != null)
             {
-                Material material = ThemeBase.GetValidMaterial(renderer);
+                Material material = ThemeShaderUtils.GetValidMaterial(renderer);
                 info.Name = material.shader.name;
 
                 if (material != null)

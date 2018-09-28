@@ -8,6 +8,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
+    /// <summary>
+    /// State data model, state management and comparison instrucitons
+    /// </summary>
+    
     /*
      * Have an enum with all the button states -
      * Create a list using the enums as the state type -
@@ -18,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
      * The other states can be checked anytime through the Interactive.
      * 
      */ 
+
     [System.Serializable]
     public class State
     {
