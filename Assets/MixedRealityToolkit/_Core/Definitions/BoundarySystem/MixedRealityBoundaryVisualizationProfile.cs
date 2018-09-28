@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
     /// Configuration profile settings for setting up boundary visualizations.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Boundary Visualization Profile", fileName = "MixedRealityBoundaryVisualizationProfile", order = (int)CreateProfileMenuItemIndices.BoundaryVisualization)]
-    public class MixedRealityBoundaryVisualizationProfile : ScriptableObject
+    public class MixedRealityBoundaryVisualizationProfile : BaseMixedRealityProfile
     {
         [SerializeField]
         [Tooltip("The approximate height of the play space, in meters.")]

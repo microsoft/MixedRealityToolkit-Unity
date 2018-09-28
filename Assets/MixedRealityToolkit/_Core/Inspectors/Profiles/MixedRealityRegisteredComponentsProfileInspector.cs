@@ -44,6 +44,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Registered Components Profile", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("This profile defines any additional systems, features, and managers to register with the Mixed Reality Manager.", MessageType.Info);
+
+            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
+            {
+                GUI.enabled = false;
+            }
+
             serializedObject.Update();
             RenderList(configurations);
             serializedObject.ApplyModifiedProperties();
