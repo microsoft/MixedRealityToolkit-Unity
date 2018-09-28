@@ -932,7 +932,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 }
 
                 // check to see if an animatorControll exists
-                if (animatorCount > 0)
+                if (animatorCount > 0 && gameObject != null)
                 {
                     GameObject host = gameObject.objectReferenceValue as GameObject;
                     Animator animator = host?.GetComponent<Animator>();
