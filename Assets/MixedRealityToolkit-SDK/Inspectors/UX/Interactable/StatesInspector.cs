@@ -99,20 +99,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             serializedObject.ApplyModifiedProperties();
         }
 
-        /// <summary>
-        /// Add a state to the list
-        /// </summary>
-        /// <param name="index"></param>
-        protected void AddState(int index)
+        protected void AddState(int index, SerializedProperty prop = null)
         {
             stateList.InsertArrayElementAtIndex(stateList.arraySize);
         }
 
-        /// <summary>
-        /// Remove a state from the list
-        /// </summary>
-        /// <param name="index"></param>
-        protected void RemoveState(int index)
+        protected void RemoveState(int index, SerializedProperty prop = null)
         {
             stateList.DeleteArrayElementAtIndex(index);
         }
