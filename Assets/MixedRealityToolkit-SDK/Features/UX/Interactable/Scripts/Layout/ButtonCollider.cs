@@ -15,15 +15,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     {
 
         [Tooltip("the object to copy the scale from")]
-        public Transform CopyFrom;
+        [SerializeField]
+        private Transform CopyFrom;
 
         [Tooltip("the percentage amounts to offset the scale")]
-        public Vector3 ScaleFactor = Vector3.one;
+        [SerializeField]
+        private Vector3 ScaleFactor = Vector3.one;
 
-        public Vector3 Expand = Vector3.zero;
+        [Tooltip("the amount to add to the source transform's scale")]
+        [SerializeField]
+        private Vector3 Expand = Vector3.zero;
 
         [Tooltip("should this only run in Edit mode, to avoid updating as items move?")]
-        public bool OnlyInEditMode;
+        [SerializeField]
+        private bool OnlyInEditMode;
 
         private Collider copyTo;
 
@@ -53,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if ((Application.isPlaying && !OnlyInEditMode) || (!Application.isPlaying))
             {
