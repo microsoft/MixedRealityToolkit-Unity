@@ -1,0 +1,29 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
+{
+    public interface IMixedRealitySpatialAwarenessObserver : IMixedRealityComponent
+    {
+        /// <summary>
+        /// Is the observer running (actively accumulating spatial data)?
+        /// </summary>
+        bool IsRunning { get; }
+
+        /// <summary>
+        /// Start the observer.
+        /// </summary>
+        void StartObserving();
+
+        /// <summary>
+        /// Stop the observer.
+        /// </summary>
+        void StopObserving();
+    }
+}

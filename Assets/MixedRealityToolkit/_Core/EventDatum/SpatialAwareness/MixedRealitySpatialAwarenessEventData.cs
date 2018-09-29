@@ -10,9 +10,9 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
 {
     /// <summary>
-    /// The base data for spatial awareness events.
+    /// Data for spatial awareness events.
     /// </summary>
-    public class MixedRealitySpatialAwarenessBaseEventData : GenericBaseEventData
+    public class MixedRealitySpatialAwarenessEventData : GenericBaseEventData
     {
         /// <summary>
         /// Identifier of the object associated with this event.
@@ -33,6 +33,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         public SpatialAwarenessEventType EventType { get; private set; }
 
         /// <summary>
+        /// The type of data to which the event is associated.
+        /// </summary>
+        public SpatialAwarenessDataType DataType { get; private set; }
+
+        /// <summary>
         /// <see cref="GameObject"/>, managed by the spatial awareness system, representing the data in this event.
         /// </summary>
         public GameObject GameObject { get; private set; }
@@ -41,19 +46,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// Constructor.
         /// </summary>
         /// <param name="eventSystem"></param>
-        protected MixedRealitySpatialAwarenessBaseEventData(EventSystem eventSystem) : base(eventSystem) { }
+        public MixedRealitySpatialAwarenessEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <inheritdoc />
-        protected void Initialize(
+        public void Initialize(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             uint id,
             SpatialAwarenessEventType eventType,
+            SpatialAwarenessDataType dataType,
             GameObject gameObject)
         {
             base.BaseInitialize(spatialAwarenessSystem);
             Id = id;
             EventTime = DateTime.Now;
             EventType = eventType;
+            DataType = dataType;
             GameObject = gameObject;
         }
     }

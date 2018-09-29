@@ -6,15 +6,15 @@
 
 <img src="Images/IMixedRealitySpatialAwarenessSurfaceFindingHandler.png">
 
-## OnSurfaceAdded([MixedRealitySpatialSurfaceEventData](./MixedRealitySpatialSurfaceEventData.md) eventData)
+## OnSurfaceAdded([MixedRealitySpatialAwarenessEventData](./MixedRealitySpatialAwarenessEventData.md) eventData)
 
 Called when a new planar surface has been identified by the spatial awareness system.
 
-## OnSurfaceUpdated([MixedRealitySpatialSurfaceEventData](./MixedRealitySpatialSurfaceEventData.md) eventData)
+## OnSurfaceUpdated([MixedRealitySpatialAwarenessEventData](./MixedRealitySpatialAwarenessEventData.md) eventData)
 
 Called when an existing planar surface has been modified by the spatial awareness system.
 
-## OnSurfaceDeleted([MixedRealitySpatialSurfaceEventData](./MixedRealitySpatialSurfaceEventData.md) eventDatawhat do )
+## OnSurfaceDeleted([MixedRealitySpatialAwarenessEventData](./MixedRealitySpatialAwarenessEventData.md) eventDatawhat do )
 
 Called when an existing planar surface has been discarded by the spatial awareness system.
 
