@@ -120,6 +120,10 @@ protected string MyProperty;
 private string myProperty;
  ```
 
+## Interface Naming Conventions
+
+Follow naming [naming conventions](#naming-conventions) with the exception that interfaces should start with `IMixedReality` if they are a public contract.
+
 ## Access Modifiers
 
 Always declare an access modifier for all fields, properties and methods.
@@ -239,6 +243,26 @@ public class MyClass
     private MyEnumType myEnumReference;
 }
  ```
+
+## Public Interface Definitions Should Avoid Concrete Types Where Possible.
+
+Interfaces are designed to provide a public contract devoid of implementation. Where possible, avoid assuming a non-primitive type. 
+
+### Don't:
+```
+public interface IMixedRealityFoo
+{
+    Dictionary<string, object> Objects { get; }
+}
+```
+
+### Do:
+```
+public interface IMixedRealityFoo
+{
+    IDictionary<string, object> Objects { get; }
+}
+```
 
 ## Initilize Enums.
 
