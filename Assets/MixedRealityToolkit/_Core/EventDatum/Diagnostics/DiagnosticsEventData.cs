@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics
         public DiagnosticsEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         public void Initialize(
-            IMixedRealityDiagnosticsManager diagnosticsSystem,
+            IMixedRealityDiagnosticsSystem diagnosticsSystem,
             bool visible,
             bool showCpu,
             bool showFps,
