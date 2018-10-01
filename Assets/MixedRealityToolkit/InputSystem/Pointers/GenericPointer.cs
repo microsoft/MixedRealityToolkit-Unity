@@ -25,14 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         /// <param name="inputSourceParent"></param>
         public GenericPointer(string pointerName, IMixedRealityInputSource inputSourceParent)
         {
-            InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
-            PointerId = InputSystem.FocusProvider.GenerateNewPointerId();
+            PointerId = MixedRealityManager.InputSystem.FocusProvider.GenerateNewPointerId();
             PointerName = pointerName;
             this.inputSourceParent = inputSourceParent;
         }
-
-        /// <inheritdoc />
-        public IMixedRealityInputSystem InputSystem { get; }
 
         /// <inheritdoc />
         public virtual IMixedRealityController Controller

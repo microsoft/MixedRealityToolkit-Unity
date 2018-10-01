@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Managers;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,9 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
     [RequireComponent(typeof(Collider))]
     public abstract class BaseFocusHandler : MonoBehaviour, IMixedRealityFocusHandler
     {
-        private static IMixedRealityInputSystem inputSystem = null;
-        protected static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>());
-
         [SerializeField]
         [Tooltip("Is focus enabled for this component?")]
         private bool focusEnabled = true;

@@ -54,23 +54,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];
 
         /// <summary>
-        /// The current Input System, if any.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
-                {
-                    inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
-                }
-
-                return inputSystem;
-            }
-        }
-        private IMixedRealityInputSystem inputSystem;
-
-        /// <summary>
         /// Request an array of pointers for the controller type.
         /// </summary>
         /// <param name="controllerType">The controller type making the request for pointers.</param>

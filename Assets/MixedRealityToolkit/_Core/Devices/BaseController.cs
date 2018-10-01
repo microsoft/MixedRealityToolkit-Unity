@@ -53,24 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
         /// </summary>
         public virtual MixedRealityInteractionMapping[] DefaultRightHandedInteractions { get; } = null;
 
-        /// <summary>
-        /// Returns the current Input System if enabled, otherwise null.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null && MixedRealityManager.Instance.ActiveProfile.IsInputSystemEnabled)
-                {
-                    inputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
-                }
-
-                return inputSystem;
-            }
-        }
-
-        private IMixedRealityInputSystem inputSystem;
-
         #region IMixedRealityController Implementation
 
         /// <inheritdoc />
