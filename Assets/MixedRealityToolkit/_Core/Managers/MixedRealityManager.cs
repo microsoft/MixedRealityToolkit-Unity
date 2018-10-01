@@ -1038,6 +1038,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// </summary>
         public static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = Instance.GetManager<IMixedRealityTeleportSystem>());
 
+        private static IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
+
+        /// <summary>
+        /// The current Spatial Awareness System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = Instance.GetManager<IMixedRealitySpatialAwarenessSystem>());
+
         private static IMixedRealityDiagnosticsManager diagnosticsSystem = null;
 
         /// <summary>

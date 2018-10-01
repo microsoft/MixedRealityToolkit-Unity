@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// <summary>
         /// Identifier of the object associated with this event.
         /// </summary>
-        public uint Id { get; private set; }
+        public int Id { get; private set; }
 
         /// <summary>
         /// The time at which the event occurred.
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem
         /// <inheritdoc />
         public void Initialize(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
-            uint id,
+            int id,
             SpatialAwarenessEventType eventType,
             SpatialAwarenessDataType dataType,
             GameObject gameObject)

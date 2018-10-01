@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
     /// Configuration profile settings for setting up the spatial awareness system.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Spatial Awareness Profile", fileName = "MixedRealitySpatialAwarenessProfile", order = (int)CreateProfileMenuItemIndices.SpatialAwareness)]
-    public class MixedRealitySpatialAwarenessProfile : ScriptableObject
+    public class MixedRealitySpatialAwarenessProfile : BaseMixedRealityProfile
     {
         #region General settings
 

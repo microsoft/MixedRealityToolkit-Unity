@@ -16,7 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 {
     public class WindowsMixedRealitySpatialObserver : IMixedRealitySpatialAwarenessObserver
     {
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -112,14 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 
-#if UNITY_WSA
-        /// <summary>
-        /// A queue of <see cref="SurfaceData"/> objects. These objects are sent to the
-        /// SurfaceObserver to generate meshes of the environment.
-        /// </summary>
-        private Queue<SurfaceData> meshWorkQueue = new Queue<SurfaceData>();
-#endif // UNITY_WSA
-
         /// <summary>
         /// A queue of clean mesh GameObjects ready to be reused.
         /// </summary>
@@ -140,15 +131,40 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         private bool meshWorkOutstanding = false;
 
         /// <summary>
-        /// Collection of mesh <see cref="GameObject"/>s observed.
+        /// Collection of mesh <see cref="GameObject"/>s to be baked.
         /// </summary>
-        Dictionary<int, GameObject> meshes = new Dictionary<int, GameObject>();
+        private Dictionary<int, GameObject> meshesToBake = new Dictionary<int, GameObject>();
+
+        /// <summary>
+        /// Identifies the meshes, by id, that are being baked by Unity and if it has been added (true) or is being updated (false). 
+        /// </summary>
+        private Dictionary<int, bool> meshAddUpdateStatus = new Dictionary<int, bool>();
+
+        /// <summary>
+        /// Collection of mesh <see cref="GameObject"/>s that can be used in a scene.
+        /// </summary>
+        private Dictionary<int, GameObject> meshes = new Dictionary<int, GameObject>();
+
+        public IDictionary<int, GameObject> Meshes
+        {
+            get
+            {
+                // We return a copy of the meshes collection to preserve the integrity of our internal dictionary.
+                return new Dictionary<int, GameObject>(meshes);
+            }
+        }
 
 #if UNITY_WSA
         /// <summary>
         /// The surface observer providing the spatial data.
         /// </summary>
         private SurfaceObserver observer = null;
+
+        /// <summary>
+        /// A queue of <see cref="SurfaceData"/> objects. These objects are sent to the
+        /// SurfaceObserver to generate meshes of the environment.
+        /// </summary>
+        private Queue<SurfaceData> meshWorkQueue = new Queue<SurfaceData>();
 #endif // UNITY_WSA
 
         /// <summary>
@@ -319,13 +335,44 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             }
 
             GameObject mesh = null;
-            if (meshes.TryGetValue(cookedData.id.handle, out mesh))
+            if (meshesToBake.TryGetValue(cookedData.id.handle, out mesh))
             {
+                // Set the appropriate material on the mesh.
+                SpatialMeshDisplayOptions displayOption = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshDisplayOption;
+                if (displayOption != SpatialMeshDisplayOptions.None)
+                {
+                    Renderer renderer = mesh.GetComponent<Renderer>();
+
+                    if (renderer != null)
+                    {
+                        renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible) ?
+                            MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshMaterial :
+                            MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshOcclusionMaterial;
+                    }
+                }
+
+                // Recalculate the normals, as appropriate.
                 if (MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshRecalculateNormals)
                 {
                     MeshFilter filter = mesh.GetComponent<MeshFilter>();
-                    filter?.sharedMesh?.RecalculateNormals();
+                    filter?.sharedMesh.RecalculateNormals();
                 }
+            }
+
+            // Inform the spatial awareness system of the mesh.
+            bool isNewMesh = false;
+            if (meshAddUpdateStatus.TryGetValue(cookedData.id.handle, out isNewMesh))
+            {
+                if (isNewMesh)
+                {
+                    MixedRealityManager.SpatialAwarenessSystem.RaiseMeshAdded(cookedData.id.handle, mesh);
+                }
+                else
+                {
+                    MixedRealityManager.SpatialAwarenessSystem.RaiseMeshUpdated(cookedData.id.handle, mesh);
+                }
+
+                meshAddUpdateStatus.Remove(cookedData.id.handle);
             }
 
             meshWorkOutstanding = false;
@@ -352,17 +399,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 case SurfaceChange.Added:
                 case SurfaceChange.Updated:
                     // NOTE: Notification to the spatial awareness system is deferred until baking is complete.
-                    if (meshes.TryGetValue(id.handle, out mesh))
+                    if (meshesToBake.TryGetValue(id.handle, out mesh))
                     {
                         meshesPendingCleanup.Add(id.handle, mesh);
-                        meshes.Remove(id.handle);
+                        meshesToBake.Remove(id.handle);
                     }
 
                     // Get an available mesh GameObject ready to be used
                     mesh = GetMeshObject(id.handle);
 
                     // Add the mesh to our dictionary of known meshes so we can interact with it later.
-                    meshes.Add(id.handle, mesh);
+                    meshesToBake.Add(id.handle, mesh);
+
+                    // Add the mesh ID to the in bake collection so that we can tell the spatial awarenesss
+                    // system to send the correct event (added or updated) once baking is complete.
+                    meshAddUpdateStatus.Add(id.handle, (changeType == SurfaceChange.Added));
 
                     // Add the request to create the mesh to our work queue.
                     QueueMeshDataRequest(id, mesh);
@@ -370,33 +421,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
                 case SurfaceChange.Removed:
                     // If the mesh is tracked, remove it and inform the spatial awareness system immediately.
-                    if (meshes.TryGetValue(id.handle, out mesh))
+                    if (meshesToBake.TryGetValue(id.handle, out mesh))
                     {
-                        meshes.Remove(id.handle);
-                        // todo: use "cached" spatial system and call the RemoveMesh method
+                        MixedRealityManager.SpatialAwarenessSystem.RaiseMeshRemoved(id.handle);
+                        meshesToBake.Remove(id.handle);
                     }
                     break;
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="meshId"></param>
-        /// <param name=""></param>
-        void ConfigureMeshObject(int meshId, GameObject mesh)
-        {
-            // todo: MeshFil
-            mesh.AddComponent<WorldAnchor>();
-
-        }
 #endif // UNITY_WSA
 
         /// <summary>
-        /// 
+        /// Gets a configured spatial mesh object.
         /// </summary>
-        /// <param name="meshId"></param>
-        /// <returns></returns>
+        /// <param name="meshId">The id of the mesh.</param>
+        /// <returns>A <see cref="GameObject"/> representing the mesh.</returns>
         private GameObject GetMeshObject(int meshId)
         {
             GameObject mesh = null;
@@ -417,9 +456,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         }
 
         /// <summary>
-        /// 
+        /// Cleans up a <see cref="GameObject"/> representing a spatial mesh.
         /// </summary>
-        /// <param name="mesh"></param>
+        /// <param name="mesh">The mesh object</param>
         private void CleanupMeshObject(GameObject mesh)
         {
             if (mesh == null)
@@ -436,10 +475,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         }
 
         /// <summary>
-        /// 
+        /// Destroys the specified mesh objects.
         /// </summary>
-        /// <param name="visualMesh"></param>
-        /// <param name="colliderMesh"></param>
+        /// <param name="visualMesh">The visible mesh.</param>
+        /// <param name="colliderMesh">The mesh used for collision detection.</param>
         private void CleanupMeshes(Mesh visualMesh, Mesh colliderMesh)
         {
             if (colliderMesh != null && colliderMesh != visualMesh)

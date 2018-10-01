@@ -24,6 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// A spatial awareness subsystem is reporting that an existing spatial
         /// element has been discarded.
         /// </summary>
-        Deleted
+        Removed
     }
 }

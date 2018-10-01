@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
@@ -107,6 +108,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.HelpBox("Spatial Awareness can enhance your experience by enabling objects to interact with the real world.", MessageType.Info);
             EditorGUILayout.Space();
             serializedObject.Update();
+
+            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
+            {
+                GUI.enabled = false;
+            }
 
             EditorGUILayout.LabelField("General Settings:", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(startupBehavior);

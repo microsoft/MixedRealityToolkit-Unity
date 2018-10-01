@@ -109,6 +109,39 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// </summary>
         IDictionary<int, GameObject> MeshObjects { get; }
 
+        #region Mesh Events
+
+        /// <summary>
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshAdded"/> method to indicate a mesh has been added.
+        /// </summary>
+        /// <param name="meshId">Value identifying the mesh.</param>
+        /// <param name="meshObject">The mesh <see cref="GameObject"/>.</param>
+        /// <remarks>
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// </remarks>
+        void RaiseMeshAdded(int meshId, GameObject meshObject);
+
+        /// <summary>
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate an existing mesh has been updated.
+        /// </summary>
+        /// <param name="meshId">Value identifying the mesh.</param>
+        /// <param name="meshObject">The mesh <see cref="GameObject"/>.</param>
+        /// <remarks>
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// </remarks>
+        void RaiseMeshUpdated(int meshId, GameObject meshObject);
+
+        /// <summary>
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessMeshHandler.OnMeshUpdated"/> method to indicate an exising mesh has been removed.
+        /// </summary>
+        /// <param name="meshId">Value identifying the mesh.</param>
+        /// <remarks>
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// </remarks>
+        void RaiseMeshRemoved(int meshId);
+
+        #endregion MeshEvents
+
         #endregion Mesh Handling
 
         #region Surface Finding Handling
