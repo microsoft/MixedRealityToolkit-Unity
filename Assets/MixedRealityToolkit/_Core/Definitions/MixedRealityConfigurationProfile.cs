@@ -217,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions
 
         [SerializeField]
         [Tooltip("Diagnostics System Class to instantiate at runtime.")]
-        [Implements(typeof(IMixedRealityDiagnosticsManager), TypeGrouping.ByNamespaceFlat)]
+        [Implements(typeof(IMixedRealityDiagnosticsSystem), TypeGrouping.ByNamespaceFlat)]
         private SystemType diagnosticsSystemType;
 
         /// <summary>

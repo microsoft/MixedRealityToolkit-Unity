@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
-    public class MixedRealityDiagnosticsManager : MixedRealityEventManager, IMixedRealityDiagnosticsManager
+    public class MixedRealityDiagnosticsManager : MixedRealityEventManager, IMixedRealityDiagnosticsSystem
     {
         #region IMixedRealityManager
         private DiagnosticsEventData eventData;
