@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Diagnostic Visualization Options", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Diagnostic vidualizations can help monitor system resources and performance inside an application.", MessageType.Info);
+            EditorGUILayout.HelpBox("Diagnostic visualizations can help monitor system resources and performance inside an application.", MessageType.Info);
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(visible);
