@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.Teleport;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
 using System;
@@ -277,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     {
                         teleportEnabled = true;
 
-                        TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
+                        MixedRealityManager.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
                     }
                     else if (canMove)
                     {
@@ -343,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                     if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                         TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                     {
-                        TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
+                        MixedRealityManager.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
                     }
                 }
 
@@ -351,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     canTeleport = false;
                     teleportEnabled = false;
-                    TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+                    MixedRealityManager.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
                 }
             }
 

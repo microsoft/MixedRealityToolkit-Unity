@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
@@ -175,18 +176,44 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 #endif
 
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
+
+                if (InputSystem == null)
+                {
+                    Debug.LogError("Failed to start the Input System!");
+                }
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
                 AddManager(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem);
+
+                if (BoundarySystem == null)
+                {
+                    Debug.LogError("Failed to start the Boundary System!");
+                }
             }
+
 
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
                 AddManager(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
+
+                if (TeleportSystem == null)
+                {
+                    Debug.LogError("Failed to start the Teleport System!");
+                }
+            }
+
+            if (ActiveProfile.IsDiagnosticsSystemEnabled)
+            {
+                AddManager(typeof(IMixedRealityDiagnosticsSystem), Activator.CreateInstance(ActiveProfile.DiagnosticsSystemSystemType) as IMixedRealityDiagnosticsSystem);
+
+                if (DiagnosticsSystem == null)
+                {
+                    Debug.LogError("Failed to start the Diagnostics System!");
+                }
             }
 
             if (ActiveProfile.RegisteredComponentsProfile != null)
@@ -886,7 +913,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             return type == typeof(IMixedRealityInputSystem) ||
                    type == typeof(IMixedRealityTeleportSystem) ||
-                   type == typeof(IMixedRealityBoundarySystem);
+                   type == typeof(IMixedRealityBoundarySystem) ||
+                   type == typeof(IMixedRealityDiagnosticsSystem);
         }
 
         /// <summary>
@@ -979,5 +1007,37 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         #endregion Manager Utilities
 
         #endregion Manager Container Management
+
+        #region Manager Accessors
+
+        private static IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The current Input System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = Instance.GetManager<IMixedRealityInputSystem>());
+
+        private static IMixedRealityBoundarySystem boundarySystem = null;
+
+        /// <summary>
+        /// The current Boundary System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityBoundarySystem BoundarySystem => boundarySystem ?? (boundarySystem = Instance.GetManager<IMixedRealityBoundarySystem>());
+
+        private static IMixedRealityTeleportSystem teleportSystem = null;
+
+        /// <summary>
+        /// The current Teleport System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = Instance.GetManager<IMixedRealityTeleportSystem>());
+
+        private static IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
+
+        /// <summary>
+        /// The current Diagnostics System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityDiagnosticsSystem DiagnosticsSystem => diagnosticsSystem ?? (diagnosticsSystem = Instance.GetManager<IMixedRealityDiagnosticsSystem>());
+
+        #endregion Manager Accessors
     }
 }

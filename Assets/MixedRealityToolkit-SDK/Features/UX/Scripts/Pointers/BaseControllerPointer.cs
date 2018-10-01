@@ -24,9 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
     [DisallowMultipleComponent]
     public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer, IMixedRealityTeleportHandler
     {
-        private static IMixedRealityTeleportSystem teleportSystem = null;
-        protected static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = MixedRealityManager.Instance.GetManager<IMixedRealityTeleportSystem>());
-
         [SerializeField]
         private GameObject cursorPrefab = null;
 
@@ -130,9 +127,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         {
             base.OnEnable();
 
-            if (MixedRealityManager.IsInitialized && TeleportSystem != null && !lateRegisterTeleport)
+            if (MixedRealityManager.IsInitialized && MixedRealityManager.TeleportSystem != null && !lateRegisterTeleport)
             {
-                TeleportSystem.Register(gameObject);
+                MixedRealityManager.TeleportSystem.Register(gameObject);
             }
         }
 
@@ -142,9 +139,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             if (lateRegisterTeleport)
             {
-                await new WaitUntil(() => TeleportSystem != null);
+                await new WaitUntil(() => MixedRealityManager.TeleportSystem != null);
                 lateRegisterTeleport = false;
-                TeleportSystem.Register(gameObject);
+                MixedRealityManager.TeleportSystem.Register(gameObject);
             }
 
             await WaitUntilInputSystemValid;
@@ -154,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         protected override void OnDisable()
         {
             base.OnDisable();
-            TeleportSystem?.Unregister(gameObject);
+            MixedRealityManager.TeleportSystem?.Unregister(gameObject);
 
             IsHoldPressed = false;
             IsSelectPressed = false;
@@ -165,8 +162,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         #endregion  MonoBehaviour Implementation
 
         #region IMixedRealityPointer Implementation
-
-        IMixedRealityInputSystem IMixedRealityPointer.InputSystem => InputSystem;
 
         /// <inheritdoc />
         public override IMixedRealityController Controller
@@ -188,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             {
                 if (pointerId == 0)
                 {
-                    pointerId = InputSystem.FocusProvider.GenerateNewPointerId();
+                    pointerId = MixedRealityManager.InputSystem.FocusProvider.GenerateNewPointerId();
                 }
 
                 return pointerId;
@@ -250,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         /// <inheritdoc />
         public float PointerExtent
         {
-            get { return overrideGlobalPointerExtent ? InputSystem.FocusProvider.GlobalPointingExtent : pointerExtent; }
+            get { return overrideGlobalPointerExtent ? MixedRealityManager.InputSystem.FocusProvider.GlobalPointingExtent : pointerExtent; }
             set { pointerExtent = value; }
         }
 
@@ -396,8 +391,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 if (eventData.MixedRealityInputAction == pointerAction)
                 {
                     IsSelectPressed = false;
-                    InputSystem.RaisePointerClicked(this, Handedness, pointerAction, 0);
-                    InputSystem.RaisePointerUp(this, Handedness, pointerAction);
+                    MixedRealityManager.InputSystem.RaisePointerClicked(this, Handedness, pointerAction, 0);
+                    MixedRealityManager.InputSystem.RaisePointerUp(this, Handedness, pointerAction);
                 }
             }
         }
@@ -418,7 +413,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 {
                     IsSelectPressed = true;
                     HasSelectPressedOnce = true;
-                    InputSystem.RaisePointerDown(this, Handedness, pointerAction);
+                    MixedRealityManager.InputSystem.RaisePointerDown(this, Handedness, pointerAction);
                 }
             }
         }
