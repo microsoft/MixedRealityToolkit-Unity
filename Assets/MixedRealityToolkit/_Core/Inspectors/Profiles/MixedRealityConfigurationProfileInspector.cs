@@ -34,6 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
         private SerializedProperty enableSpatialAwarenessSystem;
         private SerializedProperty spatialAwarenessSystemType;
         private SerializedProperty spatialAwarenessProfile;
+        // Diagnostic system properties
+        private SerializedProperty enableDiagnosticsSystem;
+        private SerializedProperty diagnosticsSystemType;
+        private SerializedProperty diagnosticsSystemProfile;
+
         // Additional registered components profile
         private SerializedProperty registeredComponentsProfile;
 
@@ -97,6 +102,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             enableSpatialAwarenessSystem = serializedObject.FindProperty("enableSpatialAwarenessSystem");
             spatialAwarenessSystemType = serializedObject.FindProperty("spatialAwarenessSystemType");
             spatialAwarenessProfile = serializedObject.FindProperty("spatialAwarenessProfile");
+            // Diagnostics system configuration
+            enableDiagnosticsSystem = serializedObject.FindProperty("enableDiagnosticsSystem");
+            diagnosticsSystemType = serializedObject.FindProperty("diagnosticsSystemType");
+            diagnosticsSystemProfile = serializedObject.FindProperty("diagnosticsSystemProfile");
+
             // Additional registered components configuration
             registeredComponentsProfile = serializedObject.FindProperty("registeredComponentsProfile");
         }
@@ -110,6 +120,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 EditorGUILayout.HelpBox("Unable to find Mixed Reality Manager!", MessageType.Error);
                 return;
+            }
+
+            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
+            {
+                EditorGUILayout.HelpBox("The Mixed Reality Toolkit's core SDK profiles can be used to get up and running quickly.\n\nYou can use the default profiles provided or create your own in the context menu:\n'Create/Mixed Reality Toolkit/...'", MessageType.Warning);
+                GUI.enabled = false;
             }
 
             var previousLabelWidth = EditorGUIUtility.labelWidth;
@@ -193,6 +209,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
             EditorGUILayout.PropertyField(spatialAwarenessSystemType);
             changed |= RenderProfile(spatialAwarenessProfile);
+
+            // Diagnostics System configuration
+            GUILayout.Space(12f);
+            EditorGUILayout.LabelField("Diagnostics System Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(enableDiagnosticsSystem);
+            EditorGUILayout.PropertyField(diagnosticsSystemType);
+            changed |= RenderProfile(diagnosticsSystemProfile);
 
             GUILayout.Space(12f);
             EditorGUILayout.LabelField("Additional Components", EditorStyles.boldLabel);
