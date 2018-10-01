@@ -43,8 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             }
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Boundary Visualization Options", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Boundary visualizations can help users stay oriented and comfortable in the experience.", MessageType.Info);
+            EditorGUILayout.LabelField("Diagnostic Visualization Options", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Diagnostic vidualizations can help monitor system resources and performance inside an application.", MessageType.Info);
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(visible);
