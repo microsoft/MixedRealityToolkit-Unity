@@ -116,11 +116,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// A button that is as wide as the label
         /// </summary>
         /// <param name="label"></param>
-        /// <param name="index"></param>
+        /// <param name="indexArr"></param>
         /// <param name="callback"></param>
         /// <param name="prop"></param>
         /// <returns></returns>
-        public static bool FlexButton(GUIContent label, int[] arr, MultiListButtonEvent callback, SerializedProperty prop = null)
+        public static bool FlexButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
             // delete button
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             bool triggered = false;
             if (GUILayout.Button(label, buttonStyle, GUILayout.Width(buttonWidth)))
             {
-                callback(arr, prop);
+                callback(indexArr, prop);
                 triggered = true;
             }
 
@@ -173,11 +173,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// A button that is as wide as the available space
         /// </summary>
         /// <param name="label"></param>
-        /// <param name="index"></param>
+        /// <param name="indexArr"></param>
         /// <param name="callback"></param>
         /// <param name="prop"></param>
         /// <returns></returns>
-        public static bool FullWidthButton(GUIContent label, float padding, int[] arr, MultiListButtonEvent callback, SerializedProperty prop = null)
+        public static bool FullWidthButton(GUIContent label, float padding, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
             addStyle.fixedHeight = 25;
@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             bool triggered = false;
             if (GUILayout.Button(label, addStyle, GUILayout.Width(addButtonWidth)))
             {
-                callback(arr, prop);
+                callback(indexArr, prop);
                 triggered = true;
             }
 
@@ -224,11 +224,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// A small button, good for a single icon like + or -
         /// </summary>
         /// <param name="label"></param>
-        /// <param name="index"></param>
+        /// <param name="indexArr"></param>
         /// <param name="callback"></param>
         /// <param name="prop"></param>
         /// <returns></returns>
-        public static bool SmallButton(GUIContent label, int[] arr, MultiListButtonEvent callback, SerializedProperty prop = null)
+        public static bool SmallButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
             GUIStyle smallButton = new GUIStyle(EditorStyles.miniButton);
             float smallButtonWidth = GUI.skin.button.CalcSize(label).x;
@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             bool triggered = false;
             if (GUILayout.Button(label, smallButton, GUILayout.Width(smallButtonWidth)))
             {
-                callback(arr, prop);
+                callback(indexArr, prop);
                 triggered = true;
             }
             return triggered;
@@ -433,6 +433,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        /// <summary>
+        /// Get an array of strings from a serialized list of strings, popup field helper
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public static string[] GetOptions(SerializedProperty options)
         {
             List<string> list = new List<string>();
@@ -444,6 +449,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Get the index of a serialized array item based on it's name, popup field helper
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="selection"></param>
+        /// <returns></returns>
         public static int GetOptionsIndex(SerializedProperty options, string selection)
         {
             for (int i = 0; i < options.arraySize; i++)
@@ -457,6 +468,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return 0;
         }
 
+        /// <summary>
+        /// Get the index of an array item based on it's name, popup field helper
+        /// </summary>
+        /// <param name="option"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public static int ReverseLookup(string option, string[] options)
         {
             for (int i = 0; i < options.Length; i++)
@@ -470,16 +487,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return 0;
         }
 
-        public static string[] SerializedPropertyToOptions(SerializedProperty arr)
-        {
-            List<string> list = new List<string>();
-            for (int i = 0; i < arr.arraySize; i++)
-            {
-                list.Add(arr.GetArrayElementAtIndex(i).stringValue);
-            }
-            return list.ToArray();
-        }
-
+        /// <summary>
+        /// Create a new list of serialized PropertySettings from InspectorFields
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="data"></param>
         protected static void PropertySettingsList(SerializedProperty settings, List<FieldData> data)
         {
             settings.ClearArray();
@@ -516,6 +528,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        /// <summary>
+        /// Update a property value in a serialized PropertySettings
+        /// </summary>
+        /// <param name="prop"></param>
+        /// <param name="type"></param>
+        /// <param name="update"></param>
         public static void UpdatePropertySettings(SerializedProperty prop, int type, object update)
         {
             SerializedProperty intValue = prop.FindPropertyRelative("IntValue");
@@ -601,6 +619,10 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             }
         }
 
+        /// <summary>
+        /// Render a PropertySettings UI field based on the InspectorField Settings
+        /// </summary>
+        /// <param name="prop"></param>
         public static void DisplayPropertyField(SerializedProperty prop)
         {
             SerializedProperty type = prop.FindPropertyRelative("Type");
