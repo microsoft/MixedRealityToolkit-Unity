@@ -460,14 +460,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         {
             SerializedProperty intValue = prop.FindPropertyRelative("IntValue");
             SerializedProperty stringValue = prop.FindPropertyRelative("StringValue");
-            SerializedProperty value = prop.FindPropertyRelative("Value");
 
             switch ((InspectorField.FieldTypes)type)
             {
                 case InspectorField.FieldTypes.Float:
                     SerializedProperty floatValue = prop.FindPropertyRelative("FloatValue");
                     floatValue.floatValue = (float)update;
-                    value.floatValue = floatValue.floatValue;
                     break;
                 case InspectorField.FieldTypes.Int:
                     intValue.intValue = (int)update;
@@ -537,6 +535,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 case InspectorField.FieldTypes.Event:
                     //SerializedProperty uEvent = prop.FindPropertyRelative("EventValue");
                     //uEvent.objectReferenceValue = update as UnityEngine.Object;
+                    //value.objectReferenceValue = update as UnityEngine.Object;
+                    // read only value, UnityEvents get instanced when serialized.
                     break;
                 default:
                     break;
@@ -549,7 +549,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             SerializedProperty label = prop.FindPropertyRelative("Label");
             SerializedProperty tooltip = prop.FindPropertyRelative("Tooltip");
             SerializedProperty options = prop.FindPropertyRelative("Options");
-            SerializedProperty value = prop.FindPropertyRelative("Value");
 
             SerializedProperty intValue = prop.FindPropertyRelative("IntValue");
             SerializedProperty stringValue = prop.FindPropertyRelative("StringValue");
@@ -559,29 +558,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 case InspectorField.FieldTypes.Float:
                     SerializedProperty floatValue = prop.FindPropertyRelative("FloatValue");
                     floatValue.floatValue = EditorGUILayout.FloatField(new GUIContent(label.stringValue, tooltip.stringValue), floatValue.floatValue);
-                    value.floatValue = floatValue.floatValue;
                     break;
                 case InspectorField.FieldTypes.Int:
                     intValue.intValue = EditorGUILayout.IntField(new GUIContent(label.stringValue, tooltip.stringValue), intValue.intValue);
-                    value.floatValue = intValue.intValue;
                     break;
                 case InspectorField.FieldTypes.String:
                     stringValue.stringValue = EditorGUILayout.TextField(new GUIContent(label.stringValue, tooltip.stringValue), stringValue.stringValue);
-                    value.stringValue = stringValue.stringValue;
                     break;
                 case InspectorField.FieldTypes.Bool:
                     SerializedProperty boolValue = prop.FindPropertyRelative("BoolValue");
                     boolValue.boolValue = EditorGUILayout.Toggle(new GUIContent(label.stringValue, tooltip.stringValue), boolValue.boolValue);
-                    value.boolValue = boolValue.boolValue;
                     break;
                 case InspectorField.FieldTypes.Color:
                     SerializedProperty colorValue = prop.FindPropertyRelative("ColorValue");
                     colorValue.colorValue = EditorGUILayout.ColorField(new GUIContent(label.stringValue, tooltip.stringValue), colorValue.colorValue);
-                    value.colorValue = colorValue.colorValue;
                     break;
                 case InspectorField.FieldTypes.DropdownInt:
                     intValue.intValue = EditorGUILayout.Popup(label.stringValue, intValue.intValue, GetOptions(options));
-                    value.intValue = intValue.intValue;
                     break;
                 case InspectorField.FieldTypes.DropdownString:
                     string[] stringOptions = GetOptions(options);
@@ -591,70 +584,57 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     {
                         stringValue.stringValue = stringOptions[newIndex];
                     }
-                    value.stringValue = stringValue.stringValue;
                     break;
                 case InspectorField.FieldTypes.GameObject:
                     SerializedProperty gameObjectValue = prop.FindPropertyRelative("GameObjectValue");
                     EditorGUILayout.PropertyField(gameObjectValue, new GUIContent(label.stringValue, tooltip.stringValue), false);
-                    value.objectReferenceValue = gameObjectValue.objectReferenceValue;
                     break;
                 case InspectorField.FieldTypes.ScriptableObject:
                     SerializedProperty scriptableObjectValue = prop.FindPropertyRelative("ScriptableObjectValue");
                     EditorGUILayout.PropertyField(scriptableObjectValue, new GUIContent(label.stringValue, tooltip.stringValue), false);
-                    value.objectReferenceValue = scriptableObjectValue.objectReferenceValue;
                     break;
                 case InspectorField.FieldTypes.Object:
                     SerializedProperty objectValue = prop.FindPropertyRelative("ObjectValue");
                     EditorGUILayout.PropertyField(objectValue, new GUIContent(label.stringValue, tooltip.stringValue), true);
-                    value.objectReferenceValue = objectValue.objectReferenceValue;
                     break;
                 case InspectorField.FieldTypes.Material:
                     SerializedProperty materialValue = prop.FindPropertyRelative("MaterialValue");
                     EditorGUILayout.PropertyField(materialValue, new GUIContent(label.stringValue, tooltip.stringValue), false);
-                    value.objectReferenceValue = materialValue.objectReferenceValue;
                     break;
                 case InspectorField.FieldTypes.Texture:
                     SerializedProperty textureValue = prop.FindPropertyRelative("TextureValue");
                     EditorGUILayout.PropertyField(textureValue, new GUIContent(label.stringValue, tooltip.stringValue), false);
-                    value.objectReferenceValue = textureValue.objectReferenceValue;
                     break;
                 case InspectorField.FieldTypes.Vector2:
                     SerializedProperty vector2Value = prop.FindPropertyRelative("Vector2Value");
                     vector2Value.vector2Value = EditorGUILayout.Vector2Field(new GUIContent(label.stringValue, tooltip.stringValue), vector2Value.vector2Value);
-                    value.vector2Value = vector2Value.vector2Value;
                     break;
                 case InspectorField.FieldTypes.Vector3:
                     SerializedProperty vector3Value = prop.FindPropertyRelative("Vector3Value");
                     vector3Value.vector3Value = EditorGUILayout.Vector3Field(new GUIContent(label.stringValue, tooltip.stringValue), vector3Value.vector3Value);
-                    value.vector3Value = vector3Value.vector3Value;
                     break;
                 case InspectorField.FieldTypes.Vector4:
                     SerializedProperty vector4Value = prop.FindPropertyRelative("Vector4Value");
                     vector4Value.vector4Value = EditorGUILayout.Vector4Field(new GUIContent(label.stringValue, tooltip.stringValue), vector4Value.vector4Value);
-                    value.vector4Value = vector4Value.vector4Value;
                     break;
                 case InspectorField.FieldTypes.Curve:
                     SerializedProperty curveValue = prop.FindPropertyRelative("CurveValue");
                     curveValue.animationCurveValue = EditorGUILayout.CurveField(new GUIContent(label.stringValue, tooltip.stringValue), curveValue.animationCurveValue);
-                    value.animationCurveValue = curveValue.animationCurveValue;
                     break;
                 case InspectorField.FieldTypes.Quaternion:
                     SerializedProperty quaternionValue = prop.FindPropertyRelative("QuaternionValue");
                     Vector4 vect4 = new Vector4(quaternionValue.quaternionValue.x, quaternionValue.quaternionValue.y, quaternionValue.quaternionValue.z, quaternionValue.quaternionValue.w);
                     vect4 = EditorGUILayout.Vector4Field(new GUIContent(label.stringValue, tooltip.stringValue), vect4);
                     quaternionValue.quaternionValue = new Quaternion(vect4.x, vect4.y, vect4.z, vect4.w);
-                    value.quaternionValue = quaternionValue.quaternionValue;
                     break;
                 case InspectorField.FieldTypes.AudioClip:
                     SerializedProperty audioClip = prop.FindPropertyRelative("AudioClipValue");
                     EditorGUILayout.PropertyField(audioClip, new GUIContent(label.stringValue, tooltip.stringValue), false);
-                    value.objectReferenceValue = audioClip.objectReferenceValue;
                     break;
                 case InspectorField.FieldTypes.Event:
                     SerializedProperty uEvent = prop.FindPropertyRelative("EventValue");
                     // Events do not work properly as a custom editor property, they do not get instanced properly
                     EditorGUILayout.PropertyField(uEvent, new GUIContent(label.stringValue, tooltip.stringValue));
-                    value.objectReferenceValue = uEvent.objectReferenceValue;
                     break;
                 default:
                     break;
