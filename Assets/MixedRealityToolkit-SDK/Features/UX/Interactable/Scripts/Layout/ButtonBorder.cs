@@ -8,37 +8,76 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     /// <summary>
-    /// Use a Cube 3D object as a border segment relative to the scale of the AnchorTransform
+    /// Use a Unity primitive Cube or cylindar as a border segment relative to the scale of the AnchorTransform
+    /// Use with ButtonSize on the component and the Anchor for consistent results
+    /// See ButtonSize for more info.
     /// </summary>
     [ExecuteInEditMode]
     public class ButtonBorder : MonoBehaviour
     {
+        /// <summary>
+        /// A scale factor for button layouts, default is based on 2048 pixels to 1 meter.
+        /// Similar to values used in designer and 2D art programs and helps create consistancy across teams.
+        /// </summary>
         [Tooltip("A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size")]
-        public float BasePixelScale = 2048;
-
-        [Tooltip("The transform this object should be linked and aligned to")]
-        public Transform AnchorTransform;
-
-        [Tooltip("Size of the border using pixel values from our design program.")]
-        public float Weight = 10;
-
-        [Tooltip("Depth of the border using pixel values from our design program.")]
-        public float Depth = 20;
-
-        [Tooltip("Where to set this object's center point in relation to the Anchor's center point")]
-        public Vector3 Alignment;
-
-        [Tooltip("That absolute amount to offset the position")]
-        public Vector3 PositionOffset;
-
-        [Tooltip("Will extend the height or width of the border to create corners.")]
-        public bool AddCorner = true;
-
-        [Tooltip("should this only run in Edit mode, to avoid updating as items move?")]
-        public bool OnlyInEditMode;
+        [SerializeField]
+        private float BasePixelScale = 2048;
 
         /// <summary>
-        /// Set the size
+        /// The transform to offset from. 
+        /// </summary>
+        [Tooltip("The transform this object should be linked and aligned to")]
+        [SerializeField]
+        private Transform AnchorTransform;
+
+        /// <summary>
+        /// Width of the border
+        /// </summary>
+        [Tooltip("Size of the border using pixel values from our design program.")]
+        [SerializeField]
+        private float Weight = 10;
+
+        /// <summary>
+        /// The depth of the border
+        /// </summary>
+        [Tooltip("Depth of the border using pixel values from our design program.")]
+        [SerializeField]
+        private float Depth = 20;
+
+        /// <summary>
+        /// A vector that sets the border position to the edge of the Anchor and
+        /// scales it to match the edge it is assigned to.
+        /// Ex: Vector3.right would place the border on the Anchor's right side.
+        /// </summary>
+        [Tooltip("Where to set this object's center point in relation to the Anchor's center point")]
+        [SerializeField]
+        private Vector3 Alignment;
+
+        /// <summary>
+        /// An absolute value to offset the border from the Anchor's edge
+        /// </summary>
+        [Tooltip("That absolute amount to offset the position")]
+        [SerializeField]
+        private Vector3 PositionOffset;
+
+        /// <summary>
+        /// Overlap the edge it is assigned to so there are not gaps in the corners
+        /// </summary>
+        [Tooltip("Will extend the height or width of the border to create corners.")]
+        [SerializeField]
+        private bool AddCorner = true;
+
+        /// <summary>
+        /// These scales and positions are applied in Unity Editor only while doing layout.
+        /// Turn off for responsive UI type results when editing ItemSize during runtime.
+        /// Scales will be applied each frame.
+        /// </summary>
+        [Tooltip("should this only run in Edit mode, to avoid updating as items move?")]
+        [SerializeField]
+        private bool OnlyInEditMode;
+
+        /// <summary>
+        /// Set the size and position
         /// </summary>
         private void UpdateSize()
         {

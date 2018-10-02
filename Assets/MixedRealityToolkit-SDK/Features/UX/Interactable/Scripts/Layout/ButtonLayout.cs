@@ -8,25 +8,69 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     /// <summary>
-    /// Place an object in space relative to another object's scale
-    /// Good for responsive buttons that can stretch and object realign
+    /// Place an object in space relative to another object's scale (See ButtonSize for more info)
+    ///     Easily layout button elements in 3D space, in the editor.
+    ///     Good for responsive buttons that can stretch and object realignment during runtime
     /// </summary>
     [ExecuteInEditMode]
     public class ButtonLayout : MonoBehaviour
     {
+        /// <summary>
+        /// A vector that sets the transform position from the Anchor's center point.
+        /// Vector3.right would aling this center point to the Anchor's right side, based on it's scale
+        /// </summary>
         [Tooltip("Where to set this object's center point in relation to the Anchor's center point")]
-        public Vector3 Alignment;
+        [SerializeField]
+        private Vector3 Alignment;
 
+        /// <summary>
+        /// A scale factor for button layouts, default is based on 2048 pixels to 1 meter.
+        /// Similar to values used in designer and 2D art programs and helps create consistancy across teams.
+        /// </summary>
         [Tooltip("A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size")]
-        public float BasePixelSize = 2048;
+        [SerializeField]
+        private float BasePixelSize = 2048;
 
+        /// <summary>
+        /// The transform to offset from. 
+        /// </summary>
         [Tooltip("The transform this object should be linked and aligned to")]
-        public Transform Anchor;
+        [SerializeField]
+        private Transform Anchor;
 
+        /// <summary>
+        /// An absolute value to offset this object from the center point.
+        /// Could be ItemSize / 2 if also using ButtonSize.
+        /// </summary>
         [Tooltip("Offset this object's position based on the same pixel based size ratio")]
-        public Vector3 AnchorOffset;
+        [SerializeField]
+        private Vector3 AnchorOffset;
 
-        public bool OnlyInEditMode;
+        /// <summary>
+        /// These positions are applied in Unity Editor only while doing layout.
+        /// Turn off for responsive UI type results when editing ItemSize during runtime.
+        /// Scales will be applied each frame.
+        /// </summary>
+        [SerializeField]
+        private bool OnlyInEditMode = true;
+
+        /// <summary>
+        /// Set the alignment with code or during runtime
+        /// </summary>
+        /// <param name="alignment"></param>
+        public void SetAlignment(Vector3 alignment)
+        {
+            Alignment = alignment;
+        }
+
+        /// <summary>
+        /// Get the alignment
+        /// </summary>
+        /// <returns></returns>
+        public Vector3 GetAlignment()
+        {
+            return Alignment;
+        }
 
         /// <summary>
         /// A transform is required for alignment

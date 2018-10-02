@@ -9,7 +9,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
-
+    /// <summary>
+    /// A reference to the InspectorField and cached info
+    /// </summary>
     [System.Serializable]
     public struct FieldData
     {

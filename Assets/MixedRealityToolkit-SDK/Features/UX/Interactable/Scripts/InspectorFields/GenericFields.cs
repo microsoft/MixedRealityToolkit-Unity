@@ -12,55 +12,75 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 {
     /// <summary>
     /// A set of Inspector fields for setting up properties in a
-    /// component to automatically draw in a custom inspector
+    /// component that can be automatically rendered in a custom inspector
     /// </summary>
     public class GenericFields<T>
     {
+        /// <summary>
+        /// Copies values from Inspector PropertySettings to an instantiated class on start,
+        /// helps overcome polymorphism limitations of serialization
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="settings"></param>
         public static void LoadSettings(T target, List<PropertySetting> settings)
         {
             Type myType = target.GetType();
 
-            foreach (PropertyInfo prop in myType.GetProperties())
+            PropertyInfo[] propInfoList = myType.GetProperties();
+            for (int i = 0; i < propInfoList.Length; i++)
             {
-                var attrs = (InspectorField[])prop.GetCustomAttributes(typeof(InspectorField), false);
+                PropertyInfo propInfo = propInfoList[i];
+                var attrs = (InspectorField[])propInfo.GetCustomAttributes(typeof(InspectorField), false);
                 foreach (var attr in attrs)
                 {
-                    object value = InspectorField.GetSettingValue(settings, prop.Name);
-                    prop.SetValue(target, value);
+                    object value = InspectorField.GetSettingValue(settings, propInfo.Name);
+                    propInfo.SetValue(target, value);
                 }
             }
 
-            foreach (FieldInfo field in myType.GetFields())
+            FieldInfo[] fieldInfoList = myType.GetFields();
+            for (int i = 0; i < fieldInfoList.Length; i++)
             {
-                var attrs = (InspectorField[])field.GetCustomAttributes(typeof(InspectorField), false);
+                FieldInfo fieldInfo = fieldInfoList[i];
+                var attrs = (InspectorField[])fieldInfo.GetCustomAttributes(typeof(InspectorField), false);
                 foreach (var attr in attrs)
                 {
-                    object value = InspectorField.GetSettingValue(settings, field.Name);
-                    field.SetValue(target, value);
+                    object value = InspectorField.GetSettingValue(settings, fieldInfo.Name);
+                    fieldInfo.SetValue(target, value);
                 }
             }
         }
         
+        /// <summary>
+        /// Searches through a class for InspectorField tags creates properties that can be serialized and
+        /// automatically rendered in a custom inspector
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static List<PropertySetting> GetSettings(T source)
         {
             Type myType = source.GetType();
             List<PropertySetting> settings = new List<PropertySetting>();
 
-            foreach (PropertyInfo prop in myType.GetProperties())
+            PropertyInfo[] propInfoList = myType.GetProperties();
+            for (int i = 0; i < propInfoList.Length; i++)
             {
-                var attrs = (InspectorField[])prop.GetCustomAttributes(typeof(InspectorField), false);
+                PropertyInfo propInfo = propInfoList[i];
+                var attrs = (InspectorField[])propInfo.GetCustomAttributes(typeof(InspectorField), false);
                 foreach (var attr in attrs)
                 {
-                    settings.Add(InspectorField.FieldToProperty(attr, prop.GetValue(source, null), prop.Name));
+                    settings.Add(InspectorField.FieldToProperty(attr, propInfo.GetValue(source, null), propInfo.Name));
                 }
             }
 
-            foreach (FieldInfo field in myType.GetFields())
+            FieldInfo[] fieldInfoList = myType.GetFields();
+            for (int i = 0; i < fieldInfoList.Length; i++)
             {
-                var attrs = (InspectorField[])field.GetCustomAttributes(typeof(InspectorField), false);
+                FieldInfo fieldInfo = fieldInfoList[i];
+                var attrs = (InspectorField[])fieldInfo.GetCustomAttributes(typeof(InspectorField), false);
                 foreach (var attr in attrs)
                 {
-                    settings.Add(InspectorField.FieldToProperty(attr, field.GetValue(source), field.Name));
+                    settings.Add(InspectorField.FieldToProperty(attr, fieldInfo.GetValue(source), fieldInfo.Name));
                 }
             }
 
