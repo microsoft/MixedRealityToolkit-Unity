@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics
     /// Configuration profile settings for setting up diagnostics.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Diagnostics Profile", fileName = "MixedRealityDiagnosticsProfile", order = (int)CreateProfileMenuItemIndices.Diagnostics)]
-    public class MixedRealityDiagnosticsProfile : ScriptableObject
+    public class MixedRealityDiagnosticsProfile : BaseMixedRealityProfile
     {
         [SerializeField]
         [Tooltip("Should show fps?")]
