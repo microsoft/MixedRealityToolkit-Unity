@@ -40,7 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         
         public static PropertySetting UpdatePropertySetting(PropertySetting setting, object update)
         {
-            setting.Value = update;
             switch (setting.Type)
             {
                 case InspectorField.FieldTypes.Float:
@@ -183,8 +182,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 default:
                     break;
             }
-
-            setting.Value = value;
             return value;
         }
         

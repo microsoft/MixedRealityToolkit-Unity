@@ -16,7 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public string Label;
         public string Name;
         public string Tooltip;
-        public object Value;
         public int IntValue;
         public string StringValue;
         public float FloatValue;
