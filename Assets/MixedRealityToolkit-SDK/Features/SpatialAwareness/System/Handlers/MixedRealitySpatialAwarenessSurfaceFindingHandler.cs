@@ -3,13 +3,14 @@
 
 using Microsoft.MixedReality.Toolkit.Core.EventDatum.SpatialAwarenessSystem;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Handlers;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.SpatialAwarenessSystem.Handlers
 {
     /// <summary>
     /// Class providing the default implementation of the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler"/> interface.
     /// </summary>
-    public class MixedRealitySpatialAwarenessSurfaceFindingHandler : IMixedRealitySpatialAwarenessSurfaceFindingHandler
+    public class MixedRealitySpatialAwarenessSurfaceFindingHandler : MonoBehaviour, IMixedRealitySpatialAwarenessSurfaceFindingHandler
     {
         /// <inheritdoc />
         public void OnSurfaceAdded(MixedRealitySpatialAwarenessEventData eventData)

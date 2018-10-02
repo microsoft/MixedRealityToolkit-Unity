@@ -24,7 +24,7 @@ MonoBehaviour:
   meshMaterial: {fileID: 2100000, guid: a923a5d1aebc7fe449b4ab3289da537b, type: 2}
   meshOcclusionMaterial: {fileID: 2100000, guid: a809c7ea182b699409443d46d5b42435,
     type: 2}
-  useSurfaceFindingSystem: 1
+  useSurfaceFindingSystem: 0
   surfaceFindingPhysicsLayer: 31
   surfaceFindingMinimumArea: 0.025
   displayFloorSurfaces: 0

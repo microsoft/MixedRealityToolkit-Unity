@@ -87,21 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// <inheritdoc />
         public void Destroy()
         {
-            // Cleanup any implementation specific objects.
-            DestroyInternal();
-
-            // Cleanup objects created during execution.
-            if (Application.isPlaying)
-            {
-                // todo
-            }
-        }
-
-        /// <summary>
-        /// Platform specific cleanup.
-        /// </summary>
-        private void DestroyInternal()
-        {
 #if UNITY_WSA
             CleanupObserver();
 #endif // UNITY_WSA
@@ -140,11 +125,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         /// </summary>
         private Dictionary<int, bool> meshAddUpdateStatus = new Dictionary<int, bool>();
 
-        /// <summary>
-        /// Collection of mesh <see cref="GameObject"/>s that can be used in a scene.
-        /// </summary>
         private Dictionary<int, GameObject> meshes = new Dictionary<int, GameObject>();
 
+        /// <inheritdoc />
         public IDictionary<int, GameObject> Meshes
         {
             get
@@ -190,8 +173,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
 
         /// <inheritdoc/>
         public bool IsRunning { get; private set; }
-
-        private Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription> meshDescriptions = new Dictionary<uint, IMixedRealitySpatialAwarenessMeshDescription>();
 
         /// <inheritdoc/>
         public void StartObserving()
@@ -254,6 +235,42 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                 }
                 observer.Dispose();
                 observer = null;
+            }
+
+            if (Application.isPlaying)
+            {
+                // Clean up mesh objects.
+                // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
+                foreach (GameObject mesh in Meshes.Values)
+                {
+                    if (Application.isEditor)
+                    {
+                        Object.DestroyImmediate(mesh);
+                    }
+                    else
+                    {
+                        Object.Destroy(mesh);
+                    }
+                }
+                Meshes.Clear();
+
+                // Clean up mesh objects that were to be baked.
+                // NOTE: We use foreach here since Dictionary<key, value>.Values is an IEnumerable.
+                foreach (GameObject mesh in meshesToBake.Values)
+                {
+                    if (Application.isEditor)
+                    {
+                        Object.DestroyImmediate(mesh);
+                    }
+                    else
+                    {
+                        Object.Destroy(mesh);
+                    }
+                }
+                meshesToBake.Clear();
+
+                // Clean up planar surface objects
+                // todo
             }
         }
 
@@ -319,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
         }
 
         /// <summary>
-        /// Handles the SurfaceObserver's OnDataReady event.
+        /// Handles the SurfaceObserver's ywataReady event.
         /// </summary>
         /// <param name="cookedData">Struct containing output data.</param>
         /// <param name="outputWritten">Set to true if output has been written.</param>
@@ -337,20 +354,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
             GameObject mesh = null;
             if (meshesToBake.TryGetValue(cookedData.id.handle, out mesh))
             {
-                // Set the appropriate material on the mesh.
-                SpatialMeshDisplayOptions displayOption = MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshDisplayOption;
-                if (displayOption != SpatialMeshDisplayOptions.None)
-                {
-                    Renderer renderer = mesh.GetComponent<Renderer>();
-
-                    if (renderer != null)
-                    {
-                        renderer.sharedMaterial = (displayOption == SpatialMeshDisplayOptions.Visible) ?
-                            MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshMaterial :
-                            MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshOcclusionMaterial;
-                    }
-                }
-
                 // Recalculate the normals, as appropriate.
                 if (MixedRealityManager.Instance.ActiveProfile.SpatialAwarenessProfile.MeshRecalculateNormals)
                 {
@@ -358,6 +361,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.SpatialAwareness
                     filter?.sharedMesh.RecalculateNormals();
                 }
             }
+
+            // Update the mesh collections to reflect that this one is ready for application use.
+            meshesToBake.Remove(cookedData.id.handle);
+            meshes.Add(cookedData.id.handle, mesh);
 
             // Inform the spatial awareness system of the mesh.
             bool isNewMesh = false;

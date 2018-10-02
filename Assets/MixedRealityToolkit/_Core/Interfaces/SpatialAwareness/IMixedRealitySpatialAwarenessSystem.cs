@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// </remarks>
         void RaiseMeshRemoved(int meshId);
 
-        #endregion MeshEvents
+        #endregion Mesh Events
 
         #endregion Mesh Handling
 
@@ -222,6 +222,39 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem
         /// Gets the collection of <see cref="GameObject"/>s being managed by the spatial awareness surface finding subsystem.
         /// </summary>
         IDictionary<int, GameObject> SurfaceObjects { get; }
+
+        #region Surface Finding Events
+
+        /// <summary>
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceAdded"/> method to indicate a planar surface has been added.
+        /// </summary>
+        /// <param name="surfaceId">Value identifying the surface.</param>
+        /// <param name="surfaceObject">The surface <see cref="GameObject"/>.</param>
+        /// <remarks>
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// </remarks>
+        void RaiseSurfaceAdded(int surfaceId, GameObject surfaceObject);
+
+        /// <summary>
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceUpdated"/> method to indicate an existing planar surface has been updated.
+        /// </summary>
+        /// <param name="surfaceId">Value identifying the surface.</param>
+        /// <param name="surfaceObject">The surface <see cref="GameObject"/>.</param>
+        /// <remarks>
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// </remarks>
+        void RaiseSurfaceUpdated(int surfaceId, GameObject surfaceObject);
+
+        /// <summary>
+        /// The spatial awareness system will call the <see cref="IMixedRealitySpatialAwarenessSurfaceFindingHandler.OnSurfaceUpdated"/> method to indicate an exising planar surface has been removed.
+        /// </summary>
+        /// <param name="surfaceId">Value identifying the surface.</param>
+        /// <remarks>
+        /// This method is to be called by implementations of the <see cref="IMixedRealitySpatialObserver"/> interface, and not by application code.
+        /// </remarks>
+        void RaiseSurfaceRemoved(int surfaceId);
+
+        #endregion Surface Finding Events
 
         #endregion Surface Finding Handling
     }
