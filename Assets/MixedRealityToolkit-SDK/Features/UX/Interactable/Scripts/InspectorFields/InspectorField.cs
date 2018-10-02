@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public string Label { get; set; }
         public string Tooltip { get; set; }
         public string[] Options { get; set; }
-        public UnityEngine.Object Value { get; set; }
+        public object Value { get; set; }
 
         public static PropertySetting FieldToProperty(InspectorField attributes, object fieldValue, string fieldName)
         {
@@ -40,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         
         public static PropertySetting UpdatePropertySetting(PropertySetting setting, object update)
         {
+            setting.Value = update;
             switch (setting.Type)
             {
                 case InspectorField.FieldTypes.Float:
@@ -117,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     break;
                 }
             }
-
+            
             object value = null;
 
             switch (setting.Type)
@@ -183,6 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     break;
             }
 
+            setting.Value = value;
             return value;
         }
         
