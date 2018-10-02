@@ -4,7 +4,7 @@
 using System;
 using System.Text;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
+namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 {
     /// <summary>
     /// <see cref="String"/> Extensions.
@@ -31,6 +31,41 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Extensions
         {
             byte[] encodedDataAsBytes = Convert.FromBase64String(encodedData);
             return Encoding.ASCII.GetString(encodedDataAsBytes);
+        }
+
+        /// <summary>
+        /// Capitalize the first character and add a space before
+        /// each capitalized letter (except the first character).
+        /// </summary>
+        /// <param name="value"></param>
+        public static string ToProperCase(this string value)
+        {
+            // If there are 0 or 1 characters, just return the string.
+            if (value == null) { return value; }
+            if (value.Length < 2) { return value.ToUpper(); }
+
+            // Start with the first character.
+            string result = value.Substring(0, 1).ToUpper();
+
+            // Add the remaining characters.
+            for (int i = 1; i < value.Length; i++)
+            {
+                var wasLastCharacterUpper = false;
+
+                if (i < value.Length)
+                {
+                    wasLastCharacterUpper = char.IsUpper(value[i - 1]);
+                }
+
+                if (char.IsUpper(value[i]) && !wasLastCharacterUpper)
+                {
+                    result += " ";
+                }
+
+                result += value[i];
+            }
+
+            return result;
         }
     }
 }

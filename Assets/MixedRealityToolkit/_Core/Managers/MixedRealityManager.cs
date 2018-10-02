@@ -1,20 +1,20 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.OpenVR;
-using Microsoft.MixedReality.Toolkit.Internal.Devices.WindowsMixedReality;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Managers
+namespace Microsoft.MixedReality.Toolkit.Core.Managers
 {
     /// <summary>
     /// The Mixed Reality manager is responsible for coordinating the operation of the Mixed Reality Toolkit.
@@ -141,6 +141,8 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 }
                 else
                 {
+                    mixedRealityComponentsCount = 0;
+                    MixedRealityComponents.Clear();
                     ActiveProfile.ActiveManagers.Clear();
                 }
             }
@@ -148,7 +150,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
 
             if (ActiveProfile.IsCameraProfileEnabled)
             {
-                if (MixedRealityCameraProfile.IsOpaque)
+                if (ActiveProfile.CameraProfile.IsCameraPersistent)
+                {
+                    CameraCache.Main.transform.root.DontDestroyOnLoad();
+                }
+
+                if (ActiveProfile.CameraProfile.IsOpaque)
                 {
                     ActiveProfile.CameraProfile.ApplySettingsForOpaqueDisplay();
                 }
@@ -163,40 +170,72 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             // If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsInputSystemEnabled)
             {
-                //Enable Input (example initializer)
+#if UNITY_EDITOR
+                // Make sure unity axis mappings are set.
+                Utilities.Editor.InputMappingAxisUtility.CheckUnityInputManagerMappings(Definitions.Devices.ControllerMappingLibrary.UnityInputManagerAxes);
+#endif
+
                 AddManager(typeof(IMixedRealityInputSystem), Activator.CreateInstance(ActiveProfile.InputSystemType) as IMixedRealityInputSystem);
+
+                if (InputSystem == null)
+                {
+                    Debug.LogError("Failed to start the Input System!");
+                }
             }
 
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
-                //Enable Boundary (example initializer)
                 AddManager(typeof(IMixedRealityBoundarySystem), Activator.CreateInstance(ActiveProfile.BoundarySystemSystemType) as IMixedRealityBoundarySystem);
+
+                if (BoundarySystem == null)
+                {
+                    Debug.LogError("Failed to start the Boundary System!");
+                }
             }
+
 
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
                 AddManager(typeof(IMixedRealityTeleportSystem), Activator.CreateInstance(ActiveProfile.TeleportSystemSystemType) as IMixedRealityTeleportSystem);
+
+                if (TeleportSystem == null)
+                {
+                    Debug.LogError("Failed to start the Teleport System!");
+                }
             }
 
-            #region ActiveSDK Discovery
+            if (ActiveProfile.IsDiagnosticsSystemEnabled)
+            {
+                AddManager(typeof(IMixedRealityDiagnosticsSystem), Activator.CreateInstance(ActiveProfile.DiagnosticsSystemSystemType) as IMixedRealityDiagnosticsSystem);
 
-            // TODO Microsoft.MixedReality.Toolkit - Active SDK Discovery
+                if (DiagnosticsSystem == null)
+                {
+                    Debug.LogError("Failed to start the Diagnostics System!");
+                }
+            }
 
-            #endregion ActiveSDK Discovery
-
-            #endregion Managers Registration
-
-            #region SDK Initialization
-
+            if (ActiveProfile.RegisteredComponentsProfile != null)
+            {
+                for (int i = 0; i < ActiveProfile.RegisteredComponentsProfile.Configurations?.Length; i++)
+                {
+                    var configuration = ActiveProfile.RegisteredComponentsProfile.Configurations[i];
 #if UNITY_EDITOR
-            AddManagersForTheCurrentPlatformEditor();
+                    if (UnityEditor.EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(configuration.RuntimePlatform))
 #else
-            AddManagersForTheCurrentPlatform();
+                    if (Application.platform.IsPlatformSupported(configuration.RuntimePlatform))
 #endif
+                    {
+                        if (configuration.ComponentType.Type != null)
+                        {
+                            AddManager(typeof(IMixedRealityComponent), Activator.CreateInstance(configuration.ComponentType, configuration.ComponentName, configuration.Priority) as IMixedRealityComponent);
+                        }
+                    }
+                }
+            }
 
-            #endregion SDK Initialization
+            #endregion Manager Registration
 
             #region Managers Initialization
 
@@ -474,6 +513,11 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
                 throw new ArgumentNullException($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has no Active Profile.");
             }
 
+            if (!IsInitialized)
+            {
+                throw new ArgumentNullException($"Unable to get {nameof(type)} Manager as the Mixed Reality Manager has not been initialized!");
+            }
+
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
             IMixedRealityManager manager;
@@ -547,7 +591,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
             else
             {
-                MixedRealityComponents.RemoveAll(tuple => tuple.Item1.Name == type.Name);
+                IMixedRealityManager manager;
+                GetComponentByType(type, out manager);
+                if (manager != null)
+                {
+                    MixedRealityComponents.Remove(new Tuple<Type, IMixedRealityManager>(type, manager));
+                }
             }
         }
 
@@ -573,7 +622,12 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
             else
             {
-                MixedRealityComponents.RemoveAll(tuple => tuple.Item1.Name == type.Name && tuple.Item2.Name == managerName);
+                IMixedRealityManager manager;
+                GetComponentByTypeAndName(type, managerName, out manager);
+                if (manager != null)
+                {
+                    MixedRealityComponents.Remove(new Tuple<Type, IMixedRealityManager>(type, manager));
+                }
             }
         }
 
@@ -710,26 +764,14 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
             else
             {
-                //If no name provided, return all components of the same type. Else return the type/name combination.
+                // If no name provided, return all components of the same type. Else return the type/name combination.
                 if (string.IsNullOrWhiteSpace(managerName))
                 {
-                    for (int i = 0; i < mixedRealityComponentsCount; i++)
-                    {
-                        if (MixedRealityComponents[i].Item1.Name == type.Name)
-                        {
-                            managers.Add(MixedRealityComponents[i].Item2);
-                        }
-                    }
+                    GetComponentsByType(type, ref managers);
                 }
                 else
                 {
-                    for (int i = 0; i < mixedRealityComponentsCount; i++)
-                    {
-                        if (MixedRealityComponents[i].Item1.Name == type.Name && MixedRealityComponents[i].Item2.Name == managerName)
-                        {
-                            managers.Add(MixedRealityComponents[i].Item2);
-                        }
-                    }
+                    GetComponentsByTypeAndName(type, managerName, ref managers);
                 }
             }
 
@@ -808,7 +850,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
         }
 
-
         private void DisableAllManagers()
         {
             //If the Mixed Reality Manager is not configured, stop.
@@ -871,7 +912,9 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
             return type == typeof(IMixedRealityInputSystem) ||
-                   type == typeof(IMixedRealityBoundarySystem);
+                   type == typeof(IMixedRealityTeleportSystem) ||
+                   type == typeof(IMixedRealityBoundarySystem) ||
+                   type == typeof(IMixedRealityDiagnosticsSystem);
         }
 
         /// <summary>
@@ -883,21 +926,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         {
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
 
-            manager = null;
-
-            for (int i = 0; i < mixedRealityComponentsCount; i++)
-            {
-                if (MixedRealityComponents[i].Item1.Name == type.Name || MixedRealityComponents[i].Item2.GetType().Name == type.Name)
-                {
-                    manager = MixedRealityComponents[i].Item2;
-                    break;
-                }
-            }
-
-            if (manager == null)
-            {
-                throw new NullReferenceException($"Unable to find {type.Name} Manager.");
-            }
+            GetComponentByTypeAndName(type, string.Empty, out manager);
         }
 
         /// <summary>
@@ -909,13 +938,23 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
         private void GetComponentByTypeAndName(Type type, string managerName, out IMixedRealityManager manager)
         {
             if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            if (string.IsNullOrEmpty(managerName)) { throw new ArgumentNullException(nameof(managerName)); }
 
             manager = null;
 
+            if (isMixedRealityManagerInitializing)
+            {
+                Debug.LogWarning("Unable to get a manager while initializing!");
+                return;
+            }
+
+            if (mixedRealityComponentsCount != MixedRealityComponents.Count)
+            {
+                Initialize();
+            }
+
             for (int i = 0; i < mixedRealityComponentsCount; i++)
             {
-                if (MixedRealityComponents[i].Item1.Name == type.Name && MixedRealityComponents[i].Item2.Name == managerName)
+                if (CheckComponentMatch(type, managerName, MixedRealityComponents[i]))
                 {
                     manager = MixedRealityComponents[i].Item2;
                     break;
@@ -923,65 +962,82 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Managers
             }
         }
 
+        private void GetComponentsByType(Type type, ref List<IMixedRealityManager> managers)
+        {
+            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+
+            GetComponentsByTypeAndName(type, string.Empty, ref managers);
+        }
+
+        private void GetComponentsByTypeAndName(Type type, string managerName, ref List<IMixedRealityManager> managers)
+        {
+            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+
+            for (int i = 0; i < mixedRealityComponentsCount; i++)
+            {
+                if (CheckComponentMatch(type, managerName, MixedRealityComponents[i]))
+                {
+                    managers.Add(MixedRealityComponents[i].Item2);
+                }
+            }
+        }
+
+        private static bool CheckComponentMatch(Type type, string managerName, Tuple<Type, IMixedRealityManager> managerTuple)
+        {
+            if ((managerTuple.Item1.Name == type.Name ||
+                managerTuple.Item2.GetType().Name == type.Name) &&
+                (string.IsNullOrEmpty(managerName) || managerTuple.Item2.Name == managerName))
+            {
+                return true;
+            }
+
+            var interfaces = managerTuple.Item2.GetType().GetInterfaces();
+            for (int i = 0; i < interfaces.Length; i++)
+            {
+                if (interfaces[i].Name == type.Name &&
+                    (string.IsNullOrEmpty(managerName) || managerTuple.Item2.Name == managerName))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         #endregion Manager Utilities
 
         #endregion Manager Container Management
 
-        #region Platform Selectors
+        #region Manager Accessors
 
-        private void AddManagersForTheCurrentPlatform()
-        {
-            switch (Application.platform)
-            {
-                case RuntimePlatform.WindowsPlayer:
-                case RuntimePlatform.WindowsEditor:
-                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("OpenVR Device Manager", 10));
-                    break;
-                case RuntimePlatform.OSXPlayer:
-                case RuntimePlatform.OSXEditor:
-                case RuntimePlatform.IPhonePlayer:
-                    break;
-                case RuntimePlatform.Android:
-                    break;
-                case RuntimePlatform.WebGLPlayer:
-                    break;
-                case RuntimePlatform.WSAPlayerX86:
-                case RuntimePlatform.WSAPlayerX64:
-                case RuntimePlatform.WSAPlayerARM:
-                    AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
-                    break;
-                default:
-                    break;
-            }
-        }
+        private static IMixedRealityInputSystem inputSystem = null;
 
-#if UNITY_EDITOR
+        /// <summary>
+        /// The current Input System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = Instance.GetManager<IMixedRealityInputSystem>());
 
-        private void AddManagersForTheCurrentPlatformEditor()
-        {
-            switch (UnityEditor.EditorUserBuildSettings.activeBuildTarget)
-            {
-                case UnityEditor.BuildTarget.StandaloneWindows:
-                case UnityEditor.BuildTarget.StandaloneWindows64:
-                    AddManager(typeof(IMixedRealityDeviceManager), new OpenVRDeviceManager("OpenVR Device Manager", 10));
-                    break;
-                case UnityEditor.BuildTarget.StandaloneOSX:
-                case UnityEditor.BuildTarget.iOS:
-                    break;
-                case UnityEditor.BuildTarget.Android:
-                    break;
-                case UnityEditor.BuildTarget.WebGL:
-                    break;
-                case UnityEditor.BuildTarget.WSAPlayer:
-                    AddManager(typeof(IMixedRealityDeviceManager), new WindowsMixedRealityDeviceManager("Mixed Reality Device Manager", 10));
-                    break;
-                default:
-                    break;
-            }
-        }
+        private static IMixedRealityBoundarySystem boundarySystem = null;
 
-#endif
+        /// <summary>
+        /// The current Boundary System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityBoundarySystem BoundarySystem => boundarySystem ?? (boundarySystem = Instance.GetManager<IMixedRealityBoundarySystem>());
 
-        #endregion Platform Selectors
+        private static IMixedRealityTeleportSystem teleportSystem = null;
+
+        /// <summary>
+        /// The current Teleport System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = Instance.GetManager<IMixedRealityTeleportSystem>());
+
+        private static IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
+
+        /// <summary>
+        /// The current Diagnostics System registered with the Mixed Reality Manager.
+        /// </summary>
+        public static IMixedRealityDiagnosticsSystem DiagnosticsSystem => diagnosticsSystem ?? (diagnosticsSystem = Instance.GetManager<IMixedRealityDiagnosticsSystem>());
+
+        #endregion Manager Accessors
     }
 }

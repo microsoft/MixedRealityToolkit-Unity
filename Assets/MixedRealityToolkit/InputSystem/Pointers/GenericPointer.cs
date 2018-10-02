@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Physics;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using System.Collections;
 using UnityEngine;
 
@@ -25,14 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.InputSystem.Pointers
         /// <param name="inputSourceParent"></param>
         public GenericPointer(string pointerName, IMixedRealityInputSource inputSourceParent)
         {
-            InputSystem = MixedRealityManager.Instance.GetManager<IMixedRealityInputSystem>();
-            PointerId = InputSystem.FocusProvider.GenerateNewPointerId();
+            PointerId = MixedRealityManager.InputSystem.FocusProvider.GenerateNewPointerId();
             PointerName = pointerName;
             this.inputSourceParent = inputSourceParent;
         }
-
-        /// <inheritdoc />
-        public IMixedRealityInputSystem InputSystem { get; }
 
         /// <inheritdoc />
         public virtual IMixedRealityController Controller

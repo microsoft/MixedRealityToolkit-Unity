@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
@@ -67,12 +68,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             base.OnCursorStateChange(state);
 
             // the cursor state has changed, reset the animation timer
-            if (hasHand != IsHandDetected || isDown != IsPointerDown || hasHover != (TargetedObject != null))
+            if (hasHand != IsSourceDetected || isDown != IsPointerDown || hasHover != (TargetedObject != null))
             {
                 timer = 0;
             }
 
-            hasHand = IsHandDetected;
+            hasHand = IsSourceDetected;
             isDown = IsPointerDown;
             hasHover = TargetedObject != null;
 
@@ -141,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             }
 
             // handle scale of main cursor go
-            float distance = Vector3.Distance(InputSystem.GazeProvider.GazeOrigin, transform.position);
+            float distance = Vector3.Distance(MixedRealityManager.InputSystem.GazeProvider.GazeOrigin, transform.position);
             float smoothScaling = 1 - DefaultCursorDistance * distanceScaleFactor;
             transform.localScale = initialScale * (distance * distanceScaleFactor + smoothScaling);
         }

@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async.AwaitYieldInstructions;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async.Internal;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,7 +34,7 @@ using System.Threading;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Async
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async
 {
     /// <summary>
     /// We could just add a generic GetAwaiter to YieldInstruction and CustomYieldInstruction
@@ -89,11 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Async
             RunOnUnityScheduler(() => AsyncCoroutineRunner.Instance.StartCoroutine(
                 InstructionWrappers.ResourceRequest(awaiter, instruction)));
             return awaiter;
-        }
-
-        public static SimpleCoroutineAwaiter<WWW> GetAwaiter(this WWW instruction)
-        {
-            return GetAwaiterReturnSelf(instruction);
         }
 
         public static SimpleCoroutineAwaiter<AssetBundle> GetAwaiter(this AssetBundleCreateRequest instruction)
@@ -328,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Async
                 }
 
                 result.AppendLine();
-                return "Unity Coroutine Object Trace: " + result;
+                return $"Unity Coroutine Object Trace: {result}";
             }
 
             private static List<Type> GenerateObjectTrace(IEnumerable<IEnumerator> enumerators)

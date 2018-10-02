@@ -2,12 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if WINDOWS_UWP && !ENABLE_IL2CPP
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
 #endif // WINDOWS_UWP && !ENABLE_IL2CPP
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
+namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
 {
     /// <summary>
     /// Reference to a class <see cref="System.Type"/> with support for Unity serialization.
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
 
         public static string GetReference(Type type)
         {
-            if (type == null)
+            if (type == null || string.IsNullOrEmpty(type.AssemblyQualifiedName))
             {
                 return string.Empty;
             }
@@ -89,14 +89,17 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
             get { return type; }
             set
             {
-#if WINDOWS_UWP && !ENABLE_IL2CPP
-                bool isValid = value.IsValueType() && !value.IsEnum() || value.IsClass();
-#else
-                bool isValid = value.IsValueType && !value.IsEnum || value.IsClass;
-#endif // WINDOWS_UWP && !ENABLE_IL2CPP
-                if (value != null && !isValid)
+                if (value != null)
                 {
-                    throw new ArgumentException($"'{value.FullName}' is not a class or struct type.", nameof(value));
+#if WINDOWS_UWP && !ENABLE_IL2CPP
+                    bool isValid = value.IsValueType() && !value.IsEnum() || value.IsClass();
+#else
+                    bool isValid = value.IsValueType && !value.IsEnum || value.IsClass;
+#endif // WINDOWS_UWP && !ENABLE_IL2CPP
+                    if (!isValid)
+                    {
+                        Debug.LogError($"'{value.FullName}' is not a class or struct type.");
+                    }
                 }
 
                 type = value;
@@ -121,15 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities
 
         public override string ToString()
         {
-            if (Type.FullName != null)
-            {
-                if (Type != null)
-                {
-                    return Type.FullName;
-                }
-            }
-
-            return "(None)";
+            return Type?.FullName ?? "(None)";
         }
     }
 }

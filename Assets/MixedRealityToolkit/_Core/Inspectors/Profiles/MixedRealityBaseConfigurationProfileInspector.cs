@@ -1,14 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Internal.Managers;
+using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     public abstract class MixedRealityBaseConfigurationProfileInspector : Editor
     {
+        private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
+
         [SerializeField]
         private Texture2D logoLightTheme = null;
 
@@ -74,6 +77,29 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             }
 
             return true;
+        }
+
+        protected static bool RenderProfile(SerializedProperty property)
+        {
+            bool changed = false;
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PropertyField(property);
+
+            if (property.objectReferenceValue == null)
+            {
+                if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton))
+                {
+                    var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
+                    Debug.Assert(profileTypeName != null, "No Type Found");
+                    ScriptableObject profile = CreateInstance(profileTypeName);
+                    profile.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject));
+                    property.objectReferenceValue = profile;
+                    changed = true;
+                }
+            }
+
+            EditorGUILayout.EndHorizontal();
+            return changed;
         }
     }
 }

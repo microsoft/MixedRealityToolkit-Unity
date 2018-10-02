@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup
 {
     /// <summary>
     /// Sets Force Text Serialization and visible meta files in all projects that use the Mixed Reality Toolkit.
@@ -18,8 +18,28 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup
 
         private static BuildTargetGroup currentBuildTargetGroup = BuildTargetGroup.Unknown;
 
+        private static string mixedRealityToolkit_RelativeFolderPath = string.Empty;
+
+        public static string MixedRealityToolkit_RelativeFolderPath
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(mixedRealityToolkit_RelativeFolderPath))
+                {
+                    if (!FindDirectory(Application.dataPath, "MixedRealityToolkit", out mixedRealityToolkit_RelativeFolderPath))
+                    {
+                        Debug.LogError("Unable to find the Mixed Reality Toolkit's directory!");
+                    }
+                }
+
+                return mixedRealityToolkit_RelativeFolderPath;
+            }
+        }
+
         static EnforceEditorSettings()
         {
+            SetIconTheme();
+
             if (!IsNewSession())
             {
                 return;
@@ -144,6 +164,66 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.Editor.Setup
             }
 
             return false;
+        }
+
+        private static bool FindDirectory(string directoryPathToSearch, string directoryName, out string path)
+        {
+            path = string.Empty;
+
+            var directories = Directory.GetDirectories(directoryPathToSearch);
+
+            for (int i = 0; i < directories.Length; i++)
+            {
+                var name = Path.GetFileName(directories[i]);
+
+                if (name != null && name.Equals(directoryName))
+                {
+                    path = directories[i];
+                    return true;
+                }
+
+                if (FindDirectory(directories[i], directoryName, out path))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static void SetIconTheme()
+        {
+            if (string.IsNullOrEmpty(MixedRealityToolkit_RelativeFolderPath))
+            {
+                Debug.LogError("Unable to find the Mixed Reality Toolkit's directory!");
+                return;
+            }
+
+            var icons = Directory.GetFiles($"{MixedRealityToolkit_RelativeFolderPath}/_Core/Resources/Icons");
+            var icon = new Texture2D(2, 2);
+
+            for (int i = 0; i < icons.Length; i++)
+            {
+                icons[i] = icons[i].Replace("/", "\\");
+                if (icons[i].Contains("mixed_reality_icon") || icons[i].Contains(".meta")) { continue; }
+
+                var imageData = File.ReadAllBytes(icons[i]);
+                icon.LoadImage(imageData, false);
+
+                var pixels = icon.GetPixels();
+                for (int j = 0; j < pixels.Length; j++)
+                {
+                    pixels[j].r = EditorGUIUtility.isProSkin ? 1f : 0f;
+                    pixels[j].g = EditorGUIUtility.isProSkin ? 1f : 0f;
+                    pixels[j].b = EditorGUIUtility.isProSkin ? 1f : 0f;
+                }
+
+                icon.SetPixels(pixels);
+                File.WriteAllBytes(icons[i], icon.EncodeToPNG());
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }
     }
 }

@@ -1,26 +1,21 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Physics;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.TeleportSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Physics;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem;
 using System.Collections;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem
 {
     /// <summary>
-    /// Cursor Interface for handling pointers.
+    /// Interface for handling pointers.
     /// </summary>
     public interface IMixedRealityPointer : IEqualityComparer
     {
-        /// <summary>
-        /// The pointer's current input system reference.
-        /// </summary>
-        IMixedRealityInputSystem InputSystem { get; }
-
         /// <summary>
         /// The pointer's current controller reference.
         /// </summary>

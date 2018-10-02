@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Internal.Interfaces.Events;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem
+namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.BoundarySystem
 {
     /// <summary>
     /// Manager interface for a Boundary system in the Mixed Reality Toolkit
@@ -28,21 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem
         float BoundaryHeight { get; set; }
 
         /// <summary>
-        /// Enable / disable boundary wall rendering.
-        /// </summary>
-        // todo: coming in Beta
-        // bool ShowBoundaryWalls { get; set; }
-
-        /// <summary>
-        /// Enable / disable ceiling rendering.
-        /// </summary>
-        /// <remarks>
-        /// The ceiling is defined as a <see cref="GameObject"/> positioned <see cref="BoundaryHeight"/> above the floor.
-        /// </remarks>
-        // todo: coming in Beta
-        // bool ShowCeiling { get; set; }
-
-        /// <summary>
         /// Enable / disable floor rendering.
         /// </summary>
         bool ShowFloor { get; set; }
@@ -55,8 +41,19 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem
         /// <summary>
         /// Enable / disable tracked area rendering.
         /// </summary>
-        // todo: coming in Beta
-        // bool ShowTrackedArea { get; set; }
+        bool ShowTrackedArea { get; set; }
+
+        /// <summary>
+        /// Enable / disable boundary wall rendering.
+        /// </summary>
+        bool ShowBoundaryWalls { get; set; }
+
+        /// <summary>
+        /// Enable / disable ceiling rendering.
+        /// </summary>
+        /// <remarks>
+        /// The ceiling is defined as a <see cref="GameObject"/> positioned <see cref="BoundaryHeight"/> above the floor.
+        bool ShowBoundaryCeiling { get; set; }
 
         /// <summary>
         /// Two dimensional representation of the geometry of the boundary, as provided
@@ -100,15 +97,29 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Interfaces.BoundarySystem
         bool TryGetRectangularBoundsParams(out Vector2 center, out float angle, out float width, out float height);
 
         /// <summary>
+        /// Gets the <see cref="GameObject"/> that represents the user's floor.
+        /// </summary>
+        /// <returns>The floor visualization object or null if one does not exist.</returns>
+        GameObject GetFloorVisualization();
+
+        /// <summary>
         /// Gets the <see cref="GameObject"/> that represents the user's play area.
         /// </summary>
         /// <returns>The play area visualization object or null if one does not exist.</returns>
         GameObject GetPlayAreaVisualization();
 
         /// <summary>
-        /// Gets the <see cref="GameObject"/> that represents the user's floor.
+        /// Gets the <see cref="GameObject"/> that represents the user's tracked area.
         /// </summary>
-        /// <returns>The floor visualization object or null if one does not exist.</returns>
-        GameObject GetFloorVisualization();
+        /// <returns>The tracked area visualization object or null if one does not exist.</returns>
+        GameObject GetTrackedAreaVisualization();
+
+        // todo: GetBoundaryWallVisualization();
+
+        /// <summary>
+        /// Gets the <see cref="GameObject"/> that represents the upper surface of the user's boundary.
+        /// </summary>
+        /// <returns>The boundary ceiling visualization object or null if one does not exist.</returns>
+        GameObject GetBoundaryCeilingVisualization();
     }
 }

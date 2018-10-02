@@ -267,6 +267,7 @@ MonoBehaviour:
     axisConstraint: 7
   cursorPrefab: {fileID: 1554777696564956, guid: ae2b3fffb00f464287cda86f49109b47,
     type: 2}
+  disableCursorOnStart: 1
   raycastOrigin: {fileID: 0}
   activeHoldAction:
     id: 0
@@ -434,8 +435,13 @@ MonoBehaviour:
     id: 5
     description: Teleport
     axisConstraint: 4
-  activationAngle: 45
-  angleOffset: 90
+  inputThreshold: 0.5
+  angleOffset: 0
+  teleportActivationAngle: 45
+  rotateActivationAngle: 22.5
+  rotationAmount: 90
+  backStrafeActivationAngle: 45
+  strafeAmount: 0.25
   upDirectionThreshold: 0.2
   LineColorHotSpot:
     serializedVersion: 2
@@ -472,7 +478,6 @@ MonoBehaviour:
   InvalidLayers:
     serializedVersion: 2
     m_Bits: 4
-  inputThreshold: 0.5
   minParabolaVelocity: 5
   maxParabolaVelocity: 20
   minDistanceModifier: 1

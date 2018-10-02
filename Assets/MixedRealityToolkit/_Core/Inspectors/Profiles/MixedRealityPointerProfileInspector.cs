@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Internal.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
+using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
+using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
 {
     [CustomEditor(typeof(MixedRealityPointerProfile))]
     public class MixedRealityPointerProfileInspector : MixedRealityBaseConfigurationProfileInspector
@@ -40,15 +42,25 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         public override void OnInspectorGUI()
         {
             RenderMixedRealityToolkitLogo();
-            EditorGUILayout.LabelField("Pointer Options", EditorStyles.boldLabel);
-
             if (!CheckMixedRealityManager())
             {
                 return;
             }
 
+            if (GUILayout.Button("Back to Input Profile"))
+            {
+                Selection.activeObject = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile;
+            }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Pointer Options", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Pointers attach themselves onto controllers as they are initialized.", MessageType.Info);
             EditorGUILayout.Space();
+
+            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
+            {
+                GUI.enabled = false;
+            }
 
             serializedObject.Update();
             currentlySelectedPointerOption = -1;

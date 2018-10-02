@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Internal.Extensions;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.Async;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.WebRequestRest;
-using Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal.DataStructures;
+using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.Async;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.WebRequestRest;
+using Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal.DataStructures;
 using System;
 using System.IO;
 using System.Linq;
@@ -14,7 +14,7 @@ using UnityEngine.Networking;
 using Debug = UnityEngine.Debug;
 using FileInfo = System.IO.FileInfo;
 
-namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal
+namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal
 {
     /// <summary>
     /// Function used to communicate with Windows 10 devices through the device portal REST APIs.
@@ -411,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal
             }
 
             // Query
-            string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={WWW.EscapeURL(fileName)}";
+            string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={UnityWebRequest.EscapeURL(fileName)}";
 
             var response = await Rest.PostAsync(query, form, targetDevice.Authorization);
 
@@ -497,7 +497,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal
                 return false;
             }
 
-            string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={WWW.EscapeURL(appInfo.PackageFullName)}";
+            string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={UnityWebRequest.EscapeURL(appInfo.PackageFullName)}";
             var response = await Rest.DeleteAsync(query, targetDevice.Authorization);
 
             if (response.Successful)
@@ -542,7 +542,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal
                 return false;
             }
 
-            string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?appid={WWW.EscapeURL(appInfo.PackageRelativeId.EncodeTo64())}&package={WWW.EscapeURL(appInfo.PackageFullName)}";
+            string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?appid={UnityWebRequest.EscapeURL(appInfo.PackageRelativeId.EncodeTo64())}&package={UnityWebRequest.EscapeURL(appInfo.PackageFullName)}";
             var response = await Rest.PostAsync(query, targetDevice.Authorization);
 
             if (!response.Successful)
@@ -586,7 +586,7 @@ namespace Microsoft.MixedReality.Toolkit.Internal.Utilities.WindowsDevicePortal
                 return false;
             }
 
-            string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?package={WWW.EscapeURL(appInfo.PackageFullName.EncodeTo64())}";
+            string query = $"{string.Format(AppQuery, FinalizeUrl(targetDevice.IP))}?package={UnityWebRequest.EscapeURL(appInfo.PackageFullName.EncodeTo64())}";
             Response response = await Rest.DeleteAsync(query, targetDevice.Authorization);
 
             if (!response.Successful)
