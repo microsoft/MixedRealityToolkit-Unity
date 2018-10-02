@@ -678,7 +678,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             SerializedProperty uEvent = eventItem.FindPropertyRelative("Event");
             SerializedProperty eventName = eventItem.FindPropertyRelative("Name");
             SerializedProperty className = eventItem.FindPropertyRelative("ClassName");
-            EditorGUILayout.PropertyField(uEvent, new GUIContent(eventName.stringValue));
 
             // show event dropdown
             int id = ReverseLookup(className.stringValue, eventOptions);
@@ -690,6 +689,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
                 ChangeEvent(index);
             }
+
+            EditorGUILayout.PropertyField(uEvent, new GUIContent(eventName.stringValue));
 
             // show event properties
             EditorGUI.indentLevel = indentOnSectionStart + 1;
