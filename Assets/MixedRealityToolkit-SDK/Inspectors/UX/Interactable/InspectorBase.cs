@@ -49,11 +49,23 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         protected readonly static string star = "\u2606";
         protected readonly static string emoji = "\u263A";
 
+        // indent tracker
         protected static int indentOnSectionStart = 0;
         public const float DottedLineScreenSpace = 4.65f;
 
+        /// <summary>
+        /// Delegate for button callbacks, single index
+        /// </summary>
+        /// <param name="index">location of item in a serialized array</param>
+        /// <param name="prop">A serialize property containing information needed if the button was clicked</param>
         public delegate void ListButtonEvent(int index, SerializedProperty prop = null);
-        public delegate void MultiListButtonEvent(int[] arr, SerializedProperty prop = null);
+
+        /// <summary>
+        /// Delegate for button callbacks, multi-index for nested arrays
+        /// </summary>
+        /// <param name="index">location of item in a serialized array</param>
+        /// <param name="prop">A serialize property containing information needed if the button was clicked</param>
+        public delegate void MultiListButtonEvent(int[] indexArray, SerializedProperty prop = null);
 
         protected List<ListSettings> listSettings;
 
@@ -71,6 +83,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return box;
         }
 
+        /// <summary>
+        /// A button that is as wide as the label
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="index"></param>
+        /// <param name="callback"></param>
+        /// <param name="prop"></param>
+        /// <returns></returns>
         public static bool FlexButton(GUIContent label, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
             // delete button
@@ -92,6 +112,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
+        /// <summary>
+        /// A button that is as wide as the label
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="index"></param>
+        /// <param name="callback"></param>
+        /// <param name="prop"></param>
+        /// <returns></returns>
         public static bool FlexButton(GUIContent label, int[] arr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
             // delete button
@@ -113,6 +141,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
+        /// <summary>
+        /// A button that is as wide as the available space
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="index"></param>
+        /// <param name="callback"></param>
+        /// <param name="prop"></param>
+        /// <returns></returns>
         public static bool FullWidthButton(GUIContent label, float padding, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
@@ -133,6 +169,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
+        /// <summary>
+        /// A button that is as wide as the available space
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="index"></param>
+        /// <param name="callback"></param>
+        /// <param name="prop"></param>
+        /// <returns></returns>
         public static bool FullWidthButton(GUIContent label, float padding, int[] arr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
@@ -153,6 +197,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
+        /// <summary>
+        /// A small button, good for a single icon like + or -
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="index"></param>
+        /// <param name="callback"></param>
+        /// <param name="prop"></param>
+        /// <returns></returns>
         public static bool SmallButton(GUIContent label, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
 
@@ -168,6 +220,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             return triggered;
         }
 
+        /// <summary>
+        /// A small button, good for a single icon like + or -
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="index"></param>
+        /// <param name="callback"></param>
+        /// <param name="prop"></param>
+        /// <returns></returns>
         public static bool SmallButton(GUIContent label, int[] arr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
             GUIStyle smallButton = new GUIStyle(EditorStyles.miniButton);
