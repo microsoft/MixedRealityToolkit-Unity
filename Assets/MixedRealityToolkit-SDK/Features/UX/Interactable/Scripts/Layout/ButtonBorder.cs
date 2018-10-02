@@ -14,28 +14,36 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     public class ButtonBorder : MonoBehaviour
     {
         [Tooltip("A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size")]
-        public float BasePixelScale = 2048;
+        [SerializeField]
+        private float BasePixelScale = 2048;
 
         [Tooltip("The transform this object should be linked and aligned to")]
-        public Transform AnchorTransform;
+        [SerializeField]
+        private Transform AnchorTransform;
 
         [Tooltip("Size of the border using pixel values from our design program.")]
-        public float Weight = 10;
+        [SerializeField]
+        private float Weight = 10;
 
         [Tooltip("Depth of the border using pixel values from our design program.")]
-        public float Depth = 20;
+        [SerializeField]
+        private float Depth = 20;
 
         [Tooltip("Where to set this object's center point in relation to the Anchor's center point")]
-        public Vector3 Alignment;
+        [SerializeField]
+        private Vector3 Alignment;
 
         [Tooltip("That absolute amount to offset the position")]
-        public Vector3 PositionOffset;
+        [SerializeField]
+        private Vector3 PositionOffset;
 
         [Tooltip("Will extend the height or width of the border to create corners.")]
-        public bool AddCorner = true;
+        [SerializeField]
+        private bool AddCorner = true;
 
         [Tooltip("should this only run in Edit mode, to avoid updating as items move?")]
-        public bool OnlyInEditMode;
+        [SerializeField]
+        private bool OnlyInEditMode;
 
         /// <summary>
         /// Set the size
@@ -68,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if ((Application.isPlaying && !OnlyInEditMode) || (!Application.isPlaying))
             {

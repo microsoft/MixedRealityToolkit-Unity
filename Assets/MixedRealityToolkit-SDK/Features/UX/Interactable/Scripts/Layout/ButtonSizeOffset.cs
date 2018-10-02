@@ -15,19 +15,44 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     {
 
         [Tooltip("A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size")]
-        public float BasePixelScale = 2048;
+        [SerializeField]
+        private float BasePixelScale = 2048;
 
         [Tooltip("The transform this object should be linked and aligned to")]
-        public Transform AnchorTransform;
+        [SerializeField]
+        private Transform AnchorTransform;
 
         [Tooltip(" How much to scale compared to the Anchor's size")]
-        public Vector3 Scale = Vector3.one;
+        [SerializeField]
+        private Vector3 Scale = Vector3.one;
 
         [Tooltip("That absolute amount to offset the scale")]
-        public Vector3 Offset;
+        [SerializeField]
+        private Vector3 Offset;
 
         [Tooltip("should this only run in Edit mode, to avoid updating as items move?")]
-        public bool OnlyInEditMode;
+        [SerializeField]
+        private bool OnlyInEditMode;
+
+        public void SetScale(Vector3 scale)
+        {
+            Scale = scale;
+        }
+
+        public Vector3 GetScale()
+        {
+            return Scale;
+        }
+
+        public void SetOffset(Vector3 offset)
+        {
+            Offset = offset;
+        }
+
+        public Vector3 GetSOffset()
+        {
+            return Offset;
+        }
 
         /// <summary>
         /// Set the size based on the Achor's size and the buffers
@@ -39,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (AnchorTransform != null)
             {

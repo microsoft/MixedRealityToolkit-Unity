@@ -11,13 +11,26 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     public class ButtonSize : MonoBehaviour
     {
         [Tooltip("A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size")]
-        public float BasePixelScale = 2048;
+        [SerializeField]
+        private float BasePixelScale = 2048;
 
         [Tooltip("Size of the primitive using pixel values from our design program.")]
-        public Vector3 ItemSize = new Vector3(594, 246, 15);
+        [SerializeField]
+        private Vector3 ItemSize = new Vector3(594, 246, 15);
 
         [Tooltip("should this only run in Edit mode, to avoid updating as items move?")]
-        public bool OnlyInEditMode;
+        [SerializeField]
+        private bool OnlyInEditMode;
+
+        public void SetSize(Vector3 size)
+        {
+            ItemSize = size;
+        }
+
+        public Vector3 GetSize()
+        {
+            return ItemSize;
+        }
 
         /// <summary>
         /// Set the size
@@ -29,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if ((Application.isPlaying && !OnlyInEditMode) || (!Application.isPlaying))
             {
