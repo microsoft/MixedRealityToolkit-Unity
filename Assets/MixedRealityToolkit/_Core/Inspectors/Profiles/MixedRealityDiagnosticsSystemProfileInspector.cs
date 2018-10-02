@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
@@ -40,6 +41,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             if (GUILayout.Button("Back to Configuration Profile"))
             {
                 Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
+            }
+
+            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
+            {
+                GUI.enabled = false;
             }
 
             EditorGUILayout.Space();
