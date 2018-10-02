@@ -11,6 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// Place an object in space relative to another object's scale (See ButtonSize for more info)
     ///     Easily layout button elements in 3D space, in the editor.
     ///     Good for responsive buttons that can stretch and object realignment during runtime
+    ///     Works best when using with ButtonSize, but not requied
+    /// Use Case:
+    /// Create a button and add an element, like an icon the needs to align to the left, even if the background changes size.
     /// </summary>
     [ExecuteInEditMode]
     public class ButtonLayout : MonoBehaviour

@@ -10,6 +10,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
     /// <summary>
     /// Scales the collider on one object relative to the transform's scale of another object
     /// Works best with box colliders
+    /// 
+    /// Use Case:
+    /// Create a button with some sub objects and it would be easier to maintain the collider on the parent object
+    /// which does not have any mesh or collider.
+    ///     Add this component and assign the largest element, like the button background, and the collider will always
+    ///     stay in sync with the backgrounds scale.
+    /// Add some consistent space around the button content quickly.
     /// </summary>
     [ExecuteInEditMode]
     public class ButtonCollider : MonoBehaviour
@@ -45,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// </summary>
         [Tooltip("should this only run in Edit mode, to avoid updating as items move?")]
         [SerializeField]
-        private bool OnlyInEditMode;
+        private bool OnlyInEditMode = true;
 
         // the Collider to copy the scale to
         private Collider copyTo;
