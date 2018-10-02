@@ -88,7 +88,69 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// <returns></returns>
         public static PropertySetting UpdatePropertySetting(PropertySetting setting, object update)
         {
-            setting.Value = update;
+            switch (setting.Type)
+            {
+                case InspectorField.FieldTypes.Float:
+                    setting.FloatValue = (float)update;
+                    break;
+                case InspectorField.FieldTypes.Int:
+                    setting.IntValue = (int)update;
+                    break;
+                case InspectorField.FieldTypes.String:
+                    setting.StringValue = (string)update;
+                    break;
+                case InspectorField.FieldTypes.Bool:
+                    setting.BoolValue = (bool)update;
+                    break;
+                case InspectorField.FieldTypes.Color:
+                    setting.ColorValue = (Color)update;
+                    break;
+                case InspectorField.FieldTypes.DropdownInt:
+                    setting.IntValue = (int)update;
+                    break;
+                case InspectorField.FieldTypes.DropdownString:
+                    setting.StringValue = (string)update;
+                    break;
+                case InspectorField.FieldTypes.GameObject:
+                    setting.GameObjectValue = (GameObject)update;
+                    break;
+                case InspectorField.FieldTypes.ScriptableObject:
+                    setting.ScriptableObjectValue = (ScriptableObject)update;
+                    break;
+                case InspectorField.FieldTypes.Object:
+                    setting.ObjectValue = (UnityEngine.Object)update;
+                    break;
+                case InspectorField.FieldTypes.Material:
+                    setting.MaterialValue = (Material)update;
+                    break;
+                case InspectorField.FieldTypes.Texture:
+                    setting.TextureValue = (Texture)update;
+                    break;
+                case InspectorField.FieldTypes.Vector2:
+                    setting.Vector2Value = (Vector2)update;
+                    break;
+                case InspectorField.FieldTypes.Vector3:
+                    setting.Vector3Value = (Vector3)update;
+                    break;
+                case InspectorField.FieldTypes.Vector4:
+                    setting.Vector4Value = (Vector4)update;
+                    break;
+                case InspectorField.FieldTypes.Curve:
+                    setting.CurveValue = (AnimationCurve)update;
+                    break;
+                case InspectorField.FieldTypes.Quaternion:
+                    setting.QuaternionValue = (Quaternion)update;
+                    break;
+                case InspectorField.FieldTypes.AudioClip:
+                    setting.AudioClipValue = (AudioClip)update;
+                    break;
+                case InspectorField.FieldTypes.Event:
+                    setting.EventValue = (UnityEvent)update;
+                    break;
+                default:
+                    break;
+            }
+
             return setting;
         }
         
@@ -110,7 +172,72 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 }
             }
 
-            return setting.Value;
+            object value = null;
+
+            switch (setting.Type)
+            {
+                case InspectorField.FieldTypes.Float:
+                    value = setting.FloatValue;
+                    break;
+                case InspectorField.FieldTypes.Int:
+                    value = setting.IntValue;
+                    break;
+                case InspectorField.FieldTypes.String:
+                    value = setting.StringValue;
+                    break;
+                case InspectorField.FieldTypes.Bool:
+                    value = setting.BoolValue;
+                    break;
+                case InspectorField.FieldTypes.Color:
+                    value = setting.ColorValue;
+                    break;
+                case InspectorField.FieldTypes.DropdownInt:
+                    value = setting.IntValue;
+                    break;
+                case InspectorField.FieldTypes.DropdownString:
+                    value = setting.StringValue;
+                    break;
+                case InspectorField.FieldTypes.GameObject:
+                    value = setting.GameObjectValue;
+                    break;
+                case InspectorField.FieldTypes.ScriptableObject:
+                    value = setting.ScriptableObjectValue;
+                    break;
+                case InspectorField.FieldTypes.Object:
+                    value = setting.ObjectValue;
+                    break;
+                case InspectorField.FieldTypes.Material:
+                    value = setting.MaterialValue;
+                    break;
+                case InspectorField.FieldTypes.Texture:
+                    value = setting.TextureValue;
+                    break;
+                case InspectorField.FieldTypes.Vector2:
+                    value = setting.Vector2Value;
+                    break;
+                case InspectorField.FieldTypes.Vector3:
+                    value = setting.Vector3Value;
+                    break;
+                case InspectorField.FieldTypes.Vector4:
+                    value = setting.Vector4Value;
+                    break;
+                case InspectorField.FieldTypes.Curve:
+                    value = setting.CurveValue;
+                    break;
+                case InspectorField.FieldTypes.Quaternion:
+                    value = setting.QuaternionValue;
+                    break;
+                case InspectorField.FieldTypes.AudioClip:
+                    value = setting.AudioClipValue;
+                    break;
+                case InspectorField.FieldTypes.Event:
+                    value = setting.EventValue;
+                    break;
+                default:
+                    break;
+            }
+
+            return value;
         }
         
         /// <summary>
