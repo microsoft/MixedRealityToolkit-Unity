@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 
             if (ActiveProfile.IsDiagnosticsSystemEnabled)
             {
-                AddManager(typeof(IMixedRealityDiagnosticsManager), Activator.CreateInstance(ActiveProfile.DiagnosticsSystemSystemType) as IMixedRealityDiagnosticsManager);
+                AddManager(typeof(IMixedRealityDiagnosticsSystem), Activator.CreateInstance(ActiveProfile.DiagnosticsSystemSystemType) as IMixedRealityDiagnosticsSystem);
 
                 if (DiagnosticsSystem == null)
                 {
@@ -921,7 +921,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                    type == typeof(IMixedRealityTeleportSystem) ||
                    type == typeof(IMixedRealityBoundarySystem) ||
                    type == typeof(IMixedRealitySpatialAwarenessSystem) ||
-                   type == typeof(IMixedRealityDiagnosticsManager);
+                   type == typeof(IMixedRealityDiagnosticsSystem);
         }
 
         /// <summary>
@@ -1038,6 +1038,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// </summary>
         public static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = Instance.GetManager<IMixedRealityTeleportSystem>());
 
+<<<<<<< HEAD
         private static IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 
         /// <summary>
@@ -1046,11 +1047,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         public static IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = Instance.GetManager<IMixedRealitySpatialAwarenessSystem>());
 
         private static IMixedRealityDiagnosticsManager diagnosticsSystem = null;
+=======
+        private static IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
+>>>>>>> upstream/feature/mrtk_spatialAwareness
 
         /// <summary>
         /// The current Diagnostics System registered with the Mixed Reality Manager.
         /// </summary>
-        public static IMixedRealityDiagnosticsManager DiagnosticsSystem => diagnosticsSystem ?? (diagnosticsSystem = Instance.GetManager<IMixedRealityDiagnosticsManager>());
+        public static IMixedRealityDiagnosticsSystem DiagnosticsSystem => diagnosticsSystem ?? (diagnosticsSystem = Instance.GetManager<IMixedRealityDiagnosticsSystem>());
 
         #endregion Manager Accessors
     }

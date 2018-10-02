@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using UnityEditor;
@@ -42,9 +43,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 Selection.activeObject = MixedRealityManager.Instance.ActiveProfile;
             }
 
+            if (MixedRealityPreferences.LockProfiles && !((BaseMixedRealityProfile)target).IsCustomProfile)
+            {
+                GUI.enabled = false;
+            }
+
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Boundary Visualization Options", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Boundary visualizations can help users stay oriented and comfortable in the experience.", MessageType.Info);
+            EditorGUILayout.LabelField("Diagnostic Visualization Options", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Diagnostic visualizations can help monitor system resources and performance inside an application.", MessageType.Info);
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(visible);

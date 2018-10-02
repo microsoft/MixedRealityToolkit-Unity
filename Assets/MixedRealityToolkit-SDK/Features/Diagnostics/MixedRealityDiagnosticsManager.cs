@@ -1,5 +1,5 @@
 ﻿using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Boundary;
+using Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Managers;
 using Microsoft.MixedReality.Toolkit.Core.Utilities;
@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
 {
-    public class MixedRealityDiagnosticsManager : MixedRealityEventManager, IMixedRealityDiagnosticsManager
+    public class MixedRealityDiagnosticsManager : MixedRealityEventManager, IMixedRealityDiagnosticsSystem
     {
         #region IMixedRealityManager
         private DiagnosticsEventData eventData;
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.DiagnosticsSystem
         }
 
         /// <summary>
-        /// Event sent whenever the boundary visualization changes.
+        /// Event sent whenever the diagnostics visualization changes.
         /// </summary>
         private static readonly ExecuteEvents.EventFunction<IMixedRealityDiagnosticsHandler> OnDiagnosticsChanged =
             delegate (IMixedRealityDiagnosticsHandler handler, BaseEventData eventData)

@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Core.Definitions.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Diagnostics;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Boundary
+namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Diagnostics
 {
     public class DiagnosticsEventData : GenericBaseEventData
     {
@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Boundary
         public DiagnosticsEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         public void Initialize(
-            IMixedRealityDiagnosticsManager diagnosticsSystem,
+            IMixedRealityDiagnosticsSystem diagnosticsSystem,
             bool visible,
             bool showCpu,
             bool showFps,
