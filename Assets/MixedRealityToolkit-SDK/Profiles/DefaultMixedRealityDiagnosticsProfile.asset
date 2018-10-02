@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c2d00f2d26cc124caed106ffbfe3f06, type: 3}
   m_Name: DefaultMixedRealityDiagnosticsProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
   showFps: 1
   showCpu: 1
   showMemory: 1

@@ -29,6 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput
                 return;
             }
 
+#if UNITY_EDITOR
+            UnityEditor.EditorWindow.focusedWindow.ShowNotification(new GUIContent("Press \"ESC\" to regain mouse control"));
+#endif
+
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
