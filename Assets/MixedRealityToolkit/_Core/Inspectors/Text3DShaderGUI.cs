@@ -1,16 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Licensed under the MIT License.
 
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
+using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 {
     /// <summary>
-    /// Editor for FastConfigurable shader
+    /// A custom shader inspector for the "Mixed Reality Toolkit/TextShader3D".
     /// </summary>
-    public class FontShader3DGUI : ShaderGUI
+    public class Text3DShader : ShaderGUI
     {
         protected bool firstTimeApply = true;
         protected MaterialProperty cullMode;
@@ -36,13 +38,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 ShowMainGUI(matEditor);
             }
         }
-            
+
         protected virtual void ShowMainGUI(MaterialEditor matEditor)
         {
             //matEditor.ShaderProperty(cullMode, Styles.cullMode);
             // add special property
         }
-        
+
         protected virtual void CacheOutputConfigurationProperties(MaterialProperty[] props)
         {
             //cullMode = FindProperty("_Cull", props);

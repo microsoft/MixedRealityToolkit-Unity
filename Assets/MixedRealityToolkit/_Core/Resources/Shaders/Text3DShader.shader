@@ -4,13 +4,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 ///
-/// Basic 3D Text shader with proper z-sorting
+/// Basic 3D Text shader with proper z-sorting and culling options.
 ///
-Shader "Mixed Reality Toolkit/3DTextShader"
+Shader "Mixed Reality Toolkit/Text3DShader"
 {
     Properties
     {
         _MainTex ("Alpha (A)", 2D) = "white" {}
+		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Cull", Float) = 2
 
         [HideInInspector] _Color ("Main Color", Color) = (1,1,1,1)
         [HideInInspector] _StencilComp ("Stencil Comparison", Float) = 8
@@ -42,7 +43,7 @@ Shader "Mixed Reality Toolkit/3DTextShader"
             WriteMask [_StencilWriteMask]
         }
 
-        Cull Off
+        Cull [_Cull]
         Lighting Off
         ZWrite Off
         ZTest [unity_GUIZTestMode]
@@ -111,4 +112,5 @@ Shader "Mixed Reality Toolkit/3DTextShader"
             ENDCG
         }
     }
+	CustomEditor "Microsoft.MixedReality.Toolkit.Core.Inspectors.Text3DShaderGUI"
 }

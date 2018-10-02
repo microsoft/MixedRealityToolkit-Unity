@@ -77,6 +77,7 @@ Material:
     - _ClippingPlaneBorderWidth: 0.025
     - _ColorMask: 15
     - _ColorWriteMask: 15
+    - _Cull: 2
     - _CullMode: 2
     - _CustomMode: 0
     - _Cutoff: 0.5

@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: 3DTextSelawik
-  m_Shader: {fileID: 4800000, guid: 27af9711eec36b341966a8d0c2209169, type: 3}
+  m_Shader: {fileID: 4800000, guid: 80c006b91733f1a4991c49af89321ecd, type: 3}
   m_ShaderKeywords: _BORDER_LIGHT_USES_HOVER_COLOR _DIRECTIONAL_LIGHT _HOVER_LIGHT
     _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 5
