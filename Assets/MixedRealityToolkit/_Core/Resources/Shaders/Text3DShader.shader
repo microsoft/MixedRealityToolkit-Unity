@@ -1,10 +1,8 @@
-﻿// Upgrade NOTE: upgraded instancing buffer 'Props' to new syntax.
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 ///
-/// Basic 3D Text shader with proper z-sorting and culling options.
+/// Basic 3D TextMesh shader with proper z-sorting and culling options.
 ///
 Shader "Mixed Reality Toolkit/Text3DShader"
 {
