@@ -611,8 +611,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     audioClip.objectReferenceValue = (AudioClip)update;
                     break;
                 case InspectorField.FieldTypes.Event:
-                    //SerializedProperty uEvent = prop.FindPropertyRelative("EventValue");
-                    //uEvent.objectReferenceValue = update as UnityEngine.Object;
+                    // read only, do not update here or a new instance of the event will be created
                     break;
                 default:
                     break;
@@ -713,10 +712,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                     break;
                 case InspectorField.FieldTypes.Event:
                     SerializedProperty uEvent = prop.FindPropertyRelative("EventValue");
-                    if (uEvent != null)
-                    {
-                        //Debug.Log("update? " + uEvent);
-                    }
                     EditorGUILayout.PropertyField(uEvent, new GUIContent(label.stringValue, tooltip.stringValue));
                     break;
                 default:
