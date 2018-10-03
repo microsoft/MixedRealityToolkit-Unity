@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Collections;
 
 using System.Collections.Generic;
 
@@ -11,7 +14,7 @@ namespace HoloToolkit.Unity.QRTracking
     {
         public GameObject qrCodePrefab;
 
-        private System.Collections.Generic.SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
+        private SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
 
         struct ActionData
         {
@@ -31,8 +34,8 @@ namespace HoloToolkit.Unity.QRTracking
             }
         }
 
-        private System.Collections.Generic.Queue<ActionData> pendingActions = new Queue<ActionData>();
-        void Awake()
+        private Queue<ActionData> pendingActions = new Queue<ActionData>();
+        private void Awake()
         {
             qrCodesObjectsList = new SortedDictionary<System.Guid, GameObject>();
             QRCodesManager.Instance.QRCodeAdded += Instance_QRCodeAdded;
@@ -40,8 +43,7 @@ namespace HoloToolkit.Unity.QRTracking
             QRCodesManager.Instance.QRCodeRemoved += Instance_QRCodeRemoved;
         }
 
-        // Use this for initialization
-        void Start()
+        private void Start()
         {
             if (qrCodePrefab == null)
             {
@@ -80,27 +82,31 @@ namespace HoloToolkit.Unity.QRTracking
                 while (pendingActions.Count > 0)
                 {
                     var action = pendingActions.Dequeue();
-                    if (action.type == ActionData.Type.Added)
+                    switch (action.type)
                     {
-                        GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                        qrCodeObject.GetComponent<SpatialGraphCoordinateSystem>().Id = action.qrCode.Id;
-                        qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
-                        qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
-                    }
-                    else if (action.type == ActionData.Type.Removed)
-                    {
-                        if (qrCodesObjectsList.ContainsKey(action.qrCode.Id))
-                        {
-                            Destroy(qrCodesObjectsList[action.qrCode.Id]);
-                            qrCodesObjectsList.Remove(action.qrCode.Id);
-                        }
+                        case ActionData.Type.Added:
+                            {
+                                GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                                qrCodeObject.GetComponent<SpatialGraphCoordinateSystem>().Id = action.qrCode.Id;
+                                qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
+                                qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
+                                break;
+                            }
+                        case ActionData.Type.Removed:
+                            {
+                                if (qrCodesObjectsList.ContainsKey(action.qrCode.Id))
+                                {
+                                    Destroy(qrCodesObjectsList[action.qrCode.Id]);
+                                    qrCodesObjectsList.Remove(action.qrCode.Id);
+                                }
+                                break;
+                            }
                     }
                 }
             }
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             HandleEvents();
         }

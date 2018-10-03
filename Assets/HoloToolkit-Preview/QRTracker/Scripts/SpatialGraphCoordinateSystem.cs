@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 #if WINDOWS_UWP
@@ -29,13 +32,12 @@ namespace HoloToolkit.Unity
             }
         }
 
-        void Awake()
+        private void Awake()
         {
             CurrentState = UnityEngine.XR.WSA.PositionalLocatorState.Unavailable;
         }
 
-        // Use this for initialization
-        void Start()
+        private void Start()
         {
             UnityEngine.XR.WSA.WorldManager.OnPositionalLocatorStateChanged += WorldManager_OnPositionalLocatorStateChanged;
             CurrentState = UnityEngine.XR.WSA.WorldManager.state;
@@ -123,8 +125,8 @@ namespace HoloToolkit.Unity
 #endif
             }
         }
-        // Update is called once per frame
-        void Update()
+
+        private void Update()
         {
             UpdateLocation();
         }

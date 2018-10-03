@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using QRCodesTrackerPlugin;
@@ -20,7 +23,7 @@ namespace HoloToolkit.Unity.QRTracking
         /// </summary>
         [SerializeField]
         [Tooltip("Data of the QR code to which we want to attach the game object.")]
-        private string qRCodeData = "";
+        private string qRCodeData = string.Empty;
         public string QRCodeData
         {
             get
@@ -34,7 +37,7 @@ namespace HoloToolkit.Unity.QRTracking
                     qRCodeData = value;
                     if (qRCodeData == null)
                     {
-                        qRCodeData = "";
+                        qRCodeData = string.Empty;
                     }
                     
                     qrCodeId = QRCodesManager.Instance.GetIdForQRCode(qRCodeData);
@@ -43,17 +46,16 @@ namespace HoloToolkit.Unity.QRTracking
             }
         }
 
-        private System.Collections.Generic.SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
+        private SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
 
-        void Awake()
+        private void Awake()
         {
             QRCodesManager.Instance.QRCodeAdded += Instance_QRCodeAdded;
             QRCodesManager.Instance.QRCodeUpdated += Instance_QRCodeUpdated;
             QRCodesManager.Instance.QRCodeRemoved += Instance_QRCodeRemoved;
         }
 
-        // Use this for initialization
-        void Start()
+        private void Start()
         {
             if (gameObjectToAttach == null)
             {
@@ -66,7 +68,7 @@ namespace HoloToolkit.Unity.QRTracking
 
         private void Instance_QRCodeAdded(object sender, QRCodeEventArgs<QRCodesTrackerPlugin.QRCode> e)
         {
-            if (qrCodeId == new System.Guid())
+            if (qrCodeId == System.Guid.Empty)
             {
                 if (e.Data.Code == QRCodeData)
                 {
@@ -78,7 +80,7 @@ namespace HoloToolkit.Unity.QRTracking
 
         private void Instance_QRCodeUpdated(object sender, QRCodeEventArgs<QRCodesTrackerPlugin.QRCode> e)
         {
-            if (qrCodeId == new System.Guid())
+            if (qrCodeId == System.Guid.Empty)
             {
                 if (e.Data.Code == QRCodeData)
                 {
@@ -92,13 +94,12 @@ namespace HoloToolkit.Unity.QRTracking
         {
             if (qrCodeId == e.Data.Id)
             {
-                qrCodeId = new System.Guid();
+                qrCodeId = System.Guid.Empty;
                 updatedId = true;
             }
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (updatedId)
             {

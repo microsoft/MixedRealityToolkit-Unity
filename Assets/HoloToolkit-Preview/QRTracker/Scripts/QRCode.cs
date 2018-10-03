@@ -1,13 +1,14 @@
-﻿using System.Collections;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 #if WINDOWS_UWP
-
 using Windows.Perception.Spatial;
-
 #endif
+
 namespace HoloToolkit.Unity.QRTracking
 {
     [RequireComponent(typeof(HoloToolkit.Unity.SpatialGraphCoordinateSystem))]
@@ -28,8 +29,7 @@ namespace HoloToolkit.Unity.QRTracking
 
         private long lastTimeStamp = 0;
 
-        // Use this for initialization
-        void Start()
+        private void Start()
         {
             PhysicalSize = 0.1f;
             CodeText = "Dummy";
@@ -56,28 +56,20 @@ namespace HoloToolkit.Unity.QRTracking
             QRTimeStamp.text = "Time:" + qrCode.LastDetectedQPCTicks;
             Debug.Log("Id= " + qrCode.Id + " PhysicalSize = " + PhysicalSize + " TimeStamp = " + qrCode.LastDetectedQPCTicks + " QRVersion = " + qrCode.Version + " QRData = " + CodeText);
         }
-
-        void UpdatePropertiesDisplay()
+        private void UpdatePropertiesDisplay()
         {
             // Update properties that change
             if (qrCode != null && lastTimeStamp != qrCode.LastDetectedQPCTicks)
             {
                 QRSize.text = "Size:" + qrCode.PhysicalSizeMeters.ToString("F04") + "m";
-#if true
+
                 {
                     long EndingTime = System.Diagnostics.Stopwatch.GetTimestamp();
                     long ElapsedTime = EndingTime - (long)qrCode.LastDetectedQPCTicks;
-
                     double ElapsedSecs = ElapsedTime * (1.0f / System.Diagnostics.Stopwatch.Frequency);
 
                     QRTimeStamp.text = "Time:" + System.DateTime.Now.AddSeconds(-ElapsedSecs).ToString("MM/dd/yyyy HH:mm:ss.fff");
-
                 }
-#else
-                {
-                    QRTimeStamp.text = "Time:" + qrCode.LastDetectedQPCTicks;
-                }
-#endif
 
                 PhysicalSize = qrCode.PhysicalSizeMeters;
                 Debug.Log("Id= " + qrCode.Id + " PhysicalSize = " + PhysicalSize + " TimeStamp = " + qrCode.LastDetectedQPCTicks);
@@ -89,8 +81,7 @@ namespace HoloToolkit.Unity.QRTracking
             }
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             UpdatePropertiesDisplay();
         }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using System.Collections;
 
 using System.Collections.Generic;
@@ -56,7 +59,7 @@ namespace HoloToolkit.Unity.QRTracking
                     }
                 }
             }
-            return new System.Guid();
+            return System.Guid.Empty;
         }
 
         public System.Collections.Generic.IList<QRCodesTrackerPlugin.QRCode> GetList()
@@ -73,20 +76,13 @@ namespace HoloToolkit.Unity.QRTracking
             IsTrackerRunning = false;
         }
 
-        // Use this for initialization
         protected virtual void Start()
         {
             qrTracker = new QRTracker();
             qrTracker.Added += QrTracker_Added;
             qrTracker.Updated += QrTracker_Updated;
             qrTracker.Removed += QrTracker_Removed;
-          /*
-            System.Collections.Generic.IList<QRCodesTrackerPlugin.QRCode> list = qrTracker.GetList() as IList<QRCodesTrackerPlugin.QRCode>;
-            foreach(var code in list)
-            {
-                Debug.Log(code.Id.ToString());
-            }
-          */
+
             if (AutoStartQRTracking)
             {
                 StartQRTracking();
