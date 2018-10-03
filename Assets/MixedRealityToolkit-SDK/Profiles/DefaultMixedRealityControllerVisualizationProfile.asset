@@ -21,19 +21,4 @@ MonoBehaviour:
     type: 2}
   globalRightHandModel: {fileID: 1760394390528354, guid: 9ef0df44319c4fb4a05649e5b8ceb6d1,
     type: 2}
-  controllerVisualizationSettings:
-  - description: Windows Mixed Reality Controller
-    controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityController,
-        Microsoft.MixedReality.Toolkit
-    handedness: 1
-    useDefaultModel: 0
-    overrideModel: {fileID: 0}
-  - description: Windows Mixed Reality Controller
-    controllerType:
-      reference: Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality.WindowsMixedRealityController,
-        Microsoft.MixedReality.Toolkit
-    handedness: 2
-    useDefaultModel: 0
-    overrideModel: {fileID: 1329002528574780, guid: 088efeed31a081c419979a80a12c5b0f,
-      type: 2}
+  controllerVisualizationSettings: []
