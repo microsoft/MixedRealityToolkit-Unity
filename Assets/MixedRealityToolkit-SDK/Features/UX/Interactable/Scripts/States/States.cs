@@ -67,21 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
                 }
             }
 
-            /* works with IL2CPP but not in .NET
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var assembly in assemblies)
-            {
-                var types = assembly.GetTypes();
-                foreach (var type in types)
-                {
-                    if (type.Equals(typeof(InteractableStates)) || type.IsSubclassOf(typeof(InteractableStates)))
-                    {
-                        stateTypes.Add(type);
-                        names.Add(type.Name);
-                    }
-                }
-            }*/
-
             StateOptions = names.ToArray();
             StateTypes = stateTypes.ToArray();
         }

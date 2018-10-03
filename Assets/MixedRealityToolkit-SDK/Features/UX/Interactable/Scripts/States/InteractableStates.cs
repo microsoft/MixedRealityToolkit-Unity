@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
             /// <summary>
             /// Default state, nothing happening
             /// </summary>
-            Default,
+            Default = 0,
             /// <summary>
             /// Looking at object
             /// </summary>
