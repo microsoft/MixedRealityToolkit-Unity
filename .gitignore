@@ -55,3 +55,7 @@ Assets/ThirdParty.meta
 Assets/TextMesh Pro.meta
 Assets/TextMesh Pro/
 --Version/
+
+# Manually managed build files
+!/Build/ 
+!/Build/

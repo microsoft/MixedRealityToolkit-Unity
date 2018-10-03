@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(LibTargetFramework)</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(MRTKRoot)\Assets\MixedRealityToolkit\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="$(UnityEngineDll)" />
+    <Reference Include="$(UnityEditorDll)" />
+    <Reference Include="$(UnityEngineUIExtensionDll)" />
+  </ItemGroup>
+
+</Project>
