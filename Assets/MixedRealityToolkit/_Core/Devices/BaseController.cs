@@ -202,6 +202,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Devices
                 }
             }
 
+            // TODO: add default model assignment here if no prefabs were found, or if settings specified to use them.
+
             // If we've got a controller model prefab, then place it in the scene.
             if (controllerModel != null)
             {
