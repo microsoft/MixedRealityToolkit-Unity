@@ -8,7 +8,7 @@
         <UnityEditorDll>$(UnityManagedRoot)\UnityEditor.dll</UnityEditorDll>
         <UnityEngineUIExtensionDll>$(UnityInstallRoot)\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</UnityEngineUIExtensionDll>
         <Version>1.0.0-alpha</Version>
-        <BuildOutputTargetFolder>$(MRTKRoot)\Build\__output</BuildOutputTargetFolder>
+        <OutputPath>$(MRTKRoot)\Build\__output</OutputPath>
         <MRTKConstants>UNITY_EDITOR;UNITY_2018_1_OR_NEWER</MRTKConstants>
         <DefineConstants>$(MRTKConstants)</DefineConstants>
     </PropertyGroup>
