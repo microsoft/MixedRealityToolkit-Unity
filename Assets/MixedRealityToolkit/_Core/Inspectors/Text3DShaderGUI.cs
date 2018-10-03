@@ -20,9 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
         public override void OnGUI(MaterialEditor matEditor, MaterialProperty[] props)
         {
-            // MaterialProperties can be animated so we do not cache them but fetch them every event to ensure animated values are updated correctly
-            CacheOutputConfigurationProperties(props);
-
             // Make sure that needed setup (ie keywords/renderqueue) are set up if we're switching from an existing material.
             // Do this before any GUI code has been issued to prevent layout issues in subsequent GUILayout statements (case 780071)
             if (firstTimeApply)
@@ -35,20 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
             EditorGUI.BeginChangeCheck();
             {
                 base.OnGUI(matEditor, props);
-                ShowMainGUI(matEditor);
             }
-        }
-
-        protected virtual void ShowMainGUI(MaterialEditor matEditor)
-        {
-            //matEditor.ShaderProperty(cullMode, Styles.cullMode);
-            // add special property
-        }
-
-        protected virtual void CacheOutputConfigurationProperties(MaterialProperty[] props)
-        {
-            //cullMode = FindProperty("_Cull", props);
-            // cache property values
         }
 
         protected static class Styles
