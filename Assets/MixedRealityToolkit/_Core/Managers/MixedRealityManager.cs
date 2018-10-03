@@ -1038,7 +1038,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// </summary>
         public static IMixedRealityTeleportSystem TeleportSystem => teleportSystem ?? (teleportSystem = Instance.GetManager<IMixedRealityTeleportSystem>());
 
-<<<<<<< HEAD
         private static IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 
         /// <summary>
@@ -1046,10 +1045,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
         /// </summary>
         public static IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = Instance.GetManager<IMixedRealitySpatialAwarenessSystem>());
 
-        private static IMixedRealityDiagnosticsManager diagnosticsSystem = null;
-=======
         private static IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
->>>>>>> upstream/feature/mrtk_spatialAwareness
 
         /// <summary>
         /// The current Diagnostics System registered with the Mixed Reality Manager.
