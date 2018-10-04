@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
@@ -147,6 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 }
             }
 #endif
+            EnsureMixedRealityRequirements();
 
             if (ActiveProfile.IsCameraProfileEnabled)
             {
@@ -254,6 +255,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
             #endregion Managers Initialization
 
             isMixedRealityManagerInitializing = false;
+        }
+
+        private void EnsureMixedRealityRequirements()
+        {
+            // There's lots of documented cases that if the camera doesn't start at 0,0,0, things break with the WMR SDK specifically.
+            // We'll enforce that here, then tracking can update it to the appropriate position later.
+           CameraCache.Main.transform.position = Vector3.zero;
         }
 
         #region MonoBehaviour Implementation
@@ -365,6 +373,53 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
 #endif // UNITY_EDITOR
 
                 Initialize();
+            }
+        }
+
+        private Transform mixedRealityPlayspace;
+
+        /// <summary>
+        /// Returns the MixedRealityPlayspace for the local player
+        /// </summary>
+        public Transform MixedRealityPlayspace
+        {
+            get {
+                AssertIsInitialized();
+                if (mixedRealityPlayspace)
+                {
+                    return mixedRealityPlayspace;
+                }
+                else
+                {
+                    string MixedRealityPlayspaceName = "MixedRealityPlayspace";
+                    if (CameraCache.Main.transform.parent == null)
+                    {
+                        mixedRealityPlayspace = new GameObject(MixedRealityPlayspaceName).transform;
+                        CameraCache.Main.transform.SetParent(mixedRealityPlayspace);
+                    }
+                    else
+                    {
+                        if (CameraCache.Main.transform.parent.name != MixedRealityPlayspaceName)
+                        {
+                            // Since the scene is set up with a different camera parent, its likely
+                            // that there's an expectation that that parent is going to be used for
+                            // something else. We print a warning to call out the fact that we're 
+                            // co-opting this object for use with teleporting and such, since that
+                            // might cause conflicts with the parent's intended purpose.
+                            Debug.LogWarning("The Mixed Reality Manager expected the camera's parent to be named " + MixedRealityPlayspaceName + ". The existing parent will be renamed and used instead.");
+                            CameraCache.Main.transform.parent.name = MixedRealityPlayspaceName; // If we rename it, we make it clearer that why it's being teleported around at runtime.
+                        }
+                    }
+
+                    // It's very important that the MixedRealityPlayspace align with the tracked space,
+                    // otherwise reality-locked things like playspace boundaries won't be aligned properly.
+                    // For now, we'll just assume that when the playspace is first initialized, the
+                    // tracked space origin overlaps with the world space origin. If a platform ever does
+                    // something else (i.e, placing the lower left hand corner of the tracked space at world 
+                    // space 0,0,0), we should compensate for that here.
+
+                    return mixedRealityPlayspace;
+                }
             }
         }
 

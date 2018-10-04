@@ -91,12 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
 
         private void InitializeInternal()
         {
-            if (CameraCache.Main.transform.parent == null)
-            {
-                var cameraParent = new GameObject("Body");
-                CameraCache.Main.transform.SetParent(cameraParent.transform);
-            }
-
             focusProvider = CameraCache.Main.gameObject.EnsureComponent<FocusProvider>();
             gazeProvider = CameraCache.Main.gameObject.EnsureComponent<GazeProvider>();
 
