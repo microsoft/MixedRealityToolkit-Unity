@@ -257,11 +257,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                     thisProfile.ControllerVisualizationType.Type != null)
                 {
                     modelPrefab.AddComponent(thisProfile.ControllerVisualizationType.Type);
+                    return true;
                 }
-                else
-                {
-                    Debug.LogError("No controller visualization type specified!");
-                }
+
+                Debug.LogError("No controller visualization type specified!");
             }
             else if (componentList.Length == 1)
             {
