@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
@@ -364,8 +364,25 @@ namespace Microsoft.MixedReality.Toolkit.Core.Managers
                 }
                 else
                 {
-                    mixedRealityPlayspace = new GameObject("MixedRealityPlayspace").transform;
-                    CameraCache.Main.transform.SetParent(mixedRealityPlayspace);
+                    string MixedRealityPlayspaceName = "MixedRealityPlayspace";
+                    if (CameraCache.Main.transform.parent == null)
+                    {
+                        mixedRealityPlayspace = new GameObject(MixedRealityPlayspaceName).transform;
+                        CameraCache.Main.transform.SetParent(mixedRealityPlayspace);
+                    }
+                    else
+                    {
+                        if (CameraCache.Main.transform.parent.name != MixedRealityPlayspaceName)
+                        {
+                            // Since the scene is set up with a different camera parent, its likely
+                            // that there's an expectation that that parent is going to be used for
+                            // something else. We print a warning to call out the fact that we're 
+                            // co-opting this object for use with teleporting and such, since that
+                            // might cause conflicts with the parent's intended purpose.
+                            Debug.LogWarning("The Mixed Reality Manager expected the camera's parent to be named " + MixedRealityPlayspaceName + ". The existing parent will be renamed and used instead.");
+                            CameraCache.Main.transform.parent.name = MixedRealityPlayspaceName; // If we rename it, we make it clearer that why it's being teleported around at runtime.
+                        }
+                    }
 
                     // It's very important that the MixedRealityPlayspace align with the tracked space,
                     // otherwise reality-locked things like playspace boundaries won't be aligned properly.
