@@ -102,6 +102,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 var rightHandModelPrefab = globalRightHandModel.objectReferenceValue as GameObject;
 
                 EditorGUILayout.PropertyField(controllerVisualizationType);
+
+                if (thisProfile.ControllerVisualizationType == null ||
+                    thisProfile.ControllerVisualizationType.Type == null)
+                {
+                    EditorGUILayout.HelpBox("A controller visualization type must be defined!", MessageType.Error);
+                }
+
                 EditorGUILayout.PropertyField(useDefaultModels);
 
                 if (useDefaultModels.boolValue && (leftHandModelPrefab != null || rightHandModelPrefab != null))
@@ -164,14 +171,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 var mixedRealityControllerMappingDescription = controllerSetting.FindPropertyRelative("description");
                 bool hasValidType = thisProfile.ControllerVisualizationSettings[i].ControllerType != null &&
                                     thisProfile.ControllerVisualizationSettings[i].ControllerType.Type != null;
-                if (hasValidType)
-                {
-                    mixedRealityControllerMappingDescription.stringValue = thisProfile.ControllerVisualizationSettings[i].ControllerType.Type.Name.ToProperCase();
-                }
+
+                mixedRealityControllerMappingDescription.stringValue = hasValidType
+                    ? thisProfile.ControllerVisualizationSettings[i].ControllerType.Type.Name.ToProperCase()
+                    : "Undefined Controller";
 
                 serializedObject.ApplyModifiedProperties();
                 var mixedRealityControllerHandedness = controllerSetting.FindPropertyRelative("handedness");
-                EditorGUILayout.LabelField($"{mixedRealityControllerMappingDescription.stringValue.ToProperCase()} {((Handedness)mixedRealityControllerHandedness.intValue).ToString().ToProperCase()} Hand");
+                EditorGUILayout.LabelField($"{mixedRealityControllerMappingDescription.stringValue} {((Handedness)mixedRealityControllerHandedness.intValue).ToString().ToProperCase()} Hand");
 
                 EditorGUIUtility.fieldWidth = defaultFieldWidth;
                 EditorGUIUtility.labelWidth = defaultLabelWidth;
