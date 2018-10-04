@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>$(LibTargetFramework)</TargetFramework>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="$(MRTKRoot)\Assets\MixedRealityToolkit\**\*.cs" />
+    <Content Include="$(MRTKRoot)\Assets\MixedRealityToolkit\_Core\Resources\*" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,15 +1,20 @@
 <Project>
     <PropertyGroup>
-        <LibTargetFramework>netstandard2.0</LibTargetFramework>
+        <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
         <MRTKRoot>..\..</MRTKRoot>
         <UnityInstallRoot>C:\Program Files\Unity</UnityInstallRoot>
         <UnityManagedRoot>$(UnityInstallRoot)\Editor\Data\Managed</UnityManagedRoot>
         <UnityEngineDll>$(UnityManagedRoot)\UnityEngine.dll</UnityEngineDll>
         <UnityEditorDll>$(UnityManagedRoot)\UnityEditor.dll</UnityEditorDll>
         <UnityEngineUIExtensionDll>$(UnityInstallRoot)\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</UnityEngineUIExtensionDll>
-        <Version>1.0.0-alpha</Version>
         <OutputPath>$(MRTKRoot)\Build\__output</OutputPath>
         <MRTKConstants>UNITY_EDITOR;UNITY_2018_1_OR_NEWER</MRTKConstants>
         <DefineConstants>$(MRTKConstants)</DefineConstants>
+        
+        <Version>1.0.1-alpha02</Version>
+        <Authors>Microsoft</Authors>
+        <PackageLicenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/License.txt</PackageLicenseUrl>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <ContentTargetFolders>MixedRealityToolkit</ContentTargetFolders>
     </PropertyGroup>
 </Project>
