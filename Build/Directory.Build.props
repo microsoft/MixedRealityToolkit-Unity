@@ -11,7 +11,7 @@
         <MRTKConstants>UNITY_EDITOR;UNITY_2018_1_OR_NEWER</MRTKConstants>
         <DefineConstants>$(MRTKConstants)</DefineConstants>
         
-        <Version>1.0.1-alpha02</Version>
+        <Version>1.0.1-alpha03</Version>
         <Authors>Microsoft</Authors>
         <PackageLicenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/master/License.txt</PackageLicenseUrl>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
