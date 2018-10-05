@@ -43,6 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
             // If there are 0 or 1 characters, just return the string.
             if (value == null) { return value; }
             if (value.Length < 2) { return value.ToUpper(); }
+            // If there's already spaces in the string, return.
+            if (value.Contains(" ")) { return value; }
 
             // Start with the first character.
             string result = value.Substring(0, 1).ToUpper();
@@ -52,12 +54,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
             {
                 var wasLastCharacterUpper = false;
 
-                if (i < value.Length)
+                if (i < value.Length && i != 0)
                 {
-                    wasLastCharacterUpper = char.IsUpper(value[i - 1]);
+                    wasLastCharacterUpper = char.IsLetter(result[i - 1]) && char.IsUpper(result[i - 1]);
                 }
 
-                if (char.IsUpper(value[i]) && !wasLastCharacterUpper)
+                if (char.IsLetter(value[i]) &&
+                    char.IsUpper(value[i]) &&
+                    !wasLastCharacterUpper)
                 {
                     result += " ";
                 }
