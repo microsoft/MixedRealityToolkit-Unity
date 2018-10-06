@@ -14,8 +14,15 @@ UnityGenerated/
 UnityPackageManager/
 project.json
 project.lock.json
+.out/
+
+# ===== #
+# Certs #
+# ===== #
 WSATestCertificate.pfx
 WSATestCertificate.pfx.meta
+*.privkey
+*.privkey.meta
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
@@ -40,6 +47,7 @@ obj/
 *.log
 *.idb
 *.opendb
+*.package
 
 # ============================ #
 # Visual Studio Code Generated #
