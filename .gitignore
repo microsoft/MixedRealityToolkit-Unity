@@ -21,6 +21,8 @@ project.lock.json
 # ===== #
 WSATestCertificate.pfx
 WSATestCertificate.pfx.meta
+*.cert
+*.cert.meta
 *.privkey
 *.privkey.meta
 
