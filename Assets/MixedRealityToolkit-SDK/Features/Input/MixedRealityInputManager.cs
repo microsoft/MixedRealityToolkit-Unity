@@ -772,7 +772,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction)
         {
             // Create input event
-            pointerEventData.Initialize(pointer.InputSourceParent, inputAction);
+            pointerEventData.Initialize(pointer, inputAction);
 
             ExecutePointerDown(HandlePointerDown(pointer));
         }
@@ -781,7 +781,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public void RaisePointerDown(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
-            pointerEventData.Initialize(pointer.InputSourceParent, handedness, inputAction);
+            pointerEventData.Initialize(pointer, handedness, inputAction);
 
             ExecutePointerDown(HandlePointerDown(pointer));
         }
@@ -855,7 +855,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public void RaisePointerUp(IMixedRealityPointer pointer, MixedRealityInputAction inputAction)
         {
             // Create input event
-            pointerEventData.Initialize(pointer.InputSourceParent, inputAction);
+            pointerEventData.Initialize(pointer, inputAction);
 
             ExecutePointerUp(HandlePointerUp(pointer));
         }
@@ -864,7 +864,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input
         public void RaisePointerUp(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction)
         {
             // Create input event
-            pointerEventData.Initialize(pointer.InputSourceParent, handedness, inputAction);
+            pointerEventData.Initialize(pointer, handedness, inputAction);
 
             ExecutePointerUp(HandlePointerUp(pointer));
         }
