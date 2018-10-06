@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input Action Rules Profile", fileName = "MixedRealityInputActionRulesProfile", order = (int)CreateProfileMenuItemIndices.InputActionRules)]
-    public class MixedRealityInputActionRulesProfile : ScriptableObject
+    public class MixedRealityInputActionRulesProfile : BaseMixedRealityProfile
     {
         [SerializeField]
         private InputActionRuleDigital[] inputActionRulesDigital;

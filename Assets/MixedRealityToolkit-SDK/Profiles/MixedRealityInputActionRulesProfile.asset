@@ -11,3 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee54661ca8af487c9db40e57d479fa48, type: 3}
   m_Name: MixedRealityInputActionRulesProfile
   m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  inputActionRulesDigital: []
+  inputActionRulesSingleAxis: []
+  inputActionRulesDualAxis: []
+  inputActionRulesVectorAxis: []
+  inputActionRulesQuaternionAxis: []
+  inputActionRulesPoseAxis: []
