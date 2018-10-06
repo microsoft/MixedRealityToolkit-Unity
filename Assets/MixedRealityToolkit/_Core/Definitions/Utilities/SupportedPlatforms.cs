@@ -15,5 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         MacStandalone = 1 << 1,
         LinuxStandalone = 1 << 2,
         WindowsUniversal = 1 << 3,
+        Lumin = 1 << 4
     }
 }

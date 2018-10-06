@@ -38,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
                 case RuntimePlatform.LinuxEditor:
                     supportedPlatforms |= SupportedPlatforms.LinuxStandalone;
                     break;
+                case RuntimePlatform.Lumin:
+                    supportedPlatforms |= SupportedPlatforms.Lumin;
+                    break;
             }
 
             return supportedPlatforms;
@@ -76,6 +79,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities
                 case UnityEditor.BuildTarget.StandaloneLinux64:
                 case UnityEditor.BuildTarget.StandaloneLinuxUniversal:
                     supportedPlatforms |= SupportedPlatforms.LinuxStandalone;
+                    break;
+                case UnityEditor.BuildTarget.Lumin:
+                    supportedPlatforms |= SupportedPlatforms.Lumin;
                     break;
             }
 

@@ -55,3 +55,10 @@ MonoBehaviour:
     priority: 10
     runtimePlatform: -1
     configurationProfile: {fileID: 0}
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.Lumin.LuminDeviceManager,
+        Microsoft.MixedReality.Toolkit
+    componentName: Lumin Device Manager
+    priority: 10
+    runtimePlatform: 16
+    configurationProfile: {fileID: 0}

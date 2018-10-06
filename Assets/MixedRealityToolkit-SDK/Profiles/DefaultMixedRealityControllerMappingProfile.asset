@@ -1963,6 +1963,104 @@ MonoBehaviour:
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
+  - description: LuminController
+    controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Core.Devices.Lumin.LuminController,
+        Microsoft.MixedReality.Toolkit
+    handedness: 7
+    useCustomInteractionMappings: 0
+    interactions:
+    - id: 0
+      description: Spatial Pointer
+      axisType: 7
+      inputType: 3
+      inputAction:
+        id: 4
+        description: Pointer Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Trigger Position
+      axisType: 3
+      inputType: 10
+      inputAction:
+        id: 6
+        description: Trigger
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 2
+      description: Trigger Touch
+      axisType: 2
+      inputType: 11
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 3
+      description: Trigger Press (Select)
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 0
+        description: None
+        axisConstraint: 0
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 4
+      description: Bumper Press
+      axisType: 2
+      inputType: 7
+      inputAction:
+        id: 2
+        description: Menu
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Touchpad Position
+      axisType: 4
+      inputType: 21
+      inputAction:
+        id: 5
+        description: Teleport Direction
+        axisConstraint: 4
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 5
+      description: Touchpad Press
+      axisType: 3
+      inputType: 24
+      inputAction:
+        id: 7
+        description: Grip Press
+        axisConstraint: 3
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
   - description: Generic OpenVR Controller Left
     controllerType:
       reference: Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR.GenericOpenVRController,

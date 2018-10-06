@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Core.Definitions;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
 using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Core.Devices.Lumin;
 using Microsoft.MixedReality.Toolkit.Core.Devices.OpenVR;
 using Microsoft.MixedReality.Toolkit.Core.Devices.UnityInput;
 using Microsoft.MixedReality.Toolkit.Core.Devices.WindowsMixedReality;
@@ -99,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             {
                 Selection.activeObject = MixedRealityManager.Instance.ActiveProfile.InputSystemProfile;
             }
-            
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Controller Input Mapping", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("Use this profile to define all the controllers and their inputs your users will be able to use in your application.\n\n" +
@@ -151,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
             bool reset = false;
             if (controllerRenderList.Count > 0)
             {
-                for (var type = 1; type <= (int)SupportedControllerType.Mouse; type++)
+                for (var type = 1; type <= (int)SupportedControllerType.Lumin; type++)
                 {
                     if (controllerRenderList.All(profile => profile.ControllerType != (SupportedControllerType)type))
                     {
@@ -164,6 +165,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                         if ((SupportedControllerType)type == SupportedControllerType.Mouse)
                         {
                             AddController(controllerList, typeof(MouseController));
+                            reset = true;
+                        }
+
+                        if ((SupportedControllerType)type == SupportedControllerType.Lumin)
+                        {
+                            AddController(controllerList, typeof(LuminController));
                             reset = true;
                         }
                     }
@@ -222,6 +229,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Profiles
                 else if (controllerType == typeof(MouseController))
                 {
                     supportedControllerType = SupportedControllerType.Mouse;
+                }
+                else if (controllerType == typeof(LuminController))
+                {
+                    supportedControllerType = SupportedControllerType.Lumin;
                 }
 
                 bool skip = false;
