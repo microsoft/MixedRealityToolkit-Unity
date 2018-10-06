@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
                 .Select(action => (int)action.Id)
                 .Prepend(0).ToArray();
 
-            Reset();
+            ResetCriteria();
         }
 
         public override void OnInspectorGUI()
@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             if (GUILayout.Button(RuleAddButtonContent, EditorStyles.miniButton))
             {
                 AddRule();
-                Reset();
+                ResetCriteria();
             }
 
             GUI.enabled = isGuiLocked;
@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors.Profiles
             serializedObject.ApplyModifiedProperties();
         }
 
-        private void Reset()
+        private void ResetCriteria()
         {
             selectedBaseActionId = 0;
             selectedRuleActionId = 0;
